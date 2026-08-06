@@ -233,21 +233,36 @@ def cmd_deck(args):
         if cs["isolated"]:
             print(f"isolated (no synergy edges): {', '.join(cs['isolated'][:15])}")
 
+    by_name = {}
+    for r in idx.records:
+        by_name.setdefault(r.get("name"), r)
+
+    if args.shape or args.suggest:
+        from .deck import deck_shape
+        shape = deck_shape(by_name, rec, decklist)
+        print(f"\n== deck shape  ({shape['lands']} lands)")
+        curve = " ".join(f"{k}:{v}" for k, v in shape["curve"].items())
+        print(f"curve (MV:count, 7=7+): {curve}")
+        print(f"pips: {shape['pips']}   producing lands: {shape['sources']}")
+        for role, cards in shape["roles"].items():
+            print(f"  {role:17} {len(cards):2}: {', '.join(cards[:8])}")
+        for f in shape["flags"]:
+            print(f"  ! {f}")
+
     if args.suggest:
         from .deck import suggest
-        by_name = {}
-        for r in idx.records:
-            by_name.setdefault(r.get("name"), r)
         with open(args.ci_index, encoding="utf-8") as f:
             db = json.load(f)["cards"]
         ci = {n: c.get("ci", "") for n, c in db.items()}
         printings = {n: c.get("*", []) for n, c in db.items()}
-        sg = suggest(idx, by_name, rec, decklist, ci, printings, args.suggest)
+        sg = suggest(idx, by_name, rec, decklist, ci, printings, args.suggest,
+                     shape=shape)
         print(f"\n== top {args.suggest} suggested additions "
               f"({sg['candidates_considered']} candidates scored)")
         for s in sg["suggestions"]:
-            print(f"  {s['edges']:3} edges ({s['provider_edges']}p/{s['consumer_edges']}c) "
-                  f"{s['printings']:3} printings  {str(s['mv'] or ''):8} {s['card']}")
+            adj = f"  [{'; '.join(s['adjustments'])}]" if s["adjustments"] else ""
+            print(f"  {s['score']:6.1f} ({s['edges']} edges, "
+                  f"{s['printings']} printings) {str(s['mv'] or ''):8} {s['card']}{adj}")
             print(f"       {'; '.join(s['why'][:2])}")
 
 
@@ -323,6 +338,8 @@ def main(argv=None):
                     help="also compute deck-internal cross-synergy edges")
     dk.add_argument("--suggest", type=int, default=0, metavar="N",
                     help="show top-N ranked additions (deck-connectivity score)")
+    dk.add_argument("--shape", action="store_true",
+                    help="mana curve, color pips vs sources, role quotas")
     dk.add_argument("--ci-index", default="/home/user/mse/index/index.json")
     dk.add_argument("--dataset", default=DEFAULT_DATASET)
     dk.set_defaults(fn=cmd_deck)

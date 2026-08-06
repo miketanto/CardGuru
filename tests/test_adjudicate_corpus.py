@@ -266,7 +266,34 @@ def test_detect_hooks_expanded():
     assert "plays_from_graveyard" in detect_hooks(muldrotha)
 
 
-from cardguru.deck import cross_synergy, parse_decklist  # noqa: E402
+from cardguru.deck import (cross_synergy, deck_shape, mana_value,  # noqa: E402
+                           parse_decklist)
+
+
+def test_mana_value():
+    assert mana_value("2 B B") == 4
+    assert mana_value("X R") == 1
+    assert mana_value("no cost") is None
+    assert mana_value(None) is None
+
+
+def test_deck_shape_flags():
+    bolt = {"name": "Bolt", "types": "Instant", "manaCost": "R", "oracle": "",
+            "edges": [], "nodes": [
+                {"id": "a0", "kind": "A", "apiKind": "SP", "api": "DealDamage",
+                 "params": {"ValidTgts": "Any", "NumDmg": "3"}}]}
+    mountain = {"name": "Mountain", "types": "Basic Land Mountain",
+                "oracle": "{T}: Add {R}.", "edges": [], "nodes": []}
+    cmdr = {"name": "C", "types": "Legendary Creature", "manaCost": "1 R",
+            "edges": [], "nodes": []}
+    by_name = {r["name"]: r for r in (bolt, mountain, cmdr)}
+    shape = deck_shape(by_name, cmdr, [("Bolt", 4), ("Mountain", 10)])
+    assert shape["curve"] == {1: 4}
+    assert shape["lands"] == 10 and shape["sources"]["R"] == 10
+    assert shape["pips"]["R"] == 4
+    # quotas all deficient in a 4-spell deck
+    assert any("ramp" in f for f in shape["flags"])
+    assert any("card_draw" in f for f in shape["flags"])
 
 
 def test_cross_synergy_finds_non_commander_pairs():
