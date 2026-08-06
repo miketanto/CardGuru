@@ -1,5 +1,10 @@
 # Phase 2 — Headless adjudication engines: verification of the reconnaissance
 
+> **Post-review decision (2026-08-06):** XMage only. The Forge cross-check described below was
+> investigated and works, but is cut from scope — Forge stays a data source (ontology), and
+> the product claims "engine-simulated with rules cited" rather than dual-engine verification.
+> This document remains the research record as investigated. Current plan: `plan/`.
+
 **Go.** The preliminary conclusion in the brief was right in direction — XMage is the better
 adjudication engine — but *understated* in two ways: (1) XMage's in-process JUnit harness is
 even better-shaped for us than the server "test mode" the README advertises, and (2) Forge is

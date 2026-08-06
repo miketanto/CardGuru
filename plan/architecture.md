@@ -4,6 +4,14 @@ Everything here assumes the findings in `research/phase1-cardscripts.md` and
 `research/phase2-engine.md`. Boring technology everywhere except the engine boundary, per the
 brief.
 
+**Decision (post-feasibility): single-engine adjudication on XMage.** Forge remains a *data*
+source only (the card-script ontology); its game engine is not integrated. Rationale: XMage
+has the better headless story (MIT license, in-process API, ~100 ms/scenario, loud failure
+modes), and the product promise is calibrated accordingly — not "provably correct," but
+"actually simulated, shown step by step, with the relevant rules cited." That is already
+beyond anything shipping today. Accuracy is monitored by spot-checking engine outcomes against
+official rulings (see eval.md), not by a second engine.
+
 ## 1. System shape
 
 ```
@@ -14,10 +22,9 @@ brief.
                         └────────────────────────────────────────────┘
  Adjudication service:
    NL question ─► scenario compiler (LLM, targets Phase-1 ontology)
-              ─► scenario spec (engine-neutral JSON, versioned)
-              ─► XMage driver ──► outcome A ─┐
-              ─► Forge driver ──► outcome B ─┤ diff ─► agree: verified answer + CR citations
-                                             └──────► disagree/error: visible-uncertainty answer
+              ─► scenario spec (JSON, versioned)
+              ─► XMage driver ─► executed: outcome + game log + CR citations
+                              ─► rejected/errored: visible-uncertainty answer (retrieval-only)
 ```
 
 ### Components, in build order
@@ -39,11 +46,13 @@ brief.
    reject any compiled query using tokens outside the ontology.
 4. **Adjudication service.** Thin JVM wrapper over XMage's `CardTestPlayerAPIImpl` exposed as
    JSON-scenario-in / structured-outcome-out (resident process, ~100 ms/scenario measured).
-   Forge twin behind the same spec. Strict mode always on; every choice must be in the spec.
-   Outcome record: final zones/life/P-T/stack + game log + engine versions.
-5. **Verified corpus store.** Append-only records `(scenario spec, engine outcomes, agreement
-   status, CR tags, generator provenance, version tuple)`. Seeded by parsing `Mage.Tests`
-   (~2k human-reviewed scenarios), grown by ontology-driven generation.
+   Strict mode always on; every choice must be in the spec. Outcome record: final
+   zones/life/P-T/stack + step-by-step game log + engine version. The game log is a product
+   feature, not just a debug artifact — "show the simulation" is the differentiator.
+5. **Simulated-scenario corpus store.** Append-only records `(scenario spec, engine outcome,
+   CR tags, rulings-check status where available, generator provenance, version tuple)`.
+   Seeded by parsing `Mage.Tests` (~2k human-reviewed scenarios), grown by ontology-driven
+   generation.
 6. **Rules layer (Phase 3).** CR parsed into numbered nodes (the numbering is a pre-authored
    hierarchy; CR text confirmed available — e.g. vendored `MagicCompRules.txt` (956 KB) in
    taw/magic-search-engine, and WotC publishes updates). Mapping table
@@ -63,10 +72,12 @@ brief.
   - Interaction misrouted to search returns cards instead of an answer — visible, annoying,
     recoverable ("did you want X vs Y adjudicated?" affordance).
   - The dangerous misroute is *adjudication attempted and wrong*. Containment is the
-    verified/uncertain split, not the router: if scenario compilation fails validation, an
-    engine errors, or engines disagree → the answer is explicitly downgraded to
-    "best-effort, not verified" with the disagreement shown. The confidently-wrong rate is the
-    metric that gates shipping (see eval.md).
+    simulated/uncertain split, not the router: if scenario compilation fails validation or the
+    engine rejects/errors, the answer is explicitly downgraded to "best-effort, not simulated"
+    (retrieval-only, uncertainty shown). Simulated answers are labeled as engine-simulated —
+    never as rules-authoritative — and always ship with the game log and CR citations so the
+    user can check the reasoning. The confidently-wrong rate is the metric that gates shipping
+    (see eval.md).
 - Every response carries its tier label and version tuple, so a misroute is at least always
   diagnosable from the response itself.
 
@@ -87,7 +98,7 @@ Correctness claims are only meaningful relative to a version tuple:
 ```
 
 - Stamp the tuple on: every parsed card graph, every corpus record, every benchmark row,
-  every user-facing verified answer.
+  every user-facing simulated answer.
 - **Bitemporal storage is deferred, not designed in.** v1 policy: single "current" snapshot,
   full tuple stamped everywhere, immutable archived corpus per tuple. That preserves the
   ability to go bitemporal later (all history is retained) without paying the schema cost now.
@@ -100,11 +111,11 @@ Correctness claims are only meaningful relative to a version tuple:
 ## 5. Licensing constraints (checked)
 
 - **XMage: MIT.** Unrestricted use, may link.
-- **Forge: GPL-3.0.** Keep it an isolated subprocess/service speaking JSON (planned anyway);
-  its card scripts are data we parse, not code we link. Distribute nothing derived from
-  Forge's code in non-GPL artifacts; the parser and extracted ontology-as-facts are our own
-  work product (mined statistics, not copied expression) — but get a real opinion before any
-  public data release that embeds script text verbatim.
+- **Forge: GPL-3.0.** Only its card scripts are used, as data we parse — its engine is not
+  integrated (single-engine decision above), so no linking question arises. The parser and
+  extracted ontology-as-facts are our own work product (mined statistics, not copied
+  expression) — but get a real opinion before any public data release that embeds script text
+  verbatim.
 - **WotC Fan Content Policy:** non-commercial, no paywalled rules content, attribute properly.
   Oracle text and CR are WotC IP used under the policy; card *images* are the riskiest asset —
   use Scryfall image URIs per their guidelines rather than rehosting.

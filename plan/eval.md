@@ -11,7 +11,7 @@ things are being evaluated and they must not share a leaderboard:
 
 | Source | Nature | Access status | Role |
 |---|---|---|---|
-| Engine-executed scenarios (XMage, cross-checked with Forge) | (state, action) → outcome, machine-verified | both engines in hand; XMage test API verified this session | Ground truth for adjudication; generation of the verified corpus |
+| Engine-executed scenarios (XMage — sole engine by decision) | (state, action) → outcome, machine-executed | XMage test API verified this session | Ground truth for adjudication; generation of the simulated corpus. Accuracy bounded by rulings spot-checks, below |
 | XMage's own regression suite (~2,000 test classes in `Mage.Tests`, incl. `LayerTests`, `HumilityTest`) | judge-reviewed scenario→assertion pairs | cloned | Seed corpus: parse `addCard/castSpell/assert*` into scenario records — thousands of pre-authored, human-reviewed adjudications |
 | Official per-card rulings (Scryfall/Gatherer) | WotC-sanctioned English Q&A | Scryfall blocked in this sandbox; available with network allowlisting | Held-out NL eval; also retrieval corpus |
 | RulesGuru (rulesguru.org) | judge-authored Q&A, tagged by rule, with an API (`/api/questions/`, documented at rulesguru.org/api/documentation) | site blocked in this sandbox; API exists (verified via search; source at github.com/KingSupernova31/RulesGuru — the live question DB is server-side, not in the repo) | NL benchmark, difficulty-stratified |
@@ -34,10 +34,10 @@ Countermeasures, all cheap:
    copy effects (707), state-based actions vs. triggers ordering, priority/stack minutiae.
    RulesGuru tags questions by rule, which makes this slice constructible.
 4. **Report abstention as a first-class outcome.** Metrics: accuracy on attempted, coverage
-   (fraction attempted), and *confidently-wrong rate* (wrong while claiming verified). The
-   product promise is "verified or visibly uncertain," so confidently-wrong is the metric to
+   (fraction attempted), and *confidently-wrong rate* (wrong while claiming simulated). The
+   product promise is "simulated and shown, or visibly uncertain," so confidently-wrong is the metric to
    drive to ~0, even at the cost of coverage.
-5. **No NL leakage into the corpus generator.** The offline verified corpus (Phase 2a) is
+5. **No NL leakage into the corpus generator.** The offline simulated corpus (Phase 2a) is
    generated from card/ability structure, not from eval questions, so memorizing the corpus
    cannot leak eval answers verbatim.
 
@@ -45,12 +45,14 @@ Countermeasures, all cheap:
 
 **Adjudication (per question):**
 - `exact-outcome accuracy` — final board/stack/life state or MCQ answer matches.
-- `verified-answer rate` — fraction where the engine actually executed the scenario
+- `simulated-answer rate` — fraction where the engine actually executed the scenario
   (vs. fell back to retrieval-only reasoning).
-- `confidently-wrong rate` — wrong AND presented as engine-verified. Target ≈ 0; this is the
+- `confidently-wrong rate` — wrong AND presented as engine-simulated. Target ≈ 0; this is the
   kill-signal metric. A wrong answer that the engine executed means either a scenario-compilation
-  bug or an engine bug — both must be surfaced, and cross-engine disagreement (XMage vs Forge)
-  is the cheap detector.
+  bug or an engine bug — both must be surfaced. With XMage as the sole engine (by decision),
+  the detector is the rulings spot-check: scenarios that correspond to an official ruling are
+  compared against it, and the per-rules-area mismatch rate is published next to simulated
+  answers.
 - Stratify all of the above by: rules area (CR section tag), engine-executed vs not,
   card-implementation status.
 
@@ -65,7 +67,7 @@ Countermeasures, all cheap:
 
 Question: does the knowledge graph earn its complexity over flat retrieval on the same corpus?
 
-- **Corpus held constant:** CR text chunks, rulings, verified scenarios, card records. Same
+- **Corpus held constant:** CR text chunks, rulings, simulated scenarios, card records. Same
   chunks in both arms.
 - **Arm 1 (flat):** BM25 + embedding hybrid over the corpus; answerer LLM sees top-k.
 - **Arm 2 (graph):** same retriever, plus graph expansion (card → ability nodes → mapped CR

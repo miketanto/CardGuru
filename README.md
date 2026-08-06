@@ -6,7 +6,13 @@ kill criteria fired.**
 | Question | Verdict | Evidence |
 |---|---|---|
 | Is Forge's cardsfolder a usable ontology? | **Yes** — 34,519 faces, 98.9% scripted, closed Zipfian vocabulary, graphs traversable; 3 mechanical-search queries Scryfall can't express run in seconds | [research/phase1-cardscripts.md](research/phase1-cardscripts.md) |
-| Can an engine adjudicate arbitrary board states headlessly? | **Yes** — XMage executed a custom Humility+Opalescence scenario in-process; ~100 ms/scenario; loud failure on unknown cards; Forge has a parallel API (bonus: brief's deck-vs-deck-only assumption was wrong) | [research/phase2-engine.md](research/phase2-engine.md) |
+| Can an engine adjudicate arbitrary board states headlessly? | **Yes** — XMage executed a custom Humility+Opalescence scenario in-process; ~100 ms/scenario; loud failure on unknown cards | [research/phase2-engine.md](research/phase2-engine.md) |
+
+**Engine decision:** XMage is the sole adjudication engine (best headless story, MIT license).
+Forge is a data source only — its card scripts are the ontology; its game engine is out of
+scope. Product posture: answers are *engine-simulated, shown step by step, with CR rules
+cited* — not certified correct. Accuracy is measured by spot-checking simulated outcomes
+against official rulings.
 
 Plans built on those findings:
 

@@ -27,25 +27,31 @@ too Count$-dependent) was tested and did not fire. Residual quality bar: if the 
 benchmark can't reach ~0.9 precision with the DSL approach, the NL compiler ships later;
 DSL-only search is still a product.
 
-## Phase 2a — Verified corpus (≈ 2–3 weeks, parallelizable with Phase 1 after week 1)
+## Phase 2a — Simulated-scenario corpus (≈ 2 weeks, parallelizable with Phase 1 after week 1)
 
-1. **Engine-neutral scenario spec** (JSON) + resident XMage driver service. *(API verified;
-   wrapper is plumbing.)*
+**Decision: XMage is the sole adjudication engine** (better headless story, MIT license,
+verified this session). Forge's engine is dropped from scope — it remains a data source only.
+The product claim is calibrated to match: answers are *engine-simulated with the game log
+shown and CR rules cited*, not certified-correct. That framing is honest and still beats
+every existing judgebot.
+
+1. **Scenario spec** (JSON) + resident XMage driver service. *(API verified; wrapper is
+   plumbing.)* Keep the spec engine-agnostic in design anyway — it costs nothing and preserves
+   the option of a second engine later.
 2. **Parse `Mage.Tests` into corpus records** — ~2k files of human-reviewed scenarios for free.
-3. **Forge driver** behind the same spec (their `AITest`/`GameSimulationTest` harness;
-   code-verified, one day to prove at runtime — do this first within 2a as it's the only
-   unexecuted claim left).
-4. **Ontology-driven scenario generator**, starting from Phase 1 graph queries (e.g. every
+3. **Ontology-driven scenario generator**, starting from Phase 1 graph queries (e.g. every
    damage-trigger card × every replacement-of-damage card). Budget is a non-issue at 100 ms;
    the real work is choosing templates that produce *interesting* interactions.
-5. **Cross-engine diff pipeline**; disagreements queue for human triage. Store agreement rate —
-   it is the empirical bound on single-engine trust and decides how much the product may say
-   "verified" without the second engine.
+4. **Rulings spot-check pipeline** (replaces the cross-engine diff): for scenarios that
+   correspond to an official per-card ruling, compare the engine outcome to the ruling and
+   store the mismatch rate, stratified by rules area. This is the empirical accuracy number
+   that goes next to "simulated" in the UI, and it queues genuine engine bugs for upstream
+   reports.
 
-**Kill criteria (2a):** all three from the brief were tested and did not fire. New one:
-if XMage-vs-Forge disagreement exceeds ~5% on generated scenarios and triage shows both sides
-wrong in nontrivial shares, "verified" claims require per-area human curation — scope of
-"verified" shrinks to curated areas (visible-uncertainty product posture, not project death).
+**Kill criteria (2a):** all three from the brief were tested and did not fire. New, softened
+one: if the rulings spot-check shows a mismatch rate that materially undercuts trust in a
+rules area (say >5% there), that area's answers get a visible accuracy caveat — a labeling
+consequence, not a project risk.
 
 ## Phase 3 — CR mapping + retrieval (≈ 3–4 weeks)
 
@@ -53,13 +59,13 @@ wrong in nontrivial shares, "verified" claims require per-area human curation �
    the last ~6 CR releases before committing to the parser design.
 2. Ontology→CR mapping table, top-frequency-first (top ~50 APIs + 30 trigger modes + keyword
    list, which maps nearly 1:1 to CR 702). Everything unmapped is *labeled* unmapped.
-3. Retrieval corpus assembly: CR chunks, rulings, verified scenarios (from 2a), all
- version-stamped.
+3. Retrieval corpus assembly: CR chunks, rulings, simulated scenarios (from 2a), all
+   version-stamped.
 4. **Run the graph-vs-flat ablation (eval.md §D). Pre-committed decision rule; cut the graph
    expansion if it doesn't earn ≥5 points on the adversarial slice.**
 
 **Kill criterion (Phase 3):** the ablation itself. Losing it kills the graph *retrieval* layer,
-not the project — search (Phase 1) and verified adjudication (2a) don't depend on it.
+not the project — search (Phase 1) and simulated adjudication (2a) don't depend on it.
 
 ## Phase 2b — NL → scenario compilation (the research problem; only now)
 
@@ -85,7 +91,7 @@ confidently-wrong rate gates launch (eval.md §C). Held-out benchmark scored onc
 
 - Pin: Forge `670429bf`, XMage `1.4.60`/master-2026-08-06, CR version, data snapshot date;
   stamp the tuple on every artifact (architecture §4).
-- Every "verified" user-visible answer must trace to a stored engine execution record.
+- Every "simulated" user-visible answer must trace to a stored engine execution record.
 - Re-run the corpus on every engine version bump; diff before adopting.
 - Network allowlist needed for production data: api.scryfall.com / data.scryfall.io,
   mtgjson.com, rulesguru.org, magic.wizards.com (all blocked in this sandbox; GitHub mirrors
