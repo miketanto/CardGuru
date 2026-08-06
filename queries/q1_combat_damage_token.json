@@ -1,0 +1,13 @@
+{
+  "description": "Combat-damage-to-a-player trigger whose effect chain creates a token",
+  "query": {
+    "chain": {
+      "from": {
+        "kind": "T",
+        "mode": {"any": ["DamageDone", "DamageDoneOnce"]},
+        "params": {"CombatDamage": "True", "ValidTarget": {"contains": "Player"}}
+      },
+      "to": {"api": "Token"}
+    }
+  }
+}

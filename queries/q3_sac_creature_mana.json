@@ -1,0 +1,20 @@
+{
+  "description": "Activated ability whose cost includes sacrificing a creature and whose effect adds mana",
+  "query": {
+    "any": [
+      {"node": {
+        "apiKind": "AB",
+        "api": {"any": ["Mana", "ManaReflected"]},
+        "params": {"Cost": {"regex": "Sac<[^>]*Creature"}}
+      }},
+      {"all": [
+        {"card": {"types": {"contains": "Creature"}}},
+        {"node": {
+          "apiKind": "AB",
+          "api": {"any": ["Mana", "ManaReflected"]},
+          "params": {"Cost": {"contains": "Sac<1/CARDNAME>"}}
+        }}
+      ]}
+    ]
+  }
+}

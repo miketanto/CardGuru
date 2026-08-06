@@ -1,1 +1,4 @@
 research/data/cards.jsonl
+data/
+__pycache__/
+.pytest_cache/

@@ -26,3 +26,16 @@ Plans built on those findings:
 Reproduce: `research/scripts/` (pure-Python parser + search prototype;
 `CardGuruFeasibilityTest.java` drops into XMage's `Mage.Tests`). Pins: Forge `670429bf`,
 XMage `1.4.60` @ master 2026-08-06.
+
+## Phase 1 build — mechanical search (`cardguru/`)
+
+Stdlib-only Python package: hardened Forge DSL parser (keyword nodes with Saga/Class edge
+extraction), JSON query DSL with evidence-returning evaluation, postings index with candidate
+pruning, CLI. See [docs/query-dsl.md](docs/query-dsl.md).
+
+```bash
+python -m cardguru build --cardsfolder <forge>/forge-gui/res/cardsfolder \
+    --canonical <index.json> --pin <forge-commit>
+python -m cardguru search queries/q1_combat_damage_token.json --explain
+python -m pytest tests/          # unit + integration goldens
+```

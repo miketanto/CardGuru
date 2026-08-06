@@ -1,0 +1,18 @@
+{
+  "description": "Impulse exile: one ability chain both exiles card(s) from the library and grants a may-play effect",
+  "query": {
+    "chain": {
+      "from": {"kind": {"any": ["A", "T", "S", "R"]}},
+      "to": [
+        {
+          "api": {"any": ["Dig", "DigUntil", "Mill"]},
+          "params": {"DestinationZone": {"contains": "Exile"}}
+        },
+        {
+          "mode": "Continuous",
+          "params": {"MayPlay": "True"}
+        }
+      ]
+    }
+  }
+}
