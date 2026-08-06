@@ -38,4 +38,10 @@ python -m cardguru build --cardsfolder <forge>/forge-gui/res/cardsfolder \
     --canonical <index.json> --pin <forge-commit>
 python -m cardguru search queries/q1_combat_damage_token.json --explain
 python -m pytest tests/          # unit + integration goldens
+python benchmark/run.py          # 20-query golden benchmark -> benchmark/report.md
 ```
+
+The benchmark (`benchmark/benchmark.json`) covers trigger→effect chains, cost structure,
+replacement effects, statics, and zone logic, each with hand-labeled expected-present/absent
+cards, and compares eight of them against best-effort oracle-text regexes (the Scryfall `o:`
+stand-in). Current run: 20/20 goldens pass; see `benchmark/report.md`.

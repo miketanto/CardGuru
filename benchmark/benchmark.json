@@ -1,0 +1,152 @@
+[
+  {
+    "id": "combat-damage-player-token",
+    "description": "Combat-damage-to-a-player trigger whose effect chain creates a token",
+    "query": {"chain": {"from": {"kind": "T", "mode": {"any": ["DamageDone", "DamageDoneOnce"]}, "params": {"CombatDamage": "True", "ValidTarget": {"contains": "Player"}}}, "to": {"api": "Token"}}},
+    "baseline_regex": "deals combat damage to a player[^.]*,[^.]*create",
+    "expect_present": ["Ragavan, Nimble Pilferer", "Old Gnawbone", "Brood Sliver"],
+    "expect_absent": ["Brazen Freebooter", "Grizzly Bears", "Saproling Migration"]
+  },
+  {
+    "id": "impulse-exile",
+    "description": "One ability chain both exiles from the library and grants may-play",
+    "query": {"chain": {"from": {"kind": {"any": ["A", "T", "S", "R"]}}, "to": [{"api": {"any": ["Dig", "DigUntil", "Mill"]}, "params": {"DestinationZone": {"contains": "Exile"}}}, {"mode": "Continuous", "params": {"MayPlay": "True"}}]}},
+    "baseline_regex": "exile the top [^.]*librar[^.]*\\.[^.]*may (play|cast)",
+    "expect_present": ["Ragavan, Nimble Pilferer", "Light Up the Stage", "Outpost Siege", "Bonehoard Dracosaur"],
+    "expect_absent": ["Oblivion Ring", "Anticipate"]
+  },
+  {
+    "id": "sac-creature-cost-mana",
+    "description": "Activated ability: sacrificing a creature in the cost, mana in the effect",
+    "query": {"any": [
+      {"node": {"apiKind": "AB", "api": {"any": ["Mana", "ManaReflected"]}, "params": {"Cost": {"regex": "Sac<[^>]*Creature"}}}},
+      {"all": [{"card": {"types": {"contains": "Creature"}}}, {"node": {"apiKind": "AB", "api": {"any": ["Mana", "ManaReflected"]}, "params": {"Cost": {"contains": "Sac<1/CARDNAME>"}}}}]}
+    ]},
+    "baseline_regex": "sacrifice [^.:]*creature[^.:]*: add",
+    "expect_present": ["Phyrexian Altar", "Ashnod's Altar", "Blood Pet"],
+    "expect_absent": ["Dark Ritual", "Village Rites"]
+  },
+  {
+    "id": "etb-drain-each-opponent",
+    "description": "ETB trigger draining each opponent (they lose life, you gain) in one chain",
+    "query": {"chain": {"from": {"kind": "T", "mode": "ChangesZone", "params": {"ValidCard": {"contains": "Card.Self"}, "Destination": "Battlefield"}}, "to": [{"api": "LoseLife", "params": {"Defined": {"contains": "Opponent"}}}, {"api": "GainLife", "params": {"Defined": "You"}}]}},
+    "expect_present": ["Gray Merchant of Asphodel"],
+    "expect_absent": ["Blood Artist", "Kokusho, the Evening Star"]
+  },
+  {
+    "id": "dies-token",
+    "description": "Self-dies trigger that creates token(s)",
+    "query": {"chain": {"from": {"kind": "T", "mode": "ChangesZone", "params": {"ValidCard": {"contains": "Card.Self"}, "Origin": "Battlefield", "Destination": "Graveyard"}}, "to": {"api": "Token"}}},
+    "baseline_regex": "when (this creature|[A-Z][^ ]*) dies[^.]*create",
+    "expect_present": ["Doomed Traveler", "Hangarback Walker"],
+    "expect_absent": ["Grave Pact", "Doubling Season"]
+  },
+  {
+    "id": "cast-copy-trigger",
+    "description": "Trigger on casting a spell that copies the spell",
+    "query": {"chain": {"from": {"kind": "T", "mode": "SpellCast"}, "to": {"api": "CopySpellAbility"}}},
+    "expect_present": ["Thousand-Year Storm", "Swarm Intelligence"],
+    "expect_absent": ["Storm Crow", "Grapeshot"]
+  },
+  {
+    "id": "landfall-token",
+    "description": "Landfall trigger (land you control enters) that creates a token",
+    "query": {"chain": {"from": {"kind": "T", "mode": "ChangesZone", "params": {"ValidCard": {"contains": "Land"}, "Destination": "Battlefield"}}, "to": {"api": "Token"}}},
+    "expect_present": ["Scute Swarm", "Emeria Angel", "Omnath, Locus of Rage"],
+    "expect_absent": ["Doomed Traveler", "Rampant Growth"]
+  },
+  {
+    "id": "token-doubling-replacement",
+    "description": "Replacement effect modifying token creation",
+    "query": {"chain": {"from": {"kind": "R", "params": {"Event": "CreateToken"}}, "to": {"api": "ReplaceToken"}}},
+    "baseline_regex": "create (twice|two times|that many)[^.]*token",
+    "expect_present": ["Doubling Season", "Parallel Lives", "Anointed Procession"],
+    "expect_absent": ["Doubling Cube", "Rhys the Redeemed"]
+  },
+  {
+    "id": "counter-add-replacement",
+    "description": "Replacement effect modifying counters being put on permanents",
+    "query": {"chain": {"from": {"kind": "R", "params": {"Event": "AddCounter"}}, "to": {"api": "ReplaceCounter"}}},
+    "expect_present": ["Doubling Season", "Hardened Scales", "Vorinclex, Monstrous Raider"],
+    "expect_absent": ["Ajani's Pridemate"]
+  },
+  {
+    "id": "graveyard-activated",
+    "description": "Activated ability usable only from the graveyard",
+    "query": {"node": {"kind": "A", "params": {"ActivationZone": "Graveyard"}}},
+    "expect_present": ["Scrapheap Scrounger", "Reassembling Skeleton"],
+    "expect_absent": ["Gravecrawler", "Doomed Traveler"]
+  },
+  {
+    "id": "lifegain-counter",
+    "description": "Lifegain trigger that puts +1/+1 counters",
+    "query": {"chain": {"from": {"kind": "T", "mode": "LifeGained"}, "to": {"api": "PutCounter", "params": {"CounterType": "P1P1"}}}},
+    "baseline_regex": "whenever you gain life[^.]*\\+1/\\+1 counter",
+    "expect_present": ["Ajani's Pridemate", "Voice of the Blessed", "Heliod, Sun-Crowned"],
+    "expect_absent": ["Soul Warden"]
+  },
+  {
+    "id": "opponent-draw-punisher",
+    "description": "Trigger on an opponent drawing that costs them life / deals damage",
+    "query": {"chain": {"from": {"kind": "T", "mode": "Drawn", "params": {"ValidCard": {"regex": "Opp(Ctrl|Own)"}}}, "to": {"api": {"any": ["LoseLife", "DealDamage"]}}}},
+    "expect_present": ["Sheoldred, the Apocalypse", "Underworld Dreams"],
+    "expect_absent": ["Howling Mine", "Font of Mythos"]
+  },
+  {
+    "id": "creature-cost-reduction",
+    "description": "Static ability reducing the cost of creature spells",
+    "query": {"node": {"kind": {"any": ["S", "SVar"]}, "mode": "ReduceCost", "params": {"ValidCard": {"contains": "Creature"}}}},
+    "expect_present": ["Goreclaw, Terror of Qal Sisma", "Heartless Summoning"],
+    "expect_absent": ["Emerald Medallion"]
+  },
+  {
+    "id": "extra-turn",
+    "description": "Any ability granting an extra turn",
+    "query": {"node": {"api": "AddTurn"}},
+    "baseline_regex": "extra turn",
+    "expect_present": ["Time Walk", "Temporal Manipulation", "Nexus of Fate"],
+    "expect_absent": ["Time Stop"]
+  },
+  {
+    "id": "free-cast-static",
+    "description": "Static allowing casting without paying mana costs",
+    "query": {"node": {"mode": "Continuous", "params": {"MayPlay": "True", "MayPlayWithoutManaCost": "True"}}},
+    "expect_present": ["Omniscience"],
+    "expect_absent": ["Future Sight"]
+  },
+  {
+    "id": "saga-tutor-battlefield",
+    "description": "Saga whose chapter chain fetches from library to battlefield",
+    "query": {"chain": {"from": {"kind": "K", "keyword": "Chapter"}, "to": {"api": "ChangeZone", "params": {"Origin": "Library", "Destination": "Battlefield"}}}},
+    "expect_present": ["Urza's Saga"],
+    "expect_absent": ["Rampant Growth"]
+  },
+  {
+    "id": "discard-cost-activated",
+    "description": "Activated ability with discarding a card in the cost",
+    "query": {"node": {"kind": "A", "apiKind": "AB", "params": {"Cost": {"contains": "Discard<"}}}},
+    "expect_present": ["Wild Mongrel", "Rummaging Goblin"],
+    "expect_absent": ["Careful Study", "Faithless Looting"]
+  },
+  {
+    "id": "fetch-land-battlefield",
+    "description": "Spell or ETB chain searching a land from library onto the battlefield",
+    "query": {"chain": {"from": {"kind": {"any": ["A", "T"]}}, "to": {"api": "ChangeZone", "params": {"Origin": "Library", "Destination": "Battlefield", "ChangeType": {"regex": "Land|Plains|Island|Swamp|Mountain|Forest"}}}}},
+    "expect_present": ["Rampant Growth", "Wood Elves", "Primeval Titan", "Evolving Wilds"],
+    "expect_absent": ["Llanowar Elves", "Sylvan Scrying"]
+  },
+  {
+    "id": "attack-token",
+    "description": "Attack trigger that creates token(s)",
+    "query": {"chain": {"from": {"kind": "T", "mode": "Attacks"}, "to": {"api": "Token"}}},
+    "expect_present": ["Hero of Bladehold", "Geist of Saint Traft"],
+    "expect_absent": ["Raise the Alarm", "Ragavan, Nimble Pilferer"]
+  },
+  {
+    "id": "die-exile-replacement",
+    "description": "Replacement sending cards to exile instead of the graveyard",
+    "query": {"chain": {"from": {"kind": "R", "params": {"Event": "Moved", "Destination": "Graveyard"}}, "to": {"api": "ChangeZone", "params": {"Destination": "Exile"}}}},
+    "expect_present": ["Leyline of the Void"],
+    "expect_absent": ["Doomed Traveler"]
+  }
+]

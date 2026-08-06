@@ -28,6 +28,11 @@ CHAIN_PARAMS = {
     "Execute", "SubAbility", "StaticAbilities", "AddTrigger", "AddStaticAbility",
     "AddReplacementEffects", "ReplacementResult", "Triggers", "AddAbility",
     "Abilities", "GainsAbilitiesOf", "Chapter", "Class",
+    # promoted from empirical ref:-edge mining over the full pool (params whose
+    # values name ability SVars and mean "then/instead execute"):
+    "Choices", "ReplaceWith", "RepeatSubAbility", "ETBReplacement",
+    "TrueSubAbility", "FalseSubAbility", "WinSubAbility", "LoseSubAbility",
+    "ChosenPile", "UnchosenPile", "StaticEffect", "Visit",
 }
 # Keyword names whose colon-args reference SVar lists (sagas, classes, ...).
 KEYWORD_SVAR_LISTS = {"Chapter", "Class"}
