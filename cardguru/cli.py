@@ -233,6 +233,23 @@ def cmd_deck(args):
         if cs["isolated"]:
             print(f"isolated (no synergy edges): {', '.join(cs['isolated'][:15])}")
 
+    if args.suggest:
+        from .deck import suggest
+        by_name = {}
+        for r in idx.records:
+            by_name.setdefault(r.get("name"), r)
+        with open(args.ci_index, encoding="utf-8") as f:
+            db = json.load(f)["cards"]
+        ci = {n: c.get("ci", "") for n, c in db.items()}
+        printings = {n: c.get("*", []) for n, c in db.items()}
+        sg = suggest(idx, by_name, rec, decklist, ci, printings, args.suggest)
+        print(f"\n== top {args.suggest} suggested additions "
+              f"({sg['candidates_considered']} candidates scored)")
+        for s in sg["suggestions"]:
+            print(f"  {s['edges']:3} edges ({s['provider_edges']}p/{s['consumer_edges']}c) "
+                  f"{s['printings']:3} printings  {str(s['mv'] or ''):8} {s['card']}")
+            print(f"       {'; '.join(s['why'][:2])}")
+
 
 def cmd_stats(args):
     idx = SearchIndex.load(args.dataset)
@@ -304,6 +321,9 @@ def main(argv=None):
     dk.add_argument("--list", required=True, help="decklist text file")
     dk.add_argument("--cross", action="store_true",
                     help="also compute deck-internal cross-synergy edges")
+    dk.add_argument("--suggest", type=int, default=0, metavar="N",
+                    help="show top-N ranked additions (deck-connectivity score)")
+    dk.add_argument("--ci-index", default="/home/user/mse/index/index.json")
     dk.add_argument("--dataset", default=DEFAULT_DATASET)
     dk.set_defaults(fn=cmd_deck)
 

@@ -82,6 +82,62 @@ def cross_synergy(by_name: dict, commander_rec: dict,
             "n_cards": len(cards), "n_edges": len(edges)}
 
 
+def suggest(idx, by_name: dict, commander_rec: dict,
+            decklist: list[tuple[str, int]], ci_by_name: dict,
+            printings_by_name: dict | None = None, top_n: int = 15) -> dict:
+    """Ranked recommendations: candidates come from the complement queries of
+    every hook present in the deck (commander included); each candidate is
+    scored by how many synergy edges it would add to THIS deck (provider side:
+    deck hooks it feeds; consumer side: deck cards feeding its own hooks).
+    Ties break on reprint count (staple proxy) then lower mana value."""
+    from .recommend import color_identity_ok
+
+    printings_by_name = printings_by_name or {}
+    commander_ci = set(ci_by_name.get(commander_rec["name"]) or "")
+    deck_names = {commander_rec["name"]} | {n for n, _c in decklist}
+    deck_recs = [(n, by_name[n]) for n in deck_names if n in by_name]
+
+    # hook sources in the deck: (card, hook) pairs
+    deck_hooks = [(name, h) for name, rec in deck_recs for h in detect_hooks(rec)]
+
+    # provider side: candidates matching any deck hook's complement queries
+    provider_edges: dict[str, list[str]] = {}
+    for src_name, hook in deck_hooks:
+        for cname, query in HOOKS[hook]["complements"].items():
+            for hit in idx.search(query):
+                rec = hit["record"]
+                cand = rec["name"]
+                if cand in deck_names:
+                    continue
+                if not color_identity_ok(ci_by_name.get(cand), commander_ci):
+                    continue
+                provider_edges.setdefault(cand, []).append(
+                    f"feeds {src_name}'s {hook} ({cname})")
+
+    # consumer side: does the deck feed the candidate's own hooks?
+    scores = []
+    for cand, why in provider_edges.items():
+        rec = by_name.get(cand)
+        if rec is None:
+            continue
+        consumer = 0
+        for hook in detect_hooks(rec):
+            for cname, query in HOOKS[hook]["complements"].items():
+                consumer += sum(1 for _dn, drec in deck_recs if _matches(drec, query))
+        edges = len(why) + consumer
+        scores.append({
+            "card": cand, "edges": edges,
+            "provider_edges": len(why), "consumer_edges": consumer,
+            "printings": len(printings_by_name.get(cand) or []),
+            "mv": rec.get("manaCost"),
+            "why": why[:4]})
+    scores.sort(key=lambda s: (-s["edges"], -s["printings"], str(s["mv"] or "z")))
+    return {"commander": commander_rec["name"],
+            "deck_hooks": sorted({h for _n, h in deck_hooks}),
+            "suggestions": scores[:top_n],
+            "candidates_considered": len(scores)}
+
+
 def analyze_deck(idx, commander_rec: dict, decklist: list[tuple[str, int]]) -> dict:
     by_name = {}
     for r in idx.records:
