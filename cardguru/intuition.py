@@ -46,12 +46,26 @@ def _sig_cast(rec):
 
 
 def _sig_etb(rec):
+    """Creature/artifact ETB scaling (Torpor Orb-vulnerable)."""
     for n in _nodes(rec):
         p = _p(n)
         if n.get("kind") == "T" and p.get("Mode") == "ChangesZone" \
-                and p.get("Destination") == "Battlefield":
+                and p.get("Destination") == "Battlefield" \
+                and "Land" not in str(p.get("ValidCard", "")):
             return True
     return False
+
+
+def _sig_landfall(rec):
+    """Land-ETB scaling: a DIFFERENT axis - creature-trigger disablers like
+    Torpor Orb do NOT stop landfall (their ValidCause is Creature)."""
+    for n in _nodes(rec):
+        p = _p(n)
+        if n.get("kind") == "T" and p.get("Mode") in ("ChangesZone", "ChangesZoneAll") \
+                and p.get("Destination") == "Battlefield" \
+                and "Land" in str(p.get("ValidCard", "") or p.get("ValidCards", "")):
+            return True
+    return any("AdjustLandPlays" in _p(n) for n in _nodes(rec))
 
 
 def _sig_death(rec):
@@ -119,6 +133,14 @@ AXES = {
         "hate": {
             "trigger_disablers": {"node": {"kind": "S", "mode": "DisableTriggers",
                                            "params": {"ValidMode": {"contains": "ChangesZone"}}}},
+        }},
+    "landfall": {
+        "describe": "scales with lands entering the battlefield",
+        "signal": _sig_landfall,
+        "hate": {
+            "land_play_restrictions": {"node": {"kind": "S", "mode": "CantPlayLand"}},
+            "land_trigger_disablers": {"node": {"kind": "S", "mode": "DisableTriggers",
+                                                "params": {"ValidCause": {"contains": "Land"}}}},
         }},
     "creatures_dying": {
         "describe": "scales with creatures dying",
