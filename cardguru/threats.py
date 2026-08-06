@@ -66,7 +66,40 @@ def analyze_opponent(idx, by_name: dict, commander_rec: dict,
     for e in cs["edges"]:
         degree[e["src"]] = degree.get(e["src"], 0) + 1
         degree[e["dst"]] = degree.get(e["dst"], 0) + 1
-    key_threats = sorted(degree.items(), key=lambda kv: -kv[1])[:top_threats]
+
+    # ENABLER weighting: centrality measures payoff wiring, but a card that
+    # accelerates the deck's mana is upstream of everything above it on the
+    # curve - killing it collapses the curve. Mana AMPLIFIERS (multiplicative)
+    # count every later drop; plain ramp engines (additive dorks/rocks) count
+    # half.
+    from .deck import detect_roles, mana_value
+    from .recommend import HOOKS
+    amp_detect = HOOKS["amplifies_mana"]["detect"]
+    key_scores: dict[str, dict] = {}
+    for name, _count in decklist:
+        rec = by_name.get(name)
+        if rec is None or "Land" in (rec.get("types") or ""):
+            continue
+        mv = mana_value(rec.get("manaCost")) or 0
+        unlocked = sum(c for n2, c in decklist
+                       if (r2 := by_name.get(n2)) is not None
+                       and "Land" not in (r2.get("types") or "")
+                       and (mana_value(r2.get("manaCost")) or 0) > mv)
+        enabler = 0
+        why = None
+        if amp_detect(rec):
+            enabler = unlocked
+            why = f"mana multiplier accelerating {unlocked} later drops"
+        elif detect_roles(rec).get("ramp") == "engine":
+            enabler = unlocked // 2
+            why = f"ramp engine accelerating {unlocked} later drops"
+        score = degree.get(name, 0) + enabler
+        key_scores[name] = {"score": score, "centrality": degree.get(name, 0),
+                            "enabler": enabler, "enabler_why": why}
+    key_threats = [(n, d["score"]) for n, d in
+                   sorted(key_scores.items(), key=lambda kv: -kv[1]["score"])
+                   ][:top_threats]
+    key_detail = {n: key_scores[n] for n, _s in key_threats}
 
     def _playable_key(name):
         rec = by_name.get(name) or {}
@@ -117,6 +150,7 @@ def analyze_opponent(idx, by_name: dict, commander_rec: dict,
     return {"gameplan": shape["gameplan"],
             "hook_counts": shape["hook_counts"],
             "key_threats": key_threats,
+            "key_detail": key_detail,
             "loops": loops[:5],
             "surgical": surgical,
             "coverage_answers": best_coverage,

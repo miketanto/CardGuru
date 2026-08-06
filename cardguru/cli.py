@@ -378,9 +378,11 @@ def cmd_threats(args):
     print(f"# opposing deck: {args.commander} - gameplan: {res['gameplan']}")
     top_hooks = list(res["hook_counts"].items())[:5]
     print(f"hook profile: {', '.join(f'{h}({c})' for h, c in top_hooks)}")
-    print(f"\nkey threats (by synergy centrality):")
-    for name, deg in res["key_threats"]:
-        print(f"  {deg:3} edges  {name}")
+    print(f"\nkey threats (synergy centrality + enabler weight):")
+    for name, score in res["key_threats"]:
+        d = res.get("key_detail", {}).get(name, {})
+        extra = f"  ({d['enabler_why']})" if d.get("enabler_why") else ""
+        print(f"  {score:3}  {name}{extra}")
     if res["loops"]:
         print(f"\nloops to break:")
         for lp in res["loops"][:3]:

@@ -282,6 +282,16 @@ def _detect_untaps_things(rec):
     return has_api(rec, "Untap", "UntapAll")
 
 
+def _detect_amplifies_mana(rec):
+    """Mana multipliers: a TapsForMana trigger that adds extra mana
+    (Badgermole Cub, Zendikar Resurgent family). Multiplicative acceleration
+    - scales with every source the deck already has."""
+    has_taps_trigger = any(n.get("kind") == "T"
+                           and _params(n).get("Mode") == "TapsForMana"
+                           for n in _nodes(rec))
+    return has_taps_trigger and has_api(rec, "Mana")
+
+
 def _detect_equipment_matters(rec):
     if has_trigger(rec, "Attached") or "Equipment" in str(rec.get("types") or ""):
         return True
@@ -534,6 +544,18 @@ HOOKS = {
             "big_spells": {"all": [
                 {"card": {"types": {"regex": "Instant|Sorcery"}}},
                 {"node": {"api": {"any": ["Draw", "DealDamage", "Token"]}}}]},
+        }},
+    "amplifies_mana": {
+        "describe": "multiplies mana production",
+        "detect": _detect_amplifies_mana,
+        "complements": {
+            "mana_dorks": {"all": [
+                {"card": {"types": {"contains": "Creature"}}},
+                {"node": {"kind": "A", "apiKind": "AB", "api": "Mana",
+                          "params": {"Cost": {"contains": "T"}}}}]},
+            "land_animators": {"node": {"api": {"any": ["Earthbend", "Animate",
+                                                        "AnimateAll"]}}},
+            "big_spells": {"card": {"manaCost": {"regex": "^[5-9]"}}},
         }},
     "untapper": {
         "describe": "untaps permanents",
