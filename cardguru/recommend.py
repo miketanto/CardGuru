@@ -157,7 +157,34 @@ def _detect_draw_matters(rec):
 
 
 def _detect_attacks_matter(rec):
-    return has_trigger(rec, "Attacks") or has_trigger(rec, "AttackersDeclared")
+    return has_trigger(rec, "Attacks") or has_trigger(rec, "AttackersDeclared") \
+        or has_trigger(rec, "AttackersDeclaredOneTarget")
+
+
+def _detect_combat_damage_matters(rec):
+    """Saboteur/pillage triggers: combat damage to a player pays off."""
+    for n in _nodes(rec):
+        p = _params(n)
+        if n.get("kind") == "T" and p.get("Mode") in ("DamageDone", "DamageDoneOnce") \
+                and p.get("CombatDamage") == "True" \
+                and "Player" in str(p.get("ValidTarget", "")):
+            src = str(p.get("ValidSource", ""))
+            if "YouCtrl" in src or "Card.Self" in src:
+                return True
+    return False
+
+
+def _detect_creatures_entering_matter(rec):
+    """Battledriver/Cathars' Crusade/Impact Tremors: triggers when your
+    (other) creatures enter the battlefield."""
+    for n in _nodes(rec):
+        p = _params(n)
+        if n.get("kind") == "T" and p.get("Mode") == "ChangesZone" \
+                and p.get("Destination") == "Battlefield":
+            v = str(p.get("ValidCard", ""))
+            if "Creature" in v and "YouCtrl" in v and "Card.Self" not in v:
+                return True
+    return False
 
 
 def _detect_lifedrain(rec):
@@ -401,8 +428,30 @@ HOOKS = {
             "haste_enablers": {"node": {"mode": "Continuous",
                                         "params": {"AddKeyword": {"contains": "Haste"},
                                                    "Affected": {"contains": "Creature.YouCtrl"}}}},
-            "attack_triggers": {"chain": {"from": {"kind": "T", "mode": "Attacks"},
+            "attack_triggers": {"chain": {"from": {"kind": "T",
+                                                   "mode": {"any": ["Attacks", "AttackersDeclared",
+                                                                    "AttackersDeclaredOneTarget"]}},
                                           "to": {}}},
+        }},
+    "combat_damage_matters": {
+        "describe": "pays off combat damage to players",
+        "detect": _detect_combat_damage_matters,
+        "complements": {
+            "extra_combats": {"node": {"api": "AddPhase"}},
+            "haste_enablers": {"node": {"mode": "Continuous",
+                                        "params": {"AddKeyword": {"contains": "Haste"},
+                                                   "Affected": {"contains": "Creature.YouCtrl"}}}},
+            "evasion_grants": {"node": {"mode": "Continuous",
+                                        "params": {"AddKeyword": {"regex": "Flying|Menace|Trample|Fear|Intimidate|Shadow"},
+                                                   "Affected": {"contains": "Creature.YouCtrl"}}}},
+        }},
+    "creatures_entering_matter": {
+        "describe": "triggers when your creatures enter the battlefield",
+        "detect": _detect_creatures_entering_matter,
+        "complements": {
+            "token_makers": _TOKEN_MAKER_Q,
+            "mass_creature_spells": {"node": {"apiKind": "SP", "api": "Token",
+                                              "params": {"TokenAmount": {"regex": "^[2-9X]"}}}},
         }},
     "lifedrain": {
         "describe": "drains opponents' life",
