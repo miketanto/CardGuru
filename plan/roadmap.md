@@ -47,6 +47,12 @@ every existing judgebot.
    store the mismatch rate, stratified by rules area. This is the empirical accuracy number
    that goes next to "simulated" in the UI, and it queues genuine engine bugs for upstream
    reports.
+5. **Implementation-status pre-screen.** Discovered in live testing: XMage has a *third*
+   card status beyond implemented/missing — cards on a set's `unfinished` list (present in
+   source, excluded from the card DB, fail loudly at setup). Extracted to
+   `research/data/xmage_unfinished.json` by `corpus/extract_unfinished.py`; the product
+   checks it before attempting execution and answers "engine can't verify this card yet"
+   up front.
 
 **Kill criteria (2a):** all three from the brief were tested and did not fire. New, softened
 one: if the rulings spot-check shows a mismatch rate that materially undercuts trust in a

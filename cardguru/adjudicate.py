@@ -1,0 +1,98 @@
+"""Batch-run scenario JSON files through the XMage driver.
+
+Copies scenarios into a temp dir, invokes the CardGuruScenarioRunner test in
+the configured XMage checkout (env CARDGURU_MAGE_REPO or --mage-repo), and
+collects the outcome JSONs. One maven/JVM invocation per batch.
+"""
+from __future__ import annotations
+
+import json
+import os
+import shutil
+import subprocess
+import tempfile
+
+DRIVER_REL = "Mage.Tests/src/test/java/org/mage/test/serverside/CardGuruScenarioRunner.java"
+
+PHASES = {"UPKEEP", "DRAW", "PRECOMBAT_MAIN", "BEGIN_COMBAT", "DECLARE_ATTACKERS",
+          "DECLARE_BLOCKERS", "COMBAT_DAMAGE", "POSTCOMBAT_MAIN", "END_TURN"}
+ACTIONS = {"cast", "play_land", "activate", "attack", "block", "wait_stack",
+           "choice", "target", "mode"}
+CHECKS = {"permanent_count", "exile_count", "graveyard_count", "hand_count",
+          "life", "tapped", "power_toughness"}
+
+
+def validate_scenario(spec: dict) -> list[str]:
+    """Cheap client-side validation so obvious mistakes fail before the JVM."""
+    errors = []
+    if "players" not in spec or not isinstance(spec["players"], dict):
+        errors.append("missing players")
+    for key in spec.get("players", {}):
+        if key not in ("A", "B"):
+            errors.append(f"unknown player '{key}' (only A/B supported)")
+    for i, a in enumerate(spec.get("actions", [])):
+        if a.get("do") not in ACTIONS:
+            errors.append(f"actions[{i}]: unknown do '{a.get('do')}'")
+        elif a["do"] in ("cast", "play_land", "activate", "wait_stack") \
+                and a.get("phase") not in PHASES:
+            errors.append(f"actions[{i}]: bad phase '{a.get('phase')}'")
+    stop = spec.get("stop")
+    if not stop or stop.get("phase") not in PHASES or "turn" not in stop:
+        errors.append("missing/invalid stop {turn, phase}")
+    for i, x in enumerate(spec.get("expect", [])):
+        if x.get("check") not in CHECKS:
+            errors.append(f"expect[{i}]: unknown check '{x.get('check')}'")
+    return errors
+
+
+def ensure_driver(mage_repo: str) -> None:
+    src = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+                       "driver", "CardGuruScenarioRunner.java")
+    dst = os.path.join(mage_repo, DRIVER_REL)
+    if not os.path.exists(dst) or \
+            open(src, encoding="utf-8").read() != open(dst, encoding="utf-8").read():
+        os.makedirs(os.path.dirname(dst), exist_ok=True)
+        shutil.copyfile(src, dst)
+
+
+def run_scenarios(paths: list[str], mage_repo: str | None = None,
+                  timeout: int = 1800) -> list[dict]:
+    mage_repo = mage_repo or os.environ.get("CARDGURU_MAGE_REPO")
+    if not mage_repo or not os.path.isdir(mage_repo):
+        raise RuntimeError("XMage checkout not found: set CARDGURU_MAGE_REPO or --mage-repo")
+
+    specs = []
+    for p in paths:
+        with open(p, encoding="utf-8") as f:
+            spec = json.load(f)
+        errs = validate_scenario(spec)
+        if errs:
+            raise ValueError(f"{p}: " + "; ".join(errs))
+        specs.append((p, spec))
+
+    ensure_driver(mage_repo)
+    with tempfile.TemporaryDirectory(prefix="cardguru-scn-") as tmp:
+        indir = os.path.join(tmp, "in")
+        outdir = os.path.join(tmp, "out")
+        os.makedirs(indir)
+        for p, _ in specs:
+            shutil.copyfile(p, os.path.join(indir, os.path.basename(p)))
+        proc = subprocess.run(
+            ["mvn", "-q", "-pl", "Mage.Tests", "test",
+             "-Dtest=CardGuruScenarioRunner", "-DfailIfNoTests=false",
+             f"-Dcardguru.scenarios.dir={indir}", f"-Dcardguru.out.dir={outdir}"],
+            cwd=mage_repo, capture_output=True, text=True, timeout=timeout)
+        results = []
+        for p, _ in specs:
+            outfile = os.path.join(
+                outdir, os.path.basename(p).replace(".json", ".out.json"))
+            if os.path.exists(outfile):
+                with open(outfile, encoding="utf-8") as f:
+                    results.append(json.load(f))
+            else:
+                results.append({
+                    "id": os.path.basename(p), "status": "error",
+                    "error": "driver produced no outcome "
+                             f"(maven rc={proc.returncode}); tail: "
+                             + proc.stdout[-800:]})
+        return results

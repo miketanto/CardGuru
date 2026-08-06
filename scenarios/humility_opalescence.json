@@ -1,0 +1,20 @@
+{
+  "id": "humility-opalescence",
+  "description": "Humility (earlier timestamp) + Opalescence on the same battlefield: layer 6/7 interaction",
+  "players": {
+    "A": {
+      "life": 20,
+      "battlefield": [
+        {"card": "Humility"},
+        {"card": "Opalescence"}
+      ]
+    },
+    "B": {"life": 20}
+  },
+  "actions": [],
+  "stop": {"turn": 1, "phase": "BEGIN_COMBAT"},
+  "expect": [
+    {"check": "power_toughness", "player": "A", "card": "Humility", "power": 4, "toughness": 4},
+    {"check": "permanent_count", "player": "A", "card": "Opalescence", "count": 1}
+  ]
+}

@@ -51,6 +51,22 @@ validates every exact api/mode/keyword/param token against the mined ontology
 bounded retries), then runs the validated query. The validator and retry loop are fully
 tested offline; only the LLM call itself needs credentials.
 
+## Phase 2a — adjudication driver + corpus seed
+
+Engine-neutral scenario JSON ([docs/scenario-spec.md](docs/scenario-spec.md)) executed by
+`driver/CardGuruScenarioRunner.java` inside an XMage checkout, batched one JVM per run,
+strict-choose mode always on; errors (unimplemented cards, unscripted choices) are
+first-class outcomes, never silent. Demo scenarios in `scenarios/` (Humility+Opalescence:
+332 ms marginal).
+
+```bash
+export CARDGURU_MAGE_REPO=~/mage        # clone + `mvn -pl Mage.Tests -am -DskipTests install`
+python -m cardguru adjudicate scenarios/*.json
+
+python corpus/parse_mage_tests.py  "$CARDGURU_MAGE_REPO"   # 6,021 scenario records from Mage.Tests
+python corpus/extract_unfinished.py "$CARDGURU_MAGE_REPO"  # per-set unfinished-card lists
+```
+
 The benchmark (`benchmark/benchmark.json`) covers trigger→effect chains, cost structure,
 replacement effects, statics, and zone logic, each with hand-labeled expected-present/absent
 cards, and compares eight of them against best-effort oracle-text regexes (the Scryfall `o:`

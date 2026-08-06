@@ -1,0 +1,9 @@
+{
+ "files": 1817,
+ "methods": 6021,
+ "setup_calls": 17385,
+ "actions": 12361,
+ "assertions": 17587,
+ "fully_parsed_methods": 2982,
+ "distinct_cards_referenced": 3338
+}

@@ -91,6 +91,22 @@ def cmd_ask(args):
     print(f"-- {len(hits)} faces matched", file=sys.stderr)
 
 
+def cmd_adjudicate(args):
+    from .adjudicate import run_scenarios
+
+    results = run_scenarios(args.scenarios, mage_repo=args.mage_repo)
+    json.dump(results, sys.stdout, indent=1)
+    print()
+    failed = [r for r in results if r.get("status") != "executed"
+              or any(not e.get("pass") for e in r.get("expectations", []))]
+    if failed:
+        print(f"-- {len(failed)}/{len(results)} scenario(s) errored or missed "
+              "expectations", file=sys.stderr)
+        sys.exit(1)
+    print(f"-- {len(results)} scenario(s) executed, all expectations met",
+          file=sys.stderr)
+
+
 def cmd_stats(args):
     idx = SearchIndex.load(args.dataset)
     recs = idx.records
@@ -137,6 +153,11 @@ def main(argv=None):
     a.add_argument("--compile-only", action="store_true",
                    help="print the compiled query without running it")
     a.set_defaults(fn=cmd_ask)
+
+    ad = sub.add_parser("adjudicate", help="run scenario JSON files through the XMage driver")
+    ad.add_argument("scenarios", nargs="+", help="scenario JSON files")
+    ad.add_argument("--mage-repo", help="XMage checkout (or env CARDGURU_MAGE_REPO)")
+    ad.set_defaults(fn=cmd_adjudicate)
 
     st = sub.add_parser("stats", help="dataset statistics")
     st.add_argument("--dataset", default=DEFAULT_DATASET)
