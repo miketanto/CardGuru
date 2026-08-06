@@ -1,0 +1,24 @@
+{
+  "id": "induced-pinger-deathtouch",
+  "description": "Engine verification of the induced tap_pinger concept's complement claim: a deathtouch grant (Gorgon Flail) turns a 1-damage pinger (Prodigal Sorcerer) into a kill - the 6/4 Craw Wurm dies to 1 deathtouch damage.",
+  "players": {
+    "A": {"life": 20,
+          "battlefield": [{"card": "Prodigal Sorcerer"}, {"card": "Gorgon Flail"},
+                           {"card": "Island", "count": 2}]},
+    "B": {"life": 20, "battlefield": [{"card": "Craw Wurm"}]}
+  },
+  "actions": [
+    {"do": "activate", "turn": 1, "phase": "PRECOMBAT_MAIN", "player": "A", "ability": "Equip"},
+    {"do": "target", "player": "A", "value": "Prodigal Sorcerer"},
+    {"do": "wait_stack", "turn": 1, "phase": "PRECOMBAT_MAIN"},
+    {"do": "activate", "turn": 1, "phase": "PRECOMBAT_MAIN", "player": "A", "ability": "{T}:"},
+    {"do": "target", "player": "A", "value": "Craw Wurm"},
+    {"do": "wait_stack", "turn": 1, "phase": "PRECOMBAT_MAIN"}
+  ],
+  "stop": {"turn": 1, "phase": "BEGIN_COMBAT"},
+  "expect": [
+    {"check": "graveyard_count", "player": "B", "card": "Craw Wurm", "count": 1},
+    {"check": "permanent_count", "player": "B", "card": "Craw Wurm", "count": 0},
+    {"check": "tapped", "card": "Prodigal Sorcerer", "value": true}
+  ]
+}

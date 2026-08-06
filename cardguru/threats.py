@@ -87,12 +87,16 @@ def analyze_opponent(idx, by_name: dict, commander_rec: dict,
                        and (mana_value(r2.get("manaCost")) or 0) > mv)
         enabler = 0
         why = None
+        reducer_detect = HOOKS.get("cost_reducer", {}).get("detect", lambda r: False)
         if amp_detect(rec):
             enabler = unlocked
             why = f"mana multiplier accelerating {unlocked} later drops"
         elif detect_roles(rec).get("ramp") == "engine":
             enabler = unlocked // 2
             why = f"ramp engine accelerating {unlocked} later drops"
+        elif reducer_detect(rec):
+            enabler = unlocked // 2
+            why = f"cost reducer discounting {unlocked} later drops"
         score = degree.get(name, 0) + enabler
         key_scores[name] = {"score": score, "centrality": degree.get(name, 0),
                             "enabler": enabler, "enabler_why": why}
