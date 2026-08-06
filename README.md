@@ -39,7 +39,17 @@ python -m cardguru build --cardsfolder <forge>/forge-gui/res/cardsfolder \
 python -m cardguru search queries/q1_combat_damage_token.json --explain
 python -m pytest tests/          # unit + integration goldens
 python benchmark/run.py          # 20-query golden benchmark -> benchmark/report.md
+
+# NL -> DSL compiler (requires ANTHROPIC_API_KEY; uses claude-opus-5)
+python -m cardguru ask "sagas whose chapters tutor a card onto the battlefield" --explain
+python -m cardguru ask "cards that let you play lands from your graveyard" --compile-only
 ```
+
+The `ask` command compiles a natural-language question into the query DSL with Claude,
+validates every exact api/mode/keyword/param token against the mined ontology
+(`cardguru/validate.py` — out-of-vocabulary queries are rejected and errors fed back for
+bounded retries), then runs the validated query. The validator and retry loop are fully
+tested offline; only the LLM call itself needs credentials.
 
 The benchmark (`benchmark/benchmark.json`) covers trigger→effect chains, cost structure,
 replacement effects, statics, and zone logic, each with hand-labeled expected-present/absent

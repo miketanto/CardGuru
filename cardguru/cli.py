@@ -65,6 +65,32 @@ def cmd_show(args):
     sys.exit(1)
 
 
+def cmd_ask(args):
+    from .nl_compiler import compile_question
+
+    result = compile_question(args.question, args.ontology, model=args.model)
+    if not result.ok:
+        print("compilation failed:", file=sys.stderr)
+        for line in result.errors:
+            print(f"  {line}", file=sys.stderr)
+        sys.exit(1)
+    print(f"# compiled query ({len(result.attempts)} attempt(s)):", file=sys.stderr)
+    print(json.dumps(result.query, indent=1), file=sys.stderr)
+    if args.compile_only:
+        json.dump(result.query, sys.stdout, indent=1)
+        print()
+        return
+    idx = SearchIndex.load(args.dataset)
+    hits = list(idx.search(result.query, limit=args.limit))
+    for h in hits:
+        rec = h["record"]
+        print(f"{rec['name']}  [{rec.get('types', '')}]")
+        if args.explain:
+            for line in explain(rec, h["evidence"]):
+                print(f"    {line}")
+    print(f"-- {len(hits)} faces matched", file=sys.stderr)
+
+
 def cmd_stats(args):
     idx = SearchIndex.load(args.dataset)
     recs = idx.records
@@ -100,6 +126,17 @@ def main(argv=None):
     sh.add_argument("name")
     sh.add_argument("--dataset", default=DEFAULT_DATASET)
     sh.set_defaults(fn=cmd_show)
+
+    a = sub.add_parser("ask", help="compile a natural-language question to a query and run it")
+    a.add_argument("question")
+    a.add_argument("--dataset", default=DEFAULT_DATASET)
+    a.add_argument("--ontology", default="research/data/ontology.json")
+    a.add_argument("--model", default="claude-opus-5")
+    a.add_argument("--limit", type=int)
+    a.add_argument("--explain", action="store_true")
+    a.add_argument("--compile-only", action="store_true",
+                   help="print the compiled query without running it")
+    a.set_defaults(fn=cmd_ask)
 
     st = sub.add_parser("stats", help="dataset statistics")
     st.add_argument("--dataset", default=DEFAULT_DATASET)
