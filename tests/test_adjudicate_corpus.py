@@ -243,3 +243,44 @@ def test_detect_hooks_panharmonicon():
                                              "Origin": "Battlefield",
                                              "Destination": "Graveyard"}}]}
     assert "amplifies_death_triggers" in detect_hooks(rec)
+
+
+def test_detect_hooks_expanded():
+    spellslinger = {"name": "S", "nodes": [
+        {"id": "t0", "kind": "T", "params": {"Mode": "SpellCast",
+                                             "ValidCard": "Instant,Sorcery"}}]}
+    assert "spellslinger" in detect_hooks(spellslinger)
+    gitrog = {"name": "G", "nodes": [
+        {"id": "t0", "kind": "T", "params": {"Mode": "ChangesZoneAll",
+                                             "ValidCards": "Land.YouOwn",
+                                             "Destination": "Graveyard"}}]}
+    assert "landfall" in detect_hooks(gitrog)
+    isshin = {"name": "I", "nodes": [
+        {"id": "s0", "kind": "S", "params": {"Mode": "Panharmonicon",
+                                             "ValidMode": "Attacks,AttackersDeclared"}}]}
+    assert "amplifies_attack_triggers" in detect_hooks(isshin)
+    muldrotha = {"name": "M", "nodes": [
+        {"id": "s0", "kind": "S", "params": {"Mode": "Continuous",
+                                             "MayPlay": "True",
+                                             "AffectedZone": "Graveyard"}}]}
+    assert "plays_from_graveyard" in detect_hooks(muldrotha)
+
+
+from cardguru.deck import parse_decklist  # noqa: E402
+
+
+def test_parse_decklist_formats():
+    text = """// comment
+1 Sol Ring
+2x Swamp
+Lightning Bolt
+1 Arcane Signet (C21) 263
+
+Sideboard
+1 Pithing Needle
+"""
+    cards = parse_decklist(text)
+    assert ("Sol Ring", 1) in cards and ("Swamp", 2) in cards
+    assert ("Lightning Bolt", 1) in cards
+    assert any(n == "Arcane Signet" for n, _c in cards)
+    assert not any(n == "Pithing Needle" for n, _c in cards)

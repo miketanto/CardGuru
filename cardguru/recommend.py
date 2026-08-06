@@ -1,4 +1,4 @@
-"""Commander deck recommendation prototype.
+"""Commander deck recommendation engine.
 
 The recommendation logic is mechanical, not co-occurrence-based: detect what
 a commander DOES from its ability graph ("synergy hooks"), then run
@@ -7,15 +7,264 @@ makers pair with token payoffs, lifegain sources with lifegain triggers,
 death triggers with sacrifice outlets. Every recommendation carries a
 machine-readable WHY (hook + matched structure), and color identity comes
 from the canonical card index.
+
+Hook detectors are node-scans over a single card's graph; complement queries
+run over the whole index. Both sides speak the same graph vocabulary.
 """
 from __future__ import annotations
 
 CI_ORDER = "wubrg"
 
-# hook -> (detector over the commander's graph, complement queries)
+
+# --------------------------------------------------------- detector helpers
+
+def _nodes(rec):
+    return rec.get("nodes") or []
+
+
+def _params(n):
+    return n.get("params") or {}
+
+
+def has_api(rec, *apis):
+    return any(n.get("api") in apis for n in _nodes(rec))
+
+
+def has_trigger(rec, mode, **contains):
+    for n in _nodes(rec):
+        if n.get("kind") != "T":
+            continue
+        p = _params(n)
+        if p.get("Mode") != mode:
+            continue
+        if all(want.lower() in str(p.get(key, "")).lower()
+               for key, want in contains.items()):
+            return True
+    return False
+
+
+def has_keyword(rec, *kws):
+    for n in _nodes(rec):
+        if n.get("kind") == "K":
+            raw = (n.get("raw") or n.get("keyword") or "")
+            if any(raw.split(":")[0].strip() == k for k in kws):
+                return True
+    return False
+
+
+def _cost(n):
+    return str(_params(n).get("Cost", ""))
+
+
+# --------------------------------------------------------------- hook defs
+#
+# hook -> describe, detect(rec), complements {class: query DSL}
+# Complement queries are deliberately structural: they match what a card DOES.
+
+def _detect_makes_tokens(rec):
+    return has_api(rec, "Token")
+
+
+def _detect_gains_life(rec):
+    return has_api(rec, "GainLife") or has_keyword(rec, "Lifelink")
+
+
+def _detect_cares_about_death(rec):
+    for n in _nodes(rec):
+        p = _params(n)
+        if n.get("kind") == "T" and p.get("Mode") == "ChangesZone" \
+                and p.get("Origin") == "Battlefield" \
+                and p.get("Destination") == "Graveyard" \
+                and p.get("ValidCard") != "Card.Self":
+            return True
+    return any(n.get("kind") == "R" and _params(n).get("Event") == "Moved"
+               for n in _nodes(rec))
+
+
+def _detect_puts_counters(rec):
+    return has_api(rec, "PutCounter", "Proliferate")
+
+
+def _detect_amplifies_etb_triggers(rec):
+    """Yarok/Panharmonicon-style: ETB triggers trigger an additional time."""
+    return any(_params(n).get("Mode") == "Panharmonicon"
+               and _params(n).get("Destination") == "Battlefield"
+               and "Attack" not in str(_params(n).get("ValidMode", ""))
+               for n in _nodes(rec))
+
+
+def _detect_sac_outlet(rec):
+    return any("Sac<" in _cost(n) and "Creature" in _cost(n) for n in _nodes(rec))
+
+
+def _detect_amplifies_death(rec):
+    return any(_params(n).get("Mode") == "Panharmonicon"
+               and _params(n).get("Origin") == "Battlefield"
+               and _params(n).get("Destination") == "Graveyard"
+               for n in _nodes(rec))
+
+
+def _detect_buffs_tokens(rec):
+    for n in _nodes(rec):
+        p = _params(n)
+        if p.get("Mode") == "Continuous" and "Creature.token" in str(p.get("Affected", "")) \
+                and ("AddKeyword" in p or "AddPower" in p):
+            return True
+    return False
+
+
+def _detect_spellslinger(rec):
+    return has_trigger(rec, "SpellCast", ValidCard="Instant") \
+        or has_trigger(rec, "SpellCast", ValidCard="Sorcery") \
+        or has_trigger(rec, "SpellCastOrCopy")
+
+
+def _detect_landfall(rec):
+    """Any trigger watching Land zone-changes (ETB landfall, Gitrog-style
+    lands-to-graveyard), or an extra-land-drop static."""
+    for n in _nodes(rec):
+        p = _params(n)
+        if n.get("kind") == "T" and p.get("Mode") in ("ChangesZone", "ChangesZoneAll") \
+                and "Land" in str(p.get("ValidCard", "") or p.get("ValidCards", "")):
+            return True
+    return any("AdjustLandPlays" in _params(n) for n in _nodes(rec))
+
+
+def _detect_reanimator(rec):
+    for n in _nodes(rec):
+        p = _params(n)
+        if n.get("api") == "ChangeZone" and p.get("Origin") == "Graveyard" \
+                and p.get("Destination") == "Battlefield":
+            return True
+    return False
+
+
+def _detect_self_mill(rec):
+    for n in _nodes(rec):
+        if n.get("api") == "Mill":
+            d = str(_params(n).get("Defined", "You"))
+            if d in ("You", "Self", "Player.You"):
+                return True
+    return False
+
+
+def _detect_discard_matters(rec):
+    return has_trigger(rec, "Discarded")
+
+
+def _detect_draw_matters(rec):
+    return has_trigger(rec, "Drawn")
+
+
+def _detect_attacks_matter(rec):
+    return has_trigger(rec, "Attacks") or has_trigger(rec, "AttackersDeclared")
+
+
+def _detect_lifedrain(rec):
+    for n in _nodes(rec):
+        if n.get("api") == "LoseLife" \
+                and "Opponent" in str(_params(n).get("Defined", "")):
+            return True
+    return False
+
+
+def _detect_artifacts_matter(rec):
+    if has_trigger(rec, "ChangesZone", ValidCard="Artifact",
+                   Destination="Battlefield") \
+            or has_trigger(rec, "SpellCast", ValidCard="Artifact"):
+        return True
+    for n in _nodes(rec):
+        p = _params(n)
+        if "Artifact" in str(p.get("Affected", "")) and p.get("Mode") == "Continuous":
+            return True
+        if "Artifact" in _cost(n):          # tapXType<1/Artifact>, Sac<1/Artifact>...
+            return True
+        if "construct" in str(p.get("TokenScript", "")).lower():
+            return True
+    return False
+
+
+def _detect_enchantments_matter(rec):
+    return has_trigger(rec, "ChangesZone", ValidCard="Enchantment",
+                       Destination="Battlefield") \
+        or has_trigger(rec, "SpellCast", ValidCard="Enchantment") \
+        or any("Enchantment" in str(_params(n).get("Affected", ""))
+               and _params(n).get("Mode") == "Continuous" for n in _nodes(rec))
+
+
+def _detect_tribal_lord(rec):
+    for n in _nodes(rec):
+        p = _params(n)
+        if p.get("Mode") == "Continuous" and "AddPower" in p:
+            aff = str(p.get("Affected", ""))
+            if "Creature." in aff and ".token" not in aff and "YouCtrl" in aff:
+                return True
+    return False
+
+
+def _detect_blink(rec):
+    """Exile-from-battlefield plus a return-to-battlefield node in the same
+    graph (the flicker round-trip)."""
+    exiles = any(n.get("api") == "ChangeZone"
+                 and _params(n).get("Origin") == "Battlefield"
+                 and _params(n).get("Destination") == "Exile"
+                 for n in _nodes(rec))
+    returns = any(_params(n).get("Destination") == "Battlefield"
+                  and _params(n).get("Origin") in ("Exile", "All", None)
+                  and n.get("api") == "ChangeZone"
+                  for n in _nodes(rec))
+    return exiles and returns
+
+
+def _detect_copies_things(rec):
+    return has_api(rec, "CopyPermanent", "CopySpellAbility")
+
+
+def _detect_plays_from_graveyard(rec):
+    """Muldrotha-style: a Continuous MayPlay static whose affected zone is
+    the graveyard."""
+    return any(_params(n).get("Mode") == "Continuous"
+               and _params(n).get("MayPlay") == "True"
+               and _params(n).get("AffectedZone") == "Graveyard"
+               for n in _nodes(rec))
+
+
+def _detect_amplifies_attack_triggers(rec):
+    """Isshin-style: Panharmonicon static over attack trigger modes."""
+    return any(_params(n).get("Mode") == "Panharmonicon"
+               and "Attack" in str(_params(n).get("ValidMode", ""))
+               for n in _nodes(rec))
+
+
+def _detect_untaps_things(rec):
+    return has_api(rec, "Untap", "UntapAll")
+
+
+def _detect_equipment_matters(rec):
+    if has_trigger(rec, "Attached") or "Equipment" in str(rec.get("types") or ""):
+        return True
+    # Equipment referenced anywhere in the graph (count SVars, Affected,
+    # cost reductions) marks an equipment payoff like Wyleth
+    return any("Equipment" in str(_params(n)) for n in _nodes(rec))
+
+
+_DEATH_TRIGGER_Q = {"chain": {"from": {"kind": "T", "mode": "ChangesZone",
+                                       "params": {"Origin": "Battlefield",
+                                                  "Destination": "Graveyard"}},
+                              "to": {}}}
+_SAC_OUTLET_Q = {"node": {"kind": "A", "apiKind": "AB",
+                          "params": {"Cost": {"regex": r"Sac<[0-9X]+/Creature"}}}}
+_TOKEN_MAKER_Q = {"chain": {"from": {"kind": {"any": ["A", "T"]}},
+                            "to": {"api": "Token"}}}
+_REANIMATE_Q = {"node": {"api": "ChangeZone",
+                         "params": {"Origin": "Graveyard",
+                                    "Destination": "Battlefield"}}}
+_SELF_MILL_Q = {"node": {"api": "Mill"}}
+
 HOOKS = {
     "makes_tokens": {
         "describe": "creates tokens",
+        "detect": _detect_makes_tokens,
         "complements": {
             "token_payoffs": {"chain": {"from": {"kind": "T", "mode": "TokenCreated"},
                                         "to": {}}},
@@ -25,105 +274,264 @@ HOOKS = {
             "anthems": {"node": {"mode": "Continuous",
                                  "params": {"AddPower": True,
                                             "Affected": {"contains": "Creature.YouCtrl"}}}},
-        },
-    },
+        }},
     "gains_life": {
         "describe": "gains life",
+        "detect": _detect_gains_life,
         "complements": {
             "lifegain_payoffs": {"chain": {"from": {"kind": "T", "mode": "LifeGained"},
                                            "to": {}}},
-        },
-    },
+            "lifegain_doubling": {"chain": {"from": {"kind": "R",
+                                                     "params": {"Event": "GainLife"}},
+                                            "to": {}}},
+        }},
     "cares_about_death": {
         "describe": "triggers on creatures dying",
+        "detect": _detect_cares_about_death,
         "complements": {
-            "sac_outlets": {"node": {"kind": "A", "apiKind": "AB",
-                                     "params": {"Cost": {"regex": "Sac<[0-9X]+/Creature"}}}},
+            "sac_outlets": _SAC_OUTLET_Q,
             "token_fodder": {"chain": {"from": {"kind": "T", "mode": "ChangesZone",
                                                 "params": {"Destination": "Battlefield"}},
                                        "to": {"api": "Token"}}},
-        },
-    },
+        }},
     "puts_counters": {
         "describe": "puts +1/+1 counters",
+        "detect": _detect_puts_counters,
         "complements": {
             "proliferate": {"node": {"api": "Proliferate"}},
             "counter_doubling": {"chain": {"from": {"kind": "R",
                                                     "params": {"Event": "AddCounter"}},
                                            "to": {"api": "ReplaceCounter"}}},
-        },
-    },
+            "counter_payoffs": {"node": {"mode": "Continuous",
+                                         "params": {"Affected": {"contains": "counter"}}}},
+        }},
     "sac_outlet": {
         "describe": "sacrifices creatures as a cost",
+        "detect": _detect_sac_outlet,
         "complements": {
-            "death_triggers": {"chain": {"from": {"kind": "T", "mode": "ChangesZone",
-                                                  "params": {"Origin": "Battlefield",
-                                                             "Destination": "Graveyard"}},
-                                         "to": {}}},
-        },
-    },
+            "death_triggers": _DEATH_TRIGGER_Q,
+            "token_makers": _TOKEN_MAKER_Q,
+        }},
     "amplifies_death_triggers": {
         "describe": "makes dies-triggers trigger an additional time",
+        "detect": _detect_amplifies_death,
         "complements": {
-            "death_triggers": {"chain": {"from": {"kind": "T", "mode": "ChangesZone",
-                                                  "params": {"Origin": "Battlefield",
-                                                             "Destination": "Graveyard"}},
-                                         "to": {}}},
-            "sac_outlets": {"node": {"kind": "A", "apiKind": "AB",
-                                     "params": {"Cost": {"regex": "Sac<[0-9X]+/Creature"}}}},
-        },
-    },
+            "death_triggers": _DEATH_TRIGGER_Q,
+            "sac_outlets": _SAC_OUTLET_Q,
+        }},
     "buffs_tokens": {
         "describe": "grants abilities to your creature tokens",
+        "detect": _detect_buffs_tokens,
         "complements": {
-            "token_makers": {"chain": {"from": {"kind": {"any": ["A", "T"]}},
-                                       "to": {"api": "Token"}}},
-        },
-    },
+            "token_makers": _TOKEN_MAKER_Q,
+        }},
+    "spellslinger": {
+        "describe": "triggers whenever you cast instants/sorceries",
+        "detect": _detect_spellslinger,
+        "complements": {
+            "cheap_cantrips": {"all": [
+                {"card": {"types": {"regex": "Instant|Sorcery"}}},
+                {"node": {"apiKind": "SP", "api": "Draw"}}]},
+            "spell_copiers": {"node": {"api": "CopySpellAbility"}},
+            "cost_reducers": {"node": {"kind": "S", "mode": "ReduceCost",
+                                       "params": {"ValidCard": {"regex": "Instant|Sorcery"}}}},
+        }},
+    "landfall": {
+        "describe": "triggers when lands enter under your control",
+        "detect": _detect_landfall,
+        "complements": {
+            "extra_land_drops": {"node": {"mode": "Continuous",
+                                          "params": {"AdjustLandPlays": True}}},
+            "land_fetch": {"node": {"api": "ChangeZone",
+                                    "params": {"Origin": "Library",
+                                               "Destination": "Battlefield",
+                                               "ChangeType": {"regex": "Land|Plains|Island|Swamp|Mountain|Forest"}}}},
+            "land_recursion": {"node": {"api": "ChangeZone",
+                                        "params": {"Origin": "Graveyard",
+                                                   "ChangeType": {"contains": "Land"}}}},
+        }},
+    "reanimator": {
+        "describe": "returns creatures from graveyards to the battlefield",
+        "detect": _detect_reanimator,
+        "complements": {
+            "self_mill": _SELF_MILL_Q,
+            "big_etb_creatures": {"all": [
+                {"card": {"types": {"contains": "Creature"}}},
+                {"chain": {"from": {"kind": "T", "mode": "ChangesZone",
+                                    "params": {"ValidCard": {"contains": "Card.Self"},
+                                               "Destination": "Battlefield"}},
+                           "to": {}}}]},
+            "discard_outlets": {"node": {"kind": "A",
+                                         "params": {"Cost": {"contains": "Discard"}}}},
+        }},
+    "self_mill": {
+        "describe": "puts cards from your library into your graveyard",
+        "detect": _detect_self_mill,
+        "complements": {
+            "graveyard_casting": {"node": {"mode": "Continuous",
+                                           "params": {"MayPlay": True,
+                                                      "Affected": {"contains": "Graveyard"}}}},
+            "reanimation": _REANIMATE_Q,
+            "graveyard_size_payoffs": {"node": {"params": {"Defined": {"contains": "Graveyard"}}}},
+        }},
+    "discard_matters": {
+        "describe": "triggers when cards are discarded",
+        "detect": _detect_discard_matters,
+        "complements": {
+            "discard_outlets": {"node": {"kind": "A",
+                                         "params": {"Cost": {"contains": "Discard"}}}},
+            "mass_discard": {"node": {"api": "Discard",
+                                      "params": {"Mode": {"contains": "Hand"}}}},
+        }},
+    "draw_matters": {
+        "describe": "triggers on card draws",
+        "detect": _detect_draw_matters,
+        "complements": {
+            "extra_draw": {"node": {"api": "Draw",
+                                    "params": {"NumCards": {"regex": "^[2-9]"}}}},
+            "wheel_effects": {"chain": {"from": {"kind": "A", "api": "Discard",
+                                                 "params": {"Mode": "Hand"}},
+                                        "to": {"api": "Draw"}}},
+        }},
+    "attacks_matter": {
+        "describe": "triggers on attacking",
+        "detect": _detect_attacks_matter,
+        "complements": {
+            "extra_combats": {"node": {"api": "AddPhase"}},
+            "haste_enablers": {"node": {"mode": "Continuous",
+                                        "params": {"AddKeyword": {"contains": "Haste"},
+                                                   "Affected": {"contains": "Creature.YouCtrl"}}}},
+            "attack_triggers": {"chain": {"from": {"kind": "T", "mode": "Attacks"},
+                                          "to": {}}},
+        }},
+    "lifedrain": {
+        "describe": "drains opponents' life",
+        "detect": _detect_lifedrain,
+        "complements": {
+            "drain_amplifiers": {"node": {"mode": "Continuous",
+                                          "params": {"Affected": {"contains": "Opponent"}}}},
+            "lifegain_payoffs": {"chain": {"from": {"kind": "T", "mode": "LifeGained"},
+                                           "to": {}}},
+        }},
+    "artifacts_matter": {
+        "describe": "cares about artifacts",
+        "detect": _detect_artifacts_matter,
+        "complements": {
+            "artifact_token_makers": {"node": {"params": {"TokenScript": {"regex": "treasure|clue|food|construct|thopter|servo"}}}},
+            "affinity_payoffs": {"node": {"params": {"Defined": {"contains": "Artifact"}}}},
+            "artifact_etb_triggers": {"chain": {"from": {"kind": "T", "mode": "ChangesZone",
+                                                         "params": {"ValidCard": {"contains": "Artifact"},
+                                                                    "Destination": "Battlefield"}},
+                                                "to": {}}},
+        }},
+    "enchantments_matter": {
+        "describe": "cares about enchantments",
+        "detect": _detect_enchantments_matter,
+        "complements": {
+            "enchantment_etb_triggers": {"chain": {"from": {"kind": "T", "mode": "ChangesZone",
+                                                            "params": {"ValidCard": {"contains": "Enchantment"},
+                                                                       "Destination": "Battlefield"}},
+                                                   "to": {}}},
+            "auras": {"card": {"types": {"contains": "Aura"}}},
+        }},
+    "tribal_lord": {
+        "describe": "pumps your creatures of a type",
+        "detect": _detect_tribal_lord,
+        "complements": {
+            "token_makers": _TOKEN_MAKER_Q,
+            "anthem_stacking": {"node": {"mode": "Continuous",
+                                         "params": {"AddPower": True,
+                                                    "Affected": {"contains": "Creature.YouCtrl"}}}},
+        }},
+    "blink": {
+        "describe": "exiles and returns permanents (flicker)",
+        "detect": _detect_blink,
+        "complements": {
+            "etb_value_creatures": {"all": [
+                {"card": {"types": {"contains": "Creature"}}},
+                {"chain": {"from": {"kind": "T", "mode": "ChangesZone",
+                                    "params": {"ValidCard": {"contains": "Card.Self"},
+                                               "Destination": "Battlefield"}},
+                           "to": {}}}]},
+            "etb_doubling": {"node": {"kind": "S",
+                                      "params": {"Mode": "Panharmonicon",
+                                                 "Destination": "Battlefield"}}},
+        }},
+    "copies_things": {
+        "describe": "copies spells or permanents",
+        "detect": _detect_copies_things,
+        "complements": {
+            "etb_value_creatures": {"all": [
+                {"card": {"types": {"contains": "Creature"}}},
+                {"chain": {"from": {"kind": "T", "mode": "ChangesZone",
+                                    "params": {"ValidCard": {"contains": "Card.Self"},
+                                               "Destination": "Battlefield"}},
+                           "to": {}}}]},
+            "big_spells": {"all": [
+                {"card": {"types": {"regex": "Instant|Sorcery"}}},
+                {"node": {"api": {"any": ["Draw", "DealDamage", "Token"]}}}]},
+        }},
+    "untapper": {
+        "describe": "untaps permanents",
+        "detect": _detect_untaps_things,
+        "complements": {
+            "big_mana_rocks": {"node": {"kind": "A", "apiKind": "AB", "api": "Mana",
+                                        "params": {"Cost": {"contains": "T"},
+                                                   "Amount": {"regex": "^[2-9]"}}}},
+            "tap_ability_creatures": {"all": [
+                {"card": {"types": {"contains": "Creature"}}},
+                {"node": {"kind": "A", "apiKind": "AB",
+                          "params": {"Cost": {"regex": "(^|\\s)T($|\\s)"}}}}]},
+        }},
+    "plays_from_graveyard": {
+        "describe": "lets you play cards from your graveyard",
+        "detect": _detect_plays_from_graveyard,
+        "complements": {
+            "self_mill": _SELF_MILL_Q,
+            "sac_outlets": _SAC_OUTLET_Q,
+            "permanent_value_etbs": {"chain": {"from": {"kind": "T", "mode": "ChangesZone",
+                                                        "params": {"ValidCard": {"contains": "Card.Self"},
+                                                                   "Destination": "Battlefield"}},
+                                               "to": {}}},
+        }},
+    "amplifies_etb_triggers": {
+        "describe": "makes enters-the-battlefield triggers trigger an additional time",
+        "detect": _detect_amplifies_etb_triggers,
+        "complements": {
+            "etb_value_creatures": {"all": [
+                {"card": {"types": {"contains": "Creature"}}},
+                {"chain": {"from": {"kind": "T", "mode": "ChangesZone",
+                                    "params": {"ValidCard": {"contains": "Card.Self"},
+                                               "Destination": "Battlefield"}},
+                           "to": {}}}]},
+            "blink_enablers": {"node": {"api": "ChangeZone",
+                                        "params": {"Origin": "Battlefield",
+                                                   "Destination": "Exile"}}},
+        }},
+    "amplifies_attack_triggers": {
+        "describe": "makes attack triggers trigger an additional time",
+        "detect": _detect_amplifies_attack_triggers,
+        "complements": {
+            "attack_triggers": {"chain": {"from": {"kind": "T", "mode": "Attacks"},
+                                          "to": {}}},
+            "extra_combats": {"node": {"api": "AddPhase"}},
+            "haste_enablers": {"node": {"mode": "Continuous",
+                                        "params": {"AddKeyword": {"contains": "Haste"},
+                                                   "Affected": {"contains": "Creature.YouCtrl"}}}},
+        }},
+    "equipment_matters": {
+        "describe": "cares about Equipment",
+        "detect": _detect_equipment_matters,
+        "complements": {
+            "equipment": {"card": {"types": {"contains": "Equipment"}}},
+            "equip_cost_reduction": {"node": {"kind": "S", "mode": "ReduceCost",
+                                              "params": {"ValidCard": {"contains": "Equipment"}}}},
+        }},
 }
 
 
-def _reaches_api(rec, api):
-    return any(n.get("api") == api for n in rec["nodes"])
-
-
 def detect_hooks(rec: dict) -> list[str]:
-    hooks = []
-    if _reaches_api(rec, "Token"):
-        hooks.append("makes_tokens")
-    if _reaches_api(rec, "GainLife") or any(
-            n.get("keyword") == "Lifelink" for n in rec["nodes"]):
-        hooks.append("gains_life")
-    for n in rec["nodes"]:
-        p = n.get("params", {})
-        if n.get("kind") == "T" and p.get("Mode") == "ChangesZone" \
-                and p.get("Origin") == "Battlefield" \
-                and p.get("Destination") == "Graveyard" \
-                and p.get("ValidCard") != "Card.Self":
-            hooks.append("cares_about_death")
-            break
-    else:
-        # Teysa-style: replacement/static doubling of dies triggers
-        if any(n.get("kind") == "R" and "Moved" == n.get("params", {}).get("Event")
-               for n in rec["nodes"]):
-            hooks.append("cares_about_death")
-    if _reaches_api(rec, "PutCounter"):
-        hooks.append("puts_counters")
-    if any("Sac<" in str(n.get("params", {}).get("Cost", ""))
-           and "Creature" in str(n.get("params", {}).get("Cost", ""))
-           for n in rec["nodes"]):
-        hooks.append("sac_outlet")
-    for n in rec["nodes"]:
-        p = n.get("params", {})
-        if p.get("Mode") == "Panharmonicon" \
-                and p.get("Origin") == "Battlefield" \
-                and p.get("Destination") == "Graveyard":
-            hooks.append("amplifies_death_triggers")
-        if p.get("Mode") == "Continuous" \
-                and "Creature.token" in str(p.get("Affected", "")) \
-                and ("AddKeyword" in p or "AddPower" in p):
-            hooks.append("buffs_tokens")
-    return hooks
+    return [name for name, cfg in HOOKS.items() if cfg["detect"](rec)]
 
 
 def color_identity_ok(ci: str | None, commander_ci: set[str]) -> bool:

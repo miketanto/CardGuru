@@ -93,6 +93,17 @@ via UI — the spec format is the feature) plus best-effort NL, and revisit as m
 Router-with-fallback per architecture §2; answer composer citing CR + rulings + engine record;
 confidently-wrong rate gates launch (eval.md §C). Held-out benchmark scored once, at the end.
 
+## Backlogged (2026-08-06): adjudication deepening
+
+The first RulesGuru probe (research/rulesguru-first-probe.md) cleared the 2b kill
+criterion and produced a concrete driver-feature roadmap (amount-division prompts,
+pass-priority action, empty-library/face-down setup, trigger-order scripting) that
+would raise simulatability from 9/24. **Deliberately backlogged** in favor of testing
+general utility on the breadth surfaces (Commander Workbench, Meta Lab): the open
+product question is how often judge-level depth matters for everyday deck questions,
+which the generality probe measures directly. Revisit after the breadth surfaces are
+demoable.
+
 ## Standing engineering rules
 
 - Pin: Forge `670429bf`, XMage `1.4.60`/master-2026-08-06, CR version, data snapshot date;

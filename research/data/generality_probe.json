@@ -1,0 +1,43 @@
+{
+ "legends": 3753,
+ "hooked": 2316,
+ "hook_counts": {
+  "cares_about_death": 200,
+  "puts_counters": 610,
+  "makes_tokens": 612,
+  "attacks_matter": 601,
+  "lifedrain": 59,
+  "gains_life": 297,
+  "blink": 66,
+  "artifacts_matter": 121,
+  "reanimator": 157,
+  "discard_matters": 21,
+  "equipment_matters": 91,
+  "spellslinger": 55,
+  "tribal_lord": 78,
+  "self_mill": 56,
+  "copies_things": 146,
+  "landfall": 58,
+  "sac_outlet": 103,
+  "draw_matters": 51,
+  "enchantments_matter": 21,
+  "untapper": 65,
+  "plays_from_graveyard": 42,
+  "buffs_tokens": 9,
+  "amplifies_death_triggers": 2,
+  "amplifies_etb_triggers": 4,
+  "amplifies_attack_triggers": 2
+ },
+ "creatures": 18878,
+ "depth_matters": 826,
+ "features": {
+  "protection": 194,
+  "ward": 207,
+  "cda_pt": 237,
+  "hexproof_or_shroud": 127,
+  "indestructible": 76
+ },
+ "with_toughness": 18700,
+ "token_makers": 3379,
+ "ability_defined_token_makers": 23
+}

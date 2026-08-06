@@ -177,6 +177,36 @@ def cmd_recommend(args):
             print(f"  {cname} ({cl['total']} in-color): {', '.join(cl['top'])}")
 
 
+def cmd_deck(args):
+    from .deck import analyze_deck, parse_decklist
+
+    idx = SearchIndex.load(args.dataset)
+    by_name = {}
+    for r in idx.records:
+        by_name.setdefault(r.get("name"), r)
+    rec = by_name.get(args.commander)
+    if not rec:
+        print(f"unknown commander: {args.commander}", file=sys.stderr)
+        sys.exit(1)
+    with open(args.list, encoding="utf-8") as f:
+        decklist = parse_decklist(f.read())
+    res = analyze_deck(idx, rec, decklist)
+    print(f"# {res['commander']} - {res['deck_size']} cards, "
+          f"hooks: {', '.join(res['hooks']) or 'none detected'}")
+    for hook, data in res["matrix"].items():
+        thin = "  [THIN - consider adding]" if data["thin"] else ""
+        print(f"\n{hook}: {data['why']}  "
+              f"({data['cards_feeding_hook']} cards feed this){thin}")
+        for cname, cards in data["classes"].items():
+            if cards:
+                print(f"  {cname}: {', '.join(cards[:10])}")
+    if res["unconnected"]:
+        print(f"\nno hook connection ({len(res['unconnected'])}): "
+              f"{', '.join(res['unconnected'][:15])}")
+    if res["unknown_cards"]:
+        print(f"unknown names: {', '.join(res['unknown_cards'][:10])}", file=sys.stderr)
+
+
 def cmd_stats(args):
     idx = SearchIndex.load(args.dataset)
     recs = idx.records
@@ -241,6 +271,12 @@ def main(argv=None):
                     help="Forge tokenscripts dir (default: $CARDGURU_TOKENSCRIPTS)")
     an.add_argument("--dataset", default=DEFAULT_DATASET)
     an.set_defaults(fn=cmd_answers)
+
+    dk = sub.add_parser("deck", help="analyze a Commander decklist's hook coverage")
+    dk.add_argument("commander", help="commander card name")
+    dk.add_argument("--list", required=True, help="decklist text file")
+    dk.add_argument("--dataset", default=DEFAULT_DATASET)
+    dk.set_defaults(fn=cmd_deck)
 
     rc = sub.add_parser("recommend", help="commander synergy recommendations")
     rc.add_argument("commander", help="commander card name")
