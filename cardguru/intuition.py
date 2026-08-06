@@ -179,6 +179,8 @@ AXES = {
         "signal": _sig_search,
         "hate": {
             "search_hate": {"node": {"params": {"AddKeyword": {"contains": "LimitSearchLibrary"}}}},
+            # punishers: triggers that FEED on the opponent's searches
+            "search_punishers": {"node": {"kind": "T", "mode": "SearchedLibrary"}},
         }},
     "lifegain": {
         "describe": "gains and leverages life",
