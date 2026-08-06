@@ -1,0 +1,20 @@
+{
+  "_comment": "Adversarial slice for the graph-vs-flat ablation (plan/eval.md section D): questions where mechanics and oracle wording diverge. Each has a witness (must be found) and an 'absent' foil (textually similar, mechanically wrong - must NOT be returned). Disjoint from all prior sets; RulesGuru remains unread.",
+  "questions": [
+    {"id": "a01", "q": "cards with an activated ability that sacrifices a creature as part of its activation cost",
+     "witness": ["Viscera Seer"], "absent": ["Fleshbag Marauder"],
+     "why_adversarial": "cost-sacrifice vs effect-sacrifice: both oracle texts contain 'sacrifice a creature'"},
+    {"id": "a02", "q": "cards that make abilities triggering on a creature dying trigger an additional time",
+     "witness": ["Teysa Karlov"], "absent": ["Grave Pact"],
+     "why_adversarial": "trigger-doubling static vs an ordinary death trigger: both texts are about creatures dying"},
+    {"id": "a03", "q": "enchantments that double the number of tokens you create",
+     "witness": ["Anointed Procession"], "absent": ["Doubling Cube"],
+     "why_adversarial": "Procession's text never says 'double' (it says 'twice that many'); Doubling Cube says 'double' but doubles mana"},
+    {"id": "a04", "q": "creatures with an ability that requires tapping themselves as a cost",
+     "witness": ["Prodigal Sorcerer"], "absent": ["Twiddle"],
+     "why_adversarial": "the tap COST is the {T} symbol, not the word 'tap'; Twiddle says 'tap' but taps as an effect"},
+    {"id": "a05", "q": "counterspells that can counter any kind of spell",
+     "witness": ["Counterspell"], "absent": ["Essence Scatter"],
+     "why_adversarial": "unrestricted vs restricted ValidTgts: 'counter target spell' is a substring of 'counter target creature spell'"}
+  ]
+}

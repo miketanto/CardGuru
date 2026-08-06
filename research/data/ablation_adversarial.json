@@ -1,0 +1,144 @@
+{
+ "a01": {
+  "graph": {
+   "witness": true,
+   "foil_rejected": true,
+   "prec_at_10": 0.1,
+   "hits": 1380
+  },
+  "flat": {
+   "witness": false,
+   "foil_rejected": true,
+   "prec_at_10": 0.0
+  },
+  "agent_query": {
+   "node": {
+    "kind": "A",
+    "apiKind": "AB",
+    "params": {
+     "Cost": {
+      "regex": "Sac<[^>]*(Creature|CARDNAME)"
+     }
+    }
+   }
+  }
+ },
+ "a02": {
+  "graph": {
+   "witness": true,
+   "foil_rejected": true,
+   "prec_at_10": 1.0,
+   "hits": 2
+  },
+  "flat": {
+   "witness": true,
+   "foil_rejected": true,
+   "prec_at_10": 0.2
+  },
+  "agent_query": {
+   "node": {
+    "kind": "S",
+    "mode": "Panharmonicon",
+    "params": {
+     "Origin": "Battlefield",
+     "Destination": "Graveyard"
+    }
+   }
+  }
+ },
+ "a03": {
+  "graph": {
+   "witness": true,
+   "foil_rejected": true,
+   "prec_at_10": 1.0,
+   "hits": 8
+  },
+  "flat": {
+   "witness": true,
+   "foil_rejected": true,
+   "prec_at_10": 0.0
+  },
+  "agent_query": {
+   "all": [
+    {
+     "card": {
+      "types": {
+       "contains": "Enchantment"
+      }
+     }
+    },
+    {
+     "chain": {
+      "from": {
+       "kind": "R",
+       "params": {
+        "Event": "CreateToken"
+       }
+      },
+      "to": {
+       "api": "ReplaceToken"
+      }
+     }
+    }
+   ]
+  }
+ },
+ "a04": {
+  "graph": {
+   "witness": true,
+   "foil_rejected": true,
+   "prec_at_10": 1.0,
+   "hits": 1956
+  },
+  "flat": {
+   "witness": false,
+   "foil_rejected": true,
+   "prec_at_10": 0.2
+  },
+  "agent_query": {
+   "all": [
+    {
+     "card": {
+      "types": {
+       "contains": "Creature"
+      }
+     }
+    },
+    {
+     "node": {
+      "kind": "A",
+      "apiKind": "AB",
+      "params": {
+       "Cost": {
+        "regex": "(^|\\s)T($|\\s)"
+       }
+      }
+     }
+    }
+   ]
+  }
+ },
+ "a05": {
+  "graph": {
+   "witness": true,
+   "foil_rejected": true,
+   "prec_at_10": 1.0,
+   "hits": 189
+  },
+  "flat": {
+   "witness": false,
+   "foil_rejected": true,
+   "prec_at_10": 0.1
+  },
+  "agent_query": {
+   "node": {
+    "apiKind": "SP",
+    "api": "Counter",
+    "params": {
+     "TargetType": "Spell",
+     "ValidTgts": "Card"
+    }
+   }
+  }
+ }
+}
