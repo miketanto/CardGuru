@@ -1,0 +1,69 @@
+{
+ "id": "answer-bolt-vs-grizzly-bears",
+ "description": "Lightning Bolt deals 3 damage to Grizzly Bears (2/2), which dies and goes to its owner's graveyard",
+ "players": {
+  "A": {
+   "life": 20,
+   "battlefield": [
+    {
+     "card": "Mountain",
+     "count": 1
+    }
+   ],
+   "hand": [
+    "Lightning Bolt"
+   ]
+  },
+  "B": {
+   "life": 20,
+   "battlefield": [
+    {
+     "card": "Grizzly Bears"
+    }
+   ]
+  }
+ },
+ "actions": [
+  {
+   "do": "cast",
+   "turn": 1,
+   "phase": "PRECOMBAT_MAIN",
+   "player": "A",
+   "card": "Lightning Bolt"
+  },
+  {
+   "do": "target",
+   "player": "A",
+   "value": "Grizzly Bears"
+  },
+  {
+   "do": "wait_stack",
+   "turn": 1,
+   "phase": "PRECOMBAT_MAIN"
+  }
+ ],
+ "stop": {
+  "turn": 1,
+  "phase": "BEGIN_COMBAT"
+ },
+ "expect": [
+  {
+   "check": "permanent_count",
+   "player": "B",
+   "card": "Grizzly Bears",
+   "count": 0
+  },
+  {
+   "check": "graveyard_count",
+   "player": "B",
+   "card": "Grizzly Bears",
+   "count": 1
+  },
+  {
+   "check": "graveyard_count",
+   "player": "A",
+   "card": "Lightning Bolt",
+   "count": 1
+  }
+ ]
+}

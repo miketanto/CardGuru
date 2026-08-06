@@ -1,0 +1,56 @@
+{
+ "id": "answer-doubling-season-attended-knight",
+ "description": "With Doubling Season out, Attended Knight's ETB trigger makes two 1/1 Soldier tokens instead of one",
+ "players": {
+  "A": {
+   "life": 20,
+   "battlefield": [
+    {
+     "card": "Plains",
+     "count": 4
+    },
+    {
+     "card": "Doubling Season"
+    }
+   ],
+   "hand": [
+    "Attended Knight"
+   ]
+  },
+  "B": {
+   "life": 20
+  }
+ },
+ "actions": [
+  {
+   "do": "cast",
+   "turn": 1,
+   "phase": "PRECOMBAT_MAIN",
+   "player": "A",
+   "card": "Attended Knight"
+  },
+  {
+   "do": "wait_stack",
+   "turn": 1,
+   "phase": "PRECOMBAT_MAIN"
+  }
+ ],
+ "stop": {
+  "turn": 1,
+  "phase": "BEGIN_COMBAT"
+ },
+ "expect": [
+  {
+   "check": "permanent_count",
+   "player": "A",
+   "card": "Attended Knight",
+   "count": 1
+  },
+  {
+   "check": "permanent_count",
+   "player": "A",
+   "card": "Soldier Token",
+   "count": 2
+  }
+ ]
+}

@@ -60,6 +60,11 @@ Conventions from the Forge card-script data this runs over:
   selectors (type words like "Land", "Forest", "Creature").
 - Effects: api names like Token, DealDamage, Draw, GainLife, LoseLife,
   PutCounter, Destroy, Mana, AddTurn, CopySpellAbility, Pump, Dig, Mill.
+- "Each opponent"/"each player" effects usually use the *All api variants
+  (DamageAll with ValidPlayers, DestroyAll, TapAll) rather than the targeted
+  api with a Defined param — query both with {"any": ...} when unsure.
+- Doubling/replacement of counters mirrors tokens: R Event "AddCounter"
+  chains to api "ReplaceCounter" (MultiplyCounter is a different, rarer API).
 - Prefer chain over all-of-two-nodes when the question implies one ability
   does both things. Prefer exact api/mode strings from the vocabulary below;
   use params only when needed for precision.

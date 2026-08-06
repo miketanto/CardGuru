@@ -1,0 +1,360 @@
+{
+ "results": [
+  {
+   "id": "q1",
+   "q": "creatures whose enter-the-battlefield trigger deals damage to each opponent",
+   "query": {
+    "all": [
+     {
+      "card": {
+       "types": {
+        "contains": "Creature"
+       }
+      }
+     },
+     {
+      "chain": {
+       "from": {
+        "kind": "T",
+        "mode": "ChangesZone",
+        "params": {
+         "ValidCard": {
+          "contains": "Card.Self"
+         },
+         "Destination": "Battlefield"
+        }
+       },
+       "to": {
+        "api": "DealDamage",
+        "params": {
+         "Defined": {
+          "icontains": "opponent"
+         }
+        }
+       }
+      }
+     }
+    ]
+   },
+   "valid": true,
+   "errors": [],
+   "hits": 14,
+   "witness_found": [],
+   "witness_missing": [
+    "Fanatic of Mogis"
+   ]
+  },
+  {
+   "id": "q2",
+   "q": "cards that double the number of +1/+1 counters you put on creatures",
+   "query": {
+    "chain": {
+     "from": {
+      "kind": "R",
+      "params": {
+       "Event": "AddCounter"
+      }
+     },
+     "to": {
+      "api": "MultiplyCounter"
+     }
+    }
+   },
+   "valid": true,
+   "errors": [],
+   "hits": 0,
+   "witness_found": [],
+   "witness_missing": [
+    "Branching Evolution"
+   ]
+  },
+  {
+   "id": "q3",
+   "q": "lands with an activated ability that sacrifices the land itself to draw a card",
+   "query": {
+    "all": [
+     {
+      "card": {
+       "types": {
+        "contains": "Land"
+       }
+      }
+     },
+     {
+      "any": [
+       {
+        "node": {
+         "kind": "A",
+         "apiKind": "AB",
+         "api": "Draw",
+         "params": {
+          "Cost": {
+           "contains": "Sac<1/CARDNAME>"
+          }
+         }
+        }
+       },
+       {
+        "chain": {
+         "from": {
+          "kind": "A",
+          "apiKind": "AB",
+          "params": {
+           "Cost": {
+            "contains": "Sac<1/CARDNAME>"
+           }
+          }
+         },
+         "to": {
+          "api": "Draw"
+         }
+        }
+       }
+      ]
+     }
+    ]
+   },
+   "valid": true,
+   "errors": [],
+   "hits": 35,
+   "witness_found": [
+    "Horizon Canopy"
+   ],
+   "witness_missing": []
+  },
+  {
+   "id": "q4",
+   "q": "creatures that get a +1/+1 counter whenever you gain life",
+   "query": {
+    "all": [
+     {
+      "card": {
+       "types": {
+        "contains": "Creature"
+       }
+      }
+     },
+     {
+      "chain": {
+       "from": {
+        "kind": "T",
+        "mode": "LifeGained"
+       },
+       "to": {
+        "api": "PutCounter",
+        "params": {
+         "CounterType": "P1P1"
+        }
+       }
+      }
+     }
+    ]
+   },
+   "valid": true,
+   "errors": [],
+   "hits": 35,
+   "witness_found": [
+    "Ajani's Pridemate"
+   ],
+   "witness_missing": []
+  },
+  {
+   "id": "q5",
+   "q": "spells that counter a spell unless its controller pays mana",
+   "query": {
+    "all": [
+     {
+      "card": {
+       "types": {
+        "any": [
+         {
+          "contains": "Instant"
+         },
+         {
+          "contains": "Sorcery"
+         }
+        ]
+       }
+      }
+     },
+     {
+      "node": {
+       "kind": "A",
+       "apiKind": "SP",
+       "api": "Counter",
+       "params": {
+        "UnlessCost": true
+       }
+      }
+     }
+    ]
+   },
+   "valid": true,
+   "errors": [],
+   "hits": 79,
+   "witness_found": [
+    "Mana Leak"
+   ],
+   "witness_missing": []
+  },
+  {
+   "id": "q6",
+   "q": "cards with a trigger that makes an opponent lose life whenever they discard a card",
+   "query": {
+    "chain": {
+     "from": {
+      "kind": "T",
+      "mode": "Discarded",
+      "params": {
+       "ValidCard": {
+        "regex": "Opp(Ctrl|Own)"
+       }
+      }
+     },
+     "to": {
+      "api": "LoseLife"
+     }
+    }
+   },
+   "valid": true,
+   "errors": [],
+   "hits": 3,
+   "witness_found": [
+    "Liliana's Caress"
+   ],
+   "witness_missing": []
+  },
+  {
+   "id": "q7",
+   "q": "cards that mill a player whenever that player draws a card",
+   "query": {
+    "chain": {
+     "from": {
+      "kind": "T",
+      "mode": "Drawn"
+     },
+     "to": {
+      "api": "Mill",
+      "params": {
+       "Defined": {
+        "contains": "Triggered"
+       }
+      }
+     }
+    }
+   },
+   "valid": true,
+   "errors": [],
+   "hits": 0,
+   "witness_found": [],
+   "witness_missing": [
+    "Sphinx's Tutelage"
+   ]
+  },
+  {
+   "id": "q8",
+   "q": "planeswalkers with an ability that returns a creature card from a graveyard to the battlefield",
+   "query": {
+    "all": [
+     {
+      "card": {
+       "types": {
+        "contains": "Planeswalker"
+       }
+      }
+     },
+     {
+      "any": [
+       {
+        "node": {
+         "api": "ChangeZone",
+         "params": {
+          "Origin": "Graveyard",
+          "Destination": "Battlefield",
+          "ChangeType": {
+           "contains": "Creature"
+          }
+         }
+        }
+       },
+       {
+        "node": {
+         "api": "ChangeZone",
+         "params": {
+          "Origin": "Graveyard",
+          "Destination": "Battlefield",
+          "ValidTgts": {
+           "contains": "Creature"
+          }
+         }
+        }
+       }
+      ]
+     }
+    ]
+   },
+   "valid": true,
+   "errors": [],
+   "hits": 14,
+   "witness_found": [
+    "Liliana, Death's Majesty"
+   ],
+   "witness_missing": []
+  }
+ ],
+ "validated": 8,
+ "witness_correct": 5,
+ "n": 8,
+ "retry_round": {
+  "feedback": "automatic zero-result signal only (no goldens leaked)",
+  "results": {
+   "q2": {
+    "query": {
+     "node": {
+      "api": "MultiplyCounter"
+     }
+    },
+    "valid": true,
+    "hits": 53,
+    "witness_found": [],
+    "witness_missing": [
+     "Branching Evolution"
+    ]
+   },
+   "q7": {
+    "query": {
+     "chain": {
+      "from": {
+       "kind": "T",
+       "mode": "Drawn"
+      },
+      "to": {
+       "api": "Mill"
+      }
+     }
+    },
+    "valid": true,
+    "hits": 5,
+    "witness_found": [
+     "Sphinx's Tutelage"
+    ],
+    "witness_missing": []
+   }
+  },
+  "witness_correct_after_retry": 6
+ },
+ "scenario_poc": {
+  "compiled": 2,
+  "validated_first_try": 2,
+  "engine_verified": 2,
+  "checks_passed": "5/5",
+  "files": [
+   "scenarios/nl_compiled/bolt_vs_grizzly_bears.json",
+   "scenarios/nl_compiled/doubling_season_attended_knight.json"
+  ],
+  "millis": [
+   434,
+   178
+  ]
+ }
+}
