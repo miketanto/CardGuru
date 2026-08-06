@@ -422,13 +422,17 @@ def ablation_importance(idx, by_name: dict, commander_rec: dict,
         cs = cross_synergy(by_name, commander_rec, without)
         gf = simulate(by_name, commander_rec, without + [filler],
                       iterations=iterations)
+        on_curve_delta = round(
+            gf["commander_by_turn_pct"].get(key_t, 0.0) - base_curve, 1)
+        mana_t5_delta = round(gf["avg_mana_by_turn"].get(5, 0.0)
+                              - base_gf["avg_mana_by_turn"].get(5, 0.0), 2)
         rows.append({
             "card": name,
             "edges_lost": base_cs["n_edges"] - cs["n_edges"],
-            "on_curve_delta": round(
-                gf["commander_by_turn_pct"].get(key_t, 0.0) - base_curve, 1),
+            "on_curve_delta": on_curve_delta,
+            "mana_t5_delta": mana_t5_delta,
             "importance": (base_cs["n_edges"] - cs["n_edges"])
-            - 2 * (gf["commander_by_turn_pct"].get(key_t, 0.0) - base_curve),
+            - 2 * on_curve_delta - 10 * mana_t5_delta,
         })
     rows.sort(key=lambda r: -r["importance"])
     return rows[:top_n]

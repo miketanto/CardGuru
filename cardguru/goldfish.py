@@ -46,6 +46,26 @@ def _is_rock(rec: dict) -> bool:
     return mv is not None and mv <= 3 and detect_roles(rec).get("ramp") == "engine"
 
 
+def _is_dork(rec: dict) -> bool:
+    return _is_rock(rec) and "Creature" in (rec.get("types") or "")
+
+
+def _is_amplifier(rec: dict) -> bool:
+    """Mana multiplier (Badgermole Cub family): each creature tapped for mana
+    yields +1 extra while this is in play."""
+    from .recommend import HOOKS
+    return HOOKS["amplifies_mana"]["detect"](rec)
+
+
+def _is_reducer(rec: dict) -> bool:
+    """Cost-reduction static (the gap miner's ReduceCost cluster): modeled as
+    -1 generic on your spells while in play (floor: colored pips)."""
+    return any(n.get("kind") == "S"
+               and ((n.get("params") or {}).get("Mode") == "ReduceCost"
+                    or n.get("mode") == "ReduceCost")
+               for n in rec.get("nodes") or [])
+
+
 def _pips(mana_cost: str | None) -> dict[str, int]:
     out: dict[str, int] = {}
     for sym in (mana_cost or "").split():
@@ -65,6 +85,9 @@ def simulate(by_name: dict, commander_rec: dict,
         is_land = "Land" in (rec.get("types") or "")
         pool += [{"name": name, "land": is_land,
                   "rock": _is_rock(rec),
+                  "dork": _is_dork(rec),
+                  "amp": _is_amplifier(rec),
+                  "reducer": _is_reducer(rec),
                   "mv": mana_value(rec.get("manaCost")),
                   "colors": _land_colors(rec) if is_land else set()}] * count
 
@@ -85,6 +108,9 @@ def simulate(by_name: dict, commander_rec: dict,
         library = deck[7:]
         lands_in_play: list[set[str]] = []
         rocks_in_play = 0
+        dorks_in_play = 0
+        amps_in_play = 0
+        reducers_in_play = 0
         commander_turn = None
         for turn in range(1, turns + 1):
             if not (turn == 1 and on_play) and library:
@@ -107,25 +133,40 @@ def simulate(by_name: dict, commander_rec: dict,
                 land_drop_hits[turn] += 1
                 dropped = True
 
-            mana = len(lands_in_play) + rocks_in_play
+            # amplifiers add +1 per creature tapped for mana (dorks)
+            mana = (len(lands_in_play) + rocks_in_play
+                    + amps_in_play * dorks_in_play)
             mana_sum[turn] += mana
-            # cast the cheapest affordable rock (it produces from next turn)
-            rock_idx = min((i for i, c in enumerate(hand)
-                            if c["rock"] and (c["mv"] or 0) <= mana),
-                           key=lambda i: hand[i]["mv"] or 0, default=None)
+            discount = reducers_in_play
+            # cast the cheapest affordable mana-system piece
+            # (rock/dork/amplifier/reducer - they compound from next turn)
+            piece_idx = min((i for i, c in enumerate(hand)
+                             if (c["rock"] or c["amp"] or c["reducer"])
+                             and (c["mv"] or 0) <= mana),
+                            key=lambda i: hand[i]["mv"] or 0, default=None)
             cast_something = False
-            if rock_idx is not None:
-                rocks_in_play += 1
-                hand.pop(rock_idx)
+            if piece_idx is not None:
+                c = hand.pop(piece_idx)
+                if c["rock"]:
+                    rocks_in_play += 1
+                if c["dork"]:
+                    dorks_in_play += 1
+                if c["amp"]:
+                    amps_in_play += 1
+                if c["reducer"]:
+                    reducers_in_play += 1
                 cast_something = True
-            elif any(not c["land"] and c["mv"] is not None and c["mv"] <= mana
+            elif any(not c["land"] and c["mv"] is not None
+                     and max((c["mv"] or 0) - discount, 1) <= mana
                      for c in hand):
                 cast_something = True    # could cast SOME spell (not tracked)
 
             if not dropped and not cast_something:
                 dead_turns[turn] += 1
 
-            if commander_turn is None and mana >= cmd_mv:
+            pip_total = sum(cmd_pips.values())
+            eff_cmd_mv = max(cmd_mv - discount, pip_total, 1) if cmd_mv else 0
+            if commander_turn is None and mana >= eff_cmd_mv:
                 if all(sum(1 for l in lands_in_play if c in l) >= n
                        for c, n in cmd_pips.items()):
                     commander_turn = turn
@@ -148,8 +189,10 @@ def simulate(by_name: dict, commander_rec: dict,
         "avg_mana_by_turn": {t: round(mana_sum[t] / n, 2)
                              for t in range(1, turns + 1)},
         "screw_rate_pct": round(100 * screwed / n, 1),
-        "caveats": "no mulligans, rocks cast greedily (any-color), untapped "
-                   "lands - an optimistic-mana / pessimistic-sequencing model",
+        "caveats": "no mulligans; rocks/dorks/amplifiers/reducers cast "
+                   "greedily (any-color, +1 per amp per dork, -1 generic per "
+                   "reducer); untapped lands - an optimistic-mana / "
+                   "pessimistic-sequencing model",
     }
 
     on_curve_t = max(cmd_mv, 1)
