@@ -43,6 +43,45 @@ def _matches(rec: dict, query: dict) -> bool:
     return ok
 
 
+def cross_synergy(by_name: dict, commander_rec: dict,
+                  decklist: list[tuple[str, int]], max_edges: int = 400) -> dict:
+    """Deck-internal synergy graph: EVERY deck card (commander included) gets
+    hook detection, and each hooked card's complement queries are tested
+    against the other deck cards. An edge (src)-[hook/class]->(dst) means
+    dst's structure feeds src's hook — with the machine-readable WHY."""
+    cards = [(commander_rec["name"], commander_rec)]
+    for name, _count in decklist:
+        rec = by_name.get(name)
+        if rec is not None and name != commander_rec["name"]:
+            cards.append((name, rec))
+
+    edges = []
+    for src_name, src_rec in cards:
+        for hook in detect_hooks(src_rec):
+            cfg = HOOKS[hook]
+            for cname, query in cfg["complements"].items():
+                for dst_name, dst_rec in cards:
+                    if dst_name == src_name:
+                        continue
+                    if _matches(dst_rec, query):
+                        edges.append({
+                            "src": src_name, "hook": hook, "class": cname,
+                            "dst": dst_name,
+                            "why": f"{src_name} {cfg['describe']}; "
+                                   f"{dst_name} matches its '{cname}' complement"})
+                        if len(edges) >= max_edges:
+                            break
+
+    degree: dict[str, int] = {}
+    for e in edges:
+        degree[e["src"]] = degree.get(e["src"], 0) + 1
+        degree[e["dst"]] = degree.get(e["dst"], 0) + 1
+    core = sorted(degree.items(), key=lambda kv: -kv[1])
+    isolated = [n for n, _r in cards if n not in degree]
+    return {"edges": edges, "engine_core": core[:10], "isolated": isolated,
+            "n_cards": len(cards), "n_edges": len(edges)}
+
+
 def analyze_deck(idx, commander_rec: dict, decklist: list[tuple[str, int]]) -> dict:
     by_name = {}
     for r in idx.records:

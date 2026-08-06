@@ -206,6 +206,33 @@ def cmd_deck(args):
     if res["unknown_cards"]:
         print(f"unknown names: {', '.join(res['unknown_cards'][:10])}", file=sys.stderr)
 
+    if args.cross:
+        from .deck import cross_synergy
+        by_name = {}
+        for r in idx.records:
+            by_name.setdefault(r.get("name"), r)
+        cs = cross_synergy(by_name, rec, decklist)
+        print(f"\n== deck-internal cross-synergy: {cs['n_edges']} edges "
+              f"across {cs['n_cards']} cards")
+        print("engine core (most-connected):")
+        for name, deg in cs["engine_core"]:
+            print(f"  {deg:3}  {name}")
+        seen_pairs = set()
+        print("sample edges (non-commander pairs first):")
+        commander = res["commander"]
+        ordered = sorted(cs["edges"],
+                         key=lambda e: (e["src"] == commander or e["dst"] == commander))
+        for e in ordered:
+            key = (e["src"], e["dst"])
+            if key in seen_pairs:
+                continue
+            seen_pairs.add(key)
+            print(f"  {e['src']} <- {e['dst']}  [{e['hook']}/{e['class']}]")
+            if len(seen_pairs) >= 20:
+                break
+        if cs["isolated"]:
+            print(f"isolated (no synergy edges): {', '.join(cs['isolated'][:15])}")
+
 
 def cmd_stats(args):
     idx = SearchIndex.load(args.dataset)
@@ -275,6 +302,8 @@ def main(argv=None):
     dk = sub.add_parser("deck", help="analyze a Commander decklist's hook coverage")
     dk.add_argument("commander", help="commander card name")
     dk.add_argument("--list", required=True, help="decklist text file")
+    dk.add_argument("--cross", action="store_true",
+                    help="also compute deck-internal cross-synergy edges")
     dk.add_argument("--dataset", default=DEFAULT_DATASET)
     dk.set_defaults(fn=cmd_deck)
 

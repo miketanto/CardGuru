@@ -266,7 +266,25 @@ def test_detect_hooks_expanded():
     assert "plays_from_graveyard" in detect_hooks(muldrotha)
 
 
-from cardguru.deck import parse_decklist  # noqa: E402
+from cardguru.deck import cross_synergy, parse_decklist  # noqa: E402
+
+
+def test_cross_synergy_finds_non_commander_pairs():
+    token_maker = {"name": "Maker", "types": "Enchantment", "edges": [], "nodes": [
+        {"id": "t0", "kind": "T", "params": {"Mode": "Phase"}},
+        {"id": "ab0", "kind": "SVar", "api": "Token", "params": {}}]}
+    doubler = {"name": "Doubler", "types": "Enchantment", "edges": [
+        {"src": "r0", "dst": "d0", "type": "ReplaceWith"}], "nodes": [
+        {"id": "r0", "kind": "R", "params": {"Event": "CreateToken"}},
+        {"id": "d0", "kind": "SVar", "api": "ReplaceToken", "params": {}}]}
+    commander = {"name": "Cmdr", "types": "Legendary Creature", "edges": [],
+                 "nodes": []}
+    by_name = {r["name"]: r for r in (token_maker, doubler, commander)}
+    cs = cross_synergy(by_name, commander, [("Maker", 1), ("Doubler", 1)])
+    # the commander has no hooks, but Maker's makes_tokens hook finds Doubler
+    assert any(e["src"] == "Maker" and e["dst"] == "Doubler"
+               and e["class"] == "token_doubling" for e in cs["edges"])
+    assert "Cmdr" in cs["isolated"]
 
 
 def test_parse_decklist_formats():
