@@ -1,0 +1,17 @@
+{
+  "id": "answer-wrath-vs-colossus",
+  "description": "Sideboard verdict check: Wrath of God sweeps Grizzly Bears but NOT indestructible Darksteel Colossus",
+  "players": {
+    "A": {"life": 20, "battlefield": [{"card": "Plains", "count": 4}, {"card": "Grizzly Bears"}], "hand": ["Wrath of God"]},
+    "B": {"life": 20, "battlefield": [{"card": "Darksteel Colossus"}]}
+  },
+  "actions": [
+    {"do": "cast", "turn": 1, "phase": "PRECOMBAT_MAIN", "player": "A", "card": "Wrath of God"},
+    {"do": "wait_stack", "turn": 1, "phase": "PRECOMBAT_MAIN"}
+  ],
+  "stop": {"turn": 1, "phase": "END_TURN"},
+  "expect": [
+    {"check": "permanent_count", "player": "B", "card": "Darksteel Colossus", "count": 1},
+    {"check": "graveyard_count", "player": "A", "card": "Grizzly Bears", "count": 1}
+  ]
+}

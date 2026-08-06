@@ -1,0 +1,18 @@
+{
+  "id": "answer-terminate-vs-sheoldred",
+  "description": "Sideboard verdict check: Terminate (destroy, no regeneration) kills Sheoldred, the Apocalypse",
+  "players": {
+    "A": {"life": 20, "battlefield": [{"card": "Swamp"}, {"card": "Mountain"}], "hand": ["Terminate"]},
+    "B": {"life": 20, "battlefield": [{"card": "Sheoldred, the Apocalypse"}]}
+  },
+  "actions": [
+    {"do": "cast", "turn": 1, "phase": "PRECOMBAT_MAIN", "player": "A", "card": "Terminate"},
+    {"do": "target", "player": "A", "value": "Sheoldred, the Apocalypse"},
+    {"do": "wait_stack", "turn": 1, "phase": "PRECOMBAT_MAIN"}
+  ],
+  "stop": {"turn": 1, "phase": "END_TURN"},
+  "expect": [
+    {"check": "permanent_count", "player": "B", "card": "Sheoldred, the Apocalypse", "count": 0},
+    {"check": "graveyard_count", "player": "B", "card": "Sheoldred, the Apocalypse", "count": 1}
+  ]
+}

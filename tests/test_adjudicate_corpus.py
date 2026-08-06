@@ -11,9 +11,11 @@ from parse_mage_tests import parse_method  # noqa: E402
 
 
 def test_shipped_scenarios_validate():
-    for fn in os.listdir("scenarios"):
-        with open(os.path.join("scenarios", fn), encoding="utf-8") as f:
-            assert validate_scenario(json.load(f)) == [], fn
+    for dirpath, _dirs, files in os.walk("scenarios"):
+        for fn in files:
+            if fn.endswith(".json"):
+                with open(os.path.join(dirpath, fn), encoding="utf-8") as f:
+                    assert validate_scenario(json.load(f)) == [], fn
 
 
 def test_validate_catches_mistakes():
@@ -120,3 +122,39 @@ def test_layout_citation():
     rec = {"name": "Adv", "alternateMode": "Adventure", "nodes": []}
     cites = citer.citations_for_record(rec)
     assert cites and cites[0]["rule"] == "715"
+
+
+from cardguru.answers import evaluate_answer, threat_profile  # noqa: E402
+from cardguru.recommend import detect_hooks  # noqa: E402
+
+
+def _fake_threat(kws=(), pt="4/5", cost="2 B B"):
+    return {"name": "T", "types": "Creature", "pt": pt, "manaCost": cost,
+            "nodes": [{"id": f"kw{i}", "kind": "K", "keyword": k.split(":")[0],
+                       "raw": k} for i, k in enumerate(kws)]}
+
+
+def test_threat_profile_reads_keyword_nodes():
+    p = threat_profile(_fake_threat(["Indestructible", "Ward:2"]))
+    assert p["indestructible"] and p["ward"] == "Ward:2" and p["toughness"] == 5
+
+
+def test_answer_verdicts():
+    plain = threat_profile(_fake_threat())
+    indestructible = threat_profile(_fake_threat(["Indestructible"]))
+    hexproof = threat_profile(_fake_threat(["Hexproof"]))
+    bolt = {"name": "Bolt", "manaCost": "R"}
+    assert evaluate_answer("damage_target", bolt, {"NumDmg": "3"}, plain)["works"] is False
+    assert evaluate_answer("damage_target", bolt, {"NumDmg": "5"}, plain)["works"] is True
+    assert evaluate_answer("destroy_target", bolt, {}, indestructible)["works"] is False
+    assert evaluate_answer("exile_target", bolt, {}, indestructible)["works"] is True
+    assert evaluate_answer("destroy_target", bolt, {}, hexproof)["works"] is False
+    assert evaluate_answer("edict_sacrifice", bolt, {}, hexproof)["works"] is None
+
+
+def test_detect_hooks_panharmonicon():
+    rec = {"name": "Teysa-like", "nodes": [
+        {"id": "s0", "kind": "S", "params": {"Mode": "Panharmonicon",
+                                             "Origin": "Battlefield",
+                                             "Destination": "Graveyard"}}]}
+    assert "amplifies_death_triggers" in detect_hooks(rec)

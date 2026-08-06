@@ -122,6 +122,60 @@ def cmd_adjudicate(args):
           file=sys.stderr)
 
 
+def cmd_answers(args):
+    from .answers import find_answers
+
+    idx = SearchIndex.load(args.dataset)
+    by_name = {}
+    for r in idx.records:
+        by_name.setdefault(r.get("name"), r)
+    rec = by_name.get(args.threat)
+    if not rec:
+        print(f"unknown card: {args.threat}", file=sys.stderr)
+        sys.exit(1)
+    colors = set(args.colors.upper()) if args.colors else None
+    res = find_answers(idx, rec, colors=colors)
+    p = res["threat"]
+    traits = [t for t, on in (("hexproof", p["hexproof"]), ("shroud", p["shroud"]),
+                              ("indestructible", p["indestructible"]),
+                              (str(p["ward"]), bool(p["ward"]))) if on]
+    print(f"# {p['name']}  toughness={p['toughness']}  "
+          f"{'/'.join(traits) if traits else 'no protection'}")
+    for klass, data in res["classes"].items():
+        if not data["total"]:
+            continue
+        print(f"\n{klass}: {data['working']}/{data['total']} work")
+        for r in data["top"]:
+            mark = {True: "YES ", None: "COND", False: "no  "}[r["works"]]
+            print(f"  [{mark}] {r['card']:36} {str(r['manaCost'] or ''):8} "
+                  f"{'; '.join(r['reasons'])[:70]}")
+
+
+def cmd_recommend(args):
+    from .recommend import recommend
+
+    idx = SearchIndex.load(args.dataset)
+    by_name = {}
+    for r in idx.records:
+        by_name.setdefault(r.get("name"), r)
+    rec = by_name.get(args.commander)
+    if not rec:
+        print(f"unknown card: {args.commander}", file=sys.stderr)
+        sys.exit(1)
+    with open(args.ci_index, encoding="utf-8") as f:
+        db = json.load(f)["cards"]
+    ci = {n: c.get("ci", "") for n, c in db.items()}
+    res = recommend(idx, rec, ci)
+    print(f"# {res['commander']}  [color identity: {res['color_identity'] or 'colorless'}]")
+    if not res["hooks"]:
+        print("no synergy hooks detected")
+        return
+    for hook, data in res["hooks"].items():
+        print(f"\n{hook}: {data['why']}")
+        for cname, cl in data["complements"].items():
+            print(f"  {cname} ({cl['total']} in-color): {', '.join(cl['top'])}")
+
+
 def cmd_stats(args):
     idx = SearchIndex.load(args.dataset)
     recs = idx.records
@@ -178,6 +232,19 @@ def main(argv=None):
     ad.add_argument("--cr", default="research/data/cr_rules.json")
     ad.add_argument("--dataset", default=DEFAULT_DATASET)
     ad.set_defaults(fn=cmd_adjudicate)
+
+    an = sub.add_parser("answers", help="find removal that actually beats a threat")
+    an.add_argument("threat", help="threat card name")
+    an.add_argument("--colors", help="restrict answers to colors, e.g. WU")
+    an.add_argument("--dataset", default=DEFAULT_DATASET)
+    an.set_defaults(fn=cmd_answers)
+
+    rc = sub.add_parser("recommend", help="commander synergy recommendations")
+    rc.add_argument("commander", help="commander card name")
+    rc.add_argument("--ci-index", default="/home/user/mse/index/index.json",
+                    help="canonical card index with color identities")
+    rc.add_argument("--dataset", default=DEFAULT_DATASET)
+    rc.set_defaults(fn=cmd_recommend)
 
     st = sub.add_parser("stats", help="dataset statistics")
     st.add_argument("--dataset", default=DEFAULT_DATASET)
