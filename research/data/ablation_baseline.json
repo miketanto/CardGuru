@@ -1,0 +1,168 @@
+{
+ "rows": [
+  {
+   "id": "d01",
+   "listed": 5,
+   "exist_in_dataset": 5,
+   "graph_confirmed": 5,
+   "graph_total": 19,
+   "witness_in_baseline": true
+  },
+  {
+   "id": "d02",
+   "listed": 6,
+   "exist_in_dataset": 6,
+   "graph_confirmed": 5,
+   "graph_total": 35,
+   "witness_in_baseline": true
+  },
+  {
+   "id": "d03",
+   "listed": 8,
+   "exist_in_dataset": 8,
+   "graph_confirmed": 6,
+   "graph_total": 72,
+   "witness_in_baseline": true
+  },
+  {
+   "id": "d04",
+   "listed": 6,
+   "exist_in_dataset": 6,
+   "graph_confirmed": 5,
+   "graph_total": 128,
+   "witness_in_baseline": true
+  },
+  {
+   "id": "d05",
+   "listed": 8,
+   "exist_in_dataset": 8,
+   "graph_confirmed": 7,
+   "graph_total": 19,
+   "witness_in_baseline": true
+  },
+  {
+   "id": "d06",
+   "listed": 6,
+   "exist_in_dataset": 6,
+   "graph_confirmed": 3,
+   "graph_total": 19,
+   "witness_in_baseline": true
+  },
+  {
+   "id": "d07",
+   "listed": 1,
+   "exist_in_dataset": 1,
+   "graph_confirmed": 1,
+   "graph_total": 1,
+   "witness_in_baseline": true
+  },
+  {
+   "id": "d08",
+   "listed": 5,
+   "exist_in_dataset": 5,
+   "graph_confirmed": 5,
+   "graph_total": 44,
+   "witness_in_baseline": true
+  },
+  {
+   "id": "d09",
+   "listed": 4,
+   "exist_in_dataset": 4,
+   "graph_confirmed": 4,
+   "graph_total": 6,
+   "witness_in_baseline": true
+  },
+  {
+   "id": "d10",
+   "listed": 5,
+   "exist_in_dataset": 5,
+   "graph_confirmed": 5,
+   "graph_total": 43,
+   "witness_in_baseline": true
+  },
+  {
+   "id": "d11",
+   "listed": 2,
+   "exist_in_dataset": 2,
+   "graph_confirmed": 2,
+   "graph_total": 16,
+   "witness_in_baseline": true
+  },
+  {
+   "id": "d12",
+   "listed": 8,
+   "exist_in_dataset": 8,
+   "graph_confirmed": 0,
+   "graph_total": 22,
+   "witness_in_baseline": true
+  },
+  {
+   "id": "d13",
+   "listed": 4,
+   "exist_in_dataset": 4,
+   "graph_confirmed": 2,
+   "graph_total": 44,
+   "witness_in_baseline": true
+  },
+  {
+   "id": "d14",
+   "listed": 8,
+   "exist_in_dataset": 8,
+   "graph_confirmed": 8,
+   "graph_total": 191,
+   "witness_in_baseline": true
+  },
+  {
+   "id": "d15",
+   "listed": 8,
+   "exist_in_dataset": 8,
+   "graph_confirmed": 8,
+   "graph_total": 90,
+   "witness_in_baseline": true
+  },
+  {
+   "id": "d16",
+   "listed": 5,
+   "exist_in_dataset": 5,
+   "graph_confirmed": 5,
+   "graph_total": 83,
+   "witness_in_baseline": true
+  },
+  {
+   "id": "d17",
+   "listed": 3,
+   "exist_in_dataset": 3,
+   "graph_confirmed": 3,
+   "graph_total": 18,
+   "witness_in_baseline": true
+  },
+  {
+   "id": "d18",
+   "listed": 8,
+   "exist_in_dataset": 8,
+   "graph_confirmed": 7,
+   "graph_total": 90,
+   "witness_in_baseline": true
+  },
+  {
+   "id": "d19",
+   "listed": 5,
+   "exist_in_dataset": 5,
+   "graph_confirmed": 5,
+   "graph_total": 173,
+   "witness_in_baseline": true
+  },
+  {
+   "id": "d20",
+   "listed": 4,
+   "exist_in_dataset": 4,
+   "graph_confirmed": 2,
+   "graph_total": 10,
+   "witness_in_baseline": true
+  }
+ ],
+ "witness_recall": 20,
+ "total_listed": 109,
+ "graph_confirmed": 88,
+ "graph_total_hits": 1123
+}

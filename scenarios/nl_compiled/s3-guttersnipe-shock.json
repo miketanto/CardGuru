@@ -1,0 +1,50 @@
+{
+ "id": "s3-guttersnipe-shock",
+ "description": "Shock targeting the opponent with Guttersnipe out: Guttersnipe trigger deals 2, Shock deals 2, opponent takes 4 total (life 20 -> 16)",
+ "players": {
+  "A": {
+   "life": 20,
+   "battlefield": [
+    {
+     "card": "Mountain",
+     "count": 1
+    },
+    {
+     "card": "Guttersnipe"
+    }
+   ],
+   "hand": [
+    "Shock"
+   ]
+  },
+  "B": {
+   "life": 20
+  }
+ },
+ "actions": [
+  {
+   "do": "cast",
+   "turn": 1,
+   "phase": "PRECOMBAT_MAIN",
+   "player": "A",
+   "card": "Shock",
+   "target_player": "B"
+  },
+  {
+   "do": "wait_stack",
+   "turn": 1,
+   "phase": "PRECOMBAT_MAIN"
+  }
+ ],
+ "stop": {
+  "turn": 1,
+  "phase": "BEGIN_COMBAT"
+ },
+ "expect": [
+  {
+   "check": "life",
+   "player": "B",
+   "value": 16
+  }
+ ]
+}

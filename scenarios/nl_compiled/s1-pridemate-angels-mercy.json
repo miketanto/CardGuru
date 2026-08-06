@@ -1,0 +1,56 @@
+{
+ "id": "s1-pridemate-angels-mercy",
+ "description": "Ajani's Pridemate gets a +1/+1 counter when Angel's Mercy gains its controller 7 life: Pridemate becomes 3/3, life goes to 27",
+ "players": {
+  "A": {
+   "life": 20,
+   "battlefield": [
+    {
+     "card": "Plains",
+     "count": 4
+    },
+    {
+     "card": "Ajani's Pridemate"
+    }
+   ],
+   "hand": [
+    "Angel's Mercy"
+   ]
+  },
+  "B": {
+   "life": 20
+  }
+ },
+ "actions": [
+  {
+   "do": "cast",
+   "turn": 1,
+   "phase": "PRECOMBAT_MAIN",
+   "player": "A",
+   "card": "Angel's Mercy"
+  },
+  {
+   "do": "wait_stack",
+   "turn": 1,
+   "phase": "PRECOMBAT_MAIN"
+  }
+ ],
+ "stop": {
+  "turn": 1,
+  "phase": "BEGIN_COMBAT"
+ },
+ "expect": [
+  {
+   "check": "power_toughness",
+   "player": "A",
+   "card": "Ajani's Pridemate",
+   "power": 3,
+   "toughness": 3
+  },
+  {
+   "check": "life",
+   "player": "A",
+   "value": 27
+  }
+ ]
+}

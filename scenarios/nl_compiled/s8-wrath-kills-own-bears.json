@@ -1,0 +1,68 @@
+{
+ "id": "s8-wrath-kills-own-bears",
+ "description": "Wrath of God destroys ALL creatures including the caster's own two Grizzly Bears: only the four Plains survive on A's battlefield",
+ "players": {
+  "A": {
+   "life": 20,
+   "battlefield": [
+    {
+     "card": "Plains",
+     "count": 4
+    },
+    {
+     "card": "Grizzly Bears",
+     "count": 2
+    }
+   ],
+   "hand": [
+    "Wrath of God"
+   ]
+  },
+  "B": {
+   "life": 20
+  }
+ },
+ "actions": [
+  {
+   "do": "cast",
+   "turn": 1,
+   "phase": "PRECOMBAT_MAIN",
+   "player": "A",
+   "card": "Wrath of God"
+  },
+  {
+   "do": "wait_stack",
+   "turn": 1,
+   "phase": "PRECOMBAT_MAIN"
+  }
+ ],
+ "stop": {
+  "turn": 1,
+  "phase": "BEGIN_COMBAT"
+ },
+ "expect": [
+  {
+   "check": "permanent_count",
+   "player": "A",
+   "card": "Grizzly Bears",
+   "count": 0
+  },
+  {
+   "check": "graveyard_count",
+   "player": "A",
+   "card": "Grizzly Bears",
+   "count": 2
+  },
+  {
+   "check": "permanent_count",
+   "player": "A",
+   "card": "Plains",
+   "count": 4
+  },
+  {
+   "check": "battlefield_count",
+   "player": "A",
+   "count": 4
+  }
+ ]
+}

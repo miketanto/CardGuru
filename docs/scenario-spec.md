@@ -58,6 +58,11 @@ deliberately avoids engine-specific vocabulary so a second engine could run the 
 | `target` | player, value | Answer the next target selection |
 | `mode` | player, value | Answer the next modal choice (1-based index as string) |
 
+Multi-card selections (e.g. "discard two cards") are ONE `target` entry with the card
+names joined by `^`: `{"do": "target", "player": "B", "value": "Plains^Island"}`. But a
+forced selection with no actual choice (discard 2 with exactly 2 in hand) must NOT be
+scripted at all — the engine auto-resolves it, and unconsumed queued choices fail the run.
+
 `choice`/`target`/`mode` entries are queued per player and consumed in order as the engine
 asks — this is what makes runs deterministic under strict mode.
 

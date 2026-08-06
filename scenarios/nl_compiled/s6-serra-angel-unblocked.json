@@ -1,0 +1,41 @@
+{
+ "id": "s6-serra-angel-unblocked",
+ "description": "Unblocked Serra Angel (4/4 flying vigilance) attacks: opponent takes 4 combat damage (life 20 -> 16), and vigilance means the Angel stays untapped",
+ "players": {
+  "A": {
+   "life": 20,
+   "battlefield": [
+    {
+     "card": "Serra Angel"
+    }
+   ]
+  },
+  "B": {
+   "life": 20
+  }
+ },
+ "actions": [
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Serra Angel"
+  }
+ ],
+ "stop": {
+  "turn": 1,
+  "phase": "POSTCOMBAT_MAIN"
+ },
+ "expect": [
+  {
+   "check": "life",
+   "player": "B",
+   "value": 16
+  },
+  {
+   "check": "tapped",
+   "card": "Serra Angel",
+   "value": false
+  }
+ ]
+}

@@ -1,0 +1,69 @@
+{
+ "id": "s2-last-gasp-grizzly-bears",
+ "description": "Last Gasp (-3/-3) on a 2/2 Grizzly Bears: it dies. NOTE: the compiler agent was given '-3/-1' in the question (author error); the engine + Forge + canonical oracle all agree on -3/-3 - the engine arbitrated a false premise in the question itself.",
+ "players": {
+  "A": {
+   "life": 20,
+   "battlefield": [
+    {
+     "card": "Swamp",
+     "count": 2
+    }
+   ],
+   "hand": [
+    "Last Gasp"
+   ]
+  },
+  "B": {
+   "life": 20,
+   "battlefield": [
+    {
+     "card": "Grizzly Bears"
+    }
+   ]
+  }
+ },
+ "actions": [
+  {
+   "do": "cast",
+   "turn": 1,
+   "phase": "PRECOMBAT_MAIN",
+   "player": "A",
+   "card": "Last Gasp"
+  },
+  {
+   "do": "target",
+   "player": "A",
+   "value": "Grizzly Bears"
+  },
+  {
+   "do": "wait_stack",
+   "turn": 1,
+   "phase": "PRECOMBAT_MAIN"
+  }
+ ],
+ "stop": {
+  "turn": 1,
+  "phase": "BEGIN_COMBAT"
+ },
+ "expect": [
+  {
+   "check": "permanent_count",
+   "player": "B",
+   "card": "Grizzly Bears",
+   "count": 0
+  },
+  {
+   "check": "graveyard_count",
+   "player": "B",
+   "card": "Grizzly Bears",
+   "count": 1
+  },
+  {
+   "check": "graveyard_count",
+   "player": "A",
+   "card": "Last Gasp",
+   "count": 1
+  }
+ ]
+}

@@ -1,0 +1,779 @@
+{
+ "results": [
+  {
+   "id": "d01",
+   "q": "creatures that make each player sacrifice a creature when they enter the battlefield",
+   "query": {
+    "all": [
+     {
+      "card": {
+       "types": {
+        "contains": "Creature"
+       }
+      }
+     },
+     {
+      "any": [
+       {
+        "chain": {
+         "from": {
+          "kind": "T",
+          "mode": "ChangesZone",
+          "params": {
+           "ValidCard": {
+            "contains": "Card.Self"
+           },
+           "Destination": "Battlefield"
+          }
+         },
+         "to": {
+          "api": "Sacrifice",
+          "params": {
+           "Defined": {
+            "contains": "Player"
+           },
+           "SacValid": {
+            "contains": "Creature"
+           }
+          }
+         }
+        }
+       },
+       {
+        "chain": {
+         "from": {
+          "kind": "T",
+          "mode": "ChangesZone",
+          "params": {
+           "ValidCard": {
+            "contains": "Card.Self"
+           },
+           "Destination": "Battlefield"
+          }
+         },
+         "to": {
+          "api": "SacrificeAll",
+          "params": {
+           "ValidCards": {
+            "contains": "Creature"
+           }
+          }
+         }
+        }
+       }
+      ]
+     }
+    ]
+   },
+   "valid": true,
+   "errors": [],
+   "hits": 19,
+   "witness_found": [
+    "Fleshbag Marauder"
+   ],
+   "witness_missing": []
+  },
+  {
+   "id": "d02",
+   "q": "enchantments that trigger whenever one of your creatures dies",
+   "query": {
+    "all": [
+     {
+      "card": {
+       "types": {
+        "contains": "Enchantment"
+       }
+      }
+     },
+     {
+      "node": {
+       "kind": "T",
+       "mode": "ChangesZone",
+       "params": {
+        "Origin": "Battlefield",
+        "Destination": "Graveyard",
+        "ValidCard": {
+         "contains": "Creature.YouCtrl"
+        }
+       }
+      }
+     }
+    ]
+   },
+   "valid": true,
+   "errors": [],
+   "hits": 35,
+   "witness_found": [
+    "Grave Pact"
+   ],
+   "witness_missing": []
+  },
+  {
+   "id": "d03",
+   "q": "cards that give all your creatures haste",
+   "query": {
+    "any": [
+     {
+      "node": {
+       "api": "PumpAll",
+       "params": {
+        "KW": {
+         "contains": "Haste"
+        },
+        "ValidCards": {
+         "contains": "Creature.YouCtrl"
+        }
+       }
+      }
+     },
+     {
+      "node": {
+       "kind": "S",
+       "mode": "Continuous",
+       "params": {
+        "AddKeyword": {
+         "contains": "Haste"
+        },
+        "Affected": {
+         "contains": "Creature.YouCtrl"
+        }
+       }
+      }
+     }
+    ]
+   },
+   "valid": true,
+   "errors": [],
+   "hits": 72,
+   "witness_found": [
+    "Fervor"
+   ],
+   "witness_missing": []
+  },
+  {
+   "id": "d04",
+   "q": "creatures with a tap ability that adds one mana of any color",
+   "query": {
+    "all": [
+     {
+      "card": {
+       "types": {
+        "contains": "Creature"
+       }
+      }
+     },
+     {
+      "node": {
+       "kind": "A",
+       "apiKind": "AB",
+       "api": "Mana",
+       "params": {
+        "Cost": {
+         "contains": "T"
+        },
+        "Produced": {
+         "contains": "Any"
+        }
+       }
+      }
+     }
+    ]
+   },
+   "valid": true,
+   "errors": [],
+   "hits": 128,
+   "witness_found": [
+    "Birds of Paradise"
+   ],
+   "witness_missing": []
+  },
+  {
+   "id": "d05",
+   "q": "spells that counter an activated or triggered ability",
+   "query": {
+    "node": {
+     "kind": "A",
+     "apiKind": "SP",
+     "api": "Counter",
+     "params": {
+      "TargetType": {
+       "regex": "Activated|Triggered"
+      }
+     }
+    }
+   },
+   "valid": true,
+   "errors": [],
+   "hits": 19,
+   "witness_found": [
+    "Stifle"
+   ],
+   "witness_missing": []
+  },
+  {
+   "id": "d06",
+   "q": "sorceries that destroy all artifacts",
+   "query": {
+    "all": [
+     {
+      "card": {
+       "types": {
+        "contains": "Sorcery"
+       }
+      }
+     },
+     {
+      "node": {
+       "apiKind": "SP",
+       "api": "DestroyAll",
+       "params": {
+        "ValidCards": {
+         "contains": "Artifact"
+        }
+       }
+      }
+     }
+    ]
+   },
+   "valid": true,
+   "errors": [],
+   "hits": 19,
+   "witness_found": [
+    "Creeping Corrosion"
+   ],
+   "witness_missing": []
+  },
+  {
+   "id": "d07",
+   "q": "lands that exile a player's entire graveyard when they enter",
+   "query": {
+    "all": [
+     {
+      "card": {
+       "types": {
+        "contains": "Land"
+       }
+      }
+     },
+     {
+      "chain": {
+       "from": {
+        "kind": "T",
+        "mode": "ChangesZone",
+        "params": {
+         "ValidCard": {
+          "contains": "Card.Self"
+         },
+         "Destination": "Battlefield"
+        }
+       },
+       "to": {
+        "api": "ChangeZoneAll",
+        "params": {
+         "Origin": "Graveyard",
+         "Destination": "Exile"
+        }
+       }
+      }
+     }
+    ]
+   },
+   "valid": true,
+   "errors": [],
+   "hits": 1,
+   "witness_found": [
+    "Bojuka Bog"
+   ],
+   "witness_missing": []
+  },
+  {
+   "id": "d08",
+   "q": "creatures with protection from red",
+   "query": {
+    "all": [
+     {
+      "card": {
+       "types": {
+        "contains": "Creature"
+       }
+      }
+     },
+     {
+      "keyword": "Protection from red"
+     }
+    ]
+   },
+   "valid": true,
+   "errors": [],
+   "hits": 44,
+   "witness_found": [
+    "Silver Knight"
+   ],
+   "witness_missing": []
+  },
+  {
+   "id": "d09",
+   "q": "spells that make each player discard their hand and draw seven cards",
+   "query": {
+    "chain": {
+     "from": {
+      "kind": "A",
+      "api": "Discard",
+      "params": {
+       "Mode": "Hand",
+       "Defined": {
+        "contains": "Player"
+       }
+      }
+     },
+     "to": {
+      "api": "Draw",
+      "params": {
+       "NumCards": "7"
+      }
+     }
+    }
+   },
+   "valid": true,
+   "errors": [],
+   "hits": 6,
+   "witness_found": [
+    "Wheel of Fortune"
+   ],
+   "witness_missing": []
+  },
+  {
+   "id": "d10",
+   "q": "creatures that get a +1/+1 counter whenever they deal combat damage to a player",
+   "query": {
+    "all": [
+     {
+      "card": {
+       "types": {
+        "contains": "Creature"
+       }
+      }
+     },
+     {
+      "chain": {
+       "from": {
+        "kind": "T",
+        "mode": {
+         "any": [
+          "DamageDone",
+          "DamageDoneOnce"
+         ]
+        },
+        "params": {
+         "CombatDamage": "True",
+         "ValidTarget": {
+          "contains": "Player"
+         },
+         "ValidSource": {
+          "contains": "Card.Self"
+         }
+        }
+       },
+       "to": {
+        "api": "PutCounter",
+        "params": {
+         "CounterType": "P1P1"
+        }
+       }
+      }
+     }
+    ]
+   },
+   "valid": true,
+   "errors": [],
+   "hits": 43,
+   "witness_found": [
+    "Slith Firewalker"
+   ],
+   "witness_missing": []
+  },
+  {
+   "id": "d11",
+   "q": "artifacts with a tap ability that deals 1 damage to any target",
+   "query": {
+    "all": [
+     {
+      "card": {
+       "types": {
+        "contains": "Artifact"
+       }
+      }
+     },
+     {
+      "node": {
+       "kind": "A",
+       "apiKind": "AB",
+       "api": "DealDamage",
+       "params": {
+        "Cost": {
+         "contains": "T"
+        },
+        "NumDmg": "1"
+       }
+      }
+     }
+    ]
+   },
+   "valid": true,
+   "errors": [],
+   "hits": 16,
+   "witness_found": [
+    "Rod of Ruin"
+   ],
+   "witness_missing": []
+  },
+  {
+   "id": "d12",
+   "q": "spells that prevent all combat damage that would be dealt this turn",
+   "query": {
+    "all": [
+     {
+      "card": {
+       "oracle": {
+        "icontains": "prevent all combat damage"
+       }
+      }
+     },
+     {
+      "node": {
+       "kind": "A",
+       "apiKind": "SP",
+       "api": {
+        "any": [
+         "Effect",
+         "PreventDamage"
+        ]
+       }
+      }
+     }
+    ]
+   },
+   "valid": true,
+   "errors": [],
+   "hits": 22,
+   "witness_found": [],
+   "witness_missing": [
+    "Fog"
+   ]
+  },
+  {
+   "id": "d13",
+   "q": "spells that return all creatures to their owners' hands",
+   "query": {
+    "node": {
+     "kind": "A",
+     "apiKind": "SP",
+     "api": "ChangeZoneAll",
+     "params": {
+      "Origin": "Battlefield",
+      "Destination": "Hand",
+      "ValidCards": {
+       "contains": "Creature"
+      }
+     }
+    }
+   },
+   "valid": true,
+   "errors": [],
+   "hits": 0,
+   "witness_found": [],
+   "witness_missing": [
+    "Evacuation"
+   ]
+  },
+  {
+   "id": "d14",
+   "q": "creatures with an activated ability that regenerates them",
+   "query": {
+    "all": [
+     {
+      "card": {
+       "types": {
+        "contains": "Creature"
+       }
+      }
+     },
+     {
+      "node": {
+       "kind": "A",
+       "apiKind": "AB",
+       "api": "Regenerate"
+      }
+     }
+    ]
+   },
+   "valid": true,
+   "errors": [],
+   "hits": 191,
+   "witness_found": [
+    "Drudge Skeletons"
+   ],
+   "witness_missing": []
+  },
+  {
+   "id": "d15",
+   "q": "sorceries that return a creature card from your graveyard to the battlefield",
+   "query": {
+    "all": [
+     {
+      "card": {
+       "types": {
+        "contains": "Sorcery"
+       }
+      }
+     },
+     {
+      "any": [
+       {
+        "node": {
+         "apiKind": "SP",
+         "api": "ChangeZone",
+         "params": {
+          "Origin": "Graveyard",
+          "Destination": "Battlefield",
+          "ChangeType": {
+           "contains": "Creature"
+          }
+         }
+        }
+       },
+       {
+        "node": {
+         "apiKind": "SP",
+         "api": "ChangeZone",
+         "params": {
+          "Origin": "Graveyard",
+          "Destination": "Battlefield",
+          "ValidTgts": {
+           "contains": "Creature"
+          }
+         }
+        }
+       }
+      ]
+     }
+    ]
+   },
+   "valid": true,
+   "errors": [],
+   "hits": 90,
+   "witness_found": [
+    "Zombify"
+   ],
+   "witness_missing": []
+  },
+  {
+   "id": "d16",
+   "q": "creatures that must attack each combat if able",
+   "query": {
+    "all": [
+     {
+      "card": {
+       "types": {
+        "contains": "Creature"
+       }
+      }
+     },
+     {
+      "node": {
+       "kind": "S",
+       "mode": "MustAttack"
+      }
+     }
+    ]
+   },
+   "valid": true,
+   "errors": [],
+   "hits": 83,
+   "witness_found": [
+    "Juggernaut"
+   ],
+   "witness_missing": []
+  },
+  {
+   "id": "d17",
+   "q": "instants that give a creature deathtouch until end of turn",
+   "query": {
+    "all": [
+     {
+      "card": {
+       "types": {
+        "contains": "Instant"
+       }
+      }
+     },
+     {
+      "node": {
+       "kind": "A",
+       "apiKind": "SP",
+       "api": "Pump",
+       "params": {
+        "KW": {
+         "contains": "Deathtouch"
+        },
+        "ValidTgts": {
+         "contains": "Creature"
+        }
+       }
+      }
+     }
+    ]
+   },
+   "valid": true,
+   "errors": [],
+   "hits": 18,
+   "witness_found": [
+    "Touch of Moonglove"
+   ],
+   "witness_missing": []
+  },
+  {
+   "id": "d18",
+   "q": "cards that make spells cost more to cast",
+   "query": {
+    "node": {
+     "kind": "S",
+     "mode": "RaiseCost"
+    }
+   },
+   "valid": true,
+   "errors": [],
+   "hits": 90,
+   "witness_found": [
+    "Sphere of Resistance"
+   ],
+   "witness_missing": []
+  },
+  {
+   "id": "d19",
+   "q": "creatures with both flying and vigilance",
+   "query": {
+    "all": [
+     {
+      "card": {
+       "types": {
+        "contains": "Creature"
+       }
+      }
+     },
+     {
+      "keyword": "Flying"
+     },
+     {
+      "keyword": "Vigilance"
+     }
+    ]
+   },
+   "valid": true,
+   "errors": [],
+   "hits": 173,
+   "witness_found": [
+    "Serra Angel"
+   ],
+   "witness_missing": []
+  },
+  {
+   "id": "d20",
+   "q": "cards that deal damage to each opponent whenever you cast an instant or sorcery",
+   "query": {
+    "any": [
+     {
+      "chain": {
+       "from": {
+        "kind": "T",
+        "mode": {
+         "any": [
+          "SpellCast",
+          "SpellCastOrCopy"
+         ]
+        },
+        "params": {
+         "ValidCard": {
+          "regex": "Instant|Sorcery"
+         }
+        }
+       },
+       "to": {
+        "api": "DealDamage",
+        "params": {
+         "Defined": {
+          "icontains": "Opponent"
+         }
+        }
+       }
+      }
+     },
+     {
+      "chain": {
+       "from": {
+        "kind": "T",
+        "mode": {
+         "any": [
+          "SpellCast",
+          "SpellCastOrCopy"
+         ]
+        },
+        "params": {
+         "ValidCard": {
+          "regex": "Instant|Sorcery"
+         }
+        }
+       },
+       "to": {
+        "api": "DamageAll",
+        "params": {
+         "ValidPlayers": {
+          "icontains": "Opponent"
+         }
+        }
+       }
+      }
+     }
+    ]
+   },
+   "valid": true,
+   "errors": [],
+   "hits": 10,
+   "witness_found": [
+    "Guttersnipe"
+   ],
+   "witness_missing": []
+  }
+ ],
+ "validated": 20,
+ "witness_correct": 18,
+ "n": 20,
+ "retry_round": {
+  "d13": {
+   "attempts": 2,
+   "final_query": {
+    "node": {
+     "api": "ChangeZoneAll",
+     "params": {
+      "Destination": "Hand",
+      "ChangeType": {
+       "contains": "Creature"
+      }
+     }
+    }
+   },
+   "final": "witness OK (44 hits incl. Evacuation)"
+  },
+  "d12": "no automatic signal (22 hits, witness missing); diagnosis: Fog has its own dedicated 'Fog' api - spec gap"
+ },
+ "witness_correct_after_retry": 19,
+ "scenario_round2": {
+  "compiled": 8,
+  "validated_first_try": 8,
+  "engine_clean_first_pass": 6,
+  "final_clean": 8,
+  "fix_1": "S7 discard scripting: forced no-choice discards must not be scripted (spec doc updated)",
+  "fix_2": "S2: author gave the agent wrong card text (-3/-1); engine + Forge + canonical oracle all say -3/-3 - engine arbitrated the false premise",
+  "files": "scenarios/nl_compiled/s1..s8"
+ }
+}

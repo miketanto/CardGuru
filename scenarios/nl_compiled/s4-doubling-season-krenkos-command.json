@@ -1,0 +1,50 @@
+{
+ "id": "s4-doubling-season-krenkos-command",
+ "description": "Krenko's Command with Doubling Season out: token creation is doubled, so two Goblin tokens become four",
+ "players": {
+  "A": {
+   "life": 20,
+   "battlefield": [
+    {
+     "card": "Mountain",
+     "count": 2
+    },
+    {
+     "card": "Doubling Season"
+    }
+   ],
+   "hand": [
+    "Krenko's Command"
+   ]
+  },
+  "B": {
+   "life": 20
+  }
+ },
+ "actions": [
+  {
+   "do": "cast",
+   "turn": 1,
+   "phase": "PRECOMBAT_MAIN",
+   "player": "A",
+   "card": "Krenko's Command"
+  },
+  {
+   "do": "wait_stack",
+   "turn": 1,
+   "phase": "PRECOMBAT_MAIN"
+  }
+ ],
+ "stop": {
+  "turn": 1,
+  "phase": "BEGIN_COMBAT"
+ },
+ "expect": [
+  {
+   "check": "permanent_count",
+   "player": "A",
+   "card": "Goblin Token",
+   "count": 4
+  }
+ ]
+}

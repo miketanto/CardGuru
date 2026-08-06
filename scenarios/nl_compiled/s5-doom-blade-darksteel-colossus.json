@@ -1,0 +1,69 @@
+{
+ "id": "s5-doom-blade-darksteel-colossus",
+ "description": "Doom Blade targeting indestructible Darksteel Colossus: the Colossus is a legal (nonblack) target, but indestructible means 'destroy' does nothing - it survives, Doom Blade just goes to the graveyard",
+ "players": {
+  "A": {
+   "life": 20,
+   "battlefield": [
+    {
+     "card": "Swamp",
+     "count": 2
+    }
+   ],
+   "hand": [
+    "Doom Blade"
+   ]
+  },
+  "B": {
+   "life": 20,
+   "battlefield": [
+    {
+     "card": "Darksteel Colossus"
+    }
+   ]
+  }
+ },
+ "actions": [
+  {
+   "do": "cast",
+   "turn": 1,
+   "phase": "PRECOMBAT_MAIN",
+   "player": "A",
+   "card": "Doom Blade"
+  },
+  {
+   "do": "target",
+   "player": "A",
+   "value": "Darksteel Colossus"
+  },
+  {
+   "do": "wait_stack",
+   "turn": 1,
+   "phase": "PRECOMBAT_MAIN"
+  }
+ ],
+ "stop": {
+  "turn": 1,
+  "phase": "BEGIN_COMBAT"
+ },
+ "expect": [
+  {
+   "check": "permanent_count",
+   "player": "B",
+   "card": "Darksteel Colossus",
+   "count": 1
+  },
+  {
+   "check": "graveyard_count",
+   "player": "B",
+   "card": "Darksteel Colossus",
+   "count": 0
+  },
+  {
+   "check": "graveyard_count",
+   "player": "A",
+   "card": "Doom Blade",
+   "count": 1
+  }
+ ]
+}
