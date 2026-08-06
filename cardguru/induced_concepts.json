@@ -1,0 +1,120 @@
+[
+ {
+  "name": "tap_pinger",
+  "describe": "has a tap-activated ability that deals damage (repeatable pinger)",
+  "detect": {
+   "all_of": [
+    {
+     "ab_cost_contains": "T",
+     "api": "DealDamage"
+    }
+   ]
+  },
+  "complements": {
+   "untappers": {
+    "node": {
+     "api": {
+      "any": [
+       "Untap",
+       "UntapAll"
+      ]
+     }
+    }
+   },
+   "deathtouch_granters": {
+    "node": {
+     "mode": "Continuous",
+     "params": {
+      "AddKeyword": {
+       "contains": "Deathtouch"
+      }
+     }
+    }
+   },
+   "damage_amplifiers": {
+    "node": {
+     "kind": "R",
+     "params": {
+      "Event": "DamageDone",
+      "ValidSource": {
+       "contains": "YouCtrl"
+      }
+     }
+    }
+   }
+  },
+  "example_cards_verified": [
+   "Apprentice Sorcerer",
+   "Ben-Ben, Akki Hermit",
+   "Bloodshot Trainee",
+   "Capricious Sorcerer",
+   "Centaur Archer",
+   "Chandra's Magmutt",
+   "Prodigal Sorcerer"
+  ],
+  "counterexample": "Lightning Bolt - one-shot SP burn, no activated tap cost"
+ },
+ {
+  "name": "phase_engine",
+  "describe": "generates recurring value from beginning-of-phase triggers",
+  "detect": {
+   "any_of": [
+    {
+     "trigger_mode": "Phase",
+     "chains_to_api": "Pump"
+    },
+    {
+     "trigger_mode": "Phase",
+     "chains_to_api": "DealDamage"
+    },
+    {
+     "trigger_mode": "Phase",
+     "chains_to_api": "Dig"
+    }
+   ]
+  },
+  "complements": {
+   "extra_upkeeps": {
+    "node": {
+     "api": "AddPhase",
+     "params": {
+      "ExtraPhase": {
+       "contains": "Upkeep"
+      }
+     }
+    }
+   },
+   "extra_turns": {
+    "node": {
+     "api": "AddTurn"
+    }
+   },
+   "engine_protection": {
+    "node": {
+     "mode": "Continuous",
+     "params": {
+      "AddKeyword": {
+       "regex": "Hexproof|Indestructible|Shroud"
+      },
+      "Affected": {
+       "contains": "YouCtrl"
+      }
+     }
+    }
+   }
+  },
+  "example_cards_verified": [
+   "Aethershield Artificer",
+   "Ana Sanctuary",
+   "Angelic Skirmisher",
+   "Ancient Runes",
+   "Black Vise",
+   "Bulwark",
+   "Aid from the Cowl",
+   "Akal Pakal, First Among Equals",
+   "Alrund, God of the Cosmos",
+   "Birthing Ritual"
+  ],
+  "counterexample": "Giant Growth - one-shot SP pump, no Phase trigger"
+ }
+]

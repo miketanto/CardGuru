@@ -110,4 +110,22 @@ def register_hook(defn: dict) -> None:
         "describe": defn["describe"],
         "detect": compile_detector(defn["detect"]),
         "complements": defn.get("complements", {}),
+        "induced": True,
     }
+
+
+def load_induced_hooks() -> list[str]:
+    """Load gate-passed induced concepts (cardguru/induced_concepts.json)
+    into HOOKS. Called by recommend at import; concepts live as data with
+    provenance, not hand-written code."""
+    import json
+    import os
+    path = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                        "induced_concepts.json")
+    if not os.path.exists(path):
+        return []
+    names = []
+    for defn in json.load(open(path, encoding="utf-8")):
+        register_hook(defn)
+        names.append(defn["name"])
+    return names

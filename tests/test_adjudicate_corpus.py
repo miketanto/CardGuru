@@ -327,6 +327,29 @@ def test_deck_shape_flags():
     assert not any("ramp" in f for f in shape["flags"])
 
 
+def test_induced_concepts_load_and_gate():
+    """The induction pipeline: gate-passed concepts load from data and
+    behave per their own examples/counterexamples."""
+    from cardguru.induction import compile_detector, validate_concept
+    from cardguru.recommend import HOOKS
+    assert "tap_pinger" in HOOKS and HOOKS["tap_pinger"].get("induced")
+    assert "phase_engine" in HOOKS and HOOKS["phase_engine"].get("induced")
+    pinger = {"name": "P", "types": "Creature", "edges": [], "nodes": [
+        {"id": "a0", "kind": "A", "apiKind": "AB", "api": "DealDamage",
+         "params": {"Cost": "T", "NumDmg": "1", "ValidTgts": "Any"}}]}
+    bolt = {"name": "B", "types": "Instant", "edges": [], "nodes": [
+        {"id": "a0", "kind": "A", "apiKind": "SP", "api": "DealDamage",
+         "params": {"NumDmg": "3", "ValidTgts": "Any"}}]}
+    assert HOOKS["tap_pinger"]["detect"](pinger)
+    assert not HOOKS["tap_pinger"]["detect"](bolt)
+    # the gate rejects a non-selective detector
+    junk = {"name": "junk", "detect": {"any_of": [{"card_type_contains": "e"}]},
+            "example_cards_verified": []}
+    by_name = {"A": pinger, "B": bolt, "C": bolt, "D": bolt}
+    rep = validate_concept(junk, by_name)
+    assert not rep["ok"]
+
+
 def test_answer_windows_tinker_shape():
     """The golden Tinker intuition: counter it or answer the output - the
     sorcery itself is never a permanent."""

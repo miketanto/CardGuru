@@ -655,3 +655,8 @@ def recommend(idx, commander_rec: dict, ci_by_name: dict,
         out["hooks"][hook] = {"why": f"{name} {cfg['describe']}",
                               "complements": classes}
     return out
+
+
+# gate-passed induced concepts (see cardguru/induction.py) load as data
+from .induction import load_induced_hooks as _load_induced  # noqa: E402
+_load_induced()
