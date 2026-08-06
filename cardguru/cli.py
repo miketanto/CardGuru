@@ -431,6 +431,20 @@ def cmd_windows(args):
         print(f"  SHUT  {x['window']:10} ({x['reason']})")
 
 
+def cmd_gaps(args):
+    from .gaps import mine_gaps
+
+    idx = SearchIndex.load(args.dataset)
+    report = mine_gaps(idx.records, top_n=args.top)
+    print(f"cards: {report['total_cards']}, concept-uncovered: "
+          f"{report['uncovered_cards']} "
+          f"({100 * report['uncovered_cards'] / report['total_cards']:.1f}%)")
+    print("top unexplained structural clusters (candidate concepts):")
+    for c in report["clusters"]:
+        print(f"  {c['uncovered_cards']:5}  {c['signature']:40} "
+              f"e.g. {', '.join(c['examples'][:3])}")
+
+
 def cmd_stats(args):
     idx = SearchIndex.load(args.dataset)
     recs = idx.records
@@ -527,6 +541,12 @@ def main(argv=None):
     th.add_argument("--colors", help="your colors, e.g. WU")
     th.add_argument("--dataset", default=DEFAULT_DATASET)
     th.set_defaults(fn=cmd_threats)
+
+    gp = sub.add_parser("gaps",
+                        help="mine unexplained structural clusters (candidate concepts)")
+    gp.add_argument("--top", type=int, default=30)
+    gp.add_argument("--dataset", default=DEFAULT_DATASET)
+    gp.set_defaults(fn=cmd_gaps)
 
     wd = sub.add_parser("windows",
                         help="where can this threat be interacted with at all")

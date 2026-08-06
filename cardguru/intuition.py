@@ -272,7 +272,23 @@ def answer_windows(rec: dict) -> dict:
     triggers = [n for n in _nodes(rec) if n.get("kind") == "T"]
     statics = [n for n in _nodes(rec) if n.get("kind") == "S"]
 
-    if a_sp or is_permanent:
+    # concept found by the gap miner (R:Counter cluster): can't-be-countered
+    # replacements close the stack window
+    uncounterable = any(
+        n.get("kind") == "R" and _p(n).get("Event") == "Counter"
+        and _p(n).get("Layer") == "CantHappen"
+        and "Self" in str(_p(n).get("ValidCard", ""))
+        for n in _nodes(rec))
+    conditional_uncounter = uncounterable and any(
+        n.get("kind") == "R" and _p(n).get("Event") == "Counter"
+        and "CheckSVar" in _p(n) for n in _nodes(rec))
+    if uncounterable:
+        closed.append({"window": "stack",
+                       "reason": "a can't-be-countered replacement closes the "
+                                 "counter window"
+                                 + (" (conditionally)" if conditional_uncounter
+                                    else "")})
+    elif a_sp or is_permanent:
         windows.append({"window": "stack", "answer": "counterspells",
                         "reason": "it must be cast, so it exists on the stack once"})
     if is_permanent:

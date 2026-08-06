@@ -393,6 +393,47 @@ def suggest(idx, by_name: dict, commander_rec: dict,
             "candidates_considered": len(scores)}
 
 
+def ablation_importance(idx, by_name: dict, commander_rec: dict,
+                        decklist: list[tuple[str, int]],
+                        iterations: int = 1200, top_n: int = 10) -> list[dict]:
+    """Concept-free importance: remove each nonland card entirely, re-measure
+    the deck (synergy edges + simulated commander-on-curve), importance =
+    degradation. Finds load-bearing cards WITHOUT needing a concept that
+    explains them - the generalized version of 'the deck is a lot weaker
+    without this card'. Caveat: only measures what the models model (the
+    goldfish sim doesn't yet simulate mana multipliers or spell ramp)."""
+    from .goldfish import simulate
+
+    base_cs = cross_synergy(by_name, commander_rec, decklist)
+    base_gf = simulate(by_name, commander_rec, decklist, iterations=iterations)
+    key_t = max(base_gf["commander_mv"], 1)
+    base_curve = base_gf["commander_by_turn_pct"].get(key_t, 0.0)
+
+    rows = []
+    for name, count in decklist:
+        rec = by_name.get(name)
+        if rec is None or "Land" in (rec.get("types") or ""):
+            continue
+        # replace the cut with a vanilla bystander so deck size, land count,
+        # and curve mass stay comparable (a land filler would flatter every
+        # removal by improving the mana)
+        without = [(n, c) for n, c in decklist if n != name]
+        filler = ("Grizzly Bears", count)
+        cs = cross_synergy(by_name, commander_rec, without)
+        gf = simulate(by_name, commander_rec, without + [filler],
+                      iterations=iterations)
+        rows.append({
+            "card": name,
+            "edges_lost": base_cs["n_edges"] - cs["n_edges"],
+            "on_curve_delta": round(
+                gf["commander_by_turn_pct"].get(key_t, 0.0) - base_curve, 1),
+            "importance": (base_cs["n_edges"] - cs["n_edges"])
+            - 2 * (gf["commander_by_turn_pct"].get(key_t, 0.0) - base_curve),
+        })
+    rows.sort(key=lambda r: -r["importance"])
+    return rows[:top_n]
+
+
 def find_loops(edges: list[dict], max_len: int = 3, limit: int = 25) -> list[dict]:
     """Directed cycles (length 2-3) in the cross-synergy graph: card sets whose
     hooks feed each other. These are SYNERGY loops (the aristocrats engine,
