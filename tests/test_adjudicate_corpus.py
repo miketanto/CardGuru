@@ -320,9 +320,28 @@ def test_deck_shape_flags():
     assert shape["curve"] == {1: 4}
     assert shape["lands"] == 10 and shape["sources"]["R"] == 10
     assert shape["pips"]["R"] == 4
-    # quotas all deficient in a 4-spell deck
-    assert any("ramp" in f for f in shape["flags"])
+    assert shape["gameplan"] == "generic"     # no hooks anywhere
+    # interaction quotas deficient in a 4-spell deck; ramp has NO quota
+    # (mana sufficiency is measured by the goldfish sim, not quoted)
     assert any("card_draw" in f for f in shape["flags"])
+    assert not any("ramp" in f for f in shape["flags"])
+
+
+def test_detect_roles_engine_vs_oneshot():
+    from cardguru.deck import detect_roles
+    reaper = {"name": "Reaper-like", "types": "Creature Zombie",
+              "manaCost": "2 B", "edges": [], "nodes": [
+                  {"id": "t0", "kind": "T",
+                   "params": {"Mode": "ChangesZone", "Origin": "Battlefield",
+                              "Destination": "Graveyard"}},
+                  {"id": "d0", "kind": "SVar", "api": "Draw",
+                   "params": {"NumCards": "1"}}]}
+    divination = {"name": "Div", "types": "Sorcery", "manaCost": "2 U",
+                  "edges": [], "nodes": [
+                      {"id": "a0", "kind": "A", "apiKind": "SP", "api": "Draw",
+                       "params": {"NumCards": "2"}}]}
+    assert detect_roles(reaper).get("card_draw") == "engine"
+    assert detect_roles(divination).get("card_draw") == "one_shot"
 
 
 def test_cross_synergy_finds_non_commander_pairs():

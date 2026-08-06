@@ -246,12 +246,19 @@ def cmd_deck(args):
     if args.shape or args.suggest:
         from .deck import deck_shape
         shape = deck_shape(by_name, rec, decklist)
-        print(f"\n== deck shape  ({shape['lands']} lands)")
+        print(f"\n== deck shape  ({shape['lands']} lands, "
+              f"gameplan: {shape['gameplan']})")
         curve = " ".join(f"{k}:{v}" for k, v in shape["curve"].items())
         print(f"curve (MV:count, 7=7+): {curve}")
         print(f"pips: {shape['pips']}   producing lands: {shape['sources']}")
-        for role, cards in shape["roles"].items():
-            print(f"  {role:17} {len(cards):2}: {', '.join(cards[:8])}")
+        for role, d in shape["roles"].items():
+            eff = shape["effective_roles"][role]
+            parts = []
+            if d["engines"]:
+                parts.append(f"engines: {', '.join(d['engines'][:6])}")
+            if d["one_shot"]:
+                parts.append(f"one-shot: {', '.join(d['one_shot'][:6])}")
+            print(f"  {role:17} eff {eff:2}: {'; '.join(parts)}")
         for f in shape["flags"]:
             print(f"  ! {f}")
 
@@ -263,7 +270,13 @@ def cmd_deck(args):
             f"T{t}:{p}%" for t, p in gf["land_drop_pct"].items()))
         print(f"{gf['commander']} (MV {gf['commander_mv']}) castable by: " + "  ".join(
             f"T{t}:{p}%" for t, p in gf["commander_by_turn_pct"].items()))
+        print(f"dead turns: " + "  ".join(
+            f"T{t}:{p}%" for t, p in gf["dead_turn_pct"].items()))
+        print(f"avg mana: " + "  ".join(
+            f"T{t}:{m}" for t, m in gf["avg_mana_by_turn"].items()))
         print(f"mana screw (<3 lands on T4): {gf['screw_rate_pct']}%")
+        for v in gf["verdicts"]:
+            print(f"  ! {v}" if "DEFICIT" in v else f"  {v}")
         print(f"caveats: {gf['caveats']}")
 
     if args.suggest:

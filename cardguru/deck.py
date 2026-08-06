@@ -84,9 +84,8 @@ def cross_synergy(by_name: dict, commander_rec: dict,
 
 COLOR_LETTERS = set("WUBRG")
 
-# conventional Commander deckbuilding quotas (widely used template numbers)
-ROLE_QUOTAS = {"ramp": 10, "card_draw": 10, "targeted_removal": 8, "sweepers": 3}
-
+# Role EFFECT queries: what the card does. Repeatability (one-shot spell vs
+# permanent engine) is determined separately by the card's node kinds.
 _ROLE_QUERIES = {
     "ramp": {"any": [
         {"node": {"kind": "A", "apiKind": "AB", "api": {"any": ["Mana", "ManaReflected"]},
@@ -94,8 +93,11 @@ _ROLE_QUERIES = {
         {"node": {"api": "ChangeZone",
                   "params": {"Origin": "Library", "Destination": "Battlefield",
                              "ChangeType": {"regex": "Land|Plains|Island|Swamp|Mountain|Forest"}}}}]},
+    # one-shot draw needs 2+ cards to count; ENGINE draw counts at any size
+    # (Midnight Reaper's draw-1-per-death is a draw engine, not a cantrip)
     "card_draw": {"node": {"api": "Draw",
                            "params": {"NumCards": {"regex": "^[2-9X]"}}}},
+    "card_draw_engine": {"node": {"api": "Draw"}},
     "targeted_removal": {"any": [
         {"node": {"api": "Destroy", "params": {"ValidTgts": {"regex": "Creature|Permanent"}}}},
         {"node": {"api": "ChangeZone",
@@ -104,6 +106,68 @@ _ROLE_QUERIES = {
     "sweepers": {"node": {"api": {"any": ["DestroyAll", "DamageAll"]},
                           "params": {"ValidCards": {"contains": "Creature"}}}},
 }
+
+ROLES = ("ramp", "card_draw", "targeted_removal", "sweepers")
+
+
+def _is_engine(rec: dict) -> bool:
+    """A repeatable source: the effect lives on a permanent's trigger or
+    activated ability rather than a one-shot spell."""
+    types = rec.get("types") or ""
+    if not any(t in types for t in ("Creature", "Artifact", "Enchantment",
+                                    "Planeswalker", "Land", "Battle")):
+        return False
+    return any(n.get("kind") in ("T", "S")
+               or (n.get("kind") == "A" and n.get("apiKind") == "AB")
+               for n in rec.get("nodes") or [])
+
+
+def detect_roles(rec: dict) -> dict[str, str]:
+    """role -> 'engine' | 'one_shot' for each role this card serves."""
+    out = {}
+    engine = _is_engine(rec)
+    for role in ROLES:
+        if role == "card_draw":
+            if engine and _matches(rec, _ROLE_QUERIES["card_draw_engine"]):
+                out[role] = "engine"
+            elif _matches(rec, _ROLE_QUERIES["card_draw"]):
+                out[role] = "engine" if engine else "one_shot"
+            continue
+        if _matches(rec, _ROLE_QUERIES[role]):
+            out[role] = "engine" if engine else "one_shot"
+    return out
+
+
+# Gameplan-conditioned interaction/draw quotas. The gameplan is detected from
+# the deck's own hook distribution - quotas bend to what the deck is trying to
+# do instead of one template for everyone. Mana/ramp needs are NOT quota-based
+# at all: the goldfish simulation measures them (see cardguru.goldfish).
+GAMEPLAN_QUOTAS = {
+    "aggro":        {"card_draw": 6,  "targeted_removal": 5, "sweepers": 0},
+    "spellslinger": {"card_draw": 12, "targeted_removal": 6, "sweepers": 2},
+    "engine":       {"card_draw": 8,  "targeted_removal": 7, "sweepers": 2},
+    "graveyard":    {"card_draw": 7,  "targeted_removal": 6, "sweepers": 3},
+    "generic":      {"card_draw": 9,  "targeted_removal": 7, "sweepers": 2},
+}
+
+_GAMEPLAN_HOOKS = {
+    "aggro": {"attacks_matter", "combat_damage_matters", "amplifies_attack_triggers",
+              "tribal_lord", "equipment_matters"},
+    "spellslinger": {"spellslinger", "copies_things"},
+    "graveyard": {"reanimator", "self_mill", "plays_from_graveyard",
+                  "cares_about_death", "amplifies_death_triggers", "sac_outlet"},
+    "engine": {"makes_tokens", "puts_counters", "gains_life", "lifedrain",
+               "landfall", "blink", "amplifies_etb_triggers",
+               "creatures_entering_matter", "draw_matters", "discard_matters"},
+}
+
+
+def detect_gameplan(hook_counts: dict[str, int]) -> str:
+    scores = {}
+    for plan, hookset in _GAMEPLAN_HOOKS.items():
+        scores[plan] = sum(c for h, c in hook_counts.items() if h in hookset)
+    best = max(scores, key=lambda p: scores[p]) if scores else "generic"
+    return best if scores.get(best, 0) >= 3 else "generic"
 
 
 def mana_value(mana_cost: str | None) -> int | None:
@@ -122,13 +186,21 @@ def mana_value(mana_cost: str | None) -> int | None:
 
 def deck_shape(by_name: dict, commander_rec: dict,
                decklist: list[tuple[str, int]]) -> dict:
-    """Mana curve, color-pip demand vs mana sources, and role quotas —
-    everything a deck doctor can compute without play data."""
+    """Mana curve, color-pip demand vs mana sources, gameplan detection, and
+    gameplan-conditioned role quotas. Repeatable engines are counted separately
+    from one-shot spells (an engine is worth roughly two one-shots — a draw
+    engine keeps drawing). Mana/ramp sufficiency is deliberately NOT judged
+    here: the goldfish simulation measures it."""
     curve: dict[int, int] = {}
     pips: dict[str, int] = {c: 0 for c in COLOR_LETTERS}
     sources: dict[str, int] = {c: 0 for c in COLOR_LETTERS}
-    roles: dict[str, list[str]] = {r: [] for r in _ROLE_QUERIES}
+    roles: dict[str, dict[str, list[str]]] = {
+        r: {"one_shot": [], "engines": []} for r in ROLES}
+    hook_counts: dict[str, int] = {}
     n_lands = 0
+
+    for h in detect_hooks(commander_rec):
+        hook_counts[h] = hook_counts.get(h, 0) + 2      # commander weighs double
 
     for name, count in decklist:
         rec = by_name.get(name)
@@ -150,9 +222,17 @@ def deck_shape(by_name: dict, commander_rec: dict,
         for sym in (rec.get("manaCost") or "").split():
             if sym in COLOR_LETTERS:
                 pips[sym] += count
-        for role, query in _ROLE_QUERIES.items():
-            if _matches(rec, query):
-                roles[role].append(name)
+        for role, kind in detect_roles(rec).items():
+            roles[role]["engines" if kind == "engine" else "one_shot"].append(name)
+        for h in detect_hooks(rec):
+            hook_counts[h] = hook_counts.get(h, 0) + 1
+
+    gameplan = detect_gameplan(hook_counts)
+    quotas = GAMEPLAN_QUOTAS[gameplan]
+
+    def effective(role):
+        r = roles[role]
+        return len(r["one_shot"]) + 2 * len(r["engines"])
 
     flags = []
     nonland = sum(curve.values())
@@ -162,15 +242,22 @@ def deck_shape(by_name: dict, commander_rec: dict,
     for c in COLOR_LETTERS:
         if pips[c] >= 8 and sources[c] < pips[c]:
             flags.append(f"{c}: {pips[c]} pips but only {sources[c]} producing lands")
-    for role, quota in ROLE_QUOTAS.items():
-        if len(roles[role]) < quota:
-            flags.append(f"{role}: {len(roles[role])}/{quota} "
-                         f"(template suggests ~{quota})")
+    for role, quota in quotas.items():
+        if effective(role) < quota:
+            flags.append(
+                f"{role}: effective {effective(role)} vs ~{quota} for a "
+                f"{gameplan} gameplan (engines count double)")
 
     return {"curve": dict(sorted(curve.items())), "lands": n_lands,
             "pips": {c: v for c, v in pips.items() if v},
             "sources": {c: v for c, v in sources.items() if v},
-            "roles": {r: sorted(v) for r, v in roles.items()},
+            "roles": {r: {k: sorted(v) for k, v in d.items()}
+                      for r, d in roles.items()},
+            "effective_roles": {r: effective(r) for r in ROLES},
+            "gameplan": gameplan,
+            "hook_counts": dict(sorted(hook_counts.items(),
+                                       key=lambda kv: -kv[1])),
+            "quotas": quotas,
             "flags": flags}
 
 
@@ -235,13 +322,14 @@ def suggest(idx, by_name: dict, commander_rec: dict,
         score = float(edges)
         adjustments = []
         if shape:
-            deficient = {r for r, quota in ROLE_QUOTAS.items()
-                         if len(shape["roles"].get(r, [])) < quota}
-            filled = [r for r in deficient
-                      if _matches(rec, _ROLE_QUERIES[r])]
-            for r in filled:
-                score *= 1.25
-                adjustments.append(f"+25% fills {r}")
+            deficient = {r for r, quota in shape.get("quotas", {}).items()
+                         if shape.get("effective_roles", {}).get(r, 0) < quota}
+            cand_roles = detect_roles(rec)
+            for r in deficient & set(cand_roles):
+                score *= 1.35 if cand_roles[r] == "engine" else 1.25
+                adjustments.append(
+                    f"+{35 if cand_roles[r] == 'engine' else 25}% fills {r}"
+                    + (" (engine)" if cand_roles[r] == "engine" else ""))
             mv = mana_value(rec.get("manaCost"))
             curve = shape.get("curve", {})
             nonland = sum(curve.values()) or 1
@@ -253,8 +341,8 @@ def suggest(idx, by_name: dict, commander_rec: dict,
             "provider_edges": len(why), "consumer_edges": consumer,
             "adjustments": adjustments,
             "feeds_hooks": sorted({h for _s, h, _c in plinks}),
-            "fills_roles": [a.split("fills ")[1] for a in adjustments
-                            if "fills" in a],
+            "fills_roles": [a.split("fills ")[1].split(" (")[0]
+                            for a in adjustments if "fills" in a],
             "printings": len(printings_by_name.get(cand) or []),
             "mv": rec.get("manaCost"),
             "why": why[:4]})
@@ -264,8 +352,8 @@ def suggest(idx, by_name: dict, commander_rec: dict,
     # buckets: deficient roles first, then hooks by ascending deck coverage
     buckets: list[tuple[str, str]] = []
     if shape:
-        for r, quota in ROLE_QUOTAS.items():
-            if len(shape["roles"].get(r, [])) < quota:
+        for r, quota in shape.get("quotas", {}).items():
+            if shape.get("effective_roles", {}).get(r, 0) < quota:
                 buckets.append(("role", r))
     for hook in sorted(hook_coverage, key=lambda h: hook_coverage[h]):
         buckets.append(("hook", hook))
