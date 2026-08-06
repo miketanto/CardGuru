@@ -187,8 +187,14 @@ public class CardGuruScenarioRunner extends CardTestPlayerBase {
                             a.get("value").getAsString());
                     break;
                 case "target":
-                    addTarget(player(a.get("player").getAsString()),
-                            a.get("value").getAsString());
+                    String tval = a.get("value").getAsString();
+                    if (tval.equals("PlayerA") || tval.equals("PlayerB")) {
+                        // player targets must be queued as player objects
+                        addTarget(player(a.get("player").getAsString()),
+                                player(tval.substring(6)));
+                    } else {
+                        addTarget(player(a.get("player").getAsString()), tval);
+                    }
                     break;
                 case "mode":
                     setModeChoice(player(a.get("player").getAsString()),

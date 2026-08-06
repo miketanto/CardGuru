@@ -270,6 +270,35 @@ from cardguru.deck import (cross_synergy, deck_shape, mana_value,  # noqa: E402
                            parse_decklist)
 
 
+from cardguru.deck import find_loops  # noqa: E402
+from cardguru.goldfish import simulate  # noqa: E402
+
+
+def test_find_loops_two_cycle():
+    edges = [
+        {"src": "A", "dst": "B", "hook": "h1", "class": "c1"},
+        {"src": "B", "dst": "A", "hook": "h2", "class": "c2"},
+        {"src": "A", "dst": "C", "hook": "h1", "class": "c1"},
+    ]
+    loops = find_loops(edges)
+    assert len(loops) == 1
+    assert set(loops[0]["cards"]) == {"A", "B"}
+    assert len(loops[0]["edges"]) == 2
+
+
+def test_goldfish_all_lands_deck():
+    mountain = {"name": "Mountain", "types": "Basic Land Mountain",
+                "oracle": "{T}: Add {R}.", "edges": [], "nodes": []}
+    cmdr = {"name": "C", "types": "Legendary Creature", "manaCost": "1 R",
+            "edges": [], "nodes": []}
+    by_name = {"Mountain": mountain}
+    gf = simulate(by_name, cmdr, [("Mountain", 40)], iterations=200, turns=3)
+    # a 100%-land deck always hits drops and casts the MV-2 commander on T2
+    assert gf["land_drop_pct"][1] == 100.0
+    assert gf["commander_by_turn_pct"][2] == 100.0
+    assert gf["screw_rate_pct"] == 0.0
+
+
 def test_mana_value():
     assert mana_value("2 B B") == 4
     assert mana_value("X R") == 1

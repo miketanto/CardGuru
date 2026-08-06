@@ -1,0 +1,106 @@
+{
+ "id": "loop-aristocrats-one-iteration",
+ "description": "One full iteration of the aristocrats recursion loop found by find_loops: sacrifice Reassembling Skeleton to Carrion Feeder (Feeder grows to 2/2), Blood Artist drains the opponent for 1, Pitiless Plunderer mints a Treasure, then {1}{B} returns the Skeleton to the battlefield. Board state is restored with value gained - the loop is real and repeatable.",
+ "players": {
+  "A": {
+   "life": 20,
+   "battlefield": [
+    {
+     "card": "Carrion Feeder"
+    },
+    {
+     "card": "Blood Artist"
+    },
+    {
+     "card": "Pitiless Plunderer"
+    },
+    {
+     "card": "Reassembling Skeleton"
+    },
+    {
+     "card": "Swamp",
+     "count": 2
+    }
+   ]
+  },
+  "B": {
+   "life": 20
+  }
+ },
+ "actions": [
+  {
+   "do": "activate",
+   "turn": 1,
+   "phase": "PRECOMBAT_MAIN",
+   "player": "A",
+   "ability": "Sacrifice a creature"
+  },
+  {
+   "do": "choice",
+   "player": "A",
+   "value": "Reassembling Skeleton"
+  },
+  {
+   "do": "choice",
+   "player": "A",
+   "value": "Pitiless Plunderer"
+  },
+  {
+   "do": "target",
+   "player": "A",
+   "value": "PlayerB"
+  },
+  {
+   "do": "wait_stack",
+   "turn": 1,
+   "phase": "PRECOMBAT_MAIN"
+  },
+  {
+   "do": "activate",
+   "turn": 1,
+   "phase": "PRECOMBAT_MAIN",
+   "player": "A",
+   "ability": "{1}{B}: Return"
+  },
+  {
+   "do": "wait_stack",
+   "turn": 1,
+   "phase": "PRECOMBAT_MAIN"
+  }
+ ],
+ "stop": {
+  "turn": 1,
+  "phase": "BEGIN_COMBAT"
+ },
+ "expect": [
+  {
+   "check": "life",
+   "player": "A",
+   "value": 21
+  },
+  {
+   "check": "life",
+   "player": "B",
+   "value": 19
+  },
+  {
+   "check": "permanent_count",
+   "player": "A",
+   "card": "Reassembling Skeleton",
+   "count": 1
+  },
+  {
+   "check": "permanent_count",
+   "player": "A",
+   "card": "Treasure Token",
+   "count": 1
+  },
+  {
+   "check": "power_toughness",
+   "player": "A",
+   "card": "Carrion Feeder",
+   "power": 2,
+   "toughness": 2
+  }
+ ]
+}

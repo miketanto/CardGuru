@@ -232,6 +232,12 @@ def cmd_deck(args):
                 break
         if cs["isolated"]:
             print(f"isolated (no synergy edges): {', '.join(cs['isolated'][:15])}")
+        from .deck import find_loops
+        loops = find_loops(cs["edges"])
+        if loops:
+            print(f"synergy loops (cycles in the graph, {len(loops)} found):")
+            for lp in loops[:8]:
+                print(f"  [{len(lp['edges'])} edges] {' <-> '.join(lp['cards'])}")
 
     by_name = {}
     for r in idx.records:
@@ -248,6 +254,17 @@ def cmd_deck(args):
             print(f"  {role:17} {len(cards):2}: {', '.join(cards[:8])}")
         for f in shape["flags"]:
             print(f"  ! {f}")
+
+    if args.goldfish:
+        from .goldfish import simulate
+        gf = simulate(by_name, rec, decklist, iterations=args.goldfish)
+        print(f"\n== goldfish simulation ({gf['iterations']} deals, on the play)")
+        print(f"land drops hit: " + "  ".join(
+            f"T{t}:{p}%" for t, p in gf["land_drop_pct"].items()))
+        print(f"{gf['commander']} (MV {gf['commander_mv']}) castable by: " + "  ".join(
+            f"T{t}:{p}%" for t, p in gf["commander_by_turn_pct"].items()))
+        print(f"mana screw (<3 lands on T4): {gf['screw_rate_pct']}%")
+        print(f"caveats: {gf['caveats']}")
 
     if args.suggest:
         from .deck import suggest
@@ -340,6 +357,8 @@ def main(argv=None):
                     help="show top-N ranked additions (deck-connectivity score)")
     dk.add_argument("--shape", action="store_true",
                     help="mana curve, color pips vs sources, role quotas")
+    dk.add_argument("--goldfish", type=int, default=0, metavar="N",
+                    help="Monte Carlo consistency simulation with N deals")
     dk.add_argument("--ci-index", default="/home/user/mse/index/index.json")
     dk.add_argument("--dataset", default=DEFAULT_DATASET)
     dk.set_defaults(fn=cmd_deck)

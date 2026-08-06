@@ -251,6 +251,45 @@ def suggest(idx, by_name: dict, commander_rec: dict,
             "candidates_considered": len(scores)}
 
 
+def find_loops(edges: list[dict], max_len: int = 3, limit: int = 25) -> list[dict]:
+    """Directed cycles (length 2-3) in the cross-synergy graph: card sets whose
+    hooks feed each other. These are SYNERGY loops (the aristocrats engine,
+    recursion engines), not proven infinite combos - resource accounting is the
+    engine's job, so loops are candidates for engine verification, ranked by
+    how many distinct hook-edges participate."""
+    adj: dict[str, set[str]] = {}
+    edge_info: dict[tuple[str, str], list[str]] = {}
+    for e in edges:
+        adj.setdefault(e["src"], set()).add(e["dst"])
+        edge_info.setdefault((e["src"], e["dst"]), []).append(
+            f"{e['hook']}/{e['class']}")
+
+    loops, seen = [], set()
+    nodes = sorted(adj)
+    for a in nodes:
+        # 2-cycles: a -> b -> a
+        for b in adj.get(a, ()):
+            if a < b and a in adj.get(b, set()):
+                key = frozenset((a, b))
+                if key not in seen:
+                    seen.add(key)
+                    loops.append({"cards": [a, b], "len": 2,
+                                  "edges": edge_info[(a, b)] + edge_info[(b, a)]})
+        if max_len >= 3:
+            for b in adj.get(a, ()):
+                for c in adj.get(b, ()):
+                    if c != a and a in adj.get(c, set()) and a < b and a < c:
+                        key = frozenset((a, b, c))
+                        if key not in seen and len(key) == 3:
+                            seen.add(key)
+                            loops.append({"cards": [a, b, c], "len": 3,
+                                          "edges": (edge_info[(a, b)]
+                                                    + edge_info[(b, c)]
+                                                    + edge_info[(c, a)])})
+    loops.sort(key=lambda l: (-len(l["edges"]), l["len"]))
+    return loops[:limit]
+
+
 def analyze_deck(idx, commander_rec: dict, decklist: list[tuple[str, int]]) -> dict:
     by_name = {}
     for r in idx.records:
