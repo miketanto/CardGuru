@@ -1,0 +1,3 @@
+compiler system prompt frozen for first RulesGuru run
+sha256: f0a92698e27d9deddaf19a7646ac0b3238984e7d1974b9257bacf5d016335675
+chars: 9680

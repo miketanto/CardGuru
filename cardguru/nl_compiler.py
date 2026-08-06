@@ -60,6 +60,11 @@ Conventions from the Forge card-script data this runs over:
   selectors (type words like "Land", "Forest", "Creature").
 - Effects: api names like Token, DealDamage, Draw, GainLife, LoseLife,
   PutCounter, Destroy, Mana, AddTurn, CopySpellAbility, Pump, Dig, Mill.
+- Idioms: fog effects have their own api "Fog". Mass zone-changes
+  (ChangeZoneAll) select what moves with ChangeType (not ValidCards — that
+  is the DestroyAll family's param). Counterspells use TargetType$ Spell
+  with ValidTgts naming what KIND of spell: unrestricted counters are
+  ValidTgts "Card"; restricted ones are ValidTgts "Creature" etc.
 - "Each opponent"/"each player" effects usually use the *All api variants
   (DamageAll with ValidPlayers, DestroyAll, TapAll) rather than the targeted
   api with a Defined param — query both with {"any": ...} when unsure.
