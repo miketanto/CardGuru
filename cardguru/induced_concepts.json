@@ -116,5 +116,506 @@
    "Birthing Ritual"
   ],
   "counterexample": "Giant Growth - one-shot SP pump, no Phase trigger"
+ },
+ {
+  "name": "cost_reducer",
+  "describe": "makes spells cheaper to cast via a static cost-reduction effect",
+  "detect": {
+   "all_of": [
+    {
+     "static_mode": "ReduceCost"
+    }
+   ]
+  },
+  "complements": {
+   "cast_triggers": {
+    "chain": {
+     "from": {
+      "kind": "T",
+      "mode": "SpellCast"
+     },
+     "to": {}
+    }
+   },
+   "storm_scaling": {
+    "any": [
+     {
+      "keyword": "Storm"
+     },
+     {
+      "node": {
+       "kind": "SVarCount",
+       "count": {
+        "contains": "ThisTurnCast"
+       }
+      }
+     }
+    ]
+   },
+   "big_generic_spells": {
+    "all": [
+     {
+      "card": {
+       "manaCost": {
+        "regex": "(^| )([6-9]|1[0-9])( |$)"
+       }
+      }
+     },
+     {
+      "not": {
+       "card": {
+        "types": {
+         "contains": "Land"
+        }
+       }
+      }
+     }
+    ]
+   }
+  },
+  "example_cards_verified": [
+   "Animist's Might",
+   "Arcane Melee",
+   "Alisaie Leveilleur",
+   "Goblin Electromancer",
+   "Sapphire Medallion"
+  ],
+  "counterexample": "Thalia, Guardian of Thraben \u2014 her only static node is Mode$ RaiseCost (taxes noncreature spells {1} more), the structural mirror of a discount; the detector requires static mode ReduceCost, so she does not match (verified against the dataset).",
+  "strategic_note": "Cost reducers are enablers like mana amplifiers: they generate no advantage alone, only when the deck casts what they discount. The ValidCard param partitions the 515-card cluster into two strategic tiers: 268 are Card.Self self-discounts (situational rate improvements on one spell, weak as deck glue) while the rest are deck-wide family discounts (Instant,Sorcery x27, any Card x29, Creature x17, plus color/tribe medallion variants). For sharper per-card recommendations, read the node's ValidCard and pair with that exact spell family; the generic complements chosen scale with any discount \u2014 SpellCast trigger payoffs (magecraft/Adeliz) convert extra casts per turn into value, Storm/ThisTurnCast counters (Aeve, Arclight Phoenix) count the additional spells a discount enables, and big generic-cost nonland cards capture the largest absolute mana savings."
+ },
+ {
+  "name": "buffs_attached",
+  "describe": "grants +X/+X to the creature it's attached to (aura/equipment suit-up, not a global anthem)",
+  "detect": {
+   "any_of": [
+    {
+     "continuous_params": [
+      "AddPower",
+      "AddToughness"
+     ],
+     "affected_contains": "EnchantedBy"
+    },
+    {
+     "continuous_params": [
+      "AddPower",
+      "AddToughness"
+     ],
+     "affected_contains": "AttachedBy"
+    }
+   ]
+  },
+  "complements": {
+   "enchantress_draw": {
+    "chain": {
+     "from": {
+      "kind": "T",
+      "mode": "SpellCast",
+      "params": {
+       "ValidCard": {
+        "contains": "Enchantment"
+       }
+      }
+     },
+     "to": {
+      "api": "Draw"
+     }
+    }
+   },
+   "hexproof_carriers": {
+    "all": [
+     {
+      "card": {
+       "types": {
+        "contains": "Creature"
+       }
+      }
+     },
+     {
+      "keyword": "Hexproof"
+     }
+    ]
+   },
+   "becomes_attached_payoffs": {
+    "chain": {
+     "from": {
+      "kind": "T",
+      "mode": "Attached"
+     },
+     "to": {}
+    }
+   }
+  },
+  "example_cards_verified": [
+   "Abzan Runemark",
+   "Aerial Modification",
+   "Aether Web",
+   "Angelic Destiny"
+  ],
+  "counterexample": "Glorious Anthem - has a Continuous static with AddPower+AddToughness, but its Affected is \"Creature.YouCtrl\" (a global anthem over your whole board, the tribal_lord/anthem family), not an EnchantedBy/AttachedBy attached target; verified the detector rejects it.",
+  "strategic_note": "Voltron pattern: stacks stats onto one (ideally evasive or hexproof) creature, so it trades card economy for threat density and is 2-for-1'd by spot removal \u2014 hexproof carriers mitigate that, enchantress engines (SpellCast-Enchantment-to-Draw triggers) refund the cards, and becomes-attached triggers (Bramble Elemental, Siona, Eriette) convert each suit-up into extra value. Distinct from tribal_lord anthems, which spread +1/+1 wide over a YouCtrl-filtered board; detector separates the two on the Affected filter (EnchantedBy/AttachedBy vs YouCtrl). Pool selectivity 1.2% (408/34519)."
+ },
+ {
+  "name": "mass_keyword_granter",
+  "describe": "continuously grants keyword abilities (haste, flying, vigilance, etc.) to your whole team",
+  "detect": {
+   "all_of": [
+    {
+     "continuous_params": [
+      "AddKeyword",
+      "Affected"
+     ],
+     "affected_contains": "YouCtrl"
+    }
+   ]
+  },
+  "complements": {
+   "token_swarms": {
+    "chain": {
+     "from": {
+      "kind": {
+       "any": [
+        "A",
+        "T"
+       ]
+      }
+     },
+     "to": {
+      "api": "Token"
+     }
+    }
+   },
+   "attack_payoffs": {
+    "chain": {
+     "from": {
+      "kind": "T",
+      "mode": "Attacks"
+     },
+     "to": {}
+    }
+   },
+   "combat_damage_payoffs": {
+    "chain": {
+     "from": {
+      "kind": "T",
+      "mode": "DamageDone",
+      "params": {
+       "CombatDamage": "True"
+      }
+     },
+     "to": {}
+    }
+   }
+  },
+  "example_cards_verified": [
+   "Aang, Air Nomad",
+   "Abaddon the Despoiler",
+   "Akroma's Memorial",
+   "Archetype of Courage",
+   "Fires of Yavimaya",
+   "Intangible Virtue",
+   "Serra's Blessing",
+   "Anger"
+  ],
+  "counterexample": "Glorious Anthem - its Continuous static affects Creature.YouCtrl but only carries AddPower/AddToughness with no AddKeyword param; it is a stat anthem, not a keyword granter (verified: detector returns False)",
+  "strategic_note": "A single permanent multiplies across every body you control, so value scales linearly with board width: token swarms (Krenko, Raise the Alarm) turn one haste/evasion grant into N immediate or unblockable attackers, and attack/combat-damage trigger payoffs (Hellrider, Coastal Piracy, Edric) need exactly what these grant - haste to trigger now, evasion to connect. The effect is concentrated in one enchantment/artifact/creature, so it folds to targeted removal; decks leaning on it want redundancy or protection statics."
+ },
+ {
+  "name": "evasion_static",
+  "describe": "carries or grants a can't-be-blocked / blocking-restriction static (CantBlockBy)",
+  "detect": {
+   "all_of": [
+    {
+     "static_mode": "CantBlockBy"
+    }
+   ]
+  },
+  "complements": {
+   "saboteur_triggers": {
+    "chain": {
+     "from": {
+      "kind": "T",
+      "mode": "DamageDone",
+      "params": {
+       "ValidTarget": {
+        "regex": "Player|Opponent"
+       }
+      }
+     },
+     "to": {}
+    }
+   },
+   "attack_triggers": {
+    "chain": {
+     "from": {
+      "kind": "T",
+      "mode": {
+       "any": [
+        "Attacks",
+        "AttackersDeclared",
+        "AttackersDeclaredOneTarget"
+       ]
+      }
+     },
+     "to": {}
+    }
+   },
+   "power_anthems": {
+    "node": {
+     "mode": "Continuous",
+     "params": {
+      "AddPower": true,
+      "Affected": {
+       "contains": "Creature.YouCtrl"
+      }
+     }
+    }
+   }
+  },
+  "example_cards_verified": [
+   "Aether Figment",
+   "Aether Tunnel",
+   "Air Bladder",
+   "Amrou Kithkin",
+   "Aqueous Form",
+   "Azorius Herald",
+   "Beloved Princess"
+  ],
+  "counterexample": "Wind Drake - evasion via the Flying keyword only (kind K node); no CantBlockBy static node, so keyword-evasion stays a separate facet",
+  "strategic_note": "CantBlockBy statics guarantee combat damage connects, so they convert saboteur bodies (DamageDone-to-player triggers like Thieving Magpie/Ohran Frostfang, 776 in pool) and attack triggers (1850 in pool) into reliable engines; power anthems (113 in pool) scale the unblocked hit. Detector matched 362/34519 records (1.05%) and passed the full validate_concept gate (ok=True, no errors); note the family also contains blocking-restriction variants (Air Bladder 'can block only creatures with flying') that share the same node shape."
+ },
+ {
+  "name": "cda_statline",
+  "describe": "creature whose power/toughness are characteristic-defining (set equal to a counted quantity like creatures, lands, or cards in a zone)",
+  "detect": {
+   "all_of": [
+    {
+     "continuous_params": [
+      "CharacteristicDefining",
+      "SetPower",
+      "SetToughness"
+     ],
+     "forbid_params": [
+      "Affected"
+     ]
+    },
+    {
+     "card_type_contains": "Creature"
+    }
+   ]
+  },
+  "complements": {
+   "graveyard_fillers": {
+    "node": {
+     "api": "Mill"
+    }
+   },
+   "token_swarm": {
+    "chain": {
+     "from": {
+      "kind": {
+       "any": [
+        "A",
+        "T"
+       ]
+      }
+     },
+     "to": {
+      "api": "Token"
+     }
+    }
+   },
+   "extra_land_drops": {
+    "node": {
+     "mode": "Continuous",
+     "params": {
+      "AdjustLandPlays": true
+     }
+    }
+   }
+  },
+  "example_cards_verified": [
+   "Abomination of Llanowar",
+   "Adamaro, First to Desire",
+   "Allosaurus Rider",
+   "Ashaya, Soul of the Wild",
+   "Barrowgoyf",
+   "Aeon Chronicler"
+  ],
+  "counterexample": "Godhead of Awe - its Continuous static also carries SetPower/SetToughness but with Affected=Creature.Other and no CharacteristicDefining flag: it rewrites OTHER creatures' stats to 1/1 rather than defining its own P/T from a counted quantity",
+  "strategic_note": "These creatures are typically undercosted for their potential stats because the stats are earned: power equals a count (creatures you control, lands, graveyard cards, cards in hand). Build around them with complements that inflate the counted quantity (mill for graveyard-counters, token producers for board-counters, extra land drops for land-counters). Structural weakness: as layer-7a characteristic-defining abilities they are nullified by ability-removal effects like Dress Down or Humility, which drop them to base 0/0 and can kill them outright; they also shrink if the counted resource is exiled or swept."
+ },
+ {
+  "name": "recurring_forced_sacrifice",
+  "describe": "forces sacrifices on a recurring phase trigger (upkeep/end step) - stax engines taxing each player's board (Anowon, Braids, Smokestack) and self-sacrificing drawback permanents (Arc Runner)",
+  "detect": {
+   "all_of": [
+    {
+     "trigger_mode": "Phase",
+     "chains_to_api": "Sacrifice"
+    }
+   ]
+  },
+  "complements": {
+   "token_fodder_makers": {
+    "chain": {
+     "from": {
+      "kind": {
+       "any": [
+        "A",
+        "T"
+       ]
+      }
+     },
+     "to": {
+      "api": "Token"
+     }
+    }
+   },
+   "death_trigger_payoffs": {
+    "chain": {
+     "from": {
+      "kind": "T",
+      "mode": "ChangesZone",
+      "params": {
+       "Origin": "Battlefield",
+       "Destination": "Graveyard"
+      }
+     },
+     "to": {}
+    }
+   },
+   "permanent_recursion": {
+    "node": {
+     "api": "ChangeZone",
+     "params": {
+      "Origin": "Graveyard",
+      "Destination": "Battlefield"
+     }
+    }
+   }
+  },
+  "example_cards_verified": [
+   "Anowon, the Ruin Sage",
+   "Anurid Scavenger",
+   "Arc Runner",
+   "Smokestack",
+   "Braids, Cabal Minion",
+   "Sheoldred, Whispering One"
+  ],
+  "counterexample": "Grave Pact - it chains to a Sacrifice API node, but from a ChangesZone (dies) trigger rather than a Phase trigger, so trigger_mode=Phase rejects it (verified non-matching; Magus of the Abyss also verified: Phase upkeep trigger but chains to Destroy, not Sacrifice)",
+  "strategic_note": "The hint's pure-stax reading fails verification: 2 of 3 given examples (Anurid Scavenger, Arc Runner) are self-drawback sacrifices with no SacValid/Defined targeting other players. The stax/drawback split lives in the Sacrifice node's params (Defined: Player/TriggeredPlayer + SacValid = stax; bare DB:Sacrifice or UnlessCost = self-drawback), which the allowed detect primitives cannot express - a future param-aware primitive could split this into recurring_sacrifice_stax vs upkeep_drawback. The chosen complements serve both readings: token makers break symmetric-sacrifice parity (feed Smokestack/Braids with free bodies), death-trigger payoffs (Blood Artist) convert every forced creature sacrifice into drain, and graveyard recursion (Sun Titan) rebuys whatever the engine eats. Dataset-wide the detector fires on 215 faces vs 97 uncovered, so it also claims already-covered neighbors - acceptable for a hook, dedupe happens at registry level."
+ },
+ {
+  "name": "alternative_cost",
+  "describe": "can be cast for an alternative cost instead of its mana cost (Force-family pitch costs, Daze-style bounce costs, conditional free casts)",
+  "detect": {
+   "all_of": [
+    {
+     "static_mode": "AlternativeCost"
+    }
+   ]
+  },
+  "complements": {
+   "spell_cast_payoffs": {
+    "node": {
+     "kind": "T",
+     "mode": {
+      "any": [
+       "SpellCast",
+       "SpellCastOrCopy"
+      ]
+     }
+    }
+   },
+   "hand_refill_engines": {
+    "role": "card_draw:engine"
+   },
+   "discard_payoffs": {
+    "node": {
+     "kind": "T",
+     "mode": "Discarded"
+    }
+   }
+  },
+  "example_cards_verified": [
+   "Abolish",
+   "Admiral's Order",
+   "Allosaurus Rider",
+   "Force of Will",
+   "Force of Negation",
+   "Snapback",
+   "Daze"
+  ],
+  "counterexample": "Counterspell - it must be cast for its printed {U}{U} mana cost and has no S-node with Mode AlternativeCost, so the detector rejects it; likewise Fury's free cast is the Evoke keyword node, not this static, and is correctly excluded.",
+  "strategic_note": "These spells pay cards (pitch/exile/bounce/life) instead of mana, so they answer threats while fully tapped out and interact with taxes differently than normal spells: since the mana cost is never paid, mana-cost-shaped hate lands askew, but S:CantBeCast statics still stop them cold because they are still cast \u2014 hate against this family must forbid casting, not tax it. The card cost means each pitch is card disadvantage, so pair them with draw engines (hand_refill_engines), turn the free timing into extra prowess/magecraft/storm triggers (spell_cast_payoffs), and where the alternative cost discards, feed Discarded-mode payoffs (discard_payoffs)."
+ },
+ {
+  "name": "amplifies_damage",
+  "describe": "increases damage dealt via a replacement effect (deals double/triple/that much plus N instead)",
+  "detect": {
+   "any_of": [
+    {
+     "replacement_event": "DamageDone",
+     "replace_with": "DmgTwice"
+    },
+    {
+     "replacement_event": "DamageDone",
+     "replace_with": "DmgPlus"
+    },
+    {
+     "replacement_event": "DamageDone",
+     "replace_with": "DmgTriple"
+    },
+    {
+     "replacement_event": "DamageDone",
+     "replace_with": "DamageReplace"
+    }
+   ]
+  },
+  "complements": {
+   "burn_spells": {
+    "all": [
+     {
+      "card": {
+       "types": {
+        "regex": "Instant|Sorcery"
+       }
+      }
+     },
+     {
+      "node": {
+       "apiKind": "SP",
+       "api": "DealDamage"
+      }
+     }
+    ]
+   },
+   "ping_engines": {
+    "node": {
+     "kind": "A",
+     "apiKind": "AB",
+     "api": "DealDamage"
+    }
+   },
+   "damage_payoffs": {
+    "chain": {
+     "from": {
+      "kind": "T",
+      "mode": "DamageDone"
+     },
+     "to": {}
+    }
+   }
+  },
+  "example_cards_verified": [
+   "Tok-Tok, Volcano Born",
+   "Absorbing Man and Titania",
+   "Aether Revolt",
+   "Angrath's Marauders",
+   "Dictate of the Twin Gods",
+   "Curse of Bloodletting"
+  ],
+  "counterexample": "Divine Presence - it carries the exact same R node shell (Event$ DamageDone with a ReplaceWith), but its replacement (SVar Dmg3, VarValue 3) CAPS damage at 3 instead of amplifying it - it is a damage-reduction card, the mechanical opposite of this concept. Verified rejected by the detector, along with prevention (Battletide Alchemist, ReplaceWith DBReplace -> ReplaceDamage) and redirection (Pariah, ReplaceWith DmgEnchanted).",
+  "strategic_note": "The R:DamageDone->replace signature is a mixed bag of 4 subfamilies; grounding in the scripts showed amplification is dominant (53 of 146 dataset-wide R:DamageDone replacements resolve to ReplaceCount$DamageAmount/Twice|Thrice|Plus.N, vs 27 prevention, ~30 damage-to-counters conversion, and small redirect/convert groups). Since the replace_with primitive only substring-matches the SVar name, the detector keys on the Forge naming convention (DmgTwice/DmgPlus*/DmgTriple/DamageReplace), which cleanly separates amplifiers from preventers/redirectors: 50 matched cards, zero observed false positives; it deliberately skips the ambiguous name Dmg3 (used by both Fiery Emancipation, an amplifier, and Divine Presence, a cap), trading 1-2 cards of recall for precision. Complements verified non-empty: burn_spells (652), ping_engines (520, repeatable activated DealDamage that turns doubling into an engine), damage_payoffs (866, T:DamageDone triggers whose 'that much' effects scale with amplified damage). The remaining prevention/conversion subfamilies deserve their own separate concept (e.g. prevents_damage) rather than being lumped in here."
  }
 ]
