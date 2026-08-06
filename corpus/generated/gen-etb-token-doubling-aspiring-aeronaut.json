@@ -1,6 +1,6 @@
 {
  "id": "gen-etb-token-doubling-aspiring-aeronaut",
- "description": "Aspiring Aeronaut ETB token trigger under Doubling Season (expect doubled token)",
+ "description": "Aspiring Aeronaut ETB token trigger under Doubling Season",
  "template": "etb_token_doubling",
  "players": {
   "A": {

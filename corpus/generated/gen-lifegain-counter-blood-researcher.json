@@ -1,21 +1,21 @@
 {
- "id": "gen-etb-token-doubling-alirios-enraptured",
- "description": "Alirios, Enraptured ETB token trigger under Doubling Season (expect doubled token)",
- "template": "etb_token_doubling",
+ "id": "gen-lifegain-counter-blood-researcher",
+ "description": "Blood Researcher lifegain->counter trigger with Angel's Mercy (+7 life)",
+ "template": "lifegain_counter",
  "players": {
   "A": {
    "life": 20,
    "battlefield": [
     {
-     "card": "Island",
-     "count": 3
+     "card": "Blood Researcher"
     },
     {
-     "card": "Doubling Season"
+     "card": "Plains",
+     "count": 4
     }
    ],
    "hand": [
-    "Alirios, Enraptured"
+    "Angel's Mercy"
    ]
   },
   "B": {
@@ -28,7 +28,7 @@
    "turn": 1,
    "phase": "PRECOMBAT_MAIN",
    "player": "A",
-   "card": "Alirios, Enraptured"
+   "card": "Angel's Mercy"
   },
   {
    "do": "wait_stack",
@@ -42,15 +42,16 @@
  },
  "expect": [
   {
-   "check": "permanent_count",
+   "check": "life",
    "player": "A",
-   "card": "Alirios, Enraptured",
-   "count": 1
+   "value": 27
   },
   {
-   "check": "battlefield_count",
+   "check": "power_toughness",
    "player": "A",
-   "count": 7
+   "card": "Blood Researcher",
+   "power": 3,
+   "toughness": 3
   }
  ]
 }

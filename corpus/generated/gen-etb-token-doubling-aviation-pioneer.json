@@ -1,6 +1,6 @@
 {
  "id": "gen-etb-token-doubling-aviation-pioneer",
- "description": "Aviation Pioneer ETB token trigger under Doubling Season (expect doubled token)",
+ "description": "Aviation Pioneer ETB token trigger under Doubling Season",
  "template": "etb_token_doubling",
  "players": {
   "A": {

@@ -1,21 +1,21 @@
 {
- "id": "gen-etb-token-doubling-bakersbane-duo",
- "description": "Bakersbane Duo ETB token trigger under Doubling Season (expect doubled token)",
- "template": "etb_token_doubling",
+ "id": "gen-lifegain-counter-bloodbond-vampire",
+ "description": "Bloodbond Vampire lifegain->counter trigger with Angel's Mercy (+7 life)",
+ "template": "lifegain_counter",
  "players": {
   "A": {
    "life": 20,
    "battlefield": [
     {
-     "card": "Forest",
-     "count": 2
+     "card": "Bloodbond Vampire"
     },
     {
-     "card": "Doubling Season"
+     "card": "Plains",
+     "count": 4
     }
    ],
    "hand": [
-    "Bakersbane Duo"
+    "Angel's Mercy"
    ]
   },
   "B": {
@@ -28,7 +28,7 @@
    "turn": 1,
    "phase": "PRECOMBAT_MAIN",
    "player": "A",
-   "card": "Bakersbane Duo"
+   "card": "Angel's Mercy"
   },
   {
    "do": "wait_stack",
@@ -42,15 +42,16 @@
  },
  "expect": [
   {
-   "check": "permanent_count",
+   "check": "life",
    "player": "A",
-   "card": "Bakersbane Duo",
-   "count": 1
+   "value": 27
   },
   {
-   "check": "battlefield_count",
+   "check": "power_toughness",
    "player": "A",
-   "count": 6
+   "card": "Bloodbond Vampire",
+   "power": 4,
+   "toughness": 4
   }
  ]
 }

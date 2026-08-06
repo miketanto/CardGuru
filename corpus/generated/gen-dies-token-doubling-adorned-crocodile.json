@@ -1,21 +1,24 @@
 {
- "id": "gen-etb-token-doubling-astrid-peth",
- "description": "Astrid Peth ETB token trigger under Doubling Season (expect doubled token)",
- "template": "etb_token_doubling",
+ "id": "gen-dies-token-doubling-adorned-crocodile",
+ "description": "Adorned Crocodile dies-token trigger (killed by Murder) under Doubling Season",
+ "template": "dies_token_doubling",
  "players": {
   "A": {
    "life": 20,
    "battlefield": [
     {
-     "card": "Plains",
-     "count": 2
+     "card": "Adorned Crocodile"
     },
     {
      "card": "Doubling Season"
+    },
+    {
+     "card": "Swamp",
+     "count": 3
     }
    ],
    "hand": [
-    "Astrid Peth"
+    "Murder"
    ]
   },
   "B": {
@@ -28,7 +31,12 @@
    "turn": 1,
    "phase": "PRECOMBAT_MAIN",
    "player": "A",
-   "card": "Astrid Peth"
+   "card": "Murder"
+  },
+  {
+   "do": "target",
+   "player": "A",
+   "value": "Adorned Crocodile"
   },
   {
    "do": "wait_stack",
@@ -42,9 +50,9 @@
  },
  "expect": [
   {
-   "check": "permanent_count",
+   "check": "graveyard_count",
    "player": "A",
-   "card": "Astrid Peth",
+   "card": "Adorned Crocodile",
    "count": 1
   },
   {

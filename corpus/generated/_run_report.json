@@ -1,11 +1,11 @@
 [
  {
-  "id": "gen-etb-token-doubling-ajani-nacatl-pariah",
+  "id": "gen-dies-token-doubling-adorned-crocodile",
   "engine": "xmage",
   "status": "executed",
   "expectations": [
    {
-    "check": "permanent_count",
+    "check": "graveyard_count",
     "pass": true
    },
    {
@@ -18,37 +18,591 @@
     "life": 20,
     "battlefield": [
      {
-      "name": "Plains",
+      "name": "Doubling Season",
+      "tapped": false
+     },
+     {
+      "name": "Swamp",
       "tapped": true
      },
      {
-      "name": "Plains",
+      "name": "Swamp",
       "tapped": true
      },
+     {
+      "name": "Swamp",
+      "tapped": true
+     },
+     {
+      "name": "Zombie Druid Token",
+      "tapped": false,
+      "power": 2,
+      "toughness": 2
+     },
+     {
+      "name": "Zombie Druid Token",
+      "tapped": false,
+      "power": 2,
+      "toughness": 2
+     }
+    ],
+    "graveyard": [
+     "Adorned Crocodile",
+     "Murder"
+    ],
+    "exile": [],
+    "hand_count": 0
+   },
+   "B": {
+    "life": 20,
+    "battlefield": [],
+    "graveyard": [],
+    "exile": [],
+    "hand_count": 0
+   }
+  },
+  "millis": 451,
+  "citations": [
+   {
+    "rule": "111",
+    "title": "Tokens",
+    "token": "Token",
+    "card": "Adorned Crocodile"
+   },
+   {
+    "rule": "122",
+    "title": "Counters",
+    "token": "PutCounter",
+    "card": "Adorned Crocodile"
+   },
+   {
+    "rule": "603.6",
+    "title": "Trigger events that involve objects changing zones are calle",
+    "token": "ChangesZone",
+    "card": "Adorned Crocodile"
+   },
+   {
+    "rule": "614",
+    "title": "Replacement Effects",
+    "token": "CreateToken",
+    "card": "Doubling Season"
+   },
+   {
+    "rule": "614",
+    "title": "Replacement Effects",
+    "token": "AddCounter",
+    "card": "Doubling Season"
+   },
+   {
+    "rule": "614",
+    "title": "Replacement Effects",
+    "token": "ReplaceToken",
+    "card": "Doubling Season"
+   },
+   {
+    "rule": "614",
+    "title": "Replacement Effects",
+    "token": "ReplaceCounter",
+    "card": "Doubling Season"
+   },
+   {
+    "rule": "701.8",
+    "title": "Destroy",
+    "token": "Destroy",
+    "card": "Murder"
+   }
+  ],
+  "cr_effective": "August 7, 2026"
+ },
+ {
+  "id": "gen-dies-token-doubling-agents-of-hydra",
+  "engine": "xmage",
+  "status": "executed",
+  "expectations": [
+   {
+    "check": "graveyard_count",
+    "pass": true
+   },
+   {
+    "check": "battlefield_count",
+    "pass": true
+   }
+  ],
+  "state": {
+   "A": {
+    "life": 20,
+    "battlefield": [
      {
       "name": "Doubling Season",
       "tapped": false
      },
      {
-      "name": "Ajani, Nacatl Pariah",
+      "name": "Swamp",
+      "tapped": true
+     },
+     {
+      "name": "Swamp",
+      "tapped": true
+     },
+     {
+      "name": "Swamp",
+      "tapped": true
+     },
+     {
+      "name": "Villain Token",
+      "tapped": false,
+      "power": 2,
+      "toughness": 1
+     },
+     {
+      "name": "Villain Token",
+      "tapped": false,
+      "power": 2,
+      "toughness": 1
+     }
+    ],
+    "graveyard": [
+     "Agents of HYDRA",
+     "Murder"
+    ],
+    "exile": [],
+    "hand_count": 0
+   },
+   "B": {
+    "life": 20,
+    "battlefield": [],
+    "graveyard": [],
+    "exile": [],
+    "hand_count": 0
+   }
+  },
+  "millis": 56,
+  "citations": [
+   {
+    "rule": "111",
+    "title": "Tokens",
+    "token": "Token",
+    "card": "Agents of HYDRA"
+   },
+   {
+    "rule": "603.6",
+    "title": "Trigger events that involve objects changing zones are calle",
+    "token": "ChangesZone",
+    "card": "Agents of HYDRA"
+   },
+   {
+    "rule": "614",
+    "title": "Replacement Effects",
+    "token": "CreateToken",
+    "card": "Doubling Season"
+   },
+   {
+    "rule": "614",
+    "title": "Replacement Effects",
+    "token": "AddCounter",
+    "card": "Doubling Season"
+   },
+   {
+    "rule": "614",
+    "title": "Replacement Effects",
+    "token": "ReplaceToken",
+    "card": "Doubling Season"
+   },
+   {
+    "rule": "614",
+    "title": "Replacement Effects",
+    "token": "ReplaceCounter",
+    "card": "Doubling Season"
+   },
+   {
+    "rule": "701.8",
+    "title": "Destroy",
+    "token": "Destroy",
+    "card": "Murder"
+   }
+  ],
+  "cr_effective": "August 7, 2026"
+ },
+ {
+  "id": "gen-dies-token-doubling-beamsaw-prospector",
+  "engine": "xmage",
+  "status": "executed",
+  "expectations": [
+   {
+    "check": "graveyard_count",
+    "pass": true
+   },
+   {
+    "check": "battlefield_count",
+    "pass": true
+   }
+  ],
+  "state": {
+   "A": {
+    "life": 20,
+    "battlefield": [
+     {
+      "name": "Doubling Season",
+      "tapped": false
+     },
+     {
+      "name": "Swamp",
+      "tapped": true
+     },
+     {
+      "name": "Swamp",
+      "tapped": true
+     },
+     {
+      "name": "Swamp",
+      "tapped": true
+     },
+     {
+      "name": "Lander Token",
+      "tapped": false
+     },
+     {
+      "name": "Lander Token",
+      "tapped": false
+     }
+    ],
+    "graveyard": [
+     "Beamsaw Prospector",
+     "Murder"
+    ],
+    "exile": [],
+    "hand_count": 0
+   },
+   "B": {
+    "life": 20,
+    "battlefield": [],
+    "graveyard": [],
+    "exile": [],
+    "hand_count": 0
+   }
+  },
+  "millis": 82,
+  "citations": [
+   {
+    "rule": "111",
+    "title": "Tokens",
+    "token": "Token",
+    "card": "Beamsaw Prospector"
+   },
+   {
+    "rule": "603.6",
+    "title": "Trigger events that involve objects changing zones are calle",
+    "token": "ChangesZone",
+    "card": "Beamsaw Prospector"
+   },
+   {
+    "rule": "614",
+    "title": "Replacement Effects",
+    "token": "CreateToken",
+    "card": "Doubling Season"
+   },
+   {
+    "rule": "614",
+    "title": "Replacement Effects",
+    "token": "AddCounter",
+    "card": "Doubling Season"
+   },
+   {
+    "rule": "614",
+    "title": "Replacement Effects",
+    "token": "ReplaceToken",
+    "card": "Doubling Season"
+   },
+   {
+    "rule": "614",
+    "title": "Replacement Effects",
+    "token": "ReplaceCounter",
+    "card": "Doubling Season"
+   },
+   {
+    "rule": "701.8",
+    "title": "Destroy",
+    "token": "Destroy",
+    "card": "Murder"
+   }
+  ],
+  "cr_effective": "August 7, 2026"
+ },
+ {
+  "id": "gen-dies-token-doubling-beskir-shieldmate",
+  "engine": "xmage",
+  "status": "executed",
+  "expectations": [
+   {
+    "check": "graveyard_count",
+    "pass": true
+   },
+   {
+    "check": "battlefield_count",
+    "pass": true
+   }
+  ],
+  "state": {
+   "A": {
+    "life": 20,
+    "battlefield": [
+     {
+      "name": "Doubling Season",
+      "tapped": false
+     },
+     {
+      "name": "Swamp",
+      "tapped": true
+     },
+     {
+      "name": "Swamp",
+      "tapped": true
+     },
+     {
+      "name": "Swamp",
+      "tapped": true
+     },
+     {
+      "name": "Human Warrior Token",
+      "tapped": false,
+      "power": 1,
+      "toughness": 1
+     },
+     {
+      "name": "Human Warrior Token",
+      "tapped": false,
+      "power": 1,
+      "toughness": 1
+     }
+    ],
+    "graveyard": [
+     "Beskir Shieldmate",
+     "Murder"
+    ],
+    "exile": [],
+    "hand_count": 0
+   },
+   "B": {
+    "life": 20,
+    "battlefield": [],
+    "graveyard": [],
+    "exile": [],
+    "hand_count": 0
+   }
+  },
+  "millis": 44,
+  "citations": [
+   {
+    "rule": "111",
+    "title": "Tokens",
+    "token": "Token",
+    "card": "Beskir Shieldmate"
+   },
+   {
+    "rule": "603.6",
+    "title": "Trigger events that involve objects changing zones are calle",
+    "token": "ChangesZone",
+    "card": "Beskir Shieldmate"
+   },
+   {
+    "rule": "614",
+    "title": "Replacement Effects",
+    "token": "CreateToken",
+    "card": "Doubling Season"
+   },
+   {
+    "rule": "614",
+    "title": "Replacement Effects",
+    "token": "AddCounter",
+    "card": "Doubling Season"
+   },
+   {
+    "rule": "614",
+    "title": "Replacement Effects",
+    "token": "ReplaceToken",
+    "card": "Doubling Season"
+   },
+   {
+    "rule": "614",
+    "title": "Replacement Effects",
+    "token": "ReplaceCounter",
+    "card": "Doubling Season"
+   },
+   {
+    "rule": "701.8",
+    "title": "Destroy",
+    "token": "Destroy",
+    "card": "Murder"
+   }
+  ],
+  "cr_effective": "August 7, 2026"
+ },
+ {
+  "id": "gen-dies-token-doubling-blisterpod",
+  "engine": "xmage",
+  "status": "executed",
+  "expectations": [
+   {
+    "check": "graveyard_count",
+    "pass": true
+   },
+   {
+    "check": "battlefield_count",
+    "pass": true
+   }
+  ],
+  "state": {
+   "A": {
+    "life": 20,
+    "battlefield": [
+     {
+      "name": "Doubling Season",
+      "tapped": false
+     },
+     {
+      "name": "Swamp",
+      "tapped": true
+     },
+     {
+      "name": "Swamp",
+      "tapped": true
+     },
+     {
+      "name": "Swamp",
+      "tapped": true
+     },
+     {
+      "name": "Eldrazi Scion Token",
+      "tapped": false,
+      "power": 1,
+      "toughness": 1
+     },
+     {
+      "name": "Eldrazi Scion Token",
+      "tapped": false,
+      "power": 1,
+      "toughness": 1
+     }
+    ],
+    "graveyard": [
+     "Blisterpod",
+     "Murder"
+    ],
+    "exile": [],
+    "hand_count": 0
+   },
+   "B": {
+    "life": 20,
+    "battlefield": [],
+    "graveyard": [],
+    "exile": [],
+    "hand_count": 0
+   }
+  },
+  "millis": 44,
+  "citations": [
+   {
+    "rule": "111",
+    "title": "Tokens",
+    "token": "Token",
+    "card": "Blisterpod"
+   },
+   {
+    "rule": "603.6",
+    "title": "Trigger events that involve objects changing zones are calle",
+    "token": "ChangesZone",
+    "card": "Blisterpod"
+   },
+   {
+    "rule": "614",
+    "title": "Replacement Effects",
+    "token": "CreateToken",
+    "card": "Doubling Season"
+   },
+   {
+    "rule": "614",
+    "title": "Replacement Effects",
+    "token": "AddCounter",
+    "card": "Doubling Season"
+   },
+   {
+    "rule": "614",
+    "title": "Replacement Effects",
+    "token": "ReplaceToken",
+    "card": "Doubling Season"
+   },
+   {
+    "rule": "614",
+    "title": "Replacement Effects",
+    "token": "ReplaceCounter",
+    "card": "Doubling Season"
+   },
+   {
+    "rule": "701.8",
+    "title": "Destroy",
+    "token": "Destroy",
+    "card": "Murder"
+   },
+   {
+    "rule": "702.114",
+    "title": "Devoid",
+    "token": "Devoid",
+    "card": "Blisterpod"
+   }
+  ],
+  "cr_effective": "August 7, 2026"
+ },
+ {
+  "id": "gen-dies-token-doubling-brood-weaver",
+  "engine": "xmage",
+  "status": "executed",
+  "expectations": [
+   {
+    "check": "graveyard_count",
+    "pass": true
+   },
+   {
+    "check": "battlefield_count",
+    "pass": true
+   }
+  ],
+  "state": {
+   "A": {
+    "life": 20,
+    "battlefield": [
+     {
+      "name": "Doubling Season",
+      "tapped": false
+     },
+     {
+      "name": "Swamp",
+      "tapped": true
+     },
+     {
+      "name": "Swamp",
+      "tapped": true
+     },
+     {
+      "name": "Swamp",
+      "tapped": true
+     },
+     {
+      "name": "Spider Token",
       "tapped": false,
       "power": 1,
       "toughness": 2
      },
      {
-      "name": "Cat Warrior Token",
+      "name": "Spider Token",
       "tapped": false,
-      "power": 2,
-      "toughness": 1
-     },
-     {
-      "name": "Cat Warrior Token",
-      "tapped": false,
-      "power": 2,
-      "toughness": 1
+      "power": 1,
+      "toughness": 2
      }
     ],
-    "graveyard": [],
+    "graveyard": [
+     "Brood Weaver",
+     "Murder"
+    ],
     "exile": [],
     "hand_count": 0
    },
@@ -60,15 +614,183 @@
     "hand_count": 0
    }
   },
-  "millis": 515
+  "millis": 31,
+  "citations": [
+   {
+    "rule": "111",
+    "title": "Tokens",
+    "token": "Token",
+    "card": "Brood Weaver"
+   },
+   {
+    "rule": "603.6",
+    "title": "Trigger events that involve objects changing zones are calle",
+    "token": "ChangesZone",
+    "card": "Brood Weaver"
+   },
+   {
+    "rule": "614",
+    "title": "Replacement Effects",
+    "token": "CreateToken",
+    "card": "Doubling Season"
+   },
+   {
+    "rule": "614",
+    "title": "Replacement Effects",
+    "token": "AddCounter",
+    "card": "Doubling Season"
+   },
+   {
+    "rule": "614",
+    "title": "Replacement Effects",
+    "token": "ReplaceToken",
+    "card": "Doubling Season"
+   },
+   {
+    "rule": "614",
+    "title": "Replacement Effects",
+    "token": "ReplaceCounter",
+    "card": "Doubling Season"
+   },
+   {
+    "rule": "701.8",
+    "title": "Destroy",
+    "token": "Destroy",
+    "card": "Murder"
+   },
+   {
+    "rule": "702.17",
+    "title": "Reach",
+    "token": "Reach",
+    "card": "Brood Weaver"
+   }
+  ],
+  "cr_effective": "August 7, 2026"
  },
  {
-  "id": "gen-etb-token-doubling-alirios-enraptured",
+  "id": "gen-dies-token-doubling-callous-inspector",
   "engine": "xmage",
   "status": "executed",
   "expectations": [
    {
-    "check": "permanent_count",
+    "check": "graveyard_count",
+    "pass": true
+   },
+   {
+    "check": "battlefield_count",
+    "pass": true
+   }
+  ],
+  "state": {
+   "A": {
+    "life": 19,
+    "battlefield": [
+     {
+      "name": "Doubling Season",
+      "tapped": false
+     },
+     {
+      "name": "Swamp",
+      "tapped": true
+     },
+     {
+      "name": "Swamp",
+      "tapped": true
+     },
+     {
+      "name": "Swamp",
+      "tapped": true
+     },
+     {
+      "name": "Clue Token",
+      "tapped": false
+     },
+     {
+      "name": "Clue Token",
+      "tapped": false
+     }
+    ],
+    "graveyard": [
+     "Callous Inspector",
+     "Murder"
+    ],
+    "exile": [],
+    "hand_count": 0
+   },
+   "B": {
+    "life": 20,
+    "battlefield": [],
+    "graveyard": [],
+    "exile": [],
+    "hand_count": 0
+   }
+  },
+  "millis": 49,
+  "citations": [
+   {
+    "rule": "111",
+    "title": "Tokens",
+    "token": "Token",
+    "card": "Callous Inspector"
+   },
+   {
+    "rule": "120",
+    "title": "Damage",
+    "token": "DealDamage",
+    "card": "Callous Inspector"
+   },
+   {
+    "rule": "603.6",
+    "title": "Trigger events that involve objects changing zones are calle",
+    "token": "ChangesZone",
+    "card": "Callous Inspector"
+   },
+   {
+    "rule": "614",
+    "title": "Replacement Effects",
+    "token": "CreateToken",
+    "card": "Doubling Season"
+   },
+   {
+    "rule": "614",
+    "title": "Replacement Effects",
+    "token": "AddCounter",
+    "card": "Doubling Season"
+   },
+   {
+    "rule": "614",
+    "title": "Replacement Effects",
+    "token": "ReplaceToken",
+    "card": "Doubling Season"
+   },
+   {
+    "rule": "614",
+    "title": "Replacement Effects",
+    "token": "ReplaceCounter",
+    "card": "Doubling Season"
+   },
+   {
+    "rule": "701.8",
+    "title": "Destroy",
+    "token": "Destroy",
+    "card": "Murder"
+   },
+   {
+    "rule": "702.111",
+    "title": "Menace",
+    "token": "Menace",
+    "card": "Callous Inspector"
+   }
+  ],
+  "cr_effective": "August 7, 2026"
+ },
+ {
+  "id": "gen-dies-token-doubling-carrier-thrall",
+  "engine": "xmage",
+  "status": "executed",
+  "expectations": [
+   {
+    "check": "graveyard_count",
     "pass": true
    },
    {
@@ -81,41 +803,38 @@
     "life": 20,
     "battlefield": [
      {
-      "name": "Island",
-      "tapped": true
-     },
-     {
-      "name": "Island",
-      "tapped": true
-     },
-     {
-      "name": "Island",
-      "tapped": true
-     },
-     {
       "name": "Doubling Season",
       "tapped": false
      },
      {
-      "name": "Alirios, Enraptured",
-      "tapped": true,
-      "power": 2,
-      "toughness": 3
+      "name": "Swamp",
+      "tapped": true
      },
      {
-      "name": "Reflection Token",
-      "tapped": false,
-      "power": 3,
-      "toughness": 2
+      "name": "Swamp",
+      "tapped": true
      },
      {
-      "name": "Reflection Token",
+      "name": "Swamp",
+      "tapped": true
+     },
+     {
+      "name": "Eldrazi Scion Token",
       "tapped": false,
-      "power": 3,
-      "toughness": 2
+      "power": 1,
+      "toughness": 1
+     },
+     {
+      "name": "Eldrazi Scion Token",
+      "tapped": false,
+      "power": 1,
+      "toughness": 1
      }
     ],
-    "graveyard": [],
+    "graveyard": [
+     "Carrier Thrall",
+     "Murder"
+    ],
     "exile": [],
     "hand_count": 0
    },
@@ -127,7 +846,52 @@
     "hand_count": 0
    }
   },
-  "millis": 78
+  "millis": 40,
+  "citations": [
+   {
+    "rule": "111",
+    "title": "Tokens",
+    "token": "Token",
+    "card": "Carrier Thrall"
+   },
+   {
+    "rule": "603.6",
+    "title": "Trigger events that involve objects changing zones are calle",
+    "token": "ChangesZone",
+    "card": "Carrier Thrall"
+   },
+   {
+    "rule": "614",
+    "title": "Replacement Effects",
+    "token": "CreateToken",
+    "card": "Doubling Season"
+   },
+   {
+    "rule": "614",
+    "title": "Replacement Effects",
+    "token": "AddCounter",
+    "card": "Doubling Season"
+   },
+   {
+    "rule": "614",
+    "title": "Replacement Effects",
+    "token": "ReplaceToken",
+    "card": "Doubling Season"
+   },
+   {
+    "rule": "614",
+    "title": "Replacement Effects",
+    "token": "ReplaceCounter",
+    "card": "Doubling Season"
+   },
+   {
+    "rule": "701.8",
+    "title": "Destroy",
+    "token": "Destroy",
+    "card": "Murder"
+   }
+  ],
+  "cr_effective": "August 7, 2026"
  },
  {
   "id": "gen-etb-token-doubling-ambassador-oak",
@@ -198,7 +962,46 @@
     "hand_count": 0
    }
   },
-  "millis": 133
+  "millis": 30,
+  "citations": [
+   {
+    "rule": "111",
+    "title": "Tokens",
+    "token": "Token",
+    "card": "Ambassador Oak"
+   },
+   {
+    "rule": "603.6",
+    "title": "Trigger events that involve objects changing zones are calle",
+    "token": "ChangesZone",
+    "card": "Ambassador Oak"
+   },
+   {
+    "rule": "614",
+    "title": "Replacement Effects",
+    "token": "CreateToken",
+    "card": "Doubling Season"
+   },
+   {
+    "rule": "614",
+    "title": "Replacement Effects",
+    "token": "AddCounter",
+    "card": "Doubling Season"
+   },
+   {
+    "rule": "614",
+    "title": "Replacement Effects",
+    "token": "ReplaceToken",
+    "card": "Doubling Season"
+   },
+   {
+    "rule": "614",
+    "title": "Replacement Effects",
+    "token": "ReplaceCounter",
+    "card": "Doubling Season"
+   }
+  ],
+  "cr_effective": "August 7, 2026"
  },
  {
   "id": "gen-etb-token-doubling-argivian-cavalier",
@@ -265,7 +1068,52 @@
     "hand_count": 0
    }
   },
-  "millis": 134
+  "millis": 34,
+  "citations": [
+   {
+    "rule": "111",
+    "title": "Tokens",
+    "token": "Token",
+    "card": "Argivian Cavalier"
+   },
+   {
+    "rule": "603.6",
+    "title": "Trigger events that involve objects changing zones are calle",
+    "token": "ChangesZone",
+    "card": "Argivian Cavalier"
+   },
+   {
+    "rule": "614",
+    "title": "Replacement Effects",
+    "token": "CreateToken",
+    "card": "Doubling Season"
+   },
+   {
+    "rule": "614",
+    "title": "Replacement Effects",
+    "token": "AddCounter",
+    "card": "Doubling Season"
+   },
+   {
+    "rule": "614",
+    "title": "Replacement Effects",
+    "token": "ReplaceToken",
+    "card": "Doubling Season"
+   },
+   {
+    "rule": "614",
+    "title": "Replacement Effects",
+    "token": "ReplaceCounter",
+    "card": "Doubling Season"
+   },
+   {
+    "rule": "702.154",
+    "title": "Enlist",
+    "token": "Enlist",
+    "card": "Argivian Cavalier"
+   }
+  ],
+  "cr_effective": "August 7, 2026"
  },
  {
   "id": "gen-etb-token-doubling-argothian-opportunist",
@@ -328,7 +1176,46 @@
     "hand_count": 0
    }
   },
-  "millis": 264
+  "millis": 24,
+  "citations": [
+   {
+    "rule": "111",
+    "title": "Tokens",
+    "token": "Token",
+    "card": "Argothian Opportunist"
+   },
+   {
+    "rule": "603.6",
+    "title": "Trigger events that involve objects changing zones are calle",
+    "token": "ChangesZone",
+    "card": "Argothian Opportunist"
+   },
+   {
+    "rule": "614",
+    "title": "Replacement Effects",
+    "token": "CreateToken",
+    "card": "Doubling Season"
+   },
+   {
+    "rule": "614",
+    "title": "Replacement Effects",
+    "token": "AddCounter",
+    "card": "Doubling Season"
+   },
+   {
+    "rule": "614",
+    "title": "Replacement Effects",
+    "token": "ReplaceToken",
+    "card": "Doubling Season"
+   },
+   {
+    "rule": "614",
+    "title": "Replacement Effects",
+    "token": "ReplaceCounter",
+    "card": "Doubling Season"
+   }
+  ],
+  "cr_effective": "August 7, 2026"
  },
  {
   "id": "gen-etb-token-doubling-aspiring-aeronaut",
@@ -399,66 +1286,52 @@
     "hand_count": 0
    }
   },
-  "millis": 114
- },
- {
-  "id": "gen-etb-token-doubling-astrid-peth",
-  "engine": "xmage",
-  "status": "executed",
-  "expectations": [
+  "millis": 25,
+  "citations": [
    {
-    "check": "permanent_count",
-    "pass": true
+    "rule": "111",
+    "title": "Tokens",
+    "token": "Token",
+    "card": "Aspiring Aeronaut"
    },
    {
-    "check": "battlefield_count",
-    "pass": true
+    "rule": "603.6",
+    "title": "Trigger events that involve objects changing zones are calle",
+    "token": "ChangesZone",
+    "card": "Aspiring Aeronaut"
+   },
+   {
+    "rule": "614",
+    "title": "Replacement Effects",
+    "token": "CreateToken",
+    "card": "Doubling Season"
+   },
+   {
+    "rule": "614",
+    "title": "Replacement Effects",
+    "token": "AddCounter",
+    "card": "Doubling Season"
+   },
+   {
+    "rule": "614",
+    "title": "Replacement Effects",
+    "token": "ReplaceToken",
+    "card": "Doubling Season"
+   },
+   {
+    "rule": "614",
+    "title": "Replacement Effects",
+    "token": "ReplaceCounter",
+    "card": "Doubling Season"
+   },
+   {
+    "rule": "702.9",
+    "title": "Flying",
+    "token": "Flying",
+    "card": "Aspiring Aeronaut"
    }
   ],
-  "state": {
-   "A": {
-    "life": 20,
-    "battlefield": [
-     {
-      "name": "Plains",
-      "tapped": true
-     },
-     {
-      "name": "Plains",
-      "tapped": true
-     },
-     {
-      "name": "Doubling Season",
-      "tapped": false
-     },
-     {
-      "name": "Astrid Peth",
-      "tapped": false,
-      "power": 2,
-      "toughness": 2
-     },
-     {
-      "name": "Food Token",
-      "tapped": false
-     },
-     {
-      "name": "Food Token",
-      "tapped": false
-     }
-    ],
-    "graveyard": [],
-    "exile": [],
-    "hand_count": 0
-   },
-   "B": {
-    "life": 20,
-    "battlefield": [],
-    "graveyard": [],
-    "exile": [],
-    "hand_count": 0
-   }
-  },
-  "millis": 96
+  "cr_effective": "August 7, 2026"
  },
  {
   "id": "gen-etb-token-doubling-attended-knight",
@@ -525,86 +1398,52 @@
     "hand_count": 0
    }
   },
-  "millis": 119
- },
- {
-  "id": "gen-etb-token-doubling-autarch-mammoth",
-  "engine": "xmage",
-  "status": "executed",
-  "expectations": [
+  "millis": 30,
+  "citations": [
    {
-    "check": "permanent_count",
-    "pass": true
+    "rule": "111",
+    "title": "Tokens",
+    "token": "Token",
+    "card": "Attended Knight"
    },
    {
-    "check": "battlefield_count",
-    "pass": true
+    "rule": "603.6",
+    "title": "Trigger events that involve objects changing zones are calle",
+    "token": "ChangesZone",
+    "card": "Attended Knight"
+   },
+   {
+    "rule": "614",
+    "title": "Replacement Effects",
+    "token": "CreateToken",
+    "card": "Doubling Season"
+   },
+   {
+    "rule": "614",
+    "title": "Replacement Effects",
+    "token": "AddCounter",
+    "card": "Doubling Season"
+   },
+   {
+    "rule": "614",
+    "title": "Replacement Effects",
+    "token": "ReplaceToken",
+    "card": "Doubling Season"
+   },
+   {
+    "rule": "614",
+    "title": "Replacement Effects",
+    "token": "ReplaceCounter",
+    "card": "Doubling Season"
+   },
+   {
+    "rule": "702.7",
+    "title": "First Strike",
+    "token": "First Strike",
+    "card": "Attended Knight"
    }
   ],
-  "state": {
-   "A": {
-    "life": 20,
-    "battlefield": [
-     {
-      "name": "Forest",
-      "tapped": true
-     },
-     {
-      "name": "Forest",
-      "tapped": true
-     },
-     {
-      "name": "Forest",
-      "tapped": true
-     },
-     {
-      "name": "Forest",
-      "tapped": true
-     },
-     {
-      "name": "Forest",
-      "tapped": true
-     },
-     {
-      "name": "Forest",
-      "tapped": true
-     },
-     {
-      "name": "Doubling Season",
-      "tapped": false
-     },
-     {
-      "name": "Autarch Mammoth",
-      "tapped": false,
-      "power": 5,
-      "toughness": 5
-     },
-     {
-      "name": "Elephant Token",
-      "tapped": false,
-      "power": 3,
-      "toughness": 3
-     },
-     {
-      "name": "Elephant Token",
-      "tapped": false,
-      "power": 3,
-      "toughness": 3
-     }
-    ],
-    "graveyard": [],
-    "exile": [],
-    "hand_count": 0
-   },
-   "B": {
-    "life": 20,
-    "battlefield": [],
-    "graveyard": [],
-    "exile": [],
-    "hand_count": 0
-   }
-  },
-  "millis": 259
+  "cr_effective": "August 7, 2026"
  },
  {
   "id": "gen-etb-token-doubling-aviation-pioneer",
@@ -671,10 +1510,49 @@
     "hand_count": 0
    }
   },
-  "millis": 27
+  "millis": 23,
+  "citations": [
+   {
+    "rule": "111",
+    "title": "Tokens",
+    "token": "Token",
+    "card": "Aviation Pioneer"
+   },
+   {
+    "rule": "603.6",
+    "title": "Trigger events that involve objects changing zones are calle",
+    "token": "ChangesZone",
+    "card": "Aviation Pioneer"
+   },
+   {
+    "rule": "614",
+    "title": "Replacement Effects",
+    "token": "CreateToken",
+    "card": "Doubling Season"
+   },
+   {
+    "rule": "614",
+    "title": "Replacement Effects",
+    "token": "AddCounter",
+    "card": "Doubling Season"
+   },
+   {
+    "rule": "614",
+    "title": "Replacement Effects",
+    "token": "ReplaceToken",
+    "card": "Doubling Season"
+   },
+   {
+    "rule": "614",
+    "title": "Replacement Effects",
+    "token": "ReplaceCounter",
+    "card": "Doubling Season"
+   }
+  ],
+  "cr_effective": "August 7, 2026"
  },
  {
-  "id": "gen-etb-token-doubling-bakersbane-duo",
+  "id": "gen-etb-token-doubling-brazen-freebooter",
   "engine": "xmage",
   "status": "executed",
   "expectations": [
@@ -692,11 +1570,19 @@
     "life": 20,
     "battlefield": [
      {
-      "name": "Forest",
+      "name": "Mountain",
       "tapped": true
      },
      {
-      "name": "Forest",
+      "name": "Mountain",
+      "tapped": true
+     },
+     {
+      "name": "Mountain",
+      "tapped": true
+     },
+     {
+      "name": "Mountain",
       "tapped": true
      },
      {
@@ -704,21 +1590,649 @@
       "tapped": false
      },
      {
-      "name": "Bakersbane Duo",
+      "name": "Brazen Freebooter",
+      "tapped": false,
+      "power": 3,
+      "toughness": 3
+     },
+     {
+      "name": "Treasure Token",
+      "tapped": false
+     },
+     {
+      "name": "Treasure Token",
+      "tapped": false
+     }
+    ],
+    "graveyard": [],
+    "exile": [],
+    "hand_count": 0
+   },
+   "B": {
+    "life": 20,
+    "battlefield": [],
+    "graveyard": [],
+    "exile": [],
+    "hand_count": 0
+   }
+  },
+  "millis": 26,
+  "citations": [
+   {
+    "rule": "111",
+    "title": "Tokens",
+    "token": "Token",
+    "card": "Brazen Freebooter"
+   },
+   {
+    "rule": "603.6",
+    "title": "Trigger events that involve objects changing zones are calle",
+    "token": "ChangesZone",
+    "card": "Brazen Freebooter"
+   },
+   {
+    "rule": "614",
+    "title": "Replacement Effects",
+    "token": "CreateToken",
+    "card": "Doubling Season"
+   },
+   {
+    "rule": "614",
+    "title": "Replacement Effects",
+    "token": "AddCounter",
+    "card": "Doubling Season"
+   },
+   {
+    "rule": "614",
+    "title": "Replacement Effects",
+    "token": "ReplaceToken",
+    "card": "Doubling Season"
+   },
+   {
+    "rule": "614",
+    "title": "Replacement Effects",
+    "token": "ReplaceCounter",
+    "card": "Doubling Season"
+   }
+  ],
+  "cr_effective": "August 7, 2026"
+ },
+ {
+  "id": "gen-etb-token-doubling-breyas-apprentice",
+  "engine": "xmage",
+  "status": "executed",
+  "expectations": [
+   {
+    "check": "permanent_count",
+    "pass": true
+   },
+   {
+    "check": "battlefield_count",
+    "pass": true
+   }
+  ],
+  "state": {
+   "A": {
+    "life": 20,
+    "battlefield": [
+     {
+      "name": "Mountain",
+      "tapped": true
+     },
+     {
+      "name": "Mountain",
+      "tapped": true
+     },
+     {
+      "name": "Mountain",
+      "tapped": true
+     },
+     {
+      "name": "Doubling Season",
+      "tapped": false
+     },
+     {
+      "name": "Breya's Apprentice",
+      "tapped": false,
+      "power": 2,
+      "toughness": 3
+     },
+     {
+      "name": "Thopter Token",
+      "tapped": false,
+      "power": 1,
+      "toughness": 1
+     },
+     {
+      "name": "Thopter Token",
+      "tapped": false,
+      "power": 1,
+      "toughness": 1
+     }
+    ],
+    "graveyard": [],
+    "exile": [],
+    "hand_count": 0
+   },
+   "B": {
+    "life": 20,
+    "battlefield": [],
+    "graveyard": [],
+    "exile": [],
+    "hand_count": 0
+   }
+  },
+  "millis": 33,
+  "citations": [
+   {
+    "rule": "111",
+    "title": "Tokens",
+    "token": "Token",
+    "card": "Breya's Apprentice"
+   },
+   {
+    "rule": "401",
+    "title": "Library",
+    "token": "Dig",
+    "card": "Breya's Apprentice"
+   },
+   {
+    "rule": "601.2b",
+    "title": "If the spell is modal, the player announces the mode choice ",
+    "token": "Charm",
+    "card": "Breya's Apprentice"
+   },
+   {
+    "rule": "603.6",
+    "title": "Trigger events that involve objects changing zones are calle",
+    "token": "ChangesZone",
+    "card": "Breya's Apprentice"
+   },
+   {
+    "rule": "611",
+    "title": "Continuous Effects",
+    "token": "Effect",
+    "card": "Breya's Apprentice"
+   },
+   {
+    "rule": "613.4",
+    "title": "Within layer 7, apply effects in a series of sublayers in th",
+    "token": "Pump",
+    "card": "Breya's Apprentice"
+   },
+   {
+    "rule": "614",
+    "title": "Replacement Effects",
+    "token": "CreateToken",
+    "card": "Doubling Season"
+   },
+   {
+    "rule": "614",
+    "title": "Replacement Effects",
+    "token": "AddCounter",
+    "card": "Doubling Season"
+   },
+   {
+    "rule": "614",
+    "title": "Replacement Effects",
+    "token": "ReplaceToken",
+    "card": "Doubling Season"
+   },
+   {
+    "rule": "614",
+    "title": "Replacement Effects",
+    "token": "ReplaceCounter",
+    "card": "Doubling Season"
+   }
+  ],
+  "cr_effective": "August 7, 2026"
+ },
+ {
+  "id": "gen-lifegain-counter-ajanis-pridemate",
+  "engine": "xmage",
+  "status": "executed",
+  "expectations": [
+   {
+    "check": "life",
+    "pass": true
+   },
+   {
+    "check": "power_toughness",
+    "pass": true
+   }
+  ],
+  "state": {
+   "A": {
+    "life": 27,
+    "battlefield": [
+     {
+      "name": "Ajani's Pridemate",
+      "tapped": false,
+      "power": 3,
+      "toughness": 3
+     },
+     {
+      "name": "Plains",
+      "tapped": true
+     },
+     {
+      "name": "Plains",
+      "tapped": true
+     },
+     {
+      "name": "Plains",
+      "tapped": true
+     },
+     {
+      "name": "Plains",
+      "tapped": true
+     }
+    ],
+    "graveyard": [
+     "Angel's Mercy"
+    ],
+    "exile": [],
+    "hand_count": 0
+   },
+   "B": {
+    "life": 20,
+    "battlefield": [],
+    "graveyard": [],
+    "exile": [],
+    "hand_count": 0
+   }
+  },
+  "millis": 23,
+  "citations": [
+   {
+    "rule": "119",
+    "title": "Life",
+    "token": "LifeGained",
+    "card": "Ajani's Pridemate"
+   },
+   {
+    "rule": "119",
+    "title": "Life",
+    "token": "GainLife",
+    "card": "Angel's Mercy"
+   },
+   {
+    "rule": "122",
+    "title": "Counters",
+    "token": "PutCounter",
+    "card": "Ajani's Pridemate"
+   }
+  ],
+  "cr_effective": "August 7, 2026"
+ },
+ {
+  "id": "gen-lifegain-counter-blood-researcher",
+  "engine": "xmage",
+  "status": "executed",
+  "expectations": [
+   {
+    "check": "life",
+    "pass": true
+   },
+   {
+    "check": "power_toughness",
+    "pass": true
+   }
+  ],
+  "state": {
+   "A": {
+    "life": 27,
+    "battlefield": [
+     {
+      "name": "Blood Researcher",
+      "tapped": false,
+      "power": 3,
+      "toughness": 3
+     },
+     {
+      "name": "Plains",
+      "tapped": true
+     },
+     {
+      "name": "Plains",
+      "tapped": true
+     },
+     {
+      "name": "Plains",
+      "tapped": true
+     },
+     {
+      "name": "Plains",
+      "tapped": true
+     }
+    ],
+    "graveyard": [
+     "Angel's Mercy"
+    ],
+    "exile": [],
+    "hand_count": 0
+   },
+   "B": {
+    "life": 20,
+    "battlefield": [],
+    "graveyard": [],
+    "exile": [],
+    "hand_count": 0
+   }
+  },
+  "millis": 25,
+  "citations": [
+   {
+    "rule": "119",
+    "title": "Life",
+    "token": "LifeGained",
+    "card": "Blood Researcher"
+   },
+   {
+    "rule": "119",
+    "title": "Life",
+    "token": "GainLife",
+    "card": "Angel's Mercy"
+   },
+   {
+    "rule": "122",
+    "title": "Counters",
+    "token": "PutCounter",
+    "card": "Blood Researcher"
+   },
+   {
+    "rule": "702.111",
+    "title": "Menace",
+    "token": "Menace",
+    "card": "Blood Researcher"
+   }
+  ],
+  "cr_effective": "August 7, 2026"
+ },
+ {
+  "id": "gen-lifegain-counter-bloodbond-vampire",
+  "engine": "xmage",
+  "status": "executed",
+  "expectations": [
+   {
+    "check": "life",
+    "pass": true
+   },
+   {
+    "check": "power_toughness",
+    "pass": true
+   }
+  ],
+  "state": {
+   "A": {
+    "life": 27,
+    "battlefield": [
+     {
+      "name": "Bloodbond Vampire",
+      "tapped": false,
+      "power": 4,
+      "toughness": 4
+     },
+     {
+      "name": "Plains",
+      "tapped": true
+     },
+     {
+      "name": "Plains",
+      "tapped": true
+     },
+     {
+      "name": "Plains",
+      "tapped": true
+     },
+     {
+      "name": "Plains",
+      "tapped": true
+     }
+    ],
+    "graveyard": [
+     "Angel's Mercy"
+    ],
+    "exile": [],
+    "hand_count": 0
+   },
+   "B": {
+    "life": 20,
+    "battlefield": [],
+    "graveyard": [],
+    "exile": [],
+    "hand_count": 0
+   }
+  },
+  "millis": 19,
+  "citations": [
+   {
+    "rule": "119",
+    "title": "Life",
+    "token": "LifeGained",
+    "card": "Bloodbond Vampire"
+   },
+   {
+    "rule": "119",
+    "title": "Life",
+    "token": "GainLife",
+    "card": "Angel's Mercy"
+   },
+   {
+    "rule": "122",
+    "title": "Counters",
+    "token": "PutCounter",
+    "card": "Bloodbond Vampire"
+   }
+  ],
+  "cr_effective": "August 7, 2026"
+ },
+ {
+  "id": "gen-lifegain-counter-bloodthirsty-aerialist",
+  "engine": "xmage",
+  "status": "executed",
+  "expectations": [
+   {
+    "check": "life",
+    "pass": true
+   },
+   {
+    "check": "power_toughness",
+    "pass": true
+   }
+  ],
+  "state": {
+   "A": {
+    "life": 27,
+    "battlefield": [
+     {
+      "name": "Bloodthirsty Aerialist",
+      "tapped": false,
+      "power": 3,
+      "toughness": 4
+     },
+     {
+      "name": "Plains",
+      "tapped": true
+     },
+     {
+      "name": "Plains",
+      "tapped": true
+     },
+     {
+      "name": "Plains",
+      "tapped": true
+     },
+     {
+      "name": "Plains",
+      "tapped": true
+     }
+    ],
+    "graveyard": [
+     "Angel's Mercy"
+    ],
+    "exile": [],
+    "hand_count": 0
+   },
+   "B": {
+    "life": 20,
+    "battlefield": [],
+    "graveyard": [],
+    "exile": [],
+    "hand_count": 0
+   }
+  },
+  "millis": 21,
+  "citations": [
+   {
+    "rule": "119",
+    "title": "Life",
+    "token": "LifeGained",
+    "card": "Bloodthirsty Aerialist"
+   },
+   {
+    "rule": "119",
+    "title": "Life",
+    "token": "GainLife",
+    "card": "Angel's Mercy"
+   },
+   {
+    "rule": "122",
+    "title": "Counters",
+    "token": "PutCounter",
+    "card": "Bloodthirsty Aerialist"
+   },
+   {
+    "rule": "702.9",
+    "title": "Flying",
+    "token": "Flying",
+    "card": "Bloodthirsty Aerialist"
+   }
+  ],
+  "cr_effective": "August 7, 2026"
+ },
+ {
+  "id": "gen-lifegain-counter-celestial-unicorn",
+  "engine": "xmage",
+  "status": "executed",
+  "expectations": [
+   {
+    "check": "life",
+    "pass": true
+   },
+   {
+    "check": "power_toughness",
+    "pass": true
+   }
+  ],
+  "state": {
+   "A": {
+    "life": 27,
+    "battlefield": [
+     {
+      "name": "Celestial Unicorn",
+      "tapped": false,
+      "power": 4,
+      "toughness": 3
+     },
+     {
+      "name": "Plains",
+      "tapped": true
+     },
+     {
+      "name": "Plains",
+      "tapped": true
+     },
+     {
+      "name": "Plains",
+      "tapped": true
+     },
+     {
+      "name": "Plains",
+      "tapped": true
+     }
+    ],
+    "graveyard": [
+     "Angel's Mercy"
+    ],
+    "exile": [],
+    "hand_count": 0
+   },
+   "B": {
+    "life": 20,
+    "battlefield": [],
+    "graveyard": [],
+    "exile": [],
+    "hand_count": 0
+   }
+  },
+  "millis": 28,
+  "citations": [
+   {
+    "rule": "119",
+    "title": "Life",
+    "token": "LifeGained",
+    "card": "Celestial Unicorn"
+   },
+   {
+    "rule": "119",
+    "title": "Life",
+    "token": "GainLife",
+    "card": "Angel's Mercy"
+   },
+   {
+    "rule": "122",
+    "title": "Counters",
+    "token": "PutCounter",
+    "card": "Celestial Unicorn"
+   }
+  ],
+  "cr_effective": "August 7, 2026"
+ },
+ {
+  "id": "gen-lifegain-counter-hallowed-priest",
+  "engine": "xmage",
+  "status": "executed",
+  "expectations": [
+   {
+    "check": "life",
+    "pass": true
+   },
+   {
+    "check": "power_toughness",
+    "pass": true
+   }
+  ],
+  "state": {
+   "A": {
+    "life": 27,
+    "battlefield": [
+     {
+      "name": "Hallowed Priest",
       "tapped": false,
       "power": 2,
       "toughness": 2
      },
      {
-      "name": "Food Token",
-      "tapped": false
+      "name": "Plains",
+      "tapped": true
      },
      {
-      "name": "Food Token",
-      "tapped": false
+      "name": "Plains",
+      "tapped": true
+     },
+     {
+      "name": "Plains",
+      "tapped": true
+     },
+     {
+      "name": "Plains",
+      "tapped": true
      }
     ],
-    "graveyard": [],
+    "graveyard": [
+     "Angel's Mercy"
+    ],
     "exile": [],
     "hand_count": 0
    },
@@ -730,70 +2244,73 @@
     "hand_count": 0
    }
   },
-  "millis": 35
+  "millis": 18,
+  "citations": [
+   {
+    "rule": "119",
+    "title": "Life",
+    "token": "LifeGained",
+    "card": "Hallowed Priest"
+   },
+   {
+    "rule": "119",
+    "title": "Life",
+    "token": "GainLife",
+    "card": "Angel's Mercy"
+   },
+   {
+    "rule": "122",
+    "title": "Counters",
+    "token": "PutCounter",
+    "card": "Hallowed Priest"
+   }
+  ],
+  "cr_effective": "August 7, 2026"
  },
  {
-  "id": "gen-etb-token-doubling-biogenic-ooze",
+  "id": "gen-lifegain-counter-leonardo-cutting-edge",
   "engine": "xmage",
   "status": "executed",
   "expectations": [
    {
-    "check": "permanent_count",
+    "check": "life",
     "pass": true
    },
    {
-    "check": "battlefield_count",
+    "check": "power_toughness",
     "pass": true
    }
   ],
   "state": {
    "A": {
-    "life": 20,
+    "life": 27,
     "battlefield": [
      {
-      "name": "Forest",
-      "tapped": true
-     },
-     {
-      "name": "Forest",
-      "tapped": true
-     },
-     {
-      "name": "Forest",
-      "tapped": true
-     },
-     {
-      "name": "Forest",
-      "tapped": true
-     },
-     {
-      "name": "Forest",
-      "tapped": true
-     },
-     {
-      "name": "Doubling Season",
-      "tapped": false
-     },
-     {
-      "name": "Biogenic Ooze",
+      "name": "Leonardo, Cutting Edge",
       "tapped": false,
-      "power": 4,
-      "toughness": 4
+      "power": 2,
+      "toughness": 2
      },
      {
-      "name": "Ooze Token",
-      "tapped": false,
-      "power": 4,
-      "toughness": 4
+      "name": "Plains",
+      "tapped": true
      },
      {
-      "name": "Ooze Token",
-      "tapped": false,
-      "power": 4,
-      "toughness": 4
+      "name": "Plains",
+      "tapped": true
+     },
+     {
+      "name": "Plains",
+      "tapped": true
+     },
+     {
+      "name": "Plains",
+      "tapped": true
      }
     ],
-    "graveyard": [],
+    "graveyard": [
+     "Angel's Mercy"
+    ],
     "exile": [],
     "hand_count": 0
    },
@@ -805,6 +2322,123 @@
     "hand_count": 0
    }
   },
-  "millis": 50
+  "millis": 22,
+  "citations": [
+   {
+    "rule": "119",
+    "title": "Life",
+    "token": "LifeGained",
+    "card": "Leonardo, Cutting Edge"
+   },
+   {
+    "rule": "119",
+    "title": "Life",
+    "token": "GainLife",
+    "card": "Angel's Mercy"
+   },
+   {
+    "rule": "122",
+    "title": "Counters",
+    "token": "PutCounter",
+    "card": "Leonardo, Cutting Edge"
+   },
+   {
+    "rule": "702.15",
+    "title": "Lifelink",
+    "token": "Lifelink",
+    "card": "Leonardo, Cutting Edge"
+   },
+   {
+    "rule": "702.190",
+    "title": "Sneak",
+    "token": "Sneak",
+    "card": "Leonardo, Cutting Edge"
+   }
+  ],
+  "cr_effective": "August 7, 2026"
+ },
+ {
+  "id": "gen-lifegain-counter-mj-rising-star",
+  "engine": "xmage",
+  "status": "executed",
+  "expectations": [
+   {
+    "check": "life",
+    "pass": true
+   },
+   {
+    "check": "power_toughness",
+    "pass": true
+   }
+  ],
+  "state": {
+   "A": {
+    "life": 27,
+    "battlefield": [
+     {
+      "name": "MJ, Rising Star",
+      "tapped": false,
+      "power": 3,
+      "toughness": 4
+     },
+     {
+      "name": "Plains",
+      "tapped": true
+     },
+     {
+      "name": "Plains",
+      "tapped": true
+     },
+     {
+      "name": "Plains",
+      "tapped": true
+     },
+     {
+      "name": "Plains",
+      "tapped": true
+     }
+    ],
+    "graveyard": [
+     "Angel's Mercy"
+    ],
+    "exile": [],
+    "hand_count": 0
+   },
+   "B": {
+    "life": 20,
+    "battlefield": [],
+    "graveyard": [],
+    "exile": [],
+    "hand_count": 0
+   }
+  },
+  "millis": 18,
+  "citations": [
+   {
+    "rule": "119",
+    "title": "Life",
+    "token": "LifeGained",
+    "card": "MJ, Rising Star"
+   },
+   {
+    "rule": "119",
+    "title": "Life",
+    "token": "GainLife",
+    "card": "Angel's Mercy"
+   },
+   {
+    "rule": "122",
+    "title": "Counters",
+    "token": "PutCounter",
+    "card": "MJ, Rising Star"
+   },
+   {
+    "rule": "702.20",
+    "title": "Vigilance",
+    "token": "Vigilance",
+    "card": "MJ, Rising Star"
+   }
+  ],
+  "cr_effective": "August 7, 2026"
  }
 ]

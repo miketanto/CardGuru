@@ -1,6 +1,6 @@
 {
  "id": "gen-etb-token-doubling-argothian-opportunist",
- "description": "Argothian Opportunist ETB token trigger under Doubling Season (expect doubled token)",
+ "description": "Argothian Opportunist ETB token trigger under Doubling Season",
  "template": "etb_token_doubling",
  "players": {
   "A": {

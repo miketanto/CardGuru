@@ -1,26 +1,21 @@
 #!/usr/bin/env python3
 """Ontology-driven scenario generator (Phase 2a item 3).
 
-Template implemented: **ETB-token trigger under a token-doubling replacement**
-(Doubling Season). Candidate cards are found by a mechanical-search query over
-the ability graph, then *prefiltered by the same graph* to maximize
-deterministic execution under strict-choose mode:
+Templates find candidate cards by mechanical-search queries over the ability
+graph, then prefilter BY THE GRAPH for deterministic execution under
+strict-choose mode (no targets, no may-triggers, no Count$ amounts,
+unconditional triggers), and compute expectations from graph params.
 
-  - trigger chain reaches api=Token with a literal TokenAmount (default 1)
-  - no targeting params (ValidTgts/TgtPrompt) anywhere in the chain
-  - no Optional/OptionalDecider (may-triggers need scripted choices)
-  - no Count$ nodes in the chain (dynamic amounts)
-  - creature, mono-colored simple mana cost, castable off basics
-  - implemented in XMage (xmage_cards.txt) and not on an 'unfinished' list
+Templates:
+  etb_token_doubling    ETB-token trigger under Doubling Season
+  dies_token_doubling   dies-token trigger, killed by Murder, under Doubling Season
+  lifegain_counter      lifegain->+1/+1-counter trigger + Angel's Mercy
 
-Each scenario: player A has basics + Doubling Season, casts the creature,
-and we expect battlefield = lands + Season + creature + 2x tokens.
 Expectation misses and errors are data, not failures — the run report
-measures the clean-execution rate (the choice-explosion number from
-plan/uncertainties.md #4).
+measures the clean-execution rate.
 
 Usage:
-  python corpus/generate_scenarios.py [N] [outdir]     # default 12 corpus/generated
+  python corpus/generate_scenarios.py [N-per-template] [outdir] [template ...]
   python -m cardguru adjudicate corpus/generated/*.json
 """
 from __future__ import annotations
@@ -32,23 +27,13 @@ import sys
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from cardguru.index import SearchIndex  # noqa: E402
-from cardguru.querydsl import CardGraph, evaluate  # noqa: E402
+from cardguru.querydsl import CardGraph  # noqa: E402
 
 DATASET = os.environ.get("CARDGURU_DATASET", "data/dataset.jsonl.gz")
 XMAGE_CARDS = os.environ.get("CARDGURU_XMAGE_CARDS", "/home/user/mse/data/xmage_cards.txt")
 UNFINISHED = "research/data/xmage_unfinished.json"
 
 BASIC = {"W": "Plains", "U": "Island", "B": "Swamp", "R": "Mountain", "G": "Forest"}
-
-ETB_TOKEN_QUERY = {
-    "chain": {
-        "from": {"kind": "T", "mode": "ChangesZone",
-                 "params": {"ValidCard": {"contains": "Card.Self"},
-                            "Destination": "Battlefield"}},
-        "to": {"api": "Token"},
-    }
-}
-
 BAD_PARAMS = {"ValidTgts", "TgtPrompt", "Optional", "OptionalDecider", "TargetMin",
               "UnlessCost", "Choices", "ChoiceTitle"}
 
@@ -67,43 +52,208 @@ def parse_mono_cost(mana_cost: str):
             color = tok
             total += 1
         else:
-            return None   # X, hybrid, phyrexian, snow...
+            return None
     return (color, total) if color else None
 
 
-def chain_is_simple(rec: dict) -> bool:
-    """True if every node reachable from the ETB trigger is deterministic."""
-    graph = CardGraph(rec)
+def find_trigger(rec, mode, req_params):
+    """The trigger node matching mode + exact params, or None."""
     for n in rec["nodes"]:
-        if n.get("kind") != "T" or n.get("params", {}).get("Mode") != "ChangesZone":
+        if n.get("kind") != "T":
             continue
-        tp = n.get("params", {})
-        # trigger must be an unconditional ETB-from-anywhere on the card itself
-        # (e.g. Archfiend's Vessel triggers only from the graveyard — casting
-        # from hand makes no token, so the naive expectation would be wrong)
-        if tp.get("Origin") not in (None, "Any"):
+        p = n.get("params", {})
+        if p.get("Mode") != mode:
+            continue
+        if all(p.get(k) == v for k, v in req_params.items()):
+            return n
+    return None
+
+
+def chain_nodes(rec, trigger):
+    graph = CardGraph(rec)
+    ids = {trigger["id"]}
+    for dst, _path in graph.reachable(trigger["id"], None):
+        ids.add(dst)
+    return [graph.by_id[i] for i in ids]
+
+
+def chain_deterministic(nodes, trigger, extra_trigger_params=()):
+    tp = trigger.get("params", {})
+    if any(k in tp for k in ("CheckSVar", "Condition", "IsPresent")):
+        return False
+    for k in extra_trigger_params:
+        if k in tp:
             return False
-        if tp.get("ValidCard") != "Card.Self":
+    for node in nodes:
+        if node.get("kind") == "SVarCount":
             return False
-        if "CheckSVar" in tp or "Condition" in tp or "IsPresent" in tp:
+        if BAD_PARAMS & set(node.get("params") or {}):
             return False
-        ids = {n["id"]}
-        for dst, _path in graph.reachable(n["id"], None):
-            ids.add(dst)
-        for nid in ids:
-            node = graph.by_id[nid]
-            if node.get("kind") == "SVarCount":
-                return False
-            params = node.get("params") or {}
-            if BAD_PARAMS & set(params):
-                return False
-            if node.get("api") == "Token":
-                if params.get("TokenAmount", "1") != "1":
-                    return False
-                if params.get("TokenOwner", "You") != "You":
-                    return False
     return True
 
+
+def no_interfering_abilities(rec, trigger):
+    """The template trigger must be the card's ONLY trigger/static/replacement.
+    (Discovered via Dr. Beverly Crusher: a second, static ability doubled her
+    own lifegain trigger — two stack entries needing an ordering choice, and a
+    +2 instead of +1 outcome. Activated abilities are fine; nobody activates
+    them in these scenarios. Keywords are allowed.)"""
+    for n in rec["nodes"]:
+        if n is trigger or n.get("id") == trigger.get("id"):
+            continue
+        if n.get("kind") in ("T", "S", "R"):
+            return False
+    return True
+
+
+def single_token_chain(nodes):
+    """Exactly-one-token effect chains (TokenAmount literal 1, owner You)."""
+    tokens = [n for n in nodes if n.get("api") == "Token"]
+    if len(tokens) != 1:
+        return False
+    p = tokens[0].get("params", {})
+    return p.get("TokenAmount", "1") == "1" and p.get("TokenOwner", "You") == "You"
+
+
+def base_scenario(scn_id, description, template, battlefield, hand, actions, expect):
+    return {
+        "id": scn_id, "description": description, "template": template,
+        "players": {"A": {"life": 20, "battlefield": battlefield, "hand": hand},
+                    "B": {"life": 20}},
+        "actions": actions,
+        "stop": {"turn": 1, "phase": "END_TURN"},
+        "expect": expect,
+    }
+
+
+def slug(name):
+    return name.lower().replace(" ", "-").replace(",", "").replace("'", "")
+
+
+# ------------------------------------------------------------------ templates
+
+def gen_etb_token(idx):
+    query = {"chain": {"from": {"kind": "T", "mode": "ChangesZone",
+                                "params": {"ValidCard": {"contains": "Card.Self"},
+                                           "Destination": "Battlefield"}},
+                       "to": {"api": "Token"}}}
+    for hit in idx.search(query):
+        rec = hit["record"]
+        if "Creature" not in (rec.get("types") or ""):
+            continue
+        cost = parse_mono_cost(rec.get("manaCost") or "")
+        if not cost or cost[1] > 6:
+            continue
+        trig = find_trigger(rec, "ChangesZone",
+                            {"ValidCard": "Card.Self", "Destination": "Battlefield"})
+        if not trig or trig.get("params", {}).get("Origin") not in (None, "Any"):
+            continue
+        nodes = chain_nodes(rec, trig)
+        if not chain_deterministic(nodes, trig) or not single_token_chain(nodes) \
+                or not no_interfering_abilities(rec, trig):
+            continue
+        name, (color, mv) = rec["name"], cost
+        yield base_scenario(
+            f"gen-etb-token-doubling-{slug(name)}",
+            f"{name} ETB token trigger under Doubling Season",
+            "etb_token_doubling",
+            [{"card": BASIC[color], "count": mv}, {"card": "Doubling Season"}],
+            [name],
+            [{"do": "cast", "turn": 1, "phase": "PRECOMBAT_MAIN", "player": "A",
+              "card": name},
+             {"do": "wait_stack", "turn": 1, "phase": "PRECOMBAT_MAIN"}],
+            [{"check": "permanent_count", "player": "A", "card": name, "count": 1},
+             {"check": "battlefield_count", "player": "A", "count": mv + 1 + 1 + 2}])
+
+
+def gen_dies_token(idx):
+    query = {"chain": {"from": {"kind": "T", "mode": "ChangesZone",
+                                "params": {"ValidCard": {"contains": "Card.Self"},
+                                           "Origin": "Battlefield",
+                                           "Destination": "Graveyard"}},
+                       "to": {"api": "Token"}}}
+    for hit in idx.search(query):
+        rec = hit["record"]
+        if "Creature" not in (rec.get("types") or ""):
+            continue
+        trig = find_trigger(rec, "ChangesZone",
+                            {"ValidCard": "Card.Self", "Origin": "Battlefield",
+                             "Destination": "Graveyard"})
+        if not trig:
+            continue
+        nodes = chain_nodes(rec, trig)
+        if not chain_deterministic(nodes, trig) or not single_token_chain(nodes) \
+                or not no_interfering_abilities(rec, trig):
+            continue
+        name = rec["name"]
+        yield base_scenario(
+            f"gen-dies-token-doubling-{slug(name)}",
+            f"{name} dies-token trigger (killed by Murder) under Doubling Season",
+            "dies_token_doubling",
+            [{"card": name}, {"card": "Doubling Season"}, {"card": "Swamp", "count": 3}],
+            ["Murder"],
+            [{"do": "cast", "turn": 1, "phase": "PRECOMBAT_MAIN", "player": "A",
+              "card": "Murder"},
+             {"do": "target", "player": "A", "value": name},
+             {"do": "wait_stack", "turn": 1, "phase": "PRECOMBAT_MAIN"}],
+            # swamps + Season + 2 tokens (creature and Murder in graveyard)
+            [{"check": "graveyard_count", "player": "A", "card": name, "count": 1},
+             {"check": "battlefield_count", "player": "A", "count": 3 + 1 + 2}])
+
+
+def gen_lifegain_counter(idx):
+    query = {"chain": {"from": {"kind": "T", "mode": "LifeGained"},
+                       "to": {"api": "PutCounter",
+                              "params": {"CounterType": "P1P1"}}}}
+    for hit in idx.search(query):
+        rec = hit["record"]
+        if "Creature" not in (rec.get("types") or ""):
+            continue
+        pt = rec.get("pt") or ""
+        if "/" not in pt:
+            continue
+        try:
+            power, tough = (int(x) for x in pt.split("/"))
+        except ValueError:
+            continue
+        trig = find_trigger(rec, "LifeGained", {"ValidPlayer": "You"})
+        if not trig:
+            continue
+        nodes = chain_nodes(rec, trig)
+        if not chain_deterministic(nodes, trig) \
+                or not no_interfering_abilities(rec, trig):
+            continue
+        counters = [n for n in nodes if n.get("api") == "PutCounter"]
+        if len(counters) != 1:
+            continue
+        cp = counters[0].get("params", {})
+        if cp.get("CounterType") != "P1P1" or cp.get("CounterNum", "1") != "1":
+            continue
+        if cp.get("Defined", "Self") != "Self":
+            continue
+        name = rec["name"]
+        yield base_scenario(
+            f"gen-lifegain-counter-{slug(name)}",
+            f"{name} lifegain->counter trigger with Angel's Mercy (+7 life)",
+            "lifegain_counter",
+            [{"card": name}, {"card": "Plains", "count": 4}],
+            ["Angel's Mercy"],
+            [{"do": "cast", "turn": 1, "phase": "PRECOMBAT_MAIN", "player": "A",
+              "card": "Angel's Mercy"},
+             {"do": "wait_stack", "turn": 1, "phase": "PRECOMBAT_MAIN"}],
+            [{"check": "life", "player": "A", "value": 27},
+             {"check": "power_toughness", "player": "A", "card": name,
+              "power": power + 1, "toughness": tough + 1}])
+
+
+TEMPLATES = {
+    "etb_token_doubling": gen_etb_token,
+    "dies_token_doubling": gen_dies_token,
+    "lifegain_counter": gen_lifegain_counter,
+}
+
+
+# ------------------------------------------------------------------ main
 
 def implemented_cards() -> set[str]:
     names = set()
@@ -124,79 +274,45 @@ def unfinished_cards() -> set[str]:
     return out
 
 
-def make_scenario(name: str, color: str, cost: int) -> dict:
-    land = BASIC[color]
-    # battlefield = lands + Doubling Season + creature + 2 tokens
-    expected = cost + 1 + 1 + 2
-    return {
-        "id": "gen-etb-token-doubling-" + name.lower().replace(" ", "-")
-              .replace(",", "").replace("'", ""),
-        "description": f"{name} ETB token trigger under Doubling Season "
-                       "(expect doubled token)",
-        "template": "etb_token_doubling",
-        "players": {
-            "A": {"life": 20,
-                  "battlefield": [{"card": land, "count": cost},
-                                  {"card": "Doubling Season"}],
-                  "hand": [name]},
-            "B": {"life": 20},
-        },
-        "actions": [
-            {"do": "cast", "turn": 1, "phase": "PRECOMBAT_MAIN",
-             "player": "A", "card": name},
-            {"do": "wait_stack", "turn": 1, "phase": "PRECOMBAT_MAIN"},
-        ],
-        "stop": {"turn": 1, "phase": "END_TURN"},
-        "expect": [
-            {"check": "permanent_count", "player": "A", "card": name, "count": 1},
-            {"check": "battlefield_count", "player": "A", "count": expected},
-        ],
-    }
+def scenario_cards(scn) -> set[str]:
+    names = set()
+    for cfg in scn["players"].values():
+        for b in cfg.get("battlefield", []):
+            names.add(b["card"])
+        names.update(cfg.get("hand", []))
+    return names
 
 
 def main():
-    n = int(sys.argv[1]) if len(sys.argv) > 1 else 12
+    n = int(sys.argv[1]) if len(sys.argv) > 1 else 8
     outdir = sys.argv[2] if len(sys.argv) > 2 else "corpus/generated"
+    wanted = sys.argv[3:] or list(TEMPLATES)
     os.makedirs(outdir, exist_ok=True)
 
     idx = SearchIndex.load(DATASET)
     impl = implemented_cards()
     unfin = unfinished_cards()
+    basics = set(BASIC.values())
 
-    stats = {"query_hits": 0, "creature": 0, "mono_castable": 0,
-             "simple_chain": 0, "xmage_implemented": 0, "generated": 0}
-    chosen = []
-    for hit in idx.search(ETB_TOKEN_QUERY):
-        rec = hit["record"]
-        stats["query_hits"] += 1
-        name = rec["name"]
-        if "Creature" not in (rec.get("types") or ""):
-            continue
-        stats["creature"] += 1
-        cost = parse_mono_cost(rec.get("manaCost") or "")
-        if not cost or cost[1] > 6:
-            continue
-        stats["mono_castable"] += 1
-        if not chain_is_simple(rec):
-            continue
-        stats["simple_chain"] += 1
-        if name not in impl or name in unfin:
-            continue
-        stats["xmage_implemented"] += 1
-        chosen.append((name, cost))
-
-    chosen.sort()
-    for name, (color, cost) in chosen[:n]:
-        scn = make_scenario(name, color, cost)
-        with open(os.path.join(outdir, scn["id"] + ".json"), "w",
-                  encoding="utf-8") as f:
-            json.dump(scn, f, indent=1)
-        stats["generated"] += 1
+    funnel = {}
+    for tname in wanted:
+        candidates, kept = 0, 0
+        for scn in sorted(TEMPLATES[tname](idx), key=lambda s: s["id"]):
+            candidates += 1
+            if kept >= n:
+                continue
+            cards = scenario_cards(scn) - basics
+            if any(c not in impl or c in unfin for c in cards):
+                continue
+            with open(os.path.join(outdir, scn["id"] + ".json"), "w",
+                      encoding="utf-8") as f:
+                json.dump(scn, f, indent=1)
+            kept += 1
+        funnel[tname] = {"deterministic_candidates": candidates, "generated": kept}
 
     with open(os.path.join(outdir, "_funnel.json"), "w", encoding="utf-8") as f:
-        json.dump(stats, f, indent=1)
-    print(json.dumps(stats, indent=1))
-    print("candidates:", [c[0] for c in chosen[:n]])
+        json.dump(funnel, f, indent=1)
+    print(json.dumps(funnel, indent=1))
 
 
 if __name__ == "__main__":

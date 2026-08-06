@@ -1,21 +1,24 @@
 {
- "id": "gen-etb-token-doubling-attended-knight",
- "description": "Attended Knight ETB token trigger under Doubling Season",
- "template": "etb_token_doubling",
+ "id": "gen-dies-token-doubling-beamsaw-prospector",
+ "description": "Beamsaw Prospector dies-token trigger (killed by Murder) under Doubling Season",
+ "template": "dies_token_doubling",
  "players": {
   "A": {
    "life": 20,
    "battlefield": [
     {
-     "card": "Plains",
-     "count": 3
+     "card": "Beamsaw Prospector"
     },
     {
      "card": "Doubling Season"
+    },
+    {
+     "card": "Swamp",
+     "count": 3
     }
    ],
    "hand": [
-    "Attended Knight"
+    "Murder"
    ]
   },
   "B": {
@@ -28,7 +31,12 @@
    "turn": 1,
    "phase": "PRECOMBAT_MAIN",
    "player": "A",
-   "card": "Attended Knight"
+   "card": "Murder"
+  },
+  {
+   "do": "target",
+   "player": "A",
+   "value": "Beamsaw Prospector"
   },
   {
    "do": "wait_stack",
@@ -42,15 +50,15 @@
  },
  "expect": [
   {
-   "check": "permanent_count",
+   "check": "graveyard_count",
    "player": "A",
-   "card": "Attended Knight",
+   "card": "Beamsaw Prospector",
    "count": 1
   },
   {
    "check": "battlefield_count",
    "player": "A",
-   "count": 7
+   "count": 6
   }
  ]
 }

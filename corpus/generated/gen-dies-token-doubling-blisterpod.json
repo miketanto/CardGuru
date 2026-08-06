@@ -1,21 +1,24 @@
 {
- "id": "gen-etb-token-doubling-ajani-nacatl-pariah",
- "description": "Ajani, Nacatl Pariah ETB token trigger under Doubling Season (expect doubled token)",
- "template": "etb_token_doubling",
+ "id": "gen-dies-token-doubling-blisterpod",
+ "description": "Blisterpod dies-token trigger (killed by Murder) under Doubling Season",
+ "template": "dies_token_doubling",
  "players": {
   "A": {
    "life": 20,
    "battlefield": [
     {
-     "card": "Plains",
-     "count": 2
+     "card": "Blisterpod"
     },
     {
      "card": "Doubling Season"
+    },
+    {
+     "card": "Swamp",
+     "count": 3
     }
    ],
    "hand": [
-    "Ajani, Nacatl Pariah"
+    "Murder"
    ]
   },
   "B": {
@@ -28,7 +31,12 @@
    "turn": 1,
    "phase": "PRECOMBAT_MAIN",
    "player": "A",
-   "card": "Ajani, Nacatl Pariah"
+   "card": "Murder"
+  },
+  {
+   "do": "target",
+   "player": "A",
+   "value": "Blisterpod"
   },
   {
    "do": "wait_stack",
@@ -42,9 +50,9 @@
  },
  "expect": [
   {
-   "check": "permanent_count",
+   "check": "graveyard_count",
    "player": "A",
-   "card": "Ajani, Nacatl Pariah",
+   "card": "Blisterpod",
    "count": 1
   },
   {

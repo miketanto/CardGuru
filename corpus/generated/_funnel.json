@@ -1,8 +1,14 @@
 {
- "query_hits": 706,
- "creature": 529,
- "mono_castable": 355,
- "simple_chain": 170,
- "xmage_implemented": 163,
- "generated": 12
+ "etb_token_doubling": {
+  "deterministic_candidates": 118,
+  "generated": 8
+ },
+ "dies_token_doubling": {
+  "deterministic_candidates": 55,
+  "generated": 8
+ },
+ "lifegain_counter": {
+  "deterministic_candidates": 13,
+  "generated": 8
+ }
 }

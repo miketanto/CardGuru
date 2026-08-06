@@ -1,6 +1,6 @@
 {
  "id": "gen-etb-token-doubling-ambassador-oak",
- "description": "Ambassador Oak ETB token trigger under Doubling Season (expect doubled token)",
+ "description": "Ambassador Oak ETB token trigger under Doubling Season",
  "template": "etb_token_doubling",
  "players": {
   "A": {

@@ -59,7 +59,7 @@ def test_parse_method_extracts_structure():
 
 
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "corpus"))
-from generate_scenarios import make_scenario, parse_mono_cost  # noqa: E402
+from generate_scenarios import base_scenario, parse_mono_cost  # noqa: E402
 
 
 def test_parse_mono_cost():
@@ -73,8 +73,50 @@ def test_parse_mono_cost():
 
 
 def test_generated_scenarios_validate():
-    scn = make_scenario("Attended Knight", "W", 3)
+    scn = base_scenario(
+        "gen-test", "test scenario", "etb_token_doubling",
+        [{"card": "Plains", "count": 3}, {"card": "Doubling Season"}],
+        ["Attended Knight"],
+        [{"do": "cast", "turn": 1, "phase": "PRECOMBAT_MAIN", "player": "A",
+          "card": "Attended Knight"}],
+        [{"check": "battlefield_count", "player": "A", "count": 7}])
     assert validate_scenario(scn) == []
-    assert scn["players"]["A"]["battlefield"][0] == {"card": "Plains", "count": 3}
-    counts = [x for x in scn["expect"] if x["check"] == "battlefield_count"]
-    assert counts[0]["count"] == 3 + 1 + 1 + 2   # lands + Season + creature + 2 tokens
+    # every shipped generated scenario must validate too
+    gen_dir = "corpus/generated"
+    for fn in os.listdir(gen_dir):
+        if fn.startswith("gen-") and fn.endswith(".json"):
+            with open(os.path.join(gen_dir, fn), encoding="utf-8") as f:
+                assert validate_scenario(json.load(f)) == [], fn
+
+
+from cardguru.cite import Citer, scenario_card_names  # noqa: E402
+
+ONTO_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "research", "data")
+
+
+def test_scenario_card_names_ordered_dedup():
+    spec = json.load(open("scenarios/lindblum_impulse.json", encoding="utf-8"))
+    names = scenario_card_names(spec)
+    assert names[0] == "Mountain" and "Mage Siege" in names
+    assert len(names) == len(set(names))
+
+
+def test_citations_from_graph():
+    citer = Citer(os.path.join(ONTO_DIR, "cr_mapping.json"),
+                  os.path.join(ONTO_DIR, "cr_rules.json"))
+    rec = {"name": "Fake Season", "alternateMode": None, "nodes": [
+        {"id": "ab0", "kind": "R", "params": {"Event": "CreateToken"}},
+        {"id": "X", "kind": "SVar", "api": "ReplaceToken", "params": {}},
+        {"id": "kw0", "kind": "K", "keyword": "Trample"},
+    ]}
+    cites = citer.citations_for_record(rec)
+    rules = {c["rule"] for c in cites}
+    assert "614" in rules and "702.19" in rules
+
+
+def test_layout_citation():
+    citer = Citer(os.path.join(ONTO_DIR, "cr_mapping.json"),
+                  os.path.join(ONTO_DIR, "cr_rules.json"))
+    rec = {"name": "Adv", "alternateMode": "Adventure", "nodes": []}
+    cites = citer.citations_for_record(rec)
+    assert cites and cites[0]["rule"] == "715"

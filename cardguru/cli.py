@@ -95,6 +95,21 @@ def cmd_adjudicate(args):
     from .adjudicate import run_scenarios
 
     results = run_scenarios(args.scenarios, mage_repo=args.mage_repo)
+    if args.cite:
+        from . import dataset as ds
+        from .cite import Citer, scenario_card_names
+
+        citer = Citer(args.mapping, args.cr)
+        _meta, records = ds.load(args.dataset)
+        by_name = {}
+        for rec in records:
+            by_name.setdefault(rec.get("name"), rec)
+        for path, result in zip(args.scenarios, results):
+            with open(path, encoding="utf-8") as f:
+                spec = json.load(f)
+            result["citations"] = citer.citations_for_cards(
+                scenario_card_names(spec), by_name)
+            result["cr_effective"] = citer.cr_effective
     json.dump(results, sys.stdout, indent=1)
     print()
     failed = [r for r in results if r.get("status") != "executed"
@@ -157,6 +172,11 @@ def main(argv=None):
     ad = sub.add_parser("adjudicate", help="run scenario JSON files through the XMage driver")
     ad.add_argument("scenarios", nargs="+", help="scenario JSON files")
     ad.add_argument("--mage-repo", help="XMage checkout (or env CARDGURU_MAGE_REPO)")
+    ad.add_argument("--cite", action="store_true",
+                    help="attach CR citations derived from the cards' ability graphs")
+    ad.add_argument("--mapping", default="research/data/cr_mapping.json")
+    ad.add_argument("--cr", default="research/data/cr_rules.json")
+    ad.add_argument("--dataset", default=DEFAULT_DATASET)
     ad.set_defaults(fn=cmd_adjudicate)
 
     st = sub.add_parser("stats", help="dataset statistics")
