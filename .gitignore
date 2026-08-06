@@ -1,5 +1,5 @@
 research/data/cards.jsonl
 corpus/mage_tests_seed.jsonl
-data/
+/data/
 __pycache__/
 .pytest_cache/

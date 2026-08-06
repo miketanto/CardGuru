@@ -20,6 +20,10 @@ This corpus is the **frozen benchmark** for the adjudicator (plan/eval.md). Rule
 - Integrity: `sha256sum -c FROZEN.sha256` must pass before any eval run. If the file
   changes, the benchmark is void.
 
+Sanctioned metadata-only tooling: `eval/addressability.py` (reads card names,
+level, complexity, tags; verifies the freeze hash before touching the file) —
+results in `research/rulesguru-addressability.md`.
+
 ## Files
 
 - `rulesguru_full.json` — the questions (fields: questionSimple, answerSimple,

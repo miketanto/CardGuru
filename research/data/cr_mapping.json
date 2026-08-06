@@ -1,0 +1,1530 @@
+{
+ "cr_effective": "August 7, 2026",
+ "coverage": {
+  "keywords": {
+   "mapped_tokens": 182,
+   "total_tokens": 252,
+   "instance_pct": 89.0
+  },
+  "apis": {
+   "mapped_tokens": 77,
+   "total_tokens": 191,
+   "instance_pct": 91.2
+  },
+  "trigger_modes": {
+   "mapped_tokens": 29,
+   "total_tokens": 137,
+   "instance_pct": 91.8
+  },
+  "replacement_events": {
+   "mapped_tokens": 11,
+   "total_tokens": 34,
+   "instance_pct": 96.2
+  }
+ },
+ "mapping": {
+  "keywords": {
+   "Flying": {
+    "rule": "702.9",
+    "title": "Flying",
+    "method": "auto"
+   },
+   "Enchant": {
+    "rule": "702.5",
+    "title": "Enchant",
+    "method": "auto"
+   },
+   "Trample": {
+    "rule": "702.19",
+    "title": "Trample",
+    "method": "auto"
+   },
+   "Vigilance": {
+    "rule": "702.20",
+    "title": "Vigilance",
+    "method": "auto"
+   },
+   "Haste": {
+    "rule": "702.10",
+    "title": "Haste",
+    "method": "auto"
+   },
+   "Equip": {
+    "rule": "702.6",
+    "title": "Equip",
+    "method": "auto"
+   },
+   "Flash": {
+    "rule": "702.8",
+    "title": "Flash",
+    "method": "auto"
+   },
+   "Reach": {
+    "rule": "702.17",
+    "title": "Reach",
+    "method": "auto"
+   },
+   "Menace": {
+    "rule": "702.111",
+    "title": "Menace",
+    "method": "auto"
+   },
+   "First Strike": {
+    "rule": "702.7",
+    "title": "First Strike",
+    "method": "auto"
+   },
+   "Lifelink": {
+    "rule": "702.15",
+    "title": "Lifelink",
+    "method": "auto"
+   },
+   "Deathtouch": {
+    "rule": "702.2",
+    "title": "Deathtouch",
+    "method": "auto"
+   },
+   "Defender": {
+    "rule": "702.3",
+    "title": "Defender",
+    "method": "auto"
+   },
+   "Cycling": {
+    "rule": "702.29",
+    "title": "Cycling",
+    "method": "auto"
+   },
+   "Kicker": {
+    "rule": "702.33",
+    "title": "Kicker",
+    "method": "auto"
+   },
+   "Ward": {
+    "rule": "702.21",
+    "title": "Ward",
+    "method": "auto"
+   },
+   "Flashback": {
+    "rule": "702.34",
+    "title": "Flashback",
+    "method": "auto"
+   },
+   "Crew": {
+    "rule": "702.122",
+    "title": "Crew",
+    "method": "auto"
+   },
+   "Morph": {
+    "rule": "702.37",
+    "title": "Morph",
+    "method": "auto"
+   },
+   "Landwalk": {
+    "rule": "702.14",
+    "title": "Landwalk",
+    "method": "auto"
+   },
+   "Devoid": {
+    "rule": "702.114",
+    "title": "Devoid",
+    "method": "auto"
+   },
+   "Double Strike": {
+    "rule": "702.4",
+    "title": "Double Strike",
+    "method": "auto"
+   },
+   "Indestructible": {
+    "rule": "702.12",
+    "title": "Indestructible",
+    "method": "auto"
+   },
+   "Hexproof": {
+    "rule": "702.11",
+    "title": "Hexproof",
+    "method": "auto"
+   },
+   "Convoke": {
+    "rule": "702.51",
+    "title": "Convoke",
+    "method": "auto"
+   },
+   "Prowess": {
+    "rule": "702.108",
+    "title": "Prowess",
+    "method": "auto"
+   },
+   "Cumulative upkeep": {
+    "rule": "702.24",
+    "title": "Cumulative Upkeep",
+    "method": "auto"
+   },
+   "Partner": {
+    "rule": "702.124",
+    "title": "Partner",
+    "method": "auto"
+   },
+   "Affinity": {
+    "rule": "702.41",
+    "title": "Affinity",
+    "method": "auto"
+   },
+   "Suspend": {
+    "rule": "702.62",
+    "title": "Suspend",
+    "method": "auto"
+   },
+   "Protection": {
+    "rule": "702.16",
+    "title": "Protection",
+    "method": "auto"
+   },
+   "Changeling": {
+    "rule": "702.73",
+    "title": "Changeling",
+    "method": "auto"
+   },
+   "Madness": {
+    "rule": "702.35",
+    "title": "Madness",
+    "method": "auto"
+   },
+   "Unearth": {
+    "rule": "702.84",
+    "title": "Unearth",
+    "method": "auto"
+   },
+   "Foretell": {
+    "rule": "702.143",
+    "title": "Foretell",
+    "method": "auto"
+   },
+   "Echo": {
+    "rule": "702.30",
+    "title": "Echo",
+    "method": "auto"
+   },
+   "Disguise": {
+    "rule": "702.168",
+    "title": "Disguise",
+    "method": "auto"
+   },
+   "Start your engines": {
+    "rule": "702.179",
+    "title": "Start Your Engines!",
+    "method": "auto"
+   },
+   "Ninjutsu": {
+    "rule": "702.49",
+    "title": "Ninjutsu",
+    "method": "auto"
+   },
+   "Infect": {
+    "rule": "702.90",
+    "title": "Infect",
+    "method": "auto"
+   },
+   "Toxic": {
+    "rule": "702.164",
+    "title": "Toxic",
+    "method": "auto"
+   },
+   "Bestow": {
+    "rule": "702.103",
+    "title": "Bestow",
+    "method": "auto"
+   },
+   "Cascade": {
+    "rule": "702.85",
+    "title": "Cascade",
+    "method": "auto"
+   },
+   "Buyback": {
+    "rule": "702.27",
+    "title": "Buyback",
+    "method": "auto"
+   },
+   "Fear": {
+    "rule": "702.36",
+    "title": "Fear",
+    "method": "auto"
+   },
+   "Shadow": {
+    "rule": "702.28",
+    "title": "Shadow",
+    "method": "auto"
+   },
+   "Storm": {
+    "rule": "702.40",
+    "title": "Storm",
+    "method": "auto"
+   },
+   "Shroud": {
+    "rule": "702.18",
+    "title": "Shroud",
+    "method": "auto"
+   },
+   "Warp": {
+    "rule": "702.185",
+    "title": "Warp",
+    "method": "auto"
+   },
+   "Bushido": {
+    "rule": "702.45",
+    "title": "Bushido",
+    "method": "auto"
+   },
+   "Evoke": {
+    "rule": "702.74",
+    "title": "Evoke",
+    "method": "auto"
+   },
+   "Station": {
+    "rule": "702.184",
+    "title": "Station",
+    "method": "auto"
+   },
+   "Exalted": {
+    "rule": "702.83",
+    "title": "Exalted",
+    "method": "auto"
+   },
+   "Rebound": {
+    "rule": "702.88",
+    "title": "Rebound",
+    "method": "auto"
+   },
+   "Mutate": {
+    "rule": "702.140",
+    "title": "Mutate",
+    "method": "auto"
+   },
+   "Escape": {
+    "rule": "702.138",
+    "title": "Escape",
+    "method": "auto"
+   },
+   "Plot": {
+    "rule": "702.170",
+    "title": "Plot",
+    "method": "auto"
+   },
+   "Entwine": {
+    "rule": "702.42",
+    "title": "Entwine",
+    "method": "auto"
+   },
+   "Saddle": {
+    "rule": "702.171",
+    "title": "Saddle",
+    "method": "auto"
+   },
+   "Disturb": {
+    "rule": "702.146",
+    "title": "Disturb",
+    "method": "auto"
+   },
+   "Ascend": {
+    "rule": "702.131",
+    "title": "Ascend",
+    "method": "auto"
+   },
+   "Flanking": {
+    "rule": "702.25",
+    "title": "Flanking",
+    "method": "auto"
+   },
+   "Splice": {
+    "rule": "702.47",
+    "title": "Splice",
+    "method": "auto"
+   },
+   "Delve": {
+    "rule": "702.66",
+    "title": "Delve",
+    "method": "auto"
+   },
+   "Horsemanship": {
+    "rule": "702.31",
+    "title": "Horsemanship",
+    "method": "auto"
+   },
+   "Backup": {
+    "rule": "702.165",
+    "title": "Backup",
+    "method": "auto"
+   },
+   "Overload": {
+    "rule": "702.96",
+    "title": "Overload",
+    "method": "auto"
+   },
+   "Aftermath": {
+    "rule": "702.127",
+    "title": "Aftermath",
+    "method": "auto"
+   },
+   "Gift": {
+    "rule": "702.174",
+    "title": "Gift",
+    "method": "auto"
+   },
+   "Soulshift": {
+    "rule": "702.46",
+    "title": "Soulshift",
+    "method": "auto"
+   },
+   "Wither": {
+    "rule": "702.80",
+    "title": "Wither",
+    "method": "auto"
+   },
+   "Sneak": {
+    "rule": "702.190",
+    "title": "Sneak",
+    "method": "auto"
+   },
+   "Encore": {
+    "rule": "702.141",
+    "title": "Encore",
+    "method": "auto"
+   },
+   "Firebending": {
+    "rule": "702.189",
+    "title": "Firebending",
+    "method": "auto"
+   },
+   "Level up": {
+    "rule": "702.87",
+    "title": "Level Up",
+    "method": "auto"
+   },
+   "Soulbond": {
+    "rule": "702.95",
+    "title": "Soulbond",
+    "method": "auto"
+   },
+   "Exploit": {
+    "rule": "702.110",
+    "title": "Exploit",
+    "method": "auto"
+   },
+   "Persist": {
+    "rule": "702.79",
+    "title": "Persist",
+    "method": "auto"
+   },
+   "Craft": {
+    "rule": "702.167",
+    "title": "Craft",
+    "method": "auto"
+   },
+   "Improvise": {
+    "rule": "702.126",
+    "title": "Improvise",
+    "method": "auto"
+   },
+   "Modular": {
+    "rule": "702.43",
+    "title": "Modular",
+    "method": "auto"
+   },
+   "Banding": {
+    "rule": "702.22",
+    "title": "Banding",
+    "method": "auto"
+   },
+   "Myriad": {
+    "rule": "702.116",
+    "title": "Myriad",
+    "method": "auto"
+   },
+   "Devour": {
+    "rule": "702.82",
+    "title": "Devour",
+    "method": "auto"
+   },
+   "Intimidate": {
+    "rule": "702.13",
+    "title": "Intimidate",
+    "method": "auto"
+   },
+   "Evolve": {
+    "rule": "702.100",
+    "title": "Evolve",
+    "method": "auto"
+   },
+   "Bloodthirst": {
+    "rule": "702.54",
+    "title": "Bloodthirst",
+    "method": "auto"
+   },
+   "Bargain": {
+    "rule": "702.166",
+    "title": "Bargain",
+    "method": "auto"
+   },
+   "Dash": {
+    "rule": "702.109",
+    "title": "Dash",
+    "method": "auto"
+   },
+   "Split second": {
+    "rule": "702.61",
+    "title": "Split Second",
+    "method": "auto"
+   },
+   "Undying": {
+    "rule": "702.93",
+    "title": "Undying",
+    "method": "auto"
+   },
+   "Reconfigure": {
+    "rule": "702.151",
+    "title": "Reconfigure",
+    "method": "auto"
+   },
+   "Offspring": {
+    "rule": "702.175",
+    "title": "Offspring",
+    "method": "auto"
+   },
+   "Prototype": {
+    "rule": "702.160",
+    "title": "Prototype",
+    "method": "auto"
+   },
+   "Replicate": {
+    "rule": "702.56",
+    "title": "Replicate",
+    "method": "auto"
+   },
+   "Vanishing": {
+    "rule": "702.63",
+    "title": "Vanishing",
+    "method": "auto"
+   },
+   "Visit": {
+    "rule": "702.159",
+    "title": "Visit",
+    "method": "auto"
+   },
+   "Spree": {
+    "rule": "702.172",
+    "title": "Spree",
+    "method": "auto"
+   },
+   "Renown": {
+    "rule": "702.112",
+    "title": "Renown",
+    "method": "auto"
+   },
+   "Job select": {
+    "rule": "702.182",
+    "title": "Job Select",
+    "method": "auto"
+   },
+   "Mentor": {
+    "rule": "702.134",
+    "title": "Mentor",
+    "method": "auto"
+   },
+   "Extort": {
+    "rule": "702.101",
+    "title": "Extort",
+    "method": "auto"
+   },
+   "Living Weapon": {
+    "rule": "702.92",
+    "title": "Living Weapon",
+    "method": "auto"
+   },
+   "Blitz": {
+    "rule": "702.152",
+    "title": "Blitz",
+    "method": "auto"
+   },
+   "Fading": {
+    "rule": "702.32",
+    "title": "Fading",
+    "method": "auto"
+   },
+   "Fuse": {
+    "rule": "702.102",
+    "title": "Fuse",
+    "method": "auto"
+   },
+   "Teamwork": {
+    "rule": "702.194",
+    "title": "Teamwork",
+    "method": "auto"
+   },
+   "Miracle": {
+    "rule": "702.94",
+    "title": "Miracle",
+    "method": "auto"
+   },
+   "Retrace": {
+    "rule": "702.81",
+    "title": "Retrace",
+    "method": "auto"
+   },
+   "Casualty": {
+    "rule": "702.153",
+    "title": "Casualty",
+    "method": "auto"
+   },
+   "Mayhem": {
+    "rule": "702.187",
+    "title": "Mayhem",
+    "method": "auto"
+   },
+   "Fabricate": {
+    "rule": "702.123",
+    "title": "Fabricate",
+    "method": "auto"
+   },
+   "Assist": {
+    "rule": "702.132",
+    "title": "Assist",
+    "method": "auto"
+   },
+   "Hideaway": {
+    "rule": "702.75",
+    "title": "Hideaway",
+    "method": "auto"
+   },
+   "Emerge": {
+    "rule": "702.119",
+    "title": "Emerge",
+    "method": "auto"
+   },
+   "Rampage": {
+    "rule": "702.23",
+    "title": "Rampage",
+    "method": "auto"
+   },
+   "Embalm": {
+    "rule": "702.128",
+    "title": "Embalm",
+    "method": "auto"
+   },
+   "Enlist": {
+    "rule": "702.154",
+    "title": "Enlist",
+    "method": "auto"
+   },
+   "Cipher": {
+    "rule": "702.99",
+    "title": "Cipher",
+    "method": "auto"
+   },
+   "More Than Meets the Eye": {
+    "rule": "702.162",
+    "title": "More Than Meets the Eye",
+    "method": "auto"
+   },
+   "Squad": {
+    "rule": "702.157",
+    "title": "Squad",
+    "method": "auto"
+   },
+   "Mobilize": {
+    "rule": "702.181",
+    "title": "Mobilize",
+    "method": "auto"
+   },
+   "For Mirrodin": {
+    "rule": "702.163",
+    "title": "For Mirrodin!",
+    "method": "auto"
+   },
+   "Sunburst": {
+    "rule": "702.44",
+    "title": "Sunburst",
+    "method": "auto"
+   },
+   "Umbra armor": {
+    "rule": "702.89",
+    "title": "Umbra Armor",
+    "method": "auto"
+   },
+   "Awaken": {
+    "rule": "702.113",
+    "title": "Awaken",
+    "method": "auto"
+   },
+   "Skulk": {
+    "rule": "702.118",
+    "title": "Skulk",
+    "method": "auto"
+   },
+   "Hidden agenda": {
+    "rule": "702.106",
+    "title": "Hidden Agenda",
+    "method": "auto"
+   },
+   "Annihilator": {
+    "rule": "702.86",
+    "title": "Annihilator",
+    "method": "auto"
+   },
+   "Scavenge": {
+    "rule": "702.97",
+    "title": "Scavenge",
+    "method": "auto"
+   },
+   "Unleash": {
+    "rule": "702.98",
+    "title": "Unleash",
+    "method": "auto"
+   },
+   "Transmute": {
+    "rule": "702.53",
+    "title": "Transmute",
+    "method": "auto"
+   },
+   "Dredge": {
+    "rule": "702.52",
+    "title": "Dredge",
+    "method": "auto"
+   },
+   "Battle cry": {
+    "rule": "702.91",
+    "title": "Battle Cry",
+    "method": "auto"
+   },
+   "Graft": {
+    "rule": "702.58",
+    "title": "Graft",
+    "method": "auto"
+   },
+   "Riot": {
+    "rule": "702.136",
+    "title": "Riot",
+    "method": "auto"
+   },
+   "Living metal": {
+    "rule": "702.161",
+    "title": "Living Metal",
+    "method": "auto"
+   },
+   "Jump-start": {
+    "rule": "702.133",
+    "title": "Jump-Start",
+    "method": "auto"
+   },
+   "Phasing": {
+    "rule": "702.26",
+    "title": "Phasing",
+    "method": "auto"
+   },
+   "Ravenous": {
+    "rule": "702.156",
+    "title": "Ravenous",
+    "method": "auto"
+   },
+   "Outlast": {
+    "rule": "702.107",
+    "title": "Outlast",
+    "method": "auto"
+   },
+   "Freerunning": {
+    "rule": "702.173",
+    "title": "Freerunning",
+    "method": "auto"
+   },
+   "Eternalize": {
+    "rule": "702.129",
+    "title": "Eternalize",
+    "method": "auto"
+   },
+   "Melee": {
+    "rule": "702.121",
+    "title": "Melee",
+    "method": "auto"
+   },
+   "Champion": {
+    "rule": "702.72",
+    "title": "Champion",
+    "method": "auto"
+   },
+   "Harmonize": {
+    "rule": "702.180",
+    "title": "Harmonize",
+    "method": "auto"
+   },
+   "Conspire": {
+    "rule": "702.78",
+    "title": "Conspire",
+    "method": "auto"
+   },
+   "Training": {
+    "rule": "702.149",
+    "title": "Training",
+    "method": "auto"
+   },
+   "Reinforce": {
+    "rule": "702.77",
+    "title": "Reinforce",
+    "method": "auto"
+   },
+   "Spectacle": {
+    "rule": "702.137",
+    "title": "Spectacle",
+    "method": "auto"
+   },
+   "Surge": {
+    "rule": "702.117",
+    "title": "Surge",
+    "method": "auto"
+   },
+   "Afterlife": {
+    "rule": "702.135",
+    "title": "Afterlife",
+    "method": "auto"
+   },
+   "Tribute": {
+    "rule": "702.104",
+    "title": "Tribute",
+    "method": "auto"
+   },
+   "Haunt": {
+    "rule": "702.55",
+    "title": "Haunt",
+    "method": "auto"
+   },
+   "Web-slinging": {
+    "rule": "702.188",
+    "title": "Web-slinging",
+    "method": "auto"
+   },
+   "Increment": {
+    "rule": "702.191",
+    "title": "Increment",
+    "method": "auto"
+   },
+   "Afflict": {
+    "rule": "702.130",
+    "title": "Afflict",
+    "method": "auto"
+   },
+   "Prowl": {
+    "rule": "702.76",
+    "title": "Prowl",
+    "method": "auto"
+   },
+   "Read ahead": {
+    "rule": "702.155",
+    "title": "Read Ahead",
+    "method": "auto"
+   },
+   "Companion": {
+    "rule": "702.139",
+    "title": "Companion",
+    "method": "auto"
+   },
+   "Amplify": {
+    "rule": "702.38",
+    "title": "Amplify",
+    "method": "auto"
+   },
+   "Ingest": {
+    "rule": "702.115",
+    "title": "Ingest",
+    "method": "auto"
+   },
+   "Escalate": {
+    "rule": "702.120",
+    "title": "Escalate",
+    "method": "auto"
+   },
+   "Dethrone": {
+    "rule": "702.105",
+    "title": "Dethrone",
+    "method": "auto"
+   },
+   "Storied": {
+    "rule": "702.195",
+    "title": "Storied",
+    "method": "auto"
+   },
+   "Provoke": {
+    "rule": "702.39",
+    "title": "Provoke",
+    "method": "auto"
+   },
+   "Compleated": {
+    "rule": "702.150",
+    "title": "Compleated",
+    "method": "auto"
+   },
+   "Tiered": {
+    "rule": "702.183",
+    "title": "Tiered",
+    "method": "auto"
+   },
+   "Recover": {
+    "rule": "702.59",
+    "title": "Recover",
+    "method": "auto"
+   },
+   "Offering": {
+    "rule": "702.48",
+    "title": "Offering",
+    "method": "auto"
+   },
+   "Demonstrate": {
+    "rule": "702.144",
+    "title": "Demonstrate",
+    "method": "auto"
+   },
+   "Impending": {
+    "rule": "702.176",
+    "title": "Impending",
+    "method": "auto"
+   },
+   "Undaunted": {
+    "rule": "702.125",
+    "title": "Undaunted",
+    "method": "auto"
+   },
+   "Paradigm": {
+    "rule": "702.192",
+    "title": "Paradigm",
+    "method": "auto"
+   },
+   "Epic": {
+    "rule": "702.50",
+    "title": "Epic",
+    "method": "auto"
+   },
+   "Ripple": {
+    "rule": "702.60",
+    "title": "Ripple",
+    "method": "auto"
+   },
+   "Gravestorm": {
+    "rule": "702.69",
+    "title": "Gravestorm",
+    "method": "auto"
+   },
+   "Fortify": {
+    "rule": "702.67",
+    "title": "Fortify",
+    "method": "auto"
+   },
+   "Aura swap": {
+    "rule": "702.65",
+    "title": "Aura Swap",
+    "method": "auto"
+   },
+   "Transfigure": {
+    "rule": "702.71",
+    "title": "Transfigure",
+    "method": "auto"
+   },
+   "Decayed": {
+    "rule": "702.147",
+    "title": "Decayed",
+    "method": "auto"
+   },
+   "Space sculptor": {
+    "rule": "702.158",
+    "title": "Space Sculptor",
+    "method": "auto"
+   }
+  },
+  "apis": {
+   "ChangeZone": {
+    "rule": "400",
+    "title": "General",
+    "method": "hand"
+   },
+   "Pump": {
+    "rule": "613.4",
+    "title": "Within layer 7, apply effects in a series of sublayers in th",
+    "method": "hand"
+   },
+   "Draw": {
+    "rule": "121",
+    "title": "Drawing a Card",
+    "method": "hand"
+   },
+   "Token": {
+    "rule": "111",
+    "title": "Tokens",
+    "method": "hand"
+   },
+   "PutCounter": {
+    "rule": "122",
+    "title": "Counters",
+    "method": "hand"
+   },
+   "Cleanup": {
+    "rule": null,
+    "title": "engine bookkeeping",
+    "method": "hand"
+   },
+   "DealDamage": {
+    "rule": "120",
+    "title": "Damage",
+    "method": "hand"
+   },
+   "Mana": {
+    "rule": "106",
+    "title": "Mana",
+    "method": "hand"
+   },
+   "Effect": {
+    "rule": "611",
+    "title": "Continuous Effects",
+    "method": "hand"
+   },
+   "GainLife": {
+    "rule": "119",
+    "title": "Life",
+    "method": "hand"
+   },
+   "Destroy": {
+    "rule": "701.8",
+    "title": "Destroy",
+    "method": "auto"
+   },
+   "Tap": {
+    "rule": "701.26",
+    "title": "Tap and Untap",
+    "method": "hand"
+   },
+   "LoseLife": {
+    "rule": "119",
+    "title": "Life",
+    "method": "hand"
+   },
+   "Discard": {
+    "rule": "701.9",
+    "title": "Discard",
+    "method": "auto"
+   },
+   "PumpAll": {
+    "rule": "613.4",
+    "title": "Within layer 7, apply effects in a series of sublayers in th",
+    "method": "hand"
+   },
+   "Animate": {
+    "rule": "613.3",
+    "title": "Within layers 2–6, apply effects from characteristic-definin",
+    "method": "hand"
+   },
+   "Dig": {
+    "rule": "401",
+    "title": "Library",
+    "method": "hand"
+   },
+   "Sacrifice": {
+    "rule": "701.21",
+    "title": "Sacrifice",
+    "method": "auto"
+   },
+   "Charm": {
+    "rule": "601.2b",
+    "title": "If the spell is modal, the player announces the mode choice ",
+    "method": "hand"
+   },
+   "ChangeZoneAll": {
+    "rule": "400",
+    "title": "General",
+    "method": "hand"
+   },
+   "Mill": {
+    "rule": "701.17",
+    "title": "Mill",
+    "method": "auto"
+   },
+   "Counter": {
+    "rule": "701.6",
+    "title": "Counter",
+    "method": "auto"
+   },
+   "Untap": {
+    "rule": "701.26",
+    "title": "Tap and Untap",
+    "method": "hand"
+   },
+   "DelayedTrigger": {
+    "rule": "603.7",
+    "title": "An effect may create a delayed triggered ability that can do",
+    "method": "hand"
+   },
+   "Scry": {
+    "rule": "701.22",
+    "title": "Scry",
+    "method": "auto"
+   },
+   "ChooseCard": {
+    "rule": null,
+    "title": "engine bookkeeping",
+    "method": "hand"
+   },
+   "CopyPermanent": {
+    "rule": "707",
+    "title": "Copying Objects",
+    "method": "hand"
+   },
+   "RepeatEach": {
+    "rule": null,
+    "title": "engine bookkeeping",
+    "method": "hand"
+   },
+   "SetState": {
+    "rule": "701",
+    "title": "Keyword Actions",
+    "method": "hand"
+   },
+   "GainControl": {
+    "rule": "613.2",
+    "title": "Within layer 1, apply effects in a series of sublayers in th",
+    "method": "hand"
+   },
+   "ImmediateTrigger": {
+    "rule": "603",
+    "title": "Handling Triggered Abilities",
+    "method": "hand"
+   },
+   "Play": {
+    "rule": "701.18",
+    "title": "Play",
+    "method": "hand"
+   },
+   "Regenerate": {
+    "rule": "701.19",
+    "title": "Regenerate",
+    "method": "auto"
+   },
+   "CopySpellAbility": {
+    "rule": "707.10",
+    "title": "To copy a spell, activated ability, or triggered ability mea",
+    "method": "hand"
+   },
+   "Attach": {
+    "rule": "701.3",
+    "title": "Attach",
+    "method": "auto"
+   },
+   "Surveil": {
+    "rule": "701.25",
+    "title": "Surveil",
+    "method": "auto"
+   },
+   "MakeCard": {
+    "rule": "111",
+    "title": "Tokens",
+    "method": "hand"
+   },
+   "DigUntil": {
+    "rule": "401",
+    "title": "Library",
+    "method": "hand"
+   },
+   "Fight": {
+    "rule": "701.14",
+    "title": "Fight",
+    "method": "auto"
+   },
+   "Investigate": {
+    "rule": "701.16",
+    "title": "Investigate",
+    "method": "auto"
+   },
+   "AnimateAll": {
+    "rule": "613.3",
+    "title": "Within layers 2–6, apply effects from characteristic-definin",
+    "method": "hand"
+   },
+   "RollDice": {
+    "rule": "706",
+    "title": "Rolling a Die",
+    "method": "hand"
+   },
+   "Branch": {
+    "rule": null,
+    "title": "engine bookkeeping",
+    "method": "hand"
+   },
+   "Proliferate": {
+    "rule": "701.34",
+    "title": "Proliferate",
+    "method": "auto"
+   },
+   "Reveal": {
+    "rule": "701.20",
+    "title": "Reveal",
+    "method": "auto"
+   },
+   "Amass": {
+    "rule": "701.47",
+    "title": "Amass",
+    "method": "auto"
+   },
+   "Goad": {
+    "rule": "701.15",
+    "title": "Goad",
+    "method": "auto"
+   },
+   "AddTurn": {
+    "rule": "500.7",
+    "title": "Some effects can give a player extra turns. They do this by ",
+    "method": "hand"
+   },
+   "Shuffle": {
+    "rule": "701.24",
+    "title": "Shuffle",
+    "method": "auto"
+   },
+   "Repeat": {
+    "rule": null,
+    "title": "engine bookkeeping",
+    "method": "hand"
+   },
+   "Debuff": {
+    "rule": "613.4",
+    "title": "Within layer 7, apply effects in a series of sublayers in th",
+    "method": "hand"
+   },
+   "Protection": {
+    "rule": "702.16",
+    "title": "Protection",
+    "method": "auto"
+   },
+   "Connive": {
+    "rule": "701.50",
+    "title": "Connive",
+    "method": "auto"
+   },
+   "ManaReflected": {
+    "rule": "106",
+    "title": "Mana",
+    "method": "hand"
+   },
+   "Venture": {
+    "rule": "701.49",
+    "title": "Venture into the Dungeon",
+    "method": "hand"
+   },
+   "Explore": {
+    "rule": "701.44",
+    "title": "Explore",
+    "method": "auto"
+   },
+   "Earthbend": {
+    "rule": "701.66",
+    "title": "Earthbend",
+    "method": "auto"
+   },
+   "ReplaceToken": {
+    "rule": "614",
+    "title": "Replacement Effects",
+    "method": "hand"
+   },
+   "ManifestDread": {
+    "rule": "701.62",
+    "title": "Manifest Dread",
+    "method": "auto"
+   },
+   "ReplaceCounter": {
+    "rule": "614",
+    "title": "Replacement Effects",
+    "method": "hand"
+   },
+   "Discover": {
+    "rule": "701.57",
+    "title": "Discover",
+    "method": "auto"
+   },
+   "Incubate": {
+    "rule": "701.53",
+    "title": "Incubate",
+    "method": "auto"
+   },
+   "Vote": {
+    "rule": "701.38",
+    "title": "Vote",
+    "method": "hand"
+   },
+   "Manifest": {
+    "rule": "701.40",
+    "title": "Manifest",
+    "method": "auto"
+   },
+   "Clash": {
+    "rule": "701.30",
+    "title": "Clash",
+    "method": "auto"
+   },
+   "Planeswalk": {
+    "rule": "701.31",
+    "title": "Planeswalk",
+    "method": "auto"
+   },
+   "Learn": {
+    "rule": "701.48",
+    "title": "Learn",
+    "method": "auto"
+   },
+   "Abandon": {
+    "rule": "701.33",
+    "title": "Abandon",
+    "method": "auto"
+   },
+   "Airbend": {
+    "rule": "701.65",
+    "title": "Airbend",
+    "method": "auto"
+   },
+   "Detain": {
+    "rule": "701.35",
+    "title": "Detain",
+    "method": "auto"
+   },
+   "Endure": {
+    "rule": "701.63",
+    "title": "Endure",
+    "method": "auto"
+   },
+   "Cloak": {
+    "rule": "701.58",
+    "title": "Cloak",
+    "method": "auto"
+   },
+   "TimeTravel": {
+    "rule": "701.56",
+    "title": "Time Travel",
+    "method": "auto"
+   },
+   "Recruit": {
+    "rule": "701.70",
+    "title": "Recruit",
+    "method": "auto"
+   },
+   "Meld": {
+    "rule": "701.42",
+    "title": "Meld",
+    "method": "auto"
+   },
+   "Blight": {
+    "rule": "701.68",
+    "title": "Blight",
+    "method": "auto"
+   },
+   "SetInMotion": {
+    "rule": "701.32",
+    "title": "Set in Motion",
+    "method": "auto"
+   }
+  },
+  "trigger_modes": {
+   "ChangesZone": {
+    "rule": "603.6",
+    "title": "Trigger events that involve objects changing zones are calle",
+    "method": "hand"
+   },
+   "Phase": {
+    "rule": "603.1",
+    "title": "Triggered abilities have a trigger condition and an effect. ",
+    "method": "hand"
+   },
+   "Attacks": {
+    "rule": "508",
+    "title": "Declare Attackers Step",
+    "method": "hand"
+   },
+   "SpellCast": {
+    "rule": "601",
+    "title": "Casting Spells",
+    "method": "hand"
+   },
+   "DamageDone": {
+    "rule": "120",
+    "title": "Damage",
+    "method": "hand"
+   },
+   "AttackersDeclared": {
+    "rule": "508",
+    "title": "Declare Attackers Step",
+    "method": "hand"
+   },
+   "DamageDoneOnce": {
+    "rule": "120",
+    "title": "Damage",
+    "method": "hand"
+   },
+   "Drawn": {
+    "rule": "121",
+    "title": "Drawing a Card",
+    "method": "hand"
+   },
+   "AttackerBlocked": {
+    "rule": "509",
+    "title": "Declare Blockers Step",
+    "method": "hand"
+   },
+   "Blocks": {
+    "rule": "509",
+    "title": "Declare Blockers Step",
+    "method": "hand"
+   },
+   "ChangesZoneAll": {
+    "rule": "603.6",
+    "title": "Trigger events that involve objects changing zones are calle",
+    "method": "hand"
+   },
+   "TurnFaceUp": {
+    "rule": "708",
+    "title": "Face-Down Spells and Permanents",
+    "method": "hand"
+   },
+   "BecomesTarget": {
+    "rule": "115",
+    "title": "Targets",
+    "method": "hand"
+   },
+   "Sacrificed": {
+    "rule": "701.21",
+    "title": "Sacrifice",
+    "method": "hand"
+   },
+   "Taps": {
+    "rule": "701.26",
+    "title": "Tap and Untap",
+    "method": "hand"
+   },
+   "LifeGained": {
+    "rule": "119",
+    "title": "Life",
+    "method": "hand"
+   },
+   "Discarded": {
+    "rule": "701.9",
+    "title": "Discard",
+    "method": "hand"
+   },
+   "Transformed": {
+    "rule": "701.27",
+    "title": "Transform",
+    "method": "hand"
+   },
+   "SpellCastOrCopy": {
+    "rule": "601",
+    "title": "Casting Spells",
+    "method": "hand"
+   },
+   "Untaps": {
+    "rule": "701.26",
+    "title": "Tap and Untap",
+    "method": "hand"
+   },
+   "LifeLost": {
+    "rule": "119",
+    "title": "Life",
+    "method": "hand"
+   },
+   "CounterAdded": {
+    "rule": "122",
+    "title": "Counters",
+    "method": "hand"
+   },
+   "CounterRemoved": {
+    "rule": "122",
+    "title": "Counters",
+    "method": "hand"
+   },
+   "DamageAll": {
+    "rule": "120",
+    "title": "Damage",
+    "method": "hand"
+   },
+   "SearchedLibrary": {
+    "rule": "701.23",
+    "title": "Search",
+    "method": "hand"
+   },
+   "Shuffled": {
+    "rule": "701.24",
+    "title": "Shuffle",
+    "method": "hand"
+   },
+   "PlanarDice": {
+    "rule": "901",
+    "title": "Planechase",
+    "method": "hand"
+   },
+   "Destroyed": {
+    "rule": "701.8",
+    "title": "Destroy",
+    "method": "hand"
+   },
+   "TokenCreated": {
+    "rule": "111",
+    "title": "Tokens",
+    "method": "hand"
+   }
+  },
+  "replacement_events": {
+   "Moved": {
+    "rule": "614",
+    "title": "Replacement Effects",
+    "method": "hand"
+   },
+   "DamageDone": {
+    "rule": "614",
+    "title": "Replacement Effects",
+    "method": "hand"
+   },
+   "Untap": {
+    "rule": "614",
+    "title": "Replacement Effects",
+    "method": "hand"
+   },
+   "Counter": {
+    "rule": "614",
+    "title": "Replacement Effects",
+    "method": "hand"
+   },
+   "Draw": {
+    "rule": "614.11",
+    "title": "Some effects replace card draws. These effects are applied e",
+    "method": "hand"
+   },
+   "CreateToken": {
+    "rule": "614",
+    "title": "Replacement Effects",
+    "method": "hand"
+   },
+   "AddCounter": {
+    "rule": "614",
+    "title": "Replacement Effects",
+    "method": "hand"
+   },
+   "GainLife": {
+    "rule": "614",
+    "title": "Replacement Effects",
+    "method": "hand"
+   },
+   "BeginPhase": {
+    "rule": "614",
+    "title": "Replacement Effects",
+    "method": "hand"
+   },
+   "GameLoss": {
+    "rule": "104",
+    "title": "Ending the Game",
+    "method": "hand"
+   },
+   "ProduceMana": {
+    "rule": "106.7",
+    "title": "Some abilities produce mana based on the type of mana anothe",
+    "method": "hand"
+   }
+  }
+ }
+}
