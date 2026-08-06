@@ -1,0 +1,21 @@
+{
+  "_comment": "Fresh NL questions for the agent-as-compiler POC. Disjoint from the 20-query dev benchmark and from RulesGuru (held out). Witness = card that must appear in results; absent = card that must not.",
+  "questions": [
+    {"id": "q1", "q": "creatures whose enter-the-battlefield trigger deals damage to each opponent",
+     "witness": ["Fanatic of Mogis"]},
+    {"id": "q2", "q": "cards that double the number of +1/+1 counters you put on creatures",
+     "witness": ["Branching Evolution"]},
+    {"id": "q3", "q": "lands with an activated ability that sacrifices the land itself to draw a card",
+     "witness": ["Horizon Canopy"]},
+    {"id": "q4", "q": "creatures that get a +1/+1 counter whenever you gain life",
+     "witness": ["Ajani's Pridemate"]},
+    {"id": "q5", "q": "spells that counter a spell unless its controller pays mana",
+     "witness": ["Mana Leak"]},
+    {"id": "q6", "q": "cards with a trigger that makes an opponent lose life whenever they discard a card",
+     "witness": ["Liliana's Caress"]},
+    {"id": "q7", "q": "cards that mill a player whenever that player draws a card",
+     "witness": ["Sphinx's Tutelage"]},
+    {"id": "q8", "q": "planeswalkers with an ability that returns a creature card from a graveyard to the battlefield",
+     "witness": ["Liliana, Death's Majesty"]}
+  ]
+}
