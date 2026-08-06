@@ -355,7 +355,7 @@ def test_axis_matching_high_noon_shape():
                    "params": {"Mode": "SpellCast", "ValidCard": "Card"}}]}
     high_noon = {"name": "Noonish", "types": "Enchantment", "manaCost": "1 W",
                  "edges": [], "nodes": [
-                     {"id": "s0", "kind": "S",
+                     {"id": "s0", "kind": "S", "mode": "CantBeCast",
                       "params": {"Mode": "CantBeCast", "ValidCard": "Card",
                                  "NumLimitEachTurn": "1"}}]}
     by_name = {r["name"]: r for r in (payoff, high_noon)}
