@@ -45,7 +45,32 @@ def signatures(rec: dict) -> set[str]:
             else:
                 sigs.add(f"T:{mode}")
         elif kind == "S":
-            sigs.add(f"S:{p.get('Mode') or n.get('mode')}")
+            mode = p.get("Mode") or n.get("mode")
+            if mode == "Continuous":
+                # sub-signature the catch-all by effect-param family so its
+                # clusters are mineable (was one 1,864-card blob)
+                fams = [k for k in ("AddPower", "AddToughness", "AddKeyword",
+                                    "AddAbility", "SetPower", "SetToughness",
+                                    "MayPlay", "GainControl", "AddType",
+                                    "RemoveKeyword", "RemoveAllAbilities",
+                                    "AddHiddenKeyword", "AdjustLandPlays",
+                                    "SetMaxHandSize", "AddColor", "Protection")
+                        if k in p]
+                aff = str(p.get("Affected", ""))
+                scope = ("Self" if "Card.Self" in aff else
+                         "YouCtrl" if "YouCtrl" in aff else
+                         "Opp" if "Opp" in aff else
+                         "All" if aff else "None")
+                if fams:
+                    sigs.add(f"S:Continuous[{'+'.join(fams[:2])}@{scope}]")
+                else:
+                    other = sorted(set(p) - {"Mode", "Affected", "Description",
+                                             "EffectZone", "AffectedZone",
+                                             "Condition", "CheckSVar",
+                                             "SVarCompare"})
+                    sigs.add(f"S:Continuous[{other[0] if other else 'bare'}@{scope}]")
+            else:
+                sigs.add(f"S:{mode}")
         elif kind == "R":
             sigs.add(f"R:{p.get('Event')}->{p.get('ReplaceWith') and 'replace' or 'other'}")
         elif kind == "A" and n.get("apiKind") == "AB":

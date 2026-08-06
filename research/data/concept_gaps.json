@@ -1,24 +1,24 @@
 {
  "total_cards": 34519,
- "uncovered_cards": 4946,
+ "uncovered_cards": 4601,
  "clusters": [
   {
-   "signature": "S:Continuous",
-   "uncovered_cards": 1864,
-   "also_on_covered_cards": 2532,
+   "signature": "S:Continuous[AddPower+AddToughness@All]",
+   "uncovered_cards": 300,
+   "also_on_covered_cards": 459,
    "examples": [
-    "A Realm Reborn",
-    "Aang, Air Nomad",
-    "Aang, Destined Savior",
-    "Abaddon the Despoiler",
-    "Abomination of Llanowar",
-    "Aboshan's Desire"
+    "Abzan Runemark",
+    "Aerial Modification",
+    "Aether Web",
+    "Agility",
+    "Akki War Paint",
+    "All That Glitters"
    ]
   },
   {
    "signature": "S:ReduceCost",
-   "uncovered_cards": 246,
-   "also_on_covered_cards": 269,
+   "uncovered_cards": 243,
+   "also_on_covered_cards": 272,
    "examples": [
     "Alisaie Leveilleur",
     "Animist's Might",
@@ -29,9 +29,22 @@
    ]
   },
   {
+   "signature": "S:Continuous[AddKeyword@YouCtrl]",
+   "uncovered_cards": 221,
+   "also_on_covered_cards": 258,
+   "examples": [
+    "Aang, Air Nomad",
+    "Aang, Destined Savior",
+    "Abaddon the Despoiler",
+    "Abzan Battle Priest",
+    "Abzan Falconer",
+    "Adept Watershaper"
+   ]
+  },
+  {
    "signature": "S:CantBlockBy",
-   "uncovered_cards": 214,
-   "also_on_covered_cards": 148,
+   "uncovered_cards": 213,
+   "also_on_covered_cards": 149,
    "examples": [
     "Aether Figment",
     "Aether Tunnel",
@@ -42,35 +55,48 @@
    ]
   },
   {
-   "signature": "T:Phase->Pump",
-   "uncovered_cards": 108,
-   "also_on_covered_cards": 63,
+   "signature": "S:Continuous[AddKeyword@All]",
+   "uncovered_cards": 211,
+   "also_on_covered_cards": 180,
    "examples": [
-    "Aethershield Artificer",
-    "Amy's Home",
-    "Ana Sanctuary",
-    "Angelic Skirmisher",
-    "Anointed Deacon",
-    "Archpriest of Iona"
+    "Aboshan's Desire",
+    "Absolute Grace",
+    "Absolute Law",
+    "Absolute Virtue",
+    "Abzan Runemark",
+    "Aegis of the Gods"
    ]
   },
   {
-   "signature": "T:Phase->Cleanup",
-   "uncovered_cards": 105,
-   "also_on_covered_cards": 193,
+   "signature": "S:Continuous[AddPower+AddToughness@Self]",
+   "uncovered_cards": 166,
+   "also_on_covered_cards": 107,
    "examples": [
-    "Agitator Ant",
-    "Aid from the Cowl",
-    "Amplifire",
-    "Amy's Home",
-    "Angel's Trumpet",
-    "Archfiend of Depravity"
+    "Akawalli, the Seething Tower",
+    "Akki Underling",
+    "Angel of Vitality",
+    "Angelic Field Marshal",
+    "Anurid Barkripper",
+    "Anya, Merciless Angel"
+   ]
+  },
+  {
+   "signature": "S:Continuous[AddKeyword@Self]",
+   "uncovered_cards": 144,
+   "also_on_covered_cards": 122,
+   "examples": [
+    "Abzan Kin-Guard",
+    "Aeronaut Tinkerer",
+    "Ainok Artillerist",
+    "Wretched Bonemass",
+    "Angelic Overseer",
+    "Animus of Predation"
    ]
   },
   {
    "signature": "T:Phase->Sacrifice",
-   "uncovered_cards": 105,
-   "also_on_covered_cards": 86,
+   "uncovered_cards": 97,
+   "also_on_covered_cards": 94,
    "examples": [
     "Anowon, the Ruin Sage",
     "Anurid Scavenger",
@@ -81,22 +107,22 @@
    ]
   },
   {
-   "signature": "T:Phase->DealDamage",
-   "uncovered_cards": 100,
-   "also_on_covered_cards": 62,
+   "signature": "S:Continuous[SetPower+SetToughness@None]",
+   "uncovered_cards": 93,
+   "also_on_covered_cards": 65,
    "examples": [
-    "Ancient Runes",
-    "Angel's Trumpet",
-    "Antagonism",
-    "Black Vise",
-    "Bulwark",
-    "Captain Rex Nebula"
+    "Abomination of Llanowar",
+    "Adamaro, First to Desire",
+    "Allosaurus Rider",
+    "Wretched Bonemass",
+    "Ancient Ooze",
+    "Angry Mob"
    ]
   },
   {
    "signature": "R:DamageDone->replace",
-   "uncovered_cards": 89,
-   "also_on_covered_cards": 53,
+   "uncovered_cards": 86,
+   "also_on_covered_cards": 56,
    "examples": [
     "Absorbing Man and Titania",
     "Aether Revolt",
@@ -108,8 +134,8 @@
   },
   {
    "signature": "S:AlternativeCost",
-   "uncovered_cards": 80,
-   "also_on_covered_cards": 68,
+   "uncovered_cards": 79,
+   "also_on_covered_cards": 69,
    "examples": [
     "Abolish",
     "Admiral's Order",
@@ -121,8 +147,8 @@
   },
   {
    "signature": "S:CantAttack",
-   "uncovered_cards": 80,
-   "also_on_covered_cards": 40,
+   "uncovered_cards": 78,
+   "also_on_covered_cards": 42,
    "examples": [
     "Akron Legionnaire",
     "Angelic Arbiter",
@@ -146,22 +172,9 @@
    ]
   },
   {
-   "signature": "AB:TapCost->DealDamage",
-   "uncovered_cards": 76,
-   "also_on_covered_cards": 117,
-   "examples": [
-    "Apprentice Sorcerer",
-    "Ben-Ben, Akki Hermit",
-    "Bloodshot Trainee",
-    "Capricious Sorcerer",
-    "Centaur Archer",
-    "Chandra's Magmutt"
-   ]
-  },
-  {
    "signature": "AB:TapCost->Pump",
-   "uncovered_cards": 75,
-   "also_on_covered_cards": 185,
+   "uncovered_cards": 74,
+   "also_on_covered_cards": 186,
    "examples": [
     "Akki Drillmaster",
     "Alaborn Veteran",
@@ -173,8 +186,8 @@
   },
   {
    "signature": "T:Phase->SetState",
-   "uncovered_cards": 65,
-   "also_on_covered_cards": 68,
+   "uncovered_cards": 63,
+   "also_on_covered_cards": 70,
    "examples": [
     "Afflicted Deserter",
     "Werewolf Ransacker",
@@ -182,6 +195,32 @@
     "Avacynian Missionaries",
     "Blitzwing, Cruel Tormentor",
     "Breakneck Rider"
+   ]
+  },
+  {
+   "signature": "S:Continuous[AddPower@Self]",
+   "uncovered_cards": 63,
+   "also_on_covered_cards": 37,
+   "examples": [
+    "Akiri, Line-Slinger",
+    "Angrath's Ambusher",
+    "Basking Capybara",
+    "Benalish Honor Guard",
+    "Blackbloom Rogue",
+    "Bolshack Dragon"
+   ]
+  },
+  {
+   "signature": "S:Continuous[AddAbility@All]",
+   "uncovered_cards": 61,
+   "also_on_covered_cards": 91,
+   "examples": [
+    "Acidic Sliver",
+    "Armor Sliver",
+    "Barbed Field",
+    "Barbed Sliver",
+    "Basal Sliver",
+    "Bigger on the Inside"
    ]
   },
   {
@@ -212,8 +251,8 @@
   },
   {
    "signature": "S:CantBeCast",
-   "uncovered_cards": 57,
-   "also_on_covered_cards": 39,
+   "uncovered_cards": 56,
+   "also_on_covered_cards": 40,
    "examples": [
     "Aether Storm",
     "Alhammarret, High Arbiter",
@@ -250,9 +289,48 @@
    ]
   },
   {
+   "signature": "T:Phase->ChangeZone",
+   "uncovered_cards": 46,
+   "also_on_covered_cards": 205,
+   "examples": [
+    "Archwing Dragon",
+    "Arms Scavenger",
+    "Blitz Hellion",
+    "Blood Clock",
+    "Boarded Window",
+    "Braids, Conjurer Adept"
+   ]
+  },
+  {
+   "signature": "S:Continuous[AddPower@All]",
+   "uncovered_cards": 45,
+   "also_on_covered_cards": 108,
+   "examples": [
+    "Aether Tunnel",
+    "Agoraphobia",
+    "Anaba Spirit Crafter",
+    "Archangel of Strife",
+    "Beckoning Will-o'-Wisp",
+    "Blade Sliver"
+   ]
+  },
+  {
+   "signature": "T:Phase->Cleanup",
+   "uncovered_cards": 45,
+   "also_on_covered_cards": 253,
+   "examples": [
+    "Agitator Ant",
+    "Amplifire",
+    "Archfiend of Depravity",
+    "Arms Scavenger",
+    "Backdraft",
+    "Bow to My Command"
+   ]
+  },
+  {
    "signature": "T:Phase->LoseLife",
-   "uncovered_cards": 50,
-   "also_on_covered_cards": 90,
+   "uncovered_cards": 44,
+   "also_on_covered_cards": 96,
    "examples": [
     "Archfiend of Despair",
     "Bellowing Mauler",
@@ -263,48 +341,9 @@
    ]
   },
   {
-   "signature": "T:Phase->ChangeZone",
-   "uncovered_cards": 49,
-   "also_on_covered_cards": 202,
-   "examples": [
-    "Amy's Home",
-    "Archwing Dragon",
-    "Arms Scavenger",
-    "Blitz Hellion",
-    "Blood Clock",
-    "Boarded Window"
-   ]
-  },
-  {
-   "signature": "T:Phase->Dig",
-   "uncovered_cards": 47,
-   "also_on_covered_cards": 22,
-   "examples": [
-    "Aid from the Cowl",
-    "Akal Pakal, First Among Equals",
-    "Alrund, God of the Cosmos",
-    "Bell Borca, Spectral Sergeant",
-    "Birthing Ritual",
-    "Cait Sith, Fortune Teller"
-   ]
-  },
-  {
-   "signature": "T:Phase->Effect",
-   "uncovered_cards": 42,
-   "also_on_covered_cards": 36,
-   "examples": [
-    "Academy Loremaster",
-    "Bell Borca, Spectral Sergeant",
-    "Boros Battleshaper",
-    "Brotherhood Spy",
-    "Cait Sith, Fortune Teller",
-    "Chaos Dragon"
-   ]
-  },
-  {
    "signature": "AB:ManaCost->Pump",
-   "uncovered_cards": 42,
-   "also_on_covered_cards": 842,
+   "uncovered_cards": 41,
+   "also_on_covered_cards": 843,
    "examples": [
     "Ajani Steadfast",
     "Armor of Faith",
@@ -316,15 +355,41 @@
   },
   {
    "signature": "AB:ManaCost->ChangeZone",
-   "uncovered_cards": 39,
-   "also_on_covered_cards": 394,
+   "uncovered_cards": 37,
+   "also_on_covered_cards": 396,
    "examples": [
     "Agoraphobia",
     "Arms Race",
     "Braids, Conjurer Adept Avatar",
     "Cage of Hands",
-    "Chandra, Heart of Fire",
-    "Conviction"
+    "Conviction",
+    "Cooped Up"
+   ]
+  },
+  {
+   "signature": "S:Continuous[SetPower@None]",
+   "uncovered_cards": 37,
+   "also_on_covered_cards": 28,
+   "examples": [
+    "Avalanche of Sector 7",
+    "Brotherhood Vertibird",
+    "Cephalopod Sentry",
+    "Coiling Woodworm",
+    "Dakmor Sorceress",
+    "Dauthi Warlord"
+   ]
+  },
+  {
+   "signature": "R:Untap->other",
+   "uncovered_cards": 36,
+   "also_on_covered_cards": 117,
+   "examples": [
+    "An-Zerrin Ruins",
+    "Back to Basics",
+    "Blizzard",
+    "Bonds of Quicksilver",
+    "Choke",
+    "Coma Veil"
    ]
   }
  ]

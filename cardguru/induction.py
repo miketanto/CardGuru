@@ -50,6 +50,32 @@ def _match_pattern(rec: dict, pat: dict) -> bool:
                    for n in _nodes(rec))
     if "has_api" in pat:
         return any(n.get("api") == pat["has_api"] for n in _nodes(rec))
+    if "continuous_params" in pat:
+        # Continuous static carrying ALL listed params; optional Affected
+        # substring and forbidden params
+        want = pat["continuous_params"]
+        forbid = pat.get("forbid_params", [])
+        aff = pat.get("affected_contains")
+        for n in _nodes(rec):
+            if n.get("kind") != "S":
+                continue
+            p = _params(n)
+            if (p.get("Mode") or n.get("mode")) != "Continuous":
+                continue
+            if not all(k in p for k in want):
+                continue
+            if any(k in p for k in forbid):
+                continue
+            if aff is not None and aff not in str(p.get("Affected", "")):
+                continue
+            return True
+        return False
+    if "replacement_event" in pat:
+        return any(n.get("kind") == "R"
+                   and _params(n).get("Event") == pat["replacement_event"]
+                   and (pat.get("replace_with") is None
+                        or pat["replace_with"] in str(_params(n).get("ReplaceWith", "")))
+                   for n in _nodes(rec))
     if "card_type_contains" in pat:
         return pat["card_type_contains"] in (rec.get("types") or "")
     raise ValueError(f"unknown pattern: {pat}")
