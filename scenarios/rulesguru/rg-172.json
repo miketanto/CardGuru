@@ -1,0 +1,65 @@
+{
+ "id": "q172-leovold-notion-thief-brainstorm",
+ "description": "Aarush (A) controls Leovold and Notion Thief; Natasha (B) casts Brainstorm on A's turn. Notion Thief replaces all three of B's draws (none is the first draw of B's draw step), so A draws 3 and B draws none; Leovold's restriction is never violated because B never draws. B's hand is empty after casting, so the put-back puts nothing back.",
+ "players": {
+  "A": {
+   "life": 20,
+   "battlefield": [
+    {
+     "card": "Leovold, Emissary of Trest"
+    },
+    {
+     "card": "Notion Thief"
+    }
+   ]
+  },
+  "B": {
+   "life": 20,
+   "battlefield": [
+    {
+     "card": "Island",
+     "count": 1
+    }
+   ],
+   "hand": [
+    "Brainstorm"
+   ]
+  }
+ },
+ "actions": [
+  {
+   "do": "cast",
+   "turn": 1,
+   "phase": "PRECOMBAT_MAIN",
+   "player": "B",
+   "card": "Brainstorm"
+  },
+  {
+   "do": "wait_stack",
+   "turn": 1,
+   "phase": "PRECOMBAT_MAIN"
+  }
+ ],
+ "stop": {
+  "turn": 1,
+  "phase": "BEGIN_COMBAT"
+ },
+ "expect": [
+  {
+   "check": "hand_count",
+   "player": "A",
+   "count": 3
+  },
+  {
+   "check": "hand_count",
+   "player": "B",
+   "count": 0
+  },
+  {
+   "check": "graveyard_count",
+   "player": "B",
+   "card": "Brainstorm",
+   "count": 1
+  }
+ ]
+}

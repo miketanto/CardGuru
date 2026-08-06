@@ -1,0 +1,79 @@
+{
+ "id": "q327-harms-way-sulfurous-springs",
+ "description": "Harm's Way redirects the next 2 damage Sulfurous Springs would deal to Aarav; tapping the Springs for {R} deals 1 damage that is redirected to Nevaeh (B) even though it comes from a mana ability. The 'source of your choice' selection is a choice (not a target) for the caster; the {R} pain ability is a separate ability in the engine so no color pick is needed.",
+ "players": {
+  "A": {
+   "life": 20,
+   "battlefield": [
+    {
+     "card": "Plains",
+     "count": 1
+    },
+    {
+     "card": "Sulfurous Springs",
+     "count": 1
+    }
+   ],
+   "hand": [
+    "Harm's Way"
+   ]
+  },
+  "B": {
+   "life": 20
+  }
+ },
+ "actions": [
+  {
+   "do": "cast",
+   "turn": 1,
+   "phase": "PRECOMBAT_MAIN",
+   "player": "A",
+   "card": "Harm's Way",
+   "target_player": "B"
+  },
+  {
+   "do": "choice",
+   "player": "A",
+   "value": "Sulfurous Springs"
+  },
+  {
+   "do": "wait_stack",
+   "turn": 1,
+   "phase": "PRECOMBAT_MAIN"
+  },
+  {
+   "do": "activate",
+   "turn": 1,
+   "phase": "PRECOMBAT_MAIN",
+   "player": "A",
+   "ability": "{T}: Add {R}"
+  }
+ ],
+ "stop": {
+  "turn": 1,
+  "phase": "BEGIN_COMBAT"
+ },
+ "expect": [
+  {
+   "check": "life",
+   "player": "B",
+   "value": 19
+  },
+  {
+   "check": "life",
+   "player": "A",
+   "value": 20
+  },
+  {
+   "check": "tapped",
+   "card": "Sulfurous Springs",
+   "value": true
+  },
+  {
+   "check": "graveyard_count",
+   "player": "A",
+   "card": "Harm's Way",
+   "count": 1
+  }
+ ]
+}

@@ -1,0 +1,78 @@
+{
+ "id": "q1555-mimeoplasm-rise-cannot-copy",
+ "description": "Rise of the Dark Realms returns Warship Scout and The Mimeoplasm simultaneously. The Mimeoplasm's as-enters replacement requires exiling TWO creature cards from graveyards; it can't exile itself, and Warship Scout is the only other creature card, so the option can't be taken. The Mimeoplasm enters as a 0/0 and dies to state-based actions; Warship Scout enters normally.",
+ "players": {
+  "A": {
+   "life": 20,
+   "battlefield": [
+    {
+     "card": "Swamp",
+     "count": 9
+    }
+   ],
+   "hand": [
+    "Rise of the Dark Realms"
+   ],
+   "graveyard": [
+    "Warship Scout",
+    "The Mimeoplasm"
+   ],
+   "library_top": [
+    "Swamp",
+    "Swamp"
+   ]
+  },
+  "B": {
+   "life": 20,
+   "library_top": [
+    "Swamp",
+    "Swamp"
+   ]
+  }
+ },
+ "actions": [
+  {
+   "do": "cast",
+   "turn": 1,
+   "phase": "PRECOMBAT_MAIN",
+   "player": "A",
+   "card": "Rise of the Dark Realms"
+  },
+  {
+   "do": "wait_stack",
+   "turn": 1,
+   "phase": "PRECOMBAT_MAIN"
+  }
+ ],
+ "stop": {
+  "turn": 1,
+  "phase": "BEGIN_COMBAT"
+ },
+ "expect": [
+  {
+   "check": "permanent_count",
+   "player": "A",
+   "card": "Warship Scout",
+   "count": 1
+  },
+  {
+   "check": "permanent_count",
+   "player": "A",
+   "card": "The Mimeoplasm",
+   "count": 0
+  },
+  {
+   "check": "graveyard_count",
+   "player": "A",
+   "card": "The Mimeoplasm",
+   "count": 1
+  },
+  {
+   "check": "power_toughness",
+   "player": "A",
+   "card": "Warship Scout",
+   "power": 2,
+   "toughness": 1
+  }
+ ]
+}

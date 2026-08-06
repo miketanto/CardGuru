@@ -1,0 +1,176 @@
+{
+ "sample_size": 24,
+ "seed": 42,
+ "burned": true,
+ "grader": "independent agent, ruling-equivalence rubric",
+ "rows": [
+  {
+   "id": 6622,
+   "level": "0",
+   "bucket": "engine_confirmed",
+   "verdict": "correct",
+   "skip_reason": null
+  },
+  {
+   "id": 327,
+   "level": "0",
+   "bucket": "engine_confirmed",
+   "verdict": "correct",
+   "skip_reason": null
+  },
+  {
+   "id": 64,
+   "level": "0",
+   "bucket": "not_simulatable",
+   "verdict": "correct",
+   "skip_reason": "The outcome is Abdullah losing the game, and no expect check can observe a game-loss/game-over state (only life and zone"
+  },
+  {
+   "id": 7073,
+   "level": "0",
+   "bucket": "not_simulatable",
+   "verdict": "correct",
+   "skip_reason": "The scenario needs Nico to pass priority exactly once while the split-second spell is on the stack, then cast Remand in "
+  },
+  {
+   "id": 1812,
+   "level": "1",
+   "bucket": "not_simulatable",
+   "verdict": "correct",
+   "skip_reason": "The question is about information availability and decision ordering during a single spell's resolution (do opponents se"
+  },
+  {
+   "id": 1533,
+   "level": "1",
+   "bucket": "engine_confirmed",
+   "verdict": "correct",
+   "skip_reason": null
+  },
+  {
+   "id": 1172,
+   "level": "1",
+   "bucket": "not_simulatable",
+   "verdict": "correct",
+   "skip_reason": "Polukranos's becomes-monstrous trigger ('deals X damage divided as you choose among any number of target creatures') rai"
+  },
+  {
+   "id": 581,
+   "level": "1",
+   "bucket": "not_simulatable",
+   "verdict": "correct",
+   "skip_reason": "Trample combat damage assignment is a multi-amount prompt ('Assign combat damage among creatures blocking Garruk's Compa"
+  },
+  {
+   "id": 395,
+   "level": "1",
+   "bucket": "not_simulatable",
+   "verdict": "correct",
+   "skip_reason": "The Prince of Thralls trigger requires an opponent's permanent to be put into a graveyard during the game, but with only"
+  },
+  {
+   "id": 7790,
+   "level": "1",
+   "bucket": "engine_confirmed",
+   "verdict": "correct",
+   "skip_reason": null
+  },
+  {
+   "id": 316,
+   "level": "1",
+   "bucket": "not_simulatable",
+   "verdict": "correct",
+   "skip_reason": "Requires a Commander game: the scenario spec has no way to designate a commander or set up/observe a command zone, and t"
+  },
+  {
+   "id": 5257,
+   "level": "1",
+   "bucket": "not_simulatable",
+   "verdict": "correct",
+   "skip_reason": "Whether soulbond pairing happens has no observable board outcome checkable by the available expect checks (pairing/reach"
+  },
+  {
+   "id": 52,
+   "level": "2",
+   "bucket": "not_simulatable",
+   "verdict": "correct",
+   "skip_reason": "Requires a manifested (face-down) permanent on the battlefield. Board setup only supports face-up cards from the questio"
+  },
+  {
+   "id": 51,
+   "level": "2",
+   "bucket": "not_simulatable",
+   "verdict": "correct",
+   "skip_reason": "Requires a manifested (face-down) permanent on the battlefield. Board setup only supports face-up cards from the questio"
+  },
+  {
+   "id": 172,
+   "level": "2",
+   "bucket": "engine_confirmed",
+   "verdict": "correct",
+   "skip_reason": null
+  },
+  {
+   "id": 448,
+   "level": "2",
+   "bucket": "not_simulatable",
+   "verdict": "incorrect",
+   "skip_reason": "The observable outcome hinges on Adelyn choosing the order of two replacement effects (Faerie Trickery's exile-instead v"
+  },
+  {
+   "id": 518,
+   "level": "2",
+   "bucket": "engine_confirmed",
+   "verdict": "correct",
+   "skip_reason": null
+  },
+  {
+   "id": 1792,
+   "level": "2",
+   "bucket": "not_simulatable",
+   "verdict": "correct",
+   "skip_reason": "Requires a three-player multiplayer game (Blaine, Autumn, Ciara) and the monarch designation; the harness supports exact"
+  },
+  {
+   "id": 4133,
+   "level": "3",
+   "bucket": "not_simulatable",
+   "verdict": "partial",
+   "skip_reason": "Casting a spell for its mutate cost and choosing to merge it underneath the target are engine prompts (alternative-cost "
+  },
+  {
+   "id": 69,
+   "level": "3",
+   "bucket": "engine_flagged",
+   "verdict": "incorrect",
+   "skip_reason": null
+  },
+  {
+   "id": 2985,
+   "level": "3",
+   "bucket": "engine_confirmed",
+   "verdict": "correct",
+   "skip_reason": null
+  },
+  {
+   "id": 319,
+   "level": "3",
+   "bucket": "not_simulatable",
+   "verdict": "incorrect",
+   "skip_reason": "The board state cannot be constructed: the scenario setup vocabulary has no way to create a token copy of Panglacial Wur"
+  },
+  {
+   "id": 5876,
+   "level": "Corner Case",
+   "bucket": "not_simulatable",
+   "verdict": "correct",
+   "skip_reason": "Zevlor's copy effect reads 'for each other opponent', so it only does anything in a game with three or more players; in "
+  },
+  {
+   "id": 1555,
+   "level": "Corner Case",
+   "bucket": "engine_confirmed",
+   "verdict": "correct",
+   "skip_reason": null
+  }
+ ]
+}

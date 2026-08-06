@@ -1,0 +1,71 @@
+{
+ "id": "q6622-edict-vs-hexproof",
+ "description": "Diabolic Edict targets the player, not the creature, so hexproof on Scaled Behemoth is irrelevant: B must sacrifice their only creature. The in-resolution sacrifice selection still prompts in strict mode and is scripted as a choice for B.",
+ "players": {
+  "A": {
+   "life": 20,
+   "battlefield": [
+    {
+     "card": "Swamp",
+     "count": 2
+    }
+   ],
+   "hand": [
+    "Diabolic Edict"
+   ]
+  },
+  "B": {
+   "life": 20,
+   "battlefield": [
+    {
+     "card": "Scaled Behemoth",
+     "count": 1
+    }
+   ]
+  }
+ },
+ "actions": [
+  {
+   "do": "cast",
+   "turn": 1,
+   "phase": "PRECOMBAT_MAIN",
+   "player": "A",
+   "card": "Diabolic Edict",
+   "target_player": "B"
+  },
+  {
+   "do": "choice",
+   "player": "B",
+   "value": "Scaled Behemoth"
+  },
+  {
+   "do": "wait_stack",
+   "turn": 1,
+   "phase": "PRECOMBAT_MAIN"
+  }
+ ],
+ "stop": {
+  "turn": 1,
+  "phase": "BEGIN_COMBAT"
+ },
+ "expect": [
+  {
+   "check": "permanent_count",
+   "player": "B",
+   "card": "Scaled Behemoth",
+   "count": 0
+  },
+  {
+   "check": "graveyard_count",
+   "player": "B",
+   "card": "Scaled Behemoth",
+   "count": 1
+  },
+  {
+   "check": "graveyard_count",
+   "player": "A",
+   "card": "Diabolic Edict",
+   "count": 1
+  }
+ ]
+}

@@ -1,0 +1,135 @@
+{
+ "id": "q1533-tephraderm-vs-rockslide",
+ "description": "Rockslide Elemental's four +1/+1 counters cannot be placed at setup, so two Tephraderm-vs-Tephraderm combats kill four creatures first (each mirror trades via the damage-reflection triggers), with B saying Yes to Rockslide's optional death trigger four times. In each mirror combat B's second Tephraderm dies during resolution of A's reflection trigger, so B briefly has two simultaneous triggers (its own Tephraderm reflection trigger plus Rockslide's death trigger) and an order choice ('Rockslide Elemental' goes on the stack first; the dead Tephraderm's reflection then fizzles against the already-dead attacker). On turn 5 A attacks with the last Tephraderm and the 5/5 first-strike Rockslide blocks: Rockslide kills Tephraderm in the first-strike step; the death trigger (stacked after the active player's reflection trigger) resolves first making Rockslide 6/6, then Tephraderm's trigger deals 5 damage and Rockslide survives.",
+ "players": {
+  "A": {
+   "life": 20,
+   "battlefield": [
+    {
+     "card": "Tephraderm",
+     "count": 3
+    }
+   ]
+  },
+  "B": {
+   "life": 20,
+   "battlefield": [
+    {
+     "card": "Tephraderm",
+     "count": 2
+    },
+    {
+     "card": "Rockslide Elemental",
+     "count": 1
+    }
+   ]
+  }
+ },
+ "actions": [
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Tephraderm"
+  },
+  {
+   "do": "block",
+   "turn": 1,
+   "player": "B",
+   "blocker": "Tephraderm",
+   "attacker": "Tephraderm"
+  },
+  {
+   "do": "choice",
+   "player": "B",
+   "value": "Yes"
+  },
+  {
+   "do": "choice",
+   "player": "B",
+   "value": "Rockslide Elemental"
+  },
+  {
+   "do": "choice",
+   "player": "B",
+   "value": "Yes"
+  },
+  {
+   "do": "attack",
+   "turn": 3,
+   "player": "A",
+   "attacker": "Tephraderm"
+  },
+  {
+   "do": "block",
+   "turn": 3,
+   "player": "B",
+   "blocker": "Tephraderm",
+   "attacker": "Tephraderm"
+  },
+  {
+   "do": "choice",
+   "player": "B",
+   "value": "Yes"
+  },
+  {
+   "do": "choice",
+   "player": "B",
+   "value": "Rockslide Elemental"
+  },
+  {
+   "do": "choice",
+   "player": "B",
+   "value": "Yes"
+  },
+  {
+   "do": "attack",
+   "turn": 5,
+   "player": "A",
+   "attacker": "Tephraderm"
+  },
+  {
+   "do": "block",
+   "turn": 5,
+   "player": "B",
+   "blocker": "Rockslide Elemental",
+   "attacker": "Tephraderm"
+  },
+  {
+   "do": "choice",
+   "player": "B",
+   "value": "Yes"
+  }
+ ],
+ "stop": {
+  "turn": 5,
+  "phase": "POSTCOMBAT_MAIN"
+ },
+ "expect": [
+  {
+   "check": "permanent_count",
+   "player": "B",
+   "card": "Rockslide Elemental",
+   "count": 1
+  },
+  {
+   "check": "power_toughness",
+   "player": "B",
+   "card": "Rockslide Elemental",
+   "power": 6,
+   "toughness": 6
+  },
+  {
+   "check": "graveyard_count",
+   "player": "A",
+   "card": "Tephraderm",
+   "count": 3
+  },
+  {
+   "check": "graveyard_count",
+   "player": "B",
+   "card": "Tephraderm",
+   "count": 2
+  }
+ ]
+}

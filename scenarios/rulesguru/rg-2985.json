@@ -1,0 +1,137 @@
+{
+ "id": "q2985-cage-vesuva-copies-border-guard",
+ "description": "Song of the Dryads makes Border Guard a colorless Forest land, so Vesuva may copy it. With Glacierwood Siege on Sultai, Amelie plays Vesuva from the graveyard: Grafdigger's Cage doesn't stop it (Vesuva is a land card in the graveyard, not a creature card, and playing a land isn't casting), and it enters tapped as Border Guard - a 1/4 creature, since the type-changing effect isn't part of the copiable values. Vesuva's optional as-enters copy is a Yes/No prompt followed by a choice-queue land selection.",
+ "players": {
+  "A": {
+   "life": 20,
+   "battlefield": [
+    {
+     "card": "Forest",
+     "count": 2
+    },
+    {
+     "card": "Island",
+     "count": 2
+    }
+   ],
+   "hand": [
+    "Glacierwood Siege"
+   ],
+   "graveyard": [
+    "Vesuva"
+   ],
+   "library_top": [
+    "Island",
+    "Island",
+    "Island"
+   ]
+  },
+  "B": {
+   "life": 20,
+   "battlefield": [
+    {
+     "card": "Grafdigger's Cage"
+    },
+    {
+     "card": "Border Guard"
+    },
+    {
+     "card": "Forest",
+     "count": 3
+    }
+   ],
+   "hand": [
+    "Song of the Dryads"
+   ],
+   "library_top": [
+    "Island",
+    "Island",
+    "Island"
+   ]
+  }
+ },
+ "actions": [
+  {
+   "do": "cast",
+   "turn": 2,
+   "phase": "PRECOMBAT_MAIN",
+   "player": "B",
+   "card": "Song of the Dryads"
+  },
+  {
+   "do": "target",
+   "player": "B",
+   "value": "Border Guard"
+  },
+  {
+   "do": "wait_stack",
+   "turn": 2,
+   "phase": "PRECOMBAT_MAIN"
+  },
+  {
+   "do": "cast",
+   "turn": 3,
+   "phase": "PRECOMBAT_MAIN",
+   "player": "A",
+   "card": "Glacierwood Siege"
+  },
+  {
+   "do": "choice",
+   "player": "A",
+   "value": "Sultai"
+  },
+  {
+   "do": "wait_stack",
+   "turn": 3,
+   "phase": "PRECOMBAT_MAIN"
+  },
+  {
+   "do": "play_land",
+   "turn": 3,
+   "phase": "PRECOMBAT_MAIN",
+   "player": "A",
+   "card": "Vesuva"
+  },
+  {
+   "do": "choice",
+   "player": "A",
+   "value": "Yes"
+  },
+  {
+   "do": "choice",
+   "player": "A",
+   "value": "Border Guard"
+  }
+ ],
+ "stop": {
+  "turn": 3,
+  "phase": "BEGIN_COMBAT"
+ },
+ "expect": [
+  {
+   "check": "permanent_count",
+   "player": "A",
+   "card": "Border Guard",
+   "count": 1
+  },
+  {
+   "check": "power_toughness",
+   "player": "A",
+   "card": "Border Guard",
+   "power": 1,
+   "toughness": 4
+  },
+  {
+   "check": "graveyard_count",
+   "player": "A",
+   "card": "Vesuva",
+   "count": 0
+  },
+  {
+   "check": "permanent_count",
+   "player": "B",
+   "card": "Border Guard",
+   "count": 1
+  }
+ ]
+}

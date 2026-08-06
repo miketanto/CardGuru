@@ -1,0 +1,90 @@
+{
+ "id": "q7790-olivia-sword-of-kaldra-ping",
+ "description": "Olivia Voldaren equipped with Sword of Kaldra pings Colorful Feiyi Sparrow for 1: the damage doesn't kill the 1/3, but Sword of Kaldra's trigger exiles it; Olivia gets a +1/+1 counter and is 9/9",
+ "players": {
+  "A": {
+   "life": 20,
+   "battlefield": [
+    {
+     "card": "Mountain",
+     "count": 6
+    },
+    {
+     "card": "Olivia Voldaren"
+    },
+    {
+     "card": "Sword of Kaldra"
+    }
+   ]
+  },
+  "B": {
+   "life": 20,
+   "battlefield": [
+    {
+     "card": "Colorful Feiyi Sparrow"
+    }
+   ]
+  }
+ },
+ "actions": [
+  {
+   "do": "activate",
+   "turn": 1,
+   "phase": "PRECOMBAT_MAIN",
+   "player": "A",
+   "ability": "Equip"
+  },
+  {
+   "do": "target",
+   "player": "A",
+   "value": "Olivia Voldaren"
+  },
+  {
+   "do": "wait_stack",
+   "turn": 1,
+   "phase": "PRECOMBAT_MAIN"
+  },
+  {
+   "do": "activate",
+   "turn": 1,
+   "phase": "PRECOMBAT_MAIN",
+   "player": "A",
+   "ability": "{1}{R}:"
+  },
+  {
+   "do": "target",
+   "player": "A",
+   "value": "Colorful Feiyi Sparrow"
+  },
+  {
+   "do": "wait_stack",
+   "turn": 1,
+   "phase": "PRECOMBAT_MAIN"
+  }
+ ],
+ "stop": {
+  "turn": 1,
+  "phase": "BEGIN_COMBAT"
+ },
+ "expect": [
+  {
+   "check": "exile_count",
+   "player": "B",
+   "card": "Colorful Feiyi Sparrow",
+   "count": 1
+  },
+  {
+   "check": "permanent_count",
+   "player": "B",
+   "card": "Colorful Feiyi Sparrow",
+   "count": 0
+  },
+  {
+   "check": "power_toughness",
+   "player": "A",
+   "card": "Olivia Voldaren",
+   "power": 9,
+   "toughness": 9
+  }
+ ]
+}

@@ -1,0 +1,96 @@
+{
+ "id": "q518-progenitor-mimic-copy-harvest-hand-dies",
+ "description": "A casts Progenitor Mimic copying B's Harvest Hand (copy-ETB scripted as choice 'Yes' then a choice naming the creature, matching XMage ProgenitorMimicTest conventions). B attacks with the real Harvest Hand, A blocks with the Mimic-copy; the 2/2s trade. B's real Harvest Hand returns transformed as Scrounged Scythe, but A's Mimic is not a transforming double-faced card, so its dies-trigger does nothing and it stays in the graveyard as Progenitor Mimic (CR 712.19).",
+ "players": {
+  "A": {
+   "life": 20,
+   "battlefield": [
+    {
+     "card": "Forest",
+     "count": 4
+    },
+    {
+     "card": "Island",
+     "count": 2
+    }
+   ],
+   "hand": [
+    "Progenitor Mimic"
+   ]
+  },
+  "B": {
+   "life": 20,
+   "battlefield": [
+    {
+     "card": "Harvest Hand"
+    }
+   ]
+  }
+ },
+ "actions": [
+  {
+   "do": "cast",
+   "turn": 1,
+   "phase": "PRECOMBAT_MAIN",
+   "player": "A",
+   "card": "Progenitor Mimic"
+  },
+  {
+   "do": "choice",
+   "player": "A",
+   "value": "Yes"
+  },
+  {
+   "do": "choice",
+   "player": "A",
+   "value": "Harvest Hand"
+  },
+  {
+   "do": "wait_stack",
+   "turn": 1,
+   "phase": "PRECOMBAT_MAIN"
+  },
+  {
+   "do": "attack",
+   "turn": 2,
+   "player": "B",
+   "attacker": "Harvest Hand"
+  },
+  {
+   "do": "block",
+   "turn": 2,
+   "player": "A",
+   "blocker": "Harvest Hand",
+   "attacker": "Harvest Hand"
+  }
+ ],
+ "stop": {
+  "turn": 2,
+  "phase": "POSTCOMBAT_MAIN"
+ },
+ "expect": [
+  {
+   "check": "graveyard_count",
+   "player": "A",
+   "card": "Progenitor Mimic",
+   "count": 1
+  },
+  {
+   "check": "battlefield_count",
+   "player": "A",
+   "count": 6
+  },
+  {
+   "check": "permanent_count",
+   "player": "B",
+   "card": "Scrounged Scythe",
+   "count": 1
+  },
+  {
+   "check": "graveyard_count",
+   "player": "B",
+   "card": "Harvest Hand",
+   "count": 0
+  }
+ ]
+}
