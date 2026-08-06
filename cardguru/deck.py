@@ -432,6 +432,113 @@ def find_loops(edges: list[dict], max_len: int = 3, limit: int = 25) -> list[dic
     return loops[:limit]
 
 
+def cuts(by_name: dict, commander_rec: dict, decklist: list[tuple[str, int]],
+         cross_edges: list[dict], shape: dict, top_n: int = 10) -> list[dict]:
+    """The antithesis of suggest(): rank deck cards by cuttability.
+    A card is cuttable when it has few synergy edges, serves no deficient
+    role, and sits high on the curve. Cards filling a deficient role or
+    anchoring the synergy graph are protected."""
+    degree: dict[str, int] = {}
+    for e in cross_edges:
+        degree[e["src"]] = degree.get(e["src"], 0) + 1
+        degree[e["dst"]] = degree.get(e["dst"], 0) + 1
+
+    deficient = {r for r, quota in shape.get("quotas", {}).items()
+                 if shape.get("effective_roles", {}).get(r, 0) < quota}
+    rows = []
+    for name, _count in decklist:
+        rec = by_name.get(name)
+        if rec is None or "Land" in (rec.get("types") or ""):
+            continue
+        if name == commander_rec["name"]:
+            continue
+        deg = degree.get(name, 0)
+        roles = detect_roles(rec)
+        fills_deficient = sorted(deficient & set(roles))
+        mv = mana_value(rec.get("manaCost")) or 0
+        # cut score: high = cut first
+        score = -deg + max(0, mv - 3) * 1.5
+        reasons = [f"{deg} synergy edges"]
+        if mv >= 5:
+            reasons.append(f"MV {mv}")
+        if fills_deficient:
+            score -= 10
+            reasons.append(f"PROTECTED: fills deficient {'/'.join(fills_deficient)}")
+        elif roles.get("ramp") == "engine" and mv <= 3:
+            # cheap mana rocks/dorks serve the mana system: their worth is
+            # measured by the goldfish sim, not by synergy edges - and
+            # cutting mana to add mana is circular
+            score -= 10
+            reasons.append("PROTECTED: cheap mana engine (judged by simulation)")
+        elif roles:
+            reasons.append(f"role: {'/'.join(sorted(roles))} (already met)")
+        rows.append({"card": name, "cut_score": round(score, 1), "edges": deg,
+                     "mv": mv, "reasons": reasons})
+    rows.sort(key=lambda r: -r["cut_score"])
+    return rows[:top_n]
+
+
+_BASIC_FOR = {"W": "Plains", "U": "Island", "B": "Swamp",
+              "R": "Mountain", "G": "Forest"}
+
+
+def prescribe(by_name: dict, commander_rec: dict,
+              decklist: list[tuple[str, int]], shape: dict,
+              cut_rows: list[dict], iterations: int = 3000) -> dict:
+    """Close the loop: for each measured mana deficit, build swap variants
+    (cut the most cuttable cards, add the fix), RE-SIMULATE each variant,
+    and report the measured deltas. The prescription is only issued if the
+    simulation actually improves."""
+    from .goldfish import simulate
+
+    baseline = simulate(by_name, commander_rec, decklist,
+                        iterations=iterations)
+    if not any("DEFICIT" in v for v in baseline["verdicts"]):
+        return {"baseline": baseline, "variants": [],
+                "note": "no measured deficits - nothing to prescribe"}
+
+    # the basic land that fixes the most-underserved color
+    pips, sources = shape.get("pips", {}), shape.get("sources", {})
+    worst = max(pips, key=lambda c: pips.get(c, 0) - sources.get(c, 0),
+                default="G")
+    basic = _BASIC_FOR[worst]
+
+    def swap(n_cuts: int, add_name: str) -> list[tuple[str, int]]:
+        cut_names = {r["card"] for r in cut_rows[:n_cuts]
+                     if not any("PROTECTED" in x for x in r["reasons"])}
+        new = [(n, c) for n, c in decklist if n not in cut_names]
+        return new + [(add_name, len(cut_names))]
+
+    variants = []
+    for n, label in ((2, f"cut 2 worst, add 2 {basic}"),
+                     (4, f"cut 4 worst, add 4 {basic}")):
+        mod = swap(n, basic)
+        gf = simulate(by_name, commander_rec, mod, iterations=iterations)
+        key_t = max(baseline["commander_mv"], 1)
+        variants.append({
+            "label": label,
+            "cut": sorted({r["card"] for r in cut_rows[:n]
+                           if not any("PROTECTED" in x for x in r["reasons"])}),
+            "delta": {
+                "commander_on_curve": (
+                    gf["commander_by_turn_pct"].get(key_t, 0)
+                    - baseline["commander_by_turn_pct"].get(key_t, 0)),
+                "t3_land_drop": (gf["land_drop_pct"][3]
+                                 - baseline["land_drop_pct"][3]),
+                "screw_rate": (gf["screw_rate_pct"]
+                               - baseline["screw_rate_pct"]),
+            },
+            "after": {"commander_on_curve": gf["commander_by_turn_pct"].get(key_t, 0),
+                      "t3_land_drop": gf["land_drop_pct"][3],
+                      "screw_rate": gf["screw_rate_pct"],
+                      "verdicts": gf["verdicts"]},
+        })
+    variants.sort(key=lambda v: -(v["delta"]["commander_on_curve"]
+                                  + v["delta"]["t3_land_drop"]
+                                  - v["delta"]["screw_rate"]))
+    return {"baseline": baseline, "basic": basic, "variants": variants}
+
+
 def analyze_deck(idx, commander_rec: dict, decklist: list[tuple[str, int]]) -> dict:
     by_name = {}
     for r in idx.records:

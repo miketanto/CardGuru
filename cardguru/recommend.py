@@ -131,20 +131,35 @@ def _detect_landfall(rec):
 
 
 def _detect_reanimator(rec):
+    """Recurs cards from graveyards: to the battlefield (Reanimate, and
+    Living Death's mass ChangeZoneAll via exile) or to hand (Genesis)."""
     for n in _nodes(rec):
         p = _params(n)
-        if n.get("api") == "ChangeZone" and p.get("Origin") == "Graveyard" \
-                and p.get("Destination") == "Battlefield":
+        if n.get("api") in ("ChangeZone", "ChangeZoneAll") \
+                and p.get("Origin") == "Graveyard" \
+                and p.get("Destination") in ("Battlefield", "Hand", "Exile"):
+            # Graveyard->Exile only counts when a later node returns to play
+            # (the Living Death two-step); plain graveyard hate doesn't
+            if p.get("Destination") == "Exile":
+                if any(_params(m).get("Destination") == "Battlefield"
+                       for m in _nodes(rec)):
+                    return True
+                continue
             return True
     return False
 
 
 def _detect_self_mill(rec):
     for n in _nodes(rec):
+        p = _params(n)
         if n.get("api") == "Mill":
-            d = str(_params(n).get("Defined", "You"))
+            d = str(p.get("Defined", "You"))
             if d in ("You", "Self", "Player.You"):
                 return True
+        # entomb/Buried Alive: tutor cards directly to the graveyard
+        if n.get("api") == "ChangeZone" and p.get("Origin") == "Library" \
+                and p.get("Destination") == "Graveyard":
+            return True
     return False
 
 

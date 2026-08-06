@@ -327,6 +327,25 @@ def test_deck_shape_flags():
     assert not any("ramp" in f for f in shape["flags"])
 
 
+def test_cuts_protects_mana_rocks_and_deficient_roles():
+    from cardguru.deck import cuts
+    rock = {"name": "Rock", "types": "Artifact", "manaCost": "1",
+            "edges": [], "nodes": [
+                {"id": "a0", "kind": "A", "apiKind": "AB", "api": "Mana",
+                 "params": {"Cost": "T", "Produced": "C"}}]}
+    vanilla = {"name": "Bear", "types": "Creature", "manaCost": "1 G",
+               "edges": [], "nodes": []}
+    cmdr = {"name": "C", "types": "Legendary Creature", "manaCost": "2 G",
+            "edges": [], "nodes": []}
+    by_name = {r["name"]: r for r in (rock, vanilla, cmdr)}
+    shape = {"quotas": {"card_draw": 8}, "effective_roles": {"card_draw": 0}}
+    rows = cuts(by_name, cmdr, [("Rock", 1), ("Bear", 1)], [], shape)
+    by_card = {r["card"]: r for r in rows}
+    assert any("PROTECTED" in x for x in by_card["Rock"]["reasons"])
+    assert not any("PROTECTED" in x for x in by_card["Bear"]["reasons"])
+    assert by_card["Bear"]["cut_score"] > by_card["Rock"]["cut_score"]
+
+
 def test_detect_roles_engine_vs_oneshot():
     from cardguru.deck import detect_roles
     reaper = {"name": "Reaper-like", "types": "Creature Zombie",

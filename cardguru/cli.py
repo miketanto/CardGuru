@@ -279,6 +279,43 @@ def cmd_deck(args):
             print(f"  ! {v}" if "DEFICIT" in v else f"  {v}")
         print(f"caveats: {gf['caveats']}")
 
+    if args.cuts or args.fix:
+        from .deck import cross_synergy, cuts as find_cuts
+        from .deck import deck_shape as _shape_fn
+        shape2 = shape if (args.shape or args.suggest) else _shape_fn(by_name, rec, decklist)
+        cs2 = cross_synergy(by_name, rec, decklist)
+        cut_rows = find_cuts(by_name, rec, decklist, cs2["edges"], shape2,
+                             top_n=max(args.cuts or 8, 8))
+        if args.cuts:
+            print(f"\n== top {args.cuts} cut candidates")
+            for r in cut_rows[:args.cuts]:
+                print(f"  {r['cut_score']:6.1f}  {r['card']:32} "
+                      f"({'; '.join(r['reasons'])})")
+        if args.fix:
+            from .deck import prescribe
+            rx = prescribe(by_name, rec, decklist, shape2, cut_rows)
+            b = rx["baseline"]
+            key_t = max(b["commander_mv"], 1)
+            print(f"\n== prescriptions (measured by re-simulation, "
+                  f"{b['iterations']} deals each)")
+            print(f"baseline: on-curve {b['commander_by_turn_pct'].get(key_t)}%, "
+                  f"T3 drops {b['land_drop_pct'][3]}%, screw {b['screw_rate_pct']}%")
+            if not rx["variants"]:
+                print(rx.get("note", ""))
+            for v in rx["variants"]:
+                d = v["delta"]
+                a = v["after"]
+                print(f"\n  RX: {v['label']}")
+                print(f"      cut: {', '.join(v['cut'])}")
+                print(f"      on-curve {a['commander_on_curve']}% "
+                      f"({d['commander_on_curve']:+.1f}), "
+                      f"T3 drops {a['t3_land_drop']}% ({d['t3_land_drop']:+.1f}), "
+                      f"screw {a['screw_rate']}% ({d['screw_rate']:+.1f})")
+                remaining = [x for x in a["verdicts"] if "DEFICIT" in x]
+                print(f"      remaining deficits: "
+                      f"{len(remaining)} ({'; '.join(remaining) or 'none'})"
+                      if remaining else "      all consistency targets met")
+
     if args.suggest:
         from .deck import suggest
         with open(args.ci_index, encoding="utf-8") as f:
@@ -372,6 +409,10 @@ def main(argv=None):
                     help="mana curve, color pips vs sources, role quotas")
     dk.add_argument("--goldfish", type=int, default=0, metavar="N",
                     help="Monte Carlo consistency simulation with N deals")
+    dk.add_argument("--cuts", type=int, default=0, metavar="N",
+                    help="show top-N cut candidates (low synergy, no needed role)")
+    dk.add_argument("--fix", action="store_true",
+                    help="prescribe swaps for measured deficits and re-simulate")
     dk.add_argument("--ci-index", default="/home/user/mse/index/index.json")
     dk.add_argument("--dataset", default=DEFAULT_DATASET)
     dk.set_defaults(fn=cmd_deck)
