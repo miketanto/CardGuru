@@ -1,7 +1,7 @@
-"""Score agent-compiled DSL queries against the POC question set.
+"""Score agent-compiled DSL queries against a question set with witnesses.
 
-Usage: python3 eval/score_nl_poc.py <compiled_queries.json>
-where the input maps question id -> query DSL object (the compiler's output).
+Usage: python3 eval/score_nl_poc.py <compiled_queries.json> [questions.json] [out.json]
+where compiled_queries maps question id -> query DSL object (compiler output).
 
 For each query: validate against the ontology (the same gate the API-based
 compiler uses), run it over the index, and check witness cards appear.
@@ -24,9 +24,10 @@ ONTOLOGY = os.path.join(ROOT, "research", "data", "ontology.json")
 DATASET = os.path.join(ROOT, "data", "dataset.jsonl.gz")
 
 
-def main(compiled_path: str):
+def main(compiled_path: str, questions_path: str = QUESTIONS,
+         out_path: str | None = None):
     compiled = json.load(open(compiled_path, encoding="utf-8"))
-    qs = {q["id"]: q for q in json.load(open(QUESTIONS, encoding="utf-8"))["questions"]}
+    qs = {q["id"]: q for q in json.load(open(questions_path, encoding="utf-8"))["questions"]}
     onto = Ontology(json.load(open(ONTOLOGY, encoding="utf-8")))
     idx = SearchIndex.load(DATASET)
 
@@ -68,7 +69,7 @@ def main(compiled_path: str):
                 print(f"       ! {e}")
     n = len(results)
     print(f"\nvalidated: {n_valid}/{n}   witness-correct: {n_witness}/{n}")
-    out = os.path.join(ROOT, "research", "data", "nl_poc_results.json")
+    out = out_path or os.path.join(ROOT, "research", "data", "nl_poc_results.json")
     json.dump({"results": results, "validated": n_valid,
                "witness_correct": n_witness, "n": n},
               open(out, "w", encoding="utf-8"), indent=1)
@@ -76,4 +77,4 @@ def main(compiled_path: str):
 
 
 if __name__ == "__main__":
-    main(sys.argv[1])
+    main(*sys.argv[1:4])
