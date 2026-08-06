@@ -56,3 +56,25 @@ def test_parse_method_extracts_structure():
     assert {a["assert"] for a in rec["assertions"]} == {"assertLife", "assertGraveyardCount"}
     cov = rec["coverage"]
     assert cov["recognized"] == cov["total_calls"] == 8
+
+
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "corpus"))
+from generate_scenarios import make_scenario, parse_mono_cost  # noqa: E402
+
+
+def test_parse_mono_cost():
+    assert parse_mono_cost("2 G") == ("G", 3)
+    assert parse_mono_cost("1 G G") == ("G", 3)
+    assert parse_mono_cost("W") == ("W", 1)
+    assert parse_mono_cost("2 W U") is None      # multicolor
+    assert parse_mono_cost("X R") is None        # X cost
+    assert parse_mono_cost("no cost") is None
+    assert parse_mono_cost("3") is None          # colorless only
+
+
+def test_generated_scenarios_validate():
+    scn = make_scenario("Attended Knight", "W", 3)
+    assert validate_scenario(scn) == []
+    assert scn["players"]["A"]["battlefield"][0] == {"card": "Plains", "count": 3}
+    counts = [x for x in scn["expect"] if x["check"] == "battlefield_count"]
+    assert counts[0]["count"] == 3 + 1 + 1 + 2   # lands + Season + creature + 2 tokens

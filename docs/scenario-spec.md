@@ -67,7 +67,8 @@ asks — this is what makes runs deterministic under strict mode.
 
 **expect** (optional) — checks recorded pass/fail in the outcome (they never abort the run):
 `permanent_count` (player, card, count) · `exile_count` · `graveyard_count` · `hand_count`
-(player, count) · `life` (player, value) · `tapped` (card, value) · `power_toughness`
+(player, count) · `battlefield_count` (player, count — total permanents; useful when token
+names vary) · `life` (player, value) · `tapped` (card, value) · `power_toughness`
 (player, card, power, toughness).
 
 ## Outcome JSON

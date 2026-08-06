@@ -18,7 +18,7 @@ PHASES = {"UPKEEP", "DRAW", "PRECOMBAT_MAIN", "BEGIN_COMBAT", "DECLARE_ATTACKERS
           "DECLARE_BLOCKERS", "COMBAT_DAMAGE", "POSTCOMBAT_MAIN", "END_TURN"}
 ACTIONS = {"cast", "play_land", "activate", "attack", "block", "wait_stack",
            "choice", "target", "mode"}
-CHECKS = {"permanent_count", "exile_count", "graveyard_count", "hand_count",
+CHECKS = {"permanent_count", "exile_count", "graveyard_count", "hand_count", "battlefield_count",
           "life", "tapped", "power_toughness"}
 
 

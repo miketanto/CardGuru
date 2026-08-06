@@ -1,0 +1,810 @@
+[
+ {
+  "id": "gen-etb-token-doubling-ajani-nacatl-pariah",
+  "engine": "xmage",
+  "status": "executed",
+  "expectations": [
+   {
+    "check": "permanent_count",
+    "pass": true
+   },
+   {
+    "check": "battlefield_count",
+    "pass": true
+   }
+  ],
+  "state": {
+   "A": {
+    "life": 20,
+    "battlefield": [
+     {
+      "name": "Plains",
+      "tapped": true
+     },
+     {
+      "name": "Plains",
+      "tapped": true
+     },
+     {
+      "name": "Doubling Season",
+      "tapped": false
+     },
+     {
+      "name": "Ajani, Nacatl Pariah",
+      "tapped": false,
+      "power": 1,
+      "toughness": 2
+     },
+     {
+      "name": "Cat Warrior Token",
+      "tapped": false,
+      "power": 2,
+      "toughness": 1
+     },
+     {
+      "name": "Cat Warrior Token",
+      "tapped": false,
+      "power": 2,
+      "toughness": 1
+     }
+    ],
+    "graveyard": [],
+    "exile": [],
+    "hand_count": 0
+   },
+   "B": {
+    "life": 20,
+    "battlefield": [],
+    "graveyard": [],
+    "exile": [],
+    "hand_count": 0
+   }
+  },
+  "millis": 515
+ },
+ {
+  "id": "gen-etb-token-doubling-alirios-enraptured",
+  "engine": "xmage",
+  "status": "executed",
+  "expectations": [
+   {
+    "check": "permanent_count",
+    "pass": true
+   },
+   {
+    "check": "battlefield_count",
+    "pass": true
+   }
+  ],
+  "state": {
+   "A": {
+    "life": 20,
+    "battlefield": [
+     {
+      "name": "Island",
+      "tapped": true
+     },
+     {
+      "name": "Island",
+      "tapped": true
+     },
+     {
+      "name": "Island",
+      "tapped": true
+     },
+     {
+      "name": "Doubling Season",
+      "tapped": false
+     },
+     {
+      "name": "Alirios, Enraptured",
+      "tapped": true,
+      "power": 2,
+      "toughness": 3
+     },
+     {
+      "name": "Reflection Token",
+      "tapped": false,
+      "power": 3,
+      "toughness": 2
+     },
+     {
+      "name": "Reflection Token",
+      "tapped": false,
+      "power": 3,
+      "toughness": 2
+     }
+    ],
+    "graveyard": [],
+    "exile": [],
+    "hand_count": 0
+   },
+   "B": {
+    "life": 20,
+    "battlefield": [],
+    "graveyard": [],
+    "exile": [],
+    "hand_count": 0
+   }
+  },
+  "millis": 78
+ },
+ {
+  "id": "gen-etb-token-doubling-ambassador-oak",
+  "engine": "xmage",
+  "status": "executed",
+  "expectations": [
+   {
+    "check": "permanent_count",
+    "pass": true
+   },
+   {
+    "check": "battlefield_count",
+    "pass": true
+   }
+  ],
+  "state": {
+   "A": {
+    "life": 20,
+    "battlefield": [
+     {
+      "name": "Forest",
+      "tapped": true
+     },
+     {
+      "name": "Forest",
+      "tapped": true
+     },
+     {
+      "name": "Forest",
+      "tapped": true
+     },
+     {
+      "name": "Forest",
+      "tapped": true
+     },
+     {
+      "name": "Doubling Season",
+      "tapped": false
+     },
+     {
+      "name": "Ambassador Oak",
+      "tapped": false,
+      "power": 3,
+      "toughness": 3
+     },
+     {
+      "name": "Elf Warrior Token",
+      "tapped": false,
+      "power": 1,
+      "toughness": 1
+     },
+     {
+      "name": "Elf Warrior Token",
+      "tapped": false,
+      "power": 1,
+      "toughness": 1
+     }
+    ],
+    "graveyard": [],
+    "exile": [],
+    "hand_count": 0
+   },
+   "B": {
+    "life": 20,
+    "battlefield": [],
+    "graveyard": [],
+    "exile": [],
+    "hand_count": 0
+   }
+  },
+  "millis": 133
+ },
+ {
+  "id": "gen-etb-token-doubling-argivian-cavalier",
+  "engine": "xmage",
+  "status": "executed",
+  "expectations": [
+   {
+    "check": "permanent_count",
+    "pass": true
+   },
+   {
+    "check": "battlefield_count",
+    "pass": true
+   }
+  ],
+  "state": {
+   "A": {
+    "life": 20,
+    "battlefield": [
+     {
+      "name": "Plains",
+      "tapped": true
+     },
+     {
+      "name": "Plains",
+      "tapped": true
+     },
+     {
+      "name": "Plains",
+      "tapped": true
+     },
+     {
+      "name": "Doubling Season",
+      "tapped": false
+     },
+     {
+      "name": "Argivian Cavalier",
+      "tapped": false,
+      "power": 2,
+      "toughness": 2
+     },
+     {
+      "name": "Soldier Token",
+      "tapped": false,
+      "power": 1,
+      "toughness": 1
+     },
+     {
+      "name": "Soldier Token",
+      "tapped": false,
+      "power": 1,
+      "toughness": 1
+     }
+    ],
+    "graveyard": [],
+    "exile": [],
+    "hand_count": 0
+   },
+   "B": {
+    "life": 20,
+    "battlefield": [],
+    "graveyard": [],
+    "exile": [],
+    "hand_count": 0
+   }
+  },
+  "millis": 134
+ },
+ {
+  "id": "gen-etb-token-doubling-argothian-opportunist",
+  "engine": "xmage",
+  "status": "executed",
+  "expectations": [
+   {
+    "check": "permanent_count",
+    "pass": true
+   },
+   {
+    "check": "battlefield_count",
+    "pass": true
+   }
+  ],
+  "state": {
+   "A": {
+    "life": 20,
+    "battlefield": [
+     {
+      "name": "Forest",
+      "tapped": true
+     },
+     {
+      "name": "Forest",
+      "tapped": true
+     },
+     {
+      "name": "Forest",
+      "tapped": true
+     },
+     {
+      "name": "Doubling Season",
+      "tapped": false
+     },
+     {
+      "name": "Argothian Opportunist",
+      "tapped": false,
+      "power": 3,
+      "toughness": 2
+     },
+     {
+      "name": "Powerstone Token",
+      "tapped": true
+     },
+     {
+      "name": "Powerstone Token",
+      "tapped": true
+     }
+    ],
+    "graveyard": [],
+    "exile": [],
+    "hand_count": 0
+   },
+   "B": {
+    "life": 20,
+    "battlefield": [],
+    "graveyard": [],
+    "exile": [],
+    "hand_count": 0
+   }
+  },
+  "millis": 264
+ },
+ {
+  "id": "gen-etb-token-doubling-aspiring-aeronaut",
+  "engine": "xmage",
+  "status": "executed",
+  "expectations": [
+   {
+    "check": "permanent_count",
+    "pass": true
+   },
+   {
+    "check": "battlefield_count",
+    "pass": true
+   }
+  ],
+  "state": {
+   "A": {
+    "life": 20,
+    "battlefield": [
+     {
+      "name": "Island",
+      "tapped": true
+     },
+     {
+      "name": "Island",
+      "tapped": true
+     },
+     {
+      "name": "Island",
+      "tapped": true
+     },
+     {
+      "name": "Island",
+      "tapped": true
+     },
+     {
+      "name": "Doubling Season",
+      "tapped": false
+     },
+     {
+      "name": "Aspiring Aeronaut",
+      "tapped": false,
+      "power": 1,
+      "toughness": 2
+     },
+     {
+      "name": "Thopter Token",
+      "tapped": false,
+      "power": 1,
+      "toughness": 1
+     },
+     {
+      "name": "Thopter Token",
+      "tapped": false,
+      "power": 1,
+      "toughness": 1
+     }
+    ],
+    "graveyard": [],
+    "exile": [],
+    "hand_count": 0
+   },
+   "B": {
+    "life": 20,
+    "battlefield": [],
+    "graveyard": [],
+    "exile": [],
+    "hand_count": 0
+   }
+  },
+  "millis": 114
+ },
+ {
+  "id": "gen-etb-token-doubling-astrid-peth",
+  "engine": "xmage",
+  "status": "executed",
+  "expectations": [
+   {
+    "check": "permanent_count",
+    "pass": true
+   },
+   {
+    "check": "battlefield_count",
+    "pass": true
+   }
+  ],
+  "state": {
+   "A": {
+    "life": 20,
+    "battlefield": [
+     {
+      "name": "Plains",
+      "tapped": true
+     },
+     {
+      "name": "Plains",
+      "tapped": true
+     },
+     {
+      "name": "Doubling Season",
+      "tapped": false
+     },
+     {
+      "name": "Astrid Peth",
+      "tapped": false,
+      "power": 2,
+      "toughness": 2
+     },
+     {
+      "name": "Food Token",
+      "tapped": false
+     },
+     {
+      "name": "Food Token",
+      "tapped": false
+     }
+    ],
+    "graveyard": [],
+    "exile": [],
+    "hand_count": 0
+   },
+   "B": {
+    "life": 20,
+    "battlefield": [],
+    "graveyard": [],
+    "exile": [],
+    "hand_count": 0
+   }
+  },
+  "millis": 96
+ },
+ {
+  "id": "gen-etb-token-doubling-attended-knight",
+  "engine": "xmage",
+  "status": "executed",
+  "expectations": [
+   {
+    "check": "permanent_count",
+    "pass": true
+   },
+   {
+    "check": "battlefield_count",
+    "pass": true
+   }
+  ],
+  "state": {
+   "A": {
+    "life": 20,
+    "battlefield": [
+     {
+      "name": "Plains",
+      "tapped": true
+     },
+     {
+      "name": "Plains",
+      "tapped": true
+     },
+     {
+      "name": "Plains",
+      "tapped": true
+     },
+     {
+      "name": "Doubling Season",
+      "tapped": false
+     },
+     {
+      "name": "Attended Knight",
+      "tapped": false,
+      "power": 2,
+      "toughness": 2
+     },
+     {
+      "name": "Soldier Token",
+      "tapped": false,
+      "power": 1,
+      "toughness": 1
+     },
+     {
+      "name": "Soldier Token",
+      "tapped": false,
+      "power": 1,
+      "toughness": 1
+     }
+    ],
+    "graveyard": [],
+    "exile": [],
+    "hand_count": 0
+   },
+   "B": {
+    "life": 20,
+    "battlefield": [],
+    "graveyard": [],
+    "exile": [],
+    "hand_count": 0
+   }
+  },
+  "millis": 119
+ },
+ {
+  "id": "gen-etb-token-doubling-autarch-mammoth",
+  "engine": "xmage",
+  "status": "executed",
+  "expectations": [
+   {
+    "check": "permanent_count",
+    "pass": true
+   },
+   {
+    "check": "battlefield_count",
+    "pass": true
+   }
+  ],
+  "state": {
+   "A": {
+    "life": 20,
+    "battlefield": [
+     {
+      "name": "Forest",
+      "tapped": true
+     },
+     {
+      "name": "Forest",
+      "tapped": true
+     },
+     {
+      "name": "Forest",
+      "tapped": true
+     },
+     {
+      "name": "Forest",
+      "tapped": true
+     },
+     {
+      "name": "Forest",
+      "tapped": true
+     },
+     {
+      "name": "Forest",
+      "tapped": true
+     },
+     {
+      "name": "Doubling Season",
+      "tapped": false
+     },
+     {
+      "name": "Autarch Mammoth",
+      "tapped": false,
+      "power": 5,
+      "toughness": 5
+     },
+     {
+      "name": "Elephant Token",
+      "tapped": false,
+      "power": 3,
+      "toughness": 3
+     },
+     {
+      "name": "Elephant Token",
+      "tapped": false,
+      "power": 3,
+      "toughness": 3
+     }
+    ],
+    "graveyard": [],
+    "exile": [],
+    "hand_count": 0
+   },
+   "B": {
+    "life": 20,
+    "battlefield": [],
+    "graveyard": [],
+    "exile": [],
+    "hand_count": 0
+   }
+  },
+  "millis": 259
+ },
+ {
+  "id": "gen-etb-token-doubling-aviation-pioneer",
+  "engine": "xmage",
+  "status": "executed",
+  "expectations": [
+   {
+    "check": "permanent_count",
+    "pass": true
+   },
+   {
+    "check": "battlefield_count",
+    "pass": true
+   }
+  ],
+  "state": {
+   "A": {
+    "life": 20,
+    "battlefield": [
+     {
+      "name": "Island",
+      "tapped": true
+     },
+     {
+      "name": "Island",
+      "tapped": true
+     },
+     {
+      "name": "Island",
+      "tapped": true
+     },
+     {
+      "name": "Doubling Season",
+      "tapped": false
+     },
+     {
+      "name": "Aviation Pioneer",
+      "tapped": false,
+      "power": 1,
+      "toughness": 2
+     },
+     {
+      "name": "Thopter Token",
+      "tapped": false,
+      "power": 1,
+      "toughness": 1
+     },
+     {
+      "name": "Thopter Token",
+      "tapped": false,
+      "power": 1,
+      "toughness": 1
+     }
+    ],
+    "graveyard": [],
+    "exile": [],
+    "hand_count": 0
+   },
+   "B": {
+    "life": 20,
+    "battlefield": [],
+    "graveyard": [],
+    "exile": [],
+    "hand_count": 0
+   }
+  },
+  "millis": 27
+ },
+ {
+  "id": "gen-etb-token-doubling-bakersbane-duo",
+  "engine": "xmage",
+  "status": "executed",
+  "expectations": [
+   {
+    "check": "permanent_count",
+    "pass": true
+   },
+   {
+    "check": "battlefield_count",
+    "pass": true
+   }
+  ],
+  "state": {
+   "A": {
+    "life": 20,
+    "battlefield": [
+     {
+      "name": "Forest",
+      "tapped": true
+     },
+     {
+      "name": "Forest",
+      "tapped": true
+     },
+     {
+      "name": "Doubling Season",
+      "tapped": false
+     },
+     {
+      "name": "Bakersbane Duo",
+      "tapped": false,
+      "power": 2,
+      "toughness": 2
+     },
+     {
+      "name": "Food Token",
+      "tapped": false
+     },
+     {
+      "name": "Food Token",
+      "tapped": false
+     }
+    ],
+    "graveyard": [],
+    "exile": [],
+    "hand_count": 0
+   },
+   "B": {
+    "life": 20,
+    "battlefield": [],
+    "graveyard": [],
+    "exile": [],
+    "hand_count": 0
+   }
+  },
+  "millis": 35
+ },
+ {
+  "id": "gen-etb-token-doubling-biogenic-ooze",
+  "engine": "xmage",
+  "status": "executed",
+  "expectations": [
+   {
+    "check": "permanent_count",
+    "pass": true
+   },
+   {
+    "check": "battlefield_count",
+    "pass": true
+   }
+  ],
+  "state": {
+   "A": {
+    "life": 20,
+    "battlefield": [
+     {
+      "name": "Forest",
+      "tapped": true
+     },
+     {
+      "name": "Forest",
+      "tapped": true
+     },
+     {
+      "name": "Forest",
+      "tapped": true
+     },
+     {
+      "name": "Forest",
+      "tapped": true
+     },
+     {
+      "name": "Forest",
+      "tapped": true
+     },
+     {
+      "name": "Doubling Season",
+      "tapped": false
+     },
+     {
+      "name": "Biogenic Ooze",
+      "tapped": false,
+      "power": 4,
+      "toughness": 4
+     },
+     {
+      "name": "Ooze Token",
+      "tapped": false,
+      "power": 4,
+      "toughness": 4
+     },
+     {
+      "name": "Ooze Token",
+      "tapped": false,
+      "power": 4,
+      "toughness": 4
+     }
+    ],
+    "graveyard": [],
+    "exile": [],
+    "hand_count": 0
+   },
+   "B": {
+    "life": 20,
+    "battlefield": [],
+    "graveyard": [],
+    "exile": [],
+    "hand_count": 0
+   }
+  },
+  "millis": 50
+ }
+]

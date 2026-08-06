@@ -234,6 +234,13 @@ public class CardGuruScenarioRunner extends CardTestPlayerBase {
             case "graveyard_count":
                 assertGraveyardCount(p, x.get("card").getAsString(), x.get("count").getAsInt());
                 break;
+            case "battlefield_count":
+                int n = currentGame.getBattlefield().getAllActivePermanents(p.getId()).size();
+                if (n != x.get("count").getAsInt()) {
+                    throw new AssertionError("battlefield_count: expected "
+                            + x.get("count").getAsInt() + ", got " + n);
+                }
+                break;
             case "hand_count":
                 assertHandCount(p, x.get("count").getAsInt());
                 break;
