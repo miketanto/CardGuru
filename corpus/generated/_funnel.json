@@ -1,6 +1,6 @@
 {
  "etb_token_doubling": {
-  "deterministic_candidates": 118,
+  "deterministic_candidates": 110,
   "generated": 8
  },
  "dies_token_doubling": {
@@ -10,5 +10,33 @@
  "lifegain_counter": {
   "deterministic_candidates": 13,
   "generated": 8
+ },
+ "etb_draw": {
+  "deterministic_candidates": 32,
+  "generated": 8
+ },
+ "etb_lifegain": {
+  "deterministic_candidates": 51,
+  "generated": 8
+ },
+ "dies_draw": {
+  "deterministic_candidates": 6,
+  "generated": 6
+ },
+ "etb_counters": {
+  "deterministic_candidates": 26,
+  "generated": 8
+ },
+ "pump_spell": {
+  "deterministic_candidates": 41,
+  "generated": 8
+ },
+ "burn_player": {
+  "deterministic_candidates": 44,
+  "generated": 8
+ },
+ "mill_player": {
+  "deterministic_candidates": 8,
+  "generated": 6
  }
 }

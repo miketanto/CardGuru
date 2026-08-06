@@ -147,9 +147,16 @@ public class CardGuruScenarioRunner extends CardTestPlayerBase {
             String kind = a.get("do").getAsString();
             switch (kind) {
                 case "cast":
-                    castSpell(a.get("turn").getAsInt(), phase(a),
-                            player(a.get("player").getAsString()),
-                            a.get("card").getAsString());
+                    if (a.has("target_player")) {
+                        castSpell(a.get("turn").getAsInt(), phase(a),
+                                player(a.get("player").getAsString()),
+                                a.get("card").getAsString(),
+                                player(a.get("target_player").getAsString()));
+                    } else {
+                        castSpell(a.get("turn").getAsInt(), phase(a),
+                                player(a.get("player").getAsString()),
+                                a.get("card").getAsString());
+                    }
                     break;
                 case "play_land":
                     playLand(a.get("turn").getAsInt(), phase(a),

@@ -10,6 +10,13 @@ Templates:
   etb_token_doubling    ETB-token trigger under Doubling Season
   dies_token_doubling   dies-token trigger, killed by Murder, under Doubling Season
   lifegain_counter      lifegain->+1/+1-counter trigger + Angel's Mercy
+  etb_draw              ETB draw-N trigger; expectation = hand_count
+  etb_lifegain          ETB gain-N-life trigger; expectation = life total
+  dies_draw             dies draw-N trigger, killed by Murder
+  etb_counters          etbCounter keyword (enters with N +1/+1); expectation = P/T
+  pump_spell            Giant Growth-style pump on Grizzly Bears; expectation = P/T
+  burn_player           Bolt-style damage spell at player B; expectation = life
+  mill_player           mill-N spell at player B with stocked library_top
 
 Expectation misses and errors are data, not failures — the run report
 measures the clean-execution rate.
@@ -35,7 +42,16 @@ UNFINISHED = "research/data/xmage_unfinished.json"
 
 BASIC = {"W": "Plains", "U": "Island", "B": "Swamp", "R": "Mountain", "G": "Forest"}
 BAD_PARAMS = {"ValidTgts", "TgtPrompt", "Optional", "OptionalDecider", "TargetMin",
-              "UnlessCost", "Choices", "ChoiceTitle"}
+              "UnlessCost", "Choices", "ChoiceTitle", "KWChoice",
+              "DividedAsYouChoose", "ConditionCheckSVar", "ConditionPresent",
+              "ConditionCompare", "ConditionDefined", "ConditionSVarCompare"}
+
+# a trigger is only deterministic if EVERY param is a known-benign one —
+# conditions ride on params we haven't seen yet (Revolt$, CheckOnTriggeredCard$,
+# Kicked$ ...), so unknown params disqualify rather than pass silently
+TRIGGER_PARAM_WHITELIST = {"Mode", "ValidCard", "ValidPlayer", "Origin",
+                           "Destination", "Execute", "TriggerDescription",
+                           "TriggerZones", "Secondary"}
 
 
 def parse_mono_cost(mana_cost: str):
@@ -79,7 +95,7 @@ def chain_nodes(rec, trigger):
 
 def chain_deterministic(nodes, trigger, extra_trigger_params=()):
     tp = trigger.get("params", {})
-    if any(k in tp for k in ("CheckSVar", "Condition", "IsPresent")):
+    if any(k not in TRIGGER_PARAM_WHITELIST for k in tp):
         return False
     for k in extra_trigger_params:
         if k in tp:
@@ -88,6 +104,10 @@ def chain_deterministic(nodes, trigger, extra_trigger_params=()):
         if node.get("kind") == "SVarCount":
             return False
         if BAD_PARAMS & set(node.get("params") or {}):
+            return False
+        # a chained AB$ with a Cost is a pay-to-do ("you may discard: draw") -
+        # optional in the engine, so not deterministic
+        if node.get("id") != trigger.get("id") and "Cost" in (node.get("params") or {}):
             return False
     return True
 
@@ -246,10 +266,300 @@ def gen_lifegain_counter(idx):
               "power": power + 1, "toughness": tough + 1}])
 
 
+def _lit_int(v, lo=0, hi=20):
+    try:
+        n = int(str(v))
+    except (TypeError, ValueError):
+        return None
+    return n if lo <= n <= hi else None
+
+
+def effect_nodes(nodes, trigger):
+    """Chain nodes that carry an effect api (skip the trigger and K nodes)."""
+    return [n for n in nodes
+            if n.get("id") != trigger.get("id") and n.get("kind") != "K"
+            and n.get("api")]
+
+
+def _simple_etb_effect(idx, api, extra=lambda p: True):
+    """Yield (rec, cost, effect_params) for creatures whose ETB trigger chain
+    is exactly one <api> node with deterministic params."""
+    query = {"chain": {"from": {"kind": "T", "mode": "ChangesZone",
+                                "params": {"ValidCard": {"contains": "Card.Self"},
+                                           "Destination": "Battlefield"}},
+                       "to": {"api": api}}}
+    for hit in idx.search(query):
+        rec = hit["record"]
+        if "Creature" not in (rec.get("types") or ""):
+            continue
+        cost = parse_mono_cost(rec.get("manaCost") or "")
+        if not cost or cost[1] > 6:
+            continue
+        trig = find_trigger(rec, "ChangesZone",
+                            {"ValidCard": "Card.Self", "Destination": "Battlefield"})
+        if not trig or trig.get("params", {}).get("Origin") not in (None, "Any"):
+            continue
+        nodes = chain_nodes(rec, trig)
+        eff = effect_nodes(nodes, trig)
+        if len(eff) != 1 or eff[0].get("api") != api:
+            continue
+        if not chain_deterministic(nodes, trig) \
+                or not no_interfering_abilities(rec, trig):
+            continue
+        p = eff[0].get("params", {})
+        if p.get("Defined") not in (None, "You", "Self"):
+            continue
+        if not extra(p):
+            continue
+        yield rec, cost, p
+
+
+def gen_etb_draw(idx):
+    for rec, (color, mv), p in _simple_etb_effect(idx, "Draw"):
+        n = _lit_int(p.get("NumCards", "1"), lo=1)
+        if n is None:
+            continue
+        name = rec["name"]
+        yield base_scenario(
+            f"gen-etb-draw-{slug(name)}",
+            f"{name} enters and draws {n}; hand goes from 0 (cast it) to {n}",
+            "etb_draw",
+            [{"card": BASIC[color], "count": mv}],
+            [name],
+            [{"do": "cast", "turn": 1, "phase": "PRECOMBAT_MAIN", "player": "A",
+              "card": name},
+             {"do": "wait_stack", "turn": 1, "phase": "PRECOMBAT_MAIN"}],
+            [{"check": "permanent_count", "player": "A", "card": name, "count": 1},
+             {"check": "hand_count", "player": "A", "count": n}])
+
+
+def gen_etb_lifegain(idx):
+    for rec, (color, mv), p in _simple_etb_effect(idx, "GainLife"):
+        n = _lit_int(p.get("LifeAmount"), lo=1)
+        if n is None:
+            continue
+        name = rec["name"]
+        yield base_scenario(
+            f"gen-etb-lifegain-{slug(name)}",
+            f"{name} enters and gains {n} life",
+            "etb_lifegain",
+            [{"card": BASIC[color], "count": mv}],
+            [name],
+            [{"do": "cast", "turn": 1, "phase": "PRECOMBAT_MAIN", "player": "A",
+              "card": name},
+             {"do": "wait_stack", "turn": 1, "phase": "PRECOMBAT_MAIN"}],
+            [{"check": "permanent_count", "player": "A", "card": name, "count": 1},
+             {"check": "life", "player": "A", "value": 20 + n}])
+
+
+def gen_dies_draw(idx):
+    query = {"chain": {"from": {"kind": "T", "mode": "ChangesZone",
+                                "params": {"ValidCard": {"contains": "Card.Self"},
+                                           "Origin": "Battlefield",
+                                           "Destination": "Graveyard"}},
+                       "to": {"api": "Draw"}}}
+    for hit in idx.search(query):
+        rec = hit["record"]
+        if "Creature" not in (rec.get("types") or ""):
+            continue
+        trig = find_trigger(rec, "ChangesZone",
+                            {"ValidCard": "Card.Self", "Origin": "Battlefield",
+                             "Destination": "Graveyard"})
+        if not trig:
+            continue
+        nodes = chain_nodes(rec, trig)
+        eff = effect_nodes(nodes, trig)
+        if len(eff) != 1 or eff[0].get("api") != "Draw":
+            continue
+        if not chain_deterministic(nodes, trig) \
+                or not no_interfering_abilities(rec, trig):
+            continue
+        p = eff[0].get("params", {})
+        if p.get("Defined") not in (None, "You", "Self"):
+            continue
+        n = _lit_int(p.get("NumCards", "1"), lo=1)
+        if n is None:
+            continue
+        name = rec["name"]
+        yield base_scenario(
+            f"gen-dies-draw-{slug(name)}",
+            f"{name} killed by Murder; its dies trigger draws {n}",
+            "dies_draw",
+            [{"card": name}, {"card": "Swamp", "count": 3}],
+            ["Murder"],
+            [{"do": "cast", "turn": 1, "phase": "PRECOMBAT_MAIN", "player": "A",
+              "card": "Murder"},
+             {"do": "target", "player": "A", "value": name},
+             {"do": "wait_stack", "turn": 1, "phase": "PRECOMBAT_MAIN"}],
+            [{"check": "graveyard_count", "player": "A", "card": name, "count": 1},
+             {"check": "hand_count", "player": "A", "count": n}])
+
+
+def gen_etb_counters(idx):
+    query = {"node": {"kind": "K", "keyword": "etbCounter"}}
+    for hit in idx.search(query):
+        rec = hit["record"]
+        if "Creature" not in (rec.get("types") or ""):
+            continue
+        cost = parse_mono_cost(rec.get("manaCost") or "")
+        if not cost or cost[1] > 6:
+            continue
+        pt = rec.get("pt") or ""
+        try:
+            power, tough = (int(x) for x in pt.split("/"))
+        except ValueError:
+            continue
+        # the etbCounter keyword must be the card's only non-K ability source
+        if any(n.get("kind") in ("T", "S", "R") for n in rec["nodes"]):
+            continue
+        kws = [n for n in rec["nodes"] if n.get("kind") == "K"
+               and (n.get("raw") or "").startswith("etbCounter:P1P1:")]
+        if len(kws) != 1:
+            continue
+        parts = (kws[0].get("raw") or "").split(":")
+        n = _lit_int(parts[2] if len(parts) > 2 else None, lo=1)
+        if n is None or len(parts) > 3:      # conditional etbCounter has a 4th field
+            continue
+        name, (color, mv) = rec["name"], cost
+        yield base_scenario(
+            f"gen-etb-counters-{slug(name)}",
+            f"{name} enters with {n} +1/+1 counters: {power}/{tough} base -> "
+            f"{power + n}/{tough + n}",
+            "etb_counters",
+            [{"card": BASIC[color], "count": mv}],
+            [name],
+            [{"do": "cast", "turn": 1, "phase": "PRECOMBAT_MAIN", "player": "A",
+              "card": name},
+             {"do": "wait_stack", "turn": 1, "phase": "PRECOMBAT_MAIN"}],
+            [{"check": "power_toughness", "player": "A", "card": name,
+              "power": power + n, "toughness": tough + n}])
+
+
+def _single_spell_node(rec, api):
+    """The card's lone spell-mode node with the given api, or None."""
+    a_nodes = [n for n in rec["nodes"] if n.get("kind") == "A"]
+    if len(a_nodes) != 1:
+        return None
+    node = a_nodes[0]
+    if node.get("api") != api or node.get("apiKind") != "SP":
+        return None
+    if any(n.get("kind") in ("T", "S", "R") for n in rec["nodes"]):
+        return None
+    p = node.get("params", {})
+    if "SubAbility" in p or "Execute" in p:
+        return None
+    if (BAD_PARAMS - {"ValidTgts", "TgtPrompt"}) & set(p):
+        return None
+    if "<" in str(p.get("Cost", "")):     # additional non-mana cost (Sac<...>)
+        return None
+    return node
+
+
+def gen_pump_spell(idx):
+    query = {"node": {"kind": "A", "apiKind": "SP", "api": "Pump",
+                      "params": {"ValidTgts": "Creature"}}}
+    for hit in idx.search(query):
+        rec = hit["record"]
+        cost = parse_mono_cost(rec.get("manaCost") or "")
+        if not cost or cost[1] > 4:
+            continue
+        node = _single_spell_node(rec, "Pump")
+        if node is None:
+            continue
+        p = node.get("params", {})
+        if p.get("ValidTgts") != "Creature" or "KW" in p:
+            continue
+        att = _lit_int(p.get("NumAtt", "0"), lo=0)
+        dfn = _lit_int(p.get("NumDef", "0"), lo=0)
+        if att is None or dfn is None or (att == 0 and dfn == 0):
+            continue
+        name, (color, mv) = rec["name"], cost
+        yield base_scenario(
+            f"gen-pump-{slug(name)}",
+            f"{name} (+{att}/+{dfn}) on Grizzly Bears -> {2 + att}/{2 + dfn}",
+            "pump_spell",
+            [{"card": "Grizzly Bears"}, {"card": BASIC[color], "count": mv}],
+            [name],
+            [{"do": "cast", "turn": 1, "phase": "PRECOMBAT_MAIN", "player": "A",
+              "card": name},
+             {"do": "target", "player": "A", "value": "Grizzly Bears"},
+             {"do": "wait_stack", "turn": 1, "phase": "PRECOMBAT_MAIN"}],
+            [{"check": "power_toughness", "player": "A", "card": "Grizzly Bears",
+              "power": 2 + att, "toughness": 2 + dfn}])
+
+
+def gen_burn_player(idx):
+    query = {"node": {"kind": "A", "apiKind": "SP", "api": "DealDamage"}}
+    for hit in idx.search(query):
+        rec = hit["record"]
+        cost = parse_mono_cost(rec.get("manaCost") or "")
+        if not cost or cost[1] > 4:
+            continue
+        node = _single_spell_node(rec, "DealDamage")
+        if node is None:
+            continue
+        p = node.get("params", {})
+        if p.get("ValidTgts") not in ("Any", "Player"):
+            continue
+        n = _lit_int(p.get("NumDmg"), lo=1)
+        if n is None:
+            continue
+        name, (color, mv) = rec["name"], cost
+        yield base_scenario(
+            f"gen-burn-{slug(name)}",
+            f"{name} deals {n} to player B: 20 -> {20 - n}",
+            "burn_player",
+            [{"card": BASIC[color], "count": mv}],
+            [name],
+            [{"do": "cast", "turn": 1, "phase": "PRECOMBAT_MAIN", "player": "A",
+              "card": name, "target_player": "B"},
+             {"do": "wait_stack", "turn": 1, "phase": "PRECOMBAT_MAIN"}],
+            [{"check": "life", "player": "B", "value": 20 - n}])
+
+
+def gen_mill_player(idx):
+    query = {"node": {"kind": "A", "apiKind": "SP", "api": "Mill"}}
+    for hit in idx.search(query):
+        rec = hit["record"]
+        cost = parse_mono_cost(rec.get("manaCost") or "")
+        if not cost or cost[1] > 4:
+            continue
+        node = _single_spell_node(rec, "Mill")
+        if node is None:
+            continue
+        p = node.get("params", {})
+        if p.get("ValidTgts") not in ("Player", "Player.Opponent"):
+            continue
+        n = _lit_int(p.get("NumCards"), lo=1)
+        if n is None:
+            continue
+        name, (color, mv) = rec["name"], cost
+        scn = base_scenario(
+            f"gen-mill-{slug(name)}",
+            f"{name} mills {n} from B's stocked library top",
+            "mill_player",
+            [{"card": BASIC[color], "count": mv}],
+            [name],
+            [{"do": "cast", "turn": 1, "phase": "PRECOMBAT_MAIN", "player": "A",
+              "card": name, "target_player": "B"},
+             {"do": "wait_stack", "turn": 1, "phase": "PRECOMBAT_MAIN"}],
+            [{"check": "graveyard_count", "player": "B", "card": "Plains",
+              "count": n}])
+        scn["players"]["B"]["library_top"] = ["Plains"] * n
+        yield scn
+
+
 TEMPLATES = {
     "etb_token_doubling": gen_etb_token,
     "dies_token_doubling": gen_dies_token,
     "lifegain_counter": gen_lifegain_counter,
+    "etb_draw": gen_etb_draw,
+    "etb_lifegain": gen_etb_lifegain,
+    "dies_draw": gen_dies_draw,
+    "etb_counters": gen_etb_counters,
+    "pump_spell": gen_pump_spell,
+    "burn_player": gen_burn_player,
+    "mill_player": gen_mill_player,
 }
 
 

@@ -1,0 +1,48 @@
+{
+ "id": "gen-burn-assault",
+ "description": "Assault deals 2 to player B: 20 -> 18",
+ "template": "burn_player",
+ "players": {
+  "A": {
+   "life": 20,
+   "battlefield": [
+    {
+     "card": "Mountain",
+     "count": 1
+    }
+   ],
+   "hand": [
+    "Assault"
+   ]
+  },
+  "B": {
+   "life": 20
+  }
+ },
+ "actions": [
+  {
+   "do": "cast",
+   "turn": 1,
+   "phase": "PRECOMBAT_MAIN",
+   "player": "A",
+   "card": "Assault",
+   "target_player": "B"
+  },
+  {
+   "do": "wait_stack",
+   "turn": 1,
+   "phase": "PRECOMBAT_MAIN"
+  }
+ ],
+ "stop": {
+  "turn": 1,
+  "phase": "END_TURN"
+ },
+ "expect": [
+  {
+   "check": "life",
+   "player": "B",
+   "value": 18
+  }
+ ]
+}

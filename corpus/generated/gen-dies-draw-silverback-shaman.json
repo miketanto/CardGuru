@@ -1,0 +1,61 @@
+{
+ "id": "gen-dies-draw-silverback-shaman",
+ "description": "Silverback Shaman killed by Murder; its dies trigger draws 1",
+ "template": "dies_draw",
+ "players": {
+  "A": {
+   "life": 20,
+   "battlefield": [
+    {
+     "card": "Silverback Shaman"
+    },
+    {
+     "card": "Swamp",
+     "count": 3
+    }
+   ],
+   "hand": [
+    "Murder"
+   ]
+  },
+  "B": {
+   "life": 20
+  }
+ },
+ "actions": [
+  {
+   "do": "cast",
+   "turn": 1,
+   "phase": "PRECOMBAT_MAIN",
+   "player": "A",
+   "card": "Murder"
+  },
+  {
+   "do": "target",
+   "player": "A",
+   "value": "Silverback Shaman"
+  },
+  {
+   "do": "wait_stack",
+   "turn": 1,
+   "phase": "PRECOMBAT_MAIN"
+  }
+ ],
+ "stop": {
+  "turn": 1,
+  "phase": "END_TURN"
+ },
+ "expect": [
+  {
+   "check": "graveyard_count",
+   "player": "A",
+   "card": "Silverback Shaman",
+   "count": 1
+  },
+  {
+   "check": "hand_count",
+   "player": "A",
+   "count": 1
+  }
+ ]
+}

@@ -1,0 +1,53 @@
+{
+ "id": "gen-etb-lifegain-balamb-t-rexaur",
+ "description": "Balamb T-Rexaur enters and gains 3 life",
+ "template": "etb_lifegain",
+ "players": {
+  "A": {
+   "life": 20,
+   "battlefield": [
+    {
+     "card": "Forest",
+     "count": 6
+    }
+   ],
+   "hand": [
+    "Balamb T-Rexaur"
+   ]
+  },
+  "B": {
+   "life": 20
+  }
+ },
+ "actions": [
+  {
+   "do": "cast",
+   "turn": 1,
+   "phase": "PRECOMBAT_MAIN",
+   "player": "A",
+   "card": "Balamb T-Rexaur"
+  },
+  {
+   "do": "wait_stack",
+   "turn": 1,
+   "phase": "PRECOMBAT_MAIN"
+  }
+ ],
+ "stop": {
+  "turn": 1,
+  "phase": "END_TURN"
+ },
+ "expect": [
+  {
+   "check": "permanent_count",
+   "player": "A",
+   "card": "Balamb T-Rexaur",
+   "count": 1
+  },
+  {
+   "check": "life",
+   "player": "A",
+   "value": 23
+  }
+ ]
+}

@@ -1,0 +1,57 @@
+{
+ "id": "gen-pump-artful-maneuver",
+ "description": "Artful Maneuver (+2/+2) on Grizzly Bears -> 4/4",
+ "template": "pump_spell",
+ "players": {
+  "A": {
+   "life": 20,
+   "battlefield": [
+    {
+     "card": "Grizzly Bears"
+    },
+    {
+     "card": "Plains",
+     "count": 2
+    }
+   ],
+   "hand": [
+    "Artful Maneuver"
+   ]
+  },
+  "B": {
+   "life": 20
+  }
+ },
+ "actions": [
+  {
+   "do": "cast",
+   "turn": 1,
+   "phase": "PRECOMBAT_MAIN",
+   "player": "A",
+   "card": "Artful Maneuver"
+  },
+  {
+   "do": "target",
+   "player": "A",
+   "value": "Grizzly Bears"
+  },
+  {
+   "do": "wait_stack",
+   "turn": 1,
+   "phase": "PRECOMBAT_MAIN"
+  }
+ ],
+ "stop": {
+  "turn": 1,
+  "phase": "END_TURN"
+ },
+ "expect": [
+  {
+   "check": "power_toughness",
+   "player": "A",
+   "card": "Grizzly Bears",
+   "power": 4,
+   "toughness": 4
+  }
+ ]
+}

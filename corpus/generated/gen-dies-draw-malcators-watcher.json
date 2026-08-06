@@ -1,0 +1,61 @@
+{
+ "id": "gen-dies-draw-malcators-watcher",
+ "description": "Malcator's Watcher killed by Murder; its dies trigger draws 1",
+ "template": "dies_draw",
+ "players": {
+  "A": {
+   "life": 20,
+   "battlefield": [
+    {
+     "card": "Malcator's Watcher"
+    },
+    {
+     "card": "Swamp",
+     "count": 3
+    }
+   ],
+   "hand": [
+    "Murder"
+   ]
+  },
+  "B": {
+   "life": 20
+  }
+ },
+ "actions": [
+  {
+   "do": "cast",
+   "turn": 1,
+   "phase": "PRECOMBAT_MAIN",
+   "player": "A",
+   "card": "Murder"
+  },
+  {
+   "do": "target",
+   "player": "A",
+   "value": "Malcator's Watcher"
+  },
+  {
+   "do": "wait_stack",
+   "turn": 1,
+   "phase": "PRECOMBAT_MAIN"
+  }
+ ],
+ "stop": {
+  "turn": 1,
+  "phase": "END_TURN"
+ },
+ "expect": [
+  {
+   "check": "graveyard_count",
+   "player": "A",
+   "card": "Malcator's Watcher",
+   "count": 1
+  },
+  {
+   "check": "hand_count",
+   "player": "A",
+   "count": 1
+  }
+ ]
+}

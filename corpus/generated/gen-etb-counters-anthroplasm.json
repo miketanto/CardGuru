@@ -1,0 +1,49 @@
+{
+ "id": "gen-etb-counters-anthroplasm",
+ "description": "Anthroplasm enters with 2 +1/+1 counters: 0/0 base -> 2/2",
+ "template": "etb_counters",
+ "players": {
+  "A": {
+   "life": 20,
+   "battlefield": [
+    {
+     "card": "Island",
+     "count": 4
+    }
+   ],
+   "hand": [
+    "Anthroplasm"
+   ]
+  },
+  "B": {
+   "life": 20
+  }
+ },
+ "actions": [
+  {
+   "do": "cast",
+   "turn": 1,
+   "phase": "PRECOMBAT_MAIN",
+   "player": "A",
+   "card": "Anthroplasm"
+  },
+  {
+   "do": "wait_stack",
+   "turn": 1,
+   "phase": "PRECOMBAT_MAIN"
+  }
+ ],
+ "stop": {
+  "turn": 1,
+  "phase": "END_TURN"
+ },
+ "expect": [
+  {
+   "check": "power_toughness",
+   "player": "A",
+   "card": "Anthroplasm",
+   "power": 2,
+   "toughness": 2
+  }
+ ]
+}

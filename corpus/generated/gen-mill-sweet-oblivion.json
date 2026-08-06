@@ -1,0 +1,55 @@
+{
+ "id": "gen-mill-sweet-oblivion",
+ "description": "Sweet Oblivion mills 4 from B's stocked library top",
+ "template": "mill_player",
+ "players": {
+  "A": {
+   "life": 20,
+   "battlefield": [
+    {
+     "card": "Island",
+     "count": 2
+    }
+   ],
+   "hand": [
+    "Sweet Oblivion"
+   ]
+  },
+  "B": {
+   "life": 20,
+   "library_top": [
+    "Plains",
+    "Plains",
+    "Plains",
+    "Plains"
+   ]
+  }
+ },
+ "actions": [
+  {
+   "do": "cast",
+   "turn": 1,
+   "phase": "PRECOMBAT_MAIN",
+   "player": "A",
+   "card": "Sweet Oblivion",
+   "target_player": "B"
+  },
+  {
+   "do": "wait_stack",
+   "turn": 1,
+   "phase": "PRECOMBAT_MAIN"
+  }
+ ],
+ "stop": {
+  "turn": 1,
+  "phase": "END_TURN"
+ },
+ "expect": [
+  {
+   "check": "graveyard_count",
+   "player": "B",
+   "card": "Plains",
+   "count": 4
+  }
+ ]
+}

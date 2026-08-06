@@ -1,0 +1,53 @@
+{
+ "id": "gen-etb-draw-gryff-vanguard",
+ "description": "Gryff Vanguard enters and draws 1; hand goes from 0 (cast it) to 1",
+ "template": "etb_draw",
+ "players": {
+  "A": {
+   "life": 20,
+   "battlefield": [
+    {
+     "card": "Island",
+     "count": 5
+    }
+   ],
+   "hand": [
+    "Gryff Vanguard"
+   ]
+  },
+  "B": {
+   "life": 20
+  }
+ },
+ "actions": [
+  {
+   "do": "cast",
+   "turn": 1,
+   "phase": "PRECOMBAT_MAIN",
+   "player": "A",
+   "card": "Gryff Vanguard"
+  },
+  {
+   "do": "wait_stack",
+   "turn": 1,
+   "phase": "PRECOMBAT_MAIN"
+  }
+ ],
+ "stop": {
+  "turn": 1,
+  "phase": "END_TURN"
+ },
+ "expect": [
+  {
+   "check": "permanent_count",
+   "player": "A",
+   "card": "Gryff Vanguard",
+   "count": 1
+  },
+  {
+   "check": "hand_count",
+   "player": "A",
+   "count": 1
+  }
+ ]
+}

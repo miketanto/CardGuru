@@ -1,0 +1,49 @@
+{
+ "id": "gen-etb-counters-mindwarper",
+ "description": "Mindwarper enters with 3 +1/+1 counters: 0/0 base -> 3/3",
+ "template": "etb_counters",
+ "players": {
+  "A": {
+   "life": 20,
+   "battlefield": [
+    {
+     "card": "Swamp",
+     "count": 4
+    }
+   ],
+   "hand": [
+    "Mindwarper"
+   ]
+  },
+  "B": {
+   "life": 20
+  }
+ },
+ "actions": [
+  {
+   "do": "cast",
+   "turn": 1,
+   "phase": "PRECOMBAT_MAIN",
+   "player": "A",
+   "card": "Mindwarper"
+  },
+  {
+   "do": "wait_stack",
+   "turn": 1,
+   "phase": "PRECOMBAT_MAIN"
+  }
+ ],
+ "stop": {
+  "turn": 1,
+  "phase": "END_TURN"
+ },
+ "expect": [
+  {
+   "check": "power_toughness",
+   "player": "A",
+   "card": "Mindwarper",
+   "power": 3,
+   "toughness": 3
+  }
+ ]
+}

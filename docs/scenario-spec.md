@@ -48,7 +48,7 @@ deliberately avoids engine-specific vocabulary so a second engine could run the 
 
 | `do` | Fields | Meaning |
 |---|---|---|
-| `cast` | turn, phase, player, card | Cast a spell (adventure faces by face name) |
+| `cast` | turn, phase, player, card, [target_player] | Cast a spell (adventure faces by face name). `target_player` names a player the spell targets — use it instead of a `target` action for player-targeted spells |
 | `play_land` | turn, phase, player, card | Take the land drop |
 | `activate` | turn, phase, player, ability | Activate; `ability` is a text prefix, e.g. `"{T}: Add"` |
 | `attack` | turn, player, attacker | Declare an attacker |

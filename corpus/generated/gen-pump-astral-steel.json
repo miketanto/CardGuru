@@ -1,0 +1,57 @@
+{
+ "id": "gen-pump-astral-steel",
+ "description": "Astral Steel (+1/+2) on Grizzly Bears -> 3/4",
+ "template": "pump_spell",
+ "players": {
+  "A": {
+   "life": 20,
+   "battlefield": [
+    {
+     "card": "Grizzly Bears"
+    },
+    {
+     "card": "Plains",
+     "count": 3
+    }
+   ],
+   "hand": [
+    "Astral Steel"
+   ]
+  },
+  "B": {
+   "life": 20
+  }
+ },
+ "actions": [
+  {
+   "do": "cast",
+   "turn": 1,
+   "phase": "PRECOMBAT_MAIN",
+   "player": "A",
+   "card": "Astral Steel"
+  },
+  {
+   "do": "target",
+   "player": "A",
+   "value": "Grizzly Bears"
+  },
+  {
+   "do": "wait_stack",
+   "turn": 1,
+   "phase": "PRECOMBAT_MAIN"
+  }
+ ],
+ "stop": {
+  "turn": 1,
+  "phase": "END_TURN"
+ },
+ "expect": [
+  {
+   "check": "power_toughness",
+   "player": "A",
+   "card": "Grizzly Bears",
+   "power": 3,
+   "toughness": 4
+  }
+ ]
+}

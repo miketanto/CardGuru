@@ -1,0 +1,57 @@
+{
+ "id": "gen-pump-antagonize",
+ "description": "Antagonize (+4/+3) on Grizzly Bears -> 6/5",
+ "template": "pump_spell",
+ "players": {
+  "A": {
+   "life": 20,
+   "battlefield": [
+    {
+     "card": "Grizzly Bears"
+    },
+    {
+     "card": "Mountain",
+     "count": 2
+    }
+   ],
+   "hand": [
+    "Antagonize"
+   ]
+  },
+  "B": {
+   "life": 20
+  }
+ },
+ "actions": [
+  {
+   "do": "cast",
+   "turn": 1,
+   "phase": "PRECOMBAT_MAIN",
+   "player": "A",
+   "card": "Antagonize"
+  },
+  {
+   "do": "target",
+   "player": "A",
+   "value": "Grizzly Bears"
+  },
+  {
+   "do": "wait_stack",
+   "turn": 1,
+   "phase": "PRECOMBAT_MAIN"
+  }
+ ],
+ "stop": {
+  "turn": 1,
+  "phase": "END_TURN"
+ },
+ "expect": [
+  {
+   "check": "power_toughness",
+   "player": "A",
+   "card": "Grizzly Bears",
+   "power": 6,
+   "toughness": 5
+  }
+ ]
+}

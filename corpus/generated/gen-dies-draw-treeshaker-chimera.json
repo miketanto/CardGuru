@@ -1,0 +1,61 @@
+{
+ "id": "gen-dies-draw-treeshaker-chimera",
+ "description": "Treeshaker Chimera killed by Murder; its dies trigger draws 3",
+ "template": "dies_draw",
+ "players": {
+  "A": {
+   "life": 20,
+   "battlefield": [
+    {
+     "card": "Treeshaker Chimera"
+    },
+    {
+     "card": "Swamp",
+     "count": 3
+    }
+   ],
+   "hand": [
+    "Murder"
+   ]
+  },
+  "B": {
+   "life": 20
+  }
+ },
+ "actions": [
+  {
+   "do": "cast",
+   "turn": 1,
+   "phase": "PRECOMBAT_MAIN",
+   "player": "A",
+   "card": "Murder"
+  },
+  {
+   "do": "target",
+   "player": "A",
+   "value": "Treeshaker Chimera"
+  },
+  {
+   "do": "wait_stack",
+   "turn": 1,
+   "phase": "PRECOMBAT_MAIN"
+  }
+ ],
+ "stop": {
+  "turn": 1,
+  "phase": "END_TURN"
+ },
+ "expect": [
+  {
+   "check": "graveyard_count",
+   "player": "A",
+   "card": "Treeshaker Chimera",
+   "count": 1
+  },
+  {
+   "check": "hand_count",
+   "player": "A",
+   "count": 3
+  }
+ ]
+}

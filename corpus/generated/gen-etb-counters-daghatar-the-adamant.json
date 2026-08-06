@@ -1,0 +1,49 @@
+{
+ "id": "gen-etb-counters-daghatar-the-adamant",
+ "description": "Daghatar the Adamant enters with 4 +1/+1 counters: 0/0 base -> 4/4",
+ "template": "etb_counters",
+ "players": {
+  "A": {
+   "life": 20,
+   "battlefield": [
+    {
+     "card": "Plains",
+     "count": 4
+    }
+   ],
+   "hand": [
+    "Daghatar the Adamant"
+   ]
+  },
+  "B": {
+   "life": 20
+  }
+ },
+ "actions": [
+  {
+   "do": "cast",
+   "turn": 1,
+   "phase": "PRECOMBAT_MAIN",
+   "player": "A",
+   "card": "Daghatar the Adamant"
+  },
+  {
+   "do": "wait_stack",
+   "turn": 1,
+   "phase": "PRECOMBAT_MAIN"
+  }
+ ],
+ "stop": {
+  "turn": 1,
+  "phase": "END_TURN"
+ },
+ "expect": [
+  {
+   "check": "power_toughness",
+   "player": "A",
+   "card": "Daghatar the Adamant",
+   "power": 4,
+   "toughness": 4
+  }
+ ]
+}

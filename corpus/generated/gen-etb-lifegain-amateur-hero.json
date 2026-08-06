@@ -1,0 +1,53 @@
+{
+ "id": "gen-etb-lifegain-amateur-hero",
+ "description": "Amateur Hero enters and gains 2 life",
+ "template": "etb_lifegain",
+ "players": {
+  "A": {
+   "life": 20,
+   "battlefield": [
+    {
+     "card": "Plains",
+     "count": 3
+    }
+   ],
+   "hand": [
+    "Amateur Hero"
+   ]
+  },
+  "B": {
+   "life": 20
+  }
+ },
+ "actions": [
+  {
+   "do": "cast",
+   "turn": 1,
+   "phase": "PRECOMBAT_MAIN",
+   "player": "A",
+   "card": "Amateur Hero"
+  },
+  {
+   "do": "wait_stack",
+   "turn": 1,
+   "phase": "PRECOMBAT_MAIN"
+  }
+ ],
+ "stop": {
+  "turn": 1,
+  "phase": "END_TURN"
+ },
+ "expect": [
+  {
+   "check": "permanent_count",
+   "player": "A",
+   "card": "Amateur Hero",
+   "count": 1
+  },
+  {
+   "check": "life",
+   "player": "A",
+   "value": 22
+  }
+ ]
+}

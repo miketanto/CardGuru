@@ -1,0 +1,49 @@
+{
+ "id": "gen-etb-counters-festercreep",
+ "description": "Festercreep enters with 1 +1/+1 counters: 0/0 base -> 1/1",
+ "template": "etb_counters",
+ "players": {
+  "A": {
+   "life": 20,
+   "battlefield": [
+    {
+     "card": "Swamp",
+     "count": 2
+    }
+   ],
+   "hand": [
+    "Festercreep"
+   ]
+  },
+  "B": {
+   "life": 20
+  }
+ },
+ "actions": [
+  {
+   "do": "cast",
+   "turn": 1,
+   "phase": "PRECOMBAT_MAIN",
+   "player": "A",
+   "card": "Festercreep"
+  },
+  {
+   "do": "wait_stack",
+   "turn": 1,
+   "phase": "PRECOMBAT_MAIN"
+  }
+ ],
+ "stop": {
+  "turn": 1,
+  "phase": "END_TURN"
+ },
+ "expect": [
+  {
+   "check": "power_toughness",
+   "player": "A",
+   "card": "Festercreep",
+   "power": 1,
+   "toughness": 1
+  }
+ ]
+}
