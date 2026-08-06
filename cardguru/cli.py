@@ -277,9 +277,9 @@ def cmd_deck(args):
         print(f"\n== top {args.suggest} suggested additions "
               f"({sg['candidates_considered']} candidates scored)")
         for s in sg["suggestions"]:
-            adj = f"  [{'; '.join(s['adjustments'])}]" if s["adjustments"] else ""
             print(f"  {s['score']:6.1f} ({s['edges']} edges, "
-                  f"{s['printings']} printings) {str(s['mv'] or ''):8} {s['card']}{adj}")
+                  f"{s['printings']} printings) {str(s['mv'] or ''):8} {s['card']}"
+                  f"  <- {s['picked_for']}")
             print(f"       {'; '.join(s['why'][:2])}")
 
 

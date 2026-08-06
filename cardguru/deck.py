@@ -196,8 +196,19 @@ def suggest(idx, by_name: dict, commander_rec: dict,
     # hook sources in the deck: (card, hook) pairs
     deck_hooks = [(name, h) for name, rec in deck_recs for h in detect_hooks(rec)]
 
+    # deck-internal coverage per hook: how many deck cards already feed it
+    # (thin hooks get priority in diversified selection)
+    hook_coverage: dict[str, int] = {}
+    for src_name, hook in deck_hooks:
+        feeders = set()
+        for cname, query in HOOKS[hook]["complements"].items():
+            for dn, drec in deck_recs:
+                if dn != src_name and _matches(drec, query):
+                    feeders.add(dn)
+        hook_coverage[hook] = max(hook_coverage.get(hook, 0), len(feeders))
+
     # provider side: candidates matching any deck hook's complement queries
-    provider_edges: dict[str, list[str]] = {}
+    provider_edges: dict[str, list[tuple[str, str, str]]] = {}
     for src_name, hook in deck_hooks:
         for cname, query in HOOKS[hook]["complements"].items():
             for hit in idx.search(query):
@@ -207,15 +218,15 @@ def suggest(idx, by_name: dict, commander_rec: dict,
                     continue
                 if not color_identity_ok(ci_by_name.get(cand), commander_ci):
                     continue
-                provider_edges.setdefault(cand, []).append(
-                    f"feeds {src_name}'s {hook} ({cname})")
+                provider_edges.setdefault(cand, []).append((src_name, hook, cname))
 
     # consumer side: does the deck feed the candidate's own hooks?
     scores = []
-    for cand, why in provider_edges.items():
+    for cand, plinks in provider_edges.items():
         rec = by_name.get(cand)
         if rec is None:
             continue
+        why = [f"feeds {s}'s {h} ({c})" for s, h, c in plinks]
         consumer = 0
         for hook in detect_hooks(rec):
             for cname, query in HOOKS[hook]["complements"].items():
@@ -241,13 +252,56 @@ def suggest(idx, by_name: dict, commander_rec: dict,
             "card": cand, "edges": edges, "score": round(score, 1),
             "provider_edges": len(why), "consumer_edges": consumer,
             "adjustments": adjustments,
+            "feeds_hooks": sorted({h for _s, h, _c in plinks}),
+            "fills_roles": [a.split("fills ")[1] for a in adjustments
+                            if "fills" in a],
             "printings": len(printings_by_name.get(cand) or []),
             "mv": rec.get("manaCost"),
             "why": why[:4]})
     scores.sort(key=lambda s: (-s["score"], -s["printings"], str(s["mv"] or "z")))
+
+    # ---- diversified selection: round-robin over the deck's NEEDS ----
+    # buckets: deficient roles first, then hooks by ascending deck coverage
+    buckets: list[tuple[str, str]] = []
+    if shape:
+        for r, quota in ROLE_QUOTAS.items():
+            if len(shape["roles"].get(r, [])) < quota:
+                buckets.append(("role", r))
+    for hook in sorted(hook_coverage, key=lambda h: hook_coverage[h]):
+        buckets.append(("hook", hook))
+
+    picked, picked_names = [], set()
+    while len(picked) < top_n and buckets:
+        progressed = False
+        for kind, key in buckets:
+            if len(picked) >= top_n:
+                break
+            for s in scores:
+                if s["card"] in picked_names:
+                    continue
+                ok = (key in s["fills_roles"]) if kind == "role" \
+                    else (key in s["feeds_hooks"])
+                if ok:
+                    label = f"thin hook: {key} (deck coverage {hook_coverage.get(key, 0)})" \
+                        if kind == "hook" else f"deficient role: {key}"
+                    picked.append({**s, "picked_for": label})
+                    picked_names.add(s["card"])
+                    progressed = True
+                    break
+        if not progressed:
+            break
+    for s in scores:                      # fill remainder by raw score
+        if len(picked) >= top_n:
+            break
+        if s["card"] not in picked_names:
+            picked.append({**s, "picked_for": "overall score"})
+            picked_names.add(s["card"])
+
     return {"commander": commander_rec["name"],
             "deck_hooks": sorted({h for _n, h in deck_hooks}),
-            "suggestions": scores[:top_n],
+            "hook_coverage": hook_coverage,
+            "suggestions": picked,
+            "by_score": scores[:top_n],
             "candidates_considered": len(scores)}
 
 
