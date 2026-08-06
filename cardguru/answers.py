@@ -168,6 +168,27 @@ def evaluate_answer(klass: str, answer_rec: dict, node_params: dict,
         if profile["hexproof"]:
             return {"works": False,
                     "reasons": ["threat has hexproof: opponents can't target it"]}
+        tgts = str(node_params.get("ValidTgts", ""))
+        for c, word in (("W", "White"), ("U", "Blue"), ("B", "Black"),
+                        ("R", "Red"), ("G", "Green")):
+            if f"non{word}" in tgts and c in profile["colors"]:
+                return {"works": False,
+                        "reasons": [f"can only target non{word.lower()} - "
+                                    f"threat is {word.lower()}"]}
+        # positive color restriction ("Permanent.Red") the threat doesn't meet
+        stripped = tgts
+        for word in ("nonWhite", "nonBlue", "nonBlack", "nonRed", "nonGreen"):
+            stripped = stripped.replace(word, "")
+        for c, word in (("W", "White"), ("U", "Blue"), ("B", "Black"),
+                        ("R", "Red"), ("G", "Green")):
+            if word in stripped and c not in profile["colors"]:
+                return {"works": False,
+                        "reasons": [f"can only target {word.lower()} - "
+                                    f"threat isn't {word.lower()}"]}
+        if any(str(k).startswith("Condition") for k in node_params):
+            works = None
+            reasons.append("conditional: effect checks a condition on "
+                           "resolution (not evaluated)")
         spell_colors = {c for c in (answer_rec.get("manaCost") or "")
                         if c in COLOR_LETTERS}
         if _protected_from_color(profile, spell_colors):
@@ -253,6 +274,35 @@ def _class_queries(profile: dict) -> dict:
                 params[key] = tgt if not creature_only else params[key]
         queries[klass] = q2
     return queries
+
+
+def answer_density(decklist: list[tuple[str, int]], answer_names: set[str],
+                   threat_turn: int, iterations: int = 5000,
+                   on_play: bool = False, seed: int = 11) -> dict:
+    """Meta Lab x goldfish synthesis: the probability of actually HOLDING a
+    working answer when the threat arrives. Deals the real list; draws 7 plus
+    one per turn (on the draw by default - answering is reactive)."""
+    import random
+    pool = []
+    for name, count in decklist:
+        pool += [name] * count
+    rng = random.Random(seed)
+    turns = threat_turn + 2
+    have_by_turn = [0] * (turns + 1)
+    for _ in range(iterations):
+        deck = pool[:]
+        rng.shuffle(deck)
+        for t in range(1, turns + 1):
+            n_seen = 7 + t - (1 if on_play else 0)
+            if any(c in answer_names for c in deck[:n_seen]):
+                for tt in range(t, turns + 1):
+                    have_by_turn[tt] += 1
+                break
+    n = float(iterations)
+    return {"iterations": iterations, "threat_turn": threat_turn,
+            "answers_in_deck": sorted(answer_names),
+            "p_have_answer_by_turn": {t: round(100 * have_by_turn[t] / n, 1)
+                                      for t in range(1, turns + 1)}}
 
 
 def find_answers(idx, threat_rec: dict, colors: set[str] | None = None,

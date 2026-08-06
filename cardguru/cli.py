@@ -135,7 +135,8 @@ def cmd_answers(args):
         sys.exit(1)
     colors = set(args.colors.upper()) if args.colors else None
     res = find_answers(idx, rec, colors=colors,
-                       token_scripts=load_token_scripts(args.tokenscripts))
+                       token_scripts=load_token_scripts(args.tokenscripts),
+                       limit_per_class=500 if args.deck else 8)
     p = res["threat"]
     traits = [t for t, on in (("hexproof", p["hexproof"]), ("shroud", p["shroud"]),
                               ("indestructible", p["indestructible"]),
@@ -146,10 +147,33 @@ def cmd_answers(args):
         if not data["total"]:
             continue
         print(f"\n{klass}: {data['working']}/{data['total']} work")
-        for r in data["top"]:
+        for r in data["top"][:8]:
             mark = {True: "YES ", None: "COND", False: "no  "}[r["works"]]
             print(f"  [{mark}] {r['card']:36} {str(r['manaCost'] or ''):8} "
                   f"{'; '.join(r['reasons'])[:70]}")
+
+    if args.deck:
+        from .answers import answer_density
+        from .deck import mana_value, parse_decklist
+        with open(args.deck, encoding="utf-8") as f:
+            decklist = parse_decklist(f.read())
+        deck_names = {n for n, _c in decklist}
+        working = {r["card"] for data in res["classes"].values()
+                   for r in data["top"] if r["works"] is True}
+        deck_answers = working & deck_names
+        threat_turn = max(mana_value(rec.get("manaCost")) or 1, 1)
+        ad = answer_density(decklist, deck_answers, threat_turn,
+                            iterations=args.sim or 5000)
+        print(f"\n== answer density vs {p['name']} (expected on turn {threat_turn})")
+        print(f"working answers in your deck ({len(deck_answers)}): "
+              f"{', '.join(sorted(deck_answers)) or 'NONE'}")
+        for t, pct in ad["p_have_answer_by_turn"].items():
+            marker = "  <- threat arrives" if t == threat_turn else ""
+            print(f"  P(answer in hand by T{t}): {pct}%{marker}")
+        arrival = ad["p_have_answer_by_turn"].get(threat_turn, 0)
+        if arrival < 60:
+            print(f"  ! ANSWER DEFICIT: {arrival}% at arrival vs 60% target - "
+                  f"add more working answers")
 
 
 def cmd_recommend(args):
@@ -333,6 +357,49 @@ def cmd_deck(args):
             print(f"       {'; '.join(s['why'][:2])}")
 
 
+def cmd_threats(args):
+    from .answers import load_token_scripts
+    from .deck import parse_decklist
+    from .threats import analyze_opponent
+
+    idx = SearchIndex.load(args.dataset)
+    by_name = {}
+    for r in idx.records:
+        by_name.setdefault(r.get("name"), r)
+    rec = by_name.get(args.commander)
+    if not rec:
+        print(f"unknown commander: {args.commander}", file=sys.stderr)
+        sys.exit(1)
+    with open(args.list, encoding="utf-8") as f:
+        decklist = parse_decklist(f.read())
+    colors = set(args.colors.upper()) if args.colors else None
+    res = analyze_opponent(idx, by_name, rec, decklist, colors,
+                           token_scripts=load_token_scripts())
+    print(f"# opposing deck: {args.commander} - gameplan: {res['gameplan']}")
+    top_hooks = list(res["hook_counts"].items())[:5]
+    print(f"hook profile: {', '.join(f'{h}({c})' for h, c in top_hooks)}")
+    print(f"\nkey threats (by synergy centrality):")
+    for name, deg in res["key_threats"]:
+        print(f"  {deg:3} edges  {name}")
+    if res["loops"]:
+        print(f"\nloops to break:")
+        for lp in res["loops"][:3]:
+            print(f"  {' <-> '.join(lp['cards'])}")
+    print(f"\n== coverage answers: work vs ALL {len(res['surgical'])} key threats "
+          f"({res['coverage_pool']} in-color)")
+    for c in res["coverage_answers"]:
+        print(f"  {c}")
+    print(f"\n== surgical answers (your colors: {args.colors or 'any'})")
+    for s in res["surgical"]:
+        flags = f"  [{'/'.join(s['profile_flags'])}]" if s["profile_flags"] else ""
+        print(f"\n{s['threat']} (centrality {s['centrality']}){flags}")
+        for a in s["answers"]:
+            print(f"  {a['card']:32} [{a['class']}] {a['reason'][:60]}")
+    print(f"\n== systemic disruption (vs a {res['gameplan']} gameplan)")
+    for cname, data in res["systemic"].items():
+        print(f"  {cname} ({data['total']} in-color): {', '.join(data['top'])}")
+
+
 def cmd_stats(args):
     idx = SearchIndex.load(args.dataset)
     recs = idx.records
@@ -395,6 +462,11 @@ def main(argv=None):
     an.add_argument("--colors", help="restrict answers to colors, e.g. WU")
     an.add_argument("--tokenscripts", default=None,
                     help="Forge tokenscripts dir (default: $CARDGURU_TOKENSCRIPTS)")
+    an.add_argument("--deck", default=None,
+                    help="decklist file: simulate P(holding a working answer) "
+                         "when the threat arrives")
+    an.add_argument("--sim", type=int, default=0,
+                    help="iterations for --deck answer-density simulation")
     an.add_argument("--dataset", default=DEFAULT_DATASET)
     an.set_defaults(fn=cmd_answers)
 
@@ -416,6 +488,14 @@ def main(argv=None):
     dk.add_argument("--ci-index", default="/home/user/mse/index/index.json")
     dk.add_argument("--dataset", default=DEFAULT_DATASET)
     dk.set_defaults(fn=cmd_deck)
+
+    th = sub.add_parser("threats",
+                        help="profile an opposing deck's gameplan and answer it")
+    th.add_argument("commander", help="opposing commander name")
+    th.add_argument("--list", required=True, help="opposing decklist file")
+    th.add_argument("--colors", help="your colors, e.g. WU")
+    th.add_argument("--dataset", default=DEFAULT_DATASET)
+    th.set_defaults(fn=cmd_threats)
 
     rc = sub.add_parser("recommend", help="commander synergy recommendations")
     rc.add_argument("commander", help="commander card name")

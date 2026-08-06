@@ -16,6 +16,11 @@ Query forms (composable):
   {"keyword": "Flying"}              card has keyword (name match)
   {"card": {"types": VP?, "name": VP?, "manaCost": VP?, "oracle": VP?}}
                                      card-level attribute predicates
+  {"hook": "sac_outlet"}             semantic facet from the validated hook
+                                     library (cardguru.recommend.HOOKS)
+  {"role": "card_draw"}              deckbuilding role facet; suffix
+                                     ":engine" / ":one_shot" to restrict
+                                     repeatability (e.g. "card_draw:engine")
 
 NodeSpec fields (all optional, AND-ed):
   kind      "A"|"T"|"S"|"R"|"K"|"SVar"|"SVarCount"|"SVarValue"  (VP allowed)
@@ -191,6 +196,25 @@ def evaluate(query: dict, graph: CardGraph):
             if not match_value(vp, rec.get(fields[f])):
                 return False, []
         return True, [{"card": list(arg)}]
+
+    if op == "hook":
+        # semantic facet from the validated hook library ("is:sac_outlet")
+        from .recommend import HOOKS, detect_hooks
+        if arg not in HOOKS:
+            raise QueryError(f"unknown hook: {arg} (see cardguru.recommend.HOOKS)")
+        ok = arg in detect_hooks(graph.record)
+        return ok, ([{"hook": arg}] if ok else [])
+
+    if op == "role":
+        # deckbuilding role facet, engine-vs-one-shot aware:
+        # "card_draw" matches either; "card_draw:engine" requires an engine
+        from .deck import ROLES, detect_roles
+        name, _, kind = arg.partition(":")
+        if name not in ROLES:
+            raise QueryError(f"unknown role: {name} (one of {sorted(ROLES)})")
+        got = detect_roles(graph.record).get(name)
+        ok = got is not None and (not kind or got == kind)
+        return ok, ([{"role": name, "kind": got}] if ok else [])
 
     raise QueryError(f"unknown query operator: {op}")
 
