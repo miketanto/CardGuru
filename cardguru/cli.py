@@ -399,6 +399,35 @@ def cmd_threats(args):
     for cname, data in res["systemic"].items():
         print(f"  {cname} ({data['total']} in-color): {', '.join(data['top'])}")
 
+    from .intuition import axis_profile, hate_for_axes
+    prof = axis_profile(by_name, rec, decklist)
+    print(f"\n== derived axis hate (the deck's scaling axes, and what throttles them)")
+    for h in hate_for_axes(idx, prof, colors, min_signal=4):
+        print(f"\n{h['axis']}: {h['why']}")
+        for cname, data in h["hate"].items():
+            if data["total"]:
+                print(f"  {cname} ({data['total']} in-color): {', '.join(data['top'])}")
+
+
+def cmd_windows(args):
+    from .intuition import answer_windows
+
+    idx = SearchIndex.load(args.dataset)
+    by_name = {}
+    for r in idx.records:
+        by_name.setdefault(r.get("name"), r)
+    rec = by_name.get(args.card)
+    if not rec:
+        print(f"unknown card: {args.card}", file=sys.stderr)
+        sys.exit(1)
+    w = answer_windows(rec)
+    print(f"# answer windows for {w['card']}")
+    for x in w["windows"]:
+        print(f"  OPEN  {x['window']:10} -> {x['answer']}")
+        print(f"        ({x['reason']})")
+    for x in w["closed"]:
+        print(f"  SHUT  {x['window']:10} ({x['reason']})")
+
 
 def cmd_stats(args):
     idx = SearchIndex.load(args.dataset)
@@ -496,6 +525,12 @@ def main(argv=None):
     th.add_argument("--colors", help="your colors, e.g. WU")
     th.add_argument("--dataset", default=DEFAULT_DATASET)
     th.set_defaults(fn=cmd_threats)
+
+    wd = sub.add_parser("windows",
+                        help="where can this threat be interacted with at all")
+    wd.add_argument("card", help="threat card name")
+    wd.add_argument("--dataset", default=DEFAULT_DATASET)
+    wd.set_defaults(fn=cmd_windows)
 
     rc = sub.add_parser("recommend", help="commander synergy recommendations")
     rc.add_argument("commander", help="commander card name")

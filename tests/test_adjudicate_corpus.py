@@ -327,6 +327,46 @@ def test_deck_shape_flags():
     assert not any("ramp" in f for f in shape["flags"])
 
 
+def test_answer_windows_tinker_shape():
+    """The golden Tinker intuition: counter it or answer the output - the
+    sorcery itself is never a permanent."""
+    from cardguru.intuition import answer_windows
+    tinker = {"name": "Tinker-like", "types": "Sorcery", "manaCost": "2 U",
+              "edges": [], "nodes": [
+                  {"id": "a0", "kind": "A", "apiKind": "SP", "api": "ChangeZone",
+                   "params": {"Origin": "Library", "Destination": "Battlefield",
+                              "ChangeType": "Artifact"}}]}
+    w = answer_windows(tinker)
+    open_names = {x["window"] for x in w["windows"]}
+    assert "stack" in open_names            # counterable
+    assert "output" in open_names           # kill what it fetches
+    assert "preempt" in open_names          # search hate
+    assert "permanent" not in open_names    # never removable itself
+    assert any(x["window"] == "permanent" for x in w["closed"])
+
+
+def test_axis_matching_high_noon_shape():
+    """The golden High Noon intuition: a cast-scaling deck is throttled by a
+    CantBeCast rate cap."""
+    from cardguru.intuition import AXES, axis_profile
+    payoff = {"name": "Prowessy", "types": "Creature", "manaCost": "R",
+              "edges": [], "nodes": [
+                  {"id": "t0", "kind": "T",
+                   "params": {"Mode": "SpellCast", "ValidCard": "Card"}}]}
+    high_noon = {"name": "Noonish", "types": "Enchantment", "manaCost": "1 W",
+                 "edges": [], "nodes": [
+                     {"id": "s0", "kind": "S",
+                      "params": {"Mode": "CantBeCast", "ValidCard": "Card",
+                                 "NumLimitEachTurn": "1"}}]}
+    by_name = {r["name"]: r for r in (payoff, high_noon)}
+    prof = axis_profile(by_name, payoff, [("Prowessy", 4)])
+    assert prof and prof[0]["axis"] == "casting_spells"
+    from cardguru.intuition import _matches
+    q = AXES["casting_spells"]["hate"]["cast_rate_caps"]
+    assert _matches(high_noon, q)
+    assert not _matches(payoff, q)
+
+
 def test_cuts_protects_mana_rocks_and_deficient_roles():
     from cardguru.deck import cuts
     rock = {"name": "Rock", "types": "Artifact", "manaCost": "1",
