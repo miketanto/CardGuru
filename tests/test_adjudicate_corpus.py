@@ -152,6 +152,91 @@ def test_answer_verdicts():
     assert evaluate_answer("edict_sacrifice", bolt, {}, hexproof)["works"] is None
 
 
+from cardguru.answers import (ability_dependence, token_is_ability_defined,  # noqa: E402
+                              _class_queries, find_answers)
+
+
+CONSTRUCT_TOKEN = {"name": "Construct Token", "pt": "0/0", "nodes": [
+    {"id": "s0", "kind": "S", "params": {"Mode": "Continuous",
+                                         "Affected": "Card.Self",
+                                         "AddPower": "X", "AddToughness": "X"}}]}
+
+
+def test_token_is_ability_defined():
+    assert token_is_ability_defined(CONSTRUCT_TOKEN)
+    assert not token_is_ability_defined({"name": "Soldier", "pt": "1/1", "nodes": []})
+    assert not token_is_ability_defined({"name": "Vanilla 0/0", "pt": "0/0", "nodes": []})
+
+
+def test_ability_dependence_via_token_scripts():
+    saga_like = {"name": "Saga-like", "types": "Enchantment Land", "pt": "",
+                 "manaCost": "no cost", "nodes": [
+                     {"id": "a0", "kind": "A",
+                      "params": {"TokenScript": "c_0_0_construct"}}]}
+    prof = threat_profile(saga_like)
+    assert prof["is_land"] and not prof["is_creature"]
+    assert prof["token_scripts"] == ["c_0_0_construct"]
+    deps = ability_dependence(prof, {"c_0_0_construct": CONSTRUCT_TOKEN})
+    assert deps and "704.5f" in deps[0]
+    assert ability_dependence(prof, {}) == []
+
+
+def test_class_queries_are_type_aware():
+    land = threat_profile({"name": "L", "types": "Land", "pt": "",
+                           "manaCost": "no cost", "nodes": []})
+    creature = threat_profile(_fake_threat())
+    lq = _class_queries(land)
+    # creature-only classes must not apply to a land threat
+    assert "damage_target" not in lq and "destroy_all" not in lq
+    assert "Land" in lq["destroy_target"]["node"]["params"]["ValidTgts"]["regex"]
+    cq = _class_queries(creature)
+    assert "damage_target" in cq and "destroy_all" in cq
+
+
+def test_ability_removal_verdicts():
+    prof = {"name": "T", "ability_dependent": ["dies as 0/0"], "shroud": False,
+            "hexproof": False, "indestructible": False, "ward": None,
+            "protection": [], "toughness": None}
+    mass = evaluate_answer("ability_removal", {"name": "Dress Down"},
+                           {"Affected": "Creature"}, prof)
+    assert mass["works"] is True and mass["reasons"] == ["dies as 0/0"]
+    single = evaluate_answer("ability_removal", {"name": "Frozen in Ice"},
+                             {"Affected": "Creature.EnchantedBy"}, prof)
+    assert single["works"] is True and any("single-target" in r
+                                          for r in single["reasons"])
+    setpt = evaluate_answer("ability_removal", {"name": "Witness Protection"},
+                            {"Affected": "Creature.EnchantedBy",
+                             "SetPower": "1", "SetToughness": "1"}, prof)
+    assert setpt["works"] is None and any("does not die" in r
+                                         for r in setpt["reasons"])
+
+
+class _FakeIdx:
+    def __init__(self, records):
+        self._records = records
+
+    def search(self, query):
+        # trivially return every record; find_answers filters/evaluates
+        return [{"record": r} for r in self._records]
+
+
+def test_find_answers_handles_mode_only_query():
+    threat = {"name": "Saga-like", "types": "Enchantment Land", "pt": "",
+              "manaCost": "no cost", "nodes": [
+                  {"id": "a0", "kind": "A",
+                   "params": {"TokenScript": "c_0_0_construct"}}]}
+    dress = {"name": "Dress Downish", "manaCost": "1 U", "types": "Enchantment",
+             "nodes": [{"id": "s0", "kind": "S",
+                        "params": {"Mode": "Continuous", "Affected": "Creature",
+                                   "RemoveAllAbilities": "True"}}]}
+    res = find_answers(_FakeIdx([dress]), threat,
+                       token_scripts={"c_0_0_construct": CONSTRUCT_TOKEN})
+    ar = res["classes"]["ability_removal"]
+    assert ar["working"] == 1
+    assert ar["top"][0]["card"] == "Dress Downish"
+    assert any("704.5f" in r for r in ar["top"][0]["reasons"])
+
+
 def test_detect_hooks_panharmonicon():
     rec = {"name": "Teysa-like", "nodes": [
         {"id": "s0", "kind": "S", "params": {"Mode": "Panharmonicon",

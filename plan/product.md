@@ -90,9 +90,25 @@ Real output from this session (`cardguru answers`):
 - **Carnage Tyrant**: all 637 targeted-destroy blocked ("hexproof"), edicts conditional,
   sweepers 193/193 ✓.
 
-**And the verdicts are engine-verifiable.** Three claims were executed in XMage this session,
+**Deep-interaction test — Dress Down vs Urza's Saga (the acid test, passed).** The engine
+reads Urza's Saga's graph (a land, so creature-only answer classes are suppressed and
+removal is retargeted to lands/permanents), follows its `TokenScript` edge to the Construct
+token script, sees the token is base 0/0 with size granted *by its own static ability*, and
+therefore adds an **ability-removal** answer class: Dress Down surfaces as the top mass
+answer with the reason "the Construct Tokens it creates are base 0/0 and get +X/+X from
+their own static ability — remove abilities and they die as 0/0s (CR 704.5f)". The verdict
+layer also distinguishes Witness Protection-style effects (removes abilities *but sets base
+P/T to 1/1* → conditional, token neutralized but alive) and single-target Auras (only hit
+one token). In blue: 19 ability-removal candidates found, 8 cleanly working. Neither text
+search nor co-occurrence can derive this — it requires composing threat graph → token
+script → CDA analysis → answer graph.
+
+**And the verdicts are engine-verifiable.** Five claims have been executed in XMage,
 all VERIFIED: Bolt fails vs Sheoldred (she survives), Terminate kills her, Wrath of God
-sweeps a Grizzly Bears but leaves Darksteel Colossus standing (106–630ms each). The product
+sweeps a Grizzly Bears but leaves Darksteel Colossus standing (106–630ms each), and the
+Dress Down pair — chapter II makes a Construct on turn 3, B flashes Dress Down, the token
+dies to state-based actions (Construct count 0); the control run without Dress Down shows
+it surviving as a 1/1. The product
 badge: ⚡ *Engine-verified* on any verdict backed by a corpus scenario; one click shows the
 game state. No other tool can do this — a sideboard guide where the advice has been *played
 out by a rules engine*.

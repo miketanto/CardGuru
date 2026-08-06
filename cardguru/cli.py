@@ -123,7 +123,7 @@ def cmd_adjudicate(args):
 
 
 def cmd_answers(args):
-    from .answers import find_answers
+    from .answers import find_answers, load_token_scripts
 
     idx = SearchIndex.load(args.dataset)
     by_name = {}
@@ -134,7 +134,8 @@ def cmd_answers(args):
         print(f"unknown card: {args.threat}", file=sys.stderr)
         sys.exit(1)
     colors = set(args.colors.upper()) if args.colors else None
-    res = find_answers(idx, rec, colors=colors)
+    res = find_answers(idx, rec, colors=colors,
+                       token_scripts=load_token_scripts(args.tokenscripts))
     p = res["threat"]
     traits = [t for t, on in (("hexproof", p["hexproof"]), ("shroud", p["shroud"]),
                               ("indestructible", p["indestructible"]),
@@ -236,6 +237,8 @@ def main(argv=None):
     an = sub.add_parser("answers", help="find removal that actually beats a threat")
     an.add_argument("threat", help="threat card name")
     an.add_argument("--colors", help="restrict answers to colors, e.g. WU")
+    an.add_argument("--tokenscripts", default=None,
+                    help="Forge tokenscripts dir (default: $CARDGURU_TOKENSCRIPTS)")
     an.add_argument("--dataset", default=DEFAULT_DATASET)
     an.set_defaults(fn=cmd_answers)
 

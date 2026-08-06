@@ -1,0 +1,20 @@
+{
+  "id": "answer-urzas-saga-construct-control",
+  "description": "Control for the Dress Down verdict: same board without Dress Down. The Construct survives as a 1/1 (it is the only artifact A controls, and its own static grants +1/+1 per artifact).",
+  "players": {
+    "A": {"life": 20, "battlefield": [{"card": "Mountain", "count": 2}], "hand": ["Urza's Saga"]},
+    "B": {"life": 20, "battlefield": [{"card": "Island", "count": 2}]}
+  },
+  "actions": [
+    {"do": "play_land", "turn": 1, "phase": "PRECOMBAT_MAIN", "player": "A", "card": "Urza's Saga"},
+    {"do": "wait_stack", "turn": 1, "phase": "PRECOMBAT_MAIN"},
+    {"do": "wait_stack", "turn": 3, "phase": "PRECOMBAT_MAIN"},
+    {"do": "activate", "turn": 3, "phase": "PRECOMBAT_MAIN", "player": "A", "ability": "{2}"},
+    {"do": "wait_stack", "turn": 3, "phase": "PRECOMBAT_MAIN"}
+  ],
+  "stop": {"turn": 4, "phase": "UPKEEP"},
+  "expect": [
+    {"check": "permanent_count", "player": "A", "card": "Construct Token", "count": 1},
+    {"check": "power_toughness", "player": "A", "card": "Construct Token", "power": 1, "toughness": 1}
+  ]
+}

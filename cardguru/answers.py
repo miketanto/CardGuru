@@ -33,9 +33,19 @@ def threat_profile(rec: dict) -> dict:
         except ValueError:
             pass
     colors = {c for c in (rec.get("manaCost") or "") if c in COLOR_LETTERS}
+    types = rec.get("types") or ""
+    token_scripts = []
+    for n in rec.get("nodes", []):
+        ts = (n.get("params") or {}).get("TokenScript")
+        if ts:
+            token_scripts += [t.strip() for t in ts.split(",")]
     return {
         "name": rec.get("name"),
-        "types": rec.get("types") or "",
+        "types": types,
+        "is_creature": "Creature" in types,
+        "is_land": "Land" in types,
+        "pt_is_cda": "*" in pt,
+        "token_scripts": token_scripts,
         "toughness": toughness,
         "colors": colors,
         "hexproof": "Hexproof" in kws,
@@ -66,6 +76,58 @@ def _lit(v):
     except (TypeError, ValueError):
         return None
 
+
+def load_token_scripts(path=None):
+    """Parse Forge tokenscripts into records keyed by script name."""
+    import os
+    from .forge_parser import parse_file
+    path = path or os.environ.get(
+        "CARDGURU_TOKENSCRIPTS",
+        "/home/user/forge-src/forge-gui/res/tokenscripts")
+    out = {}
+    if not os.path.isdir(path):
+        return out
+    for fn in os.listdir(path):
+        if fn.endswith(".txt"):
+            try:
+                faces = parse_file(os.path.join(path, fn), relroot=path)
+                if faces:
+                    out[fn[:-4]] = faces[0].to_record()
+            except Exception:
+                pass
+    return out
+
+
+def token_is_ability_defined(tok_rec: dict) -> bool:
+    """True for tokens like the Urza's Saga Construct: 0/0 base whose size is
+    granted by its own static ability — remove abilities and it dies to SBAs."""
+    if (tok_rec.get("pt") or "") != "0/0":
+        return False
+    for n in tok_rec.get("nodes", []):
+        p = n.get("params") or {}
+        if p.get("Mode") == "Continuous" and "AddPower" in p:
+            return True
+    return False
+
+
+def ability_dependence(profile: dict, token_scripts: dict) -> list[str]:
+    """Why ability-removal answers this threat (empty list = it doesn't)."""
+    reasons = []
+    if profile["pt_is_cda"]:
+        reasons.append("its power/toughness is defined by its own ability")
+    for ts in profile["token_scripts"]:
+        rec = token_scripts.get(ts)
+        if rec and token_is_ability_defined(rec):
+            reasons.append(
+                f"the {rec.get('name')}s it creates are base 0/0 and get "
+                "+X/+X from their own static ability - remove abilities and "
+                "they die as 0/0s (CR 704.5f)")
+    return reasons
+
+
+ABILITY_REMOVAL_QUERY = {"node": {"mode": "Continuous",
+                                  "params": {"RemoveAllAbilities": "True",
+                                             "Affected": {"contains": "Creature"}}}}
 
 ANSWER_QUERIES = {
     "destroy_target": {"node": {"api": "Destroy",
@@ -145,17 +207,64 @@ def evaluate_answer(klass: str, answer_rec: dict, node_params: dict,
         works = None if works else works
         reasons.append("conditional: opponent chooses; dodges hexproof/indestructible")
 
+    if klass == "ability_removal":
+        dep = profile.get("ability_dependent", ["removes abilities"])
+        if "SetPower" in node_params or "SetToughness" in node_params:
+            # e.g. Witness Protection: abilities gone but base P/T is set too,
+            # so an ability-defined 0/0 survives at the new size instead of dying
+            return {"works": None, "reasons": dep + [
+                "conditional: also sets base power/toughness "
+                f"({node_params.get('SetPower', '?')}/"
+                f"{node_params.get('SetToughness', '?')}) - the token is "
+                "neutralized but does not die"]}
+        scope = str(node_params.get("Affected", ""))
+        if "EnchantedBy" in scope or "AttachedBy" in scope:
+            return {"works": True, "reasons": dep + [
+                "single-target: only hits one token at a time"]}
+        return {"works": True, "reasons": dep}
+
     if klass == "bounce_target" and works:
         reasons.append("temporary: returns to hand, not permanent removal")
 
     return {"works": works, "reasons": reasons or ["no blocking ability found"]}
 
 
+def _class_queries(profile: dict) -> dict:
+    """Type-aware answer classes: a land threat needs land/permanent removal;
+    creature-only classes (damage, -X/-X, edicts, creature sweepers) only
+    apply to creatures."""
+    import copy
+    tgt_words = ["Permanent"]
+    if profile["is_creature"]:
+        tgt_words.append("Creature")
+    if profile["is_land"]:
+        tgt_words.append("Land")
+    tgt = {"regex": "|".join(tgt_words)}
+    queries = {}
+    for klass, q in ANSWER_QUERIES.items():
+        creature_only = klass in ("damage_target", "minus_toughness",
+                                  "edict_sacrifice", "destroy_all")
+        if creature_only and not profile["is_creature"]:
+            continue
+        q2 = copy.deepcopy(q)
+        params = q2["node"]["params"]
+        for key in ("ValidTgts", "ValidCards"):
+            if key in params:
+                params[key] = tgt if not creature_only else params[key]
+        queries[klass] = q2
+    return queries
+
+
 def find_answers(idx, threat_rec: dict, colors: set[str] | None = None,
-                 limit_per_class: int = 8) -> dict:
+                 limit_per_class: int = 8, token_scripts: dict | None = None) -> dict:
     profile = threat_profile(threat_rec)
     out = {"threat": profile, "classes": {}}
-    for klass, query in ANSWER_QUERIES.items():
+    queries = _class_queries(profile)
+    dep = ability_dependence(profile, token_scripts or {})
+    if dep:
+        queries["ability_removal"] = ABILITY_REMOVAL_QUERY
+        profile["ability_dependent"] = dep
+    for klass, query in queries.items():
         rows = []
         for hit in idx.search(query):
             rec = hit["record"]
@@ -166,8 +275,15 @@ def find_answers(idx, threat_rec: dict, colors: set[str] | None = None,
                                if c in COLOR_LETTERS}
                 if not card_colors <= colors:
                     continue
-            node = next((n for n in rec["nodes"]
-                         if n.get("api") == query["node"]["api"]), None)
+            qnode = query["node"]
+            node = next(
+                (n for n in rec["nodes"]
+                 if (qnode.get("api") is not None
+                     and n.get("api") == qnode["api"])
+                 or (qnode.get("api") is None and qnode.get("mode") is not None
+                     and (n.get("mode") == qnode["mode"]
+                          or (n.get("params") or {}).get("Mode") == qnode["mode"]))),
+                None)
             verdict = evaluate_answer(klass, rec, (node or {}).get("params", {}),
                                       profile)
             rows.append({"card": rec["name"], "manaCost": rec.get("manaCost"),
