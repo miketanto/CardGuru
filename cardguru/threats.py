@@ -138,6 +138,49 @@ def analyze_opponent(idx, by_name: dict, commander_rec: dict,
     coverage = set.intersection(*working_sets) if working_sets else set()
     best_coverage = sorted(coverage, key=_playable_key)[:10]
 
+    # sweeper sizing: the toughness curve of their creature base decides the
+    # minimal mass-damage tier (the "Pyroclasm, not Wrath" derivation)
+    tough_rows = []
+    for name, count in decklist:
+        rec = by_name.get(name)
+        if rec is None or "Creature" not in (rec.get("types") or ""):
+            continue
+        pt = rec.get("pt") or ""
+        try:
+            t = int(pt.split("/")[1])
+        except (ValueError, IndexError):
+            continue
+        tough_rows.append((t, count, name))
+    total_bodies = sum(c for _t, c, _n in tough_rows)
+    sweeper = None
+    if total_bodies:
+        tiers = {}
+        for dmg in range(1, 6):
+            killed = sum(c for t, c, _n in tough_rows if t <= dmg)
+            tiers[dmg] = killed
+        # minimal tier clearing >=70% of their bodies
+        pick = next((d for d in range(1, 6)
+                     if tiers[d] / total_bodies >= 0.7), 5)
+        survivors = sorted({n for t, c, n in tough_rows if t > pick})
+        examples = []
+        q = {"node": {"api": "DamageAll",
+                      "params": {"ValidCards": {"contains": "Creature"},
+                                 "NumDmg": {"regex": "^[%d-9]$" % pick}}}}
+        from .deck import mana_value
+        for hit in idx.search(q):
+            rec = hit["record"]
+            if my_colors is not None:
+                cc = {c for c in (rec.get("manaCost") or "") if c in "WUBRG"}
+                if not cc <= my_colors:
+                    continue
+            examples.append((mana_value(rec.get("manaCost")) or 9, rec["name"]))
+        examples = [n for _mv, n in sorted(set(examples))[:8]]
+        sweeper = {"tier": pick,
+                   "kills": tiers[pick], "bodies": total_bodies,
+                   "kill_pct": round(100 * tiers[pick] / total_bodies, 1),
+                   "survivors": survivors,
+                   "examples": examples}
+
     systemic = {}
     for cname, query in DISRUPTION.get(shape["gameplan"], DISRUPTION["generic"]).items():
         rows = []
@@ -159,4 +202,5 @@ def analyze_opponent(idx, by_name: dict, commander_rec: dict,
             "surgical": surgical,
             "coverage_answers": best_coverage,
             "coverage_pool": len(coverage),
+            "sweeper_sizing": sweeper,
             "systemic": systemic}

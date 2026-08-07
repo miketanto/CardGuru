@@ -1,0 +1,20 @@
+{
+  "id": "answer-pyroclasm-vs-dimir-tempo-board",
+  "description": "Sweeper-sizing verification vs the Standard Dimir Midrange core: Pyroclasm (2 damage to each creature) clears Deep-Cavern Bat (1/1), Floodpits Drowner (1/2), and Tishana's Tidebinder (3/2), while Enduring Curiosity (4/3) survives - exactly the tier the toughness-curve analysis predicted.",
+  "players": {
+    "A": {"life": 20, "battlefield": [{"card": "Mountain", "count": 2}], "hand": ["Pyroclasm"]},
+    "B": {"life": 20, "battlefield": [{"card": "Deep-Cavern Bat"}, {"card": "Floodpits Drowner"},
+                                       {"card": "Tishana's Tidebinder"}, {"card": "Enduring Curiosity"}]}
+  },
+  "actions": [
+    {"do": "cast", "turn": 1, "phase": "PRECOMBAT_MAIN", "player": "A", "card": "Pyroclasm"},
+    {"do": "wait_stack", "turn": 1, "phase": "PRECOMBAT_MAIN"}
+  ],
+  "stop": {"turn": 1, "phase": "BEGIN_COMBAT"},
+  "expect": [
+    {"check": "graveyard_count", "player": "B", "card": "Deep-Cavern Bat", "count": 1},
+    {"check": "graveyard_count", "player": "B", "card": "Floodpits Drowner", "count": 1},
+    {"check": "graveyard_count", "player": "B", "card": "Tishana's Tidebinder", "count": 1},
+    {"check": "permanent_count", "player": "B", "card": "Enduring Curiosity", "count": 1}
+  ]
+}

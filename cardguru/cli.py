@@ -397,6 +397,14 @@ def cmd_threats(args):
         print(f"\n{s['threat']} (centrality {s['centrality']}){flags}")
         for a in s["answers"]:
             print(f"  {a['card']:32} [{a['class']}] {a['reason'][:60]}")
+    sw = res.get("sweeper_sizing")
+    if sw:
+        print(f"\n== sweeper sizing (their toughness curve)")
+        print(f"  {sw['tier']} damage clears {sw['kills']}/{sw['bodies']} bodies "
+              f"({sw['kill_pct']}%)"
+              + (f"; survivors: {', '.join(sw['survivors'])}" if sw["survivors"] else ""))
+        print(f"  cheapest at tier: {', '.join(sw['examples'])}")
+
     print(f"\n== systemic disruption (vs a {res['gameplan']} gameplan)")
     for cname, data in res["systemic"].items():
         print(f"  {cname} ({data['total']} in-color): {', '.join(data['top'])}")
