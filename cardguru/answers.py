@@ -39,9 +39,22 @@ def threat_profile(rec: dict) -> dict:
         ts = (n.get("params") or {}).get("TokenScript")
         if ts:
             token_scripts += [t.strip() for t in ts.split(",")]
+    mc = rec.get("manaCost")
+    mv = None
+    if mc and mc != "no cost":
+        mv = sum(int(t) if t.isdigit() else (0 if t == "X" else 1)
+                 for t in mc.split())
+    uncounterable = any(
+        n.get("kind") == "R"
+        and (n.get("params") or {}).get("Event") == "Counter"
+        and (n.get("params") or {}).get("Layer") == "CantHappen"
+        and "Self" in str((n.get("params") or {}).get("ValidCard", ""))
+        for n in rec.get("nodes", []))
     return {
         "name": rec.get("name"),
         "types": types,
+        "mv": mv,
+        "uncounterable": uncounterable,
         "is_creature": "Creature" in types,
         "is_land": "Land" in types,
         "pt_is_cda": "*" in pt,
@@ -149,10 +162,77 @@ ANSWER_QUERIES = {
                                           "ValidTgts": {"contains": "Creature"}}}},
     "destroy_all": {"node": {"api": "DestroyAll",
                              "params": {"ValidCards": {"contains": "Creature"}}}},
+    "counter_spell": {"node": {"apiKind": "SP", "api": "Counter",
+                               "params": {"TargetType": {"contains": "Spell"}}}},
 }
 
 TARGETED = {"destroy_target", "exile_target", "damage_target", "minus_toughness",
             "bounce_target"}
+
+
+_COLOR_WORDS = {"White": "W", "Blue": "U", "Black": "B",
+                "Red": "R", "Green": "G"}
+_TYPE_WORDS = {"Creature", "Artifact", "Enchantment", "Instant", "Sorcery",
+               "Planeswalker", "Battle", "Kicked", "Legendary"}
+
+
+def _counter_target_legal(tgts: str, profile: dict):
+    """Can this counterspell's ValidTgts legally target the threat AS A SPELL
+    on the stack? True/False/None (None = condition we can't evaluate)."""
+    import re
+    types = profile.get("types") or ""
+    mv = profile.get("mv")
+    saw_unknown = False
+    for alt in tgts.split(","):
+        parts = alt.strip().split(".")
+        base = parts[0]
+        if base not in ("Card", "Spell") and base not in types:
+            continue
+        ok = True
+        unknown = False
+        for cond in parts[1:]:
+            m = re.match(r"cmc(GE|LE|EQ)(\d+)$", cond)
+            if m:
+                if mv is None:
+                    ok = False
+                    break
+                op, n = m.group(1), int(m.group(2))
+                if (op == "GE" and mv < n) or (op == "LE" and mv > n) \
+                        or (op == "EQ" and mv != n):
+                    ok = False
+                    break
+                continue
+            if cond.startswith("non"):
+                word = cond[3:]
+                if word in _COLOR_WORDS:
+                    if _COLOR_WORDS[word] in profile["colors"]:
+                        ok = False
+                        break
+                elif word in _TYPE_WORDS:
+                    if word in types:
+                        ok = False
+                        break
+                else:
+                    unknown = True
+                continue
+            if cond in _COLOR_WORDS:
+                if _COLOR_WORDS[cond] not in profile["colors"]:
+                    ok = False
+                    break
+                continue
+            if cond in _TYPE_WORDS:
+                if cond not in types:
+                    ok = False
+                    break
+                continue
+            if cond in ("YouDontCtrl", "OppCtrl"):
+                continue                       # true for an opposing spell
+            unknown = True                     # e.g. Kicked, targetsYou
+        if ok and not unknown:
+            return True
+        if ok and unknown:
+            saw_unknown = True
+    return None if saw_unknown else False
 
 
 def evaluate_answer(klass: str, answer_rec: dict, node_params: dict,
@@ -161,6 +241,28 @@ def evaluate_answer(klass: str, answer_rec: dict, node_params: dict,
     (None = conditional); reasons are machine-readable strings."""
     reasons = []
     works = True
+
+    if klass == "counter_spell":
+        if profile.get("uncounterable"):
+            return {"works": False,
+                    "reasons": ["threat spell can't be countered"]}
+        tgts = str(node_params.get("ValidTgts", "Card"))
+        legal = _counter_target_legal(tgts, profile)
+        if legal is False:
+            return {"works": False,
+                    "reasons": [f"targeting-illegal: counter hits only "
+                                f"'{tgts}'"]}
+        if legal is None:
+            return {"works": None,
+                    "reasons": [f"conditional: targeting restriction "
+                                f"'{tgts}' not fully evaluated"]}
+        if "UnlessCost" in node_params:
+            return {"works": None,
+                    "reasons": [f"soft counter: resolves unless controller "
+                                f"pays {node_params['UnlessCost']}"]}
+        return {"works": True,
+                "reasons": ["counters the threat on the stack "
+                            "(before any on-battlefield protection applies)"]}
 
     if klass in TARGETED:
         if profile["shroud"]:
@@ -267,6 +369,8 @@ def _class_queries(profile: dict) -> dict:
                                   "edict_sacrifice", "destroy_all")
         if creature_only and not profile["is_creature"]:
             continue
+        if klass == "counter_spell" and profile["is_land"]:
+            continue                       # lands are played, never cast
         q2 = copy.deepcopy(q)
         params = q2["node"]["params"]
         for key in ("ValidTgts", "ValidCards"):

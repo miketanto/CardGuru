@@ -43,6 +43,22 @@ DISRUPTION = {
             "api": "Destroy",
             "params": {"ValidTgts": {"regex": "Artifact|Enchantment|Permanent"}}}},
     },
+    "control": {
+        # against a pile of answers: attack the hand before they untap, and
+        # play threats the stack window can't touch
+        "hand_attack": {"node": {"api": "Discard",
+                                 "params": {"ValidTgts": {"contains": "Player"}}}},
+        "uncounterable_threats": {"node": {"kind": "R",
+                                           "params": {"Event": "Counter",
+                                                      "Layer": "CantHappen",
+                                                      "ValidCard": {"contains": "Self"}}}},
+    },
+    "ramp_aggro": {
+        "sweepers": {"node": {"api": {"any": ["DestroyAll", "DamageAll"]},
+                              "params": {"ValidCards": {"contains": "Creature"}}}},
+        "edicts": {"node": {"api": "Sacrifice",
+                            "params": {"ValidTgts": {"contains": "Player"}}}},
+    },
     "generic": {
         "sweepers": {"node": {"api": {"any": ["DestroyAll", "DamageAll"]},
                               "params": {"ValidCards": {"contains": "Creature"}}}},

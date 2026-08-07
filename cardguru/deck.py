@@ -143,6 +143,8 @@ def detect_roles(rec: dict) -> dict[str, str]:
 # do instead of one template for everyone. Mana/ramp needs are NOT quota-based
 # at all: the goldfish simulation measures them (see cardguru.goldfish).
 GAMEPLAN_QUOTAS = {
+    "control":      {"card_draw": 10, "targeted_removal": 8, "sweepers": 2},
+    "ramp_aggro":   {"card_draw": 6,  "targeted_removal": 4, "sweepers": 0},
     "aggro":        {"card_draw": 6,  "targeted_removal": 5, "sweepers": 0},
     "spellslinger": {"card_draw": 12, "targeted_removal": 6, "sweepers": 2},
     "engine":       {"card_draw": 8,  "targeted_removal": 7, "sweepers": 2},
@@ -164,15 +166,56 @@ _GAMEPLAN_HOOKS = {
 }
 
 
-def detect_gameplan(hook_counts: dict[str, int]) -> str:
+def _is_interaction(rec: dict) -> bool:
+    """Instant/sorcery whose graph answers something: counters, removal,
+    sweepers, edicts, bounce, -X/-X."""
+    types = rec.get("types") or ""
+    if "Instant" not in types and "Sorcery" not in types:
+        return False
+    for n in rec.get("nodes") or []:
+        api = n.get("api")
+        p = n.get("params") or {}
+        if api in ("Counter", "Destroy", "DestroyAll", "DamageAll"):
+            return True
+        if api == "DealDamage" and "ValidTgts" in p:
+            return True
+        if api == "Pump" and str(p.get("NumDef", "")).startswith("-"):
+            return True
+        if api == "Sacrifice" and "Player" in str(p.get("ValidTgts", "")):
+            return True
+        if api == "ChangeZone" and p.get("Origin") == "Battlefield" \
+                and "ValidTgts" in p:
+            return True
+    return False
+
+
+def detect_gameplan(hook_counts: dict[str, int],
+                    texture: dict | None = None) -> str:
     """The gameplan is the deck's DOMINANT mechanic: score each plan by its
     strongest single hook (summing a broad hook set lets incidental
     side-effects - lifelink riders, stun counters - outvote the actual
-    plan)."""
+    plan).
+
+    Two plans are invisible to hook voting because their identity is deck
+    TEXTURE, not synergy wiring, so they score from share-of-deck instead:
+    - control: the deck IS its interaction + card flow (few creatures);
+    - ramp_aggro: an acceleration package feeding a critical mass of bodies
+      (big-but-cheap payoffs, the curve is the payoff)."""
     scores = {}
     for plan, hookset in _GAMEPLAN_HOOKS.items():
         scores[plan] = max((c for h, c in hook_counts.items() if h in hookset),
                            default=0)
+    if texture and texture.get("nonland"):
+        nl = texture["nonland"]
+        # absolute floors keep tiny samples from flipping plans on shares
+        if (texture.get("interaction", 0) >= 10
+                and texture.get("interaction", 0) / nl >= 0.35
+                and texture.get("creatures", 0) / nl <= 0.25):
+            scores["control"] = texture["interaction"]
+        if (texture.get("ramp", 0) >= 6
+                and texture.get("ramp", 0) / nl >= 0.2
+                and texture.get("creatures", 0) / nl >= 0.45):
+            scores["ramp_aggro"] = texture["ramp"]
     best = max(scores, key=lambda p: scores[p]) if scores else "generic"
     return best if scores.get(best, 0) >= 3 else "generic"
 
@@ -204,6 +247,7 @@ def deck_shape(by_name: dict, commander_rec: dict,
     roles: dict[str, dict[str, list[str]]] = {
         r: {"one_shot": [], "engines": []} for r in ROLES}
     hook_counts: dict[str, int] = {}
+    texture = {"nonland": 0, "creatures": 0, "interaction": 0, "ramp": 0}
     n_lands = 0
 
     for h in detect_hooks(commander_rec):
@@ -229,12 +273,21 @@ def deck_shape(by_name: dict, commander_rec: dict,
         for sym in (rec.get("manaCost") or "").split():
             if sym in COLOR_LETTERS:
                 pips[sym] += count
-        for role, kind in detect_roles(rec).items():
+        card_roles = detect_roles(rec)
+        for role, kind in card_roles.items():
             roles[role]["engines" if kind == "engine" else "one_shot"].append(name)
-        for h in detect_hooks(rec):
+        card_hooks = detect_hooks(rec)
+        for h in card_hooks:
             hook_counts[h] = hook_counts.get(h, 0) + count   # copies matter
+        texture["nonland"] += count
+        if "Creature" in types:
+            texture["creatures"] += count
+        if _is_interaction(rec):
+            texture["interaction"] += count
+        if "amplifies_mana" in card_hooks or card_roles.get("ramp") == "engine":
+            texture["ramp"] += count
 
-    gameplan = detect_gameplan(hook_counts)
+    gameplan = detect_gameplan(hook_counts, texture)
     quotas = GAMEPLAN_QUOTAS[gameplan]
 
     def effective(role):
@@ -262,6 +315,7 @@ def deck_shape(by_name: dict, commander_rec: dict,
                       for r, d in roles.items()},
             "effective_roles": {r: effective(r) for r in ROLES},
             "gameplan": gameplan,
+            "texture": texture,
             "hook_counts": dict(sorted(hook_counts.items(),
                                        key=lambda kv: -kv[1])),
             "quotas": quotas,
