@@ -1,0 +1,23 @@
+{
+  "id": "answer-anger-vs-selesnya-gearhulk-board",
+  "description": "Sweeper-sizing verification vs the Standard Selesnya Gearhulk core: the toughness curve escalates the tier to 3 (2 damage only clears 16/31 bodies). Anger of the Gods (3 damage to each creature) clears Llanowar Elves (1/1), Badgermole Cub (2/2), Pawpatch Recruit (2/1), and Surrak, Elusive Hunter (4/3), while Brightglass Gearhulk (4/4) and Leatherhead, Swamp Stalker (5/4) survive - exactly the tier boundary the analysis predicted.",
+  "players": {
+    "A": {"life": 20, "battlefield": [{"card": "Mountain", "count": 3}], "hand": ["Anger of the Gods"]},
+    "B": {"life": 20, "battlefield": [{"card": "Llanowar Elves"}, {"card": "Badgermole Cub"},
+                                       {"card": "Pawpatch Recruit"}, {"card": "Surrak, Elusive Hunter"},
+                                       {"card": "Brightglass Gearhulk"}, {"card": "Leatherhead, Swamp Stalker"}]}
+  },
+  "actions": [
+    {"do": "cast", "turn": 1, "phase": "PRECOMBAT_MAIN", "player": "A", "card": "Anger of the Gods"},
+    {"do": "wait_stack", "turn": 1, "phase": "PRECOMBAT_MAIN"}
+  ],
+  "stop": {"turn": 1, "phase": "BEGIN_COMBAT"},
+  "expect": [
+    {"check": "permanent_count", "player": "B", "card": "Llanowar Elves", "count": 0},
+    {"check": "permanent_count", "player": "B", "card": "Badgermole Cub", "count": 0},
+    {"check": "permanent_count", "player": "B", "card": "Pawpatch Recruit", "count": 0},
+    {"check": "permanent_count", "player": "B", "card": "Surrak, Elusive Hunter", "count": 0},
+    {"check": "permanent_count", "player": "B", "card": "Brightglass Gearhulk", "count": 1},
+    {"check": "permanent_count", "player": "B", "card": "Leatherhead, Swamp Stalker", "count": 1}
+  ]
+}
