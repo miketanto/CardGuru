@@ -414,6 +414,15 @@ def cmd_threats(args):
         for ex in mv["examples"]:
             print(f"  {ex['card']:32} {ex['note']}")
 
+    swc = res.get("stack_window") or {}
+    if swc.get("closers") or swc.get("self_uncounterable"):
+        print(f"\n== stack window contests (how counterable is their deck)")
+        for c in swc.get("closers", []):
+            print(f"  {c['count']}x {c['card']}: GRANTS uncounterability to "
+                  f"other spells - counterspells unreliable while it's up")
+        for c in swc.get("self_uncounterable", []):
+            print(f"  {c['count']}x {c['card']}: can't be countered itself")
+
     print(f"\n== systemic disruption (vs a {res['gameplan']} gameplan)")
     for cname, data in res["systemic"].items():
         print(f"  {cname} ({data['total']} in-color): {', '.join(data['top'])}")

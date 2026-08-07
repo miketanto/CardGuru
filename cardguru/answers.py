@@ -39,6 +39,22 @@ def threat_profile(rec: dict) -> dict:
         ts = (n.get("params") or {}).get("TokenScript")
         if ts:
             token_scripts += [t.strip() for t in ts.split(",")]
+    # recursion: a death trigger that returns the card itself to the
+    # battlefield (Enduring cycle), or Persist/Undying - destroy/damage
+    # answers only rent the removal; exile owns it
+    by_id = {n.get("id"): n for n in rec.get("nodes", [])}
+    recursive = bool({"Persist", "Undying"} & kws)
+    for n in rec.get("nodes", []):
+        p = n.get("params") or {}
+        if (n.get("kind") == "T" and p.get("Mode") == "ChangesZone"
+                and p.get("Origin") == "Battlefield"
+                and p.get("Destination") == "Graveyard"
+                and "Self" in str(p.get("ValidCard", ""))):
+            chained = by_id.get(p.get("Execute"))
+            if chained is not None and chained.get("api") == "ChangeZone" \
+                    and (chained.get("params") or {}).get("Destination") \
+                    == "Battlefield":
+                recursive = True
     mc = rec.get("manaCost")
     mv = None
     if mc and mc != "no cost":
@@ -55,6 +71,7 @@ def threat_profile(rec: dict) -> dict:
         "types": types,
         "mv": mv,
         "uncounterable": uncounterable,
+        "recursive": recursive,
         "is_creature": "Creature" in types,
         "is_land": "Land" in types,
         "pt_is_cda": "*" in pt,
@@ -348,6 +365,20 @@ def evaluate_answer(klass: str, answer_rec: dict, node_params: dict,
 
     if klass == "bounce_target" and works:
         reasons.append("temporary: returns to hand, not permanent removal")
+
+    # recursive threats: death-based removal only rents the answer
+    if profile.get("recursive") and works is True:
+        if klass in ("destroy_target", "destroy_all", "damage_target",
+                     "minus_toughness", "edict_sacrifice"):
+            if "ReplaceDyingDefined" in node_params:
+                reasons.append("exile rider: denies its return-from-death "
+                               "trigger (would-die is replaced by exile)")
+            else:
+                works = None
+                reasons.append("conditional: threat returns when it dies - "
+                               "prefer an exile effect")
+        elif klass == "exile_target":
+            reasons.append("exile: denies its return-from-death trigger")
 
     return {"works": works, "reasons": reasons or ["no blocking ability found"]}
 

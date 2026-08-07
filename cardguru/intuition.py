@@ -349,3 +349,33 @@ def answer_windows(rec: dict) -> dict:
                         "search hate (LimitSearchLibrary / can't-search effects)",
                         "reason": "it searches the library"})
     return {"card": rec.get("name"), "windows": windows, "closed": closed}
+
+
+def stack_window_contests(by_name: dict,
+                          decklist: list[tuple[str, int]]) -> dict:
+    """Deck-level stack-window analysis: which of THEIR cards contest your
+    counterspells? Two flavors: closers GRANT uncounterability to other
+    spells (Mistrise Village's AntiMagic effect, Vexing Shusher-style broad
+    CantHappen replacements), and self_uncounterable cards carry their own
+    can't-be-countered clause (Surrak)."""
+    closers, self_unc = [], []
+    for name, count in decklist:
+        rec = by_name.get(name)
+        if rec is None:
+            continue
+        grants = False
+        selfu = False
+        for n in rec.get("nodes") or []:
+            p = n.get("params") or {}
+            if "AntiMagic" in str(p.get("ReplacementEffects", "")):
+                grants = True
+            if p.get("Event") == "Counter" and p.get("Layer") == "CantHappen":
+                if "Self" in str(p.get("ValidCard", "")):
+                    selfu = True
+                else:
+                    grants = True
+        if grants:
+            closers.append({"card": name, "count": count})
+        if selfu:
+            self_unc.append({"card": name, "count": count})
+    return {"closers": closers, "self_uncounterable": self_unc}

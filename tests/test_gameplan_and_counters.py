@@ -81,3 +81,43 @@ def test_hook_plans_win_when_texture_thin():
                            {"nonland": 32, "creatures": 22,
                             "interaction": 8, "ramp": 0})
     assert plan == "tempo"
+
+
+def test_recursive_threat_demotes_death_removal():
+    prof = _profile(types="Enchantment Creature", is_creature=True,
+                    toughness=3, recursive=True)
+    v = evaluate_answer("destroy_target", {}, {"ValidTgts": "Creature"}, prof)
+    assert v["works"] is None
+    assert any("prefer an exile" in r for r in v["reasons"])
+
+
+def test_exile_rider_beats_recursion():
+    prof = _profile(types="Enchantment Creature", is_creature=True,
+                    toughness=3, recursive=True)
+    v = evaluate_answer("damage_target", {},
+                        {"ValidTgts": "Creature", "NumDmg": "5",
+                         "ReplaceDyingDefined": "Targeted"}, prof)
+    assert v["works"] is True
+    assert any("exile rider" in r for r in v["reasons"])
+
+
+def test_exile_class_annotated_vs_recursion():
+    prof = _profile(types="Creature", is_creature=True, recursive=True)
+    v = evaluate_answer("exile_target", {}, {"ValidTgts": "Creature"}, prof)
+    assert v["works"] is True
+    assert any("denies its return" in r for r in v["reasons"])
+
+
+def test_stack_window_contests():
+    from cardguru.intuition import stack_window_contests
+    granter = {"name": "Granter", "nodes": [
+        {"id": "e", "kind": "SVar", "api": "Effect",
+         "params": {"ReplacementEffects": "AntiMagic"}}]}
+    selfu = {"name": "SelfU", "nodes": [
+        {"id": "r", "kind": "R",
+         "params": {"Event": "Counter", "Layer": "CantHappen",
+                    "ValidCard": "Card.Self"}}]}
+    by = {"Granter": granter, "SelfU": selfu}
+    out = stack_window_contests(by, [("Granter", 1), ("SelfU", 3)])
+    assert out["closers"] == [{"card": "Granter", "count": 1}]
+    assert out["self_uncounterable"] == [{"card": "SelfU", "count": 3}]

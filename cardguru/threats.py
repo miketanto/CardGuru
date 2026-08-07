@@ -272,7 +272,11 @@ def analyze_opponent(idx, by_name: dict, commander_rec: dict,
             rows.append(rec["name"])
         systemic[cname] = {"total": len(set(rows)), "top": sorted(set(rows))[:8]}
 
+    from .intuition import stack_window_contests
+    stack_window = stack_window_contests(by_name, decklist)
+
     return {"gameplan": shape["gameplan"],
+            "stack_window": stack_window,
             "hook_counts": shape["hook_counts"],
             "key_threats": key_threats,
             "key_detail": key_detail,
