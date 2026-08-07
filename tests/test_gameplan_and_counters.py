@@ -121,3 +121,55 @@ def test_stack_window_contests():
     out = stack_window_contests(by, [("Granter", 1), ("SelfU", 3)])
     assert out["closers"] == [{"card": "Granter", "count": 1}]
     assert out["self_uncounterable"] == [{"card": "SelfU", "count": 3}]
+
+
+# ---------------------------------------------------- battlefield legality
+
+def _prof(**kw):
+    base = {"types": "Creature Cat", "keywords": {"Flash"}, "power": 4,
+            "toughness": 3, "mv": 4, "colors": {"U"}, "protection": [],
+            "hexproof": False, "shroud": False, "indestructible": False,
+            "ward": None}
+    base.update(kw)
+    return base
+
+
+def test_flying_restriction_excludes_ground_creature():
+    from cardguru.answers import _battlefield_target_legal
+    assert _battlefield_target_legal("Creature.withFlying", _prof()) is False
+    assert _battlefield_target_legal(
+        "Creature.withFlying", _prof(keywords={"Flying"})) is True
+
+
+def test_plus_conjunction_and_or_alternatives():
+    from cardguru.answers import _battlefield_target_legal
+    # Arbor Colossus: fight only a flyer the opponent controls
+    assert _battlefield_target_legal(
+        "Creature.OppCtrl+withFlying", _prof()) is False
+    # Airship Crash: an enchantment creature is hit via the Enchantment leg
+    assert _battlefield_target_legal(
+        "Artifact,Enchantment,Creature.withFlying",
+        _prof(types="Enchantment Creature Cat")) is True
+
+
+def test_power_gate_and_situational():
+    from cardguru.answers import _battlefield_target_legal
+    assert _battlefield_target_legal("Creature.powerGE4", _prof()) is True
+    assert _battlefield_target_legal("Creature.powerLE2", _prof()) is False
+    # tapped/attacking depend on game state, not the card
+    assert _battlefield_target_legal("Creature.tapped", _prof()) is None
+
+
+def test_wrong_type_head_excluded():
+    from cardguru.answers import _battlefield_target_legal
+    assert _battlefield_target_legal("Artifact,Enchantment", _prof()) is False
+    assert _battlefield_target_legal("Creature.YouCtrl", _prof()) is False
+
+
+def test_evaluate_answer_applies_battlefield_legality():
+    from cardguru.answers import evaluate_answer
+    verdict = evaluate_answer(
+        "destroy_target", {"name": "Aerial Predation", "manaCost": "1 G"},
+        {"ValidTgts": "Creature.withFlying"}, _prof())
+    assert verdict["works"] is False
+    assert "targeting-illegal" in verdict["reasons"][0]

@@ -27,9 +27,14 @@ def threat_profile(rec: dict) -> dict:
     ward = [k for k in raw_kws if k.startswith("Ward")]
     pt = rec.get("pt") or ""
     toughness = None
+    power = None
     if "/" in pt:
         try:
             toughness = int(pt.split("/")[1])
+        except ValueError:
+            pass
+        try:
+            power = int(pt.split("/")[0])
         except ValueError:
             pass
     colors = {c for c in (rec.get("manaCost") or "") if c in COLOR_LETTERS}
@@ -77,6 +82,8 @@ def threat_profile(rec: dict) -> dict:
         "pt_is_cda": "*" in pt,
         "token_scripts": token_scripts,
         "toughness": toughness,
+        "power": power,
+        "keywords": kws,
         "colors": colors,
         "hexproof": "Hexproof" in kws,
         "shroud": "Shroud" in kws,
@@ -252,6 +259,103 @@ def _counter_target_legal(tgts: str, profile: dict):
     return None if saw_unknown else False
 
 
+# restrictions that depend on game state at cast time, not on the card
+_SITUATIONAL = {"attacking", "blocking", "blocked", "unblocked", "tapped",
+                "untapped", "enchanted", "equipped", "attackedThisTurn",
+                "attackingYou", "blockingOrBlockedBy", "wasDealtDamageThisTurn"}
+
+
+def _battlefield_target_legal(tgts: str, profile: dict):
+    """Can this removal spell's ValidTgts legally target the threat ON THE
+    BATTLEFIELD? True/False/None. Colors and protection are checked by the
+    caller; unknown restriction vocabulary degrades to None (conditional),
+    never to a confident verdict."""
+    types = profile.get("types") or ""
+    type_words = set(types.split())
+    kws = profile.get("keywords") or set()
+    verdicts = []
+    for alt in str(tgts).split(","):
+        alt = alt.strip()
+        if not alt:
+            continue
+        parts = alt.split(".", 1)
+        base = parts[0]
+        if base in ("Creature", "Artifact", "Enchantment", "Planeswalker",
+                    "Land", "Battle"):
+            if base not in type_words:
+                verdicts.append(False)
+                continue
+        elif base not in ("Card", "Permanent", "Any"):
+            verdicts.append(None)          # unknown head word
+            continue
+        ok = True
+        # restrictions after the head are AND-joined with '+' (or '.')
+        conds = re.split(r"[+.]", parts[1]) if len(parts) > 1 else []
+        for cond in conds:
+            m = re.match(r"(power|toughness|cmc)(GE|LE|EQ)(\d+)$", cond)
+            if m:
+                stat = {"power": profile.get("power"),
+                        "toughness": profile.get("toughness"),
+                        "cmc": profile.get("mv")}[m.group(1)]
+                if stat is None:
+                    ok = None if ok is not False else ok
+                    continue
+                op, n = m.group(2), int(m.group(3))
+                if (op == "GE" and stat < n) or (op == "LE" and stat > n) \
+                        or (op == "EQ" and stat != n):
+                    ok = False
+                    break
+                continue
+            if cond in _SITUATIONAL:
+                ok = None if ok is not False else ok
+                continue
+            if cond == "withFlying":
+                if "Flying" not in kws:
+                    ok = False
+                    break
+                continue
+            if cond == "withoutFlying":
+                if "Flying" in kws:
+                    ok = False
+                    break
+                continue
+            if cond in ("nonToken", "YouDontCtrl", "OppCtrl"):
+                continue                   # true for an opposing real card
+            if cond == "YouCtrl":
+                ok = False
+                break
+            if cond.startswith("non"):
+                word = cond[3:]
+                if word in _COLOR_WORDS:
+                    continue               # colors checked by the caller
+                if word in _TYPE_WORDS or word in ("Land", "Token"):
+                    if word in type_words:
+                        ok = False
+                        break
+                    continue
+                ok = None if ok is not False else ok
+                continue
+            if cond in _COLOR_WORDS:
+                continue                   # colors checked by the caller
+            if cond in _TYPE_WORDS or (cond.isalpha() and cond[:1].isupper()):
+                # card type, supertype, or subtype word (Zombie, Defender...)
+                if cond in type_words or cond in kws:
+                    continue
+                if cond[:1].isupper() and cond in types:
+                    continue
+                # looks like a subtype the threat lacks - but unknown words
+                # could be mechanic vocabulary, so degrade, don't exclude
+                ok = None if ok is not False else ok
+                continue
+            ok = None if ok is not False else ok
+        verdicts.append(ok)
+    if True in verdicts:
+        return True
+    if None in verdicts:
+        return None
+    return False if verdicts else True
+
+
 def evaluate_answer(klass: str, answer_rec: dict, node_params: dict,
                     profile: dict) -> dict:
     """Verdict for one answer card vs the threat. works: True/False/None
@@ -304,6 +408,14 @@ def evaluate_answer(klass: str, answer_rec: dict, node_params: dict,
                 return {"works": False,
                         "reasons": [f"can only target {word.lower()} - "
                                     f"threat isn't {word.lower()}"]}
+        legal = _battlefield_target_legal(tgts, profile)
+        if legal is False:
+            return {"works": False,
+                    "reasons": [f"targeting-illegal: hits only '{tgts}'"]}
+        if legal is None:
+            works = None
+            reasons.append(f"conditional: targeting restriction '{tgts}' "
+                           "not fully evaluated")
         if any(str(k).startswith("Condition") for k in node_params):
             works = None
             reasons.append("conditional: effect checks a condition on "
