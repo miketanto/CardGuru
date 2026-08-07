@@ -152,6 +152,17 @@ public class CardGuruScenarioRunner extends CardTestPlayerBase {
                                 player(a.get("player").getAsString()),
                                 a.get("card").getAsString(),
                                 player(a.get("target_player").getAsString()));
+                    } else if (a.has("spell_on_stack")) {
+                        castSpell(a.get("turn").getAsInt(), phase(a),
+                                player(a.get("player").getAsString()),
+                                a.get("card").getAsString(),
+                                a.has("target_card") ? a.get("target_card").getAsString() : null,
+                                a.get("spell_on_stack").getAsString());
+                    } else if (a.has("target_card")) {
+                        castSpell(a.get("turn").getAsInt(), phase(a),
+                                player(a.get("player").getAsString()),
+                                a.get("card").getAsString(),
+                                a.get("target_card").getAsString());
                     } else {
                         castSpell(a.get("turn").getAsInt(), phase(a),
                                 player(a.get("player").getAsString()),

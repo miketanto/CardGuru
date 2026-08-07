@@ -1,0 +1,24 @@
+{
+  "id": "answer-disdainful-stroke-counters-jeskai-revelation",
+  "description": "Stack-window verification vs Jeskai Lessons, as a real stack fight: B (Dimir) casts Floodpits Drowner; A responds with Jeskai Revelation (MV 7) targeting the Drowner spell for the bounce and Enduring Curiosity for the 4 damage; B answers with Disdainful Stroke (counter target spell with mana value 4 or greater). Revelation is countered: Drowner resolves, Curiosity takes no damage, no Monk tokens. The complement: Stroke cannot target Tablet of Discovery (MV 3) - Annul covers that half.",
+  "players": {
+    "A": {"life": 20, "battlefield": [{"card": "Mountain", "count": 5}, {"card": "Island", "count": 1}, {"card": "Plains", "count": 1}], "hand": ["Jeskai Revelation"]},
+    "B": {"life": 20, "battlefield": [{"card": "Island", "count": 4}, {"card": "Enduring Curiosity"}], "hand": ["Floodpits Drowner", "Disdainful Stroke"]}
+  },
+  "actions": [
+    {"do": "cast", "turn": 2, "phase": "PRECOMBAT_MAIN", "player": "B", "card": "Floodpits Drowner"},
+    {"do": "cast", "turn": 2, "phase": "PRECOMBAT_MAIN", "player": "A", "card": "Jeskai Revelation"},
+    {"do": "target", "player": "A", "value": "Floodpits Drowner"},
+    {"do": "target", "player": "A", "value": "Enduring Curiosity"},
+    {"do": "cast", "turn": 2, "phase": "PRECOMBAT_MAIN", "player": "B", "card": "Disdainful Stroke",
+     "target_card": "Jeskai Revelation", "spell_on_stack": "Jeskai Revelation"},
+    {"do": "wait_stack", "turn": 2, "phase": "PRECOMBAT_MAIN"}
+  ],
+  "stop": {"turn": 2, "phase": "BEGIN_COMBAT"},
+  "expect": [
+    {"check": "permanent_count", "player": "B", "card": "Floodpits Drowner", "count": 1},
+    {"check": "permanent_count", "player": "B", "card": "Enduring Curiosity", "count": 1},
+    {"check": "graveyard_count", "player": "A", "card": "Jeskai Revelation", "count": 1},
+    {"check": "graveyard_count", "player": "B", "card": "Disdainful Stroke", "count": 1}
+  ]
+}
