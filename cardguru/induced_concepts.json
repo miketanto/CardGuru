@@ -617,5 +617,359 @@
   ],
   "counterexample": "Divine Presence - it carries the exact same R node shell (Event$ DamageDone with a ReplaceWith), but its replacement (SVar Dmg3, VarValue 3) CAPS damage at 3 instead of amplifying it - it is a damage-reduction card, the mechanical opposite of this concept. Verified rejected by the detector, along with prevention (Battletide Alchemist, ReplaceWith DBReplace -> ReplaceDamage) and redirection (Pariah, ReplaceWith DmgEnchanted).",
   "strategic_note": "The R:DamageDone->replace signature is a mixed bag of 4 subfamilies; grounding in the scripts showed amplification is dominant (53 of 146 dataset-wide R:DamageDone replacements resolve to ReplaceCount$DamageAmount/Twice|Thrice|Plus.N, vs 27 prevention, ~30 damage-to-counters conversion, and small redirect/convert groups). Since the replace_with primitive only substring-matches the SVar name, the detector keys on the Forge naming convention (DmgTwice/DmgPlus*/DmgTriple/DamageReplace), which cleanly separates amplifiers from preventers/redirectors: 50 matched cards, zero observed false positives; it deliberately skips the ambiguous name Dmg3 (used by both Fiery Emancipation, an amplifier, and Divine Presence, a cap), trading 1-2 cards of recall for precision. Complements verified non-empty: burn_spells (652), ping_engines (520, repeatable activated DealDamage that turns doubling into an engine), damage_payoffs (866, T:DamageDone triggers whose 'that much' effects scale with amplified damage). The remaining prevention/conversion subfamilies deserve their own separate concept (e.g. prevents_damage) rather than being lumped in here."
+ },
+ {
+  "name": "conditional_self_pump",
+  "describe": "gets +X/+X (and often keywords) while a game-state condition holds - threshold/metalcraft/descend-style conditional self-pumps",
+  "detect": {
+   "any_of": [
+    {
+     "continuous_params": [
+      "AddPower",
+      "AddToughness",
+      "IsPresent"
+     ],
+     "affected_contains": "Card.Self"
+    },
+    {
+     "continuous_params": [
+      "AddPower",
+      "AddToughness",
+      "CheckSVar"
+     ],
+     "affected_contains": "Card.Self"
+    },
+    {
+     "continuous_params": [
+      "AddPower",
+      "AddToughness",
+      "Condition"
+     ],
+     "affected_contains": "Card.Self"
+    }
+   ]
+  },
+  "complements": {
+   "graveyard_fillers": {
+    "node": {
+     "api": "Mill"
+    }
+   },
+   "discard_outlets": {
+    "node": {
+     "kind": "A",
+     "params": {
+      "Cost": {
+       "contains": "Discard"
+      }
+     }
+    }
+   },
+   "big_draw": {
+    "node": {
+     "api": "Draw",
+     "params": {
+      "NumCards": {
+       "regex": "^[2-9]"
+      }
+     }
+    }
+   }
+  },
+  "example_cards_verified": [
+   "Akawalli, the Seething Tower",
+   "Akki Underling",
+   "Angel of Vitality",
+   "Anurid Barkripper",
+   "Ardent Recruit",
+   "Battlewise Aven"
+  ],
+  "counterexample": "Death's Shadow - its S:Continuous[AddPower+AddToughness@Self] node is an unconditional variable statline (X scales with life lost, no IsPresent/CheckSVar/Condition param), i.e. always-on scaling rather than a condition that can be turned on or off",
+  "strategic_note": "These are undercosted bodies gated on a game-state threshold. The dominant condition family is graveyard count (Threshold 36 nodes, Delirium 7, Descend/graveyard IsPresent ~15), so self-mill and discard outlets are the highest-leverage enablers; secondary families check hand size (ValidHand, 7 nodes - fed by big draw), life total (YourLifeTotal, 6 - fed by lifegain), and battlefield presence (lands/artifacts/commander). Grade a deck's fit by whether its existing engine holds the specific condition passively; these cards are payoffs, not engines, and are near-dead in decks that cannot keep the condition on. Note Hellbent (empty hand) and hand-size-7+ conditions want opposite complements - resolve per-card via the condition params, not at the concept level."
+ },
+ {
+  "name": "conditional_self_keyword",
+  "describe": "gains a keyword itself only while a condition holds (control an artifact, has a counter, is equipped, delirium, etc.)",
+  "detect": {
+   "any_of": [
+    {
+     "continuous_params": [
+      "AddKeyword",
+      "IsPresent"
+     ],
+     "affected_contains": "Card.Self"
+    },
+    {
+     "continuous_params": [
+      "AddKeyword",
+      "Condition"
+     ],
+     "affected_contains": "Card.Self"
+    },
+    {
+     "continuous_params": [
+      "AddKeyword",
+      "CheckSVar"
+     ],
+     "affected_contains": "Card.Self"
+    },
+    {
+     "continuous_params": [
+      "AddKeyword"
+     ],
+     "affected_contains": "Card.Self+"
+    }
+   ]
+  },
+  "complements": {
+   "p1p1_counter_sources": {
+    "node": {
+     "api": "PutCounter",
+     "params": {
+      "CounterType": "P1P1"
+     }
+    }
+   },
+   "equipment_and_auras": {
+    "card": {
+     "types": {
+      "regex": "Equipment|Aura"
+     }
+    }
+   },
+   "graveyard_fillers": {
+    "hook": "self_mill"
+   }
+  },
+  "example_cards_verified": [
+   "Abzan Kin-Guard",
+   "Aeronaut Tinkerer",
+   "Ainok Artillerist",
+   "Angelic Overseer",
+   "Ahn-Crop Invader",
+   "Anya, Merciless Angel"
+  ],
+  "counterexample": "Levitation - grants flying to ALL creatures you control (Continuous AddKeyword with Affected=Creature.YouCtrl, no Card.Self and no condition), so it is a mass keyword anthem, not a creature that conditionally earns a keyword for itself",
+  "strategic_note": "These cards are undercosted bodies whose keyword (flying, lifelink, reach, first strike...) is switched on by board state, so their value depends almost entirely on the deck reliably satisfying the condition. Condition survey across the family: counter thresholds (counters_GE*, ~35 cards) want +1/+1 counter sources; +equipped/+enchanted (~15) want Equipment and Auras; Delirium/Threshold/graveyard CheckSVars (~26+) want self-mill; IsPresent Artifact.YouCtrl / Metalcraft (~16) want cheap artifacts or artifact tokens. When recommending, weight complements by which condition family the specific card uses; the enabling permanents are the complement, and decks already running those enablers get the keyword essentially for free."
+ },
+ {
+  "name": "tap_pumper",
+  "describe": "taps to pump a creature (temporary power/toughness or keyword boost like haste/flying)",
+  "detect": {
+   "all_of": [
+    {
+     "ab_cost_contains": "T",
+     "api": "Pump"
+    },
+    {
+     "card_type_contains": "Creature"
+    }
+   ]
+  },
+  "complements": {
+   "untappers": {
+    "node": {
+     "api": {
+      "any": [
+       "Untap",
+       "UntapAll"
+      ]
+     }
+    }
+   },
+   "attack_triggers": {
+    "chain": {
+     "from": {
+      "kind": "T",
+      "mode": {
+       "any": [
+        "Attacks",
+        "AttackersDeclared",
+        "AttackersDeclaredOneTarget"
+       ]
+      }
+     },
+     "to": {}
+    }
+   },
+   "extra_combats": {
+    "node": {
+     "api": "AddPhase"
+    }
+   }
+  },
+  "example_cards_verified": [
+   "Akki Drillmaster",
+   "Alaborn Veteran",
+   "Anaba Ancestor",
+   "Angelic Page",
+   "Bloodlust Inciter",
+   "Auriok Bladewarden"
+  ],
+  "counterexample": "Shivan Dragon - its firebreathing Pump ability is an AB node with Cost \"R\" (mana only, no tap symbol), so the ab_cost_contains \"T\" pattern correctly rejects it",
+  "strategic_note": "Mirror of tap_pinger for combat instead of damage: these support creatures convert tapping into one-shot combat swings. Untappers (Untap/UntapAll nodes) let the pump fire multiple times per turn cycle; attack triggers and extra-combat effects (AddPhase) multiply the value of each pump window. Structures verified in data/dataset.jsonl.gz - all examples are single AB nodes {kind A, apiKind AB, api Pump, Cost containing T}, e.g. Alaborn Veteran's Cost \"T\" with NumAtt/NumDef \"+2\". The card_type_contains Creature clause keeps the concept on support creatures per the cluster hint and excludes tap-to-pump artifacts/lands. Gate report: 6/6 examples matched, counterexample rejected, pool_fraction 0.0067, ok=true."
+ },
+ {
+  "name": "shared_keyword_field",
+  "describe": "continuously grants keyword abilities with no stat rider - the shared rules-changer family whose flagships hit ALL creatures of a class regardless of controller (Absolute Law, Mass Hysteria, Concordant Crossroads, symmetric Sliver grants, Cover of Darkness)",
+  "detect": {
+   "all_of": [
+    {
+     "continuous_params": [
+      "AddKeyword",
+      "Affected"
+     ],
+     "affected_contains": "Creature",
+     "forbid_params": [
+      "AddPower",
+      "AddToughness"
+     ]
+    }
+   ]
+  },
+  "complements": {
+   "wide_token_boards": {
+    "chain": {
+     "from": {
+      "kind": {
+       "any": [
+        "A",
+        "T"
+       ]
+      }
+     },
+     "to": {
+      "api": "Token"
+     }
+    }
+   },
+   "one_sided_stat_anthems": {
+    "node": {
+     "mode": "Continuous",
+     "params": {
+      "AddPower": true,
+      "Affected": {
+       "contains": "Creature.YouCtrl"
+      }
+     }
+    }
+   },
+   "attack_trigger_payoffs": {
+    "chain": {
+     "from": {
+      "kind": "T",
+      "mode": "Attacks"
+     },
+     "to": {}
+    }
+   }
+  },
+  "example_cards_verified": [
+   "Absolute Grace",
+   "Absolute Law",
+   "Concordant Crossroads",
+   "Mass Hysteria",
+   "Avatar of Slaughter",
+   "Angel's Trumpet"
+  ],
+  "counterexample": "Master of the Pearl Trident - its single Continuous node grants AddKeyword (Landwalk:Island) but carries AddPower/AddToughness in the same node, so forbid_params rejects it: keyword-plus-stats lords are the tribal_lord/anthem statline family, not shared rules-changers (verified: detector returns False; Glorious Anthem and Bedlam also verified False)",
+  "strategic_note": "Parity-effect strategy: a symmetric grant (all creatures have haste/protection/exalted) is only good for whoever is built to exploit it, so complements are parity-breakers - token swarms mean more of YOUR bodies receive the shared keyword, one-sided AddPower@YouCtrl anthems make your half of the shared field bigger, and Attacks-trigger payoffs convert shared haste/evasion into value only you collect (both fire on the aggressor's schedule; Mass Hysteria decks are the classic example). Detector boundary and known limitation: forbid_params[AddPower,AddToughness] cleanly separates this from tribal_lord stat-lords and buffs_attached, but affected_contains is substring-only, so the \"Creature\" anchor cannot structurally exclude Creature.YouCtrl or Creature.EnchantedBy pure-keyword grants - the match set (618/34519 = 1.79%, validate_concept ok=True, zero errors) is ~57 truly global cards plus keyword-only YouCtrl grants (overlapping mass_keyword_granter, which requires the YouCtrl substring this concept's flagships lack - that hook leaves all 6 verified examples uncovered) and keyword auras/equipment. The truly symmetric core (Affected=\"Creature\" exact, plus controller-free class filters like Creature.Sliver, Creature.ChosenType, Creature.Elf+Other on old-frame lords) would need an exact-match or negation primitive in induction._match_pattern to isolate perfectly; until then this hook's describe/complements carry the symmetric framing while the detector covers the wider no-stat-rider keyword-static family. Note Bedlam-style \"creatures can't block\" cards sit in S:CantBlock mode nodes (evasion_static family), not this signature."
+ },
+ {
+  "name": "mass_ability_granter",
+  "describe": "continuously grants a full activated/triggered ability to a whole class of permanents (sliver-style lords and ability-granting auras)",
+  "detect": {
+   "all_of": [
+    {
+     "continuous_params": [
+      "AddAbility",
+      "Affected"
+     ],
+     "forbid_params": []
+    }
+   ]
+  },
+  "complements": {
+   "changelings": {
+    "keyword": "Changeling"
+   },
+   "typal_token_swarms": {
+    "node": {
+     "api": "Token",
+     "params": {
+      "TokenScript": true,
+      "TokenAmount": {
+       "regex": "^[2-9X]"
+      }
+     }
+    }
+   },
+   "type_setters": {
+    "node": {
+     "kind": "S",
+     "mode": "Continuous",
+     "params": {
+      "AddType": true
+     }
+    }
+   }
+  },
+  "example_cards_verified": [
+   "Acidic Sliver",
+   "Armor Sliver",
+   "Barbed Field",
+   "Barbed Sliver"
+  ],
+  "counterexample": "Crystalline Sliver - same sliver-lord family, but its Continuous static grants a keyword (AddKeyword: Shroud) rather than a full ability, so it carries no AddAbility param and belongs to the mass_keyword_granter concept instead; verified non-matching (Glorious Anthem, Coat of Arms, and Adaptive Automaton also verified non-matching: Continuous statics with AddPower/AddType but no AddAbility)",
+  "strategic_note": "Value scales linearly with the number of permanents inside the Affected class, so pair it with wide same-type boards: typed token swarms (Krenko-style multi-token makers) multiply each granted ability, changelings slot into any Affected type set, and type setters (Adaptive Automaton, Arcane Adaptation) convert an entire board into the affected class. Aura-form members (Barbed Field) instead want cheap resilient attach targets. Note the grant gives the ability to the permanents themselves, so it dodges single-target removal on the lord only until the lord leaves - the abilities are not counters and vanish with the source."
+ },
+ {
+  "name": "phase_flip_transformer",
+  "describe": "transforms itself on a phase trigger (werewolf-style state flip)",
+  "detect": {
+   "all_of": [
+    {
+     "trigger_mode": "Phase",
+     "chains_to_api": "SetState"
+    }
+   ]
+  },
+  "complements": {
+   "external_transformers": {
+    "node": {
+     "api": "SetState",
+     "apiKind": "SP",
+     "params": {
+      "Mode": "Transform"
+     }
+    }
+   },
+   "transform_locks": {
+    "node": {
+     "kind": "S",
+     "mode": "CantTransform"
+    }
+   },
+   "wolf_tribal_anthems": {
+    "node": {
+     "mode": "Continuous",
+     "params": {
+      "Affected": {
+       "contains": "Werewolf"
+      }
+     }
+    }
+   }
+  },
+  "example_cards_verified": [
+   "Afflicted Deserter",
+   "Werewolf Ransacker",
+   "Ashling, Rimebound",
+   "Huntmaster of the Fells",
+   "Ravager of the Fells",
+   "Duskwatch Recruiter"
+  ],
+  "counterexample": "Bitterblossom \u2014 it has a T node with mode Phase (upkeep trigger), but its Execute chain reaches LoseLife and Token nodes, never a SetState node, so the all_of {trigger_mode: Phase, chains_to_api: SetState} conjunction fails. Also verified non-matching: Brutal Cathar, whose day/night flip is the Daybound keyword with no Phase->SetState chain.",
+  "strategic_note": "These cards flip on an upkeep/main-phase check (WerewolfTransformCondition / WerewolfUntransformCondition: no spells cast last turn transforms to night side, two-plus spells flips back), so their power depends on controlling casting frequency, not just playing them. Complements bypass or lock the flip condition: external_transformers (Moonmist, Waxing Moon cast SetState/Transform at instant speed, flipping the whole pack without waiting a turn cycle), transform_locks (Immerwolf's CantTransform static keeps non-Human Werewolves on their stronger night face even when opponents cast two spells), and wolf_tribal_anthems (Continuous effects with Affected containing Werewolf \u2014 Howlpack Resurgence, Nightpack Ambusher \u2014 that reward committing to the tribe; several also carry Flash, which lets the player pass turns spell-free to trigger the transform while still deploying threats). Detector matched 141 records in data/dataset.jsonl.gz, a superset covering all 58 uncovered cluster cards' T:Phase->SetState signature; verification used chain edges only (ref:* excluded), matching querydsl reachability semantics."
  }
 ]

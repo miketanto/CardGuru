@@ -1,76 +1,24 @@
 {
  "total_cards": 34519,
- "uncovered_cards": 3370,
+ "uncovered_cards": 2730,
  "clusters": [
   {
-   "signature": "S:Continuous[AddKeyword@All]",
-   "uncovered_cards": 186,
-   "also_on_covered_cards": 205,
-   "examples": [
-    "Aboshan's Desire",
-    "Absolute Grace",
-    "Absolute Law",
-    "Absolute Virtue",
-    "Aegis of the Gods",
-    "Aggression"
-   ]
-  },
-  {
-   "signature": "S:Continuous[AddPower+AddToughness@Self]",
-   "uncovered_cards": 161,
-   "also_on_covered_cards": 112,
-   "examples": [
-    "Akawalli, the Seething Tower",
-    "Akki Underling",
-    "Angel of Vitality",
-    "Anurid Barkripper",
-    "Anya, Merciless Angel",
-    "Ardent Recruit"
-   ]
-  },
-  {
-   "signature": "S:Continuous[AddKeyword@Self]",
-   "uncovered_cards": 136,
-   "also_on_covered_cards": 130,
-   "examples": [
-    "Abzan Kin-Guard",
-    "Aeronaut Tinkerer",
-    "Ainok Artillerist",
-    "Angelic Overseer",
-    "Animus of Predation",
-    "Anya, Merciless Angel"
-   ]
-  },
-  {
-   "signature": "AB:TapCost->Pump",
-   "uncovered_cards": 73,
-   "also_on_covered_cards": 187,
-   "examples": [
-    "Akki Drillmaster",
-    "Alaborn Veteran",
-    "Anaba Ancestor",
-    "Angelic Page",
-    "Anointer of Champions",
-    "Apocalypse Runner"
-   ]
-  },
-  {
    "signature": "S:CantBlock",
-   "uncovered_cards": 68,
-   "also_on_covered_cards": 71,
+   "uncovered_cards": 63,
+   "also_on_covered_cards": 76,
    "examples": [
     "Aesthir Glider",
     "Ashenmoor Gouger",
     "Bedlam",
     "Blood Hypnotist",
-    "Bloodbraid Marauder",
-    "Branded Brawlers"
+    "Branded Brawlers",
+    "Cast into Darkness"
    ]
   },
   {
    "signature": "S:CantAttack",
-   "uncovered_cards": 64,
-   "also_on_covered_cards": 56,
+   "uncovered_cards": 63,
+   "also_on_covered_cards": 57,
    "examples": [
     "Akron Legionnaire",
     "Angelic Arbiter",
@@ -81,35 +29,22 @@
    ]
   },
   {
-   "signature": "S:Continuous[AddAbility@All]",
-   "uncovered_cards": 60,
-   "also_on_covered_cards": 92,
+   "signature": "S:Continuous[AddKeyword@All]",
+   "uncovered_cards": 57,
+   "also_on_covered_cards": 334,
    "examples": [
-    "Acidic Sliver",
-    "Armor Sliver",
-    "Barbed Field",
-    "Barbed Sliver",
-    "Basal Sliver",
-    "Bigger on the Inside"
-   ]
-  },
-  {
-   "signature": "T:Phase->SetState",
-   "uncovered_cards": 58,
-   "also_on_covered_cards": 75,
-   "examples": [
-    "Afflicted Deserter",
-    "Werewolf Ransacker",
-    "Ashling, Rimebound",
-    "Avacynian Missionaries",
-    "Blitzwing, Cruel Tormentor",
-    "Breakneck Rider"
+    "Absolute Virtue",
+    "Aegis of the Gods",
+    "Banding Sliver",
+    "Consecrate Land",
+    "Crystal Barricade",
+    "Crystalline Sliver"
    ]
   },
   {
    "signature": "S:Continuous[AddPower@Self]",
-   "uncovered_cards": 55,
-   "also_on_covered_cards": 45,
+   "uncovered_cards": 52,
+   "also_on_covered_cards": 48,
    "examples": [
     "Akiri, Line-Slinger",
     "Angrath's Ambusher",
@@ -121,8 +56,8 @@
   },
   {
    "signature": "S:CantBeCast",
-   "uncovered_cards": 52,
-   "also_on_covered_cards": 44,
+   "uncovered_cards": 49,
+   "also_on_covered_cards": 47,
    "examples": [
     "Aether Storm",
     "Alhammarret, High Arbiter",
@@ -134,21 +69,21 @@
   },
   {
    "signature": "S:MustAttack",
-   "uncovered_cards": 50,
-   "also_on_covered_cards": 50,
+   "uncovered_cards": 48,
+   "also_on_covered_cards": 52,
    "examples": [
     "Amarant Coral",
     "Angler Turtle",
     "Ashen Monstrosity",
-    "Avatar of Slaughter",
     "Barricade Breaker",
-    "Battle-Mad Ronin"
+    "Battle-Mad Ronin",
+    "Berserkers of Blood Ridge"
    ]
   },
   {
    "signature": "R:Counter->other",
-   "uncovered_cards": 49,
-   "also_on_covered_cards": 59,
+   "uncovered_cards": 47,
+   "also_on_covered_cards": 61,
    "examples": [
     "Absolute Virtue",
     "Banefire",
@@ -156,6 +91,45 @@
     "Carnage Tyrant",
     "Caught Red-Handed",
     "Chimil, the Inner Sun"
+   ]
+  },
+  {
+   "signature": "S:RaiseCost",
+   "uncovered_cards": 45,
+   "also_on_covered_cards": 45,
+   "examples": [
+    "Aether Tide",
+    "Alabaster Leech",
+    "Anointed Peacekeeper",
+    "Arachne, Psionic Weaver",
+    "Aura of Silence",
+    "Boreal Elemental"
+   ]
+  },
+  {
+   "signature": "R:DamageDone->replace",
+   "uncovered_cards": 44,
+   "also_on_covered_cards": 98,
+   "examples": [
+    "Angel of Suffering",
+    "Battletide Alchemist",
+    "Benevolent Unicorn",
+    "Bloatfly Swarm",
+    "Crumbling Sanctuary",
+    "Daunting Defender"
+   ]
+  },
+  {
+   "signature": "T:Phase->ChangeZone",
+   "uncovered_cards": 43,
+   "also_on_covered_cards": 208,
+   "examples": [
+    "Archwing Dragon",
+    "Blitz Hellion",
+    "Blood Clock",
+    "Boarded Window",
+    "Braids, Conjurer Adept",
+    "Briarbridge Patrol"
    ]
   }
  ]
