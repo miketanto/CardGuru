@@ -1,5 +1,8 @@
 # CardGuru — MTG rules-verified search & judge engine
 
+**New machine? Start here: [docs/getting-started.md](docs/getting-started.md)** —
+clone-to-working-search in four steps (the dataset is rebuilt locally, not shipped).
+
 Feasibility investigation, 2026-08-06. **Both core premises verified with running code; no
 kill criteria fired.**
 
