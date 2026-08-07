@@ -289,7 +289,7 @@ def _detect_amplifies_mana(rec):
     has_taps_trigger = any(n.get("kind") == "T"
                            and _params(n).get("Mode") == "TapsForMana"
                            for n in _nodes(rec))
-    return has_taps_trigger and has_api(rec, "Mana")
+    return has_taps_trigger and has_api(rec, "Mana", "ManaReflected")
 
 
 def _detect_equipment_matters(rec):
