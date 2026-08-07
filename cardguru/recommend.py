@@ -189,6 +189,32 @@ def _detect_combat_damage_matters(rec):
     return False
 
 
+def _detect_disruptive_etb(rec):
+    """Tempo creatures: an ETB trigger whose effect disrupts the OPPONENT
+    (Deep-Cavern Bat hand exile, Tishana's Tidebinder ability counter,
+    Floodpits Drowner tap-stun) rather than generating own-side value."""
+    if "Creature" not in (rec.get("types") or ""):
+        return False
+    has_etb = any(n.get("kind") == "T"
+                  and _params(n).get("Mode") == "ChangesZone"
+                  and _params(n).get("Destination") == "Battlefield"
+                  and "Card.Self" in str(_params(n).get("ValidCard", ""))
+                  for n in _nodes(rec))
+    if not has_etb:
+        return False
+    for n in _nodes(rec):
+        p = _params(n)
+        if n.get("api") == "Counter":
+            return True
+        if n.get("api") in ("Tap", "TapAll") and "Opp" in str(p.get("ValidTgts", "")):
+            return True
+        blob = str(p.get("ValidTgts", "")) + str(p.get("Defined", ""))
+        if n.get("api") in ("Discard", "ChangeZone", "RevealHand", "PeekAndReveal") \
+                and "Opp" in blob:
+            return True
+    return False
+
+
 def _detect_creatures_entering_matter(rec):
     """Battledriver/Cathars' Crusade/Impact Tremors: triggers when your
     (other) creatures enter the battlefield."""
@@ -469,6 +495,27 @@ HOOKS = {
             "evasion_grants": {"node": {"mode": "Continuous",
                                         "params": {"AddKeyword": {"regex": "Flying|Menace|Trample|Fear|Intimidate|Shadow"},
                                                    "Affected": {"contains": "Creature.YouCtrl"}}}},
+            # the FUEL: evasive bodies that actually connect for the trigger
+            "evasive_attackers": {"all": [
+                {"card": {"types": {"contains": "Creature"}}},
+                {"any": [{"keyword": "Flying"}, {"keyword": "Menace"},
+                         {"keyword": "Fear"}, {"keyword": "Shadow"},
+                         {"keyword": "Intimidate"},
+                         {"node": {"kind": "S", "mode": "CantBlockBy"}}]}]},
+        }},
+    "disruptive_etb": {
+        "describe": "disrupts the opponent as it enters (tempo creature)",
+        "detect": _detect_disruptive_etb,
+        "complements": {
+            "blink_flicker": {"node": {"api": "ChangeZone",
+                                       "params": {"Origin": "Battlefield",
+                                                  "Destination": "Exile"}}},
+            "self_bounce": {"node": {"api": "ChangeZone",
+                                     "params": {"Origin": "Battlefield",
+                                                "Destination": "Hand"}}},
+            "etb_doubling": {"node": {"kind": "S",
+                                      "params": {"Mode": "Panharmonicon",
+                                                 "Destination": "Battlefield"}}},
         }},
     "creatures_entering_matter": {
         "describe": "triggers when your creatures enter the battlefield",

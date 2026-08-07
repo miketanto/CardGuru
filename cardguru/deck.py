@@ -147,10 +147,12 @@ GAMEPLAN_QUOTAS = {
     "spellslinger": {"card_draw": 12, "targeted_removal": 6, "sweepers": 2},
     "engine":       {"card_draw": 8,  "targeted_removal": 7, "sweepers": 2},
     "graveyard":    {"card_draw": 7,  "targeted_removal": 6, "sweepers": 3},
+    "tempo":        {"card_draw": 8,  "targeted_removal": 6, "sweepers": 0},
     "generic":      {"card_draw": 9,  "targeted_removal": 7, "sweepers": 2},
 }
 
 _GAMEPLAN_HOOKS = {
+    "tempo": {"disruptive_etb"},
     "aggro": {"attacks_matter", "combat_damage_matters", "amplifies_attack_triggers",
               "tribal_lord", "equipment_matters"},
     "spellslinger": {"spellslinger", "copies_things"},
@@ -163,9 +165,14 @@ _GAMEPLAN_HOOKS = {
 
 
 def detect_gameplan(hook_counts: dict[str, int]) -> str:
+    """The gameplan is the deck's DOMINANT mechanic: score each plan by its
+    strongest single hook (summing a broad hook set lets incidental
+    side-effects - lifelink riders, stun counters - outvote the actual
+    plan)."""
     scores = {}
     for plan, hookset in _GAMEPLAN_HOOKS.items():
-        scores[plan] = sum(c for h, c in hook_counts.items() if h in hookset)
+        scores[plan] = max((c for h, c in hook_counts.items() if h in hookset),
+                           default=0)
     best = max(scores, key=lambda p: scores[p]) if scores else "generic"
     return best if scores.get(best, 0) >= 3 else "generic"
 
@@ -225,7 +232,7 @@ def deck_shape(by_name: dict, commander_rec: dict,
         for role, kind in detect_roles(rec).items():
             roles[role]["engines" if kind == "engine" else "one_shot"].append(name)
         for h in detect_hooks(rec):
-            hook_counts[h] = hook_counts.get(h, 0) + 1
+            hook_counts[h] = hook_counts.get(h, 0) + count   # copies matter
 
     gameplan = detect_gameplan(hook_counts)
     quotas = GAMEPLAN_QUOTAS[gameplan]

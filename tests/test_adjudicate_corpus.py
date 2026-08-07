@@ -390,6 +390,35 @@ def test_axis_matching_high_noon_shape():
     assert not _matches(payoff, q)
 
 
+def test_gameplan_dominant_mechanic_not_sum():
+    """A 12-copy tempo core must beat a broad engine set of incidental
+    side-effect hooks (the Dimir Midrange lesson)."""
+    from cardguru.deck import detect_gameplan
+    counts = {"disruptive_etb": 12, "puts_counters": 7, "gains_life": 7,
+              "cares_about_death": 4, "reanimator": 4}
+    assert detect_gameplan(counts) == "tempo"
+    assert detect_gameplan({"reanimator": 10, "sac_outlet": 5}) == "graveyard"
+    assert detect_gameplan({"gains_life": 2}) == "generic"
+
+
+def test_disruptive_etb_detector():
+    from cardguru.recommend import detect_hooks
+    bat = {"name": "Batlike", "types": "Creature Bat", "edges": [], "nodes": [
+        {"id": "t0", "kind": "T", "params": {"Mode": "ChangesZone",
+                                             "Destination": "Battlefield",
+                                             "ValidCard": "Card.Self"}},
+        {"id": "d0", "kind": "SVar", "api": "ChangeZone",
+         "params": {"Origin": "Hand", "Destination": "Exile",
+                    "DefinedPlayer": "Opp", "ValidTgts": "Player.Opponent"}}]}
+    valuebear = {"name": "ValueBear", "types": "Creature", "edges": [], "nodes": [
+        {"id": "t0", "kind": "T", "params": {"Mode": "ChangesZone",
+                                             "Destination": "Battlefield",
+                                             "ValidCard": "Card.Self"}},
+        {"id": "d0", "kind": "SVar", "api": "Draw", "params": {"NumCards": "1"}}]}
+    assert "disruptive_etb" in detect_hooks(bat)
+    assert "disruptive_etb" not in detect_hooks(valuebear)
+
+
 def test_cuts_protects_mana_rocks_and_deficient_roles():
     from cardguru.deck import cuts
     rock = {"name": "Rock", "types": "Artifact", "manaCost": "1",
