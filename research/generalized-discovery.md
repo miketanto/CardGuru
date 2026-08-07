@@ -46,6 +46,35 @@ Golden intuition tests (High Noon shape, Tinker shape) freeze every discovered
 concept as a regression test; the burned-sample RulesGuru protocol does the
 same for the judge pipeline.
 
+## First autonomous run (2026-08-06/07, ~2h loop)
+
+The pipeline ran unattended across three induction sweeps (8 + 6 + 3 agents),
+each round: mine → agent-draft → gate → merge-as-data → re-mine.
+
+- **Concept coverage: 85.7% → 92.6%** of 34,519 cards; hook library 30 → 44,
+  every addition gate-validated data with provenance (`induced:true`).
+- **17 concepts drafted, 17 passed the gate** (selectivity 0.1–1.8% each).
+  Notable: `recurring_forced_sacrifice`, where the agent *rejected the
+  orchestrator's stax-only hint* after verifying 2 of 3 example cards are
+  self-drawback — and documented the param-aware primitive needed to split
+  the family properly.
+- **One induced strategic claim engine-verified**: tap_pinger's "deathtouch
+  grants make each ping a kill" executed in XMage (Gorgon Flail + Prodigal
+  Sorcerer kills a 6/4 with one ping), first run, all expectations met.
+- **Product spot-check caught one real detector bug** (land-mana amplifiers
+  use api `ManaReflected` — Mana Flare, Zendikar Resurgent, Nikya now detect)
+  and my own golden-set mislabels (Sliver Overlord is a tutor, not a granter —
+  correct behavior, wrong expectation).
+- **Coverage semantics matured**: restriction/tax/punisher cards now count as
+  explained by the axis-hate side, and window-closing structures by the
+  windows model — coverage means "some subsystem knows what to do with this
+  card", not "a synergy hook exists".
+- **Saturation observed**: after sweep 2 the residual fragmented into <55-card
+  heterogeneous clusters; the marginal sweep now costs more than it teaches.
+  Remaining known boundaries: AddPower-negative-X variable statlines (Death's
+  Shadow) vs the SetPower cda_statline family; tutor-lords; exact-match /
+  negation primitives for truly-symmetric effects.
+
 ## The pipeline this enables
 
 gap miner → cluster brief (signature + example cards) → concept induction
