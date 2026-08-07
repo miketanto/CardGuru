@@ -1,0 +1,23 @@
+{
+  "id": "answer-combustion-technique-defanged-by-graveyard-exile",
+  "description": "Systemic-disruption verification vs Jeskai Lessons: Meta Lab classes the deck's graveyard as an attackable resource. Bojuka Bog exiles the 3 Firebending Lessons, so Combustion Technique falls back to its floor of 2 damage and Enduring Curiosity (4/3) survives.",
+  "players": {
+    "A": {"life": 20, "battlefield": [{"card": "Mountain", "count": 2}],
+          "hand": ["Combustion Technique"],
+          "graveyard": ["Firebending Lesson", "Firebending Lesson", "Firebending Lesson"]},
+    "B": {"life": 20, "battlefield": [{"card": "Enduring Curiosity"}], "hand": ["Bojuka Bog"]}
+  },
+  "actions": [
+    {"do": "play_land", "turn": 2, "phase": "PRECOMBAT_MAIN", "player": "B", "card": "Bojuka Bog"},
+    {"do": "target", "player": "B", "value": "PlayerA"},
+    {"do": "wait_stack", "turn": 2, "phase": "PRECOMBAT_MAIN"},
+    {"do": "cast", "turn": 3, "phase": "PRECOMBAT_MAIN", "player": "A", "card": "Combustion Technique"},
+    {"do": "target", "player": "A", "value": "Enduring Curiosity"},
+    {"do": "wait_stack", "turn": 3, "phase": "PRECOMBAT_MAIN"}
+  ],
+  "stop": {"turn": 3, "phase": "BEGIN_COMBAT"},
+  "expect": [
+    {"check": "graveyard_count", "player": "A", "card": "Firebending Lesson", "count": 0},
+    {"check": "permanent_count", "player": "B", "card": "Enduring Curiosity", "count": 1}
+  ]
+}

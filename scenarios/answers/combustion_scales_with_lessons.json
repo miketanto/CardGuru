@@ -1,0 +1,20 @@
+{
+  "id": "answer-combustion-technique-scales-with-lessons",
+  "description": "Jeskai Lessons scaling verification: Combustion Technique deals 2 plus the number of Lesson cards in its caster's graveyard. With 3 Firebending Lessons in the yard it deals 5, killing Enduring Curiosity (4/3) - and its would-die-exile-instead rider denies the Enduring Glimmer return-as-enchantment trigger, so the cat stays gone.",
+  "players": {
+    "A": {"life": 20, "battlefield": [{"card": "Mountain", "count": 2}],
+          "hand": ["Combustion Technique"],
+          "graveyard": ["Firebending Lesson", "Firebending Lesson", "Firebending Lesson"]},
+    "B": {"life": 20, "battlefield": [{"card": "Enduring Curiosity"}]}
+  },
+  "actions": [
+    {"do": "cast", "turn": 1, "phase": "PRECOMBAT_MAIN", "player": "A", "card": "Combustion Technique"},
+    {"do": "target", "player": "A", "value": "Enduring Curiosity"},
+    {"do": "wait_stack", "turn": 1, "phase": "PRECOMBAT_MAIN"}
+  ],
+  "stop": {"turn": 1, "phase": "BEGIN_COMBAT"},
+  "expect": [
+    {"check": "permanent_count", "player": "B", "card": "Enduring Curiosity", "count": 0},
+    {"check": "exile_count", "player": "B", "card": "Enduring Curiosity", "count": 1}
+  ]
+}
