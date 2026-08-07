@@ -74,3 +74,32 @@ def test_kaito_break_plan_derives_the_edict(by_name, dimir_fp):
     assert kaito["preferred"].startswith("edict")
     assert any("GUARANTEED" in w["note"] for w in kaito["windows"])
     assert any("phase-shifter" in a["note"] for a in kaito["avoid"])
+
+
+@pytest.fixture(scope="module")
+def jeskai_fp(by_name):
+    from cardguru.deck import parse_decklist
+    from cardguru.fingerprint import build_fingerprint
+    with open(os.path.join(ROOT, "decks", "jeskai_deck.txt")) as f:
+        decklist = parse_decklist(f.read())
+    return build_fingerprint(by_name, decklist)
+
+
+def test_jeskai_spine_is_the_lesson_count_engine(jeskai_fp):
+    top = jeskai_fp["spine"][0]
+    assert top["family"] == "scaling_lesson@graveyard"
+    assert "Combustion Technique" in top["payoffs"]
+    assert "Gran-Gran" in top["payoffs"]
+
+
+def test_jeskai_resource_cut_is_graveyard_exile(jeskai_fp):
+    cuts = jeskai_fp["resource_cuts"]
+    assert cuts and cuts[0]["zone"] == "graveyard"
+    assert "graveyard exile" in cuts[0]["note"]
+
+
+def test_one_shot_spell_linchpin_has_no_battlefield_window(by_name, jeskai_fp):
+    from cardguru.fingerprint import break_plan
+    plans = break_plan(by_name, jeskai_fp, top=3)
+    combustion = next(p for p in plans if p["card"] == "Combustion Technique")
+    assert any("never a permanent" in a["note"] for a in combustion["avoid"])

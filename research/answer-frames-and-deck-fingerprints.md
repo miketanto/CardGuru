@@ -187,6 +187,29 @@ must be evaluated per phase. Known residual: ninjutsu (empty K node)
 bypasses the stack window, so "counter it" overclaims vs a ninjutsu
 deployment; keyword-param parsing for ninjutsu is future work.
 
+**Third increment — all three demo decks, and count-scaling edges.**
+Running the fingerprint on Selesnya and Jeskai exposed the predicted
+blind spot immediately: Jeskai produced ONE intra-deck edge, because its
+cohesion is count-scaling (X = Lessons in graveyard), which pairwise
+hooks cannot see. Fixed by mining `SVarCount` expressions
+(`Count$ValidGraveyard Lesson.YouOwn`) and `IsPresent`/`PresentZone`
+threshold conditions into `scaling_<class>@<zone>` edges. Results:
+
+- **Jeskai**: 1 → 19 edges; spine `scaling_lesson@graveyard` (weight 52)
+  with payoffs Accumulate Wisdom, Combustion Technique, Gran-Gran. The
+  break plan gains a **resource cut**: every lesson-count payoff reads
+  the graveyard, so graveyard exile starves all of them at once — the
+  incisive answer is a ZONE attack, not a card attack (engine receipt
+  from the earlier session: combustion_defanged_by_yard_exile). One-shot
+  spell linchpins now correctly close the battlefield window.
+- **Selesnya**: spine `amplifies_mana` (Llanowar Elves, Figure of Fable,
+  Spider Manifestation → Badgermole Cub); linchpins Badgermole Cub then
+  Llanowar Elves — agreeing with both the concept-driven enabler ranking
+  and the ablation measurement from generalized-discovery.md.
+- Noise class found and filtered: Verge duals' enters-untapped
+  conditions (land→land scaling edges) are mana-base plumbing, not
+  gameplay engine.
+
 Still open from the proposal: timing-annotated edges, engine-ablation
 receipts (goldfish with linchpin neutralized), emergent-resource nodes,
 and the Commander-deck run where availability weighting matters most.

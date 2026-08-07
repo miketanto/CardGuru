@@ -391,6 +391,11 @@ def cmd_fingerprint(args):
         print(f"  {score:6}  {name} x{meta['copies']}"
               f"  [{', '.join(tags) or 'engine'}]")
 
+    if fp.get("resource_cuts"):
+        print("\n== resource cuts (starve the engine, not the card)")
+        for rc in fp["resource_cuts"]:
+            print(f"  {rc['note']}")
+
     print("\n== break plan")
     for plan in break_plan(by_name, fp, top=args.top):
         print(f"\n  {plan['card']}  (score {plan['score']})")

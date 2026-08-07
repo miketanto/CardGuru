@@ -13,6 +13,8 @@ Design notes: research/answer-frames-and-deck-fingerprints.md
 """
 from __future__ import annotations
 
+import re
+
 from .answers import threat_profile
 from .deck import _matches, detect_roles
 from .recommend import HOOKS, detect_hooks
@@ -71,6 +73,33 @@ def _interaction_classes(rec: dict) -> list[str]:
     return uniq
 
 
+# scaling classes too generic to make meaningful intra-deck edges
+_GENERIC_CLASSES = {"Card", "Permanent", "Spell", "Self", "You", "Player"}
+
+
+def _scaling_deps(rec: dict) -> list[tuple[str, str]]:
+    """(zone, class) pairs this card's numbers scale with or its function
+    thresholds on: SVarCount Count$Valid... expressions (Combustion
+    Technique's X = Lessons in your graveyard) and IsPresent/PresentZone
+    conditions (Gran-Gran's cost reduction needs 3+ Lessons in yard).
+    These are the deck's count-scaling engines - cohesion the pairwise hook
+    system cannot see."""
+    deps = []
+    for n in rec.get("nodes") or []:
+        if n.get("kind") == "SVarCount":
+            c = str(n.get("count") or "")
+            m = re.match(r"Valid(Graveyard|Hand|Battlefield)?\s+(\S+)", c)
+            if m:
+                cls = m.group(2).split(".")[0].split(",")[0]
+                deps.append((m.group(1) or "Battlefield", cls))
+        p = n.get("params") or {}
+        pres = p.get("IsPresent")
+        if pres:
+            cls = str(pres).split(".")[0].split(",")[0]
+            deps.append((p.get("PresentZone") or "Battlefield", cls))
+    return [(z, c) for z, c in deps if c not in _GENERIC_CLASSES]
+
+
 # ------------------------------------------------------------ graph build
 
 
@@ -108,6 +137,24 @@ def build_fingerprint(by_name: dict, decklist: list[tuple[str, int]]) -> dict:
                             "enabler": ename, "payoff": pname,
                             "via": f"{hook}/{cname}",
                             "weight": min(ecount, 4)})
+
+    # count-scaling edges: any deck card of the counted class feeds the
+    # card whose numbers scale with that count
+    for pname, _pc, prec in cards:
+        p_is_land = "Land" in (prec.get("types") or "")
+        for zone, cls in _scaling_deps(prec):
+            for ename, ecount, erec in cards:
+                if ename == pname:
+                    continue
+                if p_is_land and "Land" in (erec.get("types") or ""):
+                    continue    # mana-base plumbing (Verge enters-untapped
+                                # conditions), not a gameplay engine
+                if re.search(rf"\b{re.escape(cls)}\b",
+                             (erec.get("types") or "")):
+                    edges.append({
+                        "enabler": ename, "payoff": pname,
+                        "via": f"scaling_{cls.lower()}@{zone.lower()}/count",
+                        "weight": min(ecount, 4)})
 
     # weighted degree
     degree = {n: 0 for n in nodes}
@@ -183,10 +230,31 @@ def build_fingerprint(by_name: dict, decklist: list[tuple[str, int]]) -> dict:
               "payoffs": sorted({b for _a, b in fam_pairs[f]})}
              for f, w in sorted(fam_weight.items(), key=lambda kv: -kv[1])]
 
+    # resource cuts: a dominant count-scaling family is fuel in a ZONE, and
+    # attacking the zone turns off every payoff at once - a cut no single
+    # card removal can match
+    resource_cuts = []
+    for s in spine:
+        m = re.match(r"scaling_(\w+)@(\w+)", s["family"])
+        if not m or s["weight"] < 8:
+            continue
+        cls, zone = m.group(1), m.group(2)
+        answer = {"graveyard": "graveyard exile (Rest in Peace-class, or "
+                               "targeted yard exile in response to the "
+                               "count being read)",
+                  "battlefield": "board sweepers / mass removal of the "
+                                 "counted class",
+                  "hand": "discard"}.get(zone, "deny the counted resource")
+        resource_cuts.append({
+            "family": s["family"], "class": cls, "zone": zone,
+            "payoffs": s["payoffs"], "weight": s["weight"],
+            "note": f"every {cls}-count payoff ({', '.join(s['payoffs'][:4])}) "
+                    f"reads the {zone}: {answer} starves them ALL at once"})
+
     return {"nodes": nodes, "edges": edges, "degree": degree,
             "betweenness": {k: round(v, 1) for k, v in betweenness.items()},
             "sole_provider": sole_provider, "linchpins": ranked,
-            "spine": spine}
+            "spine": spine, "resource_cuts": resource_cuts}
 
 
 # ------------------------------------------------------------ break plan
@@ -197,6 +265,9 @@ def _interdiction(rec: dict, meta: dict) -> dict:
     prof = threat_profile(rec)
     windows, avoid = [], []
     mv = meta.get("mv")
+    is_permanent = any(t in (prof.get("types") or "")
+                       for t in ("Creature", "Artifact", "Enchantment",
+                                 "Planeswalker", "Land", "Battle"))
     shifter = next((g for g in prof.get("self_statics", [])
                     if g.get("condition") == "PlayerTurn"
                     and (g["keywords"] or g["types"])), None)
@@ -236,6 +307,12 @@ def _interdiction(rec: dict, meta: dict) -> dict:
         preferred = "edict/sacrifice (targets the player - ignores " \
                     "phase-shifting and granted hexproof), or your-turn " \
                     "removal that can hit its base type"
+    elif not is_permanent:
+        avoid.append({"window": "battlefield",
+                      "note": "one-shot spell: never a permanent, removal "
+                              "cannot touch it after it resolves"})
+        preferred = "stack (counter) or hand - or starve the count it " \
+                    "scales with"
     else:
         windows.append({"window": "battlefield",
                         "note": "ordinary removal window"})
