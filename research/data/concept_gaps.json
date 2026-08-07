@@ -1,44 +1,31 @@
 {
  "total_cards": 34519,
- "uncovered_cards": 2730,
+ "uncovered_cards": 2543,
  "clusters": [
   {
+   "signature": "S:Continuous[AddKeyword@All]",
+   "uncovered_cards": 54,
+   "also_on_covered_cards": 337,
+   "examples": [
+    "Aegis of the Gods",
+    "Banding Sliver",
+    "Consecrate Land",
+    "Crystal Barricade",
+    "Crystalline Sliver",
+    "Damping Field"
+   ]
+  },
+  {
    "signature": "S:CantBlock",
-   "uncovered_cards": 63,
-   "also_on_covered_cards": 76,
+   "uncovered_cards": 53,
+   "also_on_covered_cards": 86,
    "examples": [
     "Aesthir Glider",
     "Ashenmoor Gouger",
     "Bedlam",
     "Blood Hypnotist",
-    "Branded Brawlers",
-    "Cast into Darkness"
-   ]
-  },
-  {
-   "signature": "S:CantAttack",
-   "uncovered_cards": 63,
-   "also_on_covered_cards": 57,
-   "examples": [
-    "Akron Legionnaire",
-    "Angelic Arbiter",
-    "Armored Galleon",
-    "Blazing Archon",
-    "Bloodcrazed Goblin",
-    "Bog Serpent"
-   ]
-  },
-  {
-   "signature": "S:Continuous[AddKeyword@All]",
-   "uncovered_cards": 57,
-   "also_on_covered_cards": 334,
-   "examples": [
-    "Absolute Virtue",
-    "Aegis of the Gods",
-    "Banding Sliver",
-    "Consecrate Land",
-    "Crystal Barricade",
-    "Crystalline Sliver"
+    "Cast into Darkness",
+    "Charging Slateback"
    ]
   },
   {
@@ -55,19 +42,6 @@
    ]
   },
   {
-   "signature": "S:CantBeCast",
-   "uncovered_cards": 49,
-   "also_on_covered_cards": 47,
-   "examples": [
-    "Aether Storm",
-    "Alhammarret, High Arbiter",
-    "Angelic Arbiter",
-    "Arcane Laboratory",
-    "Archon of Valor's Reach",
-    "Blizzard"
-   ]
-  },
-  {
    "signature": "S:MustAttack",
    "uncovered_cards": 48,
    "also_on_covered_cards": 52,
@@ -78,32 +52,6 @@
     "Barricade Breaker",
     "Battle-Mad Ronin",
     "Berserkers of Blood Ridge"
-   ]
-  },
-  {
-   "signature": "R:Counter->other",
-   "uncovered_cards": 47,
-   "also_on_covered_cards": 61,
-   "examples": [
-    "Absolute Virtue",
-    "Banefire",
-    "Blurred Mongoose",
-    "Carnage Tyrant",
-    "Caught Red-Handed",
-    "Chimil, the Inner Sun"
-   ]
-  },
-  {
-   "signature": "S:RaiseCost",
-   "uncovered_cards": 45,
-   "also_on_covered_cards": 45,
-   "examples": [
-    "Aether Tide",
-    "Alabaster Leech",
-    "Anointed Peacekeeper",
-    "Arachne, Psionic Weaver",
-    "Aura of Silence",
-    "Boreal Elemental"
    ]
   },
   {
@@ -130,6 +78,58 @@
     "Boarded Window",
     "Braids, Conjurer Adept",
     "Briarbridge Patrol"
+   ]
+  },
+  {
+   "signature": "S:Continuous[AddPower+AddToughness@All]",
+   "uncovered_cards": 42,
+   "also_on_covered_cards": 717,
+   "examples": [
+    "Ascendant Evincar",
+    "Aven Brigadier",
+    "Bad Moon",
+    "Brothers Yamazaki",
+    "Call to Arms",
+    "Celestial Crusader"
+   ]
+  },
+  {
+   "signature": "S:Continuous[AddPower+AddToughness@Self]",
+   "uncovered_cards": 42,
+   "also_on_covered_cards": 231,
+   "examples": [
+    "Vision of the Unspeakable",
+    "Borderland Behemoth",
+    "Branch of Boseiju",
+    "Copperhoof Vorrac",
+    "Crusading Knight",
+    "Death's Shadow"
+   ]
+  },
+  {
+   "signature": "R:DamageDone->other",
+   "uncovered_cards": 41,
+   "also_on_covered_cards": 27,
+   "examples": [
+    "Argothian Treefolk",
+    "Armored Transport",
+    "Bronze Horse",
+    "Bubble Matrix",
+    "Callous Giant",
+    "Camel"
+   ]
+  },
+  {
+   "signature": "S:Continuous[AddPower@All]",
+   "uncovered_cards": 40,
+   "also_on_covered_cards": 113,
+   "examples": [
+    "Agoraphobia",
+    "Anaba Spirit Crafter",
+    "Archangel of Strife",
+    "Beckoning Will-o'-Wisp",
+    "Blade Sliver",
+    "Boarded Window"
    ]
   }
  ]

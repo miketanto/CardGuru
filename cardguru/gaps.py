@@ -86,14 +86,46 @@ def signatures(rec: dict) -> set[str]:
     return sigs
 
 
+_HATE_QUERIES = None
+
+
+def _hate_queries():
+    global _HATE_QUERIES
+    if _HATE_QUERIES is None:
+        from .intuition import AXES
+        _HATE_QUERIES = [q for cfg in AXES.values()
+                         for q in cfg["hate"].values()]
+    return _HATE_QUERIES
+
+
 def concept_coverage(rec: dict) -> bool:
-    """Is this card explained by ANY concept library?"""
+    """Is this card explained by ANY concept library? Hooks and roles (the
+    synergy side), axis signals (what decks scale on), axis HATE queries
+    (restriction/tax/punisher cards are explained by being hate), and
+    window-closing structures (can't-be-countered replacements)."""
     from .deck import detect_roles
     from .intuition import AXES
+    from .querydsl import CardGraph, evaluate
     from .recommend import detect_hooks
     if detect_hooks(rec) or detect_roles(rec):
         return True
-    return any(cfg["signal"](rec) for cfg in AXES.values())
+    if any(cfg["signal"](rec) for cfg in AXES.values()):
+        return True
+    try:
+        graph = CardGraph(rec)
+    except Exception:
+        return False
+    for q in _hate_queries():
+        try:
+            ok, _ev = evaluate(q, graph)
+        except Exception:
+            continue
+        if ok:
+            return True
+    # window-closing: can't-be-countered replacement
+    return any(n.get("kind") == "R" and _params(n).get("Event") == "Counter"
+               and _params(n).get("Layer") == "CantHappen"
+               for n in rec.get("nodes") or [])
 
 
 def mine_gaps(records: list[dict], top_n: int = 40) -> list[dict]:
