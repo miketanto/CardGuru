@@ -108,8 +108,16 @@ def _sig_counters(rec):
 
 
 def _sig_draw(rec):
-    return any(n.get("kind") == "T" and _p(n).get("Mode") == "Drawn"
-               for n in _nodes(rec))
+    """Draw payoffs (Drawn triggers) or repeatable draw engines: a permanent
+    whose trigger chain reaches a Draw effect (Enduring Curiosity, Kaito)."""
+    if any(n.get("kind") == "T" and _p(n).get("Mode") == "Drawn"
+           for n in _nodes(rec)):
+        return True
+    types = rec.get("types") or ""
+    is_perm = any(t in types for t in ("Creature", "Artifact", "Enchantment",
+                                       "Planeswalker", "Battle"))
+    return is_perm and any(n.get("kind") == "T" for n in _nodes(rec)) \
+        and any(n.get("api") == "Draw" for n in _nodes(rec))
 
 
 def _sig_attack(rec):
@@ -200,6 +208,9 @@ AXES = {
         "hate": {
             "draw_caps": {"node": {"kind": "S", "mode": "CantDraw",
                                    "params": {"DrawLimit": True}}},
+            # Sheoldred-family: their extra draws become damage/life loss
+            "draw_punishers": {"chain": {"from": {"kind": "T", "mode": "Drawn"},
+                                         "to": {"api": {"any": ["LoseLife", "DealDamage"]}}}},
         }},
     "attacking": {
         "describe": "scales with attacking",
@@ -213,14 +224,20 @@ AXES = {
 
 def axis_profile(by_name: dict, commander_rec: dict,
                  decklist: list[tuple[str, int]]) -> list[dict]:
-    """Which event axes does this deck scale on, and how hard?"""
-    cards = [commander_rec] + [by_name[n] for n, _c in decklist if n in by_name]
+    """Which event axes does this deck scale on, and how hard? Weighted by
+    copy count — in constructed, 4x a draw engine IS the deck's axis."""
+    cards = [(commander_rec, 1)] + [(by_name[n], c) for n, c in decklist
+                                    if n in by_name]
     rows = []
     for axis, cfg in AXES.items():
-        hits = sorted({r["name"] for r in cards if cfg["signal"](r)})
+        hits = [(r["name"], c) for r, c in cards if cfg["signal"](r)]
         if hits:
+            seen = {}
+            for n, c in hits:
+                seen[n] = max(seen.get(n, 0), c)
             rows.append({"axis": axis, "describe": cfg["describe"],
-                         "count": len(hits), "cards": hits})
+                         "count": sum(seen.values()),
+                         "cards": sorted(seen)})
     rows.sort(key=lambda r: -r["count"])
     return rows
 

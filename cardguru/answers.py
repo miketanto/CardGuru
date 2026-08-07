@@ -137,7 +137,7 @@ ANSWER_QUERIES = {
                                          "Destination": "Exile",
                                          "ValidTgts": {"contains": "Creature"}}}},
     "damage_target": {"node": {"api": "DealDamage",
-                               "params": {"ValidTgts": {"contains": "Creature"}}}},
+                               "params": {"ValidTgts": {"regex": "Creature|Any"}}}},
     "minus_toughness": {"node": {"api": "Pump",
                                  "params": {"ValidTgts": {"contains": "Creature"},
                                             "NumDef": {"regex": "^-"}}}},
