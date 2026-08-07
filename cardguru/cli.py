@@ -404,6 +404,15 @@ def cmd_threats(args):
               f"({sw['kill_pct']}%)"
               + (f"; survivors: {', '.join(sw['survivors'])}" if sw["survivors"] else ""))
         print(f"  cheapest at tier: {', '.join(sw['examples'])}")
+    mv = res.get("mv_sweep")
+    if mv:
+        print(f"\n== mana-value sweep (their cost curve - the other sizing axis)")
+        print(f"  destroy MV<={mv['tier']} clears {mv['kills']}/{mv['bodies']} bodies "
+              f"({mv['kill_pct']}%); full clear at MV<={mv['full_clear_x']}"
+              + (f"; survivors at tier: {', '.join(mv['survivors'])}"
+                 if mv["survivors"] else ""))
+        for ex in mv["examples"]:
+            print(f"  {ex['card']:32} {ex['note']}")
 
     print(f"\n== systemic disruption (vs a {res['gameplan']} gameplan)")
     for cname, data in res["systemic"].items():

@@ -1,0 +1,25 @@
+{
+  "id": "answer-day-of-black-sun-x4-vs-selesnya-gearhulk-board",
+  "description": "Mana-value sweep verification vs the Standard Selesnya Gearhulk core: their toughness curve defeats 2-damage sweepers and even tier-3 leaves Brightglass Gearhulk (4/4) and Leatherhead (5/4) alive, but the deck's mana-value curve tops out at 4. Day of Black Sun with X=4 (6 mana) destroys every creature - including the damage-sweep survivors - after stripping all abilities.",
+  "players": {
+    "A": {"life": 20, "battlefield": [{"card": "Swamp", "count": 6}], "hand": ["Day of Black Sun"]},
+    "B": {"life": 20, "battlefield": [{"card": "Llanowar Elves"}, {"card": "Badgermole Cub"},
+                                       {"card": "Surrak, Elusive Hunter"},
+                                       {"card": "Brightglass Gearhulk"}, {"card": "Leatherhead, Swamp Stalker"}]}
+  },
+  "actions": [
+    {"do": "cast", "turn": 1, "phase": "PRECOMBAT_MAIN", "player": "A", "card": "Day of Black Sun"},
+    {"do": "choice", "player": "A", "value": "X=4"},
+    {"do": "wait_stack", "turn": 1, "phase": "PRECOMBAT_MAIN"}
+  ],
+  "stop": {"turn": 1, "phase": "BEGIN_COMBAT"},
+  "expect": [
+    {"check": "permanent_count", "player": "B", "card": "Llanowar Elves", "count": 0},
+    {"check": "permanent_count", "player": "B", "card": "Badgermole Cub", "count": 0},
+    {"check": "permanent_count", "player": "B", "card": "Surrak, Elusive Hunter", "count": 0},
+    {"check": "permanent_count", "player": "B", "card": "Brightglass Gearhulk", "count": 0},
+    {"check": "permanent_count", "player": "B", "card": "Leatherhead, Swamp Stalker", "count": 0},
+    {"check": "graveyard_count", "player": "B", "card": "Brightglass Gearhulk", "count": 1},
+    {"check": "graveyard_count", "player": "B", "card": "Leatherhead, Swamp Stalker", "count": 1}
+  ]
+}

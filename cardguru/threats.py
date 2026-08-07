@@ -181,6 +181,68 @@ def analyze_opponent(idx, by_name: dict, commander_rec: dict,
                    "survivors": survivors,
                    "examples": examples}
 
+    # mana-value sweep: the second sizing axis. Damage tiers read the
+    # toughness curve; destroy-by-MV reads the cost curve. A deck of
+    # big-but-cheap bodies (fat toughness, compressed MV) dies whole to an
+    # X the damage tiers never reach - Day of Black Sun X=4 wipes a board
+    # that laughs at 3 damage.
+    mv_sweep = None
+    mv_rows = []
+    for name, count in decklist:
+        rec = by_name.get(name)
+        if rec is None or "Creature" not in (rec.get("types") or ""):
+            continue
+        mv_rows.append((mana_value(rec.get("manaCost")) or 0, count, name))
+    if mv_rows:
+        mv_total = sum(c for _m, c, _n in mv_rows)
+        clear_x = max(m for m, _c, _n in mv_rows)
+        mv_pick = next((x for x in range(1, clear_x + 1)
+                        if sum(c for m, c, _n in mv_rows if m <= x)
+                        / mv_total >= 0.7), clear_x)
+        # pool: cards with an MV-<= gate feeding a DestroyAll anywhere in the
+        # graph (the gate is often on an upstream node chained by Remember,
+        # so this is a card-level conjunction, not a single-node query)
+        import re
+        mv_examples = []
+        for rec2 in idx.records:
+            nodes = rec2.get("nodes") or []
+            has_destroy = any(nd.get("api") == "DestroyAll" for nd in nodes)
+            if not has_destroy:
+                continue
+            gates = [str((nd.get("params") or {}).get("ValidCards", ""))
+                     for nd in nodes]
+            gate = next((g for g in gates if "cmcLE" in g and "Creature" in g),
+                        None)
+            if gate is None:
+                continue
+            m = re.search(r"Creature\.cmcLE(\w+)", gate)
+            if m is None:
+                continue
+            bound = m.group(1)
+            if bound.isdigit():
+                if int(bound) < mv_pick:
+                    continue
+                cost_note = f"fixed <= {bound}"
+            else:
+                cost_note = f"X-scaling (pay X={clear_x} for full clear)"
+            if my_colors is not None:
+                cc = {c for c in (rec2.get("manaCost") or "") if c in "WUBRG"}
+                if not cc <= my_colors:
+                    continue
+            mv_examples.append((mana_value(rec2.get("manaCost")) or 9,
+                                rec2["name"], cost_note))
+        mv_examples = sorted(set(mv_examples))[:8]
+        mv_sweep = {"tier": mv_pick,
+                    "kills": sum(c for m, c, _n in mv_rows if m <= mv_pick),
+                    "bodies": mv_total,
+                    "kill_pct": round(100 * sum(c for m, c, _n in mv_rows
+                                                if m <= mv_pick) / mv_total, 1),
+                    "full_clear_x": clear_x,
+                    "survivors": sorted({n for m, c, n in mv_rows
+                                         if m > mv_pick}),
+                    "examples": [{"card": n, "note": note}
+                                 for _mv, n, note in mv_examples]}
+
     systemic = {}
     for cname, query in DISRUPTION.get(shape["gameplan"], DISRUPTION["generic"]).items():
         rows = []
@@ -203,4 +265,5 @@ def analyze_opponent(idx, by_name: dict, commander_rec: dict,
             "coverage_answers": best_coverage,
             "coverage_pool": len(coverage),
             "sweeper_sizing": sweeper,
+            "mv_sweep": mv_sweep,
             "systemic": systemic}
