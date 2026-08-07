@@ -1,11 +1,11 @@
 {
  "total_cards": 34519,
- "uncovered_cards": 2543,
+ "uncovered_cards": 2445,
  "clusters": [
   {
    "signature": "S:Continuous[AddKeyword@All]",
-   "uncovered_cards": 54,
-   "also_on_covered_cards": 337,
+   "uncovered_cards": 53,
+   "also_on_covered_cards": 338,
    "examples": [
     "Aegis of the Gods",
     "Banding Sliver",
@@ -43,8 +43,8 @@
   },
   {
    "signature": "S:MustAttack",
-   "uncovered_cards": 48,
-   "also_on_covered_cards": 52,
+   "uncovered_cards": 47,
+   "also_on_covered_cards": 53,
    "examples": [
     "Amarant Coral",
     "Angler Turtle",
@@ -52,45 +52,6 @@
     "Barricade Breaker",
     "Battle-Mad Ronin",
     "Berserkers of Blood Ridge"
-   ]
-  },
-  {
-   "signature": "R:DamageDone->replace",
-   "uncovered_cards": 44,
-   "also_on_covered_cards": 98,
-   "examples": [
-    "Angel of Suffering",
-    "Battletide Alchemist",
-    "Benevolent Unicorn",
-    "Bloatfly Swarm",
-    "Crumbling Sanctuary",
-    "Daunting Defender"
-   ]
-  },
-  {
-   "signature": "T:Phase->ChangeZone",
-   "uncovered_cards": 43,
-   "also_on_covered_cards": 208,
-   "examples": [
-    "Archwing Dragon",
-    "Blitz Hellion",
-    "Blood Clock",
-    "Boarded Window",
-    "Braids, Conjurer Adept",
-    "Briarbridge Patrol"
-   ]
-  },
-  {
-   "signature": "S:Continuous[AddPower+AddToughness@All]",
-   "uncovered_cards": 42,
-   "also_on_covered_cards": 717,
-   "examples": [
-    "Ascendant Evincar",
-    "Aven Brigadier",
-    "Bad Moon",
-    "Brothers Yamazaki",
-    "Call to Arms",
-    "Celestial Crusader"
    ]
   },
   {
@@ -120,16 +81,55 @@
    ]
   },
   {
+   "signature": "S:Continuous[AddPower+AddToughness@All]",
+   "uncovered_cards": 41,
+   "also_on_covered_cards": 718,
+   "examples": [
+    "Ascendant Evincar",
+    "Aven Brigadier",
+    "Bad Moon",
+    "Brothers Yamazaki",
+    "Call to Arms",
+    "Celestial Crusader"
+   ]
+  },
+  {
    "signature": "S:Continuous[AddPower@All]",
-   "uncovered_cards": 40,
-   "also_on_covered_cards": 113,
+   "uncovered_cards": 39,
+   "also_on_covered_cards": 114,
    "examples": [
     "Agoraphobia",
     "Anaba Spirit Crafter",
     "Archangel of Strife",
     "Beckoning Will-o'-Wisp",
     "Blade Sliver",
-    "Boarded Window"
+    "Bonesplitter Sliver"
+   ]
+  },
+  {
+   "signature": "S:RaiseCost",
+   "uncovered_cards": 38,
+   "also_on_covered_cards": 52,
+   "examples": [
+    "Aether Tide",
+    "Alabaster Leech",
+    "Anointed Peacekeeper",
+    "Arachne, Psionic Weaver",
+    "Aura of Silence",
+    "Boreal Elemental"
+   ]
+  },
+  {
+   "signature": "S:Continuous[SetPower@None]",
+   "uncovered_cards": 36,
+   "also_on_covered_cards": 29,
+   "examples": [
+    "Avalanche of Sector 7",
+    "Brotherhood Vertibird",
+    "Cephalopod Sentry",
+    "Coiling Woodworm",
+    "Dakmor Sorceress",
+    "Dauthi Warlord"
    ]
   }
  ]

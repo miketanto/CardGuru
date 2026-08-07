@@ -971,5 +971,255 @@
   ],
   "counterexample": "Bitterblossom \u2014 it has a T node with mode Phase (upkeep trigger), but its Execute chain reaches LoseLife and Token nodes, never a SetState node, so the all_of {trigger_mode: Phase, chains_to_api: SetState} conjunction fails. Also verified non-matching: Brutal Cathar, whose day/night flip is the Daybound keyword with no Phase->SetState chain.",
   "strategic_note": "These cards flip on an upkeep/main-phase check (WerewolfTransformCondition / WerewolfUntransformCondition: no spells cast last turn transforms to night side, two-plus spells flips back), so their power depends on controlling casting frequency, not just playing them. Complements bypass or lock the flip condition: external_transformers (Moonmist, Waxing Moon cast SetState/Transform at instant speed, flipping the whole pack without waiting a turn cycle), transform_locks (Immerwolf's CantTransform static keeps non-Human Werewolves on their stronger night face even when opponents cast two spells), and wolf_tribal_anthems (Continuous effects with Affected containing Werewolf \u2014 Howlpack Resurgence, Nightpack Ambusher \u2014 that reward committing to the tribe; several also carry Flash, which lets the player pass turns spell-free to trigger the transform while still deploying threats). Detector matched 141 records in data/dataset.jsonl.gz, a superset covering all 58 uncovered cluster cards' T:Phase->SetState signature; verification used chain edges only (ref:* excluded), matching querydsl reachability semantics."
+ },
+ {
+  "name": "phase_bouncer",
+  "describe": "moves permanents between zones on a beginning-of-phase trigger, typically returning itself to hand each end step",
+  "detect": {
+   "all_of": [
+    {
+     "trigger_mode": "Phase",
+     "chains_to_api": "ChangeZone"
+    }
+   ]
+  },
+  "complements": {
+   "etb_payoffs": {
+    "chain": {
+     "from": {
+      "kind": "T",
+      "mode": "ChangesZone",
+      "params": {
+       "Destination": "Battlefield",
+       "ValidCard": {
+        "contains": "Creature"
+       }
+      }
+     },
+     "to": {}
+    }
+   },
+   "creature_cast_triggers": {
+    "chain": {
+     "from": {
+      "kind": "T",
+      "mode": "SpellCast",
+      "params": {
+       "ValidCard": {
+        "contains": "Creature"
+       }
+      }
+     },
+     "to": {}
+    }
+   },
+   "creature_cost_reducers": {
+    "node": {
+     "kind": "S",
+     "mode": "ReduceCost",
+     "params": {
+      "ValidCard": {
+       "contains": "Creature"
+      }
+     }
+    }
+   }
+  },
+  "example_cards_verified": [
+   "Archwing Dragon",
+   "Blitz Hellion",
+   "Arms Scavenger",
+   "Viashino Sandstalker",
+   "Cache Raiders",
+   "Arclight Phoenix"
+  ],
+  "counterexample": "Man-o'-War - its bounce hangs off a ChangesZone (ETB) trigger, not a Phase trigger; verified rejected by the detector",
+  "strategic_note": "Core family is haste bodies (Archwing Dragon, Viashino Sandstalker) whose end-step self-bounce dodges sorcery-speed removal and converts each turn's mana into a fresh cast: every recast re-fires ETB payoffs (Impact Tremors, Purphoros, Terror of the Peaks \u2014 all verified against the ETB-payoff query) and creature-cast triggers (Beast Whisperer), while cost reducers (Goreclaw, Rhythm of the Wild) offset the recurring mana tax. The structural signature is broader than the self-bounce core \u2014 it also catches upkeep recursion engines (Arclight Phoenix, Akuta) and repeat-bounce engines (Cache Raiders), which share the recast-loop synergies; complements were chosen to hold across the whole family. Distinct from the existing phase_engine hook, which only covers Phase triggers chaining to Pump/DealDamage/Dig, never ChangeZone. Validation gate passed: 251/34519 pool matches (0.73%)."
+ },
+ {
+  "name": "mitigates_damage",
+  "describe": "modifies incoming damage downward via a replacement effect: prevents it, reduces it, redirects it elsewhere, or converts it into something else (counters, mill, exile) instead of letting it resolve as dealt",
+  "detect": {
+   "any_of": [
+    {
+     "replacement_event": "DamageDone",
+     "replace_with": "DBReplace"
+    },
+    {
+     "replacement_event": "DamageDone",
+     "replace_with": "DmgMinus"
+    },
+    {
+     "replacement_event": "DamageDone",
+     "replace_with": "Counters"
+    },
+    {
+     "replacement_event": "DamageDone",
+     "replace_with": "Mill"
+    },
+    {
+     "replacement_event": "DamageDone",
+     "replace_with": "DmgSelf"
+    },
+    {
+     "replacement_event": "DamageDone",
+     "replace_with": "DmgMe"
+    },
+    {
+     "replacement_event": "DamageDone",
+     "replace_with": "DmgEnchanted"
+    },
+    {
+     "replacement_event": "DamageDone",
+     "replace_with": "DmgEquipped"
+    },
+    {
+     "replacement_event": "DamageDone",
+     "replace_with": "DmgHalfDown"
+    },
+    {
+     "replacement_event": "DamageDone",
+     "replace_with": "ExileTop"
+    }
+   ]
+  },
+  "complements": {
+   "symmetric_mass_damage": {
+    "node": {
+     "api": "DamageAll"
+    }
+   },
+   "indestructible_redirect_targets": {
+    "all": [
+     {
+      "card": {
+       "types": {
+        "contains": "Creature"
+       }
+      }
+     },
+     {
+      "keyword": "Indestructible"
+     }
+    ]
+   },
+   "damaged_self_payoffs": {
+    "chain": {
+     "from": {
+      "kind": "T",
+      "mode": "DamageDone",
+      "params": {
+       "ValidTarget": {
+        "contains": "Self"
+       }
+      }
+     },
+     "to": {}
+    }
+   }
+  },
+  "example_cards_verified": [
+   "Battletide Alchemist",
+   "Angel of Suffering",
+   "Benevolent Unicorn",
+   "Bloatfly Swarm",
+   "Crumbling Sanctuary",
+   "Daunting Defender",
+   "Pariah"
+  ],
+  "counterexample": "Dictate of the Twin Gods - it carries the exact same R node shell (Event$ DamageDone with ReplaceWith), but its replacement (DmgTwice -> ReplaceEffect doubling DamageAmount) amplifies damage instead of mitigating it; it belongs to the sibling amplifies_damage concept and is verified rejected by this detector, along with Angrath's Marauders, Curse of Bloodletting, Fiery Emancipation, and Gratuitous Violence.",
+  "strategic_note": "This is the modify-not-amplify half of the R:DamageDone->replace signature (209 cards dataset-wide: 68 plain Prevent$True nodes belong to the separate R:DamageDone->other cluster, 50 amplifiers to amplifies_damage, leaving ~92 here). Since the replace_with primitive substring-matches the ReplaceWith SVar name, the detector enumerates the mitigation naming conventions - DBReplace (resolves to the ReplaceDamage prevention DB: Battletide Alchemist, Daunting Defender), DmgMinus/DmgHalfDown (reduction: Benevolent Unicorn, Ghosts of the Innocent), DmgSelf/DmgMe/DmgEnchanted/DmgEquipped (redirection: Pariah, Palisade Giant), and Counters/Mill/ExileTop (conversion: Bloatfly Swarm, Angel of Suffering, Crumbling Sanctuary) - all disjoint from the amplifier names (DmgTwice/DmgPlus*/DmgTriple/DamageReplace), so the two concepts partition the family with zero overlap except deliberate dual-role cards (Gisela, Blade of Goldnight legitimately matches both). Gate: 74 pool matches (0.21%), 7/7 examples pass, 5 amplifier counterexamples rejected. Strategically these cards break damage symmetry: symmetric_mass_damage (405 hits - Pestilence/Earthquake effects become one-sided wipes behind Daunting Defender-style prevention), indestructible_redirect_targets (76 - the classic Pariah-plus-unkillable-creature lock), and damaged_self_payoffs (9 - punishers like Phyrexian Obliterator and Tephraderm that turn redirected damage into a threat). The remaining Prevent$True no-ReplaceWith subfamily (Bubble Matrix, Bronze Horse) still needs its own concept - the current primitives cannot express a forbidden ReplaceWith, so folding it in here was not possible without a new primitive."
+ },
+ {
+  "name": "debuffs_opponent_creatures",
+  "describe": "continuously shrinks opponents' creatures with a -P/-T field",
+  "detect": {
+   "any_of": [
+    {
+     "continuous_params": [
+      "AddPower",
+      "AddToughness"
+     ],
+     "affected_contains": "OppCtrl"
+    },
+    {
+     "continuous_params": [
+      "AddPower",
+      "AddToughness"
+     ],
+     "affected_contains": "YouDontCtrl"
+    },
+    {
+     "continuous_params": [
+      "AddPower",
+      "AddToughness"
+     ],
+     "affected_contains": "EnchantedPlayerCtrl"
+    }
+   ]
+  },
+  "complements": {
+   "stacking_debuff_fields": {
+    "all": [
+     {
+      "node": {
+       "mode": "Continuous",
+       "params": {
+        "AddToughness": {
+         "regex": "^-"
+        },
+        "Affected": {
+         "contains": "Creature"
+        }
+       }
+      }
+     },
+     {
+      "not": {
+       "card": {
+        "types": {
+         "contains": "Equipment"
+        }
+       }
+      }
+     }
+    ]
+   },
+   "repeatable_pingers": {
+    "node": {
+     "kind": "A",
+     "apiKind": "AB",
+     "api": "DealDamage",
+     "params": {
+      "Cost": {
+       "contains": "T"
+      }
+     }
+    }
+   },
+   "death_payoffs": {
+    "chain": {
+     "from": {
+      "kind": "T",
+      "mode": "ChangesZone",
+      "params": {
+       "Origin": "Battlefield",
+       "Destination": "Graveyard"
+      }
+     },
+     "to": {}
+    }
+   }
+  },
+  "example_cards_verified": [
+   "Elesh Norn, Grand Cenobite",
+   "Ethereal Absolution",
+   "Toxrill, the Corrosive",
+   "Plague Engineer",
+   "M.O.D.O.K.",
+   "Curse of Death's Hold"
+  ],
+  "counterexample": "Aven Brigadier - carries the cluster's exact S:Continuous[AddPower+AddToughness] global-scope signature, but it is a symmetric positive lord (Affected \"Creature.Bird+Other\" / \"Creature.Soldier+Other\", +1/+1 each): it pumps every player's Birds and Soldiers rather than shrinking anyone's board. Its Affected strings contain none of the opponent-facing scopes (OppCtrl / YouDontCtrl / EnchantedPlayerCtrl), so the detector rejects it (verified False in the dataset, as are Glorious Anthem, Common Cause, and Leyline of the Meek).",
+  "strategic_note": "This concept deliberately takes the hint's anti-token/stax reading and covers the cleanly-expressible core of the cluster: continuous -X/-X fields scoped to creatures the controller does NOT control (Elesh Norn, Ethereal Absolution, M.O.D.O.K., Plague Engineer, Smog Elemental, Toxrill, Curse of Death's Hold - 7/34519 records, so it easily passes the selectivity gate). Empirically these three Affected scopes (OppCtrl, YouDontCtrl, EnchantedPlayerCtrl) are 100% negative-polarity in the dataset (0 positive collisions). The cluster's symmetric-negative subfamily (Night of Souls' Betrayal Affected=\"Creature\", Ascendant Evincar \"Creature.nonBlack\", Engineered Plague \"Creature.ChosenType\", Virulent Plague/Illness in the Ranks \"Creature.token\") is structurally indistinguishable from positive global lords (Common Cause \"Creature.nonArtifact\" +2/+2, Leyline of the Meek \"Creature.token\" +1/+1, Aven Brigadier) under the current primitive vocabulary, because continuous_params tests only key presence and affected_contains cannot test the SIGN of AddPower/AddToughness. To extend coverage to those ~15 remaining cluster cards, the induction primitives need a value-sign predicate (e.g. {\"continuous_params\": [...], \"param_value_regex\": {\"AddPower\": \"^-\"}}); note the query DSL already supports this via regex VPs - the stacking_debuff_fields complement query shows the exact shape. Synergy logic: the field turns X/1 tokens into corpses on arrival (death_payoffs profit from the continuous sweep), converts 1-damage pingers into repeatable removal for 2-toughness creatures, and stacks with other -toughness fields to raise the sweep threshold; the same queries double as the \"throttled-by\" view for go-wide token decks."
  }
 ]
