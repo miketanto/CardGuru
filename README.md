@@ -22,6 +22,11 @@ Plans built on those findings:
   confidently-wrong as the gating metric
 - [plan/roadmap.md](plan/roadmap.md) — phases, riskiest-first ordering, explicit kill criteria
 - [plan/uncertainties.md](plan/uncertainties.md) — ranked list of what's still unknown
+- [research/generalized-discovery.md](research/generalized-discovery.md) — autonomous
+  concept-gap mining, ablation importance, induction pipeline results
+- [research/answer-frames-and-deck-fingerprints.md](research/answer-frames-and-deck-fingerprints.md) —
+  taxonomic vs ontological gaps (the Annul/Disdainful lesson), lifecycle edge-cut framing,
+  timing cost profiles, and the per-deck fingerprint-graph proposal
 
 Reproduce: `research/scripts/` (pure-Python parser + search prototype;
 `CardGuruFeasibilityTest.java` drops into XMage's `Mage.Tests`). Pins: Forge `670429bf`,
