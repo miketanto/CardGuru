@@ -133,10 +133,32 @@ deck run" graph.
   count), not mechanical; 60-card availability makes centrality fuzzier
   than singleton-plus-commander.
 
-First increment when resumed: intra-deck edge extractor over the three demo
-decks (Dimir Midrange, Selesnya Gearhulk, Jeskai Lessons), emit the
-fingerprint, check whether min-cut on Jeskai Lessons points at what a human
-would call its engine.
+**First increment built** (`cardguru/fingerprint.py`, `cardguru
+fingerprint --list decks/dimir_deck.txt`): nodes weighted by copies, edges
+from hook complements (enabler→payoff), Brandes betweenness + weighted
+degree, sole-provider detection (min-cut lite: dependencies with no
+parallel path), and a break plan attaching exposure windows + preferred
+interdiction to each linchpin.
+
+Result on live Standard Dimir Midrange: top linchpin **Enduring Curiosity
+x4** (score 24, next card 13); spine `combat_damage_matters` — Deep-Cavern
+Bat and Flitterwing Nuisance feed its draw trigger; break plan says AVOID
+battlefield-destroy (Enduring recursion → rental), preferred cut **stack
+(counter)**, with exile-class removal as the battlefield fallback — piping
+the linchpin into `cardguru answers` lists the concrete cards (exile
+effects and exile-rider burn YES, all 735 plain destroys demoted). This
+matches expert consensus on the matchup, derived with zero deck-specific
+code. Golden tests: `tests/test_fingerprint.py`.
+
+Found and fixed en route: the reanimator hook detector counted
+self-return death triggers (Enduring cycle) as "reanimator wants fodder";
+now a return executed by a `ValidCard Card.Self` trigger is recursion, not
+a reanimation hook — the false `reanimator` spine family disappeared from
+the Dimir fingerprint.
+
+Still open from the proposal: timing-annotated edges, engine-ablation
+receipts (goldfish with linchpin neutralized), emergent-resource nodes,
+and the Commander-deck run where availability weighting matters most.
 
 ## Open work / recoverable state
 

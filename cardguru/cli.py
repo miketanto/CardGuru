@@ -357,6 +357,54 @@ def cmd_deck(args):
             print(f"       {'; '.join(s['why'][:2])}")
 
 
+def cmd_fingerprint(args):
+    from .deck import parse_decklist
+    from .fingerprint import break_plan, build_fingerprint
+
+    idx = SearchIndex.load(args.dataset)
+    by_name = {}
+    for r in idx.records:
+        by_name.setdefault(r.get("name"), r)
+    with open(args.list, encoding="utf-8") as f:
+        decklist = parse_decklist(f.read())
+    fp = build_fingerprint(by_name, decklist)
+    print(f"# fingerprint: {args.list} - {len(fp['nodes'])} functional cards, "
+          f"{len(fp['edges'])} intra-deck edges")
+
+    print("\n== engine spine (dominant edge families)")
+    for s in fp["spine"][:5]:
+        print(f"  {s['weight']:3}  {s['family']}")
+        print(f"       enablers: {', '.join(s['enablers'][:6])}")
+        print(f"       payoffs:  {', '.join(s['payoffs'][:6])}")
+
+    print("\n== linchpins (centrality x availability, "
+          "+ sole-provider bonus)")
+    for name, score in fp["linchpins"][:8]:
+        meta = fp["nodes"][name]
+        tags = []
+        if meta["wincon"]:
+            tags.append("wincon")
+        tags += meta["interaction"]
+        sole = fp["sole_provider"].get(name)
+        if sole:
+            tags.append(f"SOLE PROVIDER: {sole[0]}")
+        print(f"  {score:6}  {name} x{meta['copies']}"
+              f"  [{', '.join(tags) or 'engine'}]")
+
+    print("\n== break plan")
+    for plan in break_plan(by_name, fp, top=args.top):
+        print(f"\n  {plan['card']}  (score {plan['score']})")
+        for w in plan["why_linchpin"][:3]:
+            print(f"    linchpin because: {w}")
+        for a in plan["avoid"]:
+            print(f"    AVOID {a['window']}: {a['note']}")
+        for w in plan["windows"]:
+            print(f"    open {w['window']}: {w['note']}")
+        if plan["ward"]:
+            print(f"    note: {plan['ward']}")
+        print(f"    preferred cut: {plan['preferred']}")
+
+
 def cmd_threats(args):
     from .answers import load_token_scripts
     from .deck import parse_decklist
@@ -567,6 +615,15 @@ def main(argv=None):
     th.add_argument("--colors", help="your colors, e.g. WU")
     th.add_argument("--dataset", default=DEFAULT_DATASET)
     th.set_defaults(fn=cmd_threats)
+
+    fp = sub.add_parser("fingerprint",
+                        help="per-deck causal graph: what makes it run, "
+                             "where to cut it")
+    fp.add_argument("--list", required=True, help="decklist file")
+    fp.add_argument("--top", type=int, default=3,
+                    help="linchpins to build break plans for")
+    fp.add_argument("--dataset", default=DEFAULT_DATASET)
+    fp.set_defaults(fn=cmd_fingerprint)
 
     gp = sub.add_parser("gaps",
                         help="mine unexplained structural clusters (candidate concepts)")

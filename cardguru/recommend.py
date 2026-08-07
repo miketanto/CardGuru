@@ -133,8 +133,15 @@ def _detect_landfall(rec):
 def _detect_reanimator(rec):
     """Recurs cards from graveyards: to the battlefield (Reanimate, and
     Living Death's mass ChangeZoneAll via exile) or to hand (Genesis)."""
+    # returns executed by a SELF trigger (Enduring-cycle death triggers)
+    # are recursion, not a reanimator wanting fodder in graveyards
+    self_exec = {_params(t).get("Execute") for t in _nodes(rec)
+                 if t.get("kind") == "T"
+                 and "Self" in str(_params(t).get("ValidCard", ""))}
     for n in _nodes(rec):
         p = _params(n)
+        if n.get("id") in self_exec or "Self" in str(p.get("Defined", "")):
+            continue
         if n.get("api") in ("ChangeZone", "ChangeZoneAll") \
                 and p.get("Origin") == "Graveyard" \
                 and p.get("Destination") in ("Battlefield", "Hand", "Exile"):
