@@ -64,3 +64,13 @@ def test_break_plan_prefers_history_clean_cut(by_name, dimir_fp):
     assert plan["card"] == "Enduring Curiosity"
     assert plan["preferred"].startswith("stack")
     assert any("destroy is rental" in a["note"] for a in plan["avoid"])
+
+
+def test_kaito_break_plan_derives_the_edict(by_name, dimir_fp):
+    from cardguru.fingerprint import break_plan
+    fp, _ = dimir_fp
+    plans = break_plan(by_name, fp, top=8)
+    kaito = next(p for p in plans if p["card"].startswith("Kaito"))
+    assert kaito["preferred"].startswith("edict")
+    assert any("GUARANTEED" in w["note"] for w in kaito["windows"])
+    assert any("phase-shifter" in a["note"] for a in kaito["avoid"])

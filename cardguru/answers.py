@@ -60,6 +60,22 @@ def threat_profile(rec: dict) -> dict:
                     and (chained.get("params") or {}).get("Destination") \
                     == "Battlefield":
                 recursive = True
+    # self-shape-shifting: a conditional static the card puts on ITSELF
+    # (Kaito: during your turn, a 3/4 hexproof Ninja that stops being a
+    # planeswalker) makes the targeted window PHASE-DEPENDENT
+    self_statics = []
+    for n in rec.get("nodes", []):
+        p = n.get("params") or {}
+        if p.get("Mode") == "Continuous" and "Self" in str(p.get("Affected", "")):
+            g_kws = [k.strip() for k in str(p.get("AddKeyword", "")).split("&")
+                     if k.strip()]
+            g_types = [t.strip() for t in str(p.get("AddType", "")).split("&")
+                       if t.strip()]
+            if g_kws or g_types:
+                self_statics.append({
+                    "condition": p.get("Condition"),
+                    "keywords": g_kws, "types": g_types,
+                    "removes_types": p.get("RemoveCardTypes") == "True"})
     mc = rec.get("manaCost")
     mv = None
     if mc and mc != "no cost":
@@ -77,6 +93,7 @@ def threat_profile(rec: dict) -> dict:
         "mv": mv,
         "uncounterable": uncounterable,
         "recursive": recursive,
+        "self_statics": self_statics,
         "is_creature": "Creature" in types,
         "is_land": "Land" in types,
         "pt_is_cda": "*" in pt,
@@ -180,6 +197,9 @@ ANSWER_QUERIES = {
                                             "NumDef": {"regex": "^-"}}}},
     "edict_sacrifice": {"node": {"api": "Sacrifice",
                                  "params": {"ValidTgts": {"contains": "Player"}}}},
+    "edict_sacrifice_mass": {"node": {"api": "Sacrifice",
+                                      "params": {"Defined": {"contains": "Opponent"},
+                                                 "SacValid": {"regex": "."}}}},
     "bounce_target": {"node": {"api": "ChangeZone",
                                "params": {"Origin": "Battlefield",
                                           "Destination": "Hand",
@@ -408,14 +428,58 @@ def evaluate_answer(klass: str, answer_rec: dict, node_params: dict,
                 return {"works": False,
                         "reasons": [f"can only target {word.lower()} - "
                                     f"threat isn't {word.lower()}"]}
-        legal = _battlefield_target_legal(tgts, profile)
-        if legal is False:
-            return {"works": False,
-                    "reasons": [f"targeting-illegal: hits only '{tgts}'"]}
-        if legal is None:
-            works = None
-            reasons.append(f"conditional: targeting restriction '{tgts}' "
-                           "not fully evaluated")
+        shifters = [g for g in profile.get("self_statics", [])
+                    if g.get("condition") == "PlayerTurn"
+                    and (g["keywords"] or g["types"])]
+        if shifters:
+            # the card is a different object on each player's turn: evaluate
+            # the targeting window per phase (Kaito: hexproof creature on the
+            # controller's turn, plain planeswalker on yours)
+            g = shifters[0]
+            base_types = profile["types"]
+            if g["removes_types"]:
+                kept = [w for w in base_types.split()
+                        if w not in ("Creature", "Artifact", "Enchantment",
+                                     "Planeswalker", "Land", "Battle")]
+                ctrl_types = " ".join(kept + g["types"])
+            else:
+                ctrl_types = base_types + " " + " ".join(g["types"])
+            ctrl_prof = dict(profile, types=ctrl_types,
+                             keywords=set(profile.get("keywords") or set())
+                             | set(g["keywords"]))
+            ctrl_open = _battlefield_target_legal(tgts, ctrl_prof)
+            if {"Hexproof", "Shroud"} & set(g["keywords"]):
+                ctrl_open = False
+            your_open = _battlefield_target_legal(tgts, profile)
+            grant_desc = " ".join(g["types"]) + (
+                " with " + "/".join(g["keywords"]) if g["keywords"] else "")
+            base_card_type = next(
+                (w for w in base_types.split()
+                 if w in ("Creature", "Artifact", "Enchantment",
+                          "Planeswalker", "Land", "Battle")), base_types)
+            if ctrl_open is False and your_open is False:
+                return {"works": False, "reasons": [
+                    f"no open targeting window: on its controller's turn it "
+                    f"is a {grant_desc} (closed to '{tgts}'), on yours it is "
+                    f"a {base_card_type} that '{tgts}' can't target"]}
+            if your_open and ctrl_open is False:
+                reasons.append(
+                    f"timing: target it on YOUR turn only - on its "
+                    f"controller's turn it is a {grant_desc}")
+            elif ctrl_open and your_open is False:
+                works = None
+                reasons.append(
+                    f"conditional: only targetable on its controller's turn, "
+                    f"when it is a {grant_desc}")
+        else:
+            legal = _battlefield_target_legal(tgts, profile)
+            if legal is False:
+                return {"works": False,
+                        "reasons": [f"targeting-illegal: hits only '{tgts}'"]}
+            if legal is None:
+                works = None
+                reasons.append(f"conditional: targeting restriction '{tgts}' "
+                               "not fully evaluated")
         if any(str(k).startswith("Condition") for k in node_params):
             works = None
             reasons.append("conditional: effect checks a condition on "
@@ -455,9 +519,30 @@ def evaluate_answer(klass: str, answer_rec: dict, node_params: dict,
                         "reasons": [f"-{shrink} toughness < {profile['toughness']}"]}
             reasons.append(f"-{shrink} toughness kills through indestructible")
 
-    if klass == "edict_sacrifice":
+    if klass in ("edict_sacrifice", "edict_sacrifice_mass"):
+        sv = str(node_params.get("SacValid", ""))
+        head = sv.split(".")[0] if sv else ""
+        card_types = {"Creature", "Artifact", "Enchantment", "Planeswalker",
+                      "Land", "Battle"}
+        if head in card_types:
+            base_has = head in (profile.get("types") or "")
+            granted_has = any(head in g.get("types", [])
+                              for g in profile.get("self_statics", []))
+            if not base_has and not granted_has:
+                return {"works": False,
+                        "reasons": [f"this mode sacrifices a {head.lower()} - "
+                                    "the threat never is one"]}
+            if not base_has and granted_has:
+                works = None
+                reasons.append(f"conditional: only a {head.lower()} during "
+                               "its controller's turn - resolve the edict then")
         works = None if works else works
-        reasons.append("conditional: opponent chooses; dodges hexproof/indestructible")
+        reasons.append("conditional: opponent chooses among their "
+                       f"{head.lower() + 's' if head else 'permanents'}; "
+                       "dodges hexproof/indestructible")
+        if any(g.get("condition") for g in profile.get("self_statics", [])):
+            reasons.append("never targets, so phase-shifting and "
+                           "granted hexproof are irrelevant")
 
     if klass == "ability_removal":
         dep = profile.get("ability_dependent", ["removes abilities"])
@@ -505,12 +590,30 @@ def _class_queries(profile: dict) -> dict:
         tgt_words.append("Creature")
     if profile["is_land"]:
         tgt_words.append("Land")
+    if "Planeswalker" in (profile.get("types") or ""):
+        tgt_words.append("Planeswalker")
+    # a phase-shifter's granted types open those target classes on-turn
+    for g in profile.get("self_statics", []):
+        for t in g.get("types", []):
+            if t in ("Creature", "Artifact", "Enchantment") \
+                    and t not in tgt_words:
+                tgt_words.append(t)
     tgt = {"regex": "|".join(tgt_words)}
     queries = {}
+    # a phase-shifter that becomes a creature (Kaito) is edict-able and,
+    # as a planeswalker, sac-a-planeswalker-able: edicts never target, so
+    # they apply to whatever the card is when the sacrifice resolves
+    creaturish = profile["is_creature"] or any(
+        "Creature" in g.get("types", [])
+        for g in profile.get("self_statics", []))
+    edictable = creaturish or "Planeswalker" in (profile.get("types") or "")
     for klass, q in ANSWER_QUERIES.items():
         creature_only = klass in ("damage_target", "minus_toughness",
                                   "edict_sacrifice", "destroy_all")
-        if creature_only and not profile["is_creature"]:
+        if klass in ("edict_sacrifice", "edict_sacrifice_mass"):
+            if not edictable:
+                continue
+        elif creature_only and not profile["is_creature"]:
             continue
         if klass == "counter_spell" and profile["is_land"]:
             continue                       # lands are played, never cast
@@ -573,19 +676,22 @@ def find_answers(idx, threat_rec: dict, colors: set[str] | None = None,
                 if not card_colors <= colors:
                     continue
             qnode = query["node"]
-            node = next(
-                (n for n in rec["nodes"]
-                 if (qnode.get("api") is not None
-                     and n.get("api") == qnode["api"])
-                 or (qnode.get("api") is None and qnode.get("mode") is not None
-                     and (n.get("mode") == qnode["mode"]
-                          or (n.get("params") or {}).get("Mode") == qnode["mode"]))),
-                None)
-            verdict = evaluate_answer(klass, rec, (node or {}).get("params", {}),
-                                      profile)
+            cand = [n for n in rec["nodes"]
+                    if (qnode.get("api") is not None
+                        and n.get("api") == qnode["api"])
+                    or (qnode.get("api") is None and qnode.get("mode") is not None
+                        and (n.get("mode") == qnode["mode"]
+                             or (n.get("params") or {}).get("Mode") == qnode["mode"]))]
+            # modal cards (Charms, Sheoldred's Edict) carry several nodes of
+            # the same api: the card is as good as its BEST mode
+            rank = {True: 0, None: 1, False: 2}
+            verdict = min(
+                (evaluate_answer(klass, rec, (n or {}).get("params", {}), profile)
+                 for n in cand or [{}]),
+                key=lambda v: rank[v["works"]])
             rows.append({"card": rec["name"], "manaCost": rec.get("manaCost"),
                          **verdict})
-        rows.sort(key=lambda r: (r["works"] is not True, r["works"] is None,
+        rows.sort(key=lambda r: ({True: 0, None: 1, False: 2}[r["works"]],
                                  len(r.get("manaCost") or "zzzz"), r["card"]))
         out["classes"][klass] = {
             "total": len(rows),

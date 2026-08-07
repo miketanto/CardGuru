@@ -197,6 +197,9 @@ def _interdiction(rec: dict, meta: dict) -> dict:
     prof = threat_profile(rec)
     windows, avoid = [], []
     mv = meta.get("mv")
+    shifter = next((g for g in prof.get("self_statics", [])
+                    if g.get("condition") == "PlayerTurn"
+                    and (g["keywords"] or g["types"])), None)
     windows.append({"window": "hand",
                     "note": f"hand attack works until ~turn {mv or '?'}"
                             " (proactive, full information, decays to topdecks)"})
@@ -222,12 +225,40 @@ def _interdiction(rec: dict, meta: dict) -> dict:
         preferred = "battlefield (exile / -X-X), or stack"
         avoid.append({"window": "battlefield-destroy",
                       "note": "indestructible"})
+    elif shifter:
+        desc = " ".join(shifter["types"]) + (
+            " with " + "/".join(shifter["keywords"])
+            if shifter["keywords"] else "")
+        avoid.append({"window": "battlefield-targeted",
+                      "note": f"phase-shifter: a {desc} on its controller's "
+                              "turn - targeted removal has at most a "
+                              "your-turn-only window"})
+        preferred = "edict/sacrifice (targets the player - ignores " \
+                    "phase-shifting and granted hexproof), or your-turn " \
+                    "removal that can hit its base type"
     else:
         windows.append({"window": "battlefield",
                         "note": "ordinary removal window"})
         preferred = "cheapest available (no protections detected)"
     return {"card": rec.get("name"), "windows": windows, "avoid": avoid,
             "preferred": preferred, "ward": prof["ward"]}
+
+
+def _edict_precision(by_name: dict, fp: dict, name: str) -> str | None:
+    """Deck-context sharpening: a class-restricted edict is a guaranteed hit
+    when the linchpin is the deck's ONLY card of its class."""
+    rec = by_name.get(name)
+    types = (rec or {}).get("types") or ""
+    for klass in ("Planeswalker",):
+        if klass in types:
+            others = [n for n in fp["nodes"]
+                      if n != name and klass in
+                      ((by_name.get(n) or {}).get("types") or "")]
+            if not others:
+                return (f"a sacrifice-a-{klass.lower()} edict is a "
+                        f"GUARANTEED hit: it is the deck's only {klass.lower()}, "
+                        "and sacrifice never targets")
+    return None
 
 
 def break_plan(by_name: dict, fp: dict, top: int = 3) -> list[dict]:
@@ -239,5 +270,8 @@ def break_plan(by_name: dict, fp: dict, top: int = 3) -> list[dict]:
         plan = _interdiction(rec, fp["nodes"][name])
         plan["score"] = score
         plan["why_linchpin"] = fp["sole_provider"].get(name, [])
+        precision = _edict_precision(by_name, fp, name)
+        if precision:
+            plan["windows"].append({"window": "edict", "note": precision})
         plans.append(plan)
     return plans

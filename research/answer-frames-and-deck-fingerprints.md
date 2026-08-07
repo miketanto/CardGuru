@@ -156,6 +156,37 @@ now a return executed by a `ValidCard Card.Self` trigger is recursion, not
 a reanimation hook — the false `reanimator` spine family disappeared from
 the Dimir fingerprint.
 
+**Second increment — the Kaito/Sheoldred's Edict derivation.** The user
+named the real matchup answer (Sheoldred's Edict) and asked whether the
+system could have found it. Post-mortem: every needed fact was one S node
+Forge already encodes —
+
+    S:Continuous | Affected Permanent.Self+counters_GE1_LOYALTY
+      | Condition PlayerTurn | AddType Creature & Ninja
+      | RemoveCardTypes True | AddKeyword Hexproof
+
+— but threat_profile only read K nodes, so conditionally self-granted
+hexproof and phase-dependent types were invisible. Now implemented:
+
+- `self_statics` in threat_profile capture conditional self-grants;
+- targeted-removal evaluation is per-phase: creature removal vs Kaito =
+  "no open targeting window" (hexproof creature on their turn, not a
+  creature on yours); planeswalker-capable removal = "YOUR turn only";
+- edicts extended to modal/untargeted forms (Charm nodes with
+  `Defined$ Opponent` + `SacValid`), per-mode class precision, and
+  find_answers takes a modal card's BEST mode;
+- fingerprint deck-context sharpening: a class-restricted edict is a
+  GUARANTEED hit when the linchpin is the deck's only card of its class —
+  Kaito's break plan now reads "preferred cut: edict/sacrifice", with
+  Sheoldred's Edict's SacPW mode the canonical instance.
+
+The general lesson repeats the Annul one at the state level: the profile
+was *state-static* while the card is *phase-dependent*. Timing is not an
+annotation on answers only; threats have time-varying shapes, and windows
+must be evaluated per phase. Known residual: ninjutsu (empty K node)
+bypasses the stack window, so "counter it" overclaims vs a ninjutsu
+deployment; keyword-param parsing for ninjutsu is future work.
+
 Still open from the proposal: timing-annotated edges, engine-ablation
 receipts (goldfish with linchpin neutralized), emergent-resource nodes,
 and the Commander-deck run where availability weighting matters most.

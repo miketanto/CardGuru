@@ -173,3 +173,60 @@ def test_evaluate_answer_applies_battlefield_legality():
         {"ValidTgts": "Creature.withFlying"}, _prof())
     assert verdict["works"] is False
     assert "targeting-illegal" in verdict["reasons"][0]
+
+
+# ---------------------------------------------------- phase-shifters (Kaito)
+
+KAITO_REC = {
+    "name": "Kaito-like", "types": "Legendary Planeswalker Kaito",
+    "manaCost": "2 U B",
+    "nodes": [{"id": "s0", "kind": "S",
+               "params": {"Mode": "Continuous",
+                          "Affected": "Permanent.Self+counters_GE1_LOYALTY",
+                          "Condition": "PlayerTurn",
+                          "AddType": "Creature & Ninja",
+                          "RemoveCardTypes": "True",
+                          "SetPower": "3", "SetToughness": "4",
+                          "AddKeyword": "Hexproof"}}],
+}
+
+
+def test_profile_reads_conditional_self_static():
+    from cardguru.answers import threat_profile
+    prof = threat_profile(KAITO_REC)
+    g = prof["self_statics"][0]
+    assert g["condition"] == "PlayerTurn"
+    assert "Hexproof" in g["keywords"]
+    assert "Creature" in g["types"] and g["removes_types"]
+
+
+def test_creature_removal_has_no_window_vs_phase_shifter():
+    from cardguru.answers import evaluate_answer, threat_profile
+    prof = threat_profile(KAITO_REC)
+    v = evaluate_answer("destroy_target", {"name": "x", "manaCost": "1 B"},
+                        {"ValidTgts": "Creature"}, prof)
+    assert v["works"] is False
+    assert "no open targeting window" in v["reasons"][0]
+
+
+def test_pw_removal_gets_your_turn_only_window():
+    from cardguru.answers import evaluate_answer, threat_profile
+    prof = threat_profile(KAITO_REC)
+    v = evaluate_answer("destroy_target", {"name": "x", "manaCost": "1 B"},
+                        {"ValidTgts": "Creature,Planeswalker"}, prof)
+    assert v["works"] is True
+    assert any("YOUR turn only" in r for r in v["reasons"])
+
+
+def test_edict_mode_precision_vs_phase_shifter():
+    from cardguru.answers import evaluate_answer, threat_profile
+    prof = threat_profile(KAITO_REC)
+    pw = evaluate_answer("edict_sacrifice_mass", {"name": "x"},
+                         {"Defined": "Opponent", "SacValid": "Planeswalker"},
+                         prof)
+    assert pw["works"] is None
+    assert any("never targets" in r for r in pw["reasons"])
+    ench = evaluate_answer("edict_sacrifice_mass", {"name": "x"},
+                           {"Defined": "Opponent", "SacValid": "Enchantment"},
+                           prof)
+    assert ench["works"] is False
