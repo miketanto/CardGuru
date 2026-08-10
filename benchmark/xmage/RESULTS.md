@@ -77,11 +77,55 @@ choice-light). Both players RandomPlayer. 30 games, turn bound 50.
 
 ## B4 — parallel process scaling
 
-<!-- B4_TABLE -->
+Each worker = one `mvn surefire` invocation (a Maven parent JVM + a test
+JVM), 15 games after 3 warmup, aggregate = sum of in-JVM game rates.
+
+| P processes | aggregate games/sec | speedup | peak java RSS |
+|---|---|---|---|
+| 1 | 1.05 | 1.0× | 1.0 GB |
+| 2 | 1.96 | 1.87× | 2.0 GB |
+| 4 | 2.36 | 2.25× | 4.3 GB |
+| 8 | 2.31 | 2.20× | 8.0 GB |
+
+**Near-linear to P=2, flattening at P=4, saturated by P=8 — on a 4-core
+box where each worker is TWO JVMs** (the Maven parent burns real CPU).
+This is a lower bound on scaling: a production harness would launch bare
+JVMs (one per worker, no Maven), which on this box should track core
+count. Memory: ~1.0–1.1 GB per worker pair; no growth over the run. The
+15 GB box never paged.
 
 ## Phase 2 — complexity sweep
 
-<!-- B5_TABLE -->
+Each config: reset + build board + run 3 full turns (no actions unless
+stated), median over 20 runs after 5 warmup; plus GameState.copy() on
+the resulting board.
+
+| Axis | config | 3-turn stepping median ms | copy ms |
+|---|---|---|---|
+| board size (vanilla) | 5 | 36.2 | 0.09 |
+| | 20 | 39.5 | 0.41 |
+| | 50 | 37.6 | 0.28 |
+| | 100 | 58.2 | 0.53 |
+| continuous effects | 0 anthems (20 bodies) | 17.0 | 0.14 |
+| | 5 anthems | 34.8 | 0.21 |
+| | 20 anthems | 48.3 | 0.31 |
+| trigger fan-out | 0 wardens + 3 casts | 34.1 | 0.10 |
+| | 5 wardens + 3 casts | 51.5 | 0.13 |
+| | 20 wardens + 3 casts | 134.2 | 0.22 |
+| stack churn | 0 bolts | 12.0 | 0.09 |
+| | 3 bolts | 28.0 | 0.08 |
+| | 10 bolts | 52.2 | 0.14 |
+
+Cost model, per 3 turns of stepping:
+- **Board size: near-flat to 50, then ~+0.25 ms/permanent** — permanents
+  are cheap to carry.
+- **Continuous effects: ~+1.6 ms per anthem** — layer recomputation is
+  real but linear at this scale, not the feared blowup.
+- **Trigger fan-out is the hot spot: ~+1.7 ms per trigger FIRING**
+  (20 wardens × 3 casts = 60 firings ≈ +100 ms), trending superlinear —
+  the 5→20 warden step costs 5.5× the 0→5 step per unit.
+- **Cast/resolve cycle: ~4 ms per spell** (bolt churn), consistent with
+  B3's whole-game arithmetic (495 decisions, ~66 casts+combats, 745 ms).
 
 ## Phase 3 — determinism, failure signals, coverage
 
@@ -96,4 +140,16 @@ choice-light). Both players RandomPlayer. 30 games, turn bound 50.
   additionally fails loudly on any unscripted decision (verified across
   this project's earlier adjudication corpus: unimplemented cards and
   unscripted choices surface as first-class errors).
-<!-- B7_LINES -->
+- **Coverage** (samples drawn from the canonical printings index;
+  "modern pool" = cards with a printing in an expansion/core set released
+  ≥2016; names looked up in `CardRepository`, then `createCard()`
+  attempted):
+  - **Modern pool: 488/500 = 97.6% implemented, 0 instantiation errors.**
+    The 12 misses: Alchemy digital-only variants ("(Alchemy)" suffixed),
+    Universes Beyond one-offs (Kid Loki, Kang the Conqueror), and a
+    handful of very recent set cards.
+  - **All-cards pool: 438/500 = 87.6%.** Extra misses are dominated by
+    Un-set / Mystery Booster playtest cards ("What", "Your Own Face
+    Mocks You", CMB1 printings) and obscure ancient cards (Ring of
+    Ma'rûf) — none of which a competitive-format oracle needs.
+  - Unknown-name lookup returns empty (loud), never a silent stub.

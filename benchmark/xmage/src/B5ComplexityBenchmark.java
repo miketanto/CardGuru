@@ -93,11 +93,16 @@ public class B5ComplexityBenchmark extends CardTestPlayerBase {
         for (int n : new int[]{0, 5, 20}) {
             final int nn = n;
             bench("wardens=" + n + ".casts=3", () -> {
-                addCard(Zone.BATTLEFIELD, playerA, "Soul Warden", nn);
+                if (nn > 0) {
+                    addCard(Zone.BATTLEFIELD, playerA, "Soul Warden", nn);
+                }
                 addCard(Zone.BATTLEFIELD, playerA, "Forest", 6);
                 addCard(Zone.HAND, playerA, "Grizzly Bears", 3);
+                // turns 1 and 3 are playerA's turns (turn 2 is playerB's);
+                // second same-phase creature cast must wait for the first to
+                // resolve (sorcery timing) - hence waitStackResolved=true
+                castSpell(1, PhaseStep.PRECOMBAT_MAIN, playerA, "Grizzly Bears", true);
                 castSpell(1, PhaseStep.PRECOMBAT_MAIN, playerA, "Grizzly Bears");
-                castSpell(2, PhaseStep.PRECOMBAT_MAIN, playerA, "Grizzly Bears");
                 castSpell(3, PhaseStep.PRECOMBAT_MAIN, playerA, "Grizzly Bears");
             });
         }
@@ -108,8 +113,7 @@ public class B5ComplexityBenchmark extends CardTestPlayerBase {
                 if (nn > 0) {
                     addCard(Zone.HAND, playerA, "Lightning Bolt", nn);
                     for (int c = 0; c < nn; c++) {
-                        int turn = 1 + (c % 3);
-                        castSpell(turn, PhaseStep.PRECOMBAT_MAIN, playerA,
+                        castSpell(1, PhaseStep.PRECOMBAT_MAIN, playerA,
                                 "Lightning Bolt", playerB);
                     }
                 }
