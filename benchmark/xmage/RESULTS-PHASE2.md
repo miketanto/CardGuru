@@ -146,7 +146,25 @@ its games/decisions-per-game distributions were topdeck-mode.)
 
 ### Equivalence across archetypes
 
-<!-- EQUIV_TABLE -->
+| Archetype | plain-vs-yields identical | plain-vs-plain replay baseline |
+|---|---|---|
+| Burn | 50/50 | 50/50 |
+| Midrange | 50/50 | 50/50 |
+| Triggers | 50/50 | 50/50 |
+| Control | 22/50 | **21/50** |
+
+Control's divergences demanded the control experiment: replaying the
+SAME seed twice in plain per-window mode diverges at the same rate
+(21/50 identical) with heavily overlapping seed sets. **Yield replays
+are statistically indistinguishable from the engine's own replay
+instability — the predicate set adds zero divergence.** Root cause of
+the background instability: ComputerPlayer's choice heuristics
+tie-break in UUID-set iteration order, which differs across game
+instances; control games maximize exposure (longest games, most
+targeted removal/counter choices among near-identical objects). The
+equivalence assertion is therefore gated against the plain-replay
+baseline, not against perfection. Both REAL yield bugs found during
+development diverged on essentially every seed — far outside baseline.
 
 ## B7 — sub-action callback counts per action
 

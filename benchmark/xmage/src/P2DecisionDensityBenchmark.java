@@ -173,39 +173,75 @@ public class P2DecisionDensityBenchmark extends MageTestPlayerBase {
      * SAME action log and the SAME canonical final state. A yield that
      * skips a window where the policy would have acted shows up here.
      */
+    /**
+     * Control experiment for B6: replay the SAME seed twice in plain
+     * per-window mode. Any divergence here is engine instance
+     * nondeterminism (UUID-order tie-breaking inside ComputerPlayer's
+     * choice heuristics), and bounds what yield equivalence can prove.
+     */
+    @Test
+    public void plainReplayStability() throws Exception {
+        String deck = System.getProperty("bench.deck", "BenchBurn.dck");
+        int games = Integer.getInteger("bench.games", 50);
+        int stopTurn = Integer.getInteger("bench.stopTurn", 80);
+        playGame(19999, deck, false, stopTurn);
+        int identical = 0;
+        StringBuilder diverged = new StringBuilder();
+        for (int i = 0; i < games; i++) {
+            GameOut a = playGame(20000 + i, deck, false, stopTurn);
+            GameOut b = playGame(20000 + i, deck, false, stopTurn);
+            if (a.actions.equals(b.actions) && a.canonical.equals(b.canonical)) {
+                identical++;
+            } else {
+                diverged.append(20000 + i).append(' ');
+            }
+        }
+        System.out.println("BENCH|P2.plain_replay|deck=" + deck
+                + "|games=" + games + "|identical=" + identical
+                + "|diverged_seeds=" + diverged);
+    }
+
     @Test
     public void yieldEquivalence() throws Exception {
         String deck = System.getProperty("bench.deck", "BenchBurn.dck");
         int games = Integer.getInteger("bench.games", 50);
         int stopTurn = Integer.getInteger("bench.stopTurn", 80);
         playGame(19999, deck, false, stopTurn);   // JVM/static-init warmup
-        int identical = 0;
+        int identicalYield = 0;
+        int identicalPlain = 0;
         StringBuilder diverged = new StringBuilder();
         for (int i = 0; i < games; i++) {
             P2Stats.reset();
             GameOut plain = playGame(20000 + i, deck, false, stopTurn);
             P2Stats.reset();
+            GameOut plain2 = playGame(20000 + i, deck, false, stopTurn);
+            P2Stats.reset();
             GameOut yielded = playGame(20000 + i, deck, true, stopTurn);
+            if (plain.actions.equals(plain2.actions)
+                    && plain.canonical.equals(plain2.canonical)) {
+                identicalPlain++;
+            }
             if (plain.actions.equals(yielded.actions)
                     && plain.canonical.equals(yielded.canonical)) {
-                identical++;
+                identicalYield++;
             } else {
                 diverged.append(20000 + i).append(' ');
             }
         }
         System.out.println("BENCH|P2.equivalence|deck=" + deck
-                + "|games=" + games + "|identical=" + identical
+                + "|games=" + games + "|identical_vs_yields=" + identicalYield
+                + "|identical_plain_replay_baseline=" + identicalPlain
                 + "|diverged_seeds=" + diverged);
-        // Divergences here are NOT necessarily yield bugs: the two runs are
-        // separate game instances, and ComputerPlayer's internal choice
-        // tie-breaking follows UUID-set iteration order, which is not
-        // reproducible across instances (see RESULTS-PHASE2.md). The same
-        // seed can pass in one JVM invocation and diverge in another, with
-        // or without yields. A REAL yield bug diverges every time and for
-        // most seeds (both bugs found during development did). Assert a
-        // strong majority instead of perfection.
-        Assert.assertTrue("yield equivalence below 80%: likely a missed wake "
-                        + "predicate, not tie-break drift",
-                identical >= games * 0.8);
+        // The two compared runs are separate game INSTANCES, and
+        // ComputerPlayer's choice tie-breaking follows UUID-set iteration
+        // order - not reproducible across instances. The plain-vs-plain
+        // replay baseline measures exactly that background divergence.
+        // Yields are sound iff they add no divergence beyond it. (Both real
+        // yield bugs found during development diverged on nearly every
+        // seed, far below any plausible baseline.)
+        Assert.assertTrue("yields diverge beyond the engine's own replay "
+                        + "instability: missed wake predicate likely ("
+                        + identicalYield + " vs baseline " + identicalPlain + ")",
+                identicalYield >= identicalPlain - Math.max(2, games / 10));
     }
 }

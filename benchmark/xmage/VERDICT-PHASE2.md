@@ -35,12 +35,13 @@ with the wrapper auto-passing yielded windows. Grounds:
   is one yield.
 - The predicate set {REACTIVE, MY_NEXT_MAIN} — two predicates! —
   already covers the heuristic exactly: equivalence replay is
-  bit-identical on aggro (50/50) and majority-identical everywhere,
-  with every observed divergence traced to engine-internal tie-break
-  drift across game instances, not to a missed wake (see caveat below).
-  The RL predicate set should add the spec's full list
-  (UNTIL_PHASE(x), MANA_WOULD_EMPTY) as ACTIONS THE POLICY CHOOSES,
-  not hardcoded rules.
+  bit-identical for burn/midrange/triggers (50/50 each), and for
+  control it matches the plain-vs-plain replay baseline (22/50 vs
+  21/50) — i.e., yields add ZERO divergence beyond the engine's own
+  instance instability (proven by control experiment, see
+  RESULTS-PHASE2.md). The RL predicate set should add the spec's full
+  list (UNTIL_PHASE(x), MANA_WOULD_EMPTY) as ACTIONS THE POLICY
+  CHOOSES, not hardcoded rules.
 - Dense auxiliary rewards remain useful but are no longer forced to
   carry the whole credit-assignment burden.
 
