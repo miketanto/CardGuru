@@ -28,16 +28,29 @@ opponent's face, lethal finisher at the first legal window.
 
 Competence = >=55% over 500 eval games with 95% CI excluding 50%.
 
-| Seed | episodes to rolling gate | 500-game confirmation | episodes-to-competence |
+| Seed | rolling evals (100 games, by episodes trained) | 500-game confirmation | episodes-to-competence |
 |---|---|---|---|
-| 1 | 256 (eval 0.70) | **0.648** (CI [0.61, 0.69]) — GATE_PASSED | **256** |
-| 0 | >256 (eval 0.00 at 256; training batches 6-16%) | — | in progress |
-| 2 | — | — | in progress |
-| 3 | — | — | queued |
-| 4 | — | — | queued |
+| 1 | 256: 0.70 | 0.648 (CI [0.61, 0.69]) | **256** |
+| 2 | 256: 0.64 | 0.624 (CI [0.58, 0.67]) | **256** |
+| 0 | 256: 0.00 -> 512: 0.71 | 0.652 (CI [0.61, 0.69]) | **512** |
+| 3 | 256: 0.30 -> 512: 0.69 | 0.634 (CI [0.59, 0.68]) | **512** |
+| 4 | 256: 0.00 -> 512: 0.55 -> **confirm FAILED 0.468** -> 768: 0.69 | 0.644 (CI [0.60, 0.69]) | **768** |
 
-Early observation (why the 5-seed protocol exists): identical
-architecture and hyperparameters span 0% -> 70% eval at the same
-256-episode budget depending on init seed.
+## THE HEADLINE
 
-<!-- CURVES -->
+**Episodes to competence vs HeuristicPlayer (burn mirror, E0 + PPO,
+terminal reward only): median 512, spread 256-768, 5/5 seeds passed.**
+Confirmed win rates are tightly clustered (62.4-65.2%) despite 3x spread
+in training time.
+
+Notes:
+- Seed 4's curve.txt says "episodes=1024" for its confirmation: the
+  chunk script counts confirmation lines in its batch counter; actual
+  training was 3 x 256 = **768** episodes. Recorded correctly here.
+- Seed 4 also demonstrates why the 500-game CI confirmation exists: its
+  100-game rolling eval hit 0.55 at 512 episodes but the confirmation
+  scored 0.468 - a false gate that 100-game noise (+-10%) fully explains.
+- Learning curves are bimodal: every slow seed sat at 0-30% until it
+  found the aggressive line, then crossed the gate within a single
+  256-episode window. No seed plateaued mid-range.
+- Stalls: 0 across all training and eval runs (burn mirrors end).
