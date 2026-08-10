@@ -187,6 +187,18 @@ public class HeuristicPlayer extends ComputerPlayer {
                     .append("hand=").append(h).append(';');
         }
 
+        if (Boolean.getBoolean("bench.trace")
+                && game.getTurnStepType() == PhaseStep.END_TURN) {
+            StringBuilder pl = new StringBuilder();
+            for (ActivatedAbility a : playable) {
+                MageObject o = game.getObject(a.getSourceId());
+                pl.append(o == null ? "?" : o.getName()).append(',');
+            }
+            actionLog.append("W").append(game.getTurnNum())
+                    .append("ET:k=").append(k)
+                    .append(":stack=").append(game.getStack().size())
+                    .append(":pl=").append(pl).append(';');
+        }
         ActivatedAbility chosen = choosePolicyAction(game, playable);
         boolean acted = false;
         if (chosen != null) {

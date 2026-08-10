@@ -72,4 +72,111 @@ Two engine-level facts surfaced while making replays bit-identical:
   diverges across instances. The instrument tie-breaks by card name; a
   real policy must consume a canonically ORDERED action set.
 
-<!-- P2_TABLES -->
+## B5 — decision density (200 games per archetype, mirror matches)
+
+### The headline: act-rate at k≥1
+
+| Archetype | act-rate k≥1 | act-rate k=1 | act-rate k≥2 | actions/game | turns/game (med) |
+|---|---|---|---|---|---|
+| Burn (aggro) | **15.7%** | 2.3% | 17.6% | 17.5 | 9 |
+| Midrange | **12.3%** | 0.1% | 32.4% | 25.1 | 15 |
+| Control | **6.9%** | 0.2% | 8.4% | 55.6 | 47 (36/200 hit turn-80 bound) |
+| Triggers | **8.8%** | 0.1% | 38.8% | 28.6 | 16 |
+
+**Of windows where acting is legal, the heuristic acts at 7–16%
+(archetype-dependent), ~10% typical — the spec's "yields are worth it"
+regime.** Remember this is a floor.
+
+**k-semantics caveat (important):** `getPlayable()` includes the pending
+land drop at every window of the turn, including steps where playing a
+land is illegal — so k=1 windows are dominated by the phantom land-play
+and their act-rate is ~0. This inflates k≥1 window counts and deflates
+the blended act-rate; the k≥2 act-rates (8–39%) are the cleaner signal.
+Phase 1's B3 histogram has the same property.
+
+### Where decisions live
+
+Non-zero act steps, all four archetypes: **own Precombat Main** (bulk of
+actions) and **opponent End Turn** (all instant-speed actions). Every
+other step: zero acts from the heuristic across 800 games. (Combat
+decisions happen in the selectAttackers/selectBlockers callbacks, which
+are not priority windows.)
+
+### Consecutive-pass run lengths (consulted windows, per-window mode)
+
+| Archetype | median run | p95 | max |
+|---|---|---|---|
+| Burn | 10 | 26 | 58 |
+| Midrange | 15 | 22 | 82 |
+| Control | 16 | 38 | 144 |
+| Triggers | 18 | 40 | 112 |
+
+Median 10–18 consecutive passes between actions — this is the yield win
+directly: each run collapses to one predicate evaluation.
+
+## B6 — consults per game under each regime
+
+| Archetype | no gate | k=0 gate | yields alone | **gate + yields** | reduction vs no gate |
+|---|---|---|---|---|---|
+| Burn | 216 | 112 | 118 | **63** | 3.4× |
+| Midrange | 322 | 204 | 108 | **71** | 4.5× |
+| Control | 880 | 806 | 270 | **244** | 3.6× |
+| Triggers | 502 | 325 | 201 | **131** | 3.8× |
+
+Note the k=0 gate is nearly useless for control (880→806: control
+mirrors always have a "playable" — often the phantom land drop or a
+holdable instant) while yields cut it 3.3×. Yields dominate the gate
+everywhere except pure aggro, and the two compose.
+
+**Wall-clock bonus:** yields skip `getPlayable()` on skipped windows, so
+the ENGINE runs ~1.6–2.2× faster too:
+
+| Archetype | games/sec per-window | games/sec yields |
+|---|---|---|
+| Burn | 3.76 | 5.98 |
+| Midrange | 3.51 | 7.70 |
+| Control | 1.01 | 2.43 |
+| Triggers | 1.93 | 3.72 |
+
+(HeuristicPlayer games run 3–6× faster than Phase 1's random-policy
+number because games are shorter and windows cheaper; also note Phase 1
+B3 games were accidentally hellbent — `GameOptions.testMode=true` skips
+opening hands. Corrected here; Phase 1 throughput conclusions stand,
+its games/decisions-per-game distributions were topdeck-mode.)
+
+### Equivalence across archetypes
+
+<!-- EQUIV_TABLE -->
+
+## B7 — sub-action callback counts per action
+
+| Archetype | median | p95 | max |
+|---|---|---|---|
+| Burn | 1 | 3 | 3 |
+| Midrange | 1 | 6 | 6 |
+| Control | 2 | 5 | 5 |
+| Triggers | 1 | 4 | 5 |
+
+Callbacks counted: choose/chooseTarget/chooseTargetAmount/chooseUse/
+chooseMode/announceX/getAmount/playMana. Distribution is short and
+bounded: most actions are 0–2 callbacks (land = 0, one-target spell =
+1–2 incl. mana payment), p95 ≤ 6, **max seen = 6** across 800 games of
+four archetypes. No callback class in these decks failed to reduce to
+choice-from-candidates; the known future exceptions (X announcements =
+integer range, ordering choices = permutation) are visible in the API
+but were not exercised by these lists.
+
+## B8 — archetype spread (curriculum inputs)
+
+| Archetype | windows/game | act-rate k≥1 | consults/game (gate+yields) | games/sec (yields) | actions/game |
+|---|---|---|---|---|---|
+| Burn | 216 | 15.7% | 63 | 5.98 | 17.5 |
+| Midrange | 322 | 12.3% | 71 | 7.70 | 25.1 |
+| Control | 880 | 6.9% | 244 | 2.43 | 55.6 |
+| Triggers | 502 | 8.8% | 131 | 3.72 | 28.6 |
+
+Spread: 2.3× in act-rate, 4.1× in windows/game, 3.2× in games/sec, 3.9×
+in consults/game. Control is simultaneously the slowest, the most
+window-heavy, and the most action-rich per game (55.6 actions — 3.2×
+burn) — uniform deck sampling under-trains exactly the archetype with
+the most decisions.
