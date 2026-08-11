@@ -26,7 +26,8 @@ python3 /home/user/CardGuru/rl/policy_server.py --port $PORT \
     > $OUT/server.log 2>&1 &
 SERVER=$!
 up=0
-for i in $(seq 1 3000); do
+SECONDS=0
+while [ $SECONDS -lt 60 ]; do
     grep -q "policy server" $OUT/server.log 2>/dev/null && { up=1; break; }
     grep -q "Traceback" $OUT/server.log 2>/dev/null && { cat $OUT/server.log; exit 1; }
 done
