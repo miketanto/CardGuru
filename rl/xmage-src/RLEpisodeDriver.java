@@ -40,6 +40,9 @@ import java.util.Locale;
  */
 public class RLEpisodeDriver extends MageTestPlayerBase {
 
+    /** C1 imitation log (rl.imitateOut): open across all episodes */
+    private java.io.PrintWriter imitateOut;
+
     @org.junit.BeforeClass
     public static void buildCardDb() {
         // MageTestPlayerBase never scans; without this a fresh checkout has
@@ -103,6 +106,14 @@ public class RLEpisodeDriver extends MageTestPlayerBase {
             sp.determinizations = Integer.getInteger("rl.agentDetK", 4);
             sp.setTestMode(true);
             agent = sp;
+        } else if ("teacher".equals(agentKind)) {
+            TeacherLogPlayer tp = new TeacherLogPlayer("Agent");
+            tp.benchSeed = seed;
+            tp.searchPlies = Integer.getInteger("rl.agentPlies", 1);
+            tp.searchBreadth = Integer.getInteger("rl.agentBreadth", 8);
+            tp.out = imitateOut;
+            tp.setTestMode(true);
+            agent = tp;
         } else {
             rlAgent = new RLPlayer("Agent");
             rlAgent.policy = policy;
@@ -171,6 +182,11 @@ public class RLEpisodeDriver extends MageTestPlayerBase {
             fallbacks.merge("agentSearchNodes", (int) Math.min(Integer.MAX_VALUE, sp.nodesEvaluated), Integer::sum);
             fallbacks.merge("agentSearchDecisions", (int) sp.searchDecisions, Integer::sum);
         }
+        if (agent instanceof TeacherLogPlayer) {
+            TeacherLogPlayer tp = (TeacherLogPlayer) agent;
+            fallbacks.merge("teacherExamples", (int) tp.examples, Integer::sum);
+            fallbacks.merge("teacherUnmatched", (int) tp.unmatched, Integer::sum);
+        }
         if (opp instanceof org.mage.test.benchmark.SearchPlayer) {
             org.mage.test.benchmark.SearchPlayer sp = (org.mage.test.benchmark.SearchPlayer) opp;
             fallbacks.merge("searchNodes", (int) Math.min(Integer.MAX_VALUE, sp.nodesEvaluated), Integer::sum);
@@ -217,6 +233,11 @@ public class RLEpisodeDriver extends MageTestPlayerBase {
                 ? new SocketPolicyClient(port, mode, episodes)
                 : new RandomPolicyClient(seed);
         java.util.Map<String, Integer> fallbacks = new java.util.TreeMap<>();
+        String imitatePath = System.getProperty("rl.imitateOut");
+        if (imitatePath != null) {
+            imitateOut = new java.io.PrintWriter(new java.io.BufferedWriter(
+                    new java.io.FileWriter(imitatePath, true)));
+        }
 
         int wins = 0, losses = 0, draws = 0, stalls = 0;
         long totalConsults = 0, totalWindows = 0, totalActions = 0;
@@ -226,6 +247,10 @@ public class RLEpisodeDriver extends MageTestPlayerBase {
             EpisodeResult r = playEpisode(policy, fallbacks, seed + i, opponent,
                     decks[i % decks.length].trim(), stopTurn, i % 2 == 0);
             policy.episodeEnd(r.reward);
+            if (imitateOut != null) {
+                imitateOut.println("{\"t\":\"end\",\"r\":" + r.reward + "}");
+                imitateOut.flush();
+            }
             if (r.reward > 0) {
                 wins++;
             } else if (r.reward < 0) {
@@ -278,6 +303,9 @@ public class RLEpisodeDriver extends MageTestPlayerBase {
                     (line + "\n").getBytes(java.nio.charset.StandardCharsets.UTF_8),
                     java.nio.file.StandardOpenOption.CREATE,
                     java.nio.file.StandardOpenOption.APPEND);
+        }
+        if (imitateOut != null) {
+            imitateOut.close();
         }
         policy.close();
     }
