@@ -29,7 +29,7 @@ import time
 import torch
 import torch.nn as nn
 
-SDIM, CDIM = 24, 38
+SDIM, CDIM = 24, 38          # defaults; --sdim/--cdim override (E2 uses a wider cdim)
 GAMMA, LAM, CLIP, LR = 0.997, 0.95, 0.2, 3e-4
 EPOCHS, ENT_COEF, VAL_COEF = 4, 0.01, 0.5
 UPDATE_EPISODES = 32
@@ -37,11 +37,12 @@ MAX_K = 40
 
 
 class E0Policy(nn.Module):
-    def __init__(self):
+    def __init__(self, sdim=SDIM, cdim=CDIM):
         super().__init__()
+        self.cdim = cdim
         self.state_net = nn.Sequential(
-            nn.Linear(SDIM, 128), nn.ReLU(), nn.Linear(128, 128), nn.ReLU())
-        self.cand_net = nn.Sequential(nn.Linear(CDIM, 64), nn.ReLU())
+            nn.Linear(sdim, 128), nn.ReLU(), nn.Linear(128, 128), nn.ReLU())
+        self.cand_net = nn.Sequential(nn.Linear(cdim, 64), nn.ReLU())
         self.scorer = nn.Sequential(
             nn.Linear(128 + 64, 64), nn.ReLU(), nn.Linear(64, 1))
         self.value = nn.Sequential(nn.Linear(128, 64), nn.ReLU(), nn.Linear(64, 1))
@@ -57,9 +58,10 @@ class E0Policy(nn.Module):
 
 
 class Trainer:
-    def __init__(self, ckpt, seed, log_path):
+    def __init__(self, ckpt, seed, log_path, sdim=SDIM, cdim=CDIM):
         torch.manual_seed(seed)
-        self.net = E0Policy()
+        self.sdim, self.cdim = sdim, cdim
+        self.net = E0Policy(sdim, cdim)
         self.opt = torch.optim.Adam(self.net.parameters(), lr=LR)
         self.ckpt = ckpt
         self.log_path = log_path
@@ -82,7 +84,7 @@ class Trainer:
         with torch.no_grad():
             s = torch.tensor(state).unsqueeze(0)
             k = len(cands)
-            c = torch.zeros(1, MAX_K, CDIM)
+            c = torch.zeros(1, MAX_K, self.cdim)
             c[0, :k] = torch.tensor(cands)
             m = torch.zeros(1, MAX_K, dtype=torch.bool)
             m[0, :k] = True
@@ -191,6 +193,11 @@ def serve(port, trainer):
                 t = msg["t"]
                 if t == "hello":
                     mode = msg.get("mode", "train")
+                    hs, hc = msg.get("sdim"), msg.get("cdim")
+                    if hs is not None and (hs != trainer.sdim or hc != trainer.cdim):
+                        raise RuntimeError(
+                            f"dim mismatch: driver {hs}/{hc} vs server "
+                            f"{trainer.sdim}/{trainer.cdim}")
                     print(f"conn: mode={mode} episodes={msg.get('episodes')}",
                           flush=True)
                     f.write(b'{"ok":1}\n')
@@ -223,6 +230,9 @@ if __name__ == "__main__":
     ap.add_argument("--ckpt", default="/tmp/rl_e0.pt")
     ap.add_argument("--seed", type=int, default=0)
     ap.add_argument("--log", default=None)
+    ap.add_argument("--sdim", type=int, default=SDIM)
+    ap.add_argument("--cdim", type=int, default=CDIM)
     args = ap.parse_args()
     torch.set_num_threads(2)
-    serve(args.port, Trainer(args.ckpt, args.seed, args.log))
+    serve(args.port, Trainer(args.ckpt, args.seed, args.log,
+                             args.sdim, args.cdim))

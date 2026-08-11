@@ -17,8 +17,55 @@ import java.util.UUID;
 public final class StateEncoder {
 
     public static final int STATE_DIM = 24;
-    public static final int CAND_DIM = 38;
-    private static final int ID_BASE = 22;   // 16 identity buckets from here
+    private static final int ID_BASE = 22;   // identity features from here
+
+    /**
+     * E2 support: -Drl.cardFeatures=<file> loads a per-card mechanical
+     * feature table (TSV: first line = dim, then "name\tv1,v2,...").
+     * When present, identity = the table vector plus a trailing
+     * unknown-card flag; when absent, identity = the E0 16-bucket name
+     * hash. CAND_DIM is therefore fixed at class load, and the hello
+     * handshake carries it to the policy server.
+     */
+    private static final java.util.Map<String, float[]> CARD_FEATURES;
+    private static final int FEAT_DIM;
+    public static final int CAND_DIM;
+
+    static {
+        String path = System.getProperty("rl.cardFeatures");
+        java.util.Map<String, float[]> table = null;
+        int dim = 0;
+        if (path != null && !path.trim().isEmpty()) {
+            table = new java.util.HashMap<>();
+            try (java.io.BufferedReader r = new java.io.BufferedReader(
+                    new java.io.FileReader(path))) {
+                dim = Integer.parseInt(r.readLine().trim());
+                String line;
+                while ((line = r.readLine()) != null) {
+                    if (line.trim().isEmpty()) {
+                        continue;
+                    }
+                    int tab = line.indexOf('\t');
+                    String[] parts = line.substring(tab + 1).split(",");
+                    if (parts.length != dim) {
+                        throw new IllegalStateException("bad feature row: " + line);
+                    }
+                    float[] v = new float[dim];
+                    for (int i = 0; i < dim; i++) {
+                        v[i] = Float.parseFloat(parts[i]);
+                    }
+                    table.put(line.substring(0, tab), v);
+                }
+            } catch (java.io.IOException e) {
+                throw new IllegalStateException("rl.cardFeatures load failed: " + path, e);
+            }
+            System.out.println("RL|cardFeatures|path=" + path
+                    + "|cards=" + table.size() + "|dim=" + dim);
+        }
+        CARD_FEATURES = table;
+        FEAT_DIM = dim;
+        CAND_DIM = table == null ? ID_BASE + 16 : ID_BASE + dim + 1;
+    }
 
     private StateEncoder() {
     }
@@ -146,6 +193,15 @@ public final class StateEncoder {
     }
 
     private static void identity(float[] c, String name) {
-        c[ID_BASE + Math.floorMod(name.hashCode(), 16)] = 1f;
+        if (CARD_FEATURES == null) {
+            c[ID_BASE + Math.floorMod(name.hashCode(), 16)] = 1f;
+            return;
+        }
+        float[] v = CARD_FEATURES.get(name);
+        if (v == null) {
+            c[ID_BASE + FEAT_DIM] = 1f;   // unknown-card flag
+            return;
+        }
+        System.arraycopy(v, 0, c, ID_BASE, FEAT_DIM);
     }
 }

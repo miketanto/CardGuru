@@ -116,6 +116,8 @@ public class RLEpisodeDriver extends MageTestPlayerBase {
                     + " agentLib=" + agent.getLibrary().size()
                     + " agentHand=" + agent.getHand().size()
                     + " consults=" + agent.consults);
+            System.out.println("RLGAME|reward=" + r.reward + "|seed=" + seed
+                    + "\n" + agent.actionLog + "RLGAME_END");
         }
         if (winner.contains(agent.getName())) {
             r.reward = 1f;
@@ -134,7 +136,9 @@ public class RLEpisodeDriver extends MageTestPlayerBase {
         String opponent = System.getProperty("rl.opponent", "random");
         String policyKind = System.getProperty("rl.policy", "random");
         int port = Integer.getInteger("rl.port", 7777);
-        String deck = System.getProperty("rl.deck", "BenchBurn.dck");
+        // comma-separated list = Task C training pool; episode i plays a
+        // mirror of decks[i % n] so every deck gets equal exposure
+        String[] decks = System.getProperty("rl.deck", "BenchBurn.dck").split(",");
         long seed = Long.getLong("rl.seed", 0L);
         int stopTurn = Integer.getInteger("rl.stopTurn", 60);
         int report = Integer.getInteger("rl.report", 100);
@@ -151,7 +155,7 @@ public class RLEpisodeDriver extends MageTestPlayerBase {
         long t0 = System.nanoTime();
         for (int i = 0; i < episodes; i++) {
             EpisodeResult r = playEpisode(policy, fallbacks, seed + i, opponent,
-                    deck, stopTurn, i % 2 == 0);
+                    decks[i % decks.length].trim(), stopTurn, i % 2 == 0);
             policy.episodeEnd(r.reward);
             if (r.reward > 0) {
                 wins++;
@@ -189,7 +193,7 @@ public class RLEpisodeDriver extends MageTestPlayerBase {
                 totalWindows / (double) episodes,
                 totalActions / (double) episodes,
                 totalTurns / episodes,
-                opponent, policyKind, deck, seed, fb);
+                opponent, policyKind, String.join(",", decks), seed, fb);
         System.out.println(line);
         String outFile = System.getProperty("rl.out");
         if (outFile != null) {
