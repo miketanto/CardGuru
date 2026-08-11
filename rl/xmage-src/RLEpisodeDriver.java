@@ -195,6 +195,14 @@ public class RLEpisodeDriver extends MageTestPlayerBase {
                 totalTurns / episodes,
                 opponent, policyKind, String.join(",", decks), seed, fb);
         System.out.println(line);
+        if (policy instanceof SocketPolicyClient) {
+            SocketPolicyClient s = (SocketPolicyClient) policy;
+            System.out.println(String.format(Locale.ROOT,
+                    "RL|ipc|round_trips=%d|avg_rtt_us=%.1f|ipc_sec_total=%.1f",
+                    s.roundTrips,
+                    s.roundTripNanos / 1e3 / Math.max(1, s.roundTrips),
+                    s.roundTripNanos / 1e9));
+        }
         String outFile = System.getProperty("rl.out");
         if (outFile != null) {
             java.nio.file.Files.write(java.nio.file.Paths.get(outFile),
