@@ -1,0 +1,14 @@
+TASKC|arm=e2|seed=0|trained=256|eval=pool_256|deck=BenchBurn.dck,BenchControl.dck,BenchMidrange.dck,BenchDimir.dck|win_rate=0.0400|stalls=0
+TASKC|arm=e2|seed=0|trained=512|eval=pool_512|deck=BenchBurn.dck,BenchControl.dck,BenchMidrange.dck,BenchDimir.dck|win_rate=0.4800|stalls=5
+TASKC|arm=e2|seed=0|trained=768|eval=pool_768|deck=BenchBurn.dck,BenchControl.dck,BenchMidrange.dck,BenchDimir.dck|win_rate=0.5000|stalls=2
+TASKC|arm=e2|seed=0|trained=1024|eval=pool_1024|deck=BenchBurn.dck,BenchControl.dck,BenchMidrange.dck,BenchDimir.dck|win_rate=0.5300|stalls=7
+TASKC|arm=e2|seed=0|trained=1280|eval=pool_1280|deck=BenchBurn.dck,BenchControl.dck,BenchMidrange.dck,BenchDimir.dck|win_rate=0.5100|stalls=0
+TASKC|arm=e2|seed=0|trained=1344|eval=indist_burn|deck=BenchBurn.dck|win_rate=0.7900|stalls=0
+TASKC|arm=e2|seed=0|trained=1344|eval=indist_control|deck=BenchControl.dck|win_rate=0.0700|stalls=6
+TASKC|arm=e2|seed=0|trained=1344|eval=indist_midrange|deck=BenchMidrange.dck|win_rate=0.4400|stalls=0
+TASKC|arm=e2|seed=0|trained=1344|eval=indist_dimir|deck=BenchDimir.dck|win_rate=0.6400|stalls=0
+TASKC|arm=e2|seed=0|trained=1344|eval=zs_burn_a|deck=HoldoutBurn.dck|win_rate=0.6700|stalls=0
+TASKC|arm=e2|seed=0|trained=1344|eval=zs_burn_b|deck=HoldoutBurn.dck|win_rate=0.6800|stalls=0
+TASKC|arm=e2|seed=0|trained=1344|eval=zs_control_a|deck=HoldoutControl.dck|win_rate=0.2100|stalls=0
+TASKC|arm=e2|seed=0|trained=1344|eval=zs_control_b|deck=HoldoutControl.dck|win_rate=0.2600|stalls=0
+TASKC|arm=e2|seed=0|trained=1344|eval=zs_midrange_a|deck=HoldoutMidrange.dck|win_rate=0.4600|stalls=0
