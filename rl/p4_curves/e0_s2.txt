@@ -1,0 +1,10 @@
+P4D1|arm=e0|seed=2|trained=1280|eval=indist_burn|deck=BenchBurn.dck|win_rate=0.6200|stalls=0
+P4D1|arm=e0|seed=2|trained=1280|eval=indist_control|deck=BenchControl.dck|win_rate=0.0200|stalls=20
+P4D1|arm=e0|seed=2|trained=1280|eval=indist_midrange|deck=BenchMidrange.dck|win_rate=0.3800|stalls=0
+P4D1|arm=e0|seed=2|trained=1280|eval=indist_dimir|deck=BenchDimir.dck|win_rate=0.3000|stalls=0
+P4D1|arm=e0|seed=2|trained=1280|eval=zs_burn_a|deck=HoldoutBurn.dck|win_rate=0.5300|stalls=0
+P4D1|arm=e0|seed=2|trained=1280|eval=zs_burn_b|deck=HoldoutBurn.dck|win_rate=0.6800|stalls=0
+P4D1|arm=e0|seed=2|trained=1280|eval=zs_midrange_a|deck=HoldoutMidrange.dck|win_rate=0.3300|stalls=0
+P4D1|arm=e0|seed=2|trained=1280|eval=zs_midrange_b|deck=HoldoutMidrange.dck|win_rate=0.4200|stalls=0
+P4D1|arm=e0|seed=2|trained=1280|eval=zs_control_a|deck=HoldoutControl.dck|win_rate=0.1500|stalls=21
+P4D1|arm=e0|seed=2|trained=1280|eval=zs_control_b|deck=HoldoutControl.dck|win_rate=0.1900|stalls=19
