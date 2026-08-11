@@ -68,14 +68,43 @@ public class RLEpisodeDriver extends MageTestPlayerBase {
         // fresh player objects every episode: a finished game marks its
         // players lost/left, and those flags survive reuse (found the hard
         // way - a reused agent instantly loses every game after its first)
-        RLPlayer agent = new RLPlayer("Agent");
-        agent.policy = policy;
-        agent.resetPerEpisode();
-        agent.benchSeed = seed;
-        agent.setTestMode(true);
+        // seat A: RL agent by default; -Drl.agent=heuristic|search turns the
+        // driver into a scripted-vs-scripted match harness (ladder calibration)
+        String agentKind = System.getProperty("rl.agent", "rl");
+        Player agent;
+        RLPlayer rlAgent = null;
+        if ("heuristic".equals(agentKind)) {
+            HeuristicPlayer h = new HeuristicPlayer("Agent");
+            h.benchSeed = seed;
+            h.setTestMode(true);
+            agent = h;
+        } else if ("search".equals(agentKind)) {
+            org.mage.test.benchmark.SearchPlayer sp =
+                    new org.mage.test.benchmark.SearchPlayer("Agent");
+            sp.benchSeed = seed;
+            sp.searchPlies = Integer.getInteger("rl.agentPlies", 1);
+            sp.searchBreadth = Integer.getInteger("rl.agentBreadth", 8);
+            sp.setTestMode(true);
+            agent = sp;
+        } else {
+            rlAgent = new RLPlayer("Agent");
+            rlAgent.policy = policy;
+            rlAgent.resetPerEpisode();
+            rlAgent.benchSeed = seed;
+            rlAgent.setTestMode(true);
+            agent = rlAgent;
+        }
 
         Player opp;
-        if ("heuristic".equals(opponentKind)) {
+        if ("search".equals(opponentKind)) {
+            org.mage.test.benchmark.SearchPlayer sp =
+                    new org.mage.test.benchmark.SearchPlayer("Opponent");
+            sp.benchSeed = seed;
+            sp.searchPlies = Integer.getInteger("rl.searchPlies", 1);
+            sp.searchBreadth = Integer.getInteger("rl.searchBreadth", 8);
+            sp.setTestMode(true);
+            opp = sp;
+        } else if ("heuristic".equals(opponentKind)) {
             HeuristicPlayer h = new HeuristicPlayer("Opponent");
             h.benchSeed = seed;
             h.setTestMode(true);
@@ -105,19 +134,33 @@ public class RLEpisodeDriver extends MageTestPlayerBase {
 
         EpisodeResult r = new EpisodeResult();
         r.turns = game.getTurnNum();
-        r.consults = agent.consults;
-        r.windows = agent.windows;
-        r.actions = agent.actions;
-        agent.fallbackCalls.forEach((k, v) -> fallbacks.merge(k, v, Integer::sum));
+        if (rlAgent != null) {
+            r.consults = rlAgent.consults;
+            r.windows = rlAgent.windows;
+            r.actions = rlAgent.actions;
+            rlAgent.fallbackCalls.forEach((k, v) -> fallbacks.merge(k, v, Integer::sum));
+        }
+        if (agent instanceof org.mage.test.benchmark.SearchPlayer) {
+            org.mage.test.benchmark.SearchPlayer sp = (org.mage.test.benchmark.SearchPlayer) agent;
+            fallbacks.merge("agentSearchNodes", (int) Math.min(Integer.MAX_VALUE, sp.nodesEvaluated), Integer::sum);
+            fallbacks.merge("agentSearchDecisions", (int) sp.searchDecisions, Integer::sum);
+        }
+        if (opp instanceof org.mage.test.benchmark.SearchPlayer) {
+            org.mage.test.benchmark.SearchPlayer sp = (org.mage.test.benchmark.SearchPlayer) opp;
+            fallbacks.merge("searchNodes", (int) Math.min(Integer.MAX_VALUE, sp.nodesEvaluated), Integer::sum);
+            fallbacks.merge("searchDecisions", (int) sp.searchDecisions, Integer::sum);
+        }
         String winner = String.valueOf(game.getWinner());
         if (Boolean.getBoolean("rl.debug")) {
             System.out.println("RLDBG|ep seed=" + seed + " turns=" + r.turns
                     + " winner=" + winner + " agentLife=" + agent.getLife()
                     + " agentLib=" + agent.getLibrary().size()
                     + " agentHand=" + agent.getHand().size()
-                    + " consults=" + agent.consults);
-            System.out.println("RLGAME|reward=" + r.reward + "|seed=" + seed
-                    + "\n" + agent.actionLog + "RLGAME_END");
+                    + " consults=" + (rlAgent != null ? rlAgent.consults : 0));
+            if (rlAgent != null) {
+                System.out.println("RLGAME|reward=" + r.reward + "|seed=" + seed
+                        + "\n" + rlAgent.actionLog + "RLGAME_END");
+            }
         }
         if (winner.contains(agent.getName())) {
             r.reward = 1f;
