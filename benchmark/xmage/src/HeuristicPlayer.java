@@ -65,9 +65,14 @@ import java.util.UUID;
  */
 public class HeuristicPlayer extends ComputerPlayer {
 
+    // instrument v2: the last three entries were added for the real-deck
+    // Dimir task (BenchDimir.dck). This widens the yardstick - results
+    // against v2 are not comparable to bench-deck numbers measured
+    // against the original four-entry set.
     private static final java.util.Set<String> COUNTERSPELLS =
             new java.util.HashSet<>(java.util.Arrays.asList(
-                    "Counterspell", "Cancel", "Essence Scatter", "Mana Leak"));
+                    "Counterspell", "Cancel", "Essence Scatter", "Mana Leak",
+                    "We Say Thee Nay!", "Spell Snare", "Spell Pierce"));
 
     public boolean yieldsEnabled = false;
 
