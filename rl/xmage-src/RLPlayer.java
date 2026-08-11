@@ -63,6 +63,8 @@ public class RLPlayer extends ComputerPlayer {
     public long consultBudget = 20000;
     public boolean budgetExhausted = false;
     public final Map<String, Integer> fallbackCalls = new TreeMap<>();
+    /** rl.debug transcript: one line per chosen action (RLGAME block) */
+    public final StringBuilder actionLog = new StringBuilder();
 
     private enum YieldKind { NONE, REACTIVE, MY_NEXT_MAIN }
 
@@ -209,6 +211,10 @@ public class RLPlayer extends ComputerPlayer {
         boolean acted = this.activateAbility(chosen, game);
         if (acted) {
             actions++;
+            if (Boolean.getBoolean("rl.debug")) {
+                actionLog.append("t").append(game.getTurnNum()).append('|')
+                        .append(chosen.getRule()).append('\n');
+            }
         } else {
             failedActivations++;
             pass(game);

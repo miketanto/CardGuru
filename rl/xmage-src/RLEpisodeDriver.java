@@ -40,6 +40,14 @@ import java.util.Locale;
  */
 public class RLEpisodeDriver extends MageTestPlayerBase {
 
+    @org.junit.BeforeClass
+    public static void buildCardDb() {
+        // MageTestPlayerBase never scans; without this a fresh checkout has
+        // an empty card DB and every deck loads 0 cards (synchronous, one-time
+        // cost per checkout - the db/ directory persists)
+        mage.cards.repository.CardScanner.scan();
+    }
+
     private Deck loadDeck(String name) throws Exception {
         DeckCardLists list = DeckImporter.importDeckFromFile(name, true);
         Deck deck = Deck.load(list, false, false, loadedCardInfo);
@@ -86,6 +94,15 @@ public class RLEpisodeDriver extends MageTestPlayerBase {
             sp.searchBreadth = Integer.getInteger("rl.agentBreadth", 8);
             sp.setTestMode(true);
             agent = sp;
+        } else if ("searchip".equals(agentKind)) {
+            org.mage.test.benchmark.SearchPlayerIP sp =
+                    new org.mage.test.benchmark.SearchPlayerIP("Agent");
+            sp.benchSeed = seed;
+            sp.searchPlies = Integer.getInteger("rl.agentPlies", 1);
+            sp.searchBreadth = Integer.getInteger("rl.agentBreadth", 8);
+            sp.determinizations = Integer.getInteger("rl.agentDetK", 4);
+            sp.setTestMode(true);
+            agent = sp;
         } else {
             rlAgent = new RLPlayer("Agent");
             rlAgent.policy = policy;
@@ -102,6 +119,15 @@ public class RLEpisodeDriver extends MageTestPlayerBase {
             sp.benchSeed = seed;
             sp.searchPlies = Integer.getInteger("rl.searchPlies", 1);
             sp.searchBreadth = Integer.getInteger("rl.searchBreadth", 8);
+            sp.setTestMode(true);
+            opp = sp;
+        } else if ("searchip".equals(opponentKind)) {
+            org.mage.test.benchmark.SearchPlayerIP sp =
+                    new org.mage.test.benchmark.SearchPlayerIP("Opponent");
+            sp.benchSeed = seed;
+            sp.searchPlies = Integer.getInteger("rl.searchPlies", 1);
+            sp.searchBreadth = Integer.getInteger("rl.searchBreadth", 8);
+            sp.determinizations = Integer.getInteger("rl.detK", 4);
             sp.setTestMode(true);
             opp = sp;
         } else if ("heuristic".equals(opponentKind)) {

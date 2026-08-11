@@ -43,22 +43,28 @@ public class SearchPlayer extends HeuristicPlayer {
     public int searchBreadth = 8;
     public long nodesEvaluated = 0;
     public long searchDecisions = 0;
-    private long decisionCounter = 0;
+    protected long decisionCounter = 0;
 
     public SearchPlayer(String name) {
         super(name);
     }
 
+    /** D0 delegation point — lets subclasses (SearchPlayerIP) fall back to
+     *  HeuristicPlayer behavior without re-entering this class's search */
+    protected boolean heuristicPriority(Game game) {
+        return super.priority(game);
+    }
+
     @Override
     public boolean priority(Game game) {
         if (!canRespond()) {
-            return super.priority(game);
+            return heuristicPriority(game);
         }
         List<ActivatedAbility> playable;
         try {
             playable = getPlayable(game, true);
         } catch (Exception e) {
-            return super.priority(game);
+            return heuristicPriority(game);
         }
         List<Ability> candidates = new ArrayList<>();
         for (ActivatedAbility a : playable) {
@@ -67,7 +73,7 @@ public class SearchPlayer extends HeuristicPlayer {
             }
         }
         if (candidates.size() <= 1) {
-            return super.priority(game);   // no real choice: D0 behavior
+            return heuristicPriority(game);   // no real choice: D0 behavior
         }
         // fixed ordering, then breadth cap: expensive spells first,
         // name tie-break for reproducibility
@@ -100,17 +106,17 @@ public class SearchPlayer extends HeuristicPlayer {
         decisionCounter++;
         RandomUtil.setSeed(benchSeed * 7_777_777L + decisionCounter);
         if (best == null || best instanceof PassAbility) {
-            return super.priority(game);   // heuristic handles the pass
+            return heuristicPriority(game);   // heuristic handles the pass
         }
         return this.activateAbility((ActivatedAbility) best.copy(), game);
     }
 
-    private UUID opponentOf(Game game) {
+    protected UUID opponentOf(Game game) {
         return game.getOpponents(getId()).stream().findFirst().orElse(getId());
     }
 
     /** apply one candidate on a fresh sim, drain the stack, return sim */
-    private Game execute(Game game, UUID actor, Ability ability) {
+    protected Game execute(Game game, UUID actor, Ability ability) {
         try {
             Game sim = game.createSimulationForAI();
             Player p = sim.getPlayer(actor);
@@ -134,7 +140,7 @@ public class SearchPlayer extends HeuristicPlayer {
     }
 
     /** minimax value of a state from MY perspective; toAct moves next */
-    private int value(Game state, int pliesLeft, UUID toAct) {
+    protected int value(Game state, int pliesLeft, UUID toAct) {
         if (pliesLeft <= 0 || state.hasEnded()) {
             return GameStateEvaluator2.evaluate(getId(), state).getTotalScore();
         }
