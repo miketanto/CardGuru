@@ -25,22 +25,35 @@ python3 /home/user/CardGuru/rl/policy_server.py --port $PORT \
     --ckpt $OUT/net.pt --seed $SEED --log $OUT/train.csv --cdim $CDIM \
     > $OUT/server.log 2>&1 &
 SERVER=$!
-for i in $(seq 1 200); do
-    grep -q "policy server" $OUT/server.log 2>/dev/null && break
+up=0
+for i in $(seq 1 3000); do
+    grep -q "policy server" $OUT/server.log 2>/dev/null && { up=1; break; }
     grep -q "Traceback" $OUT/server.log 2>/dev/null && { cat $OUT/server.log; exit 1; }
-    sleep_done=$(date +%s%N)   # spin-wait; foreground sleep is unavailable
 done
+if [ "$up" = "0" ]; then
+    echo "CHUNK_FAILED|arm=$ARM|seed=$SEED|server_never_started"
+    cat $OUT/server.log 2>/dev/null
+    kill $SERVER 2>/dev/null
+    exit 1
+fi
 cd /home/user/mage
 
 trained=$(cat $OUT/trained.txt 2>/dev/null || echo 0)
 if [ "$MODE" = "train" ]; then
     N=${5:-64}
+    rows_before=$(wc -l < $OUT/train.csv 2>/dev/null || echo 0)
     mvn -q -pl Mage.Tests surefire:test -Dtest='RLEpisodeDriver' \
         -DfailIfNoTests=false -Drl.episodes=$N \
         -Drl.opponent=heuristic -Drl.policy=socket -Drl.port=$PORT \
         -Drl.deck=$POOL -Drl.stopTurn=80 $JFEAT \
         -Drl.mode=train -Drl.seed=$((6000000 + ARMOFF + SEED*1000000 + trained)) \
         -Drl.report=0 > /dev/null 2>&1
+    rows_after=$(wc -l < $OUT/train.csv 2>/dev/null || echo 0)
+    if [ "$rows_after" -le "$rows_before" ]; then
+        echo "CHUNK_FAILED|arm=$ARM|seed=$SEED|no_training_rows (trained stays $trained)"
+        kill $SERVER 2>/dev/null
+        exit 1
+    fi
     trained=$((trained + N))
     echo $trained > $OUT/trained.txt
     echo "TASKC|arm=$ARM|seed=$SEED|trained=$trained|train_chunk_done"
