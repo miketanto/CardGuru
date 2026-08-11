@@ -58,9 +58,14 @@ class E0Policy(nn.Module):
 
 
 class Trainer:
-    def __init__(self, ckpt, seed, log_path, sdim=SDIM, cdim=CDIM):
+    def __init__(self, ckpt, seed, log_path, sdim=SDIM, cdim=CDIM,
+                 shape=0.0, phi_scale=2000.0):
         torch.manual_seed(seed)
         self.sdim, self.cdim = sdim, cdim
+        # C2a potential-based shaping: r'_t = r_t + shape*(GAMMA*Φ_{t+1}-Φ_t)
+        # with Φ = tanh(raw_phi/phi_scale) and Φ(terminal) = 0 (policy-
+        # invariant, Ng et al. 1999). shape=0 reproduces Phase 3/4 exactly.
+        self.shape, self.phi_scale = shape, phi_scale
         self.net = E0Policy(sdim, cdim)
         self.opt = torch.optim.Adam(self.net.parameters(), lr=LR)
         self.ckpt = ckpt
@@ -80,7 +85,7 @@ class Trainer:
         self.ep_start = 0      # index in buf where current episode began
         self.completed = []    # per finished episode: (start, end, reward)
 
-    def act(self, state, cands, sample):
+    def act(self, state, cands, sample, phi=0.0):
         with torch.no_grad():
             s = torch.tensor(state).unsqueeze(0)
             k = len(cands)
@@ -92,9 +97,11 @@ class Trainer:
             if sample:
                 dist = torch.distributions.Categorical(logits=logits[0])
                 a = int(dist.sample())
+                import math
                 self.buf.append((s[0], c[0], m[0], a,
                                  float(dist.log_prob(torch.tensor(a))),
-                                 float(value[0])))
+                                 float(value[0]),
+                                 math.tanh(phi / self.phi_scale)))
             else:
                 a = int(torch.argmax(logits[0]))
             return a
@@ -119,6 +126,7 @@ class Trainer:
         old_logp = torch.tensor([b[4] for b in self.buf])
         values = torch.tensor([b[5] for b in self.buf])
 
+        phis = [b[6] if len(b) > 6 else 0.0 for b in self.buf]
         adv = torch.zeros(len(self.buf))
         ret = torch.zeros(len(self.buf))
         for start, end, reward in self.completed:
@@ -126,6 +134,9 @@ class Trainer:
             for t in range(end - 1, start - 1, -1):
                 v_next = values[t + 1] if t + 1 < end else 0.0
                 r = reward if t == end - 1 else 0.0
+                if self.shape:
+                    phi_next = phis[t + 1] if t + 1 < end else 0.0
+                    r += self.shape * (GAMMA * phi_next - phis[t])
                 delta = r + GAMMA * v_next - values[t]
                 gae = delta + GAMMA * LAM * gae
                 adv[t] = gae
@@ -154,9 +165,10 @@ class Trainer:
                 self.opt.step()
         self.updates += 1
         wr = sum(1 for _, _, r in self.completed if r > 0) / len(self.completed)
+        mean_abs_phi = sum(abs(p) for p in phis) / max(1, len(phis))
         line = (f"update={self.updates} episodes={self.episodes_seen} "
                 f"batch_eps={len(self.completed)} steps={n} "
-                f"batch_win_rate={wr:.3f}")
+                f"batch_win_rate={wr:.3f} mean_abs_phi={mean_abs_phi:.3f}")
         print("TRAIN|" + line, flush=True)
         if self.log_path:
             with open(self.log_path, "a") as f:
@@ -205,7 +217,9 @@ def serve(port, trainer):
                     if mode == "random":
                         a = pyrandom.randrange(len(msg["c"]))
                     else:
-                        a = trainer.act(msg["s"], msg["c"], sample=(mode == "train"))
+                        a = trainer.act(msg["s"], msg["c"],
+                                        sample=(mode == "train"),
+                                        phi=msg.get("phi", 0.0))
                     f.write(f'{{"a":{a}}}\n'.encode())
                 elif t == "end":
                     trainer.end_episode(msg["r"], training=(mode == "train"))
@@ -232,7 +246,11 @@ if __name__ == "__main__":
     ap.add_argument("--log", default=None)
     ap.add_argument("--sdim", type=int, default=SDIM)
     ap.add_argument("--cdim", type=int, default=CDIM)
+    ap.add_argument("--shape", type=float, default=0.0,
+                    help="C2a shaping coefficient (0 = terminal-only)")
+    ap.add_argument("--phi-scale", type=float, default=2000.0)
     args = ap.parse_args()
     torch.set_num_threads(2)
     serve(args.port, Trainer(args.ckpt, args.seed, args.log,
-                             args.sdim, args.cdim))
+                             args.sdim, args.cdim,
+                             args.shape, args.phi_scale))

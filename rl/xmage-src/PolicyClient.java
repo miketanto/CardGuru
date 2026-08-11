@@ -15,6 +15,15 @@ public interface PolicyClient {
     /** Returns the index of the chosen candidate in [0, candidates.length). */
     int choose(float[] state, float[][] candidates);
 
+    /**
+     * Consult with a potential value Φ(s) for reward shaping (C2a):
+     * raw GameStateEvaluator2 score from the agent's perspective, or 0
+     * when shaping is off. Default ignores it (RandomPolicyClient).
+     */
+    default int choose(float[] state, float[][] candidates, float phi) {
+        return choose(state, candidates);
+    }
+
     /** Terminal signal for the episode: +1 win, -1 loss, 0 draw/stall. */
     void episodeEnd(float reward);
 

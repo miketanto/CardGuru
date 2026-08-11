@@ -66,6 +66,21 @@ public class RLPlayer extends ComputerPlayer {
     /** rl.debug transcript: one line per chosen action (RLGAME block) */
     public final StringBuilder actionLog = new StringBuilder();
 
+    /** C2a shaping: emit Φ(s) = GameStateEvaluator2 score per consult */
+    private static final boolean PHI_ENABLED = Boolean.getBoolean("rl.phi");
+
+    private float phi(Game game) {
+        if (!PHI_ENABLED) {
+            return 0f;
+        }
+        try {
+            return mage.player.ai.score.GameStateEvaluator2
+                    .evaluate(playerId, game).getTotalScore();
+        } catch (Exception e) {
+            return 0f;
+        }
+    }
+
     private enum YieldKind { NONE, REACTIVE, MY_NEXT_MAIN }
 
     private YieldKind yield = YieldKind.NONE;
@@ -200,7 +215,7 @@ public class RLPlayer extends ComputerPlayer {
             return false;
         }
         consults++;
-        int pick = policy.choose(state, cands);
+        int pick = policy.choose(state, cands, phi(game));
         if (pick <= 0 || pick > playable.size()) {
             pass(game);
             setYieldAfterPass(game);
@@ -257,7 +272,7 @@ public class RLPlayer extends ComputerPlayer {
                 }
             }
             consults++;
-            int pick = policy.choose(state, cands);
+            int pick = policy.choose(state, cands, phi(game));
             pick = Math.max(0, Math.min(pick, possible.size() - 1));
             target.addTarget(possible.get(pick), source, game);
         }
@@ -313,7 +328,7 @@ public class RLPlayer extends ComputerPlayer {
                         possible.get(i), game);
             }
             consults++;
-            int pick = policy.choose(state, cands);
+            int pick = policy.choose(state, cands, phi(game));
             pick = Math.max(0, Math.min(pick, possible.size() - 1));
             target.addTarget(possible.get(pick).getId(), source, game);
         }
@@ -346,7 +361,7 @@ public class RLPlayer extends ComputerPlayer {
                 StateEncoder.blank(StateEncoder.T_PASS),
                 StateEncoder.forCombat(StateEncoder.T_ATTACK, creature, game)};
             consults++;
-            if (policy.choose(state, cands) == 1) {
+            if (policy.choose(state, cands, phi(game)) == 1) {
                 this.declareAttacker(creature.getId(), defender, game, false);
                 actions++;
             }
@@ -396,7 +411,7 @@ public class RLPlayer extends ComputerPlayer {
                         StateEncoder.T_BLOCK, can.get(i), game);
             }
             consults++;
-            int pick = policy.choose(state, cands);
+            int pick = policy.choose(state, cands, phi(game));
             if (pick > 0 && pick <= can.size()) {
                 this.declareBlocker(defendingPlayerId, blocker.getId(),
                         can.get(pick - 1).getId(), game);

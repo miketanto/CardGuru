@@ -14,8 +14,10 @@ import java.util.Locale;
  * the payload is floats and ints only).
  *
  * Protocol (one JSON object per line):
- *   -> {"t":"consult","s":[...],"c":[[...],...]}   <- {"a":<idx>}
- *   -> {"t":"end","r":<reward>}                    <- {"ok":1}
+ *   -> {"t":"consult","s":[...],"c":[[...],...][,"phi":<f>]}  <- {"a":<idx>}
+ *   -> {"t":"end","r":<reward>}                               <- {"ok":1}
+ * The optional phi field (C2a) carries the raw GameStateEvaluator2 score
+ * for potential-based shaping; hello advertises it via "phi":1.
  * The Python side owns trajectories, training, and eval bookkeeping.
  */
 public class SocketPolicyClient implements PolicyClient {
@@ -35,8 +37,9 @@ public class SocketPolicyClient implements PolicyClient {
         in = new BufferedReader(new InputStreamReader(
                 socket.getInputStream(), StandardCharsets.UTF_8));
         out.write(String.format(Locale.ROOT,
-                "{\"t\":\"hello\",\"mode\":\"%s\",\"episodes\":%d,\"sdim\":%d,\"cdim\":%d}%n",
-                mode, episodes, StateEncoder.STATE_DIM, StateEncoder.CAND_DIM)
+                "{\"t\":\"hello\",\"mode\":\"%s\",\"episodes\":%d,\"sdim\":%d,\"cdim\":%d,\"phi\":%d}%n",
+                mode, episodes, StateEncoder.STATE_DIM, StateEncoder.CAND_DIM,
+                Boolean.getBoolean("rl.phi") ? 1 : 0)
                 .getBytes(StandardCharsets.UTF_8));
         out.flush();
         in.readLine();
@@ -56,6 +59,11 @@ public class SocketPolicyClient implements PolicyClient {
 
     @Override
     public int choose(float[] state, float[][] candidates) {
+        return choose(state, candidates, 0f);
+    }
+
+    @Override
+    public int choose(float[] state, float[][] candidates, float phi) {
         try {
             sb.setLength(0);
             sb.append("{\"t\":\"consult\",\"s\":");
@@ -67,7 +75,12 @@ public class SocketPolicyClient implements PolicyClient {
                 }
                 floats(candidates[i]);
             }
-            sb.append("]}\n");
+            sb.append(']');
+            if (phi != 0f) {
+                sb.append(",\"phi\":")
+                        .append(String.format(Locale.ROOT, "%.1f", phi));
+            }
+            sb.append("}\n");
             long t0 = System.nanoTime();
             out.write(sb.toString().getBytes(StandardCharsets.UTF_8));
             out.flush();
