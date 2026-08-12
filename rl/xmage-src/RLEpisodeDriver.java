@@ -43,6 +43,10 @@ public class RLEpisodeDriver extends MageTestPlayerBase {
     /** C1 imitation log (rl.imitateOut): open across all episodes */
     private java.io.PrintWriter imitateOut;
 
+    /** C5 league: rl.opponent=rl - a second policy seat, served by its
+     *  own (frozen, eval-mode) server on rl.oppPort */
+    private PolicyClient oppPolicy;
+
     @org.junit.BeforeClass
     public static void buildCardDb() {
         // MageTestPlayerBase never scans; without this a fresh checkout has
@@ -139,7 +143,14 @@ public class RLEpisodeDriver extends MageTestPlayerBase {
         }
 
         Player opp;
-        if ("search".equals(opponentKind)) {
+        if ("rl".equals(opponentKind)) {
+            RLPlayer r = new RLPlayer("Opponent");
+            r.policy = oppPolicy;
+            r.resetPerEpisode();
+            r.benchSeed = seed;
+            r.setTestMode(true);
+            opp = r;
+        } else if ("search".equals(opponentKind)) {
             org.mage.test.benchmark.SearchPlayer sp =
                     new org.mage.test.benchmark.SearchPlayer("Opponent");
             sp.benchSeed = seed;
@@ -265,6 +276,10 @@ public class RLEpisodeDriver extends MageTestPlayerBase {
             imitateOut = new java.io.PrintWriter(new java.io.BufferedWriter(
                     new java.io.FileWriter(imitatePath, true)));
         }
+        if ("rl".equals(opponent)) {
+            oppPolicy = new SocketPolicyClient(
+                    Integer.getInteger("rl.oppPort", port + 1), "eval", episodes);
+        }
 
         int wins = 0, losses = 0, draws = 0, stalls = 0;
         long totalConsults = 0, totalWindows = 0, totalActions = 0;
@@ -333,6 +348,9 @@ public class RLEpisodeDriver extends MageTestPlayerBase {
         }
         if (imitateOut != null) {
             imitateOut.close();
+        }
+        if (oppPolicy != null) {
+            oppPolicy.close();
         }
         policy.close();
     }

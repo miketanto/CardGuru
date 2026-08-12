@@ -69,6 +69,13 @@ public class RLPlayer extends ComputerPlayer {
     /** C2a shaping: emit Φ(s) = GameStateEvaluator2 score per consult */
     private static final boolean PHI_ENABLED = Boolean.getBoolean("rl.phi");
 
+    /** C5 league: -Drl.noYields=true disables the hand-crafted yield
+     *  predicates entirely - the policy sees EVERY k>0 window. The
+     *  yields were a Phase 2 throughput optimization that encodes
+     *  strategic priors (they hid the flash windows pre-v3); a clean
+     *  self-play run carries no such rules. */
+    private static final boolean NO_YIELDS = Boolean.getBoolean("rl.noYields");
+
     private float phi(Game game) {
         if (!PHI_ENABLED) {
             return 0f;
@@ -215,6 +222,9 @@ public class RLPlayer extends ComputerPlayer {
     }
 
     private void setYieldAfterPass(Game game) {
+        if (NO_YIELDS) {
+            return;
+        }
         if (game.getStack().isEmpty()) {
             yield = holdsInstant(game) ? YieldKind.REACTIVE : YieldKind.MY_NEXT_MAIN;
         }
