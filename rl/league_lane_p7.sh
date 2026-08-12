@@ -78,7 +78,13 @@ pick_opponent() {  # -> echoes "ckpt|arch"
     local chunk=$1
     mapfile -t POOLCKS < <(ls $OUT/pool/*.pt 2>/dev/null | sort -V)
     case $((chunk % 4)) in
-        0) echo "$OUT/pool/ck_0.pt|$ARCH" ;;
+        0) # scratch mode (P7_NOANCHOR=1): no BC prior exists, so the
+           # anchor slot becomes another self-play snapshot chunk
+           if [ "${P7_NOANCHOR:-0}" = "1" ]; then
+               echo "${POOLCKS[$((chunk % ${#POOLCKS[@]}))]}|$ARCH"
+           else
+               echo "$OUT/pool/ck_0.pt|$ARCH"
+           fi ;;
         2)
             # externals: champions + any exploiters, rotated
             local EXT=()
