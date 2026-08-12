@@ -21,7 +21,7 @@ import torch
 import torch.nn.functional as F
 
 sys.path.insert(0, __file__.rsplit("/", 1)[0])
-from policy_server import E0Policy, GAMMA, MAX_K  # noqa: E402
+from policy_server import build_net, GAMMA, MAX_K  # noqa: E402
 
 
 def load(path):
@@ -67,6 +67,11 @@ def batches(data, batch_size, cdim, shuffle, gen):
         yield chunk, s, c, m, y, v
 
 
+def fwd(net, s, c, m):
+    out = net(s, c, m)          # lstmattn returns (logits, value, hidden)
+    return out[0], out[1]
+
+
 def accuracy(net, data, batch_size, cdim):
     hits = tot = 0
     by_kind = {}
@@ -74,7 +79,7 @@ def accuracy(net, data, batch_size, cdim):
     with torch.no_grad():
         for chunk, s, c, m, y, v in batches(data, batch_size, cdim,
                                             False, None):
-            logits, _ = net(s, c, m)
+            logits, _ = fwd(net, s, c, m)
             pred = logits.argmax(dim=1)
             ok = pred == y
             hits += int(ok.sum())
@@ -105,6 +110,8 @@ def main():
     ap.add_argument("--sdim", type=int, default=24)
     ap.add_argument("--cdim", type=int, default=38)
     ap.add_argument("--log", default=None)
+    ap.add_argument("--arch", default="e0",
+                    choices=["e0", "attn", "lstmattn"])
     args = ap.parse_args()
 
     torch.manual_seed(args.seed)
@@ -122,7 +129,9 @@ def main():
     print(f"episodes={len(episodes)} train={len(train)} val={len(val)} "
           f"dropped_overlength={dropped}", flush=True)
 
-    net = E0Policy(args.sdim, args.cdim)
+    # lstmattn BC trains with zero hidden state (episode-start memory);
+    # the cell's dynamics are learned later in the league
+    net = build_net(args.arch, args.sdim, args.cdim)
     opt = torch.optim.Adam(net.parameters(), lr=args.lr)
     logf = open(args.log, "a") if args.log else None
 
@@ -130,7 +139,7 @@ def main():
         tot_loss = n_batches = 0
         for chunk, s, c, m, y, v in batches(train, args.batch, args.cdim,
                                             True, gen):
-            logits, value = net(s, c, m)
+            logits, value = fwd(net, s, c, m)
             loss = F.cross_entropy(logits, y) \
                 + args.val_coef * F.mse_loss(value, v)
             opt.zero_grad()
@@ -148,7 +157,8 @@ def main():
             logf.flush()
 
     torch.save({"net": net.state_dict(), "opt": opt.state_dict(),
-                "episodes": len(episodes), "updates": 0}, args.ckpt)
+                "episodes": len(episodes), "updates": 0,
+                "arch": args.arch}, args.ckpt)
     print(f"saved {args.ckpt}", flush=True)
 
 

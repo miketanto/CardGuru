@@ -57,16 +57,83 @@ class E0Policy(nn.Module):
         return logits, self.value(se).squeeze(-1)
 
 
+class AttnPolicy(nn.Module):
+    """C6: attention over candidates (optionally + LSTM memory).
+
+    Tokens = [state] + candidates; a small transformer lets candidates
+    attend to each other and to the state (the E0 scorer was pointwise -
+    candidates never saw each other). ~300k params vs E0's 43k; the
+    engine is 87% of wall-clock so the extra compute is free.
+
+    lstm=True threads an LSTMCell over the consult sequence: the state
+    token is replaced by the cell's hidden state. Training uses the
+    STORED rollout hidden (detached, IMPALA-style stale-hidden) - the
+    cell gets gradient through one step only, not BPTT. Documented
+    approximation; hidden resets every episode.
+    """
+
+    def __init__(self, sdim=SDIM, cdim=CDIM, d=128, heads=4, layers=2,
+                 lstm=False):
+        super().__init__()
+        self.cdim, self.d = cdim, d
+        self.state_in = nn.Linear(sdim, d)
+        self.cand_in = nn.Linear(cdim, d)
+        enc_layer = nn.TransformerEncoderLayer(
+            d, heads, dim_feedforward=256, dropout=0.0, batch_first=True)
+        self.enc = nn.TransformerEncoder(enc_layer, layers)
+        self.cell = nn.LSTMCell(d, d) if lstm else None
+        self.scorer = nn.Sequential(nn.Linear(d, 64), nn.ReLU(), nn.Linear(64, 1))
+        self.value_head = nn.Sequential(nn.Linear(d, 64), nn.ReLU(), nn.Linear(64, 1))
+
+    def initial_hidden(self, batch=1):
+        z = torch.zeros(batch, self.d)
+        return (z, z.clone())
+
+    def forward(self, state, cands, mask, hidden=None):
+        s = self.state_in(state)                            # (B,d)
+        new_hidden = None
+        if self.cell is not None:
+            if hidden is None:
+                hidden = self.initial_hidden(state.size(0))
+            h, c = self.cell(s, hidden)
+            new_hidden = (h, c)
+            s_tok = h.unsqueeze(1)
+        else:
+            s_tok = s.unsqueeze(1)
+        ct = self.cand_in(cands)                            # (B,K,d)
+        x = torch.cat([s_tok, ct], dim=1)                   # (B,1+K,d)
+        pad = torch.cat([torch.ones_like(mask[:, :1]), mask], dim=1)
+        y = self.enc(x, src_key_padding_mask=~pad)
+        logits = self.scorer(y[:, 1:]).squeeze(-1)
+        logits = logits.masked_fill(~mask, -1e9)
+        value = self.value_head(y[:, 0]).squeeze(-1)
+        return (logits, value, new_hidden) if self.cell is not None \
+            else (logits, value)
+
+
+def build_net(arch, sdim, cdim):
+    if arch == "e0":
+        return E0Policy(sdim, cdim)
+    if arch == "attn":
+        return AttnPolicy(sdim, cdim, lstm=False)
+    if arch == "lstmattn":
+        return AttnPolicy(sdim, cdim, lstm=True)
+    raise ValueError(f"unknown arch {arch}")
+
+
 class Trainer:
     def __init__(self, ckpt, seed, log_path, sdim=SDIM, cdim=CDIM,
-                 shape=0.0, phi_scale=2000.0):
+                 shape=0.0, phi_scale=2000.0, arch="e0"):
         torch.manual_seed(seed)
         self.sdim, self.cdim = sdim, cdim
         # C2a potential-based shaping: r'_t = r_t + shape*(GAMMA*Φ_{t+1}-Φ_t)
         # with Φ = tanh(raw_phi/phi_scale) and Φ(terminal) = 0 (policy-
         # invariant, Ng et al. 1999). shape=0 reproduces Phase 3/4 exactly.
         self.shape, self.phi_scale = shape, phi_scale
-        self.net = E0Policy(sdim, cdim)
+        self.arch = arch
+        self.recurrent = (arch == "lstmattn")
+        self.hidden = None          # rollout hidden state (recurrent only)
+        self.net = build_net(arch, sdim, cdim)
         self.opt = torch.optim.Adam(self.net.parameters(), lr=LR)
         self.ckpt = ckpt
         self.log_path = log_path
@@ -74,6 +141,10 @@ class Trainer:
         self.updates = 0
         if ckpt and os.path.exists(ckpt):
             data = torch.load(ckpt, weights_only=False)
+            ck_arch = data.get("arch", "e0")
+            if ck_arch != arch:
+                raise RuntimeError(
+                    f"ckpt arch {ck_arch} != requested {arch}")
             self.net.load_state_dict(data["net"])
             self.opt.load_state_dict(data["opt"])
             self.episodes_seen = data.get("episodes", 0)
@@ -93,7 +164,13 @@ class Trainer:
             c[0, :k] = torch.tensor(cands)
             m = torch.zeros(1, MAX_K, dtype=torch.bool)
             m[0, :k] = True
-            logits, value = self.net(s, c, m)
+            if self.recurrent:
+                hin = self.hidden if self.hidden is not None \
+                    else self.net.initial_hidden(1)
+                logits, value, self.hidden = self.net(s, c, m, hin)
+            else:
+                hin = None
+                logits, value = self.net(s, c, m)
             if sample:
                 dist = torch.distributions.Categorical(logits=logits[0])
                 a = int(dist.sample())
@@ -101,12 +178,15 @@ class Trainer:
                 self.buf.append((s[0], c[0], m[0], a,
                                  float(dist.log_prob(torch.tensor(a))),
                                  float(value[0]),
-                                 math.tanh(phi / self.phi_scale)))
+                                 math.tanh(phi / self.phi_scale),
+                                 (hin[0][0].clone(), hin[1][0].clone())
+                                 if self.recurrent else None))
             else:
                 a = int(torch.argmax(logits[0]))
             return a
 
     def end_episode(self, reward, training):
+        self.hidden = None          # memory never crosses episodes
         if not training:
             return
         self.completed.append((self.ep_start, len(self.buf), reward))
@@ -127,6 +207,9 @@ class Trainer:
         values = torch.tensor([b[5] for b in self.buf])
 
         phis = [b[6] if len(b) > 6 else 0.0 for b in self.buf]
+        if self.recurrent:
+            hid_h = torch.stack([b[7][0] for b in self.buf])
+            hid_c = torch.stack([b[7][1] for b in self.buf])
         adv = torch.zeros(len(self.buf))
         ret = torch.zeros(len(self.buf))
         for start, end, reward in self.completed:
@@ -149,7 +232,12 @@ class Trainer:
         for _ in range(EPOCHS):
             perm = idx[torch.randperm(n)]
             for mb in perm.split(256):
-                logits, value = self.net(states[mb], cands[mb], masks[mb])
+                if self.recurrent:
+                    logits, value, _ = self.net(states[mb], cands[mb],
+                                                masks[mb],
+                                                (hid_h[mb], hid_c[mb]))
+                else:
+                    logits, value = self.net(states[mb], cands[mb], masks[mb])
                 dist = torch.distributions.Categorical(logits=logits)
                 logp = dist.log_prob(actions[mb])
                 ratio = torch.exp(logp - old_logp[mb])
@@ -184,7 +272,8 @@ class Trainer:
             torch.save({"net": self.net.state_dict(),
                         "opt": self.opt.state_dict(),
                         "episodes": self.episodes_seen,
-                        "updates": self.updates}, self.ckpt)
+                        "updates": self.updates,
+                        "arch": self.arch}, self.ckpt)
 
 
 def serve(port, trainer):
@@ -249,8 +338,11 @@ if __name__ == "__main__":
     ap.add_argument("--shape", type=float, default=0.0,
                     help="C2a shaping coefficient (0 = terminal-only)")
     ap.add_argument("--phi-scale", type=float, default=2000.0)
+    ap.add_argument("--arch", default="e0",
+                    choices=["e0", "attn", "lstmattn"],
+                    help="C6: net architecture")
     args = ap.parse_args()
     torch.set_num_threads(2)
     serve(args.port, Trainer(args.ckpt, args.seed, args.log,
                              args.sdim, args.cdim,
-                             args.shape, args.phi_scale))
+                             args.shape, args.phi_scale, args.arch))
