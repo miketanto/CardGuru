@@ -239,17 +239,23 @@ class Trainer:
         if adv.std() > 1e-6:
             adv = (adv - adv.mean()) / (adv.std() + 1e-8)
 
+        if self.recurrent:
+            # Phase 7: TRUE BPTT - replay each episode as a sequence
+            # through the cell, gradients through time (truncated), so
+            # the hidden state is trained to CONTAIN useful history
+            # (the stored-hidden one-step variant demonstrably fed the
+            # attention a noise token - C6 lstm arm).
+            self._update_recurrent(states, cands, masks, actions,
+                                   old_logp, adv, ret)
+            self._finish_update(n=len(self.buf), phis=phis)
+            return
+
         n = len(self.buf)
         idx = torch.arange(n)
         for _ in range(EPOCHS):
             perm = idx[torch.randperm(n)]
             for mb in perm.split(256):
-                if self.recurrent:
-                    logits, value, _ = self.net(states[mb], cands[mb],
-                                                masks[mb],
-                                                (hid_h[mb], hid_c[mb]))
-                else:
-                    logits, value = self.net(states[mb], cands[mb], masks[mb])
+                logits, value = self.net(states[mb], cands[mb], masks[mb])
                 dist = torch.distributions.Categorical(logits=logits)
                 logp = dist.log_prob(actions[mb])
                 ratio = torch.exp(logp - old_logp[mb])
@@ -263,6 +269,55 @@ class Trainer:
                 loss.backward()
                 nn.utils.clip_grad_norm_(self.net.parameters(), 0.5)
                 self.opt.step()
+        self._finish_update(n=n, phis=phis)
+
+    def _update_recurrent(self, states, cands, masks, actions,
+                          old_logp, adv, ret, tbptt=64, ep_batch=8):
+        """True-BPTT PPO for lstmattn: episodes replayed as sequences,
+        hidden carried by the live net, gradients through time
+        (detached every tbptt steps). Episodes are batched together and
+        stepped in lockstep; finished episodes drop out of the batch
+        via a live mask."""
+        episodes = [(s, e) for s, e, _ in self.completed if e > s]
+        for _ in range(EPOCHS):
+            order = torch.randperm(len(episodes))
+            for g0 in range(0, len(episodes), ep_batch):
+                group = [episodes[i] for i in order[g0:g0 + ep_batch]]
+                maxlen = max(e - s for s, e in group)
+                B = len(group)
+                h, c = self.net.initial_hidden(B)
+                losses = []
+                for t in range(maxlen):
+                    live = [bi for bi, (s, e) in enumerate(group)
+                            if s + t < e]
+                    idx = torch.tensor([group[bi][0] + t for bi in live])
+                    lt = torch.tensor(live)
+                    logits, value, (h2, c2) = self.net(
+                        states[idx], cands[idx], masks[idx],
+                        (h[lt], c[lt]))
+                    h = h.clone(); c = c.clone()
+                    h[lt] = h2; c[lt] = c2
+                    if (t + 1) % tbptt == 0:
+                        h = h.detach(); c = c.detach()
+                    dist = torch.distributions.Categorical(logits=logits)
+                    logp = dist.log_prob(actions[idx])
+                    ratio = torch.exp(logp - old_logp[idx])
+                    a = adv[idx]
+                    pg = -torch.min(ratio * a,
+                                    torch.clamp(ratio, 1 - CLIP, 1 + CLIP) * a)
+                    vloss = (value - ret[idx]) ** 2
+                    ent = dist.entropy()
+                    losses.append((pg + VAL_COEF * vloss
+                                   - ENT_COEF * ent).sum())
+                loss = torch.stack(losses).sum() / max(
+                    1, sum(e - s for s, e in group))
+                self.opt.zero_grad()
+                loss.backward()
+                nn.utils.clip_grad_norm_(self.net.parameters(), 0.5)
+                self.opt.step()
+                h = c = None
+
+    def _finish_update(self, n, phis):
         self.updates += 1
         wr = sum(1 for _, _, r in self.completed if r > 0) / len(self.completed)
         mean_abs_phi = sum(abs(p) for p in phis) / max(1, len(phis))

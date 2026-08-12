@@ -72,6 +72,74 @@ def fwd(net, s, c, m):
     return out[0], out[1]
 
 
+def seq_step_tensors(group, live, t, cdim):
+    """Tensors for step t of the live episodes in this group."""
+    rows = [group[bi][t] for bi in live]
+    bs = len(rows)
+    s = torch.tensor([e[2] for e in rows])
+    c = torch.zeros(bs, MAX_K, cdim)
+    m = torch.zeros(bs, MAX_K, dtype=torch.bool)
+    for i, e in enumerate(rows):
+        k = len(e[3])
+        c[i, :k] = torch.tensor(e[3])
+        m[i, :k] = True
+    y = torch.tensor([e[1] for e in rows])
+    v = torch.tensor([e[4] for e in rows])
+    return rows, s, c, m, y, v
+
+
+def run_seq(net, episodes_ex, cdim, ep_batch, tbptt, val_coef,
+            opt=None, gen=None):
+    """One pass over episode sequences with carried hidden (TBPTT when
+    opt is set; pure inference for validation when opt is None).
+    -> (mean_loss, acc, by_kind, nonpass_acc)"""
+    order = (torch.randperm(len(episodes_ex), generator=gen) if opt is not None
+             else torch.arange(len(episodes_ex)))
+    tot_loss = tot_n = hits = 0
+    by_kind = {}
+    np_hits = np_tot = 0
+    ctx = torch.enable_grad() if opt is not None else torch.no_grad()
+    with ctx:
+        for g0 in range(0, len(episodes_ex), ep_batch):
+            group = [episodes_ex[i] for i in order[g0:g0 + ep_batch]]
+            maxlen = max(len(e) for e in group)
+            h, hc = net.initial_hidden(len(group))
+            losses, n_group = [], 0
+            for t in range(maxlen):
+                live = [bi for bi, e in enumerate(group) if t < len(e)]
+                lt = torch.tensor(live)
+                rows, s, c, m, y, v = seq_step_tensors(group, live, t, cdim)
+                logits, value, (h2, c2) = net(s, c, m, (h[lt], hc[lt]))
+                h = h.clone(); hc = hc.clone()
+                h[lt] = h2; hc[lt] = c2
+                if opt is not None and (t + 1) % tbptt == 0:
+                    h = h.detach(); hc = hc.detach()
+                losses.append(F.cross_entropy(logits, y, reduction="sum")
+                              + val_coef * F.mse_loss(value, v,
+                                                      reduction="sum"))
+                n_group += len(rows)
+                pred = logits.argmax(dim=1)
+                ok = pred == y
+                hits += int(ok.sum())
+                for i, e in enumerate(rows):
+                    kh, kt = by_kind.get(e[0], (0, 0))
+                    by_kind[e[0]] = (kh + int(ok[i]), kt + 1)
+                    if e[0] in ("tgt", "card") or e[1] > 0:
+                        np_hits += int(ok[i])
+                        np_tot += 1
+            loss = torch.stack(losses).sum() / max(1, n_group)
+            if opt is not None:
+                opt.zero_grad()
+                loss.backward()
+                torch.nn.utils.clip_grad_norm_(net.parameters(), 1.0)
+                opt.step()
+            tot_loss += float(loss.detach()) * n_group
+            tot_n += n_group
+    return (tot_loss / max(1, tot_n), hits / max(1, tot_n),
+            {k: kh / max(1, kt) for k, (kh, kt) in sorted(by_kind.items())},
+            np_hits / max(1, np_tot))
+
+
 def accuracy(net, data, batch_size, cdim):
     hits = tot = 0
     by_kind = {}
@@ -112,49 +180,94 @@ def main():
     ap.add_argument("--log", default=None)
     ap.add_argument("--arch", default="e0",
                     choices=["e0", "attn", "lstmattn"])
+    ap.add_argument("--seq", type=int, default=None,
+                    help="1=episode-sequence BC with carried hidden "
+                         "(default for lstmattn), 0=flat shuffled BC")
+    ap.add_argument("--ep-batch", type=int, default=16)
+    ap.add_argument("--tbptt", type=int, default=64)
     args = ap.parse_args()
+    seq = (args.arch == "lstmattn") if args.seq is None else bool(args.seq)
 
     torch.manual_seed(args.seed)
     gen = torch.Generator().manual_seed(args.seed)
+    if seq:
+        # tiny per-step batches: default thread pool thrashes (>10x
+        # slowdown observed on the BPTT smoke test)
+        torch.set_num_threads(2)
 
     episodes = load(args.data)
     n_val_ep = max(1, int(len(episodes) * args.val_frac))
-    train = flatten(episodes[:-n_val_ep])
-    val = flatten(episodes[-n_val_ep:])
-    # drop the rare over-length candidate sets entirely (train AND val):
-    # truncation would relabel actions beyond MAX_K
-    dropped = sum(1 for e in train + val if len(e[3]) > MAX_K)
-    train = [e for e in train if len(e[3]) <= MAX_K]
-    val = [e for e in val if len(e[3]) <= MAX_K]
-    print(f"episodes={len(episodes)} train={len(train)} val={len(val)} "
-          f"dropped_overlength={dropped}", flush=True)
-
-    # lstmattn BC trains with zero hidden state (episode-start memory);
-    # the cell's dynamics are learned later in the league
     net = build_net(args.arch, args.sdim, args.cdim)
     opt = torch.optim.Adam(net.parameters(), lr=args.lr)
     logf = open(args.log, "a") if args.log else None
 
-    for ep in range(args.epochs):
-        tot_loss = n_batches = 0
-        for chunk, s, c, m, y, v in batches(train, args.batch, args.cdim,
-                                            True, gen):
-            logits, value = fwd(net, s, c, m)
-            loss = F.cross_entropy(logits, y) \
-                + args.val_coef * F.mse_loss(value, v)
-            opt.zero_grad()
-            loss.backward()
-            opt.step()
-            tot_loss += float(loss)
-            n_batches += 1
-        acc, by_kind, nonpass = accuracy(net, val, args.batch, args.cdim)
-        line = (f"epoch={ep + 1} loss={tot_loss / max(1, n_batches):.4f} "
-                f"val_acc={acc:.4f} nonpass_acc={nonpass:.4f} "
-                f"by_kind={by_kind}")
-        print(line, flush=True)
-        if logf:
-            logf.write(line + "\n")
-            logf.flush()
+    if seq:
+        # Phase 7: episode-sequence BC - hidden carried across a whole
+        # episode's consults (TBPTT), so the cell learns real memory
+        # dynamics instead of a zero-hidden approximation. An episode
+        # containing any over-length candidate set is dropped whole:
+        # skipping a consult mid-sequence would desync the hidden state.
+        def to_seq(eps):
+            out, dropped = [], 0
+            for examples, reward in eps:
+                fl = flatten([(examples, reward)])
+                if any(len(e[3]) > MAX_K for e in fl) or not fl:
+                    dropped += 1
+                    continue
+                out.append(fl)
+            return out, dropped
+        train_ep, d1 = to_seq(episodes[:-n_val_ep])
+        val_ep, d2 = to_seq(episodes[-n_val_ep:])
+        print(f"episodes={len(episodes)} train_eps={len(train_ep)} "
+              f"val_eps={len(val_ep)} dropped_episodes={d1 + d2}",
+              flush=True)
+        for ep in range(args.epochs):
+            tr_loss, _, _, _ = run_seq(
+                net, train_ep, args.cdim, args.ep_batch, args.tbptt,
+                args.val_coef, opt=opt, gen=gen)
+            _, acc, by_kind, nonpass = run_seq(
+                net, val_ep, args.cdim, args.ep_batch, args.tbptt,
+                args.val_coef)
+            line = (f"epoch={ep + 1} loss={tr_loss:.4f} "
+                    f"val_acc={acc:.4f} nonpass_acc={nonpass:.4f} "
+                    f"by_kind={by_kind}")
+            print(line, flush=True)
+            if logf:
+                logf.write(line + "\n")
+                logf.flush()
+    else:
+        train = flatten(episodes[:-n_val_ep])
+        val = flatten(episodes[-n_val_ep:])
+        # drop the rare over-length candidate sets entirely (train AND
+        # val): truncation would relabel actions beyond MAX_K
+        dropped = sum(1 for e in train + val if len(e[3]) > MAX_K)
+        train = [e for e in train if len(e[3]) <= MAX_K]
+        val = [e for e in val if len(e[3]) <= MAX_K]
+        print(f"episodes={len(episodes)} train={len(train)} val={len(val)} "
+              f"dropped_overlength={dropped}", flush=True)
+
+        for ep in range(args.epochs):
+            tot_loss = n_batches = 0
+            for chunk, s, c, m, y, v in batches(train, args.batch,
+                                                args.cdim, True, gen):
+                logits, value = fwd(net, s, c, m)
+                loss = F.cross_entropy(logits, y) \
+                    + args.val_coef * F.mse_loss(value, v)
+                opt.zero_grad()
+                loss.backward()
+                opt.step()
+                tot_loss += float(loss)
+                n_batches += 1
+            acc, by_kind, nonpass = accuracy(net, val, args.batch,
+                                             args.cdim)
+            line = (f"epoch={ep + 1} "
+                    f"loss={tot_loss / max(1, n_batches):.4f} "
+                    f"val_acc={acc:.4f} nonpass_acc={nonpass:.4f} "
+                    f"by_kind={by_kind}")
+            print(line, flush=True)
+            if logf:
+                logf.write(line + "\n")
+                logf.flush()
 
     torch.save({"net": net.state_dict(), "opt": opt.state_dict(),
                 "episodes": len(episodes), "updates": 0,
