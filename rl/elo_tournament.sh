@@ -8,6 +8,8 @@
 # Usage: bash rl/elo_tournament.sh [games_per_pairing=100]
 set -u
 G=${1:-100}
+FAMILY=${2:-all}          # e0 | attn | all - lets two lanes split the field
+BASEPORT=${3:-9001}
 OUT=/tmp/rl_elo
 FEATS=/home/user/CardGuru/rl/e2_features.tsv
 ESEED=980000
@@ -24,21 +26,21 @@ POLICIES=(
 )
 SCRIPTED=("D0|heuristic" "D1|search" "D1h|searchhold")
 
-serve() {  # $1 ckpt $2 arch $3 port $4 log -> pid in $OUT/.pid
+serve() {  # $1 ckpt $2 arch $3 port $4 log -> pid in $OUT/.pid_$FAMILY
     local CDIM=38; [ "$2" != "e0" ] && CDIM=91
     local try
     for try in 1 2 3; do
         rm -f "$4"
         python3 /home/user/CardGuru/rl/policy_server.py --port $3 \
             --ckpt "$1" --seed 0 --arch $2 --cdim $CDIM > "$4" 2>&1 &
-        echo $! > $OUT/.pid
+        echo $! > $OUT/.pid_$FAMILY
         local up=0; SECONDS=0
         while [ $SECONDS -lt 90 ]; do
             grep -q "policy server" "$4" 2>/dev/null && { up=1; break; }
             grep -q "Traceback" "$4" 2>/dev/null && break
         done
         [ "$up" = "1" ] && return 0
-        kill $(cat $OUT/.pid) 2>/dev/null; wait $(cat $OUT/.pid) 2>/dev/null
+        kill $(cat $OUT/.pid_$FAMILY) 2>/dev/null; wait $(cat $OUT/.pid_$FAMILY) 2>/dev/null
         grep -q "Address already in use" "$4" 2>/dev/null || break
     done
     echo "ELO_FAILED|server|$1"; cat "$4"; exit 1
@@ -51,7 +53,7 @@ run_match() {  # $1 tag $2 extra driver args (opponent config) $3 arch $4 feats-
     mvn -q -pl Mage.Tests surefire:test -Dtest='RLEpisodeDriver' \
         -DargLine="-Dfile.encoding=UTF-8 -Xmx4500m" \
         -DfailIfNoTests=false -Drl.episodes=$G \
-        -Drl.agent=rl -Drl.policy=socket -Drl.port=9001 $FEATARG \
+        -Drl.agent=rl -Drl.policy=socket -Drl.port=$BASEPORT $FEATARG \
         $2 \
         -Drl.noYields=true -Drl.consultBudget=4000 \
         -Drl.deck=BenchDimir.dck -Drl.stopTurn=80 \
@@ -69,15 +71,29 @@ record() {  # $1 A $2 B $3 tag
     echo "ELO|$1 vs $2: $w/$G (draws $d)"
 }
 
-: > $OUT/matches.tsv
+touch $OUT/matches.tsv
+
+already() {  # skip pairings another lane (or a prior run) recorded
+    grep -q "^${1}	${2}	" $OUT/matches.tsv
+}
+
+infamily() {  # policy-name family filter
+    case $FAMILY in
+        all) return 0 ;;
+        e0) [[ $1 == e0_* ]] ;;
+        attn) [[ $1 == attn_* ]] ;;
+    esac
+}
 
 # policy vs scripted anchors
 for P in "${POLICIES[@]}"; do
     IFS='|' read -r PN PA PC <<< "$P"
     [ -f "$PC" ] || { echo "ELO_FAILED|missing ckpt $PC"; exit 1; }
+    infamily "$PN" || continue
     for S in "${SCRIPTED[@]}"; do
         IFS='|' read -r SN SK <<< "$S"
-        serve "$PC" "$PA" 9001 $OUT/s_a.log; SRV=$(cat $OUT/.pid)
+        already "$PN" "$SN" && { echo "ELO|skip $PN vs $SN"; continue; }
+        serve "$PC" "$PA" $BASEPORT $OUT/s_a_$FAMILY.log; SRV=$(cat $OUT/.pid_$FAMILY)
         run_match "${PN}_${SN}" "-Drl.opponent=$SK -Drl.searchPlies=1 -Drl.searchBreadth=8" "$PA"
         kill $SRV 2>/dev/null; wait $SRV 2>/dev/null
         record "$PN" "$SN" "${PN}_${SN}"
@@ -87,10 +103,13 @@ done
 # within-family policy vs policy
 pv() {  # $1 A-entry $2 B-entry
     IFS='|' read -r AN AA AC <<< "$1"
+    infamily "$AN" || return 0
+    IFS='|' read -r BN _ _ <<< "$2"
+    already "$AN" "$BN" && { echo "ELO|skip $AN vs $BN"; return 0; }
     IFS='|' read -r BN BA BC <<< "$2"
-    serve "$AC" "$AA" 9001 $OUT/s_a.log; SRVA=$(cat $OUT/.pid)
-    serve "$BC" "$BA" 9002 $OUT/s_b.log; SRVB=$(cat $OUT/.pid)
-    run_match "${AN}_${BN}" "-Drl.opponent=rl -Drl.oppPort=9002" "$AA"
+    serve "$AC" "$AA" $BASEPORT $OUT/s_a_$FAMILY.log; SRVA=$(cat $OUT/.pid_$FAMILY)
+    serve "$BC" "$BA" $((BASEPORT+1)) $OUT/s_b_$FAMILY.log; SRVB=$(cat $OUT/.pid_$FAMILY)
+    run_match "${AN}_${BN}" "-Drl.opponent=rl -Drl.oppPort=$((BASEPORT+1))" "$AA"
     kill $SRVA $SRVB 2>/dev/null; wait $SRVA $SRVB 2>/dev/null
     record "$AN" "$BN" "${AN}_${BN}"
 }
