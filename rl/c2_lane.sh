@@ -6,7 +6,7 @@
 set -u
 ARM=$1; SEED=$2; PORT=$3; BUDGET=${4:-1280}
 POOL="BenchBurn.dck,BenchControl.dck,BenchMidrange.dck,BenchDimir.dck"
-OUT=/tmp/rl_c2_${ARM}_s${SEED}
+OUT=/tmp/rl_c2v3_${ARM}_s${SEED}
 while true; do
     trained=$(cat $OUT/trained.txt 2>/dev/null || echo 0)
     if [ "$trained" -ge "$BUDGET" ]; then

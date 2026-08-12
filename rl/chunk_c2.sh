@@ -7,9 +7,12 @@
 #        bash rl/chunk_c2.sh <arm> <seed> <port> eval <deck(s)> <games> <evalseed> <tag>
 set -u
 ARM=$1; SEED=$2; PORT=$3; MODE=$4
-OUT=/tmp/rl_c2_${ARM}_s${SEED}
+# v3 instrument line (flash/ninjutsu): fresh output namespace + v3 BC
+# init. v2 runs live in /tmp/rl_c2_<arm>_s<seed> (partials recorded in
+# PHASE5-V3.md).
+OUT=/tmp/rl_c2v3_${ARM}_s${SEED}
 POOL="BenchBurn.dck,BenchControl.dck,BenchMidrange.dck,BenchDimir.dck"
-BC=/tmp/rl_p5_c1/student_full.pt
+BC=/tmp/rl_p5_c1/student_v3.pt
 mkdir -p $OUT
 if [ ! -f $OUT/net.pt ] && [ "$ARM" != "scratch" ]; then
     cp $BC $OUT/net.pt
@@ -47,7 +50,7 @@ if [ "$MODE" = "train" ]; then
         -Drl.opponent=search -Drl.searchPlies=1 -Drl.searchBreadth=8 \
         -Drl.policy=socket -Drl.port=$PORT $JPHI \
         -Drl.deck=$POOL -Drl.stopTurn=80 \
-        -Drl.mode=train -Drl.seed=$((20000000 + ARMOFF + SEED*1000000 + trained)) \
+        -Drl.mode=train -Drl.seed=$((21000000 + ARMOFF + SEED*1000000 + trained)) \
         -Drl.report=0 > /dev/null 2>&1
     rows_after=$(wc -l < $OUT/train.csv 2>/dev/null || echo 0)
     if [ "$rows_after" -le "$rows_before" ]; then
