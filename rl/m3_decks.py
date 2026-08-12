@@ -61,9 +61,9 @@ DECKS = {
         "Gravedigger", "Murder", "Doom Blade",
         "Mind Rot", "Sign in Blood", "Sengir Vampire"]),
     "M3BlackAggro": ({"Swamp": 24}, [
-        "Diregraf Ghoul", "Vampire Lacerator", "Reassembling Skeleton",
+        "Diregraf Ghoul", "Vampire Lacerator", "Walking Corpse",
         "Vampire Nighthawk", "Bone Splinters", "Duress",
-        "Lazotep Reaver", "Spark Reaper", "Gurmag Angler"]),
+        "Lazotep Reaver", "Spark Reaper", "Gray Merchant of Asphodel"]),
     # --- mono-red burn/aggro (distinct from BenchBurn cards)
     "M3RedRush": ({"Mountain": 24}, [
         "Raging Goblin", "Goblin Piker", "Ember Beast",
@@ -111,9 +111,9 @@ DECKS = {
     "M3BlueArtifacts": ({"Island": 24}, [
         "Etherium Sculptor", "Vedalken Certarch", "Riddlesmith",
         "Frogmite", "Somber Hoverguard", "Thoughtcast",
-        "Chief Engineer", "Faerie Mechanist", "Broodstar"]),
+        "Trinket Mage", "Faerie Mechanist", "Broodstar"]),
     "M3BlackZombies": ({"Swamp": 24}, [
-        "Gravecrawler", "Diregraf Ghoul", "Highborn Ghoul",
+        "Shambling Ghoul", "Diregraf Ghoul", "Highborn Ghoul",
         "Butcher Ghoul", "Ghoulraiser", "Diregraf Captain",
         "Undead Warchief", "Cemetery Reaper", "Death Baron"]),
     "M3RedGoblins": ({"Mountain": 24}, [

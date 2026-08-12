@@ -52,7 +52,7 @@ while true; do
     mvn -q -pl Mage.Tests surefire:test -Dtest='RLEpisodeDriver' -DargLine="-Dfile.encoding=UTF-8 -Xmx4500m" \
         -DfailIfNoTests=false -Drl.episodes=64 \
         -Drl.opponent=heuristic -Drl.policy=socket -Drl.port=$PORT \
-        -Drl.deck="$POOL" -Drl.stopTurn=80 $JFEAT \
+        -Drl.deck="$POOL" -Drl.stopTurn=80 -Drl.consultBudget=4000 $JFEAT \
         -Drl.mode=train -Drl.seed=$((30000000 + ARMOFF + SEED*1000000 + PSIZE*100000 + trained)) \
         -Drl.report=0 > /dev/null 2>&1
     rows_after=$(wc -l < $OUT/train.csv 2>/dev/null || echo 0)
@@ -69,7 +69,7 @@ for HD in HoldoutBurn HoldoutControl HoldoutMidrange; do
     mvn -q -pl Mage.Tests surefire:test -Dtest='RLEpisodeDriver' -DargLine="-Dfile.encoding=UTF-8 -Xmx4500m" \
         -DfailIfNoTests=false -Drl.episodes=200 \
         -Drl.opponent=heuristic -Drl.policy=socket -Drl.port=$PORT \
-        -Drl.deck=$HD.dck -Drl.stopTurn=80 $JFEAT \
+        -Drl.deck=$HD.dck -Drl.stopTurn=80 -Drl.consultBudget=4000 $JFEAT \
         -Drl.mode=eval -Drl.seed=970000 -Drl.report=0 \
         -Drl.out=$OUT/eval_${HD}.txt > /dev/null 2>&1
     kill $SERVER 2>/dev/null

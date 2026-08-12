@@ -60,7 +60,7 @@ public class RLPlayer extends ComputerPlayer {
     public long failedActivations = 0;
     /** per-episode consult budget: a runaway episode (random policy can
      * mana-loop) degrades to always-pass instead of hanging the driver */
-    public long consultBudget = 20000;
+    public long consultBudget = Long.getLong("rl.consultBudget", 20000L);
     public boolean budgetExhausted = false;
     public final Map<String, Integer> fallbackCalls = new TreeMap<>();
     /** rl.debug transcript: one line per chosen action (RLGAME block) */
