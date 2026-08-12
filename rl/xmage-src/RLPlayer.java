@@ -127,6 +127,54 @@ public class RLPlayer extends ComputerPlayer {
         super.shuffleLibrary(source, game);
     }
 
+    // ---------------------------------------------- C3 shadow teacher
+
+    /**
+     * True-DAgger logging (rl agent + rl.imitateOut): at every consulted
+     * priority window, write the D1 teacher's label for THIS
+     * (student-visited) state while the STUDENT still chooses the
+     * action. Labels: searchBest when it fires; the static D0 policy
+     * (HeuristicPlayer.choosePolicyActionStatic) on delegated/pass
+     * windows - the complete D1 policy. Search sims cannot perturb the
+     * main game: the stream is re-keyed after every query. Priority
+     * windows only (combat/target labels come from teacher datasets).
+     */
+    public java.io.PrintWriter shadowOut;
+    public long shadowExamples = 0;
+    private long shadowCounter = 0;
+
+    private void shadowLabel(Game game, List<ActivatedAbility> playable,
+                             float[] state, float[][] cands) {
+        long[] nodes = {0};
+        Ability tBest = org.mage.test.benchmark.SearchPlayer.searchBest(
+                game, playerId,
+                Integer.getInteger("rl.shadowPlies", 1),
+                Integer.getInteger("rl.shadowBreadth", 8),
+                benchSeed * 5_555_557L + shadowCounter, nodes);
+        shadowCounter++;
+        RandomUtil.setSeed(benchSeed * 5_555_557L + shadowCounter);
+        Ability chosen = tBest;
+        if (tBest == null
+                || tBest instanceof mage.abilities.common.PassAbility) {
+            chosen = org.mage.test.benchmark.HeuristicPlayer
+                    .choosePolicyActionStatic(game, playerId, playable);
+        }
+        int label = 0;
+        if (chosen != null
+                && !(chosen instanceof mage.abilities.common.PassAbility)) {
+            String key = chosen.getSourceId() + "|" + chosen.getRule();
+            for (int i = 0; i < playable.size(); i++) {
+                ActivatedAbility a = playable.get(i);
+                if ((a.getSourceId() + "|" + a.getRule()).equals(key)) {
+                    label = i + 1;
+                    break;
+                }
+            }
+        }
+        shadowExamples++;
+        TeacherLogPlayer.writeExample(shadowOut, "prio", state, cands, label);
+    }
+
     // ------------------------------------------------------------- yields
 
     private boolean holdsInstant(Game game) {
@@ -222,6 +270,9 @@ public class RLPlayer extends ComputerPlayer {
             pass(game);
             setYieldAfterPass(game);
             return false;
+        }
+        if (shadowOut != null) {
+            shadowLabel(game, playable, state, cands);
         }
         consults++;
         int pick = policy.choose(state, cands, phi(game));

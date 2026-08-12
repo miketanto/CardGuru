@@ -261,6 +261,16 @@ public class HeuristicPlayer extends ComputerPlayer {
     }
 
     private ActivatedAbility choosePolicyAction(Game game, List<ActivatedAbility> playable) {
+        return choosePolicyActionStatic(game, playerId, playable);
+    }
+
+    /**
+     * The full D0 action policy, callable from any seat (C3 shadow
+     * teacher labels). Pure refactor of the v3 instance logic - the
+     * instrument's behavior is unchanged.
+     */
+    public static ActivatedAbility choosePolicyActionStatic(
+            Game game, UUID playerId, List<ActivatedAbility> playable) {
         if (playable.isEmpty()) {
             return null;
         }
@@ -310,7 +320,7 @@ public class HeuristicPlayer extends ComputerPlayer {
         return null;
     }
 
-    private Card cardOf(Game game, ActivatedAbility a) {
+    private static Card cardOf(Game game, ActivatedAbility a) {
         if (!(a instanceof SpellAbility)) {
             return null;
         }
@@ -323,7 +333,7 @@ public class HeuristicPlayer extends ComputerPlayer {
      * UUIDs, so "first in list" is NOT reproducible across game instances
      * (found by the B6 equivalence check).
      */
-    private ActivatedAbility bestBy(Game game, List<ActivatedAbility> playable,
+    private static ActivatedAbility bestBy(Game game, List<ActivatedAbility> playable,
                                     java.util.function.Predicate<Card> filter) {
         ActivatedAbility best = null;
         int bestMv = -1;
@@ -345,12 +355,12 @@ public class HeuristicPlayer extends ComputerPlayer {
         return best;
     }
 
-    private ActivatedAbility bestSpell(Game game, List<ActivatedAbility> playable,
+    private static ActivatedAbility bestSpell(Game game, List<ActivatedAbility> playable,
                                        boolean creaturesOnly) {
         return bestBy(game, playable, c -> !creaturesOnly || c.isCreature(game));
     }
 
-    private ActivatedAbility bestSorcery(Game game, List<ActivatedAbility> playable) {
+    private static ActivatedAbility bestSorcery(Game game, List<ActivatedAbility> playable) {
         return bestBy(game, playable, c -> c.isSorcery(game));
     }
 

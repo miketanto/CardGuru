@@ -125,6 +125,7 @@ public class RLEpisodeDriver extends MageTestPlayerBase {
             rlAgent.policy = policy;
             rlAgent.resetPerEpisode();
             rlAgent.benchSeed = seed;
+            rlAgent.shadowOut = imitateOut;   // C3 true-DAgger labels
             rlAgent.setTestMode(true);
             agent = rlAgent;
         }
@@ -182,6 +183,9 @@ public class RLEpisodeDriver extends MageTestPlayerBase {
             r.windows = rlAgent.windows;
             r.actions = rlAgent.actions;
             rlAgent.fallbackCalls.forEach((k, v) -> fallbacks.merge(k, v, Integer::sum));
+            if (rlAgent.shadowExamples > 0) {
+                fallbacks.merge("shadowExamples", (int) rlAgent.shadowExamples, Integer::sum);
+            }
         }
         if (agent instanceof org.mage.test.benchmark.SearchPlayer) {
             org.mage.test.benchmark.SearchPlayer sp = (org.mage.test.benchmark.SearchPlayer) agent;

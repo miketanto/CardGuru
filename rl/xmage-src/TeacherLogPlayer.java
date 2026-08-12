@@ -470,6 +470,12 @@ public class TeacherLogPlayer extends org.mage.test.benchmark.SearchPlayer {
 
     private void write(String kind, float[] state, float[][] cands, int label) {
         examples++;
+        writeExample(out, kind, state, cands, label);
+    }
+
+    /** NDJSON example writer, shared with RLPlayer's shadow-teacher mode */
+    static void writeExample(java.io.PrintWriter out, String kind,
+                             float[] state, float[][] cands, int label) {
         StringBuilder sb = new StringBuilder(
                 64 + cands.length * (cands.length > 0 ? cands[0].length : 0) * 7);
         sb.append("{\"t\":\"").append(kind).append("\",\"y\":").append(label)
@@ -488,7 +494,7 @@ public class TeacherLogPlayer extends org.mage.test.benchmark.SearchPlayer {
         out.println(sb);
     }
 
-    private void appendVec(StringBuilder sb, float[] v) {
+    private static void appendVec(StringBuilder sb, float[] v) {
         for (int i = 0; i < v.length; i++) {
             if (i > 0) {
                 sb.append(',');
