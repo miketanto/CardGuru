@@ -69,17 +69,24 @@ block):
    still "same league" agents; nothing has broken away from the
    instruments.
 
-## Exploitability (first result)
+## Exploitability (final)
 
-Exploiter (e0 arch, BC-init, trains only vs frozen e0_champ):
+Exploiter (e0 arch, BC-init, trains ONLY vs frozen e0_champ, 640 eps):
 
 | trained | win vs e0_champ |
 |---------|-----------------|
 | 256     | .33 |
+| 512     | .42 |
+| 640     | .42 |
 
-At 256 episodes the exploiter is *losing* to its frozen target — no
-cheap hole found yet. Full 640-episode result and verdict to follow;
-≥.65 would flag a real hole worth patching via league inclusion.
+**Verdict: e0_champ is not cheaply exploitable.** A same-capacity
+adversary given 640 dedicated episodes never reaches .50 against it
+(plateau at .42), far below the ≥.65 hole threshold. The champion's
+1083 rating is robust, not a probe artifact — the strongest evidence
+yet that the clean self-play league produced genuine, non-brittle
+skill. The trained exploiter still joins the Phase 7 opponent
+population (a .42 adversary is a useful sparring partner even without
+a winning record).
 
 ## Consequences for Phase 7
 
