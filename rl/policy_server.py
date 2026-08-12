@@ -341,7 +341,13 @@ if __name__ == "__main__":
     ap.add_argument("--arch", default="e0",
                     choices=["e0", "attn", "lstmattn"],
                     help="C6: net architecture")
+    ap.add_argument("--lr", type=float, default=None,
+                    help="override LR (default: LR constant; 3e-4 was "
+                         "tuned for the 43k E0 net and is hot for the "
+                         "C6 transformers)")
     args = ap.parse_args()
+    if args.lr is not None:
+        LR = args.lr
     torch.set_num_threads(2)
     serve(args.port, Trainer(args.ckpt, args.seed, args.log,
                              args.sdim, args.cdim,

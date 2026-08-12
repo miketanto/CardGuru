@@ -7,6 +7,13 @@
 #            <initCkpt> [budget=1024]
 set -u
 ARCH=$1; SEED=$2; APORT=$3; OPORT=$4; INIT=$5; BUDGET=${6:-1024}
+# v2 fixes after the attn-league regression (.56/.44 -> .46/.35):
+#  - LR 1e-4 for the big nets (3e-4 was tuned for the 43k E0 MLP and
+#    shreds the BC prior on a 300k transformer)
+#  - anchor opponent: every other chunk trains against ck_0 (the frozen
+#    BC student) instead of the drifting snapshot pool - external
+#    grounding a self-colluding league can't provide
+LRVAL=${C6_LR:-1e-4}
 OUT=/tmp/rl_c6_${ARCH}_s${SEED}
 DECK=BenchDimir.dck
 FEATS=/home/user/CardGuru/rl/e2_features.tsv
@@ -22,7 +29,7 @@ start_server() {  # $1 ckpt path, $2 port, $3 logfile -> pid in $OUT/.srvpid
         rm -f $3
         python3 /home/user/CardGuru/rl/policy_server.py --port $2 \
             --ckpt "$1" --seed $SEED --log $OUT/train.csv \
-            --cdim $CDIM --arch $ARCH > $3 2>&1 &
+            --cdim $CDIM --arch $ARCH --lr $LRVAL > $3 2>&1 &
         echo $! > $OUT/.srvpid
         local up=0; SECONDS=0
         while [ $SECONDS -lt 90 ]; do
@@ -54,7 +61,11 @@ while true; do
     fi
     mapfile -t POOLCKS < <(ls $OUT/pool/*.pt 2>/dev/null | sort -V)
     NPOOL=${#POOLCKS[@]}
-    OPPCK=${POOLCKS[$(( (trained / 64) % NPOOL ))]}
+    if [ $(( (trained / 64) % 2 )) -eq 0 ]; then
+        OPPCK=$OUT/pool/ck_0.pt        # anchor: the frozen BC student
+    else
+        OPPCK=${POOLCKS[$(( (trained / 64) % NPOOL ))]}
+    fi
 
     start_server $OUT/net.pt $APORT $OUT/aserver.log
     ASRV=$(cat $OUT/.srvpid)
