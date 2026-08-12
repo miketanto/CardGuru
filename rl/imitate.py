@@ -185,6 +185,8 @@ def main():
                          "(default for lstmattn), 0=flat shuffled BC")
     ap.add_argument("--ep-batch", type=int, default=16)
     ap.add_argument("--tbptt", type=int, default=64)
+    ap.add_argument("--init", default=None,
+                    help="ckpt to resume BC from (net+opt state)")
     args = ap.parse_args()
     seq = (args.arch == "lstmattn") if args.seq is None else bool(args.seq)
 
@@ -199,6 +201,13 @@ def main():
     n_val_ep = max(1, int(len(episodes) * args.val_frac))
     net = build_net(args.arch, args.sdim, args.cdim)
     opt = torch.optim.Adam(net.parameters(), lr=args.lr)
+    if args.init:
+        data = torch.load(args.init, weights_only=False)
+        if data.get("arch", "e0") != args.arch:
+            raise RuntimeError(f"init arch {data.get('arch')} != {args.arch}")
+        net.load_state_dict(data["net"])
+        opt.load_state_dict(data["opt"])
+        print(f"resumed BC from {args.init}", flush=True)
     logf = open(args.log, "a") if args.log else None
 
     if seq:
