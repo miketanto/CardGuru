@@ -49,6 +49,10 @@ public class RLEpisodeDriver extends MageTestPlayerBase {
         // an empty card DB and every deck loads 0 cards (synchronous, one-time
         // cost per checkout - the db/ directory persists)
         mage.cards.repository.CardScanner.scan();
+        // inert unless -Dxmage.dataCollectors.printGameLogs=true, which
+        // routes the engine's informPlayers game log to log4j (full
+        // human-readable transcripts for debugging/sampling)
+        mage.collectors.DataCollectorServices.init(false, false);
     }
 
     private Deck loadDeck(String name) throws Exception {
