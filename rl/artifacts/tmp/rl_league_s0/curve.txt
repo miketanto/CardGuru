@@ -1,0 +1,4 @@
+LEAGUE|seed=0|trained=256|probe=heuristic|win_rate=0.0800|stalls=0
+LEAGUE|seed=0|trained=256|probe=search|win_rate=0.0400|stalls=0
+LEAGUE|seed=0|trained=512|probe=heuristic|win_rate=|stalls=
+LEAGUE|seed=0|trained=512|probe=search|win_rate=0.0200|stalls=0

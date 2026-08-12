@@ -1,0 +1,2 @@
+C6|arch=lstmattn|seed=0|trained=256|probe=heuristic|win_rate=0.4300|stalls=0
+C6|arch=lstmattn|seed=0|trained=256|probe=search|win_rate=0.2900|stalls=0

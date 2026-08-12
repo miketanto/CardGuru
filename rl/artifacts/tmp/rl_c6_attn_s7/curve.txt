@@ -1,0 +1,6 @@
+C6|arch=attn|seed=7|trained=256|probe=heuristic|win_rate=0.4600|stalls=0|flashThreats=317|oppTurn=3
+C6|arch=attn|seed=7|trained=256|probe=search|win_rate=0.3400|stalls=0|flashThreats=299|oppTurn=1
+C6|arch=attn|seed=7|trained=512|probe=heuristic|win_rate=0.5600|stalls=0|flashThreats=348|oppTurn=2
+C6|arch=attn|seed=7|trained=512|probe=search|win_rate=0.4100|stalls=0|flashThreats=340|oppTurn=0
+C6|arch=attn|seed=7|trained=768|probe=heuristic|win_rate=0.4500|stalls=0|flashThreats=332|oppTurn=2
+C6|arch=attn|seed=7|trained=768|probe=search|win_rate=0.2700|stalls=0|flashThreats=308|oppTurn=1

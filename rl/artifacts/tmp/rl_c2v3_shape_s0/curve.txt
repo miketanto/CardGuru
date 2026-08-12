@@ -1,0 +1,6 @@
+C2|arm=shape|seed=0|trained=256|eval=roll_256|deck=BenchBurn.dck,BenchControl.dck,BenchMidrange.dck,BenchDimir.dck|win_rate=0.4700|stalls=12
+C2|arm=shape|seed=0|trained=512|eval=roll_512|deck=BenchBurn.dck,BenchControl.dck,BenchMidrange.dck,BenchDimir.dck|win_rate=0.5000|stalls=11
+C2|arm=shape|seed=0|trained=768|eval=roll_768|deck=BenchBurn.dck,BenchControl.dck,BenchMidrange.dck,BenchDimir.dck|win_rate=0.5300|stalls=10
+C2|arm=shape|seed=0|trained=1024|eval=roll_1024|deck=BenchBurn.dck,BenchControl.dck,BenchMidrange.dck,BenchDimir.dck|win_rate=0.5400|stalls=9
+C2|arm=shape|seed=0|trained=1280|eval=roll_1280|deck=BenchBurn.dck,BenchControl.dck,BenchMidrange.dck,BenchDimir.dck|win_rate=0.5100|stalls=11
+C2|arm=shape|seed=0|trained=1280|eval=final500_d1|deck=BenchBurn.dck,BenchControl.dck,BenchMidrange.dck,BenchDimir.dck|win_rate=0.4340|stalls=49
