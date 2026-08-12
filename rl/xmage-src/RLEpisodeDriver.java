@@ -115,6 +115,8 @@ public class RLEpisodeDriver extends MageTestPlayerBase {
             tp.benchSeed = seed;
             tp.searchPlies = Integer.getInteger("rl.agentPlies", 1);
             tp.searchBreadth = Integer.getInteger("rl.agentBreadth", 8);
+            tp.daggerEps = Double.parseDouble(
+                    System.getProperty("rl.daggerEps", "0"));
             tp.out = imitateOut;
             tp.setTestMode(true);
             agent = tp;
@@ -190,6 +192,7 @@ public class RLEpisodeDriver extends MageTestPlayerBase {
             TeacherLogPlayer tp = (TeacherLogPlayer) agent;
             fallbacks.merge("teacherExamples", (int) tp.examples, Integer::sum);
             fallbacks.merge("teacherUnmatched", (int) tp.unmatched, Integer::sum);
+            fallbacks.merge("daggerDeviations", (int) tp.daggerDeviations, Integer::sum);
         }
         if (opp instanceof org.mage.test.benchmark.SearchPlayer) {
             org.mage.test.benchmark.SearchPlayer sp = (org.mage.test.benchmark.SearchPlayer) opp;

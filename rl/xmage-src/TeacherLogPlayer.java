@@ -54,6 +54,19 @@ public class TeacherLogPlayer extends org.mage.test.benchmark.SearchPlayer {
     public java.io.PrintWriter out;      // owned by the driver
     public long examples = 0;
     public long unmatched = 0;           // teacher acted outside the encoded list
+    /**
+     * C3 DAgger: probability of deviating from the teacher's pick at a
+     * decisive (search-fired, non-pass) priority window. The LABEL is
+     * always the teacher's pick; the ACTION is a uniform-random
+     * playable/pass with prob daggerEps - visiting off-teacher states
+     * with exact labels (noise-injected DAgger). 0 = plain teacher.
+     */
+    public double daggerEps = 0;
+    public long daggerDeviations = 0;
+    /** deviation RNG: separate from RandomUtil so dagger draws neither
+     *  perturb the main stream nor suffer first-draw-after-sequential-
+     *  seed correlation (measured 40% at eps=.25 before this) */
+    private java.util.Random daggerRng;
     private boolean capturing = false;
     private ActivatedAbility captured;
 
@@ -111,26 +124,71 @@ public class TeacherLogPlayer extends org.mage.test.benchmark.SearchPlayer {
                             ? StateEncoder.T_LAND : StateEncoder.T_SPELL,
                     card, game);
         }
+        if (daggerEps > 0) {
+            long[] nodes = {0};
+            Ability tBest = org.mage.test.benchmark.SearchPlayer.searchBest(game, getId(),
+                    searchPlies, searchBreadth,
+                    benchSeed * 7_777_777L + decisionCounter, nodes);
+            nodesEvaluated += nodes[0];
+            if (tBest != null) {
+                searchDecisions++;
+                decisionCounter++;
+                mage.util.RandomUtil.setSeed(
+                        benchSeed * 7_777_777L + decisionCounter);
+                if (!(tBest instanceof mage.abilities.common.PassAbility)) {
+                    int label = matchLabel(tBest, playable, game);
+                    write("prio", state, cands, label);
+                    if (daggerRng == null) {
+                        daggerRng = new java.util.Random(benchSeed * 31L + 7L);
+                    }
+                    if (daggerRng.nextDouble() < daggerEps) {
+                        daggerDeviations++;
+                        int pick = daggerRng.nextInt(playable.size() + 1);
+                        if (pick > 0) {
+                            ActivatedAbility dev =
+                                    (ActivatedAbility) playable.get(pick - 1).copy();
+                            if (this.activateAbility(dev, game)) {
+                                return true;
+                            }
+                        }
+                        pass(game);
+                        return false;
+                    }
+                    return this.activateAbility(
+                            (ActivatedAbility) tBest.copy(), game);
+                }
+                // search prefers pass: D0 handles the window (capture below)
+            }
+            capturing = true;
+            captured = null;
+            boolean r = heuristicPriority(game);
+            capturing = false;
+            write("prio", state, cands,
+                    captured == null ? 0 : matchLabel(captured, playable, game));
+            return r;
+        }
         capturing = true;
         captured = null;
         boolean r = super.priority(game);
         capturing = false;
-        int label = 0;
-        if (captured != null) {
-            String key = captured.getSourceId() + "|" + captured.getRule();
-            for (int i = 0; i < playable.size(); i++) {
-                ActivatedAbility a = playable.get(i);
-                if ((a.getSourceId() + "|" + a.getRule()).equals(key)) {
-                    label = i + 1;
-                    break;
-                }
-            }
-            if (label == 0) {
-                unmatched++;
+        write("prio", state, cands,
+                captured == null ? 0 : matchLabel(captured, playable, game));
+        return r;
+    }
+
+    /** index of the acted/chosen ability in RLPlayer's candidate space
+     *  (1-based; 0 = pass/unmatched, unmatched counted) */
+    private int matchLabel(Ability chosen, List<ActivatedAbility> playable,
+                           Game game) {
+        String key = chosen.getSourceId() + "|" + chosen.getRule();
+        for (int i = 0; i < playable.size(); i++) {
+            ActivatedAbility a = playable.get(i);
+            if ((a.getSourceId() + "|" + a.getRule()).equals(key)) {
+                return i + 1;
             }
         }
-        write("prio", state, cands, label);
-        return r;
+        unmatched++;
+        return 0;
     }
 
     // ----------------------------------------------------------- combat

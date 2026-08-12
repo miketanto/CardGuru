@@ -21,7 +21,7 @@ import java.util.UUID;
  *
  * Documented instrument choices (PHASE4-LADDER.md):
  *  - PERFECT-INFORMATION search: sims copy true hidden state, so this
- *    is a "cheating" evaluator - deterministic, cheap, and strictly
+ *    is a "cheating" yardstick - deterministic, cheap, and strictly
  *    harder to fool than determinized search at equal node budget.
  *    K (determinizations) is therefore 0 by design, held fixed.
  *  - Search fires only when there is a real choice (>1 non-mana
@@ -33,6 +33,11 @@ import java.util.UUID;
  *  - Determinism: RandomUtil is reseeded from (benchSeed, decision#)
  *    before each search and again after it, so the number of nodes
  *    explored cannot perturb the main game's random stream.
+ *
+ * Phase 5 C3 refactor: the root search is exposed as static
+ * searchBest(...) so a DAgger shadow teacher can label arbitrary
+ * states from any seat. The instance behavior is bit-identical to the
+ * pre-refactor version (verified by same-seed calibration replay).
  *
  * Dial: plies x breadth. D1=1x8 (~8 nodes), D2=2x6 (~36), D3=3x5
  * (~125), D4=3x8 (~512). Actual nodes are counted and reported.
@@ -60,11 +65,43 @@ public class SearchPlayer extends HeuristicPlayer {
         if (!canRespond()) {
             return heuristicPriority(game);
         }
+        long[] nodes = {0};
+        Ability best = searchBest(game, getId(), searchPlies, searchBreadth,
+                benchSeed * 7_777_777L + decisionCounter, nodes);
+        nodesEvaluated += nodes[0];
+        if (best == null) {
+            return heuristicPriority(game);   // no real choice: D0 behavior
+        }
+        searchDecisions++;
+        decisionCounter++;
+        RandomUtil.setSeed(benchSeed * 7_777_777L + decisionCounter);
+        if (best instanceof PassAbility) {
+            return heuristicPriority(game);   // heuristic handles the pass
+        }
+        return this.activateAbility((ActivatedAbility) best.copy(), game);
+    }
+
+    /**
+     * Root search, callable from any seat (C3 shadow teacher). Returns
+     * the chosen ability (PassAbility = search prefers passing), or
+     * null when there is no real choice (<=1 non-mana candidates - the
+     * instrument delegates those windows to D0). reseedKey is applied
+     * AFTER candidate enumeration, exactly as the pre-refactor
+     * instance code did; pass Long.MIN_VALUE to skip reseeding.
+     * nodesOut[0] accumulates nodes evaluated.
+     */
+    public static Ability searchBest(Game game, UUID me, int plies,
+                                     int breadth, long reseedKey,
+                                     long[] nodesOut) {
+        Player actor = game.getPlayer(me);
+        if (actor == null) {
+            return null;
+        }
         List<ActivatedAbility> playable;
         try {
-            playable = getPlayable(game, true);
+            playable = actor.getPlayable(game, true);
         } catch (Exception e) {
-            return heuristicPriority(game);
+            return null;
         }
         List<Ability> candidates = new ArrayList<>();
         for (ActivatedAbility a : playable) {
@@ -73,50 +110,53 @@ public class SearchPlayer extends HeuristicPlayer {
             }
         }
         if (candidates.size() <= 1) {
-            return heuristicPriority(game);   // no real choice: D0 behavior
+            return null;
         }
         // fixed ordering, then breadth cap: expensive spells first,
         // name tie-break for reproducibility
         candidates.sort(Comparator
                 .comparingInt((Ability a) -> -a.getManaCosts().manaValue())
                 .thenComparing(a -> String.valueOf(a.getRule())));
-        if (candidates.size() > searchBreadth) {
-            candidates = candidates.subList(0, searchBreadth);
+        if (candidates.size() > breadth) {
+            candidates = candidates.subList(0, breadth);
         }
         candidates.add(new PassAbility());
 
-        RandomUtil.setSeed(benchSeed * 7_777_777L + decisionCounter);
+        if (reseedKey != Long.MIN_VALUE) {
+            RandomUtil.setSeed(reseedKey);
+        }
         Ability best = null;
         int bestScore = Integer.MIN_VALUE;
         for (Ability cand : candidates) {
             int score;
             if (cand instanceof PassAbility) {
-                score = value(game, searchPlies - 1, opponentOf(game));
+                score = valueStatic(game, plies - 1, opponentOf(game, me),
+                        me, breadth, nodesOut);
             } else {
-                Game sim = execute(game, getId(), cand);
+                Game sim = executeStatic(game, me, cand, nodesOut);
                 score = sim == null ? Integer.MIN_VALUE + 1
-                        : value(sim, searchPlies - 1, opponentOf(game));
+                        : valueStatic(sim, plies - 1, opponentOf(game, me),
+                                me, breadth, nodesOut);
             }
             if (score > bestScore) {
                 bestScore = score;
                 best = cand;
             }
         }
-        searchDecisions++;
-        decisionCounter++;
-        RandomUtil.setSeed(benchSeed * 7_777_777L + decisionCounter);
-        if (best == null || best instanceof PassAbility) {
-            return heuristicPriority(game);   // heuristic handles the pass
-        }
-        return this.activateAbility((ActivatedAbility) best.copy(), game);
+        return best;
+    }
+
+    protected static UUID opponentOf(Game game, UUID me) {
+        return game.getOpponents(me).stream().findFirst().orElse(me);
     }
 
     protected UUID opponentOf(Game game) {
-        return game.getOpponents(getId()).stream().findFirst().orElse(getId());
+        return opponentOf(game, getId());
     }
 
     /** apply one candidate on a fresh sim, drain the stack, return sim */
-    protected Game execute(Game game, UUID actor, Ability ability) {
+    protected static Game executeStatic(Game game, UUID actor, Ability ability,
+                                        long[] nodesOut) {
         try {
             Game sim = game.createSimulationForAI();
             Player p = sim.getPlayer(actor);
@@ -132,27 +172,36 @@ public class SearchPlayer extends HeuristicPlayer {
                 sim.applyEffects();
                 sim.checkStateAndTriggered();
             }
-            nodesEvaluated++;
+            nodesOut[0]++;
             return sim;
         } catch (Exception e) {
             return null;    // engine edge case in sim: treat as unevaluable
         }
     }
 
-    /** minimax value of a state from MY perspective; toAct moves next */
-    protected int value(Game state, int pliesLeft, UUID toAct) {
+    /** instance wrapper kept for SearchPlayerIP */
+    protected Game execute(Game game, UUID actor, Ability ability) {
+        long[] nodes = {0};
+        Game sim = executeStatic(game, actor, ability, nodes);
+        nodesEvaluated += nodes[0];
+        return sim;
+    }
+
+    /** minimax value of a state from ME's perspective; toAct moves next */
+    protected static int valueStatic(Game state, int pliesLeft, UUID toAct,
+                                     UUID me, int breadth, long[] nodesOut) {
         if (pliesLeft <= 0 || state.hasEnded()) {
-            return GameStateEvaluator2.evaluate(getId(), state).getTotalScore();
+            return GameStateEvaluator2.evaluate(me, state).getTotalScore();
         }
         Player actor = state.getPlayer(toAct);
         if (actor == null) {
-            return GameStateEvaluator2.evaluate(getId(), state).getTotalScore();
+            return GameStateEvaluator2.evaluate(me, state).getTotalScore();
         }
         List<ActivatedAbility> moves;
         try {
             moves = actor.getPlayable(state, true);
         } catch (Exception e) {
-            return GameStateEvaluator2.evaluate(getId(), state).getTotalScore();
+            return GameStateEvaluator2.evaluate(me, state).getTotalScore();
         }
         List<Ability> cands = new ArrayList<>();
         for (ActivatedAbility a : moves) {
@@ -163,27 +212,31 @@ public class SearchPlayer extends HeuristicPlayer {
         cands.sort(Comparator
                 .comparingInt((Ability a) -> -a.getManaCosts().manaValue())
                 .thenComparing(a -> String.valueOf(a.getRule())));
-        if (cands.size() > searchBreadth) {
-            cands = cands.subList(0, searchBreadth);
+        if (cands.size() > breadth) {
+            cands = cands.subList(0, breadth);
         }
-        boolean maximizing = toAct.equals(getId());
-        UUID next = maximizing ? opponentOf(state) : getId();
-        // pass is always available
-        int best = value(stateAfterPass(state), 0, next);
+        boolean maximizing = toAct.equals(me);
+        UUID next = maximizing ? opponentOf(state, me) : me;
+        // pass is always available; passing changes nothing material at
+        // this abstraction level (counted as a node, as before)
+        nodesOut[0]++;
+        int best = valueStatic(state, 0, next, me, breadth, nodesOut);
         for (Ability cand : cands) {
-            Game child = execute(state, toAct, cand);
+            Game child = executeStatic(state, toAct, cand, nodesOut);
             if (child == null) {
                 continue;
             }
-            int v = value(child, pliesLeft - 1, next);
+            int v = valueStatic(child, pliesLeft - 1, next, me, breadth, nodesOut);
             best = maximizing ? Math.max(best, v) : Math.min(best, v);
         }
         return best;
     }
 
-    /** passing changes nothing material at this abstraction level */
-    private Game stateAfterPass(Game state) {
-        nodesEvaluated++;
-        return state;
+    /** instance wrapper kept for SearchPlayerIP */
+    protected int value(Game state, int pliesLeft, UUID toAct) {
+        long[] nodes = {0};
+        int v = valueStatic(state, pliesLeft, toAct, getId(), searchBreadth, nodes);
+        nodesEvaluated += nodes[0];
+        return v;
     }
 }
