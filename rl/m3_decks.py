@@ -136,7 +136,7 @@ DECKS = {
     "M3BlackRats": ({"Swamp": 24}, [
         "Typhoid Rats", "Ravenous Rats", "Drainpipe Vermin",
         "Rancid Rats", "Crypt Rats", "Nezumi Cutthroat",
-        "Gnat Miser", "Pack Rat", "Murder"]),
+        "Gnat Miser", "Chittering Rats", "Murder"]),
     "M3RedDragons": ({"Mountain": 24}, [
         "Dragon Hatchling", "Dragon Fodder", "Seismic Stomp",
         "Dragonlord's Servant", "Dragon Tempest", "Volcanic Dragon",

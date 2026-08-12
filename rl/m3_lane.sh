@@ -49,7 +49,7 @@ while true; do
     [ "$trained" -ge "$BUDGET" ] && break
     run_server
     rows_before=$(wc -l < $OUT/train.csv 2>/dev/null || echo 0)
-    mvn -q -pl Mage.Tests surefire:test -Dtest='RLEpisodeDriver' \
+    mvn -q -pl Mage.Tests surefire:test -Dtest='RLEpisodeDriver' -DargLine="-Dfile.encoding=UTF-8 -Xmx4500m" \
         -DfailIfNoTests=false -Drl.episodes=64 \
         -Drl.opponent=heuristic -Drl.policy=socket -Drl.port=$PORT \
         -Drl.deck="$POOL" -Drl.stopTurn=80 $JFEAT \
@@ -66,7 +66,7 @@ done
 
 for HD in HoldoutBurn HoldoutControl HoldoutMidrange; do
     run_server
-    mvn -q -pl Mage.Tests surefire:test -Dtest='RLEpisodeDriver' \
+    mvn -q -pl Mage.Tests surefire:test -Dtest='RLEpisodeDriver' -DargLine="-Dfile.encoding=UTF-8 -Xmx4500m" \
         -DfailIfNoTests=false -Drl.episodes=200 \
         -Drl.opponent=heuristic -Drl.policy=socket -Drl.port=$PORT \
         -Drl.deck=$HD.dck -Drl.stopTurn=80 $JFEAT \
