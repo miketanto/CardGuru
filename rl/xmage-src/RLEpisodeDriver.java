@@ -129,6 +129,12 @@ public class RLEpisodeDriver extends MageTestPlayerBase {
             tp.searchBreadth = Integer.getInteger("rl.agentBreadth", 8);
             tp.daggerEps = Double.parseDouble(
                     System.getProperty("rl.daggerEps", "0"));
+            if (Boolean.getBoolean("rl.teacherHold")) {
+                // C7: D1h teacher - hold flash threats, cast at instant
+                // speed (the draw-go prior the students imitate)
+                tp.holdFlashAtMain = true;
+                tp.holdFlashSearch = true;
+            }
             tp.out = imitateOut;
             tp.setTestMode(true);
             agent = tp;

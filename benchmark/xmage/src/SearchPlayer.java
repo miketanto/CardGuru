@@ -51,7 +51,7 @@ public class SearchPlayer extends HeuristicPlayer {
     protected long decisionCounter = 0;
     /** open-mana experiment: hold flash/instants out of sorcery-speed
      *  search candidates (SearchPlayerHold sets this) */
-    protected boolean holdFlashSearch = false;
+    public boolean holdFlashSearch = false;
 
     public SearchPlayer(String name) {
         super(name);
