@@ -43,10 +43,23 @@ import java.util.UUID;
  *  - Instant speed:
  *      - if the stack is non-empty and its top object belongs to an
  *        opponent: cast a known COUNTERSPELL if playable
+ *      - v3: own combat, declare-blockers step: activate a playable
+ *        NINJUTSU ability (swap an unblocked attacker for the ninja)
  *      - at an opponent's END_TURN step: cast the highest-MV playable
- *        INSTANT (removal/draw/tricks all fire here - crude but
- *        deterministic)
+ *        INSTANT or FLASH card (v3; removal/draw/tricks/flash threats
+ *        all fire here - crude but deterministic)
  *      - else pass
+ *
+ * VERSION v3 (Phase 5): the v2 policy was blind to flash-speed
+ * permanent deployment - ninjutsu never fired (cardOf filtered
+ * non-SpellAbility candidates) and flash permanents were only cast at
+ * sorcery speed; the REACTIVE yield predicate also closed the very
+ * windows where those lines live unless a literal instant was in hand.
+ * v3 widens the reactive predicate to instants/flash/ninjutsu, casts
+ * flash cards at the opponent's end step, and takes the ninjutsu line
+ * in its own combat. Decks without flash/ninjutsu cards (BenchBurn
+ * etc.) are BEHAVIORALLY IDENTICAL under v2 and v3. Dimir-family
+ * numbers measured under v2 are not comparable to v3.
  *  - Combat: attack when no untapped defender both kills the attacker
  *    and survives it; block when the blocker kills the attacker and
  *    survives, or chump-block anything when unblocked damage is lethal.
@@ -232,10 +245,15 @@ public class HeuristicPlayer extends ComputerPlayer {
     }
 
     private boolean holdsReactiveCard(Game game, List<ActivatedAbility> playable) {
-        // holding any instant-speed card (castable now or later) keeps us
-        // reactive; approximate by scanning hand for instants/counters
+        // v3: any card deployable at instant speed keeps us reactive -
+        // instants, flash permanents, ninjutsu (v2 checked instants only,
+        // which closed the windows where flash lines live)
         for (Card c : getHand().getCards(game)) {
-            if (c.isInstant(game)) {
+            if (c.isInstant(game)
+                    || c.getAbilities(game).containsClass(
+                            mage.abilities.keyword.FlashAbility.class)
+                    || c.getAbilities(game).containsClass(
+                            mage.abilities.keyword.NinjutsuAbility.class)) {
                 return true;
             }
         }
@@ -273,8 +291,21 @@ public class HeuristicPlayer extends ComputerPlayer {
                 return counter;
             }
         }
+        // v3: ninjutsu in own combat once blockers are declared - swap an
+        // unblocked attacker for the ninja (cost's return choice resolves
+        // via ComputerPlayer, like all other costs)
+        if (myTurn && game.getTurnStepType() == PhaseStep.DECLARE_BLOCKERS) {
+            for (ActivatedAbility a : playable) {
+                if (a instanceof mage.abilities.keyword.NinjutsuAbility) {
+                    return a;
+                }
+            }
+        }
         if (game.getTurnStepType() == PhaseStep.END_TURN && !myTurn) {
-            return bestBy(game, playable, c -> c.isInstant(game));
+            // v3: flash permanents join instants in the draw-go slot
+            return bestBy(game, playable, c -> c.isInstant(game)
+                    || c.getAbilities(game).containsClass(
+                            mage.abilities.keyword.FlashAbility.class));
         }
         return null;
     }

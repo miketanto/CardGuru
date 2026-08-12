@@ -130,8 +130,15 @@ public class RLPlayer extends ComputerPlayer {
     // ------------------------------------------------------------- yields
 
     private boolean holdsInstant(Game game) {
+        // v3 (matches HeuristicPlayer): instants, flash permanents, and
+        // ninjutsu all keep the REACTIVE yield alive - otherwise the
+        // windows where flash lines live are auto-passed unseen
         for (Card c : getHand().getCards(game)) {
-            if (c.isInstant(game)) {
+            if (c.isInstant(game)
+                    || c.getAbilities(game).containsClass(
+                            mage.abilities.keyword.FlashAbility.class)
+                    || c.getAbilities(game).containsClass(
+                            mage.abilities.keyword.NinjutsuAbility.class)) {
                 return true;
             }
         }
@@ -201,8 +208,10 @@ public class RLPlayer extends ComputerPlayer {
         cands[0] = StateEncoder.blank(StateEncoder.T_PASS);
         for (int i = 0; i < playable.size(); i++) {
             ActivatedAbility a = playable.get(i);
-            Card card = a instanceof SpellAbility || a instanceof PlayLandAbility
-                    ? game.getCard(a.getSourceId()) : null;
+            // v3: resolve the source card for EVERY candidate (ninjutsu,
+            // creature-land activations...), not just casts - non-spell
+            // candidates used to encode featureless
+            Card card = game.getCard(a.getSourceId());
             cands[i + 1] = StateEncoder.forCard(
                     a instanceof PlayLandAbility
                             ? StateEncoder.T_LAND : StateEncoder.T_SPELL,

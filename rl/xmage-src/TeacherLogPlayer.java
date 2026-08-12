@@ -104,8 +104,8 @@ public class TeacherLogPlayer extends org.mage.test.benchmark.SearchPlayer {
         cands[0] = StateEncoder.blank(StateEncoder.T_PASS);
         for (int i = 0; i < playable.size(); i++) {
             ActivatedAbility a = playable.get(i);
-            Card card = a instanceof SpellAbility || a instanceof PlayLandAbility
-                    ? game.getCard(a.getSourceId()) : null;
+            // v3: resolve source card for every candidate (see RLPlayer)
+            Card card = game.getCard(a.getSourceId());
             cands[i + 1] = StateEncoder.forCard(
                     a instanceof PlayLandAbility
                             ? StateEncoder.T_LAND : StateEncoder.T_SPELL,
