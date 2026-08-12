@@ -77,11 +77,12 @@ already() {  # skip pairings another lane (or a prior run) recorded
     grep -q "^${1}	${2}	" $OUT/matches.tsv
 }
 
-infamily() {  # policy-name family filter
+infamily() {  # FAMILY = all | e0 | attn | comma-list of exact names
     case $FAMILY in
         all) return 0 ;;
         e0) [[ $1 == e0_* ]] ;;
         attn) [[ $1 == attn_* ]] ;;
+        *) [[ ",$FAMILY," == *",$1,"* ]] ;;
     esac
 }
 
