@@ -123,7 +123,8 @@ def build_net(arch, sdim, cdim):
 
 class Trainer:
     def __init__(self, ckpt, seed, log_path, sdim=SDIM, cdim=CDIM,
-                 shape=0.0, phi_scale=2000.0, arch="e0"):
+                 shape=0.0, phi_scale=2000.0, arch="e0",
+                 desperation=0.0):
         torch.manual_seed(seed)
         self.sdim, self.cdim = sdim, cdim
         # C2a potential-based shaping: r'_t = r_t + shape*(GAMMA*Φ_{t+1}-Φ_t)
@@ -133,6 +134,12 @@ class Trainer:
         self.arch = arch
         self.recurrent = (arch == "lstmattn")
         self.hidden = None          # rollout hidden state (recurrent only)
+        # C7 emergence: "I can't win now - try something." Training-time
+        # sampling temperature scales with how LOSING the value head says
+        # the state is: tau = 1 + desperation * max(0, -V), capped at 2.5.
+        # logp is stored under the ACTUAL (tempered) sampling
+        # distribution; PPO's ratio does the off-policy correction.
+        self.desperation = desperation
         self.net = build_net(arch, sdim, cdim)
         self.opt = torch.optim.Adam(self.net.parameters(), lr=LR)
         self.ckpt = ckpt
@@ -172,7 +179,12 @@ class Trainer:
                 hin = None
                 logits, value = self.net(s, c, m)
             if sample:
-                dist = torch.distributions.Categorical(logits=logits[0])
+                lg = logits[0]
+                if self.desperation > 0:
+                    tau = min(2.5, 1.0 + self.desperation
+                              * max(0.0, -float(value[0])))
+                    lg = lg / tau
+                dist = torch.distributions.Categorical(logits=lg)
                 a = int(dist.sample())
                 import math
                 self.buf.append((s[0], c[0], m[0], a,
@@ -345,10 +357,13 @@ if __name__ == "__main__":
                     help="override LR (default: LR constant; 3e-4 was "
                          "tuned for the 43k E0 net and is hot for the "
                          "C6 transformers)")
+    ap.add_argument("--desperation", type=float, default=0.0,
+                    help="C7: losing-state exploration temperature gain")
     args = ap.parse_args()
     if args.lr is not None:
         LR = args.lr
     torch.set_num_threads(2)
     serve(args.port, Trainer(args.ckpt, args.seed, args.log,
                              args.sdim, args.cdim,
-                             args.shape, args.phi_scale, args.arch))
+                             args.shape, args.phi_scale, args.arch,
+                             args.desperation))

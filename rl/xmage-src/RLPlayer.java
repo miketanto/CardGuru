@@ -58,6 +58,11 @@ public class RLPlayer extends ComputerPlayer {
     public long autoPassK0 = 0;
     public long actions = 0;
     public long failedActivations = 0;
+    /** C7 emergence metric: flash/instant-speed-castable PERMANENT spells
+     *  cast on the opponent's turn vs total - the draw-go behavior we
+     *  want to see emerge without a teacher */
+    public long flashThreatCasts = 0;
+    public long flashThreatCastsOppTurn = 0;
     /** per-episode consult budget: a runaway episode (random policy can
      * mana-loop) degrades to always-pass instead of hanging the driver */
     public long consultBudget = Long.getLong("rl.consultBudget", 20000L);
@@ -296,6 +301,14 @@ public class RLPlayer extends ComputerPlayer {
         boolean acted = this.activateAbility(chosen, game);
         if (acted) {
             actions++;
+            Card chosenCard = game.getCard(chosen.getSourceId());
+            if (chosenCard != null && !chosenCard.isInstant(game)
+                    && org.mage.test.benchmark.HeuristicPlayer.holdable(game, chosenCard)) {
+                flashThreatCasts++;
+                if (!playerId.equals(game.getActivePlayerId())) {
+                    flashThreatCastsOppTurn++;
+                }
+            }
             if (Boolean.getBoolean("rl.debug")) {
                 actionLog.append("t").append(game.getTurnNum()).append('|')
                         .append(chosen.getRule()).append('\n');

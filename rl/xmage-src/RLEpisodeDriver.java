@@ -219,6 +219,8 @@ public class RLEpisodeDriver extends MageTestPlayerBase {
             if (rlAgent.shadowExamples > 0) {
                 fallbacks.merge("shadowExamples", (int) rlAgent.shadowExamples, Integer::sum);
             }
+            fallbacks.merge("flashThreats", (int) rlAgent.flashThreatCasts, Integer::sum);
+            fallbacks.merge("flashThreatsOppTurn", (int) rlAgent.flashThreatCastsOppTurn, Integer::sum);
         }
         if (agent instanceof org.mage.test.benchmark.SearchPlayer) {
             org.mage.test.benchmark.SearchPlayer sp = (org.mage.test.benchmark.SearchPlayer) agent;

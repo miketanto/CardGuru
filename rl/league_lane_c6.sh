@@ -29,7 +29,7 @@ start_server() {  # $1 ckpt path, $2 port, $3 logfile -> pid in $OUT/.srvpid
         rm -f $3
         python3 /home/user/CardGuru/rl/policy_server.py --port $2 \
             --ckpt "$1" --seed $SEED --log $OUT/train.csv \
-            --cdim $CDIM --arch $ARCH --lr $LRVAL > $3 2>&1 &
+            --cdim $CDIM --arch $ARCH --lr $LRVAL --desperation ${C6_DESP:-0} > $3 2>&1 &
         echo $! > $OUT/.srvpid
         local up=0; SECONDS=0
         while [ $SECONDS -lt 90 ]; do
@@ -110,7 +110,9 @@ while true; do
             line=$(tail -1 $OUT/probe_${PROBE}_${trained}.txt 2>/dev/null)
             wr=$(echo "$line" | grep -o 'win_rate=[0-9.]*' | head -1 | cut -d= -f2)
             stalls=$(echo "$line" | grep -o 'stalls=[0-9]*' | cut -d= -f2)
-            echo "C6|arch=$ARCH|seed=$SEED|trained=$trained|probe=$PROBE|win_rate=$wr|stalls=$stalls" \
+            ft=$(echo "$line" | grep -o 'flashThreats=[0-9]*' | cut -d= -f2)
+            fto=$(echo "$line" | grep -o 'flashThreatsOppTurn=[0-9]*' | cut -d= -f2)
+            echo "C6|arch=$ARCH|seed=$SEED|trained=$trained|probe=$PROBE|win_rate=$wr|stalls=$stalls|flashThreats=$ft|oppTurn=$fto" \
                 | tee -a $OUT/curve.txt
         done
     fi
