@@ -90,6 +90,22 @@ public class HeuristicPlayer extends ComputerPlayer {
     public boolean yieldsEnabled = false;
 
     /**
+     * Phase 5 open-mana experiment (D1h/D0h): when true, flash/instant-
+     * speed cards are NEVER cast at sorcery speed - they are held, and
+     * the mana they would have spent stays open for the v3 instant-speed
+     * branches (opponent EOT, counterspells, ninjutsu). The A/B pole
+     * against the greedy deploy-at-first-window default.
+     */
+    public boolean holdFlashAtMain = false;
+
+    /** instant-speed-deployable: what holdFlashAtMain holds back */
+    public static boolean holdable(Game game, Card c) {
+        return c != null && (c.isInstant(game)
+                || c.getAbilities(game).containsClass(
+                        mage.abilities.keyword.FlashAbility.class));
+    }
+
+    /**
      * Per-player shuffle seeding. XMage shuffles every library from the
      * single global RandomUtil stream, in player-map iteration order -
      * and player UUIDs are random per game, so WHICH player's shuffle
@@ -261,7 +277,7 @@ public class HeuristicPlayer extends ComputerPlayer {
     }
 
     private ActivatedAbility choosePolicyAction(Game game, List<ActivatedAbility> playable) {
-        return choosePolicyActionStatic(game, playerId, playable);
+        return choosePolicyActionStatic(game, playerId, playable, holdFlashAtMain);
     }
 
     /**
@@ -271,8 +287,33 @@ public class HeuristicPlayer extends ComputerPlayer {
      */
     public static ActivatedAbility choosePolicyActionStatic(
             Game game, UUID playerId, List<ActivatedAbility> playable) {
+        return choosePolicyActionStatic(game, playerId, playable, false);
+    }
+
+    public static ActivatedAbility choosePolicyActionStatic(
+            Game game, UUID playerId, List<ActivatedAbility> playable,
+            boolean holdFlash) {
         if (playable.isEmpty()) {
             return null;
+        }
+        if (holdFlash) {
+            boolean myTurnH = game.getActivePlayerId().equals(playerId);
+            boolean sorceryH = myTurnH && game.getStack().isEmpty()
+                    && (game.getTurnStepType() == PhaseStep.PRECOMBAT_MAIN
+                    || game.getTurnStepType() == PhaseStep.POSTCOMBAT_MAIN);
+            if (sorceryH) {
+                java.util.List<ActivatedAbility> kept = new java.util.ArrayList<>();
+                for (ActivatedAbility a : playable) {
+                    if (a instanceof PlayLandAbility
+                            || !holdable(game, cardOf(game, a))) {
+                        kept.add(a);
+                    }
+                }
+                playable = kept;
+                if (playable.isEmpty()) {
+                    return null;
+                }
+            }
         }
         boolean myTurn = game.getActivePlayerId().equals(playerId);
         boolean sorcerySpeed = myTurn && game.getStack().isEmpty()

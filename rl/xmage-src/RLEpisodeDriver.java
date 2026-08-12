@@ -110,6 +110,14 @@ public class RLEpisodeDriver extends MageTestPlayerBase {
             sp.determinizations = Integer.getInteger("rl.agentDetK", 4);
             sp.setTestMode(true);
             agent = sp;
+        } else if ("searchhold".equals(agentKind)) {
+            org.mage.test.benchmark.SearchPlayerHold sp =
+                    new org.mage.test.benchmark.SearchPlayerHold("Agent");
+            sp.benchSeed = seed;
+            sp.searchPlies = Integer.getInteger("rl.agentPlies", 1);
+            sp.searchBreadth = Integer.getInteger("rl.agentBreadth", 8);
+            sp.setTestMode(true);
+            agent = sp;
         } else if ("teacher".equals(agentKind)) {
             TeacherLogPlayer tp = new TeacherLogPlayer("Agent");
             tp.benchSeed = seed;
@@ -134,6 +142,14 @@ public class RLEpisodeDriver extends MageTestPlayerBase {
         if ("search".equals(opponentKind)) {
             org.mage.test.benchmark.SearchPlayer sp =
                     new org.mage.test.benchmark.SearchPlayer("Opponent");
+            sp.benchSeed = seed;
+            sp.searchPlies = Integer.getInteger("rl.searchPlies", 1);
+            sp.searchBreadth = Integer.getInteger("rl.searchBreadth", 8);
+            sp.setTestMode(true);
+            opp = sp;
+        } else if ("searchhold".equals(opponentKind)) {
+            org.mage.test.benchmark.SearchPlayerHold sp =
+                    new org.mage.test.benchmark.SearchPlayerHold("Opponent");
             sp.benchSeed = seed;
             sp.searchPlies = Integer.getInteger("rl.searchPlies", 1);
             sp.searchBreadth = Integer.getInteger("rl.searchBreadth", 8);

@@ -49,6 +49,9 @@ public class SearchPlayer extends HeuristicPlayer {
     public long nodesEvaluated = 0;
     public long searchDecisions = 0;
     protected long decisionCounter = 0;
+    /** open-mana experiment: hold flash/instants out of sorcery-speed
+     *  search candidates (SearchPlayerHold sets this) */
+    protected boolean holdFlashSearch = false;
 
     public SearchPlayer(String name) {
         super(name);
@@ -67,7 +70,8 @@ public class SearchPlayer extends HeuristicPlayer {
         }
         long[] nodes = {0};
         Ability best = searchBest(game, getId(), searchPlies, searchBreadth,
-                benchSeed * 7_777_777L + decisionCounter, nodes);
+                benchSeed * 7_777_777L + decisionCounter, nodes,
+                holdFlashSearch);
         nodesEvaluated += nodes[0];
         if (best == null) {
             return heuristicPriority(game);   // no real choice: D0 behavior
@@ -93,6 +97,12 @@ public class SearchPlayer extends HeuristicPlayer {
     public static Ability searchBest(Game game, UUID me, int plies,
                                      int breadth, long reseedKey,
                                      long[] nodesOut) {
+        return searchBest(game, me, plies, breadth, reseedKey, nodesOut, false);
+    }
+
+    public static Ability searchBest(Game game, UUID me, int plies,
+                                     int breadth, long reseedKey,
+                                     long[] nodesOut, boolean holdFlash) {
         Player actor = game.getPlayer(me);
         if (actor == null) {
             return null;
@@ -103,11 +113,21 @@ public class SearchPlayer extends HeuristicPlayer {
         } catch (Exception e) {
             return null;
         }
+        boolean sorceryWindow = game.getActivePlayerId() != null
+                && game.getActivePlayerId().equals(me)
+                && game.getStack().isEmpty()
+                && (game.getTurnStepType() == mage.constants.PhaseStep.PRECOMBAT_MAIN
+                || game.getTurnStepType() == mage.constants.PhaseStep.POSTCOMBAT_MAIN);
         List<Ability> candidates = new ArrayList<>();
         for (ActivatedAbility a : playable) {
-            if (!a.isManaAbility()) {
-                candidates.add(a);
+            if (a.isManaAbility()) {
+                continue;
             }
+            if (holdFlash && sorceryWindow && HeuristicPlayer.holdable(
+                    game, game.getCard(a.getSourceId()))) {
+                continue;   // hold it: cast at instant speed or not at all
+            }
+            candidates.add(a);
         }
         if (candidates.size() <= 1) {
             return null;
