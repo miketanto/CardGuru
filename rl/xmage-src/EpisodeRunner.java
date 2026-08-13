@@ -103,7 +103,7 @@ public class EpisodeRunner {
 
     private EpisodeResult playEpisode(PolicyClient policy, Map<String, Integer> fallbacks,
                                       long seed, String opponentKind,
-                                      String deckName, int stopTurn,
+                                      String deckName, String oppDeckName, int stopTurn,
                                       boolean agentOnPlay) throws Exception {
         Game game = new TwoPlayerDuel(MultiplayerAttackOption.LEFT, RangeOfInfluence.ONE,
                 MulliganType.GAME_DEFAULT.getMulligan(0), 60, 20, 7);
@@ -216,14 +216,21 @@ public class EpisodeRunner {
             opp = r;
         }
 
-        Deck deckA = loadDeck(deckName);
-        Deck deckB = loadDeck(deckName);
+        // Phase 7c: the opponent seat may pilot a DIFFERENT archetype deck
+        // (rl.oppDeck); unset keeps the historical mirror behaviour.
+        // Decks bind to SEATS, not to play order: with asymmetric decks the
+        // old order-bound version handed the agent the opponent's list on
+        // every other episode (harmless while every match was a mirror).
+        Deck agentDeck = loadDeck(deckName);
+        Deck oppDeck = loadDeck(oppDeckName == null ? deckName : oppDeckName);
         Player first = agentOnPlay ? agent : opp;
         Player second = agentOnPlay ? opp : agent;
-        game.loadCards(deckA.getCards(), first.getId());
-        game.loadCards(deckB.getCards(), second.getId());
-        game.addPlayer(first, deckA);
-        game.addPlayer(second, deckB);
+        Deck deckFirst = agentOnPlay ? agentDeck : oppDeck;
+        Deck deckSecond = agentOnPlay ? oppDeck : agentDeck;
+        game.loadCards(deckFirst.getCards(), first.getId());
+        game.loadCards(deckSecond.getCards(), second.getId());
+        game.addPlayer(first, deckFirst);
+        game.addPlayer(second, deckSecond);
 
         GameOptions options = new GameOptions();
         options.testMode = false;      // real opening hands (Phase 2 erratum)
@@ -245,6 +252,8 @@ public class EpisodeRunner {
             }
             fallbacks.merge("flashThreats", (int) rlAgent.flashThreatCasts, Integer::sum);
             fallbacks.merge("flashThreatsOppTurn", (int) rlAgent.flashThreatCastsOppTurn, Integer::sum);
+            fallbacks.merge("blocksDeclared", (int) rlAgent.blocksDeclared, Integer::sum);
+            fallbacks.merge("blockOpportunities", (int) rlAgent.blockOpportunities, Integer::sum);
         }
         if (agent instanceof org.mage.test.benchmark.SearchPlayer) {
             org.mage.test.benchmark.SearchPlayer sp = (org.mage.test.benchmark.SearchPlayer) agent;
@@ -325,6 +334,9 @@ public class EpisodeRunner {
         // comma-separated list = Task C training pool; episode i plays a
         // mirror of decks[i % n] so every deck gets equal exposure
         String[] decks = System.getProperty("rl.deck", "BenchBurn.dck").split(",");
+        // Phase 7c: opponent-seat deck list. Unset => mirror (historical).
+        String oppDeckProp = System.getProperty("rl.oppDeck");
+        final String[] oppDecks = oppDeckProp == null ? null : oppDeckProp.split(",");
         long seed = Long.getLong("rl.seed", 0L);
         int stopTurn = Integer.getInteger("rl.stopTurn", 60);
         int report = Integer.getInteger("rl.report", 100);
@@ -353,7 +365,9 @@ public class EpisodeRunner {
                     : new RandomPolicyClient(seed);
             for (int i = 0; i < episodes; i++) {
                 EpisodeResult r = playEpisode(policy, fallbacks, seed + i, opponent,
-                        decks[i % decks.length].trim(), stopTurn, i % 2 == 0);
+                        decks[i % decks.length].trim(),
+                        oppDecks == null ? null : oppDecks[i % oppDecks.length].trim(),
+                        stopTurn, i % 2 == 0);
                 policy.episodeEnd(r.reward);
                 if (imitateOut != null) {
                     imitateOut.println("{\"t\":\"end\",\"r\":" + r.reward + "}");
@@ -372,7 +386,8 @@ public class EpisodeRunner {
             policy.close();
         } else {
             runConcurrent(out, t, fallbacks, episodes, concurrency, opponent,
-                    policyKind, port, decks, seed, stopTurn, report, mode, t0);
+                    policyKind, port, decks, oppDecks, seed, stopTurn, report,
+                    mode, t0);
         }
         double sec = (System.nanoTime() - t0) / 1e9;
         StringBuilder fb = new StringBuilder();
@@ -382,14 +397,15 @@ public class EpisodeRunner {
                         + "|win_rate=%.4f|games_per_sec=%.3f"
                         + "|agent_consults_per_ep=%.1f|agent_windows_per_ep=%.1f"
                         + "|agent_actions_per_ep=%.1f|turns_per_ep=%.1f"
-                        + "|opponent=%s|policy=%s|deck=%s|seed=%d|fallbacks=%s",
+                        + "|opponent=%s|policy=%s|deck=%s|oppDeck=%s|seed=%d|fallbacks=%s",
                 episodes, t.wins, t.losses, t.draws, t.stalls,
                 t.wins / (double) episodes, episodes / sec,
                 t.consults / (double) episodes,
                 t.windows / (double) episodes,
                 t.actions / (double) episodes,
                 t.turns / episodes,
-                opponent, policyKind, String.join(",", decks), seed, fb);
+                opponent, policyKind, String.join(",", decks),
+                oppDecks == null ? "mirror" : String.join(",", oppDecks), seed, fb);
         out.println(line);
         if (seqSocket != null) {
             out.println(String.format(Locale.ROOT,
@@ -446,8 +462,8 @@ public class EpisodeRunner {
     private void runConcurrent(PrintStream out, Totals t, Map<String, Integer> fallbacks,
                                int episodes, int concurrency, String opponent,
                                String policyKind, int port, String[] decks,
-                               long seed, int stopTurn, int report, String mode,
-                               long t0) throws Exception {
+                               String[] oppDecks, long seed, int stopTurn,
+                               int report, String mode, long t0) throws Exception {
         // TokenRepository.init() is an unsynchronized lazy initializer
         // guarded by "allTokens is not empty": a second thread walks in
         // between the assignment and the indexing and streams a
@@ -489,6 +505,7 @@ public class EpisodeRunner {
                         lastEpisode[0] = i;
                         EpisodeResult r = playEpisode(policy, fallbacks, seed + i,
                                 opponent, decks[i % decks.length].trim(),
+                                oppDecks == null ? null : oppDecks[i % oppDecks.length].trim(),
                                 stopTurn, i % 2 == 0);
                         policy.episodeEnd(r.reward);
                         synchronized (EpisodeRunner.this) {
