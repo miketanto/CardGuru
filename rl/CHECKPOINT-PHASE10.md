@@ -95,8 +95,16 @@ continuously via gating.
 2. **Phase 10 flagship — the convergent run**: from-scratch lstmattn,
    PFSP league with champion gating (promote snapshots into the pool
    only if they beat the reigning champion h2h), opponent pool =
-   archetype decks (7c's six, D0-piloted, Elo-rated rows) + gated
-   snapshot ladder + prior champions. Agent-side deck ALSO drawn from
+   archetype decks (7c's six, D0-piloted, Elo-rated rows) + the six
+   P8Meta Standard-meta approximations (rl/p8b_meta/ — already
+   pin-filtered and budget-safe; calibrate rows via
+   p7c_pilot_calib.sh before first use) + gated snapshot ladder +
+   prior champions. Fresh meta lists may be added the same way:
+   fetch a current decklist, keep pin-implemented cards, substitute
+   E2/E3-nearest pin-available equivalents for the rest, M3 budget
+   test, calibrate, add as a pool row. The engine pin 7554968c is
+   the card ceiling; bumping it invalidates the frozen instruments
+   and is a separate phase-level decision, not a league edit. Agent-side deck ALSO drawn from
    a small rotation (Dimir-heavy early, widening) — 8b's from-init
    compositional bet. Rate on the mirror (comparability) + 7c
    robustness matrix + block/oppTurn counters every 2048. Budget
