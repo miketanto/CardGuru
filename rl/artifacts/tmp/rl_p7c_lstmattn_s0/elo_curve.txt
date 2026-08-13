@@ -1,0 +1,2 @@
+P7CELO|seed=0|trained=0|elo=928|d0=0.4600|d1=0.3000|d1h=0.2300|blocks=121|blockOpps=121|flashThreats=306|oppTurn=0
+P7CELO|seed=0|trained=512|elo=1012|d0=0.6000|d1=0.3500|d1h=0.3600|blocks=126|blockOpps=126|flashThreats=289|oppTurn=3

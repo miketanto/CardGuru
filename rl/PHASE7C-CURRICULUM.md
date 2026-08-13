@@ -141,8 +141,62 @@ choosing to hold creatures back. Both are tracked at every checkpoint.
 
 ## Results
 
-*(filled in as checkpoints land)*
+### Mirror growth curve (BenchDimir, 100g vs each anchor, seed 950000)
+
+| trained | Elo | vs D0 | vs D1 | vs D1h | block rate | opp-turn casts |
+|---|---|---|---|---|---|---|
+| 0 | 928 | .46 | .30 | .23 | 121/121 = 1.00 | 0 |
+| 512 | **1012** | .60 | .35 | .36 | 126/126 = 1.00 | 3 |
+
+### Robustness matrix (100g vs D0 piloting each archetype, seed 951000)
+
+The `0` column is the 40-game pre-flight screen (seed 952000); an
+archetype only enters the 100g matrix once it has been introduced, so
+the screen is its pre-training reference.
+
+| archetype | 0 (40g screen) | 512 |
+|---|---|---|
+| sweep | .625 | **.790** |
+| tokens | .400 | **.500** |
+
+### Blocking counter (blocks / opportunities)
+
+| archetype | 0 | 512 |
+|---|---|---|
+| mirror | 121/121 | 126/126 |
+| sweep | 66/66 | 55/55 |
+| tokens | (86/86 at 40g) | 214/214 |
+
+### Realized opponent mix
+
+| opponent | deck | chunks | share |
+|---|---|---|---|
+| sweep | P7cSweepControl.dck | 6 | 75.0% |
+| D1h | BenchDimir.dck | 1 | 12.5% |
+| ck_0 | BenchDimir.dck | 1 | 12.5% |
+
+75% of chunks went to the archetype, 25% to mirror rows — the intended
+curriculum weighting, and higher than the 50% floor because PFSP also
+prefers `sweep` on rating grounds (827 seeded, nearest the agent).
+
+### Reading at 512
+
+1. **There is no diversity tax so far — the opposite.** The agent spent
+   six of eight chunks on a non-mirror deck and its *mirror* rating rose
+   84 points, from 928 to 1012, clearing the D0 anchor. The kickoff's
+   framing ("at what cost to mirror Elo?") anticipated a trade; through
+   512 episodes there is no trade to report. The gains are broad —
+   +.14 vs D0, +.05 vs D1, +.13 vs D1h — not a single anchor moving.
+2. **Robustness climbs on both introduced archetypes**, including the
+   one it was not training against (`tokens`, .400 → .500 zero-shot).
+3. **Blocking is still saturated at 1.00 everywhere.** No selectivity
+   has emerged. The one thing that moved is the *denominator* on
+   `sweep`: 66 opportunities → 55, i.e. the agent is tapping out more,
+   not blocking better. Against `tokens` it faces 214 opportunities per
+   100 games and takes all of them.
+4. **Opponent-turn casts went 0 → 3**, the first movement on another
+   Phase 7 hole, though 3 in 300 rating games is barely off zero.
 
 ## Verdict
 
-*(pending)*
+*(pending — run in progress)*

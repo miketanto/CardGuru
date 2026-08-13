@@ -1,0 +1,3 @@
+P7CMATRIX|trained=0|archetype=sweep|deck=P7cSweepControl.dck|win_rate=0.7200|blocks=66|blockOpps=66|stalls=0
+P7CMATRIX|trained=512|archetype=sweep|deck=P7cSweepControl.dck|win_rate=0.7900|blocks=55|blockOpps=55|stalls=0
+P7CMATRIX|trained=512|archetype=tokens|deck=M3SelesnyaTokens.dck|win_rate=0.5000|blocks=214|blockOpps=214|stalls=0

@@ -1,0 +1,10 @@
+D0|heuristic|BenchDimir.dck|1000
+D1|search|BenchDimir.dck|1085
+D1h|searchhold|BenchDimir.dck|1088
+attn_bc|rl:attn:/tmp/rl_p5_c1/student_e2attn.pt|BenchDimir.dck|1044
+attn_v2|rl:attn:/tmp/rl_c6_attn_s0/attn_v2_final.pt|BenchDimir.dck|1039
+attn_desp|rl:attn:/tmp/rl_c6_attn_s7/attn_desp_final.pt|BenchDimir.dck|1053
+sweep|heuristic|P7cSweepControl.dck|827
+ck_0|rl:lstmattn:/tmp/rl_p7c_lstmattn_s0/pool/ck_0.pt|BenchDimir.dck|928
+tokens|heuristic|M3SelesnyaTokens.dck|986
+ck_512|rl:lstmattn:/tmp/rl_p7c_lstmattn_s0/pool/ck_512.pt|BenchDimir.dck|1012
