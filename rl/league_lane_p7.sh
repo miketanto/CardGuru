@@ -178,10 +178,20 @@ while true; do
     trained=$(cat $OUT/trained.txt 2>/dev/null || echo 0)
     [ "$trained" -ge "$BUDGET" ] && break
 
-    if [ $((trained % ${P7_RATE:-256})) -eq 0 ] && [ ! -f $OUT/pool/ck_${trained}.pt ]; then
+    if [ $((trained % ${P7_SNAP:-${P7_RATE:-256}})) -eq 0 ] && [ ! -f $OUT/pool/ck_${trained}.pt ]; then
         cp $OUT/net.pt $OUT/pool/ck_${trained}.pt
-        # rate the starting point too (trained=0 -> BC baseline Elo)
-        [ ! -f $OUT/probe_D1h_${trained}.txt ] && rate_checkpoint $trained
+        if [ $((trained % ${P7_RATE:-256})) -eq 0 ]; then
+            # rate the starting point too (trained=0 -> BC baseline Elo)
+            [ ! -f $OUT/probe_D1h_${trained}.txt ] && rate_checkpoint $trained
+        elif [ "${P7_PFSP:-0}" = "1" ]; then
+            # unrated snapshot (P7_SNAP denser than P7_RATE): enter the
+            # pool at the current self-Elo estimate so the ladder keeps
+            # dense self-rungs without paying a 300-game rating
+            SELFE=$(cat $OUT/self_elo.txt 2>/dev/null || echo 46)
+            grep -q "^ck_${trained}|" $OUT/pool_elo.tsv 2>/dev/null || \
+                echo "ck_${trained}|$ARCH|$OUT/pool/ck_${trained}.pt|$SELFE" \
+                    >> $OUT/pool_elo.tsv
+        fi
     fi
     CHUNK=$((trained / 64))
     IFS='|' read -r OPPCK OPPARCH <<< "$(pick_opponent $CHUNK)"
