@@ -1,0 +1,11 @@
+P8BPROBE|arch=e0|trained=0|bench_d0=0.6800|bench_d1=0.5900|faeries_d0=0.5000
+P8BPROBE|arch=e0|trained=256|bench_d0=0.6800|bench_d1=0.5500|faeries_d0=0.5500
+P8BPROBE|arch=e0|trained=512|bench_d0=0.6600|bench_d1=0.5100|faeries_d0=0.5500
+P8BPROBE|arch=e0|trained=768|bench_d0=0.6600|bench_d1=0.4800|faeries_d0=0.5200
+P8BPROBE|arch=e0|trained=1024|bench_d0=0.6400|bench_d1=0.5200|faeries_d0=0.5500
+P8BPROBE|arch=e0|trained=1280|bench_d0=0.7100|bench_d1=0.5400|faeries_d0=0.5300
+P8BPROBE|arch=e0|trained=1536|bench_d0=0.6800|bench_d1=0.5500|faeries_d0=0.5000
+P8BPROBE|arch=e0|trained=1792|bench_d0=0.6900|bench_d1=0.5400|faeries_d0=0.5200
+P8BPROBE|arch=e0|trained=2048|bench_d0=0.5900|bench_d1=0.5200|faeries_d0=0.4300
+P8BPROBE|arch=e0|trained=2304|bench_d0=0.5600|bench_d1=0.5200|faeries_d0=0.5100
+P8BPROBE|arch=e0|trained=2560|bench_d0=0.5300|bench_d1=0.4800|faeries_d0=0.5000
