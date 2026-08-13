@@ -6,7 +6,7 @@
 set -u
 NAME=$1; ARCH=$2; CKPT=$3; OPP=$4; DECK=$5; GAMES=$6; SEED=$7; PORT=$8
 OUT=/tmp/rl_p8
-FEATS=/home/user/CardGuru/rl/e2_features.tsv
+FEATS=${P8_FEATS:-/home/user/CardGuru/rl/e2_features.tsv}
 TAG="${NAME}_${OPP}_$(basename $DECK .dck)"
 mkdir -p $OUT
 [ -f "$CKPT" ] || { echo "P8_EVAL_FAILED|missing_ckpt|$CKPT"; exit 1; }
