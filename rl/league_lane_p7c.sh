@@ -190,6 +190,7 @@ rate_matrix() {
 # one full transcript per checkpoint, vs the newest archetype
 sample_game() {
     local trained=$1 name deck kind
+    [ -s $OUT/transcript_${trained}.txt ] && return 0
     read -r name deck kind < <(live_archetypes $trained | tail -1)
     [ -z "${name:-}" ] && return 0
     start_server $OUT/net.pt $ARCH $APORT $OUT/aserver.log
@@ -208,11 +209,16 @@ sample_game() {
     echo "P7C_SAMPLE|trained=$trained|vs=$name|lines=$(wc -l < $OUT/transcript_${trained}.txt)"
 }
 
+# Each sub-step is independently resumable (elo_matches.tsv pairings,
+# matrix_*.txt, transcript_*.txt); the marker only lets a completed
+# battery be skipped without re-deriving all of that.
 checkpoint_battery() {
     local trained=$1
+    [ -f $OUT/.battery_${trained}.done ] && return 0
     rate_checkpoint $trained
     rate_matrix $trained
     sample_game $trained
+    touch $OUT/.battery_${trained}.done
 }
 
 # ------------------------------------------------------------------ loop
@@ -227,8 +233,7 @@ while true; do
     if [ $((trained % 256)) -eq 0 ] && [ ! -f $OUT/pool/ck_${trained}.pt ]; then
         cp $OUT/net.pt $OUT/pool/ck_${trained}.pt
     fi
-    if [ $((trained % MEASURE_EVERY)) -eq 0 ] && \
-       [ ! -f $OUT/probe_D1h_${trained}.txt ]; then
+    if [ $((trained % MEASURE_EVERY)) -eq 0 ]; then
         checkpoint_battery $trained
     fi
 

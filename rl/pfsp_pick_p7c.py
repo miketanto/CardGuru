@@ -58,11 +58,13 @@ def main():
     if not rows:
         raise SystemExit("pfsp_p7c: empty pool")
 
+    # two independent streams: the gate decides mirror-vs-archetype and
+    # must not shift when the pool grows, so it gets its own seed rather
+    # than consuming a draw from the selection stream.
+    gate = random.Random(args.chunk * 7919 + 13)
     rng = random.Random(args.chunk * 9973 + 7)
     arche = [r for r in rows if r[2] != args.mirror_deck]
-    # forced-archetype chunks use a separate deterministic draw so that
-    # adding a new archetype does not reshuffle the mirror chunk picks
-    if arche and rng.random() < args.archetype_share:
+    if arche and gate.random() < args.archetype_share:
         rows = arche
 
     target = args.self_elo + args.optimism
