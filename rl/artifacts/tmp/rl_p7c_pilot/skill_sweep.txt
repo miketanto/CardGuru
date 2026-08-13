@@ -1,0 +1,1 @@
+RL|summary|episodes=100|wins=53|losses=35|draws=12|stalls=12|win_rate=0.5300|games_per_sec=0.313|agent_consults_per_ep=0.0|agent_windows_per_ep=0.0|agent_actions_per_ep=0.0|turns_per_ep=54.9|opponent=heuristic|policy=random|deck=P7cSweepControl.dck|oppDeck=P7cSweepControl.dck|seed=954000|fallbacks=agentSearchDecisions=1809 agentSearchNodes=4989 

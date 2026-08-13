@@ -141,57 +141,70 @@ choosing to hold creatures back. Both are tracked at every checkpoint.
 
 ## Results
 
-### Mirror growth curve (BenchDimir, 100g vs each anchor, seed 950000)
+Generated from the lane's own log lines by `rl/p7c_report.py`.
 
-| trained | Elo | vs D0 | vs D1 | vs D1h | block rate | opp-turn casts |
-|---|---|---|---|---|---|---|
-| 0 | 928 | .46 | .30 | .23 | 121/121 = 1.00 | 0 |
-| 512 | 1012 | .60 | .35 | .36 | 126/126 = 1.00 | 3 |
-| 1024 | **1059** | .65 | .42 | .43 | 112/112 = 1.00 | 1 |
+### Mirror growth curve (BenchDimir, 100g vs each anchor)
 
-For scale, the Phase 6 leaderboard: D1h 1088, D1 1085, e0_champ 1083,
-attn_desp 1053, attn_bc 1044, attn_v2 1039, D0 1000, e0_bc 995. At 1024
-the agent has passed every learned agent in the project and sits ~25
-points under the scripted instruments.
+| trained | Elo | vs D0 | vs D1 | vs D1h | blocks/100g | block opps | block rate |
+|---|---|---|---|---|---|---|---|
+| 0 | 928 | 0.4600 | 0.3000 | 0.2300 | 121 | 121 | 1.00 |
+| 512 | 1012 | 0.6000 | 0.3500 | 0.3600 | 126 | 126 | 1.00 |
+| 1024 | 1059 | 0.6500 | 0.4200 | 0.4300 | 112 | 112 | 1.00 |
+| 1536 | 1096 | 0.6800 | 0.4800 | 0.4900 | 117 | 117 | 1.00 |
 
-### Robustness matrix (100g vs D0 piloting each archetype, seed 951000)
+### Robustness matrix (100g vs D0 piloting each archetype)
 
-The `0` column is the 40-game pre-flight screen (seed 952000); an
-archetype only enters the 100g matrix once it has been introduced, so
-the screen is its pre-training reference.
+| archetype | 0 | 512 | 1024 | 1536 |
+|---|---|---|---|---|
+| sweep | 0.7200 | 0.7900 | 0.8400 | 0.9200 |
+| tokens | - | 0.5000 | 0.6100 | 0.6600 |
+| wweenie | - | - | 0.5400 | 0.5300 |
+| skies | - | - | - | 0.4700 |
 
-Bold = the archetype was in the training pool for that block. Plain =
-zero-shot (introduced at that checkpoint, not yet trained against).
+### Blocking counter by archetype (blocks / opportunities)
 
-| archetype | 0 (40g screen) | 512 | 1024 |
-|---|---|---|---|
-| sweep | .625 | **.790** | **.840** |
-| tokens | .400 | .500 | **.610** |
-| wweenie | .375 | — | .540 |
+| archetype | 0 | 512 | 1024 | 1536 |
+|---|---|---|---|---|
+| sweep | 66/66 | 55/55 | 41/41 | 44/44 |
+| tokens | - | 214/214 | 174/174 | 168/168 |
+| wweenie | - | - | 191/191 | 188/188 |
+| skies | - | - | - | 82/82 |
 
-### Blocking counter (blocks / opportunities)
-
-| archetype | 0 | 512 | 1024 |
-|---|---|---|---|
-| mirror | 121/121 | 126/126 | 112/112 |
-| sweep | 66/66 | 55/55 | 41/41 |
-| tokens | (86/86 at 40g) | 214/214 | 174/174 |
-| wweenie | (77/77 at 40g) | — | 191/191 |
-
-### Realized opponent mix
+### Realized opponent mix (64-episode chunks)
 
 | opponent | deck | chunks | share |
 |---|---|---|---|
-| sweep | P7cSweepControl.dck | 6 | 37.5% |
-| tokens | M3SelesnyaTokens.dck | 4 | 25.0% |
-| D1h | BenchDimir.dck | 3 | 18.8% |
-| ck_0 | BenchDimir.dck | 2 | 12.5% |
-| D0 | BenchDimir.dck | 1 | 6.2% |
+| tokens | M3SelesnyaTokens.dck | 10 | 41.7% |
+| sweep | P7cSweepControl.dck | 6 | 25.0% |
+| D1h | BenchDimir.dck | 4 | 16.7% |
+| ck_0 | BenchDimir.dck | 2 | 8.3% |
+| D0 | BenchDimir.dck | 1 | 4.2% |
+| attn_desp | BenchDimir.dck | 1 | 4.2% |
 
-Archetype chunks 10/16 (62.5%), mirror 6/16. The share drifts toward
-the mirror as the agent's rating rises into the band where the mirror
-ladder sits — PFSP is doing its job, and the 50% archetype floor keeps
-the curriculum from being abandoned entirely.
+Archetype chunks: 16/24 (66.7%); mirror chunks: 8/24.
+
+Deck-power context for the matrix (from `rl/p7c_pilot_calib.sh`,
+D0 piloting X vs D0 piloting BenchDimir, 100g; the Dimir mirror returns
+.58, so read that as the empirical even point, not .50):
+
+| deck | power | reading |
+|---|---|---|
+| wweenie | .48 | weaker than BenchDimir |
+| sweep | .49 | weaker |
+| tokens | .55 | about even |
+| ramp | .60 | slightly stronger |
+| redrush | .64 | stronger |
+| skies | .71 | clearly stronger |
+
+Pilot-skill headroom (D1 vs D0 on the same deck, 100g; BenchDimir
+returns .62, matching the .614 calibrated over 500g in Phase 5):
+
+| deck | D1 over D0 | reading |
+|---|---|---|
+| wweenie | .69 | D0 underplays it |
+| dimir | .62 | reference |
+| sweep | .53 | 1-ply search is no better |
+| tokens | .48 | 1-ply search is *worse* |
 
 ### Reading at 1024
 

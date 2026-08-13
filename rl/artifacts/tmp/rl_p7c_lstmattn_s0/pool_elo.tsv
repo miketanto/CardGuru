@@ -10,3 +10,5 @@ tokens|heuristic|M3SelesnyaTokens.dck|986
 ck_512|rl:lstmattn:/tmp/rl_p7c_lstmattn_s0/pool/ck_512.pt|BenchDimir.dck|1012
 wweenie|heuristic|M3WhiteWeenie.dck|1004
 ck_1024|rl:lstmattn:/tmp/rl_p7c_lstmattn_s0/pool/ck_1024.pt|BenchDimir.dck|1059
+skies|heuristic|M3BlueSkies.dck|1084
+ck_1536|rl:lstmattn:/tmp/rl_p7c_lstmattn_s0/pool/ck_1536.pt|BenchDimir.dck|1096

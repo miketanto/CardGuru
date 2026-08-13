@@ -4,3 +4,7 @@ P7CMATRIX|trained=512|archetype=tokens|deck=M3SelesnyaTokens.dck|win_rate=0.5000
 P7CMATRIX|trained=1024|archetype=sweep|deck=P7cSweepControl.dck|win_rate=0.8400|blocks=41|blockOpps=41|stalls=0
 P7CMATRIX|trained=1024|archetype=tokens|deck=M3SelesnyaTokens.dck|win_rate=0.6100|blocks=174|blockOpps=174|stalls=0
 P7CMATRIX|trained=1024|archetype=wweenie|deck=M3WhiteWeenie.dck|win_rate=0.5400|blocks=191|blockOpps=191|stalls=0
+P7CMATRIX|trained=1536|archetype=sweep|deck=P7cSweepControl.dck|win_rate=0.9200|blocks=44|blockOpps=44|stalls=0
+P7CMATRIX|trained=1536|archetype=tokens|deck=M3SelesnyaTokens.dck|win_rate=0.6600|blocks=168|blockOpps=168|stalls=0
+P7CMATRIX|trained=1536|archetype=wweenie|deck=M3WhiteWeenie.dck|win_rate=0.5300|blocks=188|blockOpps=188|stalls=0
+P7CMATRIX|trained=1536|archetype=skies|deck=M3BlueSkies.dck|win_rate=0.4700|blocks=82|blockOpps=82|stalls=0
