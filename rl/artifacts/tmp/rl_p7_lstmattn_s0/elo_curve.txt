@@ -1,0 +1,5 @@
+P7ELO|seed=0|trained=0|elo=46|d0=0.0000|d1=0.0000|d1h=0.0000|flashThreats=0|oppTurn=0
+P7ELO|seed=0|trained=256|elo=456|d0=0.0500|d1=0.0300|d1h=0.0200|flashThreats=154|oppTurn=0
+P7ELO|seed=0|trained=512|elo=867|d0=0.3500|d1=0.2000|d1h=0.2300|flashThreats=271|oppTurn=0
+P7ELO|seed=0|trained=768|elo=889|d0=0.3600|d1=0.2200|d1h=0.2700|flashThreats=293|oppTurn=0
+P7ELO|seed=0|trained=1024|elo=916|d0=0.4300|d1=0.2500|d1h=0.2600|flashThreats=304|oppTurn=1
