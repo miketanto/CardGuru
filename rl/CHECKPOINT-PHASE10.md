@@ -106,9 +106,14 @@ continuously via gating.
 3. **E3 features session (parallel, independent)**: add (i) known
    top-of-library + hand-differential features (card-advantage/
    filtering visibility — Kaito-0 is currently never activated, an
-   observability gap), (ii) condition-breadth axes (Force Spike
-   incident), (iii) removal-scope axes. Re-extract, re-verify
-   byte-compat harness, then BC-free A/B inside the Phase 10 design.
+   observability gap), (ii) a TEXT-EMBEDDING card-semantics channel
+   replacing the hand-axis plan for condition breadth and removal
+   scope — see rl/e3_text_spike.py for the validated approach and
+   acceptance gates (Snare/Spike must separate; P8 swap pairs stay
+   close), (iii) colored-pip structure of candidate casts (~5 state
+   dims; c[6] carries generic MV only — {U}{U} vs {2}{U} is invisible,
+   which matters for hold-open-mana planning). Re-extract, re-verify,
+   then BC-free A/B inside the Phase 10 design.
 4. **Upper-bound opponents**: per-archetype random-init pilots
    trained to convergence (7c rec #4) — lifts the D0-piloted matrix
    caveat and supplies gated-league pressure at the top.
