@@ -113,7 +113,7 @@ while true; do
         OSRV=$(cat $OUT/.srvpid)
     fi
     rows_before=$(wc -l < $OUT/train.csv 2>/dev/null || echo 0)
-    mvn -q -pl Mage.Tests surefire:test -Dtest='RLEpisodeDriver' \
+    mvn -pl Mage.Tests surefire:test -Dtest='RLEpisodeDriver' \
         -DargLine="-Dfile.encoding=UTF-8 -Xmx4500m" \
         -DfailIfNoTests=false -Drl.episodes=64 \
         -Drl.agent=rl -Drl.policy=socket -Drl.port=$APORT $FEATARG \
@@ -121,14 +121,23 @@ while true; do
         -Drl.noYields=true -Drl.consultBudget=4000 \
         -Drl.deck=$CHUNKDECKS -Drl.stopTurn=80 \
         -Drl.mode=train -Drl.seed=$((90000000 + SEED*1000000 + trained)) \
-        -Drl.report=0 > /dev/null 2>&1
+        -Drl.report=0 > $OUT/last_chunk.log 2>&1
     rows_after=$(wc -l < $OUT/train.csv 2>/dev/null || echo 0)
     stop_server $ASRV
     [ -n "$OSRV" ] && stop_server $OSRV
     if [ "$rows_after" -le "$rows_before" ]; then
-        echo "P8B_FAILED|$ARCH|no_training_rows (trained stays $trained)"
-        exit 1
+        fails=$((${CHUNK_FAILS:-0} + 1))
+        CHUNK_FAILS=$fails
+        echo "P8B_RETRY|$ARCH|no_training_rows at trained=$trained (attempt $fails)"
+        tail -5 $OUT/last_chunk.log
+        if [ "$fails" -ge 3 ]; then
+            echo "P8B_FAILED|$ARCH|no_training_rows x3 (trained stays $trained)"
+            exit 1
+        fi
+        sleep 10
+        continue
     fi
+    CHUNK_FAILS=0
     trained=$((trained + 64))
     echo $trained > $OUT/trained.txt
     echo "P8B|$ARCH|trained=$trained|opp=$(basename $OPPCK)"
