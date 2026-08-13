@@ -163,7 +163,11 @@ class Trainer:
         self.ep_start = 0      # index in buf where current episode began
         self.completed = []    # per finished episode: (start, end, reward)
 
-    def act(self, state, cands, sample, phi=0.0):
+    def act(self, state, cands, sample, phi=0.0, session=None):
+        # session is None for the single-connection path (unchanged
+        # behaviour); with --threads N every connection passes its own
+        # Session so trajectories and LSTM memory never interleave
+        sink = self if session is None else session
         with torch.no_grad():
             s = torch.tensor(state).unsqueeze(0)
             k = len(cands)
@@ -172,9 +176,9 @@ class Trainer:
             m = torch.zeros(1, MAX_K, dtype=torch.bool)
             m[0, :k] = True
             if self.recurrent:
-                hin = self.hidden if self.hidden is not None \
+                hin = sink.hidden if sink.hidden is not None \
                     else self.net.initial_hidden(1)
-                logits, value, self.hidden = self.net(s, c, m, hin)
+                logits, value, sink.hidden = self.net(s, c, m, hin)
             else:
                 hin = None
                 logits, value = self.net(s, c, m)
@@ -187,20 +191,31 @@ class Trainer:
                 dist = torch.distributions.Categorical(logits=lg)
                 a = int(dist.sample())
                 import math
-                self.buf.append((s[0], c[0], m[0], a,
+                (self.buf if session is None else session.pending).append(
+                    (s[0], c[0], m[0], a,
                                  float(dist.log_prob(torch.tensor(a))),
                                  float(value[0]),
                                  math.tanh(phi / self.phi_scale),
-                                 (hin[0][0].clone(), hin[1][0].clone())
-                                 if self.recurrent else None))
+                     (hin[0][0].clone(), hin[1][0].clone())
+                     if self.recurrent else None))
             else:
                 a = int(torch.argmax(logits[0]))
             return a
 
-    def end_episode(self, reward, training):
+    def end_episode(self, reward, training, session=None):
         self.hidden = None          # memory never crosses episodes
+        if session is not None:
+            session.hidden = None
         if not training:
             return
+        if session is not None:
+            # concurrent lane: append this game's steps as ONE contiguous
+            # block, so every trajectory PPO sees is still a whole
+            # episode in order - only the ORDER OF EPISODES in the batch
+            # becomes scheduler-dependent (documented in PHASE9-PERF.md)
+            self.ep_start = len(self.buf)
+            self.buf.extend(session.pending)
+            session.pending = []
         self.completed.append((self.ep_start, len(self.buf), reward))
         self.ep_start = len(self.buf)
         self.episodes_seen += 1
@@ -343,60 +358,117 @@ class Trainer:
                         "arch": self.arch}, self.ckpt)
 
 
-def serve(port, trainer):
+class Session:
+    """Per-connection trajectory + LSTM memory (--threads > 1)."""
+
+    def __init__(self):
+        self.pending = []
+        self.hidden = None
+
+
+def handle(conn, trainer, lock, session):
+    """One connection's message loop. lock is None on the single-threaded
+    path, where it degenerates to the original inline loop."""
+    import random as pyrandom
+    conn.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)
+    f = conn.makefile("rwb")
+    mode = "train"
+    try:
+        for raw in f:
+            msg = json.loads(raw)
+            t = msg["t"]
+            if t == "hello":
+                mode = msg.get("mode", "train")
+                hs, hc = msg.get("sdim"), msg.get("cdim")
+                if hs is not None and (hs != trainer.sdim or hc != trainer.cdim):
+                    raise RuntimeError(
+                        f"dim mismatch: driver {hs}/{hc} vs server "
+                        f"{trainer.sdim}/{trainer.cdim}")
+                print(f"conn: mode={mode} episodes={msg.get('episodes')}",
+                      flush=True)
+                f.write(b'{"ok":1}\n')
+            elif t == "consult":
+                if mode == "random":
+                    a = pyrandom.randrange(len(msg["c"]))
+                elif lock is None:
+                    a = trainer.act(msg["s"], msg["c"],
+                                    sample=(mode == "train"),
+                                    phi=msg.get("phi", 0.0))
+                else:
+                    # torch inference and the trajectory buffers are the
+                    # shared state; the engine work this serializes
+                    # against is 87% of wall-clock, so one lock is plenty
+                    with lock:
+                        a = trainer.act(msg["s"], msg["c"],
+                                        sample=(mode == "train"),
+                                        phi=msg.get("phi", 0.0),
+                                        session=session)
+                f.write(f'{{"a":{a}}}\n'.encode())
+            elif t == "end":
+                if lock is None:
+                    trainer.end_episode(msg["r"], training=(mode == "train"))
+                else:
+                    with lock:
+                        trainer.end_episode(msg["r"],
+                                            training=(mode == "train"),
+                                            session=session)
+                f.write(b'{"ok":1}\n')
+            f.flush()
+    except (ConnectionResetError, BrokenPipeError, json.JSONDecodeError):
+        pass
+    finally:
+        try:
+            f.close()
+            conn.close()
+        except OSError:
+            pass
+        if mode == "train":
+            if lock is None:
+                trainer.save()
+            else:
+                with lock:
+                    trainer.save()
+        print("conn closed", flush=True)
+
+
+def serve(port, trainer, threads=1):
+    """threads=1 (default) keeps the original one-connection-at-a-time
+    server, byte for byte. threads>1 accepts that many concurrent driver
+    connections - one per game when the driver runs -Drl.concurrency=N -
+    each with its own Session.
+
+    Determinism note: with threads>1 in TRAIN mode, episodes still enter
+    the PPO buffer whole and in order within themselves, but which
+    episode lands first depends on the OS scheduler, so a training run is
+    no longer bit-reproducible from its seed. Eval lanes must keep
+    threads=1 (and the driver sequential) - Elo depends on it.
+    """
     srv = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     srv.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     srv.bind(("127.0.0.1", port))
-    srv.listen(4)
-    print(f"policy server on :{port}", flush=True)
-    import random as pyrandom
+    srv.listen(max(4, threads))
+    print(f"policy server on :{port}"
+          + (f" (threads={threads})" if threads > 1 else ""), flush=True)
+    if threads <= 1:
+        while True:
+            conn, _ = srv.accept()
+            handle(conn, trainer, None, None)
+        return
+    import threading
+    lock = threading.Lock()
     while True:
         conn, _ = srv.accept()
-        conn.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)
-        f = conn.makefile("rwb")
-        mode = "train"
-        try:
-            for raw in f:
-                msg = json.loads(raw)
-                t = msg["t"]
-                if t == "hello":
-                    mode = msg.get("mode", "train")
-                    hs, hc = msg.get("sdim"), msg.get("cdim")
-                    if hs is not None and (hs != trainer.sdim or hc != trainer.cdim):
-                        raise RuntimeError(
-                            f"dim mismatch: driver {hs}/{hc} vs server "
-                            f"{trainer.sdim}/{trainer.cdim}")
-                    print(f"conn: mode={mode} episodes={msg.get('episodes')}",
-                          flush=True)
-                    f.write(b'{"ok":1}\n')
-                elif t == "consult":
-                    if mode == "random":
-                        a = pyrandom.randrange(len(msg["c"]))
-                    else:
-                        a = trainer.act(msg["s"], msg["c"],
-                                        sample=(mode == "train"),
-                                        phi=msg.get("phi", 0.0))
-                    f.write(f'{{"a":{a}}}\n'.encode())
-                elif t == "end":
-                    trainer.end_episode(msg["r"], training=(mode == "train"))
-                    f.write(b'{"ok":1}\n')
-                f.flush()
-        except (ConnectionResetError, BrokenPipeError, json.JSONDecodeError):
-            pass
-        finally:
-            try:
-                f.close()
-                conn.close()
-            except OSError:
-                pass
-            if mode == "train":
-                trainer.save()
-            print("conn closed", flush=True)
+        threading.Thread(target=handle,
+                         args=(conn, trainer, lock, Session()),
+                         daemon=True).start()
 
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("--port", type=int, default=7777)
+    ap.add_argument("--threads", type=int, default=1,
+                    help="concurrent driver connections "
+                         "(1 = original sequential server)")
     ap.add_argument("--ckpt", default="/tmp/rl_e0.pt")
     ap.add_argument("--seed", type=int, default=0)
     ap.add_argument("--log", default=None)
@@ -421,4 +493,4 @@ if __name__ == "__main__":
     serve(args.port, Trainer(args.ckpt, args.seed, args.log,
                              args.sdim, args.cdim,
                              args.shape, args.phi_scale, args.arch,
-                             args.desperation))
+                             args.desperation), args.threads)
