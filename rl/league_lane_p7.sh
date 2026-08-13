@@ -76,6 +76,16 @@ stop_server() {
 
 pick_opponent() {  # -> echoes "ckpt|arch"
     local chunk=$1
+    # Phase 7b (P7_PFSP=1): optimistic Elo-based selection over the
+    # whole pool (snapshots + champions + exploiters), targeting
+    # opponents ~optimism Elo above the agent's current rating.
+    if [ "${P7_PFSP:-0}" = "1" ]; then
+        local SELF=$(cat $OUT/self_elo.txt 2>/dev/null || echo 46)
+        python3 /home/user/CardGuru/rl/pfsp_pick.py \
+            --pool $OUT/pool_elo.tsv --self-elo $SELF --chunk $chunk \
+            | cut -d'|' -f1,2
+        return
+    fi
     mapfile -t POOLCKS < <(ls $OUT/pool/*.pt 2>/dev/null | sort -V)
     case $((chunk % 4)) in
         0) # scratch mode (P7_NOANCHOR=1): no BC prior exists, so the
@@ -145,6 +155,12 @@ rate_checkpoint() {  # $1 trained -> P7ELO| line
     local fto=$(grep -o 'flashThreatsOppTurn=[0-9]*' $OUT/probe_D1_${trained}.txt | cut -d= -f2)
     echo "P7ELO|seed=$SEED|trained=$trained|elo=$ELO|d0=$d0|d1=$d1|d1h=$d1h|flashThreats=$ft|oppTurn=$fto" \
         | tee -a $OUT/elo_curve.txt
+    if [ "${P7_PFSP:-0}" = "1" ] && [ -n "$ELO" ]; then
+        echo "$ELO" > $OUT/self_elo.txt
+        grep -q "^ck_${trained}|" $OUT/pool_elo.tsv 2>/dev/null || \
+            echo "ck_${trained}|$ARCH|$OUT/pool/ck_${trained}.pt|$ELO" \
+                >> $OUT/pool_elo.tsv
+    fi
 }
 
 cd /home/user/mage
