@@ -23,18 +23,29 @@
 #             Islands for scry lands, to exercise them)
 #   E3_CASES  space-separated subset of cases to run (default: all)
 #   E3_OUT    output directory
+#   E3_ARM    e3 (default) or e2 - point the battery at the matched E2
+#             control arm (sdim 24 / cdim 91, hand-built groups off).
+#             Only the baseline cases are meaningful there: the scramble
+#             variants and the dim ablations are E3-specific.
 set -u
 NET=$1
 GAMES=${2:-200}
 SEED=${3:-0}
 CG=/home/user/CardGuru
 ARCH=lstmattn
-SDIM=29; CDIM=123
+ARM=${E3_ARM:-e3}
+if [ "$ARM" = "e2" ]; then
+    SDIM=24; CDIM=91; E3FLAG=""
+    FEAT=$CG/rl/e2_features.tsv
+else
+    SDIM=29; CDIM=123; E3FLAG="-Drl.e3=on"
+    FEAT=$CG/rl/e3_features.tsv
+fi
 APORT=7961; DPORT=7960
 DECK=${E3_DECK:-BenchDimir.dck}
 OUT=${E3_OUT:-/tmp/rl_e3_ablate}
 mkdir -p $OUT
-python3 $CG/rl/e3_scramble.py --outdir $OUT || exit 1
+[ "$ARM" = "e3" ] && { python3 $CG/rl/e3_scramble.py --outdir $OUT || exit 1; }
 
 run_case() {   # $1 tag $2 featfile $3 extra-D-flags $4 opponent $5 games
     bash $CG/rl/driver_server.sh stop $DPORT > /dev/null 2>&1
@@ -53,7 +64,7 @@ run_case() {   # $1 tag $2 featfile $3 extra-D-flags $4 opponent $5 games
     bash $CG/rl/run_driver.sh \
         -Drl.episodes=$5 \
         -Drl.agent=rl -Drl.policy=socket -Drl.port=$APORT \
-        -Drl.cardFeatures=$2 -Drl.e3=on $3 \
+        -Drl.cardFeatures=$2 $E3FLAG $3 \
         -Drl.opponent=$4 -Drl.searchPlies=1 -Drl.searchBreadth=8 \
         -Drl.noYields=true -Drl.consultBudget=4000 \
         -Drl.deck=$DECK -Drl.stopTurn=80 \
@@ -73,11 +84,10 @@ run_case() {   # $1 tag $2 featfile $3 extra-D-flags $4 opponent $5 games
     local cs=$(echo "$line" | grep -o 'agent_consults_per_ep=[0-9.]*' | cut -d= -f2)
     local bd=$(echo "$line" | grep -o 'blocksDeclared=[0-9]*' | cut -d= -f2)
     local ftc=$(echo "$line" | grep -o 'flashThreats=[0-9]*' | cut -d= -f2)
-    echo -e "E3ABL|case=$1|opp=$4|games=$5|win_rate=${wr:-NA}|turns=${tp:-NA}|actions=${ac:-NA}|consults=${cs:-NA}|blocks=${bd:-0}|flash=${ftc:-0}|knownTop=${kt:-0}|encodeWindows=${ew:-0}|seenRecorded=${sr:-0}" \
+    echo -e "E3ABL|arm=$ARM|case=$1|opp=$4|games=$5|win_rate=${wr:-NA}|turns=${tp:-NA}|actions=${ac:-NA}|consults=${cs:-NA}|blocks=${bd:-0}|flash=${ftc:-0}|knownTop=${kt:-0}|encodeWindows=${ew:-0}|seenRecorded=${sr:-0}" \
         | tee -a $OUT/results.txt
 }
 
-FEAT=$CG/rl/e3_features.tsv
 CASES=${E3_CASES:-"baseline baseline_d1 text_scrambled text_zeroed mech_scrambled all_scrambled ablate_top ablate_hand ablate_pips"}
 : > $OUT/results.txt
 for c in $CASES; do

@@ -11,19 +11,28 @@
 # per-worker policy connections (--threads) and NO playableCache.
 #
 # Usage: bash rl/e3_pilot.sh [budget=512] [seed=0]
+#   E3_ARM=e3 (default) or e2 - the MATCHED CONTROL arm: same lane, same
+#   arch, same lr, same seeds, same opponent-pool schedule, only the
+#   encoder differs (E2's 68 mechanical dims at sdim 24 / cdim 91, with
+#   the hand-built groups off). Everything else is held fixed so the two
+#   curves are comparable.
 set -u
 BUDGET=${1:-512}
 SEED=${2:-0}
+ARM=${E3_ARM:-e3}
 ARCH=lstmattn
 CG=/home/user/CardGuru
-FEATS=$CG/rl/e3_features.tsv
-SDIM=29
-CDIM=123
-APORT=7941
-OPORT=7942
-DPORT=7940
+if [ "$ARM" = "e2" ]; then
+    FEATS=$CG/rl/e2_features.tsv
+    SDIM=24; CDIM=91; E3FLAG=""
+    APORT=7951; OPORT=7952; DPORT=7950
+else
+    FEATS=$CG/rl/e3_features.tsv
+    SDIM=29; CDIM=123; E3FLAG="-Drl.e3=on"
+    APORT=7941; OPORT=7942; DPORT=7940
+fi
 DECK=BenchDimir.dck
-OUT=/tmp/rl_e3_s${SEED}
+OUT=/tmp/rl_${ARM}_pilot_s${SEED}
 LRVAL=${E3_LR:-1e-4}
 mkdir -p $OUT/pool
 
@@ -69,7 +78,7 @@ probe() {   # $1 tag $2 opponent $3 games -> win_rate
     bash $CG/rl/run_driver.sh \
         -Drl.episodes=$3 \
         -Drl.agent=rl -Drl.policy=socket -Drl.port=$APORT \
-        -Drl.cardFeatures=$FEATS -Drl.e3=on \
+        -Drl.cardFeatures=$FEATS $E3FLAG \
         -Drl.opponent=$2 -Drl.searchPlies=1 -Drl.searchBreadth=8 \
         -Drl.noYields=true -Drl.consultBudget=4000 \
         -Drl.deck=$DECK -Drl.stopTurn=80 \
@@ -82,7 +91,7 @@ probe() {   # $1 tag $2 opponent $3 games -> win_rate
 rate() {   # $1 trained
     local d0=$(probe d0_$1 heuristic 100)
     local d1=$(probe d1_$1 search 100)
-    echo "E3PILOT|trained=$1|d0=$d0|d1=$d1" | tee -a $OUT/curve.txt
+    echo "E3PILOT|arm=$ARM|trained=$1|d0=$d0|d1=$d1" | tee -a $OUT/curve.txt
 }
 
 # the driver server pins CAND_DIM and the feature file at its FIRST job,
@@ -120,7 +129,7 @@ while true; do
         -Drl.episodes=64 \
         -Drl.agent=rl -Drl.policy=socket -Drl.port=$APORT \
         -Drl.opponent=rl -Drl.oppPort=$OPORT \
-        -Drl.cardFeatures=$FEATS -Drl.e3=on \
+        -Drl.cardFeatures=$FEATS $E3FLAG \
         -Drl.noYields=true -Drl.consultBudget=4000 \
         -Drl.deck=$DECK -Drl.stopTurn=80 \
         -Drl.mode=train -Drl.seed=$((70000000 + SEED*1000000 + trained)) \
@@ -135,9 +144,9 @@ while true; do
     fi
     trained=$((trained + 64))
     echo $trained > $OUT/trained.txt
-    echo "E3|trained=$trained|opp=$(basename $OPPCK)"
+    echo "E3|arm=$ARM|trained=$trained|opp=$(basename $OPPCK)"
 done
-cp $OUT/net.pt $OUT/e3_pilot_final.pt
+cp $OUT/net.pt $OUT/${ARM}_pilot_final.pt
 rate $(cat $OUT/trained.txt)
 bash $CG/rl/driver_server.sh stop $DPORT > /dev/null 2>&1
-echo "E3_DONE|trained=$(cat $OUT/trained.txt)|net=$OUT/e3_pilot_final.pt"
+echo "E3_DONE|arm=$ARM|trained=$(cat $OUT/trained.txt)|net=$OUT/${ARM}_pilot_final.pt"
