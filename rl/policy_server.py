@@ -351,11 +351,15 @@ class Trainer:
 
     def save(self):
         if self.ckpt:
+            # atomic: a SIGKILL mid-save must never corrupt the ckpt
+            # (a truncated net.pt took down a league run once)
+            tmp = self.ckpt + ".tmp"
             torch.save({"net": self.net.state_dict(),
                         "opt": self.opt.state_dict(),
                         "episodes": self.episodes_seen,
                         "updates": self.updates,
-                        "arch": self.arch}, self.ckpt)
+                        "arch": self.arch}, tmp)
+            os.replace(tmp, self.ckpt)
 
 
 class Session:
