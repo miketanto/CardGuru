@@ -1,0 +1,1 @@
+P10MATCH|pilot=sweep|deck=P7cSweepControl.dck|games=200|pilot_vs_champ=0.3250|draws=0|stalls=0|turns=21.8|blocks=678|blockOpps=678|d0_pilot_baseline=0.1400|champ_vs_d0_sweep=0.8600
