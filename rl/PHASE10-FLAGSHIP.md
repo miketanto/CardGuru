@@ -125,7 +125,7 @@ supplies the low rungs the gate cannot.
 
 ## 5. Results
 
-### Checkpoints 0, 2048, 4096, 6144
+### Checkpoints 0, 2048, 4096, 6144, 8192
 
 ## Mirror growth curve (agent on BenchDimir, 100g vs each anchor,
 ## sequential, seed 950000)
@@ -136,32 +136,33 @@ supplies the low rungs the gate cannot.
 | 2048 | 861 | 0.4000 | 0.1800 | 0.1700 | 133 | 133 | 1.00 | 292 | 0 |
 | 4096 | 1019 | 0.5800 | 0.3900 | 0.3700 | 128 | 132 | 0.97 | 316 | 2 |
 | 6144 | 1050 | 0.5800 | 0.4400 | 0.4500 | 121 | 122 | 0.99 | 321 | 0 |
+| 8192 | 1046 | 0.5800 | 0.4200 | 0.4500 | 113 | 115 | 0.98 | 302 | 0 |
 
 ## Robustness matrix (100g vs D0 piloting each deck, agent on
 ## BenchDimir, sequential, seed 951000)
 
-| deck | power | 0 | 2048 | 4096 | 6144 | final residual |
-|---|---|---|---|---|---|---|
-| P7cSweepControl | 0.53 | 0.0300 | 0.6200 | 0.7300 | 0.8200 | +0.35 |
-| M3SelesnyaTokens | 0.57 | 0.0500 | 0.3700 | 0.4600 | 0.5800 | +0.15 |
-| M3WhiteWeenie | 0.49 | 0.0100 | 0.3200 | 0.5000 | 0.5400 | +0.03 |
-| M3BlueSkies | 0.74 | 0.0000 | 0.2600 | 0.4100 | 0.4800 | +0.22 |
-| M3RedRush | 0.63 | 0.0100 | 0.3800 | 0.5700 | 0.6400 | +0.27 |
-| M3GreenRamp | 0.61 | 0.0200 | 0.2700 | 0.4400 | 0.5000 | +0.11 |
+| deck | power | 0 | 2048 | 4096 | 6144 | 8192 | final residual |
+|---|---|---|---|---|---|---|---|
+| P7cSweepControl | 0.53 | 0.0300 | 0.6200 | 0.7300 | 0.8200 | 0.8700 | +0.40 |
+| M3SelesnyaTokens | 0.57 | 0.0500 | 0.3700 | 0.4600 | 0.5800 | 0.5000 | +0.07 |
+| M3WhiteWeenie | 0.49 | 0.0100 | 0.3200 | 0.5000 | 0.5400 | 0.5300 | +0.02 |
+| M3BlueSkies | 0.74 | 0.0000 | 0.2600 | 0.4100 | 0.4800 | 0.4600 | +0.20 |
+| M3RedRush | 0.63 | 0.0100 | 0.3800 | 0.5700 | 0.6400 | 0.6300 | +0.26 |
+| M3GreenRamp | 0.61 | 0.0200 | 0.2700 | 0.4400 | 0.5000 | 0.4900 | +0.10 |
 
 Residual = win_rate - (1 - power): performance beyond what
 deck power alone predicts for the agent's seat (7c protocol).
 
 ## Blocking by deck (blocks declared / opportunities)
 
-| deck | 0 | 2048 | 4096 | 6144 |
-|---|---|---|---|---|
-| P7cSweepControl | 0/35 | 67/67 | 57/57 | 49/49 |
-| M3SelesnyaTokens | 1/134 | 214/215 | 172/203 | 184/184 |
-| M3WhiteWeenie | 0/142 | 193/195 | 182/202 | 219/219 |
-| M3BlueSkies | 26/38 | 90/90 | 59/61 | 72/72 |
-| M3RedRush | 1/130 | 159/159 | 149/173 | 165/165 |
-| M3GreenRamp | 45/78 | 173/178 | 153/159 | 151/151 |
+| deck | 0 | 2048 | 4096 | 6144 | 8192 |
+|---|---|---|---|---|---|
+| P7cSweepControl | 0/35 | 67/67 | 57/57 | 49/49 | 55/55 |
+| M3SelesnyaTokens | 1/134 | 214/215 | 172/203 | 184/184 | 199/203 |
+| M3WhiteWeenie | 0/142 | 193/195 | 182/202 | 219/219 | 200/203 |
+| M3BlueSkies | 26/38 | 90/90 | 59/61 | 72/72 | 68/68 |
+| M3RedRush | 1/130 | 159/159 | 149/173 | 165/165 | 154/157 |
+| M3GreenRamp | 45/78 | 173/178 | 153/159 | 151/151 | 146/147 |
 
 ## Champion gate (50g h2h vs the reigning champion)
 
@@ -178,55 +179,145 @@ deck power alone predicts for the agent's seat (7c protocol).
 | 4608 | p7b_ck6144 | 0.4000 | 20 | 0 | rejected | - |
 | 5120 | p7b_ck6144 | 0.4200 | 21 | 0 | rejected | - |
 | 5632 | p7b_ck6144 | 0.4000 | 20 | 0 | rejected | - |
+| 6144 | p7b_ck6144 | 0.4400 | 22 | 0 | rejected | - |
+| 6656 | p7b_ck6144 | 0.4000 | 20 | 0 | rejected | - |
+| 7168 | p7b_ck6144 | 0.3600 | 18 | 0 | rejected | - |
+| 7680 | p7b_ck6144 | 0.3000 | 15 | 0 | rejected | - |
 
-0/11 snapshots promoted into the pool.
+0/15 snapshots promoted into the pool.
 
 ## Realized opponent mix (64-episode chunks)
 
 | opponent | deck | chunks | share |
 |---|---|---|---|
-| p7b_ck_0 | BenchDimir.dck | 10 | 10.4% |
-| p7b_ck_256 | BenchDimir.dck | 9 | 9.4% |
-| meta_monored | P8MetaMonoRed.dck | 7 | 7.3% |
-| skies | M3BlueSkies.dck | 7 | 7.3% |
-| tokens | M3SelesnyaTokens.dck | 7 | 7.3% |
-| ramp | M3GreenRamp.dck | 5 | 5.2% |
-| meta_golgari | P8MetaGolgari.dck | 4 | 4.2% |
-| redrush | M3RedRush.dck | 4 | 4.2% |
-| wweenie | M3WhiteWeenie.dck | 4 | 4.2% |
-| meta_dimirbounce | P8MetaDimirBounce.dck | 3 | 3.1% |
-| attn_desp | BenchDimir.dck | 3 | 3.1% |
-| meta_domain | P8MetaDomain.dck | 3 | 3.1% |
-| meta_boros | P8MetaBoros.dck | 3 | 3.1% |
-| p7b_ck_768 | BenchDimir.dck | 2 | 2.1% |
-| p7b_ck_2304 | BenchDimir.dck | 2 | 2.1% |
-| sweep | P7cSweepControl.dck | 2 | 2.1% |
-| meta_azorius | P8MetaAzorius.dck | 2 | 2.1% |
-| p7b_ck_3072 | BenchDimir.dck | 2 | 2.1% |
-| p7b_ck_2048 | BenchDimir.dck | 2 | 2.1% |
-| p7b_ck_5632 | BenchDimir.dck | 2 | 2.1% |
-| p7b_ck_6144 | BenchDimir.dck | 2 | 2.1% |
-| p7b_ck_8192 | BenchDimir.dck | 2 | 2.1% |
-| p7b_ck_512 | BenchDimir.dck | 1 | 1.0% |
-| p7b_ck_1280 | BenchDimir.dck | 1 | 1.0% |
-| p7b_ck_4608 | BenchDimir.dck | 1 | 1.0% |
-| p7b_ck_2560 | BenchDimir.dck | 1 | 1.0% |
-| p7b_ck_7168 | BenchDimir.dck | 1 | 1.0% |
-| p7b_ck_7680 | BenchDimir.dck | 1 | 1.0% |
-| D0 | BenchDimir.dck | 1 | 1.0% |
-| D1 | BenchDimir.dck | 1 | 1.0% |
-| p7b_ck_1536 | BenchDimir.dck | 1 | 1.0% |
+| meta_monored | P8MetaMonoRed.dck | 12 | 9.4% |
+| p7b_ck_0 | BenchDimir.dck | 10 | 7.8% |
+| p7b_ck_256 | BenchDimir.dck | 9 | 7.0% |
+| skies | M3BlueSkies.dck | 8 | 6.2% |
+| meta_golgari | P8MetaGolgari.dck | 7 | 5.5% |
+| ramp | M3GreenRamp.dck | 7 | 5.5% |
+| tokens | M3SelesnyaTokens.dck | 7 | 5.5% |
+| wweenie | M3WhiteWeenie.dck | 5 | 3.9% |
+| redrush | M3RedRush.dck | 4 | 3.1% |
+| sweep | P7cSweepControl.dck | 4 | 3.1% |
+| p7b_ck_5632 | BenchDimir.dck | 4 | 3.1% |
+| p7b_ck_7168 | BenchDimir.dck | 4 | 3.1% |
+| meta_boros | P8MetaBoros.dck | 4 | 3.1% |
+| p7b_ck_2304 | BenchDimir.dck | 3 | 2.3% |
+| meta_dimirbounce | P8MetaDimirBounce.dck | 3 | 2.3% |
+| p7b_ck_3072 | BenchDimir.dck | 3 | 2.3% |
+| attn_desp | BenchDimir.dck | 3 | 2.3% |
+| p7b_ck_2048 | BenchDimir.dck | 3 | 2.3% |
+| meta_domain | P8MetaDomain.dck | 3 | 2.3% |
+| D1 | BenchDimir.dck | 3 | 2.3% |
+| p7b_ck_768 | BenchDimir.dck | 2 | 1.6% |
+| meta_azorius | P8MetaAzorius.dck | 2 | 1.6% |
+| p7b_ck_4608 | BenchDimir.dck | 2 | 1.6% |
+| p7b_ck_6144 | BenchDimir.dck | 2 | 1.6% |
+| p7b_ck_8192 | BenchDimir.dck | 2 | 1.6% |
+| p7b_ck_7680 | BenchDimir.dck | 2 | 1.6% |
+| p7b_ck_512 | BenchDimir.dck | 1 | 0.8% |
+| p7b_ck_1280 | BenchDimir.dck | 1 | 0.8% |
+| p7b_ck_2560 | BenchDimir.dck | 1 | 0.8% |
+| D0 | BenchDimir.dck | 1 | 0.8% |
+| p7b_ck_1536 | BenchDimir.dck | 1 | 0.8% |
+| p7b_ck_4096 | BenchDimir.dck | 1 | 0.8% |
+| attn_v2 | BenchDimir.dck | 1 | 0.8% |
+| p7c_ck1536 | BenchDimir.dck | 1 | 0.8% |
+| attn_bc | BenchDimir.dck | 1 | 0.8% |
+| p7b_ck_1792 | BenchDimir.dck | 1 | 0.8% |
 
-Non-mirror opponent chunks: 51/96 (53.1%).
+Non-mirror opponent chunks: 66/128 (51.6%).
 
 ## Realized agent-deck rotation (chunks per deck list)
 
 | agent deck list | chunks |
 |---|---|
 | BenchDimir.dck,BenchDimir.dck,BenchDimir.dck,P8MetaDimirBounce.dck | 48 |
+| BenchDimir.dck,BenchDimir.dck,P8MetaDimirBounce.dck,P8MetaAzorius.dck | 48 |
 | BenchDimir.dck | 32 |
-| BenchDimir.dck,BenchDimir.dck,P8MetaDimirBounce.dck,P8MetaAzorius.dck | 16 |
 
+
+### Reading checkpoint 8192 — SATURATION, and what it diagnoses
+
+The run stopped improving on BOTH axes at ~6144, and the 8192 battery
+is the measurement that says so.
+
+**Mirror Elo is converged.** 1019 -> 1050 -> 1046, with vs-D0 pinned at
+exactly .58 for three consecutive checkpoints.
+
+**The matrix is converged too.** Mean residual change 6144 -> 8192 is
+**-.013**; only sweep moved beyond probe noise (+.05, and it has now
+reached ck_6144's own .87):
+
+| deck | 6144 | 8192 | change |
+|---|---|---|---|
+| sweep | .82 | .87 | +.05 |
+| tokens | .58 | .50 | -.08 |
+| wweenie | .54 | .53 | -.01 |
+| skies | .48 | .46 | -.02 |
+| redrush | .64 | .63 | -.01 |
+| ramp | .50 | .49 | -.01 |
+
+**This is not drift.** 7b's late-run failure was mirror Elo FALLING
+(1101 -> 1044) while the pool filled with its own drifting snapshots.
+Here Elo holds flat and the pool contains zero rows this run produced.
+Champion gating did exactly what 7b's recommendation #1 asked of it.
+
+**It is saturation against a frozen population**, and the gate decline
+(.44 -> .30 over four probes) was single-opponent noise, not decay -
+the mirror Elo held across the same window. I read those four points as
+a trend when they were not; the 100-game Elo instrument corrects the
+50-game gate.
+
+### The structural finding: gating without self-play starves the league
+
+Every one of this league's 44 rows is FROZEN. The scripted seats are
+frozen instruments, the champions are frozen checkpoints, the 7b ladder
+is frozen. And champion gating - working as designed - kept all 16 of
+this run's own snapshots OUT. So from ~6144 the agent had extracted
+what a fixed population can teach and had nothing left to climb.
+
+Against AlphaStar's league design the gap is specific:
+
+| AlphaStar | this lane |
+|---|---|
+| main agents spend ~35% on self-play vs their OWN current parameters | 0% - no opponent adapts, anywhere |
+| main agents are frozen into the league ON A SCHEDULE | pool entry gated on beating the champion |
+| the 70% win gate applies to EXPLOITERS, and even that has a step-budget escape | our gate governs pool entry itself |
+| PFSP weights by MEASURED win probability (f_hard, f_var) | Gaussian on Elo distance |
+
+The key structural error is the second row: AlphaStar gates *exploiter
+promotion*, never main-agent league membership, and it separates "who
+is the current best" from "who is in the training population". This
+lane conflated them, so a run that never beats ck_6144 grows its league
+by zero rows in 12288 episodes. 7b had the opposite failure (ungated
+entry -> drift). Neither extreme is right; AlphaStar's answer is
+scheduled entry PLUS a self-play fraction PLUS exploiters.
+
+**Recommendations for the next phase, in leverage order:**
+
+1. **Add a self-play fraction (~35%) against the live net.** The single
+   missing ingredient: an opponent that adapts, always at the right
+   difficulty. Neither 7b (self-snapshots only) nor this run (frozen
+   only) had true self-play.
+2. **Decouple pool entry from crowning.** Snapshot into the pool on a
+   schedule the way 7b did; keep the h2h gate for CHAMPION status and
+   for reporting. Anti-drift ratchet retained, population unstarved.
+3. **PFSP by measured win rate** (f_hard/f_var) rather than Elo
+   distance. We already pay for the measurement in the gate and throw
+   it away; f_var would park training on the ~.40 opponents where the
+   gradient is richest.
+4. **Main exploiters initialised from ck_6144**, trained against the
+   current agent with a real budget. 7c's exploiters failed (.20-.40
+   regardless of deck) because they had 512 episodes from a mismatched
+   prior; AlphaStar resets exploiters to the SUPERVISED init precisely
+   to avoid that.
+
+Budget caveat, stated plainly: AlphaStar ran three agent types for 44
+days on 32 TPUs each. This is 12288 episodes on a 428k-parameter net on
+4 cores. Some of this ceiling is capacity and budget, not league design,
+and nothing here separates those.
 
 ### Reading checkpoint 6144 — the falsification, and the real headline
 
