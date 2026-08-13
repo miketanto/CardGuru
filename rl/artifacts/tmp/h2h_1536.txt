@@ -1,0 +1,1 @@
+RL|summary|episodes=200|wins=112|losses=88|draws=0|stalls=0|win_rate=0.5600|games_per_sec=0.300|agent_consults_per_ep=110.0|agent_windows_per_ep=239.0|agent_actions_per_ep=42.2|turns_per_ep=19.5|opponent=rl|policy=socket|deck=BenchDimir.dck|oppDeck=mirror|seed=951201|fallbacks=blockOpportunities=268 blocksDeclared=268 chooseUse=441 flashThreats=644 flashThreatsOppTurn=2 

@@ -47,8 +47,18 @@ others lacked.
 | e0_champ | rl_e0league_s0/ | 1083 | name-hash control, no transfer |
 | D1 / D1h (scripted) | frozen instruments | 1085/1088 | mirror-specific ladder (7c) |
 
-UNRESOLVED: p7b ck_6144 vs 7c ck_1536/3072 have never played each
-other, and both "paritys" are 100g claims. See Course of Action #1.
+RESOLVED (crown matches, this branch, /tmp/p10_crown + p10_crown.sh):
+- ck_6144 vs D1, 500g mirror: **.48** — D1 parity at claim grade
+  (CI +-.045; parity, not a lead).
+- ck_6144 vs 7c ck_1536: .560 (200g); vs 7c ck_3072: .565 (200g) —
+  the mirror-PFSP champion beats both curriculum champions h2h.
+- ck_6144 archetype rows (100g, D0-piloted): redrush .52, ramp .50,
+  sweep .87 — ABOVE deck-power expectation (redrush power .64 =>
+  D0-level Dimir pilot expects ~.36; +.16 residual), i.e. the
+  mirror-trained champion is also the most robust agent measured.
+**ck_6144 is the undisputed project champion.** Note h2h was on the
+mirror; cross-deck h2h remains for the Phase 10 league to settle
+continuously via gating.
 
 ## 3. Infrastructure state on this branch (all validated together)
 
