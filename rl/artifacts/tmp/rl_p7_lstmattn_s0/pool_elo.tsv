@@ -12,3 +12,8 @@ ck_1280|lstmattn|/tmp/rl_p7_lstmattn_s0/pool/ck_1280.pt|976
 ck_1536|lstmattn|/tmp/rl_p7_lstmattn_s0/pool/ck_1536.pt|1002
 ck_1792|lstmattn|/tmp/rl_p7_lstmattn_s0/pool/ck_1792.pt|1014
 ck_2048|lstmattn|/tmp/rl_p7_lstmattn_s0/pool/ck_2048.pt|1022
+ck_2304|lstmattn|/tmp/rl_p7_lstmattn_s0/pool/ck_2304.pt|1068
+ck_2560|lstmattn|/tmp/rl_p7_lstmattn_s0/pool/ck_2560.pt|1065
+ck_3072|lstmattn|/tmp/rl_p7_lstmattn_s0/pool/ck_3072.pt|1065
+ck_3584|lstmattn|/tmp/rl_p7_lstmattn_s0/pool/ck_3584.pt|1065
+ck_4096|lstmattn|/tmp/rl_p7_lstmattn_s0/pool/ck_4096.pt|1093
