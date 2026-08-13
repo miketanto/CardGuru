@@ -13,10 +13,22 @@ import java.util.UUID;
  * pass. This is the CONTROL encoder of the ablation ladder - card identity
  * is a 16-bucket stable name hash, adequate for a fixed 10-card pool and
  * deliberately unable to generalize (that is E1/E2's job).
+ *
+ * E3 (CHECKPOINT-PHASE10.md 4.3) adds two hand-built groups on top:
+ *   - STATE dims 24-28: card-advantage visibility. Known top-of-library
+ *     after surveil/scry/explore (the agent filters its own draw and then
+ *     cannot see the result - Kaito-0 is never activated) plus the hand
+ *     differential, which is the card-advantage scoreboard s[2]/s[3] only
+ *     imply.
+ *   - CANDIDATE dims 17-21: the colored-pip STRUCTURE of a cast. c[6]
+ *     carries generic mana value only, so {U}{U} and {2}{U} are the same
+ *     candidate - the distinction that decides what to hold open. These
+ *     land in the five slots left free between the type/stat block and
+ *     ID_BASE, so CAND_DIM does not move for the pip group.
  */
 public final class StateEncoder {
 
-    public static final int STATE_DIM = 24;
+    public static final int STATE_DIM = 29;
     private static final int ID_BASE = 22;   // identity features from here
 
     /**
@@ -67,10 +79,71 @@ public final class StateEncoder {
         CAND_DIM = table == null ? ID_BASE + 16 : ID_BASE + dim + 1;
     }
 
+    /**
+     * Diagnostic ablation, the hand-built-dim analog of the Phase 8b
+     * feature scramble (rl/p8b_scramble.py can only corrupt the TSV, and
+     * the E3 state/pip dims are computed in Java): zero a set of dims at
+     * eval time and see whether the policy's win rate moves.
+     *   -Drl.ablateState=24-28   -Drl.ablateCand=17-21
+     * Both default to empty, i.e. no ablation.
+     */
+    private static final boolean[] ABLATE_STATE = ablationMask(
+            System.getProperty("rl.ablateState"), STATE_DIM);
+    private static final boolean[] ABLATE_CAND = ablationMask(
+            System.getProperty("rl.ablateCand"), CAND_DIM);
+
+    private static boolean[] ablationMask(String spec, int dim) {
+        if (spec == null || spec.trim().isEmpty()) {
+            return null;
+        }
+        boolean[] mask = new boolean[dim];
+        for (String part : spec.split(",")) {
+            part = part.trim();
+            if (part.isEmpty()) {
+                continue;
+            }
+            int dash = part.indexOf('-');
+            int lo = Integer.parseInt(dash < 0 ? part : part.substring(0, dash));
+            int hi = dash < 0 ? lo : Integer.parseInt(part.substring(dash + 1));
+            for (int i = lo; i <= hi && i < dim; i++) {
+                mask[i] = true;
+            }
+        }
+        System.out.println("RL|ablate|dim=" + dim + "|spec=" + spec);
+        return mask;
+    }
+
+    private static float[] ablate(float[] v, boolean[] mask) {
+        if (mask != null) {
+            for (int i = 0; i < v.length; i++) {
+                if (mask[i]) {
+                    v[i] = 0f;
+                }
+            }
+        }
+        return v;
+    }
+
     private StateEncoder() {
     }
 
+    /**
+     * What the seat has actually SEEN of its own library. Implemented by
+     * RLPlayer, which records every card it was shown in a library-zone
+     * choice (scry, surveil, explore, "look at the top N"); the encoder
+     * only asks whether the card currently on top is one of them, so the
+     * knowledge expires by itself the moment that card is drawn.
+     */
+    public interface LibraryKnowledge {
+        boolean hasSeen(UUID cardId);
+    }
+
     public static float[] encodeState(Game game, UUID me, UUID opp) {
+        return encodeState(game, me, opp, null);
+    }
+
+    public static float[] encodeState(Game game, UUID me, UUID opp,
+                                      LibraryKnowledge seen) {
         Player my = game.getPlayer(me);
         Player op = game.getPlayer(opp);
         float[] s = new float[STATE_DIM];
@@ -137,7 +210,20 @@ public final class StateEncoder {
         s[21] = my.getGraveyard().size() / 30f;
         s[22] = op.getGraveyard().size() / 30f;
         s[23] = my.getLibrary().size() / 60f;
-        return s;
+
+        // E3 group 1 - card-advantage visibility
+        if (seen != null) {
+            Card top = my.getLibrary().getFromTop(game);
+            if (top != null && seen.hasSeen(top.getId())) {
+                s[24] = 1f;
+                s[25] = top.isLand(game) ? 1f : 0f;
+                s[26] = top.isCreature(game) ? 1f : 0f;
+                s[27] = Math.min(top.getManaValue(), 6) / 6f;
+            }
+        }
+        int handDiff = my.getHand().size() - op.getHand().size();
+        s[28] = Math.max(-7, Math.min(7, handDiff)) / 7f;
+        return ablate(s, ABLATE_STATE);
     }
 
     /** decision-type slots */
@@ -161,16 +247,67 @@ public final class StateEncoder {
             }
             c[10] = card.isInstant(game) ? 1f : 0f;
             c[11] = card.isSorcery(game) ? 1f : 0f;
+            pips(c, card);
             identity(c, card.getName());
         }
-        return c;
+        return ablate(c, ABLATE_CAND);
+    }
+
+    /**
+     * E3 group 3 - colored-pip structure of the printed cost, in the five
+     * free candidate slots. c[6] (mana value) cannot tell {U}{U} from
+     * {2}{U}, and the difference is the whole of hold-open-mana planning:
+     * two blue sources vs one blue and any two.
+     *
+     *   c[17] generic portion        c[18] specific (colored) pips
+     *   c[19] deepest single-colour requirement (the {U}{U} signal)
+     *   c[20] distinct colours       c[21] flexible symbols (hybrid/X/phy)
+     */
+    private static void pips(float[] c, Card card) {
+        int generic = 0, specific = 0, distinct = 0, deepest = 0;
+        int[] perColor = new int[6];        // W U B R G C
+        boolean flexible = false;
+        for (String sym : card.getManaCostSymbols()) {
+            String s = sym.replace("{", "").replace("}", "").trim();
+            if (s.isEmpty()) {
+                continue;
+            }
+            if (s.chars().allMatch(Character::isDigit)) {
+                generic += Integer.parseInt(s);
+            } else if (s.contains("/") || s.equalsIgnoreCase("X")
+                    || s.equalsIgnoreCase("S")) {
+                // hybrid, phyrexian, X, snow: a requirement the seat can
+                // satisfy more than one way - counted, but not attributed
+                flexible = true;
+                if (!s.equalsIgnoreCase("X")) {
+                    specific++;
+                }
+            } else {
+                int idx = "WUBRGC".indexOf(Character.toUpperCase(s.charAt(0)));
+                if (idx >= 0) {
+                    specific++;
+                    perColor[idx]++;
+                }
+            }
+        }
+        for (int n : perColor) {
+            if (n > 0) {
+                distinct++;
+                deepest = Math.max(deepest, n);
+            }
+        }
+        c[17] = Math.min(generic, 6) / 6f;
+        c[18] = Math.min(specific, 4) / 4f;
+        c[19] = Math.min(deepest, 3) / 3f;
+        c[20] = Math.min(distinct, 3) / 3f;
+        c[21] = flexible ? 1f : 0f;
     }
 
     public static float[] forTargetPlayer(boolean isMe, int life) {
         float[] c = blank(T_TARGET);
         c[isMe ? 12 : 13] = 1f;
         c[15] = life / 20f;
-        return c;
+        return ablate(c, ABLATE_CAND);
     }
 
     public static float[] forTargetPermanent(Permanent p, Game game, UUID me) {
@@ -180,7 +317,7 @@ public final class StateEncoder {
         c[16] = p.getToughness().getValue() / 6f;
         c[12] = p.getControllerId().equals(me) ? 1f : 0f;
         identity(c, p.getName());
-        return c;
+        return ablate(c, ABLATE_CAND);
     }
 
     public static float[] forCombat(int type, Permanent creature, Game game) {
@@ -189,7 +326,7 @@ public final class StateEncoder {
         c[8] = creature.getToughness().getValue() / 6f;
         c[9] = 1f;
         identity(c, creature.getName());
-        return c;
+        return ablate(c, ABLATE_CAND);
     }
 
     private static void identity(float[] c, String name) {

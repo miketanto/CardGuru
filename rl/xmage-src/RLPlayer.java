@@ -22,8 +22,10 @@ import mage.util.RandomUtil;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 import java.util.UUID;
 
@@ -105,6 +107,32 @@ public class RLPlayer extends ComputerPlayer {
 
     private YieldKind yield = YieldKind.NONE;
 
+    /**
+     * E3 group 1: cards of our own library this seat has been SHOWN -
+     * scry/surveil/"look at the top N" (library-zone card choices),
+     * explore and every other reveal, and any look-at effect. The
+     * encoder only ever asks whether the card currently on top is in
+     * here, so a draw expires the knowledge for free; a shuffle wipes
+     * the set. Cards put on the BOTTOM stay recorded (we did see them);
+     * a 60-card library at ~17 turns never gets back to them.
+     */
+    private final Set<UUID> seenLibraryCards = new HashSet<>();
+
+    public boolean hasSeen(UUID cardId) {
+        return seenLibraryCards.contains(cardId);
+    }
+
+    private void noteSeen(Cards cards, Game game) {
+        if (cards == null) {
+            return;
+        }
+        for (Card c : cards.getCards(game)) {
+            if (c != null) {
+                seenLibraryCards.add(c.getId());
+            }
+        }
+    }
+
     public RLPlayer(String name) {
         super(name, RangeOfInfluence.ONE);
     }
@@ -116,6 +144,7 @@ public class RLPlayer extends ComputerPlayer {
         windows = consults = yieldSkipped = autoPassK0 = 0;
         actions = failedActivations = 0;
         blocksDeclared = blockOpportunities = 0;
+        seenLibraryCards.clear();
     }
 
     private UUID opponentId(Game game) {
@@ -145,6 +174,7 @@ public class RLPlayer extends ComputerPlayer {
         }
         RandomUtil.setSeed(benchSeed
                 + 1000003L * getName().hashCode() + shuffleCount++);
+        seenLibraryCards.clear();       // positions are unknown again
         super.shuffleLibrary(source, game);
     }
 
@@ -275,7 +305,7 @@ public class RLPlayer extends ComputerPlayer {
             return (o == null ? "?" : o.getName()) + "|" + a.getRule();
         }));
 
-        float[] state = StateEncoder.encodeState(game, playerId, opponentId(game));
+        float[] state = StateEncoder.encodeState(game, playerId, opponentId(game), this::hasSeen);
         float[][] cands = new float[playable.size() + 1][];
         cands[0] = StateEncoder.blank(StateEncoder.T_PASS);
         for (int i = 0; i < playable.size(); i++) {
@@ -345,7 +375,7 @@ public class RLPlayer extends ComputerPlayer {
                 return !target.getTargets().isEmpty();
             }
             possible.sort(Comparator.comparing(id -> canonicalName(id, game)));
-            float[] state = StateEncoder.encodeState(game, playerId, opp);
+            float[] state = StateEncoder.encodeState(game, playerId, opp, this::hasSeen);
             float[][] cands = new float[possible.size()][];
             for (int i = 0; i < possible.size(); i++) {
                 UUID id = possible.get(i);
@@ -403,6 +433,7 @@ public class RLPlayer extends ComputerPlayer {
     private boolean policyPickCards(Cards cards, TargetCard target,
                                     Ability source, Game game) {
         UUID opp = opponentId(game);
+        noteLibraryChoice(cards, target, game);
         int guard = 0;
         while (target.getTargets().size() < target.getMinNumberOfTargets()
                 && guard++ < 16) {
@@ -413,7 +444,7 @@ public class RLPlayer extends ComputerPlayer {
                 return !target.getTargets().isEmpty();
             }
             possible.sort(Comparator.comparing(MageObject::getName));
-            float[] state = StateEncoder.encodeState(game, playerId, opp);
+            float[] state = StateEncoder.encodeState(game, playerId, opp, this::hasSeen);
             float[][] cands = new float[possible.size()][];
             for (int i = 0; i < possible.size(); i++) {
                 cands[i] = StateEncoder.forCard(StateEncoder.T_TARGET,
@@ -439,6 +470,42 @@ public class RLPlayer extends ComputerPlayer {
         return policyPickCards(cards, target, source, game);
     }
 
+    // ------------------------------------------- E3 library visibility
+
+    /**
+     * Every way the seat gets to SEE cards of its own library funnels
+     * through one of these three: a library-zone card choice (scry and
+     * surveil both build a TargetCard in Zone.LIBRARY), a reveal
+     * (explore reveals the top card), or a look-at effect.
+     */
+    private void noteLibraryChoice(Cards cards, TargetCard target, Game game) {
+        if (target != null && target.getZone() == mage.constants.Zone.LIBRARY) {
+            noteSeen(cards, game);
+        }
+    }
+
+    @Override
+    public void revealCards(Ability source, String titleSuffix, Cards cards,
+                            Game game, boolean postToLog) {
+        noteSeen(cards, game);
+        super.revealCards(source, titleSuffix, cards, game, postToLog);
+    }
+
+    @Override
+    public void lookAtCards(Ability source, String titleSuffix, Cards cards,
+                            Game game) {
+        noteSeen(cards, game);
+        super.lookAtCards(source, titleSuffix, cards, game);
+    }
+
+    @Override
+    public void lookAtCards(String titleSuffix, Card card, Game game) {
+        if (card != null) {
+            seenLibraryCards.add(card.getId());
+        }
+        super.lookAtCards(titleSuffix, card, game);
+    }
+
     // ------------------------------------------------------------- combat
 
     @Override
@@ -448,7 +515,7 @@ public class RLPlayer extends ComputerPlayer {
         List<Permanent> avail = new ArrayList<>(getAvailableAttackers(game));
         avail.sort(Comparator.comparing(MageObject::getName));
         for (Permanent creature : avail) {
-            float[] state = StateEncoder.encodeState(game, playerId, defender);
+            float[] state = StateEncoder.encodeState(game, playerId, defender, this::hasSeen);
             float[][] cands = {
                 StateEncoder.blank(StateEncoder.T_PASS),
                 StateEncoder.forCombat(StateEncoder.T_ATTACK, creature, game)};
@@ -495,7 +562,7 @@ public class RLPlayer extends ComputerPlayer {
             if (can.isEmpty()) {
                 continue;
             }
-            float[] state = StateEncoder.encodeState(game, playerId, opp);
+            float[] state = StateEncoder.encodeState(game, playerId, opp, this::hasSeen);
             float[][] cands = new float[can.size() + 1][];
             cands[0] = StateEncoder.blank(StateEncoder.T_PASS);
             for (int i = 0; i < can.size(); i++) {
