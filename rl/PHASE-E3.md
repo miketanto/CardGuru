@@ -217,11 +217,34 @@ rather than flat — the 256→512 jump is the usual scratch-line takeoff
 (Phase 7b's scratch lstmattn needed 6,144 episodes to reach Elo 1101,
 so .455 vs D0 at 512 episodes is on-trend, not a result).
 
-**This is a shakedown, not a comparison.** There is no matched E2 arm at
-512 episodes, so nothing here says E3 > E2. What it establishes is that
-the widened encoder is trainable and that the pilot net is strong enough
-(.455, well off both the 0 floor and the .386 D0-mirror floor) for the
-scramble battery below to have room to move in either direction.
+### Matched E2 control arm
+
+`E3_ARM=e2` reruns the identical lane on E2's encoder — same `lstmattn`
+arch, same lr, same seeds, same 64-episode chunks, same snapshot-pool
+schedule, same deck, same probes — with only the encoder swapped
+(sdim 24 / cdim 91, `rl.e3` off). Seed 0, both arms:
+
+| trained | E2 vs D0 | E3 vs D0 | E2 vs D1 | E3 vs D1 |
+|---|---|---|---|---|
+| 256 (100g) | .100 | .120 | .010 | .080 |
+| 512 (100g) | .300 | .410 | .160 | .230 |
+| **512 (200g)** | **.280** | **.455** | **.170** | **.240** |
+
+At 200g the D0 gap is **+.175 ± .093** — outside the CI — and the D1 gap
+is +.070 ± .081, inside it. The two arms also play differently: the E2
+net takes 44.0 actions/ep against E3's 22.7 on 102.8 vs 158.1 consults,
+i.e. it acts on a larger share of the windows it sees.
+
+**One seed each, so this is a lead, not a result.** Phase 7b/7c/8b all
+found single scratch runs noisy enough to need replication, and the
+standing project convention is 5 seeds; a second seed is running (§7).
+Read as-is it says the E3 encoder is at least not *worse* to train from
+scratch — the honest worry with +32 mostly-uninformative dims and a
+wider state vector — and may be learning faster early. It does **not**
+say the text channel is why: §5 shows the pilot can lose that block
+entirely without a win-rate cost, so any real E3 advantage at this
+budget more likely comes from the pip dims (read, §5) or simply from a
+wider input layer.
 
 ## 5. Is the new channel load-bearing? (`rl/e3_ablate.sh`)
 
