@@ -311,35 +311,62 @@ Two readouts, because at 200g the win-rate CI on a *difference* is
 |---|---|---|---|---|---|
 | baseline (D0) | .455 | — | — | — | reference |
 | baseline (D1) | .240 | −.215 | .091 | .113 | — |
-| **text_scrambled** | .520 | +.065 | .098 | **.065** | read, no cost |
-| **text_zeroed** | .530 | +.075 | .098 | **.070** | read, no cost |
+| **text_scrambled** | .520 | +.065 | .098 | **.065** | read |
+| **text_zeroed** | .530 | +.075 | .098 | **.070** | read |
 | **mech_scrambled** | .325 | **−.130** | .095 | .209 | read, load-bearing |
 | **all_scrambled** | .175 | **−.280** | .087 | .265 | read, load-bearing |
 | ablate_top (dark here) | .460 | +.005 | .098 | .007 | null control |
 | ablate_hand | .480 | +.025 | .098 | .015 | marginal |
-| ablate_pips | .435 | −.020 | .097 | .031 | read, no cost |
+| ablate_pips | .435 | −.020 | .097 | .031 | read |
+
+Repeated on the seed-1 net, and pooled over both (400g per condition):
+
+| condition | seed 0 | seed 1 | pooled Δ vs baseline | ±95% |
+|---|---|---|---|---|
+| baseline | .455 | .350 | — | — |
+| text_scrambled | .520 | **.495** | **+.105** | .069 |
+| text_zeroed | .530 | **.510** | **+.117** | .069 |
+| mech_scrambled | .325 | .295 | **−.093** | .066 |
 
 Read straight:
 
-1. **The E2 mechanical block is load-bearing at 512 episodes**:
-   scrambling it costs −.130 (>1.96σ), and scrambling the whole row
-   costs −.280 — the same collapse 8b measured on a fully trained net
-   (.640 → .260). The E3 file reproduces the 8b diagnostic, so the
-   instrument is intact.
-2. **The new text block is READ but not yet load-bearing.** Corrupting
-   it moves play 6-7× the jitter band — the net's actions/ep swing from
-   22.7 to 25.9 (scrambled) and its consults/ep from 158 to 178
-   (zeroed) — but the win rate does not drop; if anything it drifts up
-   (+.065/+.075, both inside the CI). After 512 episodes on a single
-   deck, 32 semantic dims are input the net has learned to *use* but not
-   yet input it *needs*: on the mirror, identifiers suffice, and the
-   text block is currently a mild distractor.
+1. **The E2 mechanical block is load-bearing at 512 episodes.**
+   Scrambling it costs −.130 (s0) and −.055 (s1), −.093 pooled and
+   outside the CI; scrambling the whole row costs −.280. That is the
+   same collapse 8b measured on a fully trained net (.640 → .260), so
+   the E3 file reproduces the 8b diagnostic and the instrument is
+   intact.
+2. **The new text block is read — and at this budget it is a
+   DISTRACTOR.** Corrupting it moves play 6-9× the jitter band in both
+   seeds, so the net certainly consumes it. But the win rate does not
+   fall, it *rises*: +.065/+.075 on seed 0 (inside the CI) and
+   +.145/+.160 on seed 1 (outside it), **+.105 / +.117 pooled, both
+   significant**. Zeroing 32 dims the net trained with makes it play
+   better.
+
+   The economical explanation is overfitting: on a single deck, the
+   text dims carry no decision-relevant variance the mechanical dims
+   lack, so gradient descent fits spurious structure on them, and
+   deleting them collapses each candidate back onto its reliable
+   mechanical identifier. This is the sharpest version of the 8b
+   result in this document — semantic dims are not merely unused on one
+   deck, they are actively costly there — and it is a *within-net*
+   comparison (same weights, same eval seeds, one input block
+   corrupted), so it is far better controlled than the arm comparison
+   in §4.
 3. **The pip dims are read** (.031, 3× the band) at no win-rate cost.
 4. **The hand-differential dim is marginal** (.015 vs a .010 band) —
    expected, since `s[2]`/`s[3]` already carry both hand sizes and the
    differential is a linear function of them. It is cheap and it makes
    the card-advantage scoreboard explicit rather than implied; it is not
    doing work yet.
+
+Note what this does *not* license: "the text channel is bad". It says a
+policy trained for 512 episodes against one deck is better off without
+it — which is the regime where 8b already showed card features degrade
+into local identifiers, and precisely the regime the flagship replaces.
+A channel that is a distractor on a fixed deck can still be the only
+thing that generalizes across decks; that experiment has not been run.
 
 ### Group 1 needed its own deck to be testable at all
 
@@ -375,10 +402,14 @@ a deck where the signal was constantly zero.
 - **The E3 encoder trains from scratch** (.455 vs D0 at 512 episodes)
   and reproduces the 8b scramble collapse, so the channel diagnostics
   transfer to it unchanged.
-- **The new dims are read but not yet load-bearing.** Text: 6-7× the
-  jitter band in behaviour, no win-rate cost. Pips: 3×, no cost. Hand
-  differential: marginal. Known-top: verified live at 4.6% of decisions
-  on a deck that filters, unused by this net.
+- **The new dims are read; the text block is a distractor on one deck.**
+  Corrupting it moves play 6-9× the jitter band in both seeds — it is
+  certainly consumed — but the win rate *rises*: **+.105 scrambled,
+  +.117 zeroed, pooled over 2 seeds / 400 games, both outside the CI**.
+  A 512-episode single-deck policy is measurably better off without the
+  32 semantic dims. Pips: read, no cost. Hand differential: marginal.
+  Known-top: verified live at 4.6% of decisions on a deck that filters,
+  unused by this net.
 - **A matched E2 arm, two seeds each, does not separate from E3** —
   home deck .310 vs .407 mean, held-out P8Faeries .250 vs .210, with
   within-arm seed spreads (.04-.10) as large as every between-arm gap.
@@ -387,9 +418,9 @@ a deck where the signal was constantly zero.
   What did: the E3 encoder is **not worse to train from scratch**, and
   E3 keeps Phase 8's zero-shot transfer on feature-matched swaps
   (.445 vs its own .455 — gate G2 confirmed operationally).
-- That is the *expected* result at this budget, and it is exactly the
-  8b story from the other side: on one deck, identifier-style use of the
-  mechanical block is sufficient, so semantic dims cannot pay yet.
+- That is the 8b story from the other side, and sharper than expected:
+  on one deck the mechanical block alone is sufficient, so the semantic
+  dims are not merely idle — they are fitted noise the policy pays for.
   **E3 should be A/B'd where 8b said the mechanism lives — deck
   diversity from initialization** (the Phase 10 flagship), not on the
   BenchDimir mirror; and it needs seeds, because a single 512-episode
@@ -406,7 +437,9 @@ a deck where the signal was constantly zero.
    mirror, since the two arms rank differently depending on which you
    read. That is where "condition breadth" can pay.
 2. Re-run this battery on the flagship's champion: the same table on a
-   .60+ net has the headroom for a −.10 text-scramble effect to show.
+   .60+ net trained across decks is where the text-scramble sign should
+   flip from + to − if the channel does what it was built for. The
+   pooled +.11 measured here is the number that has to move.
 3. Group 1 needs a deck that filters (P8Meta/archetype pools have scry
    lands and surveil) — or Kaito activation to emerge. Its 4.6%
    live-window rate on E3ScryProbe is the instrument for that.
