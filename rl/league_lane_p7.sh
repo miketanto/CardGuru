@@ -131,9 +131,11 @@ rate_checkpoint() {  # $1 trained -> P7ELO| line
         grep -q "^p7_${trained}	${SN}	" $OUT/elo_matches.tsv && continue
         start_server $OUT/net.pt $ARCH $APORT $OUT/aserver.log
         local ASRV=$(cat $OUT/.srvpid)
-        mvn -q -pl Mage.Tests surefire:test -Dtest='RLEpisodeDriver' \
-            -DargLine="-Dfile.encoding=UTF-8 -Xmx4500m" \
-            -DfailIfNoTests=false -Drl.episodes=100 \
+        # eval stays SEQUENTIAL (no RL_CONC): Elo probes must remain
+        # reproducible; the persistent JVM alone is behavior-identical
+        RL_PERSIST=${P7_PERSIST:-0} RL_AUTOSTART=1 \
+        bash /home/user/CardGuru/rl/run_driver.sh \
+            -Drl.episodes=100 \
             -Drl.agent=rl -Drl.policy=socket -Drl.port=$APORT \
             -Drl.opponent=$AK -Drl.searchPlies=1 -Drl.searchBreadth=8 \
             -Drl.cardFeatures=$FEATS \
@@ -184,15 +186,22 @@ while true; do
     CHUNK=$((trained / 64))
     IFS='|' read -r OPPCK OPPARCH <<< "$(pick_opponent $CHUNK)"
 
+    # Phase 9: P7_CONC>1 runs the chunk's episodes concurrently through
+    # the persistent driver JVM (RL_PERSIST); both policy servers must
+    # then accept one connection per worker (--threads)
+    CONCN=${P7_CONC:-1}
+    THREADFLAG=""
+    [ "$CONCN" -gt 1 ] && THREADFLAG="--threads $CONCN"
     start_server $OUT/net.pt $ARCH $APORT $OUT/aserver.log \
-        "--lr $LRVAL --log $OUT/train.csv"
+        "--lr $LRVAL --log $OUT/train.csv $THREADFLAG"
     ASRV=$(cat $OUT/.srvpid)
-    start_server "$OPPCK" "$OPPARCH" $OPORT $OUT/oserver.log
+    start_server "$OPPCK" "$OPPARCH" $OPORT $OUT/oserver.log "$THREADFLAG"
     OSRV=$(cat $OUT/.srvpid)
     rows_before=$(wc -l < $OUT/train.csv 2>/dev/null || echo 0)
-    mvn -q -pl Mage.Tests surefire:test -Dtest='RLEpisodeDriver' \
-        -DargLine="-Dfile.encoding=UTF-8 -Xmx4500m" \
-        -DfailIfNoTests=false -Drl.episodes=64 \
+    RL_PERSIST=${P7_PERSIST:-0} RL_AUTOSTART=1 \
+    RL_CONC=$([ "$CONCN" -gt 1 ] && echo $CONCN || echo "") \
+    bash /home/user/CardGuru/rl/run_driver.sh \
+        -Drl.episodes=64 \
         -Drl.agent=rl -Drl.policy=socket -Drl.port=$APORT \
         -Drl.opponent=rl -Drl.oppPort=$OPORT \
         -Drl.cardFeatures=$FEATS \

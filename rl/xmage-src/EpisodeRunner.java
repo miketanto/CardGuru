@@ -57,6 +57,9 @@ public class EpisodeRunner {
     /** C5 league: rl.opponent=rl - a second policy seat, served by its
      *  own (frozen, eval-mode) server on rl.oppPort */
     private PolicyClient oppPolicy;
+    /** concurrent rl-vs-rl: each worker gets its own opponent
+     *  connection (the opponent server must run --threads >= N) */
+    private final ThreadLocal<PolicyClient> oppPolicyLocal = new ThreadLocal<>();
 
     private final boolean deckCacheOn = Boolean.getBoolean("rl.deckCache");
 
@@ -171,7 +174,8 @@ public class EpisodeRunner {
         Player opp;
         if ("rl".equals(opponentKind)) {
             RLPlayer r = new RLPlayer("Opponent");
-            r.policy = oppPolicy;
+            r.policy = oppPolicyLocal.get() != null
+                    ? oppPolicyLocal.get() : oppPolicy;
             r.resetPerEpisode();
             r.benchSeed = seed;
             r.setTestMode(true);
@@ -334,7 +338,9 @@ public class EpisodeRunner {
             imitateOut = new java.io.PrintWriter(new java.io.BufferedWriter(
                     new java.io.FileWriter(imitatePath, true)));
         }
-        if ("rl".equals(opponent)) {
+        if ("rl".equals(opponent) && concurrency == 1) {
+            // concurrent mode opens one opponent connection per worker
+            // inside runConcurrent instead of sharing this one
             oppPolicy = new SocketPolicyClient(
                     Integer.getInteger("rl.oppPort", port + 1), "eval", episodes);
         }
@@ -456,11 +462,10 @@ public class EpisodeRunner {
                             + "(a shared RandomUtil stream is not reproducible "
                             + "across interleaved games)");
         }
-        if ("rl".equals(opponent)) {
-            throw new IllegalStateException(
-                    "rl.concurrency>1 with rl.opponent=rl is not supported: "
-                            + "the opponent seat shares one policy connection");
-        }
+        // rl-vs-rl concurrency: supported since Phase 7b - each worker
+        // opens its own opponent connection below; the opponent server
+        // must be started with --threads >= concurrency
+        final int oppPort = Integer.getInteger("rl.oppPort", port + 1);
         AtomicInteger next = new AtomicInteger(0);
         java.util.List<Throwable> errors =
                 java.util.Collections.synchronizedList(new java.util.ArrayList<>());
@@ -470,10 +475,15 @@ public class EpisodeRunner {
             final int[] lastEpisode = {-1};
             workers[w] = new Thread(() -> {
                 PolicyClient policy = null;
+                PolicyClient oppClient = null;
                 try {
                     policy = "socket".equals(policyKind)
                             ? new SocketPolicyClient(port, mode, episodes)
                             : new RandomPolicyClient(seed + worker);
+                    if ("rl".equals(opponent)) {
+                        oppClient = new SocketPolicyClient(oppPort, "eval", episodes);
+                        oppPolicyLocal.set(oppClient);
+                    }
                     int i;
                     while ((i = next.getAndIncrement()) < episodes) {
                         lastEpisode[0] = i;
@@ -510,6 +520,10 @@ public class EpisodeRunner {
                     if (policy != null) {
                         policy.close();
                     }
+                    if (oppClient != null) {
+                        oppClient.close();
+                    }
+                    oppPolicyLocal.remove();
                 }
             // the GAME prefix is load-bearing: ThreadUtils.isRunGameThread
             // gates engine code (checkConcede, state checks) by thread name
