@@ -24,6 +24,10 @@ FEATS=/home/user/CardGuru/rl/e2_features.tsv
 CDIM=91; FEATARG="-Drl.cardFeatures=$FEATS"
 [ "$ARCH" = "e0" ] && { CDIM=38; FEATARG=""; }
 DECKS=$(cat /home/user/CardGuru/rl/p8b_pool/pool_list.txt)
+# P8B_META_LIST (optional): comma list of meta decks. When set, odd
+# chunks train vs D0 (heuristic pilots the opposing mirror seat) on
+# these decks; even chunks stay self-play on the variant pool.
+META=${P8B_META_LIST:-}
 mkdir -p $OUT/pool
 [ -f $OUT/net.pt ] || cp "$INIT" $OUT/net.pt
 
@@ -92,24 +96,35 @@ while true; do
     mapfile -t POOLCKS < <(ls $OUT/pool/*.pt 2>/dev/null | sort -V)
     OPPCK=${POOLCKS[$((CHUNK % ${#POOLCKS[@]}))]}
 
+    CHUNKDECKS=$DECKS
+    OPPARGS="-Drl.opponent=rl -Drl.oppPort=$OPORT"
+    OSRV=""
+    if [ -n "$META" ] && [ $((CHUNK % 2)) -eq 1 ]; then
+        CHUNKDECKS=$META
+        OPPARGS="-Drl.opponent=heuristic"
+        OPPCK="D0-meta"
+    fi
+
     start_server $OUT/net.pt $APORT $OUT/aserver.log \
         "--lr $LRVAL --log $OUT/train.csv"
     ASRV=$(cat $OUT/.srvpid)
-    start_server "$OPPCK" $OPORT $OUT/oserver.log
-    OSRV=$(cat $OUT/.srvpid)
+    if [ "$OPPCK" != "D0-meta" ]; then
+        start_server "$OPPCK" $OPORT $OUT/oserver.log
+        OSRV=$(cat $OUT/.srvpid)
+    fi
     rows_before=$(wc -l < $OUT/train.csv 2>/dev/null || echo 0)
     mvn -q -pl Mage.Tests surefire:test -Dtest='RLEpisodeDriver' \
         -DargLine="-Dfile.encoding=UTF-8 -Xmx4500m" \
         -DfailIfNoTests=false -Drl.episodes=64 \
         -Drl.agent=rl -Drl.policy=socket -Drl.port=$APORT $FEATARG \
-        -Drl.opponent=rl -Drl.oppPort=$OPORT \
+        $OPPARGS \
         -Drl.noYields=true -Drl.consultBudget=4000 \
-        -Drl.deck=$DECKS -Drl.stopTurn=80 \
+        -Drl.deck=$CHUNKDECKS -Drl.stopTurn=80 \
         -Drl.mode=train -Drl.seed=$((90000000 + SEED*1000000 + trained)) \
         -Drl.report=0 > /dev/null 2>&1
     rows_after=$(wc -l < $OUT/train.csv 2>/dev/null || echo 0)
     stop_server $ASRV
-    stop_server $OSRV
+    [ -n "$OSRV" ] && stop_server $OSRV
     if [ "$rows_after" -le "$rows_before" ]; then
         echo "P8B_FAILED|$ARCH|no_training_rows (trained stays $trained)"
         exit 1
