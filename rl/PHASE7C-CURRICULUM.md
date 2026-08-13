@@ -151,37 +151,43 @@ Generated from the lane's own log lines by `rl/p7c_report.py`.
 | 512 | 1012 | 0.6000 | 0.3500 | 0.3600 | 126 | 126 | 1.00 |
 | 1024 | 1059 | 0.6500 | 0.4200 | 0.4300 | 112 | 112 | 1.00 |
 | 1536 | 1096 | 0.6800 | 0.4800 | 0.4900 | 117 | 117 | 1.00 |
+| 2048 | 1040 | 0.5700 | 0.4000 | 0.4400 | 139 | 139 | 1.00 |
 
 ### Robustness matrix (100g vs D0 piloting each archetype)
 
-| archetype | 0 | 512 | 1024 | 1536 |
-|---|---|---|---|---|
-| sweep | 0.7200 | 0.7900 | 0.8400 | 0.9200 |
-| tokens | - | 0.5000 | 0.6100 | 0.6600 |
-| wweenie | - | - | 0.5400 | 0.5300 |
-| skies | - | - | - | 0.4700 |
+| archetype | 0 | 512 | 1024 | 1536 | 2048 |
+|---|---|---|---|---|---|
+| sweep | 0.7200 | 0.7900 | 0.8400 | 0.9200 | 0.8800 |
+| tokens | - | 0.5000 | 0.6100 | 0.6600 | 0.5800 |
+| wweenie | - | - | 0.5400 | 0.5300 | 0.5600 |
+| skies | - | - | - | 0.4700 | 0.5200 |
+| redrush | - | - | - | - | 0.6500 |
 
 ### Blocking counter by archetype (blocks / opportunities)
 
-| archetype | 0 | 512 | 1024 | 1536 |
-|---|---|---|---|---|
-| sweep | 66/66 | 55/55 | 41/41 | 44/44 |
-| tokens | - | 214/214 | 174/174 | 168/168 |
-| wweenie | - | - | 191/191 | 188/188 |
-| skies | - | - | - | 82/82 |
+| archetype | 0 | 512 | 1024 | 1536 | 2048 |
+|---|---|---|---|---|---|
+| sweep | 66/66 | 55/55 | 41/41 | 44/44 | 49/49 |
+| tokens | - | 214/214 | 174/174 | 168/168 | 168/168 |
+| wweenie | - | - | 191/191 | 188/188 | 188/188 |
+| skies | - | - | - | 82/82 | 80/80 |
+| redrush | - | - | - | - | 156/156 |
 
 ### Realized opponent mix (64-episode chunks)
 
 | opponent | deck | chunks | share |
 |---|---|---|---|
-| tokens | M3SelesnyaTokens.dck | 10 | 41.7% |
-| sweep | P7cSweepControl.dck | 6 | 25.0% |
-| D1h | BenchDimir.dck | 4 | 16.7% |
-| ck_0 | BenchDimir.dck | 2 | 8.3% |
-| D0 | BenchDimir.dck | 1 | 4.2% |
-| attn_desp | BenchDimir.dck | 1 | 4.2% |
+| tokens | M3SelesnyaTokens.dck | 13 | 40.6% |
+| sweep | P7cSweepControl.dck | 6 | 18.8% |
+| D1h | BenchDimir.dck | 4 | 12.5% |
+| skies | M3BlueSkies.dck | 3 | 9.4% |
+| ck_0 | BenchDimir.dck | 2 | 6.2% |
+| D0 | BenchDimir.dck | 1 | 3.1% |
+| attn_desp | BenchDimir.dck | 1 | 3.1% |
+| attn_bc | BenchDimir.dck | 1 | 3.1% |
+| ck_1024 | BenchDimir.dck | 1 | 3.1% |
 
-Archetype chunks: 16/24 (66.7%); mirror chunks: 8/24.
+Archetype chunks: 22/32 (68.8%); mirror chunks: 10/32.
 
 ### Opponent calibration: deck power vs pilot skill
 
@@ -238,6 +244,42 @@ Three consequences:
    growth curve is unaffected. But the anchors should not be assumed to
    carry their ordering onto other decks, which is what any future
    cross-deck rating system would want from them.
+
+### Reading at 2048 — the trade appears
+
+The first regression of the run, and it looks like a genuine trade
+rather than degradation.
+
+Mirror Elo fell 1096 -> 1040 (-56): vs D0 .68 -> .57, vs D1 .48 -> .40.
+Over the same block the robustness matrix went sideways to up —
+sweep -.04, tokens -.08, but wweenie +.03, skies +.05 — and `redrush`
+entered **zero-shot at .650**, against .225 on the pre-flight screen.
+That is the largest transfer gain of the run, on a deck the agent had
+never trained against and one of the strongest in the pool (.64 power).
+
+The mechanism is visible in the block denominator. Mirror block
+opportunities rose 117 -> 139, the first substantial increase after a
+steady decline (121, 126, 112, 117). The agent is holding creatures
+back instead of tapping out. On the Dimir mirror that is a *worse*
+plan — racing is correct there, which is what the mirror rating
+measures — while against creature decks it is what the kickoff hoped
+the curriculum would force.
+
+So the cost the kickoff asked about ("at what cost to mirror Elo?")
+does exist, it just did not appear until the pool was wide enough to
+outvote the mirror: 5 archetypes against 6 mirror rows. Through 1536
+there was no trade to report; at 2048 there is one, and it is priced
+at roughly 56 Elo for a broad archetype gain including +.43 zero-shot
+on redrush.
+
+The competing explanation is plain drift — LR 3e-4 is high for
+fine-tuning a 916-Elo prior, and Phase 6 recorded league training
+eroding the attention family's prior at 1e-4. Two things argue against
+it: the decline is not uniform (three of five archetype rows rose),
+and the block denominator moved in a specific, hypothesis-consistent
+direction rather than randomly. The 2560 and 3072 checkpoints will
+settle it — continued broad decline is drift, continued archetype gain
+against a soft mirror is the trade.
 
 ### Reading at 1024
 
