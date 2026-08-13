@@ -152,42 +152,47 @@ Generated from the lane's own log lines by `rl/p7c_report.py`.
 | 1024 | 1059 | 0.6500 | 0.4200 | 0.4300 | 112 | 112 | 1.00 |
 | 1536 | 1096 | 0.6800 | 0.4800 | 0.4900 | 117 | 117 | 1.00 |
 | 2048 | 1040 | 0.5700 | 0.4000 | 0.4400 | 139 | 139 | 1.00 |
+| 2560 | 1020 | 0.5500 | 0.3800 | 0.3900 | 136 | 136 | 1.00 |
 
 ### Robustness matrix (100g vs D0 piloting each archetype)
 
-| archetype | 0 | 512 | 1024 | 1536 | 2048 |
-|---|---|---|---|---|---|
-| sweep | 0.7200 | 0.7900 | 0.8400 | 0.9200 | 0.8800 |
-| tokens | - | 0.5000 | 0.6100 | 0.6600 | 0.5800 |
-| wweenie | - | - | 0.5400 | 0.5300 | 0.5600 |
-| skies | - | - | - | 0.4700 | 0.5200 |
-| redrush | - | - | - | - | 0.6500 |
+| archetype | 0 | 512 | 1024 | 1536 | 2048 | 2560 |
+|---|---|---|---|---|---|---|
+| sweep | 0.7200 | 0.7900 | 0.8400 | 0.9200 | 0.8800 | 0.7700 |
+| tokens | - | 0.5000 | 0.6100 | 0.6600 | 0.5800 | 0.6400 |
+| wweenie | - | - | 0.5400 | 0.5300 | 0.5600 | 0.6100 |
+| skies | - | - | - | 0.4700 | 0.5200 | 0.4700 |
+| redrush | - | - | - | - | 0.6500 | 0.6600 |
+| ramp | - | - | - | - | - | 0.5500 |
 
 ### Blocking counter by archetype (blocks / opportunities)
 
-| archetype | 0 | 512 | 1024 | 1536 | 2048 |
-|---|---|---|---|---|---|
-| sweep | 66/66 | 55/55 | 41/41 | 44/44 | 49/49 |
-| tokens | - | 214/214 | 174/174 | 168/168 | 168/168 |
-| wweenie | - | - | 191/191 | 188/188 | 188/188 |
-| skies | - | - | - | 82/82 | 80/80 |
-| redrush | - | - | - | - | 156/156 |
+| archetype | 0 | 512 | 1024 | 1536 | 2048 | 2560 |
+|---|---|---|---|---|---|---|
+| sweep | 66/66 | 55/55 | 41/41 | 44/44 | 49/49 | 51/51 |
+| tokens | - | 214/214 | 174/174 | 168/168 | 168/168 | 167/167 |
+| wweenie | - | - | 191/191 | 188/188 | 188/188 | 193/193 |
+| skies | - | - | - | 82/82 | 80/80 | 86/86 |
+| redrush | - | - | - | - | 156/156 | 163/163 |
+| ramp | - | - | - | - | - | 148/148 |
 
 ### Realized opponent mix (64-episode chunks)
 
 | opponent | deck | chunks | share |
 |---|---|---|---|
-| tokens | M3SelesnyaTokens.dck | 13 | 40.6% |
-| sweep | P7cSweepControl.dck | 6 | 18.8% |
-| D1h | BenchDimir.dck | 4 | 12.5% |
-| skies | M3BlueSkies.dck | 3 | 9.4% |
-| ck_0 | BenchDimir.dck | 2 | 6.2% |
-| D0 | BenchDimir.dck | 1 | 3.1% |
-| attn_desp | BenchDimir.dck | 1 | 3.1% |
-| attn_bc | BenchDimir.dck | 1 | 3.1% |
-| ck_1024 | BenchDimir.dck | 1 | 3.1% |
+| tokens | M3SelesnyaTokens.dck | 13 | 32.5% |
+| sweep | P7cSweepControl.dck | 6 | 15.0% |
+| D1h | BenchDimir.dck | 4 | 10.0% |
+| skies | M3BlueSkies.dck | 4 | 10.0% |
+| ck_0 | BenchDimir.dck | 3 | 7.5% |
+| redrush | M3RedRush.dck | 3 | 7.5% |
+| attn_bc | BenchDimir.dck | 2 | 5.0% |
+| ck_1024 | BenchDimir.dck | 2 | 5.0% |
+| D0 | BenchDimir.dck | 1 | 2.5% |
+| attn_desp | BenchDimir.dck | 1 | 2.5% |
+| wweenie | M3WhiteWeenie.dck | 1 | 2.5% |
 
-Archetype chunks: 22/32 (68.8%); mirror chunks: 10/32.
+Archetype chunks: 27/40 (67.5%); mirror chunks: 13/40.
 
 ### Opponent calibration: deck power vs pilot skill
 
@@ -244,6 +249,48 @@ Three consequences:
    growth curve is unaffected. But the anchors should not be assumed to
    carry their ordering onto other decks, which is what any future
    cross-deck rating system would want from them.
+
+### Reading at 2560 — what the curriculum actually bought
+
+Normalising each archetype for deck power makes the result legible.
+Expected win rate = the agent's own mirror rate against D0, shifted by
+that deck's power gap against BenchDimir (even point .58). The
+*residual* is what the agent does beyond what deck strength explains.
+
+| deck | power | base WR | resid | 2560 WR | resid | change |
+|---|---|---|---|---|---|---|
+| redrush | .64 | .225 | −.17 | .660 | +.17 | **+.34** |
+| ramp | .60 | .175 | −.27 | .550 | +.02 | **+.29** |
+| tokens | .55 | .400 | −.09 | .640 | +.06 | +.15 |
+| wweenie | .48 | .375 | −.19 | .610 | −.04 | +.15 |
+| skies | .71 | .275 | −.05 | .470 | +.05 | +.10 |
+| sweep | .49 | .625 | +.07 | .770 | +.13 | +.06 |
+
+**Every residual improved, and they improved in rank order of how much
+creature combat the deck demands.** At baseline the agent was in
+deficit against five of six decks, worst against `ramp` (−.27) and
+`redrush` (−.17) — the two decks that punish a tapped-out board hardest.
+Those two gained the most (+.34, +.29). `sweep`, the deck with almost
+no creature combat and the only one the agent already beat above
+expectation, gained the least (+.06).
+
+That is the kickoff's hypothesis confirmed, in the form the evidence
+actually supports. Deck diversity did force the skills the mirror never
+demanded. It did *not* show up as the block rate moving off 1.00 —
+that stayed saturated all run. It showed up as the agent learning to
+have creatures available at all: mirror block opportunities rose
+117 → 139 → 136 after declining for three checkpoints, and the decks
+that reward holding a board are exactly the ones whose residuals moved.
+
+**The trade, stated precisely.** Mirror Elo peaked at 1536 (1096) and
+settled to 1020 — still +92 over the 928 baseline, so nothing regressed
+below the starting point. What was given up was the *last 76 points* of
+mirror-specific rating, earned by racing, which is the correct plan on
+the mirror and the wrong one against creature decks. The `sweep` row
+tracks the same trade from the other side: it peaked at .92 when the
+agent was maximally aggressive and fell to .77 as it learned restraint,
+because racing past a control deck before its wraths matter is precisely
+the plan being unlearned.
 
 ### Reading at 2048 — the trade appears
 
