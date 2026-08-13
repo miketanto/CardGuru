@@ -10,3 +10,9 @@ P10MATRIX|trained=2048|deck=M3WhiteWeenie|win_rate=0.3200|blocks=193|blockOpps=1
 P10MATRIX|trained=2048|deck=M3BlueSkies|win_rate=0.2600|blocks=90|blockOpps=90|stalls=0
 P10MATRIX|trained=2048|deck=M3RedRush|win_rate=0.3800|blocks=159|blockOpps=159|stalls=0
 P10MATRIX|trained=2048|deck=M3GreenRamp|win_rate=0.2700|blocks=173|blockOpps=178|stalls=0
+P10MATRIX|trained=4096|deck=P7cSweepControl|win_rate=0.7300|blocks=57|blockOpps=57|stalls=0
+P10MATRIX|trained=4096|deck=M3SelesnyaTokens|win_rate=0.4600|blocks=172|blockOpps=203|stalls=0
+P10MATRIX|trained=4096|deck=M3WhiteWeenie|win_rate=0.5000|blocks=182|blockOpps=202|stalls=0
+P10MATRIX|trained=4096|deck=M3BlueSkies|win_rate=0.4100|blocks=59|blockOpps=61|stalls=0
+P10MATRIX|trained=4096|deck=M3RedRush|win_rate=0.5700|blocks=149|blockOpps=173|stalls=0
+P10MATRIX|trained=4096|deck=M3GreenRamp|win_rate=0.4400|blocks=153|blockOpps=159|stalls=0
