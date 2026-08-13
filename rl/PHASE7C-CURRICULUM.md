@@ -146,7 +146,13 @@ choosing to hold creatures back. Both are tracked at every checkpoint.
 | trained | Elo | vs D0 | vs D1 | vs D1h | block rate | opp-turn casts |
 |---|---|---|---|---|---|---|
 | 0 | 928 | .46 | .30 | .23 | 121/121 = 1.00 | 0 |
-| 512 | **1012** | .60 | .35 | .36 | 126/126 = 1.00 | 3 |
+| 512 | 1012 | .60 | .35 | .36 | 126/126 = 1.00 | 3 |
+| 1024 | **1059** | .65 | .42 | .43 | 112/112 = 1.00 | 1 |
+
+For scale, the Phase 6 leaderboard: D1h 1088, D1 1085, e0_champ 1083,
+attn_desp 1053, attn_bc 1044, attn_v2 1039, D0 1000, e0_bc 995. At 1024
+the agent has passed every learned agent in the project and sits ~25
+points under the scripted instruments.
 
 ### Robustness matrix (100g vs D0 piloting each archetype, seed 951000)
 
@@ -154,30 +160,60 @@ The `0` column is the 40-game pre-flight screen (seed 952000); an
 archetype only enters the 100g matrix once it has been introduced, so
 the screen is its pre-training reference.
 
-| archetype | 0 (40g screen) | 512 |
-|---|---|---|
-| sweep | .625 | **.790** |
-| tokens | .400 | **.500** |
+Bold = the archetype was in the training pool for that block. Plain =
+zero-shot (introduced at that checkpoint, not yet trained against).
+
+| archetype | 0 (40g screen) | 512 | 1024 |
+|---|---|---|---|
+| sweep | .625 | **.790** | **.840** |
+| tokens | .400 | .500 | **.610** |
+| wweenie | .375 | — | .540 |
 
 ### Blocking counter (blocks / opportunities)
 
-| archetype | 0 | 512 |
-|---|---|---|
-| mirror | 121/121 | 126/126 |
-| sweep | 66/66 | 55/55 |
-| tokens | (86/86 at 40g) | 214/214 |
+| archetype | 0 | 512 | 1024 |
+|---|---|---|---|
+| mirror | 121/121 | 126/126 | 112/112 |
+| sweep | 66/66 | 55/55 | 41/41 |
+| tokens | (86/86 at 40g) | 214/214 | 174/174 |
+| wweenie | (77/77 at 40g) | — | 191/191 |
 
 ### Realized opponent mix
 
 | opponent | deck | chunks | share |
 |---|---|---|---|
-| sweep | P7cSweepControl.dck | 6 | 75.0% |
-| D1h | BenchDimir.dck | 1 | 12.5% |
-| ck_0 | BenchDimir.dck | 1 | 12.5% |
+| sweep | P7cSweepControl.dck | 6 | 37.5% |
+| tokens | M3SelesnyaTokens.dck | 4 | 25.0% |
+| D1h | BenchDimir.dck | 3 | 18.8% |
+| ck_0 | BenchDimir.dck | 2 | 12.5% |
+| D0 | BenchDimir.dck | 1 | 6.2% |
 
-75% of chunks went to the archetype, 25% to mirror rows — the intended
-curriculum weighting, and higher than the 50% floor because PFSP also
-prefers `sweep` on rating grounds (827 seeded, nearest the agent).
+Archetype chunks 10/16 (62.5%), mirror 6/16. The share drifts toward
+the mirror as the agent's rating rises into the band where the mirror
+ladder sits — PFSP is doing its job, and the 50% archetype floor keeps
+the curriculum from being abandoned entirely.
+
+### Reading at 1024
+
+1. **The curriculum closed most of the gap Phase 7 could not.** Phase 7
+   ended at 916 and concluded that its remaining ~130 points to the
+   teacher-seeded agents needed "a much larger budget, stronger mid-tier
+   opponents, or a BC init". Changing only the opponent *decks* bought
+   +131 Elo in 1024 episodes, past every learned agent in the project.
+   Read against Phase 7's own slope over the same span — 889 → 916,
+   +27 — the curriculum is roughly five times more productive per
+   episode than more mirror self-play was.
+2. **Robustness rises on every archetype, trained or not.** `wweenie`
+   went .375 → .540 having never been a training opponent, and `tokens`
+   gained .100 in the block where it *was* trained plus .100 in the
+   block before it. Diversity is transferring, not just fitting the
+   deck in front of it.
+3. **Still no selective blocking.** 1.00 at every checkpoint on every
+   deck. The block *denominator* keeps falling (sweep 66 → 55 → 41,
+   tokens 214 → 174) while win rates rise, which says the agent is
+   winning by racing harder and tapping out more, not by learning
+   combat. The curriculum is buying general strength through a channel
+   other than the one the kickoff hypothesised.
 
 ### Reading at 512
 

@@ -8,3 +8,5 @@ sweep|heuristic|P7cSweepControl.dck|827
 ck_0|rl:lstmattn:/tmp/rl_p7c_lstmattn_s0/pool/ck_0.pt|BenchDimir.dck|928
 tokens|heuristic|M3SelesnyaTokens.dck|986
 ck_512|rl:lstmattn:/tmp/rl_p7c_lstmattn_s0/pool/ck_512.pt|BenchDimir.dck|1012
+wweenie|heuristic|M3WhiteWeenie.dck|1004
+ck_1024|rl:lstmattn:/tmp/rl_p7c_lstmattn_s0/pool/ck_1024.pt|BenchDimir.dck|1059
