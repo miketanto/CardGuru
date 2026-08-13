@@ -1,0 +1,6 @@
+EXPL_RESULT|deck=sweep|exploiter_wr_vs_agent=0.2700|stalls=0|turns=23.1
+EXPL_RESULT|deck=tokens|exploiter_wr_vs_agent=0.4000|stalls=0|turns=18.3
+EXPL_RESULT|deck=wweenie|exploiter_wr_vs_agent=0.2700|stalls=0|turns=21.2
+EXPL_RESULT|deck=skies|exploiter_wr_vs_agent=0.2900|stalls=0|turns=18.3
+EXPL_RESULT|deck=redrush|exploiter_wr_vs_agent=0.3600|stalls=0|turns=19.0
+EXPL_RESULT|deck=ramp|exploiter_wr_vs_agent=0.2000|stalls=0|turns=15.6

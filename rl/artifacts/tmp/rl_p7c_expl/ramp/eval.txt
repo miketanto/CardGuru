@@ -1,0 +1,1 @@
+RL|summary|episodes=100|wins=20|losses=80|draws=0|stalls=0|win_rate=0.2000|games_per_sec=0.411|agent_consults_per_ep=125.7|agent_windows_per_ep=170.7|agent_actions_per_ep=16.6|turns_per_ep=15.6|opponent=rl|policy=socket|deck=M3GreenRamp.dck|oppDeck=BenchDimir.dck|seed=953000|fallbacks=blockOpportunities=84 blocksDeclared=84 chooseUse=47 flashThreats=0 flashThreatsOppTurn=0 

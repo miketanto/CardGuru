@@ -370,6 +370,54 @@ against a soft mirror is the trade.
 4. **Opponent-turn casts went 0 → 3**, the first movement on another
    Phase 7 hole, though 3 in 300 rating games is barely off zero.
 
+
+## Follow-up B: per-deck exploiters (complete)
+
+Nets trained to *pilot* each archetype against the frozen curriculum
+agent, 512 episodes each, initialised from `p7_final.pt`
+(`rl/p7c_exploiter.sh`). Only expressible because of this phase's
+`-Drl.oppDeck` change. The D0 column is the same opponent's result
+inverted from the 3072 matrix, so the two are directly comparable.
+
+| deck | D0 vs agent | exploiter vs agent | gain |
+|---|---|---|---|
+| tokens | .35 | .40 | +.05 |
+| sweep | .24 | .27 | +.03 |
+| redrush | .35 | .36 | +.01 |
+| wweenie | .46 | .27 | −.19 |
+| skies | .51 | .29 | −.22 |
+| ramp | .48 | .20 | −.28 |
+
+**The arm does not do what it was built to do, and the reason is
+informative.** Every exploiter lands between .20 and .40 regardless of
+which deck it pilots, while D0 spans .24 to .51. Exploiter performance
+is essentially independent of the deck — the signature of a pilot whose
+level is set by its own adaptation budget rather than by the tool it
+was handed. It beats D0 only on the two decks where D0 is itself
+weakest, and loses badly wherever D0 is competent.
+
+The mechanism is domain shift. Each exploiter starts from a net trained
+exclusively to pilot BenchDimir — aggressive, evasive, ninjutsu-based —
+and most of 512 episodes goes on unlearning that before any new-deck
+skill accumulates. `ramp` is the extreme case (−.28): piloting a ramp
+deck means holding lands, casting big creatures on curve and blocking,
+which is close to the opposite of the prior.
+
+**Consequence for the robustness matrix: the caveat stands, unlifted.**
+The honest bound on opponent quality is max(D0, exploiter), which for
+four of six decks is just D0. So `sweep .76` still means "the agent
+beats D0 piloting a control deck", not "the agent handles control".
+Settling that needs random-init pilots trained to convergence per deck
+— Phase-7-scale work per deck (1024+ episodes), not a 512-episode
+fine-tune from a mismatched prior.
+
+**What it does establish**, weakly: nothing cheaply exploits this
+agent. A dedicated adversary with 512 episodes and a deck chosen to
+attack it never exceeded .40. That is the same shape of claim Phase 6
+made for e0_champ (exploiter plateaued at .42, "not cheaply
+exploitable"), and it comes with the same limit — a stronger adversary
+was not tried.
+
 ## Verdict
 
 **Does deck diversity buy robustness the mirror can't, and at what cost

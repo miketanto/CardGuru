@@ -1,0 +1,1 @@
+RL|summary|episodes=100|wins=27|losses=73|draws=0|stalls=0|win_rate=0.2700|games_per_sec=0.357|agent_consults_per_ep=72.3|agent_windows_per_ep=260.9|agent_actions_per_ep=53.1|turns_per_ep=21.2|opponent=rl|policy=socket|deck=M3WhiteWeenie.dck|oppDeck=BenchDimir.dck|seed=953000|fallbacks=blockOpportunities=398 blocksDeclared=396 flashThreats=0 flashThreatsOppTurn=0 
