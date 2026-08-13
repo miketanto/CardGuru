@@ -54,6 +54,10 @@ start_server() {  # $1 ckpt $2 arch $3 port $4 log [$5 extra flags]
     local try
     for try in 1 2 3; do
         rm -f $4
+        # one intra-op thread per server: two policy servers x --threads N
+        # connection threads on 4 cores oversubscribe torch badly, and
+        # these are batch-1 matmuls that gain nothing from it anyway
+        OMP_NUM_THREADS=1 MKL_NUM_THREADS=1 \
         python3 $RL/policy_server.py --port $3 \
             --ckpt "$1" --seed $SEED --cdim $CDIM --arch $2 \
             ${5:-} > $4 2>&1 &
