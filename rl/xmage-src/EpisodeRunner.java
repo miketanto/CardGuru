@@ -254,6 +254,9 @@ public class EpisodeRunner {
             fallbacks.merge("flashThreatsOppTurn", (int) rlAgent.flashThreatCastsOppTurn, Integer::sum);
             fallbacks.merge("blocksDeclared", (int) rlAgent.blocksDeclared, Integer::sum);
             fallbacks.merge("blockOpportunities", (int) rlAgent.blockOpportunities, Integer::sum);
+            fallbacks.merge("knownTopWindows", (int) rlAgent.knownTopWindows, Integer::sum);
+            fallbacks.merge("encodeWindows", (int) rlAgent.encodeWindows, Integer::sum);
+            fallbacks.merge("seenRecorded", (int) rlAgent.seenRecorded, Integer::sum);
         }
         if (agent instanceof org.mage.test.benchmark.SearchPlayer) {
             org.mage.test.benchmark.SearchPlayer sp = (org.mage.test.benchmark.SearchPlayer) agent;

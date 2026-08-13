@@ -46,7 +46,11 @@ public class RLDriverServer {
 
     /** properties frozen into static finals downstream: pin and enforce */
     private static final String[] PINNED = {
-            "rl.cardFeatures", "rl.phi", "rl.noYields", "rl.debug"};
+            "rl.cardFeatures", "rl.phi", "rl.noYields", "rl.debug",
+            // E3 ablations are read in StateEncoder's static initializer,
+            // so a job that changes them in a warm JVM would be silently
+            // ignored - fail loudly instead
+            "rl.ablateState", "rl.ablateCand"};
 
     private static String[] pinnedValues;
     private static long jobs = 0;
