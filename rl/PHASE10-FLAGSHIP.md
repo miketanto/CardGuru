@@ -125,7 +125,7 @@ supplies the low rungs the gate cannot.
 
 ## 5. Results
 
-### Checkpoints 0, 2048, 4096
+### Checkpoints 0, 2048, 4096, 6144
 
 ## Mirror growth curve (agent on BenchDimir, 100g vs each anchor,
 ## sequential, seed 950000)
@@ -135,32 +135,33 @@ supplies the low rungs the gate cannot.
 | 0 | 199 | 0.0100 | 0.0100 | 0.0000 | 23 | 38 | 0.61 | 165 | 0 |
 | 2048 | 861 | 0.4000 | 0.1800 | 0.1700 | 133 | 133 | 1.00 | 292 | 0 |
 | 4096 | 1019 | 0.5800 | 0.3900 | 0.3700 | 128 | 132 | 0.97 | 316 | 2 |
+| 6144 | 1050 | 0.5800 | 0.4400 | 0.4500 | 121 | 122 | 0.99 | 321 | 0 |
 
 ## Robustness matrix (100g vs D0 piloting each deck, agent on
 ## BenchDimir, sequential, seed 951000)
 
-| deck | power | 0 | 2048 | 4096 | final residual |
-|---|---|---|---|---|---|
-| P7cSweepControl | 0.53 | 0.0300 | 0.6200 | 0.7300 | +0.26 |
-| M3SelesnyaTokens | 0.57 | 0.0500 | 0.3700 | 0.4600 | +0.03 |
-| M3WhiteWeenie | 0.49 | 0.0100 | 0.3200 | 0.5000 | -0.01 |
-| M3BlueSkies | 0.74 | 0.0000 | 0.2600 | 0.4100 | +0.15 |
-| M3RedRush | 0.63 | 0.0100 | 0.3800 | 0.5700 | +0.20 |
-| M3GreenRamp | 0.61 | 0.0200 | 0.2700 | 0.4400 | +0.05 |
+| deck | power | 0 | 2048 | 4096 | 6144 | final residual |
+|---|---|---|---|---|---|---|
+| P7cSweepControl | 0.53 | 0.0300 | 0.6200 | 0.7300 | 0.8200 | +0.35 |
+| M3SelesnyaTokens | 0.57 | 0.0500 | 0.3700 | 0.4600 | 0.5800 | +0.15 |
+| M3WhiteWeenie | 0.49 | 0.0100 | 0.3200 | 0.5000 | 0.5400 | +0.03 |
+| M3BlueSkies | 0.74 | 0.0000 | 0.2600 | 0.4100 | 0.4800 | +0.22 |
+| M3RedRush | 0.63 | 0.0100 | 0.3800 | 0.5700 | 0.6400 | +0.27 |
+| M3GreenRamp | 0.61 | 0.0200 | 0.2700 | 0.4400 | 0.5000 | +0.11 |
 
 Residual = win_rate - (1 - power): performance beyond what
 deck power alone predicts for the agent's seat (7c protocol).
 
 ## Blocking by deck (blocks declared / opportunities)
 
-| deck | 0 | 2048 | 4096 |
-|---|---|---|---|
-| P7cSweepControl | 0/35 | 67/67 | 57/57 |
-| M3SelesnyaTokens | 1/134 | 214/215 | 172/203 |
-| M3WhiteWeenie | 0/142 | 193/195 | 182/202 |
-| M3BlueSkies | 26/38 | 90/90 | 59/61 |
-| M3RedRush | 1/130 | 159/159 | 149/173 |
-| M3GreenRamp | 45/78 | 173/178 | 153/159 |
+| deck | 0 | 2048 | 4096 | 6144 |
+|---|---|---|---|---|
+| P7cSweepControl | 0/35 | 67/67 | 57/57 | 49/49 |
+| M3SelesnyaTokens | 1/134 | 214/215 | 172/203 | 184/184 |
+| M3WhiteWeenie | 0/142 | 193/195 | 182/202 | 219/219 |
+| M3BlueSkies | 26/38 | 90/90 | 59/61 | 72/72 |
+| M3RedRush | 1/130 | 159/159 | 149/173 | 165/165 |
+| M3GreenRamp | 45/78 | 173/178 | 153/159 | 151/151 |
 
 ## Champion gate (50g h2h vs the reigning champion)
 
@@ -173,51 +174,112 @@ deck power alone predicts for the agent's seat (7c protocol).
 | 2560 | p7b_ck6144 | 0.2800 | 14 | 0 | rejected | - |
 | 3072 | p7b_ck6144 | 0.3600 | 18 | 0 | rejected | - |
 | 3584 | p7b_ck6144 | 0.3800 | 19 | 0 | rejected | - |
+| 4096 | p7b_ck6144 | 0.4200 | 21 | 0 | rejected | - |
+| 4608 | p7b_ck6144 | 0.4000 | 20 | 0 | rejected | - |
+| 5120 | p7b_ck6144 | 0.4200 | 21 | 0 | rejected | - |
+| 5632 | p7b_ck6144 | 0.4000 | 20 | 0 | rejected | - |
 
-0/7 snapshots promoted into the pool.
+0/11 snapshots promoted into the pool.
 
 ## Realized opponent mix (64-episode chunks)
 
 | opponent | deck | chunks | share |
 |---|---|---|---|
-| p7b_ck_0 | BenchDimir.dck | 10 | 15.6% |
-| p7b_ck_256 | BenchDimir.dck | 9 | 14.1% |
-| ramp | M3GreenRamp.dck | 4 | 6.2% |
-| meta_dimirbounce | P8MetaDimirBounce.dck | 3 | 4.7% |
-| skies | M3BlueSkies.dck | 3 | 4.7% |
-| wweenie | M3WhiteWeenie.dck | 3 | 4.7% |
-| p7b_ck_768 | BenchDimir.dck | 2 | 3.1% |
-| meta_golgari | P8MetaGolgari.dck | 2 | 3.1% |
-| meta_monored | P8MetaMonoRed.dck | 2 | 3.1% |
-| sweep | P7cSweepControl.dck | 2 | 3.1% |
-| meta_azorius | P8MetaAzorius.dck | 2 | 3.1% |
-| p7b_ck_3072 | BenchDimir.dck | 2 | 3.1% |
-| meta_domain | P8MetaDomain.dck | 2 | 3.1% |
-| p7b_ck_5632 | BenchDimir.dck | 2 | 3.1% |
-| tokens | M3SelesnyaTokens.dck | 2 | 3.1% |
-| meta_boros | P8MetaBoros.dck | 2 | 3.1% |
-| p7b_ck_2304 | BenchDimir.dck | 1 | 1.6% |
-| redrush | M3RedRush.dck | 1 | 1.6% |
-| p7b_ck_512 | BenchDimir.dck | 1 | 1.6% |
-| attn_desp | BenchDimir.dck | 1 | 1.6% |
-| p7b_ck_2048 | BenchDimir.dck | 1 | 1.6% |
-| p7b_ck_1280 | BenchDimir.dck | 1 | 1.6% |
-| p7b_ck_4608 | BenchDimir.dck | 1 | 1.6% |
-| p7b_ck_2560 | BenchDimir.dck | 1 | 1.6% |
-| p7b_ck_7168 | BenchDimir.dck | 1 | 1.6% |
-| p7b_ck_6144 | BenchDimir.dck | 1 | 1.6% |
-| p7b_ck_8192 | BenchDimir.dck | 1 | 1.6% |
-| p7b_ck_7680 | BenchDimir.dck | 1 | 1.6% |
+| p7b_ck_0 | BenchDimir.dck | 10 | 10.4% |
+| p7b_ck_256 | BenchDimir.dck | 9 | 9.4% |
+| meta_monored | P8MetaMonoRed.dck | 7 | 7.3% |
+| skies | M3BlueSkies.dck | 7 | 7.3% |
+| tokens | M3SelesnyaTokens.dck | 7 | 7.3% |
+| ramp | M3GreenRamp.dck | 5 | 5.2% |
+| meta_golgari | P8MetaGolgari.dck | 4 | 4.2% |
+| redrush | M3RedRush.dck | 4 | 4.2% |
+| wweenie | M3WhiteWeenie.dck | 4 | 4.2% |
+| meta_dimirbounce | P8MetaDimirBounce.dck | 3 | 3.1% |
+| attn_desp | BenchDimir.dck | 3 | 3.1% |
+| meta_domain | P8MetaDomain.dck | 3 | 3.1% |
+| meta_boros | P8MetaBoros.dck | 3 | 3.1% |
+| p7b_ck_768 | BenchDimir.dck | 2 | 2.1% |
+| p7b_ck_2304 | BenchDimir.dck | 2 | 2.1% |
+| sweep | P7cSweepControl.dck | 2 | 2.1% |
+| meta_azorius | P8MetaAzorius.dck | 2 | 2.1% |
+| p7b_ck_3072 | BenchDimir.dck | 2 | 2.1% |
+| p7b_ck_2048 | BenchDimir.dck | 2 | 2.1% |
+| p7b_ck_5632 | BenchDimir.dck | 2 | 2.1% |
+| p7b_ck_6144 | BenchDimir.dck | 2 | 2.1% |
+| p7b_ck_8192 | BenchDimir.dck | 2 | 2.1% |
+| p7b_ck_512 | BenchDimir.dck | 1 | 1.0% |
+| p7b_ck_1280 | BenchDimir.dck | 1 | 1.0% |
+| p7b_ck_4608 | BenchDimir.dck | 1 | 1.0% |
+| p7b_ck_2560 | BenchDimir.dck | 1 | 1.0% |
+| p7b_ck_7168 | BenchDimir.dck | 1 | 1.0% |
+| p7b_ck_7680 | BenchDimir.dck | 1 | 1.0% |
+| D0 | BenchDimir.dck | 1 | 1.0% |
+| D1 | BenchDimir.dck | 1 | 1.0% |
+| p7b_ck_1536 | BenchDimir.dck | 1 | 1.0% |
 
-Non-mirror opponent chunks: 28/64 (43.8%).
+Non-mirror opponent chunks: 51/96 (53.1%).
 
 ## Realized agent-deck rotation (chunks per deck list)
 
 | agent deck list | chunks |
 |---|---|
+| BenchDimir.dck,BenchDimir.dck,BenchDimir.dck,P8MetaDimirBounce.dck | 48 |
 | BenchDimir.dck | 32 |
-| BenchDimir.dck,BenchDimir.dck,BenchDimir.dck,P8MetaDimirBounce.dck | 32 |
+| BenchDimir.dck,BenchDimir.dck,P8MetaDimirBounce.dck,P8MetaAzorius.dck | 16 |
 
+
+### Reading checkpoint 6144 — the falsification, and the real headline
+
+**The selective-blocking candidate is FALSIFIED.** At 4096 the go-wide
+decks dropped to 85-90% blocks while win rates rose, and that was
+logged as a candidate with a named test: reproduce at 6144 or die. It
+died. Every deck is back at exactly 100%, with HIGHER win rates than
+when it dipped:
+
+| deck | 2048 | 4096 | 6144 | win rate 4096 -> 6144 |
+|---|---|---|---|---|
+| tokens | 214/215 | 172/203 (85%) | **184/184** | .46 -> .58 |
+| wweenie | 193/195 | 182/202 (90%) | **219/219** | .50 -> .54 |
+| redrush | 159/159 | 149/173 (86%) | **165/165** | .57 -> .64 |
+
+A learned policy of declining bad blocks should have persisted or
+deepened as play improved. It reversed. The 4096 dip was board-state
+sampling, not behaviour. 7c's finding stands unchallenged: agents block
+~100% of the time they are asked, and the variable is how often.
+
+**Mirror Elo 1050, still converging on 7b but decelerating.**
+
+| trained | P10 | delta | 7b | delta | gap |
+|---|---|---|---|---|---|
+| 2048 | 861 | - | 1022 | - | 161 |
+| 4096 | 1019 | +158 | 1093 | +71 | 74 |
+| 6144 | 1050 | +31 | 1101 | +8 | 51 |
+
+Both lines flatten; this one is still closing (161 -> 74 -> 51) and is
+doing it while half its episodes are on non-mirror decks and gating
+denies it self-play rungs. The gate has plateaued at .38-.42 against
+ck_6144 across five consecutive probes (2048 episodes), so the honest
+statement is that the run reaches the champion's neighbourhood and
+has not passed it.
+
+**The real headline is the matrix.** Five of six residuals now exceed
+7c's FINAL values, and the comparison that matters most is against the
+project champion itself at the SAME episode count:
+
+| deck | P10 @6144 | ck_6144 | 7c final |
+|---|---|---|---|
+| sweep | .82 (+.35) | .87 | +.09 |
+| redrush | **.64 (+.27)** | **.52** | +.13 |
+| ramp | **.50 (+.11)** | **.50** | -.04 |
+| skies | .48 (+.22) | - | +.04 |
+| tokens | .58 (+.15) | - | +.04 |
+| wweenie | .54 (+.03) | - | -.14 |
+
+At 6144 episodes each, this agent BEATS the project champion on
+redrush (.64 vs .52), ties it on ramp (.50), and trails on sweep
+(.82 vs .87) - while being 51 Elo behind it on the mirror. That is the
+trade 7c predicted, now measured from initialization rather than from a
+fine-tune: mirror rating surrendered, cross-deck competence bought.
 
 ### Reading checkpoint 4096 — the first clean window
 
