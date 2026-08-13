@@ -1,0 +1,1 @@
+RL|summary|episodes=100|wins=44|losses=56|draws=0|stalls=0|win_rate=0.4400|games_per_sec=1.194|agent_consults_per_ep=0.0|agent_windows_per_ep=0.0|agent_actions_per_ep=0.0|turns_per_ep=14.0|opponent=heuristic|policy=random|deck=M3RedRush.dck|oppDeck=M3RedRush.dck|seed=954000|fallbacks=agentSearchDecisions=955 agentSearchNodes=2679 

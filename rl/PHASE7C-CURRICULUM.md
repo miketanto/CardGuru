@@ -183,9 +183,15 @@ Generated from the lane's own log lines by `rl/p7c_report.py`.
 
 Archetype chunks: 16/24 (66.7%); mirror chunks: 8/24.
 
-Deck-power context for the matrix (from `rl/p7c_pilot_calib.sh`,
-D0 piloting X vs D0 piloting BenchDimir, 100g; the Dimir mirror returns
-.58, so read that as the empirical even point, not .50):
+### Opponent calibration: deck power vs pilot skill
+
+The matrix measures the agent against D0 piloting each archetype. Two
+scripted-only controls (`rl/p7c_pilot_calib.sh`, 100g each) separate
+what that number is made of.
+
+**Deck power** — D0 piloting X vs D0 piloting BenchDimir, so both seats
+are equally (in)competent and the gap is the deck. The Dimir mirror
+returns .58 rather than .50, so read .58 as the empirical even point.
 
 | deck | power | reading |
 |---|---|---|
@@ -196,15 +202,42 @@ D0 piloting X vs D0 piloting BenchDimir, 100g; the Dimir mirror returns
 | redrush | .64 | stronger |
 | skies | .71 | clearly stronger |
 
-Pilot-skill headroom (D1 vs D0 on the same deck, 100g; BenchDimir
-returns .62, matching the .614 calibrated over 500g in Phase 5):
+**Pilot skill headroom** — D1 vs D0 on the same deck, so the gap is the
+pilot. BenchDimir returns .62, reproducing the .614 calibrated over
+500g in Phase 5.
 
 | deck | D1 over D0 | reading |
 |---|---|---|
-| wweenie | .69 | D0 underplays it |
-| dimir | .62 | reference |
-| sweep | .53 | 1-ply search is no better |
-| tokens | .48 | 1-ply search is *worse* |
+| wweenie | .69 | search helps — D0 underplays it |
+| dimir | .62 | reference (reproduces .614) |
+| ramp | .58 | roughly neutral |
+| sweep | .53 | no help (and 12% stalls in the mirror) |
+| tokens | .48 | search is *worse* than the heuristic |
+| redrush | .44 | worse |
+| skies | .43 | worse |
+
+**The ladder is deck-specific.** D1 beats D0 on BenchDimir, the deck it
+was calibrated on, and on `wweenie`. On four of the six archetypes it
+is a *worse* pilot than the plain heuristic. Its 1-ply materialistic
+evaluator appears to mis-serve precisely the decks whose value is not
+in material trades — evasion, tokens, tempo.
+
+Three consequences:
+
+1. **There is no free pilot upgrade.** Repiloting the archetype rows
+   with D1/D1h — the obvious cheap fix once D0's competence is in doubt
+   — would have made four of six opponents measurably weaker.
+2. **The robustness matrix is a lower bound on opponent quality**, not
+   a ceiling. `sweep` at .92 says the agent beats *D0 piloting a
+   control deck*; since neither scripted pilot can play that deck
+   competently, it does not establish that the agent handles control.
+   Settling that needs a trained pilot, which is what the exploiter
+   lane is for.
+3. **The Phase 6 Elo scale is safe but not portable.** All ratings are
+   measured on the mirror, where the anchors are calibrated, so the
+   growth curve is unaffected. But the anchors should not be assumed to
+   carry their ordering onto other decks, which is what any future
+   cross-deck rating system would want from them.
 
 ### Reading at 1024
 
