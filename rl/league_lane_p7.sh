@@ -108,6 +108,9 @@ pick_opponent() {  # -> echoes "ckpt|arch"
                 BASE=$(basename "$E" .pt)
                 EA=${BASE##*__}
                 [ "$EA" = "$BASE" ] && EA=$ARCH
+                # candidate encoding is global per JVM: e0/cdim38 nets
+                # cannot seat in this cdim91 league
+                [ "$EA" = "e0" ] && continue
                 EXT+=("$E|$EA")
             done
             if [ ${#EXT[@]} -eq 0 ]; then

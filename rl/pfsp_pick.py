@@ -23,14 +23,22 @@ def main():
     ap.add_argument("--optimism", type=float, default=100.0)
     ap.add_argument("--sigma", type=float, default=150.0)
     ap.add_argument("--floor", type=float, default=0.02)
+    ap.add_argument("--arches", default="attn,lstmattn",
+                    help="allowed opponent arches - the driver's candidate "
+                         "encoding is global per JVM, so opponents must "
+                         "share the agent's encoding family (e0/cdim38 "
+                         "nets cannot seat in a cdim91 league)")
     args = ap.parse_args()
 
+    allowed = set(args.arches.split(","))
     rows = []
     for line in open(args.pool):
         line = line.strip()
         if not line or line.startswith("#"):
             continue
         name, arch, ckpt, elo = line.split("|")
+        if arch not in allowed:
+            continue
         if not os.path.exists(ckpt):
             continue                     # snapshot row written before copy
         rows.append((name, arch, ckpt, float(elo)))
