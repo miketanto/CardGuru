@@ -101,6 +101,24 @@ probe() {  # $1 out $2 oppKind $3 oppDeck $4 games $5 seed
         -Drl.out=$1 > /dev/null 2>&1
 }
 
+# Running self-Elo between the (deliberately sparse, 2048-cadence) anchor
+# probes. Without it the PFSP target and every snapshot's pool rating are
+# frozen for 2048 episodes, so the ladder's own rungs all enter at a stale
+# rating and the picker keeps re-sampling opponents the agent has outgrown
+# - the 7b drift failure in miniature. One Elo update per 64-episode chunk
+# against the sampled opponent's pool rating; the measured anchor Elo
+# overwrites it whenever one is taken.
+update_self_elo() {   # $1 chunk win rate $2 opponent elo
+    python3 - "$1" "$2" "$(cat $OUT/self_elo.txt 2>/dev/null || echo 400)" \
+        <<'PY' > $OUT/self_elo.txt.new && mv $OUT/self_elo.txt.new $OUT/self_elo.txt
+import sys
+s, opp, self_elo = (float(x) for x in sys.argv[1:4])
+exp = 1.0 / (1.0 + 10 ** ((opp - self_elo) / 400.0))
+K = 32.0                       # 64 games per chunk, sampled (not argmax) play
+print("%.0f" % min(max(self_elo + K * (s - exp), 0.0), 2000.0))
+PY
+}
+
 # score -> Elo on the anchor scale (D0 piloting BenchDimir = 1000)
 anchor_elo() {  # $1 wins $2 draws $3 games
     python3 - "$1" "$2" "$3" <<'PY'
@@ -128,7 +146,7 @@ rate_checkpoint() {   # $1 trained
     w=$(echo "$line" | grep -o 'wins=[0-9]*' | cut -d= -f2)
     d=$(echo "$line" | grep -o 'draws=[0-9]*' | cut -d= -f2)
     elo=$(anchor_elo ${w:-0} ${d:-0} 100)
-    echo "$elo" > $OUT/self_elo.txt
+    echo "$elo" > $OUT/self_elo.txt        # measured: overrides the running estimate
     echo "P10ELO|pilot=$NAME|trained=$trained|wr=$(field $f win_rate)|elo=$elo|wins=$w|draws=$d|blocks=$(field $f blocksDeclared)|blockOpps=$(field $f blockOpportunities)|stalls=$(field $f stalls)|turns=$(field $f turns_per_ep)|flashThreats=$(field $f flashThreats)|oppTurn=$(field $f flashThreatsOppTurn)" \
         | tee -a $OUT/elo_curve.txt
     touch $OUT/.rated_${trained}
@@ -194,8 +212,10 @@ while true; do
     # dense, free curve: the chunk's own win rate against the sampled
     # opponent, labelled with who that was (the 2048-cadence anchor probe
     # is the comparable metric, this is the texture between the points)
-    echo -e "${trained}\t${ONAME}\t${ODECK}\t${OELO}\t$(grep -o 'win_rate=[0-9.]*' $OUT/.chunk_out.txt | head -1 | cut -d= -f2)\t$(grep -o 'turns_per_ep=[0-9.]*' $OUT/.chunk_out.txt | head -1 | cut -d= -f2)" \
+    CWR=$(grep -o 'win_rate=[0-9.]*' $OUT/.chunk_out.txt | head -1 | cut -d= -f2)
+    echo -e "${trained}\t${ONAME}\t${ODECK}\t${OELO}\t${CWR}\t$(grep -o 'turns_per_ep=[0-9.]*' $OUT/.chunk_out.txt | head -1 | cut -d= -f2)" \
         >> $OUT/chunks.tsv
+    [ -n "${CWR:-}" ] && update_self_elo "$CWR" "${OELO:-1000}"
     rows_after=$(wc -l < $OUT/train.csv 2>/dev/null || echo 0)
     stop_server $ASRV
     [ -n "$OSRV" ] && stop_server $OSRV
