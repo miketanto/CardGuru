@@ -79,6 +79,66 @@ Ordered empirically rather than by assumption: each deck played the
 frozen starting agent for 40 games (D0 pilot, argmax, seed 952000) and
 the order is agent win rate descending — easiest first.
 
+| # | archetype | deck | agent WR (40g) | seeded Elo | blocks/opps |
+|---|---|---|---|---|---|
+| 1 | sweep | P7cSweepControl | .625 | 827 | 27/27 |
+| 2 | tokens | M3SelesnyaTokens | .400 | 986 | 86/86 |
+| 3 | wweenie | M3WhiteWeenie | .375 | 1004 | 77/77 |
+| 4 | skies | M3BlueSkies | .275 | 1084 | 42/42 |
+| 5 | redrush | M3RedRush | .225 | 1130 | 90/90 |
+| 6 | ramp | M3GreenRamp | .175 | 1185 | 71/71 |
+
+**The intuition-ordered guess would have been wrong.** The deck built to
+punish committing a board — 8 sweepers and 8 counters — is the *easiest*
+matchup in the pool, not the hardest. It cannot race a curve-out Dimir
+draw, so its wraths mostly arrive after the game is already decided.
+Green ramp, which simply presents bigger bodies, is the hardest. Any
+schedule ordered by archetype folklore would have run this curriculum
+backwards.
+
+### Baseline reproduction (trained = 0)
+
+| source | Elo | vs D0 | vs D1 | vs D1h |
+|---|---|---|---|---|
+| Phase 7 final (main session, 1024 eps) | 916 | .43 | .25 | .26 |
+| this lane, trained=0 (same checkpoint) | **928** | .46 | .30 | .23 |
+
+The frozen start re-rates to 928 here against 916 there — a 12-point
+gap on 100-game probes, well inside the noise those probes carry (the
+standing convention is that 100g probes flatter by ~.07 relative to
+500g). The rebuilt environment reproduces the main session's
+instrument, so the A/B against its mirror-PFSP arm is sound.
+
+## The blocking metric, corrected
+
+The kickoff names the never-blocks hole as the headline metric. The
+instrument added this phase says that hole, as stated, does not exist.
+
+At trained=0 the agent's block rate is **1.00 — on every deck measured,
+including the mirror**: 121/121 opportunities over 100 mirror games,
+and 27/27, 42/42, 71/71, 77/77, 86/86, 90/90 across the six archetypes.
+It does not decline to block. It blocks every single time it is asked.
+
+What is true is that it is *rarely asked*: 1.21 block opportunities per
+game on the mirror. The agent attacks with its board and taps out, so
+by the time blockers are declared it usually has no untapped creature
+and the window never opens. Phase 7 read "never blocks" off transcripts
+full of `unblocked` attackers and attributed to the policy what is
+mostly a property of the matchup and of its own attack pattern.
+
+The mechanism behind the 1.00 rate is visible in `StateEncoder`: at a
+block window the pass candidate is `blank(T_PASS)` — an all-zero vector
+with a single flag set — while every block candidate comes from
+`forCombat`, carrying power, toughness and the full E2 identity block.
+A head that has seen almost no block windows in training has no reason
+to prefer the sparse vector, so it takes a block by default.
+
+This reframes what the curriculum has to prove. The question is not
+whether blocking appears — it is already saturated — but whether deck
+diversity produces *selective* blocking: a rate that moves off 1.00 in
+the direction of good blocks, and more opportunities created by
+choosing to hold creatures back. Both are tracked at every checkpoint.
+
 ## Results
 
 *(filled in as checkpoints land)*
