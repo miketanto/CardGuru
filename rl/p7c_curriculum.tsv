@@ -1,0 +1,7 @@
+#order	name	deck	kind	elo
+1	sweep	P7cSweepControl.dck	heuristic	827
+2	tokens	M3SelesnyaTokens.dck	heuristic	986
+3	wweenie	M3WhiteWeenie.dck	heuristic	1004
+4	skies	M3BlueSkies.dck	heuristic	1084
+5	redrush	M3RedRush.dck	heuristic	1130
+6	ramp	M3GreenRamp.dck	heuristic	1185
