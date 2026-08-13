@@ -217,77 +217,72 @@ rather than flat — the 256→512 jump is the usual scratch-line takeoff
 (Phase 7b's scratch lstmattn needed 6,144 episodes to reach Elo 1101,
 so .455 vs D0 at 512 episodes is on-trend, not a result).
 
-### Matched E2 control arm
+### Matched E2 control arm — two seeds, no resolvable difference
 
 `E3_ARM=e2` reruns the identical lane on E2's encoder — same `lstmattn`
 arch, same lr, same seeds, same 64-episode chunks, same snapshot-pool
 schedule, same deck, same probes — with only the encoder swapped
-(sdim 24 / cdim 91, `rl.e3` off). Seed 0, both arms:
+(sdim 24 / cdim 91, `rl.e3` off). Two seeds each, 200g vs D0 on the
+home deck:
 
-| trained | E2 vs D0 | E3 vs D0 | E2 vs D1 | E3 vs D1 |
+| arm | seed 0 | seed 1 | mean | seed spread |
 |---|---|---|---|---|
-| 256 (100g) | .100 | .120 | .010 | .080 |
-| 512 (100g) | .300 | .410 | .160 | .230 |
-| **512 (200g)** | **.280** | **.455** | **.170** | **.240** |
+| E2 | .280 | .340 | .310 | .060 |
+| E3 | .455 | .360 | **.407** | .095 |
 
-At 200g the D0 gap is **+.175 ± .093** — outside the CI — and the D1 gap
-is +.070 ± .081, inside it. The two arms also play differently: the E2
-net takes 44.0 actions/ep against E3's 22.7 on 102.8 vs 158.1 consults,
-i.e. it acts on a larger share of the windows it sees.
+Seed 0 alone reads as a +.175 E3 lead, outside the ±.093 CI on a single
+pair of 200g probes. **Seed 1 reduces it to +.020.** The within-arm
+spread between seeds (.06 and .095) is as large as the between-arm gap,
+which is the honest answer: *at 512 episodes, two seeds cannot resolve
+an E2-vs-E3 difference of this size*. The project's standing 5-seed
+convention exists for exactly this, and 7b/7c/8b all hit it.
 
-**One seed each, so this is a lead, not a result** - and the transfer
-probes below show the lead is deck-specific. Phase 7b/7c/8b all
-found single scratch runs noisy enough to need replication, and the
-standing project convention is 5 seeds; a second seed is running (§7).
-Read as-is it says the E3 encoder is at least not *worse* to train from
-scratch — the honest worry with +32 mostly-uninformative dims and a
-wider state vector. It does **not** say the text channel is why: §5
-shows the pilot can lose that block entirely without a win-rate cost,
-so any real E3 advantage at this budget more likely comes from the pip
-dims (read, §5) or simply from a wider input layer.
+What the control arm does establish is the thing worth knowing before
+the flagship: **the wider encoder is not worse to train from scratch.**
+That was the real risk of adding 32 mostly-uninformative dims and five
+state dims — a slower or unstable early curve — and it did not happen in
+either seed. It does **not** say the text channel helps: §5 shows the
+pilot can lose that block entirely without a win-rate cost.
 
-### Transfer: the home-deck lead does not survive an archetype change
+The two arms do play visibly differently: the E2 nets take 42-45
+actions/ep against E3's 23-33, on fewer consults. That difference is
+consistent across both seeds.
 
-Both arms, three decks, 200g vs D0, seed 0 (`rl/e3_transfer.sh`):
+### Transfer to a held-out archetype (`rl/e3_transfer.sh`)
 
-| deck | E2 | E3 | what it tests |
-|---|---|---|---|
-| BenchDimir (home) | .280 | **.455** | training distribution |
-| P8SwapInteraction | .305 | **.445** | 12 feature-matched unseen cards |
-| P8Faeries | **.300** | .190 | full archetype rebuild |
-| P8Faeries vs D1 | .145 | .125 | — |
+The Phase 8/8b probes, asked of both arms: a 12-card feature-matched
+swap (unseen cards, same roles) and a full archetype rebuild. 200g vs
+D0.
 
-Transfer tax, home → held out:
+| deck | E2 s0 | E2 s1 | E3 s0 | E3 s1 |
+|---|---|---|---|---|
+| BenchDimir (home) | .280 | .340 | .455 | .360 |
+| P8SwapInteraction | .305 | .290 | .445 | .345 |
+| P8Faeries | .300 | .200 | .190 | .230 |
 
-- **E3**: .455 → .445 on the swaps (**−.010**, no tax at all) → .190 on
-  faeries (**−.265**).
-- **E2**: .280 → .305 → .300 (**+.02**, flat everywhere).
+**Zero-shot transfer on feature-matched swaps survives E3, in both
+seeds.** The E3 net plays P8SwapInteraction — 12 cards it has never
+seen — as well as its own deck: tax **−.010** (s0) and **−.015** (s1),
+against E2's +.025 / −.050. This is gate G2 confirmed operationally
+rather than geometrically: keeping the P8 pairs close in the new
+100-dim space preserved the property that made the swap decks
+transfer, and it is the one arm-level result in this section that does
+replicate.
 
-Three things follow.
+**The full archetype rebuild still costs both arms, and the arms are
+not distinguishable.** Home → faeries tax: E3 −.265 (s0) and −.130
+(s1); E2 +.020 (s0) and −.140 (s1). On seed 0 the ordering *reverses*
+versus the home deck (E2 .300 vs E3 .190) and it is tempting to read
+that as E3 overfitting its training deck — but seed 1 puts E3 ahead
+again (.230 vs .200), and the within-arm seed spread (.04-.10) covers
+the whole effect. **No transfer claim separates the encoders at this
+budget.**
 
-1. **Gate G2 is confirmed operationally, not just geometrically.** The
-   swap deck replaces 12 cards with analogs the net has never seen, and
-   the E3 net plays it as well as its own deck (.445 vs .455). Keeping
-   the P8 pairs close in the new 100-dim space preserved exactly the
-   zero-shot property Phase 8 measured — adding the text block did not
-   break it.
-2. **The archetype rebuild still breaks everything**, as in Phase 8.
-   E3's −.265 is a much bigger tax than E2's +.02, and on faeries the
-   ordering **reverses**: E2 .300 vs E3 .190 (+.110 for E2, against a
-   ±.09 CI — marginal, one seed).
-3. The most economical reading is 8b's identifier story with the volume
-   turned up: E2's 512-episode net is nearly deck-*insensitive* (it
-   plays the same weak game everywhere, .280/.305/.300, at 44-45
-   actions/ep), while E3 converted its extra capacity into BenchDimir-
-   specific competence that does not generalize. A wider card channel
-   gives more identifier capacity, and single-deck training spends it
-   locally — which is the regime 8b already told us not to trust.
-
-So the §4 home-deck lead should **not** be read as "E3 generalizes
-better". It is a stronger fit to one deck. That is not an argument
-against the channel; it is an argument that this experiment cannot
-evaluate it, and the same argument the checkpoint already makes for
-running the A/B under deck diversity from initialization.
+What replicates across both seeds and both arms is the Phase 8 result
+itself: feature-matched card swaps are free, a new archetype is not.
+That is the gap E3 was built for, and this experiment is too small and
+too single-deck to test whether it closes it — which is the same
+conclusion §4.3 reached from the other direction.
 
 ## 5. Is the new channel load-bearing? (`rl/e3_ablate.sh`)
 
@@ -384,22 +379,22 @@ a deck where the signal was constantly zero.
   jitter band in behaviour, no win-rate cost. Pips: 3×, no cost. Hand
   differential: marginal. Known-top: verified live at 4.6% of decisions
   on a deck that filters, unused by this net.
-- **A matched E2 arm wins the transfer test.** E3 leads at home (.455
-  vs .280, 200g) and keeps that lead through a 12-card feature-matched
-  swap (.445 vs .305 — gate G2 confirmed operationally, zero-shot
-  transfer intact), then loses it entirely on a full archetype rebuild:
-  P8Faeries **E2 .300 vs E3 .190**. E3's home→faeries tax is −.265;
-  E2's is +.02, because the E2 net is barely deck-sensitive at all.
-  A wider card channel buys a stronger fit to the deck it was trained
-  on, and single-deck training spends the extra capacity on local
-  identifiers — 8b's mechanism, louder.
+- **A matched E2 arm, two seeds each, does not separate from E3** —
+  home deck .310 vs .407 mean, held-out P8Faeries .250 vs .210, with
+  within-arm seed spreads (.04-.10) as large as every between-arm gap.
+  Seed 0 on its own looked like a +.175 E3 lead at home that *reversed*
+  on faeries; seed 1 shows +.020 and +.030. Neither effect replicated.
+  What did: the E3 encoder is **not worse to train from scratch**, and
+  E3 keeps Phase 8's zero-shot transfer on feature-matched swaps
+  (.445 vs its own .455 — gate G2 confirmed operationally).
 - That is the *expected* result at this budget, and it is exactly the
   8b story from the other side: on one deck, identifier-style use of the
   mechanical block is sufficient, so semantic dims cannot pay yet.
   **E3 should be A/B'd where 8b said the mechanism lives — deck
   diversity from initialization** (the Phase 10 flagship), not on the
-  BenchDimir mirror; the transfer reversal is direct evidence that a
-  single-deck A/B would *mis*-rank the two encoders. What this session
+  BenchDimir mirror; and it needs seeds, because a single 512-episode
+  seed moved the apparent ranking by .175 in one direction and .110 in
+  the other. What this session
   establishes is that the channel is correct, gated, reproducible,
   cheap, read by the net, and safe to put in that run.
 
@@ -415,19 +410,23 @@ a deck where the signal was constantly zero.
 3. Group 1 needs a deck that filters (P8Meta/archetype pools have scry
    lands and surveil) — or Kaito activation to emerge. Its 4.6%
    live-window rate on E3ScryProbe is the instrument for that.
-4. Everything here is one seed. 5-seed replication remains the standing
-   project gate for conventions.
+4. The arm comparison is two seeds; the scramble battery and the swap
+   probe are one net each. 5-seed replication remains the standing
+   project gate, and this session is a direct demonstration of why:
+   the seed-0 arm difference did not survive seed 1.
 
 ### Honest limits
 
-- 200g per condition: only |Δ| > ~.10 is claimable, and the pilot's
-  .455 leaves limited room below.
+- 200g per condition: only |Δ| > ~.10 is claimable within a seed, and
+  across seeds the same arm moved .06-.10 on its own.
 - The behaviour readout is a *sensitivity* measure, not a *usefulness*
   measure: it proves the dims reach the policy's output, not that they
   help.
-- No matched E2 arm was trained at 512 episodes, so no E3-vs-E2 claim is
-  made anywhere in this document.
-- The 512-episode pilot is a single from-scratch seed on one deck.
+- The matched E2 arm (2 seeds) supports no E3-vs-E2 performance claim
+  in either direction; it only rules out the wider encoder being
+  *worse* to train.
+- Every arm is a from-scratch run on one deck, which is the regime 8b
+  says converts card features into local identifiers.
 
 ## 6. Reproduction
 
@@ -446,6 +445,8 @@ bash    rl/e3_pilot.sh 512 0           # from-scratch pilot (sdim 29 cdim 123)
 bash    rl/e3_ablate.sh /tmp/rl_e3_pilot_s0/e3_pilot_final.pt 200
 E3_ARM=e2 bash rl/e3_pilot.sh 512 0    # matched control arm
 bash    rl/e3_transfer.sh 0 200        # both arms x home / swap / faeries
+E3_ARM=e3 bash rl/e3_pilot.sh 512 1    # seed 1 of each arm, then
+E3_ARM=e2 bash rl/e3_pilot.sh 512 1    #   bash rl/e3_transfer.sh 1 200
 
 # the two controls the battery is read against
 E3_OUT=/tmp/rl_e3_ablate_rep  E3_CASES="baseline" \
