@@ -1,0 +1,1 @@
+RL|summary|episodes=100|wins=48|losses=50|draws=2|stalls=2|win_rate=0.4800|games_per_sec=0.717|agent_consults_per_ep=0.0|agent_windows_per_ep=0.0|agent_actions_per_ep=0.0|turns_per_ep=17.5|opponent=heuristic|policy=random|deck=M3SelesnyaTokens.dck|oppDeck=M3SelesnyaTokens.dck|seed=954000|fallbacks=agentSearchDecisions=943 agentSearchNodes=2812 

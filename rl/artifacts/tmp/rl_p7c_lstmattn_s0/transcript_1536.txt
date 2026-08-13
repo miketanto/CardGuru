@@ -1,0 +1,169 @@
+# Phase 7c sample game - trained=1536, agent BenchDimir vs D0 piloting skies (M3BlueSkies.dck), seed 951000, argmax
+INFO  2026-08-13 08:14:53,177 [LOG][GAME] T1: Agent's library is shuffled
+INFO  2026-08-13 08:14:53,180 [LOG][GAME] T1: Opponent's library is shuffled
+INFO  2026-08-13 08:14:53,199 [LOG][GAME] T1: Agent chooses that they take the first turn
+INFO  2026-08-13 08:14:53,370 [LOG][GAME] T1.DR: Agent skips Draw step
+INFO  2026-08-13 08:14:53,486 [LOG][GAME] T1.M1: Agent puts Soulstone Sanctuary [36d] from hand onto the Battlefield
+INFO  2026-08-13 08:14:53,615 [LOG][GAME] T1.DA: Agent skip attack
+INFO  2026-08-13 08:14:53,745 [LOG][GAME] T2.M1: Opponent puts Island [4e3] from hand onto the Battlefield
+INFO  2026-08-13 08:14:53,835 [LOG][GAME] T2.DA: Opponent skip attack
+INFO  2026-08-13 08:14:53,979 [LOG][GAME] T3.M1: Agent puts Restless Reef [edf] from hand onto the Battlefield
+INFO  2026-08-13 08:14:54,011 [LOG][GAME] T3.DA: Agent skip attack
+INFO  2026-08-13 08:14:54,133 [LOG][GAME] T4.M1: Opponent puts Island [df0] from hand onto the Battlefield
+INFO  2026-08-13 08:14:54,157 [LOG][GAME] T4.DA: Opponent skip attack
+INFO  2026-08-13 08:14:54,258 [LOG][GAME] T5.UP: Stack push: 1 (top: Cast The Wondrous Wasp)
+INFO  2026-08-13 08:14:54,296 [LOG][GAME] T5.UP: Agent casts The Wondrous Wasp [adc] from hand
+INFO  2026-08-13 08:14:54,313 [LOG][GAME] T5.UP: Stack push: 2 (top: Cast Essence Scatter)
+INFO  2026-08-13 08:14:54,322 [LOG][GAME] T5.UP: Opponent casts Essence Scatter [662] targeting The Wondrous Wasp [adc] from hand
+INFO  2026-08-13 08:14:54,333 [LOG][GAME] T5.UP: Stack resolve: 2 (top: Cast Essence Scatter)
+INFO  2026-08-13 08:14:54,346 [LOG][GAME] T5.UP: Agent puts The Wondrous Wasp [adc] from stack into their graveyard (source: Essence Scatter [662])
+INFO  2026-08-13 08:14:54,347 [LOG][GAME] T5.UP: The Wondrous Wasp [adc] is countered by Essence Scatter [662]
+INFO  2026-08-13 08:14:54,349 [LOG][GAME] T5.UP: Opponent puts Essence Scatter [662] from stack into their graveyard
+INFO  2026-08-13 08:14:54,385 [LOG][GAME] T5.M1: Agent puts Island [cd1] from hand onto the Battlefield
+INFO  2026-08-13 08:14:54,419 [LOG][GAME] T5.DA: Agent skip attack
+INFO  2026-08-13 08:14:54,485 [LOG][GAME] T6.M1: Opponent puts Island [0b0] from hand onto the Battlefield
+INFO  2026-08-13 08:14:54,492 [LOG][GAME] T6.M1: Stack push: 1 (top: Cast Divination)
+INFO  2026-08-13 08:14:54,499 [LOG][GAME] T6.M1: Opponent casts Divination [419] from hand
+INFO  2026-08-13 08:14:54,507 [LOG][GAME] T6.M1: Stack resolve: 1 (top: Cast Divination)
+INFO  2026-08-13 08:14:54,508 [LOG][GAME] T6.M1: Opponent puts Divination [419] from stack into their graveyard
+INFO  2026-08-13 08:14:54,525 [LOG][GAME] T6.DA: Opponent skip attack
+INFO  2026-08-13 08:14:54,579 [LOG][GAME] T7.UP: Stack push: 1 (top: Cast Floodpits Drowner)
+INFO  2026-08-13 08:14:54,587 [LOG][GAME] T7.UP: Agent casts Floodpits Drowner [7ae] from hand
+INFO  2026-08-13 08:14:54,607 [LOG][GAME] T7.UP: Stack resolve: 1 (top: Cast Floodpits Drowner)
+INFO  2026-08-13 08:14:54,609 [LOG][GAME] T7.UP: Agent puts Floodpits Drowner [7ae] from stack onto the Battlefield
+INFO  2026-08-13 08:14:54,686 [LOG][GAME] T7.M1: Agent loses 2 life from Watery Grave [16d]
+INFO  2026-08-13 08:14:54,688 [LOG][GAME] T7.M1: Agent puts Watery Grave [16d] from hand onto the Battlefield
+INFO  2026-08-13 08:14:54,704 [LOG][GAME] T7.M1: Stack push: 1 (top: Cast The Wondrous Wasp)
+INFO  2026-08-13 08:14:54,713 [LOG][GAME] T7.M1: Agent casts The Wondrous Wasp [eac] from hand
+INFO  2026-08-13 08:14:54,725 [LOG][GAME] T7.M1: Stack resolve: 1 (top: Cast The Wondrous Wasp)
+INFO  2026-08-13 08:14:54,726 [LOG][GAME] T7.M1: Agent puts The Wondrous Wasp [eac] from stack onto the Battlefield
+INFO  2026-08-13 08:14:54,743 [LOG][GAME] T7.M1: Stack push: 1 (top: stack ability (<i>Wasp's Sting</i> &mdash; When {this} enters, tap up to one target creature. It ...)
+INFO  2026-08-13 08:14:54,748 [LOG][GAME] T7.M1: Agent - Ability triggers: The Wondrous Wasp [eac] - Wasp's Sting — When The Wondrous Wasp [eac] enters, tap up to one target creature. It loses all abilities for as long as The Wondrous Wasp [eac] remains on the battlefield.
+INFO  2026-08-13 08:14:54,763 [LOG][GAME] T7.M1: Stack resolve: 1 (top: stack ability (<i>Wasp's Sting</i> &mdash; When {this} enters, tap up to one target creature. It ...)
+INFO  2026-08-13 08:14:54,787 [LOG][GAME] T7.DA: Agent skip attack
+INFO  2026-08-13 08:14:54,858 [LOG][GAME] T8.M1: Opponent puts Island [15a] from hand onto the Battlefield
+INFO  2026-08-13 08:14:54,879 [LOG][GAME] T8.DA: Opponent skip attack
+INFO  2026-08-13 08:14:54,995 [LOG][GAME] T9.M1: Stack push: 1 (top: Cast Kaito, Bane of Nightmares)
+INFO  2026-08-13 08:14:55,026 [LOG][GAME] T9.M1: Agent casts Kaito, Bane of Nightmares [d56] from hand
+INFO  2026-08-13 08:14:55,037 [LOG][GAME] T9.M1: Stack resolve: 1 (top: Cast Kaito, Bane of Nightmares)
+INFO  2026-08-13 08:14:55,040 [LOG][GAME] T9.M1: Agent puts Kaito, Bane of Nightmares [d56] from stack onto the Battlefield
+INFO  2026-08-13 08:14:55,109 [LOG][GAME] T9.M1: Agent puts Hidden Lair [ad4] from hand onto the Battlefield
+INFO  2026-08-13 08:14:55,148 [LOG][GAME] T9.M1: Stack push: 1 (top: stack ability (+1: You get an emblem with "Ninjas you control get +1/+1."))
+INFO  2026-08-13 08:14:55,151 [LOG][GAME] T9.M1: Agent activates: you get an emblem with "Ninjas you control get +1/+1." from Kaito, Bane of Nightmares [d56]
+INFO  2026-08-13 08:14:55,192 [LOG][GAME] T9.M1: Stack resolve: 1 (top: stack ability (+1: You get an emblem with "Ninjas you control get +1/+1."))
+INFO  2026-08-13 08:14:55,264 [LOG][GAME] T9.DA: Agent attacks Opponent with 2 creatures
+INFO  2026-08-13 08:14:55,290 [LOG][GAME] T9.DB: Attacker: Floodpits Drowner [7ae] (2/1) unblocked
+INFO  2026-08-13 08:14:55,291 [LOG][GAME] T9.DB: Attacker: The Wondrous Wasp [eac] (2/1) unblocked
+INFO  2026-08-13 08:14:55,311 [LOG][GAME] T9.CD: Opponent loses 2 life at combat from Floodpits Drowner [7ae]
+INFO  2026-08-13 08:14:55,313 [LOG][GAME] T9.CD: Opponent loses 2 life at combat from The Wondrous Wasp [eac]
+INFO  2026-08-13 08:14:55,367 [LOG][GAME] T9.ET: Stack push: 1 (top: Cast Unsummon)
+INFO  2026-08-13 08:14:55,400 [LOG][GAME] T9.ET: Opponent casts Unsummon [be1] targeting The Wondrous Wasp [eac] from hand
+INFO  2026-08-13 08:14:55,424 [LOG][GAME] T9.ET: Stack push: 2 (top: Cast Unsummon)
+INFO  2026-08-13 08:14:55,431 [LOG][GAME] T9.ET: Opponent casts Unsummon [ac4] targeting The Wondrous Wasp [eac] from hand
+INFO  2026-08-13 08:14:55,439 [LOG][GAME] T9.ET: Stack push: 3 (top: Cast Unsummon)
+INFO  2026-08-13 08:14:55,444 [LOG][GAME] T9.ET: Opponent casts Unsummon [5b6] targeting The Wondrous Wasp [eac] from hand
+INFO  2026-08-13 08:14:55,478 [LOG][GAME] T9.ET: Stack resolve: 3 (top: Cast Unsummon)
+INFO  2026-08-13 08:14:55,486 [LOG][GAME] T9.ET: Opponent puts The Wondrous Wasp [eac] from battlefield into its owner's hand (source: Unsummon [5b6])
+INFO  2026-08-13 08:14:55,489 [LOG][GAME] T9.ET: Opponent puts Unsummon [5b6] from stack into their graveyard
+INFO  2026-08-13 08:14:55,505 [LOG][GAME] T9.ET: Stack resolve: 2 (top: Cast Unsummon)
+INFO  2026-08-13 08:14:55,507 [LOG][GAME] T9.ET: Unsummon has been fizzled.
+INFO  2026-08-13 08:14:55,507 [LOG][GAME] T9.ET: Opponent puts Unsummon [ac4] from stack into their graveyard
+INFO  2026-08-13 08:14:55,517 [LOG][GAME] T9.ET: Stack resolve: 1 (top: Cast Unsummon)
+INFO  2026-08-13 08:14:55,518 [LOG][GAME] T9.ET: Unsummon has been fizzled.
+INFO  2026-08-13 08:14:55,519 [LOG][GAME] T9.ET: Opponent puts Unsummon [be1] from stack into their graveyard
+INFO  2026-08-13 08:14:55,555 [LOG][GAME] T10.M1: Opponent puts Island [043] from hand onto the Battlefield
+INFO  2026-08-13 08:14:55,562 [LOG][GAME] T10.M1: Stack push: 1 (top: Cast Phantom Warrior)
+INFO  2026-08-13 08:14:55,573 [LOG][GAME] T10.M1: Opponent casts Phantom Warrior [a3e] from hand
+INFO  2026-08-13 08:14:55,596 [LOG][GAME] T10.M1: Stack resolve: 1 (top: Cast Phantom Warrior)
+INFO  2026-08-13 08:14:55,598 [LOG][GAME] T10.M1: Opponent puts Phantom Warrior [a3e] from stack onto the Battlefield
+INFO  2026-08-13 08:14:55,624 [LOG][GAME] T10.DA: Opponent skip attack
+INFO  2026-08-13 08:14:55,699 [LOG][GAME] T11.UP: Stack push: 1 (top: Cast The Wondrous Wasp)
+INFO  2026-08-13 08:14:55,707 [LOG][GAME] T11.UP: Agent casts The Wondrous Wasp [eac] from hand
+INFO  2026-08-13 08:14:55,749 [LOG][GAME] T11.UP: Stack push: 2 (top: Cast Essence Scatter)
+INFO  2026-08-13 08:14:55,756 [LOG][GAME] T11.UP: Opponent casts Essence Scatter [36f] targeting The Wondrous Wasp [eac] from hand
+INFO  2026-08-13 08:14:55,804 [LOG][GAME] T11.UP: Stack resolve: 2 (top: Cast Essence Scatter)
+INFO  2026-08-13 08:14:55,805 [LOG][GAME] T11.UP: Agent puts The Wondrous Wasp [eac] from stack into their graveyard (source: Essence Scatter [36f])
+INFO  2026-08-13 08:14:55,806 [LOG][GAME] T11.UP: The Wondrous Wasp [eac] is countered by Essence Scatter [36f]
+INFO  2026-08-13 08:14:55,808 [LOG][GAME] T11.UP: Opponent puts Essence Scatter [36f] from stack into their graveyard
+INFO  2026-08-13 08:14:55,839 [LOG][GAME] T11.DR: Stack push: 1 (top: Cast Floodpits Drowner)
+INFO  2026-08-13 08:14:55,846 [LOG][GAME] T11.DR: Agent casts Floodpits Drowner [c52] from hand
+INFO  2026-08-13 08:14:55,861 [LOG][GAME] T11.DR: Stack resolve: 1 (top: Cast Floodpits Drowner)
+INFO  2026-08-13 08:14:55,863 [LOG][GAME] T11.DR: Agent puts Floodpits Drowner [c52] from stack onto the Battlefield
+INFO  2026-08-13 08:14:55,866 [LOG][GAME] T11.DR: Stack push: 1 (top: stack ability (When {this} enters, tap target creature an opponent controls and put a stun counte...)
+INFO  2026-08-13 08:14:55,868 [LOG][GAME] T11.DR: Agent - Ability triggers: Floodpits Drowner [c52] - When Floodpits Drowner [c52] enters, tap target creature an opponent controls and put a stun counter on it. - targeting Phantom Warrior [a3e]
+INFO  2026-08-13 08:14:55,882 [LOG][GAME] T11.DR: Stack resolve: 1 (top: stack ability (When {this} enters, tap target creature an opponent controls and put a stun counte...)
+INFO  2026-08-13 08:14:55,884 [LOG][GAME] T11.DR: Floodpits Drowner [c52]: Agent puts 1 stun counters on Phantom Warrior [a3e]
+INFO  2026-08-13 08:14:55,912 [LOG][GAME] T11.M1: Stack push: 1 (top: stack ability (+1: You get an emblem with "Ninjas you control get +1/+1."))
+INFO  2026-08-13 08:14:55,915 [LOG][GAME] T11.M1: Agent activates: you get an emblem with "Ninjas you control get +1/+1." from Kaito, Bane of Nightmares [d56]
+INFO  2026-08-13 08:14:55,941 [LOG][GAME] T11.M1: Stack resolve: 1 (top: stack ability (+1: You get an emblem with "Ninjas you control get +1/+1."))
+INFO  2026-08-13 08:14:55,957 [LOG][GAME] T11.M1: Agent loses 2 life from Watery Grave [8be]
+INFO  2026-08-13 08:14:55,962 [LOG][GAME] T11.M1: Agent puts Watery Grave [8be] from hand onto the Battlefield
+INFO  2026-08-13 08:14:55,975 [LOG][GAME] T11.M1: Stack push: 1 (top: stack ability ({1}{U}, {T}: Shuffle {this} and target creature with a stun counter on it into the...)
+INFO  2026-08-13 08:14:55,983 [LOG][GAME] T11.M1: Agent activates: shuffle Floodpits Drowner [7ae] and target creature with a stun counter on it into their owners' libraries. from Floodpits Drowner [7ae] targeting Phantom Warrior [a3e]
+INFO  2026-08-13 08:14:55,991 [LOG][GAME] T11.M1: Stack resolve: 1 (top: stack ability ({1}{U}, {T}: Shuffle {this} and target creature with a stun counter on it into the...)
+INFO  2026-08-13 08:14:55,993 [LOG][GAME] T11.M1: Agent shuffles a card into their library (source: Floodpits Drowner [7ae])
+INFO  2026-08-13 08:14:55,994 [LOG][GAME] T11.M1: Agent puts Floodpits Drowner [7ae] from battlefield to the top of their library
+INFO  2026-08-13 08:14:55,995 [LOG][GAME] T11.M1: Agent's library is shuffled (source: Floodpits Drowner [7ae])
+INFO  2026-08-13 08:14:55,996 [LOG][GAME] T11.M1: Opponent shuffles a card into their library (source: Floodpits Drowner [7ae])
+INFO  2026-08-13 08:14:55,996 [LOG][GAME] T11.M1: Opponent puts Phantom Warrior [a3e] from battlefield to the top of their library (source: Floodpits Drowner [7ae])
+INFO  2026-08-13 08:14:55,997 [LOG][GAME] T11.M1: Opponent's library is shuffled (source: Floodpits Drowner [7ae])
+INFO  2026-08-13 08:14:56,036 [LOG][GAME] T11.DA: Agent attacks Opponent with 1 creature
+INFO  2026-08-13 08:14:56,048 [LOG][GAME] T11.DB: Attacker: Kaito, Bane of Nightmares [d56] (5/6) unblocked
+INFO  2026-08-13 08:14:56,060 [LOG][GAME] T11.CD: Opponent loses 5 life at combat from Kaito, Bane of Nightmares [d56]
+INFO  2026-08-13 08:14:56,123 [LOG][GAME] T12.M1: Opponent puts Island [a18] from hand onto the Battlefield
+INFO  2026-08-13 08:14:56,141 [LOG][GAME] T12.DA: Opponent skip attack
+INFO  2026-08-13 08:14:56,189 [LOG][GAME] T13.UP: Stack push: 1 (top: stack ability ({2}{U}{B}: Until end of turn, {this} becomes a 4/4 blue and black Shark creature w...)
+INFO  2026-08-13 08:14:56,208 [LOG][GAME] T13.UP: Agent activates: until end of turn, Restless Reef [edf] becomes a 4/4 blue and black Shark creature with deathtouch. It's still a land. from Restless Reef [edf]
+INFO  2026-08-13 08:14:56,237 [LOG][GAME] T13.UP: Stack resolve: 1 (top: stack ability ({2}{U}{B}: Until end of turn, {this} becomes a 4/4 blue and black Shark creature w...)
+INFO  2026-08-13 08:14:56,291 [LOG][GAME] T13.M1: Stack push: 1 (top: stack ability (+1: You get an emblem with "Ninjas you control get +1/+1."))
+INFO  2026-08-13 08:14:56,293 [LOG][GAME] T13.M1: Agent activates: you get an emblem with "Ninjas you control get +1/+1." from Kaito, Bane of Nightmares [d56]
+INFO  2026-08-13 08:14:56,351 [LOG][GAME] T13.M1: Stack resolve: 1 (top: stack ability (+1: You get an emblem with "Ninjas you control get +1/+1."))
+INFO  2026-08-13 08:14:56,362 [LOG][GAME] T13.M1: Agent puts Island [491] from hand onto the Battlefield
+INFO  2026-08-13 08:14:56,406 [LOG][GAME] T13.DA: Agent attacks Opponent with 2 creatures
+INFO  2026-08-13 08:14:56,435 [LOG][GAME] T13.DB: Attacker: Floodpits Drowner [c52] (2/1) unblocked
+INFO  2026-08-13 08:14:56,436 [LOG][GAME] T13.DB: Attacker: Kaito, Bane of Nightmares [d56] (6/7) unblocked
+INFO  2026-08-13 08:14:56,459 [LOG][GAME] T13.CD: Opponent loses 2 life at combat from Floodpits Drowner [c52]
+INFO  2026-08-13 08:14:56,460 [LOG][GAME] T13.CD: Opponent loses 6 life at combat from Kaito, Bane of Nightmares [d56]
+INFO  2026-08-13 08:14:56,601 [LOG][GAME] T14.M1: Opponent puts Island [b7b] from hand onto the Battlefield
+INFO  2026-08-13 08:14:56,608 [LOG][GAME] T14.M1: Stack push: 1 (top: Cast Frost Lynx)
+INFO  2026-08-13 08:14:56,617 [LOG][GAME] T14.M1: Opponent casts Frost Lynx [713] from hand
+INFO  2026-08-13 08:14:56,638 [LOG][GAME] T14.M1: Stack resolve: 1 (top: Cast Frost Lynx)
+INFO  2026-08-13 08:14:56,640 [LOG][GAME] T14.M1: Opponent puts Frost Lynx [713] from stack onto the Battlefield
+INFO  2026-08-13 08:14:56,647 [LOG][GAME] T14.M1: Stack push: 1 (top: stack ability (When {this} enters, tap target creature an opponent controls. That creature doesn'...)
+INFO  2026-08-13 08:14:56,649 [LOG][GAME] T14.M1: Opponent - Ability triggers: Frost Lynx [713] - When Frost Lynx [713] enters, tap target creature an opponent controls. That creature doesn't untap during its controller's next untap step. - targeting Floodpits Drowner [c52]
+INFO  2026-08-13 08:14:56,666 [LOG][GAME] T14.M1: Stack resolve: 1 (top: stack ability (When {this} enters, tap target creature an opponent controls. That creature doesn'...)
+INFO  2026-08-13 08:14:56,703 [LOG][GAME] T14.DA: Opponent skip attack
+INFO  2026-08-13 08:14:56,768 [LOG][GAME] T15.UN: Frost Lynx [713]: Floodpits Drowner [c52] doesn't untap (Frost Lynx [713])
+INFO  2026-08-13 08:14:56,781 [LOG][GAME] T15.UP: Stack push: 1 (top: stack ability ({2}{U}{B}: Until end of turn, {this} becomes a 4/4 blue and black Shark creature w...)
+INFO  2026-08-13 08:14:56,793 [LOG][GAME] T15.UP: Agent activates: until end of turn, Restless Reef [edf] becomes a 4/4 blue and black Shark creature with deathtouch. It's still a land. from Restless Reef [edf]
+INFO  2026-08-13 08:14:56,850 [LOG][GAME] T15.UP: Stack resolve: 1 (top: stack ability ({2}{U}{B}: Until end of turn, {this} becomes a 4/4 blue and black Shark creature w...)
+INFO  2026-08-13 08:14:56,885 [LOG][GAME] T15.M1: Stack push: 1 (top: stack ability (+1: You get an emblem with "Ninjas you control get +1/+1."))
+INFO  2026-08-13 08:14:56,887 [LOG][GAME] T15.M1: Agent activates: you get an emblem with "Ninjas you control get +1/+1." from Kaito, Bane of Nightmares [d56]
+INFO  2026-08-13 08:14:56,895 [LOG][GAME] T15.M1: Stack resolve: 1 (top: stack ability (+1: You get an emblem with "Ninjas you control get +1/+1."))
+INFO  2026-08-13 08:14:56,919 [LOG][GAME] T15.DA: Agent attacks Opponent with 1 creature
+INFO  2026-08-13 08:14:56,929 [LOG][GAME] T15.DB: Attacker: Kaito, Bane of Nightmares [d56] (7/8) blocked by Frost Lynx [713] (2/2)
+INFO  2026-08-13 08:14:56,944 [LOG][GAME] T15.CD: Frost Lynx [713] deals 2 damage to Kaito, Bane of Nightmares [d56]
+INFO  2026-08-13 08:14:56,945 [LOG][GAME] T15.CD: Kaito, Bane of Nightmares [d56] deals 7 damage to Frost Lynx [713]
+INFO  2026-08-13 08:14:56,947 [LOG][GAME] T15.CD: Frost Lynx [713] died
+INFO  2026-08-13 08:14:57,006 [LOG][GAME] T16.M1: Stack push: 1 (top: Cast Phantom Warrior)
+INFO  2026-08-13 08:14:57,013 [LOG][GAME] T16.M1: Opponent casts Phantom Warrior [081] from hand
+INFO  2026-08-13 08:14:57,022 [LOG][GAME] T16.M1: Stack resolve: 1 (top: Cast Phantom Warrior)
+INFO  2026-08-13 08:14:57,023 [LOG][GAME] T16.M1: Opponent puts Phantom Warrior [081] from stack onto the Battlefield
+INFO  2026-08-13 08:14:57,041 [LOG][GAME] T16.DA: Opponent skip attack
+INFO  2026-08-13 08:14:57,092 [LOG][GAME] T17.UP: Stack push: 1 (top: stack ability ({2}{U}{B}: Until end of turn, {this} becomes a 4/4 blue and black Shark creature w...)
+INFO  2026-08-13 08:14:57,103 [LOG][GAME] T17.UP: Agent activates: until end of turn, Restless Reef [edf] becomes a 4/4 blue and black Shark creature with deathtouch. It's still a land. from Restless Reef [edf]
+INFO  2026-08-13 08:14:57,155 [LOG][GAME] T17.UP: Stack resolve: 1 (top: stack ability ({2}{U}{B}: Until end of turn, {this} becomes a 4/4 blue and black Shark creature w...)
+INFO  2026-08-13 08:14:57,200 [LOG][GAME] T17.M1: Stack push: 1 (top: stack ability (+1: You get an emblem with "Ninjas you control get +1/+1."))
+INFO  2026-08-13 08:14:57,201 [LOG][GAME] T17.M1: Agent activates: you get an emblem with "Ninjas you control get +1/+1." from Kaito, Bane of Nightmares [d56]
+INFO  2026-08-13 08:14:57,211 [LOG][GAME] T17.M1: Stack resolve: 1 (top: stack ability (+1: You get an emblem with "Ninjas you control get +1/+1."))
+INFO  2026-08-13 08:14:57,235 [LOG][GAME] T17.DA: Agent attacks Opponent with 2 creatures
+INFO  2026-08-13 08:14:57,246 [LOG][GAME] T17.DB: Attacker: Floodpits Drowner [c52] (2/1) blocked by Phantom Warrior [081] (2/2)
+INFO  2026-08-13 08:14:57,247 [LOG][GAME] T17.DB: Attacker: Kaito, Bane of Nightmares [d56] (8/9) unblocked
+INFO  2026-08-13 08:14:57,259 [LOG][GAME] T17.CD: Phantom Warrior [081] deals 2 damage to Floodpits Drowner [c52]
+INFO  2026-08-13 08:14:57,260 [LOG][GAME] T17.CD: Floodpits Drowner [c52] deals 2 damage to Phantom Warrior [081]
+INFO  2026-08-13 08:14:57,261 [LOG][GAME] T17.CD: Opponent loses 8 life at combat from Kaito, Bane of Nightmares [d56]
+INFO  2026-08-13 08:14:57,263 [LOG][GAME] T17.CD: Opponent lost the game due life is 0 or less
+INFO  2026-08-13 08:14:57,264 [LOG][GAME] T17.CD: Opponent has lost the game.
+INFO  2026-08-13 08:14:57,267 [LOG][GAME] T17.CD: Agent has won the game
+INFO  2026-08-13 08:14:57,268 [LOG][GAME] T17.CD: Floodpits Drowner [c52] died
+INFO  2026-08-13 08:14:57,269 [LOG][GAME] T17.CD: Phantom Warrior [081] died

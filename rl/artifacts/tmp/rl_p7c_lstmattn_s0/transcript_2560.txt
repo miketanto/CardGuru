@@ -1,0 +1,187 @@
+# Phase 7c sample game - trained=2560, agent BenchDimir vs D0 piloting ramp (M3GreenRamp.dck), seed 951000, argmax
+INFO  2026-08-13 08:15:34,840 [LOG][GAME] T1: Agent's library is shuffled
+INFO  2026-08-13 08:15:34,843 [LOG][GAME] T1: Opponent's library is shuffled
+INFO  2026-08-13 08:15:34,861 [LOG][GAME] T1: Agent chooses that they take the first turn
+INFO  2026-08-13 08:15:34,994 [LOG][GAME] T1.DR: Agent skips Draw step
+INFO  2026-08-13 08:15:35,036 [LOG][GAME] T1.M1: Agent puts Restless Reef [f5e] from hand onto the Battlefield
+INFO  2026-08-13 08:15:35,125 [LOG][GAME] T1.DA: Agent skip attack
+INFO  2026-08-13 08:15:35,238 [LOG][GAME] T2.M1: Opponent puts Forest [0ec] from hand onto the Battlefield
+INFO  2026-08-13 08:15:35,268 [LOG][GAME] T2.DA: Opponent skip attack
+INFO  2026-08-13 08:15:35,463 [LOG][GAME] T3.M1: Agent puts Island [6b4] from hand onto the Battlefield
+INFO  2026-08-13 08:15:35,514 [LOG][GAME] T3.M1: Stack push: 1 (top: Cast The Wondrous Wasp)
+INFO  2026-08-13 08:15:35,538 [LOG][GAME] T3.M1: Agent casts The Wondrous Wasp [281] from hand
+INFO  2026-08-13 08:15:35,550 [LOG][GAME] T3.M1: Stack resolve: 1 (top: Cast The Wondrous Wasp)
+INFO  2026-08-13 08:15:35,552 [LOG][GAME] T3.M1: Agent puts The Wondrous Wasp [281] from stack onto the Battlefield
+INFO  2026-08-13 08:15:35,557 [LOG][GAME] T3.M1: Stack push: 1 (top: stack ability (<i>Wasp's Sting</i> &mdash; When {this} enters, tap up to one target creature. It ...)
+INFO  2026-08-13 08:15:35,564 [LOG][GAME] T3.M1: Agent - Ability triggers: The Wondrous Wasp [281] - Wasp's Sting — When The Wondrous Wasp [281] enters, tap up to one target creature. It loses all abilities for as long as The Wondrous Wasp [281] remains on the battlefield.
+INFO  2026-08-13 08:15:35,576 [LOG][GAME] T3.M1: Stack resolve: 1 (top: stack ability (<i>Wasp's Sting</i> &mdash; When {this} enters, tap up to one target creature. It ...)
+INFO  2026-08-13 08:15:35,598 [LOG][GAME] T3.DA: Agent skip attack
+INFO  2026-08-13 08:15:35,682 [LOG][GAME] T4.M1: Opponent puts Forest [83f] from hand onto the Battlefield
+INFO  2026-08-13 08:15:35,688 [LOG][GAME] T4.M1: Stack push: 1 (top: Cast Farseek)
+INFO  2026-08-13 08:15:35,696 [LOG][GAME] T4.M1: Opponent casts Farseek [588] from hand
+INFO  2026-08-13 08:15:35,707 [LOG][GAME] T4.M1: Stack resolve: 1 (top: Cast Farseek)
+INFO  2026-08-13 08:15:35,708 [LOG][GAME] T4.M1: Opponent searches their library (source: Farseek [588])
+INFO  2026-08-13 08:15:35,719 [LOG][GAME] T4.M1: Opponent's library is shuffled (source: Farseek [588])
+INFO  2026-08-13 08:15:35,721 [LOG][GAME] T4.M1: Opponent puts Farseek [588] from stack into their graveyard
+INFO  2026-08-13 08:15:35,757 [LOG][GAME] T4.DA: Opponent skip attack
+INFO  2026-08-13 08:15:35,819 [LOG][GAME] T5.UP: Stack push: 1 (top: Cast Floodpits Drowner)
+INFO  2026-08-13 08:15:35,826 [LOG][GAME] T5.UP: Agent casts Floodpits Drowner [84d] from hand
+INFO  2026-08-13 08:15:35,834 [LOG][GAME] T5.UP: Stack resolve: 1 (top: Cast Floodpits Drowner)
+INFO  2026-08-13 08:15:35,836 [LOG][GAME] T5.UP: Agent puts Floodpits Drowner [84d] from stack onto the Battlefield
+INFO  2026-08-13 08:15:35,871 [LOG][GAME] T5.M1: Agent puts Soulstone Sanctuary [24f] from hand onto the Battlefield
+INFO  2026-08-13 08:15:35,922 [LOG][GAME] T5.DA: Agent attacks Opponent with 1 creature
+INFO  2026-08-13 08:15:35,935 [LOG][GAME] T5.DB: Attacker: The Wondrous Wasp [281] (2/1) unblocked
+INFO  2026-08-13 08:15:35,947 [LOG][GAME] T5.CD: Opponent loses 2 life at combat from The Wondrous Wasp [281]
+INFO  2026-08-13 08:15:36,005 [LOG][GAME] T6.M1: Opponent puts Forest [861] from hand onto the Battlefield
+INFO  2026-08-13 08:15:36,010 [LOG][GAME] T6.M1: Stack push: 1 (top: Cast Cultivate)
+INFO  2026-08-13 08:15:36,018 [LOG][GAME] T6.M1: Opponent casts Cultivate [339] from hand
+INFO  2026-08-13 08:15:36,026 [LOG][GAME] T6.M1: Stack resolve: 1 (top: Cast Cultivate)
+INFO  2026-08-13 08:15:36,027 [LOG][GAME] T6.M1: Opponent searches their library (source: Cultivate [339])
+INFO  2026-08-13 08:15:36,032 [LOG][GAME] T6.M1: Opponent reveals Forest, Forest
+INFO  2026-08-13 08:15:36,033 [LOG][GAME] T6.M1: Opponent puts Forest [959] from library onto the Battlefield (source: Cultivate [339])
+INFO  2026-08-13 08:15:36,035 [LOG][GAME] T6.M1: Opponent puts Forest [970] from library into their hand
+INFO  2026-08-13 08:15:36,036 [LOG][GAME] T6.M1: Opponent's library is shuffled (source: Cultivate [339])
+INFO  2026-08-13 08:15:36,037 [LOG][GAME] T6.M1: Opponent puts Cultivate [339] from stack into their graveyard
+INFO  2026-08-13 08:15:36,085 [LOG][GAME] T6.DA: Opponent skip attack
+INFO  2026-08-13 08:15:36,207 [LOG][GAME] T7.DR: Stack push: 1 (top: Cast The Wondrous Wasp)
+INFO  2026-08-13 08:15:36,220 [LOG][GAME] T7.DR: Agent casts The Wondrous Wasp [fef] from hand
+INFO  2026-08-13 08:15:36,238 [LOG][GAME] T7.DR: Stack resolve: 1 (top: Cast The Wondrous Wasp)
+INFO  2026-08-13 08:15:36,240 [LOG][GAME] T7.DR: Agent puts The Wondrous Wasp [fef] from stack onto the Battlefield
+INFO  2026-08-13 08:15:36,259 [LOG][GAME] T7.DR: The Wondrous Wasp [fef] is put into graveyard from battlefield (SBA: legendary rule to keep only one)
+INFO  2026-08-13 08:15:36,264 [LOG][GAME] T7.DR: Stack push: 1 (top: stack ability (<i>Wasp's Sting</i> &mdash; When {this} enters, tap up to one target creature. It ...)
+INFO  2026-08-13 08:15:36,267 [LOG][GAME] T7.DR: Agent - Ability triggers: The Wondrous Wasp [fef] - Wasp's Sting — When The Wondrous Wasp [fef] enters, tap up to one target creature. It loses all abilities for as long as The Wondrous Wasp [fef] remains on the battlefield.
+INFO  2026-08-13 08:15:36,289 [LOG][GAME] T7.DR: Stack resolve: 1 (top: stack ability (<i>Wasp's Sting</i> &mdash; When {this} enters, tap up to one target creature. It ...)
+INFO  2026-08-13 08:15:36,325 [LOG][GAME] T7.M1: Agent loses 2 life from Watery Grave [fd5]
+INFO  2026-08-13 08:15:36,327 [LOG][GAME] T7.M1: Agent puts Watery Grave [fd5] from hand onto the Battlefield
+INFO  2026-08-13 08:15:36,438 [LOG][GAME] T7.DA: Agent attacks Opponent with 2 creatures
+INFO  2026-08-13 08:15:36,455 [LOG][GAME] T7.DB: Attacker: Floodpits Drowner [84d] (2/1) unblocked
+INFO  2026-08-13 08:15:36,456 [LOG][GAME] T7.DB: Attacker: The Wondrous Wasp [281] (2/1) unblocked
+INFO  2026-08-13 08:15:36,470 [LOG][GAME] T7.CD: Opponent loses 2 life at combat from Floodpits Drowner [84d]
+INFO  2026-08-13 08:15:36,471 [LOG][GAME] T7.CD: Opponent loses 2 life at combat from The Wondrous Wasp [281]
+INFO  2026-08-13 08:15:36,531 [LOG][GAME] T8.M1: Opponent puts Forest [2ad] from hand onto the Battlefield
+INFO  2026-08-13 08:15:36,536 [LOG][GAME] T8.M1: Stack push: 1 (top: Cast Cultivate)
+INFO  2026-08-13 08:15:36,544 [LOG][GAME] T8.M1: Opponent casts Cultivate [793] from hand
+INFO  2026-08-13 08:15:36,551 [LOG][GAME] T8.M1: Stack resolve: 1 (top: Cast Cultivate)
+INFO  2026-08-13 08:15:36,552 [LOG][GAME] T8.M1: Opponent searches their library (source: Cultivate [793])
+INFO  2026-08-13 08:15:36,555 [LOG][GAME] T8.M1: Opponent reveals Forest, Forest
+INFO  2026-08-13 08:15:36,556 [LOG][GAME] T8.M1: Opponent puts Forest [9be] from library onto the Battlefield (source: Cultivate [793])
+INFO  2026-08-13 08:15:36,557 [LOG][GAME] T8.M1: Opponent puts Forest [9f0] from library into their hand
+INFO  2026-08-13 08:15:36,558 [LOG][GAME] T8.M1: Opponent's library is shuffled (source: Cultivate [793])
+INFO  2026-08-13 08:15:36,559 [LOG][GAME] T8.M1: Opponent puts Cultivate [793] from stack into their graveyard
+INFO  2026-08-13 08:15:36,575 [LOG][GAME] T8.DA: Opponent skip attack
+INFO  2026-08-13 08:15:36,644 [LOG][GAME] T9.M1: Agent puts Hidden Lair [bd6] from hand onto the Battlefield
+INFO  2026-08-13 08:15:36,657 [LOG][GAME] T9.M1: Stack push: 1 (top: stack ability ({2}{U}{B}: Until end of turn, {this} becomes a 4/4 blue and black Shark creature w...)
+INFO  2026-08-13 08:15:36,666 [LOG][GAME] T9.M1: Agent activates: until end of turn, Restless Reef [f5e] becomes a 4/4 blue and black Shark creature with deathtouch. It's still a land. from Restless Reef [f5e]
+INFO  2026-08-13 08:15:36,678 [LOG][GAME] T9.M1: Stack resolve: 1 (top: stack ability ({2}{U}{B}: Until end of turn, {this} becomes a 4/4 blue and black Shark creature w...)
+INFO  2026-08-13 08:15:36,747 [LOG][GAME] T9.DA: Agent attacks Opponent with 2 creatures
+INFO  2026-08-13 08:15:36,763 [LOG][GAME] T9.DB: Attacker: Floodpits Drowner [84d] (2/1) unblocked
+INFO  2026-08-13 08:15:36,764 [LOG][GAME] T9.DB: Attacker: The Wondrous Wasp [281] (2/1) unblocked
+INFO  2026-08-13 08:15:36,786 [LOG][GAME] T9.CD: Opponent loses 2 life at combat from Floodpits Drowner [84d]
+INFO  2026-08-13 08:15:36,787 [LOG][GAME] T9.CD: Opponent loses 2 life at combat from The Wondrous Wasp [281]
+INFO  2026-08-13 08:15:36,934 [LOG][GAME] T10.M1: Opponent puts Forest [970] from hand onto the Battlefield
+INFO  2026-08-13 08:15:36,943 [LOG][GAME] T10.M1: Stack push: 1 (top: Cast Colossal Dreadmaw)
+INFO  2026-08-13 08:15:36,956 [LOG][GAME] T10.M1: Opponent casts Colossal Dreadmaw [60c] from hand
+INFO  2026-08-13 08:15:36,968 [LOG][GAME] T10.M1: Stack resolve: 1 (top: Cast Colossal Dreadmaw)
+INFO  2026-08-13 08:15:36,970 [LOG][GAME] T10.M1: Opponent puts Colossal Dreadmaw [60c] from stack onto the Battlefield
+INFO  2026-08-13 08:15:37,037 [LOG][GAME] T10.DA: Opponent skip attack
+INFO  2026-08-13 08:15:37,123 [LOG][GAME] T11.DR: Stack push: 1 (top: Cast Floodpits Drowner)
+INFO  2026-08-13 08:15:37,130 [LOG][GAME] T11.DR: Agent casts Floodpits Drowner [966] from hand
+INFO  2026-08-13 08:15:37,146 [LOG][GAME] T11.DR: Stack resolve: 1 (top: Cast Floodpits Drowner)
+INFO  2026-08-13 08:15:37,148 [LOG][GAME] T11.DR: Agent puts Floodpits Drowner [966] from stack onto the Battlefield
+INFO  2026-08-13 08:15:37,152 [LOG][GAME] T11.DR: Stack push: 1 (top: stack ability (When {this} enters, tap target creature an opponent controls and put a stun counte...)
+INFO  2026-08-13 08:15:37,154 [LOG][GAME] T11.DR: Agent - Ability triggers: Floodpits Drowner [966] - When Floodpits Drowner [966] enters, tap target creature an opponent controls and put a stun counter on it. - targeting Colossal Dreadmaw [60c]
+INFO  2026-08-13 08:15:37,169 [LOG][GAME] T11.DR: Stack resolve: 1 (top: stack ability (When {this} enters, tap target creature an opponent controls and put a stun counte...)
+INFO  2026-08-13 08:15:37,170 [LOG][GAME] T11.DR: Floodpits Drowner [966]: Agent puts 1 stun counters on Colossal Dreadmaw [60c]
+INFO  2026-08-13 08:15:37,182 [LOG][GAME] T11.DR: Stack push: 1 (top: stack ability ({1}{U}, {T}: Shuffle {this} and target creature with a stun counter on it into the...)
+INFO  2026-08-13 08:15:37,190 [LOG][GAME] T11.DR: Agent activates: shuffle Floodpits Drowner [84d] and target creature with a stun counter on it into their owners' libraries. from Floodpits Drowner [84d] targeting Colossal Dreadmaw [60c]
+INFO  2026-08-13 08:15:37,203 [LOG][GAME] T11.DR: Stack resolve: 1 (top: stack ability ({1}{U}, {T}: Shuffle {this} and target creature with a stun counter on it into the...)
+INFO  2026-08-13 08:15:37,205 [LOG][GAME] T11.DR: Agent shuffles a card into their library (source: Floodpits Drowner [84d])
+INFO  2026-08-13 08:15:37,206 [LOG][GAME] T11.DR: Agent puts Floodpits Drowner [84d] from battlefield to the top of their library
+INFO  2026-08-13 08:15:37,207 [LOG][GAME] T11.DR: Agent's library is shuffled (source: Floodpits Drowner [84d])
+INFO  2026-08-13 08:15:37,208 [LOG][GAME] T11.DR: Opponent shuffles a card into their library (source: Floodpits Drowner [84d])
+INFO  2026-08-13 08:15:37,208 [LOG][GAME] T11.DR: Opponent puts Colossal Dreadmaw [60c] from battlefield to the top of their library (source: Floodpits Drowner [84d])
+INFO  2026-08-13 08:15:37,209 [LOG][GAME] T11.DR: Opponent's library is shuffled (source: Floodpits Drowner [84d])
+INFO  2026-08-13 08:15:37,234 [LOG][GAME] T11.M1: Agent loses 2 life from Watery Grave [e65]
+INFO  2026-08-13 08:15:37,235 [LOG][GAME] T11.M1: Agent puts Watery Grave [e65] from hand onto the Battlefield
+INFO  2026-08-13 08:15:37,273 [LOG][GAME] T11.DA: Agent attacks Opponent with 1 creature
+INFO  2026-08-13 08:15:37,287 [LOG][GAME] T11.DB: Attacker: The Wondrous Wasp [281] (2/1) unblocked
+INFO  2026-08-13 08:15:37,299 [LOG][GAME] T11.CD: Opponent loses 2 life at combat from The Wondrous Wasp [281]
+INFO  2026-08-13 08:15:37,376 [LOG][GAME] T12.M1: Opponent puts Forest [9f0] from hand onto the Battlefield
+INFO  2026-08-13 08:15:37,381 [LOG][GAME] T12.M1: Stack push: 1 (top: Cast Craterhoof Behemoth)
+INFO  2026-08-13 08:15:37,395 [LOG][GAME] T12.M1: Opponent casts Craterhoof Behemoth [0b0] from hand
+INFO  2026-08-13 08:15:37,405 [LOG][GAME] T12.M1: Stack resolve: 1 (top: Cast Craterhoof Behemoth)
+INFO  2026-08-13 08:15:37,407 [LOG][GAME] T12.M1: Opponent puts Craterhoof Behemoth [0b0] from stack onto the Battlefield
+INFO  2026-08-13 08:15:37,408 [LOG][GAME] T12.M1: Stack push: 1 (top: stack ability (When {this} enters, creatures you control gain trample and get +X/+X until end of ...)
+INFO  2026-08-13 08:15:37,409 [LOG][GAME] T12.M1: Opponent - Ability triggers: Craterhoof Behemoth [0b0] - When Craterhoof Behemoth [0b0] enters, creatures you control gain trample and get +X/+X until end of turn, where X is the number of creatures you control.
+INFO  2026-08-13 08:15:37,420 [LOG][GAME] T12.M1: Stack resolve: 1 (top: stack ability (When {this} enters, creatures you control gain trample and get +X/+X until end of ...)
+INFO  2026-08-13 08:15:37,446 [LOG][GAME] T12.DA: Opponent attacks Agent with 1 creature
+INFO  2026-08-13 08:15:37,464 [LOG][GAME] T12.DB: Attacker: Craterhoof Behemoth [0b0] (6/6) blocked by Floodpits Drowner [966] (2/1)
+INFO  2026-08-13 08:15:37,483 [LOG][GAME] T12.CD: Agent loses 5 life at combat from Craterhoof Behemoth [0b0]
+INFO  2026-08-13 08:15:37,484 [LOG][GAME] T12.CD: Floodpits Drowner [966] deals 2 damage to Craterhoof Behemoth [0b0]
+INFO  2026-08-13 08:15:37,485 [LOG][GAME] T12.CD: Craterhoof Behemoth [0b0] deals 1 damage to Floodpits Drowner [966]
+INFO  2026-08-13 08:15:37,487 [LOG][GAME] T12.CD: Floodpits Drowner [966] died
+INFO  2026-08-13 08:15:37,565 [LOG][GAME] T13.M1: Agent puts Island [6dc] from hand onto the Battlefield
+INFO  2026-08-13 08:15:37,575 [LOG][GAME] T13.M1: Stack push: 1 (top: Cast Kaito, Bane of Nightmares)
+INFO  2026-08-13 08:15:37,584 [LOG][GAME] T13.M1: Agent casts Kaito, Bane of Nightmares [ca1] from hand
+INFO  2026-08-13 08:15:37,593 [LOG][GAME] T13.M1: Stack push: 2 (top: Cast Requiting Hex)
+INFO  2026-08-13 08:15:37,601 [LOG][GAME] T13.M1: Agent casts Requiting Hex [10f] with As an additional cost to cast this spell, you may blight 1 targeting The Wondrous Wasp [281] from hand
+INFO  2026-08-13 08:15:37,602 [LOG][GAME] T13.M1: The Wondrous Wasp [281] is put into graveyard from battlefield (SBA: creature has toughness 0 or less)
+INFO  2026-08-13 08:15:37,614 [LOG][GAME] T13.M1: Stack resolve: 2 (top: Cast Requiting Hex)
+INFO  2026-08-13 08:15:37,615 [LOG][GAME] T13.M1: Requiting Hex has been fizzled.
+INFO  2026-08-13 08:15:37,617 [LOG][GAME] T13.M1: Agent puts Requiting Hex [10f] from stack into their graveyard
+INFO  2026-08-13 08:15:37,629 [LOG][GAME] T13.M1: Stack resolve: 1 (top: Cast Kaito, Bane of Nightmares)
+INFO  2026-08-13 08:15:37,632 [LOG][GAME] T13.M1: Agent puts Kaito, Bane of Nightmares [ca1] from stack onto the Battlefield
+INFO  2026-08-13 08:15:37,648 [LOG][GAME] T13.M1: Stack push: 1 (top: stack ability (+1: You get an emblem with "Ninjas you control get +1/+1."))
+INFO  2026-08-13 08:15:37,650 [LOG][GAME] T13.M1: Agent activates: you get an emblem with "Ninjas you control get +1/+1." from Kaito, Bane of Nightmares [ca1]
+INFO  2026-08-13 08:15:37,662 [LOG][GAME] T13.M1: Stack resolve: 1 (top: stack ability (+1: You get an emblem with "Ninjas you control get +1/+1."))
+INFO  2026-08-13 08:15:37,728 [LOG][GAME] T13.DA: Agent skip attack
+INFO  2026-08-13 08:15:37,843 [LOG][GAME] T14.M1: Opponent puts Forest [add] from hand onto the Battlefield
+INFO  2026-08-13 08:15:37,849 [LOG][GAME] T14.M1: Stack push: 1 (top: Cast Ulvenwald Hydra)
+INFO  2026-08-13 08:15:37,861 [LOG][GAME] T14.M1: Opponent casts Ulvenwald Hydra [c63] from hand
+INFO  2026-08-13 08:15:37,877 [LOG][GAME] T14.M1: Stack resolve: 1 (top: Cast Ulvenwald Hydra)
+INFO  2026-08-13 08:15:37,879 [LOG][GAME] T14.M1: Opponent puts Ulvenwald Hydra [c63] from stack onto the Battlefield
+INFO  2026-08-13 08:15:37,881 [LOG][GAME] T14.M1: Stack push: 1 (top: stack ability (When {this} enters, you may search your library for a land card, put it onto the b...)
+INFO  2026-08-13 08:15:37,882 [LOG][GAME] T14.M1: Opponent - Ability triggers: Ulvenwald Hydra [c63] - When Ulvenwald Hydra [c63] enters, you may search your library for a land card, put it onto the battlefield tapped, then shuffle.
+INFO  2026-08-13 08:15:37,897 [LOG][GAME] T14.M1: Stack resolve: 1 (top: stack ability (When {this} enters, you may search your library for a land card, put it onto the b...)
+INFO  2026-08-13 08:15:37,898 [LOG][GAME] T14.M1: Opponent searches their library (source: Ulvenwald Hydra [c63])
+INFO  2026-08-13 08:15:37,900 [LOG][GAME] T14.M1: Opponent puts Forest [a40] from library onto the Battlefield (source: Ulvenwald Hydra [c63])
+INFO  2026-08-13 08:15:37,901 [LOG][GAME] T14.M1: Opponent's library is shuffled (source: Ulvenwald Hydra [c63])
+INFO  2026-08-13 08:15:37,907 [LOG][GAME] T14.M1: Stack push: 1 (top: Cast Voyaging Satyr)
+INFO  2026-08-13 08:15:37,912 [LOG][GAME] T14.M1: Opponent casts Voyaging Satyr [263] from hand
+INFO  2026-08-13 08:15:37,926 [LOG][GAME] T14.M1: Stack resolve: 1 (top: Cast Voyaging Satyr)
+INFO  2026-08-13 08:15:37,927 [LOG][GAME] T14.M1: Opponent puts Voyaging Satyr [263] from stack onto the Battlefield
+INFO  2026-08-13 08:15:37,971 [LOG][GAME] T14.DA: Opponent attacks Agent with 1 creature
+INFO  2026-08-13 08:15:37,985 [LOG][GAME] T14.DB: Attacker: Craterhoof Behemoth [0b0] (5/5) unblocked
+INFO  2026-08-13 08:15:38,006 [LOG][GAME] T14.CD: Agent loses 5 life at combat from Craterhoof Behemoth [0b0]
+INFO  2026-08-13 08:15:38,099 [LOG][GAME] T15.M1: Stack push: 1 (top: stack ability (+1: You get an emblem with "Ninjas you control get +1/+1."))
+INFO  2026-08-13 08:15:38,100 [LOG][GAME] T15.M1: Agent activates: you get an emblem with "Ninjas you control get +1/+1." from Kaito, Bane of Nightmares [ca1]
+INFO  2026-08-13 08:15:38,112 [LOG][GAME] T15.M1: Stack resolve: 1 (top: stack ability (+1: You get an emblem with "Ninjas you control get +1/+1."))
+INFO  2026-08-13 08:15:38,141 [LOG][GAME] T15.DA: Agent attacks Opponent with 1 creature
+INFO  2026-08-13 08:15:38,155 [LOG][GAME] T15.DB: Attacker: Kaito, Bane of Nightmares [ca1] (5/6) blocked by Ulvenwald Hydra [c63] (10/10)
+INFO  2026-08-13 08:15:38,171 [LOG][GAME] T15.CD: Ulvenwald Hydra [c63] deals 10 damage to Kaito, Bane of Nightmares [ca1]
+INFO  2026-08-13 08:15:38,172 [LOG][GAME] T15.CD: Kaito, Bane of Nightmares [ca1] deals 5 damage to Ulvenwald Hydra [c63]
+INFO  2026-08-13 08:15:38,174 [LOG][GAME] T15.CD: Kaito, Bane of Nightmares [ca1] died
+INFO  2026-08-13 08:15:38,255 [LOG][GAME] T16.M1: Stack push: 1 (top: Cast Ulvenwald Hydra)
+INFO  2026-08-13 08:15:38,267 [LOG][GAME] T16.M1: Opponent casts Ulvenwald Hydra [f20] from hand
+INFO  2026-08-13 08:15:38,279 [LOG][GAME] T16.M1: Stack resolve: 1 (top: Cast Ulvenwald Hydra)
+INFO  2026-08-13 08:15:38,280 [LOG][GAME] T16.M1: Opponent puts Ulvenwald Hydra [f20] from stack onto the Battlefield
+INFO  2026-08-13 08:15:38,282 [LOG][GAME] T16.M1: Stack push: 1 (top: stack ability (When {this} enters, you may search your library for a land card, put it onto the b...)
+INFO  2026-08-13 08:15:38,283 [LOG][GAME] T16.M1: Opponent - Ability triggers: Ulvenwald Hydra [f20] - When Ulvenwald Hydra [f20] enters, you may search your library for a land card, put it onto the battlefield tapped, then shuffle.
+INFO  2026-08-13 08:15:38,299 [LOG][GAME] T16.M1: Stack resolve: 1 (top: stack ability (When {this} enters, you may search your library for a land card, put it onto the b...)
+INFO  2026-08-13 08:15:38,300 [LOG][GAME] T16.M1: Opponent searches their library (source: Ulvenwald Hydra [f20])
+INFO  2026-08-13 08:15:38,302 [LOG][GAME] T16.M1: Opponent puts Forest [b07] from library onto the Battlefield (source: Ulvenwald Hydra [f20])
+INFO  2026-08-13 08:15:38,303 [LOG][GAME] T16.M1: Opponent's library is shuffled (source: Ulvenwald Hydra [f20])
+INFO  2026-08-13 08:15:38,308 [LOG][GAME] T16.M1: Stack push: 1 (top: Cast Voyaging Satyr)
+INFO  2026-08-13 08:15:38,313 [LOG][GAME] T16.M1: Opponent casts Voyaging Satyr [857] from hand
+INFO  2026-08-13 08:15:38,326 [LOG][GAME] T16.M1: Stack resolve: 1 (top: Cast Voyaging Satyr)
+INFO  2026-08-13 08:15:38,327 [LOG][GAME] T16.M1: Opponent puts Voyaging Satyr [857] from stack onto the Battlefield
+INFO  2026-08-13 08:15:38,378 [LOG][GAME] T16.DA: Opponent attacks Agent with 3 creatures
+INFO  2026-08-13 08:15:38,392 [LOG][GAME] T16.DB: Attacker: Craterhoof Behemoth [0b0] (5/5) unblocked
+INFO  2026-08-13 08:15:38,393 [LOG][GAME] T16.DB: Attacker: Ulvenwald Hydra [c63] (11/11) unblocked
+INFO  2026-08-13 08:15:38,393 [LOG][GAME] T16.DB: Attacker: Voyaging Satyr [263] (1/2) unblocked
+INFO  2026-08-13 08:15:38,408 [LOG][GAME] T16.CD: Agent loses 5 life at combat from Craterhoof Behemoth [0b0]
+INFO  2026-08-13 08:15:38,409 [LOG][GAME] T16.CD: Agent loses 11 life at combat from Ulvenwald Hydra [c63]
+INFO  2026-08-13 08:15:38,410 [LOG][GAME] T16.CD: Agent loses 1 life at combat from Voyaging Satyr [263]
+INFO  2026-08-13 08:15:38,411 [LOG][GAME] T16.CD: Agent lost the game due life is 0 or less
+INFO  2026-08-13 08:15:38,412 [LOG][GAME] T16.CD: Agent has lost the game.
+INFO  2026-08-13 08:15:38,415 [LOG][GAME] T16.CD: Opponent has won the game

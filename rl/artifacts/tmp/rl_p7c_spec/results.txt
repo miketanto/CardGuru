@@ -1,0 +1,5 @@
+SPEC_RESULT|deck=sweep|own_deck_wr=0.7800|mirror_elo=941|d0=0.4300|d1=0.3100|blocks=47|blockOpps=47|stalls=0
+SPEC_RESULT|deck=tokens|own_deck_wr=|mirror_elo=903|d0=0.3900|d1=0.2500|blocks=|blockOpps=|stalls=
+SPEC_RESULT|deck=wweenie|own_deck_wr=0.3900|mirror_elo=NA|d0=0.3600|d1=0.2600|blocks=197|blockOpps=197|stalls=0
+SPEC_RESULT|deck=skies|own_deck_wr=0.3500|mirror_elo=894|d0=0.4200|d1=0.2300|blocks=85|blockOpps=85|stalls=0
+SPEC_RESULT|deck=redrush|own_deck_wr=0.4200|mirror_elo=NA|d0=0.4300|d1=0.2300|blocks=154|blockOpps=154|stalls=0

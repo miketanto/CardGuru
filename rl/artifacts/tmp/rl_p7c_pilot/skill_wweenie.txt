@@ -1,0 +1,1 @@
+RL|summary|episodes=100|wins=69|losses=31|draws=0|stalls=0|win_rate=0.6900|games_per_sec=0.954|agent_consults_per_ep=0.0|agent_windows_per_ep=0.0|agent_actions_per_ep=0.0|turns_per_ep=14.8|opponent=heuristic|policy=random|deck=M3WhiteWeenie.dck|oppDeck=M3WhiteWeenie.dck|seed=954000|fallbacks=agentSearchDecisions=954 agentSearchNodes=2819 

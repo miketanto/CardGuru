@@ -1,0 +1,176 @@
+# Phase 7c sample game - trained=2048, agent BenchDimir vs D0 piloting redrush (M3RedRush.dck), seed 951000, argmax
+INFO  2026-08-13 08:15:14,756 [LOG][GAME] T1: Agent's library is shuffled
+INFO  2026-08-13 08:15:14,760 [LOG][GAME] T1: Opponent's library is shuffled
+INFO  2026-08-13 08:15:14,782 [LOG][GAME] T1: Agent chooses that they take the first turn
+INFO  2026-08-13 08:15:14,936 [LOG][GAME] T1.DR: Agent skips Draw step
+INFO  2026-08-13 08:15:14,986 [LOG][GAME] T1.M1: Agent puts Restless Reef [24d] from hand onto the Battlefield
+INFO  2026-08-13 08:15:15,094 [LOG][GAME] T1.DA: Agent skip attack
+INFO  2026-08-13 08:15:15,232 [LOG][GAME] T2.M1: Opponent puts Mountain [582] from hand onto the Battlefield
+INFO  2026-08-13 08:15:15,268 [LOG][GAME] T2.DA: Opponent skip attack
+INFO  2026-08-13 08:15:15,403 [LOG][GAME] T3.M1: Agent puts Soulstone Sanctuary [d12] from hand onto the Battlefield
+INFO  2026-08-13 08:15:15,455 [LOG][GAME] T3.M1: Stack push: 1 (top: Cast The Wondrous Wasp)
+INFO  2026-08-13 08:15:15,496 [LOG][GAME] T3.M1: Agent casts The Wondrous Wasp [bcd] from hand
+INFO  2026-08-13 08:15:15,516 [LOG][GAME] T3.M1: Stack resolve: 1 (top: Cast The Wondrous Wasp)
+INFO  2026-08-13 08:15:15,519 [LOG][GAME] T3.M1: Agent puts The Wondrous Wasp [bcd] from stack onto the Battlefield
+INFO  2026-08-13 08:15:15,524 [LOG][GAME] T3.M1: Stack push: 1 (top: stack ability (<i>Wasp's Sting</i> &mdash; When {this} enters, tap up to one target creature. It ...)
+INFO  2026-08-13 08:15:15,530 [LOG][GAME] T3.M1: Agent - Ability triggers: The Wondrous Wasp [bcd] - Wasp's Sting — When The Wondrous Wasp [bcd] enters, tap up to one target creature. It loses all abilities for as long as The Wondrous Wasp [bcd] remains on the battlefield.
+INFO  2026-08-13 08:15:15,545 [LOG][GAME] T3.M1: Stack resolve: 1 (top: stack ability (<i>Wasp's Sting</i> &mdash; When {this} enters, tap up to one target creature. It ...)
+INFO  2026-08-13 08:15:15,577 [LOG][GAME] T3.DA: Agent skip attack
+INFO  2026-08-13 08:15:15,660 [LOG][GAME] T4.M1: Opponent puts Mountain [517] from hand onto the Battlefield
+INFO  2026-08-13 08:15:15,667 [LOG][GAME] T4.M1: Stack push: 1 (top: Cast Goblin Piker)
+INFO  2026-08-13 08:15:15,673 [LOG][GAME] T4.M1: Opponent casts Goblin Piker [183] from hand
+INFO  2026-08-13 08:15:15,683 [LOG][GAME] T4.M1: Stack resolve: 1 (top: Cast Goblin Piker)
+INFO  2026-08-13 08:15:15,684 [LOG][GAME] T4.M1: Opponent puts Goblin Piker [183] from stack onto the Battlefield
+INFO  2026-08-13 08:15:15,707 [LOG][GAME] T4.DA: Opponent skip attack
+INFO  2026-08-13 08:15:15,764 [LOG][GAME] T5.UP: Stack push: 1 (top: Cast Floodpits Drowner)
+INFO  2026-08-13 08:15:15,774 [LOG][GAME] T5.UP: Agent casts Floodpits Drowner [a27] from hand
+INFO  2026-08-13 08:15:15,790 [LOG][GAME] T5.UP: Stack resolve: 1 (top: Cast Floodpits Drowner)
+INFO  2026-08-13 08:15:15,792 [LOG][GAME] T5.UP: Agent puts Floodpits Drowner [a27] from stack onto the Battlefield
+INFO  2026-08-13 08:15:15,794 [LOG][GAME] T5.UP: Stack push: 1 (top: stack ability (When {this} enters, tap target creature an opponent controls and put a stun counte...)
+INFO  2026-08-13 08:15:15,796 [LOG][GAME] T5.UP: Agent - Ability triggers: Floodpits Drowner [a27] - When Floodpits Drowner [a27] enters, tap target creature an opponent controls and put a stun counter on it. - targeting Goblin Piker [183]
+INFO  2026-08-13 08:15:15,806 [LOG][GAME] T5.UP: Stack resolve: 1 (top: stack ability (When {this} enters, tap target creature an opponent controls and put a stun counte...)
+INFO  2026-08-13 08:15:15,809 [LOG][GAME] T5.UP: Floodpits Drowner [a27]: Agent puts 1 stun counters on Goblin Piker [183]
+INFO  2026-08-13 08:15:15,876 [LOG][GAME] T5.M1: Agent puts Island [e10] from hand onto the Battlefield
+INFO  2026-08-13 08:15:15,936 [LOG][GAME] T5.DA: Agent attacks Opponent with 1 creature
+INFO  2026-08-13 08:15:15,954 [LOG][GAME] T5.DB: Attacker: The Wondrous Wasp [bcd] (2/1) unblocked
+INFO  2026-08-13 08:15:15,966 [LOG][GAME] T5.CD: Opponent loses 2 life at combat from The Wondrous Wasp [bcd]
+INFO  2026-08-13 08:15:16,006 [LOG][GAME] T6.UN: Removed a stun counter from Goblin Piker [183]
+INFO  2026-08-13 08:15:16,026 [LOG][GAME] T6.M1: Opponent puts Mountain [af3] from hand onto the Battlefield
+INFO  2026-08-13 08:15:16,031 [LOG][GAME] T6.M1: Stack push: 1 (top: Cast Ember Beast)
+INFO  2026-08-13 08:15:16,038 [LOG][GAME] T6.M1: Opponent casts Ember Beast [c37] from hand
+INFO  2026-08-13 08:15:16,046 [LOG][GAME] T6.M1: Stack resolve: 1 (top: Cast Ember Beast)
+INFO  2026-08-13 08:15:16,048 [LOG][GAME] T6.M1: Opponent puts Ember Beast [c37] from stack onto the Battlefield
+INFO  2026-08-13 08:15:16,064 [LOG][GAME] T6.DA: Opponent skip attack
+INFO  2026-08-13 08:15:16,139 [LOG][GAME] T7.DR: Stack push: 1 (top: Cast The Wondrous Wasp)
+INFO  2026-08-13 08:15:16,157 [LOG][GAME] T7.DR: Agent casts The Wondrous Wasp [a6a] from hand
+INFO  2026-08-13 08:15:16,178 [LOG][GAME] T7.DR: Stack resolve: 1 (top: Cast The Wondrous Wasp)
+INFO  2026-08-13 08:15:16,180 [LOG][GAME] T7.DR: Agent puts The Wondrous Wasp [a6a] from stack onto the Battlefield
+INFO  2026-08-13 08:15:16,223 [LOG][GAME] T7.DR: The Wondrous Wasp [bcd] is put into graveyard from battlefield (SBA: legendary rule to keep only one)
+INFO  2026-08-13 08:15:16,227 [LOG][GAME] T7.DR: Stack push: 1 (top: stack ability (<i>Wasp's Sting</i> &mdash; When {this} enters, tap up to one target creature. It ...)
+INFO  2026-08-13 08:15:16,229 [LOG][GAME] T7.DR: Agent - Ability triggers: The Wondrous Wasp [a6a] - Wasp's Sting — When The Wondrous Wasp [a6a] enters, tap up to one target creature. It loses all abilities for as long as The Wondrous Wasp [a6a] remains on the battlefield.
+INFO  2026-08-13 08:15:16,249 [LOG][GAME] T7.DR: Stack resolve: 1 (top: stack ability (<i>Wasp's Sting</i> &mdash; When {this} enters, tap up to one target creature. It ...)
+INFO  2026-08-13 08:15:16,283 [LOG][GAME] T7.M1: Agent loses 2 life from Watery Grave [b1a]
+INFO  2026-08-13 08:15:16,285 [LOG][GAME] T7.M1: Agent puts Watery Grave [b1a] from hand onto the Battlefield
+INFO  2026-08-13 08:15:16,297 [LOG][GAME] T7.M1: Stack push: 1 (top: Cast Requiting Hex)
+INFO  2026-08-13 08:15:16,315 [LOG][GAME] T7.M1: Agent casts Requiting Hex [1fb] with As an additional cost to cast this spell, you may blight 1 targeting Goblin Piker [183] from hand
+INFO  2026-08-13 08:15:16,317 [LOG][GAME] T7.M1: The Wondrous Wasp [a6a] is put into graveyard from battlefield (SBA: creature has toughness 0 or less)
+INFO  2026-08-13 08:15:16,337 [LOG][GAME] T7.M1: Stack resolve: 1 (top: Cast Requiting Hex)
+INFO  2026-08-13 08:15:16,343 [LOG][GAME] T7.M1: Goblin Piker [183] died by Requiting Hex [1fb]
+INFO  2026-08-13 08:15:16,346 [LOG][GAME] T7.M1: Agent gains 2 life (source: Requiting Hex [1fb])
+INFO  2026-08-13 08:15:16,347 [LOG][GAME] T7.M1: Agent puts Requiting Hex [1fb] from stack into their graveyard
+INFO  2026-08-13 08:15:16,381 [LOG][GAME] T7.DA: Agent attacks Opponent with 1 creature
+INFO  2026-08-13 08:15:16,396 [LOG][GAME] T7.DB: Attacker: Floodpits Drowner [a27] (2/1) unblocked
+INFO  2026-08-13 08:15:16,413 [LOG][GAME] T7.CD: Opponent loses 2 life at combat from Floodpits Drowner [a27]
+INFO  2026-08-13 08:15:16,524 [LOG][GAME] T8.M1: Opponent puts Mountain [0c6] from hand onto the Battlefield
+INFO  2026-08-13 08:15:16,532 [LOG][GAME] T8.M1: Stack push: 1 (top: Cast Goblin Piker)
+INFO  2026-08-13 08:15:16,538 [LOG][GAME] T8.M1: Opponent casts Goblin Piker [692] from hand
+INFO  2026-08-13 08:15:16,550 [LOG][GAME] T8.M1: Stack resolve: 1 (top: Cast Goblin Piker)
+INFO  2026-08-13 08:15:16,551 [LOG][GAME] T8.M1: Opponent puts Goblin Piker [692] from stack onto the Battlefield
+INFO  2026-08-13 08:15:16,556 [LOG][GAME] T8.M1: Stack push: 1 (top: Cast Goblin Piker)
+INFO  2026-08-13 08:15:16,560 [LOG][GAME] T8.M1: Opponent casts Goblin Piker [0cb] from hand
+INFO  2026-08-13 08:15:16,572 [LOG][GAME] T8.M1: Stack resolve: 1 (top: Cast Goblin Piker)
+INFO  2026-08-13 08:15:16,573 [LOG][GAME] T8.M1: Opponent puts Goblin Piker [0cb] from stack onto the Battlefield
+INFO  2026-08-13 08:15:16,599 [LOG][GAME] T8.DA: Opponent skip attack
+INFO  2026-08-13 08:15:16,708 [LOG][GAME] T9.M1: Stack push: 1 (top: Cast Kaito, Bane of Nightmares)
+INFO  2026-08-13 08:15:16,716 [LOG][GAME] T9.M1: Agent casts Kaito, Bane of Nightmares [45c] from hand
+INFO  2026-08-13 08:15:16,723 [LOG][GAME] T9.M1: Stack resolve: 1 (top: Cast Kaito, Bane of Nightmares)
+INFO  2026-08-13 08:15:16,726 [LOG][GAME] T9.M1: Agent puts Kaito, Bane of Nightmares [45c] from stack onto the Battlefield
+INFO  2026-08-13 08:15:16,745 [LOG][GAME] T9.M1: Stack push: 1 (top: stack ability (+1: You get an emblem with "Ninjas you control get +1/+1."))
+INFO  2026-08-13 08:15:16,752 [LOG][GAME] T9.M1: Agent activates: you get an emblem with "Ninjas you control get +1/+1." from Kaito, Bane of Nightmares [45c]
+INFO  2026-08-13 08:15:16,773 [LOG][GAME] T9.M1: Stack resolve: 1 (top: stack ability (+1: You get an emblem with "Ninjas you control get +1/+1."))
+INFO  2026-08-13 08:15:16,785 [LOG][GAME] T9.M1: Agent puts Hidden Lair [e9a] from hand onto the Battlefield
+INFO  2026-08-13 08:15:16,818 [LOG][GAME] T9.DA: Agent attacks Opponent with 1 creature
+INFO  2026-08-13 08:15:16,833 [LOG][GAME] T9.DB: Attacker: Floodpits Drowner [a27] (2/1) unblocked
+INFO  2026-08-13 08:15:16,864 [LOG][GAME] T9.CD: Opponent loses 2 life at combat from Floodpits Drowner [a27]
+INFO  2026-08-13 08:15:16,985 [LOG][GAME] T10.M1: Opponent puts Mountain [312] from hand onto the Battlefield
+INFO  2026-08-13 08:15:17,027 [LOG][GAME] T10.DA: Opponent attacks Agent with 3 creatures
+INFO  2026-08-13 08:15:17,050 [LOG][GAME] T10.DB: Attacker: Ember Beast [c37] (3/4) blocked by Floodpits Drowner [a27] (2/1)
+INFO  2026-08-13 08:15:17,052 [LOG][GAME] T10.DB: Attacker: Goblin Piker [692] (2/1) unblocked
+INFO  2026-08-13 08:15:17,054 [LOG][GAME] T10.DB: Attacker: Goblin Piker [0cb] (2/1) unblocked
+INFO  2026-08-13 08:15:17,075 [LOG][GAME] T10.CD: Floodpits Drowner [a27] deals 2 damage to Ember Beast [c37]
+INFO  2026-08-13 08:15:17,076 [LOG][GAME] T10.CD: Ember Beast [c37] deals 3 damage to Floodpits Drowner [a27]
+INFO  2026-08-13 08:15:17,077 [LOG][GAME] T10.CD: Agent loses 2 life at combat from Goblin Piker [692]
+INFO  2026-08-13 08:15:17,078 [LOG][GAME] T10.CD: Agent loses 2 life at combat from Goblin Piker [0cb]
+INFO  2026-08-13 08:15:17,080 [LOG][GAME] T10.CD: Floodpits Drowner [a27] died
+INFO  2026-08-13 08:15:17,158 [LOG][GAME] T11.DR: Stack push: 1 (top: Cast Floodpits Drowner)
+INFO  2026-08-13 08:15:17,163 [LOG][GAME] T11.DR: Agent casts Floodpits Drowner [756] from hand
+INFO  2026-08-13 08:15:17,175 [LOG][GAME] T11.DR: Stack resolve: 1 (top: Cast Floodpits Drowner)
+INFO  2026-08-13 08:15:17,176 [LOG][GAME] T11.DR: Agent puts Floodpits Drowner [756] from stack onto the Battlefield
+INFO  2026-08-13 08:15:17,179 [LOG][GAME] T11.DR: Stack push: 1 (top: stack ability (When {this} enters, tap target creature an opponent controls and put a stun counte...)
+INFO  2026-08-13 08:15:17,184 [LOG][GAME] T11.DR: Agent - Ability triggers: Floodpits Drowner [756] - When Floodpits Drowner [756] enters, tap target creature an opponent controls and put a stun counter on it. - targeting Ember Beast [c37]
+INFO  2026-08-13 08:15:17,200 [LOG][GAME] T11.DR: Stack resolve: 1 (top: stack ability (When {this} enters, tap target creature an opponent controls and put a stun counte...)
+INFO  2026-08-13 08:15:17,202 [LOG][GAME] T11.DR: Floodpits Drowner [756]: Agent puts 1 stun counters on Ember Beast [c37]
+INFO  2026-08-13 08:15:17,229 [LOG][GAME] T11.M1: Stack push: 1 (top: stack ability (+1: You get an emblem with "Ninjas you control get +1/+1."))
+INFO  2026-08-13 08:15:17,230 [LOG][GAME] T11.M1: Agent activates: you get an emblem with "Ninjas you control get +1/+1." from Kaito, Bane of Nightmares [45c]
+INFO  2026-08-13 08:15:17,242 [LOG][GAME] T11.M1: Stack resolve: 1 (top: stack ability (+1: You get an emblem with "Ninjas you control get +1/+1."))
+INFO  2026-08-13 08:15:17,253 [LOG][GAME] T11.M1: Agent loses 2 life from Watery Grave [1b9]
+INFO  2026-08-13 08:15:17,253 [LOG][GAME] T11.M1: Agent puts Watery Grave [1b9] from hand onto the Battlefield
+INFO  2026-08-13 08:15:17,265 [LOG][GAME] T11.M1: Stack push: 1 (top: stack ability ({4}: This land becomes a 3/3 creature with vigilance and all creature types. It's ...)
+INFO  2026-08-13 08:15:17,275 [LOG][GAME] T11.M1: Agent activates: this land becomes a 3/3 creature with vigilance and all creature types. It's still a land. from Soulstone Sanctuary [d12]
+INFO  2026-08-13 08:15:17,283 [LOG][GAME] T11.M1: Stack resolve: 1 (top: stack ability ({4}: This land becomes a 3/3 creature with vigilance and all creature types. It's ...)
+INFO  2026-08-13 08:15:17,341 [LOG][GAME] T11.DA: Agent attacks Opponent with 1 creature
+INFO  2026-08-13 08:15:17,353 [LOG][GAME] T11.DB: Attacker: Kaito, Bane of Nightmares [45c] (5/6) unblocked
+INFO  2026-08-13 08:15:17,363 [LOG][GAME] T11.CD: Opponent loses 5 life at combat from Kaito, Bane of Nightmares [45c]
+INFO  2026-08-13 08:15:17,406 [LOG][GAME] T11.ET: Stack push: 1 (top: Cast Trumpet Blast)
+INFO  2026-08-13 08:15:17,414 [LOG][GAME] T11.ET: Opponent casts Trumpet Blast [f61] from hand
+INFO  2026-08-13 08:15:17,429 [LOG][GAME] T11.ET: Stack resolve: 1 (top: Cast Trumpet Blast)
+INFO  2026-08-13 08:15:17,430 [LOG][GAME] T11.ET: Opponent puts Trumpet Blast [f61] from stack into their graveyard
+INFO  2026-08-13 08:15:17,440 [LOG][GAME] T12.UN: Removed a stun counter from Ember Beast [c37]
+INFO  2026-08-13 08:15:17,470 [LOG][GAME] T12.M1: Opponent puts Mountain [a2a] from hand onto the Battlefield
+INFO  2026-08-13 08:15:17,486 [LOG][GAME] T12.DA: Opponent attacks Agent with 2 creatures
+INFO  2026-08-13 08:15:17,500 [LOG][GAME] T12.DB: Attacker: Goblin Piker [692] (2/1) blocked by Floodpits Drowner [756] (2/1)
+INFO  2026-08-13 08:15:17,500 [LOG][GAME] T12.DB: Attacker: Goblin Piker [0cb] (2/1) unblocked
+INFO  2026-08-13 08:15:17,509 [LOG][GAME] T12.CD: Floodpits Drowner [756] deals 2 damage to Goblin Piker [692]
+INFO  2026-08-13 08:15:17,510 [LOG][GAME] T12.CD: Goblin Piker [692] deals 2 damage to Floodpits Drowner [756]
+INFO  2026-08-13 08:15:17,511 [LOG][GAME] T12.CD: Agent loses 2 life at combat from Goblin Piker [0cb]
+INFO  2026-08-13 08:15:17,513 [LOG][GAME] T12.CD: Goblin Piker [692] died
+INFO  2026-08-13 08:15:17,514 [LOG][GAME] T12.CD: Floodpits Drowner [756] died
+INFO  2026-08-13 08:15:17,586 [LOG][GAME] T13.DR: Stack push: 1 (top: Cast Nowhere to Run)
+INFO  2026-08-13 08:15:17,593 [LOG][GAME] T13.DR: Agent casts Nowhere to Run [2a1] from hand
+INFO  2026-08-13 08:15:17,605 [LOG][GAME] T13.DR: Stack resolve: 1 (top: Cast Nowhere to Run)
+INFO  2026-08-13 08:15:17,606 [LOG][GAME] T13.DR: Agent puts Nowhere to Run [2a1] from stack onto the Battlefield
+INFO  2026-08-13 08:15:17,609 [LOG][GAME] T13.DR: Stack push: 1 (top: stack ability (When {this} enters, target creature an opponent controls gets -3/-3 until end of t...)
+INFO  2026-08-13 08:15:17,618 [LOG][GAME] T13.DR: Agent - Ability triggers: Nowhere to Run [2a1] - When Nowhere to Run [2a1] enters, target creature an opponent controls gets -3/-3 until end of turn. - targeting Ember Beast [c37]
+INFO  2026-08-13 08:15:17,637 [LOG][GAME] T13.DR: Stack resolve: 1 (top: stack ability (When {this} enters, target creature an opponent controls gets -3/-3 until end of t...)
+INFO  2026-08-13 08:15:17,664 [LOG][GAME] T13.M1: Stack push: 1 (top: stack ability ({2}{U}{B}: Until end of turn, {this} becomes a 4/4 blue and black Shark creature w...)
+INFO  2026-08-13 08:15:17,673 [LOG][GAME] T13.M1: Agent activates: until end of turn, Restless Reef [24d] becomes a 4/4 blue and black Shark creature with deathtouch. It's still a land. from Restless Reef [24d]
+INFO  2026-08-13 08:15:17,680 [LOG][GAME] T13.M1: Stack resolve: 1 (top: stack ability ({2}{U}{B}: Until end of turn, {this} becomes a 4/4 blue and black Shark creature w...)
+INFO  2026-08-13 08:15:17,688 [LOG][GAME] T13.M1: Stack push: 1 (top: stack ability (+1: You get an emblem with "Ninjas you control get +1/+1."))
+INFO  2026-08-13 08:15:17,690 [LOG][GAME] T13.M1: Agent activates: you get an emblem with "Ninjas you control get +1/+1." from Kaito, Bane of Nightmares [45c]
+INFO  2026-08-13 08:15:17,696 [LOG][GAME] T13.M1: Stack resolve: 1 (top: stack ability (+1: You get an emblem with "Ninjas you control get +1/+1."))
+INFO  2026-08-13 08:15:17,717 [LOG][GAME] T13.DA: Agent attacks Opponent with 1 creature
+INFO  2026-08-13 08:15:17,724 [LOG][GAME] T13.DB: Attacker: Kaito, Bane of Nightmares [45c] (6/7) unblocked
+INFO  2026-08-13 08:15:17,732 [LOG][GAME] T13.CD: Opponent loses 6 life at combat from Kaito, Bane of Nightmares [45c]
+INFO  2026-08-13 08:15:17,771 [LOG][GAME] T13.ET: Stack push: 1 (top: Cast Trumpet Blast)
+INFO  2026-08-13 08:15:17,779 [LOG][GAME] T13.ET: Opponent casts Trumpet Blast [be8] from hand
+INFO  2026-08-13 08:15:17,783 [LOG][GAME] T13.ET: Stack push: 2 (top: Cast Trumpet Blast)
+INFO  2026-08-13 08:15:17,790 [LOG][GAME] T13.ET: Opponent casts Trumpet Blast [5fb] from hand
+INFO  2026-08-13 08:15:17,797 [LOG][GAME] T13.ET: Stack resolve: 2 (top: Cast Trumpet Blast)
+INFO  2026-08-13 08:15:17,798 [LOG][GAME] T13.ET: Opponent puts Trumpet Blast [5fb] from stack into their graveyard
+INFO  2026-08-13 08:15:17,806 [LOG][GAME] T13.ET: Stack resolve: 1 (top: Cast Trumpet Blast)
+INFO  2026-08-13 08:15:17,807 [LOG][GAME] T13.ET: Opponent puts Trumpet Blast [be8] from stack into their graveyard
+INFO  2026-08-13 08:15:17,833 [LOG][GAME] T14.M1: Stack push: 1 (top: Cast Raging Goblin)
+INFO  2026-08-13 08:15:17,836 [LOG][GAME] T14.M1: Opponent casts Raging Goblin [e10] from hand
+INFO  2026-08-13 08:15:17,842 [LOG][GAME] T14.M1: Stack resolve: 1 (top: Cast Raging Goblin)
+INFO  2026-08-13 08:15:17,843 [LOG][GAME] T14.M1: Opponent puts Raging Goblin [e10] from stack onto the Battlefield
+INFO  2026-08-13 08:15:17,857 [LOG][GAME] T14.DA: Opponent attacks Agent with 3 creatures
+INFO  2026-08-13 08:15:17,865 [LOG][GAME] T14.DB: Attacker: Ember Beast [c37] (3/4) unblocked
+INFO  2026-08-13 08:15:17,866 [LOG][GAME] T14.DB: Attacker: Goblin Piker [0cb] (2/1) unblocked
+INFO  2026-08-13 08:15:17,866 [LOG][GAME] T14.DB: Attacker: Raging Goblin [e10] (1/1) unblocked
+INFO  2026-08-13 08:15:17,874 [LOG][GAME] T14.CD: Agent loses 3 life at combat from Ember Beast [c37]
+INFO  2026-08-13 08:15:17,874 [LOG][GAME] T14.CD: Agent loses 2 life at combat from Goblin Piker [0cb]
+INFO  2026-08-13 08:15:17,875 [LOG][GAME] T14.CD: Agent loses 1 life at combat from Raging Goblin [e10]
+INFO  2026-08-13 08:15:17,968 [LOG][GAME] T15.DR: Stack push: 1 (top: stack ability ({2}{U}{B}: Until end of turn, {this} becomes a 4/4 blue and black Shark creature w...)
+INFO  2026-08-13 08:15:17,978 [LOG][GAME] T15.DR: Agent activates: until end of turn, Restless Reef [24d] becomes a 4/4 blue and black Shark creature with deathtouch. It's still a land. from Restless Reef [24d]
+INFO  2026-08-13 08:15:18,009 [LOG][GAME] T15.DR: Stack resolve: 1 (top: stack ability ({2}{U}{B}: Until end of turn, {this} becomes a 4/4 blue and black Shark creature w...)
+INFO  2026-08-13 08:15:18,027 [LOG][GAME] T15.M1: Stack push: 1 (top: stack ability (+1: You get an emblem with "Ninjas you control get +1/+1."))
+INFO  2026-08-13 08:15:18,030 [LOG][GAME] T15.M1: Agent activates: you get an emblem with "Ninjas you control get +1/+1." from Kaito, Bane of Nightmares [45c]
+INFO  2026-08-13 08:15:18,037 [LOG][GAME] T15.M1: Stack resolve: 1 (top: stack ability (+1: You get an emblem with "Ninjas you control get +1/+1."))
+INFO  2026-08-13 08:15:18,046 [LOG][GAME] T15.M1: Agent loses 2 life from Watery Grave [a29]
+INFO  2026-08-13 08:15:18,046 [LOG][GAME] T15.M1: Agent puts Watery Grave [a29] from hand onto the Battlefield
+INFO  2026-08-13 08:15:18,074 [LOG][GAME] T15.DA: Agent attacks Opponent with 1 creature
+INFO  2026-08-13 08:15:18,087 [LOG][GAME] T15.DB: Attacker: Kaito, Bane of Nightmares [45c] (7/8) unblocked
+INFO  2026-08-13 08:15:18,101 [LOG][GAME] T15.CD: Opponent loses 7 life at combat from Kaito, Bane of Nightmares [45c]
+INFO  2026-08-13 08:15:18,103 [LOG][GAME] T15.CD: Opponent lost the game due life is 0 or less
+INFO  2026-08-13 08:15:18,104 [LOG][GAME] T15.CD: Opponent has lost the game.
+INFO  2026-08-13 08:15:18,108 [LOG][GAME] T15.CD: Agent has won the game

@@ -1,0 +1,7 @@
+P7CELO|seed=0|trained=0|elo=928|d0=0.4600|d1=0.3000|d1h=0.2300|blocks=121|blockOpps=121|flashThreats=306|oppTurn=0
+P7CELO|seed=0|trained=512|elo=1012|d0=0.6000|d1=0.3500|d1h=0.3600|blocks=126|blockOpps=126|flashThreats=289|oppTurn=3
+P7CELO|seed=0|trained=1024|elo=1059|d0=0.6500|d1=0.4200|d1h=0.4300|blocks=112|blockOpps=112|flashThreats=328|oppTurn=1
+P7CELO|seed=0|trained=1536|elo=1096|d0=0.6800|d1=0.4800|d1h=0.4900|blocks=117|blockOpps=117|flashThreats=307|oppTurn=1
+P7CELO|seed=0|trained=2048|elo=1040|d0=0.5700|d1=0.4000|d1h=0.4400|blocks=139|blockOpps=139|flashThreats=299|oppTurn=0
+P7CELO|seed=0|trained=2560|elo=1020|d0=0.5500|d1=0.3800|d1h=0.3900|blocks=136|blockOpps=136|flashThreats=314|oppTurn=1
+P7CELO|seed=0|trained=3072|elo=1046|d0=0.5800|d1=0.4600|d1h=0.3900|blocks=131|blockOpps=131|flashThreats=328|oppTurn=2
