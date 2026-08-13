@@ -1,8 +1,9 @@
 # Phase 7c — archetype curriculum: does opponent deck variety buy robustness the mirror can't?
 
-**Status: COMPLETE** for the 3072-episode curriculum run (seed 0).
-Two follow-up arms — per-deck specialists and per-deck exploiters — are
-running and reported separately when they land.
+**Status: COMPLETE.** 3072-episode curriculum run (seed 0), plus both
+follow-up arms: 6 per-deck specialists (3072 episodes) and 6 per-deck
+exploiters (3072 episodes). ~9,200 training episodes and ~9,700
+evaluation games total.
 
 ## Question
 
@@ -371,6 +372,51 @@ against a soft mirror is the trade.
    Phase 7 hole, though 3 in 300 rating games is barely off zero.
 
 
+
+## Follow-up A: per-deck specialists (complete)
+
+Six specialists, each starting from the same frozen `p7_final.pt` the
+curriculum started from, each training 512 episodes against ONE deck
+(`rl/p7c_specialist.sh`). 6 x 512 = the 3072 the curriculum spent, so
+this is an equal-budget blocked-vs-interleaved comparison.
+
+| deck | specialist own-deck | curriculum @3072 | gap | specialist mirror Elo |
+|---|---|---|---|---|
+| sweep | .78 | .76 | **+.02** | 947 |
+| redrush | .42 | .65 | −.23 | 918 |
+| tokens | .39 | .65 | −.26 | 907 |
+| wweenie | .39 | .54 | −.15 | 899 |
+| skies | .35 | .49 | −.14 | 896 |
+| ramp | .36 | .52 | −.16 | (not collected) |
+| **mean** | **.448** | **.602** | **−.154** | **~913 vs 1046** |
+
+**Blocked practice loses on its own terms.** The specialists were
+beaten on the very decks they specialised in, by an average of .154 —
+by an agent that spent a *fraction* of its budget on each. And they
+paid for it twice: five of six mirror Elos sit at or below the 928
+starting point (896–947) against the curriculum's 1046, so single-deck
+training did not merely fail to generalise, it moved most of the
+specialists backwards on the mirror.
+
+The one near-tie is `sweep` (+.02), the near-creatureless outlier where
+the curriculum itself gained least (+.02 residual). Focused training
+matched interleaved training only on the matchup with almost nothing to
+learn.
+
+This is the sharpest result of the phase, because it inverts the
+intuition behind the question. Diversity is not a tax the curriculum
+pays for generality, offset against per-deck depth. **Diversity is the
+mechanism by which anything is learned at all** — 512 episodes against
+one opponent teaches less about that opponent than ~380 episodes
+against it amid five others.
+
+The mechanism is visible in Phase 6's earlier finding: a narrow league
+gradient eroded the attention family's prior (attn_bc 1044 ->
+attn_v2 1039). Single-deck training is the maximally narrow gradient.
+Against a fixed opponent the agent appears to converge on a
+deck-specific exploit rather than skill, which neither transfers nor
+survives contact with the mirror.
+
 ## Follow-up B: per-deck exploiters (complete)
 
 Nets trained to *pilot* each archetype against the frozen curriculum
@@ -519,3 +565,78 @@ episodes, at roughly five times Phase 7's Elo-per-episode over the same
 span. Opponent *deck* diversity is a cheaper source of learning signal
 than either proposed fix, and it is the one axis four phases of this
 project never varied.
+
+## Generalized conclusions
+
+Five things this phase established that outlive the specific question.
+
+**1. Opponent-deck diversity is a first-class training variable, and it
+was the cheapest one available.** Four phases varied the encoder (E0 vs
+E2), the evaluator depth (D0–D3), the initialisation (scratch vs BC),
+and the opponent *population* (self-play, league, PFSP, exploiters).
+None of them moved the agent past the scripted search instruments.
+Varying which *decks* the opponents pilot did, in 1536 episodes, with
+no other change. PHASE4-VERDICT's recommendation — dial the evaluator,
+not the node count — was reasonable and would have been more expensive
+than the axis nobody tried.
+
+**2. Diversity is the learning mechanism, not a tax paid for
+generality.** The natural model is that focused training buys depth and
+mixed training trades depth for breadth. The specialist arm refutes it
+at equal budget: specialists lost on their own decks by .154 on
+average, and five of six ended at or below their own starting mirror
+rating. Against a fixed opponent the agent converges on something
+deck-specific that neither transfers nor survives contact with the
+mirror; it takes a varied population to make the gradient point at
+skill at all.
+
+**3. Instruments need calibrating before their outputs mean anything.**
+Three confident predictions in this phase were wrong, and each was
+caught by a cheap control rather than by inspection:
+   - "The sweeper deck will be the hardest matchup" — it was the
+     easiest (.625 baseline). Fixed by the 40g screen.
+   - "D1 is a better pilot than D0, so repilot the archetype rows" —
+     D1 is *worse* than D0 on four of six decks. Fixed by 1,400
+     scripted games. Acting on the prediction would have weakened four
+     opponents and corrupted the matrix.
+   - "Trained exploiters will give an upper bound on opponent quality"
+     — they landed below D0 on four of six decks. Fixed by running
+     them.
+   The scripted D0 < D1 < D1h ladder that anchors the entire Phase 6
+   Elo scale turns out to be a *BenchDimir-specific* ordering. It is
+   safe for every rating this project has measured, because all of them
+   are measured on the mirror — and unsafe for any future cross-deck
+   rating system, which is exactly what someone would try next.
+
+**4. Report the denominator.** The headline metric was "the agent never
+blocks". It blocks 100% of the time it is asked, at every checkpoint,
+on every deck — 34 probes, no exceptions. What changed over the run was
+how often it is *asked* (mirror opportunities 121 → 112 → 139 → 131),
+and that inverted exactly when the mirror rating started falling. A raw
+block count would have shown a flat line all run and concluded nothing
+happened. The finding exists only because the counter shipped with its
+opportunity denominator.
+
+**5. "Better" needs a stated axis.** The run does not produce one best
+agent. `ck_1536` is the strongest mirror player (1096, sweep .92);
+`ck_3072` is the most robust across archetypes (residuals uniformly
+better, redrush +.31, ramp +.23) at 1046. The curriculum converts
+mirror-specific rating into breadth at roughly 50 Elo, and which side
+of that trade is preferable is a product question, not a training one.
+
+### What would settle the open questions
+
+- **Seeds.** Everything here is seed 0 against a ≥5-seed convention.
+  The Elo trend to 1536 is large enough to survive, the per-checkpoint
+  moves and the noisier matrix rows (`wweenie`: .54, .53, .56, .61,
+  .54) are not.
+- **A 500g match vs D1 at ck_1536**, to convert "parity within 100g
+  noise" into a real result. This is the single cheapest high-value
+  follow-up.
+- **Random-init pilots trained to convergence per deck** (Phase-7 scale
+  each) to get a genuine upper bound on opponent quality and finally
+  lift the matrix caveat.
+- **A/B against the main session's mirror-PFSP arm** from the shared
+  frozen start, which is the comparison this phase was designed as one
+  half of.
+

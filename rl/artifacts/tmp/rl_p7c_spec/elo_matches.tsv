@@ -1,0 +1,16 @@
+spec_sweep	D0	43	0	100
+spec_sweep	D1	31	0	100
+spec_sweep	D1h	31	0	100
+spec_tokens	D0	39	0	100
+spec_tokens	D1	25	0	100
+spec_tokens	D1h	26	0	100
+spec_wweenie	D0	36	0	100
+spec_wweenie	D1	26	0	100
+spec_wweenie	D1h	25	0	100
+spec_skies	D0	42	0	100
+spec_skies	D1	23	0	100
+spec_skies	D1h	21	0	100
+spec_redrush	D0	43	0	100
+spec_redrush	D1	23	0	100
+spec_redrush	D1h	28	0	100
+spec_ramp	D0	46	0	100
