@@ -16,3 +16,4 @@ redrush|heuristic|M3RedRush.dck|1130
 ck_2048|rl:lstmattn:/tmp/rl_p7c_lstmattn_s0/pool/ck_2048.pt|BenchDimir.dck|1040
 ramp|heuristic|M3GreenRamp.dck|1185
 ck_2560|rl:lstmattn:/tmp/rl_p7c_lstmattn_s0/pool/ck_2560.pt|BenchDimir.dck|1020
+ck_3072|rl:lstmattn:/tmp/rl_p7c_lstmattn_s0/pool/ck_3072.pt|BenchDimir.dck|1046

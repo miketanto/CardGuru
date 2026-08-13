@@ -1,8 +1,8 @@
 # Phase 7c — archetype curriculum: does opponent deck variety buy robustness the mirror can't?
 
-**Status: IN PROGRESS.** Setup, instruments and pre-flight are complete
-and reported below; the growth curve, robustness matrix and blocking
-counters are filled in as checkpoints land.
+**Status: COMPLETE** for the 3072-episode curriculum run (seed 0).
+Two follow-up arms — per-deck specialists and per-deck exploiters — are
+running and reported separately when they land.
 
 ## Question
 
@@ -153,46 +153,48 @@ Generated from the lane's own log lines by `rl/p7c_report.py`.
 | 1536 | 1096 | 0.6800 | 0.4800 | 0.4900 | 117 | 117 | 1.00 |
 | 2048 | 1040 | 0.5700 | 0.4000 | 0.4400 | 139 | 139 | 1.00 |
 | 2560 | 1020 | 0.5500 | 0.3800 | 0.3900 | 136 | 136 | 1.00 |
+| 3072 | 1046 | 0.5800 | 0.4600 | 0.3900 | 131 | 131 | 1.00 |
 
 ### Robustness matrix (100g vs D0 piloting each archetype)
 
-| archetype | 0 | 512 | 1024 | 1536 | 2048 | 2560 |
-|---|---|---|---|---|---|---|
-| sweep | 0.7200 | 0.7900 | 0.8400 | 0.9200 | 0.8800 | 0.7700 |
-| tokens | - | 0.5000 | 0.6100 | 0.6600 | 0.5800 | 0.6400 |
-| wweenie | - | - | 0.5400 | 0.5300 | 0.5600 | 0.6100 |
-| skies | - | - | - | 0.4700 | 0.5200 | 0.4700 |
-| redrush | - | - | - | - | 0.6500 | 0.6600 |
-| ramp | - | - | - | - | - | 0.5500 |
+| archetype | 0 | 512 | 1024 | 1536 | 2048 | 2560 | 3072 |
+|---|---|---|---|---|---|---|---|
+| sweep | 0.7200 | 0.7900 | 0.8400 | 0.9200 | 0.8800 | 0.7700 | 0.7600 |
+| tokens | - | 0.5000 | 0.6100 | 0.6600 | 0.5800 | 0.6400 | 0.6500 |
+| wweenie | - | - | 0.5400 | 0.5300 | 0.5600 | 0.6100 | 0.5400 |
+| skies | - | - | - | 0.4700 | 0.5200 | 0.4700 | 0.4900 |
+| redrush | - | - | - | - | 0.6500 | 0.6600 | 0.6500 |
+| ramp | - | - | - | - | - | 0.5500 | 0.5200 |
 
 ### Blocking counter by archetype (blocks / opportunities)
 
-| archetype | 0 | 512 | 1024 | 1536 | 2048 | 2560 |
-|---|---|---|---|---|---|---|
-| sweep | 66/66 | 55/55 | 41/41 | 44/44 | 49/49 | 51/51 |
-| tokens | - | 214/214 | 174/174 | 168/168 | 168/168 | 167/167 |
-| wweenie | - | - | 191/191 | 188/188 | 188/188 | 193/193 |
-| skies | - | - | - | 82/82 | 80/80 | 86/86 |
-| redrush | - | - | - | - | 156/156 | 163/163 |
-| ramp | - | - | - | - | - | 148/148 |
+| archetype | 0 | 512 | 1024 | 1536 | 2048 | 2560 | 3072 |
+|---|---|---|---|---|---|---|---|
+| sweep | 66/66 | 55/55 | 41/41 | 44/44 | 49/49 | 51/51 | 59/59 |
+| tokens | - | 214/214 | 174/174 | 168/168 | 168/168 | 167/167 | 181/181 |
+| wweenie | - | - | 191/191 | 188/188 | 188/188 | 193/193 | 180/180 |
+| skies | - | - | - | 82/82 | 80/80 | 86/86 | 75/75 |
+| redrush | - | - | - | - | 156/156 | 163/163 | 169/169 |
+| ramp | - | - | - | - | - | 148/148 | 159/159 |
 
 ### Realized opponent mix (64-episode chunks)
 
 | opponent | deck | chunks | share |
 |---|---|---|---|
-| tokens | M3SelesnyaTokens.dck | 13 | 32.5% |
-| sweep | P7cSweepControl.dck | 6 | 15.0% |
-| D1h | BenchDimir.dck | 4 | 10.0% |
-| skies | M3BlueSkies.dck | 4 | 10.0% |
-| ck_0 | BenchDimir.dck | 3 | 7.5% |
-| redrush | M3RedRush.dck | 3 | 7.5% |
-| attn_bc | BenchDimir.dck | 2 | 5.0% |
-| ck_1024 | BenchDimir.dck | 2 | 5.0% |
-| D0 | BenchDimir.dck | 1 | 2.5% |
-| attn_desp | BenchDimir.dck | 1 | 2.5% |
-| wweenie | M3WhiteWeenie.dck | 1 | 2.5% |
+| tokens | M3SelesnyaTokens.dck | 15 | 31.2% |
+| sweep | P7cSweepControl.dck | 6 | 12.5% |
+| D1h | BenchDimir.dck | 5 | 10.4% |
+| skies | M3BlueSkies.dck | 5 | 10.4% |
+| redrush | M3RedRush.dck | 4 | 8.3% |
+| ck_0 | BenchDimir.dck | 3 | 6.2% |
+| ck_1024 | BenchDimir.dck | 3 | 6.2% |
+| attn_bc | BenchDimir.dck | 2 | 4.2% |
+| ramp | M3GreenRamp.dck | 2 | 4.2% |
+| D0 | BenchDimir.dck | 1 | 2.1% |
+| attn_desp | BenchDimir.dck | 1 | 2.1% |
+| wweenie | M3WhiteWeenie.dck | 1 | 2.1% |
 
-Archetype chunks: 27/40 (67.5%); mirror chunks: 13/40.
+Archetype chunks: 33/48 (68.8%); mirror chunks: 15/48.
 
 ### Opponent calibration: deck power vs pilot skill
 
@@ -370,4 +372,102 @@ against a soft mirror is the trade.
 
 ## Verdict
 
-*(pending — run in progress)*
+**Does deck diversity buy robustness the mirror can't, and at what cost
+to mirror Elo?** Yes, and 50 Elo off the peak — but the honest version
+of both halves needs the deck-power normalisation, because raw win
+rates conflate three different things.
+
+### 1. It buys robustness, and the gains are combat-shaped
+
+Normalising each archetype for measured deck power (expected WR = the
+agent's own mirror rate vs D0, shifted by the deck's power gap against
+BenchDimir; residual = performance beyond what deck strength explains):
+
+| deck | power | base WR | resid | 3072 WR | resid | change |
+|---|---|---|---|---|---|---|
+| redrush | .64 | .225 | −.18 | .65 | +.13 | **+.31** |
+| ramp | .60 | .175 | −.27 | .52 | −.04 | **+.23** |
+| tokens | .55 | .400 | −.09 | .65 | +.04 | +.13 |
+| skies | .71 | .275 | −.06 | .49 | +.04 | +.10 |
+| wweenie | .48 | .375 | −.19 | .54 | −.14 | +.05 |
+| sweep | .49 | .625 | +.07 | .76 | +.09 | +.02 |
+
+Every residual improved. They improved roughly in order of how much
+creature combat the deck demands: the two decks that punish a tapped-out
+board hardest (`redrush`, `ramp`) gained most, and `sweep` — almost no
+creature combat, and the only deck the agent already beat above
+expectation — gained least. Two of these are substantially zero-shot
+results: `redrush` was at .650 the moment it was introduced, `ramp` at
+.550, before either had been trained against.
+
+The mirror could not have produced this. The mirror never presents a
+Craterhoof or a four-token board.
+
+### 2. It costs ~50 Elo, and only once diversity outvotes the mirror
+
+| trained | 0 | 512 | 1024 | 1536 | 2048 | 2560 | 3072 |
+|---|---|---|---|---|---|---|---|
+| Elo | 928 | 1012 | 1059 | **1096** | 1040 | 1020 | 1046 |
+
+Through 1536 there was no cost at all — the mirror rating *rose* 168
+points while the agent trained mostly off-mirror, and at 1096 it reached
+parity with the scripted search instruments (D1 1085, D1h 1088), which
+is the wall Phase 4 declared: *"terminal-reward PPO at ~120k consults
+cannot beat even 1-ply search."* The cost appeared at 2048, when five
+archetypes outvoted six mirror rows in the sampling, and settled at
+1046 — **+118 over baseline, −50 off peak**.
+
+### 3. What was traded, mechanically
+
+Mirror block *opportunities* per 100 games: 121, 126, 112, 117, **139,
+136, 131**. The first three checkpoints drove that number down — the
+agent racing harder, tapping out more — and it inverted at 2048. The
+agent learned to keep creatures back. On the Dimir mirror that is the
+wrong plan, because racing is correct there, which is exactly what the
+mirror rating measures. The `sweep` row records the same trade from the
+other side: .92 at peak aggression, .76 after restraint, because racing
+past a control deck before its wraths matter is the plan being
+unlearned.
+
+### 4. The blocking metric, as promised, at every checkpoint
+
+**The block rate is 1.00 at every checkpoint on every deck — all seven
+mirror probes and all 27 matrix probes.** The agent never once declined
+a block. The kickoff's "never-blocks hole" does not exist as stated;
+what exists is that the agent is rarely *asked*, and the curriculum's
+real effect was to raise the number of times it is asked. Reporting
+this required the `blockOpportunities` denominator added this phase — a
+raw block count would have shown a flat line all run and concluded
+nothing changed.
+
+### 5. What this does not establish
+
+- **Single seed.** The project convention for a defensible claim is ≥5
+  seeds. The Elo trend is large and monotone to 1536, but per-checkpoint
+  moves of ~20 points sit inside 100g noise, and `wweenie` (.54, .53,
+  .56, .61, .54) is visibly noise-dominated.
+- **Parity with D1 is within noise, not a demonstrated lead.** A 500g
+  match at the peak checkpoint would settle it; 100g probes flatter by
+  ~.07 by standing convention.
+- **The robustness matrix is a lower bound on opponent quality.** Every
+  archetype row is piloted by D0, and the pilot calibration showed the
+  scripted ladder cannot pilot four of six archetypes better than the
+  heuristic. `sweep` .76 means the agent beats *D0 piloting control*,
+  not that it handles control. The exploiter arm exists to settle this.
+- **Peak-vs-final is a real choice.** If mirror strength is the goal,
+  ck_1536 is the better checkpoint (1096, sweep .92). If archetype
+  robustness is the goal, ck_3072 is (residuals uniformly better). They
+  are different agents and the run does not collapse that choice.
+
+### 6. Consequence for the project
+
+Phase 4 concluded that beating the search instruments needed a better
+evaluator or a denser learning signal, and Phase 7 concluded its
+remaining ~130 points needed "a much larger budget, stronger mid-tier
+opponents, or a BC init". Neither was necessary. Changing only which
+decks the opponents pilot — same architecture, same terminal-reward
+PPO, same fixed piloting task — reached instrument parity in 1536
+episodes, at roughly five times Phase 7's Elo-per-episode over the same
+span. Opponent *deck* diversity is a cheaper source of learning signal
+than either proposed fix, and it is the one axis four phases of this
+project never varied.
