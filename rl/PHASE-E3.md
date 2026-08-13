@@ -235,16 +235,59 @@ is +.070 ± .081, inside it. The two arms also play differently: the E2
 net takes 44.0 actions/ep against E3's 22.7 on 102.8 vs 158.1 consults,
 i.e. it acts on a larger share of the windows it sees.
 
-**One seed each, so this is a lead, not a result.** Phase 7b/7c/8b all
+**One seed each, so this is a lead, not a result** - and the transfer
+probes below show the lead is deck-specific. Phase 7b/7c/8b all
 found single scratch runs noisy enough to need replication, and the
 standing project convention is 5 seeds; a second seed is running (§7).
 Read as-is it says the E3 encoder is at least not *worse* to train from
 scratch — the honest worry with +32 mostly-uninformative dims and a
-wider state vector — and may be learning faster early. It does **not**
-say the text channel is why: §5 shows the pilot can lose that block
-entirely without a win-rate cost, so any real E3 advantage at this
-budget more likely comes from the pip dims (read, §5) or simply from a
-wider input layer.
+wider state vector. It does **not** say the text channel is why: §5
+shows the pilot can lose that block entirely without a win-rate cost,
+so any real E3 advantage at this budget more likely comes from the pip
+dims (read, §5) or simply from a wider input layer.
+
+### Transfer: the home-deck lead does not survive an archetype change
+
+Both arms, three decks, 200g vs D0, seed 0 (`rl/e3_transfer.sh`):
+
+| deck | E2 | E3 | what it tests |
+|---|---|---|---|
+| BenchDimir (home) | .280 | **.455** | training distribution |
+| P8SwapInteraction | .305 | **.445** | 12 feature-matched unseen cards |
+| P8Faeries | **.300** | .190 | full archetype rebuild |
+| P8Faeries vs D1 | .145 | .125 | — |
+
+Transfer tax, home → held out:
+
+- **E3**: .455 → .445 on the swaps (**−.010**, no tax at all) → .190 on
+  faeries (**−.265**).
+- **E2**: .280 → .305 → .300 (**+.02**, flat everywhere).
+
+Three things follow.
+
+1. **Gate G2 is confirmed operationally, not just geometrically.** The
+   swap deck replaces 12 cards with analogs the net has never seen, and
+   the E3 net plays it as well as its own deck (.445 vs .455). Keeping
+   the P8 pairs close in the new 100-dim space preserved exactly the
+   zero-shot property Phase 8 measured — adding the text block did not
+   break it.
+2. **The archetype rebuild still breaks everything**, as in Phase 8.
+   E3's −.265 is a much bigger tax than E2's +.02, and on faeries the
+   ordering **reverses**: E2 .300 vs E3 .190 (+.110 for E2, against a
+   ±.09 CI — marginal, one seed).
+3. The most economical reading is 8b's identifier story with the volume
+   turned up: E2's 512-episode net is nearly deck-*insensitive* (it
+   plays the same weak game everywhere, .280/.305/.300, at 44-45
+   actions/ep), while E3 converted its extra capacity into BenchDimir-
+   specific competence that does not generalize. A wider card channel
+   gives more identifier capacity, and single-deck training spends it
+   locally — which is the regime 8b already told us not to trust.
+
+So the §4 home-deck lead should **not** be read as "E3 generalizes
+better". It is a stronger fit to one deck. That is not an argument
+against the channel; it is an argument that this experiment cannot
+evaluate it, and the same argument the checkpoint already makes for
+running the A/B under deck diversity from initialization.
 
 ## 5. Is the new channel load-bearing? (`rl/e3_ablate.sh`)
 
@@ -341,20 +384,32 @@ a deck where the signal was constantly zero.
   jitter band in behaviour, no win-rate cost. Pips: 3×, no cost. Hand
   differential: marginal. Known-top: verified live at 4.6% of decisions
   on a deck that filters, unused by this net.
+- **A matched E2 arm wins the transfer test.** E3 leads at home (.455
+  vs .280, 200g) and keeps that lead through a 12-card feature-matched
+  swap (.445 vs .305 — gate G2 confirmed operationally, zero-shot
+  transfer intact), then loses it entirely on a full archetype rebuild:
+  P8Faeries **E2 .300 vs E3 .190**. E3's home→faeries tax is −.265;
+  E2's is +.02, because the E2 net is barely deck-sensitive at all.
+  A wider card channel buys a stronger fit to the deck it was trained
+  on, and single-deck training spends the extra capacity on local
+  identifiers — 8b's mechanism, louder.
 - That is the *expected* result at this budget, and it is exactly the
   8b story from the other side: on one deck, identifier-style use of the
   mechanical block is sufficient, so semantic dims cannot pay yet.
   **E3 should be A/B'd where 8b said the mechanism lives — deck
   diversity from initialization** (the Phase 10 flagship), not on the
-  BenchDimir mirror. What this session establishes is that the channel
-  is correct, gated, reproducible, cheap, read by the net, and safe to
-  put in that run.
+  BenchDimir mirror; the transfer reversal is direct evidence that a
+  single-deck A/B would *mis*-rank the two encoders. What this session
+  establishes is that the channel is correct, gated, reproducible,
+  cheap, read by the net, and safe to put in that run.
 
 ### What would settle it
 
 1. Matched E2-vs-E3 arms inside the Phase 10 flagship (deck diversity
    from episode 0, gated PFSP league), rated on the mirror + the 7c
-   robustness matrix. That is where "condition breadth" can pay.
+   robustness matrix — and scored on HELD-OUT archetypes, not just the
+   mirror, since the two arms rank differently depending on which you
+   read. That is where "condition breadth" can pay.
 2. Re-run this battery on the flagship's champion: the same table on a
    .60+ net has the headroom for a −.10 text-scramble effect to show.
 3. Group 1 needs a deck that filters (P8Meta/archetype pools have scry
@@ -388,14 +443,16 @@ python3 rl/e3_text_spike.py            # feasibility spike, unchanged
 python3 rl/e3_extract.py               # -> rl/e3_features.tsv (dim 100)
 python3 rl/e3_gates.py                 # the three gates, exit 0 = pass
 bash    rl/e3_pilot.sh 512 0           # from-scratch pilot (sdim 29 cdim 123)
-bash    rl/e3_ablate.sh /tmp/rl_e3_s0/e3_pilot_final.pt 200
+bash    rl/e3_ablate.sh /tmp/rl_e3_pilot_s0/e3_pilot_final.pt 200
+E3_ARM=e2 bash rl/e3_pilot.sh 512 0    # matched control arm
+bash    rl/e3_transfer.sh 0 200        # both arms x home / swap / faeries
 
 # the two controls the battery is read against
 E3_OUT=/tmp/rl_e3_ablate_rep  E3_CASES="baseline" \
-    bash rl/e3_ablate.sh /tmp/rl_e3_s0/e3_pilot_final.pt 200
+    bash rl/e3_ablate.sh /tmp/rl_e3_pilot_s0/e3_pilot_final.pt 200
 E3_OUT=/tmp/rl_e3_ablate_scry E3_DECK=E3ScryProbe.dck \
     E3_CASES="baseline ablate_top ablate_hand" \
-    bash rl/e3_ablate.sh /tmp/rl_e3_s0/e3_pilot_final.pt 200
+    bash rl/e3_ablate.sh /tmp/rl_e3_pilot_s0/e3_pilot_final.pt 200
 
 python3 rl/e3_ablate_report.py /tmp/rl_e3_ablate/results.txt \
     --null /tmp/rl_e3_ablate_rep/results.txt
