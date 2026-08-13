@@ -44,9 +44,17 @@ the same eval seed):
 3. **512–1024: grind (+49 Elo).** Same game plan, executed tighter
    (ninjutsu turn 7 instead of 11; the final checkpoint wins the
    benchmark-seed game on turn 13, using Nowhere to Run as draw-step
-   removal). Known holes at budget end: never blocks (pure race),
-   over-activates Kaito's emblem, and opponent-turn casts are still
-   essentially absent under argmax (one in 300 rating games).
+   removal). Known holes at budget end: rarely blocks, over-activates
+   Kaito's emblem, and opponent-turn casts are still essentially
+   absent under argmax (one in 300 rating games).
+   [CORRECTION, post-2432 audit: "never blocks" as originally written
+   here was a log-parsing artifact - XMage logs blocks as "Attacker: X
+   blocked by Y" without naming the defender, which the transcript
+   filter missed. Re-audit: blocks rise from 0/9 attackers faced at
+   ck256 to ~1/3 vs D0 late, and in the self-play mirror the 2432 net
+   blocks 41% of attackers vs its ck2304 snapshot's 12% - blocking is
+   learned, and accelerates in the snapshot-mirror era. See
+   PHASE7B (in progress).]
 
 ## Verdict
 
