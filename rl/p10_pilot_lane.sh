@@ -210,6 +210,10 @@ while true; do
     fi
 
     rows_before=$(wc -l < $OUT/train.csv 2>/dev/null || echo 0)
+    # the driver APPENDS its summary to -Drl.out, and field() reads the
+    # first match: a stale chunk.txt makes every chunk report chunk 0's
+    # win rate (and feeds that into the self-Elo update).
+    rm -f $OUT/chunk.txt
     RL_PERSIST=$PERSIST RL_AUTOSTART=1 \
     RL_CONC=$([ "$CONC" -gt 1 ] && echo $CONC || echo "") \
     bash $RL/run_driver.sh \

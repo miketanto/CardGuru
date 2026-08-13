@@ -75,12 +75,20 @@ def main():
     target = args.self_elo + args.optimism
     weights = [math.exp(-((e - target) ** 2) / (2 * args.sigma ** 2))
                for _, _, _, e in rows]
-    if max(weights) <= 0.0:
-        # every row is far away: take the one nearest the target rather
-        # than a floor-driven coin flip over the whole field
+    top = max(weights)
+    if top <= 0.0:
+        # true underflow (a from-random-init net is ~1000 Elo below the
+        # whole field): take the nearest row rather than a coin flip.
         pick = min(range(len(rows)), key=lambda i: abs(rows[i][3] - target))
     else:
-        weights = [w + args.floor for w in weights]
+        # RELATIVE floor. Phase 7b's absolute .02 floor was sized for a
+        # dense pool of own snapshots; over a field whose rows all sit
+        # 500+ Elo above a from-scratch pilot, every Gaussian weight is
+        # smaller than the floor and selection becomes uniform -- an
+        # Elo-500 net would meet ck_6144 as often as D0 and learn from
+        # neither. Scaling the floor by the best weight retires nothing
+        # while keeping the ladder ordered.
+        weights = [w + args.floor * top for w in weights]
         pick = rng.choices(range(len(rows)), weights=weights, k=1)[0]
     name, kind, deck, elo = rows[pick]
     print(f"{kind}|{deck}|{name}|{elo:.0f}")
