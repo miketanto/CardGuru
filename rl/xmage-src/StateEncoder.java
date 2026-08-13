@@ -29,6 +29,9 @@ import java.util.UUID;
 public final class StateEncoder {
 
     public static final int STATE_DIM = 29;
+    /** s[24]: "I know what my next draw is" (E3 group 1) - exported so
+     *  the seat can report how often the new visibility is live. */
+    public static final int S_KNOWN_TOP = 24;
     private static final int ID_BASE = 22;   // identity features from here
 
     /**
