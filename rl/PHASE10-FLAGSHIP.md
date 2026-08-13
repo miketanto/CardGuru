@@ -84,7 +84,44 @@ BenchDimir over 100g, mapped to the D0=1000 anchor by
 `Elo = 1000 + 400·log10(p/(1−p))`. Champion and snapshot rows keep their
 Phase 6 mirror ratings, which are on that same anchor.
 
-_(Seeded pool table inserted at first checkpoint.)_
+44 rows: 3 scripted mirror instruments, 6 archetype decks, 6 meta
+decks, 6 prior champions, and the 7b snapshot ladder (23 rungs,
+ck_0 at 46 through ck_8704 at 1085).
+
+| deck row | power | Elo | source |
+|---|---|---|---|
+| meta_dimirbounce | .14 | 685 | 8b |
+| meta_azorius | .20 | 759 | 8b |
+| meta_boros | .38 | 915 | 8b |
+| meta_domain | .45 | 965 | 8b |
+| wweenie | .49 | 993 | 7c |
+| sweep | .53 | 1021 | 7c |
+| tokens | .57 | 1049 | 7c |
+| ramp | .61 | 1078 | 7c |
+| meta_monored | .62 | 1085 | 8b |
+| redrush | .63 | 1092 | 7c |
+| meta_golgari | .69 | 1139 | 8b |
+| skies | .74 | 1182 | 7c |
+
+The six archetype powers reproduce 7c's published figures within noise
+(7c: sweep .49, wweenie .48, tokens .55, ramp .60, redrush .64, skies
+.71) — a free cross-session reproducibility check, on a different build
+of the same pin.
+
+**Read the two lowest rows carefully.** meta_dimirbounce (.14) and
+meta_azorius (.20) are not weak decks; D0 pilots a bounce/tempo deck
+and a flash/counter deck badly. This is the same pilot-vs-deck confound
+7c documented from the other side (D1 is a *worse* pilot than D0 on
+four of six archetypes). Every deck row in this pool therefore means
+"how hard is D0 piloting this deck", not "how hard is this archetype" —
+which is exactly what a training opponent's rating should mean, and
+exactly what a robustness claim must not be read as.
+
+**Why the snapshot ladder is in the pool.** With gating on, no snapshot
+of *this* run can enter until it beats ck_6144 (Elo 1101). A
+from-scratch net would otherwise face a population whose weakest member
+is 685 and would never produce a rung of its own. The 7b ladder
+supplies the low rungs the gate cannot.
 
 ## 5. Results
 
