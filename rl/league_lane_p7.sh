@@ -167,6 +167,11 @@ rate_checkpoint() {  # $1 trained -> P7ELO| line
 }
 
 cd /home/user/mage
+# a crashed prior run can leave a server bound to our ports (failure
+# paths exit without stopping the sibling server) - clear them first
+pkill -f "policy_serve[r].py --port $APORT" 2>/dev/null
+pkill -f "policy_serve[r].py --port $OPORT" 2>/dev/null
+sleep 1
 while true; do
     trained=$(cat $OUT/trained.txt 2>/dev/null || echo 0)
     [ "$trained" -ge "$BUDGET" ] && break
