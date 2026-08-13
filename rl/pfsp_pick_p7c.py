@@ -33,7 +33,22 @@ def main():
     ap.add_argument("--chunk", type=int, required=True)
     ap.add_argument("--optimism", type=float, default=100.0)
     ap.add_argument("--sigma", type=float, default=150.0)
-    ap.add_argument("--floor", type=float, default=0.02)
+    ap.add_argument("--floor", type=float, default=0.02,
+                    help="per-row floor weight (7b/7c semantics)")
+    # Phase 10: a per-ROW floor is a per-POOL floor in disguise. 7b's
+    # .02 was set against a ~25-row pool of mirror snapshots; the
+    # flagship pool has 44 rows spanning 46-1182 Elo, so the floor
+    # contributes .88 of total weight - which swamps the Gaussian
+    # exactly when the agent is weakest (50% of picks are floor-driven
+    # at Elo 199, 2% at Elo 1000). That inverts the whole point of
+    # optimistic selection: the weaker the agent, the more of its games
+    # go to opponents it cannot learn anything from. --floor-total
+    # fixes the floor's SHARE of the mass instead, so nothing is ever
+    # retired but nothing is ever swamped either. Unset = 7b/7c
+    # behaviour, so those lanes still reproduce.
+    ap.add_argument("--floor-total", type=float, default=None,
+                    help="total floor mass, spread across rows "
+                         "(overrides --floor)")
     # Phase 7c: guarantee the curriculum actually gets played. Without a
     # floor on archetype mass, PFSP can park on the mirror rows whenever
     # they happen to sit closer to the agent's rating - and then the
@@ -76,8 +91,10 @@ def main():
         rows = arche
 
     target = args.self_elo + args.optimism
+    floor = (args.floor_total / len(rows) if args.floor_total is not None
+             else args.floor)
     weights = [math.exp(-((e - target) ** 2) / (2 * args.sigma ** 2))
-               + args.floor for _, _, _, e in rows]
+               + floor for _, _, _, e in rows]
     pick = rng.choices(range(len(rows)), weights=weights, k=1)[0]
     name, kind, deck, elo = rows[pick]
     print(f"{kind}|{deck}|{name}|{elo:.0f}")

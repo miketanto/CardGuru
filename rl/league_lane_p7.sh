@@ -85,6 +85,7 @@ P10_CHAMPION_ELO=${P10_CHAMPION_ELO:-1101}
 P10_DECK_SCHEDULE=${P10_DECK_SCHEDULE:-}
 P10_MATRIX_DECKS=${P10_MATRIX_DECKS:-}
 P10_ARCHSHARE=${P10_ARCHSHARE:-0.5}
+P10_FLOOR_TOTAL=${P10_FLOOR_TOTAL:-0.2}  # PFSP floor as a SHARE of total mass
 P7_PROBE_G=${P7_PROBE_G:-100}       # games per Elo-anchor probe
 P10_MATRIX_G=${P10_MATRIX_G:-100}   # games per robustness-matrix cell
 P10_SAMPLE_DECK=${P10_SAMPLE_DECK-M3RedRush.dck}  # 2nd transcript opponent deck
@@ -176,6 +177,7 @@ pick_opponent() {  # $1 chunk $2 trained -> "ckpt|arch" | "kind|deck|name|elo"
         python3 $RL/pfsp_pick_p7c.py --pool $OUT/pool_elo.tsv \
             --self-elo $SELF --chunk $chunk \
             --archetype-share "$(stage_value ${2:-0} "$P10_ARCHSHARE" 0.5)" \
+            --floor-total $P10_FLOOR_TOTAL \
             --mirror-deck $DECK
         return
     fi
