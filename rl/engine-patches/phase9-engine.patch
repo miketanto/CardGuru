@@ -1,0 +1,235 @@
+diff --git a/Mage/src/main/java/mage/game/combat/Combat.java b/Mage/src/main/java/mage/game/combat/Combat.java
+index 706cbf5673..6364f45118 100644
+--- a/Mage/src/main/java/mage/game/combat/Combat.java
++++ b/Mage/src/main/java/mage/game/combat/Combat.java
+@@ -1404,7 +1404,12 @@ public class Combat implements Serializable, Copyable<Combat> {
+                 case LEFT:
+                     players = game.getState().getPlayerList(attackingPlayerId);
+                     opponent = players.getNext(game, false);
+-                    while (opponent != null && attackingPlayer.isInGame()) {
++                    // LOCAL BENCH PATCH: bound the scan by the player count.
++                    // getNext cycles a circular list, so when no live
++                    // opponent remains (reachable under random policies in
++                    // the RL bench) the original loop spins forever.
++                    for (int scanned = 0; opponent != null && attackingPlayer.isInGame()
++                            && scanned < players.size(); scanned++) {
+                         if (attackingPlayer.hasOpponent(opponent.getId(), game)) {
+                             attackablePlayers.add(opponent.getId());
+                             break;
+@@ -1415,7 +1420,9 @@ public class Combat implements Serializable, Copyable<Combat> {
+                 case RIGHT:
+                     players = game.getState().getPlayerList(attackingPlayerId);
+                     opponent = players.getPrevious(game);
+-                    while (opponent != null && attackingPlayer.isInGame()) {
++                    // LOCAL BENCH PATCH: bounded scan (see LEFT above)
++                    for (int scanned = 0; opponent != null && attackingPlayer.isInGame()
++                            && scanned < players.size(); scanned++) {
+                         if (attackingPlayer.hasOpponent(opponent.getId(), game)) {
+                             attackablePlayers.add(opponent.getId());
+                             break;
+diff --git a/Mage/src/main/java/mage/players/PlayerImpl.java b/Mage/src/main/java/mage/players/PlayerImpl.java
+index 2bd3920891..354ec38fea 100644
+--- a/Mage/src/main/java/mage/players/PlayerImpl.java
++++ b/Mage/src/main/java/mage/players/PlayerImpl.java
+@@ -4284,6 +4284,100 @@ public abstract class PlayerImpl implements Player, Serializable {
+         }
+     }
+ 
++    // ------------------------------------------------------------------
++    // LOCAL BENCH PATCH (CardGuru Phase 9): getPlayable memo.
++    //
++    // Profiling the RL bench (rl/PHASE9-PERF.md) put 82% of engine time
++    // inside getPlayable, and 72% inside the full-state
++    // createSimulationForPlayableCalc() copy it makes on EVERY call. The
++    // D1 search seat provably calls it twice on the same untouched state
++    // per priority window (SearchPlayer.searchBest, then the delegated
++    // HeuristicPlayer.priority), which alone was 27.7% of game-thread
++    // samples.
++    //
++    // -Dmage.playableCache=on      memo the last result per player
++    // -Dmage.playableCache=verify  memo AND recompute, throwing if the
++    //                              two disagree (how the equivalence
++    //                              claim below was tested)
++    // -Dmage.playableCache=off     (default) untouched original path
++    //
++    // The key fingerprints everything getPlayable reads: the effects
++    // counter, turn/phase/step/step-part, active and priority player,
++    // stack size, and per player life, hand (ids), library/graveyard/
++    // exile sizes, mana pool, and every permanent's id + zone-change
++    // counter + tapped/phased/face-down/summoning-sick flags. Any
++    // difference misses the memo. A null key disables memoing for that
++    // call (used when the game has no step yet).
++    private static final String PLAYABLE_MEMO_MODE =
++            System.getProperty("mage.playableCache", "off");
++    private static final boolean PLAYABLE_MEMO_ON = !"off".equals(PLAYABLE_MEMO_MODE);
++    private static final boolean PLAYABLE_MEMO_VERIFY = "verify".equals(PLAYABLE_MEMO_MODE);
++    public static final java.util.concurrent.atomic.AtomicLong PLAYABLE_MEMO_HITS =
++            new java.util.concurrent.atomic.AtomicLong();
++    public static final java.util.concurrent.atomic.AtomicLong PLAYABLE_MEMO_MISSES =
++            new java.util.concurrent.atomic.AtomicLong();
++    public static final java.util.concurrent.atomic.AtomicLong PLAYABLE_MEMO_MISMATCHES =
++            new java.util.concurrent.atomic.AtomicLong();
++    // deliberately NOT copied by the copy constructor: a simulation gets
++    // a cold memo rather than an inherited one
++    private transient String playableMemoKeyValue;
++    private transient List<ActivatedAbility> playableMemoValue;
++
++    private String playableMemoKey(Game game, boolean hidden, Zone fromZone,
++                                   boolean hideDuplicatedAbilities) {
++        if (game.getStep() == null || game.getState() == null) {
++            return null;
++        }
++        StringBuilder sb = new StringBuilder(256);
++        sb.append(hidden).append('|').append(fromZone).append('|')
++                .append(hideDuplicatedAbilities).append('|')
++                .append(game.getState().getApplyEffectsCounter()).append('|')
++                .append(game.getTurnNum()).append('|')
++                .append(game.getPhase() == null ? "-" : game.getPhase().getType()).append('|')
++                .append(game.getStep().getType()).append('|')
++                .append(game.getStep().getStepPart()).append('|')
++                .append(game.getActivePlayerId()).append('|')
++                .append(game.getState().getPriorityPlayerId()).append('|')
++                .append(game.getStack().size()).append('|')
++                .append(game.getState().getStack().isEmpty() ? "-"
++                        : game.getStack().peek().getId()).append('#');
++        for (UUID pid : game.getState().getPlayersInRange(getId(), game)) {
++            Player p = game.getPlayer(pid);
++            if (p == null) {
++                continue;
++            }
++            sb.append(pid).append(':').append(p.getLife()).append(':')
++                    .append(p.getLibrary().size()).append(':')
++                    .append(p.getGraveyard().size()).append(':')
++                    .append(p.getHand().size()).append(':')
++                    .append(p.getManaPool().getMana()).append(':')
++                    .append(p.isInGame() ? 1 : 0).append(';');
++        }
++        for (UUID cardId : this.getHand()) {
++            sb.append(cardId).append(',');
++        }
++        sb.append('#');
++        for (Permanent permanent : game.getBattlefield().getAllPermanents()) {
++            sb.append(permanent.getId()).append(':')
++                    .append(permanent.getZoneChangeCounter(game)).append(':')
++                    .append(permanent.isTapped() ? 1 : 0)
++                    .append(permanent.isPhasedIn() ? 1 : 0)
++                    .append(permanent.isFaceDown(game) ? 1 : 0)
++                    .append(permanent.hasSummoningSickness() ? 1 : 0).append(';');
++        }
++        sb.append('#').append(game.getExile().getAllCards(game).size());
++        return sb.toString();
++    }
++
++    private static String playableSignature(List<ActivatedAbility> list) {
++        List<String> rules = new ArrayList<>();
++        for (ActivatedAbility a : list) {
++            rules.add(a.getSourceId() + "|" + a.getRule());
++        }
++        java.util.Collections.sort(rules);
++        return String.join("\n", rules);
++    }
++
+     @Override
+     public List<ActivatedAbility> getPlayable(Game game, boolean hidden) {
+         return getPlayable(game, hidden, Zone.ALL, true);
+@@ -4302,6 +4396,39 @@ public abstract class PlayerImpl implements Player, Serializable {
+      * @return
+      */
+     public List<ActivatedAbility> getPlayable(Game originalGame, boolean hidden, Zone fromZone, boolean hideDuplicatedAbilities) {
++        // LOCAL BENCH PATCH (CardGuru Phase 9): opt-in memo, see
++        // playableMemoKey below. Off by default = original code path.
++        if (PLAYABLE_MEMO_ON) {
++            String memoKey = playableMemoKey(originalGame, hidden, fromZone, hideDuplicatedAbilities);
++            if (memoKey != null && memoKey.equals(playableMemoKeyValue)
++                    && playableMemoValue != null) {
++                PLAYABLE_MEMO_HITS.incrementAndGet();
++                List<ActivatedAbility> cached = new ArrayList<>(playableMemoValue);
++                if (!PLAYABLE_MEMO_VERIFY) {
++                    return cached;
++                }
++                List<ActivatedAbility> fresh = getPlayableUncached(
++                        originalGame, hidden, fromZone, hideDuplicatedAbilities);
++                if (!playableSignature(cached).equals(playableSignature(fresh))) {
++                    PLAYABLE_MEMO_MISMATCHES.incrementAndGet();
++                    throw new IllegalStateException("playable memo mismatch for "
++                            + getName() + " key=" + memoKey
++                            + "\n cached=" + playableSignature(cached)
++                            + "\n fresh =" + playableSignature(fresh));
++                }
++                return fresh;
++            }
++            PLAYABLE_MEMO_MISSES.incrementAndGet();
++            List<ActivatedAbility> fresh = getPlayableUncached(
++                    originalGame, hidden, fromZone, hideDuplicatedAbilities);
++            playableMemoKeyValue = memoKey;
++            playableMemoValue = memoKey == null ? null : new ArrayList<>(fresh);
++            return fresh;
++        }
++        return getPlayableUncached(originalGame, hidden, fromZone, hideDuplicatedAbilities);
++    }
++
++    private List<ActivatedAbility> getPlayableUncached(Game originalGame, boolean hidden, Zone fromZone, boolean hideDuplicatedAbilities) {
+         List<ActivatedAbility> playable = new ArrayList<>();
+         if (shouldSkipGettingPlayable(originalGame)) {
+             return playable;
+diff --git a/Mage/src/main/java/mage/util/RandomUtil.java b/Mage/src/main/java/mage/util/RandomUtil.java
+index b042486345..c5c5a9ca84 100644
+--- a/Mage/src/main/java/mage/util/RandomUtil.java
++++ b/Mage/src/main/java/mage/util/RandomUtil.java
+@@ -13,27 +13,42 @@ public final class RandomUtil {
+ 
+     private static final Random random = new Random(); // thread safe with seed support
+ 
++    /**
++     * LOCAL BENCH PATCH (CardGuru Phase 9): -Dmage.randomPerThread=true
++     * gives every thread its own Random, so N games played concurrently
++     * in one JVM each keep a private, seedable stream. Default false =
++     * the original single shared Random, bit-for-bit. The flag is read
++     * once into a static final, so the branch folds away under JIT.
++     */
++    private static final boolean PER_THREAD = Boolean.getBoolean("mage.randomPerThread");
++    private static final ThreadLocal<Random> threadRandom =
++            ThreadLocal.withInitial(Random::new);
++
+     private RandomUtil() {
+     }
+ 
++    public static boolean isPerThread() {
++        return PER_THREAD;
++    }
++
+     public static Random getRandom() {
+-        return random;
++        return PER_THREAD ? threadRandom.get() : random;
+     }
+ 
+     public static int nextInt() {
+-        return random.nextInt();
++        return getRandom().nextInt();
+     }
+ 
+     public static int nextInt(int max) {
+-        return random.nextInt(max);
++        return getRandom().nextInt(max);
+     }
+ 
+     public static boolean nextBoolean() {
+-        return random.nextBoolean();
++        return getRandom().nextBoolean();
+     }
+ 
+     public static double nextDouble() {
+-        return random.nextDouble();
++        return getRandom().nextDouble();
+     }
+ 
+     public static Color nextColor() {
+@@ -41,7 +56,7 @@ public final class RandomUtil {
+     }
+ 
+     public static void setSeed(long newSeed) {
+-        random.setSeed(newSeed);
++        getRandom().setSeed(newSeed);
+     }
+ 
+     public static <T> T randomFromCollection(Collection<T> collection) {
