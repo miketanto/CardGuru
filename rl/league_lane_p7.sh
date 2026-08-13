@@ -178,7 +178,7 @@ while true; do
     trained=$(cat $OUT/trained.txt 2>/dev/null || echo 0)
     [ "$trained" -ge "$BUDGET" ] && break
 
-    if [ $((trained % 256)) -eq 0 ] && [ ! -f $OUT/pool/ck_${trained}.pt ]; then
+    if [ $((trained % ${P7_RATE:-256})) -eq 0 ] && [ ! -f $OUT/pool/ck_${trained}.pt ]; then
         cp $OUT/net.pt $OUT/pool/ck_${trained}.pt
         # rate the starting point too (trained=0 -> BC baseline Elo)
         [ ! -f $OUT/probe_D1h_${trained}.txt ] && rate_checkpoint $trained
@@ -220,7 +220,7 @@ while true; do
     echo $trained > $OUT/trained.txt
     echo "P7|s$SEED|trained=$trained|opp=$(basename $OPPCK)"
 
-    if [ $((trained % 256)) -eq 0 ] || [ "$trained" -ge "$BUDGET" ]; then
+    if [ $((trained % ${P7_RATE:-256})) -eq 0 ] || [ "$trained" -ge "$BUDGET" ]; then
         rate_checkpoint $trained
     fi
 done
