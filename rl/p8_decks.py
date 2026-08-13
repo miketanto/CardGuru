@@ -26,7 +26,12 @@ SWAPS = {
         "Bitter Triumph": "Go for the Throat",       # d=0  2x
         "Requiting Hex": "Cut Down",                 # d=2  4x
         "Shoot the Sheriff": "Eliminate",            # d=0  1x
-        "Spell Snare": "Force Spike",                # d=0  1x
+        # Force Spike (first pick, d=0) calibrated hot: vs scripted
+        # opponents that deploy on-curve tapped out, "unless pays {1}"
+        # is a de-facto hard counter on ANY spell, where Snare only hits
+        # MV2 — counters-only bisect .735 vs anchor .620. Dispel keeps
+        # d=0 with a narrow slice (instants) like Snare's (MV2).
+        "Spell Snare": "Dispel",                     # d=0  1x
         "We Say Thee Nay!": "Don't Make a Sound",    # d=0  3x
         "Spell Pierce": "Stubborn Denial",           # d=0  1x
     },
