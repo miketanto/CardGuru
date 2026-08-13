@@ -25,10 +25,10 @@ INIT=${P10_INIT:-/tmp/rl_p10_scratch_init.pt}
 python3 $RL/p10_init_net.py --out "$INIT" 2>/dev/null | tail -1
 
 # --- the league ---------------------------------------------------------
-export P7_PFSP=1
-export P10_POOL=1
-export P10_GATE=1
-export P10_GATE_G=50
+export P7_PFSP=${P7_PFSP:-1}
+export P10_POOL=${P10_POOL:-1}
+export P10_GATE=${P10_GATE:-1}
+export P10_GATE_G=${P10_GATE_G:-50}
 export P10_POOL_SEED=$RL/p10_pool_seed.tsv
 export P10_CHAMPION=/tmp/rl_p7_lstmattn_s0/p7b_champion.pt
 export P10_CHAMPION_NAME=p7b_ck6144

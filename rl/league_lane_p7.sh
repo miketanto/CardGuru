@@ -87,6 +87,7 @@ P10_MATRIX_DECKS=${P10_MATRIX_DECKS:-}
 P10_ARCHSHARE=${P10_ARCHSHARE:-0.5}
 P7_PROBE_G=${P7_PROBE_G:-100}       # games per Elo-anchor probe
 P10_MATRIX_G=${P10_MATRIX_G:-100}   # games per robustness-matrix cell
+P10_SAMPLE_DECK=${P10_SAMPLE_DECK-M3RedRush.dck}  # 2nd transcript opponent deck
 mkdir -p $OUT/pool $EXPDIR
 [ -f $OUT/net.pt ] || cp "$INIT" $OUT/net.pt
 
@@ -359,25 +360,40 @@ rate_matrix() {
     done
 }
 
-# one logged game per checkpoint (vs D1 on the mirror, the rating game)
-sample_game() {
-    local trained=$1
-    [ -s $OUT/transcript_${trained}.txt ] && return 0
+# Logged games per checkpoint: one on the mirror vs D1 (the rating
+# game) and one vs D0 piloting $P10_SAMPLE_DECK (the matrix game, where
+# blocking and opponent-turn casts are actually exercised).
+#
+# These go through the MVN path deliberately: the persistent driver
+# server writes XMage's [LOG][GAME] lines to its own console, not to the
+# job's captured stdout, so a transcript taken through the fast path
+# comes back with the summary and no game. One episode each, twice per
+# 2048, is a price worth paying for a readable transcript.
+sample_game() {   # $1 trained $2 tag $3 opponent-kind $4 oppDeck $5 seed
+    local trained=$1 tag=$2 f=$OUT/transcript_${2}_${1}.txt
+    [ -s "$f" ] && return 0
     start_server $OUT/net.pt $ARCH $APORT $OUT/aserver.log
     local ASRV=$(cat $OUT/.srvpid)
-    RL_PERSIST=${P7_PERSIST:-0} RL_AUTOSTART=1 \
+    local XML=/home/user/mage/Mage.Tests/target/surefire-reports/TEST-org.mage.test.benchmark.rl.RLEpisodeDriver.xml
+    rm -f $XML
+    RL_PERSIST=0 \
     bash $RL/run_driver.sh \
         -Drl.episodes=1 \
         -Drl.agent=rl -Drl.policy=socket -Drl.port=$APORT \
-        -Drl.opponent=search -Drl.searchPlies=1 -Drl.searchBreadth=8 \
+        -Drl.opponent=$3 -Drl.searchPlies=1 -Drl.searchBreadth=8 \
         -Drl.cardFeatures=$FEATS \
         -Drl.noYields=true -Drl.consultBudget=4000 \
-        -Drl.deck=$DECK -Drl.oppDeck=$DECK -Drl.stopTurn=80 \
-        -Drl.mode=eval -Drl.seed=950000 -Drl.report=0 \
+        -Drl.deck=$DECK -Drl.oppDeck=$4 -Drl.stopTurn=80 \
+        -Drl.mode=eval -Drl.seed=$5 -Drl.report=0 \
         -Dxmage.dataCollectors.printGameLogs=true \
-        > $OUT/transcript_${trained}.txt 2>&1
+        > $OUT/.transcript_mvn.log 2>&1
     stop_server $ASRV
-    echo "P10_SAMPLE|trained=$trained|lines=$(wc -l < $OUT/transcript_${trained}.txt)"
+    # surefire captures the forked JVM's stdout into the report rather
+    # than relaying it, so the game log has to be read back out of it
+    python3 $RL/p10_transcript.py --xml $XML --out $f \
+        --header "Phase 10 sample game - trained=$trained, agent $DECK vs $3 piloting $4, seed $5, argmax" \
+        || echo "P10_SAMPLE_FAILED|trained=$trained|tag=$tag"
+    echo "P10_SAMPLE|trained=$trained|tag=$tag|lines=$(wc -l < $f 2>/dev/null || echo 0)"
 }
 
 checkpoint_battery() {
@@ -385,7 +401,10 @@ checkpoint_battery() {
     [ -f $OUT/.battery_${trained}.done ] && return 0
     rate_checkpoint $trained
     rate_matrix $trained
-    sample_game $trained
+    sample_game $trained mirror search $DECK 950000
+    [ -n "$P10_SAMPLE_DECK" ] && \
+        sample_game $trained "$(basename $P10_SAMPLE_DECK .dck)" heuristic \
+            $P10_SAMPLE_DECK 951000
     touch $OUT/.battery_${trained}.done
 }
 
