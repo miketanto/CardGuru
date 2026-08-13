@@ -42,8 +42,14 @@ def main():
     ap.add_argument("--archetype-share", type=float, default=0.5,
                     help="fraction of chunks forced onto non-mirror decks")
     ap.add_argument("--mirror-deck", default="BenchDimir.dck")
+    # Phase 10: the driver's candidate encoding is global per JVM, so a
+    # served opponent must share the agent's encoding family (an
+    # e0/cdim38 net cannot seat in a cdim91 league). Scripted rows are
+    # unaffected - they read no features.
+    ap.add_argument("--arches", default="attn,lstmattn")
     args = ap.parse_args()
 
+    allowed = set(args.arches.split(","))
     rows = []
     for line in open(args.pool):
         line = line.strip()
@@ -51,7 +57,9 @@ def main():
             continue
         name, kind, deck, elo = line.split("|")
         if kind.startswith("rl:"):
-            ckpt = kind.split(":", 2)[2]
+            arch, ckpt = kind.split(":", 2)[1:]
+            if arch not in allowed:
+                continue
             if not os.path.exists(ckpt):
                 continue          # snapshot row written before the copy
         rows.append((name, kind, deck, float(elo)))
