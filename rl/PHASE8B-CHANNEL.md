@@ -75,24 +75,38 @@ amplifies the damage (worse play → worse data).
 
 | net | BenchDimir D0 (was) | BenchDimir D1 (was) | Faeries D0 (was) | Faeries D1 (was) |
 |---|---|---|---|---|
-| p8b_attn (s0 final) | REEVAL_ATTN_BD0 (.640) | REEVAL_ATTN_BD1 (.445) | REEVAL_ATTN_FD0 (.485) | REEVAL_ATTN_FD1 (.370) |
-| p8b_attn_meta (s1 final) | REEVAL_META_BD0 (.640) | REEVAL_META_BD1 (.445) | REEVAL_META_FD0 (.485) | REEVAL_META_FD1 (.370) |
-| p8b_e0 (control final) | REEVAL_E0_BD0 (.670) | REEVAL_E0_BD1 (.425) | REEVAL_E0_FD0 (.470) | REEVAL_E0_FD1 (.365) |
+| p8b_attn (s0 final) | .605 (.640) | .350 (.445) | **.535** (.485) | .325 (.370) |
+| p8b_attn_meta (s1 final) | .545 (.640) | .340 (.445) | **.530** (.485) | **.405** (.370) |
+| p8b_e0 (control final) | .555 (.670) | .430 (.425) | .490 (.470) | .385 (.365) |
 
-REEVAL_SUMMARY
+Every arm paid on the home deck (catastrophic-forgetting tax; the
+attn arms paid most vs D1, −.095/−.105). On the held-out archetype the
+attn arms gained where the control barely moved: faeries deltas
+average **+.040 (meta arm, positive in both cells)** and +.003 (s0,
++.050 vs D0 but −.045 vs D1) against **+.020 for the e0 control** —
+consistent in sign with the hypothesis, but all inside the ±.07 CI.
+One behavioral shift is unambiguous: the s0 arm's opponent-turn flash
+casts on the faeries deck went from 2–6 per 200 games (all Phase 8
+policies) to **26–51** — deck-randomized training taught real
+instant-speed play that no previous regimen (including C5's
+flash-heavy self-play) ever produced.
 
 ## Verdict
 
 1. **The card channel is load-bearing** (scramble: −.38 vs D0) — Phase
    8's structural-channel conclusion is overturned; the transfer null
    is re-explained as identifier-style feature use.
-2. **~2k episodes of deck-randomized fine-tuning does not convert
-   identifiers into compositional semantics** — it destabilizes the
-   policy first, and neither the variant pool nor D0-piloted meta
-   mirrors improved held-out-archetype transfer at this budget.
-3. The meta-augmented lane was no better than the pure variant lane on
-   transfer (and noisier vs D1) — opponent-deck diversity via D0
-   pilots is not the missing ingredient either, at this scale.
+2. **~2k episodes of deck-randomized fine-tuning does not
+   significantly convert identifiers into compositional semantics** —
+   it destabilizes the policy first (−.10 home-deck tax), and the
+   held-out-archetype gains (+.04 avg meta arm, +.02 control) stay
+   inside the CI. The sign pattern (both attn arms > control on
+   faeries) and the 10× jump in opponent-turn flash casts are real
+   hints that the mechanism works but needs a bigger budget or
+   from-scratch diversity — a 5-seed, 500g gate would resolve it.
+3. The meta-augmented lane was the *best* transfer arm (positive in
+   both faeries cells, +.040 avg) — D0-piloted meta mirrors did add
+   something over pure variant self-play, at sub-CI scale.
 4. Consistent with M3 (diversity from *scratch* produced the only
    E2-vs-E0 daylight ever), the surviving hypotheses for real
    transfer are: **train with deck diversity from initialization**
