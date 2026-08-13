@@ -1,1 +1,2 @@
 P7ELO|seed=0|trained=0|elo=199|d0=0.0100|d1=0.0100|d1h=0.0000|blocks=23|blockOpps=38|flashThreats=165|oppTurn=0
+P7ELO|seed=0|trained=2048|elo=861|d0=0.4000|d1=0.1800|d1h=0.1700|blocks=133|blockOpps=133|flashThreats=292|oppTurn=0

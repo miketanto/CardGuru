@@ -125,7 +125,7 @@ supplies the low rungs the gate cannot.
 
 ## 5. Results
 
-### Checkpoint 0 — the from-scratch baseline
+### Checkpoints 0 and 2048
 
 ## Mirror growth curve (agent on BenchDimir, 100g vs each anchor,
 ## sequential, seed 950000)
@@ -133,45 +133,128 @@ supplies the low rungs the gate cannot.
 | trained | Elo | vs D0 | vs D1 | vs D1h | blocks | block opps | block rate | flashThreats | oppTurn casts |
 |---|---|---|---|---|---|---|---|---|---|
 | 0 | 199 | 0.0100 | 0.0100 | 0.0000 | 23 | 38 | 0.61 | 165 | 0 |
+| 2048 | 861 | 0.4000 | 0.1800 | 0.1700 | 133 | 133 | 1.00 | 292 | 0 |
 
 ## Robustness matrix (100g vs D0 piloting each deck, agent on
 ## BenchDimir, sequential, seed 951000)
 
-| deck | power | 0 | final residual |
-|---|---|---|---|
-| P7cSweepControl | 0.53 | 0.0300 | -0.44 |
-| M3SelesnyaTokens | 0.57 | 0.0500 | -0.38 |
-| M3WhiteWeenie | 0.49 | 0.0100 | -0.50 |
-| M3BlueSkies | 0.74 | 0.0000 | -0.26 |
-| M3RedRush | 0.63 | 0.0100 | -0.36 |
-| M3GreenRamp | 0.61 | 0.0200 | -0.37 |
+| deck | power | 0 | 2048 | final residual |
+|---|---|---|---|---|
+| P7cSweepControl | 0.53 | 0.0300 | 0.6200 | +0.15 |
+| M3SelesnyaTokens | 0.57 | 0.0500 | 0.3700 | -0.06 |
+| M3WhiteWeenie | 0.49 | 0.0100 | 0.3200 | -0.19 |
+| M3BlueSkies | 0.74 | 0.0000 | 0.2600 | +0.00 |
+| M3RedRush | 0.63 | 0.0100 | 0.3800 | +0.01 |
+| M3GreenRamp | 0.61 | 0.0200 | 0.2700 | -0.12 |
 
 Residual = win_rate - (1 - power): performance beyond what
 deck power alone predicts for the agent's seat (7c protocol).
 
 ## Blocking by deck (blocks declared / opportunities)
 
-| deck | 0 |
+| deck | 0 | 2048 |
+|---|---|---|
+| P7cSweepControl | 0/35 | 67/67 |
+| M3SelesnyaTokens | 1/134 | 214/215 |
+| M3WhiteWeenie | 0/142 | 193/195 |
+| M3BlueSkies | 26/38 | 90/90 |
+| M3RedRush | 1/130 | 159/159 |
+| M3GreenRamp | 45/78 | 173/178 |
+
+## Champion gate (50g h2h vs the reigning champion)
+
+| trained | champion | score | wins | draws | verdict | pool Elo |
+|---|---|---|---|---|---|---|
+| 512 | p7b_ck6144 | 0.2000 | 10 | 0 | rejected | - |
+| 1024 | p7b_ck6144 | 0.2000 | 10 | 0 | rejected | - |
+| 1536 | p7b_ck6144 | 0.3200 | 16 | 0 | rejected | - |
+
+0/3 snapshots promoted into the pool.
+
+## Realized opponent mix (64-episode chunks)
+
+| opponent | deck | chunks | share |
+|---|---|---|---|
+| p7b_ck_0 | BenchDimir.dck | 10 | 31.2% |
+| p7b_ck_256 | BenchDimir.dck | 9 | 28.1% |
+| p7b_ck_768 | BenchDimir.dck | 2 | 6.2% |
+| ramp | M3GreenRamp.dck | 2 | 6.2% |
+| meta_dimirbounce | P8MetaDimirBounce.dck | 2 | 6.2% |
+| meta_golgari | P8MetaGolgari.dck | 1 | 3.1% |
+| p7b_ck_2304 | BenchDimir.dck | 1 | 3.1% |
+| meta_monored | P8MetaMonoRed.dck | 1 | 3.1% |
+| redrush | M3RedRush.dck | 1 | 3.1% |
+| sweep | P7cSweepControl.dck | 1 | 3.1% |
+| skies | M3BlueSkies.dck | 1 | 3.1% |
+| p7b_ck_512 | BenchDimir.dck | 1 | 3.1% |
+
+Non-mirror opponent chunks: 9/32 (28.1%).
+
+## Realized agent-deck rotation (chunks per deck list)
+
+| agent deck list | chunks |
 |---|---|
-| P7cSweepControl | 0/35 |
-| M3SelesnyaTokens | 1/134 |
-| M3WhiteWeenie | 0/142 |
-| M3BlueSkies | 26/38 |
-| M3RedRush | 1/130 |
-| M3GreenRamp | 45/78 |
+| BenchDimir.dck | 32 |
 
-The baseline is what a random-init lstmattn does before a single
-gradient step, measured with the same instruments the rest of the run
-uses. Two things in it matter later:
+### Reading checkpoint 2048
 
-- **Every residual starts deeply negative** (-.26 to -.50). 7c's line
-  started from a 916-rated net at -.06 to -.27, so this run has
-  strictly more room and a strictly harder job; the residual *movement*
-  is the result, not the endpoint value.
-- **The blocking baseline is not zero and not uniform**: 0/142 vs
-  wweenie but 26/38 vs skies. A random policy blocks when it happens to
-  have untapped creatures and the attack is small. Any later "the agent
-  learned to block" claim has to beat this per-deck, not pooled.
+**Blocking is solved, and the counter shipped with its denominator so
+we can tell.** Block rate went 61% -> 100% on the mirror and is 100%
+or one-off-100% on every archetype (67/67, 214/215, 193/195, 90/90,
+159/159, 173/178). More importantly the OPPORTUNITIES tripled
+(38 -> 133 on the mirror): the agent now survives into boards where
+combat happens instead of dying on turn 21. This reproduces 7c's
+correction — agents block when asked, the question was always how
+often they get asked.
+
+**Every robustness residual improved, by .26 to .59.** Against the
+trained=0 baseline: sweep -.44 -> +.15, tokens -.38 -> -.06,
+wweenie -.50 -> -.19, skies -.26 -> +.00, redrush -.36 -> +.01,
+ramp -.37 -> -.12. Sweep is already above 7c's FINAL residual (+.09)
+and wweenie is near 7c's final (-.14), from a random init at 2048
+episodes rather than a 916-rated net at 3072.
+
+**Mirror Elo is behind 7b, and that is the honest headline.** 861 at
+2048 against 7b's 1022 — roughly where 7b sat at 512 episodes. Part of
+that is the deliberate trade (40% of episodes on archetype decks the
+mirror rating does not reward; champion gating denies this run the
+self-snapshot rungs 7b trained on). But part of it was a BUG, see
+below, and the checkpoint should not be read as a clean measurement of
+the trade until the next one.
+
+**The gate is a ratchet and nothing has passed it.** 0/3 promoted,
+scores .20 / .20 / .32 against ck_6144. The pool still contains no row
+this run produced, which is the design working: there has been no
+opportunity to drift toward a population of its own making.
+
+### A selection bug this checkpoint exposed, and the fix
+
+The realized opponent mix shows **59% of chunks went to p7b_ck_0
+(Elo 46, a random net) and p7b_ck_256 (Elo 456)** — opponents this
+agent beats 100% and ~95% of the time. Cause: the lane refreshes
+`self_elo.txt` only when it RATES, and the flagship rates every 2048
+episodes for reporting comparability. So PFSP aimed at Elo 299 for the
+entire first 2048 episodes while the agent was really ~860-970. 7b did
+not hit this because it rated every 256.
+
+The information to fix it already existed and was being discarded: the
+champion gate plays 50 games against an opponent of known rating every
+512 episodes. `rl/p10_selfelo_daemon.sh` turns each gate into a free
+self-Elo estimate between ratings:
+
+    implied self Elo = champion Elo - 400*log10(1/score - 1)
+
+which at gates 512/1024/1536 would have read ~860/~860/~970 instead of
+199. It runs alongside the lane (no edit to a lane mid-flight) and only
+feeds opponent selection — the reported curve is still the lane's own
+sequential 300-game fit, and a real rating always beats a gate estimate
+at the same episode count.
+
+**Consequence for the result:** episodes 0-2048 were run with a
+degraded opponent distribution, so the 861-vs-1022 gap is a mix of the
+intended trade and a fixable inefficiency. The 4096 checkpoint is the
+first one measured with selection working as designed, and the
+comparison to 7b should be drawn from there.
 
 ## 6. Protocol notes that bind these numbers
 
