@@ -1,0 +1,55 @@
+# Phase 10 flagship seed pool - rows are name|kind|deck|elo
+# kind: heuristic|search|searchhold (scripted seat piloting deck)
+#       rl:<arch>:<ckpt>          (a served policy seat)
+# Deck rows: Elo = 1000 + 400*log10(p/(1-p)), p = D0(deck) vs
+# D0(BenchDimir) over 100g (rl/p10_pool_calib.sh). Champion and
+# snapshot rows: Phase 6 mirror ratings, same D0=1000 anchor.
+# --- scripted mirror ladder (the frozen instruments) ---
+D0|heuristic|BenchDimir.dck|1000
+D1|search|BenchDimir.dck|1085
+D1h|searchhold|BenchDimir.dck|1088
+# --- 7c archetype decks, D0-piloted ---
+sweep|heuristic|P7cSweepControl.dck|1021
+tokens|heuristic|M3SelesnyaTokens.dck|1049
+wweenie|heuristic|M3WhiteWeenie.dck|993
+skies|heuristic|M3BlueSkies.dck|1182
+redrush|heuristic|M3RedRush.dck|1092
+ramp|heuristic|M3GreenRamp.dck|1078
+# --- 8b Standard-meta approximations, D0-piloted ---
+meta_monored|heuristic|P8MetaMonoRed.dck|1085
+meta_boros|heuristic|P8MetaBoros.dck|915
+meta_golgari|heuristic|P8MetaGolgari.dck|1139
+meta_dimirbounce|heuristic|P8MetaDimirBounce.dck|685
+meta_domain|heuristic|P8MetaDomain.dck|965
+meta_azorius|heuristic|P8MetaAzorius.dck|759
+# --- prior champions (all cdim 91) ---
+p7b_ck6144|rl:lstmattn:/tmp/rl_p7_lstmattn_s0/p7b_champion.pt|BenchDimir.dck|1101
+p7c_ck1536|rl:lstmattn:/tmp/rl_p7c_lstmattn_s0/pool/ck_1536.pt|BenchDimir.dck|1096
+p7c_ck3072|rl:lstmattn:/tmp/rl_p7c_lstmattn_s0/p7c_final.pt|BenchDimir.dck|1046
+attn_desp|rl:attn:/tmp/rl_c6_attn_s7/attn_desp_final.pt|BenchDimir.dck|1053
+attn_bc|rl:attn:/tmp/rl_p5_c1/student_e2attn.pt|BenchDimir.dck|1044
+attn_v2|rl:attn:/tmp/rl_c6_attn_s0/attn_v2_final.pt|BenchDimir.dck|1039
+# --- 7b snapshot ladder: the low rungs a from-scratch net needs ---
+p7b_ck_0|rl:lstmattn:/tmp/rl_p7_lstmattn_s0/pool/ck_0.pt|BenchDimir.dck|46
+p7b_ck_256|rl:lstmattn:/tmp/rl_p7_lstmattn_s0/pool/ck_256.pt|BenchDimir.dck|456
+p7b_ck_512|rl:lstmattn:/tmp/rl_p7_lstmattn_s0/pool/ck_512.pt|BenchDimir.dck|867
+p7b_ck_768|rl:lstmattn:/tmp/rl_p7_lstmattn_s0/pool/ck_768.pt|BenchDimir.dck|889
+p7b_ck_1024|rl:lstmattn:/tmp/rl_p7_lstmattn_s0/pool/ck_1024.pt|BenchDimir.dck|916
+p7b_ck_1280|rl:lstmattn:/tmp/rl_p7_lstmattn_s0/pool/ck_1280.pt|BenchDimir.dck|976
+p7b_ck_1536|rl:lstmattn:/tmp/rl_p7_lstmattn_s0/pool/ck_1536.pt|BenchDimir.dck|1002
+p7b_ck_1792|rl:lstmattn:/tmp/rl_p7_lstmattn_s0/pool/ck_1792.pt|BenchDimir.dck|1014
+p7b_ck_2048|rl:lstmattn:/tmp/rl_p7_lstmattn_s0/pool/ck_2048.pt|BenchDimir.dck|1022
+p7b_ck_2304|rl:lstmattn:/tmp/rl_p7_lstmattn_s0/pool/ck_2304.pt|BenchDimir.dck|1068
+p7b_ck_2560|rl:lstmattn:/tmp/rl_p7_lstmattn_s0/pool/ck_2560.pt|BenchDimir.dck|1065
+p7b_ck_3072|rl:lstmattn:/tmp/rl_p7_lstmattn_s0/pool/ck_3072.pt|BenchDimir.dck|1065
+p7b_ck_3584|rl:lstmattn:/tmp/rl_p7_lstmattn_s0/pool/ck_3584.pt|BenchDimir.dck|1065
+p7b_ck_4096|rl:lstmattn:/tmp/rl_p7_lstmattn_s0/pool/ck_4096.pt|BenchDimir.dck|1093
+p7b_ck_4608|rl:lstmattn:/tmp/rl_p7_lstmattn_s0/pool/ck_4608.pt|BenchDimir.dck|1093
+p7b_ck_5120|rl:lstmattn:/tmp/rl_p7_lstmattn_s0/pool/ck_5120.pt|BenchDimir.dck|1093
+p7b_ck_5632|rl:lstmattn:/tmp/rl_p7_lstmattn_s0/pool/ck_5632.pt|BenchDimir.dck|1093
+p7b_ck_6144|rl:lstmattn:/tmp/rl_p7_lstmattn_s0/pool/ck_6144.pt|BenchDimir.dck|1101
+p7b_ck_6656|rl:lstmattn:/tmp/rl_p7_lstmattn_s0/pool/ck_6656.pt|BenchDimir.dck|1101
+p7b_ck_7168|rl:lstmattn:/tmp/rl_p7_lstmattn_s0/pool/ck_7168.pt|BenchDimir.dck|1101
+p7b_ck_7680|rl:lstmattn:/tmp/rl_p7_lstmattn_s0/pool/ck_7680.pt|BenchDimir.dck|1101
+p7b_ck_8192|rl:lstmattn:/tmp/rl_p7_lstmattn_s0/pool/ck_8192.pt|BenchDimir.dck|1085
+p7b_ck_8704|rl:lstmattn:/tmp/rl_p7_lstmattn_s0/pool/ck_8704.pt|BenchDimir.dck|1085

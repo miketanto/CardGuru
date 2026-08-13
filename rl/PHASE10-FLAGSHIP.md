@@ -125,8 +125,53 @@ supplies the low rungs the gate cannot.
 
 ## 5. Results
 
-_(Growth curve, robustness matrix, blocking, gate log and opponent mix
-inserted at each 2048-episode checkpoint.)_
+### Checkpoint 0 — the from-scratch baseline
+
+## Mirror growth curve (agent on BenchDimir, 100g vs each anchor,
+## sequential, seed 950000)
+
+| trained | Elo | vs D0 | vs D1 | vs D1h | blocks | block opps | block rate | flashThreats | oppTurn casts |
+|---|---|---|---|---|---|---|---|---|---|
+| 0 | 199 | 0.0100 | 0.0100 | 0.0000 | 23 | 38 | 0.61 | 165 | 0 |
+
+## Robustness matrix (100g vs D0 piloting each deck, agent on
+## BenchDimir, sequential, seed 951000)
+
+| deck | power | 0 | final residual |
+|---|---|---|---|
+| P7cSweepControl | 0.53 | 0.0300 | -0.44 |
+| M3SelesnyaTokens | 0.57 | 0.0500 | -0.38 |
+| M3WhiteWeenie | 0.49 | 0.0100 | -0.50 |
+| M3BlueSkies | 0.74 | 0.0000 | -0.26 |
+| M3RedRush | 0.63 | 0.0100 | -0.36 |
+| M3GreenRamp | 0.61 | 0.0200 | -0.37 |
+
+Residual = win_rate - (1 - power): performance beyond what
+deck power alone predicts for the agent's seat (7c protocol).
+
+## Blocking by deck (blocks declared / opportunities)
+
+| deck | 0 |
+|---|---|
+| P7cSweepControl | 0/35 |
+| M3SelesnyaTokens | 1/134 |
+| M3WhiteWeenie | 0/142 |
+| M3BlueSkies | 26/38 |
+| M3RedRush | 1/130 |
+| M3GreenRamp | 45/78 |
+
+The baseline is what a random-init lstmattn does before a single
+gradient step, measured with the same instruments the rest of the run
+uses. Two things in it matter later:
+
+- **Every residual starts deeply negative** (-.26 to -.50). 7c's line
+  started from a 916-rated net at -.06 to -.27, so this run has
+  strictly more room and a strictly harder job; the residual *movement*
+  is the result, not the endpoint value.
+- **The blocking baseline is not zero and not uniform**: 0/142 vs
+  wweenie but 26/38 vs skies. A random policy blocks when it happens to
+  have untapped creatures and the attack is small. Any later "the agent
+  learned to block" claim has to beat this per-deck, not pooled.
 
 ## 6. Protocol notes that bind these numbers
 
