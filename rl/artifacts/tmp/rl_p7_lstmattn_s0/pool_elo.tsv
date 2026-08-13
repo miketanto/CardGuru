@@ -1,0 +1,14 @@
+# name|arch|ckpt|elo  (externals seeded from Phase 6 leaderboard;
+# exploiter estimated from .42 vs e0_champ; snapshots from checkpoints)
+attn_bc|attn|/tmp/rl_p5_c1/student_e2attn.pt|1044
+attn_v2|attn|/tmp/rl_c6_attn_s0/attn_v2_final.pt|1039
+attn_desp|attn|/tmp/rl_c6_attn_s7/attn_desp_final.pt|1053
+ck_0|lstmattn|/tmp/rl_p7_lstmattn_s0/pool/ck_0.pt|46
+ck_256|lstmattn|/tmp/rl_p7_lstmattn_s0/pool/ck_256.pt|456
+ck_512|lstmattn|/tmp/rl_p7_lstmattn_s0/pool/ck_512.pt|867
+ck_768|lstmattn|/tmp/rl_p7_lstmattn_s0/pool/ck_768.pt|889
+ck_1024|lstmattn|/tmp/rl_p7_lstmattn_s0/pool/ck_1024.pt|916
+ck_1280|lstmattn|/tmp/rl_p7_lstmattn_s0/pool/ck_1280.pt|976
+ck_1536|lstmattn|/tmp/rl_p7_lstmattn_s0/pool/ck_1536.pt|1002
+ck_1792|lstmattn|/tmp/rl_p7_lstmattn_s0/pool/ck_1792.pt|1014
+ck_2048|lstmattn|/tmp/rl_p7_lstmattn_s0/pool/ck_2048.pt|1022

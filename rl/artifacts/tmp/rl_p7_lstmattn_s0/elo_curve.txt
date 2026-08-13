@@ -3,3 +3,7 @@ P7ELO|seed=0|trained=256|elo=456|d0=0.0500|d1=0.0300|d1h=0.0200|flashThreats=154
 P7ELO|seed=0|trained=512|elo=867|d0=0.3500|d1=0.2000|d1h=0.2300|flashThreats=271|oppTurn=0
 P7ELO|seed=0|trained=768|elo=889|d0=0.3600|d1=0.2200|d1h=0.2700|flashThreats=293|oppTurn=0
 P7ELO|seed=0|trained=1024|elo=916|d0=0.4300|d1=0.2500|d1h=0.2600|flashThreats=304|oppTurn=1
+P7ELO|seed=0|trained=1280|elo=976|d0=0.4800|d1=0.3300|d1h=0.3600|flashThreats=287|oppTurn=2
+P7ELO|seed=0|trained=1536|elo=1002|d0=0.5600|d1=0.3700|d1h=0.3400|flashThreats=294|oppTurn=0
+P7ELO|seed=0|trained=1792|elo=1014|d0=0.5700|d1=0.3700|d1h=0.3700|flashThreats=300|oppTurn=1
+P7ELO|seed=0|trained=2048|elo=1022|d0=0.5800|d1=0.3800|d1h=0.3800|flashThreats=302|oppTurn=0
