@@ -53,7 +53,7 @@ run_case() {   # $1 tag $2 featfile $3 extra-D-flags $4 opponent $5 games
     bash $CG/rl/run_driver.sh \
         -Drl.episodes=$5 \
         -Drl.agent=rl -Drl.policy=socket -Drl.port=$APORT \
-        -Drl.cardFeatures=$2 $3 \
+        -Drl.cardFeatures=$2 -Drl.e3=on $3 \
         -Drl.opponent=$4 -Drl.searchPlies=1 -Drl.searchBreadth=8 \
         -Drl.noYields=true -Drl.consultBudget=4000 \
         -Drl.deck=$DECK -Drl.stopTurn=80 \

@@ -14,7 +14,12 @@ are provably always zero, which is an input-identical no-op. XMage is
 not bit-deterministic across processes, so anything at or below the
 null band is jitter, not evidence of a read.
 
+A null file must come from the SAME deck as the results it calibrates
+(the counters are per-deck); for a second deck, measure the band once
+and pass it with --band.
+
 Run: python3 rl/e3_ablate_report.py [results.txt] [--null null.txt ...]
+                                    [--band 0.010]
 """
 import math
 import sys
@@ -55,6 +60,11 @@ def behaviour_distance(row, base):
 
 def main():
     args = sys.argv[1:]
+    fixed_band = None
+    if "--band" in args:
+        i = args.index("--band")
+        fixed_band = float(args[i + 1])
+        args = args[:i] + args[i + 2:]
     nulls = []
     if "--null" in args:
         i = args.index("--null")
@@ -76,6 +86,9 @@ def main():
                 null_d.append((p.split("/")[-2] + ":" + r["case"],
                                behaviour_distance(r, base)))
     band = max((d for _, d in null_d), default=0.0)
+    if fixed_band is not None:
+        band = fixed_band
+        null_d.append(("--band (measured on another deck)", fixed_band))
 
     print(f"{'case':<16} {'opp':<10} {'win':>6} {'delta':>7} {'+-95%':>7} "
           f"{'behav':>7}  verdict")

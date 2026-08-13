@@ -28,7 +28,16 @@ import java.util.UUID;
  */
 public final class StateEncoder {
 
-    public static final int STATE_DIM = 29;
+    /**
+     * -Drl.e3=on turns the two hand-built E3 groups on. It is OFF by
+     * default so that this build still reproduces every pre-E3 phase
+     * bit-for-bit: the frozen instruments and every committed checkpoint
+     * were trained at sdim 24 with candidate slots 17-21 always zero, and
+     * silently changing either would invalidate them.
+     */
+    public static final boolean E3 = "on".equals(System.getProperty("rl.e3"));
+
+    public static final int STATE_DIM = E3 ? 29 : 24;
     /** s[24]: "I know what my next draw is" (E3 group 1) - exported so
      *  the seat can report how often the new visibility is live. */
     public static final int S_KNOWN_TOP = 24;
@@ -215,6 +224,9 @@ public final class StateEncoder {
         s[23] = my.getLibrary().size() / 60f;
 
         // E3 group 1 - card-advantage visibility
+        if (!E3) {
+            return s;
+        }
         if (seen != null) {
             Card top = my.getLibrary().getFromTop(game);
             if (top != null && seen.hasSeen(top.getId())) {
@@ -250,7 +262,9 @@ public final class StateEncoder {
             }
             c[10] = card.isInstant(game) ? 1f : 0f;
             c[11] = card.isSorcery(game) ? 1f : 0f;
-            pips(c, card);
+            if (E3) {
+                pips(c, card);
+            }
             identity(c, card.getName());
         }
         return ablate(c, ABLATE_CAND);

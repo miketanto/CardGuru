@@ -130,7 +130,7 @@ public class RLPlayer extends ComputerPlayer {
     private float[] encode(Game game, UUID opp) {
         float[] s = StateEncoder.encodeState(game, playerId, opp, this::hasSeen);
         encodeWindows++;
-        if (s[StateEncoder.S_KNOWN_TOP] > 0f) {
+        if (StateEncoder.E3 && s[StateEncoder.S_KNOWN_TOP] > 0f) {
             knownTopWindows++;
         }
         return s;

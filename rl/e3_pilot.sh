@@ -69,7 +69,7 @@ probe() {   # $1 tag $2 opponent $3 games -> win_rate
     bash $CG/rl/run_driver.sh \
         -Drl.episodes=$3 \
         -Drl.agent=rl -Drl.policy=socket -Drl.port=$APORT \
-        -Drl.cardFeatures=$FEATS \
+        -Drl.cardFeatures=$FEATS -Drl.e3=on \
         -Drl.opponent=$2 -Drl.searchPlies=1 -Drl.searchBreadth=8 \
         -Drl.noYields=true -Drl.consultBudget=4000 \
         -Drl.deck=$DECK -Drl.stopTurn=80 \
@@ -120,7 +120,7 @@ while true; do
         -Drl.episodes=64 \
         -Drl.agent=rl -Drl.policy=socket -Drl.port=$APORT \
         -Drl.opponent=rl -Drl.oppPort=$OPORT \
-        -Drl.cardFeatures=$FEATS \
+        -Drl.cardFeatures=$FEATS -Drl.e3=on \
         -Drl.noYields=true -Drl.consultBudget=4000 \
         -Drl.deck=$DECK -Drl.stopTurn=80 \
         -Drl.mode=train -Drl.seed=$((70000000 + SEED*1000000 + trained)) \

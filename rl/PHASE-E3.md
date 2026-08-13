@@ -22,6 +22,9 @@ Encoder dims: **sdim 24 → 29**, **cdim 91 → 123** (= 22 + 68 + 32 + 1).
 The pip group costs nothing in cdim: candidate slots 17-21 were already
 allocated and unused, so the whole cdim increase is the text block.
 
+Groups 1 and 3 are gated behind **`-Drl.e3=on` (default off)** so this
+build still reproduces every pre-E3 phase exactly — see §6.
+
 ### Group 1 — how "known top of library" is knowable
 
 XMage has no persistent model of what a player knows about their own
@@ -195,13 +198,167 @@ ALL GATES: PASS
 
 ## 4. The 512-episode pilot
 
-_(filled in below)_
+`rl/e3_pilot.sh`: from-scratch `lstmattn`, self-play against its own
+snapshot pool, BenchDimir mirror, lr 1e-4, 64-episode chunks, fast path
+(persistent driver JVM, `RL_CONC=4`, per-worker policy connections),
+~19 episodes/min. No teacher, no BC init — the net starts from random
+weights, which is the only way to see whether the E3 input shape trains
+at all.
 
-## 5. Is the new channel load-bearing?
+| trained | vs D0 (100g) | vs D1 (100g) |
+|---|---|---|
+| 256 | .120 | .080 |
+| 512 | **.410** | **.230** |
+| 512 (200g re-probe) | **.455** | **.240** |
 
-_(filled in below)_
+The encoder trains. sdim 29 / cdim 123 negotiates cleanly through the
+hello handshake, no stalls in ~2,300 games, and the curve is alive
+rather than flat — the 256→512 jump is the usual scratch-line takeoff
+(Phase 7b's scratch lstmattn needed 6,144 episodes to reach Elo 1101,
+so .455 vs D0 at 512 episodes is on-trend, not a result).
+
+**This is a shakedown, not a comparison.** There is no matched E2 arm at
+512 episodes, so nothing here says E3 > E2. What it establishes is that
+the widened encoder is trainable and that the pilot net is strong enough
+(.455, well off both the 0 floor and the .386 D0-mirror floor) for the
+scramble battery below to have room to move in either direction.
+
+## 5. Is the new channel load-bearing? (`rl/e3_ablate.sh`)
+
+The 8b protocol, applied per channel: corrupt one block of the feature
+file (or zero one group of encoder dims) at eval time and re-probe the
+pilot net. 200 games vs D0 per condition, BenchDimir, seed 950000,
+sequential, a fresh driver JVM per condition (both the feature table and
+the ablation masks are read in `StateEncoder`'s static initializer, and
+`RLDriverServer` now pins them so a stale warm JVM fails loudly instead
+of ignoring the flag).
+
+Two readouts, because at 200g the win-rate CI on a *difference* is
+±.10 and a 512-episode net has little headroom:
+
+- **win rate** — the 8b measure;
+- **behaviour** — mean relative change across turns/ep, actions/ep,
+  consults/ep, blocks declared and flash casts. This needs a null, and
+  two are available: a baseline **replicate** (identical config, fresh
+  JVM: .460 vs .455, behaviour distance **.010**) and `ablate_top` on
+  BenchDimir, which is an *input-identical no-op* there because those
+  dims are already zero in every window (behaviour distance **.007**).
+  XMage is not bit-deterministic across processes, so **.010 is the
+  jitter band** and only movement well above it is a read.
+
+| condition | win rate | Δ | ±95% | behaviour | reading |
+|---|---|---|---|---|---|
+| baseline (D0) | .455 | — | — | — | reference |
+| baseline (D1) | .240 | −.215 | .091 | .113 | — |
+| **text_scrambled** | .520 | +.065 | .098 | **.065** | read, no cost |
+| **text_zeroed** | .530 | +.075 | .098 | **.070** | read, no cost |
+| **mech_scrambled** | .325 | **−.130** | .095 | .209 | read, load-bearing |
+| **all_scrambled** | .175 | **−.280** | .087 | .265 | read, load-bearing |
+| ablate_top (dark here) | .460 | +.005 | .098 | .007 | null control |
+| ablate_hand | .480 | +.025 | .098 | .015 | marginal |
+| ablate_pips | .435 | −.020 | .097 | .031 | read, no cost |
+
+Read straight:
+
+1. **The E2 mechanical block is load-bearing at 512 episodes**:
+   scrambling it costs −.130 (>1.96σ), and scrambling the whole row
+   costs −.280 — the same collapse 8b measured on a fully trained net
+   (.640 → .260). The E3 file reproduces the 8b diagnostic, so the
+   instrument is intact.
+2. **The new text block is READ but not yet load-bearing.** Corrupting
+   it moves play 6-7× the jitter band — the net's actions/ep swing from
+   22.7 to 25.9 (scrambled) and its consults/ep from 158 to 178
+   (zeroed) — but the win rate does not drop; if anything it drifts up
+   (+.065/+.075, both inside the CI). After 512 episodes on a single
+   deck, 32 semantic dims are input the net has learned to *use* but not
+   yet input it *needs*: on the mirror, identifiers suffice, and the
+   text block is currently a mild distractor.
+3. **The pip dims are read** (.031, 3× the band) at no win-rate cost.
+4. **The hand-differential dim is marginal** (.015 vs a .010 band) —
+   expected, since `s[2]`/`s[3]` already carry both hand sizes and the
+   differential is a linear function of them. It is cheap and it makes
+   the card-advantage scoreboard explicit rather than implied; it is not
+   doing work yet.
+
+### Group 1 needed its own deck to be testable at all
+
+On BenchDimir the known-top dims are **dark**: `knownTopWindows = 0` out
+of 31,624 encode windows over 200 games, and `seenRecorded` is 34 — the
+deck's only filtering source is Kaito's surveil, and the pilot never
+activates it. That is precisely the observability gap §4.3 describes,
+now measured rather than asserted, and it means an ablation on this deck
+tests nothing (which is why `ablate_top` serves as the null control).
+
+`rl/E3ScryProbe.dck` (BenchDimir with 3 Islands → Temple of Deceit, so
+the land drops themselves scry) makes the group live and proves the
+mechanism end-to-end:
+
+| deck | condition | knownTop / encode windows | win rate | behaviour |
+|---|---|---|---|---|
+| BenchDimir | baseline | 0 / 31,624 (0.00%) | .455 | — |
+| E3ScryProbe | baseline | **1,449 / 31,839 (4.55%)** | .480 | reference |
+| E3ScryProbe | ablate_top | 0 / 31,821 (0.00%) | .490 | .014 |
+| E3ScryProbe | ablate_hand | 1,526 / 31,836 (4.79%) | .485 | .026 |
+
+So the plumbing works — scry lands feed the seat real knowledge of its
+next draw in ~4.6% of decisions — and this net does not use it (+.010,
+behaviour at the jitter band). It never could have: the pilot trained on
+a deck where the signal was constantly zero.
+
+## Verdict
+
+- **All three acceptance gates pass**, and the text channel groups cards
+  by the *condition* on their effect (Force Spike with the tax counters,
+  Spell Snare with the mana-value counters) — the axis 68 graph dims
+  provably cannot express, since E2 gives those two the same vector.
+- **The E3 encoder trains from scratch** (.455 vs D0 at 512 episodes)
+  and reproduces the 8b scramble collapse, so the channel diagnostics
+  transfer to it unchanged.
+- **The new dims are read but not yet load-bearing.** Text: 6-7× the
+  jitter band in behaviour, no win-rate cost. Pips: 3×, no cost. Hand
+  differential: marginal. Known-top: verified live at 4.6% of decisions
+  on a deck that filters, unused by this net.
+- That is the *expected* result at this budget, and it is exactly the
+  8b story from the other side: on one deck, identifier-style use of the
+  mechanical block is sufficient, so semantic dims cannot pay yet.
+  **E3 should be A/B'd where 8b said the mechanism lives — deck
+  diversity from initialization** (the Phase 10 flagship), not on the
+  BenchDimir mirror. What this session establishes is that the channel
+  is correct, gated, reproducible, cheap, read by the net, and safe to
+  put in that run.
+
+### What would settle it
+
+1. Matched E2-vs-E3 arms inside the Phase 10 flagship (deck diversity
+   from episode 0, gated PFSP league), rated on the mirror + the 7c
+   robustness matrix. That is where "condition breadth" can pay.
+2. Re-run this battery on the flagship's champion: the same table on a
+   .60+ net has the headroom for a −.10 text-scramble effect to show.
+3. Group 1 needs a deck that filters (P8Meta/archetype pools have scry
+   lands and surveil) — or Kaito activation to emerge. Its 4.6%
+   live-window rate on E3ScryProbe is the instrument for that.
+4. Everything here is one seed. 5-seed replication remains the standing
+   project gate for conventions.
+
+### Honest limits
+
+- 200g per condition: only |Δ| > ~.10 is claimable, and the pilot's
+  .455 leaves limited room below.
+- The behaviour readout is a *sensitivity* measure, not a *usefulness*
+  measure: it proves the dims reach the policy's output, not that they
+  help.
+- No matched E2 arm was trained at 512 episodes, so no E3-vs-E2 claim is
+  made anywhere in this document.
+- The 512-episode pilot is a single from-scratch seed on one deck.
 
 ## 6. Reproduction
+
+Setup is the standard spawn kit (XMage pin `7554968c` +
+`rl/engine-patches/phase9-engine.patch`, overlay `rl/xmage-src/` and
+`benchmark/xmage/src/`, `mvn -pl Mage.Tests -am install -DskipTests`,
+decks copied into `Mage.Tests`), plus a Forge checkout for the oracle
+text (`git clone --depth 50 https://github.com/Card-Forge/forge.git
+~/forge-src`) and `pip install torch scikit-learn`.
 
 ```
 python3 rl/e3_text_spike.py            # feasibility spike, unchanged
@@ -209,4 +366,35 @@ python3 rl/e3_extract.py               # -> rl/e3_features.tsv (dim 100)
 python3 rl/e3_gates.py                 # the three gates, exit 0 = pass
 bash    rl/e3_pilot.sh 512 0           # from-scratch pilot (sdim 29 cdim 123)
 bash    rl/e3_ablate.sh /tmp/rl_e3_s0/e3_pilot_final.pt 200
+
+# the two controls the battery is read against
+E3_OUT=/tmp/rl_e3_ablate_rep  E3_CASES="baseline" \
+    bash rl/e3_ablate.sh /tmp/rl_e3_s0/e3_pilot_final.pt 200
+E3_OUT=/tmp/rl_e3_ablate_scry E3_DECK=E3ScryProbe.dck \
+    E3_CASES="baseline ablate_top ablate_hand" \
+    bash rl/e3_ablate.sh /tmp/rl_e3_s0/e3_pilot_final.pt 200
+
+python3 rl/e3_ablate_report.py /tmp/rl_e3_ablate/results.txt \
+    --null /tmp/rl_e3_ablate_rep/results.txt
+python3 rl/e3_ablate_report.py /tmp/rl_e3_ablate_scry/results.txt --band 0.010
 ```
+
+Using the channel in a lane: `-Drl.e3=on
+-Drl.cardFeatures=rl/e3_features.tsv` with `policy_server.py --sdim 29
+--cdim 123`.
+
+**The hand-built groups are behind `-Drl.e3=on`, default OFF.** Both of
+them would otherwise silently invalidate every frozen instrument on this
+build: group 1 changes sdim 24 → 29, and group 3 fills candidate slots
+17-21 that were always zero for every checkpoint the project has trained
+(ck_6144, attn_desp, e0_champ, the scripted ladder's comparability).
+With the flag off this encoder is byte-identical to the pre-E3 one, so a
+Phase ≤10 lane runs unchanged on the same jar. `RLDriverServer` pins
+`rl.e3` alongside `rl.cardFeatures`, so a warm JVM cannot serve a job
+under the wrong encoder — it refuses the job instead.
+
+The flag was added after the numbers above were collected, so the
+baseline was re-measured through it: **.455 win rate, turns 20.1,
+actions 22.7** against the original .455 / 20.1 / 22.7 (consults 158.4
+vs 158.1, blocks 243 vs 244, flash 567 vs 562 — all inside the .010
+jitter band). The gated path is the path that was measured.

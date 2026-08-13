@@ -50,7 +50,7 @@ public class RLDriverServer {
             // E3 ablations are read in StateEncoder's static initializer,
             // so a job that changes them in a warm JVM would be silently
             // ignored - fail loudly instead
-            "rl.ablateState", "rl.ablateCand"};
+            "rl.ablateState", "rl.ablateCand", "rl.e3"};
 
     private static String[] pinnedValues;
     private static long jobs = 0;
