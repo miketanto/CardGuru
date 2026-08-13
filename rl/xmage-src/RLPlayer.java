@@ -63,6 +63,14 @@ public class RLPlayer extends ComputerPlayer {
      *  want to see emerge without a teacher */
     public long flashThreatCasts = 0;
     public long flashThreatCastsOppTurn = 0;
+
+    /** Phase 7c: blocks the agent actually declared (the scratch agent's
+     *  headline hole is that it never blocks - the mirror never punished
+     *  it, so the deck curriculum has to). */
+    public long blocksDeclared = 0;
+    /** Windows where a block was legal at all, so the counter above can
+     *  be read as a RATE rather than an artifact of board state. */
+    public long blockOpportunities = 0;
     /** per-episode consult budget: a runaway episode (random policy can
      * mana-loop) degrades to always-pass instead of hanging the driver */
     public long consultBudget = Long.getLong("rl.consultBudget", 20000L);
@@ -107,6 +115,7 @@ public class RLPlayer extends ComputerPlayer {
         shuffleCount = 0;
         windows = consults = yieldSkipped = autoPassK0 = 0;
         actions = failedActivations = 0;
+        blocksDeclared = blockOpportunities = 0;
     }
 
     private UUID opponentId(Game game) {
@@ -494,11 +503,13 @@ public class RLPlayer extends ComputerPlayer {
                         StateEncoder.T_BLOCK, can.get(i), game);
             }
             consults++;
+            blockOpportunities++;
             int pick = policy.choose(state, cands, phi(game));
             if (pick > 0 && pick <= can.size()) {
                 this.declareBlocker(defendingPlayerId, blocker.getId(),
                         can.get(pick - 1).getId(), game);
                 actions++;
+                blocksDeclared++;
             }
         }
     }

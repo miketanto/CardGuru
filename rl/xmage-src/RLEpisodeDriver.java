@@ -30,6 +30,8 @@ import java.util.Locale;
  *   -Drl.policy=random       random | socket
  *   -Drl.port=7777           socket policy port
  *   -Drl.deck=BenchBurn.dck
+ *   -Drl.oppDeck=...        opponent-seat deck (Phase 7c archetype
+ *                           curriculum); unset = mirror of rl.deck
  *   -Drl.seed=0              base seed; episode i uses seed+i
  *   -Drl.stopTurn=60         stall bound; stalls score reward 0
  *   -Drl.report=100          print a progress line every N episodes
@@ -80,7 +82,8 @@ public class RLEpisodeDriver extends MageTestPlayerBase {
 
     private EpisodeResult playEpisode(PolicyClient policy, java.util.Map<String, Integer> fallbacks,
                                       long seed, String opponentKind,
-                                      String deckName, int stopTurn,
+                                      String deckName, String oppDeckName,
+                                      int stopTurn,
                                       boolean agentOnPlay) throws Exception {
         Game game = new TwoPlayerDuel(MultiplayerAttackOption.LEFT, RangeOfInfluence.ONE,
                 MulliganType.GAME_DEFAULT.getMulligan(0), 60, 20, 7);
@@ -192,14 +195,21 @@ public class RLEpisodeDriver extends MageTestPlayerBase {
             opp = r;
         }
 
-        Deck deckA = loadDeck(deckName);
-        Deck deckB = loadDeck(deckName);
+        // Phase 7c: the opponent seat may pilot a DIFFERENT archetype deck
+        // (rl.oppDeck); unset keeps the historical mirror behaviour.
+        // decks bind to SEATS, not to play order: with asymmetric decks the
+        // old order-bound version handed the agent the opponent's list on
+        // every other episode (harmless while every match was a mirror).
+        Deck agentDeck = loadDeck(deckName);
+        Deck oppDeck = loadDeck(oppDeckName == null ? deckName : oppDeckName);
         Player first = agentOnPlay ? agent : opp;
         Player second = agentOnPlay ? opp : agent;
-        game.loadCards(deckA.getCards(), first.getId());
-        game.loadCards(deckB.getCards(), second.getId());
-        game.addPlayer(first, deckA);
-        game.addPlayer(second, deckB);
+        Deck deckFirst = agentOnPlay ? agentDeck : oppDeck;
+        Deck deckSecond = agentOnPlay ? oppDeck : agentDeck;
+        game.loadCards(deckFirst.getCards(), first.getId());
+        game.loadCards(deckSecond.getCards(), second.getId());
+        game.addPlayer(first, deckFirst);
+        game.addPlayer(second, deckSecond);
 
         GameOptions options = new GameOptions();
         options.testMode = false;      // real opening hands (Phase 2 erratum)
@@ -221,6 +231,8 @@ public class RLEpisodeDriver extends MageTestPlayerBase {
             }
             fallbacks.merge("flashThreats", (int) rlAgent.flashThreatCasts, Integer::sum);
             fallbacks.merge("flashThreatsOppTurn", (int) rlAgent.flashThreatCastsOppTurn, Integer::sum);
+            fallbacks.merge("blocksDeclared", (int) rlAgent.blocksDeclared, Integer::sum);
+            fallbacks.merge("blockOpportunities", (int) rlAgent.blockOpportunities, Integer::sum);
         }
         if (agent instanceof org.mage.test.benchmark.SearchPlayer) {
             org.mage.test.benchmark.SearchPlayer sp = (org.mage.test.benchmark.SearchPlayer) agent;
@@ -270,6 +282,9 @@ public class RLEpisodeDriver extends MageTestPlayerBase {
         // comma-separated list = Task C training pool; episode i plays a
         // mirror of decks[i % n] so every deck gets equal exposure
         String[] decks = System.getProperty("rl.deck", "BenchBurn.dck").split(",");
+        // Phase 7c: opponent-seat deck. Unset => mirror (historical default).
+        String oppDeckProp = System.getProperty("rl.oppDeck");
+        String[] oppDecks = oppDeckProp == null ? null : oppDeckProp.split(",");
         long seed = Long.getLong("rl.seed", 0L);
         int stopTurn = Integer.getInteger("rl.stopTurn", 60);
         int report = Integer.getInteger("rl.report", 100);
@@ -295,7 +310,9 @@ public class RLEpisodeDriver extends MageTestPlayerBase {
         long t0 = System.nanoTime();
         for (int i = 0; i < episodes; i++) {
             EpisodeResult r = playEpisode(policy, fallbacks, seed + i, opponent,
-                    decks[i % decks.length].trim(), stopTurn, i % 2 == 0);
+                    decks[i % decks.length].trim(),
+                    oppDecks == null ? null : oppDecks[i % oppDecks.length].trim(),
+                    stopTurn, i % 2 == 0);
             policy.episodeEnd(r.reward);
             if (imitateOut != null) {
                 imitateOut.println("{\"t\":\"end\",\"r\":" + r.reward + "}");
@@ -330,14 +347,15 @@ public class RLEpisodeDriver extends MageTestPlayerBase {
                         + "|win_rate=%.4f|games_per_sec=%.3f"
                         + "|agent_consults_per_ep=%.1f|agent_windows_per_ep=%.1f"
                         + "|agent_actions_per_ep=%.1f|turns_per_ep=%.1f"
-                        + "|opponent=%s|policy=%s|deck=%s|seed=%d|fallbacks=%s",
+                        + "|opponent=%s|policy=%s|deck=%s|oppDeck=%s|seed=%d|fallbacks=%s",
                 episodes, wins, losses, draws, stalls,
                 wins / (double) episodes, episodes / sec,
                 totalConsults / (double) episodes,
                 totalWindows / (double) episodes,
                 totalActions / (double) episodes,
                 totalTurns / episodes,
-                opponent, policyKind, String.join(",", decks), seed, fb);
+                opponent, policyKind, String.join(",", decks),
+                oppDecks == null ? "mirror" : String.join(",", oppDecks), seed, fb);
         System.out.println(line);
         if (policy instanceof SocketPolicyClient) {
             SocketPolicyClient s = (SocketPolicyClient) policy;
