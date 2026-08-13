@@ -1,0 +1,195 @@
+# Phase 7c sample game - trained=0, agent BenchDimir vs D0 piloting sweep (P7cSweepControl.dck), seed 951000, argmax
+INFO  2026-08-13 08:13:47,084 [LOG][GAME] T1: Agent's library is shuffled
+INFO  2026-08-13 08:13:47,087 [LOG][GAME] T1: Opponent's library is shuffled
+INFO  2026-08-13 08:13:47,105 [LOG][GAME] T1: Agent chooses that they take the first turn
+INFO  2026-08-13 08:13:47,249 [LOG][GAME] T1.DR: Agent skips Draw step
+INFO  2026-08-13 08:13:47,298 [LOG][GAME] T1.M1: Agent puts Island [bac] from hand onto the Battlefield
+INFO  2026-08-13 08:13:47,421 [LOG][GAME] T1.DA: Agent skip attack
+INFO  2026-08-13 08:13:47,560 [LOG][GAME] T2.M1: Opponent puts Island [002] from hand onto the Battlefield
+INFO  2026-08-13 08:13:47,585 [LOG][GAME] T2.DA: Opponent skip attack
+INFO  2026-08-13 08:13:47,731 [LOG][GAME] T3.M1: Agent puts Soulstone Sanctuary [8db] from hand onto the Battlefield
+INFO  2026-08-13 08:13:47,764 [LOG][GAME] T3.DA: Agent skip attack
+INFO  2026-08-13 08:13:47,866 [LOG][GAME] T4.M1: Opponent puts Plains [490] from hand onto the Battlefield
+INFO  2026-08-13 08:13:47,875 [LOG][GAME] T4.M1: Stack push: 1 (top: Cast Omenspeaker)
+INFO  2026-08-13 08:13:47,892 [LOG][GAME] T4.M1: Opponent casts Omenspeaker [f34] from hand
+INFO  2026-08-13 08:13:47,904 [LOG][GAME] T4.M1: Stack resolve: 1 (top: Cast Omenspeaker)
+INFO  2026-08-13 08:13:47,915 [LOG][GAME] T4.M1: Opponent puts Omenspeaker [f34] from stack onto the Battlefield
+INFO  2026-08-13 08:13:47,921 [LOG][GAME] T4.M1: Stack push: 1 (top: stack ability (When {this} enters, scry 2. <i>(Look at the top two cards of your library, then pu...)
+INFO  2026-08-13 08:13:47,923 [LOG][GAME] T4.M1: Opponent - Ability triggers: Omenspeaker [f34] - When Omenspeaker [f34] enters, scry 2. (Look at the top two cards of your library, then put any number of them on the bottom and the rest on top in any order.)
+INFO  2026-08-13 08:13:47,937 [LOG][GAME] T4.M1: Stack resolve: 1 (top: stack ability (When {this} enters, scry 2. <i>(Look at the top two cards of your library, then pu...)
+INFO  2026-08-13 08:13:47,939 [LOG][GAME] T4.M1: Opponent scries 2 (source: Omenspeaker [f34])
+INFO  2026-08-13 08:13:47,950 [LOG][GAME] T4.M1: Opponent puts a card from library to the bottom of their library (source: Omenspeaker [f34])
+INFO  2026-08-13 08:13:47,951 [LOG][GAME] T4.M1: Opponent puts a card from library to the bottom of their library (source: Omenspeaker [f34])
+INFO  2026-08-13 08:13:47,971 [LOG][GAME] T4.DA: Opponent skip attack
+INFO  2026-08-13 08:13:48,071 [LOG][GAME] T5.UP: Stack push: 1 (top: Cast The Wondrous Wasp)
+INFO  2026-08-13 08:13:48,078 [LOG][GAME] T5.UP: Agent casts The Wondrous Wasp [e5c] from hand
+INFO  2026-08-13 08:13:48,091 [LOG][GAME] T5.UP: Stack resolve: 1 (top: Cast The Wondrous Wasp)
+INFO  2026-08-13 08:13:48,092 [LOG][GAME] T5.UP: Agent puts The Wondrous Wasp [e5c] from stack onto the Battlefield
+INFO  2026-08-13 08:13:48,094 [LOG][GAME] T5.UP: Stack push: 1 (top: stack ability (<i>Wasp's Sting</i> &mdash; When {this} enters, tap up to one target creature. It ...)
+INFO  2026-08-13 08:13:48,097 [LOG][GAME] T5.UP: Agent - Ability triggers: The Wondrous Wasp [e5c] - Wasp's Sting — When The Wondrous Wasp [e5c] enters, tap up to one target creature. It loses all abilities for as long as The Wondrous Wasp [e5c] remains on the battlefield.
+INFO  2026-08-13 08:13:48,106 [LOG][GAME] T5.UP: Stack resolve: 1 (top: stack ability (<i>Wasp's Sting</i> &mdash; When {this} enters, tap up to one target creature. It ...)
+INFO  2026-08-13 08:13:48,137 [LOG][GAME] T5.M1: Agent loses 2 life from Watery Grave [53d]
+INFO  2026-08-13 08:13:48,143 [LOG][GAME] T5.M1: Agent puts Watery Grave [53d] from hand onto the Battlefield
+INFO  2026-08-13 08:13:48,191 [LOG][GAME] T5.DA: Agent skip attack
+INFO  2026-08-13 08:13:48,248 [LOG][GAME] T6.M1: Opponent puts Plains [ae4] from hand onto the Battlefield
+INFO  2026-08-13 08:13:48,264 [LOG][GAME] T6.M1: Stack push: 1 (top: Cast Divination)
+INFO  2026-08-13 08:13:48,271 [LOG][GAME] T6.M1: Opponent casts Divination [774] from hand
+INFO  2026-08-13 08:13:48,279 [LOG][GAME] T6.M1: Stack resolve: 1 (top: Cast Divination)
+INFO  2026-08-13 08:13:48,280 [LOG][GAME] T6.M1: Opponent puts Divination [774] from stack into their graveyard
+INFO  2026-08-13 08:13:48,301 [LOG][GAME] T6.DA: Opponent attacks Agent with 1 creature
+INFO  2026-08-13 08:13:48,355 [LOG][GAME] T6.DB: Attacker: Omenspeaker [f34] (1/3) blocked by The Wondrous Wasp [e5c] (2/1)
+INFO  2026-08-13 08:13:48,373 [LOG][GAME] T6.CD: The Wondrous Wasp [e5c] deals 2 damage to Omenspeaker [f34]
+INFO  2026-08-13 08:13:48,374 [LOG][GAME] T6.CD: Omenspeaker [f34] deals 1 damage to The Wondrous Wasp [e5c]
+INFO  2026-08-13 08:13:48,377 [LOG][GAME] T6.CD: The Wondrous Wasp [e5c] died
+INFO  2026-08-13 08:13:48,424 [LOG][GAME] T7.UP: Stack push: 1 (top: Cast Floodpits Drowner)
+INFO  2026-08-13 08:13:48,429 [LOG][GAME] T7.UP: Agent casts Floodpits Drowner [bb6] from hand
+INFO  2026-08-13 08:13:48,458 [LOG][GAME] T7.UP: Stack resolve: 1 (top: Cast Floodpits Drowner)
+INFO  2026-08-13 08:13:48,460 [LOG][GAME] T7.UP: Agent puts Floodpits Drowner [bb6] from stack onto the Battlefield
+INFO  2026-08-13 08:13:48,462 [LOG][GAME] T7.UP: Stack push: 1 (top: stack ability (When {this} enters, tap target creature an opponent controls and put a stun counte...)
+INFO  2026-08-13 08:13:48,464 [LOG][GAME] T7.UP: Agent - Ability triggers: Floodpits Drowner [bb6] - When Floodpits Drowner [bb6] enters, tap target creature an opponent controls and put a stun counter on it. - targeting Omenspeaker [f34]
+INFO  2026-08-13 08:13:48,491 [LOG][GAME] T7.UP: Stack resolve: 1 (top: stack ability (When {this} enters, tap target creature an opponent controls and put a stun counte...)
+INFO  2026-08-13 08:13:48,493 [LOG][GAME] T7.UP: Floodpits Drowner [bb6]: Agent puts 1 stun counters on Omenspeaker [f34]
+INFO  2026-08-13 08:13:48,559 [LOG][GAME] T7.M1: Agent loses 2 life from Watery Grave [9c0]
+INFO  2026-08-13 08:13:48,560 [LOG][GAME] T7.M1: Agent puts Watery Grave [9c0] from hand onto the Battlefield
+INFO  2026-08-13 08:13:48,616 [LOG][GAME] T7.DA: Agent skip attack
+INFO  2026-08-13 08:13:48,664 [LOG][GAME] T8.UN: Removed a stun counter from Omenspeaker [f34]
+INFO  2026-08-13 08:13:48,696 [LOG][GAME] T8.M1: Opponent puts Island [4e9] from hand onto the Battlefield
+INFO  2026-08-13 08:13:48,703 [LOG][GAME] T8.M1: Stack push: 1 (top: Cast Wall of Frost)
+INFO  2026-08-13 08:13:48,710 [LOG][GAME] T8.M1: Opponent casts Wall of Frost [03a] from hand
+INFO  2026-08-13 08:13:48,721 [LOG][GAME] T8.M1: Stack resolve: 1 (top: Cast Wall of Frost)
+INFO  2026-08-13 08:13:48,722 [LOG][GAME] T8.M1: Opponent puts Wall of Frost [03a] from stack onto the Battlefield
+INFO  2026-08-13 08:13:48,745 [LOG][GAME] T8.DA: Opponent skip attack
+INFO  2026-08-13 08:13:48,811 [LOG][GAME] T9.UP: Stack push: 1 (top: Cast The Wondrous Wasp)
+INFO  2026-08-13 08:13:48,817 [LOG][GAME] T9.UP: Agent casts The Wondrous Wasp [154] from hand
+INFO  2026-08-13 08:13:48,887 [LOG][GAME] T9.UP: Stack resolve: 1 (top: Cast The Wondrous Wasp)
+INFO  2026-08-13 08:13:48,888 [LOG][GAME] T9.UP: Agent puts The Wondrous Wasp [154] from stack onto the Battlefield
+INFO  2026-08-13 08:13:48,891 [LOG][GAME] T9.UP: Stack push: 1 (top: stack ability (<i>Wasp's Sting</i> &mdash; When {this} enters, tap up to one target creature. It ...)
+INFO  2026-08-13 08:13:48,893 [LOG][GAME] T9.UP: Agent - Ability triggers: The Wondrous Wasp [154] - Wasp's Sting — When The Wondrous Wasp [154] enters, tap up to one target creature. It loses all abilities for as long as The Wondrous Wasp [154] remains on the battlefield.
+INFO  2026-08-13 08:13:48,920 [LOG][GAME] T9.UP: Stack resolve: 1 (top: stack ability (<i>Wasp's Sting</i> &mdash; When {this} enters, tap up to one target creature. It ...)
+INFO  2026-08-13 08:13:48,963 [LOG][GAME] T9.M1: Agent puts Hidden Lair [db9] from hand onto the Battlefield
+INFO  2026-08-13 08:13:49,009 [LOG][GAME] T9.DA: Agent attacks Opponent with 1 creature
+INFO  2026-08-13 08:13:49,032 [LOG][GAME] T9.DB: Attacker: Floodpits Drowner [bb6] (2/1) unblocked
+INFO  2026-08-13 08:13:49,052 [LOG][GAME] T9.CD: Opponent loses 2 life at combat from Floodpits Drowner [bb6]
+INFO  2026-08-13 08:13:49,203 [LOG][GAME] T10.M1: Opponent puts Plains [d98] from hand onto the Battlefield
+INFO  2026-08-13 08:13:49,213 [LOG][GAME] T10.M1: Stack push: 1 (top: Cast Serra Angel)
+INFO  2026-08-13 08:13:49,228 [LOG][GAME] T10.M1: Opponent casts Serra Angel [302] from hand
+INFO  2026-08-13 08:13:49,259 [LOG][GAME] T10.M1: Stack resolve: 1 (top: Cast Serra Angel)
+INFO  2026-08-13 08:13:49,261 [LOG][GAME] T10.M1: Opponent puts Serra Angel [302] from stack onto the Battlefield
+INFO  2026-08-13 08:13:49,357 [LOG][GAME] T10.DA: Opponent attacks Agent with 1 creature
+INFO  2026-08-13 08:13:49,410 [LOG][GAME] T10.DB: Attacker: Omenspeaker [f34] (1/3) blocked by Floodpits Drowner [bb6] (2/1) The Wondrous Wasp [154] (2/1)
+INFO  2026-08-13 08:13:49,459 [LOG][GAME] T10.CD: Floodpits Drowner [bb6] deals 2 damage to Omenspeaker [f34]
+INFO  2026-08-13 08:13:49,460 [LOG][GAME] T10.CD: The Wondrous Wasp [154] deals 2 damage to Omenspeaker [f34]
+INFO  2026-08-13 08:13:49,461 [LOG][GAME] T10.CD: Omenspeaker [f34] deals 1 damage to Floodpits Drowner [bb6]
+INFO  2026-08-13 08:13:49,465 [LOG][GAME] T10.CD: Omenspeaker [f34] died
+INFO  2026-08-13 08:13:49,466 [LOG][GAME] T10.CD: Floodpits Drowner [bb6] died
+INFO  2026-08-13 08:13:49,721 [LOG][GAME] T11.DR: Stack push: 1 (top: Cast Floodpits Drowner)
+INFO  2026-08-13 08:13:49,737 [LOG][GAME] T11.DR: Agent casts Floodpits Drowner [819] from hand
+INFO  2026-08-13 08:13:49,776 [LOG][GAME] T11.DR: Stack resolve: 1 (top: Cast Floodpits Drowner)
+INFO  2026-08-13 08:13:49,779 [LOG][GAME] T11.DR: Agent puts Floodpits Drowner [819] from stack onto the Battlefield
+INFO  2026-08-13 08:13:49,783 [LOG][GAME] T11.DR: Stack push: 1 (top: stack ability (When {this} enters, tap target creature an opponent controls and put a stun counte...)
+INFO  2026-08-13 08:13:49,789 [LOG][GAME] T11.DR: Agent - Ability triggers: Floodpits Drowner [819] - When Floodpits Drowner [819] enters, tap target creature an opponent controls and put a stun counter on it. - targeting Serra Angel [302]
+INFO  2026-08-13 08:13:49,816 [LOG][GAME] T11.DR: Stack resolve: 1 (top: stack ability (When {this} enters, tap target creature an opponent controls and put a stun counte...)
+INFO  2026-08-13 08:13:49,818 [LOG][GAME] T11.DR: Floodpits Drowner [819]: Agent puts 1 stun counters on Serra Angel [302]
+INFO  2026-08-13 08:13:49,958 [LOG][GAME] T11.DA: Agent attacks Opponent with 1 creature
+INFO  2026-08-13 08:13:50,011 [LOG][GAME] T11.DB: Attacker: The Wondrous Wasp [154] (2/1) unblocked
+INFO  2026-08-13 08:13:50,040 [LOG][GAME] T11.DB: Stack push: 1 (top: stack ability (Ninjutsu {1}{U}{B} <i>({1}{U}{B} Return an unblocked attacker you control to hand:...)
+INFO  2026-08-13 08:13:50,065 [LOG][GAME] T11.DB: Agent reveals Kaito, Bane of Nightmares
+INFO  2026-08-13 08:13:50,075 [LOG][GAME] T11.DB: Agent puts The Wondrous Wasp [154] from battlefield into their hand
+INFO  2026-08-13 08:13:50,076 [LOG][GAME] T11.DB: Agent activates: Put this card onto the battlefield from your hand tapped and attacking. from Kaito, Bane of Nightmares [8fc]
+INFO  2026-08-13 08:13:50,132 [LOG][GAME] T11.DB: Stack resolve: 1 (top: stack ability (Ninjutsu {1}{U}{B} <i>({1}{U}{B} Return an unblocked attacker you control to hand:...)
+INFO  2026-08-13 08:13:50,136 [LOG][GAME] T11.DB: Agent puts Kaito, Bane of Nightmares [8fc] from hand onto the Battlefield
+INFO  2026-08-13 08:13:50,219 [LOG][GAME] T11.CD: Opponent loses 3 life at combat from Kaito, Bane of Nightmares [8fc]
+INFO  2026-08-13 08:13:50,398 [LOG][GAME] T11.M2: Stack push: 1 (top: stack ability (+1: You get an emblem with "Ninjas you control get +1/+1."))
+INFO  2026-08-13 08:13:50,401 [LOG][GAME] T11.M2: Agent activates: you get an emblem with "Ninjas you control get +1/+1." from Kaito, Bane of Nightmares [8fc]
+INFO  2026-08-13 08:13:50,449 [LOG][GAME] T11.M2: Stack resolve: 1 (top: stack ability (+1: You get an emblem with "Ninjas you control get +1/+1."))
+INFO  2026-08-13 08:13:50,477 [LOG][GAME] T11.M2: Agent puts Restless Reef [b09] from hand onto the Battlefield
+INFO  2026-08-13 08:13:50,499 [LOG][GAME] T12.UN: Removed a stun counter from Serra Angel [302]
+INFO  2026-08-13 08:13:50,534 [LOG][GAME] T12.M1: Opponent puts Plains [1c2] from hand onto the Battlefield
+INFO  2026-08-13 08:13:50,552 [LOG][GAME] T12.M1: Stack push: 1 (top: Cast Serra Angel)
+INFO  2026-08-13 08:13:50,567 [LOG][GAME] T12.M1: Opponent casts Serra Angel [5d1] from hand
+INFO  2026-08-13 08:13:50,576 [LOG][GAME] T12.M1: Stack resolve: 1 (top: Cast Serra Angel)
+INFO  2026-08-13 08:13:50,577 [LOG][GAME] T12.M1: Opponent puts Serra Angel [5d1] from stack onto the Battlefield
+INFO  2026-08-13 08:13:50,595 [LOG][GAME] T12.DA: Opponent skip attack
+INFO  2026-08-13 08:13:50,643 [LOG][GAME] T13.UP: Stack push: 1 (top: Cast The Wondrous Wasp)
+INFO  2026-08-13 08:13:50,652 [LOG][GAME] T13.UP: Agent casts The Wondrous Wasp [154] from hand
+INFO  2026-08-13 08:13:50,672 [LOG][GAME] T13.UP: Stack resolve: 1 (top: Cast The Wondrous Wasp)
+INFO  2026-08-13 08:13:50,673 [LOG][GAME] T13.UP: Agent puts The Wondrous Wasp [154] from stack onto the Battlefield
+INFO  2026-08-13 08:13:50,681 [LOG][GAME] T13.UP: Stack push: 1 (top: stack ability (<i>Wasp's Sting</i> &mdash; When {this} enters, tap up to one target creature. It ...)
+INFO  2026-08-13 08:13:50,690 [LOG][GAME] T13.UP: Agent - Ability triggers: The Wondrous Wasp [154] - Wasp's Sting — When The Wondrous Wasp [154] enters, tap up to one target creature. It loses all abilities for as long as The Wondrous Wasp [154] remains on the battlefield.
+INFO  2026-08-13 08:13:50,705 [LOG][GAME] T13.UP: Stack resolve: 1 (top: stack ability (<i>Wasp's Sting</i> &mdash; When {this} enters, tap up to one target creature. It ...)
+INFO  2026-08-13 08:13:50,754 [LOG][GAME] T13.DR: Stack push: 1 (top: Cast Nowhere to Run)
+INFO  2026-08-13 08:13:50,762 [LOG][GAME] T13.DR: Agent casts Nowhere to Run [ba4] from hand
+INFO  2026-08-13 08:13:50,777 [LOG][GAME] T13.DR: Stack resolve: 1 (top: Cast Nowhere to Run)
+INFO  2026-08-13 08:13:50,778 [LOG][GAME] T13.DR: Agent puts Nowhere to Run [ba4] from stack onto the Battlefield
+INFO  2026-08-13 08:13:50,781 [LOG][GAME] T13.DR: Stack push: 1 (top: stack ability (When {this} enters, target creature an opponent controls gets -3/-3 until end of t...)
+INFO  2026-08-13 08:13:50,791 [LOG][GAME] T13.DR: Agent - Ability triggers: Nowhere to Run [ba4] - When Nowhere to Run [ba4] enters, target creature an opponent controls gets -3/-3 until end of turn. - targeting Serra Angel [302]
+INFO  2026-08-13 08:13:50,810 [LOG][GAME] T13.DR: Stack resolve: 1 (top: stack ability (When {this} enters, target creature an opponent controls gets -3/-3 until end of t...)
+INFO  2026-08-13 08:13:50,855 [LOG][GAME] T13.M1: Stack push: 1 (top: stack ability (+1: You get an emblem with "Ninjas you control get +1/+1."))
+INFO  2026-08-13 08:13:50,857 [LOG][GAME] T13.M1: Agent activates: you get an emblem with "Ninjas you control get +1/+1." from Kaito, Bane of Nightmares [8fc]
+INFO  2026-08-13 08:13:50,891 [LOG][GAME] T13.M1: Stack resolve: 1 (top: stack ability (+1: You get an emblem with "Ninjas you control get +1/+1."))
+INFO  2026-08-13 08:13:50,970 [LOG][GAME] T13.DA: Agent attacks Opponent with 2 creatures
+INFO  2026-08-13 08:13:50,991 [LOG][GAME] T13.DB: Attacker: Floodpits Drowner [819] (2/1) blocked by Serra Angel [5d1] (4/4)
+INFO  2026-08-13 08:13:50,991 [LOG][GAME] T13.DB: Attacker: Kaito, Bane of Nightmares [8fc] (5/6) unblocked
+INFO  2026-08-13 08:13:51,012 [LOG][GAME] T13.CD: Serra Angel [5d1] deals 4 damage to Floodpits Drowner [819]
+INFO  2026-08-13 08:13:51,013 [LOG][GAME] T13.CD: Floodpits Drowner [819] deals 2 damage to Serra Angel [5d1]
+INFO  2026-08-13 08:13:51,014 [LOG][GAME] T13.CD: Opponent loses 5 life at combat from Kaito, Bane of Nightmares [8fc]
+INFO  2026-08-13 08:13:51,018 [LOG][GAME] T13.CD: Floodpits Drowner [819] died
+INFO  2026-08-13 08:13:51,164 [LOG][GAME] T14.M1: Opponent puts Plains [2a7] from hand onto the Battlefield
+INFO  2026-08-13 08:13:51,169 [LOG][GAME] T14.M1: Stack push: 1 (top: Cast Windreader Sphinx)
+INFO  2026-08-13 08:13:51,198 [LOG][GAME] T14.M1: Opponent casts Windreader Sphinx [408] from hand
+INFO  2026-08-13 08:13:51,212 [LOG][GAME] T14.M1: Stack resolve: 1 (top: Cast Windreader Sphinx)
+INFO  2026-08-13 08:13:51,213 [LOG][GAME] T14.M1: Opponent puts Windreader Sphinx [408] from stack onto the Battlefield
+INFO  2026-08-13 08:13:51,244 [LOG][GAME] T14.DA: Opponent attacks Agent with 2 creatures
+INFO  2026-08-13 08:13:51,254 [LOG][GAME] T14.DA: Stack push: 1 (top: stack ability (Whenever a creature with flying attacks, you may draw a card.))
+INFO  2026-08-13 08:13:51,256 [LOG][GAME] T14.DA: Opponent - Ability triggers: Windreader Sphinx [408] - Whenever a creature with flying attacks, you may draw a card.
+INFO  2026-08-13 08:13:51,257 [LOG][GAME] T14.DA: Stack push: 2 (top: stack ability (Whenever a creature with flying attacks, you may draw a card.))
+INFO  2026-08-13 08:13:51,258 [LOG][GAME] T14.DA: Opponent - Ability triggers: Windreader Sphinx [408] - Whenever a creature with flying attacks, you may draw a card.
+INFO  2026-08-13 08:13:51,271 [LOG][GAME] T14.DA: Stack resolve: 2 (top: stack ability (Whenever a creature with flying attacks, you may draw a card.))
+INFO  2026-08-13 08:13:51,285 [LOG][GAME] T14.DA: Stack resolve: 1 (top: stack ability (Whenever a creature with flying attacks, you may draw a card.))
+INFO  2026-08-13 08:13:51,309 [LOG][GAME] T14.DB: Attacker: Serra Angel [302] (4/4) blocked by The Wondrous Wasp [154] (2/1)
+INFO  2026-08-13 08:13:51,310 [LOG][GAME] T14.DB: Attacker: Serra Angel [5d1] (4/4) unblocked
+INFO  2026-08-13 08:13:51,325 [LOG][GAME] T14.CD: The Wondrous Wasp [154] deals 2 damage to Serra Angel [302]
+INFO  2026-08-13 08:13:51,326 [LOG][GAME] T14.CD: Serra Angel [302] deals 4 damage to The Wondrous Wasp [154]
+INFO  2026-08-13 08:13:51,326 [LOG][GAME] T14.CD: Agent loses 4 life at combat from Serra Angel [5d1]
+INFO  2026-08-13 08:13:51,329 [LOG][GAME] T14.CD: The Wondrous Wasp [154] died
+INFO  2026-08-13 08:13:51,456 [LOG][GAME] T15.M1: Stack push: 1 (top: stack ability (+1: You get an emblem with "Ninjas you control get +1/+1."))
+INFO  2026-08-13 08:13:51,458 [LOG][GAME] T15.M1: Agent activates: you get an emblem with "Ninjas you control get +1/+1." from Kaito, Bane of Nightmares [8fc]
+INFO  2026-08-13 08:13:51,478 [LOG][GAME] T15.M1: Stack resolve: 1 (top: stack ability (+1: You get an emblem with "Ninjas you control get +1/+1."))
+INFO  2026-08-13 08:13:51,499 [LOG][GAME] T15.M1: Agent loses 2 life from Watery Grave [77b]
+INFO  2026-08-13 08:13:51,500 [LOG][GAME] T15.M1: Agent puts Watery Grave [77b] from hand onto the Battlefield
+INFO  2026-08-13 08:13:51,537 [LOG][GAME] T15.DA: Agent attacks Opponent with 1 creature
+INFO  2026-08-13 08:13:51,551 [LOG][GAME] T15.DB: Attacker: Kaito, Bane of Nightmares [8fc] (6/7) unblocked
+INFO  2026-08-13 08:13:51,568 [LOG][GAME] T15.CD: Opponent loses 6 life at combat from Kaito, Bane of Nightmares [8fc]
+INFO  2026-08-13 08:13:51,664 [LOG][GAME] T16.M1: Opponent puts Plains [a03] from hand onto the Battlefield
+INFO  2026-08-13 08:13:51,669 [LOG][GAME] T16.M1: Stack push: 1 (top: Cast Windreader Sphinx)
+INFO  2026-08-13 08:13:51,684 [LOG][GAME] T16.M1: Opponent casts Windreader Sphinx [c6b] from hand
+INFO  2026-08-13 08:13:51,697 [LOG][GAME] T16.M1: Stack resolve: 1 (top: Cast Windreader Sphinx)
+INFO  2026-08-13 08:13:51,699 [LOG][GAME] T16.M1: Opponent puts Windreader Sphinx [c6b] from stack onto the Battlefield
+INFO  2026-08-13 08:13:51,729 [LOG][GAME] T16.DA: Opponent attacks Agent with 3 creatures
+INFO  2026-08-13 08:13:51,732 [LOG][GAME] T16.DA: Stack push: 1 (top: stack ability (Whenever a creature with flying attacks, you may draw a card.))
+INFO  2026-08-13 08:13:51,735 [LOG][GAME] T16.DA: Opponent - Ability triggers: Windreader Sphinx [408] - Whenever a creature with flying attacks, you may draw a card.
+INFO  2026-08-13 08:13:51,736 [LOG][GAME] T16.DA: Stack push: 2 (top: stack ability (Whenever a creature with flying attacks, you may draw a card.))
+INFO  2026-08-13 08:13:51,737 [LOG][GAME] T16.DA: Opponent - Ability triggers: Windreader Sphinx [c6b] - Whenever a creature with flying attacks, you may draw a card.
+INFO  2026-08-13 08:13:51,738 [LOG][GAME] T16.DA: Stack push: 3 (top: stack ability (Whenever a creature with flying attacks, you may draw a card.))
+INFO  2026-08-13 08:13:51,739 [LOG][GAME] T16.DA: Opponent - Ability triggers: Windreader Sphinx [408] - Whenever a creature with flying attacks, you may draw a card.
+INFO  2026-08-13 08:13:51,740 [LOG][GAME] T16.DA: Stack push: 4 (top: stack ability (Whenever a creature with flying attacks, you may draw a card.))
+INFO  2026-08-13 08:13:51,741 [LOG][GAME] T16.DA: Opponent - Ability triggers: Windreader Sphinx [c6b] - Whenever a creature with flying attacks, you may draw a card.
+INFO  2026-08-13 08:13:51,743 [LOG][GAME] T16.DA: Stack push: 5 (top: stack ability (Whenever a creature with flying attacks, you may draw a card.))
+INFO  2026-08-13 08:13:51,744 [LOG][GAME] T16.DA: Opponent - Ability triggers: Windreader Sphinx [408] - Whenever a creature with flying attacks, you may draw a card.
+INFO  2026-08-13 08:13:51,746 [LOG][GAME] T16.DA: Stack push: 6 (top: stack ability (Whenever a creature with flying attacks, you may draw a card.))
+INFO  2026-08-13 08:13:51,746 [LOG][GAME] T16.DA: Opponent - Ability triggers: Windreader Sphinx [c6b] - Whenever a creature with flying attacks, you may draw a card.
+INFO  2026-08-13 08:13:51,760 [LOG][GAME] T16.DA: Stack resolve: 6 (top: stack ability (Whenever a creature with flying attacks, you may draw a card.))
+INFO  2026-08-13 08:13:51,774 [LOG][GAME] T16.DA: Stack resolve: 5 (top: stack ability (Whenever a creature with flying attacks, you may draw a card.))
+INFO  2026-08-13 08:13:51,787 [LOG][GAME] T16.DA: Stack resolve: 4 (top: stack ability (Whenever a creature with flying attacks, you may draw a card.))
+INFO  2026-08-13 08:13:51,800 [LOG][GAME] T16.DA: Stack resolve: 3 (top: stack ability (Whenever a creature with flying attacks, you may draw a card.))
+INFO  2026-08-13 08:13:51,814 [LOG][GAME] T16.DA: Stack resolve: 2 (top: stack ability (Whenever a creature with flying attacks, you may draw a card.))
+INFO  2026-08-13 08:13:51,827 [LOG][GAME] T16.DA: Stack resolve: 1 (top: stack ability (Whenever a creature with flying attacks, you may draw a card.))
+INFO  2026-08-13 08:13:51,841 [LOG][GAME] T16.DB: Attacker: Serra Angel [302] (4/4) unblocked
+INFO  2026-08-13 08:13:51,841 [LOG][GAME] T16.DB: Attacker: Serra Angel [5d1] (4/4) unblocked
+INFO  2026-08-13 08:13:51,842 [LOG][GAME] T16.DB: Attacker: Windreader Sphinx [408] (3/7) unblocked
+INFO  2026-08-13 08:13:51,855 [LOG][GAME] T16.CD: Agent loses 4 life at combat from Serra Angel [302]
+INFO  2026-08-13 08:13:51,855 [LOG][GAME] T16.CD: Agent loses 4 life at combat from Serra Angel [5d1]
+INFO  2026-08-13 08:13:51,856 [LOG][GAME] T16.CD: Agent loses 3 life at combat from Windreader Sphinx [408]
+INFO  2026-08-13 08:13:51,857 [LOG][GAME] T16.CD: Agent lost the game due life is 0 or less
+INFO  2026-08-13 08:13:51,858 [LOG][GAME] T16.CD: Agent has lost the game.
+INFO  2026-08-13 08:13:51,861 [LOG][GAME] T16.CD: Opponent has won the game

@@ -1,0 +1,198 @@
+# Phase 7c sample game - trained=1024, agent BenchDimir vs D0 piloting wweenie (M3WhiteWeenie.dck), seed 951000, argmax
+INFO  2026-08-13 08:14:30,443 [LOG][GAME] T1: Agent's library is shuffled
+INFO  2026-08-13 08:14:30,446 [LOG][GAME] T1: Opponent's library is shuffled
+INFO  2026-08-13 08:14:30,528 [LOG][GAME] T1: Agent chooses that they take the first turn
+INFO  2026-08-13 08:14:30,707 [LOG][GAME] T1.DR: Agent skips Draw step
+INFO  2026-08-13 08:14:30,779 [LOG][GAME] T1.M1: Agent puts Island [a55] from hand onto the Battlefield
+INFO  2026-08-13 08:14:30,951 [LOG][GAME] T1.DA: Agent skip attack
+INFO  2026-08-13 08:14:31,064 [LOG][GAME] T2.M1: Opponent puts Plains [f9d] from hand onto the Battlefield
+INFO  2026-08-13 08:14:31,080 [LOG][GAME] T2.M1: Stack push: 1 (top: Cast Elite Vanguard)
+INFO  2026-08-13 08:14:31,098 [LOG][GAME] T2.M1: Opponent casts Elite Vanguard [2f1] from hand
+INFO  2026-08-13 08:14:31,115 [LOG][GAME] T2.M1: Stack resolve: 1 (top: Cast Elite Vanguard)
+INFO  2026-08-13 08:14:31,117 [LOG][GAME] T2.M1: Opponent puts Elite Vanguard [2f1] from stack onto the Battlefield
+INFO  2026-08-13 08:14:31,158 [LOG][GAME] T2.DA: Opponent skip attack
+INFO  2026-08-13 08:14:31,369 [LOG][GAME] T3.M1: Agent puts Restless Reef [bee] from hand onto the Battlefield
+INFO  2026-08-13 08:14:31,410 [LOG][GAME] T3.DA: Agent skip attack
+INFO  2026-08-13 08:14:31,536 [LOG][GAME] T4.M1: Opponent puts Plains [fc0] from hand onto the Battlefield
+INFO  2026-08-13 08:14:31,546 [LOG][GAME] T4.M1: Stack push: 1 (top: Cast Elite Vanguard)
+INFO  2026-08-13 08:14:31,552 [LOG][GAME] T4.M1: Opponent casts Elite Vanguard [a32] from hand
+INFO  2026-08-13 08:14:31,567 [LOG][GAME] T4.M1: Stack resolve: 1 (top: Cast Elite Vanguard)
+INFO  2026-08-13 08:14:31,569 [LOG][GAME] T4.M1: Opponent puts Elite Vanguard [a32] from stack onto the Battlefield
+INFO  2026-08-13 08:14:31,619 [LOG][GAME] T4.DA: Opponent attacks Agent with 1 creature
+INFO  2026-08-13 08:14:31,651 [LOG][GAME] T4.DB: Attacker: Elite Vanguard [2f1] (2/1) unblocked
+INFO  2026-08-13 08:14:31,670 [LOG][GAME] T4.CD: Agent loses 2 life at combat from Elite Vanguard [2f1]
+INFO  2026-08-13 08:14:31,903 [LOG][GAME] T5.UP: Stack push: 1 (top: Cast The Wondrous Wasp)
+INFO  2026-08-13 08:14:31,920 [LOG][GAME] T5.UP: Agent casts The Wondrous Wasp [099] from hand
+INFO  2026-08-13 08:14:31,941 [LOG][GAME] T5.UP: Stack resolve: 1 (top: Cast The Wondrous Wasp)
+INFO  2026-08-13 08:14:31,942 [LOG][GAME] T5.UP: Agent puts The Wondrous Wasp [099] from stack onto the Battlefield
+INFO  2026-08-13 08:14:31,950 [LOG][GAME] T5.UP: Stack push: 1 (top: stack ability (<i>Wasp's Sting</i> &mdash; When {this} enters, tap up to one target creature. It ...)
+INFO  2026-08-13 08:14:31,955 [LOG][GAME] T5.UP: Agent - Ability triggers: The Wondrous Wasp [099] - Wasp's Sting — When The Wondrous Wasp [099] enters, tap up to one target creature. It loses all abilities for as long as The Wondrous Wasp [099] remains on the battlefield.
+INFO  2026-08-13 08:14:31,976 [LOG][GAME] T5.UP: Stack resolve: 1 (top: stack ability (<i>Wasp's Sting</i> &mdash; When {this} enters, tap up to one target creature. It ...)
+INFO  2026-08-13 08:14:32,067 [LOG][GAME] T5.M1: Agent puts Soulstone Sanctuary [c51] from hand onto the Battlefield
+INFO  2026-08-13 08:14:32,131 [LOG][GAME] T5.DA: Agent skip attack
+INFO  2026-08-13 08:14:32,269 [LOG][GAME] T6.M1: Opponent puts Plains [c4f] from hand onto the Battlefield
+INFO  2026-08-13 08:14:32,305 [LOG][GAME] T6.DA: Opponent attacks Agent with 2 creatures
+INFO  2026-08-13 08:14:32,329 [LOG][GAME] T6.DB: Attacker: Elite Vanguard [2f1] (2/1) blocked by The Wondrous Wasp [099] (2/1)
+INFO  2026-08-13 08:14:32,330 [LOG][GAME] T6.DB: Attacker: Elite Vanguard [a32] (2/1) unblocked
+INFO  2026-08-13 08:14:32,352 [LOG][GAME] T6.CD: The Wondrous Wasp [099] deals 2 damage to Elite Vanguard [2f1]
+INFO  2026-08-13 08:14:32,353 [LOG][GAME] T6.CD: Elite Vanguard [2f1] deals 2 damage to The Wondrous Wasp [099]
+INFO  2026-08-13 08:14:32,354 [LOG][GAME] T6.CD: Agent loses 2 life at combat from Elite Vanguard [a32]
+INFO  2026-08-13 08:14:32,357 [LOG][GAME] T6.CD: Elite Vanguard [2f1] died
+INFO  2026-08-13 08:14:32,358 [LOG][GAME] T6.CD: The Wondrous Wasp [099] died
+INFO  2026-08-13 08:14:32,415 [LOG][GAME] T7.UP: Stack push: 1 (top: Cast Floodpits Drowner)
+INFO  2026-08-13 08:14:32,421 [LOG][GAME] T7.UP: Agent casts Floodpits Drowner [ad6] from hand
+INFO  2026-08-13 08:14:32,433 [LOG][GAME] T7.UP: Stack push: 2 (top: Cast Requiting Hex)
+INFO  2026-08-13 08:14:32,442 [LOG][GAME] T7.UP: Agent casts Requiting Hex [d08] targeting Elite Vanguard [a32] from hand
+INFO  2026-08-13 08:14:32,455 [LOG][GAME] T7.UP: Stack resolve: 2 (top: Cast Requiting Hex)
+INFO  2026-08-13 08:14:32,457 [LOG][GAME] T7.UP: Elite Vanguard [a32] died by Requiting Hex [d08]
+INFO  2026-08-13 08:14:32,458 [LOG][GAME] T7.UP: Agent puts Requiting Hex [d08] from stack into their graveyard
+INFO  2026-08-13 08:14:32,470 [LOG][GAME] T7.UP: Stack resolve: 1 (top: Cast Floodpits Drowner)
+INFO  2026-08-13 08:14:32,472 [LOG][GAME] T7.UP: Agent puts Floodpits Drowner [ad6] from stack onto the Battlefield
+INFO  2026-08-13 08:14:32,502 [LOG][GAME] T7.M1: Agent loses 2 life from Watery Grave [670]
+INFO  2026-08-13 08:14:32,504 [LOG][GAME] T7.M1: Agent puts Watery Grave [670] from hand onto the Battlefield
+INFO  2026-08-13 08:14:32,534 [LOG][GAME] T7.DA: Agent skip attack
+INFO  2026-08-13 08:14:32,637 [LOG][GAME] T8.M1: Stack push: 1 (top: Cast Elite Vanguard)
+INFO  2026-08-13 08:14:32,641 [LOG][GAME] T8.M1: Opponent casts Elite Vanguard [a9e] from hand
+INFO  2026-08-13 08:14:32,657 [LOG][GAME] T8.M1: Stack resolve: 1 (top: Cast Elite Vanguard)
+INFO  2026-08-13 08:14:32,659 [LOG][GAME] T8.M1: Opponent puts Elite Vanguard [a9e] from stack onto the Battlefield
+INFO  2026-08-13 08:14:32,706 [LOG][GAME] T8.DA: Opponent skip attack
+INFO  2026-08-13 08:14:32,802 [LOG][GAME] T9.UP: Stack push: 1 (top: Cast The Wondrous Wasp)
+INFO  2026-08-13 08:14:32,807 [LOG][GAME] T9.UP: Agent casts The Wondrous Wasp [cc6] from hand
+INFO  2026-08-13 08:14:32,820 [LOG][GAME] T9.UP: Stack resolve: 1 (top: Cast The Wondrous Wasp)
+INFO  2026-08-13 08:14:32,821 [LOG][GAME] T9.UP: Agent puts The Wondrous Wasp [cc6] from stack onto the Battlefield
+INFO  2026-08-13 08:14:32,823 [LOG][GAME] T9.UP: Stack push: 1 (top: stack ability (<i>Wasp's Sting</i> &mdash; When {this} enters, tap up to one target creature. It ...)
+INFO  2026-08-13 08:14:32,825 [LOG][GAME] T9.UP: Agent - Ability triggers: The Wondrous Wasp [cc6] - Wasp's Sting — When The Wondrous Wasp [cc6] enters, tap up to one target creature. It loses all abilities for as long as The Wondrous Wasp [cc6] remains on the battlefield.
+INFO  2026-08-13 08:14:32,838 [LOG][GAME] T9.UP: Stack resolve: 1 (top: stack ability (<i>Wasp's Sting</i> &mdash; When {this} enters, tap up to one target creature. It ...)
+INFO  2026-08-13 08:14:32,891 [LOG][GAME] T9.M1: Agent puts Hidden Lair [fe5] from hand onto the Battlefield
+INFO  2026-08-13 08:14:32,940 [LOG][GAME] T9.DA: Agent attacks Opponent with 1 creature
+INFO  2026-08-13 08:14:32,959 [LOG][GAME] T9.DB: Attacker: Floodpits Drowner [ad6] (2/1) unblocked
+INFO  2026-08-13 08:14:32,974 [LOG][GAME] T9.DB: Stack push: 1 (top: stack ability (Ninjutsu {1}{U}{B} <i>({1}{U}{B} Return an unblocked attacker you control to hand:...)
+INFO  2026-08-13 08:14:32,981 [LOG][GAME] T9.DB: Agent reveals Kaito, Bane of Nightmares
+INFO  2026-08-13 08:14:32,996 [LOG][GAME] T9.DB: Agent puts Floodpits Drowner [ad6] from battlefield into their hand
+INFO  2026-08-13 08:14:32,998 [LOG][GAME] T9.DB: Agent activates: Put this card onto the battlefield from your hand tapped and attacking. from Kaito, Bane of Nightmares [39d]
+INFO  2026-08-13 08:14:33,008 [LOG][GAME] T9.DB: Stack resolve: 1 (top: stack ability (Ninjutsu {1}{U}{B} <i>({1}{U}{B} Return an unblocked attacker you control to hand:...)
+INFO  2026-08-13 08:14:33,011 [LOG][GAME] T9.DB: Agent puts Kaito, Bane of Nightmares [39d] from hand onto the Battlefield
+INFO  2026-08-13 08:14:33,045 [LOG][GAME] T9.CD: Opponent loses 3 life at combat from Kaito, Bane of Nightmares [39d]
+INFO  2026-08-13 08:14:33,088 [LOG][GAME] T9.M2: Stack push: 1 (top: stack ability (+1: You get an emblem with "Ninjas you control get +1/+1."))
+INFO  2026-08-13 08:14:33,090 [LOG][GAME] T9.M2: Agent activates: you get an emblem with "Ninjas you control get +1/+1." from Kaito, Bane of Nightmares [39d]
+INFO  2026-08-13 08:14:33,097 [LOG][GAME] T9.M2: Stack resolve: 1 (top: stack ability (+1: You get an emblem with "Ninjas you control get +1/+1."))
+INFO  2026-08-13 08:14:33,142 [LOG][GAME] T10.M1: Opponent puts Plains [981] from hand onto the Battlefield
+INFO  2026-08-13 08:14:33,158 [LOG][GAME] T10.M1: Stack push: 1 (top: Cast Pillarfield Ox)
+INFO  2026-08-13 08:14:33,181 [LOG][GAME] T10.M1: Opponent casts Pillarfield Ox [ea7] from hand
+INFO  2026-08-13 08:14:33,190 [LOG][GAME] T10.M1: Stack resolve: 1 (top: Cast Pillarfield Ox)
+INFO  2026-08-13 08:14:33,191 [LOG][GAME] T10.M1: Opponent puts Pillarfield Ox [ea7] from stack onto the Battlefield
+INFO  2026-08-13 08:14:33,209 [LOG][GAME] T10.DA: Opponent attacks Agent with 1 creature
+INFO  2026-08-13 08:14:33,223 [LOG][GAME] T10.DB: Attacker: Elite Vanguard [a9e] (2/1) blocked by The Wondrous Wasp [cc6] (2/1)
+INFO  2026-08-13 08:14:33,232 [LOG][GAME] T10.CD: The Wondrous Wasp [cc6] deals 2 damage to Elite Vanguard [a9e]
+INFO  2026-08-13 08:14:33,233 [LOG][GAME] T10.CD: Elite Vanguard [a9e] deals 2 damage to The Wondrous Wasp [cc6]
+INFO  2026-08-13 08:14:33,235 [LOG][GAME] T10.CD: Elite Vanguard [a9e] died
+INFO  2026-08-13 08:14:33,236 [LOG][GAME] T10.CD: The Wondrous Wasp [cc6] died
+INFO  2026-08-13 08:14:33,279 [LOG][GAME] T11.UP: Stack push: 1 (top: Cast Floodpits Drowner)
+INFO  2026-08-13 08:14:33,285 [LOG][GAME] T11.UP: Agent casts Floodpits Drowner [ad6] from hand
+INFO  2026-08-13 08:14:33,301 [LOG][GAME] T11.UP: Stack resolve: 1 (top: Cast Floodpits Drowner)
+INFO  2026-08-13 08:14:33,308 [LOG][GAME] T11.UP: Agent puts Floodpits Drowner [ad6] from stack onto the Battlefield
+INFO  2026-08-13 08:14:33,311 [LOG][GAME] T11.UP: Stack push: 1 (top: stack ability (When {this} enters, tap target creature an opponent controls and put a stun counte...)
+INFO  2026-08-13 08:14:33,313 [LOG][GAME] T11.UP: Agent - Ability triggers: Floodpits Drowner [ad6] - When Floodpits Drowner [ad6] enters, tap target creature an opponent controls and put a stun counter on it. - targeting Pillarfield Ox [ea7]
+INFO  2026-08-13 08:14:33,334 [LOG][GAME] T11.UP: Stack resolve: 1 (top: stack ability (When {this} enters, tap target creature an opponent controls and put a stun counte...)
+INFO  2026-08-13 08:14:33,346 [LOG][GAME] T11.UP: Floodpits Drowner [ad6]: Agent puts 1 stun counters on Pillarfield Ox [ea7]
+INFO  2026-08-13 08:14:33,383 [LOG][GAME] T11.DR: Stack push: 1 (top: Cast Floodpits Drowner)
+INFO  2026-08-13 08:14:33,391 [LOG][GAME] T11.DR: Agent casts Floodpits Drowner [2ce] from hand
+INFO  2026-08-13 08:14:33,431 [LOG][GAME] T11.DR: Stack resolve: 1 (top: Cast Floodpits Drowner)
+INFO  2026-08-13 08:14:33,432 [LOG][GAME] T11.DR: Agent puts Floodpits Drowner [2ce] from stack onto the Battlefield
+INFO  2026-08-13 08:14:33,442 [LOG][GAME] T11.DR: Stack push: 1 (top: stack ability (When {this} enters, tap target creature an opponent controls and put a stun counte...)
+INFO  2026-08-13 08:14:33,444 [LOG][GAME] T11.DR: Agent - Ability triggers: Floodpits Drowner [2ce] - When Floodpits Drowner [2ce] enters, tap target creature an opponent controls and put a stun counter on it. - targeting Pillarfield Ox [ea7]
+INFO  2026-08-13 08:14:33,462 [LOG][GAME] T11.DR: Stack resolve: 1 (top: stack ability (When {this} enters, tap target creature an opponent controls and put a stun counte...)
+INFO  2026-08-13 08:14:33,467 [LOG][GAME] T11.DR: Floodpits Drowner [2ce]: Agent puts 1 stun counters on Pillarfield Ox [ea7]
+INFO  2026-08-13 08:14:33,497 [LOG][GAME] T11.M1: Stack push: 1 (top: stack ability (+1: You get an emblem with "Ninjas you control get +1/+1."))
+INFO  2026-08-13 08:14:33,499 [LOG][GAME] T11.M1: Agent activates: you get an emblem with "Ninjas you control get +1/+1." from Kaito, Bane of Nightmares [39d]
+INFO  2026-08-13 08:14:33,515 [LOG][GAME] T11.M1: Stack resolve: 1 (top: stack ability (+1: You get an emblem with "Ninjas you control get +1/+1."))
+INFO  2026-08-13 08:14:33,529 [LOG][GAME] T11.M1: Agent loses 2 life from Watery Grave [12b]
+INFO  2026-08-13 08:14:33,530 [LOG][GAME] T11.M1: Agent puts Watery Grave [12b] from hand onto the Battlefield
+INFO  2026-08-13 08:14:33,580 [LOG][GAME] T11.DA: Agent attacks Opponent with 1 creature
+INFO  2026-08-13 08:14:33,609 [LOG][GAME] T11.DB: Attacker: Kaito, Bane of Nightmares [39d] (5/6) unblocked
+INFO  2026-08-13 08:14:33,626 [LOG][GAME] T11.CD: Opponent loses 5 life at combat from Kaito, Bane of Nightmares [39d]
+INFO  2026-08-13 08:14:33,703 [LOG][GAME] T12.UN: Removed a stun counter from Pillarfield Ox [ea7]
+INFO  2026-08-13 08:14:33,738 [LOG][GAME] T12.M1: Opponent puts Plains [2a5] from hand onto the Battlefield
+INFO  2026-08-13 08:14:33,745 [LOG][GAME] T12.M1: Stack push: 1 (top: Cast Serra Angel)
+INFO  2026-08-13 08:14:33,772 [LOG][GAME] T12.M1: Opponent casts Serra Angel [9d9] from hand
+INFO  2026-08-13 08:14:33,785 [LOG][GAME] T12.M1: Stack resolve: 1 (top: Cast Serra Angel)
+INFO  2026-08-13 08:14:33,787 [LOG][GAME] T12.M1: Opponent puts Serra Angel [9d9] from stack onto the Battlefield
+INFO  2026-08-13 08:14:33,820 [LOG][GAME] T12.DA: Opponent skip attack
+INFO  2026-08-13 08:14:33,888 [LOG][GAME] T13.UP: Stack push: 1 (top: stack ability ({1}{U}, {T}: Shuffle {this} and target creature with a stun counter on it into the...)
+INFO  2026-08-13 08:14:33,895 [LOG][GAME] T13.UP: Agent activates: shuffle Floodpits Drowner [ad6] and target creature with a stun counter on it into their owners' libraries. from Floodpits Drowner [ad6] targeting Pillarfield Ox [ea7]
+INFO  2026-08-13 08:14:33,908 [LOG][GAME] T13.UP: Stack push: 2 (top: stack ability ({1}{U}, {T}: Shuffle {this} and target creature with a stun counter on it into the...)
+INFO  2026-08-13 08:14:33,914 [LOG][GAME] T13.UP: Agent activates: shuffle Floodpits Drowner [2ce] and target creature with a stun counter on it into their owners' libraries. from Floodpits Drowner [2ce] targeting Pillarfield Ox [ea7]
+INFO  2026-08-13 08:14:33,929 [LOG][GAME] T13.UP: Stack resolve: 2 (top: stack ability ({1}{U}, {T}: Shuffle {this} and target creature with a stun counter on it into the...)
+INFO  2026-08-13 08:14:33,931 [LOG][GAME] T13.UP: Agent shuffles a card into their library (source: Floodpits Drowner [2ce])
+INFO  2026-08-13 08:14:33,933 [LOG][GAME] T13.UP: Agent puts Floodpits Drowner [2ce] from battlefield to the top of their library
+INFO  2026-08-13 08:14:33,934 [LOG][GAME] T13.UP: Agent's library is shuffled (source: Floodpits Drowner [2ce])
+INFO  2026-08-13 08:14:33,935 [LOG][GAME] T13.UP: Opponent shuffles a card into their library (source: Floodpits Drowner [2ce])
+INFO  2026-08-13 08:14:33,935 [LOG][GAME] T13.UP: Opponent puts Pillarfield Ox [ea7] from battlefield to the top of their library (source: Floodpits Drowner [2ce])
+INFO  2026-08-13 08:14:33,936 [LOG][GAME] T13.UP: Opponent's library is shuffled (source: Floodpits Drowner [2ce])
+INFO  2026-08-13 08:14:33,949 [LOG][GAME] T13.UP: Stack resolve: 1 (top: stack ability ({1}{U}, {T}: Shuffle {this} and target creature with a stun counter on it into the...)
+INFO  2026-08-13 08:14:33,955 [LOG][GAME] T13.UP: Ability has been fizzled: {1}{U}, {T}: Shuffle {this} and target creature with a stun counter on it into their owners' libraries.
+INFO  2026-08-13 08:14:34,038 [LOG][GAME] T13.M1: Stack push: 1 (top: stack ability (+1: You get an emblem with "Ninjas you control get +1/+1."))
+INFO  2026-08-13 08:14:34,040 [LOG][GAME] T13.M1: Agent activates: you get an emblem with "Ninjas you control get +1/+1." from Kaito, Bane of Nightmares [39d]
+INFO  2026-08-13 08:14:34,053 [LOG][GAME] T13.M1: Stack resolve: 1 (top: stack ability (+1: You get an emblem with "Ninjas you control get +1/+1."))
+INFO  2026-08-13 08:14:34,063 [LOG][GAME] T13.M1: Agent puts Island [c11] from hand onto the Battlefield
+INFO  2026-08-13 08:14:34,094 [LOG][GAME] T13.DA: Agent attacks Opponent with 1 creature
+INFO  2026-08-13 08:14:34,107 [LOG][GAME] T13.DB: Attacker: Kaito, Bane of Nightmares [39d] (6/7) unblocked
+INFO  2026-08-13 08:14:34,121 [LOG][GAME] T13.CD: Opponent loses 6 life at combat from Kaito, Bane of Nightmares [39d]
+INFO  2026-08-13 08:14:34,204 [LOG][GAME] T14.M1: Stack push: 1 (top: Cast Serra Angel)
+INFO  2026-08-13 08:14:34,213 [LOG][GAME] T14.M1: Opponent casts Serra Angel [51d] from hand
+INFO  2026-08-13 08:14:34,225 [LOG][GAME] T14.M1: Stack resolve: 1 (top: Cast Serra Angel)
+INFO  2026-08-13 08:14:34,227 [LOG][GAME] T14.M1: Opponent puts Serra Angel [51d] from stack onto the Battlefield
+INFO  2026-08-13 08:14:34,254 [LOG][GAME] T14.DA: Opponent attacks Agent with 1 creature
+INFO  2026-08-13 08:14:34,268 [LOG][GAME] T14.DB: Attacker: Serra Angel [9d9] (4/4) unblocked
+INFO  2026-08-13 08:14:34,282 [LOG][GAME] T14.CD: Agent loses 4 life at combat from Serra Angel [9d9]
+INFO  2026-08-13 08:14:34,362 [LOG][GAME] T15.M1: Stack push: 1 (top: stack ability (+1: You get an emblem with "Ninjas you control get +1/+1."))
+INFO  2026-08-13 08:14:34,363 [LOG][GAME] T15.M1: Agent activates: you get an emblem with "Ninjas you control get +1/+1." from Kaito, Bane of Nightmares [39d]
+INFO  2026-08-13 08:14:34,376 [LOG][GAME] T15.M1: Stack resolve: 1 (top: stack ability (+1: You get an emblem with "Ninjas you control get +1/+1."))
+INFO  2026-08-13 08:14:34,423 [LOG][GAME] T15.DA: Agent attacks Opponent with 2 creatures
+INFO  2026-08-13 08:14:34,445 [LOG][GAME] T15.DB: Attacker: Floodpits Drowner [ad6] (2/1) blocked by Serra Angel [9d9] (4/4)
+INFO  2026-08-13 08:14:34,445 [LOG][GAME] T15.DB: Attacker: Kaito, Bane of Nightmares [39d] (7/8) blocked by Serra Angel [51d] (4/4)
+INFO  2026-08-13 08:14:34,465 [LOG][GAME] T15.CD: Serra Angel [9d9] deals 4 damage to Floodpits Drowner [ad6]
+INFO  2026-08-13 08:14:34,466 [LOG][GAME] T15.CD: Floodpits Drowner [ad6] deals 2 damage to Serra Angel [9d9]
+INFO  2026-08-13 08:14:34,467 [LOG][GAME] T15.CD: Serra Angel [51d] deals 4 damage to Kaito, Bane of Nightmares [39d]
+INFO  2026-08-13 08:14:34,467 [LOG][GAME] T15.CD: Kaito, Bane of Nightmares [39d] deals 7 damage to Serra Angel [51d]
+INFO  2026-08-13 08:14:34,469 [LOG][GAME] T15.CD: Floodpits Drowner [ad6] died
+INFO  2026-08-13 08:14:34,470 [LOG][GAME] T15.CD: Serra Angel [51d] died
+INFO  2026-08-13 08:14:34,578 [LOG][GAME] T16.M1: Opponent puts Plains [a1a] from hand onto the Battlefield
+INFO  2026-08-13 08:14:34,583 [LOG][GAME] T16.M1: Stack push: 1 (top: Cast Serra Angel)
+INFO  2026-08-13 08:14:34,593 [LOG][GAME] T16.M1: Opponent casts Serra Angel [893] from hand
+INFO  2026-08-13 08:14:34,605 [LOG][GAME] T16.M1: Stack resolve: 1 (top: Cast Serra Angel)
+INFO  2026-08-13 08:14:34,607 [LOG][GAME] T16.M1: Opponent puts Serra Angel [893] from stack onto the Battlefield
+INFO  2026-08-13 08:14:34,643 [LOG][GAME] T16.DA: Opponent attacks Agent with 1 creature
+INFO  2026-08-13 08:14:34,699 [LOG][GAME] T16.DB: Attacker: Serra Angel [9d9] (4/4) unblocked
+INFO  2026-08-13 08:14:34,714 [LOG][GAME] T16.CD: Agent loses 4 life at combat from Serra Angel [9d9]
+INFO  2026-08-13 08:14:34,799 [LOG][GAME] T17.M1: Stack push: 1 (top: stack ability (+1: You get an emblem with "Ninjas you control get +1/+1."))
+INFO  2026-08-13 08:14:34,800 [LOG][GAME] T17.M1: Agent activates: you get an emblem with "Ninjas you control get +1/+1." from Kaito, Bane of Nightmares [39d]
+INFO  2026-08-13 08:14:34,813 [LOG][GAME] T17.M1: Stack resolve: 1 (top: stack ability (+1: You get an emblem with "Ninjas you control get +1/+1."))
+INFO  2026-08-13 08:14:34,843 [LOG][GAME] T17.DA: Agent attacks Opponent with 1 creature
+INFO  2026-08-13 08:14:34,856 [LOG][GAME] T17.DB: Attacker: Kaito, Bane of Nightmares [39d] (8/9) blocked by Serra Angel [9d9] (4/4)
+INFO  2026-08-13 08:14:34,869 [LOG][GAME] T17.CD: Serra Angel [9d9] deals 4 damage to Kaito, Bane of Nightmares [39d]
+INFO  2026-08-13 08:14:34,870 [LOG][GAME] T17.CD: Kaito, Bane of Nightmares [39d] deals 8 damage to Serra Angel [9d9]
+INFO  2026-08-13 08:14:34,871 [LOG][GAME] T17.CD: Serra Angel [9d9] died
+INFO  2026-08-13 08:14:34,968 [LOG][GAME] T18.M1: Stack push: 1 (top: Cast Attended Knight)
+INFO  2026-08-13 08:14:34,975 [LOG][GAME] T18.M1: Opponent casts Attended Knight [166] from hand
+INFO  2026-08-13 08:14:34,988 [LOG][GAME] T18.M1: Stack resolve: 1 (top: Cast Attended Knight)
+INFO  2026-08-13 08:14:34,989 [LOG][GAME] T18.M1: Opponent puts Attended Knight [166] from stack onto the Battlefield
+INFO  2026-08-13 08:14:34,991 [LOG][GAME] T18.M1: Stack push: 1 (top: stack ability (When {this} enters, create a 1/1 white Soldier creature token.))
+INFO  2026-08-13 08:14:34,992 [LOG][GAME] T18.M1: Opponent - Ability triggers: Attended Knight [166] - When Attended Knight [166] enters, create a 1/1 white Soldier creature token.
+INFO  2026-08-13 08:14:35,004 [LOG][GAME] T18.M1: Stack resolve: 1 (top: stack ability (When {this} enters, create a 1/1 white Soldier creature token.))
+INFO  2026-08-13 08:14:35,010 [LOG][GAME] T18.M1: Opponent creates a Soldier Token [261] token
+INFO  2026-08-13 08:14:35,023 [LOG][GAME] T18.M1: Stack push: 1 (top: Cast Ajani's Pridemate)
+INFO  2026-08-13 08:14:35,029 [LOG][GAME] T18.M1: Opponent casts Ajani's Pridemate [383] from hand
+INFO  2026-08-13 08:14:35,043 [LOG][GAME] T18.M1: Stack push: 2 (top: Cast Requiting Hex)
+INFO  2026-08-13 08:14:35,049 [LOG][GAME] T18.M1: Agent casts Requiting Hex [814] targeting Soldier Token [261] from hand
+INFO  2026-08-13 08:14:35,098 [LOG][GAME] T18.M1: Stack resolve: 2 (top: Cast Requiting Hex)
+INFO  2026-08-13 08:14:35,100 [LOG][GAME] T18.M1: Soldier Token [261] died by Requiting Hex [814]
+INFO  2026-08-13 08:14:35,103 [LOG][GAME] T18.M1: Agent puts Requiting Hex [814] from stack into their graveyard
+INFO  2026-08-13 08:14:35,129 [LOG][GAME] T18.M1: Stack resolve: 1 (top: Cast Ajani's Pridemate)
+INFO  2026-08-13 08:14:35,131 [LOG][GAME] T18.M1: Opponent puts Ajani's Pridemate [383] from stack onto the Battlefield
+INFO  2026-08-13 08:14:35,159 [LOG][GAME] T18.DA: Opponent attacks Agent with 1 creature
+INFO  2026-08-13 08:14:35,172 [LOG][GAME] T18.DB: Attacker: Serra Angel [893] (4/4) unblocked
+INFO  2026-08-13 08:14:35,186 [LOG][GAME] T18.CD: Agent loses 4 life at combat from Serra Angel [893]
+INFO  2026-08-13 08:14:35,188 [LOG][GAME] T18.CD: Agent lost the game due life is 0 or less
+INFO  2026-08-13 08:14:35,189 [LOG][GAME] T18.CD: Agent has lost the game.
+INFO  2026-08-13 08:14:35,192 [LOG][GAME] T18.CD: Opponent has won the game

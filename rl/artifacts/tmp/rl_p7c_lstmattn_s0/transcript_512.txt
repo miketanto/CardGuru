@@ -1,0 +1,158 @@
+# Phase 7c sample game - trained=512, agent BenchDimir vs D0 piloting tokens (M3SelesnyaTokens.dck), seed 951000, argmax
+INFO  2026-08-13 08:14:09,690 [LOG][GAME] T1: Agent's library is shuffled
+INFO  2026-08-13 08:14:09,693 [LOG][GAME] T1: Opponent's library is shuffled
+INFO  2026-08-13 08:14:09,710 [LOG][GAME] T1: Agent chooses that they take the first turn
+INFO  2026-08-13 08:14:09,850 [LOG][GAME] T1.DR: Agent skips Draw step
+INFO  2026-08-13 08:14:09,933 [LOG][GAME] T1.M1: Agent puts Island [63c] from hand onto the Battlefield
+INFO  2026-08-13 08:14:10,079 [LOG][GAME] T1.DA: Agent skip attack
+INFO  2026-08-13 08:14:10,186 [LOG][GAME] T2.M1: Opponent puts Forest [116] from hand onto the Battlefield
+INFO  2026-08-13 08:14:10,235 [LOG][GAME] T2.M1: Stack push: 1 (top: Cast Centaur's Herald)
+INFO  2026-08-13 08:14:10,251 [LOG][GAME] T2.M1: Opponent casts Centaur's Herald [bea] from hand
+INFO  2026-08-13 08:14:10,266 [LOG][GAME] T2.M1: Stack resolve: 1 (top: Cast Centaur's Herald)
+INFO  2026-08-13 08:14:10,271 [LOG][GAME] T2.M1: Opponent puts Centaur's Herald [bea] from stack onto the Battlefield
+INFO  2026-08-13 08:14:10,314 [LOG][GAME] T2.DA: Opponent skip attack
+INFO  2026-08-13 08:14:10,592 [LOG][GAME] T3.M1: Agent puts Restless Reef [706] from hand onto the Battlefield
+INFO  2026-08-13 08:14:10,632 [LOG][GAME] T3.DA: Agent skip attack
+INFO  2026-08-13 08:14:10,920 [LOG][GAME] T4.M1: Opponent puts Forest [744] from hand onto the Battlefield
+INFO  2026-08-13 08:14:10,930 [LOG][GAME] T4.M1: Stack push: 1 (top: Cast Centaur's Herald)
+INFO  2026-08-13 08:14:10,934 [LOG][GAME] T4.M1: Opponent casts Centaur's Herald [3f7] from hand
+INFO  2026-08-13 08:14:10,943 [LOG][GAME] T4.M1: Stack resolve: 1 (top: Cast Centaur's Herald)
+INFO  2026-08-13 08:14:10,945 [LOG][GAME] T4.M1: Opponent puts Centaur's Herald [3f7] from stack onto the Battlefield
+INFO  2026-08-13 08:14:10,973 [LOG][GAME] T4.DA: Opponent attacks Agent with 1 creature
+INFO  2026-08-13 08:14:10,995 [LOG][GAME] T4.DB: Attacker: Centaur's Herald [bea] (0/1) unblocked
+INFO  2026-08-13 08:14:11,115 [LOG][GAME] T5.UP: Stack push: 1 (top: Cast Floodpits Drowner)
+INFO  2026-08-13 08:14:11,131 [LOG][GAME] T5.UP: Agent casts Floodpits Drowner [007] from hand
+INFO  2026-08-13 08:14:11,141 [LOG][GAME] T5.UP: Stack resolve: 1 (top: Cast Floodpits Drowner)
+INFO  2026-08-13 08:14:11,142 [LOG][GAME] T5.UP: Agent puts Floodpits Drowner [007] from stack onto the Battlefield
+INFO  2026-08-13 08:14:11,146 [LOG][GAME] T5.UP: Stack push: 1 (top: stack ability (When {this} enters, tap target creature an opponent controls and put a stun counte...)
+INFO  2026-08-13 08:14:11,156 [LOG][GAME] T5.UP: Agent - Ability triggers: Floodpits Drowner [007] - When Floodpits Drowner [007] enters, tap target creature an opponent controls and put a stun counter on it. - targeting Centaur's Herald [bea]
+INFO  2026-08-13 08:14:11,170 [LOG][GAME] T5.UP: Stack resolve: 1 (top: stack ability (When {this} enters, tap target creature an opponent controls and put a stun counte...)
+INFO  2026-08-13 08:14:11,173 [LOG][GAME] T5.UP: Floodpits Drowner [007]: Agent puts 1 stun counters on Centaur's Herald [bea]
+INFO  2026-08-13 08:14:11,229 [LOG][GAME] T5.M1: Agent puts Soulstone Sanctuary [d6f] from hand onto the Battlefield
+INFO  2026-08-13 08:14:11,298 [LOG][GAME] T5.DA: Agent skip attack
+INFO  2026-08-13 08:14:11,358 [LOG][GAME] T6.UN: Removed a stun counter from Centaur's Herald [bea]
+INFO  2026-08-13 08:14:11,382 [LOG][GAME] T6.M1: Opponent puts Plains [e4e] from hand onto the Battlefield
+INFO  2026-08-13 08:14:11,388 [LOG][GAME] T6.M1: Stack push: 1 (top: Cast Call of the Conclave)
+INFO  2026-08-13 08:14:11,393 [LOG][GAME] T6.M1: Opponent casts Call of the Conclave [c98] from hand
+INFO  2026-08-13 08:14:11,403 [LOG][GAME] T6.M1: Stack resolve: 1 (top: Cast Call of the Conclave)
+INFO  2026-08-13 08:14:11,408 [LOG][GAME] T6.M1: Opponent creates a Centaur Token [edc] token
+INFO  2026-08-13 08:14:11,415 [LOG][GAME] T6.M1: Opponent puts Call of the Conclave [c98] from stack into their graveyard
+INFO  2026-08-13 08:14:11,434 [LOG][GAME] T6.DA: Opponent skip attack
+INFO  2026-08-13 08:14:11,486 [LOG][GAME] T7.UP: Stack push: 1 (top: Cast The Wondrous Wasp)
+INFO  2026-08-13 08:14:11,491 [LOG][GAME] T7.UP: Agent casts The Wondrous Wasp [463] from hand
+INFO  2026-08-13 08:14:11,507 [LOG][GAME] T7.UP: Stack resolve: 1 (top: Cast The Wondrous Wasp)
+INFO  2026-08-13 08:14:11,508 [LOG][GAME] T7.UP: Agent puts The Wondrous Wasp [463] from stack onto the Battlefield
+INFO  2026-08-13 08:14:11,510 [LOG][GAME] T7.UP: Stack push: 1 (top: stack ability (<i>Wasp's Sting</i> &mdash; When {this} enters, tap up to one target creature. It ...)
+INFO  2026-08-13 08:14:11,513 [LOG][GAME] T7.UP: Agent - Ability triggers: The Wondrous Wasp [463] - Wasp's Sting — When The Wondrous Wasp [463] enters, tap up to one target creature. It loses all abilities for as long as The Wondrous Wasp [463] remains on the battlefield.
+INFO  2026-08-13 08:14:11,528 [LOG][GAME] T7.UP: Stack resolve: 1 (top: stack ability (<i>Wasp's Sting</i> &mdash; When {this} enters, tap up to one target creature. It ...)
+INFO  2026-08-13 08:14:11,574 [LOG][GAME] T7.M1: Agent loses 2 life from Watery Grave [7d3]
+INFO  2026-08-13 08:14:11,575 [LOG][GAME] T7.M1: Agent puts Watery Grave [7d3] from hand onto the Battlefield
+INFO  2026-08-13 08:14:11,595 [LOG][GAME] T7.M1: Stack push: 1 (top: Cast The Wondrous Wasp)
+INFO  2026-08-13 08:14:11,601 [LOG][GAME] T7.M1: Agent casts The Wondrous Wasp [911] from hand
+INFO  2026-08-13 08:14:11,609 [LOG][GAME] T7.M1: Stack resolve: 1 (top: Cast The Wondrous Wasp)
+INFO  2026-08-13 08:14:11,610 [LOG][GAME] T7.M1: Agent puts The Wondrous Wasp [911] from stack onto the Battlefield
+INFO  2026-08-13 08:14:11,648 [LOG][GAME] T7.M1: The Wondrous Wasp [463] is put into graveyard from battlefield (SBA: legendary rule to keep only one)
+INFO  2026-08-13 08:14:11,656 [LOG][GAME] T7.M1: Stack push: 1 (top: stack ability (<i>Wasp's Sting</i> &mdash; When {this} enters, tap up to one target creature. It ...)
+INFO  2026-08-13 08:14:11,659 [LOG][GAME] T7.M1: Agent - Ability triggers: The Wondrous Wasp [911] - Wasp's Sting — When The Wondrous Wasp [911] enters, tap up to one target creature. It loses all abilities for as long as The Wondrous Wasp [911] remains on the battlefield.
+INFO  2026-08-13 08:14:11,669 [LOG][GAME] T7.M1: Stack resolve: 1 (top: stack ability (<i>Wasp's Sting</i> &mdash; When {this} enters, tap up to one target creature. It ...)
+INFO  2026-08-13 08:14:11,694 [LOG][GAME] T7.DA: Agent attacks Opponent with 1 creature
+INFO  2026-08-13 08:14:11,709 [LOG][GAME] T7.DB: Attacker: Floodpits Drowner [007] (2/1) blocked by Centaur Token [edc] (3/3)
+INFO  2026-08-13 08:14:11,724 [LOG][GAME] T7.CD: Centaur Token [edc] deals 3 damage to Floodpits Drowner [007]
+INFO  2026-08-13 08:14:11,725 [LOG][GAME] T7.CD: Floodpits Drowner [007] deals 2 damage to Centaur Token [edc]
+INFO  2026-08-13 08:14:11,727 [LOG][GAME] T7.CD: Floodpits Drowner [007] died
+INFO  2026-08-13 08:14:11,783 [LOG][GAME] T8.M1: Opponent puts Forest [6ad] from hand onto the Battlefield
+INFO  2026-08-13 08:14:11,789 [LOG][GAME] T8.M1: Stack push: 1 (top: Cast Centaur's Herald)
+INFO  2026-08-13 08:14:11,792 [LOG][GAME] T8.M1: Opponent casts Centaur's Herald [1c2] from hand
+INFO  2026-08-13 08:14:11,810 [LOG][GAME] T8.M1: Stack resolve: 1 (top: Cast Centaur's Herald)
+INFO  2026-08-13 08:14:11,811 [LOG][GAME] T8.M1: Opponent puts Centaur's Herald [1c2] from stack onto the Battlefield
+INFO  2026-08-13 08:14:11,828 [LOG][GAME] T8.DA: Opponent attacks Agent with 1 creature
+INFO  2026-08-13 08:14:11,847 [LOG][GAME] T8.DB: Attacker: Centaur Token [edc] (3/3) blocked by The Wondrous Wasp [911] (2/1)
+INFO  2026-08-13 08:14:11,857 [LOG][GAME] T8.CD: The Wondrous Wasp [911] deals 2 damage to Centaur Token [edc]
+INFO  2026-08-13 08:14:11,858 [LOG][GAME] T8.CD: Centaur Token [edc] deals 3 damage to The Wondrous Wasp [911]
+INFO  2026-08-13 08:14:11,860 [LOG][GAME] T8.CD: The Wondrous Wasp [911] died
+INFO  2026-08-13 08:14:11,963 [LOG][GAME] T9.M1: Stack push: 1 (top: Cast Kaito, Bane of Nightmares)
+INFO  2026-08-13 08:14:11,980 [LOG][GAME] T9.M1: Agent casts Kaito, Bane of Nightmares [0e0] from hand
+INFO  2026-08-13 08:14:11,990 [LOG][GAME] T9.M1: Stack resolve: 1 (top: Cast Kaito, Bane of Nightmares)
+INFO  2026-08-13 08:14:11,995 [LOG][GAME] T9.M1: Agent puts Kaito, Bane of Nightmares [0e0] from stack onto the Battlefield
+INFO  2026-08-13 08:14:12,020 [LOG][GAME] T9.M1: Stack push: 1 (top: stack ability (+1: You get an emblem with "Ninjas you control get +1/+1."))
+INFO  2026-08-13 08:14:12,023 [LOG][GAME] T9.M1: Agent activates: you get an emblem with "Ninjas you control get +1/+1." from Kaito, Bane of Nightmares [0e0]
+INFO  2026-08-13 08:14:12,033 [LOG][GAME] T9.M1: Stack resolve: 1 (top: stack ability (+1: You get an emblem with "Ninjas you control get +1/+1."))
+INFO  2026-08-13 08:14:12,071 [LOG][GAME] T9.M1: Agent puts Hidden Lair [f44] from hand onto the Battlefield
+INFO  2026-08-13 08:14:12,114 [LOG][GAME] T9.DA: Agent skip attack
+INFO  2026-08-13 08:14:12,201 [LOG][GAME] T9.ET: Stack push: 1 (top: Cast Rootborn Defenses)
+INFO  2026-08-13 08:14:12,216 [LOG][GAME] T9.ET: Opponent casts Rootborn Defenses [41c] from hand
+INFO  2026-08-13 08:14:12,232 [LOG][GAME] T9.ET: Stack resolve: 1 (top: Cast Rootborn Defenses)
+INFO  2026-08-13 08:14:12,240 [LOG][GAME] T9.ET: Token selected for populate: Centaur Token [edc]
+INFO  2026-08-13 08:14:12,247 [LOG][GAME] T9.ET: Opponent creates a Centaur Token [2e7] token
+INFO  2026-08-13 08:14:12,251 [LOG][GAME] T9.ET: Opponent puts Rootborn Defenses [41c] from stack into their graveyard
+INFO  2026-08-13 08:14:12,354 [LOG][GAME] T10.M1: Opponent puts Forest [080] from hand onto the Battlefield
+INFO  2026-08-13 08:14:12,398 [LOG][GAME] T10.DA: Opponent attacks Agent with 5 creatures
+INFO  2026-08-13 08:14:12,418 [LOG][GAME] T10.DB: Attacker: Centaur's Herald [bea] (0/1) unblocked
+INFO  2026-08-13 08:14:12,419 [LOG][GAME] T10.DB: Attacker: Centaur's Herald [3f7] (0/1) unblocked
+INFO  2026-08-13 08:14:12,420 [LOG][GAME] T10.DB: Attacker: Centaur Token [edc] (3/3) unblocked
+INFO  2026-08-13 08:14:12,420 [LOG][GAME] T10.DB: Attacker: Centaur's Herald [1c2] (0/1) unblocked
+INFO  2026-08-13 08:14:12,421 [LOG][GAME] T10.DB: Attacker: Centaur Token [2e7] (3/3) unblocked
+INFO  2026-08-13 08:14:12,447 [LOG][GAME] T10.CD: Agent loses 3 life at combat from Centaur Token [edc]
+INFO  2026-08-13 08:14:12,449 [LOG][GAME] T10.CD: Agent loses 3 life at combat from Centaur Token [2e7]
+INFO  2026-08-13 08:14:12,556 [LOG][GAME] T11.DR: Stack push: 1 (top: Cast Floodpits Drowner)
+INFO  2026-08-13 08:14:12,564 [LOG][GAME] T11.DR: Agent casts Floodpits Drowner [b06] from hand
+INFO  2026-08-13 08:14:12,584 [LOG][GAME] T11.DR: Stack resolve: 1 (top: Cast Floodpits Drowner)
+INFO  2026-08-13 08:14:12,586 [LOG][GAME] T11.DR: Agent puts Floodpits Drowner [b06] from stack onto the Battlefield
+INFO  2026-08-13 08:14:12,589 [LOG][GAME] T11.DR: Stack push: 1 (top: stack ability (When {this} enters, tap target creature an opponent controls and put a stun counte...)
+INFO  2026-08-13 08:14:12,603 [LOG][GAME] T11.DR: Agent - Ability triggers: Floodpits Drowner [b06] - When Floodpits Drowner [b06] enters, tap target creature an opponent controls and put a stun counter on it. - targeting Centaur Token [edc]
+INFO  2026-08-13 08:14:12,622 [LOG][GAME] T11.DR: Stack resolve: 1 (top: stack ability (When {this} enters, tap target creature an opponent controls and put a stun counte...)
+INFO  2026-08-13 08:14:12,624 [LOG][GAME] T11.DR: Floodpits Drowner [b06]: Agent puts 1 stun counters on Centaur Token [edc]
+INFO  2026-08-13 08:14:12,662 [LOG][GAME] T11.M1: Stack push: 1 (top: stack ability (+1: You get an emblem with "Ninjas you control get +1/+1."))
+INFO  2026-08-13 08:14:12,664 [LOG][GAME] T11.M1: Agent activates: you get an emblem with "Ninjas you control get +1/+1." from Kaito, Bane of Nightmares [0e0]
+INFO  2026-08-13 08:14:12,689 [LOG][GAME] T11.M1: Stack resolve: 1 (top: stack ability (+1: You get an emblem with "Ninjas you control get +1/+1."))
+INFO  2026-08-13 08:14:12,770 [LOG][GAME] T11.DA: Agent attacks Opponent with 1 creature
+INFO  2026-08-13 08:14:12,792 [LOG][GAME] T11.DB: Attacker: Kaito, Bane of Nightmares [0e0] (5/6) unblocked
+INFO  2026-08-13 08:14:12,813 [LOG][GAME] T11.CD: Opponent loses 5 life at combat from Kaito, Bane of Nightmares [0e0]
+INFO  2026-08-13 08:14:12,889 [LOG][GAME] T11.ET: Stack push: 1 (top: Cast Rootborn Defenses)
+INFO  2026-08-13 08:14:12,897 [LOG][GAME] T11.ET: Opponent casts Rootborn Defenses [32f] from hand
+INFO  2026-08-13 08:14:12,911 [LOG][GAME] T11.ET: Stack resolve: 1 (top: Cast Rootborn Defenses)
+INFO  2026-08-13 08:14:12,914 [LOG][GAME] T11.ET: Token selected for populate: Centaur Token [edc]
+INFO  2026-08-13 08:14:12,915 [LOG][GAME] T11.ET: Opponent creates a Centaur Token [203] token
+INFO  2026-08-13 08:14:12,918 [LOG][GAME] T11.ET: Opponent puts Rootborn Defenses [32f] from stack into their graveyard
+INFO  2026-08-13 08:14:12,934 [LOG][GAME] T12.UN: Removed a stun counter from Centaur Token [edc]
+INFO  2026-08-13 08:14:12,995 [LOG][GAME] T12.DA: Opponent attacks Agent with 2 creatures
+INFO  2026-08-13 08:14:13,014 [LOG][GAME] T12.DB: Attacker: Centaur Token [2e7] (3/3) blocked by Floodpits Drowner [b06] (2/1)
+INFO  2026-08-13 08:14:13,015 [LOG][GAME] T12.DB: Attacker: Centaur Token [203] (3/3) unblocked
+INFO  2026-08-13 08:14:13,039 [LOG][GAME] T12.CD: Floodpits Drowner [b06] deals 2 damage to Centaur Token [2e7]
+INFO  2026-08-13 08:14:13,039 [LOG][GAME] T12.CD: Centaur Token [2e7] deals 3 damage to Floodpits Drowner [b06]
+INFO  2026-08-13 08:14:13,040 [LOG][GAME] T12.CD: Agent loses 3 life at combat from Centaur Token [203]
+INFO  2026-08-13 08:14:13,042 [LOG][GAME] T12.CD: Floodpits Drowner [b06] died
+INFO  2026-08-13 08:14:13,157 [LOG][GAME] T13.DR: Stack push: 1 (top: Cast Nowhere to Run)
+INFO  2026-08-13 08:14:13,168 [LOG][GAME] T13.DR: Agent casts Nowhere to Run [74e] from hand
+INFO  2026-08-13 08:14:13,181 [LOG][GAME] T13.DR: Stack resolve: 1 (top: Cast Nowhere to Run)
+INFO  2026-08-13 08:14:13,183 [LOG][GAME] T13.DR: Agent puts Nowhere to Run [74e] from stack onto the Battlefield
+INFO  2026-08-13 08:14:13,186 [LOG][GAME] T13.DR: Stack push: 1 (top: stack ability (When {this} enters, target creature an opponent controls gets -3/-3 until end of t...)
+INFO  2026-08-13 08:14:13,194 [LOG][GAME] T13.DR: Agent - Ability triggers: Nowhere to Run [74e] - When Nowhere to Run [74e] enters, target creature an opponent controls gets -3/-3 until end of turn. - targeting Centaur Token [203]
+INFO  2026-08-13 08:14:13,246 [LOG][GAME] T13.DR: Stack resolve: 1 (top: stack ability (When {this} enters, target creature an opponent controls gets -3/-3 until end of t...)
+INFO  2026-08-13 08:14:13,249 [LOG][GAME] T13.DR: Centaur Token [203] is put into graveyard from battlefield (SBA: creature has toughness 0 or less)
+INFO  2026-08-13 08:14:13,282 [LOG][GAME] T13.M1: Stack push: 1 (top: stack ability (+1: You get an emblem with "Ninjas you control get +1/+1."))
+INFO  2026-08-13 08:14:13,285 [LOG][GAME] T13.M1: Agent activates: you get an emblem with "Ninjas you control get +1/+1." from Kaito, Bane of Nightmares [0e0]
+INFO  2026-08-13 08:14:13,300 [LOG][GAME] T13.M1: Stack resolve: 1 (top: stack ability (+1: You get an emblem with "Ninjas you control get +1/+1."))
+INFO  2026-08-13 08:14:13,328 [LOG][GAME] T13.DA: Agent attacks Opponent with 1 creature
+INFO  2026-08-13 08:14:13,345 [LOG][GAME] T13.DB: Attacker: Kaito, Bane of Nightmares [0e0] (6/7) unblocked
+INFO  2026-08-13 08:14:13,359 [LOG][GAME] T13.CD: Opponent loses 6 life at combat from Kaito, Bane of Nightmares [0e0]
+INFO  2026-08-13 08:14:13,430 [LOG][GAME] T13.ET: Stack push: 1 (top: Cast Rootborn Defenses)
+INFO  2026-08-13 08:14:13,437 [LOG][GAME] T13.ET: Opponent casts Rootborn Defenses [684] from hand
+INFO  2026-08-13 08:14:13,450 [LOG][GAME] T13.ET: Stack resolve: 1 (top: Cast Rootborn Defenses)
+INFO  2026-08-13 08:14:13,451 [LOG][GAME] T13.ET: Token selected for populate: Centaur Token [edc]
+INFO  2026-08-13 08:14:13,451 [LOG][GAME] T13.ET: Opponent creates a Centaur Token [ba2] token
+INFO  2026-08-13 08:14:13,453 [LOG][GAME] T13.ET: Opponent puts Rootborn Defenses [684] from stack into their graveyard
+INFO  2026-08-13 08:14:13,500 [LOG][GAME] T14.M1: Opponent puts Plains [f44] from hand onto the Battlefield
+INFO  2026-08-13 08:14:13,526 [LOG][GAME] T14.DA: Opponent attacks Agent with 6 creatures
+INFO  2026-08-13 08:14:13,538 [LOG][GAME] T14.DB: Attacker: Centaur's Herald [bea] (0/1) unblocked
+INFO  2026-08-13 08:14:13,539 [LOG][GAME] T14.DB: Attacker: Centaur's Herald [3f7] (0/1) unblocked
+INFO  2026-08-13 08:14:13,539 [LOG][GAME] T14.DB: Attacker: Centaur Token [edc] (3/3) unblocked
+INFO  2026-08-13 08:14:13,540 [LOG][GAME] T14.DB: Attacker: Centaur's Herald [1c2] (0/1) unblocked
+INFO  2026-08-13 08:14:13,540 [LOG][GAME] T14.DB: Attacker: Centaur Token [2e7] (3/3) unblocked
+INFO  2026-08-13 08:14:13,541 [LOG][GAME] T14.DB: Attacker: Centaur Token [ba2] (3/3) unblocked
+INFO  2026-08-13 08:14:13,557 [LOG][GAME] T14.CD: Agent loses 3 life at combat from Centaur Token [edc]
+INFO  2026-08-13 08:14:13,558 [LOG][GAME] T14.CD: Agent loses 3 life at combat from Centaur Token [2e7]
+INFO  2026-08-13 08:14:13,561 [LOG][GAME] T14.CD: Agent loses 3 life at combat from Centaur Token [ba2]
+INFO  2026-08-13 08:14:13,563 [LOG][GAME] T14.CD: Agent lost the game due life is 0 or less
+INFO  2026-08-13 08:14:13,563 [LOG][GAME] T14.CD: Agent has lost the game.
+INFO  2026-08-13 08:14:13,572 [LOG][GAME] T14.CD: Opponent has won the game
