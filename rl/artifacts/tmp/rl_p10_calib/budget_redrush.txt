@@ -1,0 +1,1 @@
+RL|summary|episodes=4|wins=3|losses=1|draws=0|stalls=0|win_rate=0.7500|games_per_sec=1.457|agent_consults_per_ep=0.0|agent_windows_per_ep=0.0|agent_actions_per_ep=0.0|turns_per_ep=16.3|opponent=heuristic|policy=random|deck=M3RedRush.dck|oppDeck=BenchDimir.dck|seed=949000|fallbacks=

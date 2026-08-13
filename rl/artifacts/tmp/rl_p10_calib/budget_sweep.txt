@@ -1,0 +1,1 @@
+RL|summary|episodes=4|wins=1|losses=3|draws=0|stalls=0|win_rate=0.2500|games_per_sec=0.859|agent_consults_per_ep=0.0|agent_windows_per_ep=0.0|agent_actions_per_ep=0.0|turns_per_ep=26.3|opponent=heuristic|policy=random|deck=P7cSweepControl.dck|oppDeck=BenchDimir.dck|seed=949000|fallbacks=

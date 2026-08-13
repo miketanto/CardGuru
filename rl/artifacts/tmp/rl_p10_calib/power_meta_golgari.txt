@@ -1,0 +1,1 @@
+RL|summary|episodes=100|wins=69|losses=31|draws=0|stalls=0|win_rate=0.6900|games_per_sec=4.107|agent_consults_per_ep=0.0|agent_windows_per_ep=0.0|agent_actions_per_ep=0.0|turns_per_ep=17.9|opponent=heuristic|policy=random|deck=P8MetaGolgari.dck|oppDeck=BenchDimir.dck|seed=953000|fallbacks=

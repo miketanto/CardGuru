@@ -1,0 +1,1 @@
+RL|summary|episodes=4|wins=4|losses=0|draws=0|stalls=0|win_rate=1.0000|games_per_sec=1.170|agent_consults_per_ep=0.0|agent_windows_per_ep=0.0|agent_actions_per_ep=0.0|turns_per_ep=14.5|opponent=heuristic|policy=random|deck=M3SelesnyaTokens.dck|oppDeck=BenchDimir.dck|seed=949000|fallbacks=

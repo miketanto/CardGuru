@@ -85,6 +85,8 @@ P10_CHAMPION_ELO=${P10_CHAMPION_ELO:-1101}
 P10_DECK_SCHEDULE=${P10_DECK_SCHEDULE:-}
 P10_MATRIX_DECKS=${P10_MATRIX_DECKS:-}
 P10_ARCHSHARE=${P10_ARCHSHARE:-0.5}
+P7_PROBE_G=${P7_PROBE_G:-100}       # games per Elo-anchor probe
+P10_MATRIX_G=${P10_MATRIX_G:-100}   # games per robustness-matrix cell
 mkdir -p $OUT/pool $EXPDIR
 [ -f $OUT/net.pt ] || cp "$INIT" $OUT/net.pt
 
@@ -144,28 +146,36 @@ champion_row() {
     cat $OUT/champion.tsv
 }
 
-# --------------------------------------------------------- agent decks
-# "<from>:<deck,deck>;<from>:<deck,deck>" -> the list live at $1 episodes
-agent_decks() {
-    local trained=$1 stage from list out=$DECK
-    [ -z "$P10_DECK_SCHEDULE" ] && { echo "$DECK"; return; }
+# --------------------------------------------------------- staged knobs
+# Schedules are "<from-episode>:<value>[;<from-episode>:<value>...]";
+# a value with no ':' in it is a constant. Used for the agent's deck
+# rotation and for the archetype share (which has to start low: a
+# random-init net learns nothing from 50% of its games against decks it
+# cannot yet beat, and the low rungs of the ladder are all mirror rows).
+stage_value() {   # $1 trained $2 schedule $3 default
+    local trained=$1 sched=$2 out=$3 stage from val
+    [ -z "$sched" ] && { echo "$out"; return; }
+    case "$sched" in *:*) ;; *) echo "$sched"; return ;; esac
     local IFSBAK=$IFS
     IFS=';'
-    for stage in $P10_DECK_SCHEDULE; do
-        from=${stage%%:*}; list=${stage#*:}
-        [ "$trained" -ge "$from" ] && out=$list
+    for stage in $sched; do
+        from=${stage%%:*}; val=${stage#*:}
+        [ "$trained" -ge "$from" ] && out=$val
     done
     IFS=$IFSBAK
     echo "$out"
 }
 
-pick_opponent() {  # -> echoes "ckpt|arch" (legacy) or "kind|deck|name|elo"
+agent_decks() { stage_value $1 "$P10_DECK_SCHEDULE" "$DECK"; }
+
+pick_opponent() {  # $1 chunk $2 trained -> "ckpt|arch" | "kind|deck|name|elo"
     local chunk=$1
     if [ "$P10_POOL" = "1" ]; then
         local SELF=$(cat $OUT/self_elo.txt 2>/dev/null || echo 46)
         python3 $RL/pfsp_pick_p7c.py --pool $OUT/pool_elo.tsv \
             --self-elo $SELF --chunk $chunk \
-            --archetype-share $P10_ARCHSHARE --mirror-deck $DECK
+            --archetype-share "$(stage_value ${2:-0} "$P10_ARCHSHARE" 0.5)" \
+            --mirror-deck $DECK
         return
     fi
     # Phase 7b (P7_PFSP=1): optimistic Elo-based selection over the
@@ -284,7 +294,7 @@ rate_checkpoint() {  # $1 trained -> P7ELO| line
         # reproducible; the persistent JVM alone is behavior-identical
         RL_PERSIST=${P7_PERSIST:-0} RL_AUTOSTART=1 \
         bash /home/user/CardGuru/rl/run_driver.sh \
-            -Drl.episodes=100 \
+            -Drl.episodes=$P7_PROBE_G \
             -Drl.agent=rl -Drl.policy=socket -Drl.port=$APORT \
             -Drl.opponent=$AK -Drl.searchPlies=1 -Drl.searchBreadth=8 \
             -Drl.cardFeatures=$FEATS \
@@ -297,7 +307,7 @@ rate_checkpoint() {  # $1 trained -> P7ELO| line
         [ -z "$line" ] && { echo "P7_FAILED|probe_${SN}_${trained} empty"; exit 1; }
         w=$(echo "$line" | grep -o 'wins=[0-9]*' | cut -d= -f2)
         d=$(echo "$line" | grep -o 'draws=[0-9]*' | cut -d= -f2)
-        echo -e "p7_${trained}\t${SN}\t${w}\t${d}\t100" >> $OUT/elo_matches.tsv
+        echo -e "p7_${trained}\t${SN}\t${w}\t${d}\t$P7_PROBE_G" >> $OUT/elo_matches.tsv
     done
     local ELO=$(python3 /home/user/CardGuru/rl/elo_fit.py \
         --matches $OUT/elo_matches.tsv | grep " p7_${trained} " \
@@ -332,7 +342,7 @@ rate_matrix() {
             local ASRV=$(cat $OUT/.srvpid)
             RL_PERSIST=${P7_PERSIST:-0} RL_AUTOSTART=1 \
             bash $RL/run_driver.sh \
-                -Drl.episodes=100 \
+                -Drl.episodes=$P10_MATRIX_G \
                 -Drl.agent=rl -Drl.policy=socket -Drl.port=$APORT \
                 -Drl.opponent=heuristic -Drl.searchPlies=1 -Drl.searchBreadth=8 \
                 -Drl.cardFeatures=$FEATS \
@@ -418,9 +428,9 @@ while true; do
     CHUNK=$((trained / 64))
     ADECKS=$(agent_decks $trained)
     if [ "$P10_POOL" = "1" ]; then
-        IFS='|' read -r OKIND ODECK ONAME OELO <<< "$(pick_opponent $CHUNK)"
+        IFS='|' read -r OKIND ODECK ONAME OELO <<< "$(pick_opponent $CHUNK $trained)"
     else
-        IFS='|' read -r OPPCK OPPARCH <<< "$(pick_opponent $CHUNK)"
+        IFS='|' read -r OPPCK OPPARCH <<< "$(pick_opponent $CHUNK $trained)"
         OKIND="rl:${OPPARCH}:${OPPCK}"; ODECK=$DECK; ONAME=$(basename $OPPCK .pt)
     fi
 
