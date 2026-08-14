@@ -60,6 +60,16 @@ RESOLVED (crown matches, this branch, /tmp/p10_crown + p10_crown.sh):
 mirror; cross-deck h2h remains for the Phase 10 league to settle
 continuously via gating.
 
+**SETTLED (Phase 10 flagship, rl/PHASE10-FLAGSHIP.md):** ck_6144
+retains the crown on the mirror — 24 gates over 12288 episodes, zero
+promotions, best .48, pooled .399 over 950 games. But the flagship's
+p10_final.pt (Elo 1047) **beats it cross-deck on redrush (.60 vs .52)**
+and matches it on sweep (.85 vs .87), with all six archetype residuals
+positive (mean +.172) where 7c finished with two negative. The crown is
+mirror-specific; the cross-deck answer is that deck diversity from
+initialization buys what mirror specialisation cannot, at a cost of
+~55 Elo of mirror rating.
+
 ## 3. Infrastructure state on this branch (all validated together)
 
 - **Phase 9 fast path**: persistent driver JVM (rl/driver_server.sh,
@@ -92,7 +102,15 @@ continuously via gating.
    500g ck_6144 vs D1; 200g ck_6144 vs 7c ck_1536 and ck_3072 (mirror
    AND 2-3 archetype rows). Converts two noise-level parity claims
    into one ranked answer and picks the Phase 10 opponent-pool seeds.
-2. **Phase 10 flagship — the convergent run**: from-scratch lstmattn,
+2. **DONE — Phase 10 flagship** (rl/PHASE10-FLAGSHIP.md). Verdict:
+   champion gating works as an anti-drift ratchet (Elo flat, pool never
+   polluted, no 7b-style decay) AND starves the league on its own — the
+   run saturated at ~6144 because all 44 pool rows are frozen and
+   gating kept its own 24 snapshots out. Successor design:
+   rl/PHASE11-KICKOFF.md (self-play fraction, pool entry decoupled from
+   crowning, PFSP by measured win rate, exploiters from ck_6144).
+   Original spec follows.
+   **Phase 10 flagship — the convergent run**: from-scratch lstmattn,
    PFSP league with champion gating (promote snapshots into the pool
    only if they beat the reigning champion h2h), opponent pool =
    archetype decks (7c's six, D0-piloted, Elo-rated rows) + the six
