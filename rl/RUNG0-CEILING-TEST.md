@@ -109,3 +109,64 @@ this deck, where on BenchDimir it was the stronger instrument and the
 whole Elo ladder is built with D0 at 1000 and D1 above. So "the agent
 beat 1-ply search at 512 episodes" is not the Phase 4 bar being cleared.
 On W0Base that bar sits below D0. Phase 4 stands.
+
+---
+
+## Correction: D1 does not search combat, so its row means nothing here
+
+The depth ladder returned `.410` at 1 ply, `.450` at 2, and `.450` at 3.
+The 2-ply and 3-ply files are **byte-identical in node count**
+(`searchDecisions=499 searchNodes=3839` both), so the third row is not a
+third data point — it is the same computation. Nodes per decision do
+move from 1 to 2 plies (3.31 → 7.69), so the flag works; the tree simply
+bottoms out at depth 2 on this deck.
+
+Chasing that turned up the thing that actually matters:
+
+```
+SearchPlayer  — overrides priority() only
+HeuristicPlayer — overrides selectAttackers() and selectBlockers()
+```
+
+**`SearchPlayer` does not override `selectAttackers` or `selectBlockers`.**
+It inherits D0's hand-written combat rules and searches only over
+*activated abilities*. On `W0Base` — no instants, no removal, no
+activated abilities beyond casting a creature — the only decisions that
+matter are attacks and blocks, and D1 does not search them at all. Its
+search is confined to "which creature do I cast", which the curve
+nearly forces.
+
+So three earlier statements are withdrawn:
+
+1. **"D1 is weaker than D0 on this deck"** — misleading. D1 *is* D0 in
+   combat, by construction. Its .410 vs D0's .460 is two instruments
+   that play combat identically, differing only in a spell-choice search
+   that has almost nothing to choose. The gap is noise.
+2. **"Depth buys nothing, so the game does not reward lookahead"** —
+   unsupported. The depth ladder varied depth in a subgame containing no
+   interesting decisions. It is uninformative about lookahead, not
+   evidence against it.
+3. **"Both search instruments do worse than the learned agent"** — only
+   one of them is a search instrument *here*. `ComputerPlayer6.selectAttackers`
+   → `declareAttackers` means **CP7 does simulate combat**, so its .650
+   is the only number in this document that reflects search over the
+   decisions the deck is about.
+
+## What survives
+
+```
+CP7 (searches combat, depth 6)   .650 [.524, .758]
+our agent (peak)                 .782 [.720, .834]
+```
+
+The reading-A conclusion stands and is now resting on a single
+comparison rather than three: the intervals overlap, so the strongest
+*combat-searching* instrument available is not distinguishable from our
+agent. The variance-ceiling hypothesis is still supported by that, and
+still unproven — and the depth ladder cannot be used to shore it up.
+
+The oracle (`CURRICULUM-LADDER.md` §4) is now the only clean way to
+settle it, and this correction sharpens what it must do: **search over
+attack and block assignments**, not over which spell to cast. That is
+precisely the no-instants combat subgame rungs 0-3 were designed to keep
+computable.
