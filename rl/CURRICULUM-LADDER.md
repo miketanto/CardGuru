@@ -1,4 +1,18 @@
-# The curriculum ladder — rungs 0 to 5, designed and built
+# The curriculum ladder — two branches, designed and built
+
+**White branch (§1-4): combat.** Attack, block, trade math, then timing
+and hidden information. 12 decks.
+
+**Black branch (§5): threat assessment.** Of everything on the
+battlefield, which one matters most — plus one rung on card advantage
+with no board effect at all. 7 decks.
+
+They share nothing but a design rule and are meant to run at the same
+time (§6). All 19 decks are built, load clean, and have passed the stall
+gate.
+
+---
+
 
 Every prior phase changed several things at once. 7c swapped whole
 archetypes; 8b swapped twelve cards; Phase 10 varied the agent's deck,
@@ -6,13 +20,12 @@ the opponent pool and the gating rule in the same run. When a number
 moved there was never one candidate cause.
 
 This ladder is the opposite discipline. **Each rung is the previous
-deck with one thing changed**, and in most rungs that one thing is four
-cards out of sixty. All twelve decks below are built, load clean, and
-have passed the stall gate.
+deck with one thing changed**, and in every rung below that one thing is
+four cards out of sixty.
 
 ---
 
-## 1. Why the whole ladder is white, and why it is one card slot
+## 1. Why the combat branch is white, and why it is one card slot
 
 A keyword rung has to swap vanilla creatures for creatures with the
 **same mana cost and the same power/toughness** that differ by one
@@ -175,7 +188,110 @@ change is smallest.
 
 ---
 
-## 5. What red rung 0 is now for
+## 5. The black branch — threat assessment, run in parallel
+
+The white branch never asks *"of everything on the battlefield, which
+one matters most?"* Its removal targets a **tapped** creature, which on
+a real board is one or two attackers — the choice is close to forced.
+That question is this branch, and the axis is **how wide the legal
+target set is**. The pin supports it at a fixed cost, in one colour,
+with one template:
+
+| rung | deck | the four cards become | legal targets |
+|---|---|---|---|
+| 1 | `B1Narrow` | 4 Defeat `[DTK:97]` — sorcery, power ≤2 | near-forced |
+| 2 | `B2Mid` | 4 Reave Soul `[J22:459]` — sorcery, power ≤3 | a real but small choice |
+| 3 | `B3Open` | 4 Fell `[BLB:383]` — sorcery, **destroy target creature** | full threat assessment |
+| — | `B1Fast` | 4 Cruel Cut `[ANB:47]` — **instant**, power ≤2 | Defeat's timing twin |
+| 4 | `B4Card` | 4 Mind Knives `[POR:100]` — sorcery, opponent discards at random | *no board effect, no choice* |
+
+Every one of those is `{1}{B}`, four copies, replacing the same four
+`Gutter Skulk` in `B0Base`. Cost, colour, count, type and slot are held
+constant; **only the card name changes**. That is tighter than the white
+branch's keyword rungs, which at least alter a creature's body.
+
+### The deck exists to make the thresholds bite
+
+A targeting ladder is vacuous unless the board has creatures on both
+sides of each threshold, so `B0Base` is built around its **power
+census**:
+
+```
+power 2   16 creatures   <- everything Defeat can ever hit
+power 3    8 creatures   <- Reave Soul adds these
+power 4    4 creatures   <- only Fell reaches these
+power 5    8 creatures   <- and these, which are the actual threats
+```
+
+So the rungs do not merely differ in wording — they differ in whether
+the best target on a typical board is *legal at all*. At B1 the choice
+is nearly made for you; at B3, picking a 2/1 over a 5/3 is an
+unambiguous error.
+
+### `B1Fast` is a free replication
+
+`Cruel Cut` is `Defeat` at instant speed — identical restriction,
+identical cost. So `B1Narrow → B1Fast` is the white branch's `W3 → W4`
+timing experiment repeated in a second colour with a different effect,
+at no extra design cost. Given that every claim in `POOLED-ANALYSIS.md`
+comparing two separately-trained nets at one seed turned out
+provisional, having the same question asked twice by two independent
+decks is worth more than either asking alone.
+
+### `B4Card` is a prediction, recorded before the run
+
+`Mind Knives` costs the same, sits in the same slot, and does nothing to
+the battlefield. The discard is random, so there is no target to choose
+either. It is pure card advantage — value that never becomes visible.
+
+Phase 4 recorded terminal-reward PPO failing to beat 1-ply search, and a
+card whose worth never appears on the board is the hardest possible case
+for a terminal signal. **Prediction, stated up front: this is the rung
+the agent fails.** If it learns to cast Mind Knives at a sensible rate,
+the prediction is wrong, and that is a more interesting result than any
+win rate in this document.
+
+### The measurement this branch makes possible
+
+Win rate is the weak instrument here. The strong one is the
+**distribution of chosen targets by power**: a policy doing threat
+assessment concentrates its kills on high power; a policy ignoring the
+board is uniform over the legal set. That is a chi-square on fixed
+weights — a within-net measurement, the class §6 of
+`POOLED-ANALYSIS.md` found actually replicates, and it needs no second
+training run.
+
+Everything except `B1Fast` is sorcery speed, so the opponent can never
+respond during combat, the combat subgame stays perfect information, and
+minimax still gives ground truth for *which creature should have died*.
+
+**One instrumentation gap**: the action log records the spell but not
+the target it was pointed at, so the target-by-power distribution needs
+a small `EpisodeRunner` change before it can be read. Not built yet.
+
+---
+
+## 6. Running the two branches in parallel
+
+They are independent by construction — different colours, different
+skills, no shared card, no shared instrument. Two lanes, two policy
+servers, two ports.
+
+The one thing that must be got right is already known: three separate
+branches independently hit torch thread oversubscription
+(`POOLED-ANALYSIS.md` §3), and the fix is **`RL_TORCH_THREADS=1` on
+every server**. Two servers left at the default will each grab four
+intra-op threads on a four-core box and cost more than the second lane
+gains.
+
+At 12-17 games/sec per deck, a rung is minutes rather than hours, which
+is what makes running both at once affordable — and what finally makes
+the project's standing 5-seed convention, asserted since Phase 3 and
+never once met, practical.
+
+---
+
+## 7. What red rung 0 is now for
 
 `R0Base` / `R0Twin` / `R0Novel` (mono-red, already built and gated)
 stay. They are not superseded — they become two extra probes:
@@ -193,7 +309,7 @@ stay. They are not superseded — they become two extra probes:
 
 ---
 
-## 6. Honest accounting of what else changed
+## 8. Honest accounting of what else changed
 
 Rungs 3-5 replace four **creatures** with four **spells**, so the
 creature count drops 36 → 32. That is a second change, and it cannot be
@@ -211,13 +327,13 @@ use it.
 
 ---
 
-## 7. Gate results
+## 9. Gate results
 
 Two things must hold before a deck is worth training on. It must
 **load** — `.dck` silently loads zero cards on a bad `[SET:NUM]`, and a
 0-card deck still "runs" — and it must **end**.
 
-`DeckImporter` on all twelve: **60 cards, no errors, no auto-fixes.**
+`DeckImporter` on all nineteen: **60 cards, no errors, no auto-fixes.**
 (This also caught that the red decks' `[FDN:277]` Mountain was an
 outdated printing being silently auto-replaced; fixed to `[FDN:278]`.)
 
@@ -237,24 +353,39 @@ W2Ctrl         0/40      0      13.1    0.5000     13.656
 W3Sorc         0/40      0      13.6    0.5250     12.940
 W4Inst         0/40      0      13.4    0.4750     13.512
 W5Trick        0/40      0      12.9    0.4500     13.720
+
+B0Base         0/40      0      12.8    0.4250     14.756
+B0Twin         0/40      0      13.6    0.5250     14.308
+B1Narrow       0/40      0      12.7    0.4500     17.253
+B2Mid          0/40      0      12.7    0.4750     13.671
+B3Open         0/40      0      13.2    0.4000     13.548
+B1Fast         0/40      0      13.0    0.4500     15.183
+B4Card         0/40      0      12.4    0.4750     16.195
 ```
 
 Zero stalls anywhere, ~13 turns, and every mirror win rate is inside
 ±.155 of .5 (the 95% band at 40 games) — no deck has a structural seat
 advantage, so measured differences will be skill rather than seat.
 
-Loading a deck is not the same as the cards being reachable, so the
-three spell rungs were checked separately by logging the agent's chosen
-actions:
+Loading a deck is not the same as the cards being reachable, so every
+spell rung was checked separately by logging the agent's chosen actions:
 
 ```
-W3Sorc    destroy target tapped creature.        chosen 3x
-W4Inst    destroy target tapped creature.        chosen 5x
-W5Trick   target creature gets +1/+7 until EOT.  chosen 5x
+W3Sorc    destroy target tapped creature.               chosen 3x
+W4Inst    destroy target tapped creature.               chosen 5x
+W5Trick   target creature gets +1/+7 until EOT.         chosen 5x
+B1Narrow  destroy target creature with power 2 or less. chosen 3x
+B2Mid     destroy target creature with power 3 or less. chosen 3x
+B3Open    destroy target creature.                      chosen 2x
+B1Fast    destroy target creature with power 2 or less. chosen 8x
+B4Card    target opponent discards a card at random.    chosen 8x
 ```
 
-The spells are enumerable and castable. Rungs 3-5 are not silently
-vanilla decks.
+Every spell is enumerable and castable — no rung is a silently vanilla
+deck. The `B1Narrow` 3× vs `B1Fast` 8× gap is incidental but pointed:
+the same card at instant speed gets more than twice the casting windows
+from an identical random policy, so the timing variable is real at the
+engine level before any agent has been trained on it.
 
 **12-16 games/sec** against BenchDimir's ~2.5 on the same scripted
 workload. That 5-6x comes from simpler cards alone, no engine work, and
@@ -264,11 +395,14 @@ Phase 3 and never once met — is finally practical.
 
 ---
 
-## 8. Reproduction
+## 10. Reproduction
 
 ```
-python3 rl/wladder_decks.py          # builds all 12 decks
-bash    rl/wladder_gate.sh 40        # load + stall + seat-balance gate
+python3 rl/wladder_decks.py          # white branch, 12 decks
+python3 rl/bladder_decks.py          # black branch, 7 decks
+bash    rl/wladder_gate.sh 40        # white: load + stall + seat balance
+bash    rl/wladder_gate.sh 40 B0Base B0Twin B1Narrow B2Mid B3Open \
+                                B1Fast B4Card          # black
 ```
 
 Card pools come from the pin's own database: `rl/r0_scan.txt` (vanilla
