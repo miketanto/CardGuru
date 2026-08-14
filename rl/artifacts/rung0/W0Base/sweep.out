@@ -16,3 +16,4 @@ R0|W0Base|s0|FINAL|CP7=0.7000+-0.284|games=10
 R0_DONE|W0Base|s0|trained=2111|out=/tmp/rl_rung0_W0Base_s0
 P10INIT|out=/tmp/rl_rung0_W0Base_s1/init.pt|arch=lstmattn|seed=11|cdim=91|params=428674
 R0_START|W0Base|seed=1|budget=2048|resume_at=0|out=/tmp/rl_rung0_W0Base_s1
+R0|W0Base|s1|trained=0|D0=0.0050+-0.010|D1=0.0050+-0.010|TWIN=0.0000+-0.000|blocks=92/92|turns=11.3
