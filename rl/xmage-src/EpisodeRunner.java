@@ -210,6 +210,27 @@ public class EpisodeRunner {
             h.benchSeed = seed;
             h.setTestMode(true);
             opp = h;
+        } else if ("cp7".equals(opponentKind)) {
+            // XMage's OWN advanced AI (Mage.Player.AI.MAD). Every
+            // instrument this project has used - D0/D1/D1h - is built on
+            // ComputerPlayer, the BASIC shipped AI: HeuristicPlayer
+            // extends it and SearchPlayer extends HeuristicPlayer. So the
+            // whole Elo ladder is anchored to a derivative of the weakest
+            // of the four AIs XMage ships, and CP7/MCTS have never
+            // appeared in any measurement. -Drl.aiSkill sets the
+            // simulation depth (XMage's own default is 6).
+            mage.player.ai.ComputerPlayer7 c7 = new mage.player.ai.ComputerPlayer7(
+                    "Opponent", RangeOfInfluence.ONE,
+                    Integer.getInteger("rl.aiSkill", 6));
+            c7.setTestMode(true);
+            opp = c7;
+        } else if ("mcts".equals(opponentKind)) {
+            // XMage's Monte-Carlo tree search AI (Mage.Player.AIMCTS).
+            mage.player.ai.ComputerPlayerMCTS mc = new mage.player.ai.ComputerPlayerMCTS(
+                    "Opponent", RangeOfInfluence.ONE,
+                    Integer.getInteger("rl.aiSkill", 6));
+            mc.setTestMode(true);
+            opp = mc;
         } else {
             RandomPlayer r = new RandomPlayer("Opponent");
             r.setTestMode(true);
@@ -231,6 +252,22 @@ public class EpisodeRunner {
         game.loadCards(deckSecond.getCards(), second.getId());
         game.addPlayer(first, deckFirst);
         game.addPlayer(second, deckSecond);
+
+        // XMage's own advanced AIs (ComputerPlayer6/7, MCTS) build their
+        // simulations through MatchPlayer, so a game with no Match behind
+        // it NPEs in SimulatedPlayer2.<init> ("Cannot read field wins
+        // because source is null"). The test framework solves this with a
+        // fake match (CardTestPlayerAPIImpl: game.addPlayer THEN
+        // currentMatch.addPlayer); we do the same, and only when one of
+        // those seats is actually in play, so every pre-existing lane
+        // constructs its game exactly as before.
+        if ("cp7".equals(opponentKind) || "mcts".equals(opponentKind)) {
+            mage.game.match.MatchOptions mo =
+                    new mage.game.match.MatchOptions("rl match", "rl", true);
+            mage.game.match.Match fakeMatch = new mage.game.FreeForAllMatch(mo);
+            fakeMatch.addPlayer(first, deckFirst);
+            fakeMatch.addPlayer(second, deckSecond);
+        }
 
         GameOptions options = new GameOptions();
         options.testMode = false;      // real opening hands (Phase 2 erratum)
