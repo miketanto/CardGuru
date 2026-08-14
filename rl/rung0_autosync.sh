@@ -33,13 +33,15 @@ while true; do
         cp $d/probe_*.txt $DST/$s/ 2>/dev/null
         newest=$(ls -t $d/ck_*.pt 2>/dev/null | head -1)
         [ -n "$newest" ] && cp "$newest" $DST/$s/latest.pt 2>/dev/null
-        [ -n "$newest" ] && echo "$s $(basename $newest)" >> /dev/null
         STATE="$STATE $s:$(ls $d/probe_D0_*.txt 2>/dev/null | wc -l)"
     done
-    cp /tmp/rl_rung0_${BASE}_sweep.out $DST/sweep.out 2>/dev/null
-    python3 $CG/rl/rung0_report.py --base "$BASE" > $DST/report.txt 2>&1
-
+    # Regenerate the report ONLY when a battery has landed. Rewriting it
+    # every poll left the working tree permanently dirty between syncs -
+    # the file changes even when nothing has, so `git status` was never
+    # clean and a real uncommitted change would have hidden in the noise.
     if [ "$STATE" != "$LAST" ] && [ -n "$STATE" ]; then
+        cp /tmp/rl_rung0_${BASE}_sweep.out $DST/sweep.out 2>/dev/null
+        python3 $CG/rl/rung0_report.py --base "$BASE" > $DST/report.txt 2>&1
         (
           flock 9
           cd $CG
