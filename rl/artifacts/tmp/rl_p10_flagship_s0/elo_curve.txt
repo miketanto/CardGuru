@@ -4,3 +4,4 @@ P7ELO|seed=0|trained=4096|elo=1019|d0=0.5800|d1=0.3900|d1h=0.3700|blocks=128|blo
 P7ELO|seed=0|trained=6144|elo=1050|d0=0.5800|d1=0.4400|d1h=0.4500|blocks=121|blockOpps=122|flashThreats=321|oppTurn=0
 P7ELO|seed=0|trained=8192|elo=1046|d0=0.5800|d1=0.4200|d1h=0.4500|blocks=113|blockOpps=115|flashThreats=302|oppTurn=0
 P7ELO|seed=0|trained=10240|elo=1059|d0=0.5800|d1=0.4800|d1h=0.4500|blocks=131|blockOpps=131|flashThreats=309|oppTurn=1
+P7ELO|seed=0|trained=12288|elo=1047|d0=0.5600|d1=0.4800|d1h=0.4200|blocks=107|blockOpps=116|flashThreats=316|oppTurn=0
