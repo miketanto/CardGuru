@@ -136,7 +136,20 @@ def main():
     # whole seeds; pooling the final battery costs nothing once every
     # seed is past the plateau (flat from ~1400), and the episode numbers
     # are printed so that assumption is visible rather than buried.
-    finals = {d: max(per_seed[d]) for d in per_seed if per_seed[d]}
+    # Only FINISHED seeds. The lane runs its CP7 probe once, at the very
+    # end, so probe_CP7_final.txt is a reliable "this seed is done"
+    # marker. Without this the block pooled a finished seed at 2111 with
+    # a running one at 512 and reported "spread 0.500-0.705, range 0.205"
+    # as though it were between-seed variance at the plateau. It was the
+    # gap between a trained net and a half-trained one.
+    done = [d for d in per_seed
+            if os.path.exists(os.path.join(d, "probe_CP7_final.txt"))]
+    running = len(per_seed) - len(done)
+    finals = {d: max(per_seed[d]) for d in done if per_seed[d]}
+    if running:
+        print()
+        print("=== (%d seed(s) still running - excluded from the final "
+              "pool below)" % running)
     if finals:
         print()
         print("=== FINAL checkpoint per seed, pooled  (%s)"
