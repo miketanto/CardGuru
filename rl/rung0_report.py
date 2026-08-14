@@ -118,6 +118,39 @@ def main():
                       "mean %.3f" % (label, len(ps), min(ps), max(ps),
                                      max(ps) - min(ps), sum(ps) / len(ps)))
 
+    # Saturation. "It plateaued" has been asserted by eye in every phase
+    # of this project; here it is a test. A step counts as PROGRESS only
+    # if the later checkpoint's Wilson interval clears the earlier one's
+    # point estimate - anything else is a step the budget bought nothing
+    # for, and the first run of a flat tail is where the budget should
+    # have stopped.
+    ckpts = sorted(curve)
+    if len(ckpts) > 1:
+        print()
+        print("=== saturation on D0 (does each step clear the last?)")
+        flat_from, prev = None, None
+        for tr in ckpts:
+            pairs = curve[tr].get("D0", [])
+            n = sum(x for _, x in pairs)
+            if not n:
+                continue
+            p, lo, hi = wilson(sum(k for k, _ in pairs), n)
+            verdict = "-"
+            if prev is not None:
+                if lo > prev:
+                    verdict, flat_from = "progress", None
+                else:
+                    verdict = "flat"
+                    flat_from = tr if flat_from is None else flat_from
+            print("  %6d  %.3f [%.3f,%.3f]  %s" % (tr, p, lo, hi, verdict))
+            prev = p
+        if flat_from is not None:
+            print("  -> flat from %d onward; episodes past that point "
+                  "bought nothing measurable" % flat_from)
+        else:
+            print("  -> still improving at the last checkpoint; the budget "
+                  "was the binding constraint, not the opponent")
+
     # the held-out instrument, pooled across seeds
     cp = [read_probe(os.path.join(d, "probe_CP7_final.txt")) for d in seeds]
     cp = [c for c in cp if c]
