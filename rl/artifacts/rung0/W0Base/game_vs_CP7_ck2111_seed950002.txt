@@ -1,0 +1,71 @@
+t1|Plains (Play Plains)
+t1|Elite Vanguard
+t3|Plains (Play Plains)
+t3|Silvercoat Lion
+t3|== my combat: life 20-20, creatures 2-1
+t3|  ATTACK  Elite Vanguard 2/1
+t5|Plains (Play Plains)
+t5|Knight of the Keep
+t5|== my combat: life 20-20, creatures 2-1
+t5|  ATTACK  Silvercoat Lion 2/2
+t7|Plains (Play Plains)
+t7|Foot Soldiers
+t7|== my combat: life 20-20, creatures 2-1
+t7|  ATTACK  Knight of the Keep 3/2
+t9|Foot Soldiers
+t9|== my combat: life 20-20, creatures 2-1
+t9|  hold    Foot Soldiers 2/4
+t10|== incoming: life 20-20, creatures 2-2
+t10|  attacked by Shu Elite Infantry 3/3
+t10|  BLOCK   Foot Soldiers 2/4  <- Shu Elite Infantry 3/3
+t10|  BLOCK   Foot Soldiers 2/4  <- Shu Elite Infantry 3/3
+t11|== my combat: life 20-20, creatures 2-1
+t11|  hold    Foot Soldiers 2/4
+t11|  hold    Foot Soldiers 2/4
+t12|Plains ({T}: Add {W}.)
+t12|Plains ({T}: Add {W}.)
+t12|Plains ({T}: Add {W}.)
+t12|Plains ({T}: Add {W}.)
+t12|== incoming: life 20-20, creatures 2-3
+t12|  attacked by Shu Elite Infantry 3/3
+t12|  BLOCK   Foot Soldiers 2/4  <- Shu Elite Infantry 3/3
+t12|  BLOCK   Foot Soldiers 2/4  <- Shu Elite Infantry 3/3
+t13|Silvercoat Lion
+t13|Plains ({T}: Add {W}.)
+t13|Plains ({T}: Add {W}.)
+t13|== my combat: life 20-20, creatures 3-2
+t13|  hold    Foot Soldiers 2/4
+t13|  hold    Foot Soldiers 2/4
+t14|== incoming: life 20-20, creatures 3-2
+t14|  attacked by Foot Soldiers 2/4
+t14|  BLOCK   Foot Soldiers 2/4  <- Foot Soldiers 2/4
+t14|  BLOCK   Foot Soldiers 2/4  <- Foot Soldiers 2/4
+t14|  BLOCK   Silvercoat Lion 2/2  <- Foot Soldiers 2/4
+t15|Blade of the Sixth Pride
+t15|Plains ({T}: Add {W}.)
+t15|Plains ({T}: Add {W}.)
+t15|== my combat: life 20-20, creatures 4-1
+t15|  ATTACK  Foot Soldiers 2/4
+t15|  ATTACK  Foot Soldiers 2/4
+t15|  ATTACK  Silvercoat Lion 2/2
+t17|Glory Seeker
+t17|Plains ({T}: Add {W}.)
+t17|Plains ({T}: Add {W}.)
+t17|== my combat: life 20-16, creatures 4-1
+t17|  ATTACK  Blade of the Sixth Pride 3/1
+t17|  ATTACK  Foot Soldiers 2/4
+t17|  ATTACK  Foot Soldiers 2/4
+t19|Regal Unicorn
+t19|Plains ({T}: Add {W}.)
+t19|== my combat: life 20-12, creatures 4-0
+t19|  ATTACK  Foot Soldiers 2/4
+t19|  ATTACK  Foot Soldiers 2/4
+t19|  ATTACK  Glory Seeker 2/2
+t21|Glory Seeker
+t21|Plains ({T}: Add {W}.)
+t21|Plains ({T}: Add {W}.)
+t21|== my combat: life 20-6, creatures 5-0
+t21|  ATTACK  Foot Soldiers 2/4
+t21|  ATTACK  Foot Soldiers 2/4
+t21|  ATTACK  Glory Seeker 2/2
+t21|  ATTACK  Regal Unicorn 2/3
