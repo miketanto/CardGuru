@@ -319,8 +319,22 @@ public class RLPlayer extends ComputerPlayer {
                 }
             }
             if (Boolean.getBoolean("rl.debug")) {
+                // Log the CARD NAME, not just the rule text. On the
+                // curriculum rung-0 decks every creature is vanilla, so
+                // getRule() is the empty string and a whole game's
+                // transcript came out as blank lines and mana taps -
+                // technically complete, unreadable, and easy to mistake
+                // for "the agent never cast anything".
+                String what = chosenCard != null ? chosenCard.getName() : "";
+                String rule = chosen.getRule();
+                if (rule != null && !rule.trim().isEmpty()) {
+                    what = what.isEmpty() ? rule : what + " (" + rule + ")";
+                }
+                if (what.isEmpty()) {
+                    what = String.valueOf(chosen.getSourceObject(game));
+                }
                 actionLog.append("t").append(game.getTurnNum()).append('|')
-                        .append(chosen.getRule()).append('\n');
+                        .append(what).append('\n');
             }
         } else {
             failedActivations++;
