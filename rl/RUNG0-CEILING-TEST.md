@@ -44,11 +44,15 @@ Compare CP7's interval to **our agent's [.720, .834]**.
 
 ## Caveats that apply whichever way it lands
 
-**Seat.** Our agent's .782 is measured in the *agent* seat; CP7 runs in
-the *opponent* seat with the rate inverted. The control says the
-opponent seat scored .460, i.e. the agent seat scored .540 — inside
-noise, but if it is real it means CP7's number is mildly *understated*
-and the comparison is conservative in the direction that matters.
+**Seat — this caveat was wrong and is withdrawn.** I worried that our
+.782 came from the *agent* seat while CP7 ran in the *opponent* seat,
+and read the control's .460/.540 split as a possible seat effect.
+`EpisodeRunner` sets `agentOnPlay = (i % 2 == 0)`: **seats alternate
+every episode**, so over an even number of games each role gets exactly
+half the play draws. There is no seat asymmetry to correct for, in any
+row of this table or anywhere else in the project, and the control's
+.460 is ordinary sampling noise. Left in rather than deleted because
+the pre-registered rule was written under the mistaken version.
 
 **n.** CP7 at 60 games is ±.13 at p=.5. That is wide enough to leave the
 "neither" branch genuinely possible, which is why it is written down as
