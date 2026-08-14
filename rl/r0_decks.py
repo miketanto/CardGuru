@@ -44,6 +44,7 @@ import re
 
 COLOUR = "R"
 LAND = "Mountain"
+LAND_PRINTING = "FDN:277"   # a basic Mountain printing in the pin
 N_LAND = 24
 
 # (cmc, power, toughness, copies) — the curve.
@@ -104,15 +105,15 @@ def load_pool(path):
             p, t = (int(x) for x in pt.split("/"))
         except ValueError:
             continue
-        pool.append((name, cols.pop(), cmc, p, t))
+        pool.append((name, cols.pop(), cmc, p, t, _set))
     return pool
 
 
 def index(pool, colour):
     by = collections.defaultdict(list)
-    for name, c, cmc, p, t in pool:
+    for name, c, cmc, p, t, setnum in pool:
         if c == colour:
-            by[(cmc, p, t)].append(name)
+            by[(cmc, p, t)].append((name, setnum))
     for k in by:
         by[k].sort()                      # deterministic
     return by
@@ -139,9 +140,9 @@ def build(by, curve, arm):
             continue
         chosen = cards[arm * need:(arm + 1) * need]
         left = copies
-        for card in chosen:
+        for card, setnum in chosen:
             n = min(MAX_COPIES, left)
-            out.append((n, card, cmc, p, t))
+            out.append((n, card, cmc, p, t, setnum))
             left -= n
     return out, missing
 
@@ -149,9 +150,10 @@ def build(by, curve, arm):
 def write_deck(path, name, entries, n_land=N_LAND, land=LAND):
     with open(path, "w") as fh:
         fh.write("NAME:%s\n" % name)
-        for copies, card, _cmc, _p, _t in entries:
-            fh.write("%d [] %s\n" % (copies, card))
-        fh.write("%d [] %s\n" % (n_land, land))
+        # .dck format needs [SET:NUM]; empty brackets load zero cards
+        for copies, card, _cmc, _p, _t, setnum in entries:
+            fh.write("%d [%s] %s\n" % (copies, setnum, card))
+        fh.write("%d [%s] %s\n" % (n_land, LAND_PRINTING, land))
     return sum(c for c, *_ in entries) + n_land
 
 
@@ -179,8 +181,8 @@ def main():
         path = "%s/%s.dck" % (args.out_dir, deck_name)
         total = write_deck(path, deck_name, entries)
         print("  %-8s %d cards -> %s" % (deck_name, total, path))
-        for copies, card, cmc, p, t in entries:
-            print("      %dx %-28s %dcmc %d/%d" % (copies, card, cmc, p, t))
+        for copies, card, cmc, p, t, setnum in entries:
+            print("      %dx %-28s %dcmc %d/%d  [%s]" % (copies, card, cmc, p, t, setnum))
 
 
 if __name__ == "__main__":
