@@ -1,25 +1,35 @@
-=== W0Base — learning curve, pooled over 1 seed(s), Wilson 95%
+=== W0Base — learning curve, pooled over 2 seed(s), Wilson 95%
  trained seeds  vs D0                  vs D1                  vs TWIN (transfer)     D0-TWIN
-       0     1  0.000 [0.000,0.019]    0.000 [0.000,0.019]    0.000 [0.000,0.019]    +0.000
+       0     2  0.003 [0.000,0.014]    0.003 [0.000,0.014]    0.000 [0.000,0.019]    +0.003
      512     1  0.635 [0.566,0.699]    0.620 [0.551,0.684]    0.615 [0.546,0.680]    +0.020
     1407     1  0.787 [0.726,0.839]    0.777 [0.715,0.830]    0.767 [0.704,0.821]    +0.020
     1919     1  0.782 [0.720,0.834]    0.795 [0.734,0.845]    0.745 [0.680,0.800]    +0.037
-    2111     1  0.705 [0.638,0.764]    -                      -                      
+    2111     1  0.705 [0.638,0.764]    0.705 [0.638,0.764]    0.690 [0.623,0.750]    +0.015
+  (uneven seed counts: rows contributed by fewer seeds are not comparable to the full-pool rows - compare like with like, usually the first and last)
 
-=== FINAL checkpoint per seed, pooled  (0=2111)
-  D0    0.705 [0.638,0.764]  n=200
+=== FINAL checkpoint per seed, pooled  (0=2111, 1=0)
+  D0    0.355 [0.310,0.403]  n=400  spread 0.005-0.705 (range 0.700)
+  D1    0.355 [0.310,0.403]  n=400  spread 0.005-0.705 (range 0.700)
+  TWIN  0.690 [0.623,0.750]  n=200
+  (seeds ended on different episode counts - fine only because all are past the plateau; check the saturation block below before trusting this row)
 
 === saturation on D0 (does each step clear the last?)
-       0  0.000 [0.000,0.019]  -
+       0  0.003 [0.000,0.014]  -
      512  0.635 [0.566,0.699]  progress
     1407  0.787 [0.726,0.839]  progress
     1919  0.782 [0.720,0.834]  flat
-    2111  0.705 [0.638,0.764]  flat
-  -> flat from 1919 onward; episodes past that point bought nothing measurable
+    2111  0.705 [0.638,0.764]  REGRESSION
+  -> REGRESSED by the last step: this is drift, not a plateau. The best checkpoint is not the last one, so any headline must name which checkpoint it quotes.
 
 === stall watch (stalls / games, per checkpoint)
-       0  D0 0/200   D1 0/200   TWIN 0/200
+       0  D0 0/400   D1 0/400   TWIN 0/200
      512  D0 0/200   D1 0/200   TWIN 0/200
     1407  D0 5/200   D1 3/200   TWIN 7/200
     1919  D0 1/200   D1 0/200   TWIN 0/200
-    2111  D0 0/200   D1 -   TWIN -
+    2111  D0 0/200   D1 0/200   TWIN 0/200
+
+=== vs CP7 (held out, never trained against), 1 seed(s), 10 games
+  pooled 0.700 [0.397,0.892]
+  per-seed: 0.70
+  reference: PHASE12-XMAGE-AI.md has ck_6144 at .28 and p10_final at .22, 50 games each (+-.13)
+  NOTE: 10 games total. Per-seed rows at this n are nearly uninformative; quote only the pooled figure, and only as a coarse check that the agent is not already near CP7.

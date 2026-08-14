@@ -11,3 +11,8 @@ P10INIT|exists|/tmp/rl_rung0_W0Base_s0/init.pt (left untouched)
 R0_START|W0Base|seed=0|budget=2048|resume_at=895|out=/tmp/rl_rung0_W0Base_s0
 R0|W0Base|s0|trained=1407|D0=0.7750+-0.058|D1=0.7700+-0.058|TWIN=0.7500+-0.060|blocks=3002/3002|turns=25.9
 R0|W0Base|s0|trained=1919|D0=0.7800+-0.057|D1=0.7950+-0.056|TWIN=0.7450+-0.060|blocks=1953/1953|turns=22.0
+R0|W0Base|s0|trained=2111|D0=0.7050+-0.063|D1=0.7050+-0.063|TWIN=0.6900+-0.064|blocks=1651/1651|turns=19.7
+R0|W0Base|s0|FINAL|CP7=0.7000+-0.284|games=10
+R0_DONE|W0Base|s0|trained=2111|out=/tmp/rl_rung0_W0Base_s0
+P10INIT|out=/tmp/rl_rung0_W0Base_s1/init.pt|arch=lstmattn|seed=11|cdim=91|params=428674
+R0_START|W0Base|seed=1|budget=2048|resume_at=0|out=/tmp/rl_rung0_W0Base_s1
