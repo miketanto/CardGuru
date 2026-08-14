@@ -1,8 +1,8 @@
 # Phase 12 — scoping the next engine speedup, measured not guessed
 
-**Update: the recommended change was BUILT and TESTED. It is safe and it
-is small. See §5 — and the reason it is small is the most useful thing
-this phase found.**
+**Update: the engine change was built, verified safe, and turned out to
+be small — because the conc4 bottleneck was never the engine. Probing
+that (§6) found a ONE-LINE fix worth 1.54x. Read §6 first.**
 
 Prompted by the Phase 10 result: 12288 training episodes + 7500 eval
 games took **~15h on 4 cores** (~0.37 games/sec overall). A 5-seed
@@ -208,3 +208,90 @@ Revised order:
    1.28x sequential (which is what every Elo probe, matrix cell and
    gate runs at), and eval was 27% of Phase 10's wall clock.
 3. Only then decide between engine work (C/D) and server work.
+
+
+## 6. The real conc4 bottleneck: torch thread oversubscription
+
+The engine change removed ~35% of game-thread work and bought 1.28x
+sequential but 1.05x at conc4, so something else was the constraint.
+JFR could not see it — `ExecutionSample` samples only ON-CPU threads,
+so a worker blocked on the policy socket is invisible, which is why the
+profile's "IPC = 2%" is 2% of CPU rather than 2% of wall clock.
+
+### Probe 1: scaling curve (`rl/p12_bottleneck_probe.sh`)
+
+20 episodes, `manaNoRecopy=on`, workload WITH the policy server vs one
+WITHOUT it (scripted):
+
+| conc | scripted | scale | policy | scale |
+|---|---|---|---|---|
+| 1 | 0.852 | 1.00x | 0.687 | 1.00x |
+| 2 | 1.592 | 1.87x | 1.339 | 1.95x |
+| 4 | 2.572 | **3.02x** | 1.484 | **2.16x** |
+
+Both scale fine to 2 workers, so it is not the box. The policy path
+stalls between conc2 and conc4: 2x the workers buys 1.11x.
+
+### Probe 2: lock instrumentation (`RL_LOCK_STATS=1`)
+
+Time blocked ACQUIRING the lock vs time HOLDING it, around the torch
+forward pass all four workers serialize on:
+
+| | wait/call | held/call | wait share |
+|---|---|---|---|
+| sequential | **0.00 ms** | 3.40 ms | **0.0%** |
+| conc4, torch threads=2 | **7.19 ms** | 5.75 ms | **55.6%** |
+| conc4, torch threads=1 | 2.36 ms | 3.15 ms | 42.8% |
+
+Zero contention sequentially, so the lock is genuinely a concurrency
+effect. But note the second row's HELD time: inference itself got 69%
+slower (3.40 -> 5.75 ms) under concurrency. That is not lock contention,
+it is CPU contention — and it *compounds*, because a longer hold means
+more waiting for everyone else.
+
+`policy_server.py` hardcoded `torch.set_num_threads(2)`. With 4 game
+worker threads plus a 4-thread server each using 2 torch threads on a
+4-core box, the machine is heavily oversubscribed.
+
+### Result: `RL_TORCH_THREADS=1`
+
+| configuration | conc4 games/sec | vs Phase 10 |
+|---|---|---|
+| Phase 10 baseline (recopy on, torch=2) | 1.431 (n=3) | 1.00x |
+| manaNoRecopy=on, torch=2 | 1.488 (n=5) | 1.04x |
+| **manaNoRecopy=on, torch=1** | **2.202 (n=3)** | **1.54x** |
+
+Held time falls back to 3.15 ms (near the uncontended 3.40), wait falls
+from 7.19 to 2.36 ms, and the policy workload now runs at **86% of the
+scripted ceiling on this box, up from 56%**.
+
+**1.54x for an environment variable.** The engine patch contributes
+~1.04x of that at conc4 (and 1.28x on the sequential probes, which is
+where every Elo/matrix/gate game runs), so both are worth keeping — but
+the ordering lesson is blunt: *the expensive, risky, deeply-profiled
+engine work was worth a twentieth of a one-line configuration fix.*
+
+### What is still on the table
+
+Lock wait is still 42.8% of consult time at conc4, so the single lock
+around `trainer.act` is now the next target. In EVAL mode there is no
+trajectory collection at all and the LSTM hidden state is per-session,
+so the lock may be unnecessary there entirely; in TRAIN mode a
+read-write lock (concurrent forwards, exclusive during the PPO update)
+is the standard fix. Estimated ceiling if wait went to zero: consult
+cost 5.51 -> 3.15 ms, roughly another 1.2-1.3x.
+
+### Revised recommendation
+
+1. **Set `RL_TORCH_THREADS=1` for conc4 lanes.** Free, 1.43x on its own.
+2. **Adopt `manaNoRecopy=on`.** Verified safe (22,825 checks, 0
+   mismatches), 1.28x sequential — every Elo probe, matrix cell and
+   gate runs sequentially.
+3. **Then** the read-write lock in `policy_server.py` (~1.2-1.3x).
+4. Only after that consider options C/D (mana memo, simulation
+   pooling), and re-profile first — the C/D estimates were computed
+   against a profile whose bottleneck has now moved.
+
+Combined 1-3 is roughly **2x on training throughput and 1.3x on eval**,
+which turns Phase 10's 15h into ~8h. Still not 10x; the 5-container
+route remains the only path to that on this hardware.

@@ -391,6 +391,13 @@ def _record(wait, held):
         LOCK_WAIT += wait
         LOCK_HELD += held
         LOCK_CALLS += 1
+        n = LOCK_CALLS
+        w, h = LOCK_WAIT, LOCK_HELD
+    if n % 2000 == 0:
+        print(f"RLLOCK|calls={n}|wait_s={w:.1f}|held_s={h:.1f}"
+              f"|wait_per_call_ms={1000 * w / n:.2f}"
+              f"|held_per_call_ms={1000 * h / n:.2f}"
+              f"|wait_share={w / (w + h):.1%}", flush=True)
 
 
 def handle(conn, trainer, lock, session):
@@ -525,7 +532,10 @@ if __name__ == "__main__":
     args = ap.parse_args()
     if args.lr is not None:
         LR = args.lr
-    torch.set_num_threads(2)
+    # Phase 12: 4 game threads + N server threads on 4 cores is heavily
+    # oversubscribed; measured held-time per consult rose 3.40 -> 5.75 ms
+    # from conc1 to conc4. Configurable so the trade can be measured.
+    torch.set_num_threads(int(os.environ.get("RL_TORCH_THREADS", "2")))
     serve(args.port, Trainer(args.ckpt, args.seed, args.log,
                              args.sdim, args.cdim,
                              args.shape, args.phi_scale, args.arch,
