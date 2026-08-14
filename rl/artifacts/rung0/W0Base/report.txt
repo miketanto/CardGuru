@@ -2,10 +2,18 @@
  trained seeds  vs D0                  vs D1                  vs TWIN (transfer)     D0-TWIN
        0     1  0.000 [0.000,0.019]    0.000 [0.000,0.019]    0.000 [0.000,0.019]    +0.000
      512     1  0.635 [0.566,0.699]    0.620 [0.551,0.684]    0.615 [0.546,0.680]    +0.020
-    1407     1  0.787 [0.726,0.839]    -                      -                      
+    1407     1  0.787 [0.726,0.839]    0.777 [0.715,0.830]    0.767 [0.704,0.821]    +0.020
+    1919     1  0.782 [0.720,0.834]    -                      -                      
 
 === saturation on D0 (does each step clear the last?)
        0  0.000 [0.000,0.019]  -
      512  0.635 [0.566,0.699]  progress
     1407  0.787 [0.726,0.839]  progress
-  -> still improving at the last checkpoint; the budget was the binding constraint, not the opponent
+    1919  0.782 [0.720,0.834]  flat
+  -> flat from 1919 onward; episodes past that point bought nothing measurable
+
+=== stall watch (stalls / games, per checkpoint)
+       0  D0 0/200   D1 0/200   TWIN 0/200
+     512  D0 0/200   D1 0/200   TWIN 0/200
+    1407  D0 5/200   D1 3/200   TWIN 7/200
+    1919  D0 1/200   D1 -   TWIN -
