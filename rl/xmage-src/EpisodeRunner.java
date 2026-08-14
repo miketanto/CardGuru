@@ -254,6 +254,14 @@ public class EpisodeRunner {
             fallbacks.merge("flashThreatsOppTurn", (int) rlAgent.flashThreatCastsOppTurn, Integer::sum);
             fallbacks.merge("blocksDeclared", (int) rlAgent.blocksDeclared, Integer::sum);
             fallbacks.merge("blockOpportunities", (int) rlAgent.blockOpportunities, Integer::sum);
+            // Phase 12 (perf scoping): priority windows where getPlayable
+            // came back empty, i.e. the seat paid a full state copy - 67%
+            // of game-thread time lives under createSimulationForPlayableCalc
+            // - only to discover it had nothing to do and pass. This is the
+            // denominator for "is a cheap can-I-act-at-all pre-check worth
+            // building"; it was counted in RLPlayer but never surfaced.
+            fallbacks.merge("autoPassEmpty", (int) rlAgent.autoPassK0, Integer::sum);
+            fallbacks.merge("windows", (int) rlAgent.windows, Integer::sum);
         }
         if (agent instanceof org.mage.test.benchmark.SearchPlayer) {
             org.mage.test.benchmark.SearchPlayer sp = (org.mage.test.benchmark.SearchPlayer) agent;
