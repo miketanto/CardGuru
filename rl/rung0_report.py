@@ -40,19 +40,27 @@ def wilson(k, n, z=1.96):
     return (p, max(0.0, centre - half), min(1.0, centre + half))
 
 
-def read_probe(path):
-    """-> (wins, episodes); draws count as half a win, as Elo does."""
+def probe_field(path, key):
     try:
-        text = open(path).read()
+        m = re.search(r"\b%s=([0-9.]+)" % key, open(path).read())
     except OSError:
         return None
-    def f(k):
-        m = re.search(r"\b%s=([0-9.]+)" % k, text)
-        return float(m.group(1)) if m else None
-    n, w, d = f("episodes"), f("wins"), f("draws")
+    return float(m.group(1)) if m else None
+
+
+def read_probe(path):
+    """-> (wins, episodes); draws count as half a win, as Elo does.
+
+    Note this differs from the lane's own win_rate, which counts a draw
+    as neither. At the 1407 checkpoint that is .787 here vs .775 there,
+    on 5 draws in 200 - so the two numbers are both right and must not
+    be mixed in one table.
+    """
+    n = probe_field(path, "episodes")
+    w = probe_field(path, "wins")
     if n is None or w is None:
         return None
-    return (w + 0.5 * (d or 0.0), int(n))
+    return (w + 0.5 * (probe_field(path, "draws") or 0.0), int(n))
 
 
 def fmt(k, n):
@@ -162,6 +170,27 @@ def main():
         else:
             print("  -> still improving at the last checkpoint; the budget "
                   "was the binding constraint, not the opponent")
+
+    # STALL WATCH. The rung-0 decks were built so games END - the gate
+    # measured 0/40 stalls on a scripted mirror at ~13 turns. A TRAINED
+    # agent is a different matter: terminal reward pays -1 for a loss and
+    # 0 for a stall, so "make the game never finish" is a strictly better
+    # outcome than losing, and a policy can drift into it. If this column
+    # climbs with training, the rung is degrading and the reward, not the
+    # deck, is the cause.
+    print()
+    print("=== stall watch (stalls / games, per checkpoint)")
+    for tr in sorted(curve):
+        cells = []
+        for label in LABELS:
+            tot = st = 0
+            for d in seeds:
+                p = os.path.join(d, "probe_%s_%d.txt" % (label, tr))
+                if os.path.exists(p):
+                    st += probe_field(p, "stalls") or 0
+                    tot += probe_field(p, "episodes") or 0
+            cells.append("%s %d/%d" % (label, st, tot) if tot else "%s -" % label)
+        print("  %6d  %s" % (tr, "   ".join(cells)))
 
     # the held-out instrument, pooled across seeds
     cp = [read_probe(os.path.join(d, "probe_CP7_final.txt")) for d in seeds]
