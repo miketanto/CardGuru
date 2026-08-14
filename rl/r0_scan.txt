@@ -1,0 +1,330 @@
+VANILLA_CREATURES=329
+V|Aegis Turtle|{U}|0/5|FDN
+V|Ageless Guardian|{1}{W}|1/4|STX
+V|Alaborn Trooper|{2}{W}|2/3|ME4
+V|Alpha Myr|{2}|2/1|MRD
+V|Alpha Tyrranax|{4}{G}{G}|6/5|SOM
+V|Alpine Grizzly|{2}{G}|4/2|KTK
+V|Amphin Cutthroat|{3}{U}|2/4|M12
+V|Ancient Brontodon|{6}{G}{G}|9/9|XLN
+V|Ancient Carp|{4}{U}|2/5|DTK
+V|Ancient Crab|{1}{U}{U}|1/5|AKH
+V|Armored Cancrix|{4}{U}|2/5|M11
+V|Armored Warhorse|{W}{W}|2/3|M12
+V|Armored Whirl Turtle|{2}{U}|0/5|GS1
+V|Armored Wolf-Rider|{3}{G}{W}|4/6|DGM
+V|Axebane Beast|{3}{G}|3/4|RNA
+V|Axebane Stag|{6}{G}|6/7|RTR
+V|Axegrinder Giant|{4}{R}{R}|6/4|LRW
+V|Balduvian Barbarians|{1}{R}{R}|3/2|ICE
+V|Balduvian Bears|{1}{G}|2/2|DKM
+V|Bane Alley Blackguard|{1}{B}|1/3|DGM
+V|Barbarian Horde|{3}{R}|3/3|PTK
+V|Barbary Apes|{1}{G}|2/2|LEG
+V|Barbtooth Wurm|{5}{G}|6/4|P02
+V|Barony Vampire|{2}{B}|3/2|M11
+V|Bastion Enforcer|{2}{W}|3/2|AER
+V|Bear Cub|{1}{G}|2/2|J21
+V|Blade of the Sixth Pride|{1}{W}|3/1|FUT
+V|Blanchwood Treefolk|{4}{G}|4/5|USG
+V|Blind Phantasm|{2}{U}|2/3|FUT
+V|Bogstomper|{4}{B}{B}|6/5|M19
+V|Bonebreaker Giant|{4}{R}|4/4|M12
+V|Border Guard|{2}{W}|1/4|POR
+V|Borderland Minotaur|{2}{R}{R}|4/3|THS
+V|Bronze Sable|{2}|2/1|THS
+V|Broodhunter Wurm|{3}{G}|4/3|BFZ
+V|Cabal Evangel|{1}{B}|2/2|DOM
+V|Canal Monitor|{4}{B}|5/3|RIX
+V|Canopy Gorger|{4}{G}{G}|6/5|OGW
+V|Canyon Minotaur|{3}{R}|3/3|CON
+V|Capital Guard|{1}{R}|2/2|TLE
+V|Catacomb Crocodile|{4}{B}|3/7|RNA
+V|Catacomb Slug|{4}{B}|2/6|RTR
+V|Centaur Courser|{2}{G}|3/3|M10
+V|Cliffhaven Sell-Sword|{1}{W}|3/1|ZNR
+V|Cobblebrute|{3}{R}|5/2|RTR
+V|Colossapede|{4}{G}|5/5|AKH
+V|Colossodon Yearling|{2}{G}|2/4|DTK
+V|Coral Commando|{2}{U}|3/2|RNA
+V|Coral Eel|{1}{U}|2/1|POR
+V|Coral Merfolk|{1}{U}|2/1|W17
+V|Cowl Prowler|{4}{G}{G}|6/6|BBD
+V|Craw Wurm|{4}{G}{G}|6/4|3ED
+V|Crimson Kobolds|{0}|0/1|ME3
+V|Crookshank Kobolds|{0}|0/1|ME1
+V|Curio Vendor|{1}{U}|2/1|KLD
+V|Curious Killbot|{2}|2/1|UST
+V|Cyclops of One-Eyed Pass|{2}{R}{R}|5/2|BNG
+V|Cylian Elf|{1}{G}|2/2|ALA
+V|Dakmor Scorpion|{1}{B}|2/1|P02
+V|Defense Force Aggressor|{R}|2/1|TRC
+V|Defiant Khenra|{1}{R}|2/2|HOU
+V|Delighted Killbot|{2}|2/1|UST
+V|Despondent Killbot|{2}|2/1|UST
+V|Devilthorn Fox|{1}{W}|3/1|SIR
+V|Devoted Hero|{W}|1/2|POR
+V|Douser of Lights|{4}{B}|4/5|GRN
+V|Dreg Reaver|{4}{B}|4/3|ALA
+V|Dromoka Warrior|{1}{W}|3/1|DTK
+V|Dross Crocodile|{3}{B}|5/1|10E
+V|Dune Beetle|{1}{B}|1/4|J22
+V|Durkwood Boars|{4}{G}|4/4|REN
+V|Dutiful Servants|{3}{W}|2/5|HOU
+V|Dwarven Trader|{R}|1/1|HML
+V|Eager Cadet|{W}|1/1|S00
+V|Earth Elemental|{3}{R}{R}|4/5|BBD
+V|Elite Vanguard|{W}|2/1|EMA
+V|Elvish Ranger|{2}{G}|4/1|ALL
+V|Elvish Warrior|{G}{G}|2/3|DPA
+V|Enormous Baloth|{6}{G}|7/7|10E
+V|Enraged Killbot|{2}|2/1|UST
+V|Expedition Envoy|{W}|2/1|BFZ
+V|Falkenrath Reaver|{1}{R}|2/2|EMN
+V|Fearless Halberdier|{2}{R}|3/2|GRN
+V|Felhide Minotaur|{2}{B}|2/3|THS
+V|Femeref Scouts|{2}{W}|1/4|MIR
+V|Feral Krushok|{4}{G}|5/4|FRF
+V|Feral Maaka|{1}{R}|2/2|RNA
+V|Ferocious Zheng|{2}{G}{G}|4/4|GS1
+V|Field Creeper|{2}|2/1|EMN
+V|Fire Elemental|{3}{R}{R}|5/4|3ED
+V|Flameborn Viron|{4}{R}{R}|6/4|NPH
+V|Fomori Nomad|{4}{R}|4/4|FUT
+V|Foot Soldiers|{3}{W}|2/4|POR
+V|Forest Bear|{1}{G}|2/2|MB2
+V|Fortress Crab|{3}{U}|1/6|ISD
+V|Frenzied Raptor|{2}{R}|4/2|IKO
+V|Fresh Volunteers|{1}{W}|2/2|MMQ
+V|Frost Ogre|{3}{R}{R}|5/3|BOK
+V|Fugitive Wizard|{U}|1/1|10E
+V|Fusion Elemental|{W}{U}{B}{R}{G}|8/8|J25
+V|Garruk's Gorehorn|{4}{G}|7/3|M21
+V|Giant Cockroach|{3}{B}|4/2|ULG
+V|Giant Octopus|{3}{U}|3/3|S00
+V|Gigantosaurus|{G}{G}{G}{G}{G}|10/10|PM19
+V|Gilded Sentinel|{4}|3/3|XLN
+V|Glass Golem|{5}|6/2|RAV
+V|Gloom Pangolin|{2}{B}|1/5|IKO
+V|Glory Seeker|{1}{W}|2/2|W17
+V|Gnarled Mass|{1}{G}{G}|3/3|BOK
+V|Goblin Assailant|{1}{R}|2/2|WAR
+V|Goblin Bruiser|{1}{R}{R}|3/3|ATC
+V|Goblin Bully|{1}{R}|2/1|ME4
+V|Goblin Cavaliers|{2}{R}|3/2|ME4
+V|Goblin Hero|{2}{R}|2/2|DRK
+V|Goblin Piker|{1}{R}|2/1|DPA
+V|Goblin Roughrider|{2}{R}|3/2|WWK
+V|Golden Bear|{3}{G}|4/3|P02
+V|Golgari Longlegs|{3}{B/G}{B/G}|5/4|RTR
+V|Gore Swine|{2}{R}|4/1|FRF
+V|Gorilla Warrior|{2}{G}|3/2|USG
+V|Gray Ogre|{2}{R}|2/2|3ED
+V|Great Hart|{3}{W}|2/4|BNG
+V|Great-Horn Krushok|{4}{W}|3/5|FRF
+V|Grizzled Leotau|{G}{W}|1/5|ARB
+V|Grizzled Outrider|{4}{G}|5/5|KHM
+V|Grizzly Bears|{1}{G}|2/2|J21
+V|Gutter Skulk|{1}{B}|2/2|GTC
+V|Harrier Naga|{2}{G}|3/3|HOU
+V|Headless Horseman|{2}{B}|2/2|LEG
+V|Headwater Sentries|{3}{U}|2/5|XLN
+V|Hexplate Golem|{7}|5/7|BBD
+V|Highborn Vampire|{3}{B}|4/3|FDN
+V|Highland Giant|{2}{R}{R}|3/4|POR
+V|Hill Giant|{3}{R}|3/3|3ED
+V|Hollowhenge Beast|{3}{G}{G}|5/5|DKA
+V|Horned Turtle|{2}{U}|1/4|TMP
+V|Hulking Devil|{3}{R}|5/2|SOI
+V|Hurloon Minotaur|{1}{R}{R}|2/3|3ED
+V|Hyena Pack|{2}{R}{R}|3/4|AKH
+V|Imperial Outrider|{3}{W}|1/5|M20
+V|Incurable Ogre|{3}{R}|5/1|ALA
+V|Independent Troops|{1}{R}|2/1|PTK
+V|Indomitable Ancients|{2}{W}{W}|2/10|MOR
+V|Ironclad Krovod|{3}{W}|2/5|WAR
+V|Ironroot Treefolk|{4}{G}|3/5|3ED
+V|Jhessian Lookout|{1}{U}|2/1|ALA
+V|Jibbirik Omnivore|{1}{G}|3/2|DFT
+V|Jwari Scuttler|{2}{U}|2/3|ROE
+V|Kalonian Tusker|{G}{G}|3/3|M14
+V|Kami of Old Stone|{3}{W}|1/7|CHK
+V|Keepers of the Faith|{1}{W}{W}|2/3|CHR
+V|Kindercatch|{3}{G}{G}{G}|6/6|ISD
+V|Knight Errant|{1}{W}|2/2|S00
+V|Knight of New Benalia|{1}{W}|3/1|DOM
+V|Knight of the Keep|{2}{W}|3/2|ELD
+V|Kobolds of Kher Keep|{0}|0/1|MB2
+V|Kraken Hatchling|{U}|0/4|BBD
+V|Krovikan Scoundrel|{1}{B}|2/1|ANB
+V|Kyoshi Warrior Guard|{1}{W}|2/3|TLE
+V|Lagac Lizard|{3}{R}|3/3|ROE
+V|Lathnu Sailback|{4}{R}|5/4|AER
+V|Lazotep Behemoth|{4}{B}|5/4|WAR
+V|Leatherback Baloth|{G}{G}{G}|4/5|WWK
+V|Leopard-Spotted Jiao|{1}{R}|3/1|GS1
+V|Lizard Warrior|{3}{R}|4/2|CNS
+V|Loamdragger Giant|{4}{R/G}{R/G}{R/G}|7/6|SHM
+V|Looming Altisaur|{3}{W}|1/7|XLN
+V|Lowland Giant|{2}{R}{R}|4/3|TMP
+V|Loxodon Convert|{3}{W}|4/2|NPH
+V|Loxodon Line Breaker|{2}{W}|3/2|ANB
+V|Loxodon Wayfarer|{2}{W}|1/5|SOM
+V|Lumengrid Warden|{1}{U}|1/3|10E
+V|Maritime Guard|{1}{U}|1/3|ORI
+V|Mass of Ghouls|{3}{B}{B}|5/3|FUT
+V|Memnite|{0}|1/1|MB2
+V|Meng Huo's Horde|{4}{G}|4/5|ME3
+V|Merfolk of the Pearl Trident|{U}|1/1|3ED
+V|Metallic Sliver|{1}|1/1|H09
+V|Minotaur Abomination|{4}{B}{B}|4/6|M14
+V|Minotaur Warrior|{2}{R}|2/3|POR
+V|Mons's Goblin Raiders|{R}|1/1|3ED
+V|Moriok Reaver|{2}{B}|3/2|SOM
+V|Moss Monster|{3}{G}{G}|3/6|LEG
+V|Muck Rats|{B}|1/1|POR
+V|Murasa Brute|{2}{G}|3/3|ZNR
+V|Naga Eternal|{2}{U}|3/2|WAR
+V|Nema Siltlurker|{4}{G}|3/5|ROE
+V|Nessian Courser|{2}{G}|3/3|THS
+V|Nether Horror|{3}{B}|4/2|M11
+V|Nettle Swine|{3}{G}|4/3|AVR
+V|Norwood Ranger|{G}|1/2|P02
+V|Nyxborn Brute|{3}{R}{R}|7/3|THB
+V|Nyxborn Colossus|{3}{G}{G}{G}|6/7|THB
+V|Nyxborn Courser|{1}{W}{W}|2/4|THB
+V|Nyxborn Marauder|{2}{B}{B}|4/3|THB
+V|Nyxborn Seaguard|{2}{U}{U}|2/5|THB
+V|Obsianus Golem|{6}|4/6|3ED
+V|Obsidian Giant|{4}{R}|4/4|P02
+V|Ogre Resister|{2}{R}{R}|4/3|MBS
+V|Ogre Warrior|{3}{R}|3/3|S00
+V|Old Ghastbark|{3}{G/W}{G/W}|3/6|SHM
+V|Omega Myr|{2}|1/2|MRD
+V|Onakke Ogre|{2}{R}|4/2|M19
+V|Orazca Frillback|{2}{G}|4/2|RIX
+V|Orazca Raptor|{2}{R}{R}|3/4|RIX
+V|Order of the Sacred Bell|{3}{G}|4/3|CHK
+V|Ordinary Bear|{3}{G}|4/5|HOB
+V|Oreskos Swiftclaw|{1}{W}|3/1|M15
+V|Panther Warriors|{4}{G}|6/3|VIS
+V|Pearled Unicorn|{2}{W}|2/2|3ED
+V|Pensive Minotaur|{2}{R}|2/3|JOU
+V|Pheres-Band Centaurs|{4}{G}|3/7|THS
+V|Phyrexian Hulk|{6}|5/4|TMP
+V|Phyrexian Walker|{0}|0/3|VIS
+V|Pillarfield Ox|{3}{W}|2/4|CNS
+V|Plated Seastrider|{U}{U}|1/4|CNS
+V|Plated Wurm|{4}{G}|4/5|P02
+V|Prakhata Club Security|{3}{B}|3/4|BBD
+V|Primordial Wurm|{4}{G}{G}|7/6|DOM
+V|Prizefighter Construct|{5}|6/2|AER
+V|Prowling Caracal|{1}{W}|3/1|RNA
+V|Python|{1}{B}{B}|3/2|VIS
+V|Quakestrider Ceratops|{3}{G}{G}{G}|12/8|FDN
+V|Queen's Bay Soldier|{1}{B}|2/2|XLN
+V|Quilled Slagwurm|{4}{G}{G}{G}|8/8|MBS
+V|Raging Bull|{2}{R}|2/2|LEG
+V|Raging Poltergeist|{4}{R}|6/1|AVR
+V|Raptor Companion|{1}{W}|3/1|BBD
+V|Razorfield Thresher|{7}|6/4|SOM
+V|Redwood Treefolk|{4}{G}|3/6|WTH
+V|Regal Unicorn|{2}{W}|2/3|POR
+V|Regathan Firecat|{2}{R}|4/1|M14
+V|Renegade Demon|{3}{B}{B}|5/3|J22
+V|Rhox Brute|{2}{R}{G}|4/4|BBD
+V|Riot Devils|{2}{R}|2/3|ISD
+V|River Kaijin|{2}{U}|1/4|CHK
+V|Rotted Hulk|{3}{B}|2/5|JOU
+V|Rotted Hystrix|{4}{G}|3/6|NPH
+V|Rotting Fensnake|{3}{B}|5/1|ISD
+V|Rotting Mastodon|{4}{B}|2/8|KTK
+V|Rowan Treefolk|{3}{G}|3/4|POR
+V|Ruination Wurm|{4}{R}{G}|7/6|GTC
+V|Rumbling Baloth|{2}{G}{G}|4/4|ANB
+V|Runeclaw Bear|{1}{G}|2/2|J21
+V|Russet Wolves|{3}{R}|3/3|DKA
+V|Sanctuary Cat|{W}|1/2|DKA
+V|Savai Sabertooth|{1}{W}|3/1|IKO
+V|Savannah Lions|{W}|2/1|J22
+V|Scaled Wurm|{7}{G}|7/6|CNS
+V|Scarwood Goblins|{R}{G}|2/2|DRK
+V|Scathe Zombies|{2}{B}|2/2|3ED
+V|Scoria Elemental|{4}{R}|6/1|SOM
+V|Seagraf Skaab|{1}{U}|1/3|SOI
+V|Shatterskull Giant|{2}{R}{R}|4/3|ZEN
+V|Shorecomber Crab|{U}|0/4|J25
+V|Shrine Keeper|{W}{W}|2/2|ANB
+V|Shu Elite Infantry|{3}{W}|3/3|PTK
+V|Shu Foot Soldiers|{2}{W}|2/3|PTK
+V|Siege Mastodon|{4}{W}|3/5|M11
+V|Silent Artisan|{3}{W}{W}|3/5|THS
+V|Silverback Ape|{3}{G}{G}|5/5|S99
+V|Silvercoat Lion|{1}{W}|2/2|M11
+V|Skeletal Crocodile|{3}{B}|5/1|POR
+V|Skeletal Snake|{1}{B}|2/1|POR
+V|Sliver Construct|{3}|2/2|M14
+V|Southern Elephant|{3}{G}|3/4|ME4
+V|Spined Karok|{2}{G}|2/4|STX
+V|Spined Wurm|{4}{G}|5/4|DPA
+V|Squire|{1}{W}|1/2|SLD
+V|Starfleet Crew|{1}{W}|2/3|TRC
+V|Staunch Shieldmate|{W}|1/3|M21
+V|Stone Golem|{5}|4/4|BBD
+V|Stonework Puma|{3}|2/2|ZEN
+V|Straw Soldiers|{1}{U}|1/3|PTK
+V|Streetbreaker Wurm|{3}{R}{G}|6/4|GPT
+V|Summit Prowler|{2}{R}{R}|4/3|KTK
+V|Swab Goblin|{1}{R}|2/2|RIX
+V|Swordwise Centaur|{G}{G}|3/2|BNG
+V|Sworn Guardian|{1}{U}|1/3|RIX
+V|Talas Merchant|{1}{U}|1/3|P02
+V|Tasseled Dromedary|{W}|0/4|KLD
+V|Terrain Elemental|{1}{G}|3/2|KLD
+V|Terror of the Fairgrounds|{3}{R}|5/2|KLD
+V|Thornhide Wolves|{4}{G}|4/5|SIR
+V|Those Who Serve|{2}{W}|2/4|AKH
+V|Thraben Purebloods|{4}{W}|3/5|ISD
+V|Titanic Pelagosaur|{3}{U}{U}|4/6|ATC
+V|Tolarian Scholar|{2}{U}|2/3|DOM
+V|Tor Giant|{3}{R}|3/3|ICE
+V|Trained Armodon|{1}{G}{G}|3/3|TMP
+V|Trained Jackal|{G}|1/2|PTK
+V|Trained Orgg|{6}{R}|6/6|S00
+V|Traveling Philosopher|{1}{W}|2/2|THS
+V|Treetop Warden|{1}{G}|2/2|ANB
+V|Triton Shorethief|{U}|1/2|THS
+V|Trokin High Guard|{3}{W}|3/3|P02
+V|Tusked Colossodon|{4}{G}{G}|6/5|KTK
+V|Undead Minotaur|{2}{B}|2/3|M14
+V|Valiant Guard|{W}|0/3|CON
+V|Vampire Noble|{2}{B}|3/2|E02
+V|Vastwood Gorger|{5}{G}|5/6|ZEN
+V|Venser's Sliver|{5}|3/3|TSP
+V|Viashino Warrior|{3}{R}|4/2|BTD
+V|Vizzerdrix|{6}{U}|6/6|S00
+V|Vodalian Soldiers|{1}{U}|1/2|6ED
+V|Volunteer Militia|{W}|1/2|P02
+V|Vorstclaw|{4}{G}{G}|7/7|AVR
+V|Walking Corpse|{1}{B}|2/2|ISD
+V|Wandering Ones|{U}|1/1|CHK
+V|Wandering Tombshell|{3}{B}|1/6|DTK
+V|Warpath Ghoul|{2}{B}|3/2|M10
+V|Warship Flight Crew|{1}{R}|2/2|TRC
+V|Warship Scout|{R}|2/1|TLE
+V|Watchwolf|{G}{W}|3/3|RAV
+V|Water Elemental|{3}{U}{U}|5/4|3ED
+V|Wei Infantry|{1}{B}|2/1|ME3
+V|Wetland Sambar|{1}{U}|2/1|KTK
+V|Whiptail Wurm|{6}{G}|8/5|ME4
+V|Wicker Witch|{3}|3/1|SOI
+V|Wild Ceratok|{3}{G}|4/3|GRN
+V|Wild Jhovall|{3}{R}|3/3|MMQ
+V|Willow Elf|{G}|1/1|S00
+V|Wishcoin Crab|{3}{U}|2/5|GRN
+V|Witch's Familiar|{2}{B}|2/3|ANB
+V|Woodland Druid|{G}|1/2|ODY
+V|Woolly Thoctar|{R}{G}{W}|5/4|ALA
+V|Wu Infantry|{1}{U}|2/1|PTK
+V|Yoked Ox|{W}|0/4|THS
+V|Zombie Goliath|{4}{B}|4/3|CNS
