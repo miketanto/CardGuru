@@ -110,6 +110,18 @@ build moves that past .50.
 
 ## 4. What to report back
 
+Use `rl/rung0_report.py --base B0Base`, not the lane's own log lines.
+
+**The lane's inline `±` is a Wald interval and is wrong at the edges.**
+It collapses to `±0.000` when a checkpoint goes 0/200 or 200/200, and
+the untrained baseline does exactly that — the first row of your log
+will claim zero uncertainty about a result it has no right to be certain
+of. The report script uses a Wilson score interval, which stays finite
+there (0/200 → `[0.000, 0.019]`). Treat the report script as
+authoritative and do not quote the raw `±` from the log. The lane itself
+is left alone while a sweep is running — bash reads a script
+incrementally and editing one mid-run has corrupted a run here before.
+
 The per-seed lines are raw material, not the result. What is wanted:
 
 1. **Pooled across 5 seeds**, with 95% bands: D0, D1, TWIN, CP7 at the
