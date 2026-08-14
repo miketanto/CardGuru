@@ -1,0 +1,4 @@
+=== W0Base — learning curve, pooled over 1 seed(s), Wilson 95%
+ trained  vs D0                  vs D1                  vs TWIN (transfer)     D0-TWIN
+       0  0.000 [0.000,0.019]    0.000 [0.000,0.019]    0.000 [0.000,0.019]    +0.000
+     512  0.635 [0.566,0.699]    0.620 [0.551,0.684]    0.615 [0.546,0.680]    +0.020
