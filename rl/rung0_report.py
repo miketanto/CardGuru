@@ -85,8 +85,10 @@ def main():
         print("no seed directories under %s for %s" % (args.root, args.base))
         return
 
-    # checkpoint -> label -> [(k, n) per seed]
-    curve = {}
+    # checkpoint -> label -> [(k, n) per seed], and the same data keyed by
+    # seed so the FINAL checkpoint can be pooled even when the seeds do
+    # not land on the same episode count (see the final-checkpoint block)
+    curve, per_seed = {}, {}
     for d in seeds:
         for path in glob.glob(os.path.join(d, "probe_*_*.txt")):
             m = re.match(r"probe_(\w+)_(\d+)\.txt$", os.path.basename(path))
@@ -96,6 +98,7 @@ def main():
             got = read_probe(path)
             if got:
                 curve.setdefault(tr, {}).setdefault(label, []).append(got)
+                per_seed.setdefault(d, {}).setdefault(tr, {})[label] = got
 
     print("=== %s — learning curve, pooled over %d seed(s), "
           "Wilson 95%%" % (args.base, len(seeds)))
@@ -125,18 +128,35 @@ def main():
               "not comparable to the full-pool rows - compare like with "
               "like, usually the first and last)")
 
-    # between-seed spread at the final checkpoint: a pooled mean that
-    # hides a wide range is not a finding
-    final = max(curve) if curve else None
-    if final is not None and len(seeds) > 1:
+    # THE HEADLINE. Pool each seed's LAST battery, not a fixed episode
+    # number, because the seeds do not land on the same one: the inner
+    # loop advances in chunks of 64, so a seed resumed at 1919 with a
+    # 2048 budget overshoots to 2111 while a seed running 1536 -> 2048
+    # lands exactly. Insisting on a shared episode count would throw away
+    # whole seeds; pooling the final battery costs nothing once every
+    # seed is past the plateau (flat from ~1400), and the episode numbers
+    # are printed so that assumption is visible rather than buried.
+    finals = {d: max(per_seed[d]) for d in per_seed if per_seed[d]}
+    if finals:
         print()
-        print("=== between-seed spread at trained=%d" % final)
+        print("=== FINAL checkpoint per seed, pooled  (%s)"
+              % ", ".join("%s=%d" % (os.path.basename(d).split("_s")[-1], t)
+                          for d, t in sorted(finals.items())))
         for label in LABELS:
-            ps = [k / n for k, n in curve[final].get(label, []) if n]
-            if len(ps) > 1:
-                print("  %-5s n=%d  min %.3f  max %.3f  range %.3f  "
-                      "mean %.3f" % (label, len(ps), min(ps), max(ps),
-                                     max(ps) - min(ps), sum(ps) / len(ps)))
+            pairs = [per_seed[d][t][label] for d, t in finals.items()
+                     if label in per_seed[d][t]]
+            if not pairs:
+                continue
+            k, n = sum(a for a, _ in pairs), sum(b for _, b in pairs)
+            ps = [a / b for a, b in pairs if b]
+            spread = ("  spread %.3f-%.3f (range %.3f)"
+                      % (min(ps), max(ps), max(ps) - min(ps))
+                      if len(ps) > 1 else "")
+            print("  %-5s %s  n=%d%s" % (label, fmt(k, n), n, spread))
+        if len(set(finals.values())) > 1:
+            print("  (seeds ended on different episode counts - fine only "
+                  "because all are past the plateau; check the saturation "
+                  "block below before trusting this row)")
 
     # Saturation. "It plateaued" has been asserted by eye in every phase
     # of this project; here it is a test. A step counts as PROGRESS only
