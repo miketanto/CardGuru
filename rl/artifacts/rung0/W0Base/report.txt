@@ -1,9 +1,11 @@
 === W0Base — learning curve, pooled over 1 seed(s), Wilson 95%
- trained  vs D0                  vs D1                  vs TWIN (transfer)     D0-TWIN
-       0  0.000 [0.000,0.019]    0.000 [0.000,0.019]    0.000 [0.000,0.019]    +0.000
-     512  0.635 [0.566,0.699]    0.620 [0.551,0.684]    0.615 [0.546,0.680]    +0.020
+ trained seeds  vs D0                  vs D1                  vs TWIN (transfer)     D0-TWIN
+       0     1  0.000 [0.000,0.019]    0.000 [0.000,0.019]    0.000 [0.000,0.019]    +0.000
+     512     1  0.635 [0.566,0.699]    0.620 [0.551,0.684]    0.615 [0.546,0.680]    +0.020
+    1407     1  0.787 [0.726,0.839]    -                      -                      
 
 === saturation on D0 (does each step clear the last?)
        0  0.000 [0.000,0.019]  -
      512  0.635 [0.566,0.699]  progress
+    1407  0.787 [0.726,0.839]  progress
   -> still improving at the last checkpoint; the budget was the binding constraint, not the opponent

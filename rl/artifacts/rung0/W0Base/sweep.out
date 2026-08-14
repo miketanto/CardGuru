@@ -6,3 +6,6 @@ R0|W0Base|s0|trained=512|D0=0.6350+-0.067|D1=0.6200+-0.067|TWIN=0.6150+-0.067|bl
 R0_SWEEP_START|W0Base|budget=2048|seeds=5
 P10INIT|exists|/tmp/rl_rung0_W0Base_s0/init.pt (left untouched)
 R0_START|W0Base|seed=0|budget=2048|resume_at=512|out=/tmp/rl_rung0_W0Base_s0
+R0_SWEEP_START|W0Base|budget=2048|seeds=5
+P10INIT|exists|/tmp/rl_rung0_W0Base_s0/init.pt (left untouched)
+R0_START|W0Base|seed=0|budget=2048|resume_at=895|out=/tmp/rl_rung0_W0Base_s0
