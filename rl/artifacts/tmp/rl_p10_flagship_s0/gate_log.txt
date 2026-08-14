@@ -13,3 +13,4 @@ P10GATE|trained=6144|champion=p7b_ck6144|score=0.4400|wins=22|draws=0|games=50|v
 P10GATE|trained=6656|champion=p7b_ck6144|score=0.4000|wins=20|draws=0|games=50|verdict=rejected|pool_elo=-
 P10GATE|trained=7168|champion=p7b_ck6144|score=0.3600|wins=18|draws=0|games=50|verdict=rejected|pool_elo=-
 P10GATE|trained=7680|champion=p7b_ck6144|score=0.3000|wins=15|draws=0|games=50|verdict=rejected|pool_elo=-
+P10GATE|trained=8192|champion=p7b_ck6144|score=0.4400|wins=22|draws=0|games=50|verdict=rejected|pool_elo=-
