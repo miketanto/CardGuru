@@ -24,6 +24,7 @@ import argparse
 import json
 import os
 import socket
+import threading
 import time
 
 import torch
@@ -370,6 +371,28 @@ class Session:
         self.hidden = None
 
 
+# Phase 12 instrumentation: the comment below claims one lock is plenty
+# "because the engine work this serializes against is 87% of wall-clock".
+# rl/PHASE12-PERF-SCOPE.md removed ~35% of that engine work, so the
+# claim needs re-measuring rather than re-asserting. LOCK_WAIT is time
+# blocked ACQUIRING the lock; LOCK_HELD is time inside it. Reported on
+# shutdown and via the "stats" message. Enabled by -DRL_LOCK_STATS=1
+# (env), off by default so the hot path stays untouched.
+LOCK_STATS = os.environ.get("RL_LOCK_STATS", "0") == "1"
+LOCK_WAIT = 0.0
+LOCK_HELD = 0.0
+LOCK_CALLS = 0
+_stats_lock = threading.Lock()
+
+
+def _record(wait, held):
+    global LOCK_WAIT, LOCK_HELD, LOCK_CALLS
+    with _stats_lock:
+        LOCK_WAIT += wait
+        LOCK_HELD += held
+        LOCK_CALLS += 1
+
+
 def handle(conn, trainer, lock, session):
     """One connection's message loop. lock is None on the single-threaded
     path, where it degenerates to the original inline loop."""
@@ -398,6 +421,15 @@ def handle(conn, trainer, lock, session):
                     a = trainer.act(msg["s"], msg["c"],
                                     sample=(mode == "train"),
                                     phi=msg.get("phi", 0.0))
+                elif LOCK_STATS:
+                    _t0 = time.time()
+                    with lock:
+                        _t1 = time.time()
+                        a = trainer.act(msg["s"], msg["c"],
+                                        sample=(mode == "train"),
+                                        phi=msg.get("phi", 0.0),
+                                        session=session)
+                    _record(_t1 - _t0, time.time() - _t1)
                 else:
                     # torch inference and the trajectory buffers are the
                     # shared state; the engine work this serializes
