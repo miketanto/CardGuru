@@ -39,11 +39,11 @@ OUT=/tmp/rl_rung0_ceiling
 mkdir -p $OUT
 cp $RL/$DECK.dck /home/user/mage/Mage.Tests/ 2>/dev/null
 
-probe() {   # $1 out $2 opponent $3 games
+probe() {   # $1 out $2 opponent $3 games [$4 plies]
     [ -s "$1" ] && return 0
     RL_PERSIST=1 RL_AUTOSTART=1 timeout 7200 bash $RL/run_driver.sh \
         -Drl.episodes=$3 -Drl.agent=heuristic \
-        -Drl.opponent=$2 -Drl.searchPlies=1 -Drl.searchBreadth=8 \
+        -Drl.opponent=$2 -Drl.searchPlies=${4:-1} -Drl.searchBreadth=8 \
         -Drl.cardFeatures=$RL/e2_features.tsv -Drl.noYields=true \
         -Drl.consultBudget=4000 -Drl.deck=$DECK.dck -Drl.oppDeck=$DECK.dck \
         -Drl.stopTurn=60 -Drl.mode=eval -Drl.seed=960000 -Drl.report=0 \
@@ -81,4 +81,18 @@ echo "R0CEIL|deck=$DECK|score is the OPPONENT's, draws at half"
 probe $OUT/${DECK}_D0.txt  heuristic $G ; report $OUT/${DECK}_D0.txt  "D0 vs D0"
 probe $OUT/${DECK}_D1.txt  search    $G ; report $OUT/${DECK}_D1.txt  "D1 vs D0"
 probe $OUT/${DECK}_CP7.txt cp7       $GC; report $OUT/${DECK}_CP7.txt "CP7 vs D0"
+
+# DEPTH LADDER. The rows above say the two search instruments do WORSE
+# than our learned agent, which is consistent with the mirror imposing a
+# variance ceiling - but it is also consistent with these particular
+# searchers being badly suited to the deck. Varying only the ply count
+# separates the two: if depth buys nothing, the game is not rewarding
+# lookahead and the ceiling reading strengthens; if 3-ply jumps well
+# above .78, the ceiling is higher than our agent reaches and the
+# plateau is ours after all. Same seat, same breadth, same opponent -
+# only the depth moves.
+for P in 2 3; do
+    probe $OUT/${DECK}_D1p${P}.txt search $GC $P
+    report $OUT/${DECK}_D1p${P}.txt "D1(${P}ply) vs D0"
+done
 echo "R0CEIL_DONE"
