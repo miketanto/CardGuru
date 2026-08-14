@@ -549,7 +549,18 @@ public class RLPlayer extends ComputerPlayer {
                 mine.add(p);
             }
         }
-        mine.sort(Comparator.comparing(MageObject::getName));
+        // Blocks are declared SIMULTANEOUSLY in real Magic; this loop is
+        // an autoregressive decomposition of one joint decision, so the
+        // iteration order is ours to choose - and sorting by NAME was a
+        // bad choice. It makes "which creature decides first" a function
+        // of card identity, which is exactly the coupling W0Twin exists
+        // to detect: rename every card and the block order changes.
+        // Sort by body instead, smallest toughness first (the natural
+        // chump-block order), with name only as a determinism tiebreak.
+        mine.sort(Comparator
+                .comparingInt((Permanent p) -> p.getToughness().getValue())
+                .thenComparingInt(p -> p.getPower().getValue())
+                .thenComparing(MageObject::getName));
         UUID opp = opponentId(game);
         for (Permanent blocker : mine) {
             List<Permanent> can = new ArrayList<>();

@@ -25,7 +25,11 @@ public final class StateEncoder {
     // and stack blocks at the end of encodeState for why this was worth
     // breaking compatibility for.
     public static final int STATE_DIM = 32;
-    private static final int ID_BASE = 22;   // identity features from here
+    // 22 -> 25: three more block-context slots ahead of the identity
+    // block (see forBlock). CAND_DIM grows with it, which is a second
+    // compatibility break - taken in the same commit as the sdim change
+    // rather than as a separate one later.
+    private static final int ID_BASE = 25;   // identity features from here
 
     /**
      * E2 support: -Drl.cardFeatures=<file> loads a per-card mechanical
@@ -267,10 +271,18 @@ public final class StateEncoder {
     public static float[] forBlock(Permanent attacker, Permanent blocker,
                                    Game game) {
         float[] c = forCombat(T_BLOCK, attacker, game);
-        int already = 0;
+        int already = 0, assignedPower = 0, assignedTough = 0;
         for (CombatGroup g : game.getCombat().getGroups()) {
-            if (g.getAttackers().contains(attacker.getId())) {
-                already += g.getBlockers().size();
+            if (!g.getAttackers().contains(attacker.getId())) {
+                continue;
+            }
+            already += g.getBlockers().size();
+            for (UUID bId : g.getBlockers()) {
+                Permanent b = game.getPermanent(bId);
+                if (b != null) {
+                    assignedPower += b.getPower().getValue();
+                    assignedTough += b.getToughness().getValue();
+                }
             }
         }
         int ap = attacker.getPower().getValue();
@@ -282,6 +294,14 @@ public final class StateEncoder {
         c[19] = bt / 6f;
         c[20] = bp >= at ? 1f : 0f;        // this block kills the attacker
         c[21] = ap >= bt ? 1f : 0f;        // this block loses the blocker
+        // A COUNT of prior blockers is not enough. Three 2/4s already on a
+        // 3/3 have killed it six times over, and a fourth blocker is pure
+        // waste - but "already = 3" reads the same as three 0/1s, which
+        // have not killed it at all. What decides the question is the
+        // power and toughness already committed, so encode that.
+        c[22] = Math.min(1f, assignedPower / (float) Math.max(1, at));
+        c[23] = assignedPower >= at ? 1f : 0f;   // attacker ALREADY dead
+        c[24] = assignedTough >= ap ? 1f : 0f;   // its damage already eaten
         return c;
     }
 
