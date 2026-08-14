@@ -91,8 +91,15 @@ def main():
 
     print("=== %s — learning curve, pooled over %d seed(s), "
           "Wilson 95%%" % (args.base, len(seeds)))
-    print("%8s  %-22s %-22s %-22s %s"
-          % ("trained", "vs D0", "vs D1", "vs TWIN (transfer)", "D0-TWIN"))
+    # The per-row seed count is NOT decoration. Restarting a lane mid
+    # block shifts its battery cadence (a resume at 895 with EVERY=512
+    # puts the next battery at 1407, not 1024), so one seed can own
+    # checkpoints no other seed has. Those rows are single-seed sitting
+    # in a table headed "pooled over 5" - print n_seeds per row or the
+    # table lies.
+    print("%8s %5s  %-22s %-22s %-22s %s"
+          % ("trained", "seeds", "vs D0", "vs D1", "vs TWIN (transfer)",
+             "D0-TWIN"))
     for tr in sorted(curve):
         row, gap = [], ""
         for label in LABELS:
@@ -103,7 +110,12 @@ def main():
             a = sum(k for k, _ in d0) / max(1, sum(n for _, n in d0))
             b = sum(k for k, _ in tw) / max(1, sum(n for _, n in tw))
             gap = "%+.3f" % (a - b)
-        print("%8d  %-22s %-22s %-22s %s" % (tr, row[0], row[1], row[2], gap))
+        print("%8d %5d  %-22s %-22s %-22s %s"
+              % (tr, len(d0), row[0], row[1], row[2], gap))
+    if len({len(curve[tr].get("D0", [])) for tr in curve}) > 1:
+        print("  (uneven seed counts: rows contributed by fewer seeds are "
+              "not comparable to the full-pool rows - compare like with "
+              "like, usually the first and last)")
 
     # between-seed spread at the final checkpoint: a pooled mean that
     # hides a wide range is not a finding
