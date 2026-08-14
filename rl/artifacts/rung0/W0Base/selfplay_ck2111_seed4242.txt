@@ -1,0 +1,95 @@
+RLDBG|ep seed=4242 turns=26 winner=Player Opponent is the winner agentLife=-7 agentLib=0 agentHand=0 consults=136
+t1|Plains (Play Plains)
+t1|Plains ({T}: Add {W}.)
+t3|Plains (Play Plains)
+t3|Dromoka Warrior
+t4|== incoming: life 20-20, creatures 1-2
+t4|  attacked by Elite Vanguard 2/1
+t4|  BLOCK   Dromoka Warrior 3/1  <- Elite Vanguard 2/1
+t5|Plains (Play Plains)
+t5|Regal Unicorn
+t6|== incoming: life 20-20, creatures 1-3
+t6|  attacked by Dromoka Warrior 3/1
+t6|  BLOCK   Regal Unicorn 2/3  <- Dromoka Warrior 3/1
+t7|Plains (Play Plains)
+t7|Foot Soldiers
+t9|Knight of the Keep
+t9|Plains ({T}: Add {W}.)
+t9|Elite Vanguard
+t9|== my combat: life 20-20, creatures 3-2
+t9|  hold    Foot Soldiers 2/4
+t11|Shu Elite Infantry
+t11|== my combat: life 20-20, creatures 4-3
+t11|  ATTACK  Elite Vanguard 2/1
+t11|  hold    Foot Soldiers 2/4
+t11|  ATTACK  Knight of the Keep 3/2
+t13|Foot Soldiers
+t13|== my combat: life 20-18, creatures 4-2
+t13|  ATTACK  Elite Vanguard 2/1
+t13|  hold    Foot Soldiers 2/4
+t13|  ATTACK  Shu Elite Infantry 3/3
+t15|== my combat: life 20-16, creatures 3-3
+t15|  ATTACK  Elite Vanguard 2/1
+t15|  hold    Foot Soldiers 2/4
+t15|  hold    Foot Soldiers 2/4
+t16|Plains ({T}: Add {W}.)
+t16|Plains ({T}: Add {W}.)
+t16|Plains ({T}: Add {W}.)
+t16|Plains ({T}: Add {W}.)
+t16|== incoming: life 20-16, creatures 2-4
+t16|  attacked by Glory Seeker 2/2
+t16|  BLOCK   Foot Soldiers 2/4  <- Glory Seeker 2/2
+t16|  BLOCK   Foot Soldiers 2/4  <- Glory Seeker 2/2
+t17|Glory Seeker
+t17|Plains ({T}: Add {W}.)
+t17|Plains ({T}: Add {W}.)
+t17|== my combat: life 20-16, creatures 3-3
+t17|  hold    Foot Soldiers 2/4
+t17|  hold    Foot Soldiers 2/4
+t19|== my combat: life 20-16, creatures 3-4
+t19|  hold    Foot Soldiers 2/4
+t19|  hold    Foot Soldiers 2/4
+t19|  hold    Glory Seeker 2/2
+t19|Plains ({T}: Add {W}.)
+t20|Plains ({T}: Add {W}.)
+t20|Plains ({T}: Add {W}.)
+t20|Plains ({T}: Add {W}.)
+t20|== incoming: life 20-16, creatures 3-5
+t20|  attacked by Foot Soldiers 2/4, Shu Elite Infantry 3/3
+t20|  BLOCK   Foot Soldiers 2/4  <- Foot Soldiers 2/4
+t20|  BLOCK   Foot Soldiers 2/4  <- Foot Soldiers 2/4
+t20|  BLOCK   Glory Seeker 2/2  <- Foot Soldiers 2/4
+t21|== my combat: life 17-16, creatures 3-4
+t21|  hold    Foot Soldiers 2/4
+t21|  hold    Foot Soldiers 2/4
+t21|  ATTACK  Glory Seeker 2/2
+t22|Plains ({T}: Add {W}.)
+t22|Plains ({T}: Add {W}.)
+t22|Plains ({T}: Add {W}.)
+t22|Plains ({T}: Add {W}.)
+t22|== incoming: life 17-16, creatures 2-5
+t22|  attacked by Foot Soldiers 2/4, Foot Soldiers 2/4, Regal Unicorn 2/3, Shu Elite Infantry 3/3
+t22|  BLOCK   Foot Soldiers 2/4  <- Foot Soldiers 2/4
+t22|  BLOCK   Foot Soldiers 2/4  <- Foot Soldiers 2/4
+t23|Foot Soldiers
+t23|== my combat: life 10-16, creatures 3-4
+t23|  hold    Foot Soldiers 2/4
+t23|  hold    Foot Soldiers 2/4
+t24|== incoming: life 10-16, creatures 3-6
+t24|  attacked by Foot Soldiers 2/4, Knight of the Keep 3/2, Regal Unicorn 2/3, Shu Elite Infantry 3/3
+t24|  BLOCK   Foot Soldiers 2/4  <- Foot Soldiers 2/4
+t24|  BLOCK   Foot Soldiers 2/4  <- Foot Soldiers 2/4
+t24|  BLOCK   Foot Soldiers 2/4  <- Foot Soldiers 2/4
+t25|Dromoka Warrior
+t25|Plains ({T}: Add {W}.)
+t25|Plains ({T}: Add {W}.)
+t25|== my combat: life 2-16, creatures 4-5
+t25|  hold    Foot Soldiers 2/4
+t25|  hold    Foot Soldiers 2/4
+t25|  hold    Foot Soldiers 2/4
+t26|== incoming: life 2-16, creatures 4-6
+t26|  attacked by Glory Seeker 2/2, Knight of the Keep 3/2, Regal Unicorn 2/3, Shu Elite Infantry 3/3, Silvercoat Lion 2/2
+t26|  BLOCK   Dromoka Warrior 3/1  <- Shu Elite Infantry 3/3
+t26|  BLOCK   Foot Soldiers 2/4  <- Shu Elite Infantry 3/3
+t26|  BLOCK   Foot Soldiers 2/4  <- Shu Elite Infantry 3/3
+t26|  BLOCK   Foot Soldiers 2/4  <- Shu Elite Infantry 3/3

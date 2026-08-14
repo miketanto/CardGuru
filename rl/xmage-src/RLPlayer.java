@@ -455,12 +455,53 @@ public class RLPlayer extends ComputerPlayer {
 
     // ------------------------------------------------------------- combat
 
+    /** -Drl.debug transcript line. */
+    private void log(Game game, String s) {
+        if (Boolean.getBoolean("rl.debug")) {
+            actionLog.append("t").append(game.getTurnNum()).append('|')
+                    .append(s).append('\n');
+        }
+    }
+
+    /** "Name 2/3" - the transcript is unreadable without the body. */
+    private static String pt(Permanent p, Game game) {
+        return p.getName() + " " + p.getPower().getValue()
+                + "/" + p.getToughness().getValue();
+    }
+
+    private String boardLine(Game game, String what) {
+        UUID opp = opponentId(game);
+        int mine = 0, theirs = 0;
+        for (Permanent p : game.getBattlefield().getAllActivePermanents()) {
+            if (!p.isCreature(game)) {
+                continue;
+            }
+            if (playerId.equals(p.getControllerId())) {
+                mine++;
+            } else if (opp != null && opp.equals(p.getControllerId())) {
+                theirs++;
+            }
+        }
+        Player me = game.getPlayer(playerId);
+        Player they = opp == null ? null : game.getPlayer(opp);
+        return String.format("== %s: life %d-%d, creatures %d-%d", what,
+                me == null ? 0 : me.getLife(), they == null ? 0 : they.getLife(),
+                mine, theirs);
+    }
+
     @Override
     public void selectAttackers(Game game, UUID attackingPlayerId) {
         yield = YieldKind.NONE;
         UUID defender = opponentId(game);
         List<Permanent> avail = new ArrayList<>(getAvailableAttackers(game));
         avail.sort(Comparator.comparing(MageObject::getName));
+        // Combat was invisible in the transcript: attacks and blocks go
+        // through these callbacks, not through the activated-ability path
+        // the action log was recording, so a "sample game" showed only
+        // lands and spells. On a rung-0 deck combat IS the game.
+        if (!avail.isEmpty()) {
+            log(game, boardLine(game, "my combat"));
+        }
         for (Permanent creature : avail) {
             float[] state = StateEncoder.encodeState(game, playerId, defender);
             float[][] cands = {
@@ -470,6 +511,9 @@ public class RLPlayer extends ComputerPlayer {
             if (policy.choose(state, cands, phi(game)) == 1) {
                 this.declareAttacker(creature.getId(), defender, game, false);
                 actions++;
+                log(game, "  ATTACK  " + pt(creature, game));
+            } else {
+                log(game, "  hold    " + pt(creature, game));
             }
         }
     }
@@ -491,6 +535,14 @@ public class RLPlayer extends ComputerPlayer {
             return;
         }
         attackers.sort(Comparator.comparing(MageObject::getName));
+        if (Boolean.getBoolean("rl.debug")) {
+            StringBuilder atk = new StringBuilder();
+            for (Permanent a : attackers) {
+                atk.append(atk.length() == 0 ? "" : ", ").append(pt(a, game));
+            }
+            log(game, boardLine(game, "incoming"));
+            log(game, "  attacked by " + atk);
+        }
         List<Permanent> mine = new ArrayList<>();
         for (Permanent p : game.getBattlefield().getAllActivePermanents(playerId)) {
             if (p.isCreature(game) && !p.isTapped()) {
@@ -524,6 +576,14 @@ public class RLPlayer extends ComputerPlayer {
                         can.get(pick - 1).getId(), game);
                 actions++;
                 blocksDeclared++;
+                log(game, "  BLOCK   " + pt(blocker, game) + "  <- "
+                        + pt(can.get(pick - 1), game));
+            } else {
+                // declining a block is a real decision and the project has
+                // measured it before (7c: agents block ~100% when asked),
+                // so it has to be visible, not an absent line
+                log(game, "  decline " + pt(blocker, game)
+                        + "  (could block " + can.size() + ")");
             }
         }
     }
