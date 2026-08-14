@@ -565,8 +565,7 @@ public class RLPlayer extends ComputerPlayer {
             float[][] cands = new float[can.size() + 1][];
             cands[0] = StateEncoder.blank(StateEncoder.T_PASS);
             for (int i = 0; i < can.size(); i++) {
-                cands[i + 1] = StateEncoder.forCombat(
-                        StateEncoder.T_BLOCK, can.get(i), game);
+                cands[i + 1] = StateEncoder.forBlock(can.get(i), blocker, game);
             }
             consults++;
             blockOpportunities++;

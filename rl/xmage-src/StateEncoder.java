@@ -3,6 +3,9 @@ package org.mage.test.benchmark.rl;
 import mage.cards.Card;
 import mage.constants.PhaseStep;
 import mage.game.Game;
+import mage.game.combat.CombatGroup;
+import mage.game.stack.StackObject;
+import mage.MageObject;
 import mage.game.permanent.Permanent;
 import mage.players.Player;
 
@@ -16,7 +19,12 @@ import java.util.UUID;
  */
 public final class StateEncoder {
 
-    public static final int STATE_DIM = 24;
+    // 24 -> 32. The first 24 are unchanged and in the same order, so the
+    // diff to a prior net is purely additive - but the input width moves,
+    // so checkpoints trained at sdim=24 cannot be loaded. See the combat
+    // and stack blocks at the end of encodeState for why this was worth
+    // breaking compatibility for.
+    public static final int STATE_DIM = 32;
     private static final int ID_BASE = 22;   // identity features from here
 
     /**
@@ -137,6 +145,60 @@ public final class StateEncoder {
         s[21] = my.getGraveyard().size() / 30f;
         s[22] = op.getGraveyard().size() / 30f;
         s[23] = my.getLibrary().size() / 60f;
+
+        // ---- COMBAT, s[24..28] ------------------------------------------
+        // Nothing above this line reads game.getCombat(). That is why a
+        // rung-0 agent piled four blockers onto one attacker and let four
+        // others through: declaring a block taps nothing and changes no
+        // life total or creature count, so the observation for the 2nd,
+        // 3rd and 4th blocker in a combat was IDENTICAL to the 1st. Greedy
+        // argmax on an identical observation returns an identical choice.
+        // The only channel that could have distinguished them was the LSTM
+        // hidden state, which had no explicit signal to learn from.
+        int attackers = 0, unblocked = 0, unblockedPower = 0;
+        for (CombatGroup g : game.getCombat().getGroups()) {
+            for (UUID atkId : g.getAttackers()) {
+                Permanent atk = game.getPermanent(atkId);
+                if (atk == null) {
+                    continue;
+                }
+                attackers++;
+                if (g.getBlockers().isEmpty()) {
+                    unblocked++;
+                    unblockedPower += atk.getPower().getValue();
+                }
+            }
+        }
+        int freeBlockers = 0;
+        for (Permanent p : game.getBattlefield().getAllActivePermanents(me)) {
+            if (p.isCreature(game) && !p.isTapped()) {
+                freeBlockers++;
+            }
+        }
+        s[24] = attackers / 6f;
+        s[25] = unblocked / 6f;
+        s[26] = unblockedPower / 20f;
+        // life AFTER the currently-unblocked attackers connect: negative
+        // means dead on board unless something else blocks, which is the
+        // single fact the t26 loss turned on
+        s[27] = (my.getLife() - unblockedPower) / 20f;
+        s[28] = freeBlockers / 6f;
+
+        // ---- STACK, s[29..31] -------------------------------------------
+        // s[20] carries only the DEPTH. Order and contents were invisible:
+        // a Lightning Bolt and a Wrath of God on the stack looked the same,
+        // and so did mine and theirs. Rungs 0-3 have no instants so this
+        // costs nothing there, but rung 4 (instant removal) and rung 5
+        // (combat tricks) are exactly the rungs that need it.
+        if (!game.getStack().isEmpty()) {
+            StackObject top = game.getStack().getFirst();
+            s[29] = me.equals(top.getControllerId()) ? 1f : 0f;
+            s[30] = top.getStackAbility() == null ? 0f
+                    : top.getStackAbility().getManaCosts().manaValue() / 6f;
+            // StackObject extends MageObject, so isInstant is available
+            // directly - there is no getStackObject() accessor
+            s[31] = top.isInstant(game) ? 1f : 0f;
+        }
         return s;
     }
 
@@ -189,6 +251,37 @@ public final class StateEncoder {
         c[8] = creature.getToughness().getValue() / 6f;
         c[9] = 1f;
         identity(c, creature.getName());
+        return c;
+    }
+
+    /**
+     * "Block this attacker with THIS blocker."
+     *
+     * forCombat carries only the attacker, so the candidate for blocking a
+     * 3/3 looked the same whether the blocker was a 2/4 that survives or a
+     * 3/1 that trades down - and it said nothing about how many blockers
+     * were already on that attacker. Slots 17-21 were unused, so this adds
+     * the missing context WITHOUT changing CAND_DIM: only the state width
+     * moves, and only once.
+     */
+    public static float[] forBlock(Permanent attacker, Permanent blocker,
+                                   Game game) {
+        float[] c = forCombat(T_BLOCK, attacker, game);
+        int already = 0;
+        for (CombatGroup g : game.getCombat().getGroups()) {
+            if (g.getAttackers().contains(attacker.getId())) {
+                already += g.getBlockers().size();
+            }
+        }
+        int ap = attacker.getPower().getValue();
+        int at = attacker.getToughness().getValue();
+        int bp = blocker.getPower().getValue();
+        int bt = blocker.getToughness().getValue();
+        c[17] = already / 3f;              // piling signal
+        c[18] = bp / 6f;                   // the blocker's own body
+        c[19] = bt / 6f;
+        c[20] = bp >= at ? 1f : 0f;        // this block kills the attacker
+        c[21] = ap >= bt ? 1f : 0f;        // this block loses the blocker
         return c;
     }
 
