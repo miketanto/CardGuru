@@ -168,23 +168,37 @@ def main():
     if len(ckpts) > 1:
         print()
         print("=== saturation on D0 (does each step clear the last?)")
-        flat_from, prev = None, None
+        flat_from, prev, regressed = None, None, False
         for tr in ckpts:
             pairs = curve[tr].get("D0", [])
             n = sum(x for _, x in pairs)
             if not n:
                 continue
             p, lo, hi = wilson(sum(k for k, _ in pairs), n)
+            # Three outcomes, not two. The first version of this test
+            # called anything that was not progress "flat", which labelled
+            # seed 0's .782 -> .705 drop as a plateau. A step whose whole
+            # interval sits BELOW the previous point estimate is a
+            # regression, and that is 7b's drift signature - the thing
+            # Phase 10 built champion gating to catch - not saturation.
             verdict = "-"
             if prev is not None:
                 if lo > prev:
-                    verdict, flat_from = "progress", None
+                    verdict, flat_from, regressed = "progress", None, False
+                elif hi < prev:
+                    verdict = "REGRESSION"
+                    regressed = True
+                    flat_from = tr if flat_from is None else flat_from
                 else:
                     verdict = "flat"
                     flat_from = tr if flat_from is None else flat_from
             print("  %6d  %.3f [%.3f,%.3f]  %s" % (tr, p, lo, hi, verdict))
             prev = p
-        if flat_from is not None:
+        if regressed:
+            print("  -> REGRESSED by the last step: this is drift, not a "
+                  "plateau. The best checkpoint is not the last one, so "
+                  "any headline must name which checkpoint it quotes.")
+        elif flat_from is not None:
             print("  -> flat from %d onward; episodes past that point "
                   "bought nothing measurable" % flat_from)
         else:
