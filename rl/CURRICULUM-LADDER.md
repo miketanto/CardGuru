@@ -388,10 +388,28 @@ from an identical random policy, so the timing variable is real at the
 engine level before any agent has been trained on it.
 
 **12-16 games/sec** against BenchDimir's ~2.5 on the same scripted
-workload. That 5-6x comes from simpler cards alone, no engine work, and
-it is what makes the ladder affordable: a rung-0 training run is
-minutes, so the project's standing 5-seed convention — asserted since
-Phase 3 and never once met — is finally practical.
+workload — 5-6x, from simpler cards alone, with no engine work.
+
+**That number does not transfer to a training lane, and an earlier
+version of this document wrongly implied it did** ("a rung-0 training
+run is minutes"). The gate is a scripted D0 mirror with *zero* policy
+round-trips. A lane with an agent on the socket is a different workload,
+and it gets slower as the agent gets better — measured on the first
+rung-0 seed:
+
+| checkpoint | turns/ep | policy consults/ep | games/sec (sequential eval) |
+|---|---|---|---|
+| trained=0 | 10.5 | 19.6 | 4.75 |
+| trained=512 | 21.1 | **165.1** | 1.23 |
+
+An untrained net loses in 10 turns having made almost no decisions. A
+trained one plays real games, blocks everything it can, and consults the
+policy 8.4x more often. Training throughput on the first 512-episode
+block measured **0.37 episodes/sec at conc4**, so the real cost is
+roughly **~35 min per 512 episodes plus ~10 min per 200-game battery**.
+
+The 5-seed convention is still affordable here in a way it never was on
+BenchDimir — but it is hours per seed, not minutes.
 
 ---
 

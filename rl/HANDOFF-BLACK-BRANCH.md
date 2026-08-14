@@ -13,7 +13,7 @@ are running them at the same time. Everything below assumes it.
 ## 1. What you are doing
 
 ```
-bash rl/rung0_sweep.sh B0Base B0Twin 4096 5
+bash rl/rung0_sweep.sh B0Base B0Twin 2048 5
 ```
 
 with
@@ -28,12 +28,20 @@ both branches (can a from-scratch net learn combat in a minimal game),
 so anything that differs between the two lanes other than the deck is a
 confound in a comparison we will want to make later.
 
-Expect **roughly an hour per seed**, five seeds. Launch it detached and
-do not sit on it:
+Expect **roughly 2.5-3 hours per seed** at budget 2048, five seeds.
+The white branch measured the real cost: **0.37 episodes/sec at conc4**
+for training, plus ~10 min per 200-game battery. The gate's 12-16
+games/sec is a SCRIPTED mirror with no policy round-trips and does not
+apply to a training lane - and it gets slower as the agent improves
+(policy consults/ep went 19.6 -> 165.1 between trained=0 and 512).
+Budget 2048 rather than 4096 because the white branch beat 1-ply search
+at 512 episodes, so the plateau in this minimal game is early.
+
+Launch it detached and do not sit on it:
 
 ```
 export R0_EVERY=512 R0_EVAL_G=200 R0_CP7_G=50
-setsid nohup bash rl/rung0_sweep.sh B0Base B0Twin 4096 5 \
+setsid nohup bash rl/rung0_sweep.sh B0Base B0Twin 2048 5 \
     > /tmp/rl_rung0_B0Base_sweep.out 2>&1 &
 ```
 
@@ -130,8 +138,9 @@ The per-seed lines are raw material, not the result. What is wanted:
    worth carrying.
 2. **Where it saturates.** Every run in `POOLED-ANALYSIS.md` §4
    plateaued between 1.5k and 6k episodes against a fixed population.
-   Rung 0 is a far smaller game; if it saturates at 512 that is the
-   finding, and the 4096 budget was mostly wasted (say so).
+   Rung 0 is a far smaller game - the white branch was already beating
+   1-ply search at 512 - so if it saturates there, say so and say the
+   remaining budget bought nothing.
 3. **The transfer gap, D0 − TWIN, per seed and pooled.** This is the
    branch's sharpest single number. 8b inferred card-identity dependence
    from a 12-card swap where roles only approximately matched; `B0Twin`
