@@ -1,5 +1,9 @@
 # Phase 12 — scoping the next engine speedup, measured not guessed
 
+**Update: the recommended change was BUILT and TESTED. It is safe and it
+is small. See §5 — and the reason it is small is the most useful thing
+this phase found.**
+
 Prompted by the Phase 10 result: 12288 training episodes + 7500 eval
 games took **~15h on 4 cores** (~0.37 games/sec overall). A 5-seed
 replication of that design is 75h, which is not a research loop. More
@@ -129,3 +133,78 @@ every result from phases 4-10. **The cheapest real 10x remains running
 5 seeds concurrently in 5 containers** (5x experiment throughput, zero
 code) combined with A (1.7x) — which is ~8.5x on the metric that
 actually matters, wall-clock to a replicated result.
+
+
+## 5. The redundant-copy experiment: built, tested, measured
+
+Prompted by the question "can the pre-check miss something?" — it can
+(Kaito's loyalty ability costs no mana, so "tapped out" does not imply
+"nothing playable", and 4 Kaito are in BenchDimir), so option A was
+dropped for the sound alternative: remove the second copy rather than
+guess at emptiness.
+
+`rl/engine-patches/phase12-mana-recopy.patch`, flag-guarded exactly
+like Phase 9's memo:
+
+    -Dmage.manaNoRecopy=off      (default) untouched
+    -Dmage.manaNoRecopy=on       skip the redundant copy
+    -Dmage.manaNoRecopy=verify   compute the playable list BOTH ways,
+                                 each from its own fresh simulation,
+                                 compare, count, return the ORIGINAL
+
+### Is it safe? Yes, and this is measured, not argued
+
+    RL|manaNoRecopy|mode=verify|checked=22825|mismatches=0
+
+22,825 `getPlayable` calls over a 50-episode policy workload; the
+no-copy path produced an identical playable list every single time.
+The risk was real and specific — `getPlayableUncached` reads `game`
+dozens of times after the mana call, so any mutation would be visible
+— and it did not materialise.
+
+### Does it work? Yes, exactly as designed
+
+| profile share | off | on |
+|---|---|---|
+| copy reached via `getManaAvailable` | 35.4% | **0.0%** |
+| `createSimulationForPlayableCalc` | 67.2% | 50.9% |
+| `getManaAvailable` | 38.2% | 4.8% |
+| `getPlayable` | 77.8% | 67.9% |
+
+The renormalisation checks out: removing 35.4 units of 100 leaves
+(67.2-35.4)/64.6 = 49.2% predicted vs 50.9% observed for the copy, and
+2.8/64.6 = 4.3% vs 4.8% for mana. **~35% of game-thread work is gone.**
+
+### So why is the wall-clock win small?
+
+| configuration | off | on | speedup |
+|---|---|---|---|
+| sequential | 0.516 g/s (n=2) | 0.662 g/s (n=2) | **1.28x** |
+| conc4 | 1.431 g/s (n=3) | 1.496 g/s (n=4) | **1.05x** |
+| Amdahl ceiling from the profile | | | 1.55x |
+
+**Game-thread work is no longer the wall-clock bottleneck at conc4.**
+Sequential recovers most of the predicted win; conc4 recovers almost
+none. Cutting engine work by a third barely moves a 4-worker run, which
+means something else is now the constraint — the obvious suspect is
+`policy_server.py`, where a SINGLE lock guards inference and the PPO
+buffers for all four workers. Phase 9 dismissed that lock explicitly
+("fine, because engine work dwarfs it"). Engine work no longer dwarfs
+it.
+
+### What this changes about the 10x plan
+
+The profile's 82%/77.8% `getPlayable` share is real but **misleading as
+a speedup budget**: at conc4 it is partly hidden behind contention.
+Before spending 1-2 weeks on options C or D (mana memo, simulation
+pooling), measure the policy server. If the lock is the conc4
+bottleneck, batching inference across workers or sharding the lock is
+likely cheaper AND larger than any further engine work — and it is
+Python, not a 15-year-old rules engine.
+
+Revised order:
+1. **Measure the policy server's serialization** at conc4 (cheap).
+2. Adopt `manaNoRecopy=on` regardless — it is verified safe, it is
+   1.28x sequential (which is what every Elo probe, matrix cell and
+   gate runs at), and eval was 27% of Phase 10's wall clock.
+3. Only then decide between engine work (C/D) and server work.

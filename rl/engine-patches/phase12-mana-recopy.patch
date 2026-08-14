@@ -1,0 +1,238 @@
+diff --git a/Mage/src/main/java/mage/players/PlayerImpl.java b/Mage/src/main/java/mage/players/PlayerImpl.java
+index 2bd3920891..b7b1f54573 100644
+--- a/Mage/src/main/java/mage/players/PlayerImpl.java
++++ b/Mage/src/main/java/mage/players/PlayerImpl.java
+@@ -3571,7 +3571,19 @@ public abstract class PlayerImpl implements Player, Serializable {
+     @Override
+     public ManaOptions getManaAvailable(Game originalGame) {
+         // workaround to fix a triggers list modification bug (game must be immutable on playable calculations)
+-        Game game = originalGame.createSimulationForPlayableCalc();
++        return getManaAvailableImpl(originalGame.createSimulationForPlayableCalc());
++    }
++
++    /**
++     * Phase 12: same computation WITHOUT the defensive copy, for callers
++     * that already own a private simulation (getPlayableUncached does).
++     * Never call this with a real game.
++     */
++    public ManaOptions getManaAvailableNoCopy(Game alreadySimulated) {
++        return getManaAvailableImpl(alreadySimulated);
++    }
++
++    private ManaOptions getManaAvailableImpl(Game game) {
+ 
+         ManaOptions availableMana = new ManaOptions();
+         availableMana.addMana(manaPool.getMana());
+@@ -4284,6 +4296,127 @@ public abstract class PlayerImpl implements Player, Serializable {
+         }
+     }
+ 
++    // ------------------------------------------------------------------
++    // LOCAL BENCH PATCH (CardGuru Phase 9): getPlayable memo.
++    //
++    // Profiling the RL bench (rl/PHASE9-PERF.md) put 82% of engine time
++    // inside getPlayable, and 72% inside the full-state
++    // createSimulationForPlayableCalc() copy it makes on EVERY call. The
++    // D1 search seat provably calls it twice on the same untouched state
++    // per priority window (SearchPlayer.searchBest, then the delegated
++    // HeuristicPlayer.priority), which alone was 27.7% of game-thread
++    // samples.
++    //
++    // -Dmage.playableCache=on      memo the last result per player
++    // -Dmage.playableCache=verify  memo AND recompute, throwing if the
++    //                              two disagree (how the equivalence
++    //                              claim below was tested)
++    // -Dmage.playableCache=off     (default) untouched original path
++    //
++    // The key fingerprints everything getPlayable reads: the effects
++    // counter, turn/phase/step/step-part, active and priority player,
++    // stack size, and per player life, hand (ids), library/graveyard/
++    // exile sizes, mana pool, and every permanent's id + zone-change
++    // counter + tapped/phased/face-down/summoning-sick flags. Any
++    // difference misses the memo. A null key disables memoing for that
++    // call (used when the game has no step yet).
++    // ---- Phase 12: the redundant mana copy -------------------------
++    // getPlayableUncached() creates a private simulation, then hands it
++    // to getManaAvailable(), which copies it AGAIN "so the game is
++    // immutable on playable calculations". The caller's game is already
++    // a private, disposable copy, so that second copy is redundant work
++    // - and the profile says it is 35.4% of total game-thread time on
++    // the RL policy workload (rl/PHASE12-PERF-SCOPE.md).
++    //
++    // The risk is NOT hypothetical: getPlayableUncached reads `game`
++    // dozens of times after the call, so any mutation mana simulation
++    // performs would become visible to it. That is what `verify`
++    // measures - it computes the playable list BOTH ways, each from its
++    // own fresh simulation, and counts disagreements.
++    //
++    // -Dmage.manaNoRecopy=off     (default) untouched original path
++    // -Dmage.manaNoRecopy=on      skip the redundant copy
++    // -Dmage.manaNoRecopy=verify  compute both, compare, count, return
++    //                             the ORIGINAL result
++    private static final String MANA_NO_RECOPY_MODE =
++            System.getProperty("mage.manaNoRecopy", "off");
++    private static final boolean MANA_NO_RECOPY_ON = "on".equals(MANA_NO_RECOPY_MODE);
++    private static final boolean MANA_NO_RECOPY_VERIFY = "verify".equals(MANA_NO_RECOPY_MODE);
++    public static final java.util.concurrent.atomic.AtomicLong MANA_RECOPY_CHECKED =
++            new java.util.concurrent.atomic.AtomicLong();
++    public static final java.util.concurrent.atomic.AtomicLong MANA_RECOPY_MISMATCHES =
++            new java.util.concurrent.atomic.AtomicLong();
++
++    private static final String PLAYABLE_MEMO_MODE =
++            System.getProperty("mage.playableCache", "off");
++    private static final boolean PLAYABLE_MEMO_ON = !"off".equals(PLAYABLE_MEMO_MODE);
++    private static final boolean PLAYABLE_MEMO_VERIFY = "verify".equals(PLAYABLE_MEMO_MODE);
++    public static final java.util.concurrent.atomic.AtomicLong PLAYABLE_MEMO_HITS =
++            new java.util.concurrent.atomic.AtomicLong();
++    public static final java.util.concurrent.atomic.AtomicLong PLAYABLE_MEMO_MISSES =
++            new java.util.concurrent.atomic.AtomicLong();
++    public static final java.util.concurrent.atomic.AtomicLong PLAYABLE_MEMO_MISMATCHES =
++            new java.util.concurrent.atomic.AtomicLong();
++    // deliberately NOT copied by the copy constructor: a simulation gets
++    // a cold memo rather than an inherited one
++    private transient String playableMemoKeyValue;
++    private transient List<ActivatedAbility> playableMemoValue;
++
++    private String playableMemoKey(Game game, boolean hidden, Zone fromZone,
++                                   boolean hideDuplicatedAbilities) {
++        if (game.getStep() == null || game.getState() == null) {
++            return null;
++        }
++        StringBuilder sb = new StringBuilder(256);
++        sb.append(hidden).append('|').append(fromZone).append('|')
++                .append(hideDuplicatedAbilities).append('|')
++                .append(game.getState().getApplyEffectsCounter()).append('|')
++                .append(game.getTurnNum()).append('|')
++                .append(game.getPhase() == null ? "-" : game.getPhase().getType()).append('|')
++                .append(game.getStep().getType()).append('|')
++                .append(game.getStep().getStepPart()).append('|')
++                .append(game.getActivePlayerId()).append('|')
++                .append(game.getState().getPriorityPlayerId()).append('|')
++                .append(game.getStack().size()).append('|')
++                .append(game.getState().getStack().isEmpty() ? "-"
++                        : game.getStack().peek().getId()).append('#');
++        for (UUID pid : game.getState().getPlayersInRange(getId(), game)) {
++            Player p = game.getPlayer(pid);
++            if (p == null) {
++                continue;
++            }
++            sb.append(pid).append(':').append(p.getLife()).append(':')
++                    .append(p.getLibrary().size()).append(':')
++                    .append(p.getGraveyard().size()).append(':')
++                    .append(p.getHand().size()).append(':')
++                    .append(p.getManaPool().getMana()).append(':')
++                    .append(p.isInGame() ? 1 : 0).append(';');
++        }
++        for (UUID cardId : this.getHand()) {
++            sb.append(cardId).append(',');
++        }
++        sb.append('#');
++        for (Permanent permanent : game.getBattlefield().getAllPermanents()) {
++            sb.append(permanent.getId()).append(':')
++                    .append(permanent.getZoneChangeCounter(game)).append(':')
++                    .append(permanent.isTapped() ? 1 : 0)
++                    .append(permanent.isPhasedIn() ? 1 : 0)
++                    .append(permanent.isFaceDown(game) ? 1 : 0)
++                    .append(permanent.hasSummoningSickness() ? 1 : 0).append(';');
++        }
++        sb.append('#').append(game.getExile().getAllCards(game).size());
++        return sb.toString();
++    }
++
++    private static String playableSignature(List<ActivatedAbility> list) {
++        List<String> rules = new ArrayList<>();
++        for (ActivatedAbility a : list) {
++            rules.add(a.getSourceId() + "|" + a.getRule());
++        }
++        java.util.Collections.sort(rules);
++        return String.join("\n", rules);
++    }
++
+     @Override
+     public List<ActivatedAbility> getPlayable(Game game, boolean hidden) {
+         return getPlayable(game, hidden, Zone.ALL, true);
+@@ -4302,13 +4435,83 @@ public abstract class PlayerImpl implements Player, Serializable {
+      * @return
+      */
+     public List<ActivatedAbility> getPlayable(Game originalGame, boolean hidden, Zone fromZone, boolean hideDuplicatedAbilities) {
++        // LOCAL BENCH PATCH (CardGuru Phase 9): opt-in memo, see
++        // playableMemoKey below. Off by default = original code path.
++        if (PLAYABLE_MEMO_ON) {
++            String memoKey = playableMemoKey(originalGame, hidden, fromZone, hideDuplicatedAbilities);
++            if (memoKey != null && memoKey.equals(playableMemoKeyValue)
++                    && playableMemoValue != null) {
++                PLAYABLE_MEMO_HITS.incrementAndGet();
++                List<ActivatedAbility> cached = new ArrayList<>(playableMemoValue);
++                if (!PLAYABLE_MEMO_VERIFY) {
++                    return cached;
++                }
++                List<ActivatedAbility> fresh = getPlayableUncached(
++                        originalGame, hidden, fromZone, hideDuplicatedAbilities);
++                if (!playableSignature(cached).equals(playableSignature(fresh))) {
++                    PLAYABLE_MEMO_MISMATCHES.incrementAndGet();
++                    throw new IllegalStateException("playable memo mismatch for "
++                            + getName() + " key=" + memoKey
++                            + "\n cached=" + playableSignature(cached)
++                            + "\n fresh =" + playableSignature(fresh));
++                }
++                return fresh;
++            }
++            PLAYABLE_MEMO_MISSES.incrementAndGet();
++            List<ActivatedAbility> fresh = getPlayableUncached(
++                    originalGame, hidden, fromZone, hideDuplicatedAbilities);
++            playableMemoKeyValue = memoKey;
++            playableMemoValue = memoKey == null ? null : new ArrayList<>(fresh);
++            return fresh;
++        }
++        return getPlayableUncached(originalGame, hidden, fromZone, hideDuplicatedAbilities);
++    }
++
++    private List<ActivatedAbility> getPlayableUncached(Game originalGame, boolean hidden, Zone fromZone, boolean hideDuplicatedAbilities) {
++        if (MANA_NO_RECOPY_VERIFY) {
++            // each path gets its OWN fresh simulation, so the two runs
++            // cannot contaminate each other; the ORIGINAL result is
++            // returned so verify mode never changes play
++            List<ActivatedAbility> baseline =
++                    getPlayableUncachedImpl(originalGame, hidden, fromZone, hideDuplicatedAbilities, false);
++            List<ActivatedAbility> candidate =
++                    getPlayableUncachedImpl(originalGame, hidden, fromZone, hideDuplicatedAbilities, true);
++            MANA_RECOPY_CHECKED.incrementAndGet();
++            if (!samePlayable(baseline, candidate)) {
++                MANA_RECOPY_MISMATCHES.incrementAndGet();
++            }
++            return baseline;
++        }
++        return getPlayableUncachedImpl(originalGame, hidden, fromZone, hideDuplicatedAbilities,
++                MANA_NO_RECOPY_ON);
++    }
++
++    /** Phase 12: order-independent comparison of two playable lists. */
++    private static boolean samePlayable(List<ActivatedAbility> a, List<ActivatedAbility> b) {
++        if (a.size() != b.size()) {
++            return false;
++        }
++        java.util.List<String> x = new ArrayList<>(a.size());
++        java.util.List<String> y = new ArrayList<>(b.size());
++        for (ActivatedAbility ab : a) {
++            x.add(ab.getSourceId() + "|" + ab.getRule());
++        }
++        for (ActivatedAbility ab : b) {
++            y.add(ab.getSourceId() + "|" + ab.getRule());
++        }
++        java.util.Collections.sort(x);
++        java.util.Collections.sort(y);
++        return x.equals(y);
++    }
++
++    private List<ActivatedAbility> getPlayableUncachedImpl(Game originalGame, boolean hidden, Zone fromZone, boolean hideDuplicatedAbilities, boolean skipManaCopy) {
+         List<ActivatedAbility> playable = new ArrayList<>();
+         if (shouldSkipGettingPlayable(originalGame)) {
+             return playable;
+         }
+ 
+         Game game = originalGame.createSimulationForPlayableCalc();
+-        ManaOptions availableMana = getManaAvailable(game); // get available mana options (mana pool and conditional mana added (but conditional still lose condition))
++        ManaOptions availableMana = skipManaCopy ? getManaAvailableNoCopy(game) : getManaAvailable(game); // get available mana options (mana pool and conditional mana added (but conditional still lose condition))
+         if (hidden && fromZone.match(Zone.HAND)) {
+             for (Card card : hand.getCards(game)) {
+                 for (Ability ability : card.getAbilities(game)) { // gets this activated ability from hand? (Morph?)

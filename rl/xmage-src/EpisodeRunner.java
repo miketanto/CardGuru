@@ -425,6 +425,12 @@ public class EpisodeRunner {
         }
         // -Dmage.playableCache: report the memo's hit rate so a run can
         // never claim the speedup without showing the cache did work
+        if (!"off".equals(System.getProperty("mage.manaNoRecopy", "off"))) {
+            out.printf(Locale.ROOT, "RL|manaNoRecopy|mode=%s|checked=%d|mismatches=%d%n",
+                    System.getProperty("mage.manaNoRecopy"),
+                    mage.players.PlayerImpl.MANA_RECOPY_CHECKED.get(),
+                    mage.players.PlayerImpl.MANA_RECOPY_MISMATCHES.get());
+        }
         if (!"off".equals(System.getProperty("mage.playableCache", "off"))) {
             out.printf(Locale.ROOT, "RL|playableMemo|mode=%s|hits=%d|misses=%d"
                             + "|mismatches=%d%n",
