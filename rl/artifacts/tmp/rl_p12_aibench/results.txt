@@ -1,0 +1,7 @@
+AIBENCH|agent=ck_6144|opp=D1|games=50|win_rate=0.4800|gps=0.623|turns=18.4
+AIBENCH|agent=ck_6144|opp=CP7|games=50|win_rate=0.2800|gps=0.044|turns=18.7
+AIBENCH|agent=ck_6144|opp=MCTS|NO_RESULT
+AIBENCH|agent=p10_final|opp=D1|games=50|win_rate=0.4400|gps=0.678|turns=17.9
+AIBENCH|agent=p10_final|opp=CP7|games=50|win_rate=0.2200|gps=0.051|turns=17.9
+AIBENCH|agent=p10_final|opp=MCTS|NO_RESULT
+AIBENCH_DONE
