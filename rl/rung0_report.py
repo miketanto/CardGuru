@@ -164,6 +164,11 @@ def main():
               % ", ".join("%.2f" % (a / b) for a, b in cp if b))
         print("  reference: PHASE12-XMAGE-AI.md has ck_6144 at .28 and "
               "p10_final at .22, 50 games each (+-.13)")
+        if n < 100:
+            print("  NOTE: %d games total. Per-seed rows at this n are "
+                  "nearly uninformative; quote only the pooled figure, "
+                  "and only as a coarse check that the agent is not "
+                  "already near CP7." % n)
 
 
 if __name__ == "__main__":

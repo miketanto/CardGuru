@@ -19,7 +19,7 @@ bash rl/rung0_sweep.sh B0Base B0Twin 2048 5
 with
 
 ```
-R0_EVERY=512 R0_EVAL_G=200 R0_CP7_G=50
+R0_EVERY=512 R0_EVAL_G=200 R0_CP7_G=10
 ```
 
 exported first — that is the exact configuration the white branch is
@@ -40,7 +40,7 @@ at 512 episodes, so the plateau in this minimal game is early.
 Launch it detached and do not sit on it:
 
 ```
-export R0_EVERY=512 R0_EVAL_G=200 R0_CP7_G=50
+export R0_EVERY=512 R0_EVAL_G=200 R0_CP7_G=10
 setsid nohup bash rl/rung0_sweep.sh B0Base B0Twin 2048 5 \
     > /tmp/rl_rung0_B0Base_sweep.out 2>&1 &
 ```
@@ -133,9 +133,13 @@ incrementally and editing one mid-run has corrupted a run here before.
 The per-seed lines are raw material, not the result. What is wanted:
 
 1. **Pooled across 5 seeds**, with 95% bands: D0, D1, TWIN, CP7 at the
-   final checkpoint. Pooled CP7 is 250 games (±.06) against the ±.13 of
-   the single 50-game rows in `PHASE12-XMAGE-AI.md` — that is the number
-   worth carrying.
+   final checkpoint. **CP7 is 10 games per seed**, not 50 — it runs at
+   0.044 games/sec (18s per decision, depth-6 alpha-beta) and 50 cost
+   ~19 min a seed. A single 10-game row is nearly uninformative (±.28 at
+   p=.5); only the 5-seed pool of 50 games is worth quoting, and that
+   lands at ±.13, the same precision as the rows in
+   `PHASE12-XMAGE-AI.md` rather than better than them. Quote the pooled
+   number and never a per-seed one.
 2. **Where it saturates.** Every run in `POOLED-ANALYSIS.md` §4
    plateaued between 1.5k and 6k episodes against a fixed population.
    Rung 0 is a far smaller game - the white branch was already beating
