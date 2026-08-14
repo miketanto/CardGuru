@@ -44,7 +44,7 @@ import re
 
 COLOUR = "R"
 LAND = "Mountain"
-LAND_PRINTING = "FDN:277"   # a basic Mountain printing in the pin
+LAND_PRINTING = "FDN:278"   # a basic Mountain printing in the pin
 N_LAND = 24
 
 # (cmc, power, toughness, copies) — the curve.

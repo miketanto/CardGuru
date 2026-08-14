@@ -1,0 +1,1272 @@
+KEYWORD_CREATURES=495
+K|A.I.M. Bot|{2}{U}|2/3|MSC:529|Flying
+K|Aardvark Sloth|{3}{W}|3/3|TLE:212|Lifelink
+K|Aegis of the Gods|{1}{W}|2/1|JOU:1|You have hexproof.
+K|Affa Protector|{2}{W}|1/4|OGW:14|Vigilance
+K|Agent of Stromgald|{R}|1/1|ALL:64a|{R}: Add {B}.
+K|Air Elemental|{3}{U}{U}|4/4|J25:284|Flying
+K|Ajani's Sunstriker|{W}{W}|2/2|CNS:66|Lifelink
+K|Akoum Warrior|{5}{R}|4/5|PIO:122|Trample
+K|Alabaster Host Sanctifier|{1}{W}|2/2|MOM:4|Lifelink
+K|Alaborn Grenadier|{W}{W}|2/2|P02:2|Vigilance
+K|Alaborn Musketeer|{1}{W}|2/1|ME4:1|Reach
+K|Alert Shu Infantry|{2}{W}|2/2|PTK:1|Vigilance
+K|Ali Baba|{R}|1/1|REN:71|{R}: Tap target Wall.
+K|Alley Strangler|{2}{B}|2/3|J22:375|Menace
+K|Alpine Watchdog|{1}{W}|2/2|M21:2|Vigilance
+K|Anaba Bodyguard|{3}{R}|2/3|10E:187*|First strike
+K|Ancient Silverback|{4}{G}{G}|6/5|9ED:230|{G}: Regenerate {this}.
+K|Ankle Biter|{G}|1/1|OTJ:153|Deathtouch
+K|Apprentice Wizard|{1}{U}{U}|0/1|REN:23|{U}, {T}: Add {C}{C}{C}.
+K|Arachnoid|{6}|2/6|5DN:102|Reach
+K|Archivist|{2}{U}{U}|1/1|ULG:26|{T}: Draw a card.
+K|Ardent Militia|{4}{W}|2/5|WTH:5|Vigilance
+K|Argothian Swine|{3}{G}|3/3|USG:235|Trample
+K|Armored Pegasus|{1}{W}|1/2|TMP:5|Flying
+K|Arrogant Vampire|{3}{B}{B}|4/3|POR:79|Flying
+K|Ashcoat Bear|{1}{G}|2/2|TSP:190|Flash
+K|Ashenmoor Gouger|{B/R}{B/R}{B/R}|4/4|SHM:180|{this} can't block.
+K|Assault Griffin|{3}{W}|3/2|GTC:4|Flying
+K|Avacyn's Pilgrim|{G}|1/1|ISD:170|{T}: Add {W}.
+K|Aven Envoy|{U}|0/2|LGN:30|Flying
+K|Aven Sentry|{3}{W}|3/2|DOM:3|Flying
+K|Aven Skirmisher|{W}|1/1|FRF:6|Flying
+K|Azure Drake|{3}{U}|2/4|J25:288|Flying
+K|Azure Mage|{1}{U}|2/1|C14:98|{3}{U}: Draw a card.
+K|Bartizan Bats|{3}{B}|3/1|GRN:62|Flying
+K|Battle Hurda|{4}{W}|3/3|WWK:4|First strike
+K|Beast in Show|{4}{G}{G}|6/4|UST:103a|Trample
+K|Benalish Hero|{W}|1/1|3ED:4|Banding
+K|Benalish Infantry|{2}{W}|1/3|WTH:8|Banding
+K|Benthic Giant|{5}{U}|4/5|BBD:113|Hexproof
+K|Bird Maiden|{2}{R}|1/2|REN:74|Flying
+K|Bishop's Soldier|{1}{W}|2/2|J25:174|Lifelink
+K|Blistering Barrier|{2}{R}|5/2|MIR:159|Defender
+K|Blood Glutton|{4}{B}|4/3|M21:90|Lifelink
+K|Blossom Dryad|{2}{G}|2/2|XLN:178|{T}: Untap target land.
+K|Bog Imp|{1}{B}|1/1|REN:49|Flying
+K|Bog Initiate|{1}{B}|1/1|INV:95|{1}: Add {B}.
+K|Border Patrol|{4}{W}|1/6|JUD:6|Vigilance
+K|Boreal Druid|{G}|1/1|CSP:105|{T}: Add {C}.
+K|Boros Recruit|{R/W}|1/1|RAV:243|First strike
+K|Boros Swiftblade|{R}{W}|1/2|RAV:193|Double strike
+K|Brambleweft Behemoth|{4}{G}{G}|6/6|HOU:202|Trample
+K|Brazen Scourge|{1}{R}{R}|3/3|UMA:125|Haste
+K|Breakneck Berserker|{2}{R}|3/2|KHM:124|Haste
+K|Brushstrider|{1}{G}|3/1|J25:640|Vigilance
+K|Bygone Colossus|{9}|9/9|EOE:235|Warp {3}
+K|Canopy Spider|{1}{G}|1/3|BBD:191|Reach
+K|Caravan Hurda|{4}{W}|1/5|ZEN:5|Lifelink
+K|Carnivorous Plant|{3}{G}|4/5|REN:117|Defender
+K|Carrion Screecher|{3}{B}|3/1|GN2:27|Flying
+K|Champion of Arashin|{3}{W}|3/2|BBD:90|Lifelink
+K|Chapel Geist|{1}{W}{W}|2/3|ISD:7|Flying
+K|Chardalyn Dragon|{6}|4/4|CLB:306|Flying
+K|Charging Badger|{G}|1/1|BNG:118|Trample
+K|Charity Extractor|{3}{B}|1/5|WAR:81|Lifelink
+K|Child of Night|{1}{B}|2/1|GRN:65|Lifelink
+K|Clay Statue|{4}|3/1|REN:120|{2}: Regenerate {this}.
+K|Cloud Manta|{3}{U}|3/2|BFZ:71|Flying
+K|Cloudcrown Oak|{2}{G}{G}|3/4|LRW:201|Reach
+K|Coiled Tinviper|{3}|2/1|TMP:279|First strike
+K|Cold-Water Snapper|{5}{U}|4/5|DOM:48|Hexproof
+K|Colorful Feiyi Sparrow|{1}{W}|1/3|GS1:2|Flying
+K|Colossal Dreadmaw|{4}{G}{G}|6/6|J22:640|Trample
+K|Concordia Pegasus|{1}{W}|1/3|RNA:7|Flying
+K|Conifer Strider|{3}{G}|5/1|DTK:179|Hexproof
+K|Copper Myr|{2}|1/1|HOP:109|{T}: Add {G}.
+K|Covert Operative|{4}{U}|3/2|LGN:33|{this} can't be blocked.
+K|Crash of Rhinos|{6}{G}{G}|8/4|BTD:51|Trample
+K|Craven Giant|{2}{R}|4/1|TPR:128|{this} can't block.
+K|Craven Knight|{1}{B}|2/2|POR:85|{this} can't block.
+K|Crooked Custodian|{1}{B}|3/2|J25:416|{this} enters tapped.
+K|Crystacean|{3}{U}|1/6|J25:303|Flash
+K|Crystalline Sliver|{W}{U}|2/2|H09:11|All Slivers have shroud.
+K|Cudgel Troll|{2}{G}{G}|4/3|M11:167|{G}: Regenerate {this}.
+K|Daggerback Basilisk|{2}{G}|2/2|BBD:194|Deathtouch
+K|Dakmor Bat|{1}{B}|1/1|P02:68|Flying
+K|Dancing Scimitar|{4}|1/5|3ED:243|Flying
+K|Darksteel Myr|{3}|0/1|SOM:151|Indestructible
+K|Dawn Gryff|{2}{W}|2/2|EMN:19|Flying
+K|Daybreak Chaplain|{1}{W}|1/3|J22:171|Lifelink
+K|Deadly Insect|{4}{G}|6/1|ALL:86a|Shroud
+K|Death Speakers|{W}|1/1|ME1:7|Protection from black
+K|Deer-Dog|{1}{R}|1/3|TLE:114|First strike
+K|Defiant Elf|{G}|1/1|LGN:123|Trample
+K|Desert Drake|{3}{R}|2/2|POR:122|Flying
+K|Diabolic Machine|{7}|4/4|REN:129|{3}: Regenerate {this}.
+K|Diregraf Ghoul|{B}|2/2|ISD:97|{this} enters tapped.
+K|Djinn of the Lamp|{5}{U}{U}|5/6|POR:52|Flying
+K|Dragon Moose|{3}{R}|3/3|TLE:235|Haste
+K|Dross Prowler|{2}{B}|2/1|MRD:64|Fear
+K|Drowned|{1}{U}|1/1|DRK:24|{B}: Regenerate {this}.
+K|Drudge Skeletons|{1}{B}|1/1|3ED:107|{B}: Regenerate {this}.
+K|Druid of the Cowl|{1}{G}|1/3|AER:106|{T}: Add {G}.
+K|Dusk Imp|{2}{B}|2/1|ODY:131|Flying
+K|Duskdale Wurm|{5}{G}{G}|7/7|DPA:58|Trample
+K|Dutiful Thrull|{W}|1/1|GTC:11|{B}: Regenerate {this}.
+K|Earthshaking Si|{5}{G}|5/5|GS1:31|Trample
+K|Ebony Rhino|{7}|4/5|ME4:199|Trample
+K|Eldrazi Devastator|{8}|8/9|BFZ:7|Trample
+K|Elvish Archers|{1}{G}|2/1|3ED:193|First strike
+K|Elvish Lookout|{G}|1/1|UDS:103|Shroud
+K|Elvish Mystic|{G}|1/1|HOC:205|{T}: Add {G}.
+K|Enforcer Griffin|{4}{W}|3/4|CLU:60|Flying
+K|Esper Cormorants|{2}{W}{U}|3/3|CON:105|Flying
+K|Exocomp|{2}{U}|3/1|TRC:145|Flying
+K|Exultant Skymarcher|{1}{W}{W}|2/3|RIX:7|Flying
+K|Faithbearer Paladin|{4}{W}|3/4|EMN:25|Lifelink
+K|Fang of Shigeki|{G}|1/1|NEO:183|Deathtouch
+K|Fangren Hunter|{3}{G}{G}|4/4|MRD:119|Trample
+K|Feiyi Snake|{1}{G}|2/1|GS1:24|Reach
+K|Fencing Ace|{1}{W}|1/1|J25:199|Double strike
+K|Feral Abomination|{5}{B}|5/5|DOM:92|Deathtouch
+K|Feral Shadow|{2}{B}|2/1|POR:93|Flying
+K|Fighting Drake|{2}{U}{U}|2/4|TMP:63|Flying
+K|Fire Nation Ambushers|{2}{B}|3/2|TLE:229|Flash
+K|Fire Nation Soldier|{2}{R}|3/2|TLE:238|Haste
+K|Flying Dolphin-Fish|{1}{U}|1/3|TLE:223|Flying
+K|Flying Men|{U}|1/1|TSB:20|Flying
+K|Force of Savagery|{2}{G}|8/0|FUT:126|Trample
+K|Forgotten Sentinel|{4}|4/3|M21:231|{this} enters tapped.
+K|Fortified Rampart|{1}{W}|0/6|BFZ:27|Defender
+K|Frenetic Raptor|{5}{R}|6/6|LGN:93|Beasts can't block.
+K|Frog-Squirrels|{1}{G}|2/2|TLE:251|Reach
+K|Fyndhorn Elder|{2}{G}|1/1|ICE:243|{T}: Add {G}{G}.
+K|Fyndhorn Elves|{G}|1/1|VMA:210|{T}: Add {G}.
+K|Gaea's Skyfolk|{G}{U}|2/2|APC:101|Flying
+K|Galina's Knight|{W}{U}|2/2|INV:248|Protection from red
+K|Garruk's Companion|{G}{G}|3/2|M11:176|Trample
+K|Geist of the Moors|{1}{W}{W}|3/1|A25:15|Flying
+K|Ghirapur Osprey|{2}{W}|2/2|AER:20|Flying
+K|Giant Mantis|{3}{G}|2/4|VMA:213|Reach
+K|Giant Scorpion|{2}{B}|1/3|ZEN:90|Deathtouch
+K|Giant Spider|{3}{G}|2/4|3ED:200|Reach
+K|Giant Warthog|{5}{G}|5/5|JUD:118|Trample
+K|Gilacorn|{B}|1/1|TLE:231|Deathtouch
+K|Glacial Wall|{2}{U}|0/7|EMA:53|Defender
+K|Gladecover Scout|{G}|1/1|PIO:175|Hexproof
+K|Gloomhunter|{2}{B}|2/1|ROE:111|Flying
+K|Gluttonous Zombie|{4}{B}|3/3|ONS:151|Fear
+K|Gnottvold Recluse|{2}{G}|4/2|KHM:172|Reach
+K|Goblin Chariot|{2}{R}|2/2|9ED:191|Haste
+K|Goblin Deathraiders|{B}{R}|3/1|ALA:169|Trample
+K|Goblin Outlander|{B}{R}|2/2|CON:109|Protection from white
+K|Goblin Raider|{1}{R}|2/2|USG:194|{this} can't block.
+K|Goblin Sky Raider|{2}{R}|1/2|DPA:46|Flying
+K|Gold Myr|{2}|1/1|HOP:114|{T}: Add {W}.
+K|Gold-Forged Sentinel|{6}|4/4|BBD:236|Flying
+K|Golden Hind|{1}{G}|2/1|JOU:124|{T}: Add {G}.
+K|Golden-Tail Disciple|{2}{W}|2/3|J25:205|Lifelink
+K|Goliath Beetle|{2}{G}|3/1|UDS:107|Trample
+K|Goliath Sphinx|{5}{U}{U}|8/7|CMM:99|Flying
+K|Goliath Spider|{6}{G}{G}|7/6|RAV:168|Reach
+K|Goobbue Gardener|{1}{G}|1/3|FIN:188|{T}: Add {G}.
+K|Gorn Captain|{3}{G}|4/3|TRC:172|Trample
+K|Grappler Spider|{1}{G}|2/1|WWK:102|Reach
+K|Grazing Whiptail|{2}{G}{G}|3/4|GN2:48|Reach
+K|Greater Basilisk|{3}{G}{G}|3/5|M11:180|Deathtouch
+K|Greenside Watcher|{1}{G}|2/1|GTC:122|{T}: Untap target Gate.
+K|Greenweaver Druid|{2}{G}|1/1|DPA:68|{T}: Add {G}{G}.
+K|Greenwood Sentinel|{1}{G}|2/2|J25:666|Vigilance
+K|Guardian Lions|{4}{W}|1/6|M13:17|Vigilance
+K|Guardians of Meletis|{3}|0/6|THS:217|Defender
+K|Guma|{2}{R}|2/2|USG:197|Protection from blue
+K|Gyre Engineer|{1}{G}{U}|1/1|RNA:180|{T}: Add {G}{U}.
+K|Halberdier|{3}{R}|3/1|ODY:196|First strike
+K|Hand of Silumgar|{1}{B}|2/1|BBD:146|Deathtouch
+K|Havoc Devils|{2}{R}{R}|4/3|M19:146|Trample
+K|Head of Security|{1}{W}|2/2|TRC:133|First strike
+K|Hearthfire Hobgoblin|{R/W}{R/W}{R/W}|2/2|HOP:102|Double strike
+K|Hedron Crawler|{2}|0/1|OGW:164|{T}: Add {C}.
+K|Hippo-Cows|{4}{G}|5/4|TLE:252|Trample
+K|Hired Blade|{2}{B}|3/2|ACR:299|Flash
+K|Hired Poisoner|{B}|1/1|GRN:72|Deathtouch
+K|Hitchclaw Recluse|{2}{G}|1/4|GRN:133|Reach
+K|Horned Troll|{2}{G}|2/2|MMQ:251|{G}: Regenerate {this}.
+K|Hornet Cobra|{1}{G}{G}|2/1|LEG:190|First strike
+K|Horseshoe Crab|{2}{U}|1/3|DMR:55|{U}: Untap {this}.
+K|Hostile Minotaur|{3}{R}|3/3|M19:147|Haste
+K|Huatli's Snubhorn|{1}{W}|2/2|XLN:286|Vigilance
+K|Hulking Bugbear|{1}{R}{R}|3/3|AFR:149|Haste
+K|Hulking Cyclops|{3}{R}{R}|5/5|VIS:84|{this} can't block.
+K|Hulking Goblin|{1}{R}|2/2|VMA:174|{this} can't block.
+K|Hulking Ogre|{2}{R}|3/3|S99:108|{this} can't block.
+K|Hullcarver|{B}|1/1|EOE:105|Deathtouch
+K|Humble Budoka|{1}{G}|2/2|CHK:214|Shroud
+K|Humongulus|{4}{U}|2/5|RNA:41|Hexproof
+K|Icatian Phalanx|{4}{W}|2/4|ME2:16|Banding
+K|Iroas's Champion|{1}{R}{W}|2/2|ORI:214|Double strike
+K|Iron Myr|{2}|1/1|HOP:115|{T}: Add {R}.
+K|Iron Tusk Elephant|{4}{W}|3/3|MIR:22|Trample
+K|Jagwasp Swarm|{3}{B}|3/2|WWK:58|Flying
+K|Jhessian Infiltrator|{G}{U}|2/2|ALA:174|{this} can't be blocked.
+K|Jhovall Queen|{4}{W}{W}|4/7|MMQ:25|Vigilance
+K|Jhovall Rider|{4}{W}|3/3|MMQ:26|Trample
+K|Jungle Lion|{G}|2/1|ME3:125|{this} can't block.
+K|Juniper Order Druid|{2}{G}|1/1|ICE:251|{T}: Untap target land.
+K|Kalonian Behemoth|{5}{G}{G}|9/9|M10:188|Shroud
+K|Karoo Meerkat|{1}{G}|2/1|MIR:225|Protection from blue
+K|Keen-Eyed Archers|{2}{W}|2/2|POR:19|Reach
+K|Kelinore Bat|{2}{B}|2/1|M10:101|Flying
+K|King Cheetah|{3}{G}|3/2|VIS:110|Flash
+K|Kitesail Scout|{W}|1/1|BFZ:33|Flying
+K|Kithkin Billyrider|{2}{W}|1/3|MOM:24|Double strike
+K|Kitsune Diviner|{W}|0/1|CHK:26|{T}: Tap target Spirit.
+K|Kjeldoran Escort|{2}{W}{W}|2/3|ALL:7a|Banding
+K|Kjeldoran Warrior|{W}|1/1|ICE:41|Banding
+K|Knight of the Tusk|{4}{W}{W}|3/7|M19:18|Vigilance
+K|Knotvine Mystic|{R}{G}{W}|2/2|CON:114|{1}, {T}: Add {R}{G}{W}.
+K|Kolinahr Priest|{2}{U}|3/2|TRC:146|Flash
+K|Komodo Rhino|{3}{R}|5/2|TLE:241|Trample
+K|Kozilek's Channeler|{5}|4/4|BFZ:10|{T}: Add {C}{C}.
+K|Kraul Stinger|{2}{G}|2/2|WAR:165|Deathtouch
+K|Land Leeches|{1}{G}{G}|2/2|REN:147|First strike
+K|Lantern Kami|{W}|1/1|CHK:32|Flying
+K|Latch Seeker|{1}{U}{U}|3/1|PAVR:63|{this} can't be blocked.
+K|Leaden Myr|{2}|1/1|HOP:116|{T}: Add {B}.
+K|Leaf Gilder|{1}{G}|2/1|ARC:63|{T}: Add {G}.
+K|Leonin Skyhunter|{W}{W}|2/2|MBS:11|Flying
+K|Ley Druid|{2}{G}|1/1|3ED:206|{T}: Untap target land.
+K|Lightning Elemental|{3}{R}|4/1|TMP:186|Haste
+K|Lightning Hounds|{2}{R}{R}|3/2|PRM:36154|First strike
+K|Llanowar Dead|{B}{G}|2/2|APC:109|{T}: Add {B}.
+K|Llanowar Elves|{G}|1/1|J25:149|{T}: Add {G}.
+K|Llanowar Knight|{G}{W}|2/2|INV:254|Protection from black
+K|Llanowar Tribe|{G}{G}{G}|3/3|J21:598|{T}: Add {G}{G}{G}.
+K|Lucent Liminid|{3}{W}{W}|3/3|FUT:24|Flying
+K|Lumengrid Gargoyle|{6}|4/4|CMR:321|Flying
+K|Magnigoth Sentry|{3}{G}|4/4|DMU:172|Reach
+K|Mahamoti Djinn|{4}{U}{U}|5/6|3ED:66|Flying
+K|Makindi Aeronaut|{1}{W}|1/3|OGW:27|Flying
+K|Makindi Griffin|{3}{W}|2/4|ROE:36|Flying
+K|Mammoth Spider|{4}{G}|3/5|J22:687|Reach
+K|Manakin|{2}|1/1|J22:785|{T}: Add {C}.
+K|Maned Serval|{1}{W}|1/4|IKO:23|Vigilance
+K|Marisi's Twinclaws|{2}{R/W}{G}|2/4|ARB:140|Double strike
+K|Markov Patrician|{2}{B}|3/1|ISD:107|Lifelink
+K|Merfolk of the Depths|{4}{G/U}{G/U}|4/2|GTC:221|Flash
+K|Mesa Unicorn|{1}{W}|2/2|J25:224|Lifelink
+K|Metathran Soldier|{1}{U}|1/1|UDS:39|{this} can't be blocked.
+K|Metathran Zombie|{1}{U}|1/1|INV:63|{B}: Regenerate {this}.
+K|Midnight Duelist|{W}|1/2|AVR:27|Protection from Vampires
+K|Millennial Gargoyle|{4}|2/2|BBD:239|Flying
+K|Misshapen Fiend|{1}{B}|1/1|MMQ:147|Flying
+K|Mist Leopard|{3}{G}|3/2|M10:193|Shroud
+K|Mist-Cloaked Herald|{U}|1/1|RIX:43|{this} can't be blocked.
+K|Mistral Charger|{1}{W}|2/1|DIS:13|Flying
+K|Moaning Spirit|{2}{B}|2/1|P02:79|Flying
+K|Moat Piranhas|{1}{U}|3/3|M20:67|Defender
+K|Monoist Sentry|{B}|4/1|EOE:111|Defender
+K|Moon Heron|{3}{U}|3/2|ISD:69|Flying
+K|Moon Sprite|{1}{G}|1/1|S00:42|Flying
+K|Moonglove Winnower|{3}{B}|2/3|DPA:29|Deathtouch
+K|Moorish Cavalry|{2}{W}{W}|3/3|TSB:11|Trample
+K|Moss Kami|{5}{G}|5/5|CHK:228|Trample
+K|Moss Viper|{G}|1/1|THB:179|Deathtouch
+K|Mosscoat Goriak|{2}{G}|2/4|IKO:167|Vigilance
+K|Mountain Bandit|{R}|1/1|PTK:117|Haste
+K|Murmuring Phantasm|{1}{U}|0/5|DGM:15|Defender
+K|Nacatl Outlander|{R}{G}|2/2|CON:119|Protection from blue
+K|Nantuko Elder|{2}{G}|1/2|ODY:254|{T}: Add {C}{G}.
+K|Nath's Buffoon|{1}{B}|1/1|LRW:129|Protection from Elves
+K|Needlepeak Spider|{3}{R}|4/2|TSR:177|Reach
+K|Needleshot Gourna|{4}{G}{G}|3/6|LGN:133|Reach
+K|Nest Robber|{1}{R}|2/1|J22:576|Haste
+K|Nightspider|{G}|1/1|SWS:149|Deathtouch
+K|Nimble Birdsticker|{2}{R}|2/3|M20:333|Reach
+K|Nimble Pilferer|{1}{B}|2/1|ANB:55|Flash
+K|Nimbus of the Isles|{4}{U}|3/3|BBD:124|Flying
+K|Nip Gwyllion|{W/B}|1/1|EVE:92|Lifelink
+K|Norwood Archers|{3}{G}|3/3|P02:136|Reach
+K|Noxious Groodion|{2}{B}|2/2|RNA:78|Deathtouch
+K|Ogre Berserker|{4}{R}|4/2|P02:111|Haste
+K|Ogre Sentry|{1}{R}|3/3|CN2:168|Defender
+K|Ogre Taskmaster|{3}{R}|4/3|ME4:128|{this} can't block.
+K|Oko's Accomplices|{2}{U}|2/3|ELD:310|Flying
+K|Oraxid|{3}{U}|2/3|NEM:35|Protection from red
+K|Ornithopter|{0}|0/2|3ED:270|Flying
+K|Orochi Sustainer|{1}{G}|1/2|CHK:236|{T}: Add {G}.
+K|Oscorp Research Team|{3}{U}|1/5|SPM:40|{6}{U}: Draw two cards.
+K|Palladium Myr|{3}|2/2|CM2:207|{T}: Add {C}{C}.
+K|Pardic Wanderer|{6}|5/5|DOM:226|Trample
+K|Phantom Monster|{3}{U}|3/3|3ED:71|Flying
+K|Phantom Ninja|{1}{U}{U}|2/2|J21:230|{this} can't be blocked.
+K|Phantom Warrior|{1}{U}{U}|2/2|BBD:129|{this} can't be blocked.
+K|Pharika's Chosen|{B}|1/1|J25:474|Deathtouch
+K|Phyrexian Monitor|{3}{B}|2/2|UDS:64|{B}: Regenerate {this}.
+K|Pincher Beetles|{2}{G}|3/1|TMP:244|Shroud
+K|Pitiless Gorgon|{1}{B/G}{B/G}|2/2|GRN:218|Deathtouch
+K|Plasma Elemental|{5}{U}|4/1|5DN:34|{this} can't be blocked.
+K|Plated Slagwurm|{4}{G}{G}{G}|8/8|GVL:12|Hexproof
+K|Plated Spider|{4}{G}|4/4|BTD:59|Reach
+K|Porcelain Legionnaire|{2}{W/P}|3/1|NPH:19|First strike
+K|Pouncing Cheetah|{2}{G}|3/2|AKH:179|Flash
+K|Prickly Boggart|{B}|1/1|MOR:74|Fear
+K|Primal Huntbeast|{3}{G}|3/3|BBD:208|Hexproof
+K|Prized Griffin|{4}{W}|3/4|ELD:24|Flying
+K|Pygmy Razorback|{1}{G}|2/1|PCY:120|Trample
+K|Pyromantic Pilgrim|{2}{R}|3/1|DOM:278|Haste
+K|Raging Cougar|{2}{R}|2/2|POR:144|Haste
+K|Raging Goblin|{R}|1/1|ANB:81|Haste
+K|Raging Minotaur|{2}{R}{R}|3/3|ME3:109|Haste
+K|Raging Redcap|{2}{R}|1/2|ELD:134|Double strike
+K|Rakdos Shred-Freak|{B/R}{B/R}|2/1|UMA:219|Haste
+K|Razortooth Rats|{2}{B}|2/1|WTH:78|Fear
+K|Renegade Troops|{4}{R}|4/2|PTK:120|Haste
+K|Repentant Blacksmith|{1}{W}|1/2|CHR:11|Protection from red
+K|Restless Dead|{1}{B}|1/1|MIR:138|{B}: Regenerate {this}.
+K|Revered Dead|{1}{W}|1/1|PLC:29|{W}: Regenerate {this}.
+K|Rhox War Monk|{G}{W}{U}|3/4|F11:6|Lifelink
+K|Rib Cage Spider|{2}{G}|1/4|PCY:121|Reach
+K|Ridgetop Raptor|{3}{R}|2/1|DMR:134|Double strike
+K|Rimebound Dead|{B}|1/1|CSP:69|{S}: Regenerate {this}.
+K|Rip-Clan Crasher|{R}{G}|2/2|ALA:189|Haste
+K|Risen Sanctuary|{5}{G}{W}|8/8|RTR:190|Vigilance
+K|Roc Hunter|{1}{R}|3/1|BRO:150|Reach
+K|Roc of Kher Ridges|{3}{R}|3/3|3ED:172|Flying
+K|Rootbreaker Wurm|{5}{G}{G}|6/6|TMP:251|Trample
+K|Rotting Legion|{4}{B}|4/5|M11:115|{this} enters tapped.
+K|Royal Falcon|{1}{W}|1/1|S00:8|Flying
+K|Rubble Slinger|{2}{R/G}|2/3|RNA:217|Reach
+K|Rubbleback Rhino|{4}{G}|3/4|RTR:132|Hexproof
+K|Rusted Sentinel|{4}|3/4|M12:215|{this} enters tapped.
+K|Rustwing Falcon|{W}|1/2|M19:36|Flying
+K|Sabretooth Tiger|{2}{R}|2/1|ICE:215|First strike
+K|Sacred Wolf|{2}{G}|3/1|M11:196|Hexproof
+K|Satyr Rambler|{1}{R}|2/1|THS:139|Trample
+K|Scalebane's Elite|{3}{G}{W}|4/4|VIS:135|Protection from black
+K|Scaled Behemoth|{4}{G}{G}|6/7|CMR:251|Hexproof
+K|Scarwood Treefolk|{3}{G}|3/5|TSP:214|{this} enters tapped.
+K|Scavenging Scarab|{3}{B}|3/3|DST:51|{this} can't block.
+K|Scion of Ugin|{6}|4/4|PIO:2|Flying
+K|Scrounger of Souls|{4}{B}|3/4|HOU:76|Lifelink
+K|Scryb Sprites|{G}|1/1|3ED:215|Flying
+K|Sea Eagle|{1}{U}|1/1|S00:18|Flying
+K|Seacoast Drake|{1}{U}|1/3|M14:70|Flying
+K|Sedge Scorpion|{G}|1/1|THS:177|Deathtouch
+K|Serra Zealot|{W}|1/1|USG:46|First strike
+K|Severed Legion|{1}{B}{B}|2/2|DPA:33|Fear
+K|Shadow Glider|{2}{W}|2/2|BFZ:47|Flying
+K|Shambling Ghoul|{1}{B}|2/3|BBD:159|{this} enters tapped.
+K|Shield Bearer|{1}{W}|0/3|ME2:35|Banding
+K|Shining Aerosaur|{4}{W}|3/4|XLN:36|Flying
+K|Shivan Zombie|{B}{R}|2/2|INV:271|Protection from white
+K|Shoreline Raider|{2}{U}|2/2|INV:73|Protection from Kavu
+K|Sickbay Orderly|{2}{W}|3/2|TRC:138|Lifelink
+K|Silent Attendant|{2}{W}|0/2|USG:51|{T}: You gain 1 life.
+K|Silent Observer|{3}{U}|1/5|SOI:86|Flying
+K|Silver Myr|{2}|1/1|HOP:126|{T}: Add {U}.
+K|Silverbeak Griffin|{W}{W}|2/2|M19:285|Flying
+K|Simic Ragworm|{3}{G}|3/3|DIS:93|{U}: Untap {this}.
+K|Sisters of the Flame|{1}{R}{R}|2/2|REN:94|{T}: Add {R}.
+K|Skeletal Wurm|{7}{B}|7/6|ROE:127|{B}: Regenerate {this}.
+K|Sky Ruin Drake|{4}{U}|2/5|ZEN:66|Flying
+K|Skyblade of the Legion|{1}{W}|1/3|XLN:37|Flying
+K|Skyraker Giant|{2}{R}{R}|4/3|CMR:199|Reach
+K|Skyshroud Troopers|{3}{G}|3/3|STH:115|{T}: Add {G}.
+K|Skyswirl Harrier|{4}{W}|3/4|KLD:28|Flying
+K|Slash Panther|{4}{R/P}|4/2|NPH:96|Haste
+K|Slippery Bogle|{G/U}|1/1|UMA:223|Hexproof
+K|Slither Blade|{U}|1/2|AKH:71|{this} can't be blocked.
+K|Snapping Drake|{3}{U}|3/2|RAV:64|Flying
+K|Soaring Drake|{2}{U}|2/3|DMU:66|Flying
+K|Soliton|{5}|3/4|SOM:204|{U}: Untap {this}.
+K|Soulmender|{W}|1/1|ANB:20|{T}: You gain 1 life.
+K|Spike Jester|{B}{R}|3/1|DGM:106|Haste
+K|Spiked Baloth|{3}{G}|4/2|M13:192|Trample
+K|Spined Thopter|{2}{U/P}|2/1|NPH:45|Flying
+K|Spineless Thug|{1}{B}|2/2|NEM:71|{this} can't block.
+K|Sporecap Spider|{2}{G}|1/5|ELD:176|Reach
+K|Spotted Griffin|{3}{W}|2/3|ME4:28|Flying
+K|Squirming Mass|{1}{B}|1/1|UDS:73|Fear
+K|Squirrelanoids|{B}|1/1|TMT:81|Deathtouch
+K|Stampeding Rhino|{4}{G}|4/4|W17:29|Trample
+K|Standing Troops|{2}{W}|1/4|W17:4|Vigilance
+K|Starlight Invoker|{1}{W}|1/3|10E:47|{7}{W}: You gain 5 life.
+K|Starlit Angel|{3}{W}{W}|3/4|POR:30|Flying
+K|Steadfast Guard|{W}{W}|2/2|10E:48*|Vigilance
+K|Steadfast Paladin|{1}{W}|2/2|AFR:38|Lifelink
+K|Steel Wall|{1}|0/4|MRD:248|Defender
+K|Stomper Cub|{3}{G}{G}|5/3|ROE:210|Trample
+K|Stone-Throwing Devils|{B}|1/1|ARN:33+|First strike
+K|Storm Crow|{1}{U}|1/2|SLD:60|Flying
+K|Stormcloud Spirit|{3}{U}{U}|4/4|GS1:11|Flying
+K|Stormfront Pegasus|{1}{W}|2/1|J21:778|Flying
+K|Story Seeker|{1}{W}|2/2|KHM:34|Lifelink
+K|Sun Sentinel|{1}{W}|2/2|RIX:26|Vigilance
+K|Sunspire Griffin|{1}{W}{W}|2/3|RTR:25|Flying
+K|Suntail Hawk|{W}|1/1|JUD:28|Flying
+K|Tajuru Blightblade|{G}|1/1|ZNR:208|Deathtouch
+K|Tajuru Snarecaster|{2}{G}|1/4|ZNR:210|Reach
+K|Talarian Hook Spider|{1}{G}|2/2|TRC:175|Reach
+K|Talas Air Ship|{3}{U}|3/2|P02:48|Flying
+K|Talas Scout|{1}{U}|1/2|P02:52|Flying
+K|Talas Warrior|{1}{U}{U}|2/2|P02:53|{this} can't be blocked.
+K|Talon Trooper|{1}{W}{U}|2/3|ARB:14|Flying
+K|Talruum Minotaur|{2}{R}{R}|3/3|BTD:47|Haste
+K|Tangle Mantis|{2}{G}{G}|3/4|MBS:91|Trample
+K|Tangled Florahedron|{1}{G}|1/1|PMEI:2020-8|{T}: Add {G}.
+K|Taoist Hermit|{2}{G}|2/2|PTK:150|Hexproof
+K|Tenement Crasher|{5}{R}|5/4|RTR:108|Haste
+K|Territorial Roc|{1}{W}|1/3|DTK:43|Flying
+K|Third Path Savant|{2}{U}|2/3|BRO:67|{7}: Draw two cards.
+K|Thraben Valiant|{1}{W}|2/1|AVR:39|Vigilance
+K|Thundering Giant|{3}{R}{R}|4/3|W17:23|Haste
+K|Thundering Tanadon|{4}{G/P}{G/P}|5/4|NPH:122|Trample
+K|Tidal Kraken|{5}{U}{U}{U}|6/6|9ED:105|{this} can't be blocked.
+K|Timber Wolves|{G}|1/1|3ED:219|Banding
+K|Tormented Angel|{3}{W}|1/5|UDS:22|Flying
+K|Tower Gargoyle|{1}{W}{U}{B}|4/4|ALA:205|Flying
+K|Towering Indrik|{3}{G}|2/4|RTR:137|Reach
+K|Trained Caracal|{W}|1/1|J22:256|Lifelink
+K|Transguild Courier|{4}|3/3|DIS:168|{this} is all colors.
+K|Tree Monkey|{G}|1/1|P02:148|Reach
+K|Triton Shorestalker|{U}|1/1|J22:365|{this} can't be blocked.
+K|True Believer|{W}{W}|2/2|10E:53*|You have shroud.
+K|Tundra Wall|{1}{W}|0/4|TLE:220|Defender
+K|Tundra Wolves|{W}|1/1|REN:21|First strike
+K|Turtle-Seals|{3}{U}|2/4|TLE:226|Vigilance
+K|Twinscroll Shaman|{2}{R}|1/2|STX:118|Double strike
+K|Two-Headed Cerberus|{1}{R}{R}|1/2|THS:146|Double strike
+K|Typhoid Rats|{B}|1/1|J22:480|Deathtouch
+K|Uktabi Efreet|{2}{G}{G}|5/4|WTH:143|Cumulative upkeep {G}
+K|Ukud Cobra|{3}{B}|2/5|J25:498|Deathtouch
+K|Underdark Basilisk|{1}{G}|1/2|AFR:208|Deathtouch
+K|Unhallowed Phalanx|{4}{B}|1/13|VOW:135|{this} enters tapped.
+K|Unworthy Dead|{1}{B}|1/1|USG:163|{B}: Regenerate {this}.
+K|Updraft Elemental|{2}{U}|1/4|DTK:82|Flying
+K|Uthden Troll|{2}{R}|2/2|3ED:182|{R}: Regenerate {this}.
+K|Valeron Outlander|{G}{W}|2/2|CON:130|Protection from black
+K|Vampire Champion|{3}{B}|3/3|RIX:198|Deathtouch
+K|Vampire Revenant|{3}{B}|3/1|RIX:89|Flying
+K|Vassal Soul|{1}{W/U}{W/U}|2/2|RTR:224|Flying
+K|Vedalken Outlander|{W}{U}|2/2|CON:132|Protection from red
+K|Venerable Lammasu|{6}{W}|5/4|KTK:28|Flying
+K|Vernadi Shieldmate|{1}{G/W}|2/2|GRN:219|Vigilance
+K|Veteran Cavalier|{W}{W}|2/2|9ED:52|Vigilance
+K|Viashino Spearhunter|{2}{R}|2/1|M10:161|First strike
+K|Vigilant Baloth|{3}{G}{G}|5/5|M19:206|Vigilance
+K|Vizkopa Vampire|{2}{W/B}|3/1|CLU:217|Lifelink
+K|Vodalian Zombie|{U}{B}|2/2|INV:286|Protection from green
+K|Voyaging Satyr|{1}{G}|1/2|THS:182|{T}: Untap target land.
+K|Vulpine Goliath|{4}{G}{G}|6/5|THS:183|Trample
+K|Vulshok Berserker|{3}{R}|3/2|M11:159|Haste
+K|Vulshok Refugee|{1}{R}{R}|3/2|NPH:101|Protection from red
+K|Walking Dead|{1}{B}|1/1|LEG:126|{B}: Regenerate {this}.
+K|Wall of Earth|{1}{R}|0/6|LEG:169|Defender
+K|Wall of Granite|{2}{R}|0/7|POR:155|Defender
+K|Wall of Heat|{2}{R}|2/6|CHR:55|Defender
+K|Wall of Ice|{2}{G}|0/7|3ED:225|Defender
+K|Wall of Mist|{1}{U}|0/5|GRN:58|Defender
+K|Wall of Stone|{1}{R}{R}|0/8|3ED:184|Defender
+K|Wall of Torches|{1}{R}|4/1|M12:159|Defender
+K|Wall of Wood|{G}|0/3|3ED:226|Defender
+K|War Mammoth|{3}{G}|3/3|3ED:228|Trample
+K|Warclamp Mastiff|{W}|1/1|M13:40|First strike
+K|Wardscale Crocodile|{4}{G}|5/3|WAR:183|Hexproof
+K|Warren-Scourge Elf|{1}{G}|1/1|LRW:241|Protection from Goblins
+K|Warriors of Wakanda|{3}{G}|4/4|MSC:565|Trample
+K|Wary Okapi|{2}{G}|3/2|GRN:149|Vigilance
+K|Wasp Lancer|{U/B}{U/B}{U/B}|3/2|SHM:179|Flying
+K|Wayward Giant|{4}{R}|4/5|KLD:139|Menace
+K|Weaver of Currents|{1}{G}{U}|2/2|AKH:209|{T}: Add {C}{C}.
+K|Wild Colos|{2}{R}|2/2|UDS:100|Haste
+K|Wild Elephant|{3}{G}|3/3|MIR:254|Trample
+K|Wild Griffin|{2}{W}|2/2|CN2:99|Flying
+K|Wildwood Patrol|{2}{G}|4/2|CLU:180|Trample
+K|Willow Faerie|{1}{G}|1/2|HML:99a|Flying
+K|Wilt-Leaf Cavaliers|{G/W}{G/W}{G/W}|3/4|SHM:244|Vigilance
+K|Wind Drake|{2}{U}|2/2|DGM:20|Flying
+K|Windseeker Centaur|{1}{R}{R}|2/2|PHPR:3|Vigilance
+K|Wirewood Elf|{1}{G}|1/2|ONS:301|{T}: Add {G}.
+K|Wolf Cove Villager|{W}|2/2|TLE:221|{this} enters tapped.
+K|Woodland Mystic|{1}{G}|1/1|ANB:109|{T}: Add {G}.
+K|Woodland Patrol|{2}{G}|3/2|EMN:180|Vigilance
+K|Yavimaya Barbarian|{R}{G}|2/2|INV:290|Protection from blue
+K|Yavimaya Wurm|{4}{G}{G}|6/4|ULG:120|Trample
+K|Yellow Scarves Troops|{1}{R}|2/2|PTK:127|{this} can't block.
+K|Yotian Medic|{2}{W}|1/4|BRO:33|Lifelink
+K|Yotian Soldier|{3}|1/4|BBD:249|Vigilance
+K|Young Wei Recruits|{1}{B}|2/2|ME3:84|{this} can't block.
+K|Youthful Knight|{1}{W}|2/1|ELD:37|First strike
+K|Zealous Guardian|{W/U}|1/1|SHM:157|Flash
+K|Zephyr Gull|{U}|1/1|ANB:44|Flying
+K|Zephyr Sprite|{U}|1/1|M10:82|Flying
+K|Zombie Outlander|{U}{B}|2/2|CON:133|Protection from green
+SIMPLE_INSTANTS=775
+I|Abandon Attachments|{1}{U/R}|TLA:205|You may discard a card. If you do, draw two cards.
+I|About Face|{R}|ULG:73|Switch target creature's power and toughness until end of turn.
+I|Absorb|{W}{U}{U}|DMR:186|Counter target spell. You gain 3 life.
+I|Accelerate|{1}{R}|TOR:90|Target creature gains haste until end of turn. <br>Draw a card.
+I|Adamant Will|{1}{W}|VOW:1|Target creature gets +2/+2 and gains indestructible until end of turn.
+I|Advent of the Wurm|{1}{G}{G}{W}|DGM:51|Create a 5/5 green Wurm creature token with trample.
+I|Aegis of the Heavens|{1}{W}|M19:1|Target creature gets +1/+7 until end of turn.
+I|Aerial Predation|{2}{G}|RTR:113|Destroy target creature with flying. You gain 2 life.
+I|Aetherize|{3}{U}|GTC:29|Return all attacking creatures to their owner's hand.
+I|Aethersnatch|{4}{U}{U}|C15:9|Gain control of target spell. You may choose new targets for it.
+I|Afflict|{2}{B}|ODY:115|Target creature gets -1/-1 until end of turn. <br>Draw a card.
+I|Afterlife Insurance|{1}{W/B}|CLU:23|Creatures you control gain afterlife 1 until end of turn. Draw a card.
+I|Aggressive Urge|{1}{G}|RIX:122|Target creature gets +1/+1 until end of turn. <br>Draw a card.
+I|Airbending Lesson|{2}{W}|TLA:8|Airbend target nonland permanent. <br>Draw a card.
+I|Alarum|{1}{W}|MIR:2|Untap target nonattacking creature. It gets +1/+3 until end of turn.
+I|Aliban's Tower|{1}{R}|HML:61a|Target blocking creature gets +3/+1 until end of turn.
+I|Altar's Light|{2}{W}{W}|MRD:1|Exile target artifact or enchantment.
+I|Ambush|{3}{R}|HML:62|Blocking creatures gain first strike until end of turn.
+I|Ancestral Recall|{U}|2ED:48|Target player draws three cards.
+I|Angel's Mercy|{2}{W}{W}|AVR:3|You gain 7 life.
+I|Anguished Unmaking|{1}{W}{B}|SIR:229|Exile target nonland permanent. You lose 3 life.
+I|Annul|{U}|THS:38|Counter target artifact or enchantment spell.
+I|Antagonize|{1}{R}|SNC:100|Target creature gets +4/+3 until end of turn.
+I|Appetite for the Unnatural|{2}{G}|KLD:141|Destroy target artifact or enchantment. You gain 2 life.
+I|Army of Allah|{1}{W}{W}|ARN:2+|Attacking creatures get +2/+0 until end of turn.
+I|Arrows of Justice|{2}{R/W}|GTC:211|{this} deals 4 damage to target attacking or blocking creature.
+I|Artifact Blast|{R}|ME1:85|Counter target artifact spell.
+I|Artificer's Epiphany|{2}{U}|J22:272|Draw two cards. If you control no artifacts, discard a card.
+I|Auger Spree|{1}{B}{R}|BBD:218|Target creature gets +4/-4 until end of turn.
+I|Aura Blast|{1}{W}|PLS:1|Destroy target enchantment. <br>Draw a card.
+I|Aura Finesse|{U}|ROE:54|Attach target Aura you control to target creature. <br>Draw a card.
+I|Auroral Procession|{G}{U}|TDM:169|Return target card from your graveyard to your hand.
+I|Avenging Arrow|{2}{W}|RTR:4|Destroy target creature that dealt damage this turn.
+I|Awaken the Bear|{2}{G}|KTK:129|Target creature gets +3/+3 and gains trample until end of turn.
+I|Back to Nature|{1}{G}|M11:164|Destroy all enchantments.
+I|Bake into a Pie|{2}{B}{B}|ELD:76|Destroy target creature. Create a Food token.
+I|Banners Raised|{R}|AVR:127|Creatures you control get +1/+0 until end of turn.
+I|Bar the Door|{2}{W}|DKA:2|Creatures you control get +0/+4 until end of turn.
+I|Battle Hymn|{1}{R}|SLD:2346|Add {R} for each creature you control.
+I|Battle-Rage Blessing|{1}{B}|DMU:80|Target creature gains deathtouch and indestructible until end of turn.
+I|Battlegrowth|{G}|MRD:113|Put a +1/+1 counter on target creature.
+I|Bedevil|{B}{B}{R}|AFC:179|Destroy target artifact, creature, or planeswalker.
+I|Befuddle|{2}{U}|DOM:45|Target creature gets -4/-0 until end of turn. <br>Draw a card.
+I|Bestow Greatness|{2}{G}|DFT:155|Target creature gets +4/+4 and gains trample until end of turn.
+I|Bewilder|{2}{U}|TSP:49|Target creature gets -3/-0 until end of turn. <br>Draw a card.
+I|Beyeen Veil|{1}{U}|ZNR:46|Creatures your opponents control get -2/-0 until end of turn.
+I|Bilbo's Deadly Slice|{1}{B}{B}|HOB:62|Destroy target creature.
+I|Bind|{1}{G}|INV:182|Counter target activated ability. <br>Draw a card.
+I|Blade Banish|{3}{W}|IKO:4|Exile target creature with power 4 or greater.
+I|Bladebrand|{1}{B}|CMR:110|Target creature gains deathtouch until end of turn. <br>Draw a card.
+I|Blessed Light|{4}{W}|DOM:7|Exile target creature or enchantment.
+I|Blessed Reversal|{1}{W}|ULG:2|You gain 3 life for each creature attacking you.
+I|Blight Rot|{2}{B}|ECL:89|Put four -1/-1 counters on target creature.
+I|Blitzball Shot|{1}{G}|FIN:176|Target creature gets +3/+3 and gains trample until end of turn.
+I|Blood Pact|{2}{B}|DSC:76|Target player draws two cards and loses 2 life.
+I|Bloodscent|{3}{G}|MRD:114|All creatures able to block target creature this turn do so.
+I|Blossoming Wreath|{G}|WTH:120|You gain life equal to the number of creature cards in your graveyard.
+I|Bludgeoning Pain|{1}{B}|SWS:300|Target creature gets -2/-2 until end of turn. Tap target creature.
+I|Blue Sun's Zenith|{X}{U}{U}{U}|CMA:32|Target player draws X cards. Shuffle {this} into its owner's library.
+I|Boil|{3}{R}|TMP:165|Destroy all Islands.
+I|Boiling Blood|{2}{R}|WTH:92|Target creature attacks this turn if able. <br>Draw a card.
+I|Bombard|{2}{R}|GNT:37|{this} deals 4 damage to target creature.
+I|Bone to Ash|{2}{U}{U}|DKA:29|Counter target creature spell. <br>Draw a card.
+I|Boomerang|{U}{U}|CHR:16|Return target permanent to its owner's hand.
+I|Boon of Safety|{W}|SNC:4|Put a shield counter on target creature. <br>Scry 1.
+I|Bounce Off|{U}|DFT:39|Return target creature or Vehicle to its owner's hand.
+I|Breach|{2}{B}|USG:120|Target creature gets +2/+0 and gains fear until end of turn.
+I|Break Down|{2}{G}|PIP:602|Destroy target artifact or enchantment. Create a Junk token.
+I|Break Open|{1}{R}|ONS:190|Turn target face-down creature an opponent controls face up.
+I|Breath Weapon|{2}{R}|CLB:165|{this} deals 2 damage to each non-Dragon creature.
+I|Breath of Fire|{1}{R}|GS1:33|{this} deals 2 damage to target creature.
+I|Breath of Malfegor|{3}{B}{R}|PIDW:8|{this} deals 5 damage to each opponent.
+I|Bright Reprisal|{4}{W}|GNT:9|Destroy target attacking creature. <br>Draw a card.
+I|Brightstone Ritual|{R}|SLD:2409|Add {R} for each Goblin on the battlefield.
+I|Broken Wings|{2}{G}|DFT:156|Destroy target artifact, enchantment, or creature with flying.
+I|Brute Force|{R}|TSR:157|Target creature gets +3/+3 until end of turn.
+I|Brute Strength|{1}{R}|J25:528|Target creature gets +3/+1 and gains trample until end of turn.
+I|Bull Rush|{R}|WWK:73|Target creature gets +2/+0 until end of turn.
+I|Burden of Greed|{3}{B}|DST:38|Target player loses 1 life for each tapped artifact they control.
+I|Burn Bright|{2}{R}|J22:508|Creatures you control get +2/+0 until end of turn.
+I|Burst of Energy|{W}|ULG:3|Untap target permanent.
+I|Burst of Strength|{G}|GTC:115|Put a +1/+1 counter on target creature and untap it.
+I|Cancel|{1}{U}{U}|KTK:33|Counter target spell.
+I|Carrion Call|{3}{G}|SOM:115|Create two 1/1 green Phyrexian Insect creature tokens with infect.
+I|Case the Joint|{3}{U}|SNC:37|Draw two cards, then look at the top card of each player's library.
+I|Cast Down|{1}{B}|CLB:119|Destroy target nonlegendary creature.
+I|Catalog|{2}{U}|USG:64|Draw two cards, then discard a card.
+I|Cease-Fire|{2}{W}|ODY:14|Target player can't cast creature spells this turn. <br>Draw a card.
+I|Celestial Purge|{1}{W}|CON:5|Exile target black or red permanent.
+I|Ceremonious Rejection|{U}|KLD:40|Counter target colorless spell.
+I|Chain to Memory|{U}|THB:46|Target creature gets -4/-0 until end of turn. Scry 2.
+I|Chameleon Blur|{3}{G}|TSP:192|Prevent all damage that creatures would deal to players this turn.
+I|Chandra's Pyrohelix|{1}{R}|J22:514|{this} deals 2 damage divided as you choose among one or two targets.
+I|Chaoslace|{R}|3ED:141|Target spell or permanent becomes red.
+I|Char|{2}{R}|RAV:117|{this} deals 4 damage to any target and 2 damage to you.
+I|Charge|{W}|DOM:10|Creatures you control get +1/+1 until end of turn.
+I|Charge Through|{G}|STX:124|Target creature gains trample until end of turn. <br>Draw a card.
+I|Chastise|{3}{W}|JUD:8|Destroy target attacking creature. You gain life equal to its power.
+I|Chill to the Bone|{3}{B}|CSP:52|Destroy target nonsnow creature.
+I|Choking Fumes|{2}{W}|MBS:4|Put a -1/-1 counter on each attacking creature.
+I|Chronostutter|{5}{U}|M15:48|Put target creature into its owner's library second from the top.
+I|Clash of Wills|{X}{U}|F16:2|Counter target spell unless its controller pays {X}.
+I|Clip Wings|{1}{G}|SOI:197|Each opponent sacrifices a creature of their choice with flying.
+I|Coat with Venom|{B}|J25:412|Target creature gets +1/+2 and gains deathtouch until end of turn.
+I|Collar the Culprit|{3}{W}|GRN:5|Destroy target creature with toughness 4 or greater.
+I|Colossal Might|{R}{G}|CMD:190|Target creature gets +4/+2 and gains trample until end of turn.
+I|Command the Storm|{4}{R}|GRN:94|{this} deals 5 damage to target creature.
+I|Commencement of Festivities|{1}{G}|KLD:148|Prevent all combat damage that would be dealt to players this turn.
+I|Concentrated Fire|{3}{R}|MSC:847|{this} deals 5 damage to target creature.
+I|Confound|{1}{U}|PLS:22|Counter target spell that targets a creature. <br>Draw a card.
+I|Congregate|{3}{W}|HOP:2|Target player gains 2 life for each creature on the battlefield.
+I|Consuming Ashes|{2}{B}{B}|OTJ:83|Exile target creature. If it had mana value 3 or less, surveil 2.
+I|Contaminated Drink|{X}{U}{B}|PIP:627|Draw X cards, then you get half X rad counters, rounded up.
+I|Contradict|{3}{U}{U}|DTK:49|Counter target spell. <br>Draw a card.
+I|Convolute|{2}{U}|RAV:41|Counter target spell unless its controller pays {4}.
+I|Corrupted Resolve|{1}{U}|NPH:32|Counter target spell if its controller is poisoned.
+I|Cosmium Blast|{1}{W}|LCI:7|{this} deals 4 damage to target attacking or blocking creature.
+I|Countermand|{2}{U}{U}|JOU:33|Counter target spell. Its controller mills four cards.
+I|Counterspell|{U}{U}|3ED:54|Counter target spell.
+I|Countersquall|{U}{B}|UMA:198|Counter target noncreature spell. Its controller loses 2 life.
+I|Cower in Fear|{1}{B}{B}|MM3:62|Creatures your opponents control get -1/-1 until end of turn.
+I|Crash the Ramparts|{2}{G}|XLN:182|Target creature gets +3/+3 and gains trample until end of turn.
+I|Cremate|{B}|GPT:45|Exile target card from a graveyard. <br>Draw a card.
+I|Crossbow Ambush|{G}|STH:105|Creatures you control gain reach until end of turn.
+I|Cruel Cut|{1}{B}|ANB:47|Destroy target creature with power 2 or less.
+I|Cruel Truths|{3}{B}|TDM:76|Surveil 2, then draw two cards. You lose 2 life.
+I|Crush|{R}|MBS:61|Destroy target noncreature artifact.
+I|Crushing Disappointment|{3}{B}|STX:68|Each player loses 2 life. You draw two cards.
+I|Cryogenic Stasis|{1}{U}|TRC:142|Tap target creature and put a stun counter on it. <br>Draw a card.
+I|Cunning Maneuver|{1}{R}|TLA:130|Target creature gets +3/+1 until end of turn. <br>Create a Clue token.
+I|Curfew|{U}|USG:68|Each player returns a creature they control to its owner's hand.
+I|Cursebreak|{1}{W}|AVR:14|Destroy target enchantment. You gain 2 life.
+I|Cut Down|{B}|DMU:432|Destroy target creature with total power and toughness 5 or less.
+I|Cut the Earthly Bond|{U}|SOK:32|Return target enchanted permanent to its owner's hand.
+I|Dangerous Wager|{1}{R}|AVR:131|Discard your hand, then draw two cards.
+I|Dark Banishing|{2}{B}|DKM:3|Destroy target nonblack creature. It can't be regenerated.
+I|Dark Betrayal|{B}|THS:83|Destroy target black creature.
+I|Dark Deed|{1}{B}|PW26:12|Target creature gets -4/-4 until end of turn.
+I|Dark Nourishment|{4}{B}|XLN:97|{this} deals 3 damage to any target. You gain 3 life.
+I|Dark Remedy|{1}{B}|M20:321|Target creature gets +1/+3 until end of turn.
+I|Dark Ritual|{B}|J21:783|Add {B}{B}{B}.
+I|Darkness|{B}|40K:197*|Prevent all combat damage that would be dealt this turn.
+I|Dauntless Onslaught|{2}{W}|J25:98|Up to two target creatures each get +2/+2 until end of turn.
+I|Deadly Derision|{2}{B}{B}|MOM:99|Destroy target creature or planeswalker. Create a Treasure token.
+I|Deadly Riposte|{1}{W}|J25:185|{this} deals 3 damage to target tapped creature and you gain 2 life.
+I|Death Denied|{X}{B}{B}|UMA:92|Return X target creature cards from your graveyard to your hand.
+I|Death Ward|{W}|3ED:16|Regenerate target creature.
+I|Death Wind|{X}{B}|J21:314|Target creature gets -X/-X until end of turn.
+I|Death in the Family|{1}{B}|TMT:61|Exile target creature with mana value 3 or less.
+I|Deathlace|{B}|3ED:102|Target spell or permanent becomes black.
+I|Defend the Hearth|{1}{G}|THS:156|Prevent all combat damage that would be dealt to players this turn.
+I|Defenestrate|{2}{B}|J25:420|Destroy target creature without flying.
+I|Defiant Strike|{W}|KTK:7|Target creature gets +1/+0 until end of turn. <br>Draw a card.
+I|Deflection|{3}{U}|ICE:65|Change the target of target spell with a single target.
+I|Deliberate|{1}{U}|ZNR:56|Scry 2, then draw a card.
+I|Deluge|{2}{U}|ODY:80|Tap all creatures without flying.
+I|Demon's Due|{3}{B}|SNC:75|Scry 2, then draw two cards. You lose 2 life.
+I|Demystify|{W}|ROE:18|Destroy target enchantment.
+I|Deny Entry|{2}{U}|TLE:222|Counter target creature spell. Draw a card, then discard a card.
+I|Deploy The Troops|{4}{W}|SWS:8|Create three 1/1 white Trooper creature tokens.
+I|Depths of Desire|{2}{U}|XLN:52|Return target creature to its owner's hand. Create a Treasure token.
+I|Despair|{B}{B}|SWS:604|Each opponent sacrifices a creature of their choice.
+I|Despark|{W}{B}|AFC:184|Exile target permanent with mana value 4 or greater.
+I|Desynchronization|{2}{U}{U}|ACR:159|Return each nonland permanent that's not historic to its owner's hand.
+I|Diabolic Edict|{1}{B}|J22:67|Target player sacrifices a creature of their choice.
+I|Didn't Say Please|{1}{U}{U}|ELD:42|Counter target spell. Its controller mills three cards.
+I|Diminish|{U}|M11:52|Target creature has base power and toughness 1/1 until end of turn.
+I|Disallow|{1}{U}{U}|AER:31|Counter target spell, activated ability, or triggered ability.
+I|Disarm|{U}|MRD:32|Unattach all Equipment from target creature.
+I|Disdainful Stroke|{1}{U}|KTK:37|Counter target spell with mana value 4 or greater.
+I|Disembowel|{X}{B}|RAV:85|Destroy target creature with mana value X.
+I|Disempower|{1}{W}|MIR:9|Put target artifact or enchantment on top of its owner's library.
+I|Disenchant|{1}{W}|3ED:17|Destroy target artifact or enchantment.
+I|Disfigure|{B}|J25:424|Target creature gets -2/-2 until end of turn.
+I|Dismal Failure|{2}{U}{U}|PLC:39|Counter target spell. Its controller discards a card.
+I|Dismember|{1}{B/P}{B/P}|F12:4|Target creature gets -5/-5 until end of turn.
+I|Dismiss|{2}{U}{U}|J21:182|Counter target spell. <br>Draw a card.
+I|Disorient|{3}{U}|M10:48|Target creature gets -7/-0 until end of turn.
+I|Dispel|{U}|BFZ:76|Counter target instant spell.
+I|Disperse|{1}{U}|W16:5|Return target nonland permanent to its owner's hand.
+I|Dissension in the Ranks|{3}{R}{R}|SOI:152|Target blocking creature fights another target blocking creature.
+I|Divine Arrow|{1}{W}|J22:176|{this} deals 4 damage to target attacking or blocking creature.
+I|Divine Offering|{1}{W}|CHR:6|Destroy target artifact. You gain life equal to its mana value.
+I|Divine Verdict|{3}{W}|J22:177|Destroy target attacking or blocking creature.
+I|Dominate|{X}{1}{U}{U}|NEM:31|Gain control of target creature with mana value X or less.
+I|Doom Blade|{1}{B}|GN3:47|Destroy target nonblack creature.
+I|Double Cleave|{1}{R/W}|HOP:100|Target creature gains double strike until end of turn.
+I|Double Negative|{U}{U}{R}|ARB:87|Counter up to two target spells.
+I|Double Trouble|{4}{R}|SPE:13|Double the power of each creature you control until end of turn.
+I|Douse in Gloom|{2}{B}|GPT:49|{this} deals 2 damage to target creature and you gain 2 life.
+I|Downpour|{1}{U}|M13:48|Tap up to three target creatures.
+I|Dragon's Presence|{2}{W}|GS1:16|{this} deals 5 damage to target attacking or blocking creature.
+I|Dragonscale Boon|{3}{G}|KTK:131|Put two +1/+1 counters on target creature and untap it.
+I|Dramatic Entrance|{3}{G}{G}|SHM:111|You may put a green creature card from your hand onto the battlefield.
+I|Dramatic Rescue|{W}{U}|RTR:156|Return target creature to its owner's hand. You gain 2 life.
+I|Dramatic Reversal|{1}{U}|GN2:20|Untap all nonland permanents you control.
+I|Dream Fracture|{1}{U}{U}|CLB:66|Counter target spell. Its controller draws a card. <br>Draw a card.
+I|Dredge|{B}|INV:103|Sacrifice a creature or land. <br>Draw a card.
+I|Drown in Shapelessness|{1}{U}|GS1:15|Return target creature to its owner's hand.
+I|Dual Shot|{R}|SOI:153|{this} deals 1 damage to each of up to two target creatures.
+I|Due Respect|{1}{W}|NPH:8|Permanents enter tapped this turn. <br>Draw a card.
+I|Dwarven Song|{R}|LEG:143|One or more target creatures become red until end of turn.
+I|EMP Blast|{2}{W}|SWS:10|Exile target artifact. Tap all other artifacts.
+I|Early Frost|{1}{U}|5DN:29|Tap up to three target lands.
+I|Early Harvest|{1}{G}{G}|MIR:213|Target player untaps all basic lands they control.
+I|Electrify|{3}{R}|J22:527|{this} deals 4 damage to target creature.
+I|Eliminate|{1}{B}|STA:30|Destroy target creature or planeswalker with mana value 3 or less.
+I|Ember Shot|{6}{R}|JUD:87|{this} deals 3 damage to any target. <br>Draw a card.
+I|Enhanced Awareness|{4}{U}|FRF:33|Draw three cards, then discard a card.
+I|Enrage|{X}{R}|DPA:43|Target creature gets +X/+0 until end of turn.
+I|Envelop|{U}|JUD:39|Counter target sorcery spell.
+I|Erase|{W}|KTK:9|Exile target enchantment.
+I|Errand of Duty|{1}{W}|ALL:2a|Create a 1/1 white Knight creature token with banding.
+I|Ertai's Trickery|{U}|PLS:24|Counter target spell if it was kicked.
+I|Essence Extraction|{1}{B}{B}|PKLD:80|{this} deals 3 damage to target creature and you gain 3 life.
+I|Essence Scatter|{1}{U}|DMU:49|Counter target creature spell.
+I|Ethereal Haze|{W}|CHK:9|Prevent all damage that would be dealt this turn by creatures.
+I|Evacuation|{3}{U}{U}|CMM:89|Return all creatures to their owners' hands.
+I|Excise|{X}{W}|PCY:8|Exile target attacking creature unless its controller pays {X}.
+I|Exclude|{2}{U}|CMM:90|Counter target creature spell. <br>Draw a card.
+I|Expedite|{R}|BBD:177|Target creature gains haste until end of turn. <br>Draw a card.
+I|Expel|{2}{W}|STX:18|Exile target tapped creature.
+I|Explosive Impact|{5}{R}|RTR:94|{this} deals 5 damage to any target.
+I|Expose to Daylight|{2}{W}|RNA:8|Destroy target artifact or enchantment. Scry 1.
+I|Extinguish|{1}{U}|P02:38|Counter target sorcery spell.
+I|Eyeblight's Ending|{2}{B}|EMA:88|Destroy target non-Elf creature.
+I|Eyes of the Beholder|{4}{B}{B}|AFR:101|Target creature gets -11/-11 until end of turn.
+I|Failed Inspection|{2}{U}{U}|KLD:47|Counter target spell. Draw a card, then discard a card.
+I|Fall of the Gavel|{3}{W}{U}|RTR:161|Counter target spell. You gain 5 life.
+I|False Summoning|{1}{U}|ME4:49|Counter target creature spell.
+I|Falter|{1}{R}|VMA:158|Creatures without flying can't block this turn.
+I|Fanatical Fever|{2}{G}{G}|ICE:234|Target creature gets +3/+0 and gains trample until end of turn.
+I|Fanatical Strength|{1}{G}|MKM:159|Target creature gets +3/+3 and gains trample until end of turn.
+I|Fatal Fumes|{3}{B}|DGM:24|Target creature gets -4/-2 until end of turn.
+I|Fate Forgotten|{2}{W}|DTK:17|Exile target artifact or enchantment.
+I|Fate Transfer|{1}{U/B}|SHM:161|Move all counters from target creature onto another target creature.
+I|Fated Retribution|{4}{W}{W}{W}|BNG:11|Destroy all creatures and planeswalkers. If it's your turn, scry 2.
+I|Fateful Absence|{1}{W}|MID:18|Destroy target creature or planeswalker. Its controller investigates.
+I|Fateful End|{2}{R}|THB:133|{this} deals 3 damage to any target. Scry 1.
+I|Fault Line|{X}{R}{R}|USG:185|{this} deals X damage to each creature without flying and each player.
+I|Feast of Dreams|{1}{B}|JOU:69|Destroy target enchanted creature or enchantment creature.
+I|Feed the Serpent|{2}{B}{B}|KHM:95|Exile target creature or planeswalker.
+I|Fell the Profane|{2}{B}{B}|MH3:244|Destroy target creature or planeswalker.
+I|Feral Ferocity|{1}{G}|MSC:560|Target creature gets +4/+4 until end of turn.
+I|Fiery Cannonade|{2}{R}|CMR:178|{this} deals 2 damage to each non-Pirate creature.
+I|Fight to the Death|{R}{W}|MAR:90|Destroy all blocking creatures and all blocked creatures.
+I|Filter Out|{1}{U}{U}|MAT:7|Return all noncreature, nonland permanents to their owners' hands.
+I|Final Death|{4}{B}|THB:95|Exile target creature.
+I|Final Reward|{4}{B}|AKH:92|Exile target creature.
+I|Finishing Blow|{4}{B}|M21:99|Destroy target creature or planeswalker.
+I|Fissure|{3}{R}{R}|REN:85|Destroy target creature or land. It can't be regenerated.
+I|Fists of the Anvil|{1}{R}|10E:201|Target creature gets +4/+0 until end of turn.
+I|Flame Javelin|{2/R}{2/R}{2/R}|JVC:53|{this} deals 4 damage to any target.
+I|Flame Lash|{3}{R}|J22:534|{this} deals 4 damage to any target.
+I|Flash Counter|{1}{U}|LEG:56|Counter target instant spell.
+I|Flashfreeze|{1}{U}|CSP:33|Counter target red or green spell.
+I|Flatten|{3}{B}|DTK:100|Target creature gets -4/-4 until end of turn.
+I|Fleeting Distraction|{U}|J22:299|Target creature gets -1/-0 until end of turn. <br>Draw a card.
+I|Flesh to Dust|{3}{B}{B}|ORI:280|Destroy target creature. It can't be regenerated.
+I|Flow of Knowledge|{4}{U}|BRO:381|Draw a card for each Island you control, then discard two cards.
+I|Flowstone Infusion|{R}|DMU:124|Target creature gets +2/-2 until end of turn.
+I|Flowstone Strike|{1}{R}|NEM:84|Target creature gets +1/-1 and gains haste until end of turn.
+I|Fog|{G}|J21:789|Prevent all combat damage that would be dealt this turn.
+I|Force Spike|{U}|J21:780|Counter target spell unless its controller pays {1}.
+I|Forced Landing|{1}{G}|RVR:141|Put target creature with flying on the bottom of its owner's library.
+I|Forfend|{1}{W}|MOR:10|Prevent all damage that would be dealt to creatures this turn.
+I|Fracture|{W}{B}|SOA:65|Destroy target artifact, enchantment, or planeswalker.
+I|Frantic Search|{2}{U}|WOC:93|Draw two cards, then discard two cards. Untap up to three lands.
+I|Frazzle|{3}{U}|GPT:25|Counter target nonblue spell.
+I|Gainsay|{1}{U}|THS:49|Counter target blue spell.
+I|Galestrike|{2}{U}|GN2:22|Return target tapped creature to its owner's hand. <br>Draw a card.
+I|Gerrard's Command|{G}{W}|PLS:109|Untap target creature. It gets +3/+3 until end of turn.
+I|Get the Point|{3}{B}{R}|RNA:176|Destroy target creature. Scry 1.
+I|Geth's Verdict|{B}{B}|NPH:61|Target player sacrifices a creature of their choice and loses 1 life.
+I|Giant Growth|{G}|BBD:200|Target creature gets +3/+3 until end of turn.
+I|Gideon's Reproach|{1}{W}|BFZ:30|{this} deals 4 damage to target attacking or blocking creature.
+I|Gift of Strength|{1}{G}|HOU:117|Target creature gets +3/+3 and gains reach until end of turn.
+I|Give In to Violence|{1}{B}|DSK:101|Target creature gets +2/+2 and gains lifelink until end of turn.
+I|Glimmerburst|{3}{U}|DSK:62|Draw two cards. Create a 1/1 white Glimmer enchantment creature token.
+I|Glissa's Scorn|{1}{G}|NPH:110|Destroy target artifact. Its controller loses 1 life.
+I|Glorious Charge|{1}{W}|SWS:509|Creatures you control get +1/+1 until end of turn.
+I|Go for the Throat|{1}{B}|J25:447|Destroy target nonartifact creature.
+I|Goblin Wizardry|{3}{R}|CLU:136|Create two 1/1 red Goblin Wizard creature tokens with prowess.
+I|Grasp of Darkness|{B}{B}|GN2:30|Target creature gets -4/-4 until end of turn.
+I|Gravkill|{3}{B}|EOE:103|Exile target creature or Spacecraft.
+I|Gridlock|{X}{U}|GTC:36|Tap X target nonland permanents.
+I|Griptide|{3}{U}|THS:50|Put target creature on top of its owner's library.
+I|Grotesque Demise|{2}{B}|RNA:75|Exile target creature with power 3 or less.
+I|Grotesque Mutation|{1}{B}|BBD:145|Target creature gets +3/+1 and gains lifelink until end of turn.
+I|Guardians' Pledge|{1}{W}{W}|M12:22|White creatures you control get +2/+2 until end of turn.
+I|Gut Shot|{R/P}|MM2:117|{this} deals 1 damage to any target.
+I|Guttural Response|{R/G}|SHM:208|Counter target blue instant spell.
+I|Halt Order|{2}{U}|SOM:34|Counter target artifact spell. <br>Draw a card.
+I|Hamato Ninpo|{1}{W}|TMC:100|{this} deals 4 damage to target attacking or blocking creature.
+I|Harmonic Convergence|{2}{G}|ULG:103|Put all enchantments on top of their owners' libraries.
+I|Harness Infinity|{1}{B}{B}{B}{G}{G}{G}|STX:191|Exchange your hand and graveyard.<br>Exile {this}.
+I|Headlong Rush|{1}{R}|USG:198|Attacking creatures gain first strike until end of turn.
+I|Hearts on Fire|{1}{R}|J25:17|One or two target creatures each get +2/+1 until end of turn.
+I|Heat Ray|{X}{R}|USG:199|{this} deals X damage to target creature.
+I|Heaven's Gate|{W}|LEG:19|One or more target creatures become white until end of turn.
+I|Hell Swarm|{B}|LEG:103|All creatures get -1/-0 until end of turn.
+I|Hero's Demise|{1}{B}|BOK:68|Destroy target legendary creature.
+I|Hero's Downfall|{1}{B}{B}|THS:90|Destroy target creature or planeswalker.
+I|Heroes' Reunion|{G}{W}|ARC:87|Target player gains 7 life.
+I|Hibernation|{2}{U}|USG:79|Return all green permanents to their owners' hands.
+I|Hideous End|{1}{B}{B}|HOP:31|Destroy target nonblack creature. Its controller loses 2 life.
+I|Hisoka's Defiance|{1}{U}|CHK:67|Counter target Spirit or Arcane spell.
+I|Hithlain Knots|{1}{U}|HOC:176|Tap target creature. Scry 1. <br>Draw a card.
+I|Hold at Bay|{1}{W}|BNG:18|Prevent the next 7 damage that would be dealt to any target this turn.
+I|Hold the Line|{1}{W}{W}|CHK:13|Blocking creatures get +7/+7 until end of turn.
+I|Holy Day|{W}|LEG:20|Prevent all combat damage that would be dealt this turn.
+I|Holy Light|{2}{W}|DRK:10|Nonwhite creatures get -1/-1 until end of turn.
+I|Hoodwink|{1}{U}|MB2:123|Return target artifact, enchantment, or land to its owner's hand.
+I|Hope and Glory|{1}{W}|ULG:9|Untap two target creatures. Each of them gets +1/+1 until end of turn.
+I|Hornet Sting|{G}|M11:181|{this} deals 1 damage to any target.
+I|Hornswoggle|{2}{U}|RIX:39|Counter target creature spell. You create a Treasure token.
+I|Horrid Vigor|{1}{G}|DSK:184|Target creature gains deathtouch and indestructible until end of turn.
+I|Hour of Defeat|{3}{B}|MSH:99|Destroy target creature. Surveil 1.
+I|Howl from Beyond|{X}{B}|3ED:114|Target creature gets +X/+0 until end of turn.
+I|Human Frailty|{B}|AVR:109|Destroy target Human creature.
+I|Humble|{1}{W}|EMA:14|Target creature loses all abilities and becomes 0/1 until end of turn.
+I|Hurkyl's Recall|{1}{U}|3ED:60|Return all artifacts target player owns to their hand.
+I|Hydrolash|{2}{U}|GNT:22|Attacking creatures get -2/-0 until end of turn. <br>Draw a card.
+I|Hydrosurge|{U}|M13:54|Target creature gets -5/-0 until end of turn.
+I|Hysterical Blindness|{2}{U}|ISD:59|Creatures your opponents control get -4/-0 until end of turn.
+I|Illusion of Choice|{U}|CN2:31|You choose how each player votes this turn. <br>Draw a card.
+I|Immolating Glare|{1}{W}|OGW:20|Destroy target attacking creature.
+I|Impeccable Timing|{1}{W}|J22:195|{this} deals 3 damage to target attacking or blocking creature.
+I|Indestructible Aura|{W}|CHR:7|Prevent all damage that would be dealt to target creature this turn.
+I|Infernal Grasp|{1}{B}|J25:456|Destroy target creature. You lose 2 life.
+I|Infernal Reckoning|{B}|PM19:102s|Exile target colorless creature. You gain life equal to its power.
+I|Inferno|{5}{R}{R}|REN:90|{this} deals 6 damage to each creature and each player.
+I|Infiltrate|{U}|NEM:33|Target creature can't be blocked this turn.
+I|Inflame|{R}|PCY:91|{this} deals 2 damage to each creature dealt damage this turn.
+I|Infuriate|{R}|J25:565|Target creature gets +3/+2 until end of turn.
+I|Inner Struggle|{3}{R}|SOI:167|Target creature deals damage to itself equal to its power.
+I|Inordinate Rage|{1}{R}|ZNR:144|Target creature gets +3/+2 until end of turn. Scry 1.
+I|Inspiration|{3}{U}|VIS:35|Target player draws two cards.
+I|Inspire|{1}{U}|SWS:510|Untap target creature. Draw a card.
+I|Inspired Charge|{2}{W}{W}|GNT:13|Creatures you control get +2/+1 until end of turn.
+I|Inspirit|{2}{W}|ONS:41|Untap target creature. It gets +2/+4 until end of turn.
+I|Instill Infection|{3}{B}|SOM:68|Put a -1/-1 counter on target creature. <br>Draw a card.
+I|Interjection|{W}|SOS:22|Target creature gets +2/+2 and gains first strike until end of turn.
+I|Intervene|{U}|ULG:33|Counter target spell that targets a creature.
+I|Into the Core|{2}{R}{R}|MBS:67|Exile two target artifacts.
+I|Invoke the Divine|{2}{W}|DOM:22|Destroy target artifact or enchantment. You gain 4 life.
+I|Isolate|{W}|PM19:17s|Exile target permanent with mana value 1.
+I|Isolation at Orthanc|{3}{U}|LTR:508|Put target creature into its owner's library second from the top.
+I|It'll Quench Ya!|{1}{U}|TLA:58|Counter target spell unless its controller pays {2}.
+I|Jace's Ingenuity|{3}{U}{U}|F11:7|Draw three cards.
+I|Jaded Response|{1}{U}|APC:26|Counter target spell if it shares a color with a creature you control.
+I|Jaya's Greeting|{1}{R}|WAR:136|{this} deals 3 damage to target creature. Scry 1.
+I|Join the Ranks|{3}{W}|WWK:9|Create two 1/1 white Soldier Ally creature tokens.
+I|Jump|{U}|3ED:62|Target creature gains flying until end of turn.
+I|Justice Strike|{R}{W}|GRN:182|Target creature deals damage to itself equal to its power.
+I|Jwari Disruption|{1}{U}|PIO:62|Counter target spell unless its controller pays {1}.
+I|Keep Watch|{2}{U}|HOP:10|Draw a card for each attacking creature.
+I|Kill Shot|{2}{W}|KTK:15|Destroy target attacking creature.
+I|Killing Glare|{X}{B}|J25:120|Destroy target creature with power X or less.
+I|Kin-Tree Severance|{2/W}{2/B}{2/G}|TDM:200|Exile target permanent with mana value 3 or greater.
+I|Kindled Fury|{R}|J25:571|Target creature gets +1/+0 and gains first strike until end of turn.
+I|Lace with Moonglove|{2}{G}|CN2:184|Target creature gains deathtouch until end of turn. <br>Draw a card.
+I|Laquatus's Disdain|{1}{U}|JUD:44|Counter target spell cast from a graveyard. <br>Draw a card.
+I|Lash of Malice|{B}|STX:74|Target creature gets +2/-2 until end of turn.
+I|Lash of Thorns|{B}|ELD:92|Target creature gets +2/+1 and gains deathtouch until end of turn.
+I|Lash of the Whip|{4}{B}|THS:94|Target creature gets -4/-4 until end of turn.
+I|Last Gasp|{1}{B}|BBD:147|Target creature gets -3/-3 until end of turn.
+I|Last Kiss|{2}{B}|ROE:116|{this} deals 2 damage to target creature and you gain 2 life.
+I|Lay Bare|{2}{U}{U}|ROE:74|Counter target spell. Look at its controller's hand.
+I|Lead Astray|{1}{W}|JUD:14|Tap up to two target creatures.
+I|Leaf Arrow|{G}|ROE:194|{this} deals 3 damage to target creature with flying.
+I|Leap|{U}|STH:35|Target creature gains flying until end of turn. <br>Draw a card.
+I|Leave in the Dust|{3}{U}|J22:313|Return target nonland permanent to its owner's hand. <br>Draw a card.
+I|Lifelace|{G}|3ED:208|Target spell or permanent becomes green.
+I|Lightning Blast|{3}{R}|TMP:185|{this} deals 4 damage to any target.
+I|Lightning Bolt|{R}|J21:787|{this} deals 3 damage to any target.
+I|Lightning Helix|{R}{W}|RAV:213|{this} deals 3 damage to any target and you gain 3 life.
+I|Lightning Strike|{1}{R}|DFT:136|{this} deals 3 damage to any target.
+I|Lost in the Mist|{3}{U}{U}|ISD:63|Counter target spell. Return target permanent to its owner's hand.
+I|Maelstrom Blockade|{2}{W/B}|SWS:611|Exile target attacking creature.
+I|Magnetic Flux|{2}{U}|DST:25|Artifact creatures you control gain flying until end of turn.
+I|Magnetic Theft|{R}|5DN:74|Attach target Equipment to target creature.
+I|Magnify|{G}|UDS:111|All creatures get +1/+1 until end of turn.
+I|Make Obsolete|{2}{B}|KLD:89|Creatures your opponents control get -1/-1 until end of turn.
+I|Malicious Advice|{X}{U}{B}|PLS:114|Tap X target artifacts, creatures, and/or lands. You lose X life.
+I|Mana Leak|{1}{U}|TPR:58|Counter target spell unless its controller pays {3}.
+I|Mana Tithe|{W}|TSR:26|Counter target spell unless its controller pays {1}.
+I|Manamorphose|{1}{R/G}|SHM:211|Add two mana in any combination of colors. <br>Draw a card.
+I|Marrow Shards|{W/P}|NPH:15|{this} deals 1 damage to each attacking creature.
+I|Marsh Gas|{B}|REN:59|All creatures get -2/-0 until end of turn.
+I|Massive Might|{G}|VOW:208|Target creature gets +2/+2 and gains trample until end of turn.
+I|Master's Call|{2}{W}|MBS:13|Create two 1/1 colorless Myr artifact creature tokens.
+I|Meditate|{2}{U}|TMP:76|Draw four cards. You skip your next turn.
+I|Mending Hands|{W}|BOK:15|Prevent the next 4 damage that would be dealt to any target this turn.
+I|Mending Touch|{G}|DGM:44|Regenerate target creature.
+I|Mental Misstep|{U/P}|SLD:1179|Counter target spell with mana value 1.
+I|Mental Note|{U}|JUD:46|Mill two cards. <br>Draw a card.
+I|Metal Fatigue|{2}{W}|DST:8|Tap all artifacts.
+I|Midnight Haunting|{2}{W}|ISD:22|Create two 1/1 white Spirit creature tokens with flying.
+I|Might of Oaks|{3}{G}|ULG:106|Target creature gets +7/+7 until end of turn.
+I|Might of the Nephilim|{1}{G}|DIS:88|Target creature gets +2/+2 until end of turn for each of its colors.
+I|Mighty Leap|{1}{W}|GN2:9|Target creature gets +2/+2 and gains flying until end of turn.
+I|Mindstatic|{3}{U}|DGM:14|Counter target spell unless its controller pays {6}.
+I|Minor Misstep|{U}|ONE:64|Counter target spell with mana value 1 or less.
+I|Mnemonic Nexus|{3}{U}|RAV:59|Each player shuffles their graveyard into their library.
+I|Moment of Craving|{1}{B}|J22:444|Target creature gets -2/-2 until end of turn. You gain 2 life.
+I|Moment of Heroism|{1}{W}|J25:228|Target creature gets +2/+2 and gains lifelink until end of turn.
+I|Moment of Silence|{W}|MMQ:28|Target player skips their next combat phase this turn.
+I|Moment of Triumph|{W}|J22:218|Target creature gets +2/+2 until end of turn. You gain 2 life.
+I|Moonlace|{U}|TSP:68|Target spell or permanent becomes colorless.
+I|Morale|{1}{W}{W}|REN:15|Attacking creatures get +1/+1 until end of turn.
+I|Mortal's Ardor|{W}|BNG:20|Target creature gets +1/+1 and gains lifelink until end of turn.
+I|Mortal's Resolve|{1}{G}|BNG:127|Target creature gets +1/+1 and gains indestructible until end of turn.
+I|Mortify|{1}{W}{B}|ACR:243|Destroy target creature or enchantment.
+I|Mudhole|{2}{R}|SLD:62|Target player exiles all land cards from their graveyard.
+I|Murder|{1}{B}{B}|J25:467|Destroy target creature.
+I|Mutagenic Growth|{G/P}|MM2:149|Target creature gets +2/+2 until end of turn.
+I|Mystic Denial|{1}{U}{U}|POR:61|Counter target creature or sorcery spell.
+I|Mystic Repeal|{G}|THB:180|Put target enchantment on the bottom of its owner's library.
+I|Nahiri's Stoneblades|{1}{R}|WAR:139|Up to two target creatures each get +2/+0 until end of turn.
+I|Natural Affinity|{2}{G}|9ED:256|Until end of turn, lands become 2/2 creature that are still lands.
+I|Natural End|{2}{G}|AVR:185|Destroy target artifact or enchantment. You gain 3 life.
+I|Natural Obsolescence|{1}{G}|AER:118|Put target artifact on the bottom of its owner's library.
+I|Natural State|{G}|PIO:383|Destroy target artifact or enchantment with mana value 3 or less.
+I|Naturalize|{1}{G}|KTK:142|Destroy target artifact or enchantment.
+I|Nature's Chant|{1}{G/W}|MH1:210|Destroy target artifact or enchantment.
+I|Nature's Claim|{G}|EMA:178|Destroy target artifact or enchantment. Its controller gains 4 life.
+I|Neck Snap|{3}{W}|LRW:32|Destroy target attacking or blocking creature.
+I|Necrobite|{2}{B}|BNG:77|Target creature gains deathtouch until end of turn. Regenerate it.
+I|Negate|{1}{U}|BBD:123|Counter target noncreature spell.
+I|Neutralizing Blast|{1}{U}|FRF:44|Counter target multicolored spell.
+I|Nix|{U}|FUT:55|Counter target spell if no mana was spent to cast it.
+I|Nocturnal Raid|{2}{B}{B}|MIR:132|Black creatures get +2/+0 until end of turn.
+I|Not on My Watch|{1}{W}|MKM:28|Exile target attacking creature.
+I|Nourish|{G}{G}|DST:78|You gain 6 life.
+I|Noxious Revival|{G/P}|SLD:1416|Put target card from a graveyard on top of its owner's library.
+I|Nullify|{U}{U}|BNG:45|Counter target creature or Aura spell.
+I|Off Balance|{W}|NEM:15|Target creature can't attack or block this turn.
+I|Offer Immortality|{1}{B}|ONE:102|Target creature gains deathtouch and indestructible until end of turn.
+I|Offering to Asha|{2}{W}{U}|ARB:9|Counter target spell unless its controller pays {4}. You gain 4 life.
+I|One with Nothing|{B}|SOK:84|Discard your hand.
+I|Ooze Spill|{1}{U}{U}|TMT:48|Counter target spell. Create a Mutagen token.
+I|Open Fire|{2}{R}|J25:583|{this} deals 3 damage to any target.
+I|Opportunity|{4}{U}{U}|BBD:126|Target player draws four cards.
+I|Ornamental Courage|{G}|KLD:164|Untap target creature. It gets +1/+3 until end of turn.
+I|Outwit|{U}|AVR:70|Counter target spell that targets a player.
+I|Overkill|{2}{B}|FIN:109|Target creature gets -0/-9999 until end of turn.
+I|Overrule|{X}{W}{U}|DIS:120|Counter target spell unless its controller pays {X}. You gain X life.
+I|Oxidize|{G}|DST:79|Destroy target artifact. It can't be regenerated.
+I|Part the Veil|{3}{U}|CHK:77|Return all creatures you control to their owner's hand.
+I|Path of Anger's Flame|{2}{R}|SOK:109|Creatures you control get +2/+0 until end of turn.
+I|Pay No Heed|{W}|TOR:12|Prevent all damage a source of your choice would deal this turn.
+I|Peace and Quiet|{1}{W}|ULG:17|Destroy two target enchantments.
+I|Pedal to the Metal|{X}{R}|DFT:141|Target creature gets +X/+0 and gains first strike until end of turn.
+I|Peek|{U}|SLD:401|Look at target player's hand. <br>Draw a card.
+I|Perilous Research|{1}{U}|CMD:54|Draw two cards, then sacrifice a permanent.
+I|Personal Energy Shield|{U}|SWS:51|Counter target spell that targets you or a permanent you control.
+I|Pharika's Cure|{B}{B}|THS:100|{this} deals 2 damage to target creature and you gain 2 life.
+I|Pierce the Sky|{1}{G}|DOM:176|{this} deals 7 damage to target creature with flying.
+I|Piety|{2}{W}|REN:17|Blocking creatures get +0/+3 until end of turn.
+I|Pillar of Light|{2}{W}|M15:24|Exile target creature with toughness 4 or greater.
+I|Plummet|{1}{G}|THB:194|Destroy target creature with flying.
+I|Plunge into Winter|{1}{W}|WOE:22|Tap up to one target creature. Scry 1, then draw a card.
+I|Poison the Blade|{1}{G}|CLB:248|Target creature gains deathtouch until end of turn. <br>Draw a card.
+I|Power Word Kill|{1}{B}|AFR:114|Destroy target non-Angel, non-Demon, non-Devil, non-Dragon creature.
+I|Precise Strike|{R}|AER:92|Target creature gets +1/+0 and gains first strike until end of turn.
+I|Predator's Strike|{1}{G}|J25:699|Target creature gets +3/+3 and gains trample until end of turn.
+I|Preemptive Strike|{1}{U}|PTK:50|Counter target creature spell.
+I|Pressure Point|{1}{W}|FRF:21|Tap target creature. <br>Draw a card.
+I|Prismatic Lace|{U}|MIR:84|Target permanent becomes the color or colors of your choice.
+I|Prologue to Phyresis|{1}{U}|ONE:65|Each opponent gets a poison counter. <br>Draw a card.
+I|Protection Magic|{1}{W}|FIC:107|Put a shield counter on each of up to three target creatures.
+I|Prying Eyes|{4}{U}{U}|CMR:86|Draw four cards, then discard two cards.
+I|Psionic Blast|{2}{U}|2ED:75|{this} deals 4 damage to any target and 2 damage to you.
+I|Psychic Barrier|{U}{U}|NPH:43|Counter target creature spell. Its controller loses 1 life.
+I|Psychic Strike|{1}{U}{B}|GTC:189|Counter target spell. Its controller mills two cards.
+I|Pull Under|{5}{B}|CHK:137|Target creature gets -5/-5 until end of turn.
+I|Pull from Eternity|{W}|TSP:35|Put target face-up exiled card into its owner's graveyard.
+I|Pull from Tomorrow|{X}{U}{U}|GN3:35|Draw X cards, then discard a card.
+I|Puncturing Light|{1}{W}|SIR:40|Destroy target attacking or blocking creature with power 3 or less.
+I|Punish Ignorance|{W}{U}{U}{B}|ALA:183|Counter target spell. Its controller loses 3 life and you gain 3 life.
+I|Purelace|{W}|3ED:32|Target spell or permanent becomes white.
+I|Putrefy|{1}{B}{G}|RAV:221|Destroy target artifact or creature. It can't be regenerated.
+I|Pyretic Ritual|{1}{R}|SLD:1064|Add {R}{R}{R}.
+I|Qilin's Blessing|{W}|GS1:14|Target creature gets +2/+2 until end of turn.
+I|Quench|{1}{U}|RNA:48|Counter target spell unless its controller pays {2}.
+I|Quick Study|{2}{U}|WOE:65|Draw two cards.
+I|Quicksilver Geyser|{4}{U}|MBS:30|Return up to two target nonland permanents to their owners' hands.
+I|Quiet Purity|{W}|CHK:39|Destroy target enchantment.
+I|Rack and Ruin|{2}{R}|ULG:89|Destroy two target artifacts.
+I|Radiant Purge|{1}{W}|DTK:31|Exile target multicolored creature or multicolored enchantment.
+I|Radiant Strike|{3}{W}|EOE:29|Destroy target artifact or tapped creature. You gain 3 life.
+I|Rain of Blades|{W}|8ED:35|{this} deals 1 damage to each attacking creature.
+I|Rain of Revelation|{3}{U}|MH1:65|Draw three cards, then discard a card.
+I|Raise the Alarm|{1}{W}|J25:101|Create two 1/1 white Soldier creature tokens.
+I|Rally|{W}{W}|ICE:48|Blocking creatures get +1/+1 until end of turn.
+I|Rally the Forces|{2}{R}|MBS:73|Attacking creatures get +1/+0 and gain first strike until end of turn.
+I|Rally to Battle|{3}{W}|CLU:69|Creatures you control get +1/+3 until end of turn. Untap them.
+I|Rallying Fire|{2}{R}|SWS:116|Creatures you control get +2/+0 until end of turn.
+I|Rallying Roar|{2}{W}|XLN:30|Creatures you control get +1/+1 until end of turn. Untap them.
+I|Ray of Dissolution|{2}{W}|THS:27|Destroy target enchantment. You gain 3 life.
+I|Razorgrass Ambush|{1}{W}|MH3:238|{this} deals 3 damage to target attacking or blocking creature.
+I|Reach Through Mists|{U}|CHK:81|Draw a card.
+I|Reach of Shadows|{4}{B}|FRF:81|Destroy target creature that's one or more colors.
+I|Reality Anchor|{1}{G}|TMP:246|Target creature loses shadow until end of turn. <br>Draw a card.
+I|Reality Ripple|{1}{U}|MIR:87|Target artifact, creature, or land phases out.
+I|Reap What Is Sown|{1}{G}{W}|BNG:154|Put a +1/+1 counter on each of up to three target creatures.
+I|Reaver Ambush|{2}{B}|RIX:83|Exile target creature with power 3 or less.
+I|Rebellious Strike|{1}{W}|TDM:20|Target creature gets +3/+0 until end of turn. <br>Draw a card.
+I|Rebuff the Wicked|{W}|TSR:35|Counter target spell that targets a permanent you control.
+I|Rebuke|{2}{W}|BBD:103|Destroy target attacking creature.
+I|Reciprocate|{W}|CHK:40|Exile target creature that dealt damage to you this turn.
+I|Reckless Ransacking|{1}{R}|ECL:152|Target creature gets +3/+2 until end of turn. Create a Treasure token.
+I|Reckless Spite|{1}{B}{B}|WOC:117|Destroy two target nonblack creatures. You lose 5 life.
+I|Reclaim|{G}|EXO:120|Put target card from your graveyard on top of your library.
+I|Redirect|{U}{U}|M11:71|You may choose new targets for target spell.
+I|Refocus|{1}{U}|FRF:47|Untap target creature. <br>Draw a card.
+I|Refresh|{2}{G}|ODY:264|Regenerate target creature. <br>Draw a card.
+I|Refuse to Yield|{1}{W}|SNC:27|Target creature gets +2/+7 until end of turn. Untap it.
+I|Refute|{1}{U}{U}|TRC:579|Counter target spell. Draw a card, then discard a card.
+I|Regenerate|{1}{G}|M10:202|Regenerate target creature.
+I|Regress|{2}{U}|ROE:83|Return target permanent to its owner's hand.
+I|Reknit|{1}{G/W}|SHM:236|Regenerate target permanent.
+I|Remove Soul|{1}{U}|CHR:25|Counter target creature spell.
+I|Rend Flesh|{2}{B}|CHK:140|Destroy target non-Spirit creature.
+I|Rend Spirit|{2}{B}|CHK:141|Destroy target Spirit.
+I|Render Silent|{W}{U}{U}|DGM:96|Counter target spell. Its controller can't cast spells this turn.
+I|Renounce the Guilds|{1}{W}|DGM:5|Each player sacrifices a multicolored permanent of their choice.
+I|Repel|{3}{U}|VMA:89|Put target creature on top of its owner's library.
+I|Repel Calamity|{1}{W}|BLB:27|Destroy target creature with power or toughness 4 or greater.
+I|Repel the Abominable|{1}{W}|EMN:38|Prevent all damage that would be dealt this turn by non-Human sources.
+I|Repel the Darkness|{2}{W}|J25:242|Tap up to two target creatures. <br>Draw a card.
+I|Reprieve|{1}{W}|HOC:17|Return target spell to its owner's hand. <br>Draw a card.
+I|Repulse|{2}{U}|GN3:36|Return target creature to its owner's hand. <br>Draw a card.
+I|Rescue|{U}|DOM:63|Return target permanent you control to its owner's hand.
+I|Restore the Peace|{1}{W}{U}|DGM:97|Return each creature that dealt damage this turn to its owner's hand.
+I|Resupply|{5}{W}|DTK:32|You gain 6 life. <br>Draw a card.
+I|Retaliate|{2}{W}{W}|5DN:13|Destroy all creatures that dealt damage to you this turn.
+I|Retract|{U}|DST:32|Return all artifacts you control to their owner's hand.
+I|Return to the Earth|{3}{G}|BBD:210|Destroy target artifact, enchantment, or creature with flying.
+I|Revitalize|{1}{W}|J25:244|You gain 3 life. <br>Draw a card.
+I|Reviving Dose|{2}{W}|CN2:97|You gain 3 life. <br>Draw a card.
+I|Revolutionary Rebuff|{1}{U}|KLD:61|Counter target nonartifact spell unless its controller pays {2}.
+I|Rewind|{2}{U}{U}|PAL99:6|Counter target spell. Untap up to four lands.
+I|Righteous Blow|{W}|GRN:23|{this} deals 2 damage to target attacking or blocking creature.
+I|Righteousness|{W}|J22:235|Target blocking creature gets +7/+7 until end of turn.
+I|Riptide|{U}|DRK:35|Tap all blue creatures.
+I|Rise to the Challenge|{1}{R}|BNG:107|Target creature gets +2/+0 and gains first strike until end of turn.
+I|Ritual of Rejuvenation|{2}{W}|XLN:32|You gain 4 life. <br>Draw a card.
+I|Root Snare|{1}{G}|RNA:137|Prevent all combat damage that would be dealt this turn.
+I|Run Afoul|{G}|M21:201|Target opponent sacrifices a creature of their choice with flying.
+I|Run Aground|{3}{U}|XLN:72|Put target artifact or creature on top of its owner's library.
+I|Runeboggle|{2}{U}|GPT:33|Counter target spell unless its controller pays {1}. <br>Draw a card.
+I|Rush of Adrenaline|{R}|J22:592|Target creature gets +2/+1 and gains trample until end of turn.
+I|Rush of Blood|{2}{R}|AVR:154|Target creature gets +X/+0 until end of turn, where X is its power.
+I|Rush of Inspiration|{1}{U/R}{U/R}|MH3:257|Draw two cards. Then discard a card at random unless you pay {E}{E}.
+I|Rust|{G}|LEG:203|Counter target activated ability from an artifact source.
+I|Samut's Sprint|{R}|WAR:142|Target creature gets +2/+1 and gains haste until end of turn. Scry 1.
+I|Sandblast|{2}{W}|HOU:20|{this} deals 5 damage to target attacking or blocking creature.
+I|Sandstorm|{G}|REN:156|{this} deals 1 damage to each attacking creature.
+I|Sarkhan's Catharsis|{4}{R}|WAR:144|{this} deals 5 damage to target player or planeswalker.
+I|Savage Surge|{1}{G}|THS:176|Target creature gets +2/+2 until end of turn. Untap that creature.
+I|Savor|{1}{B}|BLB:109|Target creature gets -2/-2 until end of turn. Create a Food token.
+I|Scar|{B/R}|SHM:194|Put a -1/-1 counter on target creature.
+I|Scare Tactics|{B}|EXO:73|Creatures you control get +1/+0 until end of turn.
+I|Scatter Arc|{3}{U}|GTC:48|Counter target noncreature spell. <br>Draw a card.
+I|Scorpion's Sting|{1}{B}|SPM:65|Target creature gets -3/-3 until end of turn.
+I|Scour from Existence|{7}|BFZ:13|Exile target permanent.
+I|Sea Kings' Blessing|{U}|LEG:75|One or more target creatures become blue until end of turn.
+I|Sear|{1}{R}|ECL:154|{this} deals 4 damage to target creature or planeswalker.
+I|Searing Light|{W}|OGW:33|Destroy target attacking or blocking creature with power 2 or less.
+I|Searing Spear|{1}{R}|J22:597|{this} deals 3 damage to any target.
+I|Searing Wind|{8}{R}|PCY:103|{this} deals 10 damage to any target.
+I|Second Guess|{1}{U}|AVR:74|Counter target spell that's the second spell cast this turn.
+I|Second Thoughts|{4}{W}|EMA:27|Exile target attacking creature. <br>Draw a card.
+I|Secure the Wastes|{X}{W}|SLD:1748|Create X 1/1 white Warrior creature tokens.
+I|Seething Song|{2}{R}|SLD:7051|Add {R}{R}{R}{R}{R}.
+I|Seismic Shudder|{1}{R}|ZEN:147|{this} deals 1 damage to each creature without flying.
+I|Seize the Initiative|{W}|SOM:20|Target creature gets +1/+1 and gains first strike until end of turn.
+I|Sephiroth's Intervention|{3}{B}|FIN:116|Destroy target creature. You gain 2 life.
+I|Serene Heart|{1}{G}|MIR:242|Destroy all Auras.
+I|Serene Offering|{1}{W}|TMP:40|Destroy target enchantment. You gain life equal to its mana value.
+I|Serene Sunset|{X}{G}|JUD:131|Prevent all combat damage X target creatures would deal this turn.
+I|Serpent's Gift|{2}{G}|M13:190|Target creature gains deathtouch until end of turn.
+I|Shadow Rift|{U}|TMP:86|Target creature gains shadow until end of turn. <br>Draw a card.
+I|Shadow of Doubt|{U/B}{U/B}|RAV:253|Players can't search libraries this turn. <br>Draw a card.
+I|Shadowfeed|{B}|ALA:86|Exile target card from a graveyard. You gain 3 life.
+I|Shape the Sands|{G}|DTK:205|Target creature gets +0/+5 and gains reach until end of turn.
+I|Shatter|{1}{R}|KTK:120|Destroy target artifact.
+I|Shattering Blow|{1}{R/W}|GTC:225|Exile target artifact.
+I|Sheltering Light|{W}|XLN:35|Target creature gains indestructible until end of turn. Scry 1.
+I|Shield Wall|{1}{W}|CHR:12|Creatures you control get +0/+2 until end of turn.
+I|Shielded Passage|{W}|GTC:24|Prevent all damage that would be dealt to target creature this turn.
+I|Shieldmate's Blessing|{W}|ZEN:35|Prevent the next 3 damage that would be dealt to any target this turn.
+I|Shock|{R}|BBD:184|{this} deals 2 damage to any target.
+I|Shocking Grasp|{1}{U}|AFR:72|Target creature gets -2/-0 until end of turn. <br>Draw a card.
+I|Shoot the Sheriff|{1}{B}|SLD:7166|Destroy target non-outlaw creature.
+I|Shoving Match|{2}{U}|MMQ:103|Until end of turn, all creatures gain "{T}: Tap target creature."
+I|Show of Valor|{1}{W}|M13:34|Target creature gets +2/+4 until end of turn.
+I|Shower of Arrows|{2}{G}|LTR:188|Destroy target artifact, enchantment, or creature with flying. Scry 1.
+I|Shredding Winds|{2}{G}|THS:178|{this} deals 7 damage to target creature with flying.
+I|Shriek of Dread|{1}{B}|PLS:53|Target creature gains fear until end of turn.
+I|Shrink|{G}|ME2:175|Target creature gets -5/-0 until end of turn.
+I|Shunt|{1}{R}{R}|DST:68|Change the target of target spell with a single target.
+I|Sick and Tired|{2}{B}|ULG:66|Two target creatures each get -1/-1 until end of turn.
+I|Sideswipe|{1}{R}|CHK:187|You may change any targets of target Arcane spell.
+I|Silk Net|{G}|ULG:112|Target creature gets +1/+1 and gains reach until end of turn.
+I|Silverstrike|{3}{W}|SOI:37|Destroy target attacking creature. You gain 3 life.
+I|Simoon|{R}{G}|VIS:136|{this} deals 1 damage to each creature target opponent controls.
+I|Sizzling Barrage|{1}{R}|ZNR:162|{this} deals 4 damage to target creature that blocked this turn.
+I|Skillful Lunge|{1}{W}|DKA:22|Target creature gets +2/+0 and gains first strike until end of turn.
+I|Skyshroud Blessing|{1}{G}|PLS:92|All lands gain shroud until end of turn. <br>Draw a card.
+I|Slash of Talons|{W}|XLN:38|{this} deals 2 damage to target attacking or blocking creature.
+I|Slice in Twain|{2}{G}{G}|SOM:127|Destroy target artifact or enchantment. <br>Draw a card.
+I|Slip Out the Back|{U}|CLU:99|Put a +1/+1 counter on target creature. It phases out.
+I|Smash|{2}{R}|RAV:143|Destroy target artifact. <br>Draw a card.
+I|Smelt|{R}|M13:149|Destroy target artifact.
+I|Smite|{W}|GTC:25|Destroy target blocked creature.
+I|Smite the Monstrous|{3}{W}|KTK:24|Destroy target creature with power 4 or greater.
+I|Snap|{1}{U}|WOC:110|Return target creature to its owner's hand. Untap up to two lands.
+I|Snare the Skies|{G}|AVR:193|Target creature gets +1/+1 and gains reach until end of turn.
+I|Sokka's Sword Training|{1}{W}|TLE:84|Target creature gets +2/+2 until end of turn. <br>Create a Clue token.
+I|Soldier On|{2}{W}|MSC:843|Put two +1/+1 counters on target creature. Untap it.
+I|Solidarity|{3}{W}|8ED:46|Creatures you control get +0/+5 until end of turn.
+I|Songs of the Damned|{B}|UMA:115|Add {B} for each creature cards in your graveyard.
+I|Soothing Balm|{1}{W}|MMQ:48|Target player gains 5 life.
+I|Sorin's Thirst|{B}{B}|WAR:104|{this} deals 2 damage to target creature and you gain 2 life.
+I|Soul Nova|{3}{W}{W}|MRD:25|Exile target attacking creature and all Equipment attached to it.
+I|Soul Parry|{1}{W}|SOM:21|Prevent all damage one or two target creatures would deal this turn.
+I|Soul's Grace|{1}{W}|ALA:28|You gain life equal to target creature's power.
+I|Spatial Contortion|{1}{C}|F16:7|Target creature gets +3/-3 until end of turn.
+I|Spell Blast|{X}{U}|3ED:82|Counter target spell with mana value X.
+I|Spell Pierce|{U}|DFT:64|Counter target noncreature spell unless its controller pays {2}.
+I|Spell Snare|{U}|BBD:132|Counter target spell with mana value 2.
+I|Sphinx's Revelation|{X}{W}{U}{U}|AKR:262|You gain X life and draw X cards.
+I|Spin Out|{1}{B}{B}|DFT:106|Destroy target creature or Vehicle.
+I|Splendid Agony|{2}{B}|AKH:109|Distribute two -1/-1 counters among one or two target creatures.
+I|Spore Swarm|{3}{G}|J25:717|Create three 1/1 green Saproling creature tokens.
+I|Springsage Ritual|{3}{G}|EMN:172|Destroy target artifact or enchantment. You gain 4 life.
+I|Sprout|{G}|TSP:221|Create a 1/1 green Saproling creature token.
+I|Squall Line|{X}{G}{G}|TSP:222|{this} deals X damage to each creature with flying and each player.
+I|Square Up|{1}{G/U}|STX:238|Target creature has base power and toughness 4/4 until end of turn.
+I|Squelch|{1}{U}|CHK:92|Counter target activated ability. <br>Draw a card.
+I|Stab|{B}|FDN:71|Target creature gets -2/-2 until end of turn.
+I|Stabbing Pain|{B}|M11:118|Target creature gets -1/-1 until end of turn. Tap that creature.
+I|Staggering Size|{1}{G}|LCI:214|Target creature gets +3/+3 and gains trample until end of turn.
+I|Stampede|{1}{G}{G}|ME2:178|Attacking creatures get +1/+0 and gain trample until end of turn.
+I|Stand United|{1}{G/W}|TLE:149|Target creature gets +2/+2 until end of turn. If it's an Ally, scry 2.
+I|Stand Up for Yourself|{2}{W}|SOS:34|Destroy target creature with power 3 or greater.
+I|Stench of Decay|{1}{B}{B}|ALL:61a|Nonartifact creatures get -1/-1 until end of turn.
+I|Stern Lesson|{2}{U}|BRO:64|Draw two cards, then discard a card. Create a tapped Powerstone token.
+I|Stern Scolding|{U}|HOC:183|Counter target creature spell with power or toughness 2 or less.
+I|Stifle|{U}|G09:3|Counter target activated or triggered ability.
+I|Strangling Spores|{3}{B}|J22:473|Target creature gets -3/-3 until end of turn.
+I|Strip Bare|{W}|SHM:24|Destroy all Auras and Equipment attached to target creature.
+I|Stroke of Genius|{X}{2}{U}|VMA:95|Target player draws X cards.
+I|Stun|{1}{R}|TMP:207|Target creature can't block this turn. <br>Draw a card.
+I|Succumb to Temptation|{1}{B}{B}|EMN:107|You draw two cards and you lose 2 life.
+I|Sudden Strength|{3}{G}|JUD:132|Target creature gets +3/+3 until end of turn. <br>Draw a card.
+I|Sudden Strike|{1}{W}|SPM:19|Destroy target attacking or blocking creature.
+I|Suffocating Blast|{1}{U}{U}{R}|APC:124|Counter target spell and {this} deals 3 damage to target creature.
+I|Sugar Rush|{1}{B}|WOE:110|Target creature gets +3/+0 until end of turn. <br>Draw a card.
+I|Summary Dismissal|{2}{U}{U}|EMN:75|Exile all other spells and counter all abilities.
+I|Sunder|{3}{U}{U}|USG:101|Return all lands to their owners' hands.
+I|Sungold Barrage|{2}{W}|MID:36|Destroy target creature with toughness 4 or greater.
+I|Sure Strike|{1}{R}|BFZ:157|Target creature gets +3/+0 and gains first strike until end of turn.
+I|Swerve|{U}{R}|ALA:200|Change the target of target spell with a single target.
+I|Swift Response|{1}{W}|J25:269|Destroy target tapped creature.
+I|Swords to Plowshares|{W}|BBD:110|Exile target creature. Its controller gains life equal to its power.
+I|Sylvan Paradise|{G}|LEG:208|One or more target creatures become green until end of turn.
+I|Symbiosis|{1}{G}|USG:275|Two target creatures each get +2/+2 until end of turn.
+I|Syphon Essence|{2}{U}|VOW:84|Counter target creature or planeswalker spell. Create a Blood token.
+I|Syphon Fuel|{4}{B}|DFT:108|Target creature gets -6/-6 until end of turn. You gain 2 life.
+I|Tainted Strike|{B}|SOM:80|Target creature gets +1/+0 and gains infect until end of turn.
+I|Take Up Arms|{4}{W}|KTK:26|Create three 1/1 white Warrior creature tokens.
+I|Taken by Nightmares|{2}{B}{B}|WOE:112|Exile target creature. If you control an enchantment, scry 2.
+I|Tar Snare|{2}{B}|OGW:90|Target creature gets -3/-2 until end of turn.
+I|Tarfire|{R}|EVG:56|{this} deals 2 damage to any target.
+I|Team Spirit|{2}{G}|UGL:67|Creatures target player's team controls get +1/+1 until end of turn.
+I|Tempest of Light|{2}{W}|10E:51|Destroy all enchantments.
+I|Terashi's Verdict|{1}{W}|BOK:27|Destroy target attacking creature with power 3 or less.
+I|Terminate|{B}{R}|ACR:251|Destroy target creature. It can't be regenerated.
+I|Thought Collapse|{1}{U}{U}|RNA:57|Counter target spell. Its controller mills three cards.
+I|Thought Scour|{U}|DKA:52|Target player mills two cards. <br>Draw a card.
+I|Thoughtbind|{2}{U}|CHK:96|Counter target spell with mana value 4 or less.
+I|Thoughtflare|{3}{U}{R}|RTR:203|Draw four cards, then discard two cards.
+I|Thoughtlace|{U}|3ED:85|Target spell or permanent becomes blue.
+I|Thraben Exorcism|{1}{W}|MID:39|Exile target Spirit, creature with disturb, or enchantment.
+I|Throttle|{4}{B}|KTK:93|Target creature gets -4/-4 until end of turn.
+I|Thunder Strike|{1}{R}|BBD:185|Target creature gets +2/+0 and gains first strike until end of turn.
+I|Titanic Growth|{1}{G}|WOE:191|Target creature gets +4/+4 until end of turn.
+I|To Arms!|{1}{W}|GPT:20|Untap all creatures you control. <br>Draw a card.
+I|Tolarian Winds|{1}{U}|USG:104|Discard all the cards in your hand, then draw that many cards.
+I|Topple the Statue|{2}{W}|2XM:36|Tap target permanent. If it's an artifact, destroy it.<br>Draw a card.
+I|Tortoise Formation|{3}{U}|ALA:61|Creatures you control gain shroud until end of turn.
+I|Totally Lost|{4}{U}|BBD:135|Put target nonland permanent on top of its owner's library.
+I|Touch of Darkness|{B}|LEG:122|One or more target creatures become black until end of turn.
+I|Tower Defense|{1}{G}|GTC:137|Creatures you control get +0/+5 and gain reach until end of turn.
+I|Trailblazer|{2}{G}{G}|ICE:272|Target creature can't be blocked this turn.
+I|Tranquil Domain|{1}{G}|MIR:245|Destroy all non-Aura enchantments.
+I|Transmutation|{1}{B}|CHR:40|Switch target creature's power and toughness until end of turn.
+I|Tread Upon|{1}{G}|DTK:211|Target creature gets +2/+2 and gains trample until end of turn.
+I|Tribute to the Wild|{1}{G}|VMA:238|Each opponent sacrifices an artifact or enchantment of their choice.
+I|Triumphant Surge|{3}{W}|THB:41|Destroy target creature with power 4 or greater. You gain 3 life.
+I|True Love's Kiss|{2}{W}{W}|ELD:34|Exile target artifact or enchantment. <br>Draw a card.
+I|Trumpet Blast|{2}{R}|KTK:124|Attacking creatures get +2/+0 until end of turn.
+I|Tune the Narrative|{U}|MH3:75|Draw a card. You get {E}{E} <i>(two energy counters)</i>.
+I|Tunnel|{R}|3ED:181|Destroy target Wall. It can't be regenerated.
+I|Turf Wound|{2}{R}|INV:177|Target player can't play lands this turn. <br>Draw a card.
+I|Turn Aside|{U}|EMN:78|Counter target spell that targets a permanent you control.
+I|Turn the Tide|{1}{U}|CNS:110|Creatures your opponents control get -2/-0 until end of turn.
+I|Turn to Dust|{G}|MRD:137|Destroy target Equipment. Add {G}.
+I|Twiddle|{U}|2ED:86|You may tap or untap target artifact, creature, or land.
+I|Twin Bolt|{1}{R}|CN2:173|{this} deals 2 damage divided as you choose among one or two targets.
+I|Ulcerate|{B}|J22:481|Target creature gets -3/-3 until end of turn. You lose 3 life.
+I|Ultimate Price|{1}{B}|F15:10|Destroy target monocolored creature.
+I|Uncaged Fury|{2}{R}|J25:607|Target creature gets +1/+1 and gains double strike until end of turn.
+I|Uncanny Speed|{1}{R}|AVR:163|Target creature gets +3/+0 and gains haste until end of turn.
+I|Undermine|{U}{U}{B}|WC01:ar282|Counter target spell. Its controller loses 3 life.
+I|Undying Evil|{B}|DKA:77|Target creature gains undying until end of turn.
+I|Unexpected Fangs|{1}{B}|IKO:102|Put a +1/+1 counter and a lifelink counter on target creature.
+I|Unfriendly Fire|{4}{R}|XLN:172|{this} deals 4 damage to any target.
+I|Unleash Fury|{1}{R}|J25:608|Double the power of target creature until end of turn.
+I|Unlikely Aid|{1}{B}|ANB:64|Target creature gets +2/+0 and gains indestructible until end of turn.
+I|Unmake|{W/B}{W/B}{W/B}|EVE:96|Exile target creature.
+I|Unnatural Predation|{G}|MBS:93|Target creature gets +1/+1 and gains trample until end of turn.
+I|Unnatural Speed|{R}|CHK:197|Target creature gains haste until end of turn.
+I|Unsubstantiate|{1}{U}|EMN:79|Return target spell or creature to its owner's hand.
+I|Unsummon|{U}|3ED:87|Return target creature to its owner's hand.
+I|Untamed Might|{X}{G}|SOM:131|Target creature gets +X/+X until end of turn.
+I|Unwanted Remake|{W}|DSK:306|Destroy target creature. Its controller manifests dread.
+I|Unwind|{2}{U}|DOM:72|Counter target noncreature spell. Untap up to three lands.
+I|Urgent Exorcism|{1}{W}|ISD:40|Destroy target Spirit or enchantment.
+I|Utter End|{2}{W}{B}|KTK:210|Exile target nonland permanent.
+I|Valor Made Real|{W}|DIS:20|Target creature can block any number of creatures this turn.
+I|Vanishing Verse|{W}{B}|SOC:335|Exile target monocolored permanent.
+I|Vanquish|{2}{W}|5DN:20|Destroy target blocking creature.
+I|Vanquish the Weak|{2}{B}|MOM:129|Destroy target creature with power 3 or less.
+I|Vastwood Fortification|{G}|ZNR:216|Put a +1/+1 counter on target creature.
+I|Vault Skyward|{U}|SOM:51|Target creature gains flying until end of turn. Untap it.
+I|Venser's Diffusion|{2}{U}|FUT:47|Return target nonland permanent or suspended card to its owner's hand.
+I|Verdigris|{2}{G}|TMP:264|Destroy target artifact.
+I|Veteran's Reflexes|{W}|E02:5|Target creature gets +1/+1 until end of turn. Untap that creature.
+I|Vex|{2}{U}|DST:36|Counter target spell. That spell's controller may draw a card.
+I|Vibrant Outburst|{U}{R}|SOS:240|{this} deals 3 damage to any target. Tap up to one target creature.
+I|Victim of Night|{B}{B}|ISD:124|Destroy target non-Vampire, non-Werewolf, non-Zombie creature.
+I|Vision Skeins|{1}{U}|DIS:36|Each player draws two cards.
+I|Vitalize|{G}|WTH:145|Untap all creatures you control.
+I|Vitalizing Cascade|{X}{G}{W}|MIR:286|You gain X plus 3 life.
+I|Vitalizing Wind|{8}{G}|PCY:133|Creatures you control get +7/+7 until end of turn.
+I|Void Helix|{4}{B}{B}|MSC:674|{this} deals 5 damage to any target and you gain 5 life.
+I|Voidslime|{G}{U}{U}|DIS:137|Counter target spell, activated ability, or triggered ability.
+I|Volcanic Geyser|{X}{R}{R}|FNM:4|{this} deals X damage to any target.
+I|Volcanic Rush|{4}{R}|DTK:166|Attacking creatures get +2/+0 and gain trample until end of turn.
+I|Volcanic Upheaval|{3}{R}|BFZ:161|Destroy target land.
+I|Vraska's Contempt|{2}{B}{B}|PXLN:129p|Exile target creature or planeswalker. You gain 2 life.
+I|Wander Off|{3}{B}|SOS:104|Exile target creature.
+I|Wanderer's Intervention|{1}{W}|NEO:41|{this} deals 4 damage to target attacking or blocking creature.
+I|Warleader's Helix|{2}{R}{W}|DGM:116|{this} deals 4 damage to any target and you gain 4 life.
+I|Warrior's Honor|{2}{W}|VIS:24|Creatures you control get +1/+1 until end of turn.
+I|Waterwhirl|{4}{U}{U}|KTK:60|Return up to two target creatures to their owners' hands.
+I|Weave Fate|{3}{U}|KTK:61|Draw two cards.
+I|Whitesun's Passage|{1}{W}|SOM:27|You gain 5 life.
+I|Wildwood Rebirth|{1}{G}|GTC:140|Return target creature card from your graveyard to your hand.
+I|Windstorm|{X}{G}|KTK:157|{this} deals X damage to each creature with flying.
+I|Winter's Intervention|{1}{B}|DSK:123|{this} deals 2 damage to target creature. You gain 2 life.
+I|Withering Torment|{2}{B}|DSK:124|Destroy target creature or enchantment. You lose 2 life.
+I|Withstand Death|{G}|SOM:134|Target creature gains indestructible until end of turn.
+I|Words of Wisdom|{1}{U}|ODY:114|You draw two cards, then each other player draws a card.
+I|Wrap in Vigor|{1}{G}|CNS:183|Regenerate each creature you control.
+I|Wrecking Ball|{2}{B}{R}|DIS:139|Destroy target creature or land.
+I|Wring Flesh|{B}|M12:118|Target creature gets -3/-1 until end of turn.
+I|Wrong Turn|{2}{U}|CMR:107|Target opponent gains control of target creature.
+I|Zap|{2}{R}|INV:180|{this} deals 1 damage to any target. <br>Draw a card.
+I|Zealous Strike|{1}{W}|CN2:101|Target creature gets +2/+2 and gains first strike until end of turn.
