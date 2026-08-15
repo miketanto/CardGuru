@@ -45,8 +45,21 @@ import java.util.List;
 public class RLDriverServer {
 
     /** properties frozen into static finals downstream: pin and enforce */
+    /**
+     * Read ONCE per JVM, so a job asking for a different value must get a
+     * loud error rather than a silently wrong run.
+     *
+     * rl.encoderV belongs here because StateEncoder reads it in a STATIC
+     * INITIALIZER: the first job to touch that class fixes the encoder for
+     * the life of the JVM. Without pinning, a v1 arm run against a driver
+     * JVM that had already served v2 produced probes with NO GAMES - every
+     * job died on a dim mismatch, the lane recorded NA, and the loop
+     * marched through all four batteries as though it had trained. An arm
+     * can fail completely and still look like an arm.
+     */
     private static final String[] PINNED = {
-            "rl.cardFeatures", "rl.phi", "rl.noYields", "rl.debug"};
+            "rl.cardFeatures", "rl.phi", "rl.noYields", "rl.debug",
+            "rl.encoderV"};
 
     private static String[] pinnedValues;
     private static long jobs = 0;

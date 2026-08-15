@@ -65,6 +65,12 @@ mkdir -p $OUT
 
 for D in $BASE $TWIN; do cp $RL/$D.dck /home/user/mage/Mage.Tests/; done
 
+# The persistent driver JVM fixes rl.encoderV at StateEncoder class-init,
+# so a JVM that has already served one arm CANNOT serve the other. Kill it
+# here; RL_AUTOSTART=1 brings up a fresh one on this arm's first job.
+pkill -f "[R]LDriverServer" 2>/dev/null
+sleep 2
+
 INIT=$OUT/init.pt
 python3 $RL/p10_init_net.py --out $INIT --seed $((10 + SEED)) --sdim $SDIM --cdim $CDIM 2>/dev/null | tail -1
 CKPT=$OUT/agent.pt
