@@ -206,6 +206,55 @@ def solver_best(pos):
     return best, bs
 
 
+def cand_assignment(pos, assign):
+    """v4 candidate: the assignment described by its OUTCOME only."""
+    c = [0.0] * CDIM
+    c[T_BLOCK] = 1.0
+    o = _resolve(pos.attackers, pos.blockers, assign, pos.my_life)
+    used = sum(1 for a in assign if a >= 0)
+    c[6] = o["dmg"] / 20
+    c[7] = o["akill"] / 6
+    c[8] = o["aval"] / 20
+    c[9] = o["blost"] / 6
+    c[10] = o["bval"] / 20
+    c[11] = 1.0 if o["dead"] else 0.0
+    c[12] = used / 6
+    c[13] = (pos.my_life - o["dmg"]) / 20
+    return c
+
+
+def run_position_v4(pol, pos, label):
+    """One joint decision over outcome-deduped complete assignments -
+    mirrors RLPlayer.jointBlocks, including insertion order."""
+    import itertools
+    seen, options = {}, []
+    for assign in itertools.product(range(-1, len(pos.attackers)),
+                                    repeat=len(pos.blockers)):
+        o = _resolve(pos.attackers, pos.blockers, assign, pos.my_life)
+        used = sum(1 for a in assign if a >= 0)
+        key = (o["dmg"], o["akill"], o["aval"], o["blost"], o["bval"], used)
+        if key in seen:
+            continue
+        seen[key] = assign
+        options.append(assign)
+    cands = [cand_assignment(pos, a) for a in options]
+    pick = pol.choose(pos.state({}), cands)
+    chosen = options[pick] if 0 <= pick < len(options) else [-1] * len(pos.blockers)
+    print("== %s   [%d distinct outcomes]" % (label, len(options)))
+    print("   life %d, attackers %s, blockers %s"
+          % (pos.my_life,
+             ", ".join("%s %d/%d" % a for a in pos.attackers),
+             ", ".join("%s %d/%d" % b for b in pos.blockers)))
+    for bi, ai in enumerate(chosen):
+        print("     %-26s -> %s" % (pos.blockers[bi][0],
+                                    pos.attackers[ai][0] if ai >= 0 else "DECLINE"))
+    best, bs = solver_best(pos)
+    total = sum(p for _, p, _ in pos.attackers)
+    gs = _score(_resolve(pos.attackers, pos.blockers, chosen, pos.my_life), total)
+    print("   policy score %d   solver score %d   %s"
+          % (gs, bs, "MATCH" if gs >= bs else "SUBOPTIMAL"))
+
+
 def run_position(pol, pos, label):
     """Replay the engine's per-blocker loop: body order, conditioned."""
     order = sorted(range(len(pos.blockers)),
@@ -273,9 +322,13 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--port", type=int, default=7995)
     ap.add_argument("--validate", action="store_true")
+    ap.add_argument("--v4", action="store_true",
+                    help="joint assignment: one decision per combat")
     args = ap.parse_args()
     load_features()
     pol = Policy(args.port)
+    if args.v4:
+        globals()["run_position"] = run_position_v4
 
     if args.validate:
         # From game_v2_ck1024_vs_D0_seed6001.txt, t10: agent blocked the
