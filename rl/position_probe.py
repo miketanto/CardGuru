@@ -140,6 +140,47 @@ class Policy:
         return json.loads(self.f.readline())["a"]
 
 
+# --- CombatMath, Python port, so the probe prints the reference answer
+# next to the policy's rather than leaving the reader to do the maths.
+def _resolve(attackers, blockers, assign, life):
+    dmg = akill = aval = blost = bval = 0
+    for a, (an, ap, at) in enumerate(attackers):
+        mine = [blockers[b] for b in range(len(blockers)) if assign[b] == a]
+        if not mine:
+            dmg += ap
+            continue
+        if sum(p for _, p, _ in mine) >= at:
+            akill += 1
+            aval += ap + at
+        left = ap
+        for bn, bp, bt in sorted(mine, key=lambda x: x[2]):
+            if left >= bt:
+                left -= bt
+                blost += 1
+                bval += bp + bt
+    return dict(dmg=dmg, akill=akill, aval=aval, blost=blost, bval=bval,
+                dead=dmg >= life)
+
+
+def _score(o, total):
+    if o["dead"]:
+        return -10 ** 9
+    return 2 * (total - o["dmg"]) + 3 * o["aval"] - 3 * o["bval"]
+
+
+def solver_best(pos):
+    import itertools
+    total = sum(p for _, p, _ in pos.attackers)
+    best, bs = None, -10 ** 18
+    for assign in itertools.product(range(-1, len(pos.attackers)),
+                                    repeat=len(pos.blockers)):
+        sc = _score(_resolve(pos.attackers, pos.blockers, assign,
+                             pos.my_life), total)
+        if sc > bs:
+            bs, best = sc, assign
+    return best, bs
+
+
 def run_position(pol, pos, label):
     """Replay the engine's per-blocker loop: body order, conditioned."""
     order = sorted(range(len(pos.blockers)),
@@ -167,6 +208,20 @@ def run_position(pol, pos, label):
              ", ".join("%s %d/%d" % b for b in pos.blockers)))
     for who, target in picks:
         print("     %-26s -> %s" % (who, target or "DECLINE"))
+    best, bs = solver_best(pos)
+    print("   solver best:")
+    for bi, ai in enumerate(best):
+        print("     %-26s -> %s"
+              % (pos.blockers[bi][0],
+                 pos.attackers[ai][0] if ai >= 0 else "DECLINE"))
+    total = sum(p for _, p, _ in pos.attackers)
+    got = [-1] * len(pos.blockers)
+    for ai, bis in assigned.items():
+        for bi in bis:
+            got[bi] = ai
+    gs = _score(_resolve(pos.attackers, pos.blockers, got, pos.my_life), total)
+    print("   policy score %d   solver score %d   %s"
+          % (gs, bs, "MATCH" if gs >= bs else "SUBOPTIMAL"))
     return assigned, picks
 
 
@@ -201,6 +256,29 @@ def main():
         blockers=[("Glory Seeker", 2, 2), ("Silvercoat Lion", 2, 2),
                   ("Fresh Volunteers", 2, 2)],
         turn=14), "MUST DOUBLE BLOCK (3 life, 3/3 attacker, three 2/2s)")
+
+    # TWO attackers, BOTH needing a double block from 2/2s, one bigger.
+    # Shu Elite Infantry 3/3 and Regal Unicorn 2/3 each survive a single
+    # 2/2 (2 < 3) and die to two (4 >= 3). With only three blockers the
+    # agent can double exactly one, so it must RANK the threats rather
+    # than apply a threshold.
+    run_position(pol, Pos(
+        my_life=10, opp_life=12,
+        attackers=[("Shu Elite Infantry", 3, 3), ("Regal Unicorn", 2, 3)],
+        blockers=[("Glory Seeker", 2, 2), ("Silvercoat Lion", 2, 2),
+                  ("Fresh Volunteers", 2, 2)],
+        turn=14), "RANK: two attackers both needing a double, three blockers")
+
+    # Same two attackers, but FOUR blockers - enough to double both. If
+    # the policy blocks here and not with three, the failure is about
+    # RANKING under scarcity; if it declines here too, the failure is
+    # about COMMITTING a first blocker at all when a second is needed.
+    run_position(pol, Pos(
+        my_life=10, opp_life=12,
+        attackers=[("Shu Elite Infantry", 3, 3), ("Regal Unicorn", 2, 3)],
+        blockers=[("Glory Seeker", 2, 2), ("Silvercoat Lion", 2, 2),
+                  ("Fresh Volunteers", 2, 2), ("Knight Errant", 2, 2)],
+        turn=14), "RANK+1: same two attackers, FOUR blockers")
 
     # Control: same board, comfortable life. Blocking is now optional and
     # declining is defensible, so a difference between these two says the
