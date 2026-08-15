@@ -28,6 +28,13 @@ public final class StateEncoder {
      *       the ONLY way to load them.
      *   v2  adds combat and stack state (s[24..31]) and block context
      *       (c[17..24]); see encodeState and forBlock.
+     *   v3  v2 with the controller-blind combat channels fixed.
+     *   v4  v3 state, but blocks become ONE joint decision per combat
+     *       over complete assignments described by their simulated
+     *       OUTCOME (see forAssignment). Sequential conditioning can fix
+     *       over-piling and provably cannot fix under-committing - a
+     *       blocker cannot condition on a decision not yet made - so the
+     *       decomposition itself has to go.
      *
      * Deliberately NOT a compile-time constant. javac inlines
      * `static final int X = 32` into every caller, so the previous
@@ -265,6 +272,32 @@ public final class StateEncoder {
         c[16] = p.getToughness().getValue() / 6f;
         c[12] = p.getControllerId().equals(me) ? 1f : 0f;
         identity(c, p.getName());
+        return c;
+    }
+
+    /**
+     * A COMPLETE block assignment, described by what it does rather than
+     * by which cards it uses. The policy never sees the assignment - only
+     * its consequences - which is the afterstate formulation and the
+     * reason this is learnable: no combat arithmetic has to be inferred
+     * from stat lines.
+     *
+     * Reuses the T_BLOCK type slot and the card-feature region 6..16,
+     * which carry mana value / power / toughness / card flags for
+     * single-card candidates and are meaningless for an assignment.
+     * CAND_DIM is unchanged.
+     */
+    public static float[] forAssignment(CombatMath.Outcome o, int blockersUsed,
+                                        int myLife) {
+        float[] c = blank(T_BLOCK);
+        c[6] = o.damageTaken / 20f;
+        c[7] = o.attackersKilled / 6f;
+        c[8] = o.attackerValueKilled / 20f;
+        c[9] = o.blockersLost / 6f;
+        c[10] = o.blockerValueLost / 20f;
+        c[11] = o.defenderDies ? 1f : 0f;
+        c[12] = blockersUsed / 6f;
+        c[13] = (myLife - o.damageTaken) / 20f;
         return c;
     }
 

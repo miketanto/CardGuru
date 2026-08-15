@@ -619,6 +619,13 @@ public class RLPlayer extends ComputerPlayer {
             return;
         }
 
+        // v4: ONE joint decision over complete assignments.
+        if (StateEncoder.ENCODER_V >= 4) {
+            jointBlocks(game, defendingPlayerId, attackers, mine);
+            auditBlocks(game, attackers, mine);
+            return;
+        }
+
         for (Permanent blocker : mine) {
             List<Permanent> can = new ArrayList<>();
             for (Permanent atk : attackers) {
@@ -654,6 +661,89 @@ public class RLPlayer extends ComputerPlayer {
             }
         }
         auditBlocks(game, attackers, mine);
+    }
+
+    /**
+     * Enumerate complete block assignments, describe each by its
+     * SIMULATED OUTCOME, and let the policy pick one.
+     *
+     * Two things make this tractable. Assignments are DEDUPED BY
+     * OUTCOME - interchangeable blockers produce identical consequences,
+     * and the policy only ever sees consequences, so distinct outcomes
+     * are the real action space and the collapse is large. And the raw
+     * space is capped, with anything past the cap dropped and counted
+     * rather than silently truncated.
+     */
+    private void jointBlocks(Game game, UUID defendingPlayerId,
+                             List<Permanent> attackers, List<Permanent> mine) {
+        int A = attackers.size();
+        int B = mine.size();
+        List<CombatMath.Body> ab = CombatMath.bodies(attackers);
+        List<CombatMath.Body> bb = CombatMath.bodies(mine);
+        long cap = Long.getLong("rl.jointCap", 20000L);
+        long space = 1;
+        for (int i = 0; i < B; i++) {
+            space *= (A + 1);
+            if (space > cap) {
+                space = cap;
+                countFallback("jointCapped");
+                break;
+            }
+        }
+        Map<String, int[]> byOutcome = new java.util.LinkedHashMap<>();
+        Map<String, float[]> feats = new java.util.LinkedHashMap<>();
+        int[] assign = new int[B];
+        for (long code = 0; code < space; code++) {
+            long c = code;
+            int used = 0;
+            for (int b = 0; b < B; b++) {
+                assign[b] = (int) (c % (A + 1)) - 1;
+                c /= (A + 1);
+                if (assign[b] >= 0) {
+                    used++;
+                }
+            }
+            CombatMath.Outcome o = CombatMath.resolve(ab, bb, assign, getLife());
+            String key = o.damageTaken + "/" + o.attackersKilled + "/"
+                    + o.attackerValueKilled + "/" + o.blockersLost + "/"
+                    + o.blockerValueLost + "/" + used;
+            if (byOutcome.containsKey(key)) {
+                continue;
+            }
+            byOutcome.put(key, assign.clone());
+            feats.put(key, StateEncoder.forAssignment(o, used, getLife()));
+        }
+        List<int[]> options = new ArrayList<>(byOutcome.values());
+        float[][] cands = new float[options.size()][];
+        int i = 0;
+        for (float[] f : feats.values()) {
+            cands[i++] = f;
+        }
+        consults++;
+        blockOpportunities += B;
+        int pick = policy.choose(
+                StateEncoder.encodeState(game, playerId, opponentId(game)),
+                cands, phi(game));
+        if (pick < 0 || pick >= options.size()) {
+            return;
+        }
+        int[] chosen = options.get(pick);
+        for (int b = 0; b < B; b++) {
+            if (chosen[b] < 0) {
+                log(game, "  decline " + pt(mine.get(b), game));
+                continue;
+            }
+            Permanent atk = attackers.get(chosen[b]);
+            if (!mine.get(b).canBlock(atk.getId(), game)) {
+                continue;
+            }
+            this.declareBlocker(defendingPlayerId, mine.get(b).getId(),
+                    atk.getId(), game);
+            actions++;
+            blocksDeclared++;
+            log(game, "  BLOCK   " + pt(mine.get(b), game) + "  <- "
+                    + pt(atk, game));
+        }
     }
 
     /**
