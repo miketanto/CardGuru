@@ -1,4 +1,4 @@
-# Encoder A/B — conditioned autoregressive blocking
+# Encoder A/B — conditioned autoregressive blocking, and v4 joint assignment
 
 Two arms, two seeds each, rung 0 (`W0Base`), 1024 episodes, identical
 budget / init procedure / concurrency / build. The **only** difference is
@@ -131,11 +131,66 @@ That reprioritises the remaining options:
   observability was. And DAgger against a myopic teacher would train out
   the strategic declines v2 discovered on its own.
 
+---
+
+## v4: joint assignment (512 episodes, 1 seed)
+
+The A/B's conclusion was that conditioning fixes over-piling and
+**provably cannot** fix under-committing. v4 removes the sequential
+decomposition instead of patching it: one decision per combat over
+complete assignments, Pareto-filtered, each described by its simulated
+outcome rather than by cards.
+
+```
+trained   D0     block-optimal     gap    turns
+  256    .550    91.4% (550/602)   416    19.2
+  512    .850    93.0% (635/683)   349    23.6
+```
+
+`.850` at 512 episodes exceeds every checkpoint of every other arm — v2's
+best was .790 at 1024, v1's .730 at 512. Block-optimality 93.0% against
+v2's best 83.1% and v1's 66.1%, and the score gap is 349 where v1 ran
+2,000–6,000.
+
+### The constructed positions, which are the clean part
+
+| position | v2 | v4 |
+|---|---|---|
+| one attacker needing a double | 12 = 12 ✅ | 12 = 12 ✅ |
+| **two attackers, three blockers** | **0 vs 12 ❌** | **12 = 12 ✅** |
+| two attackers, four blockers | 12 vs 19 ❌ | **19 = 19 ✅** |
+| control at 20 life | 12 = 12 ✅ | 12 = 12 ✅ |
+
+v2 declined all three blockers in the two-attacker position and took 5
+damage for nothing — blocking a 3/3 with one 2/2 is bad and only becomes
+good if a second joins, so nobody went first. v4 never faces that
+question. With four blockers it splits them two and two and kills both
+attackers, which is an allocation rather than a threshold rule.
+
+### What is confounded, and what is not
+
+v4 moves **three** things at once: joint assignment, the v3 controller
+fix, and credit assignment (one action per combat instead of B actions
+sharing one terminal reward). The win rate cannot be attributed among
+those from one seed.
+
+The constructed positions can. RANK is a defensive position, so the
+controller fix is irrelevant to it, and a position probe involves no
+credit assignment at all. **"Commitment is fixed" is clean; "v4 wins
+more" is not.**
+
+### Still broken
+
+Attacking. The attack probe holds all three creatures back against a
+single blocker, exactly as v2 did — `selectAttackers` is still a product
+of independent per-creature marginals, because joint assignment was
+implemented for blocks only.
+
 ## Reproduction
 
 ```
-bash rl/rung0_lane.sh W0Base W0Twin 1024 <seed>     # R0_ENCODER_V=1 or 2
-python3 rl/position_probe.py --port <p> [--validate]
+bash rl/rung0_lane.sh W0Base W0Twin 1024 <seed>   # R0_ENCODER_V=1|2|3|4
+python3 rl/position_probe.py --port <p> [--validate] [--v4]
 ```
 
 Artifacts under `rl/artifacts/rung0/W0Base/`.
