@@ -19,17 +19,26 @@ import java.util.UUID;
  */
 public final class StateEncoder {
 
-    // 24 -> 32. The first 24 are unchanged and in the same order, so the
-    // diff to a prior net is purely additive - but the input width moves,
-    // so checkpoints trained at sdim=24 cannot be loaded. See the combat
-    // and stack blocks at the end of encodeState for why this was worth
-    // breaking compatibility for.
-    public static final int STATE_DIM = 32;
-    // 22 -> 25: three more block-context slots ahead of the identity
-    // block (see forBlock). CAND_DIM grows with it, which is a second
-    // compatibility break - taken in the same commit as the sdim change
-    // rather than as a separate one later.
-    private static final int ID_BASE = 25;   // identity features from here
+    /**
+     * Encoder version, -Drl.encoderV (default 2).
+     *
+     *   v1  the original: 24 state dims, no combat channels, no stack
+     *       contents, and forBlock == forCombat. This is what every
+     *       checkpoint before August 2026 was trained against, so it is
+     *       the ONLY way to load them.
+     *   v2  adds combat and stack state (s[24..31]) and block context
+     *       (c[17..24]); see encodeState and forBlock.
+     *
+     * Deliberately NOT a compile-time constant. javac inlines
+     * `static final int X = 32` into every caller, so the previous
+     * version had SocketPolicyClient still sending the old width in its
+     * handshake after a rebuild. Reading a property at class-init also
+     * means A0 and A1 arms of an encoder A/B run from ONE build, which
+     * is what makes the comparison clean.
+     */
+    public static final int ENCODER_V = Integer.getInteger("rl.encoderV", 2);
+    public static final int STATE_DIM = ENCODER_V == 1 ? 24 : 32;
+    private static final int ID_BASE = ENCODER_V == 1 ? 22 : 25;
 
     /**
      * E2 support: -Drl.cardFeatures=<file> loads a per-card mechanical
@@ -149,6 +158,10 @@ public final class StateEncoder {
         s[21] = my.getGraveyard().size() / 30f;
         s[22] = op.getGraveyard().size() / 30f;
         s[23] = my.getLibrary().size() / 60f;
+
+        if (ENCODER_V == 1) {
+            return s;              // v1 stops here, exactly as trained
+        }
 
         // ---- COMBAT, s[24..28] ------------------------------------------
         // Nothing above this line reads game.getCombat(). That is why a
@@ -271,6 +284,9 @@ public final class StateEncoder {
     public static float[] forBlock(Permanent attacker, Permanent blocker,
                                    Game game) {
         float[] c = forCombat(T_BLOCK, attacker, game);
+        if (ENCODER_V == 1) {
+            return c;              // v1 saw the attacker and nothing else
+        }
         int already = 0, assignedPower = 0, assignedTough = 0;
         for (CombatGroup g : game.getCombat().getGroups()) {
             if (!g.getAttackers().contains(attacker.getId())) {

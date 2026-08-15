@@ -557,11 +557,49 @@ public class RLPlayer extends ComputerPlayer {
         // to detect: rename every card and the block order changes.
         // Sort by body instead, smallest toughness first (the natural
         // chump-block order), with name only as a determinism tiebreak.
-        mine.sort(Comparator
-                .comparingInt((Permanent p) -> p.getToughness().getValue())
-                .thenComparingInt(p -> p.getPower().getValue())
-                .thenComparing(MageObject::getName));
+        if (StateEncoder.ENCODER_V == 1) {
+            mine.sort(Comparator.comparing(MageObject::getName));
+        } else {
+            mine.sort(Comparator
+                    .comparingInt((Permanent p) -> p.getToughness().getValue())
+                    .thenComparingInt(p -> p.getPower().getValue())
+                    .thenComparing(MageObject::getName));
+        }
         UUID opp = opponentId(game);
+
+        // -Drl.solverBlocks=true replaces the POLICY's block decisions
+        // with CombatMath's best assignment, leaving every other decision
+        // to the net. This is a measurement, not a mode we would ship: it
+        // bounds how much of the agent's win rate is being lost to
+        // blocking at all. If a net blocks perfectly and barely improves,
+        // no amount of block encoding is worth building.
+        if (Boolean.getBoolean("rl.solverBlocks")) {
+            List<CombatMath.Body> ab = CombatMath.bodies(attackers);
+            List<CombatMath.Body> bb = CombatMath.bodies(mine);
+            CombatMath.Best best = CombatMath.best(
+                    ab, bb, getLife(), Long.getLong("rl.solverCap", 200000L));
+            for (int i = 0; i < mine.size(); i++) {
+                blockOpportunities++;
+                if (best.assign[i] < 0) {
+                    continue;
+                }
+                Permanent atk = attackers.get(best.assign[i]);
+                if (!mine.get(i).canBlock(atk.getId(), game)) {
+                    continue;
+                }
+                this.declareBlocker(defendingPlayerId, mine.get(i).getId(),
+                        atk.getId(), game);
+                actions++;
+                blocksDeclared++;
+                log(game, "  SOLVER  " + pt(mine.get(i), game) + "  <- "
+                        + pt(atk, game));
+            }
+            if (!best.exhaustive) {
+                countFallback("solverBlocksTruncated");
+            }
+            return;
+        }
+
         for (Permanent blocker : mine) {
             List<Permanent> can = new ArrayList<>();
             for (Permanent atk : attackers) {
