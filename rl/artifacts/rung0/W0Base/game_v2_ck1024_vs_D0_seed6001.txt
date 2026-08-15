@@ -1,0 +1,63 @@
+t1|Plains (Play Plains)
+t3|Plains (Play Plains)
+t3|Glory Seeker
+t5|Silvercoat Lion
+t5|== my combat: life 20-20, creatures 2-0
+t5|  hold    Glory Seeker 2/2
+t7|Blade of the Sixth Pride
+t7|== my combat: life 20-20, creatures 3-0
+t7|  hold    Glory Seeker 2/2
+t7|  hold    Silvercoat Lion 2/2
+t9|Blade of the Sixth Pride
+t9|== my combat: life 20-20, creatures 4-1
+t9|  ATTACK  Blade of the Sixth Pride 3/1
+t9|  hold    Glory Seeker 2/2
+t9|  hold    Silvercoat Lion 2/2
+t10|== incoming: life 20-17, creatures 4-2
+t10|  attacked by Elite Vanguard 2/1
+t10|  BLOCK   Blade of the Sixth Pride 3/1  <- Elite Vanguard 2/1
+t10|  decline Glory Seeker 2/2  (could block 1)
+t10|  decline Silvercoat Lion 2/2  (could block 1)
+t11|== my combat: life 20-17, creatures 3-1
+t11|  ATTACK  Blade of the Sixth Pride 3/1
+t11|  hold    Glory Seeker 2/2
+t11|  hold    Silvercoat Lion 2/2
+t12|== incoming: life 20-14, creatures 3-2
+t12|  attacked by Blade of the Sixth Pride 3/1
+t12|  BLOCK   Glory Seeker 2/2  <- Blade of the Sixth Pride 3/1
+t12|  decline Silvercoat Lion 2/2  (could block 1)
+t13|Plains (Play Plains)
+t13|Regal Unicorn
+t13|== my combat: life 20-14, creatures 3-1
+t13|  ATTACK  Blade of the Sixth Pride 3/1
+t13|  ATTACK  Silvercoat Lion 2/2
+t14|== incoming: life 20-9, creatures 3-2
+t14|  attacked by Knight of the Keep 3/2
+t14|  BLOCK   Regal Unicorn 2/3  <- Knight of the Keep 3/2
+t15|Knight of the Keep
+t15|Plains (Play Plains)
+t15|Plains ({T}: Add {W}.)
+t15|== my combat: life 20-9, creatures 3-1
+t15|  ATTACK  Blade of the Sixth Pride 3/1
+t15|  ATTACK  Silvercoat Lion 2/2
+t16|== incoming: life 20-6, creatures 2-3
+t16|  attacked by Regal Unicorn 2/3
+t16|  BLOCK   Knight of the Keep 3/2  <- Regal Unicorn 2/3
+t17|Foot Soldiers
+t17|== my combat: life 20-6, creatures 2-2
+t17|  ATTACK  Blade of the Sixth Pride 3/1
+t19|Foot Soldiers
+t19|== my combat: life 20-3, creatures 3-4
+t19|  ATTACK  Blade of the Sixth Pride 3/1
+t19|  ATTACK  Foot Soldiers 2/4
+t21|Shu Elite Infantry
+t21|== my combat: life 20-3, creatures 3-3
+t21|  ATTACK  Foot Soldiers 2/4
+t21|  ATTACK  Foot Soldiers 2/4
+t22|== incoming: life 20-3, creatures 3-1
+t22|  attacked by Shu Elite Infantry 3/3
+t22|  BLOCK   Shu Elite Infantry 3/3  <- Shu Elite Infantry 3/3
+t23|Foot Soldiers
+t23|== my combat: life 20-3, creatures 3-0
+t23|  ATTACK  Foot Soldiers 2/4
+t23|  ATTACK  Foot Soldiers 2/4
