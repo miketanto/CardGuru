@@ -44,7 +44,6 @@ TWIN=${2:?}
 BUDGET=${3:-4096}
 SEED=${4:-0}
 RL=/home/user/CardGuru/rl
-OUT=${R0_OUT:-/tmp/rl_rung0_${BASE}_s${SEED}}
 PORT=${R0_PORT:-$((7940 + SEED))}
 EVERY=${R0_EVERY:-512}      # battery cadence
 CHUNK=${R0_CHUNK:-64}       # episodes per driver job
@@ -53,12 +52,21 @@ CP7_G=${R0_CP7_G:-50}
 LR=${R0_LR:-3e-4}
 CONC=${R0_CONC:-4}
 FEATS=$RL/e2_features.tsv
+# Encoder arm. v1 = the original 24-dim encoder (no combat channels, no
+# block context, blockers ordered by card name); v2 = the conditioned
+# autoregressive encoder. Both run from ONE build - StateEncoder reads
+# -Drl.encoderV at class init - so an A/B between them differs in the
+# encoder and nothing else.
+ENC=${R0_ENCODER_V:-2}
+if [ "$ENC" = "1" ]; then SDIM=24; CDIM=91; else SDIM=32; CDIM=94; fi
+ENCFLAGS="-Drl.encoderV=$ENC -Drl.blockAudit=true"
+OUT=${R0_OUT:-/tmp/rl_rung0_${BASE}_v${ENC}_s${SEED}}
 mkdir -p $OUT
 
 for D in $BASE $TWIN; do cp $RL/$D.dck /home/user/mage/Mage.Tests/; done
 
 INIT=$OUT/init.pt
-python3 $RL/p10_init_net.py --out $INIT --seed $((10 + SEED)) 2>/dev/null | tail -1
+python3 $RL/p10_init_net.py --out $INIT --seed $((10 + SEED)) --sdim $SDIM --cdim $CDIM 2>/dev/null | tail -1
 CKPT=$OUT/agent.pt
 [ -s $CKPT ] || cp $INIT $CKPT
 
@@ -68,7 +76,7 @@ CKPT=$OUT/agent.pt
 start_server() {   # $1 extra-flags
     pkill -f "policy_serve[r].py --port $PORT" 2>/dev/null
     RL_TORCH_THREADS=1 setsid nohup python3 $RL/policy_server.py \
-        --port $PORT --ckpt $CKPT --seed $SEED --cdim 91 --arch lstmattn \
+        --port $PORT --ckpt $CKPT --seed $SEED --sdim $SDIM --cdim $CDIM --arch lstmattn \
         --threads $CONC ${1:-} > $OUT/server.log 2>&1 &
     local t=0
     while [ $t -lt 90 ]; do
@@ -88,7 +96,7 @@ probe() {   # $1 out $2 opponent $3 deck $4 games $5 seed
         -Drl.episodes=$4 -Drl.agent=rl -Drl.policy=socket -Drl.port=$PORT \
         -Drl.opponent=$2 -Drl.searchPlies=1 -Drl.searchBreadth=8 \
         -Drl.cardFeatures=$FEATS -Drl.noYields=true -Drl.consultBudget=4000 \
-        -Drl.deck=$3.dck -Drl.oppDeck=$3.dck -Drl.stopTurn=60 \
+        $ENCFLAGS -Drl.deck=$3.dck -Drl.oppDeck=$3.dck -Drl.stopTurn=60 \
         -Drl.mode=eval -Drl.seed=$5 -Drl.report=0 -Drl.out=$1 \
         > /dev/null 2>&1
 }
@@ -116,7 +124,10 @@ battery() {   # $1 trained
     done
     local bo=$(field $OUT/probe_D0_${tr}.txt blockOpportunities)
     local bd=$(field $OUT/probe_D0_${tr}.txt blocksDeclared)
-    line="$line|blocks=${bd:-0}/${bo:-0}|turns=$(field $OUT/probe_D0_${tr}.txt turns_per_ep)"
+    local bc=$(field $OUT/probe_D0_${tr}.txt blockCombats)
+    local bopt=$(field $OUT/probe_D0_${tr}.txt blockOptimal)
+    local bgap=$(field $OUT/probe_D0_${tr}.txt blockScoreGap)
+    line="$line|blocks=${bd:-0}/${bo:-0}|BLOCKOPT=${bopt:-0}/${bc:-0}|gap=${bgap:-0}|turns=$(field $OUT/probe_D0_${tr}.txt turns_per_ep)"
     echo "$line"
     cp $CKPT $OUT/ck_${tr}.pt
     stop_server
@@ -142,7 +153,7 @@ while [ "$trained" -lt "$BUDGET" ]; do
             -Drl.port=$PORT -Drl.opponent=heuristic \
             -Drl.searchPlies=1 -Drl.searchBreadth=8 \
             -Drl.cardFeatures=$FEATS -Drl.noYields=true \
-            -Drl.consultBudget=4000 -Drl.deck=$BASE.dck \
+            -Drl.consultBudget=4000 $ENCFLAGS -Drl.deck=$BASE.dck \
             -Drl.oppDeck=$BASE.dck -Drl.stopTurn=60 -Drl.mode=train \
             -Drl.seed=$((80000000 + SEED * 1000000 + trained)) \
             -Drl.report=0 > /dev/null 2>&1

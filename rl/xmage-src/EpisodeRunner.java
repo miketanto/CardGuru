@@ -291,6 +291,11 @@ public class EpisodeRunner {
             fallbacks.merge("flashThreatsOppTurn", (int) rlAgent.flashThreatCastsOppTurn, Integer::sum);
             fallbacks.merge("blocksDeclared", (int) rlAgent.blocksDeclared, Integer::sum);
             fallbacks.merge("blockOpportunities", (int) rlAgent.blockOpportunities, Integer::sum);
+            // -Drl.blockAudit: the encoder A/B's primary metric
+            fallbacks.merge("blockCombats", (int) rlAgent.blockCombats, Integer::sum);
+            fallbacks.merge("blockOptimal", (int) rlAgent.blockCombatsOptimal, Integer::sum);
+            fallbacks.merge("blockScoreGap", (int) rlAgent.blockScoreGap, Integer::sum);
+            fallbacks.merge("blockTruncated", (int) rlAgent.blockTruncated, Integer::sum);
             // Phase 12 (perf scoping): priority windows where getPlayable
             // came back empty, i.e. the seat paid a full state copy - 67%
             // of game-thread time lives under createSimulationForPlayableCalc

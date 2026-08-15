@@ -71,6 +71,15 @@ public class RLPlayer extends ComputerPlayer {
     /** Windows where a block was legal at all, so the counter above can
      *  be read as a RATE rather than an artifact of board state. */
     public long blockOpportunities = 0;
+    /** -Drl.blockAudit: compare the policy's WHOLE block assignment against
+     *  CombatMath's best for the same position. This is the low-variance
+     *  A/B metric - a within-net measurement on the positions the agent
+     *  actually reached, rather than a win rate that between-run variance
+     *  swamps (seeds 0 and 1 differed .635 vs .500 at one checkpoint). */
+    public long blockCombats = 0;
+    public long blockCombatsOptimal = 0;
+    public long blockScoreGap = 0;
+    public long blockTruncated = 0;
     /** per-episode consult budget: a runaway episode (random policy can
      * mana-loop) degrades to always-pass instead of hanging the driver */
     public long consultBudget = Long.getLong("rl.consultBudget", 20000L);
@@ -116,6 +125,7 @@ public class RLPlayer extends ComputerPlayer {
         windows = consults = yieldSkipped = autoPassK0 = 0;
         actions = failedActivations = 0;
         blocksDeclared = blockOpportunities = 0;
+        blockCombats = blockCombatsOptimal = blockScoreGap = blockTruncated = 0;
     }
 
     private UUID opponentId(Game game) {
@@ -633,6 +643,60 @@ public class RLPlayer extends ComputerPlayer {
                 log(game, "  decline " + pt(blocker, game)
                         + "  (could block " + can.size() + ")");
             }
+        }
+        auditBlocks(game, attackers, mine);
+    }
+
+    /**
+     * Score the assignment the policy just made against the best one
+     * CombatMath can find for the same position. Read AFTER the policy
+     * has committed, so it never influences the decision.
+     */
+    private void auditBlocks(Game game, List<Permanent> attackers,
+                             List<Permanent> mine) {
+        if (!Boolean.getBoolean("rl.blockAudit") || attackers.isEmpty()) {
+            return;
+        }
+        List<CombatMath.Body> ab = CombatMath.bodies(attackers);
+        List<CombatMath.Body> bb = CombatMath.bodies(mine);
+        int[] actual = new int[mine.size()];
+        java.util.Arrays.fill(actual, -1);
+        for (CombatGroup g : game.getCombat().getGroups()) {
+            for (UUID atkId : g.getAttackers()) {
+                int ai = -1;
+                for (int i = 0; i < attackers.size(); i++) {
+                    if (attackers.get(i).getId().equals(atkId)) {
+                        ai = i;
+                    }
+                }
+                if (ai < 0) {
+                    continue;
+                }
+                for (UUID bId : g.getBlockers()) {
+                    for (int i = 0; i < mine.size(); i++) {
+                        if (mine.get(i).getId().equals(bId)) {
+                            actual[i] = ai;
+                        }
+                    }
+                }
+            }
+        }
+        int total = 0;
+        for (CombatMath.Body a : ab) {
+            total += a.power;
+        }
+        CombatMath.Outcome got = CombatMath.resolve(ab, bb, actual, getLife());
+        int gotScore = CombatMath.defenderScore(got, total);
+        CombatMath.Best best = CombatMath.best(ab, bb, getLife(),
+                Long.getLong("rl.solverCap", 200000L));
+        blockCombats++;
+        if (!best.exhaustive) {
+            blockTruncated++;
+        }
+        if (gotScore >= best.score) {
+            blockCombatsOptimal++;
+        } else {
+            blockScoreGap += (best.score - gotScore);
         }
     }
 
