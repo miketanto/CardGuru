@@ -27,7 +27,7 @@ import socket
 SDIM, CDIM = 32, 94        # encoder v2
 ID_BASE = 25
 FEAT_DIM = 68              # e2_features.tsv
-T_PASS, T_BLOCK = 0, 5
+T_PASS, T_ATTACK, T_BLOCK = 0, 4, 5
 
 FEATURES = {}
 
@@ -115,6 +115,31 @@ class Pos:
         c[24] = 1.0 if atou >= ap else 0.0
         identity(c, an)
         return c
+
+    def cand_attack(self, bi):
+        """My creature bi considering an attack. Note what is NOT here:
+        nothing about which of my other creatures have already been
+        declared. selectAttackers has no equivalent of c[17..24] - the
+        attack decision is even less conditioned than the block one."""
+        c = [0.0] * CDIM
+        c[T_ATTACK] = 1.0
+        n, p, t = self.blockers[bi]
+        c[7] = p / 6
+        c[8] = t / 6
+        c[9] = 1.0
+        identity(c, n)
+        return c
+
+    def attack_state(self, declared):
+        s = self.state({})
+        s[15] = 1.0                 # my turn
+        s[16] = 0.0
+        s[24] = declared / 6        # attackers declared so far
+        s[25] = declared / 6
+        s[26] = 0.0
+        s[27] = self.my_life / 20
+        s[28] = (len(self.blockers) - declared) / 6
+        return s
 
     def cand_pass(self):
         c = [0.0] * CDIM
@@ -225,6 +250,25 @@ def run_position(pol, pos, label):
     return assigned, picks
 
 
+def run_attacks(pol, pos, label):
+    """Replay selectAttackers: one binary choice per creature, name order
+    (RLPlayer sorts attackers by name in BOTH encoder versions)."""
+    order = sorted(range(len(pos.blockers)), key=lambda i: pos.blockers[i][0])
+    declared = 0
+    print("== %s" % label)
+    print("   my creatures %s   vs their %s"
+          % (", ".join("%s %d/%d" % b for b in pos.blockers),
+             ", ".join("%s %d/%d" % a for a in pos.attackers)))
+    for bi in order:
+        a = pol.choose(pos.attack_state(declared),
+                       [pos.cand_pass(), pos.cand_attack(bi)])
+        if a == 1:
+            declared += 1
+        print("     %-26s -> %s" % (pos.blockers[bi][0],
+                                    "ATTACK" if a == 1 else "hold"))
+    return declared
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--port", type=int, default=7995)
@@ -279,6 +323,19 @@ def main():
         blockers=[("Glory Seeker", 2, 2), ("Silvercoat Lion", 2, 2),
                   ("Fresh Volunteers", 2, 2), ("Knight Errant", 2, 2)],
         turn=14), "RANK+1: same two attackers, FOUR blockers")
+
+    # ATTACKING IS THE SAME JOINT DECISION, MIRRORED. Three 2/2s into one
+    # 3/3 blocker: attacking with ONE is bad (it gets blocked and dies for
+    # nothing); attacking with ALL THREE is good (one is blocked, two get
+    # through for 4). If the policy holds everything back here, the
+    # "nobody goes first" failure is not specific to blocking - it is a
+    # property of every joint decision this action space decomposes.
+    run_attacks(pol, Pos(
+        my_life=15, opp_life=10,
+        attackers=[("Shu Elite Infantry", 3, 3)],
+        blockers=[("Glory Seeker", 2, 2), ("Silvercoat Lion", 2, 2),
+                  ("Fresh Volunteers", 2, 2)],
+        turn=14), "ATTACK: three 2/2s into one 3/3 blocker")
 
     # Control: same board, comfortable life. Blocking is now optional and
     # declining is defensible, so a difference between these two says the
