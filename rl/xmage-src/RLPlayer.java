@@ -713,12 +713,51 @@ public class RLPlayer extends ComputerPlayer {
             byOutcome.put(key, assign.clone());
             feats.put(key, StateEncoder.forAssignment(o, used, getLife()));
         }
-        List<int[]> options = new ArrayList<>(byOutcome.values());
-        float[][] cands = new float[options.size()][];
-        int i = 0;
-        for (float[] f : feats.values()) {
-            cands[i++] = f;
+        // PARETO FILTER. An assignment that takes MORE damage, kills LESS
+        // attacker value and loses MORE blocker value than another is
+        // never preferable under any value function, so it can be dropped
+        // without encoding a preference. This is what keeps the candidate
+        // list inside the policy server's buffer: raw enumeration on a
+        // real board produced 46 distinct outcomes against a 40-slot
+        // buffer and crashed the server mid-run.
+        List<String> keys = new ArrayList<>(byOutcome.keySet());
+        List<int[]> options = new ArrayList<>();
+        List<float[]> kept = new ArrayList<>();
+        int maxCands = Integer.getInteger("rl.jointMaxCands", 48);
+        for (String k1 : keys) {
+            int[] a1 = byOutcome.get(k1);
+            CombatMath.Outcome o1 = CombatMath.resolve(ab, bb, a1, getLife());
+            boolean dominated = false;
+            for (String k2 : keys) {
+                if (k1.equals(k2)) {
+                    continue;
+                }
+                CombatMath.Outcome o2 =
+                        CombatMath.resolve(ab, bb, byOutcome.get(k2), getLife());
+                if (o2.damageTaken <= o1.damageTaken
+                        && o2.attackerValueKilled >= o1.attackerValueKilled
+                        && o2.blockerValueLost <= o1.blockerValueLost
+                        && (o2.damageTaken < o1.damageTaken
+                            || o2.attackerValueKilled > o1.attackerValueKilled
+                            || o2.blockerValueLost < o1.blockerValueLost)) {
+                    dominated = true;
+                    break;
+                }
+            }
+            if (!dominated) {
+                options.add(a1);
+                kept.add(feats.get(k1));
+                if (options.size() >= maxCands) {
+                    countFallback("jointCandsCapped");
+                    break;
+                }
+            }
         }
+        if (options.isEmpty()) {          // every option dominated: fall back
+            options.add(byOutcome.values().iterator().next());
+            kept.add(feats.values().iterator().next());
+        }
+        float[][] cands = kept.toArray(new float[0][]);
         consults++;
         blockOpportunities += B;
         int pick = policy.choose(

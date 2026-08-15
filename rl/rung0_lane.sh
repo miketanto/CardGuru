@@ -60,6 +60,12 @@ FEATS=$RL/e2_features.tsv
 ENC=${R0_ENCODER_V:-2}
 if [ "$ENC" = "1" ]; then SDIM=24; CDIM=91; else SDIM=32; CDIM=94; fi
 ENCFLAGS="-Drl.encoderV=$ENC -Drl.blockAudit=true"
+# v4's candidates are whole assignments, so the server's 40-slot buffer
+# is too small - raw enumeration produced 46 distinct outcomes and
+# crashed it mid-run. Pareto filtering cuts the set; this is the belt to
+# that braces.
+SRVEXTRA=""
+[ "$ENC" -ge 4 ] 2>/dev/null && SRVEXTRA="--max-k 64"
 OUT=${R0_OUT:-/tmp/rl_rung0_${BASE}_v${ENC}_s${SEED}}
 mkdir -p $OUT
 
@@ -83,7 +89,7 @@ start_server() {   # $1 extra-flags
     pkill -f "policy_serve[r].py --port $PORT" 2>/dev/null
     RL_TORCH_THREADS=1 setsid nohup python3 $RL/policy_server.py \
         --port $PORT --ckpt $CKPT --seed $SEED --sdim $SDIM --cdim $CDIM --arch lstmattn \
-        --threads $CONC ${1:-} > $OUT/server.log 2>&1 &
+        --threads $CONC $SRVEXTRA ${1:-} > $OUT/server.log 2>&1 &
     local t=0
     while [ $t -lt 90 ]; do
         grep -q "policy server" $OUT/server.log 2>/dev/null && return 0

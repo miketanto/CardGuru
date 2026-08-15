@@ -34,7 +34,13 @@ SDIM, CDIM = 24, 38          # defaults; --sdim/--cdim override (E2 uses a wider
 GAMMA, LAM, CLIP, LR = 0.997, 0.95, 0.2, 3e-4
 EPOCHS, ENT_COEF, VAL_COEF = 4, 0.01, 0.5
 UPDATE_EPISODES = 32
-MAX_K = 40
+MAX_K = 40                   # candidate buffer; --max-k overrides
+# MAX_K is a BUFFER SIZE, not an architectural constant: every parameter
+# is shaped by sdim/cdim/d and padded candidates are masked out, so
+# raising it changes no weights and no checkpoint compatibility. It only
+# costs compute (cand_net runs over MAX_K rows per consult), which is why
+# it stays at 40 by default and is raised only for the joint-assignment
+# encoder, whose action space is whole assignments rather than cards.
 
 
 class E0Policy(nn.Module):
@@ -527,9 +533,16 @@ if __name__ == "__main__":
                     help="override LR (default: LR constant; 3e-4 was "
                          "tuned for the 43k E0 net and is hot for the "
                          "C6 transformers)")
+    ap.add_argument("--max-k", type=int, default=None,
+                    help="candidate buffer; raise for joint assignment")
     ap.add_argument("--desperation", type=float, default=0.0,
                     help="C7: losing-state exploration temperature gain")
     args = ap.parse_args()
+    # module scope (this is the __main__ block, not a function), so these
+    # rebind the module globals directly - a `global` statement here is
+    # both unnecessary and a SyntaxError after the earlier assignment
+    if args.max_k is not None:
+        MAX_K = args.max_k
     if args.lr is not None:
         LR = args.lr
     # Phase 12: 4 game threads + N server threads on 4 cores is heavily
