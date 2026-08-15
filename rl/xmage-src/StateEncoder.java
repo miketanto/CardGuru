@@ -172,11 +172,17 @@ public final class StateEncoder {
         // argmax on an identical observation returns an identical choice.
         // The only channel that could have distinguished them was the LSTM
         // hidden state, which had no explicit signal to learn from.
+        // v3 FIX. This loop had no controller check, so during the
+        // agent's OWN combat its own attackers were counted as incoming
+        // damage and s[27] read "my life after my own attack" - an
+        // explicit anti-attack signal. Only count attackers the agent
+        // does NOT control; on its own turn the channels go to zero,
+        // which is the truthful reading of "nothing is attacking me".
         int attackers = 0, unblocked = 0, unblockedPower = 0;
         for (CombatGroup g : game.getCombat().getGroups()) {
             for (UUID atkId : g.getAttackers()) {
                 Permanent atk = game.getPermanent(atkId);
-                if (atk == null) {
+                if (atk == null || me.equals(atk.getControllerId())) {
                     continue;
                 }
                 attackers++;
