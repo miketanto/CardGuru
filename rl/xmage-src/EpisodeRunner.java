@@ -296,6 +296,7 @@ public class EpisodeRunner {
             fallbacks.merge("blockOptimal", (int) rlAgent.blockCombatsOptimal, Integer::sum);
             fallbacks.merge("blockScoreGap", (int) rlAgent.blockScoreGap, Integer::sum);
             fallbacks.merge("blockTruncated", (int) rlAgent.blockTruncated, Integer::sum);
+            fallbacks.merge("blockFatal", (int) rlAgent.blockFatal, Integer::sum);
             // Phase 12 (perf scoping): priority windows where getPlayable
             // came back empty, i.e. the seat paid a full state copy - 67%
             // of game-thread time lives under createSimulationForPlayableCalc

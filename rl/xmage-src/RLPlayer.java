@@ -80,6 +80,14 @@ public class RLPlayer extends ComputerPlayer {
     public long blockCombatsOptimal = 0;
     public long blockScoreGap = 0;
     public long blockTruncated = 0;
+    /** Combats the policy's own blocks made LETHAL when a survivable
+     *  assignment existed. Counted separately because defenderScore uses
+     *  a death sentinel of Integer.MIN_VALUE/2 - subtracting it into the
+     *  score gap produced blockScoreGap=1073743876 on the first real
+     *  battery, i.e. one avoidable death swamping every material misplay
+     *  in the run. Fatal errors are a different KIND of mistake and get
+     *  their own counter. */
+    public long blockFatal = 0;
     /** per-episode consult budget: a runaway episode (random policy can
      * mana-loop) degrades to always-pass instead of hanging the driver */
     public long consultBudget = Long.getLong("rl.consultBudget", 20000L);
@@ -126,6 +134,7 @@ public class RLPlayer extends ComputerPlayer {
         actions = failedActivations = 0;
         blocksDeclared = blockOpportunities = 0;
         blockCombats = blockCombatsOptimal = blockScoreGap = blockTruncated = 0;
+        blockFatal = 0;
     }
 
     private UUID opponentId(Game game) {
@@ -654,7 +663,11 @@ public class RLPlayer extends ComputerPlayer {
      */
     private void auditBlocks(Game game, List<Permanent> attackers,
                              List<Permanent> mine) {
-        if (!Boolean.getBoolean("rl.blockAudit") || attackers.isEmpty()) {
+        // mine.isEmpty() means there was NOTHING TO DECIDE - the empty
+        // assignment is trivially optimal, and counting those inflated
+        // the untrained net to 420/427 purely by having no creatures.
+        if (!Boolean.getBoolean("rl.blockAudit")
+                || attackers.isEmpty() || mine.isEmpty()) {
             return;
         }
         List<CombatMath.Body> ab = CombatMath.bodies(attackers);
@@ -693,9 +706,13 @@ public class RLPlayer extends ComputerPlayer {
         if (!best.exhaustive) {
             blockTruncated++;
         }
-        if (gotScore >= best.score) {
+        boolean gotDies = got.defenderDies;
+        boolean bestDies = best.outcome.defenderDies;
+        if (gotDies && !bestDies) {
+            blockFatal++;              // avoidable death: its own category
+        } else if (gotScore >= best.score) {
             blockCombatsOptimal++;
-        } else {
+        } else if (!gotDies && !bestDies) {
             blockScoreGap += (best.score - gotScore);
         }
     }
