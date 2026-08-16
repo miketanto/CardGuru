@@ -19,3 +19,12 @@ into `Mage.Tests/src/test/java/org/mage/test/benchmark/rl/` and
 
 Everything Phase 9 added is off unless its flag is set, so a checkout
 with these patches reproduces pre-Phase-9 behavior by default.
+
+`phase12-mana-recopy.patch` **is not applied and should not be.** Its
+fuzzy hunks land on top of the Phase 9 playable-memo block and duplicate
+it, and the recopy optimisation it proposes was never adopted. Only two
+things from it are carried in `phase9-engine.patch`: the
+`MANA_RECOPY_CHECKED` / `MANA_RECOPY_MISMATCHES` counters, which exist
+solely because `EpisodeRunner` still prints them under
+`-Dmage.manaNoRecopy` and the module does not compile without them. They
+stay at zero. This cost a rebuild once; that is why it is written down.

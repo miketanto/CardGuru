@@ -28,10 +28,10 @@ index 706cbf5673..6364f45118 100644
                              attackablePlayers.add(opponent.getId());
                              break;
 diff --git a/Mage/src/main/java/mage/players/PlayerImpl.java b/Mage/src/main/java/mage/players/PlayerImpl.java
-index 2bd3920891..354ec38fea 100644
+index 2bd3920891..b0d4e6b7a0 100644
 --- a/Mage/src/main/java/mage/players/PlayerImpl.java
 +++ b/Mage/src/main/java/mage/players/PlayerImpl.java
-@@ -4284,6 +4284,100 @@ public abstract class PlayerImpl implements Player, Serializable {
+@@ -4284,6 +4284,111 @@ public abstract class PlayerImpl implements Player, Serializable {
          }
      }
  
@@ -59,6 +59,17 @@ index 2bd3920891..354ec38fea 100644
 +    // counter + tapped/phased/face-down/summoning-sick flags. Any
 +    // difference misses the memo. A null key disables memoing for that
 +    // call (used when the game has no step yet).
++    // EpisodeRunner reports these under -Dmage.manaNoRecopy. The rest of
++    // phase12-mana-recopy.patch no longer applies on top of phase9 (the
++    // fuzzy hunk duplicated the playable-memo block), and the recopy
++    // optimisation itself was never adopted - but the reporting line
++    // still references the counters, so they have to exist. They stay at
++    // zero unless that optimisation is reinstated.
++    public static final java.util.concurrent.atomic.AtomicLong MANA_RECOPY_CHECKED =
++            new java.util.concurrent.atomic.AtomicLong();
++    public static final java.util.concurrent.atomic.AtomicLong MANA_RECOPY_MISMATCHES =
++            new java.util.concurrent.atomic.AtomicLong();
++
 +    private static final String PLAYABLE_MEMO_MODE =
 +            System.getProperty("mage.playableCache", "off");
 +    private static final boolean PLAYABLE_MEMO_ON = !"off".equals(PLAYABLE_MEMO_MODE);
@@ -132,7 +143,7 @@ index 2bd3920891..354ec38fea 100644
      @Override
      public List<ActivatedAbility> getPlayable(Game game, boolean hidden) {
          return getPlayable(game, hidden, Zone.ALL, true);
-@@ -4302,6 +4396,39 @@ public abstract class PlayerImpl implements Player, Serializable {
+@@ -4302,6 +4407,39 @@ public abstract class PlayerImpl implements Player, Serializable {
       * @return
       */
      public List<ActivatedAbility> getPlayable(Game originalGame, boolean hidden, Zone fromZone, boolean hideDuplicatedAbilities) {
