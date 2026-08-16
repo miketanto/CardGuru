@@ -760,6 +760,9 @@ public class RLPlayer extends ComputerPlayer {
         float[][] cands = kept.toArray(new float[0][]);
         consults++;
         blockOpportunities += B;
+        log(game, String.format("  [joint] %d attackers, %d blockers, "
+                + "%d distinct outcomes, %d after Pareto",
+                A, B, byOutcome.size(), options.size()));
         int pick = policy.choose(
                 StateEncoder.encodeState(game, playerId, opponentId(game)),
                 cands, phi(game));
@@ -783,6 +786,33 @@ public class RLPlayer extends ComputerPlayer {
             log(game, "  BLOCK   " + pt(mine.get(b), game) + "  <- "
                     + pt(atk, game));
         }
+    }
+
+    /** "Lion 2/2->Vanguard 2/1, Seeker 2/2->-- (score 7)" */
+    private static String assignStr(List<CombatMath.Body> ab,
+                                    List<CombatMath.Body> bb,
+                                    int[] assign, int score) {
+        StringBuilder sb = new StringBuilder();
+        for (int b = 0; b < bb.size(); b++) {
+            if (sb.length() > 0) {
+                sb.append(", ");
+            }
+            CombatMath.Body me = bb.get(b);
+            sb.append(me.name).append(' ').append(me.power).append('/')
+                    .append(me.toughness).append("->");
+            if (assign[b] < 0 || assign[b] >= ab.size()) {
+                sb.append("--");
+            } else {
+                CombatMath.Body a = ab.get(assign[b]);
+                sb.append(a.name).append(' ').append(a.power).append('/')
+                        .append(a.toughness);
+            }
+        }
+        // the death sentinel is Integer.MIN_VALUE/2; printing it raw made
+        // an earlier report read "gap 1073743876"
+        sb.append(score <= Integer.MIN_VALUE / 4 ? " (LETHAL)"
+                : " (score " + score + ")");
+        return sb.toString();
     }
 
     /**
@@ -837,6 +867,15 @@ public class RLPlayer extends ComputerPlayer {
         }
         boolean gotDies = got.defenderDies;
         boolean bestDies = best.outcome.defenderDies;
+        // The audit already knows the reference assignment; without this
+        // line a transcript shows WHAT was blocked but never whether it
+        // was right, which is the only interesting question about a block.
+        log(game, "  [audit] policy " + assignStr(ab, bb, actual, gotScore)
+                + " | solver " + assignStr(ab, bb, best.assign, best.score)
+                + (gotDies && !bestDies ? "  AVOIDABLE DEATH"
+                   : gotScore >= best.score ? "  MATCH"
+                   : "  GAP " + (best.score - gotScore))
+                + (best.exhaustive ? "" : "  (solver truncated)"));
         if (gotDies && !bestDies) {
             blockFatal++;              // avoidable death: its own category
         } else if (gotScore >= best.score) {
