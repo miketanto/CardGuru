@@ -1,0 +1,120 @@
+RLGAME|reward=1.0|seed=6001
+t1|Plains (Play Plains)
+t3|Plains (Play Plains)
+t3|Glory Seeker
+t5|Silvercoat Lion
+t5|== my combat: life 20-20, creatures 2-0
+t5|  hold    Glory Seeker 2/2
+t7|Blade of the Sixth Pride
+t7|== my combat: life 20-20, creatures 3-0
+t7|  hold    Glory Seeker 2/2
+t7|  hold    Silvercoat Lion 2/2
+t9|Blade of the Sixth Pride
+t9|== my combat: life 20-20, creatures 4-1
+t9|  hold    Blade of the Sixth Pride 3/1
+t9|  hold    Glory Seeker 2/2
+t9|  hold    Silvercoat Lion 2/2
+t10|== incoming: life 20-20, creatures 4-2
+t10|  attacked by Elite Vanguard 2/1
+t10|  [joint] 1 attackers, 4 blockers, 7 distinct outcomes, 4 after Pareto
+t10|  BLOCK   Blade of the Sixth Pride 3/1  <- Elite Vanguard 2/1
+t10|  decline Blade of the Sixth Pride 3/1
+t10|  BLOCK   Glory Seeker 2/2  <- Elite Vanguard 2/1
+t10|  BLOCK   Silvercoat Lion 2/2  <- Elite Vanguard 2/1
+t10|  [audit] policy Blade of the Sixth Pride 3/1->Elite Vanguard 2/1, Blade of the Sixth Pride 3/1->--, Glory Seeker 2/2->Elite Vanguard 2/1, Silvercoat Lion 2/2->Elite Vanguard 2/1 (score 1) | solver Blade of the Sixth Pride 3/1->Elite Vanguard 2/1, Blade of the Sixth Pride 3/1->--, Glory Seeker 2/2->--, Silvercoat Lion 2/2->-- (score 1)  MATCH
+t11|== my combat: life 20-20, creatures 3-1
+t11|  hold    Blade of the Sixth Pride 3/1
+t11|  hold    Glory Seeker 2/2
+t11|  hold    Silvercoat Lion 2/2
+t12|Plains ({T}: Add {W}.)
+t12|Plains ({T}: Add {W}.)
+t12|== incoming: life 20-20, creatures 3-2
+t12|  attacked by Blade of the Sixth Pride 3/1
+t12|  [joint] 1 attackers, 3 blockers, 5 distinct outcomes, 3 after Pareto
+t12|  decline Blade of the Sixth Pride 3/1
+t12|  BLOCK   Glory Seeker 2/2  <- Blade of the Sixth Pride 3/1
+t12|  BLOCK   Silvercoat Lion 2/2  <- Blade of the Sixth Pride 3/1
+t12|  [audit] policy Blade of the Sixth Pride 3/1->--, Glory Seeker 2/2->Blade of the Sixth Pride 3/1, Silvercoat Lion 2/2->Blade of the Sixth Pride 3/1 (score 6) | solver Blade of the Sixth Pride 3/1->Blade of the Sixth Pride 3/1, Glory Seeker 2/2->--, Silvercoat Lion 2/2->-- (score 6)  MATCH
+t13|Plains (Play Plains)
+t13|Regal Unicorn
+t13|== my combat: life 20-20, creatures 3-1
+t13|  hold    Blade of the Sixth Pride 3/1
+t13|  hold    Silvercoat Lion 2/2
+t14|== incoming: life 20-20, creatures 3-2
+t14|  attacked by Knight of the Keep 3/2
+t14|  [joint] 1 attackers, 3 blockers, 6 distinct outcomes, 3 after Pareto
+t14|  BLOCK   Blade of the Sixth Pride 3/1  <- Knight of the Keep 3/2
+t14|  decline Silvercoat Lion 2/2
+t14|  BLOCK   Regal Unicorn 2/3  <- Knight of the Keep 3/2
+t14|  [audit] policy Blade of the Sixth Pride 3/1->Knight of the Keep 3/2, Silvercoat Lion 2/2->--, Regal Unicorn 2/3->Knight of the Keep 3/2 (score 9) | solver Blade of the Sixth Pride 3/1->Knight of the Keep 3/2, Silvercoat Lion 2/2->--, Regal Unicorn 2/3->-- (score 9)  MATCH
+t15|Knight of the Keep
+t15|Plains (Play Plains)
+t15|Plains ({T}: Add {W}.)
+t15|== my combat: life 20-20, creatures 3-1
+t15|  hold    Regal Unicorn 2/3
+t15|  hold    Silvercoat Lion 2/2
+t16|== incoming: life 20-20, creatures 3-3
+t16|  attacked by Regal Unicorn 2/3
+t16|  [joint] 1 attackers, 3 blockers, 7 distinct outcomes, 3 after Pareto
+t16|  BLOCK   Silvercoat Lion 2/2  <- Regal Unicorn 2/3
+t16|  BLOCK   Knight of the Keep 3/2  <- Regal Unicorn 2/3
+t16|  BLOCK   Regal Unicorn 2/3  <- Regal Unicorn 2/3
+t16|  [audit] policy Silvercoat Lion 2/2->Regal Unicorn 2/3, Knight of the Keep 3/2->Regal Unicorn 2/3, Regal Unicorn 2/3->Regal Unicorn 2/3 (score 7) | solver Silvercoat Lion 2/2->Regal Unicorn 2/3, Knight of the Keep 3/2->Regal Unicorn 2/3, Regal Unicorn 2/3->-- (score 7)  MATCH
+t17|Foot Soldiers
+t17|== my combat: life 20-20, creatures 3-2
+t17|  hold    Knight of the Keep 3/2
+t17|  hold    Regal Unicorn 2/3
+t19|Foot Soldiers
+t19|== my combat: life 20-20, creatures 4-4
+t19|  hold    Foot Soldiers 2/4
+t19|  hold    Knight of the Keep 3/2
+t19|  hold    Regal Unicorn 2/3
+t21|Shu Elite Infantry
+t21|== my combat: life 20-20, creatures 5-5
+t21|  hold    Foot Soldiers 2/4
+t21|  hold    Foot Soldiers 2/4
+t21|  hold    Knight of the Keep 3/2
+t21|  hold    Regal Unicorn 2/3
+t22|== incoming: life 20-20, creatures 5-5
+t22|  attacked by Shu Elite Infantry 3/3
+t22|  [joint] 1 attackers, 5 blockers, 12 distinct outcomes, 1 after Pareto
+t22|  decline Knight of the Keep 3/2
+t22|  decline Regal Unicorn 2/3
+t22|  decline Shu Elite Infantry 3/3
+t22|  BLOCK   Foot Soldiers 2/4  <- Shu Elite Infantry 3/3
+t22|  BLOCK   Foot Soldiers 2/4  <- Shu Elite Infantry 3/3
+t22|  [audit] policy Knight of the Keep 3/2->--, Regal Unicorn 2/3->--, Shu Elite Infantry 3/3->--, Foot Soldiers 2/4->Shu Elite Infantry 3/3, Foot Soldiers 2/4->Shu Elite Infantry 3/3 (score 24) | solver Knight of the Keep 3/2->--, Regal Unicorn 2/3->--, Shu Elite Infantry 3/3->--, Foot Soldiers 2/4->Shu Elite Infantry 3/3, Foot Soldiers 2/4->Shu Elite Infantry 3/3 (score 24)  MATCH
+t23|Foot Soldiers
+t23|== my combat: life 20-20, creatures 6-4
+t23|  hold    Foot Soldiers 2/4
+t23|  ATTACK  Foot Soldiers 2/4
+t23|  hold    Knight of the Keep 3/2
+t23|  hold    Regal Unicorn 2/3
+t23|  ATTACK  Shu Elite Infantry 3/3
+t25|Shu Elite Infantry
+t25|== my combat: life 20-15, creatures 7-4
+t25|  ATTACK  Foot Soldiers 2/4
+t25|  ATTACK  Foot Soldiers 2/4
+t25|  ATTACK  Foot Soldiers 2/4
+t25|  ATTACK  Knight of the Keep 3/2
+t25|  ATTACK  Regal Unicorn 2/3
+t25|  ATTACK  Shu Elite Infantry 3/3
+t26|== incoming: life 20-1, creatures 7-5
+t26|  attacked by Blade of the Sixth Pride 3/1, Dromoka Warrior 3/1
+t26|  [joint] 2 attackers, 1 blockers, 2 distinct outcomes, 2 after Pareto
+t26|  BLOCK   Shu Elite Infantry 3/3  <- Blade of the Sixth Pride 3/1
+t26|  [audit] policy Shu Elite Infantry 3/3->Blade of the Sixth Pride 3/1 (score 0) | solver Shu Elite Infantry 3/3->-- (score 0)  MATCH
+t27|Plains ({T}: Add {W}.)
+t27|Plains ({T}: Add {W}.)
+t27|Plains ({T}: Add {W}.)
+t27|Elite Vanguard
+t27|Plains (Play Plains)
+t27|Elite Vanguard
+t27|== my combat: life 17-1, creatures 8-4
+t27|  ATTACK  Foot Soldiers 2/4
+t27|  ATTACK  Foot Soldiers 2/4
+t27|  ATTACK  Foot Soldiers 2/4
+t27|  ATTACK  Knight of the Keep 3/2
+t27|  ATTACK  Regal Unicorn 2/3
+t27|  ATTACK  Shu Elite Infantry 3/3
+RLGAME_END

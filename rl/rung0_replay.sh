@@ -49,6 +49,15 @@ while [ $t -lt 90 ]; do
     sleep 2; t=$((t + 2))
 done
 
+# WHERE THE TRANSCRIPT ACTUALLY GOES. The RLGAME block is a
+# System.out.println in the JVM that PLAYS the game. Under the persistent
+# driver that is the server JVM, so it lands in the server's log and the
+# client log comes back empty - indistinguishable from "the game produced
+# no transcript". The mvn path is not an escape either: run_driver.sh
+# passes -q, which suppresses surefire's console output entirely. So the
+# server log is the only place it exists; read it from there.
+DRVLOG=/tmp/rl_p9/driver_server_${RL_DRIVER_PORT:-7910}.log
+: > $DRVLOG 2>/dev/null || true
 cd /home/user/mage
 RL_PERSIST=1 RL_AUTOSTART=1 timeout 900 bash $RL/run_driver.sh \
     -Drl.episodes=1 -Drl.agent=rl -Drl.policy=socket -Drl.port=$PORT \
@@ -59,10 +68,11 @@ RL_PERSIST=1 RL_AUTOSTART=1 timeout 900 bash $RL/run_driver.sh \
     -Drl.stopTurn=60 -Drl.mode=eval -Drl.seed=$SEED -Drl.report=0 \
     > /tmp/replay_driver.log 2>&1
 
-sed -n '/^RLGAME|/,/^RLGAME_END/p' /tmp/replay_driver.log > $OUT
+sed -n '/^RLGAME|/,/^RLGAME_END/p' $DRVLOG > $OUT
 pkill -f "policy_serve[r].py --port $PORT" 2>/dev/null
 if [ ! -s "$OUT" ]; then
-    echo "REPLAY_EMPTY - driver log tail:"; tail -20 /tmp/replay_driver.log
+    echo "REPLAY_EMPTY - driver server log tail:"; tail -20 $DRVLOG
+    echo "--- client log tail:"; tail -5 /tmp/replay_driver.log
     exit 1
 fi
 wc -l < $OUT | xargs echo "REPLAY_DONE lines:"

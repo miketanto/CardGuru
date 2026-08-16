@@ -323,6 +323,18 @@ public class EpisodeRunner {
             fallbacks.merge("searchDecisions", (int) sp.searchDecisions, Integer::sum);
         }
         String winner = String.valueOf(game.getWinner());
+        if (winner.contains(agent.getName())) {
+            r.reward = 1f;
+        } else if (winner.contains("Opponent")) {
+            r.reward = -1f;
+        } else {
+            r.reward = 0f;      // draw or stall bound: deliberate, documented
+            r.stalled = !game.hasEnded();
+        }
+        // AFTER the reward is assigned. This block used to sit above the
+        // assignment, so every RLGAME header ever written said reward=0.0
+        // regardless of who won - a committed transcript of a won game
+        // read as a draw.
         if (Boolean.getBoolean("rl.debug")) {
             System.out.println("RLDBG|ep seed=" + seed + " turns=" + r.turns
                     + " winner=" + winner + " agentLife=" + agent.getLife()
@@ -333,14 +345,6 @@ public class EpisodeRunner {
                 System.out.println("RLGAME|reward=" + r.reward + "|seed=" + seed
                         + "\n" + rlAgent.actionLog + "RLGAME_END");
             }
-        }
-        if (winner.contains(agent.getName())) {
-            r.reward = 1f;
-        } else if (winner.contains("Opponent")) {
-            r.reward = -1f;
-        } else {
-            r.reward = 0f;      // draw or stall bound: deliberate, documented
-            r.stalled = !game.hasEnded();
         }
         return r;
     }
