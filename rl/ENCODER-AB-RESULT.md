@@ -186,11 +186,58 @@ single blocker, exactly as v2 did — `selectAttackers` is still a product
 of independent per-creature marginals, because joint assignment was
 implemented for blocks only.
 
+### Replication, and what a replay shows that the counters hide
+
+The container was recycled and took `/tmp` with it, so the run above was
+repeated from scratch on the same seed and budget (this time with the
+battery only at 0 and 512, so no mid-run server restart):
+
+```
+              D0     D1     TWIN    block-optimal      gap   turns
+first run    .850     -       -     93.0% (635/683)    349   23.6
+replication  .940   .920    .860    95.3% (702/737)    236   31.0
+untrained    .000     -       -           -              -   11.0
+```
+
+100 games a row, one seed each. This is a replication that came out high,
+**not** an improvement — do not report the delta as one.
+
+The replay (`game_v4_ck512_vs_D0_seed6001.txt`, won on t27 at 17 life)
+carries two new lines per combat: `[joint]` with the candidate count and
+`[audit]` with the solver's assignment beside the policy's. Reading it
+turns up two things the block-optimality counter cannot show.
+
+**`MATCH` means scored the same, not chose the same.** At t10 the policy
+throws a 3/1 and two 2/2s at an Elite Vanguard 2/1; the solver uses the
+3/1 alone. Both score 1, because the 2/1 has 2 damage and kills exactly
+one blocker either way — and because `defenderScore` has **no term for
+blockers used**. So the policy is still over-piling; piling is merely
+free at rung 0. `forAssignment` passes `c[12] = blockers used` as a
+feature and nothing in the reward or the reference pushes against it.
+This is a live gap, not a curiosity: at rung 5 (`W5Trick`, Aegis of the
+Heavens, +1/+7 instant) over-committing to a 2/1 is how three creatures
+die to one card, and there is currently no gradient away from it. Same
+shape at t16, a triple block on a 2/3.
+
+**Some combats have no decision in them.** t22 enumerated 12 distinct
+outcomes and the Pareto filter left **1**. The MATCH there belongs to the
+filter, not the net. Five of the six combats in this game had >1
+candidate; `blockOptimal/blockCombats` does not distinguish, so treat it
+as an upper bound on how much of the credit is the policy's.
+
+The attacking failure is on full display in the same game: twelve
+consecutive turns of `hold` at 20-20 life, including turns at 4-1 and 3-1
+on board, before it alpha-strikes on t25.
+
 ## Reproduction
 
 ```
 bash rl/rung0_lane.sh W0Base W0Twin 1024 <seed>   # R0_ENCODER_V=1|2|3|4
 python3 rl/position_probe.py --port <p> [--validate] [--v4]
+bash rl/rung0_replay.sh <ckpt> <encV> W0Base heuristic <seed> <out>
 ```
 
-Artifacts under `rl/artifacts/rung0/W0Base/`.
+Artifacts under `rl/artifacts/rung0/W0Base/`. **Commit checkpoints you
+care about** — `rung0_autosync.sh` syncs only the white-branch seeds, and
+the first v4 checkpoint was lost to a container restart, costing a full
+rebuild and retrain to answer "show me a replay".
