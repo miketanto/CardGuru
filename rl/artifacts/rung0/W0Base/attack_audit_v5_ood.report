@@ -1,0 +1,23 @@
+=== attack audit — v5 vs heuristic on W0Base
+  20 episodes, win_rate 0.000, 54.0 turns/ep
+
+  attack rate                  377/1650   0.228 [0.209,0.249]   creatures sent / could have attacked
+  attack-optimality             74/460    0.161 [0.130,0.197]   UPPER BOUND: includes no-choice combats
+    ...where a choice existed    74/460    0.161 [0.130,0.197]   the honest one
+  attack-optimality (CA)        81/460    0.176 [0.144,0.214]   reference charges for the crack-back
+
+  score gap (myopic)         528 over 460 combats
+  score gap (CA)             544
+  missed lethal              301   (own category, never a gap)
+  errors UNDER / OVER        27 / 58   (sent fewer / more than ref)
+  truncated subsets/replies  0 / 0
+  combats with no choice     0   (MATCH there is the position's)
+
+  cost: policy search 46 ms total, 0.10 ms/combat; audit 48 ms (instrument, not play)
+  nodes: 38k resolve() calls, 83 per combat
+
+  READ WITH: the reference is one combat deep and prices at zero
+  the fact that an attacker cannot block next turn, so it
+  over-credits attacking. A rise in attack-optimality alongside
+  a rise in attack rate is partly tautological; the CA row and
+  the UNDER/OVER split are what separate them.

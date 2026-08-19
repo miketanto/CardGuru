@@ -1,0 +1,25 @@
+== COVERAGE COMMIT: three 2/2s into one 3/1 (all three = +8, any one = 0)
+   8 subsets -> 4 distinct -> 4 after Pareto
+   reference best: Glory Seeker + Silvercoat Lion + Fresh Volunteers (score 8)
+   reference best (CA): Glory Seeker + Silvercoat Lion + Fresh Volunteers (score 8)
+   best subset survives the filter: YES
+
+== COVERAGE ALPHA33: three 2/2s into one 3/3 (reference says HOLD, -4)
+   8 subsets -> 4 distinct -> 3 after Pareto
+   reference best: (none) (score 0)
+   reference best (CA): (none) (score 0)
+   best subset survives the filter: YES
+
+== COVERAGE HOLD: one 2/2 into two 3/3s (attacking is strictly bad)
+   2 subsets -> 2 distinct -> 1 after Pareto
+   reference best: (none) (score 0)
+   reference best (CA): (none) (score -6)
+   best subset survives the filter: YES
+
+== COVERAGE LETHAL: three 2/2s, they are at 4 with no untapped blocker
+   8 subsets -> 4 distinct -> 4 after Pareto
+   reference best: Glory Seeker + Silvercoat Lion (score 1000000000)
+   reference best (CA): Glory Seeker + Silvercoat Lion (score 1000000000)
+   best subset survives the filter: YES
+
+COVERAGE|all_reference_subsets_survive_filter=YES

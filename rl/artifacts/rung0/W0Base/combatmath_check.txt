@@ -1,0 +1,4 @@
+CHECK|bestDeduped|trials=5000|mismatches=0
+CHECK|evaluate|mismatches=0
+legacyTieBreak CHECK|bestDeduped|trials=5000|mismatches=6
+legacyTieBreak CHECK|evaluate|mismatches=0

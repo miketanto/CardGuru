@@ -1,0 +1,446 @@
+RLGAME|reward=0.0|seed=6001
+t1|Plains (Play Plains)
+t3|Plains (Play Plains)
+t3|Glory Seeker
+t5|Silvercoat Lion
+t5|== my combat: life 20-20, creatures 2-0
+t5|  [atkjoint] 1 avail, 0 defenders, 2 distinct subsets, 2 after Pareto, 2.7ms
+t5|  ATTACK  Glory Seeker 2/2
+t5|  [atkaudit] policy Glory Seeker 2/2 (4, dealt 2, lost 0, killed 0, back 0) | ref Glory Seeker 2/2 (4)  MATCH
+t7|Blade of the Sixth Pride
+t7|== my combat: life 20-18, creatures 3-0
+t7|  [atkjoint] 2 avail, 0 defenders, 3 distinct subsets, 3 after Pareto, 0.1ms
+t7|  hold    Glory Seeker 2/2
+t7|  hold    Silvercoat Lion 2/2
+t7|  [atkaudit] policy (none) (0, dealt 0, lost 0, killed 0, back 0) | ref Glory Seeker 2/2 + Silvercoat Lion 2/2 (8)  GAP 8 UNDER
+t9|Blade of the Sixth Pride
+t9|== my combat: life 20-18, creatures 4-1
+t9|  [atkjoint] 3 avail, 1 defenders, 6 distinct subsets, 4 after Pareto, 0.9ms
+t9|  ATTACK  Blade of the Sixth Pride 3/1
+t9|  ATTACK  Glory Seeker 2/2
+t9|  ATTACK  Silvercoat Lion 2/2
+t9|  [atkaudit] policy Blade of the Sixth Pride 3/1 + Glory Seeker 2/2 + Silvercoat Lion 2/2 (5, dealt 4, lost 1, killed 1, back 0) | ref Blade of the Sixth Pride 3/1 + Glory Seeker 2/2 + Silvercoat Lion 2/2 (5)  MATCH
+t10|== incoming: life 20-11, creatures 4-2
+t10|  attacked by Elite Vanguard 2/1
+t10|  [joint] 1 attackers, 1 blockers, 2 distinct outcomes, 2 after Pareto
+t10|  BLOCK   Blade of the Sixth Pride 3/1  <- Elite Vanguard 2/1
+t10|  [audit] policy Blade of the Sixth Pride 3/1->Elite Vanguard 2/1 (score 1) | solver Blade of the Sixth Pride 3/1->Elite Vanguard 2/1 (score 1)  MATCH
+t11|== my combat: life 20-11, creatures 3-1
+t11|  [atkjoint] 3 avail, 1 defenders, 6 distinct subsets, 4 after Pareto, 0.2ms
+t11|  ATTACK  Blade of the Sixth Pride 3/1
+t11|  ATTACK  Glory Seeker 2/2
+t11|  ATTACK  Silvercoat Lion 2/2
+t11|  [atkaudit] policy Blade of the Sixth Pride 3/1 + Glory Seeker 2/2 + Silvercoat Lion 2/2 (8, dealt 4, lost 1, killed 1, back 0) | ref Blade of the Sixth Pride 3/1 + Glory Seeker 2/2 + Silvercoat Lion 2/2 (8)  MATCH
+t12|Plains ({T}: Add {W}.)
+t12|Plains ({T}: Add {W}.)
+t12|== incoming: life 20-4, creatures 3-2
+t12|  attacked by Blade of the Sixth Pride 3/1
+t12|  [joint] 1 attackers, 0 blockers, 1 distinct outcomes, 1 after Pareto
+t13|Plains (Play Plains)
+t13|Regal Unicorn
+t13|== my combat: life 17-4, creatures 4-2
+t13|  [atkjoint] 3 avail, 1 defenders, 6 distinct subsets, 4 after Pareto, 0.2ms
+t13|  hold    Blade of the Sixth Pride 3/1
+t13|  ATTACK  Glory Seeker 2/2
+t13|  ATTACK  Silvercoat Lion 2/2
+t13|  [atkaudit] policy Glory Seeker 2/2 + Silvercoat Lion 2/2 (7, dealt 2, lost 1, killed 1, back 0) | ref Blade of the Sixth Pride 3/1 + Glory Seeker 2/2 + Silvercoat Lion 2/2 (LETHAL)  MISSED LETHAL
+t14|== incoming: life 17-2, creatures 3-2
+t14|  attacked by Blade of the Sixth Pride 3/1
+t14|  [joint] 1 attackers, 2 blockers, 4 distinct outcomes, 3 after Pareto
+t14|  BLOCK   Blade of the Sixth Pride 3/1  <- Blade of the Sixth Pride 3/1
+t14|  BLOCK   Regal Unicorn 2/3  <- Blade of the Sixth Pride 3/1
+t14|  [audit] policy Blade of the Sixth Pride 3/1->Blade of the Sixth Pride 3/1, Regal Unicorn 2/3->Blade of the Sixth Pride 3/1 (score 6) | solver Blade of the Sixth Pride 3/1->Blade of the Sixth Pride 3/1, Regal Unicorn 2/3->-- (score 6)  MATCH
+t15|Knight of the Keep
+t15|Plains (Play Plains)
+t15|Plains ({T}: Add {W}.)
+t15|== my combat: life 17-2, creatures 3-1
+t15|  [atkjoint] 2 avail, 1 defenders, 4 distinct subsets, 2 after Pareto, 0.2ms
+t15|  hold    Silvercoat Lion 2/2
+t15|  hold    Regal Unicorn 2/3
+t15|  [atkaudit] policy (none) (0, dealt 0, lost 0, killed 0, back 0) | ref Silvercoat Lion 2/2 + Regal Unicorn 2/3 (LETHAL)  MISSED LETHAL
+t16|== incoming: life 17-2, creatures 3-3
+t16|  attacked by Regal Unicorn 2/3
+t16|  [joint] 1 attackers, 3 blockers, 7 distinct outcomes, 2 after Pareto
+t16|  BLOCK   Silvercoat Lion 2/2  <- Regal Unicorn 2/3
+t16|  decline Knight of the Keep 3/2
+t16|  BLOCK   Regal Unicorn 2/3  <- Regal Unicorn 2/3
+t16|  [audit] policy Silvercoat Lion 2/2->Regal Unicorn 2/3, Knight of the Keep 3/2->--, Regal Unicorn 2/3->Regal Unicorn 2/3 (score 7) | solver Silvercoat Lion 2/2->Regal Unicorn 2/3, Knight of the Keep 3/2->--, Regal Unicorn 2/3->Regal Unicorn 2/3 (score 7)  MATCH
+t17|Foot Soldiers
+t17|== my combat: life 17-2, creatures 3-2
+t17|  [atkjoint] 2 avail, 2 defenders, 4 distinct subsets, 3 after Pareto, 0.3ms
+t17|  ATTACK  Knight of the Keep 3/2
+t17|  ATTACK  Regal Unicorn 2/3
+t17|  [atkaudit] policy Knight of the Keep 3/2 + Regal Unicorn 2/3 (-6, dealt 0, lost 2, killed 2, back 0) | ref (none) (0)  GAP 6 OVER
+t19|Foot Soldiers
+t19|== my combat: life 17-2, creatures 2-2
+t19|  [atkjoint] 1 avail, 2 defenders, 2 distinct subsets, 2 after Pareto, 0.1ms
+t19|  ATTACK  Foot Soldiers 2/4
+t19|  [atkaudit] policy Foot Soldiers 2/4 (-9, dealt 0, lost 1, killed 1, back 2) | ref (none) (0)  GAP 9 OVER
+t21|Shu Elite Infantry
+t21|== my combat: life 17-2, creatures 3-2
+t21|  [atkjoint] 2 avail, 2 defenders, 3 distinct subsets, 3 after Pareto, 0.1ms
+t21|  ATTACK  Foot Soldiers 2/4
+t21|  hold    Foot Soldiers 2/4
+t21|  [atkaudit] policy Foot Soldiers 2/4 (-9, dealt 0, lost 1, killed 1, back 0) | ref Foot Soldiers 2/4 + Foot Soldiers 2/4 (9)  GAP 18 UNDER
+t22|== incoming: life 17-2, creatures 3-1
+t22|  attacked by Shu Elite Infantry 3/3
+t22|  [joint] 1 attackers, 2 blockers, 4 distinct outcomes, 3 after Pareto
+t22|  BLOCK   Shu Elite Infantry 3/3  <- Shu Elite Infantry 3/3
+t22|  BLOCK   Foot Soldiers 2/4  <- Shu Elite Infantry 3/3
+t22|  [audit] policy Shu Elite Infantry 3/3->Shu Elite Infantry 3/3, Foot Soldiers 2/4->Shu Elite Infantry 3/3 (score 6) | solver Shu Elite Infantry 3/3->Shu Elite Infantry 3/3, Foot Soldiers 2/4->-- (score 6)  MATCH
+t23|Foot Soldiers
+t23|== my combat: life 17-2, creatures 3-0
+t23|  [atkjoint] 2 avail, 0 defenders, 3 distinct subsets, 3 after Pareto, 0.1ms
+t23|  hold    Foot Soldiers 2/4
+t23|  hold    Foot Soldiers 2/4
+t23|  [atkaudit] policy (none) (0, dealt 0, lost 0, killed 0, back 0) | ref Foot Soldiers 2/4 (LETHAL)  MISSED LETHAL
+t25|Plains ({T}: Add {W}.)
+t25|Plains ({T}: Add {W}.)
+t25|Elite Vanguard
+t25|Plains ({T}: Add {W}.)
+t25|Elite Vanguard
+t25|== my combat: life 17-2, creatures 5-0
+t25|  [atkjoint] 3 avail, 0 defenders, 4 distinct subsets, 4 after Pareto, 0.1ms
+t25|  hold    Foot Soldiers 2/4
+t25|  hold    Foot Soldiers 2/4
+t25|  hold    Foot Soldiers 2/4
+t25|  [atkaudit] policy (none) (0, dealt 0, lost 0, killed 0, back 0) | ref Foot Soldiers 2/4 (LETHAL)  MISSED LETHAL
+t27|Plains ({T}: Add {W}.)
+t27|Plains ({T}: Add {W}.)
+t27|Plains ({T}: Add {W}.)
+t27|Plains ({T}: Add {W}.)
+t27|Plains (Play Plains)
+t27|Plains ({T}: Add {W}.)
+t27|== my combat: life 17-2, creatures 5-1
+t27|  [atkjoint] 5 avail, 1 defenders, 12 distinct subsets, 6 after Pareto, 0.4ms
+t27|  hold    Elite Vanguard 2/1
+t27|  hold    Elite Vanguard 2/1
+t27|  ATTACK  Foot Soldiers 2/4
+t27|  hold    Foot Soldiers 2/4
+t27|  hold    Foot Soldiers 2/4
+t27|  [atkaudit] policy Foot Soldiers 2/4 (15, dealt 0, lost 0, killed 1, back 0) | ref Elite Vanguard 2/1 + Elite Vanguard 2/1 (LETHAL)  MISSED LETHAL
+t29|Plains ({T}: Add {W}.)
+t29|Plains ({T}: Add {W}.)
+t29|Plains ({T}: Add {W}.)
+t29|Plains ({T}: Add {W}.)
+t29|Plains ({T}: Add {W}.)
+t29|== my combat: life 17-2, creatures 5-0
+t29|  [atkjoint] 5 avail, 0 defenders, 12 distinct subsets, 6 after Pareto, 0.3ms
+t29|  hold    Elite Vanguard 2/1
+t29|  hold    Elite Vanguard 2/1
+t29|  hold    Foot Soldiers 2/4
+t29|  hold    Foot Soldiers 2/4
+t29|  hold    Foot Soldiers 2/4
+t29|  [atkaudit] policy (none) (0, dealt 0, lost 0, killed 0, back 0) | ref Elite Vanguard 2/1 (LETHAL)  MISSED LETHAL
+t31|Plains ({T}: Add {W}.)
+t31|Plains ({T}: Add {W}.)
+t31|Plains ({T}: Add {W}.)
+t31|Plains ({T}: Add {W}.)
+t31|Plains ({T}: Add {W}.)
+t31|== my combat: life 17-2, creatures 5-1
+t31|  [atkjoint] 5 avail, 1 defenders, 12 distinct subsets, 5 after Pareto, 0.6ms
+t31|  hold    Elite Vanguard 2/1
+t31|  hold    Elite Vanguard 2/1
+t31|  hold    Foot Soldiers 2/4
+t31|  hold    Foot Soldiers 2/4
+t31|  hold    Foot Soldiers 2/4
+t31|  [atkaudit] policy (none) (0, dealt 0, lost 0, killed 0, back 0) | ref Elite Vanguard 2/1 + Elite Vanguard 2/1 (LETHAL)  MISSED LETHAL
+t32|== incoming: life 17-2, creatures 5-1
+t32|  attacked by Foot Soldiers 2/4
+t32|  [joint] 1 attackers, 5 blockers, 12 distinct outcomes, 2 after Pareto
+t32|  decline Elite Vanguard 2/1
+t32|  decline Elite Vanguard 2/1
+t32|  BLOCK   Foot Soldiers 2/4  <- Foot Soldiers 2/4
+t32|  BLOCK   Foot Soldiers 2/4  <- Foot Soldiers 2/4
+t32|  BLOCK   Foot Soldiers 2/4  <- Foot Soldiers 2/4
+t32|  [audit] policy Elite Vanguard 2/1->--, Elite Vanguard 2/1->--, Foot Soldiers 2/4->Foot Soldiers 2/4, Foot Soldiers 2/4->Foot Soldiers 2/4, Foot Soldiers 2/4->Foot Soldiers 2/4 (score 22) | solver Elite Vanguard 2/1->--, Elite Vanguard 2/1->--, Foot Soldiers 2/4->Foot Soldiers 2/4, Foot Soldiers 2/4->Foot Soldiers 2/4, Foot Soldiers 2/4->-- (score 22)  MATCH
+t33|Plains ({T}: Add {W}.)
+t33|Plains ({T}: Add {W}.)
+t33|Plains ({T}: Add {W}.)
+t33|Plains ({T}: Add {W}.)
+t33|Plains ({T}: Add {W}.)
+t33|Plains (Play Plains)
+t33|Plains ({T}: Add {W}.)
+t33|== my combat: life 17-2, creatures 5-0
+t33|  [atkjoint] 5 avail, 0 defenders, 12 distinct subsets, 6 after Pareto, 0.2ms
+t33|  hold    Elite Vanguard 2/1
+t33|  hold    Elite Vanguard 2/1
+t33|  hold    Foot Soldiers 2/4
+t33|  hold    Foot Soldiers 2/4
+t33|  hold    Foot Soldiers 2/4
+t33|  [atkaudit] policy (none) (0, dealt 0, lost 0, killed 0, back 0) | ref Elite Vanguard 2/1 (LETHAL)  MISSED LETHAL
+t35|Plains ({T}: Add {W}.)
+t35|Plains ({T}: Add {W}.)
+t35|Plains ({T}: Add {W}.)
+t35|Plains ({T}: Add {W}.)
+t35|Plains ({T}: Add {W}.)
+t35|Plains ({T}: Add {W}.)
+t35|Plains (Play Plains)
+t35|Plains ({T}: Add {W}.)
+t35|== my combat: life 17-2, creatures 5-0
+t35|  [atkjoint] 5 avail, 0 defenders, 12 distinct subsets, 6 after Pareto, 0.3ms
+t35|  hold    Elite Vanguard 2/1
+t35|  hold    Elite Vanguard 2/1
+t35|  hold    Foot Soldiers 2/4
+t35|  hold    Foot Soldiers 2/4
+t35|  hold    Foot Soldiers 2/4
+t35|  [atkaudit] policy (none) (0, dealt 0, lost 0, killed 0, back 0) | ref Elite Vanguard 2/1 (LETHAL)  MISSED LETHAL
+t37|Plains ({T}: Add {W}.)
+t37|Plains ({T}: Add {W}.)
+t37|Plains ({T}: Add {W}.)
+t37|Plains ({T}: Add {W}.)
+t37|Plains ({T}: Add {W}.)
+t37|Plains ({T}: Add {W}.)
+t37|Plains ({T}: Add {W}.)
+t37|Plains (Play Plains)
+t37|Plains ({T}: Add {W}.)
+t37|== my combat: life 17-2, creatures 5-1
+t37|  [atkjoint] 5 avail, 1 defenders, 12 distinct subsets, 5 after Pareto, 0.3ms
+t37|  hold    Elite Vanguard 2/1
+t37|  hold    Elite Vanguard 2/1
+t37|  hold    Foot Soldiers 2/4
+t37|  hold    Foot Soldiers 2/4
+t37|  hold    Foot Soldiers 2/4
+t37|  [atkaudit] policy (none) (0, dealt 0, lost 0, killed 0, back 0) | ref Elite Vanguard 2/1 + Elite Vanguard 2/1 (LETHAL)  MISSED LETHAL
+t38|== incoming: life 17-2, creatures 5-2
+t38|  attacked by Foot Soldiers 2/4
+t38|  [joint] 1 attackers, 5 blockers, 12 distinct outcomes, 2 after Pareto
+t38|  decline Elite Vanguard 2/1
+t38|  decline Elite Vanguard 2/1
+t38|  BLOCK   Foot Soldiers 2/4  <- Foot Soldiers 2/4
+t38|  BLOCK   Foot Soldiers 2/4  <- Foot Soldiers 2/4
+t38|  BLOCK   Foot Soldiers 2/4  <- Foot Soldiers 2/4
+t38|  [audit] policy Elite Vanguard 2/1->--, Elite Vanguard 2/1->--, Foot Soldiers 2/4->Foot Soldiers 2/4, Foot Soldiers 2/4->Foot Soldiers 2/4, Foot Soldiers 2/4->Foot Soldiers 2/4 (score 22) | solver Elite Vanguard 2/1->--, Elite Vanguard 2/1->--, Foot Soldiers 2/4->Foot Soldiers 2/4, Foot Soldiers 2/4->Foot Soldiers 2/4, Foot Soldiers 2/4->-- (score 22)  MATCH
+t39|Plains ({T}: Add {W}.)
+t39|Plains ({T}: Add {W}.)
+t39|Plains ({T}: Add {W}.)
+t39|Plains ({T}: Add {W}.)
+t39|Plains ({T}: Add {W}.)
+t39|Plains ({T}: Add {W}.)
+t39|Plains ({T}: Add {W}.)
+t39|Plains ({T}: Add {W}.)
+t39|Plains (Play Plains)
+t39|Plains ({T}: Add {W}.)
+t39|== my combat: life 17-2, creatures 5-1
+t39|  [atkjoint] 5 avail, 1 defenders, 12 distinct subsets, 6 after Pareto, 0.2ms
+t39|  hold    Elite Vanguard 2/1
+t39|  hold    Elite Vanguard 2/1
+t39|  ATTACK  Foot Soldiers 2/4
+t39|  hold    Foot Soldiers 2/4
+t39|  hold    Foot Soldiers 2/4
+t39|  [atkaudit] policy Foot Soldiers 2/4 (15, dealt 0, lost 0, killed 1, back 0) | ref Elite Vanguard 2/1 + Elite Vanguard 2/1 (LETHAL)  MISSED LETHAL
+t41|Plains ({T}: Add {W}.)
+t41|Plains ({T}: Add {W}.)
+t41|Plains ({T}: Add {W}.)
+t41|Plains ({T}: Add {W}.)
+t41|Plains ({T}: Add {W}.)
+t41|Plains ({T}: Add {W}.)
+t41|Plains ({T}: Add {W}.)
+t41|Plains ({T}: Add {W}.)
+t41|Plains ({T}: Add {W}.)
+t41|== my combat: life 17-2, creatures 5-1
+t41|  [atkjoint] 5 avail, 1 defenders, 12 distinct subsets, 6 after Pareto, 0.3ms
+t41|  hold    Elite Vanguard 2/1
+t41|  hold    Elite Vanguard 2/1
+t41|  ATTACK  Foot Soldiers 2/4
+t41|  hold    Foot Soldiers 2/4
+t41|  hold    Foot Soldiers 2/4
+t41|  [atkaudit] policy Foot Soldiers 2/4 (12, dealt 0, lost 0, killed 1, back 0) | ref Elite Vanguard 2/1 + Elite Vanguard 2/1 (LETHAL)  MISSED LETHAL
+t43|Plains ({T}: Add {W}.)
+t43|Plains ({T}: Add {W}.)
+t43|Plains ({T}: Add {W}.)
+t43|Plains ({T}: Add {W}.)
+t43|Plains ({T}: Add {W}.)
+t43|Plains ({T}: Add {W}.)
+t43|Plains ({T}: Add {W}.)
+t43|Plains ({T}: Add {W}.)
+t43|Plains ({T}: Add {W}.)
+t43|== my combat: life 17-2, creatures 5-1
+t43|  [atkjoint] 5 avail, 1 defenders, 12 distinct subsets, 6 after Pareto, 0.3ms
+t43|  hold    Elite Vanguard 2/1
+t43|  hold    Elite Vanguard 2/1
+t43|  ATTACK  Foot Soldiers 2/4
+t43|  hold    Foot Soldiers 2/4
+t43|  hold    Foot Soldiers 2/4
+t43|  [atkaudit] policy Foot Soldiers 2/4 (12, dealt 0, lost 0, killed 1, back 0) | ref Elite Vanguard 2/1 + Elite Vanguard 2/1 (LETHAL)  MISSED LETHAL
+t45|Plains ({T}: Add {W}.)
+t45|Plains ({T}: Add {W}.)
+t45|Plains ({T}: Add {W}.)
+t45|Plains ({T}: Add {W}.)
+t45|Plains ({T}: Add {W}.)
+t45|Plains ({T}: Add {W}.)
+t45|Plains ({T}: Add {W}.)
+t45|Plains ({T}: Add {W}.)
+t45|Plains ({T}: Add {W}.)
+t45|Plains (Play Plains)
+t45|Elite Vanguard
+t45|== my combat: life 17-2, creatures 6-1
+t45|  [atkjoint] 5 avail, 1 defenders, 12 distinct subsets, 5 after Pareto, 0.3ms
+t45|  hold    Elite Vanguard 2/1
+t45|  hold    Elite Vanguard 2/1
+t45|  hold    Foot Soldiers 2/4
+t45|  hold    Foot Soldiers 2/4
+t45|  hold    Foot Soldiers 2/4
+t45|  [atkaudit] policy (none) (0, dealt 0, lost 0, killed 0, back 0) | ref Elite Vanguard 2/1 + Elite Vanguard 2/1 (LETHAL)  MISSED LETHAL
+t46|== incoming: life 17-2, creatures 6-1
+t46|  attacked by Foot Soldiers 2/4
+t46|  [joint] 1 attackers, 6 blockers, 13 distinct outcomes, 2 after Pareto
+t46|  decline Elite Vanguard 2/1
+t46|  decline Elite Vanguard 2/1
+t46|  decline Elite Vanguard 2/1
+t46|  BLOCK   Foot Soldiers 2/4  <- Foot Soldiers 2/4
+t46|  BLOCK   Foot Soldiers 2/4  <- Foot Soldiers 2/4
+t46|  BLOCK   Foot Soldiers 2/4  <- Foot Soldiers 2/4
+t46|  [audit] policy Elite Vanguard 2/1->--, Elite Vanguard 2/1->--, Elite Vanguard 2/1->--, Foot Soldiers 2/4->Foot Soldiers 2/4, Foot Soldiers 2/4->Foot Soldiers 2/4, Foot Soldiers 2/4->Foot Soldiers 2/4 (score 22) | solver Elite Vanguard 2/1->--, Elite Vanguard 2/1->--, Elite Vanguard 2/1->--, Foot Soldiers 2/4->Foot Soldiers 2/4, Foot Soldiers 2/4->Foot Soldiers 2/4, Foot Soldiers 2/4->-- (score 22)  MATCH
+t47|Plains ({T}: Add {W}.)
+t47|Plains ({T}: Add {W}.)
+t47|Plains ({T}: Add {W}.)
+t47|Plains ({T}: Add {W}.)
+t47|Plains ({T}: Add {W}.)
+t47|Plains ({T}: Add {W}.)
+t47|Plains ({T}: Add {W}.)
+t47|Plains ({T}: Add {W}.)
+t47|Plains ({T}: Add {W}.)
+t47|Plains ({T}: Add {W}.)
+t47|== my combat: life 17-2, creatures 6-0
+t47|  [atkjoint] 6 avail, 0 defenders, 16 distinct subsets, 7 after Pareto, 0.3ms
+t47|  hold    Elite Vanguard 2/1
+t47|  hold    Elite Vanguard 2/1
+t47|  hold    Elite Vanguard 2/1
+t47|  hold    Foot Soldiers 2/4
+t47|  hold    Foot Soldiers 2/4
+t47|  hold    Foot Soldiers 2/4
+t47|  [atkaudit] policy (none) (0, dealt 0, lost 0, killed 0, back 0) | ref Elite Vanguard 2/1 (LETHAL)  MISSED LETHAL
+t49|Plains ({T}: Add {W}.)
+t49|Plains ({T}: Add {W}.)
+t49|Plains ({T}: Add {W}.)
+t49|Plains ({T}: Add {W}.)
+t49|Plains ({T}: Add {W}.)
+t49|Plains ({T}: Add {W}.)
+t49|Plains ({T}: Add {W}.)
+t49|Plains ({T}: Add {W}.)
+t49|Plains ({T}: Add {W}.)
+t49|Plains ({T}: Add {W}.)
+t49|Plains (Play Plains)
+t49|Plains ({T}: Add {W}.)
+t49|== my combat: life 17-2, creatures 6-1
+t49|  [atkjoint] 6 avail, 1 defenders, 16 distinct subsets, 7 after Pareto, 0.5ms
+t49|  hold    Elite Vanguard 2/1
+t49|  hold    Elite Vanguard 2/1
+t49|  hold    Elite Vanguard 2/1
+t49|  ATTACK  Foot Soldiers 2/4
+t49|  hold    Foot Soldiers 2/4
+t49|  hold    Foot Soldiers 2/4
+t49|  [atkaudit] policy Foot Soldiers 2/4 (12, dealt 0, lost 0, killed 1, back 0) | ref Elite Vanguard 2/1 + Elite Vanguard 2/1 (LETHAL)  MISSED LETHAL
+t51|Plains ({T}: Add {W}.)
+t51|Plains ({T}: Add {W}.)
+t51|Plains ({T}: Add {W}.)
+t51|Plains ({T}: Add {W}.)
+t51|Plains ({T}: Add {W}.)
+t51|Plains ({T}: Add {W}.)
+t51|Plains ({T}: Add {W}.)
+t51|Plains ({T}: Add {W}.)
+t51|Plains ({T}: Add {W}.)
+t51|Plains ({T}: Add {W}.)
+t51|Plains ({T}: Add {W}.)
+t51|== my combat: life 17-2, creatures 6-1
+t51|  [atkjoint] 6 avail, 1 defenders, 16 distinct subsets, 7 after Pareto, 0.3ms
+t51|  hold    Elite Vanguard 2/1
+t51|  hold    Elite Vanguard 2/1
+t51|  hold    Elite Vanguard 2/1
+t51|  ATTACK  Foot Soldiers 2/4
+t51|  hold    Foot Soldiers 2/4
+t51|  hold    Foot Soldiers 2/4
+t51|  [atkaudit] policy Foot Soldiers 2/4 (12, dealt 0, lost 0, killed 1, back 0) | ref Elite Vanguard 2/1 + Elite Vanguard 2/1 (LETHAL)  MISSED LETHAL
+t53|Plains ({T}: Add {W}.)
+t53|Plains ({T}: Add {W}.)
+t53|Plains ({T}: Add {W}.)
+t53|Plains ({T}: Add {W}.)
+t53|Plains ({T}: Add {W}.)
+t53|Plains ({T}: Add {W}.)
+t53|Plains ({T}: Add {W}.)
+t53|Plains ({T}: Add {W}.)
+t53|Plains ({T}: Add {W}.)
+t53|Plains ({T}: Add {W}.)
+t53|Plains ({T}: Add {W}.)
+t53|Plains (Play Plains)
+t53|Plains ({T}: Add {W}.)
+t53|== my combat: life 17-2, creatures 6-0
+t53|  [atkjoint] 6 avail, 0 defenders, 16 distinct subsets, 7 after Pareto, 0.3ms
+t53|  hold    Elite Vanguard 2/1
+t53|  hold    Elite Vanguard 2/1
+t53|  hold    Elite Vanguard 2/1
+t53|  hold    Foot Soldiers 2/4
+t53|  hold    Foot Soldiers 2/4
+t53|  hold    Foot Soldiers 2/4
+t53|  [atkaudit] policy (none) (0, dealt 0, lost 0, killed 0, back 0) | ref Elite Vanguard 2/1 (LETHAL)  MISSED LETHAL
+t55|Plains ({T}: Add {W}.)
+t55|Plains ({T}: Add {W}.)
+t55|Plains ({T}: Add {W}.)
+t55|Plains ({T}: Add {W}.)
+t55|Plains ({T}: Add {W}.)
+t55|Plains ({T}: Add {W}.)
+t55|Plains ({T}: Add {W}.)
+t55|Plains ({T}: Add {W}.)
+t55|Plains ({T}: Add {W}.)
+t55|Plains ({T}: Add {W}.)
+t55|Plains ({T}: Add {W}.)
+t55|Plains ({T}: Add {W}.)
+t55|Plains (Play Plains)
+t55|Plains ({T}: Add {W}.)
+t55|== my combat: life 17-2, creatures 6-0
+t55|  [atkjoint] 6 avail, 0 defenders, 16 distinct subsets, 7 after Pareto, 0.2ms
+t55|  hold    Elite Vanguard 2/1
+t55|  hold    Elite Vanguard 2/1
+t55|  hold    Elite Vanguard 2/1
+t55|  hold    Foot Soldiers 2/4
+t55|  hold    Foot Soldiers 2/4
+t55|  hold    Foot Soldiers 2/4
+t55|  [atkaudit] policy (none) (0, dealt 0, lost 0, killed 0, back 0) | ref Elite Vanguard 2/1 (LETHAL)  MISSED LETHAL
+t57|Plains ({T}: Add {W}.)
+t57|Plains ({T}: Add {W}.)
+t57|Plains ({T}: Add {W}.)
+t57|Plains ({T}: Add {W}.)
+t57|Plains ({T}: Add {W}.)
+t57|Plains ({T}: Add {W}.)
+t57|Plains ({T}: Add {W}.)
+t57|Plains ({T}: Add {W}.)
+t57|Plains ({T}: Add {W}.)
+t57|Plains ({T}: Add {W}.)
+t57|Plains ({T}: Add {W}.)
+t57|Plains ({T}: Add {W}.)
+t57|Plains ({T}: Add {W}.)
+t57|== my combat: life 17-2, creatures 6-0
+t57|  [atkjoint] 6 avail, 0 defenders, 16 distinct subsets, 7 after Pareto, 0.3ms
+t57|  hold    Elite Vanguard 2/1
+t57|  hold    Elite Vanguard 2/1
+t57|  hold    Elite Vanguard 2/1
+t57|  hold    Foot Soldiers 2/4
+t57|  hold    Foot Soldiers 2/4
+t57|  hold    Foot Soldiers 2/4
+t57|  [atkaudit] policy (none) (0, dealt 0, lost 0, killed 0, back 0) | ref Elite Vanguard 2/1 (LETHAL)  MISSED LETHAL
+t59|Plains ({T}: Add {W}.)
+t59|Plains ({T}: Add {W}.)
+t59|Plains ({T}: Add {W}.)
+t59|Plains ({T}: Add {W}.)
+t59|Plains ({T}: Add {W}.)
+t59|Plains ({T}: Add {W}.)
+t59|Plains ({T}: Add {W}.)
+t59|Plains ({T}: Add {W}.)
+t59|Plains ({T}: Add {W}.)
+t59|Plains ({T}: Add {W}.)
+t59|Plains ({T}: Add {W}.)
+t59|Plains ({T}: Add {W}.)
+t59|Plains ({T}: Add {W}.)
+t59|Plains (Play Plains)
+t59|Plains ({T}: Add {W}.)
+t59|== my combat: life 17-2, creatures 6-0
+t59|  [atkjoint] 6 avail, 0 defenders, 16 distinct subsets, 7 after Pareto, 0.3ms
+t59|  hold    Elite Vanguard 2/1
+t59|  hold    Elite Vanguard 2/1
+t59|  hold    Elite Vanguard 2/1
+t59|  hold    Foot Soldiers 2/4
+t59|  hold    Foot Soldiers 2/4
+t59|  hold    Foot Soldiers 2/4
+t59|  [atkaudit] policy (none) (0, dealt 0, lost 0, killed 0, back 0) | ref Elite Vanguard 2/1 (LETHAL)  MISSED LETHAL
+RLGAME_END
