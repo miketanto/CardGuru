@@ -178,6 +178,17 @@ class Trainer:
         with torch.no_grad():
             s = torch.tensor(state).unsqueeze(0)
             k = len(cands)
+            if k > MAX_K:
+                # Without this the assignment below fails with a tensor
+                # shape error two frames down, which is what a joint-
+                # assignment arm against the default 40-slot buffer
+                # actually looked like the first time: the server died
+                # mid-run and the lane recorded nothing. Name the cause.
+                raise ValueError(
+                    "consult carried %d candidates, buffer is %d - start "
+                    "the server with --max-k >= %d (joint arms need it: "
+                    "rl.jointMaxCands for blocks, rl.attackMaxCands for "
+                    "attacks)" % (k, MAX_K, k))
             c = torch.zeros(1, MAX_K, self.cdim)
             c[0, :k] = torch.tensor(cands)
             m = torch.zeros(1, MAX_K, dtype=torch.bool)

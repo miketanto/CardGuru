@@ -297,6 +297,35 @@ public class EpisodeRunner {
             fallbacks.merge("blockScoreGap", (int) rlAgent.blockScoreGap, Integer::sum);
             fallbacks.merge("blockTruncated", (int) rlAgent.blockTruncated, Integer::sum);
             fallbacks.merge("blockFatal", (int) rlAgent.blockFatal, Integer::sum);
+            // -Drl.attackAudit: the attack-side instrument. attackCombats
+            // excludes positions with no available attacker;
+            // attackCombatsWithChoice is the subset where more than one
+            // distinct outcome existed, so attackOptimal/attackCombats is
+            // an UPPER bound on the policy's share of the credit and
+            // attackOptimalChoice/attackCombatsWithChoice is the honest
+            // one. attacksDeclared/attackOpportunities is the rate the
+            // whole exercise is about and catches a fix that overshoots.
+            fallbacks.merge("attackCombats", (int) rlAgent.attackCombats, Integer::sum);
+            fallbacks.merge("attackCombatsChoice", (int) rlAgent.attackCombatsWithChoice, Integer::sum);
+            fallbacks.merge("attackOptimal", (int) rlAgent.attackOptimal, Integer::sum);
+            fallbacks.merge("attackOptimalChoice", (int) rlAgent.attackOptimalWithChoice, Integer::sum);
+            fallbacks.merge("attackScoreGap", (int) rlAgent.attackScoreGap, Integer::sum);
+            fallbacks.merge("attackLethalMissed", (int) rlAgent.attackLethalMissed, Integer::sum);
+            fallbacks.merge("attackUnder", (int) rlAgent.attackUnder, Integer::sum);
+            fallbacks.merge("attackOver", (int) rlAgent.attackOver, Integer::sum);
+            fallbacks.merge("attackTruncated", (int) rlAgent.attackTruncated, Integer::sum);
+            fallbacks.merge("attackReplyTruncated", (int) rlAgent.attackReplyTruncated, Integer::sum);
+            fallbacks.merge("attackOptimalCA", (int) rlAgent.attackOptimalCA, Integer::sum);
+            fallbacks.merge("attackScoreGapCA", (int) rlAgent.attackScoreGapCA, Integer::sum);
+            fallbacks.merge("attacksDeclared", (int) rlAgent.attacksDeclared, Integer::sum);
+            fallbacks.merge("attackOpportunities", (int) rlAgent.attackOpportunities, Integer::sum);
+            // cost, in milliseconds, so "measure the cost per combat" is a
+            // measurement and not an assurance. Policy search and audit
+            // search are separate: the audit is an instrument and would
+            // not ship.
+            fallbacks.merge("attackSearchMs", (int) (rlAgent.attackSearchNanos / 1000000L), Integer::sum);
+            fallbacks.merge("attackAuditMs", (int) (rlAgent.attackAuditNanos / 1000000L), Integer::sum);
+            fallbacks.merge("attackSearchKNodes", (int) (rlAgent.attackSearchNodes / 1000L), Integer::sum);
             // Phase 12 (perf scoping): priority windows where getPlayable
             // came back empty, i.e. the seat paid a full state copy - 67%
             // of game-thread time lives under createSimulationForPlayableCalc

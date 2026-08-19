@@ -59,13 +59,17 @@ FEATS=$RL/e2_features.tsv
 # encoder and nothing else.
 ENC=${R0_ENCODER_V:-2}
 if [ "$ENC" = "1" ]; then SDIM=24; CDIM=91; else SDIM=32; CDIM=94; fi
-ENCFLAGS="-Drl.encoderV=$ENC -Drl.blockAudit=true"
+ENCFLAGS="-Drl.encoderV=$ENC -Drl.blockAudit=true -Drl.attackAudit=true"
 # v4's candidates are whole assignments, so the server's 40-slot buffer
 # is too small - raw enumeration produced 46 distinct outcomes and
 # crashed it mid-run. Pareto filtering cuts the set; this is the belt to
 # that braces.
 SRVEXTRA=""
 [ "$ENC" -ge 4 ] 2>/dev/null && SRVEXTRA="--max-k 64"
+# v5's ATTACK candidates are whole subsets and rl.attackMaxCands defaults
+# to 64, so the buffer has to clear that too or the server drops
+# candidates the policy was meant to be choosing between.
+[ "$ENC" -ge 5 ] 2>/dev/null && SRVEXTRA="--max-k 96"
 OUT=${R0_OUT:-/tmp/rl_rung0_${BASE}_v${ENC}_s${SEED}}
 mkdir -p $OUT
 
@@ -113,11 +117,19 @@ probe() {   # $1 out $2 opponent $3 deck $4 games $5 seed
         > /dev/null 2>&1
 }
 
-# 95% band, printed with every rate so nobody reads 100 games as exact
+# 95% interval, printed with every rate so nobody reads 100 games as
+# exact. WILSON, not Wald. The Wald half-width this used to print is
+# 1.96*sqrt(p(1-p)/n), which is 0.000 at p=0 and at p=1 - so the
+# untrained row of every lane log ever written claims perfect certainty
+# about 0/100, and the standing rule since then is Wilson everywhere.
+# rung0_report.py already carried the correct one; the lane did not.
 band() { python3 -c "
-import math,sys
-n=float('$1' or 1); p=float('$2' or 0)
-print('%.3f' % (1.96*math.sqrt(max(p*(1-p),1e-9)/n)))"; }
+import math
+n=float('$1' or 1); p=float('$2' or 0); z=1.96
+k=p*n; d=1+z*z/n
+c=(p+z*z/(2*n))/d
+h=z*math.sqrt(p*(1-p)/n+z*z/(4*n*n))/d
+print('[%.3f,%.3f]' % (max(0.0,c-h), min(1.0,c+h)))"; }
 
 battery() {   # $1 trained
     local tr=$1
@@ -132,14 +144,28 @@ battery() {   # $1 trained
         local f=$OUT/probe_${LB}_${tr}.txt
         probe "$f" "$OPP" "$DK" "$EVAL_G" $((900000 + tr))
         local wr=$(field $f win_rate)
-        line="$line|$LB=${wr:-NA}+-$(band $EVAL_G ${wr:-0})"
+        line="$line|$LB=${wr:-NA} $(band $EVAL_G ${wr:-0})"
     done
     local bo=$(field $OUT/probe_D0_${tr}.txt blockOpportunities)
     local bd=$(field $OUT/probe_D0_${tr}.txt blocksDeclared)
     local bc=$(field $OUT/probe_D0_${tr}.txt blockCombats)
     local bopt=$(field $OUT/probe_D0_${tr}.txt blockOptimal)
     local bgap=$(field $OUT/probe_D0_${tr}.txt blockScoreGap)
-    line="$line|blocks=${bd:-0}/${bo:-0}|BLOCKOPT=${bopt:-0}/${bc:-0}|gap=${bgap:-0}|turns=$(field $OUT/probe_D0_${tr}.txt turns_per_ep)"
+    # ATTACK side. attacks/attackOpportunities is the rate the joint
+    # attack decision exists to move; ATKOPT is measured against a
+    # reference that is one combat deep and cannot see that an attacker
+    # cannot block next turn, so it over-credits attacking - read it with
+    # the attack rate beside it, never alone.
+    local ad=$(field $OUT/probe_D0_${tr}.txt attacksDeclared)
+    local ao=$(field $OUT/probe_D0_${tr}.txt attackOpportunities)
+    local ac=$(field $OUT/probe_D0_${tr}.txt attackCombats)
+    local aopt=$(field $OUT/probe_D0_${tr}.txt attackOptimal)
+    local aoptca=$(field $OUT/probe_D0_${tr}.txt attackOptimalCA)
+    local aund=$(field $OUT/probe_D0_${tr}.txt attackUnder)
+    local aov=$(field $OUT/probe_D0_${tr}.txt attackOver)
+    line="$line|blocks=${bd:-0}/${bo:-0}|BLOCKOPT=${bopt:-0}/${bc:-0}|gap=${bgap:-0}"
+    line="$line|attacks=${ad:-0}/${ao:-0}|ATKOPT=${aopt:-0}/${ac:-0}|ATKOPTCA=${aoptca:-0}/${ac:-0}|under_over=${aund:-0}/${aov:-0}"
+    line="$line|turns=$(field $OUT/probe_D0_${tr}.txt turns_per_ep)"
     echo "$line"
     cp $CKPT $OUT/ck_${tr}.pt
     stop_server
@@ -180,6 +206,6 @@ stop_server
 start_server
 probe "$OUT/probe_CP7_final.txt" cp7 "$BASE" "$CP7_G" 950000
 wr=$(field $OUT/probe_CP7_final.txt win_rate)
-echo "R0|$BASE|s$SEED|FINAL|CP7=${wr:-NA}+-$(band $CP7_G ${wr:-0})|games=$CP7_G"
+echo "R0|$BASE|s$SEED|FINAL|CP7=${wr:-NA} $(band $CP7_G ${wr:-0})|games=$CP7_G"
 stop_server
 echo "R0_DONE|$BASE|s$SEED|trained=$trained|out=$OUT"

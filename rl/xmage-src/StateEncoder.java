@@ -35,6 +35,13 @@ public final class StateEncoder {
      *       over-piling and provably cannot fix under-committing - a
      *       blocker cannot condition on a decision not yet made - so the
      *       decomposition itself has to go.
+     *   v5  v4 plus the SAME move on the attack side: one joint decision
+     *       per combat over attack SUBSETS, each described by its value
+     *       under a best-replying defender (see forAttackSet).
+     *       selectAttackers carried the original per-creature bug
+     *       untouched through v1-v4 - declaring an attacker taps nothing
+     *       encodeState reads and changes no life total, so creature 2's
+     *       observation was byte-identical to creature 1's.
      *
      * Deliberately NOT a compile-time constant. javac inlines
      * `static final int X = 32` into every caller, so the previous
@@ -298,6 +305,49 @@ public final class StateEncoder {
         c[11] = o.defenderDies ? 1f : 0f;
         c[12] = blockersUsed / 6f;
         c[13] = (myLife - o.damageTaken) / 20f;
+        return c;
+    }
+
+    /**
+     * A COMPLETE attack subset, described by what the defender's best
+     * reply does to it. The attack-side twin of forAssignment, and the
+     * same afterstate argument applies: the policy never sees which
+     * cards are in the subset, only its consequences.
+     *
+     * WHAT IS HERE THAT forAssignment DOES NOT NEED. A block assignment
+     * has no cost outside the combat it resolves; an attack does, because
+     * an attacking creature is tapped through the opponent's whole next
+     * turn. So c[14..18] carry what is LEFT AT HOME and what swings back
+     * at it. Nothing in the terminal reward points at those channels
+     * specifically - they are facts about the afterstate, offered
+     * because the alternative is that the cost of attacking is invisible
+     * in the candidate the way blocker count is invisible in c[12].
+     *
+     * Reuses the T_ATTACK type slot and slots 6..18. Those carry
+     * mana value / power / toughness / block context for single-card
+     * candidates and are meaningless for a subset; a subset candidate
+     * never shares a candidate list with a card candidate. CAND_DIM is
+     * unchanged, so v4 checkpoints still LOAD - but the MEANING of a
+     * T_ATTACK candidate has changed, so a v4-trained net driven through
+     * this path is out of distribution and its answers carry no claim.
+     */
+    public static float[] forAttackSet(CombatMath.AttackOption op,
+                                       int myLife, int oppLife) {
+        float[] c = blank(T_ATTACK);
+        CombatMath.Outcome o = op.outcome;
+        c[6] = o.damageTaken / 20f;              // damage DEALT
+        c[7] = o.blockersLost / 6f;              // THEIR creatures killed
+        c[8] = o.blockerValueLost / 20f;
+        c[9] = o.attackersKilled / 6f;           // MY creatures lost
+        c[10] = o.attackerValueKilled / 20f;
+        c[11] = o.defenderDies ? 1f : 0f;        // lethal this combat
+        c[12] = op.attackersUsed / 6f;
+        c[13] = (oppLife - o.damageTaken) / 20f;
+        c[14] = op.retainedBodies / 6f;          // left untapped to block
+        c[15] = op.retainedPower / 20f;
+        c[16] = op.retainedToughness / 20f;
+        c[17] = op.crackBack / 20f;              // unabsorbed swing back
+        c[18] = (myLife - op.crackBack) / 20f;   // my life after it
         return c;
     }
 

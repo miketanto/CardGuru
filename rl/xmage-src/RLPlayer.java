@@ -88,6 +88,56 @@ public class RLPlayer extends ComputerPlayer {
      *  in the run. Fatal errors are a different KIND of mistake and get
      *  their own counter. */
     public long blockFatal = 0;
+    /** -Drl.attackAudit: the attack-side twin of the block audit. There
+     *  was NO instrument for attacks at all, so "the agent holds
+     *  everything for twelve turns at 20-20" was an anecdote read off one
+     *  replay rather than a number. Same discipline as auditBlocks: read
+     *  AFTER the policy commits, positions with nothing to decide
+     *  excluded, truncation counted separately.
+     *
+     *  READ THE BIAS BEFORE READING THE NUMBERS. The reference is
+     *  CombatMath.bestAttack, which is one combat deep and prices at ZERO
+     *  the fact that an attacking creature cannot block on the opponent's
+     *  next turn. It therefore over-credits attacking, which is the same
+     *  direction as any fix that makes the agent attack more. The CA
+     *  counters below re-score the same decisions against a reference
+     *  that charges for the swing back; where the two disagree, the
+     *  disagreement is the result and neither number settles it. */
+    public long attackCombats = 0;
+    public long attackCombatsWithChoice = 0;
+    public long attackOptimal = 0;
+    public long attackOptimalWithChoice = 0;
+    public long attackScoreGap = 0;
+    /** Reference finds lethal and the policy does not. Its own category
+     *  for the same reason blockFatal is: attackerScore's lethal sentinel
+     *  is Integer.MAX_VALUE/2 and subtracting it into a score gap would
+     *  swamp every material misplay in the run. */
+    public long attackLethalMissed = 0;
+    /** Direction of the error, so "attack-optimality went up" cannot hide
+     *  an agent that has simply started attacking with everything: UNDER
+     *  = sent fewer creatures than the reference, OVER = sent more. */
+    public long attackUnder = 0;
+    public long attackOver = 0;
+    /** Subset enumeration hit rl.attackCap, and any inner defender reply
+     *  hit rl.attackReplyCap. Different truncations, counted apart. */
+    public long attackTruncated = 0;
+    public long attackReplyTruncated = 0;
+    /** Sensitivity arm: the same decisions scored against a reference
+     *  that subtracts the crack-back (CombatMath.attackerScoreCA). */
+    public long attackOptimalCA = 0;
+    public long attackScoreGapCA = 0;
+    /** Attacks declared / creatures that could legally have attacked.
+     *  The RATE the whole task is about - the v4 replay holds 12 turns
+     *  running - and the number that catches the fix overshooting. */
+    public long attacksDeclared = 0;
+    public long attackOpportunities = 0;
+    /** Cost of the minimax search, so "measure the cost per combat" is a
+     *  measurement. Nanos are the policy's search only; the audit runs a
+     *  second one and is counted separately because it is an instrument,
+     *  not part of playing. */
+    public long attackSearchNanos = 0;
+    public long attackSearchNodes = 0;
+    public long attackAuditNanos = 0;
     /** per-episode consult budget: a runaway episode (random policy can
      * mana-loop) degrades to always-pass instead of hanging the driver */
     public long consultBudget = Long.getLong("rl.consultBudget", 20000L);
@@ -135,6 +185,12 @@ public class RLPlayer extends ComputerPlayer {
         blocksDeclared = blockOpportunities = 0;
         blockCombats = blockCombatsOptimal = blockScoreGap = blockTruncated = 0;
         blockFatal = 0;
+        attackCombats = attackCombatsWithChoice = attackOptimal = 0;
+        attackOptimalWithChoice = attackScoreGap = attackLethalMissed = 0;
+        attackUnder = attackOver = attackTruncated = attackReplyTruncated = 0;
+        attackOptimalCA = attackScoreGapCA = 0;
+        attacksDeclared = attackOpportunities = 0;
+        attackSearchNanos = attackSearchNodes = attackAuditNanos = 0;
     }
 
     private UUID opponentId(Game game) {
@@ -521,18 +577,196 @@ public class RLPlayer extends ComputerPlayer {
         if (!avail.isEmpty()) {
             log(game, boardLine(game, "my combat"));
         }
+        // v5: ONE joint decision over attack subsets. Below v5 the
+        // original per-creature loop runs UNCHANGED, so a v4 checkpoint
+        // measured through this method plays exactly the games it always
+        // played and the audit reads the pre-fix policy.
+        if (StateEncoder.ENCODER_V >= 5) {
+            // Card identity must not decide who attacks first, the same
+            // argument selectBlockers makes: rename every card in W0Twin
+            // and a name sort changes the enumeration. Body order.
+            avail.sort(Comparator
+                    .comparingInt((Permanent p) -> p.getToughness().getValue())
+                    .thenComparingInt(p -> p.getPower().getValue())
+                    .thenComparing(MageObject::getName));
+            jointAttacks(game, defender, avail);
+            auditAttacks(game, defender, avail);
+            return;
+        }
         for (Permanent creature : avail) {
             float[] state = StateEncoder.encodeState(game, playerId, defender);
             float[][] cands = {
                 StateEncoder.blank(StateEncoder.T_PASS),
                 StateEncoder.forCombat(StateEncoder.T_ATTACK, creature, game)};
             consults++;
+            attackOpportunities++;
             if (policy.choose(state, cands, phi(game)) == 1) {
                 this.declareAttacker(creature.getId(), defender, game, false);
                 actions++;
+                attacksDeclared++;
                 log(game, "  ATTACK  " + pt(creature, game));
             } else {
                 log(game, "  hold    " + pt(creature, game));
+            }
+        }
+        auditAttacks(game, defender, avail);
+    }
+
+    /** The defender's potential blockers: their untapped creatures.
+     *  Vanilla scope, exactly as CombatMath documents - no evasion, so
+     *  "untapped creature" and "can block this" are the same set. */
+    private List<Permanent> theirBlockers(Game game, UUID defender) {
+        List<Permanent> out = new ArrayList<>();
+        if (defender == null) {
+            return out;
+        }
+        for (Permanent p : game.getBattlefield().getAllActivePermanents(defender)) {
+            if (p.isCreature(game) && !p.isTapped()) {
+                out.add(p);
+            }
+        }
+        out.sort(Comparator
+                .comparingInt((Permanent p) -> p.getToughness().getValue())
+                .thenComparingInt(p -> p.getPower().getValue())
+                .thenComparing(MageObject::getName));
+        return out;
+    }
+
+    /** Creatures the choice actually ranges over. Above rl.attackMaxCreatures
+     *  the 2^A enumeration is unaffordable, so the choice covers the
+     *  BIGGEST bodies and the remainder is forced to hold. That
+     *  truncation is hold-biased - the same direction as the bug this
+     *  task exists to fix - so it is counted, and the counter is reported
+     *  rather than assumed to be zero. */
+    private List<Permanent> attackChoiceSet(List<Permanent> avail) {
+        int maxA = Integer.getInteger("rl.attackMaxCreatures", 12);
+        if (avail.size() <= maxA) {
+            return avail;
+        }
+        countFallback("attackCreaturesCapped");
+        List<Permanent> big = new ArrayList<>(avail);
+        big.sort(Comparator.comparingInt(
+                (Permanent p) -> -(p.getPower().getValue()
+                        + p.getToughness().getValue())));
+        return new ArrayList<>(big.subList(0, maxA));
+    }
+
+    /**
+     * Enumerate attack subsets, value each by what a BEST-REPLYING
+     * DEFENDER does to it, and let the policy pick one.
+     *
+     * The shape is jointBlocks', and the difference is the whole reason
+     * this took a design decision rather than a copy: a block assignment
+     * resolves deterministically, an attack subset does not resolve at
+     * all until the defender answers. The answer modelled here is minimax
+     * one ply (CombatMath.bestAttack); its cost and its three known
+     * limitations are documented there, and the cost is measured into
+     * attackSearchNanos rather than assumed affordable.
+     */
+    private void jointAttacks(Game game, UUID defender, List<Permanent> avail) {
+        if (avail.isEmpty()) {
+            return;
+        }
+        long t0 = System.nanoTime();
+        List<Permanent> pick = attackChoiceSet(avail);
+        List<Permanent> theirs = theirBlockers(game, defender);
+        Player op = defender == null ? null : game.getPlayer(defender);
+        int oppLife = op == null ? 20 : op.getLife();
+        List<CombatMath.Body> mb = CombatMath.bodies(pick);
+        List<CombatMath.Body> tb = CombatMath.bodies(theirs);
+        CombatMath.BestAttack search = CombatMath.bestAttack(
+                mb, tb, getLife(), oppLife,
+                Long.getLong("rl.attackCap", 4096L),
+                Long.getLong("rl.attackReplyCap", 200000L));
+        attackSearchNodes += search.considered;
+        if (!search.exhaustive) {
+            countFallback("attackCapped");
+        }
+        if (!search.replyExhaustive) {
+            countFallback("attackReplyCapped");
+        }
+
+        // PARETO FILTER, four objectives. Blocks use three; attacks need
+        // RETAINED POWER as a fourth, and leaving it out would be a
+        // policy decision disguised as a filter: under a one-combat
+        // outcome, holding a creature back is dominated by attacking with
+        // it almost always, so a three-objective filter would delete the
+        // option to hold from the candidate list entirely and the agent
+        // would alpha-strike by construction. The filter must not decide
+        // the question the fix is supposed to let the policy decide.
+        List<CombatMath.AttackOption> kept = new ArrayList<>();
+        java.util.Set<String> outcomes = new java.util.LinkedHashSet<>();
+        int maxCands = Integer.getInteger("rl.attackMaxCands", 64);
+        for (CombatMath.AttackOption o1 : search.options) {
+            boolean dominated = false;
+            for (CombatMath.AttackOption o2 : search.options) {
+                if (o1 == o2) {
+                    continue;
+                }
+                if (o2.outcome.damageTaken >= o1.outcome.damageTaken
+                        && o2.outcome.blockerValueLost >= o1.outcome.blockerValueLost
+                        && o2.outcome.attackerValueKilled <= o1.outcome.attackerValueKilled
+                        && o2.retainedPower >= o1.retainedPower
+                        && (o2.outcome.damageTaken > o1.outcome.damageTaken
+                            || o2.outcome.blockerValueLost > o1.outcome.blockerValueLost
+                            || o2.outcome.attackerValueKilled < o1.outcome.attackerValueKilled
+                            || o2.retainedPower > o1.retainedPower)) {
+                    dominated = true;
+                    break;
+                }
+            }
+            if (dominated) {
+                continue;
+            }
+            String key = o1.outcome.damageTaken + "/" + o1.outcome.blockersLost
+                    + "/" + o1.outcome.blockerValueLost + "/"
+                    + o1.outcome.attackersKilled + "/"
+                    + o1.outcome.attackerValueKilled + "/" + o1.attackersUsed
+                    + "/" + o1.retainedPower + "/" + o1.crackBack;
+            if (!outcomes.add(key)) {
+                continue;
+            }
+            kept.add(o1);
+            if (kept.size() >= maxCands) {
+                countFallback("attackCandsCapped");
+                break;
+            }
+        }
+        if (kept.isEmpty()) {                 // cannot happen; not a crash
+            kept.add(search.options.get(0));
+        }
+        float[][] cands = new float[kept.size()][];
+        for (int i = 0; i < kept.size(); i++) {
+            cands[i] = StateEncoder.forAttackSet(kept.get(i), getLife(), oppLife);
+        }
+        attackSearchNanos += System.nanoTime() - t0;
+        consults++;
+        attackOpportunities += avail.size();
+        log(game, String.format("  [atkjoint] %d avail, %d defenders, "
+                + "%d distinct subsets, %d after Pareto, %.1fms",
+                avail.size(), theirs.size(), search.options.size(),
+                kept.size(), (System.nanoTime() - t0) / 1e6));
+        int idx = policy.choose(
+                StateEncoder.encodeState(game, playerId, defender),
+                cands, phi(game));
+        if (idx < 0 || idx >= kept.size()) {
+            return;
+        }
+        CombatMath.AttackOption chosen = kept.get(idx);
+        for (int i = 0; i < pick.size(); i++) {
+            Permanent c = pick.get(i);
+            if (!chosen.attack[i]) {
+                log(game, "  hold    " + pt(c, game));
+                continue;
+            }
+            this.declareAttacker(c.getId(), defender, game, false);
+            actions++;
+            attacksDeclared++;
+            log(game, "  ATTACK  " + pt(c, game));
+        }
+        for (Permanent c : avail) {
+            if (!pick.contains(c)) {
+                log(game, "  hold    " + pt(c, game) + "  (past cap)");
             }
         }
     }
@@ -883,6 +1117,142 @@ public class RLPlayer extends ComputerPlayer {
         } else if (!gotDies && !bestDies) {
             blockScoreGap += (best.score - gotScore);
         }
+    }
+
+    /**
+     * Score the attack the policy just declared against the best subset
+     * CombatMath can find for the same position. Read AFTER the policy
+     * has committed, so it never influences the decision.
+     *
+     * THIS INSTRUMENT DID NOT EXIST. auditBlocks has given
+     * block-optimality since the encoder A/B; there was no equivalent for
+     * attacks, so the only evidence that attacking was broken was a human
+     * reading twelve consecutive `hold` lines out of one replay. Nothing
+     * could say whether an attack was good, which means nothing could
+     * have said whether a fix worked.
+     *
+     * WHAT IS EXCLUDED AND WHAT IS SPLIT OUT.
+     *   - avail.isEmpty(): no creature could attack, so there was no
+     *     decision. Counting those is the mistake that once inflated an
+     *     untrained net to 98.4% block-optimality by scoring positions it
+     *     had no creatures in.
+     *   - attackCombatsWithChoice: combats where more than one distinct
+     *     subset outcome existed. Where only one does, a MATCH belongs to
+     *     the position, not the policy - the same caveat that makes
+     *     blockOptimal/blockCombats an upper bound (12 outcomes collapsed
+     *     to 1 at t22 of the v4 replay).
+     *   - truncation is two counters, not one: the subset enumeration and
+     *     the inner defender reply are different searches and either can
+     *     be cut.
+     *   - UNDER/OVER: the direction of the error. Without it, an agent
+     *     that alpha-strikes every turn would post a high optimality
+     *     against a reference that cannot see the cost of tapping out.
+     */
+    private void auditAttacks(Game game, UUID defender, List<Permanent> avail) {
+        if (!Boolean.getBoolean("rl.attackAudit") || avail.isEmpty()) {
+            return;
+        }
+        long t0 = System.nanoTime();
+        List<Permanent> theirs = theirBlockers(game, defender);
+        Player op = defender == null ? null : game.getPlayer(defender);
+        int oppLife = op == null ? 20 : op.getLife();
+        List<CombatMath.Body> mb = CombatMath.bodies(avail);
+        List<CombatMath.Body> tb = CombatMath.bodies(theirs);
+
+        boolean[] actual = new boolean[avail.size()];
+        for (CombatGroup g : game.getCombat().getGroups()) {
+            for (UUID atkId : g.getAttackers()) {
+                for (int i = 0; i < avail.size(); i++) {
+                    if (avail.get(i).getId().equals(atkId)) {
+                        actual[i] = true;
+                    }
+                }
+            }
+        }
+        long replyCap = Long.getLong("rl.attackReplyCap", 200000L);
+        CombatMath.AttackOption got = CombatMath.evaluate(
+                mb, actual, tb, getLife(), oppLife, replyCap);
+        CombatMath.BestAttack ref = CombatMath.bestAttack(
+                mb, tb, getLife(), oppLife,
+                Long.getLong("rl.attackCap", 4096L), replyCap);
+        CombatMath.AttackOption best = ref.best;
+        CombatMath.AttackOption bestCA = ref.bestCA;
+
+        attackCombats++;
+        // "Was there anything to decide" has to be counted over distinct
+        // OUTCOMES, not distinct subsets: two subsets that resolve
+        // identically are one decision. This is the attack-side version
+        // of the t22 caveat, where the Pareto filter left the v4 policy
+        // one block candidate and the MATCH belonged to the filter.
+        java.util.Set<String> distinct = new java.util.HashSet<>();
+        for (CombatMath.AttackOption o : ref.options) {
+            distinct.add(o.outcome.damageTaken + "/" + o.outcome.blockersLost
+                    + "/" + o.outcome.blockerValueLost + "/"
+                    + o.outcome.attackersKilled + "/"
+                    + o.outcome.attackerValueKilled + "/" + o.attackersUsed
+                    + "/" + o.retainedPower + "/" + o.crackBack);
+        }
+        boolean hasChoice = distinct.size() > 1;
+        if (hasChoice) {
+            attackCombatsWithChoice++;
+        }
+        if (!ref.exhaustive) {
+            attackTruncated++;
+        }
+        if (!ref.replyExhaustive || !got.replyExhaustive) {
+            attackReplyTruncated++;
+        }
+
+        String verdict;
+        if (best.outcome.defenderDies && !got.outcome.defenderDies) {
+            attackLethalMissed++;             // its own category, never a gap
+            verdict = "  MISSED LETHAL";
+        } else if (got.score >= best.score) {
+            attackOptimal++;
+            if (hasChoice) {
+                attackOptimalWithChoice++;
+            }
+            verdict = "  MATCH";
+        } else {
+            // both scores are inside the normal band here: got < best and
+            // best is not the lethal sentinel, so neither is a sentinel
+            attackScoreGap += (best.score - got.score);
+            verdict = "  GAP " + (best.score - got.score);
+            if (got.attackersUsed < best.attackersUsed) {
+                attackUnder++;
+                verdict += " UNDER";
+            } else if (got.attackersUsed > best.attackersUsed) {
+                attackOver++;
+                verdict += " OVER";
+            }
+        }
+        // The sensitivity arm, scored on the SAME decision. Sentinels are
+        // filtered out of the gap on both sides: a lethal attack and a
+        // lethal crack-back are MAX/2 and MIN/2, and subtracting either
+        // into a running total is how blockScoreGap once read 1073743876.
+        if (got.scoreCA >= bestCA.scoreCA) {
+            attackOptimalCA++;
+        } else if (Math.abs((long) bestCA.scoreCA) < Integer.MAX_VALUE / 4
+                && Math.abs((long) got.scoreCA) < Integer.MAX_VALUE / 4) {
+            attackScoreGapCA += (bestCA.scoreCA - got.scoreCA);
+        }
+        attackAuditNanos += System.nanoTime() - t0;
+
+        log(game, "  [atkaudit] policy " + CombatMath.subsetStr(mb, actual)
+                + " (" + CombatMath.scoreStr(got.score) + ", dealt "
+                + got.outcome.damageTaken + ", lost " + got.outcome.attackersKilled
+                + ", killed " + got.outcome.blockersLost + ", back "
+                + got.crackBack + ")"
+                + " | ref " + CombatMath.subsetStr(mb, best.attack)
+                + " (" + CombatMath.scoreStr(best.score) + ")"
+                + verdict
+                + (bestCA == best ? "" : "  | refCA "
+                   + CombatMath.subsetStr(mb, bestCA.attack) + " ("
+                   + CombatMath.scoreStr(bestCA.scoreCA) + " vs policy "
+                   + CombatMath.scoreStr(got.scoreCA) + ")")
+                + (ref.exhaustive ? "" : "  (subsets truncated)")
+                + (ref.replyExhaustive ? "" : "  (replies truncated)")
+                + (hasChoice ? "" : "  (no choice: 1 distinct outcome)"));
     }
 
     // ------------------------------------ counted heuristic fallbacks

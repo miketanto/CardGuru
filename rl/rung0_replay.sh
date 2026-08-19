@@ -14,8 +14,11 @@
 #
 # rl.debug puts one line per decision into the RLGAME block on stdout;
 # rl.blockAudit adds the [audit] line comparing what the policy did to
-# CombatMath's best assignment for the same position. The audit is read
-# AFTER the policy commits, so it annotates the replay without changing it.
+# CombatMath's best assignment for the same position, and rl.attackAudit
+# adds the [atkaudit] line doing the same for the attack. Both are read
+# AFTER the policy commits, so they annotate the replay without changing
+# it. On v5 an [atkjoint] line also reports the candidate count and the
+# search cost per combat.
 set -u
 CKPT=${1:?usage: rung0_replay.sh <ckpt> <encV> <deck> <opp> <seed> <out>}
 ENC=${2:-4}
@@ -29,6 +32,7 @@ PORT=${REPLAY_PORT:-7899}
 if [ "$ENC" = "1" ]; then SDIM=24; CDIM=91; else SDIM=32; CDIM=94; fi
 SRVEXTRA=""
 [ "$ENC" -ge 4 ] 2>/dev/null && SRVEXTRA="--max-k 64"
+[ "$ENC" -ge 5 ] 2>/dev/null && SRVEXTRA="--max-k 96"
 
 cp $RL/$DECK.dck /home/user/mage/Mage.Tests/
 
@@ -64,6 +68,7 @@ RL_PERSIST=1 RL_AUTOSTART=1 timeout 900 bash $RL/run_driver.sh \
     -Drl.opponent=$OPP -Drl.searchPlies=1 -Drl.searchBreadth=8 \
     -Drl.cardFeatures=$RL/e2_features.tsv -Drl.noYields=true \
     -Drl.consultBudget=4000 -Drl.encoderV=$ENC -Drl.blockAudit=true \
+    -Drl.attackAudit=true \
     -Drl.debug=true -Drl.deck=$DECK.dck -Drl.oppDeck=$DECK.dck \
     -Drl.stopTurn=60 -Drl.mode=eval -Drl.seed=$SEED -Drl.report=0 \
     > /tmp/replay_driver.log 2>&1
