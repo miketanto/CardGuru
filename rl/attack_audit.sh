@@ -40,6 +40,11 @@ SRVEXTRA=""
 
 cp $RL/$DECK.dck /home/user/mage/Mage.Tests/
 
+# ATTACK_AUDIT=false turns the instrument off while leaving everything
+# else identical. That is the only way to measure what the POLICY's own
+# minimax search costs on a v5 arm: with the audit on, the audit's search
+# is 76% of wall clock and swamps it.
+#
 # AUDIT_EXTRA passes further -D flags through, e.g.
 #   AUDIT_EXTRA=-Drl.legacyTieBreak=true
 # to read the same games under the pre-fix combat damage tie-break.
@@ -69,7 +74,7 @@ RL_PERSIST=1 RL_AUTOSTART=1 timeout 7200 bash $RL/run_driver.sh \
     -Drl.opponent=$OPP -Drl.searchPlies=1 -Drl.searchBreadth=8 \
     -Drl.cardFeatures=$RL/e2_features.tsv -Drl.noYields=true \
     -Drl.consultBudget=4000 -Drl.encoderV=$ENC \
-    -Drl.blockAudit=true -Drl.attackAudit=true ${AUDIT_EXTRA:-} \
+    -Drl.blockAudit=true -Drl.attackAudit=${ATTACK_AUDIT:-true} ${AUDIT_EXTRA:-} \
     -Drl.deck=$DECK.dck -Drl.oppDeck=$DECK.dck -Drl.stopTurn=60 \
     -Drl.mode=eval -Drl.seed=$SEED -Drl.report=0 -Drl.out=$OUT \
     > /tmp/audit_driver.log 2>&1
