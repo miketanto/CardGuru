@@ -319,6 +319,8 @@ public class EpisodeRunner {
             fallbacks.merge("attackScoreGapCA", (int) rlAgent.attackScoreGapCA, Integer::sum);
             fallbacks.merge("attacksDeclared", (int) rlAgent.attacksDeclared, Integer::sum);
             fallbacks.merge("attackOpportunities", (int) rlAgent.attackOpportunities, Integer::sum);
+            fallbacks.merge("attackRefDeclared", (int) rlAgent.attackRefDeclared, Integer::sum);
+            fallbacks.merge("attackRefDeclaredCA", (int) rlAgent.attackRefDeclaredCA, Integer::sum);
             // cost, in milliseconds, so "measure the cost per combat" is a
             // measurement and not an assurance. Policy search and audit
             // search are separate: the audit is an instrument and would

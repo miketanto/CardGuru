@@ -63,6 +63,12 @@ def main():
     print()
     print(rate("attack rate", declared, opps,
                "creatures sent / could have attacked"))
+    ref = int(f("attackRefDeclared"))
+    refca = int(f("attackRefDeclaredCA"))
+    if ref or refca:
+        print(rate("  reference would send", ref, opps,
+                   "same denominator: the size of any over/under shoot"))
+        print(rate("  reference (CA) would send", refca, opps, ""))
     print(rate("attack-optimality", opt, combats,
                "UPPER BOUND: includes no-choice combats"))
     print(rate("  ...where a choice existed", optc, choice,

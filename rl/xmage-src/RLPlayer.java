@@ -126,6 +126,15 @@ public class RLPlayer extends ComputerPlayer {
      *  that subtracts the crack-back (CombatMath.attackerScoreCA). */
     public long attackOptimalCA = 0;
     public long attackScoreGapCA = 0;
+    /** Creatures the REFERENCE would have sent, over the same
+     *  denominator as attacksDeclared. Without this, UNDER/OVER says the
+     *  policy attacks more than the reference wants but not BY HOW MUCH,
+     *  and "OVER 208" is unreadable next to an attack rate of .674 - the
+     *  overshoot could be one creature per combat or five. The CA variant
+     *  is carried too, since the two references disagree about exactly
+     *  the quantity in question. */
+    public long attackRefDeclared = 0;
+    public long attackRefDeclaredCA = 0;
     /** Attacks declared / creatures that could legally have attacked.
      *  The RATE the whole task is about - the v4 replay holds 12 turns
      *  running - and the number that catches the fix overshooting. */
@@ -190,6 +199,7 @@ public class RLPlayer extends ComputerPlayer {
         attackUnder = attackOver = attackTruncated = attackReplyTruncated = 0;
         attackOptimalCA = attackScoreGapCA = 0;
         attacksDeclared = attackOpportunities = 0;
+        attackRefDeclared = attackRefDeclaredCA = 0;
         attackSearchNanos = attackSearchNodes = attackAuditNanos = 0;
     }
 
@@ -1188,6 +1198,8 @@ public class RLPlayer extends ComputerPlayer {
         CombatMath.AttackOption bestCA = ref.bestCA;
 
         attackCombats++;
+        attackRefDeclared += best.attackersUsed;
+        attackRefDeclaredCA += bestCA.attackersUsed;
         // "Was there anything to decide" has to be counted over distinct
         // OUTCOMES, not distinct subsets: two subsets that resolve
         // identically are one decision. This is the attack-side version
