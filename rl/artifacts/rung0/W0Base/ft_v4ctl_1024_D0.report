@@ -1,0 +1,25 @@
+=== attack audit — v4 vs heuristic on W0Base
+  100 episodes, win_rate 0.810, 28.4 turns/ep
+
+  attack rate                 1073/2817   0.381 [0.363,0.399]   creatures sent / could have attacked
+    reference would send       883/2817   0.313 [0.297,0.331]   same denominator: the size of any over/under shoot
+    reference (CA) would send   734/2817   0.261 [0.245,0.277]
+  attack-optimality            704/1070   0.658 [0.629,0.686]   UPPER BOUND: includes no-choice combats
+    ...where a choice existed   704/1070   0.658 [0.629,0.686]   the honest one
+  attack-optimality (CA)       707/1070   0.661 [0.632,0.688]   reference charges for the crack-back
+
+  score gap (myopic)         2802 over 1070 combats
+  score gap (CA)             3114
+  missed lethal              2   (own category, never a gap)
+  errors UNDER / OVER        178 / 180   (sent fewer / more than ref)
+  truncated subsets/replies  0 / 0
+  combats with no choice     0   (MATCH there is the position's)
+
+  cost: policy search 0 ms total, 0.00 ms/combat; audit 42706 ms (instrument, not play)
+  nodes: 0k resolve() calls, 0 per combat
+
+  READ WITH: the reference is one combat deep and prices at zero
+  the fact that an attacker cannot block next turn, so it
+  over-credits attacking. A rise in attack-optimality alongside
+  a rise in attack rate is partly tautological; the CA row and
+  the UNDER/OVER split are what separate them.

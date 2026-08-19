@@ -6,11 +6,16 @@ one independent decision per blocker with no sight of the others, it was
 fixed by replacing that with one decision per combat over complete
 assignments, and `selectAttackers` still carried the original bug.
 
-**What is settled here is the INSTRUMENT and the MECHANISM. Nothing here
-is a policy result.** There is no trained v5 net, by decision, so no
-number below says the fix makes the agent play better. What the numbers
-do say is what the pre-fix agent actually does on attacks — which nobody
-could measure before, because the measurement did not exist.
+**Headline: the fix works mechanically, changes behaviour enormously,
+and does not make the agent play measurably better.** Against a
+budget-matched v4 control fine-tuned from the same checkpoint, joint
+attacks move the attack rate by z = +18.7, leave attack-optimality
+statistically unchanged (z = -0.4), cost block-optimality (z = -3.8) and
+leave the win rate exactly where the control puts it. What v5 does fix,
+and the control does not, is recognising lethal on board. §6b.
+
+Sections 1-5 are the instrument and the pre-fix baseline; §6b is the
+trained A/B; §6 records the untrained v5 numbers and is superseded by it.
 
 ---
 
@@ -65,9 +70,17 @@ truncated subsets/replies  1 / 0
 
 **The agent sends 30% of the creatures that could legally attack, and
 matches the reference on 62% of combats.** UNDER outruns OVER 277:197 —
-it under-attacks more often than it over-attacks, and it does so against
-a reference that is structurally biased TOWARD attacking (§7). Three
-errors sent the right NUMBER of creatures and the wrong ones.
+in more combats it sends FEWER creatures than the reference than more.
+
+**But per-combat error direction and aggregate volume disagree, and it
+matters.** The reference would have sent 1145/4485 = .255 [.243,.268]
+against the policy's .304, so in total creature-volume the pre-fix agent
+already OVER-attacks by 4.8 points while under-attacking in more
+individual combats. It misses small and often on the under side and
+overshoots big on the over side. Any statement of the form "this agent
+under-attacks" has to say which of the two measurements it means; the
+counters now carry both. Three errors sent the right NUMBER of creatures
+and the wrong ones.
 
 ### Attacks always have a choice, and blocks do not
 
@@ -305,6 +318,102 @@ already establishes without a net at all.
 
 ---
 
+## 6b. Training v5: a large behaviour change and no measurable gain
+
+Two arms, both fine-tuned from `v4_ck512` for 512 episodes (512 -> 1024),
+same seed, same training-game seeds, same eval seed (901024), same
+battery, CP7 skipped symmetrically. **The only difference is the encoder
+arm**, so this separates "v5 did it" from "512 more episodes did it" —
+and that distinction turned out to carry the headline.
+
+```
+                     v5                     v4 control                z
+attack rate          .674 [.650,.696]       .381 [.363,.399]      +18.72
+attack-optimality    .649 [.615,.681]       .658 [.629,.686]       -0.41
+attack-opt (CA)      .688 [.655,.720]       .661 [.632,.688]       +1.25
+block-optimality     .946 [.926,.962]       .983 [.971,.990]       -3.78
+D0 win rate          .810 [.722,.875]       .810 [.722,.875]        0.00
+UNDER / OVER         63 / 208               178 / 180
+turns per episode    22.5                   28.4
+```
+
+**The win-rate drop is not v5's.** `v4_ck512` scored .940 and both arms
+came back at .810 — 81/100, identically. Fine-tuning 512 further
+episodes cost that, whatever the encoder. Without the control this would
+have been reported as a v5 regression, and it is not one. (The encoder
+A/B already recorded the same shape: v2 seed 0's block-optimality fell
+82.7% -> 65.0% between 768 and 1024.)
+
+**Joint attacks did not improve attack quality.** Attack-optimality is
+marginally BELOW the control at z = -0.41, and the CA reference gives v5
++1.25 — neither is a finding. On the metric built specifically to answer
+"did attacking get better", one decision per combat over subsets is
+indistinguishable from thirty independent yes/nos.
+
+**It cost block-optimality**, .983 -> .946 at z = -3.78, the only
+significant aggregate difference and a regression. v5's shorter, more
+aggressive games leave it different blocking positions, so this is not
+cleanly "joint attacks made blocking worse"; the arms sampled different
+position populations (786 vs 1070 attack combats, 22.5 vs 28.4 turns).
+
+### The overshoot, sized
+
+`attackRefDeclared` counts what the reference would have sent over the
+same denominator, so the over/under shoot is measured WITHIN the same
+positions — which the raw rate is not, since the arms reach different
+boards:
+
+| checkpoint | policy rate | reference rate | overshoot |
+|---|---|---|---|
+| `v4_ck512` (pre-fix) | .304 [.290,.317] | .255 [.243,.268] | +.048 |
+| v4 control @1024 | .381 [.363,.399] | .313 [.297,.331] | +.067 |
+| **v5 @1024** | **.674 [.650,.696]** | .399 [.376,.424] | **+.274** |
+
+All three over-send; v5 by four times the control. The CA reference wants
+less still (.346 on v5's positions, .261 on the control's), so correcting
+for the tapped-out blindness makes the overshoot WORSE, not better — the
+one direction the §7 bias could have excused it, and it does not.
+
+### What v5 did fix, and it is specific
+
+Constructed positions, all three checkpoints, in distribution:
+
+| position | `v4_ck512` | v4 control @1024 | v5 @1024 |
+|---|---|---|---|
+| COMMIT — all three = +8, any one = 0 | hold ❌ | hold ❌ | hold ❌ |
+| ALPHA33 — reference says hold | hold ✓ | hold ✓ | hold ✓ |
+| HOLD — attacking strictly bad | hold ✓ | hold ✓ | hold ✓ (filter) |
+| **LETHAL — they are at 4, no blocker** | hold ❌ | hold ❌ | **attacks, exactly lethal ✓** |
+
+**v5 takes the lethal attack and the control, under identical treatment,
+still declines it.** That is attributable to the encoder arm rather than
+to the extra episodes — the one causal statement a single seed supports
+here, because the control is matched on everything else. v5 also picked
+the MINIMAL lethal subset, two creatures for exactly 4, matching the
+reference.
+
+There is a mechanism, and it is the point of the whole exercise:
+`forAttackSet` carries `c[11] = defenderDies`, so "this subset kills
+them" is one feature of one candidate. Under the per-creature
+decomposition that fact is INEXPRESSIBLE — no single creature attacking
+is lethal on its own, so no per-creature candidate can carry the flag.
+The joint candidate is the first encoding in which lethal-on-board is
+visible at all.
+
+The same features plausibly drive the overshoot: the candidate advertises
+damage dealt and material killed, and nothing in the terminal reward
+prices the tempo cost of an empty board. That is a hypothesis, not a
+measurement.
+
+**COMMIT is still failed by all three arms.** The position the joint
+decision was designed for — where no creature has a marginal reason to go
+first and the payoff only appears once all three commit — is not fixed by
+making the decision joint. Being able to express a choice is not the same
+as learning it. That is the single most useful thing this experiment
+says, and it says it about one position on one seed.
+
+---
+
 ## 7. Confounds, named here rather than in chat
 
 **The reference is biased toward attacking.** `attackerScore` is one
@@ -355,14 +464,27 @@ slightly better than they are.
 
 ## 8. What is left
 
-- **Train a v5 arm.** The obvious next step and the one deliberately not
-  taken. It needs a v4 control fine-tuned from the same checkpoint for
-  the same budget, or "v5 is better" is confounded with "512 more
-  episodes". Two seeds if the win rate is going to be quoted at all.
-- **The LETHAL failure is worth chasing on its own.** A policy that
-  declines an unblockable lethal attack has a problem that joint
-  assignment may not touch, since no coordination is required. Whether
-  v5 fixes it is exactly what a trained arm would answer.
+- **A second seed.** Everything in §6b is one seed. The project's own
+  history says this is where claims die: E3 beat E2 by +.175 on seed 0
+  and +.020 on seed 1, and its faeries result reversed outright.
+  `R0_ENCODER_V=5 R0_OUT=... bash rl/rung0_lane.sh W0Base W0Twin 1024 1`
+  against the matching v4 control is the cheapest real follow-up.
+- **Separate the joint decision from the credit-assignment change.** v5
+  moves both — one action per combat instead of A actions sharing one
+  terminal reward — exactly as v4 did for blocks. A third arm with joint
+  candidates but per-creature credit would separate them. Until then
+  "joint attacks do not help" is not separated from "the credit change
+  hurt".
+- **The overshoot is the live problem.** v5 sends .674 where its own
+  reference wants .399, and the CA reference wants .346. Nothing in the
+  terminal reward prices an empty board, and `forAttackSet` advertises
+  damage dealt. A tempo term in the reward, or retained-power shaping, is
+  the obvious thing to try — and it should be tried against the
+  instrument, not against a win rate that 100 games cannot resolve.
+- **COMMIT is unsolved by all three arms.** Being able to EXPRESS the
+  joint choice did not produce it. Whether that is a training-budget
+  problem, an exploration problem, or a feature problem is open, and it
+  is the question the next experiment should pick.
 - **`rl.attackMaxCreatures` truncation is hold-biased.** Above 12
   available attackers the choice covers the biggest 12 and the rest are
   forced to hold — the same direction as the bug. It fired on 1 combat in

@@ -1,0 +1,47 @@
+== MUST DOUBLE BLOCK (3 life, 3/3 attacker, three 2/2s)   [4 distinct outcomes]
+   life 3, attackers Shu Elite Infantry 3/3, blockers Glory Seeker 2/2, Silvercoat Lion 2/2, Fresh Volunteers 2/2
+     Glory Seeker               -> Shu Elite Infantry
+     Silvercoat Lion            -> Shu Elite Infantry
+     Fresh Volunteers           -> Shu Elite Infantry
+   policy score 12   solver score 12   MATCH
+== RANK: two attackers both needing a double, three blockers   [10 distinct outcomes]
+   life 10, attackers Shu Elite Infantry 3/3, Regal Unicorn 2/3, blockers Glory Seeker 2/2, Silvercoat Lion 2/2, Fresh Volunteers 2/2
+     Glory Seeker               -> Shu Elite Infantry
+     Silvercoat Lion            -> Shu Elite Infantry
+     Fresh Volunteers           -> Shu Elite Infantry
+   policy score 12   solver score 12   MATCH
+== RANK+1: same two attackers, FOUR blockers   [15 distinct outcomes]
+   life 10, attackers Shu Elite Infantry 3/3, Regal Unicorn 2/3, blockers Glory Seeker 2/2, Silvercoat Lion 2/2, Fresh Volunteers 2/2, Knight Errant 2/2
+     Glory Seeker               -> Shu Elite Infantry
+     Silvercoat Lion            -> Shu Elite Infantry
+     Fresh Volunteers           -> Regal Unicorn
+     Knight Errant              -> Regal Unicorn
+   policy score 19   solver score 19   MATCH
+== COMMIT: three 2/2s into one 3/1 (all three = +8, any one = 0)
+   my creatures Glory Seeker 2/2, Silvercoat Lion 2/2, Fresh Volunteers 2/2   vs their Blade of the Sixth Pride 3/1
+     Fresh Volunteers           -> hold
+     Glory Seeker               -> hold
+     Silvercoat Lion            -> hold
+
+== ALPHA33: three 2/2s into one 3/3 (reference says HOLD, -4)
+   my creatures Glory Seeker 2/2, Silvercoat Lion 2/2, Fresh Volunteers 2/2   vs their Shu Elite Infantry 3/3
+     Fresh Volunteers           -> hold
+     Glory Seeker               -> hold
+     Silvercoat Lion            -> hold
+
+== HOLD: one 2/2 into two 3/3s (attacking is strictly bad)
+   my creatures Glory Seeker 2/2   vs their Shu Elite Infantry 3/3, Knight of the Keep 3/3
+     Glory Seeker               -> hold
+
+== LETHAL: three 2/2s, they are at 4 with no untapped blocker
+   my creatures Glory Seeker 2/2, Silvercoat Lion 2/2, Fresh Volunteers 2/2   vs their 
+     Fresh Volunteers           -> hold
+     Glory Seeker               -> hold
+     Silvercoat Lion            -> hold
+
+== CONTROL: identical board at 20 life   [4 distinct outcomes]
+   life 20, attackers Shu Elite Infantry 3/3, blockers Glory Seeker 2/2, Silvercoat Lion 2/2, Fresh Volunteers 2/2
+     Glory Seeker               -> Shu Elite Infantry
+     Silvercoat Lion            -> Shu Elite Infantry
+     Fresh Volunteers           -> Shu Elite Infantry
+   policy score 12   solver score 12   MATCH

@@ -2,6 +2,8 @@
   100 episodes, win_rate 0.940, 31.1 turns/ep
 
   attack rate                 1362/4485   0.304 [0.290,0.317]   creatures sent / could have attacked
+    reference would send      1145/4485   0.255 [0.243,0.268]   same denominator: the size of any over/under shoot
+    reference (CA) would send   944/4485   0.210 [0.199,0.223]
   attack-optimality            786/1264   0.622 [0.595,0.648]   UPPER BOUND: includes no-choice combats
     ...where a choice existed   786/1264   0.622 [0.595,0.648]   the honest one
   attack-optimality (CA)       799/1264   0.632 [0.605,0.658]   reference charges for the crack-back
@@ -13,7 +15,7 @@
   truncated subsets/replies  1 / 0
   combats with no choice     0   (MATCH there is the position's)
 
-  cost: policy search 0 ms total, 0.00 ms/combat; audit 583994 ms (instrument, not play)
+  cost: policy search 0 ms total, 0.00 ms/combat; audit 500201 ms (instrument, not play)
   nodes: 0k resolve() calls, 0 per combat
 
   READ WITH: the reference is one combat deep and prices at zero

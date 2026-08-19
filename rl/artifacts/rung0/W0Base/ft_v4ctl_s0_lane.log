@@ -1,0 +1,4 @@
+P10INIT|out=/tmp/rl_ft_v4_s0/init.pt|arch=lstmattn|seed=10|cdim=94|params=430082
+R0_START|W0Base|seed=0|budget=1024|resume_at=512|out=/tmp/rl_ft_v4_s0
+R0|W0Base|s0|trained=1024|D0=0.8100 [0.722,0.875]|D1=0.8600 [0.779,0.915]|TWIN=0.8300 [0.745,0.891]|blocks=1502/1859|BLOCKOPT=789/803|gap=63|attacks=1073/2817|ATKOPT=704/1070|ATKOPTCA=707/1070|under_over=178/180|turns=28.4
+R0_DONE|W0Base|s0|trained=1024|out=/tmp/rl_ft_v4_s0
