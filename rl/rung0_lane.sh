@@ -59,7 +59,15 @@ FEATS=$RL/e2_features.tsv
 # encoder and nothing else.
 ENC=${R0_ENCODER_V:-2}
 if [ "$ENC" = "1" ]; then SDIM=24; CDIM=91; else SDIM=32; CDIM=94; fi
-ENCFLAGS="-Drl.encoderV=$ENC -Drl.blockAudit=true -Drl.attackAudit=true"
+ENCFLAGS="-Drl.encoderV=$ENC -Drl.blockAudit=true"
+# THE ATTACK AUDIT IS EVAL-ONLY, and that is a cost decision, not a
+# style one. It runs a full minimax attack search per combat on top of
+# the one the policy may already have run, and measured over 100 eval
+# games it was 584 s of a 763 s run - 76% of wall clock, a 4x slowdown.
+# blockAudit is cheap enough to leave on everywhere; this one is not,
+# and putting it in ENCFLAGS would have quadrupled every training chunk
+# for a number nothing reads during training.
+EVALFLAGS="$ENCFLAGS -Drl.attackAudit=true"
 # v4's candidates are whole assignments, so the server's 40-slot buffer
 # is too small - raw enumeration produced 46 distinct outcomes and
 # crashed it mid-run. Pareto filtering cuts the set; this is the belt to
@@ -112,7 +120,7 @@ probe() {   # $1 out $2 opponent $3 deck $4 games $5 seed
         -Drl.episodes=$4 -Drl.agent=rl -Drl.policy=socket -Drl.port=$PORT \
         -Drl.opponent=$2 -Drl.searchPlies=1 -Drl.searchBreadth=8 \
         -Drl.cardFeatures=$FEATS -Drl.noYields=true -Drl.consultBudget=4000 \
-        $ENCFLAGS -Drl.deck=$3.dck -Drl.oppDeck=$3.dck -Drl.stopTurn=60 \
+        $EVALFLAGS -Drl.deck=$3.dck -Drl.oppDeck=$3.dck -Drl.stopTurn=60 \
         -Drl.mode=eval -Drl.seed=$5 -Drl.report=0 -Drl.out=$1 \
         > /dev/null 2>&1
 }
