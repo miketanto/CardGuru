@@ -1,5 +1,4 @@
-# Attacking as a joint decision — the instrument, the fix, and what
-# neither of them says
+# Attacking as a joint decision — the instrument, the fix, and what neither says
 
 Follows `rl/HANDOFF-ATTACK-JOINT.md`, which follows
 `rl/ENCODER-AB-RESULT.md`. The one-line version of those: blocking was
