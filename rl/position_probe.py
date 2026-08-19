@@ -349,11 +349,13 @@ def _pareto_attacks(options, max_cands=64):
             ge = (o2["o"]["dmg"] >= o1["o"]["dmg"]
                   and o2["o"]["bval"] >= o1["o"]["bval"]
                   and o2["o"]["aval"] <= o1["o"]["aval"]
-                  and o2["retained_power"] >= o1["retained_power"])
+                  and o2["retained_power"] >= o1["retained_power"]
+                  and o2["retained_bodies"] >= o1["retained_bodies"])
             gt = (o2["o"]["dmg"] > o1["o"]["dmg"]
                   or o2["o"]["bval"] > o1["o"]["bval"]
                   or o2["o"]["aval"] < o1["o"]["aval"]
-                  or o2["retained_power"] > o1["retained_power"])
+                  or o2["retained_power"] > o1["retained_power"]
+                  or o2["retained_bodies"] > o1["retained_bodies"])
             if ge and gt:
                 dominated = True
                 break
@@ -422,7 +424,7 @@ def attack_coverage(pos, label):
     return in_list
 
 
-def run_attacks_v5(pol, pos, label):
+def run_attacks_v5(pol, pos, label, encv=5):
     """One joint decision over attack subsets - mirrors
     RLPlayer.jointAttacks, including candidate order."""
     mine, theirs = pos.blockers, pos.attackers
@@ -430,7 +432,7 @@ def run_attacks_v5(pol, pos, label):
                                           pos.opp_life)
     kept = _pareto_attacks(options)
     cands = [cand_attack_set(k, pos.my_life, pos.opp_life) for k in kept]
-    pick = pol.choose(pos.attack_state(0, encv=5), cands)
+    pick = pol.choose(pos.attack_state(0, encv=encv), cands)
     chosen = kept[pick] if 0 <= pick < len(kept) else None
     print("== %s   [%d distinct subsets, %d after Pareto]"
           % (label, len(options), len(kept)))
@@ -695,8 +697,13 @@ def main():
                   ("Fresh Volunteers", 2, 2), ("Knight Errant", 2, 2)],
         turn=14), "RANK+1: same two attackers, FOUR blockers")
 
+    # The encoder version decides the STATE the probe builds, not just
+    # which code path runs: below v3 the agent's own attackers register
+    # in s[24..27] and above it they do not. Passing the arm through is
+    # what keeps the probe faithful to the net it is questioning.
+    encv = 5 if args.v5 else (4 if args.v4 else 2)
     for pos, label in attack_positions():
-        run_attacks(pol, pos, label)
+        run_attacks(pol, pos, label, encv=encv)
         print()
 
     # Control: same board, comfortable life. Blocking is now optional and

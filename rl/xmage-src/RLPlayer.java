@@ -694,6 +694,13 @@ public class RLPlayer extends ComputerPlayer {
         // option to hold from the candidate list entirely and the agent
         // would alpha-strike by construction. The filter must not decide
         // the question the fix is supposed to let the policy decide.
+        //
+        // RETAINED BODIES is a fifth objective for the same reason, one
+        // level down: blocking capacity is bodies, not power. Keeping one
+        // 3/3 beats keeping two 1/1s on power and loses on blockers, and
+        // a filter carrying only power would drop the two-body option as
+        // dominated. Each extra objective weakens the filter, which costs
+        // candidate slots and never costs correctness.
         List<CombatMath.AttackOption> kept = new ArrayList<>();
         java.util.Set<String> outcomes = new java.util.LinkedHashSet<>();
         int maxCands = Integer.getInteger("rl.attackMaxCands", 64);
@@ -707,10 +714,12 @@ public class RLPlayer extends ComputerPlayer {
                         && o2.outcome.blockerValueLost >= o1.outcome.blockerValueLost
                         && o2.outcome.attackerValueKilled <= o1.outcome.attackerValueKilled
                         && o2.retainedPower >= o1.retainedPower
+                        && o2.retainedBodies >= o1.retainedBodies
                         && (o2.outcome.damageTaken > o1.outcome.damageTaken
                             || o2.outcome.blockerValueLost > o1.outcome.blockerValueLost
                             || o2.outcome.attackerValueKilled < o1.outcome.attackerValueKilled
-                            || o2.retainedPower > o1.retainedPower)) {
+                            || o2.retainedPower > o1.retainedPower
+                            || o2.retainedBodies > o1.retainedBodies)) {
                     dominated = true;
                     break;
                 }
