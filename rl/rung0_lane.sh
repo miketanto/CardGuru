@@ -210,10 +210,17 @@ done
 
 # The held-out instrument, once, at the end. Training against it would
 # destroy the only externally uncontaminated number this project has.
-stop_server
-start_server
-probe "$OUT/probe_CP7_final.txt" cp7 "$BASE" "$CP7_G" 950000
-wr=$(field $OUT/probe_CP7_final.txt win_rate)
-echo "R0|$BASE|s$SEED|FINAL|CP7=${wr:-NA} $(band $CP7_G ${wr:-0})|games=$CP7_G"
-stop_server
+#
+# R0_CP7_G=0 skips it. CP7 is a slow alpha-beta opponent and the handoff
+# already records that 50 games of it is decorative (the same arm gave
+# .900 and .500 on consecutive seeds); an A/B between two arms that skips
+# it SYMMETRICALLY loses nothing it could have settled.
+if [ "$CP7_G" -gt 0 ]; then
+    stop_server
+    start_server
+    probe "$OUT/probe_CP7_final.txt" cp7 "$BASE" "$CP7_G" 950000
+    wr=$(field $OUT/probe_CP7_final.txt win_rate)
+    echo "R0|$BASE|s$SEED|FINAL|CP7=${wr:-NA} $(band $CP7_G ${wr:-0})|games=$CP7_G"
+    stop_server
+fi
 echo "R0_DONE|$BASE|s$SEED|trained=$trained|out=$OUT"
