@@ -1,0 +1,551 @@
+<title>What the Net Sees</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Spectral:wght@600;700&display=swap">
+
+<style>
+:root{
+  --ground:#F6F7F5; --surface:#FFFFFF; --raise:#FBFCFB;
+  --ink:#16211D; --muted:#5E6D67; --line:#DCE3E0;
+  --keep:#0B6E5F; --lost:#9E4A31;
+  --wash-keep:#E4F1ED; --wash-lost:#F6E9E4;
+  --shadow:0 1px 2px rgba(20,40,34,.06),0 8px 24px -12px rgba(20,40,34,.14);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --ground:#0D1513; --surface:#141E1B; --raise:#18241F;
+    --ink:#E4EBE8; --muted:#93A39D; --line:#26332F;
+    --keep:#5FC9B4; --lost:#E29273;
+    --wash-keep:#123029; --wash-lost:#33211A;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px -12px rgba(0,0,0,.6);
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#0D1513; --surface:#141E1B; --raise:#18241F;
+  --ink:#E4EBE8; --muted:#93A39D; --line:#26332F;
+  --keep:#5FC9B4; --lost:#E29273;
+  --wash-keep:#123029; --wash-lost:#33211A;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px -12px rgba(0,0,0,.6);
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--ground); color:var(--ink);
+  font-family:"IBM Plex Sans",system-ui,-apple-system,sans-serif;
+  font-size:16.5px; line-height:1.62;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1120px; margin:0 auto; padding:clamp(28px,5vw,72px) clamp(18px,4vw,40px) 96px;}
+.col{max-width:72ch; margin-inline:auto;}
+
+h1,h2,h3{font-family:Spectral,Georgia,serif; text-wrap:balance; margin:0;}
+h1{font-weight:700; font-size:clamp(2.1rem,4.6vw,3.15rem); line-height:1.08; letter-spacing:-.015em;}
+h2{font-weight:700; font-size:clamp(1.35rem,2.4vw,1.72rem); line-height:1.2; letter-spacing:-.01em;}
+h3{font-weight:600; font-size:1.06rem;}
+p{margin:0}
+a{color:var(--keep)}
+
+.eyebrow{
+  font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:.72rem;
+  letter-spacing:.16em; text-transform:uppercase; color:var(--muted);
+}
+.lede{font-size:1.12rem; color:var(--muted); max-width:60ch;}
+.stack{display:flex; flex-direction:column; gap:1.05rem;}
+.stack-lg{display:flex; flex-direction:column; gap:2.6rem;}
+section{display:flex; flex-direction:column; gap:1.05rem;}
+.rule{height:1px; background:var(--line); border:0; margin:0;}
+
+.mono{font-family:"IBM Plex Mono",ui-monospace,monospace; font-variant-numeric:tabular-nums;}
+code{font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:.88em;
+     background:var(--raise); border:1px solid var(--line); border-radius:4px; padding:.06em .34em;}
+.keep{color:var(--keep)} .lost{color:var(--lost)}
+strong{font-weight:600}
+
+/* ---- slot map ---- */
+.slotmap{
+  display:grid; grid-template-columns:repeat(auto-fill,minmax(132px,1fr));
+  gap:6px; padding:16px; background:var(--surface);
+  border:1px solid var(--line); border-radius:10px; box-shadow:var(--shadow);
+}
+.slot{
+  border:1px solid var(--line); border-radius:6px; padding:7px 9px;
+  background:var(--raise); display:flex; flex-direction:column; gap:2px; min-height:56px;
+}
+.slot .i{font-family:"IBM Plex Mono",monospace; font-size:.7rem; color:var(--muted); font-variant-numeric:tabular-nums;}
+.slot .l{font-size:.78rem; line-height:1.28;}
+.slot.board{background:var(--wash-lost); border-color:var(--lost);}
+.slot.board .i{color:var(--lost)}
+.slot.dim{opacity:.5}
+
+.legend{display:flex; flex-wrap:wrap; gap:14px 22px; font-size:.82rem; color:var(--muted);}
+.legend span{display:flex; align-items:center; gap:7px;}
+.chip{width:13px; height:13px; border-radius:3px; border:1px solid var(--line); display:inline-block;}
+.chip.b{background:var(--wash-lost); border-color:var(--lost)}
+.chip.n{background:var(--raise)}
+
+/* ---- figures ---- */
+figure{margin:0; display:flex; flex-direction:column; gap:.7rem;}
+.figbox{background:var(--surface); border:1px solid var(--line); border-radius:10px;
+        padding:20px; box-shadow:var(--shadow); overflow-x:auto;}
+figure svg{display:block; max-width:100%; height:auto; color:var(--ink);}
+figcaption{font-size:.86rem; color:var(--muted); max-width:68ch;}
+
+/* ---- table ---- */
+.tablewrap{overflow-x:auto; border:1px solid var(--line); border-radius:10px;
+           background:var(--surface); box-shadow:var(--shadow);}
+table{border-collapse:collapse; width:100%; min-width:660px; font-size:.9rem;}
+th,td{text-align:left; padding:11px 14px; border-bottom:1px solid var(--line); vertical-align:top;}
+th{font-family:"IBM Plex Mono",monospace; font-size:.7rem; letter-spacing:.1em;
+   text-transform:uppercase; color:var(--muted); font-weight:500; white-space:nowrap;}
+tbody tr:last-child td{border-bottom:0}
+td.enc{font-family:"IBM Plex Mono",monospace; font-size:.82rem; font-variant-numeric:tabular-nums;}
+.tag{display:inline-block; font-family:"IBM Plex Mono",monospace; font-size:.68rem;
+     letter-spacing:.06em; text-transform:uppercase; padding:2px 7px; border-radius:4px;
+     border:1px solid currentColor; white-space:nowrap;}
+.tag.exact{color:var(--keep)} .tag.lossy{color:var(--lost)}
+.tag.absent{color:var(--lost); background:var(--wash-lost)}
+.tag.deriv{color:var(--muted)}
+
+/* ---- callout ---- */
+.note{border-left:3px solid var(--keep); background:var(--wash-keep);
+      padding:14px 18px; border-radius:0 8px 8px 0; display:flex; flex-direction:column; gap:.5rem;}
+.note.warn{border-left-color:var(--lost); background:var(--wash-lost);}
+
+/* ---- question cards ---- */
+.qgrid{display:grid; grid-template-columns:repeat(auto-fit,minmax(268px,1fr)); gap:14px;}
+.q{background:var(--surface); border:1px solid var(--line); border-radius:10px;
+   padding:16px 18px; display:flex; flex-direction:column; gap:.5rem; box-shadow:var(--shadow);}
+.q .qn{font-family:"IBM Plex Mono",monospace; font-size:.7rem; letter-spacing:.1em;
+       text-transform:uppercase; color:var(--keep);}
+.q p{font-size:.9rem}
+
+.foot{font-size:.82rem; color:var(--muted); max-width:68ch;}
+</style>
+
+<div class="wrap">
+<div class="stack-lg">
+
+  <header class="col stack">
+    <p class="eyebrow">CardGuru · rung 0 · StateEncoder.java</p>
+    <h1>What the net sees</h1>
+    <p class="lede">The agent's entire view of a Magic battlefield is ten numbers. Here is
+    what they are, what they throw away, and why that hasn't cost us anything
+    measurable yet — which is the part that decides what to fix.</p>
+  </header>
+
+  <hr class="rule">
+
+  <section class="col">
+    <h2>The whole state vector</h2>
+    <p>Thirty-two slots, built in one pass over the battlefield. Six of them —
+    highlighted — carry <em>every creature on both sides</em>.</p>
+  </section>
+
+  <div class="stack">
+    <div class="slotmap" role="list" aria-label="The 32-dimension state vector">
+      <div class="slot dim" role="listitem"><span class="i">s[0]</span><span class="l">my life ÷20</span></div>
+      <div class="slot dim" role="listitem"><span class="i">s[1]</span><span class="l">their life ÷20</span></div>
+      <div class="slot dim" role="listitem"><span class="i">s[2]</span><span class="l">my hand <em>size</em></span></div>
+      <div class="slot dim" role="listitem"><span class="i">s[3]</span><span class="l">their hand <em>size</em></span></div>
+      <div class="slot dim" role="listitem"><span class="i">s[4]</span><span class="l">my untapped lands</span></div>
+      <div class="slot dim" role="listitem"><span class="i">s[5]</span><span class="l">my lands</span></div>
+      <div class="slot dim" role="listitem"><span class="i">s[6]</span><span class="l">their untapped lands</span></div>
+      <div class="slot dim" role="listitem"><span class="i">s[7]</span><span class="l">their lands</span></div>
+      <div class="slot board" role="listitem"><span class="i">s[8]</span><span class="l">my creature <em>count</em></span></div>
+      <div class="slot board" role="listitem"><span class="i">s[9]</span><span class="l">their creature <em>count</em></span></div>
+      <div class="slot board" role="listitem"><span class="i">s[10]</span><span class="l">my <em>total</em> power</span></div>
+      <div class="slot board" role="listitem"><span class="i">s[11]</span><span class="l">my <em>total</em> toughness</span></div>
+      <div class="slot board" role="listitem"><span class="i">s[12]</span><span class="l">their <em>total</em> power</span></div>
+      <div class="slot board" role="listitem"><span class="i">s[13]</span><span class="l">their <em>total</em> toughness</span></div>
+      <div class="slot dim" role="listitem"><span class="i">s[14]</span><span class="l">turn number</span></div>
+      <div class="slot dim" role="listitem"><span class="i">s[15]</span><span class="l">is it my turn</span></div>
+      <div class="slot dim" role="listitem"><span class="i">s[16]</span><span class="l">phase: main</span></div>
+      <div class="slot dim" role="listitem"><span class="i">s[17]</span><span class="l">phase: combat</span></div>
+      <div class="slot dim" role="listitem"><span class="i">s[18]</span><span class="l">phase: end</span></div>
+      <div class="slot dim" role="listitem"><span class="i">s[19]</span><span class="l">phase: other</span></div>
+      <div class="slot dim" role="listitem"><span class="i">s[20]</span><span class="l">stack depth</span></div>
+      <div class="slot dim" role="listitem"><span class="i">s[21]</span><span class="l">my graveyard <em>size</em></span></div>
+      <div class="slot dim" role="listitem"><span class="i">s[22]</span><span class="l">their graveyard <em>size</em></span></div>
+      <div class="slot dim" role="listitem"><span class="i">s[23]</span><span class="l">my library size</span></div>
+      <div class="slot dim" role="listitem"><span class="i">s[24]</span><span class="l">attackers (theirs)</span></div>
+      <div class="slot dim" role="listitem"><span class="i">s[25]</span><span class="l">unblocked count</span></div>
+      <div class="slot dim" role="listitem"><span class="i">s[26]</span><span class="l">unblocked power</span></div>
+      <div class="slot dim" role="listitem"><span class="i">s[27]</span><span class="l">my life after that</span></div>
+      <div class="slot dim" role="listitem"><span class="i">s[28]</span><span class="l">my untapped creatures</span></div>
+      <div class="slot dim" role="listitem"><span class="i">s[29]</span><span class="l">stack top is mine</span></div>
+      <div class="slot dim" role="listitem"><span class="i">s[30]</span><span class="l">stack top mana value</span></div>
+      <div class="slot dim" role="listitem"><span class="i">s[31]</span><span class="l">stack top is instant</span></div>
+    </div>
+    <div class="legend">
+      <span><i class="chip b"></i> the entire battlefield, six scalars</span>
+      <span><i class="chip n"></i> everything else</span>
+      <span>no per-creature slot exists anywhere</span>
+    </div>
+  </div>
+
+  <section class="col">
+    <h2>What that costs</h2>
+    <p>Counts and sums are not a board. Six genuinely different boards from our own
+    card pool produce one identical vector — the net cannot tell them apart, and they
+    play nothing alike.</p>
+  </section>
+
+  <figure>
+    <div class="figbox">
+      <svg viewBox="0 0 940 372" role="img" aria-label="Six different three-creature boards from the W0Base pool all encode to the same three numbers: count 3, total power 7, total toughness 7.">
+        <defs>
+          <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor"/>
+          </marker>
+        </defs>
+
+        <text x="24" y="22" font-family="IBM Plex Mono, monospace" font-size="11" fill="currentColor" opacity=".62" letter-spacing="1.4">SIX DISTINCT BOARDS</text>
+        <text x="648" y="22" font-family="IBM Plex Mono, monospace" font-size="11" fill="currentColor" opacity=".62" letter-spacing="1.4">ONE ENCODING</text>
+
+        <g font-family="IBM Plex Mono, monospace" font-size="13" fill="currentColor">
+          <g transform="translate(24,40)">
+            <rect x="0"  y="0" width="58" height="30" rx="5" fill="none" stroke="currentColor" opacity=".55"/><text x="29" y="20" text-anchor="middle">2/2</text>
+            <rect x="66" y="0" width="58" height="30" rx="5" fill="none" stroke="currentColor" opacity=".55"/><text x="95" y="20" text-anchor="middle">2/2</text>
+            <rect x="132" y="0" width="58" height="30" rx="5" fill="none" stroke="currentColor" opacity=".55"/><text x="161" y="20" text-anchor="middle">3/3</text>
+          </g>
+          <g transform="translate(24,88)">
+            <rect x="0"  y="0" width="58" height="30" rx="5" fill="none" stroke="currentColor" opacity=".55"/><text x="29" y="20" text-anchor="middle">2/2</text>
+            <rect x="66" y="0" width="58" height="30" rx="5" fill="none" stroke="currentColor" opacity=".55"/><text x="95" y="20" text-anchor="middle">3/1</text>
+            <rect x="132" y="0" width="58" height="30" rx="5" fill="none" stroke="currentColor" opacity=".55"/><text x="161" y="20" text-anchor="middle">2/4</text>
+          </g>
+          <g transform="translate(24,136)">
+            <rect x="0"  y="0" width="58" height="30" rx="5" fill="none" stroke="currentColor" opacity=".55"/><text x="29" y="20" text-anchor="middle">2/2</text>
+            <rect x="66" y="0" width="58" height="30" rx="5" fill="none" stroke="currentColor" opacity=".55"/><text x="95" y="20" text-anchor="middle">2/3</text>
+            <rect x="132" y="0" width="58" height="30" rx="5" fill="none" stroke="currentColor" opacity=".55"/><text x="161" y="20" text-anchor="middle">3/2</text>
+          </g>
+          <g transform="translate(24,184)">
+            <rect x="0"  y="0" width="58" height="30" rx="5" fill="none" stroke="currentColor" opacity=".55"/><text x="29" y="20" text-anchor="middle">3/1</text>
+            <rect x="66" y="0" width="58" height="30" rx="5" fill="none" stroke="currentColor" opacity=".55"/><text x="95" y="20" text-anchor="middle">2/3</text>
+            <rect x="132" y="0" width="58" height="30" rx="5" fill="none" stroke="currentColor" opacity=".55"/><text x="161" y="20" text-anchor="middle">2/3</text>
+          </g>
+          <g transform="translate(24,232)">
+            <rect x="0"  y="0" width="58" height="30" rx="5" fill="none" stroke="currentColor" opacity=".55"/><text x="29" y="20" text-anchor="middle">2/3</text>
+            <rect x="66" y="0" width="58" height="30" rx="5" fill="none" stroke="currentColor" opacity=".55"/><text x="95" y="20" text-anchor="middle">3/3</text>
+            <rect x="132" y="0" width="58" height="30" rx="5" fill="none" stroke="currentColor" opacity=".55"/><text x="161" y="20" text-anchor="middle">2/1</text>
+          </g>
+          <g transform="translate(24,280)">
+            <rect x="0"  y="0" width="58" height="30" rx="5" fill="none" stroke="currentColor" opacity=".55"/><text x="29" y="20" text-anchor="middle">3/2</text>
+            <rect x="66" y="0" width="58" height="30" rx="5" fill="none" stroke="currentColor" opacity=".55"/><text x="95" y="20" text-anchor="middle">2/4</text>
+            <rect x="132" y="0" width="58" height="30" rx="5" fill="none" stroke="currentColor" opacity=".55"/><text x="161" y="20" text-anchor="middle">2/1</text>
+          </g>
+        </g>
+
+        <g stroke="currentColor" fill="none" opacity=".4" stroke-width="1.2">
+          <path d="M 224 55  C 300 55, 330 175, 402 175"/>
+          <path d="M 224 103 C 300 103, 340 175, 402 175"/>
+          <path d="M 224 151 C 300 151, 350 175, 402 175"/>
+          <path d="M 224 199 C 300 199, 350 175, 402 175"/>
+          <path d="M 224 247 C 300 247, 340 175, 402 175"/>
+          <path d="M 224 295 C 300 295, 330 175, 402 175"/>
+        </g>
+
+        <rect x="402" y="152" width="178" height="46" rx="7" fill="none" stroke="currentColor" opacity=".7"/>
+        <text x="491" y="172" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="12" fill="currentColor">encodeState()</text>
+        <text x="491" y="188" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="11" fill="currentColor" opacity=".6">one loop, three sums</text>
+
+        <line x1="580" y1="175" x2="642" y2="175" stroke="currentColor" stroke-width="1.4" marker-end="url(#ar)"/>
+
+        <rect x="648" y="118" width="266" height="114" rx="8" fill="none" stroke="currentColor" stroke-width="1.6"/>
+        <g font-family="IBM Plex Mono, monospace" font-size="13" fill="currentColor">
+          <text x="670" y="148">s[8]</text><text x="742" y="148">= 0.30</text><text x="838" y="148" opacity=".55" font-size="11">count 3</text>
+          <text x="670" y="180">s[10]</text><text x="742" y="180">= 0.35</text><text x="838" y="180" opacity=".55" font-size="11">power 7</text>
+          <text x="670" y="212">s[11]</text><text x="742" y="212">= 0.35</text><text x="838" y="212" opacity=".55" font-size="11">tough 7</text>
+        </g>
+
+        <text x="24" y="344" font-family="IBM Plex Sans, sans-serif" font-size="12" fill="currentColor" opacity=".62">462 distinct 5-creature boards collapse to 81 encodings — 97% share a vector with a different board.</text>
+      </svg>
+    </div>
+    <figcaption>Collision rates on the actual W0Base body pool: 86% of three-creature
+    boards, 93% at four, 97% at five. A player asked to attack into these six boards
+    would give six different answers.</figcaption>
+  </figure>
+
+  <section class="col">
+    <h2>Why it hasn't hurt yet</h2>
+    <p>The net never has to reconstruct the board, because the <em>options</em> arrive
+    pre-resolved. Every candidate is an afterstate: <code>CombatMath</code> simulates
+    the subset against a best-replying defender and hands over the consequence.</p>
+  </section>
+
+  <figure>
+    <div class="figbox">
+      <svg viewBox="0 0 940 300" role="img" aria-label="Two paths feed the scorer: a lossy aggregate state path and an exact per-option afterstate path from CombatMath. The correct choice is recoverable from the candidate path alone.">
+        <defs>
+          <marker id="ar2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor"/>
+          </marker>
+        </defs>
+
+        <rect x="20" y="112" width="132" height="60" rx="7" fill="none" stroke="currentColor" opacity=".7"/>
+        <text x="86" y="139" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="13" fill="currentColor">live board</text>
+        <text x="86" y="157" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="11" fill="currentColor" opacity=".6">+ both hands</text>
+
+        <path d="M 152 132 C 196 132, 200 68, 246 68" fill="none" stroke="currentColor" stroke-width="1.3" stroke-dasharray="5 4" opacity=".55" marker-end="url(#ar2)"/>
+        <text x="196" y="58" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="currentColor" opacity=".6">sums</text>
+
+        <path d="M 152 152 C 196 152, 200 216, 246 216" fill="none" stroke="currentColor" stroke-width="1.7" marker-end="url(#ar2)"/>
+        <text x="196" y="240" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="currentColor" opacity=".6">simulate</text>
+
+        <rect x="252" y="40" width="238" height="58" rx="7" fill="none" stroke="currentColor" stroke-width="1.2" stroke-dasharray="5 4" opacity=".62"/>
+        <text x="371" y="64" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="13" fill="currentColor" opacity=".8">state · 32 dims</text>
+        <text x="371" y="83" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" fill="currentColor" opacity=".55">board = 6 aggregates</text>
+
+        <rect x="252" y="186" width="238" height="72" rx="7" fill="none" stroke="currentColor" stroke-width="1.8"/>
+        <text x="371" y="210" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="13" fill="currentColor">one candidate per option</text>
+        <text x="371" y="229" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" fill="currentColor" opacity=".7">dealt · killed · lost · lethal</text>
+        <text x="371" y="247" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" fill="currentColor" opacity=".7">retained · crack-back</text>
+
+        <path d="M 490 69 C 546 69, 556 132, 606 132" fill="none" stroke="currentColor" stroke-width="1.3" stroke-dasharray="5 4" opacity=".55" marker-end="url(#ar2)"/>
+        <path d="M 490 222 C 546 222, 556 152, 606 152" fill="none" stroke="currentColor" stroke-width="1.8" marker-end="url(#ar2)"/>
+
+        <rect x="612" y="110" width="120" height="64" rx="7" fill="none" stroke="currentColor" opacity=".75"/>
+        <text x="672" y="139" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="13" fill="currentColor">scorer</text>
+        <text x="672" y="157" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" fill="currentColor" opacity=".6">argmax</text>
+
+        <line x1="732" y1="142" x2="792" y2="142" stroke="currentColor" stroke-width="1.5" marker-end="url(#ar2)"/>
+        <text x="862" y="138" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="13" fill="currentColor">the attack</text>
+        <text x="862" y="157" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="11" fill="currentColor" opacity=".6">it declares</text>
+
+        <text x="371" y="288" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="12" fill="currentColor" opacity=".62">solid path carries the answer — argmax recovered from candidates alone in 400 / 400 positions</text>
+      </svg>
+    </div>
+    <figcaption>The dashed path is lossy and the solid path is exact. Because the
+    reference score is a linear function of three candidate features
+    (<span class="mono">40·c[6] + 60·c[8] − 60·c[10]</span>), discarding the state
+    entirely still recovers the correct choice — so today's board compression costs
+    nothing the instrument can detect.</figcaption>
+  </figure>
+
+  <div class="col">
+    <div class="note warn">
+      <p><strong>The trap in that.</strong> The afterstate only rescues us for
+      questions answerable <em>inside one combat</em>. A k-turn value depends on
+      <em>which</em> creatures survive, not how much total power does — and the
+      candidate is aggregate there too: <span class="mono">retainedBodies</span>,
+      <span class="mono">retainedPower</span>, <span class="mono">retainedToughness</span>.
+      The moment the objective looks past this combat, both channels fail together.</p>
+    </div>
+  </div>
+
+  <section class="col">
+    <h2>Your read vs the encoder's</h2>
+    <p>This is my guess at what you actually track when you look at a board. The point
+    of the table is the disagreements — tell me which rows are wrong, and what's missing
+    from the left column entirely.</p>
+  </section>
+
+  <div class="tablewrap">
+    <table>
+      <thead>
+        <tr><th>What a player reads</th><th>What the encoder holds</th><th>Status</th><th>Rescued by the candidate?</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Each creature's body, individually</td><td class="enc">s[8..13] — count &amp; sums</td><td><span class="tag lossy">lossy</span></td><td>within one combat, yes</td></tr>
+        <tr><td>Which specific trades are available</td><td class="enc">— none</td><td><span class="tag absent">absent</span></td><td>yes — that's the whole candidate</td></tr>
+        <tr><td>Which of mine are tapped / sick</td><td class="enc">s[28] — a count</td><td><span class="tag lossy">lossy</span></td><td>as retained totals only</td></tr>
+        <tr><td>What's in my hand</td><td class="enc">s[2] — size</td><td><span class="tag absent">absent</span></td><td>no</td></tr>
+        <tr><td>Whether I can rebuild after trading</td><td class="enc">— none</td><td><span class="tag absent">absent</span></td><td>no</td></tr>
+        <tr><td>Turns-to-lethal, both directions</td><td class="enc">s[1] ÷ s[10]</td><td><span class="tag deriv">derivable</span></td><td>one turn of it</td></tr>
+        <tr><td>Who wins the race if nobody blocks</td><td class="enc">— none</td><td><span class="tag absent">absent</span></td><td>no</td></tr>
+        <tr><td>What they can deploy next turn</td><td class="enc">s[3], s[7] — sizes</td><td><span class="tag absent">absent</span></td><td>no</td></tr>
+        <tr><td>Life totals</td><td class="enc">s[0], s[1]</td><td><span class="tag exact">exact</span></td><td>—</td></tr>
+        <tr><td>Mana available</td><td class="enc">s[4..7]</td><td><span class="tag exact">exact</span></td><td>—</td></tr>
+        <tr><td>Cards left in library</td><td class="enc">s[23]</td><td><span class="tag exact">exact</span></td><td>—</td></tr>
+        <tr><td>What's already died (attrition)</td><td class="enc">s[21], s[22] — sizes</td><td><span class="tag lossy">lossy</span></td><td>no</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <section class="col">
+    <h2>What the comparable work encodes</h2>
+    <p>Read from <code>gym-locm</code>'s source, which is authoritative for an
+    encoding question in a way a paper abstract is not. Every card is a row, and
+    every keyword is a bit on that row.</p>
+  </section>
+
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>System</th><th>Board representation</th><th>Per-card features</th><th>Abilities</th></tr></thead>
+      <tbody>
+        <tr><td>LOCM (<span class="mono">gym-locm</span>)</td><td class="enc">20 card slots × 16 feats, zero-padded</td><td class="enc">type one-hot ×4, cost, attack, defense, <strong>6 keyword bits</strong>, hp×2, draw</td><td><span class="tag exact">explicit bits</span></td></tr>
+        <tr><td>Hearthstone RL <em>(secondary)</em></td><td class="enc">~750-dim flat, per-minion slots</td><td class="enc">attack, HP, taunt, charge, can-attack…</td><td><span class="tag exact">explicit bits</span></td></tr>
+        <tr><td><strong>CardGuru today</strong></td><td class="enc">6 scalars, whole battlefield</td><td class="enc">— none —</td><td><span class="tag absent">invisible</span></td></tr>
+        <tr><td>CardGuru <span class="mono">e2_features.tsv</span></td><td class="enc">built, wired to candidates only</td><td class="enc">68 dims: 18 keyword flags, 20 effect APIs, targeting flags…</td><td><span class="tag exact">already extracted</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="col">
+    <div class="note">
+      <p><strong>The vocabulary already exists.</strong> <span class="mono">e2_extract.py</span>
+      emits 68 mechanical features per card — including flags for Flying, Deathtouch,
+      First Strike, Trample, Vigilance, Menace, Ward, Hexproof and eleven more, plus
+      <span class="mono">tgt_creature</span> / <span class="mono">tgt_player_or_any</span> /
+      <span class="mono">tgt_spell</span>. It is passed to <span class="mono">identity()</span>
+      for single-card candidates and <em>never</em> to <span class="mono">encodeState</span>.
+      A 2/2 Flier and a 2/2 Deathtoucher are already distinguishable — just not on the
+      board. This is plumbing, not research.</p>
+    </div>
+  </div>
+
+  <section class="col">
+    <h2>The architecture, adapted</h2>
+    <p>Mapping the ByteRL-style design onto MTG. Teal is machinery we already have;
+    rust is what would have to be built. The whole missing half sits on the state
+    path — the action path is already the right shape.</p>
+  </section>
+
+  <figure>
+    <div class="figbox">
+      <svg viewBox="0 0 940 520" role="img" aria-label="Proposed architecture: every zone's cards pass through one shared card encoder, are pooled per zone, concatenated into a state embedding, and scored against afterstate candidate vectors. The state path is new; the candidate scoring path, LSTM and decision-type input already exist.">
+        <defs>
+          <marker id="ar3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor"/>
+          </marker>
+        </defs>
+
+        <text x="20" y="20" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="currentColor" opacity=".6" letter-spacing="1.3">ZONES</text>
+        <text x="222" y="20" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="currentColor" opacity=".6" letter-spacing="1.3">SHARED ENCODER</text>
+        <text x="424" y="20" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="currentColor" opacity=".6" letter-spacing="1.3">POOL PER ZONE</text>
+        <text x="628" y="20" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="currentColor" opacity=".6" letter-spacing="1.3">STATE</text>
+        <text x="792" y="20" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="currentColor" opacity=".6" letter-spacing="1.3">HEADS</text>
+
+        <g font-family="IBM Plex Sans, sans-serif" font-size="12" fill="currentColor">
+          <rect x="20" y="34"  width="150" height="30" rx="5" fill="none" stroke="#9E4A31" stroke-width="1.5"/><text x="34" y="53">my battlefield</text>
+          <rect x="20" y="70"  width="150" height="30" rx="5" fill="none" stroke="#9E4A31" stroke-width="1.5"/><text x="34" y="89">their battlefield</text>
+          <rect x="20" y="106" width="150" height="30" rx="5" fill="none" stroke="#9E4A31" stroke-width="1.5"/><text x="34" y="125">my hand</text>
+          <rect x="20" y="142" width="150" height="30" rx="5" fill="none" stroke="#9E4A31" stroke-width="1.5"/><text x="34" y="161">the stack (ordered)</text>
+          <rect x="20" y="178" width="150" height="30" rx="5" fill="none" stroke="#9E4A31" stroke-width="1.5"/><text x="34" y="197">graveyards</text>
+          <rect x="20" y="214" width="150" height="30" rx="5" fill="none" stroke="currentColor" opacity=".55"/><text x="34" y="233" opacity=".75">life · lands · turn</text>
+        </g>
+
+        <g stroke="#9E4A31" fill="none" stroke-width="1.2" opacity=".85">
+          <path d="M 170 49  C 196 49, 200 140, 222 140" marker-end="url(#ar3)"/>
+          <path d="M 170 85  C 196 85, 202 140, 222 140" marker-end="url(#ar3)"/>
+          <path d="M 170 121 C 196 121, 204 140, 222 140" marker-end="url(#ar3)"/>
+          <path d="M 170 157 C 196 157, 204 140, 222 140" marker-end="url(#ar3)"/>
+          <path d="M 170 193 C 196 193, 202 140, 222 140" marker-end="url(#ar3)"/>
+        </g>
+
+        <rect x="222" y="96" width="152" height="88" rx="7" fill="none" stroke="#9E4A31" stroke-width="1.8"/>
+        <text x="298" y="126" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="13" fill="currentColor">one card encoder</text>
+        <text x="298" y="145" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="currentColor" opacity=".7">68-dim E2 + P/T</text>
+        <text x="298" y="162" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="currentColor" opacity=".7">+ tapped/sick/damage</text>
+
+        <g font-family="IBM Plex Sans, sans-serif" font-size="11.5" fill="currentColor">
+          <rect x="424" y="34"  width="164" height="34" rx="5" fill="none" stroke="#9E4A31" stroke-width="1.5"/>
+          <text x="438" y="49">battlefield · <tspan font-weight="600">sum</tspan></text>
+          <text x="438" y="63" font-size="10" opacity=".65">mean would erase count</text>
+          <rect x="424" y="76"  width="164" height="30" rx="5" fill="none" stroke="#9E4A31" stroke-width="1.5"/><text x="438" y="95">hand · sum</text>
+          <rect x="424" y="114" width="164" height="34" rx="5" fill="none" stroke="#9E4A31" stroke-width="1.5"/>
+          <text x="438" y="129">stack · <tspan font-weight="600">sequence</tspan></text>
+          <text x="438" y="143" font-size="10" opacity=".65">LIFO order is information</text>
+          <rect x="424" y="156" width="164" height="30" rx="5" fill="none" stroke="#9E4A31" stroke-width="1.5"/><text x="438" y="175">graveyard · mean</text>
+        </g>
+
+        <g stroke="#9E4A31" fill="none" stroke-width="1.1" opacity=".8">
+          <path d="M 374 130 C 398 130, 400 51, 424 51" marker-end="url(#ar3)"/>
+          <path d="M 374 134 C 398 134, 402 91, 424 91" marker-end="url(#ar3)"/>
+          <path d="M 374 140 C 398 140, 404 131, 424 131" marker-end="url(#ar3)"/>
+          <path d="M 374 148 C 398 148, 402 171, 424 171" marker-end="url(#ar3)"/>
+        </g>
+
+        <g stroke="currentColor" fill="none" stroke-width="1.1" opacity=".55">
+          <path d="M 588 51  C 612 51, 618 128, 640 128" marker-end="url(#ar3)"/>
+          <path d="M 588 91  C 612 91, 620 132, 640 132" marker-end="url(#ar3)"/>
+          <path d="M 588 131 C 612 131, 622 136, 640 136" marker-end="url(#ar3)"/>
+          <path d="M 588 171 C 612 171, 620 140, 640 140" marker-end="url(#ar3)"/>
+          <path d="M 170 229 C 500 229, 600 150, 640 148" marker-end="url(#ar3)"/>
+        </g>
+
+        <rect x="640" y="104" width="126" height="62" rx="7" fill="none" stroke="currentColor" stroke-width="1.6"/>
+        <text x="703" y="130" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="13" fill="currentColor">state embed</text>
+        <text x="703" y="149" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="currentColor" opacity=".65">concat</text>
+
+        <rect x="640" y="196" width="126" height="44" rx="7" fill="none" stroke="#0B6E5F" stroke-width="1.8"/>
+        <text x="703" y="223" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="13" fill="#0B6E5F">LSTM</text>
+        <line x1="703" y1="166" x2="703" y2="192" stroke="currentColor" stroke-width="1.2" marker-end="url(#ar3)"/>
+        <line x1="766" y1="218" x2="812" y2="218" stroke="currentColor" stroke-width="1.2" marker-end="url(#ar3)"/>
+        <text x="866" y="222" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="12" fill="currentColor">value</text>
+
+        <line x1="766" y1="135" x2="812" y2="135" stroke="#0B6E5F" stroke-width="1.6" marker-end="url(#ar3)"/>
+        <rect x="812" y="112" width="108" height="46" rx="7" fill="none" stroke="#0B6E5F" stroke-width="1.8"/>
+        <text x="866" y="132" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="12.5" fill="#0B6E5F">scorer</text>
+        <text x="866" y="149" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="10" fill="#0B6E5F" opacity=".85">masked argmax</text>
+
+        <g font-family="IBM Plex Sans, sans-serif" font-size="12" fill="currentColor">
+          <rect x="424" y="330" width="230" height="62" rx="7" fill="none" stroke="#0B6E5F" stroke-width="1.8"/>
+          <text x="539" y="352" text-anchor="middle" font-size="12.5" fill="#0B6E5F">candidates = afterstates</text>
+          <text x="539" y="370" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="#0B6E5F" opacity=".85">dealt · killed · lost · lethal</text>
+          <text x="539" y="386" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="#0B6E5F" opacity=".85">retained · crack-back</text>
+          <rect x="180" y="330" width="200" height="62" rx="7" fill="none" stroke="#0B6E5F" stroke-width="1.5"/>
+          <text x="280" y="352" text-anchor="middle" font-size="12.5" fill="#0B6E5F">decision type</text>
+          <text x="280" y="372" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="10" fill="#0B6E5F" opacity=".85">PASS LAND SPELL</text>
+          <text x="280" y="386" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="10" fill="#0B6E5F" opacity=".85">TARGET ATTACK BLOCK</text>
+        </g>
+        <path d="M 380 361 L 418 361" stroke="#0B6E5F" stroke-width="1.4" marker-end="url(#ar3)"/>
+        <path d="M 654 361 C 760 361, 830 200, 862 164" fill="none" stroke="#0B6E5F" stroke-width="1.6" marker-end="url(#ar3)"/>
+
+        <g font-family="IBM Plex Sans, sans-serif" font-size="11.5">
+          <rect x="20" y="440" width="14" height="14" rx="3" fill="none" stroke="#0B6E5F" stroke-width="1.8"/>
+          <text x="44" y="452" fill="currentColor">already built — candidate scoring, LSTM, decision type, afterstate candidates</text>
+          <rect x="20" y="466" width="14" height="14" rx="3" fill="none" stroke="#9E4A31" stroke-width="1.8"/>
+          <text x="44" y="478" fill="currentColor">to build — the entire state path: per-card rows, one shared encoder, per-zone pooling</text>
+          <text x="20" y="504" fill="currentColor" opacity=".65">Relations (blocker→attacker, aura→creature, spell→target) survive attention and are destroyed by pooling.</text>
+        </g>
+      </svg>
+    </div>
+    <figcaption>The action path is already the right shape — we score afterstate
+    candidates against a state embedding with a decision-type input and an LSTM. The
+    missing half is entirely on the left: nothing in our state is an entity.</figcaption>
+  </figure>
+
+  <section class="col">
+    <h2>Four things to decide together</h2>
+  </section>
+
+  <div class="qgrid">
+    <div class="q">
+      <span class="qn">Shape</span>
+      <h3>Slots or a set?</h3>
+      <p>Largely settled: a set encoder removes the ordering question and generalises
+      past a fixed board. The live sub-question is whether to start with cheap
+      sum-pooling and add attention later, or build attention once — combat is
+      relational, and pooling destroys relations.</p>
+    </div>
+    <div class="q">
+      <span class="qn">Ordering</span>
+      <h3>What order do creatures go in?</h3>
+      <p>Moot under a set encoder — permutation invariance by construction, so
+      W0Twin has nothing to catch. It returns the moment we use fixed ordered slots
+      instead, which is the cheaper build.</p>
+    </div>
+    <div class="q">
+      <span class="qn">Hand</span>
+      <h3>Is hand size really enough?</h3>
+      <p>Rung 0 has no tricks, so their hand may genuinely not matter. <em>My</em> hand
+      decides whether a trade is cheap or ruinous, and right now it's one integer.</p>
+    </div>
+    <div class="q">
+      <span class="qn">Order of work</span>
+      <h3>Reference first?</h3>
+      <p>A richer encoding produces no measurable change while the referee is one
+      combat deep. That argues the k-turn reference lands first — but it's the slower
+      build, and you may want the encoding ready to test against it.</p>
+    </div>
+  </div>
+
+  <div class="col">
+    <p class="foot">Sources: <span class="mono">rl/xmage-src/StateEncoder.java</span> ·
+    <span class="mono">rl/ATTACK-JOINT-RESULT.md</span> §6c. Collision rates computed
+    over the W0Base body pool; the 400/400 recovery figure over 400 random positions,
+    2,699 candidate options, 0 score mismatches.</p>
+  </div>
+
+</div>
+</div>
