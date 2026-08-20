@@ -17,8 +17,19 @@ PPO: terminal-only reward (+1/-1/0), discounting PER CONSULT (gamma
 0.997), GAE lambda 0.95, clip 0.2, 4 epochs, entropy 0.01. All standard,
 deliberately non-novel.
 
+Encoder v6 (--arch entattn, ENCODER-V6-BUILD.md) replaces the flat state
+vector with one token per card plus a typed relation edge list:
+  -> {"t":"consult","g":[...],"e":[[...],...],"r":[[s,d,t],...],"c":[...]}
+and the hello advertises gdim/edim/emax/rtypes, which the server checks
+and refuses to guess at. Everything from the state token onward -
+candidates, scorer, value head - is the v5 path unchanged.
+
 Run: python3 rl/policy_server.py --port 7777 --ckpt /tmp/rl_e0.pt \
         [--seed 0] [--log /tmp/rl_train.csv]
+     python3 rl/policy_server.py --port 7777 --arch entattn --cdim 94 \
+        --ckpt /tmp/rl_v6.pt [--r0]        # v6, and its ablation arm
+
+Checked by: python3 rl/entattn_check.py
 """
 import argparse
 import json
@@ -41,6 +52,20 @@ MAX_K = 40                   # candidate buffer; --max-k overrides
 # costs compute (cand_net runs over MAX_K rows per consult), which is why
 # it stays at 40 by default and is raised only for the joint-assignment
 # encoder, whose action space is whole assignments rather than cards.
+
+# ---- encoder v6 (entity tokens + relations), ENCODER-V6-BUILD.md §1-§3 ----
+GDIM, EDIM, EMAX = 16, 48, 24    # --gdim/--edim/--emax override
+# RTYPES is the wire's relation vocabulary (§2). The INDEX IS THE
+# CONTRACT with StateEncoder.encodeRelations: an edge arrives as
+# [src, dst, type] with type an index into this list, so reordering it
+# silently relabels every edge in every transcript. Append only.
+RTYPES = ["blocks", "blocked_by", "attacking_player",
+          "targets", "controls", "attached_to"]
+# EMAX, like MAX_K, is a buffer size and not an architectural constant:
+# ent_in/rel_emb are shaped by EDIM/heads and padded slots are masked
+# out, so raising it changes no weights. GDIM/EDIM/len(RTYPES) are NOT
+# buffers - they are the meaning of the vectors, and a driver that
+# disagrees about them is rejected at the handshake.
 
 
 class E0Policy(nn.Module):
@@ -97,11 +122,21 @@ class AttnPolicy(nn.Module):
         return (z, z.clone())
 
     def forward(self, state, cands, mask, hidden=None):
-        s = self.state_in(state)                            # (B,d)
+        return self.from_state_token(self.state_in(state),   # (B,d)
+                                     cands, mask, hidden)
+
+    def from_state_token(self, s, cands, mask, hidden=None):
+        """Everything downstream of the state embedding.
+
+        Extracted verbatim from forward() so EntityAttnPolicy can reuse
+        the candidate path rather than copy it - ENCODER-V6-BUILD.md
+        §4c is explicit that from state_tok onward nothing changes, and
+        a copy is a place for the two to drift.
+        """
         new_hidden = None
         if self.cell is not None:
             if hidden is None:
-                hidden = self.initial_hidden(state.size(0))
+                hidden = self.initial_hidden(s.size(0))
             h, c = self.cell(s, hidden)
             new_hidden = (h, c)
             s_tok = h.unsqueeze(1)
@@ -118,28 +153,158 @@ class AttnPolicy(nn.Module):
             else (logits, value)
 
 
-def build_net(arch, sdim, cdim):
+class EntityObs:
+    """The v6 state, as tensors: globals, entity rows, mask, relations.
+
+    Holds either ONE step (no batch dim, what the trajectory buffer
+    stores) or a BATCH (what the net is called with). It exists so the
+    PPO code can keep writing `states[mb]` and `torch.stack(...)`
+    against a state that is four tensors instead of one.
+
+    rel is a DENSE (E,E) type-index matrix, not the wire's edge list:
+    0 means "no edge" and t+1 means RTYPES[t]. The index (rather than a
+    precomputed bias) is what gets stored, so rel_emb receives gradient
+    during the PPO update - a stored bias would freeze it.
+    """
+
+    __slots__ = ("g", "e", "mask", "rel")
+
+    def __init__(self, g, e, mask, rel):
+        self.g, self.e, self.mask, self.rel = g, e, mask, rel
+
+    def __getitem__(self, idx):
+        return EntityObs(self.g[idx], self.e[idx],
+                         self.mask[idx], self.rel[idx])
+
+    def size(self, dim=0):
+        return self.g.size(dim)
+
+    @staticmethod
+    def stack(items):
+        return EntityObs(torch.stack([o.g for o in items]),
+                         torch.stack([o.e for o in items]),
+                         torch.stack([o.mask for o in items]),
+                         torch.stack([o.rel for o in items]))
+
+
+class EntityAttnPolicy(AttnPolicy):
+    """v6: one token per card, relations as attention bias, SUM pooled.
+
+    ENCODER-V6-BUILD.md §4c. The six board scalars are replaced by
+
+        state_tok = glob_in(globals) + pool(SUM_i ent_enc(ent_in(E))_i)
+
+    and from state_tok onward this is `AttnPolicy.from_state_token`,
+    unchanged and shared rather than copied. `--arch entattn` carries
+    the LSTMCell because the arm it is compared against (`lstmattn`,
+    what rung0_lane.sh trains) has it: the point of the A/B is that the
+    STATE PATH is the only difference.
+
+    SUM, NOT MEAN (§4c). Mean-pooling is exactly the collision this
+    change exists to remove: with no positional encoding, three
+    identical tokens each attend to three identical keys and come out
+    of the encoder identical to one token attending to itself, so their
+    MEAN is bit-identical to the single token's. `entattn_check.py`
+    measures both and prints the pair.
+
+    Relations. `rel_emb` is Embedding(len(RTYPES)+1, heads) with
+    padding_idx=0, so the "no edge" row is exactly zero and STAYS
+    exactly zero under training (padding_idx zeroes its gradient). That
+    is what makes arm R0 - relations zeroed - degrade to plain
+    self-attention numerically rather than approximately.
+
+    Edge direction: an edge [s, d, t] adds bias to the score of QUERY s
+    attending to KEY d. §2's reverse edges (`blocks` / `blocked_by`)
+    are typed separately precisely because the bias is directed. A
+    repeated (s,d) pair keeps the last type written.
+    """
+
+    def __init__(self, gdim=GDIM, edim=EDIM, cdim=CDIM, d=128, heads=4,
+                 layers=2, ent_layers=2, lstm=True, n_rtypes=len(RTYPES)):
+        # sdim=gdim: the inherited state_in IS glob_in (see the property
+        # below). One Linear, two names, no duplicated parameter.
+        super().__init__(sdim=gdim, cdim=cdim, d=d, heads=heads,
+                         layers=layers, lstm=lstm)
+        self.gdim, self.edim, self.heads = gdim, edim, heads
+        self.n_rtypes, self.ent_layers = n_rtypes, ent_layers
+        self.ent_in = nn.Linear(edim, d)
+        self.rel_emb = nn.Embedding(n_rtypes + 1, heads, padding_idx=0)
+        ent_layer = nn.TransformerEncoderLayer(
+            d, heads, dim_feedforward=256, dropout=0.0, batch_first=True)
+        self.ent_enc = nn.TransformerEncoder(ent_layer, ent_layers)
+        self.pool = nn.Linear(d, d)
+
+    @property
+    def glob_in(self):
+        """§4c's name for the inherited state_in: Linear(GDIM -> d)."""
+        return self.state_in
+
+    def entity_bias(self, rel, mask):
+        """(B,E,E) type indices + (B,E) validity -> (B*heads,E,E) float.
+
+        Padded KEYS get -inf so a padding slot cannot reach any real
+        token. Padded QUERIES are computed and then thrown away by the
+        pool; their rows must not be entirely -inf or softmax returns
+        NaN, which is also why a board with zero entities keeps key 0
+        open.
+        """
+        b, e = mask.shape
+        bias = self.rel_emb(rel)                       # (B,E,E,heads)
+        bias = bias.permute(0, 3, 1, 2)                # (B,heads,E,E)
+        keys = mask.clone()
+        keys[~mask.any(dim=1), 0] = True
+        neg = torch.zeros(b, 1, 1, e, device=bias.device)
+        neg = neg.masked_fill(~keys[:, None, None, :], float("-inf"))
+        return (bias + neg).reshape(b * self.heads, e, e)
+
+    def state_token(self, obs):
+        """EntityObs (batched) -> (B,d) state token."""
+        x = self.ent_in(obs.e)                                   # (B,E,d)
+        y = self.ent_enc(x, mask=self.entity_bias(obs.rel, obs.mask))
+        y = y * obs.mask.unsqueeze(-1)          # padded slots contribute 0
+        return self.glob_in(obs.g) + self.pool(y.sum(dim=1))     # SUM
+
+    def forward(self, obs, cands, mask, hidden=None):
+        return self.from_state_token(self.state_token(obs),
+                                     cands, mask, hidden)
+
+
+def build_net(arch, sdim, cdim, gdim=GDIM, edim=EDIM,
+              n_rtypes=len(RTYPES)):
     if arch == "e0":
         return E0Policy(sdim, cdim)
     if arch == "attn":
         return AttnPolicy(sdim, cdim, lstm=False)
     if arch == "lstmattn":
         return AttnPolicy(sdim, cdim, lstm=True)
+    if arch == "entattn":
+        return EntityAttnPolicy(gdim, edim, cdim, n_rtypes=n_rtypes)
     raise ValueError(f"unknown arch {arch}")
 
 
 class Trainer:
     def __init__(self, ckpt, seed, log_path, sdim=SDIM, cdim=CDIM,
                  shape=0.0, phi_scale=2000.0, arch="e0",
-                 desperation=0.0):
+                 desperation=0.0, gdim=GDIM, edim=EDIM, emax=EMAX,
+                 n_rtypes=len(RTYPES), r0=False):
         torch.manual_seed(seed)
         self.sdim, self.cdim = sdim, cdim
+        # v6 state path; unused (and unvalidated) by the v1-v5 arches
+        self.gdim, self.edim, self.emax = gdim, edim, emax
+        self.n_rtypes = n_rtypes
+        self.entity = (arch == "entattn")
+        # R0 ablation arm: relations dropped on arrival, so the bias is
+        # the all-zero padding_idx row and the entity encoder is plain
+        # self-attention. Recorded in the ckpt because an R0 net
+        # fine-tuned with relations live is exactly the confound R0
+        # exists to remove.
+        self.r0 = r0
         # C2a potential-based shaping: r'_t = r_t + shape*(GAMMA*Φ_{t+1}-Φ_t)
         # with Φ = tanh(raw_phi/phi_scale) and Φ(terminal) = 0 (policy-
         # invariant, Ng et al. 1999). shape=0 reproduces Phase 3/4 exactly.
         self.shape, self.phi_scale = shape, phi_scale
         self.arch = arch
-        self.recurrent = (arch == "lstmattn")
+        self.recurrent = arch in ("lstmattn", "entattn")
         self.hidden = None          # rollout hidden state (recurrent only)
         # C7 emergence: "I can't win now - try something." Training-time
         # sampling temperature scales with how LOSING the value head says
@@ -147,7 +312,7 @@ class Trainer:
         # logp is stored under the ACTUAL (tempered) sampling
         # distribution; PPO's ratio does the off-policy correction.
         self.desperation = desperation
-        self.net = build_net(arch, sdim, cdim)
+        self.net = build_net(arch, sdim, cdim, gdim, edim, n_rtypes)
         self.opt = torch.optim.Adam(self.net.parameters(), lr=LR)
         self.ckpt = ckpt
         self.log_path = log_path
@@ -159,6 +324,7 @@ class Trainer:
             if ck_arch != arch:
                 raise RuntimeError(
                     f"ckpt arch {ck_arch} != requested {arch}")
+            self._check_ckpt_dims(data, ckpt)
             self.net.load_state_dict(data["net"])
             self.opt.load_state_dict(data["opt"])
             self.episodes_seen = data.get("episodes", 0)
@@ -170,13 +336,108 @@ class Trainer:
         self.ep_start = 0      # index in buf where current episode began
         self.completed = []    # per finished episode: (start, end, reward)
 
-    def act(self, state, cands, sample, phi=0.0, session=None):
+    def dims(self):
+        """What the vectors MEAN, as opposed to how big the buffers are.
+
+        Written into every checkpoint so a load that would silently
+        reinterpret them dies here instead of mispredicting for a run.
+        emax/max_k are buffers and deliberately absent.
+        """
+        d = {"sdim": self.sdim, "cdim": self.cdim}
+        if self.entity:
+            d.update({"gdim": self.gdim, "edim": self.edim,
+                      "rtypes": self.n_rtypes, "r0": self.r0})
+            del d["sdim"]           # entattn has no flat state to mean
+        return d
+
+    def _check_ckpt_dims(self, data, path):
+        have = data.get("dims")
+        if have is None:
+            # v1-v5 checkpoints predate this field. They can still be
+            # loaded by their own arch; say out loud that the check did
+            # not run rather than implying it passed.
+            print(f"WARN: {path} has no dims record - loading unchecked "
+                  f"(pre-v6 checkpoint)", flush=True)
+            return
+        want = self.dims()
+        bad = [f"{k}: ckpt {have.get(k)} != server {v}"
+               for k, v in want.items() if have.get(k) != v]
+        if bad:
+            raise RuntimeError(
+                "CHECKPOINT DIM MISMATCH loading %s\n  %s\nThe weights "
+                "would load and then mean something else. Match the "
+                "flags (--gdim/--edim/--cdim/--r0) or start from a "
+                "fresh checkpoint." % (path, "\n  ".join(bad)))
+
+    def _entity_obs(self, g, ents, rels):
+        """Wire lists -> a batch-1 EntityObs, validating as it goes.
+
+        Every raise here is a drift the handshake cannot catch: a row
+        that changed width mid-run, an edge indexing a padding slot, a
+        relation type outside RTYPES.
+        """
+        if len(g) != self.gdim:
+            raise ValueError(
+                "consult globals carried %d dims, server expects GDIM=%d "
+                "- start the server with --gdim %d or fix the emitter"
+                % (len(g), self.gdim, len(g)))
+        n = len(ents)
+        if n > self.emax:
+            # the k > MAX_K guard, extended to entities: without it the
+            # assignment below fails with a shape error two frames down
+            raise ValueError(
+                "consult carried %d entities, buffer is %d - start the "
+                "server with --emax >= %d (EMAX is a buffer size: "
+                "raising it changes no weights)" % (n, self.emax, n))
+        e = torch.zeros(1, self.emax, self.edim)
+        for i, row in enumerate(ents):
+            if len(row) != self.edim:
+                raise ValueError(
+                    "entity row %d carried %d dims, server expects "
+                    "EDIM=%d" % (i, len(row), self.edim))
+            e[0, i] = torch.tensor(row)
+        m = torch.zeros(1, self.emax, dtype=torch.bool)
+        m[0, :n] = True
+        rel = torch.zeros(1, self.emax, self.emax, dtype=torch.long)
+        if not self.r0:
+            for edge in rels:
+                if len(edge) != 3:
+                    raise ValueError(
+                        "relation edge %r is not [src,dst,type]" % (edge,))
+                if any(float(x) != int(x) for x in edge):
+                    # a JSON float here means the emitter formatted the
+                    # indices with %.4f; int() would truncate silently
+                    raise ValueError(
+                        "relation edge %r is not integral - src/dst/type "
+                        "are token indices, not floats" % (edge,))
+                src, dst, ty = int(edge[0]), int(edge[1]), int(edge[2])
+                if not (0 <= src < n and 0 <= dst < n):
+                    raise ValueError(
+                        "relation edge [%d,%d,%d] indexes outside the %d "
+                        "emitted entities - the edge list and the token "
+                        "order have drifted apart" % (src, dst, ty, n))
+                if not (0 <= ty < self.n_rtypes):
+                    raise ValueError(
+                        "relation type %d is outside RTYPES (0..%d) - "
+                        "driver and server disagree about the relation "
+                        "vocabulary" % (ty, self.n_rtypes - 1))
+                rel[0, src, dst] = ty + 1
+        return EntityObs(torch.tensor(g, dtype=torch.float32).unsqueeze(0),
+                         e, m, rel)
+
+    def act(self, state, cands, sample, phi=0.0, session=None, ent=None):
         # session is None for the single-connection path (unchanged
         # behaviour); with --threads N every connection passes its own
         # Session so trajectories and LSTM memory never interleave
         sink = self if session is None else session
         with torch.no_grad():
-            s = torch.tensor(state).unsqueeze(0)
+            if self.entity:
+                # ent = (globals, entity rows, relation edge list)
+                s = self._entity_obs(*ent)      # batch-1 EntityObs
+                store = s[0]                    # per-step, no batch dim
+            else:
+                s = torch.tensor(state).unsqueeze(0)
+                store = s[0]
             k = len(cands)
             if k > MAX_K:
                 # Without this the assignment below fails with a tensor
@@ -210,7 +471,7 @@ class Trainer:
                 a = int(dist.sample())
                 import math
                 (self.buf if session is None else session.pending).append(
-                    (s[0], c[0], m[0], a,
+                    (store, c[0], m[0], a,
                                  float(dist.log_prob(torch.tensor(a))),
                                  float(value[0]),
                                  math.tanh(phi / self.phi_scale),
@@ -244,7 +505,8 @@ class Trainer:
         if not self.buf:
             self.completed = []
             return
-        states = torch.stack([b[0] for b in self.buf])
+        states = (EntityObs.stack([b[0] for b in self.buf]) if self.entity
+                  else torch.stack([b[0] for b in self.buf]))
         cands = torch.stack([b[1] for b in self.buf])
         masks = torch.stack([b[2] for b in self.buf])
         actions = torch.tensor([b[3] for b in self.buf])
@@ -376,7 +638,8 @@ class Trainer:
                         "opt": self.opt.state_dict(),
                         "episodes": self.episodes_seen,
                         "updates": self.updates,
-                        "arch": self.arch}, tmp)
+                        "arch": self.arch,
+                        "dims": self.dims()}, tmp)
             os.replace(tmp, self.ckpt)
 
 
@@ -417,6 +680,90 @@ def _record(wait, held):
               f"|wait_share={w / (w + h):.1%}", flush=True)
 
 
+def check_hello(msg, trainer):
+    """Reject a driver whose vectors mean something else. Loudly.
+
+    ENCODER-V6-BUILD.md §4b: the failure this codebase keeps hitting is
+    a handshake that SUCCEEDS while the meaning of the vectors has
+    changed, after which the run mispredicts to completion and the
+    numbers look like a result. So every meaning-carrying dim is
+    checked here, and a mismatch raises rather than warns.
+
+    Not checked for entattn: `sdim`. The flat state vector is not read
+    by this arch, so enforcing its width would fail runs over a field
+    that carries no meaning. cdim IS checked - the candidate path is
+    untouched by v6 and still reads it.
+    """
+    hs, hc = msg.get("sdim"), msg.get("cdim")
+    hg, he = msg.get("gdim"), msg.get("edim")
+    hm, hr = msg.get("emax"), msg.get("rtypes")
+    driver_v6 = any(x is not None for x in (hg, he, hm, hr))
+    if trainer.entity and not driver_v6:
+        raise RuntimeError(
+            "HANDSHAKE MISMATCH: server is --arch entattn (entity "
+            "tokens + relations) but the driver advertised no "
+            "gdim/edim/emax/rtypes, i.e. it is emitting a flat v1-v5 "
+            "state. Run the driver with -Drl.encoderV=6 or the server "
+            "with --arch lstmattn.")
+    if driver_v6 and not trainer.entity:
+        raise RuntimeError(
+            "HANDSHAKE MISMATCH: driver advertised v6 entity tokens "
+            "(gdim=%s edim=%s emax=%s rtypes=%s) but the server is "
+            "--arch %s, which reads a flat state vector. Start the "
+            "server with --arch entattn." % (hg, he, hm, hr, trainer.arch))
+    if not trainer.entity:
+        if hs is not None and (hs != trainer.sdim or hc != trainer.cdim):
+            raise RuntimeError(
+                f"dim mismatch: driver {hs}/{hc} vs server "
+                f"{trainer.sdim}/{trainer.cdim}")
+        return
+    missing = [k for k in ("gdim", "edim", "emax", "rtypes")
+               if msg.get(k) is None]
+    if missing:
+        raise RuntimeError(
+            "HANDSHAKE MISMATCH: v6 hello is missing %s - all four of "
+            "gdim/edim/emax/rtypes are required so the server can "
+            "prove the vectors mean what it thinks" % ", ".join(missing))
+    bad = []
+    if hg != trainer.gdim:
+        bad.append(f"gdim: driver {hg} vs server {trainer.gdim}")
+    if he != trainer.edim:
+        bad.append(f"edim: driver {he} vs server {trainer.edim}")
+    if hr != trainer.n_rtypes:
+        bad.append(f"rtypes: driver {hr} vs server {trainer.n_rtypes} "
+                   f"({', '.join(RTYPES)})")
+    if hc is not None and hc != trainer.cdim:
+        bad.append(f"cdim: driver {hc} vs server {trainer.cdim}")
+    if hm > trainer.emax:
+        # emax is a buffer, so this one is fixable without retraining -
+        # say how, rather than just refusing
+        bad.append(f"emax: driver emits up to {hm} entities, server "
+                   f"buffer is {trainer.emax} - restart with "
+                   f"--emax {hm} (buffer only, no weights change)")
+    if bad:
+        raise RuntimeError("HANDSHAKE MISMATCH:\n  " + "\n  ".join(bad))
+    if hm < trainer.emax:
+        print(f"note: driver emax={hm} < server buffer {trainer.emax} "
+              f"(fine: padded slots are masked)", flush=True)
+    if trainer.r0:
+        print("note: arm R0 - relation edges are DROPPED on arrival",
+              flush=True)
+
+
+def consult_args(msg, trainer):
+    """(state, cands, ent) for trainer.act, per arch."""
+    if not trainer.entity:
+        if "s" not in msg:
+            raise RuntimeError(
+                "consult carried no \"s\" field on a flat-state server")
+        return msg["s"], msg["c"], None
+    if "g" not in msg or "e" not in msg:
+        raise RuntimeError(
+            "consult carried no \"g\"/\"e\" fields on an entattn server "
+            "- the driver switched encoder arms mid-connection")
+    return None, msg["c"], (msg["g"], msg["e"], msg.get("r", []))
+
+
 def handle(conn, trainer, lock, session):
     """One connection's message loop. lock is None on the single-threaded
     path, where it degenerates to the original inline loop."""
@@ -430,39 +777,47 @@ def handle(conn, trainer, lock, session):
             t = msg["t"]
             if t == "hello":
                 mode = msg.get("mode", "train")
-                hs, hc = msg.get("sdim"), msg.get("cdim")
-                if hs is not None and (hs != trainer.sdim or hc != trainer.cdim):
-                    raise RuntimeError(
-                        f"dim mismatch: driver {hs}/{hc} vs server "
-                        f"{trainer.sdim}/{trainer.cdim}")
+                try:
+                    check_hello(msg, trainer)
+                except RuntimeError as exc:
+                    # tell the driver before dying, so the failure shows
+                    # up in ITS log too rather than as a bare EOF
+                    f.write(json.dumps({"ok": 0, "err": str(exc)}).encode()
+                            + b"\n")
+                    f.flush()
+                    print("=" * 60 + f"\n{exc}\n" + "=" * 60, flush=True)
+                    raise
                 print(f"conn: mode={mode} episodes={msg.get('episodes')}",
                       flush=True)
                 f.write(b'{"ok":1}\n')
             elif t == "consult":
                 if mode == "random":
                     a = pyrandom.randrange(len(msg["c"]))
-                elif lock is None:
-                    a = trainer.act(msg["s"], msg["c"],
-                                    sample=(mode == "train"),
-                                    phi=msg.get("phi", 0.0))
-                elif LOCK_STATS:
-                    _t0 = time.time()
-                    with lock:
-                        _t1 = time.time()
-                        a = trainer.act(msg["s"], msg["c"],
-                                        sample=(mode == "train"),
-                                        phi=msg.get("phi", 0.0),
-                                        session=session)
-                    _record(_t1 - _t0, time.time() - _t1)
                 else:
-                    # torch inference and the trajectory buffers are the
-                    # shared state; the engine work this serializes
-                    # against is 87% of wall-clock, so one lock is plenty
-                    with lock:
-                        a = trainer.act(msg["s"], msg["c"],
+                    st, cd, ent = consult_args(msg, trainer)
+                    if lock is None:
+                        a = trainer.act(st, cd,
                                         sample=(mode == "train"),
-                                        phi=msg.get("phi", 0.0),
-                                        session=session)
+                                        phi=msg.get("phi", 0.0), ent=ent)
+                    elif LOCK_STATS:
+                        _t0 = time.time()
+                        with lock:
+                            _t1 = time.time()
+                            a = trainer.act(st, cd,
+                                            sample=(mode == "train"),
+                                            phi=msg.get("phi", 0.0),
+                                            session=session, ent=ent)
+                        _record(_t1 - _t0, time.time() - _t1)
+                    else:
+                        # torch inference and the trajectory buffers are
+                        # the shared state; the engine work this
+                        # serializes against is 87% of wall-clock, so one
+                        # lock is plenty
+                        with lock:
+                            a = trainer.act(st, cd,
+                                            sample=(mode == "train"),
+                                            phi=msg.get("phi", 0.0),
+                                            session=session, ent=ent)
                 f.write(f'{{"a":{a}}}\n'.encode())
             elif t == "end":
                 if lock is None:
@@ -538,8 +893,17 @@ if __name__ == "__main__":
                     help="C2a shaping coefficient (0 = terminal-only)")
     ap.add_argument("--phi-scale", type=float, default=2000.0)
     ap.add_argument("--arch", default="e0",
-                    choices=["e0", "attn", "lstmattn"],
-                    help="C6: net architecture")
+                    choices=["e0", "attn", "lstmattn", "entattn"],
+                    help="C6: net architecture (entattn = encoder v6)")
+    ap.add_argument("--gdim", type=int, default=GDIM,
+                    help="v6 globals width (meaning, not a buffer)")
+    ap.add_argument("--edim", type=int, default=EDIM,
+                    help="v6 entity token width (meaning, not a buffer)")
+    ap.add_argument("--emax", type=int, default=EMAX,
+                    help="v6 entity buffer; raising it changes no weights")
+    ap.add_argument("--r0", action="store_true",
+                    help="ablation arm R0: drop every relation edge, so "
+                         "the entity encoder is plain self-attention")
     ap.add_argument("--lr", type=float, default=None,
                     help="override LR (default: LR constant; 3e-4 was "
                          "tuned for the 43k E0 net and is hot for the "
@@ -563,4 +927,6 @@ if __name__ == "__main__":
     serve(args.port, Trainer(args.ckpt, args.seed, args.log,
                              args.sdim, args.cdim,
                              args.shape, args.phi_scale, args.arch,
-                             args.desperation), args.threads)
+                             args.desperation,
+                             args.gdim, args.edim, args.emax,
+                             len(RTYPES), args.r0), args.threads)
