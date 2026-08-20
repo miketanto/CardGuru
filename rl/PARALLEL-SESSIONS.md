@@ -27,7 +27,7 @@ containers, so this is fine **provided each rebuilds its own
 | **C · second seed** | docs + artifacts only | yes | independent |
 | **D · k-turn reference** | `CombatMath.java`, new doc | yes (validation) | independent; unblocks *everything* being measurable |
 
-Branches, pre-created off `bb1e3a7`:
+Branches, pre-created off `0d2eef6` (the commit that added this file):
 
 ```
 claude/v6-entity-emission     (A)
