@@ -437,6 +437,69 @@ says, and it says it about one position on one seed.
 
 ---
 
+## 6c. Is the encoding adequate? Two answers, and their order is the point
+
+Raised as "do we have the ability to represent the state so the model can
+learn the right things" — the sharpest question asked of this work, and
+the study answers it in a way that reorders §8.
+
+**The board encoding is ten scalars.** `encodeState` runs one loop over
+every permanent and accumulates: creature COUNT, total POWER, total
+TOUGHNESS per side, plus four land counts. There are no per-creature
+slots anywhere in the state. On the W0Base body pool:
+
+| board size | distinct boards | distinct state encodings | share an encoding |
+|---|---|---|---|
+| 3 | 84 | 34 | 86% |
+| 4 | 210 | 55 | 93% |
+| 5 | 462 | 81 | 97% |
+
+`{2/2+2/2+3/3}`, `{2/2+3/1+2/4}`, `{2/2+2/3+3/2}`, `{3/1+2/3+2/3}`,
+`{2/3+3/3+2/1}` and `{3/2+2/4+2/1}` are one vector to the net.
+
+**And it provably does not matter for anything measured here.** The
+reference's preference is a LINEAR function of three candidate features:
+
+```
+attackerScore = 2*dealt + 3*theirValueKilled - 3*myValueLost
+              = 40*c[6] + 60*c[8]            - 60*c[10]
+```
+
+Verified numerically: over 2699 options in 400 random positions the score
+reconstructs from the candidate vector with **0 mismatches**, and the
+argmax is recovered **from the candidates alone in 400/400 positions**,
+with the state discarded entirely. The same holds for the CA reference,
+which reads `c[17]`/`c[18]`.
+
+Two consequences, and neither is optional reading:
+
+1. **No attack error measured in this study is a representation
+   failure.** A single linear layer over features the net is handed
+   directly reproduces the reference exactly. v5 failing COMMIT is a
+   learning or objective failure, full stop. This is what the afterstate
+   formulation BOUGHT: `CombatMath` does the combat arithmetic and the
+   candidate carries the consequence, so the lossy board summary is
+   routed around.
+2. **A supervised probe of "can this architecture represent the right
+   answer" would be near-vacuous** and is not worth running. The question
+   it would ask is already answered analytically above.
+
+**The lossiness becomes binding the moment the objective stops being one
+combat deep.** A k-turn value depends on WHICH creatures survive, not how
+much total power does; on whether the hand can rebuild (we encode hand
+SIZE only); on which of their specific bodies threaten the crack-back.
+The v5 candidate is aggregate there too — `retainedBodies` /
+`retainedPower` / `retainedToughness`, not a multiset.
+
+So the objective and the state are matched to each other and both are one
+combat deep. Fixing the encoding alone buys nothing the instrument can
+see; fixing the objective alone makes the encoding the constraint
+immediately. **They are one piece of work, not two**, and the k-turn
+reference has to come first because it is what makes a better encoding
+measurable.
+
+---
+
 ## 7. Confounds, named here rather than in chat
 
 **The reference is biased toward attacking.** `attackerScore` is one
@@ -498,6 +561,11 @@ slightly better than they are.
   candidates but per-creature credit would separate them. Until then
   "joint attacks do not help" is not separated from "the credit change
   hurt".
+- **The k-turn reference and a per-creature board encoding, together.**
+  §6c: neither is worth doing alone. The encoding wants per-creature
+  slots or a set encoder over creatures (so it generalises past a fixed
+  pool) rather than more scalars, and the reference has to come first
+  because it is what makes the encoding measurable.
 - **The overshoot is the live problem.** v5 sends .674 where its own
   reference wants .399, and the CA reference wants .346. Nothing in the
   terminal reward prices an empty board, and `forAttackSet` advertises
