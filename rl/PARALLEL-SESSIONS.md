@@ -23,7 +23,7 @@ containers, so this is fine **provided each rebuilds its own
 | stream | owns | needs engine? | blocks / blocked by |
 |---|---|---|---|
 | **A · entity emission** | `StateEncoder.java`, new `EntityView.java` | yes | blocks C6-wire; nothing blocks it |
-| **B · the network** | `policy_server.py` | **no** | merges with A at wire-up |
+| **B · the network** | `policy_server.py` | **no** | PRIORITY; self-verifying, lands before A |
 | **C · second seed** | docs + artifacts only | yes | independent |
 | **D · k-turn reference** | `CombatMath.java`, new doc | yes (validation) | independent; unblocks *everything* being measurable |
 
@@ -91,48 +91,94 @@ block-optimality CANNOT improve from a state change. Do not report them
 as evidence for this work.
 ```
 
-## Prompt · Stream B — the network, no engine required
+## Prompt · Stream B — the network (priority; no engine required)
 
 ```
 Repo: miketanto/CardGuru, branch claude/v6-network
 (develop and push there; never push to phase-5).
 
-Read rl/HANDOFF-ENCODER-V6.md and rl/ENCODER-V6-BUILD.md §3 and §4c.
+Read rl/HANDOFF-ENCODER-V6.md for the state of the world, then
+rl/ENCODER-V6-BUILD.md §0, §1, §2, §3 and §4c. Read §0 twice.
 
-YOU DO NOT NEED THE XMAGE ENGINE. This stream is pure PyTorch and runs
-against synthetic tensors, so skip the 15-minute rebuild entirely —
-`pip install torch` is all you need.
+YOU DO NOT NEED THE XMAGE ENGINE. This stream is pure PyTorch against
+synthetic tensors, so skip the ~15-minute mage rebuild entirely.
+`pip install torch` is the whole setup. You can finish and verify this
+work before any Java exists.
+
+WHY THIS EXISTS, in one paragraph. The agent's entire view of a Magic
+battlefield is six scalars — creature count, total power, total
+toughness, per side. On the real card pool that makes 86% of
+three-creature boards and 97% of five-creature boards share an encoding
+with a DIFFERENT board: {2/2+2/2+3/3} and {3/1+2/3+2/3} are byte
+identical to the net. You are building the half of the network that can
+tell them apart.
 
 YOUR TASK: build EntityAttnPolicy in rl/policy_server.py, selected by
---arch entattn, to the shapes in §3:
+--arch entattn, plus the server side of the wire protocol, plus tests.
 
-  ent_in    Linear(EDIM=48 -> d)
-  rel_emb   Embedding(len(RTYPES)+1, heads)  scattered into a
-            (B, heads, EMAX, EMAX) additive attention bias, reshaped to
-            (B*heads, E, E) for TransformerEncoder's mask argument
-  ent_enc   TransformerEncoder(d, heads=4, layers=2)
-  pool      MASKED SUM over entity tokens -> Linear(d -> d)
-  state_tok = glob_in(globals) + pool(entities)
+1. THE MODULE, to the shapes in §3:
 
-From state_tok onward the existing AttnPolicy path is UNCHANGED — LSTM
-cell, cat with candidate tokens, encoder, scorer, value head. Do not
-alter the candidate path; it is already correct and is not what is
-missing.
+     ent_in    Linear(EDIM=48 -> d)
+     rel_emb   Embedding(len(RTYPES)+1, heads), scattered into a
+               (B, heads, EMAX, EMAX) additive attention bias and
+               reshaped to (B*heads, E, E) for TransformerEncoder's
+               `mask` argument
+     ent_enc   TransformerEncoder(d, heads=4, layers=2)
+     pool      MASKED SUM over entity tokens -> Linear(d -> d)
+     glob_in   Linear(GDIM=16 -> d)
+     state_tok = glob_in(globals) + pool(entities)
 
-SUM, NOT MEAN. Mean-pooling one 2/2 and three 2/2s gives the identical
-vector — that is the exact bug this whole effort exists to fix, rebuilt
-with extra steps. Write a unit test that asserts sum-pooling
-distinguishes those two boards.
+   From state_tok onward the existing AttnPolicy path is UNCHANGED:
+   LSTMCell, cat([state_tok, cand_tokens]), TransformerEncoder, scorer
+   off the candidate positions, value head off position 0. DO NOT alter
+   the candidate path. It is already correct and is not what is missing
+   — see §0.
 
-Also: the --edim/--emax/--gdim args, the existing k > MAX_K guard
-extended to entities, dims recorded in the checkpoint so a mismatched
-load fails loudly at handshake rather than silently mispredicting, and
-an all-zero relation edge list must degrade EXACTLY to plain
-self-attention (that is arm R0, and it must be verified by test, not by
-argument).
+2. SUM, NOT MEAN. Mean-pooling one 2/2 and three 2/2s produces the
+   identical vector, which is the exact bug this entire effort exists to
+   fix, rebuilt with extra steps. This is the single easiest way to
+   build the whole thing and fix nothing.
 
-DO NOT touch any Java. Stream A owns the emission side. §4b/§4c is the
-contract between you.
+3. THE WIRE, server side. Consults arrive as
+     {"t":"consult","g":[...],"e":[[...],...],"r":[[src,dst,type],...],
+      "c":[[...],...],"phi":f}
+   and the hello advertises gdim/edim/emax/rtypes beside the existing
+   sdim/cdim. Validate at handshake and FAIL LOUDLY on a mismatch — the
+   failure this codebase keeps hitting is a handshake that succeeds
+   while the meaning of the vectors has changed, and then silently
+   mispredicts for a whole run. Extend the existing k > MAX_K guard to
+   entities, and record all dims in the checkpoint so a mismatched load
+   dies at load rather than at inference.
+
+4. TESTS, committed and runnable, in the spirit of
+   rl/xmage-src/CombatMathCheck.java (an argument is not a check):
+   - POOLING: a synthetic board of one 2/2 versus three 2/2s must give
+     DIFFERENT state embeddings. Assert it. This is the whole point.
+   - PERMUTATION: shuffling entity rows (with the relation indices
+     permuted to match) must give the same embedding to float tolerance.
+   - R0 DEGRADATION: an all-zero relation edge list must produce output
+     numerically identical to plain self-attention with no bias term.
+     R0 is a required ablation arm, so verify it rather than asserting
+     it — without it we cannot separate "entity rows helped" from
+     "relations helped".
+   - MASKING: padded entity slots must not change any output.
+   - LOOPBACK: a synthetic client that opens a socket, sends a hello and
+     a consult with fabricated entities and relations, and gets an
+     action index back. This is what makes the wire-up with stream A a
+     ten-minute job instead of a debugging session.
+
+WHAT YOU MUST NOT DO. Do not touch any Java — stream A owns the emission
+side, and §4b/§4c of the build plan is the contract between you. Do not
+change the wire format unilaterally; if it needs to change, say so.
+
+GROUND RULES: §6 of rl/HANDOFF-ATTACK-JOINT.md and §6 of the new
+handoff. The one that bites hardest here is §0 of the build plan:
+attack- and block-optimality CANNOT improve from a state-path change,
+because the reference's answer is a linear function of three candidate
+features and is recovered from candidates alone in 400/400 positions
+with the state discarded. If you find yourself reporting better audit
+numbers, that is a bug to find, not a result to write up. Your gate is
+the pooling test, not the agent's win rate.
 ```
 
 ## Prompt · Stream C — does the v5 result hold on a second seed
