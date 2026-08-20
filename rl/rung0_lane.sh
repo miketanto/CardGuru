@@ -60,6 +60,20 @@ FEATS=$RL/e2_features.tsv
 ENC=${R0_ENCODER_V:-2}
 if [ "$ENC" = "1" ]; then SDIM=24; CDIM=91; else SDIM=32; CDIM=94; fi
 ENCFLAGS="-Drl.encoderV=$ENC -Drl.blockAudit=true"
+# v6 replaces the flat state with entity tokens, so the ARCH changes too
+# (ENCODER-V6-BUILD.md §4c/§4e). Everything else about the lane is
+# identical on purpose: same opponent, same decks, same budget, same
+# candidate width - the state path is the only thing that moves.
+# R0_RELATIONS=0 selects the ablation arm (relations dropped), which is
+# what separates "entity rows helped" from "relations helped".
+ARCH=lstmattn
+V6FLAGS=""
+if [ "$ENC" -ge 6 ] 2>/dev/null; then
+    ARCH=entattn
+    V6FLAGS="--gdim 16 --edim 48 --emax ${R0_EMAX:-48}"
+    [ "${R0_RELATIONS:-1}" = "0" ] && V6FLAGS="$V6FLAGS --r0"
+    [ -n "${R0_EMAX:-}" ] && ENCFLAGS="$ENCFLAGS -Drl.entityMax=$R0_EMAX"
+fi
 # THE ATTACK AUDIT IS EVAL-ONLY, and that is a cost decision, not a
 # style one. It runs a full minimax attack search per combat on top of
 # the one the policy may already have run, and measured over 100 eval
@@ -90,7 +104,11 @@ pkill -f "[R]LDriverServer" 2>/dev/null
 sleep 2
 
 INIT=$OUT/init.pt
-python3 $RL/p10_init_net.py --out $INIT --seed $((10 + SEED)) --sdim $SDIM --cdim $CDIM 2>/dev/null | tail -1
+INITEXTRA=""
+[ "$ARCH" = "entattn" ] && INITEXTRA="--gdim 16 --edim 48"
+[ "${R0_RELATIONS:-1}" = "0" ] && [ "$ARCH" = "entattn" ] && INITEXTRA="$INITEXTRA --r0"
+python3 $RL/p10_init_net.py --out $INIT --seed $((10 + SEED)) --sdim $SDIM \
+    --cdim $CDIM --arch $ARCH $INITEXTRA 2>/dev/null | tail -1
 CKPT=$OUT/agent.pt
 [ -s $CKPT ] || cp $INIT $CKPT
 
@@ -100,8 +118,8 @@ CKPT=$OUT/agent.pt
 start_server() {   # $1 extra-flags
     pkill -f "policy_serve[r].py --port $PORT" 2>/dev/null
     RL_TORCH_THREADS=1 setsid nohup python3 $RL/policy_server.py \
-        --port $PORT --ckpt $CKPT --seed $SEED --sdim $SDIM --cdim $CDIM --arch lstmattn \
-        --threads $CONC $SRVEXTRA ${1:-} > $OUT/server.log 2>&1 &
+        --port $PORT --ckpt $CKPT --seed $SEED --sdim $SDIM --cdim $CDIM --arch $ARCH \
+        --threads $CONC $SRVEXTRA $V6FLAGS ${1:-} > $OUT/server.log 2>&1 &
     local t=0
     while [ $t -lt 90 ]; do
         grep -q "policy server" $OUT/server.log 2>/dev/null && return 0

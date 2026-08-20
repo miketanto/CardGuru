@@ -36,6 +36,13 @@ def main():
     ap.add_argument("--arch", default="lstmattn")
     ap.add_argument("--sdim", type=int, default=24)
     ap.add_argument("--cdim", type=int, default=91)
+    # encoder v6 (--arch entattn): the entity/relation widths. They are
+    # MEANING, not buffers, so they go into the checkpoint's dims record
+    # and a server started with different ones refuses to load it.
+    ap.add_argument("--gdim", type=int, default=16)
+    ap.add_argument("--edim", type=int, default=48)
+    ap.add_argument("--r0", action="store_true",
+                    help="mint the ablation arm's init (relations dropped)")
     args = ap.parse_args()
 
     if os.path.exists(args.out):
@@ -43,11 +50,20 @@ def main():
         return
     ps = load_policy_server()
     torch.manual_seed(args.seed)
-    net = ps.build_net(args.arch, args.sdim, args.cdim)
+    net = ps.build_net(args.arch, args.sdim, args.cdim, args.gdim, args.edim,
+                       len(ps.RTYPES))
     opt = torch.optim.Adam(net.parameters(), lr=ps.LR)
+    # the dims record Trainer._check_ckpt_dims validates on load: without
+    # it the server prints "loading unchecked" and a mismatched arm would
+    # get a whole run before anyone noticed
+    dims = ({"gdim": args.gdim, "edim": args.edim, "cdim": args.cdim,
+             "rtypes": len(ps.RTYPES), "r0": args.r0}
+            if args.arch == "entattn"
+            else {"sdim": args.sdim, "cdim": args.cdim})
     tmp = args.out + ".tmp"
     torch.save({"net": net.state_dict(), "opt": opt.state_dict(),
-                "episodes": 0, "updates": 0, "arch": args.arch}, tmp)
+                "episodes": 0, "updates": 0, "arch": args.arch,
+                "dims": dims}, tmp)
     os.replace(tmp, args.out)
     n = sum(p.numel() for p in net.parameters())
     print(f"P10INIT|out={args.out}|arch={args.arch}|seed={args.seed}"

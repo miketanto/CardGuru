@@ -321,6 +321,25 @@ public class EpisodeRunner {
             fallbacks.merge("attackOpportunities", (int) rlAgent.attackOpportunities, Integer::sum);
             fallbacks.merge("attackRefDeclared", (int) rlAgent.attackRefDeclared, Integer::sum);
             fallbacks.merge("attackRefDeclaredCA", (int) rlAgent.attackRefDeclaredCA, Integer::sum);
+            // v6 emission. entityTrunc is board state the agent could
+            // NOT see because it overflowed the EMAX buffer, and EMAX is
+            // a buffer rather than a meaning - so this is the number
+            // that says whether 24 slots was the right guess, and it is
+            // reported rather than left to be discovered later.
+            //
+            // PUT, not merge: these are STATIC counters on the encoder
+            // (it has no instance) and are already cumulative over the
+            // whole job across all game threads. Merging them per
+            // episode would sum a running total into itself, and
+            // entityMaxSeen is a max rather than a sum in any case. The
+            // last write wins and equals the job total.
+            if (StateEncoder.ENCODER_V >= 6) {
+                fallbacks.put("entityConsults", (int) StateEncoder.entityConsults);
+                fallbacks.put("entityTrunc", (int) StateEncoder.entityTrunc);
+                fallbacks.put("entityDropped", (int) StateEncoder.entityDropped);
+                fallbacks.put("entityMaxSeen", (int) StateEncoder.entityMaxSeen);
+                fallbacks.put("entityUnknown", (int) StateEncoder.entityUnknown);
+            }
             // cost, in milliseconds, so "measure the cost per combat" is a
             // measurement and not an assurance. Policy search and audit
             // search are separate: the audit is an instrument and would

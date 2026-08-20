@@ -54,7 +54,15 @@ MAX_K = 40                   # candidate buffer; --max-k overrides
 # encoder, whose action space is whole assignments rather than cards.
 
 # ---- encoder v6 (entity tokens + relations), ENCODER-V6-BUILD.md §1-§3 ----
-GDIM, EDIM, EMAX = 16, 48, 24    # --gdim/--edim/--emax override
+GDIM, EDIM = 16, 48             # --gdim/--edim override
+# EMAX was 24 in the build plan, which was a guess made before
+# anything had been emitted. MEASURED on 40 rung-0 games: 458 of
+# 1944 consults (23.6%) carried more than 24 entities and the
+# largest board was 45, so 24 blinded the agent to a quarter of
+# its own consults. 48 covers that run with room; the driver
+# reports entityTrunc every job, so if it ever bites again it
+# says so rather than degrading quietly.
+EMAX = 48                       # --emax overrides
 # RTYPES is the wire's relation vocabulary (§2). The INDEX IS THE
 # CONTRACT with StateEncoder.encodeRelations: an edge arrives as
 # [src, dst, type] with type an index into this list, so reordering it
@@ -782,7 +790,13 @@ def handle(conn, trainer, lock, session):
                 except RuntimeError as exc:
                     # tell the driver before dying, so the failure shows
                     # up in ITS log too rather than as a bare EOF
-                    f.write(json.dumps({"ok": 0, "err": str(exc)}).encode()
+                    # COMPACT separators: the driver matches on the
+                    # literal "ok":0 and json.dumps' default ", " / ": "
+                    # spacing slipped past it, so the refusal arrived as
+                    # a mid-consult stack trace instead of a clean
+                    # "server refused the handshake"
+                    f.write(json.dumps({"ok": 0, "err": str(exc)},
+                                       separators=(",", ":")).encode()
                             + b"\n")
                     f.flush()
                     print("=" * 60 + f"\n{exc}\n" + "=" * 60, flush=True)

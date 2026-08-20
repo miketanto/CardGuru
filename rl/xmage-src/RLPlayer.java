@@ -165,6 +165,26 @@ public class RLPlayer extends ComputerPlayer {
      *  self-play run carries no such rules. */
     private static final boolean NO_YIELDS = Boolean.getBoolean("rl.noYields");
 
+    /**
+     * ONE consult, on whichever state path the encoder arm selects.
+     *
+     * v1-v5 send the flat 24/32-dim vector; v6 sends entity tokens plus
+     * the relation edge list (ENCODER-V6-BUILD.md §4a/§4b). The
+     * CANDIDATES are identical either way - v6 changes what the agent
+     * sees, never what it can choose - so every call site passes the
+     * same cands it always did and this is the only place that knows
+     * which arm is running.
+     */
+    private int consult(Game game, UUID opp, float[][] cands) {
+        if (StateEncoder.ENCODER_V >= 6) {
+            return policy.choose(
+                    StateEncoder.encodeEntityView(game, playerId, opp),
+                    cands, phi(game));
+        }
+        return policy.choose(StateEncoder.encodeState(game, playerId, opp),
+                cands, phi(game));
+    }
+
     private float phi(Game game) {
         if (!PHI_ENABLED) {
             return 0f;
@@ -360,7 +380,11 @@ public class RLPlayer extends ComputerPlayer {
             return (o == null ? "?" : o.getName()) + "|" + a.getRule();
         }));
 
-        float[] state = StateEncoder.encodeState(game, playerId, opponentId(game));
+        // v6 does not read the flat state at all; only the shadow
+        // teacher still logs it, so do not pay for it otherwise
+        float[] state = (StateEncoder.ENCODER_V >= 6 && shadowOut == null)
+                ? null
+                : StateEncoder.encodeState(game, playerId, opponentId(game));
         float[][] cands = new float[playable.size() + 1][];
         cands[0] = StateEncoder.blank(StateEncoder.T_PASS);
         for (int i = 0; i < playable.size(); i++) {
@@ -384,7 +408,7 @@ public class RLPlayer extends ComputerPlayer {
             shadowLabel(game, playable, state, cands);
         }
         consults++;
-        int pick = policy.choose(state, cands, phi(game));
+        int pick = consult(game, opponentId(game), cands);
         if (pick <= 0 || pick > playable.size()) {
             pass(game);
             setYieldAfterPass(game);
@@ -444,7 +468,6 @@ public class RLPlayer extends ComputerPlayer {
                 return !target.getTargets().isEmpty();
             }
             possible.sort(Comparator.comparing(id -> canonicalName(id, game)));
-            float[] state = StateEncoder.encodeState(game, playerId, opp);
             float[][] cands = new float[possible.size()][];
             for (int i = 0; i < possible.size(); i++) {
                 UUID id = possible.get(i);
@@ -463,7 +486,7 @@ public class RLPlayer extends ComputerPlayer {
                 }
             }
             consults++;
-            int pick = policy.choose(state, cands, phi(game));
+            int pick = consult(game, opp, cands);
             pick = Math.max(0, Math.min(pick, possible.size() - 1));
             target.addTarget(possible.get(pick), source, game);
         }
@@ -512,14 +535,13 @@ public class RLPlayer extends ComputerPlayer {
                 return !target.getTargets().isEmpty();
             }
             possible.sort(Comparator.comparing(MageObject::getName));
-            float[] state = StateEncoder.encodeState(game, playerId, opp);
             float[][] cands = new float[possible.size()][];
             for (int i = 0; i < possible.size(); i++) {
                 cands[i] = StateEncoder.forCard(StateEncoder.T_TARGET,
                         possible.get(i), game);
             }
             consults++;
-            int pick = policy.choose(state, cands, phi(game));
+            int pick = consult(game, opp, cands);
             pick = Math.max(0, Math.min(pick, possible.size() - 1));
             target.addTarget(possible.get(pick).getId(), source, game);
         }
@@ -604,13 +626,12 @@ public class RLPlayer extends ComputerPlayer {
             return;
         }
         for (Permanent creature : avail) {
-            float[] state = StateEncoder.encodeState(game, playerId, defender);
             float[][] cands = {
                 StateEncoder.blank(StateEncoder.T_PASS),
                 StateEncoder.forCombat(StateEncoder.T_ATTACK, creature, game)};
             consults++;
             attackOpportunities++;
-            if (policy.choose(state, cands, phi(game)) == 1) {
+            if (consult(game, defender, cands) == 1) {
                 this.declareAttacker(creature.getId(), defender, game, false);
                 actions++;
                 attacksDeclared++;
@@ -765,9 +786,7 @@ public class RLPlayer extends ComputerPlayer {
                 + "%d distinct subsets, %d after Pareto, %.1fms",
                 avail.size(), theirs.size(), search.options.size(),
                 kept.size(), (System.nanoTime() - t0) / 1e6));
-        int idx = policy.choose(
-                StateEncoder.encodeState(game, playerId, defender),
-                cands, phi(game));
+        int idx = consult(game, defender, cands);
         if (idx < 0 || idx >= kept.size()) {
             return;
         }
@@ -889,7 +908,6 @@ public class RLPlayer extends ComputerPlayer {
             if (can.isEmpty()) {
                 continue;
             }
-            float[] state = StateEncoder.encodeState(game, playerId, opp);
             float[][] cands = new float[can.size() + 1][];
             cands[0] = StateEncoder.blank(StateEncoder.T_PASS);
             for (int i = 0; i < can.size(); i++) {
@@ -897,7 +915,7 @@ public class RLPlayer extends ComputerPlayer {
             }
             consults++;
             blockOpportunities++;
-            int pick = policy.choose(state, cands, phi(game));
+            int pick = consult(game, opp, cands);
             if (pick > 0 && pick <= can.size()) {
                 this.declareBlocker(defendingPlayerId, blocker.getId(),
                         can.get(pick - 1).getId(), game);
@@ -1016,9 +1034,7 @@ public class RLPlayer extends ComputerPlayer {
         log(game, String.format("  [joint] %d attackers, %d blockers, "
                 + "%d distinct outcomes, %d after Pareto",
                 A, B, byOutcome.size(), options.size()));
-        int pick = policy.choose(
-                StateEncoder.encodeState(game, playerId, opponentId(game)),
-                cands, phi(game));
+        int pick = consult(game, opponentId(game), cands);
         if (pick < 0 || pick >= options.size()) {
             return;
         }
