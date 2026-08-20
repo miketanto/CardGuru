@@ -19,7 +19,7 @@ one build:
 | v1–v3 | see `ENCODER-AB-RESULT.md` |
 | v4 | joint BLOCK assignment, outcome-featurized |
 | **v5** | **v4 + joint ATTACK subsets, valued under a best-replying defender** |
-| v6 | not built — `ENCODER-V6-BUILD.md` |
+| v6 | `ENCODER-V6-BUILD.md`. Net + server wire built (§1b); the Java emission side is not |
 
 Committed checkpoints, all 32/94:
 
@@ -49,6 +49,66 @@ Do not re-derive these; they are measured and written up.
   lane row exactly.
 - **The state encoding is provably irrelevant to the current metric**
   (§6c). This is the finding that reorders everything below.
+
+## 1b. Stream B has landed — the server side of the wire is ready
+
+`claude/v6-network`, commit `e2ae6fd`. Steps 3 and 4 of the build plan's
+§7 are done on the **Python side only**: `EntityAttnPolicy`
+(`--arch entattn`), the v6 consult and hello, arm `--r0`, and 23 checks
+in `rl/entattn_check.py` that run with no engine and no Java
+(`python3 rl/entattn_check.py`, ~4 s). Nothing Java was touched;
+`rung0_lane.sh` and friends are untouched too, because the §4e lane
+switch belongs with the wire-up commit. Merge B before writing that
+commit.
+
+**What the server now accepts**, i.e. what `SocketPolicyClient` has to
+emit:
+
+```
+hello   {"t":"hello","mode":..,"episodes":..,"sdim":..,"cdim":94,
+         "gdim":16,"edim":48,"emax":24,"rtypes":6}
+consult {"t":"consult","g":[16],"e":[[48],...],"r":[[s,d,t],...],
+         "c":[[94],...],"phi":f}     ->  {"a":<idx>}
+```
+
+Four details §4b left to the implementation, now fixed by the server —
+`ENCODER-V6-NETWORK.md` §2 is the full list:
+
+1. An edge `[s,d,t]` biases the attention of **query `s` toward key
+   `d`**. The reverse edge is a separate type on purpose.
+2. `t` indexes `RTYPES` in the §2 order (`blocks, blocked_by,
+   attacking_player, targets, controls, attached_to`). **The index is
+   the contract**; append only.
+3. Edges index the **emitted** entities, not the padded buffer. An edge
+   into a padding slot is rejected per consult — that is the
+   order/edge-list drift a handshake cannot catch.
+4. `sdim` is not enforced for `entattn` (nothing reads it); `cdim` is.
+
+**Mismatches die at the handshake, loudly and on both sides**: a v1–v5
+driver against a v6 server, a v6 driver against a flat one, gdim / edim
+/ rtypes / cdim drift, or an `emax` above the server's buffer. The
+server prints the reason and also sends it as `{"ok":0,"err":...}`
+before the connection dies, so it lands in the driver's log too. Note
+that `SocketPolicyClient` currently discards the hello reply — reading
+it is worth the three lines.
+
+Bring the server up and point a driver at it:
+
+```bash
+python3 rl/policy_server.py --port 7960 --arch entattn --cdim 94 \
+    --ckpt /tmp/rl_v6/agent.pt --max-k 64        # add --r0 for arm R0
+```
+
+`--gdim/--edim/--emax` override 16/48/24. `emax` is a buffer like
+`MAX_K`: if emission exceeds 24 entities the handshake says so and names
+the flag, and raising it changes no weights.
+
+**What B did NOT establish**, because it cannot: any audit number, any
+win rate, and the §5b gate itself. B's collision check runs on synthetic
+rows built to §1's layout and shows only that *given* correct rows the
+pooling separates the six 3/7/7 boards (closest pair 0.0049 at token
+scale 6.67, untrained init). The gate is still yours, against real
+emission.
 
 ## 2. The task
 
@@ -153,6 +213,8 @@ support, confounds in the doc not just in chat. This session added one:
 | `rl/ATTACK-JOINT-RESULT.md` | the attack work end to end; §6b the trained A/B, §6c the encoding proof |
 | `rl/ENCODING-DESIGN.md` | LOCM/Hearthstone encodings, the E2 finding, the ByteRL adaptation |
 | `rl/ENCODER-V6-BUILD.md` | **the plan you are executing** |
+| `rl/ENCODER-V6-NETWORK.md` | stream B's result: the wire as implemented (§2 is the contract), the decisions, what the checks cannot show |
+| `rl/entattn_check.py` | 23 checks over the v6 net and wire; no engine, no Java, ~4 s |
 | `rl/artifacts/encoding-*.html` | the diagrams, renderable with the chromium note above |
 | `rl/xmage-src/RLPlayer.java` | `jointAttacks`, `auditAttacks`, `jointBlocks`, `auditBlocks` |
 | `rl/xmage-src/CombatMath.java` | `bestAttack`, `bestDeduped`, the tie-break fix |
