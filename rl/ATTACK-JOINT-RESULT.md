@@ -405,6 +405,29 @@ damage dealt and material killed, and nothing in the terminal reward
 prices the tempo cost of an empty board. That is a hypothesis, not a
 measurement.
 
+### One game, same seed, all three arms
+
+Seed 6001, the project's standard replay seed and the one the committed
+v4 replay uses. Opponent life by turn:
+
+| turn | 5 | 7 | 9 | 11 | 13 | 15 | 17 | 19 | 21 | 27 |
+|---|---|---|---|---|---|---|---|---|---|---|
+| **v5 @1024** | 20 | 18 | 14 | 7 | 3 | **1 → dead** | | | | |
+| v4 control @1024 | 20 | 20 | 20 | 20 | 20 | 20 | 20 | 18 | 12 | **dead** |
+
+v5 attacks from t5 and wins on **t15**, with all seven attack combats and
+its one block scored MATCH. The control holds through t5, t7, t9, t11 and
+t13 — five consecutive `GAP n UNDER` — does not attack until t17, and
+wins on t27. The pre-fix `v4_ck512` replay on the same seed also won on
+t27, after twelve consecutive holds.
+
+Both arms WIN this game; the difference is twelve turns. And the game
+flatters v5 badly — 7/7 MATCH against an aggregate of .649 — so it is an
+illustration of the behaviour change, not evidence of quality. The
+control's own replay shows the other half of the story at t19, a
+`GAP 8 OVER` where it throws two Foot Soldiers and a Unicorn into a trade
+it loses.
+
 **COMMIT is still failed by all three arms.** The position the joint
 decision was designed for — where no creature has a marginal reason to go
 first and the payoff only appears once all three commit — is not fixed by

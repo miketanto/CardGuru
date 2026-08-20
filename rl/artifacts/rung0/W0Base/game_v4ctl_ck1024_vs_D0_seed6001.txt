@@ -1,0 +1,124 @@
+RLGAME|reward=1.0|seed=6001
+t1|Plains (Play Plains)
+t1|Plains ({T}: Add {W}.)
+t3|Plains (Play Plains)
+t3|Glory Seeker
+t5|Silvercoat Lion
+t5|== my combat: life 20-20, creatures 2-0
+t5|  hold    Glory Seeker 2/2
+t5|  [atkaudit] policy (none) (0, dealt 0, lost 0, killed 0, back 0) | ref Glory Seeker 2/2 (4)  GAP 4 UNDER
+t7|Blade of the Sixth Pride
+t7|== my combat: life 20-20, creatures 3-0
+t7|  hold    Glory Seeker 2/2
+t7|  hold    Silvercoat Lion 2/2
+t7|  [atkaudit] policy (none) (0, dealt 0, lost 0, killed 0, back 0) | ref Glory Seeker 2/2 + Silvercoat Lion 2/2 (8)  GAP 8 UNDER
+t9|Blade of the Sixth Pride
+t9|== my combat: life 20-20, creatures 4-1
+t9|  hold    Blade of the Sixth Pride 3/1
+t9|  hold    Glory Seeker 2/2
+t9|  hold    Silvercoat Lion 2/2
+t9|  [atkaudit] policy (none) (0, dealt 0, lost 0, killed 0, back 0) | ref Blade of the Sixth Pride 3/1 + Glory Seeker 2/2 + Silvercoat Lion 2/2 (5)  GAP 5 UNDER
+t10|== incoming: life 20-20, creatures 4-2
+t10|  attacked by Elite Vanguard 2/1
+t10|  [joint] 1 attackers, 4 blockers, 7 distinct outcomes, 4 after Pareto
+t10|  BLOCK   Blade of the Sixth Pride 3/1  <- Elite Vanguard 2/1
+t10|  decline Blade of the Sixth Pride 3/1
+t10|  BLOCK   Glory Seeker 2/2  <- Elite Vanguard 2/1
+t10|  BLOCK   Silvercoat Lion 2/2  <- Elite Vanguard 2/1
+t10|  [audit] policy Blade of the Sixth Pride 3/1->Elite Vanguard 2/1, Blade of the Sixth Pride 3/1->--, Glory Seeker 2/2->Elite Vanguard 2/1, Silvercoat Lion 2/2->Elite Vanguard 2/1 (score 1) | solver Blade of the Sixth Pride 3/1->Elite Vanguard 2/1, Blade of the Sixth Pride 3/1->--, Glory Seeker 2/2->--, Silvercoat Lion 2/2->-- (score 1)  MATCH
+t11|== my combat: life 20-20, creatures 3-1
+t11|  hold    Blade of the Sixth Pride 3/1
+t11|  hold    Glory Seeker 2/2
+t11|  hold    Silvercoat Lion 2/2
+t11|  [atkaudit] policy (none) (0, dealt 0, lost 0, killed 0, back 0) | ref Blade of the Sixth Pride 3/1 + Glory Seeker 2/2 + Silvercoat Lion 2/2 (8)  GAP 8 UNDER
+t11|Plains ({T}: Add {W}.)
+t11|Plains ({T}: Add {W}.)
+t12|== incoming: life 20-20, creatures 3-2
+t12|  attacked by Blade of the Sixth Pride 3/1
+t12|  [joint] 1 attackers, 3 blockers, 5 distinct outcomes, 3 after Pareto
+t12|  decline Blade of the Sixth Pride 3/1
+t12|  BLOCK   Glory Seeker 2/2  <- Blade of the Sixth Pride 3/1
+t12|  BLOCK   Silvercoat Lion 2/2  <- Blade of the Sixth Pride 3/1
+t12|  [audit] policy Blade of the Sixth Pride 3/1->--, Glory Seeker 2/2->Blade of the Sixth Pride 3/1, Silvercoat Lion 2/2->Blade of the Sixth Pride 3/1 (score 6) | solver Blade of the Sixth Pride 3/1->Blade of the Sixth Pride 3/1, Glory Seeker 2/2->--, Silvercoat Lion 2/2->-- (score 6)  MATCH
+t13|Plains (Play Plains)
+t13|Regal Unicorn
+t13|== my combat: life 20-20, creatures 3-1
+t13|  hold    Blade of the Sixth Pride 3/1
+t13|  hold    Silvercoat Lion 2/2
+t13|  [atkaudit] policy (none) (0, dealt 0, lost 0, killed 0, back 0) | ref Blade of the Sixth Pride 3/1 + Silvercoat Lion 2/2 (7)  GAP 7 UNDER
+t14|== incoming: life 20-20, creatures 3-2
+t14|  attacked by Knight of the Keep 3/2
+t14|  [joint] 1 attackers, 3 blockers, 6 distinct outcomes, 3 after Pareto
+t14|  BLOCK   Blade of the Sixth Pride 3/1  <- Knight of the Keep 3/2
+t14|  decline Silvercoat Lion 2/2
+t14|  BLOCK   Regal Unicorn 2/3  <- Knight of the Keep 3/2
+t14|  [audit] policy Blade of the Sixth Pride 3/1->Knight of the Keep 3/2, Silvercoat Lion 2/2->--, Regal Unicorn 2/3->Knight of the Keep 3/2 (score 9) | solver Blade of the Sixth Pride 3/1->Knight of the Keep 3/2, Silvercoat Lion 2/2->--, Regal Unicorn 2/3->-- (score 9)  MATCH
+t15|Plains (Play Plains)
+t15|Foot Soldiers
+t15|== my combat: life 20-20, creatures 3-1
+t15|  hold    Regal Unicorn 2/3
+t15|  hold    Silvercoat Lion 2/2
+t15|  [atkaudit] policy (none) (0, dealt 0, lost 0, killed 0, back 0) | ref (none) (0)  MATCH
+t16|== incoming: life 20-20, creatures 3-3
+t16|  attacked by Regal Unicorn 2/3
+t16|  [joint] 1 attackers, 3 blockers, 6 distinct outcomes, 1 after Pareto
+t16|  decline Silvercoat Lion 2/2
+t16|  BLOCK   Regal Unicorn 2/3  <- Regal Unicorn 2/3
+t16|  BLOCK   Foot Soldiers 2/4  <- Regal Unicorn 2/3
+t16|  [audit] policy Silvercoat Lion 2/2->--, Regal Unicorn 2/3->Regal Unicorn 2/3, Foot Soldiers 2/4->Regal Unicorn 2/3 (score 19) | solver Silvercoat Lion 2/2->--, Regal Unicorn 2/3->Regal Unicorn 2/3, Foot Soldiers 2/4->Regal Unicorn 2/3 (score 19)  MATCH
+t17|Foot Soldiers
+t17|== my combat: life 20-20, creatures 4-2
+t17|  ATTACK  Foot Soldiers 2/4
+t17|  hold    Regal Unicorn 2/3
+t17|  hold    Silvercoat Lion 2/2
+t17|  [atkaudit] policy Foot Soldiers 2/4 (4, dealt 2, lost 0, killed 0, back 0) | ref Foot Soldiers 2/4 (4)  MATCH
+t19|Shu Elite Infantry
+t19|== my combat: life 20-18, creatures 5-4
+t19|  ATTACK  Foot Soldiers 2/4
+t19|  ATTACK  Foot Soldiers 2/4
+t19|  ATTACK  Regal Unicorn 2/3
+t19|  hold    Silvercoat Lion 2/2
+t19|  [atkaudit] policy Foot Soldiers 2/4 + Foot Soldiers 2/4 + Regal Unicorn 2/3 (-8, dealt 2, lost 2, killed 2, back 2) | ref (none) (0)  GAP 8 OVER
+t20|== incoming: life 20-12, creatures 5-5
+t20|  attacked by Blade of the Sixth Pride 3/1, Dromoka Warrior 3/1
+t20|  [joint] 2 attackers, 2 blockers, 5 distinct outcomes, 4 after Pareto
+t20|  BLOCK   Silvercoat Lion 2/2  <- Dromoka Warrior 3/1
+t20|  BLOCK   Shu Elite Infantry 3/3  <- Blade of the Sixth Pride 3/1
+t20|  [audit] policy Silvercoat Lion 2/2->Dromoka Warrior 3/1, Shu Elite Infantry 3/3->Blade of the Sixth Pride 3/1 (score 6) | solver Silvercoat Lion 2/2->Blade of the Sixth Pride 3/1, Shu Elite Infantry 3/3->-- (score 6)  MATCH
+t21|Shu Elite Infantry
+t21|== my combat: life 20-12, creatures 4-3
+t21|  ATTACK  Foot Soldiers 2/4
+t21|  ATTACK  Foot Soldiers 2/4
+t21|  ATTACK  Regal Unicorn 2/3
+t21|  [atkaudit] policy Foot Soldiers 2/4 + Foot Soldiers 2/4 + Regal Unicorn 2/3 (-20, dealt 2, lost 2, killed 1, back 5) | ref (none) (0)  GAP 20 OVER
+t22|== incoming: life 20-8, creatures 3-3
+t22|  attacked by Shu Elite Infantry 3/3
+t22|  [joint] 1 attackers, 1 blockers, 2 distinct outcomes, 2 after Pareto
+t22|  BLOCK   Shu Elite Infantry 3/3  <- Shu Elite Infantry 3/3
+t22|  [audit] policy Shu Elite Infantry 3/3->Shu Elite Infantry 3/3 (score 6) | solver Shu Elite Infantry 3/3->Shu Elite Infantry 3/3 (score 6)  MATCH
+t23|Foot Soldiers
+t23|== my combat: life 20-8, creatures 3-2
+t23|  ATTACK  Foot Soldiers 2/4
+t23|  ATTACK  Foot Soldiers 2/4
+t23|  [atkaudit] policy Foot Soldiers 2/4 + Foot Soldiers 2/4 (-5, dealt 2, lost 1, killed 1, back 2) | ref (none) (0)  GAP 5 OVER
+t25|Knight of the Keep
+t25|Plains ({T}: Add {W}.)
+t25|Elite Vanguard
+t25|== my combat: life 20-4, creatures 5-2
+t25|  ATTACK  Foot Soldiers 2/4
+t25|  ATTACK  Foot Soldiers 2/4
+t25|  ATTACK  Foot Soldiers 2/4
+t25|  [atkaudit] policy Foot Soldiers 2/4 + Foot Soldiers 2/4 + Foot Soldiers 2/4 (25, dealt 2, lost 0, killed 2, back 0) | ref Foot Soldiers 2/4 + Foot Soldiers 2/4 + Foot Soldiers 2/4 (25)  MATCH
+t27|Knight of the Keep
+t27|Plains ({T}: Add {W}.)
+t27|Elite Vanguard
+t27|Plains (Play Plains)
+t27|Plains ({T}: Add {W}.)
+t27|== my combat: life 20-2, creatures 7-1
+t27|  ATTACK  Elite Vanguard 2/1
+t27|  ATTACK  Foot Soldiers 2/4
+t27|  ATTACK  Foot Soldiers 2/4
+t27|  ATTACK  Foot Soldiers 2/4
+t27|  ATTACK  Knight of the Keep 3/2
+t27|  [atkaudit] policy Elite Vanguard 2/1 + Foot Soldiers 2/4 + Foot Soldiers 2/4 + Foot Soldiers 2/4 + Knight of the Keep 3/2 (LETHAL, dealt 11, lost 0, killed 0, back 3) | ref Elite Vanguard 2/1 + Foot Soldiers 2/4 (LETHAL)  MATCH
+RLGAME_END
