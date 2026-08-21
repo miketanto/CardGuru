@@ -349,6 +349,22 @@ public class EpisodeRunner {
                 }
                 fallbacks.merge("tgtChoices",
                         (int) rlAgent.targetCreatureChoices, Integer::sum);
+                fallbacks.merge("tgtChoseAtk",
+                        (int) rlAgent.targetChosenAttacking, Integer::sum);
+                fallbacks.merge("tgtLegalAtk",
+                        (int) rlAgent.targetLegalAttacking, Integer::sum);
+                fallbacks.merge("tgtChoseBlk",
+                        (int) rlAgent.targetChosenBlocking, Integer::sum);
+                fallbacks.merge("tgtLegalBlk",
+                        (int) rlAgent.targetLegalBlocking, Integer::sum);
+                fallbacks.merge("tgtChoseTap",
+                        (int) rlAgent.targetChosenTapped, Integer::sum);
+                fallbacks.merge("tgtLegalTap",
+                        (int) rlAgent.targetLegalTapped, Integer::sum);
+                fallbacks.merge("tgtChoseMaxPow",
+                        (int) rlAgent.targetChosenWasMaxPower, Integer::sum);
+                fallbacks.merge("tgtMaxPowTies",
+                        (int) rlAgent.targetMaxPowerTies, Integer::sum);
             }
             // v6 emission. entityTrunc is board state the agent could
             // NOT see because it overflowed the EMAX buffer, and EMAX is

@@ -1,0 +1,77 @@
+RLGAME|reward=1.0|seed=931003
+t2|Swamp (Play Swamp)
+t4|Swamp (Play Swamp)
+t4|Cabal Evangel
+t6|  KILL    Barony Vampire 3/2   [of 2: Barony Vampire 3/2, Cabal Evangel 2/2]
+t6|Fell (destroy target creature.)
+t6|Swamp (Play Swamp)
+t6|== my combat: life 20-20, creatures 1-0
+t6|  [atkjoint] 1 avail, 0 defenders, 2 distinct subsets, 2 after Pareto, 0.1ms
+t6|  ATTACK  Cabal Evangel 2/2
+t8|Felhide Minotaur
+t8|Swamp (Play Swamp)
+t8|== my combat: life 20-18, creatures 2-1
+t8|  [atkjoint] 1 avail, 1 defenders, 2 distinct subsets, 2 after Pareto, 0.1ms
+t8|  ATTACK  Cabal Evangel 2/2
+t9|== incoming: life 20-16, creatures 2-2
+t9|  attacked by Barony Vampire 3/2
+t9|  [joint] 1 attackers, 1 blockers, 2 distinct outcomes, 2 after Pareto
+t9|  BLOCK   Felhide Minotaur 2/3  <- Barony Vampire 3/2
+t9|  [audit] policy Felhide Minotaur 2/3->Barony Vampire 3/2 (score 6) | solver Felhide Minotaur 2/3->Barony Vampire 3/2 (score 6)  MATCH
+t10|Barony Vampire
+t10|Swamp (Play Swamp)
+t10|== my combat: life 20-16, creatures 2-1
+t10|  [atkjoint] 1 avail, 1 defenders, 2 distinct subsets, 2 after Pareto, 0.1ms
+t10|  ATTACK  Cabal Evangel 2/2
+t11|== incoming: life 20-14, creatures 2-2
+t11|  attacked by Dross Crocodile 5/1
+t11|  [joint] 1 attackers, 1 blockers, 2 distinct outcomes, 2 after Pareto
+t11|  BLOCK   Barony Vampire 3/2  <- Dross Crocodile 5/1
+t11|  [audit] policy Barony Vampire 3/2->Dross Crocodile 5/1 (score 13) | solver Barony Vampire 3/2->Dross Crocodile 5/1 (score 13)  MATCH
+t12|Canal Monitor
+t12|== my combat: life 20-14, creatures 2-1
+t12|  [atkjoint] 1 avail, 1 defenders, 2 distinct subsets, 2 after Pareto, 0.1ms
+t12|  ATTACK  Cabal Evangel 2/2
+t13|== incoming: life 20-12, creatures 2-3
+t13|  attacked by Giant Cockroach 4/2
+t13|  [joint] 1 attackers, 1 blockers, 2 distinct outcomes, 2 after Pareto
+t13|  BLOCK   Canal Monitor 5/3  <- Giant Cockroach 4/2
+t13|  [audit] policy Canal Monitor 5/3->Giant Cockroach 4/2 (score 2) | solver Canal Monitor 5/3->Giant Cockroach 4/2 (score 2)  MATCH
+t14|Barony Vampire
+t14|Swamp (Play Swamp)
+t14|== my combat: life 20-12, creatures 2-2
+t14|  [atkjoint] 1 avail, 2 defenders, 2 distinct subsets, 2 after Pareto, 0.1ms
+t14|  ATTACK  Cabal Evangel 2/2
+t15|== incoming: life 20-10, creatures 2-3
+t15|  attacked by Cabal Evangel 2/2, Giant Cockroach 4/2
+t15|  [joint] 2 attackers, 1 blockers, 3 distinct outcomes, 2 after Pareto
+t15|  BLOCK   Barony Vampire 3/2  <- Giant Cockroach 4/2
+t15|  [audit] policy Barony Vampire 3/2->Giant Cockroach 4/2 (score 11) | solver Barony Vampire 3/2->Giant Cockroach 4/2 (score 11)  MATCH
+t16|  KILL    Cabal Evangel 2/2   [of 3: Cabal Evangel 2/2, Cabal Evangel 2/2, Cabal Evangel 2/2 tap]
+t16|Fell (destroy target creature.)
+t16|Dross Crocodile
+t16|== my combat: life 18-10, creatures 2-1
+t16|  [atkjoint] 1 avail, 0 defenders, 2 distinct subsets, 2 after Pareto, 0.1ms
+t16|  ATTACK  Cabal Evangel 2/2
+t17|== incoming: life 18-8, creatures 2-2
+t17|  attacked by Cabal Evangel 2/2
+t17|  [joint] 1 attackers, 1 blockers, 2 distinct outcomes, 2 after Pareto
+t17|  BLOCK   Dross Crocodile 5/1  <- Cabal Evangel 2/2
+t17|  [audit] policy Dross Crocodile 5/1->Cabal Evangel 2/2 (score -2) | solver Dross Crocodile 5/1->-- (score 0)  GAP 2
+t18|Dross Crocodile
+t18|Dakmor Scorpion
+t18|== my combat: life 18-8, creatures 3-1
+t18|  [atkjoint] 1 avail, 1 defenders, 2 distinct subsets, 2 after Pareto, 0.1ms
+t18|  ATTACK  Cabal Evangel 2/2
+t19|== incoming: life 18-6, creatures 3-1
+t19|  attacked by Giant Cockroach 4/2
+t19|  [joint] 1 attackers, 2 blockers, 4 distinct outcomes, 2 after Pareto
+t19|  BLOCK   Dakmor Scorpion 2/1  <- Giant Cockroach 4/2
+t19|  decline Dross Crocodile 5/1
+t19|  [audit] policy Dakmor Scorpion 2/1->Giant Cockroach 4/2, Dross Crocodile 5/1->-- (score 17) | solver Dakmor Scorpion 2/1->Giant Cockroach 4/2, Dross Crocodile 5/1->-- (score 17)  MATCH
+t20|Swamp (Play Swamp)
+t20|== my combat: life 18-6, creatures 2-0
+t20|  [atkjoint] 2 avail, 0 defenders, 4 distinct subsets, 4 after Pareto, 0.1ms
+t20|  ATTACK  Dross Crocodile 5/1
+t20|  ATTACK  Cabal Evangel 2/2
+RLGAME_END

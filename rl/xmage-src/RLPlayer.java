@@ -153,6 +153,20 @@ public class RLPlayer extends ComputerPlayer {
     public final long[] targetChosenByPower = new long[7];
     public final long[] targetLegalByPower = new long[7];
     public long targetCreatureChoices = 0;
+    /** THE TEMPO HYPOTHESIS, made measurable. A kill can be chosen for
+     *  size (threat assessment) or for what the creature is DOING right
+     *  now - attacking, blocking, or tapped and unable to block back.
+     *  Those are different policies and the power census cannot tell
+     *  them apart, so the same chosen-vs-legal treatment is applied to
+     *  combat status. Same denominators as the power census. */
+    public long targetChosenAttacking = 0, targetLegalAttacking = 0;
+    public long targetChosenBlocking = 0, targetLegalBlocking = 0;
+    public long targetChosenTapped = 0, targetLegalTapped = 0;
+    /** Was the chosen creature the single biggest legal target? The
+     *  power histogram answers "what did it kill"; this answers "did it
+     *  take the largest thing available", which is the sharpest form of
+     *  the threat-assessment question and needs no binning. */
+    public long targetChosenWasMaxPower = 0, targetMaxPowerTies = 0;
 
     /** Attacks declared / creatures that could legally have attacked.
      *  The RATE the whole task is about - the v4 replay holds 12 turns
@@ -218,22 +232,79 @@ public class RLPlayer extends ComputerPlayer {
      *  in the legal set are skipped entirely rather than counted as a
      *  degenerate choice. */
     private void recordTargetChoice(Game game, List<UUID> possible, int pick) {
-        int creatures = 0;
+        int creatures = 0, maxPower = Integer.MIN_VALUE, atMax = 0;
+        StringBuilder opts = new StringBuilder();
         for (UUID id : possible) {
             Permanent p = game.getPermanent(id);
-            if (p != null && p.isCreature(game)) {
-                creatures++;
-                targetLegalByPower[bucket(p.getPower().getValue())]++;
+            if (p == null || !p.isCreature(game)) {
+                continue;
             }
+            creatures++;
+            int pw = p.getPower().getValue();
+            targetLegalByPower[bucket(pw)]++;
+            if (p.isAttacking()) {
+                targetLegalAttacking++;
+            }
+            if (p.getBlocking() > 0) {
+                targetLegalBlocking++;
+            }
+            if (p.isTapped()) {
+                targetLegalTapped++;
+            }
+            if (pw > maxPower) {
+                maxPower = pw;
+                atMax = 1;
+            } else if (pw == maxPower) {
+                atMax++;
+            }
+            if (opts.length() > 0) {
+                opts.append(", ");
+            }
+            opts.append(pt(p, game)).append(status(p));
         }
         if (creatures == 0) {
             return;                 // no creature was targetable; not a
         }                           // threat-assessment decision at all
         Permanent chosen = game.getPermanent(possible.get(pick));
-        if (chosen != null && chosen.isCreature(game)) {
-            targetChosenByPower[bucket(chosen.getPower().getValue())]++;
-            targetCreatureChoices++;
+        if (chosen == null || !chosen.isCreature(game)) {
+            return;
         }
+        int pw = chosen.getPower().getValue();
+        targetChosenByPower[bucket(pw)]++;
+        targetCreatureChoices++;
+        if (chosen.isAttacking()) {
+            targetChosenAttacking++;
+        }
+        if (chosen.getBlocking() > 0) {
+            targetChosenBlocking++;
+        }
+        if (chosen.isTapped()) {
+            targetChosenTapped++;
+        }
+        if (pw == maxPower) {
+            targetChosenWasMaxPower++;
+            if (atMax > 1) {
+                targetMaxPowerTies++;
+            }
+        }
+        log(game, "  KILL    " + pt(chosen, game) + status(chosen)
+                + "   [of " + creatures + ": " + opts + "]");
+    }
+
+    /** Compact combat status, so a transcript line says WHY a kill might
+     *  have been chosen and not only how big it was. */
+    private static String status(Permanent p) {
+        StringBuilder b = new StringBuilder();
+        if (p.isAttacking()) {
+            b.append(" atk");
+        }
+        if (p.getBlocking() > 0) {
+            b.append(" blk");
+        }
+        if (p.isTapped()) {
+            b.append(" tap");
+        }
+        return b.toString();
     }
 
     private static int bucket(int power) {

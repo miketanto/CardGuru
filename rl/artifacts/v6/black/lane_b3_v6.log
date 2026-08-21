@@ -1,0 +1,9 @@
+W3 lane finished at 07:25:22; installing Java
+compiled at 07:25:33
+=== BLACK rung 3 (B3Open), v6 07:25:33 ===
+P10INIT|out=/tmp/rl_b3_v6/init.pt|arch=entattn|seed=10|cdim=94|params=715806
+R0_START|B3Open|seed=0|budget=512|resume_at=0|out=/tmp/rl_b3_v6
+R0|B3Open|s0|trained=0|ck_eps=0|D0=0.0000 [0.000,0.133]|D1=0.0000 [0.000,0.133]|TWIN=0.0000 [0.000,0.133]|blocks=0/0|BLOCKOPT=0/0|gap=0|attacks=0/0|ATKOPT=0/0|ATKOPTCA=0/0|under_over=0/0|turns=12.4
+R0|B3Open|s0|trained=512|ck_eps=512|D0=0.4000 [0.234,0.593]|D1=0.4800 [0.300,0.665]|TWIN=0.6400 [0.445,0.798]|blocks=135/143|BLOCKOPT=103/120|gap=51|attacks=143/156|ATKOPT=95/122|ATKOPTCA=85/122|under_over=0/27|turns=22.6
+R0_DONE|B3Open|s0|trained=512|out=/tmp/rl_b3_v6
+=== BLACK DONE 08:20:52 ===

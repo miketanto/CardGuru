@@ -1,0 +1,6 @@
+=== ARM v5 (v5) on W3Sorc 05:30:08 ===
+P10INIT|out=/tmp/rl_w3_v5/init.pt|arch=lstmattn|seed=10|cdim=94|params=430082
+R0_START|W3Sorc|seed=0|budget=512|resume_at=0|out=/tmp/rl_w3_v5
+R0|W3Sorc|s0|trained=0|ck_eps=0|D0=0.0000 [0.000,0.133]|D1=0.0000 [0.000,0.133]|TWIN=0.0000 [0.000,0.133]|blocks=11/11|BLOCKOPT=11/11|gap=0|attacks=2/4|ATKOPT=3/4|ATKOPTCA=4/4|under_over=1/0|turns=12.4
+R0|W3Sorc|s0|trained=512|ck_eps=512|D0=0.2000 [0.089,0.391]|D1=0.1200 [0.042,0.300]|TWIN=0.0800 [0.022,0.250]|blocks=548/776|BLOCKOPT=214/216|gap=4|attacks=137/2874|ATKOPT=397/590|ATKOPTCA=424/590|under_over=179/10|turns=54.4
+R0_DONE|W3Sorc|s0|trained=512|out=/tmp/rl_w3_v5

@@ -1,0 +1,798 @@
+RLGAME|reward=1.0|seed=931000
+t1|Swamp (Play Swamp)
+t3|Swamp (Play Swamp)
+t3|Cabal Evangel
+t5|Cabal Evangel
+t5|Swamp (Play Swamp)
+t5|== my combat: life 20-20, creatures 2-1
+t5|  [atkjoint] 1 avail, 1 defenders, 2 distinct subsets, 2 after Pareto, 2.7ms
+t5|  ATTACK  Cabal Evangel 2/2
+t6|== incoming: life 20-18, creatures 2-2
+t6|  attacked by Cabal Evangel 2/2
+t6|  [joint] 1 attackers, 1 blockers, 2 distinct outcomes, 2 after Pareto
+t6|  BLOCK   Cabal Evangel 2/2  <- Cabal Evangel 2/2
+t6|  [audit] policy Cabal Evangel 2/2->Cabal Evangel 2/2 (score 4) | solver Cabal Evangel 2/2->Cabal Evangel 2/2 (score 4)  MATCH
+t7|Barony Vampire
+t7|Swamp (Play Swamp)
+t7|== my combat: life 20-18, creatures 2-1
+t7|  [atkjoint] 1 avail, 1 defenders, 2 distinct subsets, 1 after Pareto, 0.1ms
+t7|  hold    Cabal Evangel 2/2
+t8|== incoming: life 20-18, creatures 2-2
+t8|  attacked by Felhide Minotaur 2/3
+t8|  [joint] 1 attackers, 2 blockers, 4 distinct outcomes, 4 after Pareto
+t8|  BLOCK   Cabal Evangel 2/2  <- Felhide Minotaur 2/3
+t8|  BLOCK   Barony Vampire 3/2  <- Felhide Minotaur 2/3
+t8|  [audit] policy Cabal Evangel 2/2->Felhide Minotaur 2/3, Barony Vampire 3/2->Felhide Minotaur 2/3 (score 4) | solver Cabal Evangel 2/2->--, Barony Vampire 3/2->Felhide Minotaur 2/3 (score 4)  MATCH
+t9|Giant Cockroach
+t9|Swamp (Play Swamp)
+t9|== my combat: life 20-18, creatures 2-1
+t9|  [atkjoint] 1 avail, 1 defenders, 2 distinct subsets, 2 after Pareto, 0.1ms
+t9|  ATTACK  Barony Vampire 3/2
+t10|== incoming: life 20-15, creatures 2-2
+t10|  attacked by Felhide Minotaur 2/3
+t10|  [joint] 1 attackers, 1 blockers, 2 distinct outcomes, 2 after Pareto
+t10|  BLOCK   Giant Cockroach 4/2  <- Felhide Minotaur 2/3
+t10|  [audit] policy Giant Cockroach 4/2->Felhide Minotaur 2/3 (score 1) | solver Giant Cockroach 4/2->Felhide Minotaur 2/3 (score 1)  MATCH
+t11|Dakmor Scorpion
+t11|Dakmor Scorpion
+t11|Swamp (Play Swamp)
+t11|== my combat: life 20-15, creatures 3-1
+t11|  [atkjoint] 1 avail, 1 defenders, 2 distinct subsets, 2 after Pareto, 0.1ms
+t11|  ATTACK  Barony Vampire 3/2
+t12|== incoming: life 20-12, creatures 3-2
+t12|  attacked by Giant Cockroach 4/2
+t12|  [joint] 1 attackers, 2 blockers, 3 distinct outcomes, 2 after Pareto
+t12|  BLOCK   Dakmor Scorpion 2/1  <- Giant Cockroach 4/2
+t12|  decline Dakmor Scorpion 2/1
+t12|  [audit] policy Dakmor Scorpion 2/1->Giant Cockroach 4/2, Dakmor Scorpion 2/1->-- (score 17) | solver Dakmor Scorpion 2/1->Giant Cockroach 4/2, Dakmor Scorpion 2/1->-- (score 17)  MATCH
+t13|Dross Crocodile
+t13|== my combat: life 20-12, creatures 3-1
+t13|  [atkjoint] 2 avail, 1 defenders, 4 distinct subsets, 4 after Pareto, 0.2ms
+t13|  ATTACK  Dakmor Scorpion 2/1
+t13|  ATTACK  Barony Vampire 3/2
+t14|== incoming: life 20-7, creatures 3-3
+t14|  attacked by Dross Crocodile 5/1
+t14|  [joint] 1 attackers, 1 blockers, 2 distinct outcomes, 2 after Pareto
+t14|  BLOCK   Dross Crocodile 5/1  <- Dross Crocodile 5/1
+t14|  [audit] policy Dross Crocodile 5/1->Dross Crocodile 5/1 (score 10) | solver Dross Crocodile 5/1->Dross Crocodile 5/1 (score 10)  MATCH
+t15|Dross Crocodile
+t15|== my combat: life 20-7, creatures 3-2
+t15|  [atkjoint] 2 avail, 2 defenders, 4 distinct subsets, 3 after Pareto, 0.2ms
+t15|  ATTACK  Dakmor Scorpion 2/1
+t15|  ATTACK  Barony Vampire 3/2
+t16|== incoming: life 20-2, creatures 1-2
+t16|  attacked by Cabal Evangel 2/2, Dakmor Scorpion 2/1
+t16|  [joint] 2 attackers, 0 blockers, 1 distinct outcomes, 1 after Pareto
+t17|Felhide Minotaur
+t17|== my combat: life 16-2, creatures 2-2
+t17|  [atkjoint] 1 avail, 0 defenders, 2 distinct subsets, 2 after Pareto, 0.1ms
+t17|  ATTACK  Dakmor Scorpion 2/1
+RLGAME_END
+RLGAME|reward=1.0|seed=931001
+t2|Swamp (Play Swamp)
+t4|Swamp (Play Swamp)
+t6|Cabal Evangel
+t6|Swamp (Play Swamp)
+t8|Moriok Reaver
+t8|Swamp (Play Swamp)
+t8|== my combat: life 20-20, creatures 2-0
+t8|  [atkjoint] 1 avail, 0 defenders, 2 distinct subsets, 2 after Pareto, 0.1ms
+t8|  ATTACK  Cabal Evangel 2/2
+t10|Giant Cockroach
+t10|Swamp (Play Swamp)
+t10|== my combat: life 20-18, creatures 3-1
+t10|  [atkjoint] 2 avail, 1 defenders, 4 distinct subsets, 3 after Pareto, 0.1ms
+t10|  ATTACK  Cabal Evangel 2/2
+t10|  ATTACK  Moriok Reaver 3/2
+t11|== incoming: life 20-13, creatures 3-2
+t11|  attacked by Barony Vampire 3/2
+t11|  [joint] 1 attackers, 1 blockers, 2 distinct outcomes, 2 after Pareto
+t11|  BLOCK   Giant Cockroach 4/2  <- Barony Vampire 3/2
+t11|  [audit] policy Giant Cockroach 4/2->Barony Vampire 3/2 (score 3) | solver Giant Cockroach 4/2->Barony Vampire 3/2 (score 3)  MATCH
+t12|Giant Cockroach
+t12|Swamp (Play Swamp)
+t12|== my combat: life 20-13, creatures 3-1
+t12|  [atkjoint] 2 avail, 1 defenders, 4 distinct subsets, 4 after Pareto, 0.2ms
+t12|  ATTACK  Cabal Evangel 2/2
+t12|  ATTACK  Moriok Reaver 3/2
+t13|== incoming: life 20-8, creatures 3-2
+t13|  attacked by Dross Crocodile 5/1
+t13|  [joint] 1 attackers, 1 blockers, 2 distinct outcomes, 2 after Pareto
+t13|  BLOCK   Giant Cockroach 4/2  <- Dross Crocodile 5/1
+t13|  [audit] policy Giant Cockroach 4/2->Dross Crocodile 5/1 (score 10) | solver Giant Cockroach 4/2->Dross Crocodile 5/1 (score 10)  MATCH
+t14|Moriok Reaver
+t14|Swamp (Play Swamp)
+t14|Dross Crocodile
+t14|== my combat: life 20-8, creatures 4-1
+t14|  [atkjoint] 2 avail, 1 defenders, 4 distinct subsets, 2 after Pareto, 0.1ms
+t14|  hold    Cabal Evangel 2/2
+t14|  ATTACK  Moriok Reaver 3/2
+t15|== incoming: life 20-5, creatures 4-2
+t15|  attacked by Canal Monitor 5/3
+t15|  [joint] 1 attackers, 3 blockers, 8 distinct outcomes, 3 after Pareto
+t15|  decline Dross Crocodile 5/1
+t15|  decline Cabal Evangel 2/2
+t15|  BLOCK   Moriok Reaver 3/2  <- Canal Monitor 5/3
+t15|  [audit] policy Dross Crocodile 5/1->--, Cabal Evangel 2/2->--, Moriok Reaver 3/2->Canal Monitor 5/3 (score 19) | solver Dross Crocodile 5/1->--, Cabal Evangel 2/2->--, Moriok Reaver 3/2->Canal Monitor 5/3 (score 19)  MATCH
+t16|  KILL    Canal Monitor 5/3   [of 4: Cabal Evangel 2/2, Canal Monitor 5/3, Dross Crocodile 5/1, Moriok Reaver 3/2]
+t16|Fell (destroy target creature.)
+t16|Swamp (Play Swamp)
+t16|== my combat: life 20-5, creatures 3-0
+t16|  [atkjoint] 3 avail, 0 defenders, 8 distinct subsets, 7 after Pareto, 0.1ms
+t16|  ATTACK  Dross Crocodile 5/1
+t16|  ATTACK  Cabal Evangel 2/2
+t16|  ATTACK  Moriok Reaver 3/2
+RLGAME_END
+RLGAME|reward=-1.0|seed=931002
+t1|Swamp (Play Swamp)
+t3|Swamp (Play Swamp)
+t5|Swamp (Play Swamp)
+t5|Moriok Reaver
+t7|  KILL    Barony Vampire 3/2   [of 2: Barony Vampire 3/2, Moriok Reaver 3/2]
+t7|Fell (destroy target creature.)
+t7|Swamp (Play Swamp)
+t7|Fell (destroy target creature.)
+t9|Giant Cockroach
+t9|Swamp (Play Swamp)
+t10|== incoming: life 20-20, creatures 1-2
+t10|  attacked by Dross Crocodile 5/1
+t10|  [joint] 1 attackers, 1 blockers, 2 distinct outcomes, 2 after Pareto
+t10|  BLOCK   Giant Cockroach 4/2  <- Dross Crocodile 5/1
+t10|  [audit] policy Giant Cockroach 4/2->Dross Crocodile 5/1 (score 10) | solver Giant Cockroach 4/2->Dross Crocodile 5/1 (score 10)  MATCH
+t11|Canal Monitor
+t12|== incoming: life 20-20, creatures 1-3
+t12|  attacked by Canal Monitor 5/3
+t12|  [joint] 1 attackers, 1 blockers, 2 distinct outcomes, 2 after Pareto
+t12|  BLOCK   Canal Monitor 5/3  <- Canal Monitor 5/3
+t12|  [audit] policy Canal Monitor 5/3->Canal Monitor 5/3 (score 10) | solver Canal Monitor 5/3->Canal Monitor 5/3 (score 10)  MATCH
+t13|Giant Cockroach
+t13|Swamp (Play Swamp)
+t13|Dakmor Scorpion
+t14|== incoming: life 20-20, creatures 1-4
+t14|  attacked by Barony Vampire 3/2, Felhide Minotaur 2/3
+t14|  [joint] 2 attackers, 1 blockers, 3 distinct outcomes, 2 after Pareto
+t14|  BLOCK   Dakmor Scorpion 2/1  <- Barony Vampire 3/2
+t14|  [audit] policy Dakmor Scorpion 2/1->Barony Vampire 3/2 (score 12) | solver Dakmor Scorpion 2/1->Barony Vampire 3/2 (score 12)  MATCH
+t15|Cabal Evangel
+t16|== incoming: life 18-20, creatures 1-3
+t16|  attacked by Cabal Evangel 2/2, Dakmor Scorpion 2/1, Felhide Minotaur 2/3
+t16|  [joint] 3 attackers, 1 blockers, 4 distinct outcomes, 2 after Pareto
+t16|  BLOCK   Cabal Evangel 2/2  <- Cabal Evangel 2/2
+t16|  [audit] policy Cabal Evangel 2/2->Cabal Evangel 2/2 (score 4) | solver Cabal Evangel 2/2->Cabal Evangel 2/2 (score 4)  MATCH
+t17|Dakmor Scorpion
+t18|== incoming: life 14-20, creatures 1-3
+t18|  attacked by Dakmor Scorpion 2/1, Felhide Minotaur 2/3
+t18|  [joint] 2 attackers, 1 blockers, 3 distinct outcomes, 2 after Pareto
+t18|  BLOCK   Dakmor Scorpion 2/1  <- Dakmor Scorpion 2/1
+t18|  [audit] policy Dakmor Scorpion 2/1->Dakmor Scorpion 2/1 (score 4) | solver Dakmor Scorpion 2/1->Dakmor Scorpion 2/1 (score 4)  MATCH
+t19|Canal Monitor
+t21|Barony Vampire
+t21|== my combat: life 12-20, creatures 2-3
+t21|  [atkjoint] 1 avail, 3 defenders, 2 distinct subsets, 2 after Pareto, 0.3ms
+t21|  ATTACK  Canal Monitor 5/3
+t22|== incoming: life 12-15, creatures 2-4
+t22|  attacked by Cabal Evangel 2/2, Felhide Minotaur 2/3, Giant Cockroach 4/2
+t22|  [joint] 3 attackers, 1 blockers, 4 distinct outcomes, 2 after Pareto
+t22|  BLOCK   Barony Vampire 3/2  <- Giant Cockroach 4/2
+t22|  [audit] policy Barony Vampire 3/2->Giant Cockroach 4/2 (score 11) | solver Barony Vampire 3/2->Giant Cockroach 4/2 (score 11)  MATCH
+t23|Swamp (Play Swamp)
+t23|== my combat: life 8-15, creatures 1-3
+t23|  [atkjoint] 1 avail, 1 defenders, 2 distinct subsets, 2 after Pareto, 0.1ms
+t23|  ATTACK  Canal Monitor 5/3
+t24|== incoming: life 8-10, creatures 1-4
+t24|  attacked by Barony Vampire 3/2, Cabal Evangel 2/2, Felhide Minotaur 2/3
+t24|  [joint] 3 attackers, 0 blockers, 1 distinct outcomes, 1 after Pareto
+t25|Barony Vampire
+t25|== my combat: life 1-10, creatures 2-4
+t25|  [atkjoint] 1 avail, 1 defenders, 2 distinct subsets, 2 after Pareto, 0.1ms
+t25|  ATTACK  Canal Monitor 5/3
+t26|== incoming: life 1-5, creatures 2-4
+t26|  attacked by Barony Vampire 3/2, Barony Vampire 3/2, Cabal Evangel 2/2, Felhide Minotaur 2/3
+t26|  [joint] 4 attackers, 1 blockers, 4 distinct outcomes, 2 after Pareto
+t26|  BLOCK   Barony Vampire 3/2  <- Barony Vampire 3/2
+t26|  [audit] policy Barony Vampire 3/2->Barony Vampire 3/2 (LETHAL) | solver Barony Vampire 3/2->-- (LETHAL)  MATCH
+RLGAME_END
+RLGAME|reward=1.0|seed=931003
+t2|Swamp (Play Swamp)
+t4|Swamp (Play Swamp)
+t4|Cabal Evangel
+t6|  KILL    Barony Vampire 3/2   [of 2: Barony Vampire 3/2, Cabal Evangel 2/2]
+t6|Fell (destroy target creature.)
+t6|Swamp (Play Swamp)
+t6|== my combat: life 20-20, creatures 1-0
+t6|  [atkjoint] 1 avail, 0 defenders, 2 distinct subsets, 2 after Pareto, 0.1ms
+t6|  ATTACK  Cabal Evangel 2/2
+t8|Felhide Minotaur
+t8|Swamp (Play Swamp)
+t8|== my combat: life 20-18, creatures 2-1
+t8|  [atkjoint] 1 avail, 1 defenders, 2 distinct subsets, 2 after Pareto, 0.1ms
+t8|  ATTACK  Cabal Evangel 2/2
+t9|== incoming: life 20-16, creatures 2-2
+t9|  attacked by Barony Vampire 3/2
+t9|  [joint] 1 attackers, 1 blockers, 2 distinct outcomes, 2 after Pareto
+t9|  BLOCK   Felhide Minotaur 2/3  <- Barony Vampire 3/2
+t9|  [audit] policy Felhide Minotaur 2/3->Barony Vampire 3/2 (score 6) | solver Felhide Minotaur 2/3->Barony Vampire 3/2 (score 6)  MATCH
+t10|Barony Vampire
+t10|Swamp (Play Swamp)
+t10|== my combat: life 20-16, creatures 2-1
+t10|  [atkjoint] 1 avail, 1 defenders, 2 distinct subsets, 2 after Pareto, 0.1ms
+t10|  ATTACK  Cabal Evangel 2/2
+t11|== incoming: life 20-14, creatures 2-2
+t11|  attacked by Dross Crocodile 5/1
+t11|  [joint] 1 attackers, 1 blockers, 2 distinct outcomes, 2 after Pareto
+t11|  BLOCK   Barony Vampire 3/2  <- Dross Crocodile 5/1
+t11|  [audit] policy Barony Vampire 3/2->Dross Crocodile 5/1 (score 13) | solver Barony Vampire 3/2->Dross Crocodile 5/1 (score 13)  MATCH
+t12|Canal Monitor
+t12|== my combat: life 20-14, creatures 2-1
+t12|  [atkjoint] 1 avail, 1 defenders, 2 distinct subsets, 2 after Pareto, 0.1ms
+t12|  ATTACK  Cabal Evangel 2/2
+t13|== incoming: life 20-12, creatures 2-3
+t13|  attacked by Giant Cockroach 4/2
+t13|  [joint] 1 attackers, 1 blockers, 2 distinct outcomes, 2 after Pareto
+t13|  BLOCK   Canal Monitor 5/3  <- Giant Cockroach 4/2
+t13|  [audit] policy Canal Monitor 5/3->Giant Cockroach 4/2 (score 2) | solver Canal Monitor 5/3->Giant Cockroach 4/2 (score 2)  MATCH
+t14|Barony Vampire
+t14|Swamp (Play Swamp)
+t14|== my combat: life 20-12, creatures 2-2
+t14|  [atkjoint] 1 avail, 2 defenders, 2 distinct subsets, 2 after Pareto, 0.1ms
+t14|  ATTACK  Cabal Evangel 2/2
+t15|== incoming: life 20-10, creatures 2-3
+t15|  attacked by Cabal Evangel 2/2, Giant Cockroach 4/2
+t15|  [joint] 2 attackers, 1 blockers, 3 distinct outcomes, 2 after Pareto
+t15|  BLOCK   Barony Vampire 3/2  <- Giant Cockroach 4/2
+t15|  [audit] policy Barony Vampire 3/2->Giant Cockroach 4/2 (score 11) | solver Barony Vampire 3/2->Giant Cockroach 4/2 (score 11)  MATCH
+t16|  KILL    Cabal Evangel 2/2   [of 3: Cabal Evangel 2/2, Cabal Evangel 2/2, Cabal Evangel 2/2 tap]
+t16|Fell (destroy target creature.)
+t16|Dross Crocodile
+t16|== my combat: life 18-10, creatures 2-1
+t16|  [atkjoint] 1 avail, 0 defenders, 2 distinct subsets, 2 after Pareto, 0.1ms
+t16|  ATTACK  Cabal Evangel 2/2
+t17|== incoming: life 18-8, creatures 2-2
+t17|  attacked by Cabal Evangel 2/2
+t17|  [joint] 1 attackers, 1 blockers, 2 distinct outcomes, 2 after Pareto
+t17|  BLOCK   Dross Crocodile 5/1  <- Cabal Evangel 2/2
+t17|  [audit] policy Dross Crocodile 5/1->Cabal Evangel 2/2 (score -2) | solver Dross Crocodile 5/1->-- (score 0)  GAP 2
+t18|Dross Crocodile
+t18|Dakmor Scorpion
+t18|== my combat: life 18-8, creatures 3-1
+t18|  [atkjoint] 1 avail, 1 defenders, 2 distinct subsets, 2 after Pareto, 0.1ms
+t18|  ATTACK  Cabal Evangel 2/2
+t19|== incoming: life 18-6, creatures 3-1
+t19|  attacked by Giant Cockroach 4/2
+t19|  [joint] 1 attackers, 2 blockers, 4 distinct outcomes, 2 after Pareto
+t19|  BLOCK   Dakmor Scorpion 2/1  <- Giant Cockroach 4/2
+t19|  decline Dross Crocodile 5/1
+t19|  [audit] policy Dakmor Scorpion 2/1->Giant Cockroach 4/2, Dross Crocodile 5/1->-- (score 17) | solver Dakmor Scorpion 2/1->Giant Cockroach 4/2, Dross Crocodile 5/1->-- (score 17)  MATCH
+t20|Swamp (Play Swamp)
+t20|== my combat: life 18-6, creatures 2-0
+t20|  [atkjoint] 2 avail, 0 defenders, 4 distinct subsets, 4 after Pareto, 0.1ms
+t20|  ATTACK  Dross Crocodile 5/1
+t20|  ATTACK  Cabal Evangel 2/2
+RLGAME_END
+RLGAME|reward=1.0|seed=931004
+t1|Swamp (Play Swamp)
+t3|Swamp (Play Swamp)
+t3|Cabal Evangel
+t5|Dakmor Scorpion
+t5|Swamp (Play Swamp)
+t5|== my combat: life 20-20, creatures 2-1
+t5|  [atkjoint] 1 avail, 1 defenders, 2 distinct subsets, 2 after Pareto, 0.1ms
+t5|  ATTACK  Cabal Evangel 2/2
+t6|== incoming: life 20-18, creatures 2-2
+t6|  attacked by Dakmor Scorpion 2/1
+t6|  [joint] 1 attackers, 1 blockers, 2 distinct outcomes, 2 after Pareto
+t6|  BLOCK   Dakmor Scorpion 2/1  <- Dakmor Scorpion 2/1
+t6|  [audit] policy Dakmor Scorpion 2/1->Dakmor Scorpion 2/1 (score 4) | solver Dakmor Scorpion 2/1->Dakmor Scorpion 2/1 (score 4)  MATCH
+t7|Barony Vampire
+t7|Swamp (Play Swamp)
+t7|== my combat: life 20-18, creatures 2-1
+t7|  [atkjoint] 1 avail, 1 defenders, 2 distinct subsets, 2 after Pareto, 0.1ms
+t7|  ATTACK  Cabal Evangel 2/2
+t8|== incoming: life 20-16, creatures 2-2
+t8|  attacked by Moriok Reaver 3/2
+t8|  [joint] 1 attackers, 1 blockers, 2 distinct outcomes, 2 after Pareto
+t8|  BLOCK   Barony Vampire 3/2  <- Moriok Reaver 3/2
+t8|  [audit] policy Barony Vampire 3/2->Moriok Reaver 3/2 (score 6) | solver Barony Vampire 3/2->Moriok Reaver 3/2 (score 6)  MATCH
+t9|Dross Crocodile
+t9|Swamp (Play Swamp)
+t9|== my combat: life 20-16, creatures 2-1
+t9|  [atkjoint] 1 avail, 1 defenders, 2 distinct subsets, 2 after Pareto, 0.1ms
+t9|  ATTACK  Cabal Evangel 2/2
+t10|== incoming: life 20-14, creatures 2-2
+t10|  attacked by Dross Crocodile 5/1
+t10|  [joint] 1 attackers, 1 blockers, 2 distinct outcomes, 2 after Pareto
+t10|  BLOCK   Dross Crocodile 5/1  <- Dross Crocodile 5/1
+t10|  [audit] policy Dross Crocodile 5/1->Dross Crocodile 5/1 (score 10) | solver Dross Crocodile 5/1->Dross Crocodile 5/1 (score 10)  MATCH
+t11|Canal Monitor
+t11|== my combat: life 20-14, creatures 2-1
+t11|  [atkjoint] 1 avail, 1 defenders, 2 distinct subsets, 2 after Pareto, 0.1ms
+t11|  ATTACK  Cabal Evangel 2/2
+t12|== incoming: life 20-12, creatures 2-2
+t12|  attacked by Dross Crocodile 5/1
+t12|  [joint] 1 attackers, 1 blockers, 2 distinct outcomes, 2 after Pareto
+t12|  BLOCK   Canal Monitor 5/3  <- Dross Crocodile 5/1
+t12|  [audit] policy Canal Monitor 5/3->Dross Crocodile 5/1 (score 4) | solver Canal Monitor 5/3->Dross Crocodile 5/1 (score 4)  MATCH
+t13|Canal Monitor
+t13|== my combat: life 20-12, creatures 2-1
+t13|  [atkjoint] 1 avail, 1 defenders, 2 distinct subsets, 1 after Pareto, 0.1ms
+t13|  hold    Cabal Evangel 2/2
+t14|== incoming: life 20-12, creatures 2-2
+t14|  attacked by Canal Monitor 5/3
+t14|  [joint] 1 attackers, 2 blockers, 4 distinct outcomes, 3 after Pareto
+t14|  decline Cabal Evangel 2/2
+t14|  BLOCK   Canal Monitor 5/3  <- Canal Monitor 5/3
+t14|  [audit] policy Cabal Evangel 2/2->--, Canal Monitor 5/3->Canal Monitor 5/3 (score 10) | solver Cabal Evangel 2/2->--, Canal Monitor 5/3->Canal Monitor 5/3 (score 10)  MATCH
+t15|Canal Monitor
+t15|== my combat: life 20-12, creatures 2-1
+t15|  [atkjoint] 1 avail, 1 defenders, 2 distinct subsets, 2 after Pareto, 0.1ms
+t15|  ATTACK  Cabal Evangel 2/2
+t16|== incoming: life 20-10, creatures 2-3
+t16|  attacked by Giant Cockroach 4/2
+t16|  [joint] 1 attackers, 1 blockers, 2 distinct outcomes, 2 after Pareto
+t16|  BLOCK   Canal Monitor 5/3  <- Giant Cockroach 4/2
+t16|  [audit] policy Canal Monitor 5/3->Giant Cockroach 4/2 (score 2) | solver Canal Monitor 5/3->Giant Cockroach 4/2 (score 2)  MATCH
+t17|  KILL    Barony Vampire 3/2   [of 3: Barony Vampire 3/2, Cabal Evangel 2/2, Felhide Minotaur 2/3]
+t17|Fell (destroy target creature.)
+t17|Barony Vampire
+t17|== my combat: life 20-10, creatures 2-1
+t17|  [atkjoint] 1 avail, 1 defenders, 2 distinct subsets, 1 after Pareto, 0.1ms
+t17|  hold    Cabal Evangel 2/2
+t18|== incoming: life 20-10, creatures 2-2
+t18|  attacked by Felhide Minotaur 2/3
+t18|  [joint] 1 attackers, 2 blockers, 4 distinct outcomes, 4 after Pareto
+t18|  BLOCK   Cabal Evangel 2/2  <- Felhide Minotaur 2/3
+t18|  BLOCK   Barony Vampire 3/2  <- Felhide Minotaur 2/3
+t18|  [audit] policy Cabal Evangel 2/2->Felhide Minotaur 2/3, Barony Vampire 3/2->Felhide Minotaur 2/3 (score 4) | solver Cabal Evangel 2/2->--, Barony Vampire 3/2->Felhide Minotaur 2/3 (score 4)  MATCH
+t19|Dross Crocodile
+t19|Swamp (Play Swamp)
+t19|== my combat: life 20-10, creatures 2-1
+t19|  [atkjoint] 1 avail, 1 defenders, 2 distinct subsets, 2 after Pareto, 0.1ms
+t19|  ATTACK  Barony Vampire 3/2
+t20|== incoming: life 20-7, creatures 2-1
+t20|  attacked by Dakmor Scorpion 2/1
+t20|  [joint] 1 attackers, 1 blockers, 2 distinct outcomes, 2 after Pareto
+t20|  BLOCK   Dross Crocodile 5/1  <- Dakmor Scorpion 2/1
+t20|  [audit] policy Dross Crocodile 5/1->Dakmor Scorpion 2/1 (score -5) | solver Dross Crocodile 5/1->-- (score 0)  GAP 5
+t21|Dakmor Scorpion
+t21|== my combat: life 20-7, creatures 2-0
+t21|  [atkjoint] 1 avail, 0 defenders, 2 distinct subsets, 2 after Pareto, 0.1ms
+t21|  ATTACK  Barony Vampire 3/2
+t23|Moriok Reaver
+t23|== my combat: life 20-4, creatures 3-1
+t23|  [atkjoint] 2 avail, 1 defenders, 4 distinct subsets, 4 after Pareto, 0.2ms
+t23|  ATTACK  Dakmor Scorpion 2/1
+t23|  ATTACK  Barony Vampire 3/2
+t25|Felhide Minotaur
+t25|== my combat: life 20-1, creatures 3-1
+t25|  [atkjoint] 2 avail, 1 defenders, 3 distinct subsets, 3 after Pareto, 0.1ms
+t25|  ATTACK  Barony Vampire 3/2
+t25|  ATTACK  Moriok Reaver 3/2
+RLGAME_END
+RLGAME|reward=-1.0|seed=931005
+t2|Swamp (Play Swamp)
+t4|Swamp (Play Swamp)
+t6|Swamp (Play Swamp)
+t6|Moriok Reaver
+t8|Swamp (Play Swamp)
+t8|Giant Cockroach
+t8|== my combat: life 20-20, creatures 2-1
+t8|  [atkjoint] 1 avail, 1 defenders, 2 distinct subsets, 2 after Pareto, 0.1ms
+t8|  ATTACK  Moriok Reaver 3/2
+t9|== incoming: life 20-17, creatures 2-2
+t9|  attacked by Cabal Evangel 2/2
+t9|  [joint] 1 attackers, 1 blockers, 2 distinct outcomes, 2 after Pareto
+t9|  BLOCK   Giant Cockroach 4/2  <- Cabal Evangel 2/2
+t9|  [audit] policy Giant Cockroach 4/2->Cabal Evangel 2/2 (score -2) | solver Giant Cockroach 4/2->-- (score 0)  GAP 2
+t10|Barony Vampire
+t10|Swamp (Play Swamp)
+t10|== my combat: life 20-17, creatures 2-1
+t10|  [atkjoint] 1 avail, 1 defenders, 2 distinct subsets, 2 after Pareto, 0.1ms
+t10|  ATTACK  Moriok Reaver 3/2
+t11|== incoming: life 20-14, creatures 2-2
+t11|  attacked by Barony Vampire 3/2
+t11|  [joint] 1 attackers, 1 blockers, 2 distinct outcomes, 2 after Pareto
+t11|  BLOCK   Barony Vampire 3/2  <- Barony Vampire 3/2
+t11|  [audit] policy Barony Vampire 3/2->Barony Vampire 3/2 (score 6) | solver Barony Vampire 3/2->Barony Vampire 3/2 (score 6)  MATCH
+t12|Dross Crocodile
+t12|Swamp (Play Swamp)
+t12|== my combat: life 20-14, creatures 2-1
+t12|  [atkjoint] 1 avail, 1 defenders, 2 distinct subsets, 2 after Pareto, 0.1ms
+t12|  ATTACK  Moriok Reaver 3/2
+t13|== incoming: life 20-11, creatures 2-2
+t13|  attacked by Barony Vampire 3/2
+t13|  [joint] 1 attackers, 1 blockers, 2 distinct outcomes, 2 after Pareto
+t13|  BLOCK   Dross Crocodile 5/1  <- Barony Vampire 3/2
+t13|  [audit] policy Dross Crocodile 5/1->Barony Vampire 3/2 (score 3) | solver Dross Crocodile 5/1->Barony Vampire 3/2 (score 3)  MATCH
+t14|Barony Vampire
+t14|Swamp (Play Swamp)
+t14|== my combat: life 20-11, creatures 2-1
+t14|  [atkjoint] 1 avail, 1 defenders, 2 distinct subsets, 2 after Pareto, 0.1ms
+t14|  ATTACK  Moriok Reaver 3/2
+t15|== incoming: life 20-8, creatures 2-2
+t15|  attacked by Giant Cockroach 4/2
+t15|  [joint] 1 attackers, 1 blockers, 2 distinct outcomes, 2 after Pareto
+t15|  BLOCK   Barony Vampire 3/2  <- Giant Cockroach 4/2
+t15|  [audit] policy Barony Vampire 3/2->Giant Cockroach 4/2 (score 11) | solver Barony Vampire 3/2->Giant Cockroach 4/2 (score 11)  MATCH
+t16|  KILL    Dross Crocodile 5/1   [of 2: Dross Crocodile 5/1, Moriok Reaver 3/2]
+t16|Fell (destroy target creature.)
+t16|Swamp (Play Swamp)
+t16|== my combat: life 20-8, creatures 1-0
+t16|  [atkjoint] 1 avail, 0 defenders, 2 distinct subsets, 2 after Pareto, 0.1ms
+t16|  ATTACK  Moriok Reaver 3/2
+t18|Dakmor Scorpion
+t18|Swamp (Play Swamp)
+t18|== my combat: life 20-5, creatures 2-1
+t18|  [atkjoint] 1 avail, 1 defenders, 2 distinct subsets, 2 after Pareto, 0.1ms
+t18|  ATTACK  Moriok Reaver 3/2
+t19|== incoming: life 20-2, creatures 2-2
+t19|  attacked by Canal Monitor 5/3
+t19|  [joint] 1 attackers, 1 blockers, 2 distinct outcomes, 2 after Pareto
+t19|  BLOCK   Dakmor Scorpion 2/1  <- Canal Monitor 5/3
+t19|  [audit] policy Dakmor Scorpion 2/1->Canal Monitor 5/3 (score 1) | solver Dakmor Scorpion 2/1->Canal Monitor 5/3 (score 1)  MATCH
+t20|Swamp (Play Swamp)
+t20|== my combat: life 20-2, creatures 1-2
+t20|  [atkjoint] 1 avail, 1 defenders, 2 distinct subsets, 2 after Pareto, 0.1ms
+t20|  ATTACK  Moriok Reaver 3/2
+t21|== incoming: life 20-2, creatures 0-3
+t21|  attacked by Canal Monitor 5/3
+t21|  [joint] 1 attackers, 0 blockers, 1 distinct outcomes, 1 after Pareto
+t22|Moriok Reaver
+t23|== incoming: life 15-2, creatures 0-4
+t23|  attacked by Barony Vampire 3/2, Cabal Evangel 2/2, Canal Monitor 5/3
+t23|  [joint] 3 attackers, 0 blockers, 1 distinct outcomes, 1 after Pareto
+t24|Swamp (Play Swamp)
+t25|== incoming: life 5-2, creatures 0-4
+t25|  attacked by Barony Vampire 3/2, Cabal Evangel 2/2, Canal Monitor 5/3, Dakmor Scorpion 2/1
+t25|  [joint] 4 attackers, 0 blockers, 1 distinct outcomes, 1 after Pareto
+RLGAME_END
+RLGAME|reward=1.0|seed=931006
+t1|Swamp (Play Swamp)
+t3|Swamp (Play Swamp)
+t3|Dakmor Scorpion
+t5|Swamp (Play Swamp)
+t5|Felhide Minotaur
+t5|== my combat: life 20-20, creatures 2-0
+t5|  [atkjoint] 1 avail, 0 defenders, 2 distinct subsets, 2 after Pareto, 0.1ms
+t5|  ATTACK  Dakmor Scorpion 2/1
+t7|Moriok Reaver
+t7|Swamp (Play Swamp)
+t7|== my combat: life 20-18, creatures 3-0
+t7|  [atkjoint] 2 avail, 0 defenders, 4 distinct subsets, 3 after Pareto, 0.1ms
+t7|  ATTACK  Dakmor Scorpion 2/1
+t7|  ATTACK  Felhide Minotaur 2/3
+t9|Giant Cockroach
+t9|Swamp (Play Swamp)
+t9|== my combat: life 20-14, creatures 4-1
+t9|  [atkjoint] 3 avail, 1 defenders, 8 distinct subsets, 5 after Pareto, 0.2ms
+t9|  ATTACK  Dakmor Scorpion 2/1
+t9|  ATTACK  Moriok Reaver 3/2
+t9|  ATTACK  Felhide Minotaur 2/3
+t10|== incoming: life 20-7, creatures 4-2
+t10|  attacked by Cabal Evangel 2/2
+t10|  [joint] 1 attackers, 1 blockers, 2 distinct outcomes, 2 after Pareto
+t10|  BLOCK   Giant Cockroach 4/2  <- Cabal Evangel 2/2
+t10|  [audit] policy Giant Cockroach 4/2->Cabal Evangel 2/2 (score -2) | solver Giant Cockroach 4/2->-- (score 0)  GAP 2
+t11|Giant Cockroach
+t11|Swamp (Play Swamp)
+t11|== my combat: life 20-7, creatures 4-1
+t11|  [atkjoint] 3 avail, 1 defenders, 8 distinct subsets, 5 after Pareto, 0.1ms
+t11|  ATTACK  Dakmor Scorpion 2/1
+t11|  ATTACK  Moriok Reaver 3/2
+t11|  ATTACK  Felhide Minotaur 2/3
+t13|Giant Cockroach
+t13|== my combat: life 20-2, creatures 4-1
+t13|  [atkjoint] 3 avail, 1 defenders, 8 distinct subsets, 6 after Pareto, 0.1ms
+t13|  ATTACK  Moriok Reaver 3/2
+t13|  ATTACK  Giant Cockroach 4/2
+t13|  ATTACK  Felhide Minotaur 2/3
+RLGAME_END
+RLGAME|reward=-1.0|seed=931007
+t2|Swamp (Play Swamp)
+t4|Swamp (Play Swamp)
+t4|Fell (destroy target creature.)
+t6|Fell (destroy target creature.)
+t6|Swamp (Play Swamp)
+t8|Moriok Reaver
+t8|Swamp (Play Swamp)
+t9|== incoming: life 20-20, creatures 1-2
+t9|  attacked by Dross Crocodile 5/1
+t9|  [joint] 1 attackers, 1 blockers, 2 distinct outcomes, 2 after Pareto
+t9|  BLOCK   Moriok Reaver 3/2  <- Dross Crocodile 5/1
+t9|  [audit] policy Moriok Reaver 3/2->Dross Crocodile 5/1 (score 13) | solver Moriok Reaver 3/2->Dross Crocodile 5/1 (score 13)  MATCH
+t10|Dross Crocodile
+t10|Swamp (Play Swamp)
+t11|== incoming: life 20-20, creatures 0-2
+t11|  attacked by Canal Monitor 5/3
+t11|  [joint] 1 attackers, 0 blockers, 1 distinct outcomes, 1 after Pareto
+t12|Dross Crocodile
+t12|Swamp (Play Swamp)
+t12|Cabal Evangel
+t13|== incoming: life 15-20, creatures 2-3
+t13|  attacked by Canal Monitor 5/3, Dakmor Scorpion 2/1
+t13|  [joint] 2 attackers, 2 blockers, 9 distinct outcomes, 5 after Pareto
+t13|  BLOCK   Dross Crocodile 5/1  <- Canal Monitor 5/3
+t13|  BLOCK   Cabal Evangel 2/2  <- Dakmor Scorpion 2/1
+t13|  [audit] policy Dross Crocodile 5/1->Canal Monitor 5/3, Cabal Evangel 2/2->Dakmor Scorpion 2/1 (score 17) | solver Dross Crocodile 5/1->Canal Monitor 5/3, Cabal Evangel 2/2->Dakmor Scorpion 2/1 (score 17)  MATCH
+t14|Dross Crocodile
+t14|Swamp (Play Swamp)
+t15|== incoming: life 15-20, creatures 0-1
+t15|  attacked by Canal Monitor 5/3
+t15|  [joint] 1 attackers, 0 blockers, 1 distinct outcomes, 1 after Pareto
+t16|Felhide Minotaur
+t17|== incoming: life 10-20, creatures 1-2
+t17|  attacked by Canal Monitor 5/3
+t17|  [joint] 1 attackers, 1 blockers, 2 distinct outcomes, 2 after Pareto
+t17|  BLOCK   Felhide Minotaur 2/3  <- Canal Monitor 5/3
+t17|  [audit] policy Felhide Minotaur 2/3->Canal Monitor 5/3 (score -5) | solver Felhide Minotaur 2/3->-- (score 0)  GAP 5
+t18|Swamp (Play Swamp)
+t19|== incoming: life 10-20, creatures 0-3
+t19|  attacked by Canal Monitor 5/3, Felhide Minotaur 2/3
+t19|  [joint] 2 attackers, 0 blockers, 1 distinct outcomes, 1 after Pareto
+t20|Barony Vampire
+t21|== incoming: life 3-20, creatures 1-4
+t21|  attacked by Canal Monitor 5/3, Felhide Minotaur 2/3, Giant Cockroach 4/2
+t21|  [joint] 3 attackers, 1 blockers, 4 distinct outcomes, 2 after Pareto
+t21|  BLOCK   Barony Vampire 3/2  <- Canal Monitor 5/3
+t21|  [audit] policy Barony Vampire 3/2->Canal Monitor 5/3 (LETHAL) | solver Barony Vampire 3/2->-- (LETHAL)  MATCH
+RLGAME_END
+RLGAME|reward=1.0|seed=931008
+t1|Swamp (Play Swamp)
+t3|Swamp (Play Swamp)
+t3|Cabal Evangel
+t5|Cabal Evangel
+t5|Swamp (Play Swamp)
+t5|== my combat: life 20-20, creatures 2-1
+t5|  [atkjoint] 1 avail, 1 defenders, 2 distinct subsets, 2 after Pareto, 0.2ms
+t5|  ATTACK  Cabal Evangel 2/2
+t6|== incoming: life 20-18, creatures 2-2
+t6|  attacked by Cabal Evangel 2/2
+t6|  [joint] 1 attackers, 1 blockers, 2 distinct outcomes, 2 after Pareto
+t6|  BLOCK   Cabal Evangel 2/2  <- Cabal Evangel 2/2
+t6|  [audit] policy Cabal Evangel 2/2->Cabal Evangel 2/2 (score 4) | solver Cabal Evangel 2/2->Cabal Evangel 2/2 (score 4)  MATCH
+t7|Moriok Reaver
+t7|Swamp (Play Swamp)
+t7|== my combat: life 20-18, creatures 2-1
+t7|  [atkjoint] 1 avail, 1 defenders, 2 distinct subsets, 1 after Pareto, 0.2ms
+t7|  hold    Cabal Evangel 2/2
+t8|== incoming: life 20-18, creatures 2-2
+t8|  attacked by Felhide Minotaur 2/3
+t8|  [joint] 1 attackers, 2 blockers, 4 distinct outcomes, 4 after Pareto
+t8|  BLOCK   Cabal Evangel 2/2  <- Felhide Minotaur 2/3
+t8|  BLOCK   Moriok Reaver 3/2  <- Felhide Minotaur 2/3
+t8|  [audit] policy Cabal Evangel 2/2->Felhide Minotaur 2/3, Moriok Reaver 3/2->Felhide Minotaur 2/3 (score 4) | solver Cabal Evangel 2/2->--, Moriok Reaver 3/2->Felhide Minotaur 2/3 (score 4)  MATCH
+t9|Dakmor Scorpion
+t9|Dakmor Scorpion
+t9|Swamp (Play Swamp)
+t9|== my combat: life 20-18, creatures 3-1
+t9|  [atkjoint] 1 avail, 1 defenders, 2 distinct subsets, 2 after Pareto, 0.1ms
+t9|  ATTACK  Moriok Reaver 3/2
+t10|== incoming: life 20-15, creatures 3-3
+t10|  attacked by Dross Crocodile 5/1
+t10|  [joint] 1 attackers, 2 blockers, 3 distinct outcomes, 2 after Pareto
+t10|  BLOCK   Dakmor Scorpion 2/1  <- Dross Crocodile 5/1
+t10|  decline Dakmor Scorpion 2/1
+t10|  [audit] policy Dakmor Scorpion 2/1->Dross Crocodile 5/1, Dakmor Scorpion 2/1->-- (score 19) | solver Dakmor Scorpion 2/1->Dross Crocodile 5/1, Dakmor Scorpion 2/1->-- (score 19)  MATCH
+t11|Canal Monitor
+t11|== my combat: life 20-15, creatures 3-2
+t11|  [atkjoint] 2 avail, 2 defenders, 4 distinct subsets, 3 after Pareto, 0.1ms
+t11|  ATTACK  Dakmor Scorpion 2/1
+t11|  ATTACK  Moriok Reaver 3/2
+t12|== incoming: life 20-10, creatures 3-3
+t12|  attacked by Moriok Reaver 3/2
+t12|  [joint] 1 attackers, 1 blockers, 2 distinct outcomes, 2 after Pareto
+t12|  BLOCK   Canal Monitor 5/3  <- Moriok Reaver 3/2
+t12|  [audit] policy Canal Monitor 5/3->Moriok Reaver 3/2 (score -3) | solver Canal Monitor 5/3->-- (score 0)  GAP 3
+t13|Cabal Evangel
+t13|Swamp (Play Swamp)
+t13|== my combat: life 20-10, creatures 3-2
+t13|  [atkjoint] 2 avail, 2 defenders, 4 distinct subsets, 3 after Pareto, 0.1ms
+t13|  ATTACK  Dakmor Scorpion 2/1
+t13|  ATTACK  Moriok Reaver 3/2
+t14|== incoming: life 20-5, creatures 3-3
+t14|  attacked by Cabal Evangel 2/2, Cabal Evangel 2/2
+t14|  [joint] 2 attackers, 1 blockers, 2 distinct outcomes, 2 after Pareto
+t14|  BLOCK   Cabal Evangel 2/2  <- Cabal Evangel 2/2
+t14|  [audit] policy Cabal Evangel 2/2->Cabal Evangel 2/2 (score 4) | solver Cabal Evangel 2/2->Cabal Evangel 2/2 (score 4)  MATCH
+t15|Moriok Reaver
+t15|== my combat: life 18-5, creatures 3-2
+t15|  [atkjoint] 2 avail, 1 defenders, 4 distinct subsets, 4 after Pareto, 0.1ms
+t15|  ATTACK  Dakmor Scorpion 2/1
+t15|  ATTACK  Moriok Reaver 3/2
+t16|== incoming: life 18-2, creatures 2-2
+t16|  attacked by Cabal Evangel 2/2
+t16|  [joint] 1 attackers, 1 blockers, 2 distinct outcomes, 2 after Pareto
+t16|  BLOCK   Moriok Reaver 3/2  <- Cabal Evangel 2/2
+t16|  [audit] policy Moriok Reaver 3/2->Cabal Evangel 2/2 (score 1) | solver Moriok Reaver 3/2->Cabal Evangel 2/2 (score 1)  MATCH
+t17|Canal Monitor
+t17|== my combat: life 18-2, creatures 2-1
+t17|  [atkjoint] 1 avail, 1 defenders, 2 distinct subsets, 2 after Pareto, 0.1ms
+t17|  ATTACK  Moriok Reaver 3/2
+t19|Felhide Minotaur
+t19|== my combat: life 18-2, creatures 2-1
+t19|  [atkjoint] 1 avail, 1 defenders, 2 distinct subsets, 2 after Pareto, 0.1ms
+t19|  ATTACK  Canal Monitor 5/3
+t21|Swamp (Play Swamp)
+t21|== my combat: life 18-2, creatures 2-1
+t21|  [atkjoint] 2 avail, 1 defenders, 4 distinct subsets, 3 after Pareto, 0.1ms
+t21|  ATTACK  Felhide Minotaur 2/3
+t21|  ATTACK  Canal Monitor 5/3
+RLGAME_END
+RLGAME|reward=1.0|seed=931009
+t2|Swamp (Play Swamp)
+t4|Swamp (Play Swamp)
+t6|Swamp (Play Swamp)
+t6|Barony Vampire
+t8|Moriok Reaver
+t8|Swamp (Play Swamp)
+t8|== my combat: life 20-20, creatures 2-1
+t8|  [atkjoint] 1 avail, 1 defenders, 2 distinct subsets, 2 after Pareto, 0.1ms
+t8|  ATTACK  Barony Vampire 3/2
+t9|== incoming: life 20-17, creatures 2-2
+t9|  attacked by Dross Crocodile 5/1
+t9|  [joint] 1 attackers, 1 blockers, 2 distinct outcomes, 2 after Pareto
+t9|  BLOCK   Moriok Reaver 3/2  <- Dross Crocodile 5/1
+t9|  [audit] policy Moriok Reaver 3/2->Dross Crocodile 5/1 (score 13) | solver Moriok Reaver 3/2->Dross Crocodile 5/1 (score 13)  MATCH
+t10|Giant Cockroach
+t10|Swamp (Play Swamp)
+t10|== my combat: life 20-17, creatures 2-1
+t10|  [atkjoint] 1 avail, 1 defenders, 2 distinct subsets, 2 after Pareto, 0.1ms
+t10|  ATTACK  Barony Vampire 3/2
+t11|== incoming: life 20-14, creatures 2-2
+t11|  attacked by Dross Crocodile 5/1
+t11|  [joint] 1 attackers, 1 blockers, 2 distinct outcomes, 2 after Pareto
+t11|  BLOCK   Giant Cockroach 4/2  <- Dross Crocodile 5/1
+t11|  [audit] policy Giant Cockroach 4/2->Dross Crocodile 5/1 (score 10) | solver Giant Cockroach 4/2->Dross Crocodile 5/1 (score 10)  MATCH
+t12|Felhide Minotaur
+t12|Swamp (Play Swamp)
+t12|Moriok Reaver
+t12|== my combat: life 20-14, creatures 3-1
+t12|  [atkjoint] 1 avail, 1 defenders, 2 distinct subsets, 2 after Pareto, 0.1ms
+t12|  ATTACK  Barony Vampire 3/2
+t13|== incoming: life 20-11, creatures 3-2
+t13|  attacked by Felhide Minotaur 2/3
+t13|  [joint] 1 attackers, 2 blockers, 4 distinct outcomes, 3 after Pareto
+t13|  BLOCK   Moriok Reaver 3/2  <- Felhide Minotaur 2/3
+t13|  BLOCK   Felhide Minotaur 2/3  <- Felhide Minotaur 2/3
+t13|  [audit] policy Moriok Reaver 3/2->Felhide Minotaur 2/3, Felhide Minotaur 2/3->Felhide Minotaur 2/3 (score 4) | solver Moriok Reaver 3/2->Felhide Minotaur 2/3, Felhide Minotaur 2/3->-- (score 4)  MATCH
+t14|Dross Crocodile
+t14|Swamp (Play Swamp)
+t14|== my combat: life 20-11, creatures 3-1
+t14|  [atkjoint] 2 avail, 1 defenders, 4 distinct subsets, 4 after Pareto, 0.1ms
+t14|  ATTACK  Barony Vampire 3/2
+t14|  ATTACK  Felhide Minotaur 2/3
+t15|== incoming: life 20-6, creatures 3-2
+t15|  attacked by Dakmor Scorpion 2/1
+t15|  [joint] 1 attackers, 1 blockers, 2 distinct outcomes, 2 after Pareto
+t15|  BLOCK   Dross Crocodile 5/1  <- Dakmor Scorpion 2/1
+t15|  [audit] policy Dross Crocodile 5/1->Dakmor Scorpion 2/1 (score -5) | solver Dross Crocodile 5/1->-- (score 0)  GAP 5
+t16|  KILL    Barony Vampire 3/2   [of 3: Barony Vampire 3/2, Barony Vampire 3/2, Felhide Minotaur 2/3]
+t16|Fell (destroy target creature.)
+t16|Swamp (Play Swamp)
+t16|== my combat: life 20-6, creatures 2-0
+t16|  [atkjoint] 2 avail, 0 defenders, 4 distinct subsets, 4 after Pareto, 0.1ms
+t16|  ATTACK  Barony Vampire 3/2
+t16|  ATTACK  Felhide Minotaur 2/3
+t18|Cabal Evangel
+t18|== my combat: life 20-1, creatures 3-1
+t18|  [atkjoint] 2 avail, 1 defenders, 4 distinct subsets, 3 after Pareto, 0.1ms
+t18|  ATTACK  Barony Vampire 3/2
+t18|  ATTACK  Felhide Minotaur 2/3
+RLGAME_END
+RLGAME|reward=1.0|seed=931010
+t1|Swamp (Play Swamp)
+t3|Swamp (Play Swamp)
+t3|Dakmor Scorpion
+t5|Fell (destroy target creature.)
+t5|Swamp (Play Swamp)
+t7|Moriok Reaver
+t7|Swamp (Play Swamp)
+t9|Giant Cockroach
+t9|Swamp (Play Swamp)
+t9|== my combat: life 20-20, creatures 2-0
+t9|  [atkjoint] 1 avail, 0 defenders, 2 distinct subsets, 2 after Pareto, 0.1ms
+t9|  ATTACK  Moriok Reaver 3/2
+t11|Canal Monitor
+t11|== my combat: life 20-17, creatures 3-0
+t11|  [atkjoint] 2 avail, 0 defenders, 4 distinct subsets, 4 after Pareto, 0.1ms
+t11|  ATTACK  Moriok Reaver 3/2
+t11|  ATTACK  Giant Cockroach 4/2
+t13|  KILL    Moriok Reaver 3/2   [of 3: Canal Monitor 5/3, Giant Cockroach 4/2, Moriok Reaver 3/2]
+t13|Fell (destroy target creature.)
+t13|Moriok Reaver
+t13|Swamp (Play Swamp)
+t13|== my combat: life 20-10, creatures 3-0
+t13|  [atkjoint] 2 avail, 0 defenders, 4 distinct subsets, 4 after Pareto, 0.1ms
+t13|  ATTACK  Giant Cockroach 4/2
+t13|  ATTACK  Canal Monitor 5/3
+t15|Swamp (Play Swamp)
+t15|== my combat: life 20-1, creatures 3-1
+t15|  [atkjoint] 3 avail, 1 defenders, 8 distinct subsets, 7 after Pareto, 0.1ms
+t15|  ATTACK  Moriok Reaver 3/2
+t15|  ATTACK  Giant Cockroach 4/2
+t15|  ATTACK  Canal Monitor 5/3
+RLGAME_END
+RLGAME|reward=1.0|seed=931011
+t2|Swamp (Play Swamp)
+t4|Swamp (Play Swamp)
+t4|Fell (destroy target creature.)
+t6|Swamp (Play Swamp)
+t6|Felhide Minotaur
+t7|== incoming: life 20-20, creatures 1-2
+t7|  attacked by Barony Vampire 3/2
+t7|  [joint] 1 attackers, 1 blockers, 2 distinct outcomes, 2 after Pareto
+t7|  BLOCK   Felhide Minotaur 2/3  <- Barony Vampire 3/2
+t7|  [audit] policy Felhide Minotaur 2/3->Barony Vampire 3/2 (score 6) | solver Felhide Minotaur 2/3->Barony Vampire 3/2 (score 6)  MATCH
+t8|Barony Vampire
+t9|== incoming: life 20-20, creatures 1-2
+t9|  attacked by Moriok Reaver 3/2
+t9|  [joint] 1 attackers, 1 blockers, 2 distinct outcomes, 2 after Pareto
+t9|  BLOCK   Barony Vampire 3/2  <- Moriok Reaver 3/2
+t9|  [audit] policy Barony Vampire 3/2->Moriok Reaver 3/2 (score 6) | solver Barony Vampire 3/2->Moriok Reaver 3/2 (score 6)  MATCH
+t10|Moriok Reaver
+t10|Swamp (Play Swamp)
+t11|== incoming: life 20-20, creatures 1-2
+t11|  attacked by Felhide Minotaur 2/3
+t11|  [joint] 1 attackers, 1 blockers, 2 distinct outcomes, 2 after Pareto
+t11|  BLOCK   Moriok Reaver 3/2  <- Felhide Minotaur 2/3
+t11|  [audit] policy Moriok Reaver 3/2->Felhide Minotaur 2/3 (score 4) | solver Moriok Reaver 3/2->Felhide Minotaur 2/3 (score 4)  MATCH
+t12|Giant Cockroach
+t12|Swamp (Play Swamp)
+t13|== incoming: life 20-20, creatures 1-2
+t13|  attacked by Cabal Evangel 2/2
+t13|  [joint] 1 attackers, 1 blockers, 2 distinct outcomes, 2 after Pareto
+t13|  BLOCK   Giant Cockroach 4/2  <- Cabal Evangel 2/2
+t13|  [audit] policy Giant Cockroach 4/2->Cabal Evangel 2/2 (score -2) | solver Giant Cockroach 4/2->-- (score 0)  GAP 2
+t14|Canal Monitor
+t15|== incoming: life 20-20, creatures 1-2
+t15|  attacked by Dross Crocodile 5/1
+t15|  [joint] 1 attackers, 1 blockers, 2 distinct outcomes, 2 after Pareto
+t15|  BLOCK   Canal Monitor 5/3  <- Dross Crocodile 5/1
+t15|  [audit] policy Canal Monitor 5/3->Dross Crocodile 5/1 (score 4) | solver Canal Monitor 5/3->Dross Crocodile 5/1 (score 4)  MATCH
+t16|Canal Monitor
+t17|== incoming: life 20-20, creatures 1-2
+t17|  attacked by Giant Cockroach 4/2
+t17|  [joint] 1 attackers, 1 blockers, 2 distinct outcomes, 2 after Pareto
+t17|  BLOCK   Canal Monitor 5/3  <- Giant Cockroach 4/2
+t17|  [audit] policy Canal Monitor 5/3->Giant Cockroach 4/2 (score 2) | solver Canal Monitor 5/3->Giant Cockroach 4/2 (score 2)  MATCH
+t18|Moriok Reaver
+t19|== incoming: life 20-20, creatures 0-2
+t19|  attacked by Canal Monitor 5/3
+t19|  [joint] 1 attackers, 0 blockers, 1 distinct outcomes, 1 after Pareto
+t20|  KILL    Dakmor Scorpion 2/1   [of 2: Canal Monitor 5/3 tap, Dakmor Scorpion 2/1]
+t20|Fell (destroy target creature.)
+t21|== incoming: life 15-20, creatures 0-1
+t21|  attacked by Canal Monitor 5/3
+t21|  [joint] 1 attackers, 0 blockers, 1 distinct outcomes, 1 after Pareto
+t22|Barony Vampire
+t23|== incoming: life 10-20, creatures 1-1
+t23|  attacked by Canal Monitor 5/3
+t23|  [joint] 1 attackers, 1 blockers, 2 distinct outcomes, 2 after Pareto
+t23|  BLOCK   Barony Vampire 3/2  <- Canal Monitor 5/3
+t23|  [audit] policy Barony Vampire 3/2->Canal Monitor 5/3 (score 19) | solver Barony Vampire 3/2->Canal Monitor 5/3 (score 19)  MATCH
+t24|Dross Crocodile
+t26|Dross Crocodile
+t26|Swamp (Play Swamp)
+t26|Dakmor Scorpion
+t26|== my combat: life 10-20, creatures 3-1
+t26|  [atkjoint] 1 avail, 1 defenders, 2 distinct subsets, 2 after Pareto, 0.1ms
+t26|  ATTACK  Dross Crocodile 5/1
+t27|== incoming: life 10-15, creatures 3-1
+t27|  attacked by Moriok Reaver 3/2
+t27|  [joint] 1 attackers, 2 blockers, 4 distinct outcomes, 2 after Pareto
+t27|  BLOCK   Dakmor Scorpion 2/1  <- Moriok Reaver 3/2
+t27|  decline Dross Crocodile 5/1
+t27|  [audit] policy Dakmor Scorpion 2/1->Moriok Reaver 3/2, Dross Crocodile 5/1->-- (score 12) | solver Dakmor Scorpion 2/1->Moriok Reaver 3/2, Dross Crocodile 5/1->-- (score 12)  MATCH
+t28|Dross Crocodile
+t28|Dakmor Scorpion
+t28|== my combat: life 10-15, creatures 4-0
+t28|  [atkjoint] 2 avail, 0 defenders, 3 distinct subsets, 3 after Pareto, 0.1ms
+t28|  ATTACK  Dross Crocodile 5/1
+t28|  ATTACK  Dross Crocodile 5/1
+t30|Dakmor Scorpion
+t30|== my combat: life 10-5, creatures 5-1
+t30|  [atkjoint] 4 avail, 1 defenders, 8 distinct subsets, 8 after Pareto, 0.2ms
+t30|  ATTACK  Dakmor Scorpion 2/1
+t30|  ATTACK  Dross Crocodile 5/1
+t30|  ATTACK  Dross Crocodile 5/1
+t30|  ATTACK  Dross Crocodile 5/1
+RLGAME_END
