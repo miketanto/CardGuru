@@ -335,6 +335,21 @@ public class EpisodeRunner {
             fallbacks.merge("attackOpportunities", (int) rlAgent.attackOpportunities, Integer::sum);
             fallbacks.merge("attackRefDeclared", (int) rlAgent.attackRefDeclared, Integer::sum);
             fallbacks.merge("attackRefDeclaredCA", (int) rlAgent.attackRefDeclaredCA, Integer::sum);
+            // CURRICULUM-LADDER.md §5's target-by-power census, the black
+            // branch's strong instrument. Emitted as two parallel
+            // histograms so the read is "chose p5 this often, could have
+            // chosen p5 this often" - the chosen counts alone would just
+            // describe the board.
+            if (rlAgent.targetCreatureChoices > 0) {
+                for (int p = 0; p <= 6; p++) {
+                    fallbacks.merge("tgtChose_p" + p,
+                            (int) rlAgent.targetChosenByPower[p], Integer::sum);
+                    fallbacks.merge("tgtLegal_p" + p,
+                            (int) rlAgent.targetLegalByPower[p], Integer::sum);
+                }
+                fallbacks.merge("tgtChoices",
+                        (int) rlAgent.targetCreatureChoices, Integer::sum);
+            }
             // v6 emission. entityTrunc is board state the agent could
             // NOT see because it overflowed the EMAX buffer, and EMAX is
             // a buffer rather than a meaning - so this is the number

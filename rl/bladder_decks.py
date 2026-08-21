@@ -104,6 +104,12 @@ SHELL = [
 
 SWAP_CARD = ("Gutter Skulk", "GTC:67")
 SWAP_N = 4
+# The same slot in the TWIN shell. The ladder builds a twin for rung 0
+# only, so a higher rung has no transfer arm: passing B0Twin would move
+# the RUNG and the card identities at once, which is the confound the
+# twin exists to remove. (The white branch needed the same fix - see
+# TWIN_SWAP_CARD in wladder_decks.py.)
+TWIN_SWAP_CARD = ("Krovikan Scoundrel", "ANB:50")
 
 # Every rung is the same slot, the same cost, the same count. Only the
 # card name changes.
@@ -134,10 +140,10 @@ def shell_entries(arm):
     return out
 
 
-def swap(entries, card):
+def swap(entries, card, swap_card=SWAP_CARD):
     out, dropped = [], 0
     for n, c, cmc, p, t in entries:
-        if c == SWAP_CARD:
+        if c == swap_card:
             dropped += n
             continue
         out.append((n, c, cmc, p, t))
@@ -171,6 +177,13 @@ def main():
                               "no shared card")]
     for name, card, note in RUNGS:
         decks.append((name, swap(base, card), note))
+    # B3's transfer arm, by the rung-0 recipe: the twin shell with ITS
+    # ladder slot swapped for the same spell. Only B3 gets one so far,
+    # because B3 is the rung being trained.
+    decks.append(("B3Twin",
+                  swap(twin, ("Fell", "BLB:383"),
+                       swap_card=TWIN_SWAP_CARD),
+                  "rung 3 transfer: B0Twin's identities, B3's spell"))
 
     names = {}
     for name, entries, note in decks:

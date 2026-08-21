@@ -135,6 +135,25 @@ public class RLPlayer extends ComputerPlayer {
      *  the quantity in question. */
     public long attackRefDeclared = 0;
     public long attackRefDeclaredCA = 0;
+    /** BLACK BRANCH instrument (CURRICULUM-LADDER.md §5): the power of
+     *  the creature the policy pointed removal at, and the power census
+     *  of everything it could legally have pointed at instead.
+     *
+     *  Win rate is the weak instrument on that branch; this is the
+     *  strong one. A policy doing threat assessment concentrates its
+     *  kills on high power, a policy ignoring the board is uniform over
+     *  the legal set, and the difference is a chi-square on FIXED
+     *  weights - no second training run, which is the class of claim
+     *  POOLED-ANALYSIS.md §6 found actually replicates. The ladder
+     *  records this instrument as "not built yet"; this is it.
+     *
+     *  Indexed by power, clamped into 0..6 (6 = "6 or more"). Only
+     *  creature targets are counted: a spell aimed at a player has no
+     *  power and would dilute the census. */
+    public final long[] targetChosenByPower = new long[7];
+    public final long[] targetLegalByPower = new long[7];
+    public long targetCreatureChoices = 0;
+
     /** Attacks declared / creatures that could legally have attacked.
      *  The RATE the whole task is about - the v4 replay holds 12 turns
      *  running - and the number that catches the fix overshooting. */
@@ -191,6 +210,34 @@ public class RLPlayer extends ComputerPlayer {
         }
         return policy.choose(StateEncoder.encodeState(game, playerId, opp),
                 cands, phi(game));
+    }
+
+    /** §5's target-by-power census. Counts the whole legal set as well
+     *  as the pick, because "chose a 5-power creature" means nothing
+     *  without "and could have chosen these". Windows with no creature
+     *  in the legal set are skipped entirely rather than counted as a
+     *  degenerate choice. */
+    private void recordTargetChoice(Game game, List<UUID> possible, int pick) {
+        int creatures = 0;
+        for (UUID id : possible) {
+            Permanent p = game.getPermanent(id);
+            if (p != null && p.isCreature(game)) {
+                creatures++;
+                targetLegalByPower[bucket(p.getPower().getValue())]++;
+            }
+        }
+        if (creatures == 0) {
+            return;                 // no creature was targetable; not a
+        }                           // threat-assessment decision at all
+        Permanent chosen = game.getPermanent(possible.get(pick));
+        if (chosen != null && chosen.isCreature(game)) {
+            targetChosenByPower[bucket(chosen.getPower().getValue())]++;
+            targetCreatureChoices++;
+        }
+    }
+
+    private static int bucket(int power) {
+        return Math.max(0, Math.min(6, power));
     }
 
     private float phi(Game game) {
@@ -496,6 +543,7 @@ public class RLPlayer extends ComputerPlayer {
             consults++;
             int pick = consult(game, opp, cands);
             pick = Math.max(0, Math.min(pick, possible.size() - 1));
+            recordTargetChoice(game, possible, pick);
             target.addTarget(possible.get(pick), source, game);
         }
         return true;
