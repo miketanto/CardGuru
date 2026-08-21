@@ -1,0 +1,47 @@
+RLGAME|reward=1.0|seed=6001
+t1|Plains (Play Plains)
+t3|Plains (Play Plains)
+t3|Glory Seeker
+t5|Silvercoat Lion
+t5|== my combat: life 20-20, creatures 2-0
+t5|  [atkjoint] 1 avail, 0 defenders, 2 distinct subsets, 2 after Pareto, 3.0ms
+t5|  hold    Glory Seeker 2/2
+t5|  [atkaudit] policy (none) (0, dealt 0, lost 0, killed 0, back 0) | ref Glory Seeker 2/2 (4)  GAP 4 UNDER
+t7|Blade of the Sixth Pride
+t7|== my combat: life 20-20, creatures 3-0
+t7|  [atkjoint] 2 avail, 0 defenders, 3 distinct subsets, 3 after Pareto, 0.1ms
+t7|  ATTACK  Glory Seeker 2/2
+t7|  ATTACK  Silvercoat Lion 2/2
+t7|  [atkaudit] policy Glory Seeker 2/2 + Silvercoat Lion 2/2 (8, dealt 4, lost 0, killed 0, back 0) | ref Glory Seeker 2/2 + Silvercoat Lion 2/2 (8)  MATCH
+t9|Blade of the Sixth Pride
+t9|== my combat: life 20-16, creatures 4-1
+t9|  [atkjoint] 3 avail, 1 defenders, 6 distinct subsets, 4 after Pareto, 0.9ms
+t9|  ATTACK  Blade of the Sixth Pride 3/1
+t9|  ATTACK  Glory Seeker 2/2
+t9|  ATTACK  Silvercoat Lion 2/2
+t9|  [atkaudit] policy Blade of the Sixth Pride 3/1 + Glory Seeker 2/2 + Silvercoat Lion 2/2 (5, dealt 4, lost 1, killed 1, back 0) | ref Blade of the Sixth Pride 3/1 + Glory Seeker 2/2 + Silvercoat Lion 2/2 (5)  MATCH
+t10|== incoming: life 20-9, creatures 4-2
+t10|  attacked by Elite Vanguard 2/1
+t10|  [joint] 1 attackers, 1 blockers, 2 distinct outcomes, 2 after Pareto
+t10|  BLOCK   Blade of the Sixth Pride 3/1  <- Elite Vanguard 2/1
+t10|  [audit] policy Blade of the Sixth Pride 3/1->Elite Vanguard 2/1 (score 1) | solver Blade of the Sixth Pride 3/1->Elite Vanguard 2/1 (score 1)  MATCH
+t11|== my combat: life 20-9, creatures 3-1
+t11|  [atkjoint] 3 avail, 1 defenders, 6 distinct subsets, 4 after Pareto, 0.2ms
+t11|  ATTACK  Blade of the Sixth Pride 3/1
+t11|  ATTACK  Glory Seeker 2/2
+t11|  ATTACK  Silvercoat Lion 2/2
+t11|  [atkaudit] policy Blade of the Sixth Pride 3/1 + Glory Seeker 2/2 + Silvercoat Lion 2/2 (8, dealt 4, lost 1, killed 1, back 0) | ref Blade of the Sixth Pride 3/1 + Glory Seeker 2/2 + Silvercoat Lion 2/2 (8)  MATCH
+t12|Plains ({T}: Add {W}.)
+t12|Plains ({T}: Add {W}.)
+t12|== incoming: life 20-2, creatures 3-2
+t12|  attacked by Blade of the Sixth Pride 3/1
+t12|  [joint] 1 attackers, 0 blockers, 1 distinct outcomes, 1 after Pareto
+t13|Plains (Play Plains)
+t13|Regal Unicorn
+t13|== my combat: life 17-2, creatures 4-2
+t13|  [atkjoint] 3 avail, 1 defenders, 6 distinct subsets, 5 after Pareto, 0.2ms
+t13|  ATTACK  Blade of the Sixth Pride 3/1
+t13|  ATTACK  Glory Seeker 2/2
+t13|  ATTACK  Silvercoat Lion 2/2
+t13|  [atkaudit] policy Blade of the Sixth Pride 3/1 + Glory Seeker 2/2 + Silvercoat Lion 2/2 (LETHAL, dealt 7, lost 0, killed 0, back 3) | ref Blade of the Sixth Pride 3/1 + Glory Seeker 2/2 (LETHAL)  MATCH
+RLGAME_END

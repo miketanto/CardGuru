@@ -33,6 +33,16 @@ if [ "$ENC" = "1" ]; then SDIM=24; CDIM=91; else SDIM=32; CDIM=94; fi
 SRVEXTRA=""
 [ "$ENC" -ge 4 ] 2>/dev/null && SRVEXTRA="--max-k 64"
 [ "$ENC" -ge 5 ] 2>/dev/null && SRVEXTRA="--max-k 96"
+# v6 is a different arch, not just a different encoder property, and the
+# checkpoint's dims record makes a mismatch fail at load rather than
+# mispredict - which is exactly the trap this script's header describes.
+ARCH=lstmattn
+V6FLAGS=""
+if [ "$ENC" -ge 6 ] 2>/dev/null; then
+    ARCH=entattn
+    V6FLAGS="--gdim 16 --edim 48 --emax ${REPLAY_EMAX:-48}"
+    [ "${REPLAY_RELATIONS:-1}" = "0" ] && V6FLAGS="$V6FLAGS --r0"
+fi
 
 cp $RL/$DECK.dck /home/user/mage/Mage.Tests/
 
@@ -44,7 +54,7 @@ sleep 2
 
 RL_TORCH_THREADS=1 setsid nohup python3 $RL/policy_server.py \
     --port $PORT --ckpt $CKPT --seed 0 --sdim $SDIM --cdim $CDIM \
-    --arch lstmattn --threads 1 $SRVEXTRA > /tmp/replay_server.log 2>&1 &
+    --arch $ARCH --threads 1 $SRVEXTRA $V6FLAGS > /tmp/replay_server.log 2>&1 &
 t=0
 while [ $t -lt 90 ]; do
     grep -q "policy server" /tmp/replay_server.log 2>/dev/null && break
