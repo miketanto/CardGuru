@@ -44,18 +44,24 @@ gate would have had nothing to test. `entity_gate.py` prints
 The build plan said `EMAX = 24`. That was a guess made before anything
 had been emitted. Measured over 40 rung-0 games:
 
-| EMAX | consults | truncated | entities dropped | largest board |
-|---|---|---|---|---|
-| 24 | 1944 | **458 (23.6%)** | 3172 | 45 |
-| 48 | 1983 | 0 | 0 | 43 |
+| run | avg turns | EMAX | consults | truncated | largest board |
+|---|---|---|---|---|---|
+| 40 games vs D0 | 13.6 | 24 | 1944 | **458 (23.6%)** | 45 |
+| 40 games vs D0 | 13.6 | 48 | 1983 | 0 | 43 |
+| 20 games v6-vs-v5 | 50.6 | 48 | ~8900 | **3856 (43%)** | **75** |
 
-At 24, a quarter of the agent's consults would have been blind to part
-of its own board — the exact failure v6 exists to remove, reintroduced
-by a buffer size. The default is now 48 on both sides.
-`entityTrunc`/`entityDropped`/`entityMaxSeen` are reported in every
-driver summary, so the next time the buffer is wrong it says so instead
-of degrading quietly. 43 against 48 is not much headroom: rung 4+ or
-longer games should re-read the counter rather than assume.
+At 24, a quarter of the agent's consults were blind to part of its own
+board — the exact failure v6 exists to remove, reintroduced by a buffer
+size. 48 fixed that for games that END. It did NOT survive contact with
+games that stall: the head-to-head (§6) averages 50.6 turns, 11 of 20
+hitting the turn cap, and builds boards of 75.
+
+**The default is 96**, sized for the stalls rather than the wins,
+because a buffer has to cover the worst case you intend to measure.
+`entityTrunc`/`entityDropped`/`entityMaxSeen` are in every driver
+summary, which is the only reason either of these was noticed rather
+than quietly degrading a run. Note what that means for §6's numbers:
+they were measured at 48 and are therefore partially blind.
 
 EMAX is a BUFFER — raising it changes no weights and no checkpoint —
 which is why this is a one-line fix and not a re-baseline.
