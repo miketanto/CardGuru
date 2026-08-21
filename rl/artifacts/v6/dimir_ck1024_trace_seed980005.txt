@@ -1,0 +1,143 @@
+RLGAME|reward=-1.0|seed=980005
+t1|  [trace] target step=null k=2 pick=0 (PASS)
+t1|  [trace] prio step=Precombat Main k=2 pick=0 (PASS)
+t1|  [trace] prio step=Postcombat Main k=2 pick=0 (PASS)
+t3|  [trace] prio step=Precombat Main k=3 pick=2
+t3|Watery Grave (Play Watery Grave)
+t3|  [trace] prio step=Precombat Main k=5 pick=1
+t3|Cecil, Dark Knight
+t4|== incoming: life 18-20, creatures 1-2
+t4|  attacked by Spyglass Siren 1/1
+t4|  [joint] 1 attackers, 0 blockers, 1 distinct outcomes, 1 after Pareto
+t4|  [trace] blkjoint step=Declare Blockers k=1 pick=0
+t5|  [trace] prio step=Upkeep k=4 pick=1
+t5|  [trace] target step=Upkeep k=3 pick=0 (PASS)
+t5|  KILL    Cecil, Dark Knight 2/3 tap (MINE)   [of 3, 2 enemy: Cecil, Dark Knight 2/3 tap, Floodpits Drowner 2/1, Spyglass Siren 1/1 tap]
+t5|  [trace] target step=Upkeep k=1 pick=0 (PASS)
+t5|  KILL    Cecil, Dark Knight 2/3 tap (MINE)   [of 1, 0 enemy: Cecil, Dark Knight 2/3 tap]
+t5|Requiting Hex (destroy target creature with mana value 2 or less. If this spell's additional cost was paid, you gain 2 life.)
+t5|  [trace] prio step=Precombat Main k=2 pick=0 (PASS)
+t5|  [trace] prio step=Postcombat Main k=2 pick=0 (PASS)
+t6|== incoming: life 19-20, creatures 0-2
+t6|  attacked by Floodpits Drowner 2/1, Spyglass Siren 1/1
+t6|  [joint] 2 attackers, 0 blockers, 1 distinct outcomes, 1 after Pareto
+t6|  [trace] blkjoint step=Declare Blockers k=1 pick=0
+t7|  [trace] prio step=Upkeep k=3 pick=0 (PASS)
+t7|  [trace] prio step=Draw k=3 pick=0 (PASS)
+t7|  [trace] prio step=Precombat Main k=5 pick=0 (PASS)
+t7|  [trace] prio step=Begin Combat k=3 pick=0 (PASS)
+t7|  [trace] prio step=Declare Attackers k=3 pick=0 (PASS)
+t7|  [trace] prio step=End Combat k=3 pick=0 (PASS)
+t7|  [trace] prio step=Postcombat Main k=5 pick=0 (PASS)
+t7|  [trace] prio step=End Turn k=3 pick=0 (PASS)
+t8|  [trace] prio step=Upkeep k=3 pick=0 (PASS)
+t8|  [trace] prio step=Draw k=3 pick=0 (PASS)
+t8|  [trace] prio step=Precombat Main k=3 pick=0 (PASS)
+t8|  [trace] prio step=Precombat Main k=3 pick=0 (PASS)
+t8|  [trace] prio step=Precombat Main k=3 pick=0 (PASS)
+t8|  [trace] prio step=Begin Combat k=3 pick=0 (PASS)
+t8|  [trace] prio step=Declare Attackers k=3 pick=0 (PASS)
+t8|== incoming: life 16-20, creatures 0-3
+t8|  attacked by Floodpits Drowner 2/1, Spyglass Siren 1/1
+t8|  [joint] 2 attackers, 0 blockers, 1 distinct outcomes, 1 after Pareto
+t8|  [trace] blkjoint step=Declare Blockers k=1 pick=0
+t8|  [trace] prio step=Declare Blockers k=3 pick=0 (PASS)
+t8|  [trace] prio step=Combat Damage k=3 pick=0 (PASS)
+t8|  [trace] prio step=End Combat k=3 pick=0 (PASS)
+t8|  [trace] prio step=Postcombat Main k=3 pick=0 (PASS)
+t8|  [trace] prio step=End Turn k=3 pick=0 (PASS)
+t9|  [trace] prio step=Upkeep k=3 pick=0 (PASS)
+t9|  [trace] prio step=Draw k=3 pick=0 (PASS)
+t9|  [trace] prio step=Precombat Main k=6 pick=1
+t9|Island (Play Island)
+t9|  [trace] prio step=Precombat Main k=6 pick=1
+t9|  [trace] target step=Precombat Main k=3 pick=1
+t9|  KILL    Spyglass Siren 1/1 tap   [of 3, 3 enemy: Floodpits Drowner 2/1, Spyglass Siren 1/1 tap, The Wondrous Wasp 2/1]
+t9|  [trace] target step=Precombat Main k=6 pick=0 (PASS)
+t9|Bitter Triumph (destroy target creature or planeswalker.)
+t10|== incoming: life 13-20, creatures 0-3
+t10|  attacked by Floodpits Drowner 2/1, Spyglass Siren 1/1, The Wondrous Wasp 2/1
+t10|  [joint] 3 attackers, 0 blockers, 1 distinct outcomes, 1 after Pareto
+t10|  [trace] blkjoint step=Declare Blockers k=1 pick=0
+t11|  [trace] prio step=Upkeep k=5 pick=1
+t11|Floodpits Drowner
+t11|  [trace] target step=Upkeep k=3 pick=1
+t11|  KILL    Spyglass Siren 1/1 tap   [of 3, 3 enemy: Floodpits Drowner 2/1, Spyglass Siren 1/1 tap, The Wondrous Wasp 2/1 tap]
+t11|  [trace] prio step=Precombat Main k=3 pick=2
+t11|Soulstone Sanctuary (Play Soulstone Sanctuary)
+t11|  [trace] prio step=Precombat Main k=2 pick=0 (PASS)
+t11|  [trace] prio step=Begin Combat k=2 pick=0 (PASS)
+t11|  [trace] prio step=Declare Attackers k=2 pick=0 (PASS)
+t11|  [trace] prio step=End Combat k=2 pick=0 (PASS)
+t11|  [trace] prio step=Postcombat Main k=2 pick=0 (PASS)
+t11|  [trace] prio step=End Turn k=2 pick=0 (PASS)
+t12|  [trace] prio step=Upkeep k=2 pick=0 (PASS)
+t12|  [trace] prio step=Draw k=2 pick=0 (PASS)
+t12|  [trace] prio step=Precombat Main k=2 pick=0 (PASS)
+t12|  [trace] prio step=Begin Combat k=2 pick=0 (PASS)
+t12|  [trace] prio step=Declare Attackers k=2 pick=0 (PASS)
+t12|== incoming: life 8-18, creatures 1-3
+t12|  attacked by Floodpits Drowner 2/1, The Wondrous Wasp 2/1
+t12|  [joint] 2 attackers, 1 blockers, 2 distinct outcomes, 2 after Pareto
+t12|  [trace] blkjoint step=Declare Blockers k=2 pick=1
+t12|  BLOCK   Floodpits Drowner 2/1  <- Floodpits Drowner 2/1
+t12|  [audit] policy Floodpits Drowner 2/1->Floodpits Drowner 2/1 (score 4) | solver Floodpits Drowner 2/1->Floodpits Drowner 2/1 (score 4)  MATCH
+t12|  [trace] prio step=Declare Blockers k=2 pick=0 (PASS)
+t12|  [trace] prio step=Declare Blockers k=2 pick=0 (PASS)
+t12|  [trace] prio step=Combat Damage k=2 pick=0 (PASS)
+t12|  [trace] prio step=End Combat k=2 pick=0 (PASS)
+t12|  [trace] prio step=Postcombat Main k=2 pick=0 (PASS)
+t12|  [trace] prio step=Postcombat Main k=2 pick=0 (PASS)
+t12|  [trace] prio step=Postcombat Main k=2 pick=0 (PASS)
+t12|  [trace] prio step=End Turn k=2 pick=0 (PASS)
+t13|  [trace] prio step=Upkeep k=6 pick=2
+t13|Shoot the Sheriff (destroy target non-outlaw creature.)
+t13|  [trace] prio step=Upkeep k=2 pick=0 (PASS)
+t13|  [trace] prio step=Upkeep k=2 pick=0 (PASS)
+t13|  [trace] prio step=Draw k=2 pick=0 (PASS)
+t13|  [trace] prio step=Precombat Main k=3 pick=0 (PASS)
+t13|  [trace] prio step=Begin Combat k=2 pick=0 (PASS)
+t13|  [trace] prio step=Declare Attackers k=2 pick=0 (PASS)
+t13|  [trace] prio step=End Combat k=2 pick=0 (PASS)
+t13|  [trace] prio step=Postcombat Main k=3 pick=0 (PASS)
+t13|  [trace] prio step=End Turn k=2 pick=0 (PASS)
+t14|  [trace] prio step=Upkeep k=2 pick=0 (PASS)
+t14|  [trace] prio step=Draw k=2 pick=0 (PASS)
+t14|  [trace] prio step=Precombat Main k=2 pick=0 (PASS)
+t14|  [trace] prio step=Begin Combat k=2 pick=0 (PASS)
+t14|  [trace] prio step=Declare Attackers k=2 pick=0 (PASS)
+t14|== incoming: life 5-18, creatures 0-2
+t14|  attacked by Kaito, Bane of Nightmares 3/4, Spyglass Siren 1/1
+t14|  [joint] 2 attackers, 0 blockers, 1 distinct outcomes, 1 after Pareto
+t14|  [trace] blkjoint step=Declare Blockers k=1 pick=0
+t14|  [trace] prio step=Declare Blockers k=2 pick=0 (PASS)
+t14|  [trace] prio step=Declare Blockers k=2 pick=0 (PASS)
+t14|  [trace] prio step=Combat Damage k=2 pick=0 (PASS)
+t14|  [trace] prio step=End Combat k=2 pick=0 (PASS)
+t14|  [trace] prio step=Postcombat Main k=2 pick=0 (PASS)
+t14|  [trace] prio step=Postcombat Main k=2 pick=0 (PASS)
+t14|  [trace] prio step=Postcombat Main k=2 pick=0 (PASS)
+t14|  [trace] prio step=End Turn k=2 pick=0 (PASS)
+t15|  [trace] prio step=Upkeep k=6 pick=0 (PASS)
+t15|  [trace] prio step=Draw k=6 pick=0 (PASS)
+t15|  [trace] prio step=Precombat Main k=7 pick=1
+t15|Nowhere to Run
+t15|  [trace] prio step=Precombat Main k=2 pick=0 (PASS)
+t15|  [trace] prio step=Precombat Main k=2 pick=0 (PASS)
+t15|  [trace] prio step=Precombat Main k=3 pick=0 (PASS)
+t15|  [trace] prio step=Begin Combat k=2 pick=0 (PASS)
+t15|  [trace] prio step=Declare Attackers k=2 pick=0 (PASS)
+t15|  [trace] prio step=End Combat k=2 pick=0 (PASS)
+t15|  [trace] prio step=Postcombat Main k=3 pick=0 (PASS)
+t15|  [trace] prio step=End Turn k=2 pick=0 (PASS)
+t16|  [trace] prio step=Upkeep k=2 pick=0 (PASS)
+t16|  [trace] prio step=Draw k=2 pick=0 (PASS)
+t16|  [trace] prio step=Precombat Main k=2 pick=0 (PASS)
+t16|  [trace] prio step=Begin Combat k=2 pick=0 (PASS)
+t16|  [trace] prio step=Declare Attackers k=2 pick=0 (PASS)
+t16|== incoming: life 2-18, creatures 0-1
+t16|  attacked by Kaito, Bane of Nightmares 3/4
+t16|  [joint] 1 attackers, 0 blockers, 1 distinct outcomes, 1 after Pareto
+t16|  [trace] blkjoint step=Declare Blockers k=1 pick=0
+t16|  [trace] prio step=Declare Blockers k=2 pick=0 (PASS)
+RLGAME_END

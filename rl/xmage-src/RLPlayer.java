@@ -240,7 +240,28 @@ public class RLPlayer extends ComputerPlayer {
      *  three-line change and not a fork of StateEncoder. */
     public int stateV = StateEncoder.ENCODER_V;
 
-    private int consult(Game game, UUID opp, float[][] cands) {
+    /** -Drl.trace: one line per CONSULT, whatever the decision is.
+     *  rl.debug logs the actions the agent took; this logs every
+     *  decision it was asked to make, including the ones where it
+     *  passed - which are invisible otherwise and are most of them. */
+    private static final boolean TRACE = Boolean.getBoolean("rl.trace");
+
+    private int consult(Game game, UUID opp, float[][] cands, String site) {
+        int pick = consultInner(game, opp, cands);
+        if (TRACE) {
+            actionLog.append("t").append(game.getTurnNum())
+                    .append("|  [trace] ").append(site)
+                    .append(" step=").append(game.getTurnStepType())
+                    .append(" k=").append(cands.length)
+                    .append(" pick=").append(pick)
+                    .append(pick == 0 && !"atkjoint".equals(site)
+                            && !"blkjoint".equals(site) ? " (PASS)" : "")
+                    .append('\n');
+        }
+        return pick;
+    }
+
+    private int consultInner(Game game, UUID opp, float[][] cands) {
         if (stateV >= 6) {
             return policy.choose(
                     StateEncoder.encodeEntityView(game, playerId, opp),
@@ -571,7 +592,7 @@ public class RLPlayer extends ComputerPlayer {
             shadowLabel(game, playable, state, cands);
         }
         consults++;
-        int pick = consult(game, opponentId(game), cands);
+        int pick = consult(game, opponentId(game), cands, "prio");
         if (pick <= 0 || pick > playable.size()) {
             pass(game);
             setYieldAfterPass(game);
@@ -664,7 +685,7 @@ public class RLPlayer extends ComputerPlayer {
                 }
             }
             consults++;
-            int pick = consult(game, opp, cands);
+            int pick = consult(game, opp, cands, "target");
             pick = Math.max(0, Math.min(pick, possible.size() - 1));
             recordTargetChoice(game, possible, pick);
             target.addTarget(possible.get(pick), source, game);
@@ -720,7 +741,7 @@ public class RLPlayer extends ComputerPlayer {
                         possible.get(i), game);
             }
             consults++;
-            int pick = consult(game, opp, cands);
+            int pick = consult(game, opp, cands, "targetCard");
             pick = Math.max(0, Math.min(pick, possible.size() - 1));
             target.addTarget(possible.get(pick).getId(), source, game);
         }
@@ -810,7 +831,7 @@ public class RLPlayer extends ComputerPlayer {
                 StateEncoder.forCombat(StateEncoder.T_ATTACK, creature, game)};
             consults++;
             attackOpportunities++;
-            if (consult(game, defender, cands) == 1) {
+            if (consult(game, defender, cands, "attack1") == 1) {
                 this.declareAttacker(creature.getId(), defender, game, false);
                 actions++;
                 attacksDeclared++;
@@ -965,7 +986,7 @@ public class RLPlayer extends ComputerPlayer {
                 + "%d distinct subsets, %d after Pareto, %.1fms",
                 avail.size(), theirs.size(), search.options.size(),
                 kept.size(), (System.nanoTime() - t0) / 1e6));
-        int idx = consult(game, defender, cands);
+        int idx = consult(game, defender, cands, "atkjoint");
         if (idx < 0 || idx >= kept.size()) {
             return;
         }
@@ -1094,7 +1115,7 @@ public class RLPlayer extends ComputerPlayer {
             }
             consults++;
             blockOpportunities++;
-            int pick = consult(game, opp, cands);
+            int pick = consult(game, opp, cands, "block1");
             if (pick > 0 && pick <= can.size()) {
                 this.declareBlocker(defendingPlayerId, blocker.getId(),
                         can.get(pick - 1).getId(), game);
@@ -1213,7 +1234,7 @@ public class RLPlayer extends ComputerPlayer {
         log(game, String.format("  [joint] %d attackers, %d blockers, "
                 + "%d distinct outcomes, %d after Pareto",
                 A, B, byOutcome.size(), options.size()));
-        int pick = consult(game, opponentId(game), cands);
+        int pick = consult(game, opponentId(game), cands, "blkjoint");
         if (pick < 0 || pick >= options.size()) {
             return;
         }
