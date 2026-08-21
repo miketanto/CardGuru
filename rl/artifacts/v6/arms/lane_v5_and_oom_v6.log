@@ -1,0 +1,11 @@
+=== ARM v5 (v5, relations=1) 23:51:58 ===
+P10INIT|out=/tmp/rl_arm_v5/init.pt|arch=lstmattn|seed=10|cdim=94|params=430082
+R0_START|W0Base|seed=0|budget=512|resume_at=0|out=/tmp/rl_arm_v5
+R0|W0Base|s0|trained=0|D0=0.0000 [0.000,0.133]|D1=0.0000 [0.000,0.133]|TWIN=0.0000 [0.000,0.133]|blocks=11/11|BLOCKOPT=11/11|gap=0|attacks=2/4|ATKOPT=3/4|ATKOPTCA=4/4|under_over=1/0|turns=10.8
+R0|W0Base|s0|trained=512|D0=1.0000 [0.867,1.000]|D1=1.0000 [0.867,1.000]|TWIN=0.9200 [0.750,0.978]|blocks=270/309|BLOCKOPT=146/158|gap=56|attacks=340/634|ATKOPT=160/242|ATKOPTCA=164/242|under_over=30/52|turns=25.4
+R0_DONE|W0Base|s0|trained=512|out=/tmp/rl_arm_v5
+=== ARM v6 (v6, relations=1) 00:33:50 ===
+P10INIT|out=/tmp/rl_arm_v6/init.pt|arch=entattn|seed=10|cdim=94|params=715806
+R0_START|W0Base|seed=0|budget=512|resume_at=0|out=/tmp/rl_arm_v6
+R0|W0Base|s0|trained=0|D0=0.0000 [0.000,0.133]|D1=0.0000 [0.000,0.133]|TWIN=0.0000 [0.000,0.133]|blocks=2/2|BLOCKOPT=2/2|gap=0|attacks=0/0|ATKOPT=0/0|ATKOPTCA=0/0|under_over=0/0|turns=10.0
+/home/user/CardGuru/rl/rung0_lane.sh: line 227:  2186 Killed                  RL_TORCH_THREADS=1 setsid nohup python3 $RL/policy_server.py --port $PORT --ckpt $CKPT --seed $SEED --sdim $SDIM --cdim $CDIM --arch $ARCH --threads $CONC $SRVEXTRA $V6FLAGS ${1:-} > $OUT/server.log 2>&1

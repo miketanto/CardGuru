@@ -149,7 +149,8 @@ probe() {   # $1 out $2 opponent $3 deck $4 games $5 seed
 # untrained row of every lane log ever written claims perfect certainty
 # about 0/100, and the standing rule since then is Wilson everywhere.
 # rung0_report.py already carried the correct one; the lane did not.
-band() { python3 -c "
+band() { [ -z "${2:-}" ] && { echo "[NA]"; return; }
+python3 -c "
 import math
 n=float('$1' or 1); p=float('$2' or 0); z=1.96
 k=p*n; d=1+z*z/n
