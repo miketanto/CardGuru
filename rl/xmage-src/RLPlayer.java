@@ -167,6 +167,17 @@ public class RLPlayer extends ComputerPlayer {
      *  take the largest thing available", which is the sharpest form of
      *  the threat-assessment question and needs no binning. */
     public long targetChosenWasMaxPower = 0, targetMaxPowerTies = 0;
+    /** WHOSE creature was killed, and whether an enemy one was even
+     *  available. Without this split the power census pools the agent's
+     *  own creatures with the opponent's and cannot tell "chose badly"
+     *  from "had no enemy target at all" - which is exactly the mistake
+     *  the first read of it made. targetWindowsNoOpp is the number that
+     *  matters: a removal cast resolved into a board with ZERO legal
+     *  enemy targets is a CAST error, not a targeting error, and the
+     *  cast candidate (forCard) carries nothing about target
+     *  availability. */
+    public long targetChosenOpp = 0, targetLegalOpp = 0;
+    public long targetWindowsNoOpp = 0;
     /** TIMING instrument, for the instant-speed rungs (B1Fast, W4Inst).
      *  The whole point of a timing rung is that the same effect is
      *  printed at both speeds, so the measured difference is whether
@@ -246,6 +257,7 @@ public class RLPlayer extends ComputerPlayer {
      *  degenerate choice. */
     private void recordTargetChoice(Game game, List<UUID> possible, int pick) {
         int creatures = 0, maxPower = Integer.MIN_VALUE, atMax = 0;
+        int oppLegal = 0;
         StringBuilder opts = new StringBuilder();
         for (UUID id : possible) {
             Permanent p = game.getPermanent(id);
@@ -255,6 +267,10 @@ public class RLPlayer extends ComputerPlayer {
             creatures++;
             int pw = p.getPower().getValue();
             targetLegalByPower[bucket(pw)]++;
+            if (!p.getControllerId().equals(playerId)) {
+                targetLegalOpp++;
+                oppLegal++;
+            }
             if (p.isAttacking()) {
                 targetLegalAttacking++;
             }
@@ -285,6 +301,12 @@ public class RLPlayer extends ComputerPlayer {
         int pw = chosen.getPower().getValue();
         targetChosenByPower[bucket(pw)]++;
         targetCreatureChoices++;
+        if (oppLegal == 0) {
+            targetWindowsNoOpp++;
+        }
+        if (!chosen.getControllerId().equals(playerId)) {
+            targetChosenOpp++;
+        }
         if (chosen.isAttacking()) {
             targetChosenAttacking++;
         }
@@ -301,7 +323,9 @@ public class RLPlayer extends ComputerPlayer {
             }
         }
         log(game, "  KILL    " + pt(chosen, game) + status(chosen)
-                + "   [of " + creatures + ": " + opts + "]");
+                + (chosen.getControllerId().equals(playerId) ? " (MINE)" : "")
+                + "   [of " + creatures + ", " + oppLegal + " enemy: "
+                + opts + "]");
     }
 
     /** Compact combat status, so a transcript line says WHY a kill might

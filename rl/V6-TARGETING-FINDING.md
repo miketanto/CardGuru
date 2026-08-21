@@ -1,8 +1,8 @@
-# The agent points its own removal at its own board
+# The agent casts removal at boards with nothing to kill
 
-Found while running v6 on three different decks. It is the clearest
-behavioural defect this encoder work has turned up, and it is not an
-encoder defect.
+Found while running v6 on three decks. The visible symptom is that it
+destroys its own creatures; the cause is not what the first version of
+this document said it was, and §2 records the correction.
 
 ---
 
@@ -40,20 +40,48 @@ t23  Bitter Triumph (destroy target creature or planeswalker.)
 
 It destroyed its own 3/3 and kept its own 1/1.
 
-## 2. It is NOT an encoding gap, and v6 could not have fixed it
+## 2. CORRECTION: it is a cast-decision failure, not a targeting one
 
-Ownership is in the observation twice:
+The first version of this document claimed the policy ignores the
+ownership bit. **That was wrong, and the measurement refutes it.**
 
-- **The candidate** carries it explicitly —
-  `StateEncoder.forTargetPermanent` sets `c[12] = controller == me`.
-- **The v6 state** carries it again — every entity token has
-  `mine`/`theirs` one-hot at idx 1–2, and relation type 4 (`controls`)
-  links each player token to its permanents.
+Every window quoted in §1 had NO legal enemy target - the opponent's
+board was empty, or their creatures were outside the spell's power
+restriction. The target choice was forced. Measured on BenchDimir @1024,
+25 eval games, with the census split by controller:
 
-So the bit is there, in the action representation and in the state, and
-the policy ignores it. v6 adds *vision*; vision was never the missing
-thing. That also predicts v5 fails identically here, which is a testable
-claim rather than a hedge — and it is the cheapest next experiment.
+| | count |
+|---|---|
+| target decisions | 22 |
+| ...with ZERO enemy creatures legally targetable | **11 (50%)** |
+| ...with at least one enemy target available | 11 |
+| of those, an ENEMY creature was chosen | **10 of 11 (91%)** |
+
+So given something worth killing, it kills the right side nine times in
+ten. The ownership bit is read. What fails is the decision to cast at
+all: half of all removal casts happen into a board with no enemy target,
+and once the spell is on the stack the engine demands a legal target, so
+one of its own creatures dies.
+
+**And there the encoding really is short.** Ownership is encoded twice -
+`forTargetPermanent` sets `c[12] = controller == me`, and every v6
+entity token carries `mine`/`theirs` plus the `controls` relation. But
+the CAST candidate is this, in full:
+
+```java
+public static float[] forCard(int type, Card card, Game game) {
+    c[6]  = card.getManaValue() / 6f;
+    c[7..9] = power / toughness / is-creature;
+    c[10] = card.isInstant(game);
+    c[11] = card.isSorcery(game);
+    identity(c, card.getName());
+```
+
+Mana value, body, type, name. **Nothing about whether the spell has a
+legal target worth having.** The net can only get there by learning a
+conjunction between the card's identity and the board state, from a
+handful of casts per hundred games. v6 does not help: it widens the
+state, and the missing feature is on the action.
 
 ## 3. The likely cause is exposure, not representation
 
@@ -109,11 +137,39 @@ because they have no triggers, which is why this hid until Dimir.
 
 ## 6. What to do next, in order
 
-1. **Split the target census by controller** (`tgtChoseMine` /
-   `tgtLegalMine`). One number - the share of kills aimed at its own
-   board - decides how much of §4 needs re-reading.
+1. ~~Split the target census by controller.~~ **Done** -
+   `tgtChoseOpp` / `tgtLegalOpp` / `tgtNoOppAvail`, and the answer is
+   in §2: the targeting is fine, the casting is not. §4's first item
+   still stands: B3Open's power census was measured over the pooled
+   population and needs re-running with the split before it can be read
+   as threat assessment.
 2. **Run the same census on v5.** If it self-targets at the same rate,
    the failure is confirmed as reward-side and the encoder A/B has
    nothing to say about it.
 3. Only then consider whether a rung whose spell is cast this rarely can
    teach anything under terminal-only reward.
+
+## 7. The Dimir run that produced the number
+
+BenchDimir, v6, 512 -> 1024 episodes (the split was added before the
+second half, so the 1024 battery carries it).
+
+| | @512 | @1024 |
+|---|---|---|
+| D0 (10 games) | .200 [.057,.510] | .400 [.168,.687] |
+| D1 | .000 | .200 |
+| turns / game | 22.6 | 17.5 |
+| actions / episode | 15.7 | 21.0 |
+| instant casts (10 games) | 15 | 13 |
+| ...cast inside a combat step | 0 | 0 |
+
+The win rate doubled and means nothing at ten games - the intervals
+overlap almost entirely. Two things are worth keeping: the agent is
+closing games faster (22.6 -> 17.5 turns), and it has never once cast an
+instant during a combat step, across every checkpoint measured on two
+different instant-speed decks.
+
+READ THE AUDIT COLUMNS NOWHERE. BenchDimir has 7 fliers and 3
+deathtouch, and CombatMath models neither, so this deck's BLOCKOPT and
+ATKOPT are computed against a reference that mis-simulates its own
+creatures. They are excluded from this table deliberately.

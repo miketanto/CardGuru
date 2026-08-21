@@ -1,0 +1,6 @@
+=== BenchDimir 512 -> 1024, v6 22:37:16 ===
+P10INIT|exists|/tmp/rl_dimir_v6/init.pt (left untouched)
+R0_START|BenchDimir|seed=0|budget=1024|resume_at=512|out=/tmp/rl_dimir_v6
+R0|BenchDimir|s0|trained=1024|ck_eps=1024|D0=0.4000 [0.168,0.687]|D1=0.2000 [0.057,0.510]|TWIN=0.4000 [0.168,0.687]|blocks=15/15|BLOCKOPT=10/12|gap=8|attacks=46/48|ATKOPT=33/36|ATKOPTCA=29/36|under_over=0/3|turns=17.5
+R0_DONE|BenchDimir|s0|trained=1024|out=/tmp/rl_dimir_v6
+=== DIMIR 1K DONE 23:13:22 ===

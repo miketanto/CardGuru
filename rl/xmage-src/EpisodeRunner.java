@@ -368,6 +368,12 @@ public class EpisodeRunner {
                         (int) rlAgent.targetChosenTapped, Integer::sum);
                 fallbacks.merge("tgtLegalTap",
                         (int) rlAgent.targetLegalTapped, Integer::sum);
+                fallbacks.merge("tgtChoseOpp",
+                        (int) rlAgent.targetChosenOpp, Integer::sum);
+                fallbacks.merge("tgtLegalOpp",
+                        (int) rlAgent.targetLegalOpp, Integer::sum);
+                fallbacks.merge("tgtNoOppAvail",
+                        (int) rlAgent.targetWindowsNoOpp, Integer::sum);
                 fallbacks.merge("tgtChoseMaxPow",
                         (int) rlAgent.targetChosenWasMaxPower, Integer::sum);
                 fallbacks.merge("tgtMaxPowTies",
