@@ -301,6 +301,13 @@ public class EpisodeRunner {
             if (rlAgent.shadowExamples > 0) {
                 fallbacks.merge("shadowExamples", (int) rlAgent.shadowExamples, Integer::sum);
             }
+            if (rlAgent.instantCasts > 0) {
+                fallbacks.merge("instCasts", (int) rlAgent.instantCasts, Integer::sum);
+                fallbacks.merge("instOppTurn",
+                        (int) rlAgent.instantCastsOppTurn, Integer::sum);
+                fallbacks.merge("instInCombat",
+                        (int) rlAgent.instantCastsInCombat, Integer::sum);
+            }
             fallbacks.merge("flashThreats", (int) rlAgent.flashThreatCasts, Integer::sum);
             fallbacks.merge("flashThreatsOppTurn", (int) rlAgent.flashThreatCastsOppTurn, Integer::sum);
             fallbacks.merge("blocksDeclared", (int) rlAgent.blocksDeclared, Integer::sum);

@@ -177,13 +177,18 @@ def main():
                               "no shared card")]
     for name, card, note in RUNGS:
         decks.append((name, swap(base, card), note))
-    # B3's transfer arm, by the rung-0 recipe: the twin shell with ITS
-    # ladder slot swapped for the same spell. Only B3 gets one so far,
-    # because B3 is the rung being trained.
-    decks.append(("B3Twin",
-                  swap(twin, ("Fell", "BLB:383"),
-                       swap_card=TWIN_SWAP_CARD),
-                  "rung 3 transfer: B0Twin's identities, B3's spell"))
+    # Transfer arms, by the rung-0 recipe: the twin shell with ITS
+    # ladder slot swapped for the same spell. The ladder builds a twin
+    # for rung 0 only, so any rung that gets TRAINED needs one of these
+    # or its transfer probe moves the rung and the card identities at
+    # once. Add a line here when a new rung is trained.
+    for tname, tcard, tnote in [
+            ("B3Twin", ("Fell", "BLB:383"),
+             "rung 3 transfer: B0Twin's identities, B3's spell"),
+            ("B1FastTwin", ("Cruel Cut", "ANB:47"),
+             "B1Fast transfer: B0Twin's identities, the instant")]:
+        decks.append((tname, swap(twin, tcard, swap_card=TWIN_SWAP_CARD),
+                      tnote))
 
     names = {}
     for name, entries, note in decks:

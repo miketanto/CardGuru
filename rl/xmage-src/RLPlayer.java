@@ -167,6 +167,19 @@ public class RLPlayer extends ComputerPlayer {
      *  take the largest thing available", which is the sharpest form of
      *  the threat-assessment question and needs no binning. */
     public long targetChosenWasMaxPower = 0, targetMaxPowerTies = 0;
+    /** TIMING instrument, for the instant-speed rungs (B1Fast, W4Inst).
+     *  The whole point of a timing rung is that the same effect is
+     *  printed at both speeds, so the measured difference is whether
+     *  the policy learned to WAIT. A player that only acts at sorcery
+     *  speed gains nothing from the swap and these counters say so
+     *  directly, instead of leaving it to a win rate to imply.
+     *
+     *  own turn / opponent's turn / inside a combat step. The last is
+     *  the sharpest: killing a creature mid-combat is the tempo play
+     *  that sorcery-speed removal structurally cannot make. */
+    public long instantCasts = 0;
+    public long instantCastsOppTurn = 0;
+    public long instantCastsInCombat = 0;
 
     /** Attacks declared / creatures that could legally have attacked.
      *  The RATE the whole task is about - the v4 replay holds 12 turns
@@ -546,6 +559,21 @@ public class RLPlayer extends ComputerPlayer {
         if (acted) {
             actions++;
             Card chosenCard = game.getCard(chosen.getSourceId());
+            if (chosenCard != null && chosenCard.isInstant(game)) {
+                instantCasts++;
+                if (!playerId.equals(game.getActivePlayerId())) {
+                    instantCastsOppTurn++;
+                }
+                PhaseStep st = game.getTurnStepType();
+                if (st == PhaseStep.DECLARE_ATTACKERS
+                        || st == PhaseStep.DECLARE_BLOCKERS
+                        || st == PhaseStep.BEGIN_COMBAT
+                        || st == PhaseStep.FIRST_COMBAT_DAMAGE
+                        || st == PhaseStep.COMBAT_DAMAGE
+                        || st == PhaseStep.END_COMBAT) {
+                    instantCastsInCombat++;
+                }
+            }
             if (chosenCard != null && !chosenCard.isInstant(game)
                     && org.mage.test.benchmark.HeuristicPlayer.holdable(game, chosenCard)) {
                 flashThreatCasts++;
