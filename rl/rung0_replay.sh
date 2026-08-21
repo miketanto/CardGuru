@@ -40,7 +40,7 @@ ARCH=lstmattn
 V6FLAGS=""
 if [ "$ENC" -ge 6 ] 2>/dev/null; then
     ARCH=entattn
-    V6FLAGS="--gdim 16 --edim 48 --emax ${REPLAY_EMAX:-48}"
+    V6FLAGS="--gdim 16 --edim 48 --emax ${REPLAY_EMAX:-96}"
     [ "${REPLAY_RELATIONS:-1}" = "0" ] && V6FLAGS="$V6FLAGS --r0"
 fi
 

@@ -30,7 +30,19 @@ public class SocketPolicyClient implements PolicyClient {
     public long roundTrips = 0;
     public long roundTripNanos = 0;
 
+    /** The encoder version THIS SEAT emits. Normally the global
+     *  StateEncoder.ENCODER_V; the opponent seat can differ, which is
+     *  what makes a v5-vs-v6 match possible in one JVM (see
+     *  rl.oppEncoderV in EpisodeRunner). */
+    private final int encV;
+
     public SocketPolicyClient(int port, String mode, int episodes) throws IOException {
+        this(port, mode, episodes, StateEncoder.ENCODER_V);
+    }
+
+    public SocketPolicyClient(int port, String mode, int episodes, int encV)
+            throws IOException {
+        this.encV = encV;
         socket = new Socket("127.0.0.1", port);
         socket.setTcpNoDelay(true);
         out = socket.getOutputStream();
@@ -41,7 +53,7 @@ public class SocketPolicyClient implements PolicyClient {
                 + "\"cdim\":%d,\"phi\":%d",
                 mode, episodes, StateEncoder.STATE_DIM, StateEncoder.CAND_DIM,
                 Boolean.getBoolean("rl.phi") ? 1 : 0);
-        if (StateEncoder.ENCODER_V >= 6) {
+        if (encV >= 6) {
             hello += String.format(Locale.ROOT,
                     ",\"gdim\":%d,\"edim\":%d,\"emax\":%d,\"rtypes\":%d",
                     StateEncoder.GDIM, StateEncoder.EDIM, StateEncoder.EMAX,

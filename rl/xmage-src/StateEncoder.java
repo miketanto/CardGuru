@@ -456,14 +456,15 @@ public final class StateEncoder {
      * Entity buffer. A BUFFER, not a meaning: the server pads and masks,
      * so raising it changes no weights and no checkpoint.
      *
-     * 48, not the build plan's 24. 24 was a guess made before anything
-     * had been emitted; MEASURED over 40 rung-0 games, 458 of 1944
-     * consults (23.6%) overflowed it and the largest board was 45 - a
-     * quarter of the agent's consults would have been blind to part of
-     * the board. entityTrunc below keeps measuring it, so the next time
-     * the buffer is wrong it says so instead of degrading quietly.
+     * MEASURED, not chosen. The build plan guessed 24; 40 rung-0 games
+     * (13.6 turns avg) overflowed it on 23.6% of consults with a
+     * largest board of 45, so it went to 48. Then 20 v6-vs-v5 mirror
+     * games (50.6 turns avg, 11 of 20 hitting the turn cap) reached
+     * boards of 75 and overflowed 48 on 43% of consults. Long games
+     * build boards short ones never reach, so the buffer is sized for
+     * the stalls: 96. entityTrunc below keeps measuring it.
      */
-    public static final int EMAX = Integer.getInteger("rl.entityMax", 48);
+    public static final int EMAX = Integer.getInteger("rl.entityMax", 96);
 
     /** §2's relation vocabulary. THE INDEX IS THE CONTRACT with
      *  policy_server.py's RTYPES; append only, never reorder. */

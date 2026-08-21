@@ -57,6 +57,9 @@ public class EpisodeRunner {
     /** C5 league: rl.opponent=rl - a second policy seat, served by its
      *  own (frozen, eval-mode) server on rl.oppPort */
     private PolicyClient oppPolicy;
+    /** The opponent seat's encoder arm, default = the agent's. */
+    private static final int OPP_ENC =
+            Integer.getInteger("rl.oppEncoderV", StateEncoder.ENCODER_V);
     /** concurrent rl-vs-rl: each worker gets its own opponent
      *  connection (the opponent server must run --threads >= N) */
     private final ThreadLocal<PolicyClient> oppPolicyLocal = new ThreadLocal<>();
@@ -176,6 +179,11 @@ public class EpisodeRunner {
             RLPlayer r = new RLPlayer("Opponent");
             r.policy = oppPolicyLocal.get() != null
                     ? oppPolicyLocal.get() : oppPolicy;
+            // rl.oppEncoderV: the opponent seat's STATE encoding. Lets a
+            // v5 checkpoint and a v6 checkpoint play each other in one
+            // JVM, which rl.encoderV (a class-init constant) otherwise
+            // forbids. Candidates are shared, so only the state moves.
+            r.stateV = OPP_ENC;
             r.resetPerEpisode();
             r.benchSeed = seed;
             r.setTestMode(true);
@@ -459,7 +467,8 @@ public class EpisodeRunner {
             // concurrent mode opens one opponent connection per worker
             // inside runConcurrent instead of sharing this one
             oppPolicy = new SocketPolicyClient(
-                    Integer.getInteger("rl.oppPort", port + 1), "eval", episodes);
+                    Integer.getInteger("rl.oppPort", port + 1), "eval", episodes,
+                    OPP_ENC);
         }
 
         Totals t = new Totals();
@@ -608,7 +617,8 @@ public class EpisodeRunner {
                             ? new SocketPolicyClient(port, mode, episodes)
                             : new RandomPolicyClient(seed + worker);
                     if ("rl".equals(opponent)) {
-                        oppClient = new SocketPolicyClient(oppPort, "eval", episodes);
+                        oppClient = new SocketPolicyClient(oppPort, "eval",
+                                episodes, OPP_ENC);
                         oppPolicyLocal.set(oppClient);
                     }
                     int i;

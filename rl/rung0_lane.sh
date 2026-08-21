@@ -70,7 +70,7 @@ ARCH=lstmattn
 V6FLAGS=""
 if [ "$ENC" -ge 6 ] 2>/dev/null; then
     ARCH=entattn
-    V6FLAGS="--gdim 16 --edim 48 --emax ${R0_EMAX:-48}"
+    V6FLAGS="--gdim 16 --edim 48 --emax ${R0_EMAX:-96}"
     [ "${R0_RELATIONS:-1}" = "0" ] && V6FLAGS="$V6FLAGS --r0"
     [ -n "${R0_EMAX:-}" ] && ENCFLAGS="$ENCFLAGS -Drl.entityMax=$R0_EMAX"
 fi

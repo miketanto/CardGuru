@@ -264,3 +264,38 @@ total-node budget is the missing guard.
 This is not a v6 property as such — v5 runs the same search — but the
 v6 arms reach the boards that trigger it, so in practice it arrived
 with them.
+
+## 6. v6 against v5, head to head
+
+The lane only ever plays an arm against a scripted opponent, so the two
+nets had never met. They can now: `rl.encoderV` is a class-init
+constant and always will be, but the **only** per-seat difference
+between v5 and v6 is the state path — the candidate encoding is
+identical by construction — so the opponent seat takes
+`-Drl.oppEncoderV=5` and emits flat state to its own server while the
+JVM runs at 6. Three lines in `RLPlayer`/`EpisodeRunner`/
+`SocketPolicyClient`, no fork of `StateEncoder`.
+
+**20 games, mirror W0Base, alternating who is on the play, both nets
+frozen in eval mode: v6 4 wins, v5 5 wins, 11 stalls.** A 47.5% score
+for v6, which is not distinguishable from even. 11 of 20 games hit the
+60-turn cap — two policies that both out-develop and neither of which
+can close against a mirror of itself.
+
+**Read that with a caveat that nearly disqualifies it.** These games
+average 50.6 turns and reach boards of **75 entities**, against an EMAX
+of 48 at the time: `entityTrunc` says **3856 of ~8900 consults (43%)
+were truncated**. v6 played this match partially blind. The buffer is
+now 96 (§1's table is updated with both measurements) and the match
+should be re-run before anyone quotes 4-5-11.
+
+The single annotated game (`rl/artifacts/v6/arms/h2h_v6_vs_v5_seed6001.txt`,
+seed 6001) is worth reading anyway, because the win and the audit
+disagree in it: v6 wins on turn 29 at 20-0 having never taken a point
+of damage, while the attack audit scores it OVER on 7 of its 13
+combats — it repeatedly attacks into a bigger blocking board, loses
+creatures, and wins on development regardless. v5, in the opponent
+seat, never declared a single attack in those 29 turns.
+
+One game proves nothing about §5a. It does illustrate why win rate and
+attack-optimality cannot be substituted for each other.

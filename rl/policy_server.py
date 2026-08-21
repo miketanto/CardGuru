@@ -55,14 +55,17 @@ MAX_K = 40                   # candidate buffer; --max-k overrides
 
 # ---- encoder v6 (entity tokens + relations), ENCODER-V6-BUILD.md §1-§3 ----
 GDIM, EDIM = 16, 48             # --gdim/--edim override
-# EMAX was 24 in the build plan, which was a guess made before
-# anything had been emitted. MEASURED on 40 rung-0 games: 458 of
-# 1944 consults (23.6%) carried more than 24 entities and the
-# largest board was 45, so 24 blinded the agent to a quarter of
-# its own consults. 48 covers that run with room; the driver
-# reports entityTrunc every job, so if it ever bites again it
-# says so rather than degrading quietly.
-EMAX = 48                       # --emax overrides
+# EMAX is measured, not chosen. The build plan guessed 24 before
+# anything had been emitted; two runs since have priced it:
+#   40 rung-0 games vs D0, 13.6 turns avg: max board 45, and 24
+#     truncated 458 of 1944 consults (23.6%).
+#   20 v6-vs-v5 mirror games, 50.6 turns avg (11 hit the turn cap):
+#     max board 75, and 48 truncated 3856 of ~8900 consults (43%).
+# Long games build boards nothing shorter reaches, so the buffer is
+# sized for the stalls rather than the wins: 96. It is a BUFFER -
+# padded slots are masked, no weights change - and entityTrunc is
+# reported every job, so the next time it is wrong it says so.
+EMAX = 96                       # --emax overrides
 # RTYPES is the wire's relation vocabulary (§2). The INDEX IS THE
 # CONTRACT with StateEncoder.encodeRelations: an edge arrives as
 # [src, dst, type] with type an index into this list, so reordering it

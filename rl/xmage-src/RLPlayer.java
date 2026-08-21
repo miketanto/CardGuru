@@ -175,8 +175,16 @@ public class RLPlayer extends ComputerPlayer {
      * same cands it always did and this is the only place that knows
      * which arm is running.
      */
+    /** Which STATE encoding this seat emits. Defaults to the global
+     *  arm; the opponent seat overrides it via rl.oppEncoderV so a
+     *  v5 net and a v6 net can meet in one JVM. Only the state path
+     *  is per-seat - the CANDIDATE features are identical for v5 and
+     *  v6 by construction, which is the whole reason this is a
+     *  three-line change and not a fork of StateEncoder. */
+    public int stateV = StateEncoder.ENCODER_V;
+
     private int consult(Game game, UUID opp, float[][] cands) {
-        if (StateEncoder.ENCODER_V >= 6) {
+        if (stateV >= 6) {
             return policy.choose(
                     StateEncoder.encodeEntityView(game, playerId, opp),
                     cands, phi(game));

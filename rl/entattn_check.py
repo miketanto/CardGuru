@@ -455,7 +455,10 @@ def test_loopback():
         for tag, hs in (("wrong edim", dict(hello, edim=64)),
                         ("v5 driver", {"t": "hello", "mode": "eval",
                                        "sdim": 32, "cdim": CDIM}),
-                        ("emax > buffer", dict(hello, emax=64)),
+                        # relative to the server's buffer, not a
+                        # hardcoded 64: raising EMAX once turned this
+                        # case into a legal hello and the check failed
+                        ("emax > buffer", dict(hello, emax=ps.EMAX + 16)),
                         ("rtypes drift", dict(hello, rtypes=9))):
             with socket.create_connection(("127.0.0.1", port), 5) as s:
                 f = s.makefile("rwb")
