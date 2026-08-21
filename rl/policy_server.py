@@ -580,7 +580,22 @@ class Trainer:
         hidden carried by the live net, gradients through time
         (detached every tbptt steps). Episodes are batched together and
         stepped in lockstep; finished episodes drop out of the batch
-        via a live mask."""
+        via a live mask.
+
+        MEMORY. The backward runs once per tbptt WINDOW rather than once
+        per episode group. Mathematically identical - the windows are cut
+        at the same points the hidden state is detached, so no graph
+        spans a boundary, and summed per-window gradients are the
+        gradient of the summed loss - but it frees each window's
+        activations instead of holding the whole episode's.
+
+        This is not a hypothetical: the entattn arm OOM-killed its own
+        server at episode 383 of a 512-episode run (11.2 GB anon-rss in a
+        16 GB cgroup) because a 400-consult episode held ~12 MB of
+        activations per step. The lane did NOT notice - it restarted the
+        server from the last checkpoint and carried on toward a battery
+        row that would have been labelled 512 while the net had seen 383.
+        """
         episodes = [(s, e) for s, e, _ in self.completed if e > s]
         for _ in range(EPOCHS):
             order = torch.randperm(len(episodes))
@@ -588,7 +603,9 @@ class Trainer:
                 group = [episodes[i] for i in order[g0:g0 + ep_batch]]
                 maxlen = max(e - s for s, e in group)
                 B = len(group)
+                denom = max(1, sum(e - s for s, e in group))
                 h, c = self.net.initial_hidden(B)
+                self.opt.zero_grad()
                 losses = []
                 for t in range(maxlen):
                     live = [bi for bi, (s, e) in enumerate(group)
@@ -612,10 +629,15 @@ class Trainer:
                     ent = dist.entropy()
                     losses.append((pg + VAL_COEF * vloss
                                    - ENT_COEF * ent).sum())
-                loss = torch.stack(losses).sum() / max(
-                    1, sum(e - s for s, e in group))
-                self.opt.zero_grad()
-                loss.backward()
+                    if (t + 1) % tbptt == 0:
+                        # the window just closed at the same point the
+                        # hidden state was detached above, so its graph
+                        # reaches no further back: backward it now and
+                        # let the activations go
+                        torch.stack(losses).sum().div(denom).backward()
+                        losses = []
+                if losses:
+                    torch.stack(losses).sum().div(denom).backward()
                 nn.utils.clip_grad_norm_(self.net.parameters(), 0.5)
                 self.opt.step()
                 h = c = None

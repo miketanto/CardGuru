@@ -159,9 +159,26 @@ print('[%.3f,%.3f]' % (max(0.0,c-h), min(1.0,c+h)))"; }
 
 battery() {   # $1 trained
     local tr=$1
+    # DID THE SERVER SURVIVE? The lane counts episodes in bash and the
+    # net counts them in the checkpoint. They agree unless the policy
+    # server died mid-run - which happened: the entattn arm OOM-killed
+    # its server at episode 383 of 512, the lane restarted it from the
+    # last checkpoint and carried on toward a battery row it would have
+    # labelled 512. A row that says 512 while the net saw 383 is worse
+    # than no row, so check the two counters and stop.
+    local ck_eps
+    ck_eps=$(python3 -c "
+import torch
+try: print(int(torch.load('$CKPT',map_location='cpu',weights_only=False).get('episodes',0)))
+except Exception: print(-1)" 2>/dev/null || echo -1)
+    if [ "$tr" -gt 0 ] && [ "$((tr - ck_eps))" -gt "$CHUNK" ]; then
+        echo "R0_FAILED|episode mismatch: lane counted $tr, checkpoint has"\
+             "$ck_eps - the server died mid-run (see $OUT/server.log)"
+        exit 1
+    fi
     # separate statement: bash expands every word of a `local` line before
     # assigning any of them, so "$tr" here would be unbound under set -u
-    local line="R0|$BASE|s$SEED|trained=$tr"
+    local line="R0|$BASE|s$SEED|trained=$tr|ck_eps=$ck_eps"
     stop_server                     # eval must not learn from its own games
     start_server                    # (no --lr => inference only)
     local spec
