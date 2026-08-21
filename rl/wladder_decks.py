@@ -98,6 +98,13 @@ SHELL = [
 # The block that every rung >=1 replaces: 4x Silvercoat Lion, 2cmc 2/2.
 SWAP_CARD = ("Silvercoat Lion", "M11:31")
 SWAP_N = 4
+# The TWIN's ladder slot, i.e. the same position in the twin shell. The
+# ladder as designed only builds a twin for rung 0, because rung 0 is
+# where the transfer question was first asked. Training a higher rung
+# then has no transfer arm: passing W0Twin would move the RUNG and the
+# card identities at once, which is the confound the twin exists to
+# remove. TWIN_SWAP lets a rung build its own twin by the same recipe.
+TWIN_SWAP_CARD = ("Knight Errant", "S00:7")
 
 # ---------------------------------------------------------------- rung 1
 # Same cost, same 2/2 body, one keyword. W1Ctrl is the control: the same
@@ -166,11 +173,11 @@ def shell_entries(arm):
     return out
 
 
-def swap(entries, replacements):
-    """Drop SWAP_N copies of SWAP_CARD; add `replacements` in its place."""
+def swap(entries, replacements, swap_card=SWAP_CARD):
+    """Drop SWAP_N copies of swap_card; add `replacements` in its place."""
     out, dropped = [], 0
     for n, card, cmc, p, t in entries:
-        if card == SWAP_CARD:
+        if card == swap_card:
             dropped += n
             continue
         out.append((n, card, cmc, p, t))
@@ -215,6 +222,15 @@ def main():
                       note))
     for name, card, note in SPELL_RUNGS:
         decks.append((name, swap(base, [(SWAP_N, card, 2, 0, 0)]), note))
+    # Rung 3's transfer arm, built by the rung-0 recipe: the TWIN shell
+    # with its ladder slot swapped for the same spell. Only rung 3 gets
+    # one so far, because rung 3 is the highest rung whose combat is
+    # still vanilla bodies (CombatMath's SCOPE note) and therefore the
+    # highest one that can be trained and audited today.
+    decks.append(("W3Twin",
+                  swap(twin, [(SWAP_N, ("Take Vengeance", "GN2:13"), 2, 0, 0)],
+                       swap_card=TWIN_SWAP_CARD),
+                  "rung 3 transfer: W0Twin's identities, rung 3's spell"))
 
     seen_cards = collections.defaultdict(set)
     for name, entries, note in decks:
