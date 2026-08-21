@@ -10,7 +10,13 @@ the emitter rather than of the pooling operator.
 Input: the JSONL written by -Drl.entityDump=<file> (StateEncoder), one
 line per consult: {"g":[...],"e":[[...]],"r":[[s,d,t]],"v5":[...]}.
 
-    python3 rl/entity_gate.py /tmp/v6_gate.jsonl [--emax 24]
+    python3 rl/entity_gate.py                    # committed fixture
+    python3 rl/entity_gate.py /tmp/v6_gate.jsonl  # a fresh dump
+
+The fixture is 1983 consults from 40 rung-0 W0Base games
+(rl/artifacts/v6/), committed gzipped so this gate re-runs anywhere
+torch does - the engine takes 15 minutes to rebuild and the gate
+should not be hostage to it.
 
 WHAT IT MEASURES
   1. v5 collision groups: sets of positions whose v5 state vector is
@@ -28,7 +34,9 @@ about attack- or block-optimality, which §0 says cannot move from a
 state-path change. It is a statement about what the agent can SEE.
 """
 import argparse
+import gzip
 import json
+import os
 import sys
 
 import torch
@@ -37,9 +45,14 @@ sys.path.insert(0, __file__.rsplit("/", 1)[0])
 import policy_server as ps                                  # noqa: E402
 
 
+DEFAULT = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                       "artifacts/v6/gate_positions_W0Base_40g.jsonl.gz")
+
+
 def load(path):
     out, bad = [], []
-    with open(path) as f:
+    opener = gzip.open if path.endswith(".gz") else open
+    with opener(path, "rt") as f:
         for n, line in enumerate(f):
             line = line.strip()
             if not line:
@@ -60,7 +73,11 @@ def load(path):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("dump")
+    ap.add_argument("dump", nargs="?", default=DEFAULT,
+                    help="entity dump (.jsonl or .jsonl.gz). Defaults to "
+                         "the committed 40-game W0Base fixture, so the "
+                         "gate is runnable with torch alone - no engine, "
+                         "no Java, no rebuild.")
     ap.add_argument("--emax", type=int, default=ps.EMAX)
     ap.add_argument("--tol", type=float, default=1e-4,
                     help="two embeddings closer than this count as one")
