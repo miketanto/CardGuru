@@ -57,6 +57,12 @@ public class EpisodeRunner {
     /** C5 league: rl.opponent=rl - a second policy seat, served by its
      *  own (frozen, eval-mode) server on rl.oppPort */
     private PolicyClient oppPolicy;
+    /** -Drl.stallReward: what a turn-cap cutoff pays. 0 (the default)
+     *  is the historical rule - a stall beats a loss, which is exactly
+     *  why a policy can learn to run out the clock. */
+    private static final float STALL_REWARD =
+            Float.parseFloat(System.getProperty("rl.stallReward", "0"));
+
     /** The opponent seat's encoder arm, default = the agent's. */
     private static final int OPP_ENC =
             Integer.getInteger("rl.oppEncoderV", StateEncoder.ENCODER_V);
@@ -388,6 +394,18 @@ public class EpisodeRunner {
         } else {
             r.reward = 0f;      // draw or stall bound: deliberate, documented
             r.stalled = !game.hasEnded();
+            if (r.stalled) {
+                // A STALL IS NOT A DRAW, and -Drl.stallReward lets that
+                // be priced. The default is 0, which reproduces every
+                // number this project has published; README.md's reward
+                // section flags it as the thing to revisit, and rung 3
+                // is where the bill arrives - with removal punishing
+                // whoever taps, a policy that never attacks loses
+                // almost nothing and 19 of 25 games run to the cap.
+                // A draw the ENGINE declares still scores 0; this is
+                // only the turn-bound cutoff.
+                r.reward = STALL_REWARD;
+            }
         }
         // AFTER the reward is assigned. This block used to sit above the
         // assignment, so every RLGAME header ever written said reward=0.0
