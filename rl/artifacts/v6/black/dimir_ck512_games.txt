@@ -1,0 +1,235 @@
+RLGAME|reward=1.0|seed=970000
+t1|Watery Grave (Play Watery Grave)
+t3|Soulstone Sanctuary (Play Soulstone Sanctuary)
+t3|Nowhere to Run
+t7|Spyglass Siren
+t9|Spyglass Siren
+t11|Swamp (Play Swamp)
+t11|== my combat: life 18-18, creatures 1-0
+t11|  [atkjoint] 1 avail, 0 defenders, 2 distinct subsets, 2 after Pareto, 3.3ms
+t11|  ATTACK  Spyglass Siren 1/1
+t11|  KILL    Spyglass Siren 1/1 atk tap   [of 1: Spyglass Siren 1/1 atk tap]
+t11|Elektra, Daughter of the Hand (Sneak {1}{B}{B} <i>(You may cast this spell for {1}{B}{B} if you also return an unblocked attacker you control to hand during the declare blockers step.)</i>)
+t13|Spyglass Siren
+t13|Island (Play Island)
+t15|Enduring Curiosity
+t15|== my combat: life 18-16, creatures 1-0
+t15|  [atkjoint] 1 avail, 0 defenders, 2 distinct subsets, 2 after Pareto, 0.1ms
+t15|  ATTACK  Spyglass Siren 1/1
+t17|The Wondrous Wasp
+t17|Shoot the Sheriff (destroy target non-outlaw creature.)
+t17|== my combat: life 18-15, creatures 1-0
+t17|  [atkjoint] 1 avail, 0 defenders, 2 distinct subsets, 2 after Pareto, 0.1ms
+t17|  ATTACK  Spyglass Siren 1/1
+t19|Spyglass Siren
+t19|Island (Play Island)
+t19|== my combat: life 18-14, creatures 2-0
+t19|  [atkjoint] 1 avail, 0 defenders, 2 distinct subsets, 2 after Pareto, 0.1ms
+t19|  ATTACK  Spyglass Siren 1/1
+t21|Cecil, Dark Knight
+t21|== my combat: life 18-13, creatures 3-0
+t21|  [atkjoint] 2 avail, 0 defenders, 3 distinct subsets, 3 after Pareto, 0.1ms
+t21|  ATTACK  Spyglass Siren 1/1
+t21|  ATTACK  Spyglass Siren 1/1
+t23|  KILL    Elektra, Daughter of the Hand 3/3   [of 2: Elektra, Daughter of the Hand 3/3, Spyglass Siren 1/1]
+t23|Bitter Triumph (destroy target creature or planeswalker.)
+t23|== my combat: life 18-11, creatures 1-0
+t23|  [atkjoint] 1 avail, 0 defenders, 2 distinct subsets, 2 after Pareto, 0.1ms
+t23|  ATTACK  Spyglass Siren 1/1
+t25|== my combat: life 18-10, creatures 1-0
+t25|  [atkjoint] 1 avail, 0 defenders, 2 distinct subsets, 2 after Pareto, 0.1ms
+t25|  ATTACK  Spyglass Siren 1/1
+t27|Kaito, Bane of Nightmares
+t27|Kaito, Bane of Nightmares (+1: You get an emblem with "Ninjas you control get +1/+1.")
+t29|Kaito, Bane of Nightmares (+1: You get an emblem with "Ninjas you control get +1/+1.")
+t29|== my combat: life 18-9, creatures 1-0
+t29|  [atkjoint] 1 avail, 0 defenders, 2 distinct subsets, 2 after Pareto, 0.1ms
+t29|  ATTACK  Kaito, Bane of Nightmares 5/6
+t31|Kaito, Bane of Nightmares (+1: You get an emblem with "Ninjas you control get +1/+1.")
+t31|== my combat: life 18-4, creatures 1-1
+t31|  [atkjoint] 1 avail, 1 defenders, 2 distinct subsets, 2 after Pareto, 0.7ms
+t31|  ATTACK  Kaito, Bane of Nightmares 6/7
+t33|Kaito, Bane of Nightmares (+1: You get an emblem with "Ninjas you control get +1/+1.")
+t33|== my combat: life 18-4, creatures 1-1
+t33|  [atkjoint] 1 avail, 1 defenders, 2 distinct subsets, 2 after Pareto, 0.1ms
+t33|  ATTACK  Kaito, Bane of Nightmares 7/8
+t35|Floodpits Drowner
+t37|== my combat: life 18-2, creatures 1-0
+t37|  [atkjoint] 1 avail, 0 defenders, 2 distinct subsets, 2 after Pareto, 0.1ms
+t37|  ATTACK  Floodpits Drowner 2/1
+RLGAME_END
+RLGAME|reward=-1.0|seed=970001
+t2|Island (Play Island)
+t4|Watery Grave (Play Watery Grave)
+t4|The Wondrous Wasp
+t5|== incoming: life 18-18, creatures 1-2
+t5|  attacked by Floodpits Drowner 2/1
+t5|  [joint] 1 attackers, 0 blockers, 1 distinct outcomes, 1 after Pareto
+t6|  KILL    The Wondrous Wasp 2/1   [of 3: Floodpits Drowner 2/1, The Wondrous Wasp 2/1, The Wondrous Wasp 2/1]
+t6|Shoot the Sheriff (destroy target non-outlaw creature.)
+t6|Watery Grave (Play Watery Grave)
+t7|== incoming: life 14-18, creatures 0-2
+t7|  attacked by Floodpits Drowner 2/1
+t7|  [joint] 1 attackers, 0 blockers, 1 distinct outcomes, 1 after Pareto
+t8|Floodpits Drowner
+t8|  KILL    The Wondrous Wasp 2/1   [of 2: Floodpits Drowner 2/1, The Wondrous Wasp 2/1]
+t8|Spyglass Siren
+t8|Soulstone Sanctuary (Play Soulstone Sanctuary)
+t9|== incoming: life 12-18, creatures 2-3
+t9|  attacked by Floodpits Drowner 2/1
+t9|  [joint] 1 attackers, 2 blockers, 4 distinct outcomes, 2 after Pareto
+t9|  BLOCK   Spyglass Siren 1/1  <- Floodpits Drowner 2/1
+t9|  decline Floodpits Drowner 2/1
+t9|  [audit] policy Spyglass Siren 1/1->Floodpits Drowner 2/1, Floodpits Drowner 2/1->-- (score 7) | solver Spyglass Siren 1/1->Floodpits Drowner 2/1, Floodpits Drowner 2/1->-- (score 7)  MATCH
+t10|Nowhere to Run
+t10|  KILL    The Wondrous Wasp 2/1 tap   [of 2: Cecil, Dark Knight 2/3, The Wondrous Wasp 2/1 tap]
+t10|== my combat: life 12-18, creatures 1-1
+t10|  [atkjoint] 1 avail, 1 defenders, 2 distinct subsets, 1 after Pareto, 0.1ms
+t10|  hold    Floodpits Drowner 2/1
+t11|== incoming: life 12-20, creatures 0-2
+t11|  attacked by Cecil, Dark Knight 1/2
+t11|  [joint] 1 attackers, 0 blockers, 1 distinct outcomes, 1 after Pareto
+t13|== incoming: life 11-19, creatures 0-3
+t13|  attacked by Cecil, Dark Knight 1/2, Enduring Curiosity 4/3
+t13|  [joint] 2 attackers, 0 blockers, 1 distinct outcomes, 1 after Pareto
+t14|Island (Play Island)
+t15|== incoming: life 6-18, creatures 0-5
+t15|  attacked by Cecil, Dark Knight 2/3, Enduring Curiosity 4/3, Enduring Curiosity 4/3
+t15|  [joint] 3 attackers, 0 blockers, 1 distinct outcomes, 1 after Pareto
+RLGAME_END
+RLGAME|reward=-1.0|seed=970002
+t1|Island (Play Island)
+t4|== incoming: life 20-20, creatures 0-2
+t4|  attacked by Spyglass Siren 1/1
+t4|  [joint] 1 attackers, 0 blockers, 1 distinct outcomes, 1 after Pareto
+t5|Spyglass Siren
+t6|== incoming: life 19-20, creatures 1-2
+t6|  attacked by Spyglass Siren 1/1, Spyglass Siren 1/1
+t6|  [joint] 2 attackers, 1 blockers, 2 distinct outcomes, 2 after Pareto
+t6|  BLOCK   Spyglass Siren 1/1  <- Spyglass Siren 1/1
+t6|  [audit] policy Spyglass Siren 1/1->Spyglass Siren 1/1 (score 2) | solver Spyglass Siren 1/1->Spyglass Siren 1/1 (score 2)  MATCH
+t11|Soulstone Sanctuary (Play Soulstone Sanctuary)
+t12|== incoming: life 18-18, creatures 0-2
+t12|  attacked by The Wondrous Wasp 2/1
+t12|  [joint] 1 attackers, 0 blockers, 1 distinct outcomes, 1 after Pareto
+t14|== incoming: life 16-18, creatures 0-3
+t14|  attacked by Floodpits Drowner 2/1, The Wondrous Wasp 2/1
+t14|  [joint] 2 attackers, 0 blockers, 1 distinct outcomes, 1 after Pareto
+t15|Watery Grave (Play Watery Grave)
+t16|== incoming: life 10-18, creatures 0-3
+t16|  attacked by Enduring Curiosity 4/3, Floodpits Drowner 2/1, The Wondrous Wasp 2/1
+t16|  [joint] 3 attackers, 0 blockers, 1 distinct outcomes, 1 after Pareto
+t18|== incoming: life 3-18, creatures 0-6
+t18|  attacked by Enduring Curiosity 4/3, Floodpits Drowner 2/1, Kaito, Bane of Nightmares 3/4
+t18|  [joint] 3 attackers, 0 blockers, 1 distinct outcomes, 1 after Pareto
+RLGAME_END
+RLGAME|reward=-1.0|seed=970003
+t2|Island (Play Island)
+t3|== incoming: life 20-20, creatures 0-2
+t3|  attacked by Spyglass Siren 1/1
+t3|  [joint] 1 attackers, 0 blockers, 1 distinct outcomes, 1 after Pareto
+t4|Spyglass Siren
+t4|Watery Grave (Play Watery Grave)
+t5|== incoming: life 17-20, creatures 1-3
+t5|  attacked by Floodpits Drowner 2/1, Spyglass Siren 1/1
+t5|  [joint] 2 attackers, 0 blockers, 1 distinct outcomes, 1 after Pareto
+t6|The Wondrous Wasp
+t6|Soulstone Sanctuary (Play Soulstone Sanctuary)
+t7|== incoming: life 14-20, creatures 2-4
+t7|  attacked by Floodpits Drowner 2/1, Floodpits Drowner 2/1, Spyglass Siren 1/1
+t7|  [joint] 3 attackers, 0 blockers, 1 distinct outcomes, 1 after Pareto
+t8|  KILL    Spyglass Siren 1/1   [of 6: Floodpits Drowner 2/1, Floodpits Drowner 2/1, Spyglass Siren 1/1, Spyglass Siren 1/1 tap, The Wondrous Wasp 2/1, The Wondrous Wasp 2/1]
+t8|Bitter Triumph (destroy target creature or planeswalker.)
+t8|== my combat: life 9-20, creatures 1-4
+t8|  [atkjoint] 1 avail, 3 defenders, 2 distinct subsets, 2 after Pareto, 0.2ms
+t8|  ATTACK  The Wondrous Wasp 2/1
+t9|== incoming: life 9-18, creatures 1-4
+t9|  attacked by Floodpits Drowner 2/1, Floodpits Drowner 2/1, Spyglass Siren 1/1
+t9|  [joint] 3 attackers, 0 blockers, 1 distinct outcomes, 1 after Pareto
+t10|Spyglass Siren
+t10|Island (Play Island)
+t10|== my combat: life 4-18, creatures 2-4
+t10|  [atkjoint] 1 avail, 3 defenders, 2 distinct subsets, 2 after Pareto, 0.1ms
+t10|  ATTACK  The Wondrous Wasp 2/1
+t11|== incoming: life 4-16, creatures 2-4
+t11|  attacked by Floodpits Drowner 2/1, Floodpits Drowner 2/1, Spyglass Siren 1/1, The Wondrous Wasp 2/1
+t11|  [joint] 4 attackers, 1 blockers, 3 distinct outcomes, 2 after Pareto
+t11|  BLOCK   Spyglass Siren 1/1  <- Floodpits Drowner 2/1
+t11|  [audit] policy Spyglass Siren 1/1->Floodpits Drowner 2/1 (LETHAL) | solver Spyglass Siren 1/1->-- (LETHAL)  MATCH
+RLGAME_END
+RLGAME|reward=-1.0|seed=970004
+t4|== incoming: life 20-20, creatures 0-1
+t4|  attacked by Cecil, Dark Knight 2/3
+t4|  [joint] 1 attackers, 0 blockers, 1 distinct outcomes, 1 after Pareto
+t6|== incoming: life 18-18, creatures 0-1
+t6|  attacked by Cecil, Dark Knight 2/3
+t6|  [joint] 1 attackers, 0 blockers, 1 distinct outcomes, 1 after Pareto
+t7|Soulstone Sanctuary (Play Soulstone Sanctuary)
+t8|== incoming: life 16-16, creatures 0-2
+t8|  attacked by Cecil, Dark Knight 2/3
+t8|  [joint] 1 attackers, 0 blockers, 1 distinct outcomes, 1 after Pareto
+t10|== incoming: life 14-14, creatures 0-3
+t10|  attacked by Cecil, Dark Knight 2/3, Enduring Curiosity 4/3
+t10|  [joint] 2 attackers, 0 blockers, 1 distinct outcomes, 1 after Pareto
+t11|Island (Play Island)
+t11|Floodpits Drowner
+t11|  KILL    The Wondrous Wasp 2/1   [of 3: Cecil, Dark Knight 2/3 tap, Enduring Curiosity 4/3 tap, The Wondrous Wasp 2/1]
+t12|== incoming: life 8-12, creatures 1-3
+t12|  attacked by Cecil, Dark Knight 2/3, Enduring Curiosity 4/3
+t12|  [joint] 2 attackers, 0 blockers, 1 distinct outcomes, 1 after Pareto
+t13|Watery Grave (Play Watery Grave)
+RLGAME_END
+RLGAME|reward=1.0|seed=970005
+t2|Watery Grave (Play Watery Grave)
+t2|Spyglass Siren
+t3|== incoming: life 18-20, creatures 1-1
+t3|  attacked by Spyglass Siren 1/1
+t3|  [joint] 1 attackers, 1 blockers, 2 distinct outcomes, 2 after Pareto
+t3|  BLOCK   Spyglass Siren 1/1  <- Spyglass Siren 1/1
+t3|  [audit] policy Spyglass Siren 1/1->Spyglass Siren 1/1 (score 2) | solver Spyglass Siren 1/1->Spyglass Siren 1/1 (score 2)  MATCH
+t4|Cecil, Dark Knight
+t4|Soulstone Sanctuary (Play Soulstone Sanctuary)
+t6|The Wondrous Wasp
+t8|Bitter Triumph (destroy target creature or planeswalker.)
+t8|Swamp (Play Swamp)
+t10|Floodpits Drowner
+t10|  KILL    Spyglass Siren 1/1   [of 2: Cecil, Dark Knight 2/3, Spyglass Siren 1/1]
+t11|== incoming: life 18-20, creatures 1-2
+t11|  attacked by Cecil, Dark Knight 2/3
+t11|  [joint] 1 attackers, 1 blockers, 2 distinct outcomes, 2 after Pareto
+t11|  BLOCK   Floodpits Drowner 2/1  <- Cecil, Dark Knight 2/3
+t11|  [audit] policy Floodpits Drowner 2/1->Cecil, Dark Knight 2/3 (score -5) | solver Floodpits Drowner 2/1->-- (score 0)  GAP 5
+t12|Watery Grave (Play Watery Grave)
+t13|== incoming: life 16-18, creatures 0-2
+t13|  attacked by Cecil, Dark Knight 2/3, Spyglass Siren 1/1
+t13|  [joint] 2 attackers, 0 blockers, 1 distinct outcomes, 1 after Pareto
+t14|Kaito, Bane of Nightmares
+t14|Kaito, Bane of Nightmares (+1: You get an emblem with "Ninjas you control get +1/+1.")
+t15|== incoming: life 13-18, creatures 0-3
+t15|  attacked by Kaito, Bane of Nightmares 3/4
+t15|  [joint] 1 attackers, 0 blockers, 1 distinct outcomes, 1 after Pareto
+t16|Floodpits Drowner
+t16|  KILL    Spyglass Siren 1/1   [of 2: Cecil, Dark Knight 2/3, Spyglass Siren 1/1]
+t16|Kaito, Bane of Nightmares (+1: You get an emblem with "Ninjas you control get +1/+1.")
+t16|== my combat: life 10-18, creatures 2-2
+t16|  [atkjoint] 1 avail, 1 defenders, 2 distinct subsets, 2 after Pareto, 0.1ms
+t16|  ATTACK  Kaito, Bane of Nightmares 5/6
+t17|== incoming: life 10-13, creatures 1-3
+t17|  attacked by Cecil, Dark Knight 2/3, Kaito, Bane of Nightmares 3/4
+t17|  [joint] 2 attackers, 1 blockers, 3 distinct outcomes, 2 after Pareto
+t17|  BLOCK   Floodpits Drowner 2/1  <- Kaito, Bane of Nightmares 3/4
+t17|  [audit] policy Floodpits Drowner 2/1->Kaito, Bane of Nightmares 3/4 (score -3) | solver Floodpits Drowner 2/1->-- (score 0)  GAP 3
+t18|Kaito, Bane of Nightmares (+1: You get an emblem with "Ninjas you control get +1/+1.")
+t18|== my combat: life 8-11, creatures 1-2
+t18|  [atkjoint] 1 avail, 0 defenders, 2 distinct subsets, 2 after Pareto, 0.1ms
+t18|  ATTACK  Kaito, Bane of Nightmares 6/7
+t19|== incoming: life 8-5, creatures 0-2
+t19|  attacked by Cecil, Dark Knight 2/3, Kaito, Bane of Nightmares 3/4
+t19|  [joint] 2 attackers, 0 blockers, 1 distinct outcomes, 1 after Pareto
+t20|  KILL    Kaito, Bane of Nightmares 6/7   [of 1: Kaito, Bane of Nightmares 6/7]
+t20|Requiting Hex (destroy target creature with mana value 2 or less. If this spell's additional cost was paid, you gain 2 life.)
+t20|Kaito, Bane of Nightmares (+1: You get an emblem with "Ninjas you control get +1/+1.")
+t20|== my combat: life 7-5, creatures 1-0
+t20|  [atkjoint] 1 avail, 0 defenders, 2 distinct subsets, 2 after Pareto, 0.1ms
+t20|  ATTACK  Kaito, Bane of Nightmares 6/7
+RLGAME_END

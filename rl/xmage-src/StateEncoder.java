@@ -624,6 +624,10 @@ public final class StateEncoder {
      * synthetic board cannot answer that, because the question is about
      * what the game actually produces.
      */
+    private static final boolean DEBUG_UNKNOWN = Boolean.getBoolean("rl.debug");
+    private static final java.util.Set<String> UNKNOWN_SEEN =
+            java.util.Collections.synchronizedSet(new java.util.HashSet<>());
+
     private static final String DUMP = System.getProperty("rl.entityDump");
     private static java.io.PrintWriter dumpOut;
 
@@ -858,7 +862,16 @@ public final class StateEncoder {
         r[38] = depth / 4f;
         r[39] = so.isInstant(game) ? 1f : 0f;
         r[40] = so.isSorcery(game) ? 1f : 0f;
-        keywords(e.name, r);
+        // Look the features up by the SOURCE CARD, not by the stack
+        // object's name. A triggered ability's getName() is its rule
+        // text - "stack ability (When {this} enters, create a Map
+        // token.)" - which is never in a card table, so every trigger
+        // counted as an unknown card AND lost the keyword bits of the
+        // permanent that produced it. On BenchDimir that read
+        // entityUnknown=64289 in ten games and looked like the whole
+        // deck was missing; it was triggers and one token.
+        Card src = game.getCard(so.getSourceId());
+        keywords(src != null ? src.getName() : e.name, r);
         e.row = r;
         return e;
     }
@@ -873,6 +886,13 @@ public final class StateEncoder {
         float[] v = CARD_FEATURES.get(name);
         if (v == null) {
             entityUnknown++;
+            // -Drl.debug: name each MISSING card once. "64289 unknown
+            // lookups" is unactionable; a list of names says whether the
+            // table is missing tokens, split cards, or the whole deck.
+            if (DEBUG_UNKNOWN && UNKNOWN_SEEN.size() < 40
+                    && UNKNOWN_SEEN.add(name)) {
+                System.out.println("RL|entityUnknownName|" + name);
+            }
             // No unknown-card FLAG: v1's 48 dims have no free slot and
             // widening EDIM would break the handshake mid-ladder. The
             // count is reported instead, and the E2-116 extension (§1)
