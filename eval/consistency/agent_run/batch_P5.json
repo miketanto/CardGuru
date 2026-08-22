@@ -1,0 +1,42 @@
+[
+ {
+  "qid": "I04.P5",
+  "question": "abilities you pay for by sacrificing an artifact"
+ },
+ {
+  "qid": "I08.P5",
+  "question": "one ability where every other player loses life and you gain that much"
+ },
+ {
+  "qid": "I10.P5",
+  "question": "creatures that make tokens and can also sac creatures themselves"
+ },
+ {
+  "qid": "I11.P5",
+  "question": "spells that burn every other player at the table"
+ },
+ {
+  "qid": "I12.P5",
+  "question": "spells that send every creature back to its owner's hand"
+ },
+ {
+  "qid": "I18.P5",
+  "question": "permanents that keep drawing you extra cards each turn"
+ },
+ {
+  "qid": "I22.P5",
+  "question": "spells that kill a creature and can be cast on someone else's turn"
+ },
+ {
+  "qid": "I26.P5",
+  "question": "cards that remove things from the game"
+ },
+ {
+  "qid": "I36.P5",
+  "question": "sorcery-speed spells that have flash"
+ },
+ {
+  "qid": "I40.P5",
+  "question": "cards that stop damage that would hit you"
+ }
+]
