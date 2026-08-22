@@ -130,6 +130,44 @@ def level_a_wide(rows, tol):
     return invariant, len(multi)
 
 
+def state_separation(rows):
+    """Does REAL emission separate the two steps in the state?
+
+    LEVEL B shows the architecture can route the step to a candidate's
+    logit. That is worth nothing if the emitter never sets the channels
+    apart in practice, so this checks the dumped states rather than
+    trusting the code: s[15] active-player and s[16..19] the phase-step
+    buckets, per bucket, from the same consults LEVEL A used.
+
+    v6 reads `globals`, not this flat vector, and its step one-hot is
+    FINER (a dedicated g[3] for DECLARE_ATTACKERS) - but both come from
+    the same getTurnStepType() call, so a clean split here is evidence
+    for both.
+    """
+    out = {}
+    for r in rows:
+        if r.get("site") != "prio" or "state" not in r:
+            continue
+        b = bucket(r)
+        if b is None:
+            continue
+        out.setdefault(b, set()).add(tuple(r["state"][15:20]))
+    if len(out) < 2:
+        return
+    for b in ("own_main", "opp_declare_attackers"):
+        pats = out.get(b, set())
+        print("GATE|S|%-22s|consult_patterns=%d|s[15..19]=%s"
+              % (b, len(pats), sorted(pats)[0] if pats else "-"))
+    same = out["own_main"] & out["opp_declare_attackers"]
+    if same:
+        print("GATE|S|FAIL|the two steps share a step-channel pattern: %s"
+              % sorted(same))
+    else:
+        print("GATE|S|PASS|the two steps never share a step-channel "
+              "pattern in real emission - the STATE separates what the "
+              "CANDIDATE does not")
+
+
 def _census(rows):
     """How often does an instant-speed window even EXIST?
 
@@ -175,6 +213,7 @@ def level_a(rows, tol):
             seen.setdefault(name, {}).setdefault(b, set()).add(tuple(cand))
 
     _census(rows)
+    state_separation(rows)
     both = {k: v for k, v in seen.items() if len(v) == 2}
     print("GATE|A|consults=%d|in_scope=%d|cards=%d|cards_in_both_steps=%d"
           % (len(rows), n_used, len(seen), len(both)))

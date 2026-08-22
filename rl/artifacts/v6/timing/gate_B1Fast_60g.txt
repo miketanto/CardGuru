@@ -1,5 +1,8 @@
 GATE|WINDOWS|priority_windows=9119|opp_declare_attackers=451|with_castable=4 (0.9%)|holding_an_instant=116 (25.7%)
 GATE|WINDOWS|held an instant but could not cast it: 115/116 - the gap is MANA, not the encoder
+GATE|S|own_main              |consult_patterns=1|s[15..19]=(1.0, 1.0, 0.0, 0.0, 0.0)
+GATE|S|opp_declare_attackers |consult_patterns=1|s[15..19]=(0.0, 0.0, 1.0, 0.0, 0.0)
+GATE|S|PASS|the two steps never share a step-channel pattern in real emission - the STATE separates what the CANDIDATE does not
 GATE|A|consults=11647|in_scope=1028|cards=10|cards_in_both_steps=1
 GATE|A|card=Swamp                   |own_main_rows=2|opp_atk_rows=1|min_dist=0.000000
 GATE|A|pairs=2|min_cross_step_distance=0.000000|on=Swamp|colliding_cards=1/1

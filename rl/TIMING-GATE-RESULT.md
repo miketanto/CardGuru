@@ -166,6 +166,20 @@ the observation. Three facts, from the code:
    transformer takes `[state] + candidates` and `logits =
    scorer(y[:, 1:])`, so a candidate's logit is a function of the state.
 
+The path also *fires* in practice — checked on the dumped states rather
+than trusted from the code, because a live path the emitter never
+exercises would be worth nothing:
+
+```
+GATE|S|own_main             |consult_patterns=1|s[15..19]=(1.0, 1.0, 0.0, 0.0, 0.0)
+GATE|S|opp_declare_attackers|consult_patterns=1|s[15..19]=(0.0, 0.0, 1.0, 0.0, 0.0)
+GATE|S|PASS
+```
+
+Both buckets are perfectly consistent internally (one pattern each,
+across 1024 and 4 consults) and share none. v6 reads the finer `globals`
+one-hot, but from the same `getTurnStepType()` call.
+
 So the path exists. Measured, on the quantity that actually decides
 cast-or-hold — `logit(spell) − logit(PASS)` — holding the candidate list
 and the board fixed and moving only the step channels, at random init:
