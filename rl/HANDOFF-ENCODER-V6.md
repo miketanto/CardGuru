@@ -3,6 +3,13 @@
 Read `rl/ATTACK-JOINT-RESULT.md` then `rl/ENCODING-DESIGN.md`, then this.
 The build plan you are executing is `rl/ENCODER-V6-BUILD.md`.
 
+> **Superseded for new work.** v6 landed, gated, and was trained to 2048
+> episodes on a constructed deck; the board encoding is no longer the
+> binding constraint. See `rl/DIMIR-V6-2K-RESULT.md` for that run and
+> `rl/HANDOFF-STACK-TIMING.md` for the current handoff. This file
+> remains the reference for the v6 build itself, and its §5 gotchas and
+> §6 ground rules still govern.
+
 ---
 
 ## 0. State of the world
