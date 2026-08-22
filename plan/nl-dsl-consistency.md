@@ -52,9 +52,33 @@ the fact:
   `plan/eval.md` §B.2). Any later edit is a new benchmark version with its own numbers;
   old numbers are not carried forward.
 
+## Status (C0 complete — see `eval/consistency/C0-results.md`)
+
+Baseline measured over 150 compilations: **PC 0.509, SC 0.784, agreement@witness 0.925,
+0/150 compile failures.** The recorded prediction (SC ~0.9, PC 0.6–0.75) was wrong on both
+magnitudes, right on direction.
+
+Consequences, all against pre-committed rules:
+
+- **C1 is dropped.** It failed both halves of its own decision rule: modal consensus over
+  k=3 bought **+0.4 points** of `PC_correct` against a 5-point bar, and the disagreement
+  signal ranked the ambiguous intent **8th of 10** — anti-correlated with real ambiguity.
+- **C3 is promoted to first.** The measured root cause is prompt truncation:
+  `DamageAll` needs `ValidPlayers` (rank 159 of 1,206); the prompt emits only the top 100,
+  so the correct token was never available and all five rungs used `ValidPlayer` (rank 25)
+  instead — validating clean and returning 0 hits.
+- **C6 is triggered.** It was conditional on C0 showing *structural* variance. I10 scores
+  PC 0.197 with rung result-set sizes spanning 0–154 on a plain intent; that is shape
+  variance, not token variance.
+- **New prerequisite:** `validate.QUERY_OPS` omits `hook` and `role`, so the S9 control
+  stratum is unmeasurable until fixed.
+
+Phase text below is as originally committed; the ordering table at the end of
+`C0-results.md` supersedes the sequence table in this document.
+
 ## Phases
 
-### C0 — Instrument and freeze *(days)*
+### C0 — Instrument and freeze *(days)* — **DONE**
 
 Build the thing that makes every later claim checkable.
 
