@@ -3,3 +3,5 @@ corpus/mage_tests_seed.jsonl
 /data/
 __pycache__/
 .pytest_cache/
+eval/consistency/smoke_cache.json
+eval/consistency/cache.json
