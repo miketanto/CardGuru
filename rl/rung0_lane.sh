@@ -117,9 +117,14 @@ CKPT=$OUT/agent.pt
 # (POOLED-ANALYSIS.md section 3), more than the verified engine patch.
 start_server() {   # $1 extra-flags
     pkill -f "policy_serve[r].py --port $PORT" 2>/dev/null
+    # --log APPENDS, so the per-update TRAIN| rows survive the restart
+    # every 512 episodes that server.log does not: server.log is
+    # truncated by this very redirect, which is why no run in this
+    # project has a dense training curve (HANDOFF-STACK-TIMING.md §5).
     RL_TORCH_THREADS=1 setsid nohup python3 $RL/policy_server.py \
         --port $PORT --ckpt $CKPT --seed $SEED --sdim $SDIM --cdim $CDIM --arch $ARCH \
-        --threads $CONC $SRVEXTRA $V6FLAGS ${1:-} > $OUT/server.log 2>&1 &
+        --threads $CONC --log $OUT/train.csv \
+        $SRVEXTRA $V6FLAGS ${1:-} > $OUT/server.log 2>&1 &
     local t=0
     while [ $t -lt 90 ]; do
         grep -q "policy server" $OUT/server.log 2>/dev/null && return 0
