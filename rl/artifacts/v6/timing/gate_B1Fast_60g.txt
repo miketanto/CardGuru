@@ -1,0 +1,28 @@
+GATE|WINDOWS|priority_windows=9119|opp_declare_attackers=451|with_castable=4 (0.9%)|holding_an_instant=116 (25.7%)
+GATE|WINDOWS|held an instant but could not cast it: 115/116 - the gap is MANA, not the encoder
+GATE|A|consults=11647|in_scope=1028|cards=10|cards_in_both_steps=1
+GATE|A|card=Swamp                   |own_main_rows=2|opp_atk_rows=1|min_dist=0.000000
+GATE|A|pairs=2|min_cross_step_distance=0.000000|on=Swamp|colliding_cards=1/1
+GATE|A|COLLIDE|1/1 cards have a byte-identical candidate row in own-main and opp-declare-attackers - the candidate channel carries NO timing information
+GATE|AW|cards=10|cards_seen_in_2plus_steps=7
+GATE|AW|card=Barony Vampire      |steps=2  |distinct_rows=1|STEP-INVARIANT
+GATE|AW|card=Cabal Evangel       |steps=2  |distinct_rows=1|STEP-INVARIANT
+GATE|AW|card=Cruel Cut           |steps=4  |distinct_rows=1|STEP-INVARIANT
+GATE|AW|card=Dakmor Scorpion     |steps=2  |distinct_rows=1|STEP-INVARIANT
+GATE|AW|card=Felhide Minotaur    |steps=2  |distinct_rows=1|STEP-INVARIANT
+GATE|AW|card=Moriok Reaver       |steps=2  |distinct_rows=1|STEP-INVARIANT
+GATE|AW|card=Swamp               |steps=17 |distinct_rows=2|varies
+GATE|AW|step_invariant=6/7 cards
+GATE|B|cdim=94
+/usr/local/lib/python3.11/dist-packages/torch/nn/modules/transformer.py:529: UserWarning: The PyTorch API of nested tensors is in prototype stage and will change in the near future. We recommend specifying layout=torch.jagged when constructing a nested tensor, as this layout receives active development, has better operator coverage, and works with torch.compile. (Triggered internally at /__w/pytorch/pytorch/aten/src/ATen/NestedTensorImpl.cpp:177.)
+  output = torch._nested_tensor_from_mask(
+GATE|B|seed=0|cast_minus_pass own_main=+0.34823 opp_atk=+0.36413|delta=0.01590
+GATE|B|seed=1|cast_minus_pass own_main=-0.00768 opp_atk=-0.02018|delta=0.01250
+GATE|B|seed=2|cast_minus_pass own_main=+0.20978 opp_atk=+0.21830|delta=0.00852
+GATE|B|seed=3|cast_minus_pass own_main=+0.08665 opp_atk=+0.09781|delta=0.01116
+GATE|B|seed=4|cast_minus_pass own_main=+0.09907 opp_atk=+0.10131|delta=0.00225
+GATE|B|scale_reference|one_extra_enemy_creature moves the same margin by 0.003293-0.026429, vs 0.002247-0.015895 for the step
+GATE|B|seeds=5|delta_min=0.002247|delta_max=0.015895|below_tol=0
+GATE|B|PASS|the step moves the cast-vs-hold margin at every seed - the step reaches the candidate logits through the state token, so a timing decision IS representable
+GATE|VERDICT|level_a_min=0.000000|expressible=True
+GATE|VERDICT|The candidate channel is timing-blind (LEVEL A distance 0) but the observation is NOT: the step reaches the logits through the state token (LEVEL B). §2a's collision holds; its 'no amount of training can learn the difference' does NOT follow.

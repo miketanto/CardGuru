@@ -246,6 +246,100 @@ public class RLPlayer extends ComputerPlayer {
      *  passed - which are invisible otherwise and are most of them. */
     private static final boolean TRACE = Boolean.getBoolean("rl.trace");
 
+    /**
+     * -Drl.candDump=<file>: one JSON line per priority consult, with the
+     * candidate rows, the card name behind each row, and the step it was
+     * taken in. This is what makes the timing-collision gate a
+     * measurement on REAL emission: group the rows by card name, split
+     * them by step, and ask whether the same card looks different in a
+     * main phase and in the opponent's declare-attackers step.
+     *
+     * Off unless the property is set; the name resolution alone would
+     * cost a getCard per candidate per consult.
+     */
+    private static final String CAND_DUMP = System.getProperty("rl.candDump");
+    private static java.io.PrintWriter candOut;
+
+    private static synchronized void dumpCands(Game game, UUID me, UUID opp,
+                                               String site, float[][] cands,
+                                               String[] names) {
+        try {
+            if (candOut == null) {
+                candOut = new java.io.PrintWriter(new java.io.BufferedWriter(
+                        new java.io.FileWriter(CAND_DUMP, true)));
+                Runtime.getRuntime().addShutdownHook(
+                        new Thread(() -> candOut.flush()));
+            }
+            StringBuilder b = new StringBuilder(1 << 12);
+            b.append("{\"site\":\"").append(site)
+             .append("\",\"turn\":").append(game.getTurnNum())
+             .append(",\"step\":\"").append(game.getTurnStepType())
+             .append("\",\"active\":")
+             .append(me.equals(game.getActivePlayerId()) ? 1 : 0)
+             .append(",\"names\":[");
+            for (int i = 0; i < names.length; i++) {
+                b.append(i > 0 ? "," : "").append('"')
+                 .append(names[i] == null ? "?"
+                         : names[i].replace("\\", "").replace("\"", ""))
+                 .append('"');
+            }
+            b.append("],\"cands\":[");
+            for (int i = 0; i < cands.length; i++) {
+                b.append(i > 0 ? "," : "").append(candArr(cands[i]));
+            }
+            // the flat state for the SAME consult: s[15] is active-player
+            // and s[16..19] are the phase-step buckets, so the gate can
+            // say whether the STATE separates what the CANDIDATE does not
+            b.append("],\"state\":")
+             .append(candArr(StateEncoder.encodeState(game, me, opp)))
+             .append('}');
+            candOut.println(b);
+            // flush per line: the driver JVM is persistent, so a buffered
+            // tail sits unwritten while the gate is already reading
+            candOut.flush();
+        } catch (java.io.IOException e) {
+            throw new IllegalStateException("rl.candDump failed: " + CAND_DUMP, e);
+        }
+    }
+
+    /**
+     * One line per PRIORITY WINDOW, k=0 ones included. dumpCands only
+     * sees windows that reached a consult, so on its own it cannot tell
+     * "the agent was never offered priority in the opponent's
+     * declare-attackers step" from "it was offered it with nothing
+     * castable in hand". k and holdsInstant separate those.
+     */
+    private static synchronized void dumpWindow(Game game, UUID me, int k,
+                                                boolean holdsInstant) {
+        try {
+            if (candOut == null) {
+                candOut = new java.io.PrintWriter(new java.io.BufferedWriter(
+                        new java.io.FileWriter(CAND_DUMP, true)));
+                Runtime.getRuntime().addShutdownHook(
+                        new Thread(() -> candOut.flush()));
+            }
+            candOut.println("{\"site\":\"window\",\"turn\":" + game.getTurnNum()
+                    + ",\"step\":\"" + game.getTurnStepType()
+                    + "\",\"active\":"
+                    + (me.equals(game.getActivePlayerId()) ? 1 : 0)
+                    + ",\"k\":" + k
+                    + ",\"holds_instant\":" + (holdsInstant ? 1 : 0) + "}");
+            candOut.flush();
+        } catch (java.io.IOException e) {
+            throw new IllegalStateException("rl.candDump failed: " + CAND_DUMP, e);
+        }
+    }
+
+    private static String candArr(float[] v) {
+        StringBuilder b = new StringBuilder(v.length * 7 + 2);
+        b.append('[');
+        for (int i = 0; i < v.length; i++) {
+            b.append(i > 0 ? "," : "")
+             .append(String.format(java.util.Locale.ROOT, "%.6f", v[i]));
+        }
+        return b.append(']').toString();
+    }
+
     private int consult(Game game, UUID opp, float[][] cands, String site) {
         int pick = consultInner(game, opp, cands);
         if (TRACE) {
@@ -555,6 +649,9 @@ public class RLPlayer extends ComputerPlayer {
         playable.removeIf(a -> a instanceof PlayLandAbility && !sorceryWindow);
         if (playable.isEmpty()) {
             autoPassK0++;
+            if (CAND_DUMP != null) {
+                dumpWindow(game, playerId, 0, holdsInstant(game));
+            }
             pass(game);
             setYieldAfterPass(game);
             return false;
@@ -581,6 +678,16 @@ public class RLPlayer extends ComputerPlayer {
                     a instanceof PlayLandAbility
                             ? StateEncoder.T_LAND : StateEncoder.T_SPELL,
                     card, game);
+        }
+        if (CAND_DUMP != null) {
+            String[] nm = new String[cands.length];
+            nm[0] = "PASS";
+            for (int i = 0; i < playable.size(); i++) {
+                Card c0 = game.getCard(playable.get(i).getSourceId());
+                nm[i + 1] = c0 == null ? "?" : c0.getName();
+            }
+            dumpCands(game, playerId, opponentId(game), "prio", cands, nm);
+            dumpWindow(game, playerId, playable.size(), holdsInstant(game));
         }
         if (consults >= consultBudget) {
             budgetExhausted = true;
