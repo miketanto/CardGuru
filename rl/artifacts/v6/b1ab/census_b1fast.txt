@@ -1,0 +1,15 @@
+ckpt=/tmp/rl_b1fast/ck_1024.pt deck=B1Fast games=100 -> /tmp/census_ck_1024_B1Fast.jsonl
+win_rate=0.5000 
+GATE|WINDOWS|priority_windows=24068|opp_declare_attackers=1158|with_castable=678 (58.5%)|holding_an_instant=688 (59.4%)
+GATE|WINDOWS|held an instant but could not cast it: 251/688 - the gap is MANA, not the encoder
+GATE|A|consults=39715|in_scope=4109|cards=10|cards_in_both_steps=2
+GATE|A|card=Cruel Cut               |own_main_rows=1|opp_atk_rows=1|min_dist=0.000000
+GATE|A|card=Swamp                   |own_main_rows=2|opp_atk_rows=1|min_dist=0.000000
+GATE|A|pairs=3|min_cross_step_distance=0.000000|on=Cruel Cut|colliding_cards=2/2
+GATE|A|COLLIDE|2/2 cards have a byte-identical candidate row in own-main and opp-declare-attackers - the candidate channel carries NO timing information
+GATE|AW|cards=10|cards_seen_in_2plus_steps=2
+GATE|AW|card=Cruel Cut           |steps=20 |distinct_rows=1|STEP-INVARIANT
+GATE|AW|card=Swamp               |steps=20 |distinct_rows=2|varies
+GATE|AW|step_invariant=1/2 cards
+
+[exited with code 0]

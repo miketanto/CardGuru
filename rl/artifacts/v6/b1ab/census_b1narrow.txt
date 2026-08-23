@@ -1,0 +1,14 @@
+ckpt=/tmp/rl_b1narrow/ck_1024.pt deck=B1Narrow games=100 -> /tmp/census_ck_1024_B1Narrow.jsonl
+win_rate=0.5300 
+GATE|WINDOWS|priority_windows=23825|opp_declare_attackers=1144|with_castable=632 (55.2%)|holding_an_instant=0 (0.0%)
+GATE|WINDOWS|held an instant but could not cast it: 0/0 - the gap is MANA, not the encoder
+GATE|S|own_main              |consult_patterns=1|s[15..19]=(1.0, 1.0, 0.0, 0.0, 0.0)
+GATE|S|opp_declare_attackers |consult_patterns=1|s[15..19]=(0.0, 0.0, 1.0, 0.0, 0.0)
+GATE|S|PASS|the two steps never share a step-channel pattern in real emission - the STATE separates what the CANDIDATE does not
+GATE|A|consults=38734|in_scope=4129|cards=10|cards_in_both_steps=1
+GATE|A|card=Swamp                   |own_main_rows=2|opp_atk_rows=1|min_dist=0.000000
+GATE|A|pairs=2|min_cross_step_distance=0.000000|on=Swamp|colliding_cards=1/1
+GATE|A|COLLIDE|1/1 cards have a byte-identical candidate row in own-main and opp-declare-attackers - the candidate channel carries NO timing information
+GATE|AW|cards=10|cards_seen_in_2plus_steps=1
+GATE|AW|card=Swamp               |steps=20 |distinct_rows=2|varies
+GATE|AW|step_invariant=0/1 cards

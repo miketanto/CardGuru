@@ -239,10 +239,54 @@ and the policy must recover the difference from the state token alone.
 creature). **Timing-blindness may not merely fail to help an instant —
 it may make an instant harder to learn than a sorcery.**
 
-**This is a hypothesis with one seed per arm behind it, not a result.**
-Two arms, two training trajectories, one seed each; the mechanism is
-consistent with the evidence and is not established by it. What would
-test it is in §6.
+### 5b. The mechanism, measured
+
+The chosen index is now recorded (`-Drl.candDump` carries `"pick"`), so
+the hypothesis above is testable without a new training run. Both
+`ck_1024` checkpoints, 100 games each:
+
+| | `B1Fast` — Cruel Cut (instant) | `B1Narrow` — Defeat (sorcery) |
+|---|---|---|
+| priority consults | 15,647 | 14,909 |
+| **removal on the menu** | **5,504** | **470** |
+| **removal chosen** | **0 (0.00%)** | **92 (19.6%)** |
+| chose `PASS` in those consults | 4,949 | **0** |
+| `PASS` share of all picks | 89.7% | 88.8% |
+
+Two facts, and together they are the mechanism:
+
+1. **The instant's candidate appears 11.7× more often** — 5,504 menu
+   appearances against 470. That is pure legality: a sorcery is castable
+   only in an own main phase with an empty stack, an instant in ~20 step
+   contexts across both turns. The engine filters the sorcery's menu
+   down to the moments when acting is plausible; it does not filter the
+   instant's at all.
+2. **In every one of the 470 consults where Defeat was on the menu, the
+   policy chose to act** — `PASS` zero times. In Cruel Cut's 5,504, it
+   passed 4,949 times.
+
+So the *same candidate row* — §2a proved it is byte-identical across all
+20 steps — arrives overwhelmingly in **pass-contexts** for the instant
+and exclusively in **act-contexts** for the sorcery. A timing-blind
+encoding cannot tell those apart, and the base rate does the rest: the
+policy learns "this vector → do not act", which is correct 90% of the
+time it sees it, and is then unable to make the exception in the 10%
+where casting is right.
+
+**Instant speed is not a capability the policy failed to exploit. Under
+a timing-blind candidate encoding it is a liability**, because
+legality-driven context filtering is doing the timing work for the
+sorcery and nothing is doing it for the instant.
+
+The `PASS` share of all picks — 89.7% and 88.8% — is the same pass-heavy
+policy the Dimir trace found (83 of 92 windows passed) on a different
+deck, so that part is not specific to this rung.
+
+**What is still one seed per arm.** The choice rates (0.00% vs 19.6%)
+are one training trajectory each and could be trajectory noise. The
+**menu ratio (5,504 vs 470) is not** — it is a structural consequence of
+what the rules make legal, and would hold for any policy. The mechanism
+rests on the robust half; the magnitudes rest on the fragile half.
 
 ## 6. What this does not support, and what to run next
 
