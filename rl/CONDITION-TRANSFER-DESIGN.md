@@ -178,12 +178,22 @@ of these is a bug to find rather than a result to write up.
   here — replicates where win rates do not, and it needs **no second
   training run**. It should be the primary readout and the win rate the
   secondary.
-- **`CURRICULUM-LADDER.md` §5 records an instrumentation gap that
-  blocks that primary readout**: the action log records the spell but
-  not the target it was pointed at, so target-by-power needs a small
-  `EpisodeRunner` change first. `-Drl.candDump` (added this session)
-  already carries per-candidate rows and would need only the *chosen
-  index* added to close it.
+- **Correction — the instrumentation gap this section originally
+  claimed does not exist.** `CURRICULUM-LADDER.md` §5 records
+  target-by-power as unbuilt ("the action log records the spell but not
+  the target it was pointed at"), and an earlier revision of this doc
+  repeated it. It has since been built: `EpisodeRunner` emits
+  `tgtChose_p0..p6` beside `tgtLegal_p0..p6` — two parallel histograms,
+  so the read is "chose p5 this often, could have chosen p5 this often",
+  which is the right shape and better than what §5 asked for. **The
+  primary readout is available today and needs no new code.**
+  `CURRICULUM-LADDER.md` §5 should be corrected in place.
+
+  One property of it matters for reading any B-branch result: the whole
+  `tgt*` block is emitted only `if (targetCreatureChoices > 0)`, so on a
+  policy that never casts its removal the counters are **absent from the
+  probe file rather than zero**. Absent means zero; it does not mean the
+  instrument is broken.
 - **It says nothing about capacity**, which is the other lever Phase 8's
   verdict named.
 

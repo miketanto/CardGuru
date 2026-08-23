@@ -269,6 +269,17 @@ minimax still gives ground truth for *which creature should have died*.
 the target it was pointed at, so the target-by-power distribution needs
 a small `EpisodeRunner` change before it can be read. Not built yet.
 
+> **Correction (v6-network, B1 timing A/B session).** This is no longer
+> true and should not be carried forward. `EpisodeRunner` now emits
+> `tgtChose_p0..p6` beside `tgtLegal_p0..p6` — chosen and legal targets
+> as two parallel histograms by power, which is what this paragraph
+> asked for. The census is available today with no new code.
+>
+> Caveat that matters when reading it: the whole `tgt*` block is emitted
+> only `if (targetCreatureChoices > 0)`, so on a policy that never casts
+> its removal the counters are **absent from the probe file rather than
+> zero**. Absent means zero, not broken. See `rl/B1-TIMING-AB.md`.
+
 ---
 
 ## 6. Running the two branches in parallel
