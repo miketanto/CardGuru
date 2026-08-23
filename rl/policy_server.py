@@ -348,7 +348,7 @@ class Trainer:
     def __init__(self, ckpt, seed, log_path, sdim=SDIM, cdim=CDIM,
                  shape=0.0, phi_scale=2000.0, arch="e0",
                  desperation=0.0, gdim=GDIM, edim=EDIM, emax=EMAX,
-                 n_rtypes=len(RTYPES), r0=False):
+                 n_rtypes=len(RTYPES), r0=False, oracle=False):
         torch.manual_seed(seed)
         self.sdim, self.cdim = sdim, cdim
         # v6 state path; unused (and unvalidated) by the v1-v5 arches
@@ -379,6 +379,20 @@ class Trainer:
         self.ckpt = ckpt
         self.log_path = log_path
         self.frozen = False
+        # Asymmetric critic. None => the policy's own value head
+        # supplies GAE, exactly as before.
+        self.oracle_critic = None
+        self.copt = None
+        self._want_oracle = oracle
+        if oracle:
+            if arch != "entattn":
+                raise RuntimeError(
+                    "--oracle needs the v6 entity path (arch=entattn); "
+                    "the privileged rows ARE entity rows")
+            self.oracle_critic = OracleCritic(gdim, edim,
+                                              n_rtypes=n_rtypes)
+            self.copt = torch.optim.Adam(
+                self.oracle_critic.used_parameters(), lr=LR)
         self.episodes_seen = 0
         self.updates = 0
         if ckpt and os.path.exists(ckpt):
@@ -392,6 +406,18 @@ class Trainer:
             self.opt.load_state_dict(data["opt"])
             self.episodes_seen = data.get("episodes", 0)
             self.updates = data.get("updates", 0)
+            if self.oracle_critic is not None and "oracle_critic" in data:
+                self.oracle_critic.load_state_dict(data["oracle_critic"])
+                self.copt.load_state_dict(data["oracle_opt"])
+                print("resumed oracle critic", flush=True)
+            elif self.oracle_critic is not None:
+                # Starting the critic from scratch on a policy that is
+                # already trained is a REAL asymmetry, not a detail: its
+                # first advantages are noise. Say so rather than let it
+                # look like a null.
+                print("NOTE: oracle critic starts from scratch on a "
+                      "pre-trained policy - early advantages are "
+                      "untrained-critic noise", flush=True)
             print(f"resumed ckpt: {self.episodes_seen} episodes, "
                   f"{self.updates} updates", flush=True)
         # trajectory buffers (across episodes until update)
@@ -488,16 +514,24 @@ class Trainer:
         return EntityObs(torch.tensor(g, dtype=torch.float32).unsqueeze(0),
                          e, m, rel)
 
-    def act(self, state, cands, sample, phi=0.0, session=None, ent=None):
+    def act(self, state, cands, sample, phi=0.0, session=None, ent=None,
+            oracle_rows=None):
         # session is None for the single-connection path (unchanged
         # behaviour); with --threads N every connection passes its own
         # Session so trajectories and LSTM memory never interleave
         sink = self if session is None else session
         with torch.no_grad():
+            store_or = None
             if self.entity:
                 # ent = (globals, entity rows, relation edge list)
                 s = self._entity_obs(*ent)      # batch-1 EntityObs
                 store = s[0]                    # per-step, no batch dim
+                # The privileged observation is built SEPARATELY and only
+                # ever reaches the critic. `s` above - what the policy
+                # sees - is untouched by the oracle rows.
+                if self.oracle_critic is not None and oracle_rows:
+                    store_or = self._entity_obs(
+                        ent[0], list(ent[1]) + list(oracle_rows), ent[2])[0]
             else:
                 s = torch.tensor(state).unsqueeze(0)
                 store = s[0]
@@ -539,7 +573,8 @@ class Trainer:
                                  float(value[0]),
                                  math.tanh(phi / self.phi_scale),
                      (hin[0][0].clone(), hin[1][0].clone())
-                     if self.recurrent else None))
+                     if self.recurrent else None,
+                     store_or))
             else:
                 a = int(torch.argmax(logits[0]))
             return a
@@ -575,6 +610,22 @@ class Trainer:
         actions = torch.tensor([b[3] for b in self.buf])
         old_logp = torch.tensor([b[4] for b in self.buf])
         values = torch.tensor([b[5] for b in self.buf])
+        # ORACLE GUIDING. Recompute the baseline from the privileged
+        # critic BEFORE GAE, so every residual gamma*V(s')-V(s) - which
+        # with terminal-only reward is the entire dense credit path - is
+        # estimated by a value function that can see the opponent's hand.
+        # Recomputed here rather than at act time so the privileged
+        # forward pass never touches the serving path.
+        or_obs = [b[8] for b in self.buf] if len(self.buf[0]) > 8 else []
+        self.oracle_cover = 0.0
+        if self.oracle_critic is not None and any(o is not None for o in or_obs):
+            have = [i for i, o in enumerate(or_obs) if o is not None]
+            self.oracle_cover = len(have) / float(len(self.buf))
+            with torch.no_grad():
+                ov = self.oracle_critic(
+                    EntityObs.stack([or_obs[i] for i in have]))
+            values = values.clone()
+            values[torch.tensor(have)] = ov.float()
 
         phis = [b[6] if len(b) > 6 else 0.0 for b in self.buf]
         if self.recurrent:
@@ -614,6 +665,19 @@ class Trainer:
         mv = mc.var()
         self.last_ev = (float(1.0 - (mc - values).var() / mv)
                         if float(mv) > 1e-8 else float("nan"))
+        if self.oracle_critic is not None and or_obs and any(
+                o is not None for o in or_obs):
+            have = [i for i, o in enumerate(or_obs) if o is not None]
+            obs_b = EntityObs.stack([or_obs[i] for i in have])
+            tgt = ret[torch.tensor(have)]
+            for _ in range(EPOCHS):
+                self.copt.zero_grad()
+                loss = ((self.oracle_critic(obs_b) - tgt) ** 2).mean()
+                loss.backward()
+                nn.utils.clip_grad_norm_(
+                    self.oracle_critic.used_parameters(), 0.5)
+                self.copt.step()
+
         if adv.std() > 1e-6:
             adv = (adv - adv.mean()) / (adv.std() + 1e-8)
 
@@ -724,7 +788,8 @@ class Trainer:
         line = (f"update={self.updates} episodes={self.episodes_seen} "
                 f"batch_eps={len(self.completed)} steps={n} "
                 f"batch_win_rate={wr:.3f} mean_abs_phi={mean_abs_phi:.3f} "
-                f"value_ev={getattr(self, 'last_ev', float('nan')):.4f}")
+                f"value_ev={getattr(self, 'last_ev', float('nan')):.4f} "
+                f"oracle_cover={getattr(self, 'oracle_cover', 0.0):.3f}")
         print("TRAIN|" + line, flush=True)
         if self.log_path:
             with open(self.log_path, "a") as f:
@@ -737,16 +802,25 @@ class Trainer:
         self.save()
 
     def save(self):
+        if self.frozen:
+            return          # a probe must never write the thing it measures
         if self.ckpt:
             # atomic: a SIGKILL mid-save must never corrupt the ckpt
             # (a truncated net.pt took down a league run once)
             tmp = self.ckpt + ".tmp"
-            torch.save({"net": self.net.state_dict(),
-                        "opt": self.opt.state_dict(),
-                        "episodes": self.episodes_seen,
-                        "updates": self.updates,
-                        "arch": self.arch,
-                        "dims": self.dims()}, tmp)
+            blob = {"net": self.net.state_dict(),
+                    "opt": self.opt.state_dict(),
+                    "episodes": self.episodes_seen,
+                    "updates": self.updates,
+                    "arch": self.arch,
+                    "dims": self.dims()}
+            # The critic rides in the same file under its own keys, so an
+            # oracle checkpoint still LOADS on a non-oracle server (the
+            # extra keys are ignored) and the arms stay swappable.
+            if self.oracle_critic is not None:
+                blob["oracle_critic"] = self.oracle_critic.state_dict()
+                blob["oracle_opt"] = self.copt.state_dict()
+            torch.save(blob, tmp)
             os.replace(tmp, self.ckpt)
 
 
@@ -868,6 +942,9 @@ def consult_args(msg, trainer):
         raise RuntimeError(
             "consult carried no \"g\"/\"e\" fields on an entattn server "
             "- the driver switched encoder arms mid-connection")
+    # "oe" rides ALONGSIDE the policy's entity list, never inside it.
+    # rl/oracle_gate.py level 1 asserts this tuple is identical with
+    # and without the key.
     return None, msg["c"], (msg["g"], msg["e"], msg.get("r", []))
 
 
@@ -911,7 +988,8 @@ def handle(conn, trainer, lock, session):
                     if lock is None:
                         a = trainer.act(st, cd,
                                         sample=(mode == "train"),
-                                        phi=msg.get("phi", 0.0), ent=ent)
+                                        phi=msg.get("phi", 0.0), ent=ent,
+                                        oracle_rows=msg.get("oe"))
                     elif LOCK_STATS:
                         _t0 = time.time()
                         with lock:
@@ -919,7 +997,8 @@ def handle(conn, trainer, lock, session):
                             a = trainer.act(st, cd,
                                             sample=(mode == "train"),
                                             phi=msg.get("phi", 0.0),
-                                            session=session, ent=ent)
+                                            session=session, ent=ent,
+                                            oracle_rows=msg.get("oe"))
                         _record(_t1 - _t0, time.time() - _t1)
                     else:
                         # torch inference and the trajectory buffers are
@@ -930,7 +1009,8 @@ def handle(conn, trainer, lock, session):
                             a = trainer.act(st, cd,
                                             sample=(mode == "train"),
                                             phi=msg.get("phi", 0.0),
-                                            session=session, ent=ent)
+                                            session=session, ent=ent,
+                                            oracle_rows=msg.get("oe"))
                 f.write(f'{{"a":{a}}}\n'.encode())
             elif t == "end":
                 if lock is None:
@@ -1007,6 +1087,8 @@ if __name__ == "__main__":
     # independent of --lr, so any sampled probe silently trained the
     # checkpoint it was measuring and save() overwrote it in place.
     # That cost a published checkpoint once (B1-TIMING-AB.md §7).
+    ap.add_argument("--oracle", action="store_true",
+                    help="asymmetric critic: a SEPARATE value network\n                         reads the opponent's hand (driver must run\n                         -Drl.oracle=true). Training-only - it never\n                         picks an action, so there is nothing to\n                         withdraw at eval.")
     ap.add_argument("--frozen", action="store_true",
                     help="serve sampled actions but never update or "
                          "save - for probes that need exploration "
@@ -1053,6 +1135,6 @@ if __name__ == "__main__":
                  args.shape, args.phi_scale, args.arch,
                  args.desperation,
                  args.gdim, args.edim, args.emax,
-                 len(RTYPES), args.r0)
+                 len(RTYPES), args.r0, args.oracle)
     _t.frozen = args.frozen
     serve(args.port, _t, args.threads)
