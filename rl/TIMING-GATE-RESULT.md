@@ -207,6 +207,63 @@ about a weak card is `B1Narrow`: the identical card at sorcery speed is
 cast 86 times in 300 games. Same cost, same restriction, same slot. See
 `B1-TIMING-AB.md` §5a.
 
+### 4c. Exploration is not the failure — and the casts have no aim
+
+The same checkpoint, same 100 games, served **sampled** instead of
+argmax (`CAND_MODE=train`, server still without `--lr`, so it samples
+and does not learn):
+
+| B1Fast ck_1024, 100 games | argmax | **sampled** |
+|---|---|---|
+| Cruel Cut on the menu | 5,504 | 1,097 |
+| **Cruel Cut chosen** | **0 (0.00%)** | **87 (7.9%)** |
+| `PASS` share of all picks | 89.7% | 75.1% |
+
+**The behaviour exists in the distribution and has ~zero mass at the
+mode.** So this is a credit-assignment failure, not an exploration
+failure: the policy tries the cast 87 times per 100 games and argmax
+never selects it. (The menu counts differ for a consistent reason —
+under argmax the card is held and re-offered every step, under sampling
+it gets cast and leaves the menu.)
+
+The more informative half is **where** the sampled casts land:
+
+```
+Upkeep 20 | Precombat Main 19 | Draw 17 | Begin Combat 9 | End Combat 8
+Declare Attackers 6 | Postcombat Main 4 | Declare Blockers 2 | End Turn 2
+```
+
+**Nearly uniform across nine steps**, with only 10 of 87 on the
+opponent's turn and 1 at opponent declare-attackers. When the policy
+does explore casting its instant, it casts at an essentially random
+moment.
+
+That closes the loop with §2a, and the chain is now measured end to end:
+
+1. The candidate row is timing-blind (§2–3), so nothing distinguishes a
+   good moment to cast from a bad one **at the candidate**.
+2. Exploration therefore spreads casts roughly uniformly over every step
+   the card is legal in — most of which are bad moments.
+3. Terminal-only reward gives one bit per ~45 consults, which cannot
+   separate the well-timed cast from the eight badly-timed ones.
+4. The net gradient over those casts is not positive, so training
+   suppresses casting rather than re-timing it.
+5. Argmax converges on never casting — §4b's 0 in 5,504.
+
+This is the same shape Talor-A's `anvil` reached from the other
+direction on a much larger system (V-trace self-play, ADR-0049): *"the
+behavior exists; no credit reaches its timing"*, with hold-then-cast
+abundant in exploration and flat across 20 iterations, and 46% of
+changed cast-decisions going cast→pass. Two independent codebases,
+same failure.
+
+**What it changes.** Dense per-decision credit is the lever, not
+representation. The one representational change still indicated is a
+per-candidate "this cast is at instant speed" channel
+(`CONDITION-TRANSFER-DESIGN.md` slot 16) — not to add information the
+state lacks, but so exploration can *aim*, which step 2 above says it
+currently cannot.
+
 ## 5. LEVEL B — does the step reach the logits at all?
 
 §2a's stop condition assumes a colliding candidate means the difference
