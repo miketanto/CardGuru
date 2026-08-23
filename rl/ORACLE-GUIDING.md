@@ -151,4 +151,58 @@ information was never the critic's problem, which would be a real
 finding and would send the next lever elsewhere (rollout-delta targets,
 where the signal is measured rather than estimated).
 
-*(arm in progress — full curves below when both complete)*
+### 6b. Three implementation failures, and what each one teaches
+
+The first three attempts to run this arm all failed, none reached a
+published number, and the failures are more useful than a clean run
+would have been.
+
+**1. The fresh critic diverged.** Wired straight into GAE and trained on
+`ret`, it went **EV −1.47 → −6.05 over two updates**. The cause is
+structural: `ret = gae + values` and `gae` is computed *from the
+critic's own values*, so a randomly-initialised critic bootstraps off
+its own noise with nothing anchoring it. Fixed with **Monte-Carlo
+targets** — with terminal-only reward `mc[t] = R·γ^(end−1−t)` is exact,
+so bootstrapping buys nothing here and costs stability.
+
+**2. The question did not need the policy in the loop.** "Does
+privileged information predict the outcome better" is *supervised*.
+`--oracle-probe` now trains and scores the critic without letting it
+supply GAE, so the policy trajectory is identical across arms and the
+only difference is what the critic sees. This also removed the risk of
+a diverging critic damaging the policy mid-measurement.
+
+**3. The server was OOM-killed.** Storing a parallel `EntityObs` per
+step doubled its largest allocation — `rel` is `(emax, emax)` int64,
+~73 KB per step — and the kernel took it down after one update. The
+first fix would have repeated the fault: indexing `states.rel[hidx]`
+copies ~368 MB at n=5000. Now `act()` stores only the few privileged
+**rows** and `update()` rebuilds the critic's batch in chunks from the
+policy's own stored entities, sharing `rel` rather than copying it.
+
+**A fourth, smaller:** `oracle_cover` initially read 1.000 in both arms
+because the stored value was a list rather than `None`. It now counts
+steps with **non-empty** privileged rows, so the control reads 0.000 and
+the treatment ~0.67 — which is the whole point of having the counter.
+
+### 6c. Validity, established
+
+`oracle_cover=0.669` on the treatment arm and `0.000` on the control.
+The Java emission, the `"oe"` wire key, the server routing and the
+critic all work end to end, and the control genuinely has no privileged
+input. An inert channel cannot masquerade as a negative result here.
+
+### 6d. Where it stands
+
+| arm | critic | privileged | status |
+|---|---|---|---|
+| baseline | policy value head, 1024 ep trained | no | **EV 0.361** (8 updates, range .312–.455) |
+| probe0 | fresh, MC targets | no (`cover 0.000`) | running |
+| probe1 | fresh, MC targets | yes (`cover ~0.67`) | queued |
+
+`probe1 − probe0` is the privileged-information effect with the
+fresh-network confound removed. Early held-out readings from a
+randomly-initialised critic are negative by construction (−0.86, −1.06
+on update 1) and say nothing; the comparison is the trajectory across
+eight updates, and **neither arm's number should be quoted before both
+finish.**
