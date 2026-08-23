@@ -551,9 +551,18 @@ class Trainer:
         # fed noise, and no amount of shaping on top of it can help.
         # Suphx's oracle guiding and AlphaStar's opponent-conditioned
         # value both target exactly this number.
-        rv = ret.var()
-        self.last_ev = (float(1.0 - (ret - values).var() / rv)
-                        if float(rv) > 1e-8 else float("nan"))
+        # AGAINST THE MONTE-CARLO RETURN, not `ret`. ret[t] is DEFINED as
+        # gae[t] + values[t], so (ret - values) is identically the
+        # advantage and 1 - Var(ret-V)/Var(ret) is circular - it says
+        # nothing about the critic. The honest target is the actual
+        # per-consult-discounted terminal outcome each state led to.
+        mc = torch.zeros(len(self.buf))
+        for start, end, reward in self.completed:
+            for t in range(start, end):
+                mc[t] = reward * (GAMMA ** (end - 1 - t))
+        mv = mc.var()
+        self.last_ev = (float(1.0 - (mc - values).var() / mv)
+                        if float(mv) > 1e-8 else float("nan"))
         if adv.std() > 1e-6:
             adv = (adv - adv.mean()) / (adv.std() + 1e-8)
 
