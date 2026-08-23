@@ -1,6 +1,6 @@
 {
   "_comment": "DRAFT consistency intent set for plan/nl-dsl-consistency.md Phase C0. NOT FROZEN - see eval/consistency-set-outline.md for the design rationale, axis definitions, scoring semantics and known gaps. Unit is the INTENT (one mechanical meaning), not the question; each intent carries paraphrases scored against each other, not against a gold query. Disjoint from nl_questions_poc/dev/adversarial, benchmark/benchmark.json, the compiler's own EXAMPLES, and the README demo questions. RulesGuru remains unread. Witnesses/foils are unresolved until they are checked against a built index at freeze time (this checkout ships no index). Freeze + hash before the first scoring run (decision rule R6).",
-  "_status": "DRAFT - review, then resolve witnesses against a pinned index, then freeze and hash",
+  "_status": "DRAFT - all 40 laddered; hook/role operators now validated; ready to freeze after re-baseline",
   "_version": "consistency-v1-draft",
   "_pin": {
     "forge_commit": "7ba1a393",
@@ -72,7 +72,13 @@
         "Smothering Tithe"
       ],
       "absent_foil": [],
-      "paraphrases": {}
+      "paraphrases": {
+        "P1": "cards that create Treasure tokens",
+        "P2": "anything that ramps me off treasure",
+        "P3": "treasure makers",
+        "P4": "I need more fast mana and I'm looking for anything that produces those artifact tokens you sacrifice for mana. This is for Commander.",
+        "P5": "cards that make Treasure artifact tokens"
+      }
     },
     {
       "id": "I02",
@@ -87,7 +93,13 @@
       "absent_foil": [
         "Raise Dead"
       ],
-      "paraphrases": {}
+      "paraphrases": {
+        "P1": "cards that shuffle your graveyard into your library",
+        "P2": "recursion that recycles everything back in",
+        "P3": "graveyard-to-library shuffle",
+        "P4": "My playgroup runs a lot of graveyard hate and I keep losing my whole yard. I want something that puts my discard pile back into my deck. Budget is a concern.",
+        "P5": "cards that shuffle your bin back into your deck"
+      }
     },
     {
       "id": "I03",
@@ -103,7 +115,13 @@
         "Phyrexian Arena"
       ],
       "note": "foil loses life as an EFFECT, not as a cost",
-      "paraphrases": {}
+      "paraphrases": {
+        "P1": "cards with an ability that requires paying life as a cost",
+        "P2": "abilities you pay for with your own life total",
+        "P3": "pay-life costs",
+        "P4": "I'm building a deck that treats life as a resource. I want abilities where you spend life to turn them on, not ones that just drain you as an effect. Any colour works.",
+        "P5": "cards with an ability you activate by paying life"
+      }
     },
     {
       "id": "I04",
@@ -143,7 +161,13 @@
         "Elvish Visionary"
       ],
       "note": "foil draws on ETB, not on death",
-      "paraphrases": {}
+      "paraphrases": {
+        "P1": "creatures that draw you a card when they die",
+        "P2": "bodies that replace themselves when they get killed",
+        "P3": "death-trigger card draw",
+        "P4": "I want creatures that aren't card disadvantage when they trade in combat. Something that cantrips on the way out. This is for Commander.",
+        "P5": "creatures that draw you a card when they hit the bin"
+      }
     },
     {
       "id": "I06",
@@ -156,7 +180,13 @@
         "Rampaging Baloths"
       ],
       "absent_foil": [],
-      "paraphrases": {}
+      "paraphrases": {
+        "P1": "abilities that create creature tokens whenever a land enters the battlefield under your control",
+        "P2": "landfall payoffs that go wide",
+        "P3": "landfall token makers",
+        "P4": "I'm on a lands-matter build with a lot of extra land drops. I want payoffs that put bodies down every time a land shows up. Budget doesn't matter.",
+        "P5": "abilities that make creature tokens whenever a land comes into play for you"
+      }
     },
     {
       "id": "I07",
@@ -171,7 +201,13 @@
       "absent_foil": [
         "Windfall"
       ],
-      "paraphrases": {}
+      "paraphrases": {
+        "P1": "a single ability that draws cards and then makes you discard cards",
+        "P2": "looting effects",
+        "P3": "draw then discard",
+        "P4": "I need to fill my yard while digging for combo pieces. One spell that draws and then makes me pitch is right, rather than two separate effects. This is for Commander.",
+        "P5": "one ability that draws you cards and then makes you pitch cards"
+      }
     },
     {
       "id": "I08",
@@ -211,7 +247,13 @@
       "absent_foil": [
         "Baneslayer Angel"
       ],
-      "paraphrases": {}
+      "paraphrases": {
+        "P1": "creatures with flying that also have an ability that triggers when they die",
+        "P2": "evasive bodies that leave something behind when they go",
+        "P3": "flying death triggers",
+        "P4": "I want fliers that still pay me off after they eat removal. The death trigger matters more than the size. Ideally in white.",
+        "P5": "creatures with flying that also have an ability triggering when they hit the bin"
+      }
     },
     {
       "id": "I10",
@@ -301,7 +343,13 @@
         "Prossh, Skyraider of Kher"
       ],
       "note": "deliberate inverse of I10 - same card pair, opposite verdicts",
-      "paraphrases": {}
+      "paraphrases": {
+        "P1": "creatures that create creature tokens without sacrificing anything",
+        "P2": "token makers that don't eat their own board",
+        "P3": "token makers, no sacrifice",
+        "P4": "I want to go wide without needing fodder to feed in. Making bodies shouldn't cost me other bodies. This is for Commander.",
+        "P5": "creatures that make creature tokens without sacrificing anything"
+      }
     },
     {
       "id": "I14",
@@ -316,7 +364,13 @@
       "absent_foil": [
         "Doom Blade"
       ],
-      "paraphrases": {}
+      "paraphrases": {
+        "P1": "creature removal that does not target",
+        "P2": "removal that gets around hexproof",
+        "P3": "non-targeted creature removal",
+        "P4": "My opponents keep resolving hexproof and ward threats I can't point anything at. I need answers that kill without choosing a target. Budget is a concern.",
+        "P5": "creature removal that does not choose a target"
+      }
     },
     {
       "id": "I15",
@@ -331,7 +385,13 @@
       "absent_foil": [
         "Eladamri's Call"
       ],
-      "paraphrases": {}
+      "paraphrases": {
+        "P1": "green sorceries that search your library for a land card",
+        "P2": "green ramp sorceries that go fetch a land",
+        "P3": "green land tutors",
+        "P4": "I want basic ramp in my green deck. A sorcery that digs a land out is what I'm after. This is for Commander.",
+        "P5": "green sorceries that search your deck for a land card"
+      }
     },
     {
       "id": "I16",
@@ -347,7 +407,13 @@
         "Dragon Fodder"
       ],
       "note": "foil is the same effect at sorcery speed",
-      "paraphrases": {}
+      "paraphrases": {
+        "P1": "instants that create creature tokens",
+        "P2": "token makers I can drop mid-combat",
+        "P3": "instant-speed token makers",
+        "P4": "I want to make blockers during my opponent's attack instead of telegraphing them on my own turn. Sorceries are too slow. Ideally in white.",
+        "P5": "instants that make creature tokens"
+      }
     },
     {
       "id": "I17",
@@ -362,14 +428,20 @@
       "absent_foil": [
         "Sedge Scorpion"
       ],
-      "paraphrases": {}
+      "paraphrases": {
+        "P1": "creatures with both deathtouch and lifelink",
+        "P2": "creatures that trade up and stabilise you doing it",
+        "P3": "deathtouch lifelink creatures",
+        "P4": "I want a blocker nobody wants to attack into that also pulls my life total back up. Both abilities on one body. Budget matters.",
+        "P5": "creatures that have both deathtouch and lifelink"
+      }
     },
     {
       "id": "I18",
       "intent": "repeatable card-draw engines, not one-shot draw",
       "S": "S9",
       "H": "H05",
-      "D": "D2",
+      "D": "D3",
       "prov": "absent",
       "witness": [
         "Phyrexian Arena"
@@ -385,14 +457,14 @@
         "P4": "My deck runs out of gas around turn six. I'm looking for something that keeps drawing me extra cards every turn on its own, not a one-shot that refills once and then does nothing. Budget matters.",
         "P5": "permanents that keep drawing you extra cards each turn"
       },
-      "blocked_by": "validate.QUERY_OPS omits the 'hook' and 'role' operators that querydsl.evaluate implements, so the production gate rejects any compilation using them. Unscoreable until fixed - see eval/consistency/C0-findings.md."
+      "D_observed_hits": 2454
     },
     {
       "id": "I19",
       "intent": "sacrifice outlets",
       "S": "S9",
       "H": "H01",
-      "D": "D2",
+      "D": "D3",
       "prov": "absent",
       "witness": [
         "Viscera Seer"
@@ -401,8 +473,14 @@
         "Fleshbag Marauder"
       ],
       "note": "hook:sac_outlet control",
-      "paraphrases": {},
-      "blocked_by": "validate.QUERY_OPS omits the 'hook' and 'role' operators that querydsl.evaluate implements, so the production gate rejects any compilation using them. Unscoreable until fixed - see eval/consistency/C0-findings.md."
+      "paraphrases": {
+        "P1": "cards with an ability that lets you sacrifice a creature as a cost",
+        "P2": "sac outlets",
+        "P3": "sacrifice outlets",
+        "P4": "I'm on an aristocrats build and I need a way to throw my own creatures away at will, ideally repeatable and free. This is for Commander.",
+        "P5": "cards with an ability letting you sacrifice a creature to pay for it"
+      },
+      "D_observed_hits": 533
     },
     {
       "id": "I20",
@@ -412,12 +490,20 @@
       "D": "D2",
       "prov": "absent",
       "witness": [
-        "Reanimate"
+        "Animate Dead",
+        "Zombify"
       ],
       "absent_foil": [
         "Raise Dead"
       ],
-      "paraphrases": {}
+      "paraphrases": {
+        "P1": "cards that return creature cards from a graveyard to the battlefield",
+        "P2": "reanimation spells",
+        "P3": "reanimate creatures",
+        "P4": "I want to cheat fatties into play after pitching them early. Getting them onto the board matters, not back to my hand. Budget is a concern.",
+        "P5": "cards that return creature cards from a bin into play"
+      },
+      "note": "witness swapped off 'Reanimate' \u2014 the card name collides with the natural player term used in P2/P3, which would let the compiler match on the name instead of the mechanic. Witnesses now span the enchantment and sorcery encodings of the same effect."
     },
     {
       "id": "I21",
@@ -432,7 +518,13 @@
       "absent_foil": [
         "Green Sun's Zenith"
       ],
-      "paraphrases": {}
+      "paraphrases": {
+        "P1": "cards that search your library for a creature card and put it into your hand",
+        "P2": "creature tutors that find it to hand",
+        "P3": "creature tutor to hand",
+        "P4": "I need consistency finding my combo piece. I want it in hand so I can cast it on my own terms rather than dumped straight onto the board. This is for Commander.",
+        "P5": "cards that search your deck for a creature card and put it into your hand"
+      }
     },
     {
       "id": "I22",
@@ -472,7 +564,13 @@
       "absent_foil": [
         "Serra Angel"
       ],
-      "paraphrases": {}
+      "paraphrases": {
+        "P1": "creatures you can cast at instant speed",
+        "P2": "creatures you can ambush blockers with at end of turn",
+        "P3": "instant-speed creatures",
+        "P4": "I like holding up mana and deploying threats on the end step. A creature I can only cast in my own main phase doesn't do that. Ideally in blue.",
+        "P5": "creatures you can cast on someone else's turn"
+      }
     },
     {
       "id": "I24",
@@ -487,7 +585,13 @@
       "absent_foil": [
         "Divination"
       ],
-      "paraphrases": {}
+      "paraphrases": {
+        "P1": "cards that draw three or more cards at once",
+        "P2": "big refuels",
+        "P3": "draw three or more",
+        "P4": "I run out of gas by turn six and need one spell that refills my hand in a single go, not one that trickles cards over time. Budget doesn't matter.",
+        "P5": "cards that draw you three or more cards at once"
+      }
     },
     {
       "id": "I25",
@@ -503,7 +607,13 @@
         "Lord of Extinction"
       ],
       "note": "foil counts ALL graveyards - an H03 scope trap riding on an H08 intent",
-      "paraphrases": {}
+      "paraphrases": {
+        "P1": "creatures whose power is defined by the number of creature cards in your graveyard",
+        "P2": "creatures that get bigger as your yard fills up",
+        "P3": "graveyard-count creatures",
+        "P4": "I'm on a self-mill build and I want a threat whose size scales with how much I've dumped. It should read off my own pile. This is for Commander.",
+        "P5": "creatures whose power is set by how many creature cards are in your bin"
+      }
     },
     {
       "id": "I26",
@@ -544,7 +654,13 @@
         "targeted vs mass",
         "creature vs any permanent"
       ],
-      "paraphrases": {}
+      "paraphrases": {
+        "P1": "efficient removal",
+        "P2": "the good removal",
+        "P3": "good removal",
+        "P4": "I need removal for my deck but I'm not sure what counts as good these days. My playgroup runs a lot of different threats. Budget is a concern.",
+        "P5": "strong removal spells"
+      }
     },
     {
       "id": "I28",
@@ -562,7 +678,13 @@
         "graveyard payoffs",
         "death-replacement effects"
       ],
-      "paraphrases": {}
+      "paraphrases": {
+        "P1": "cards that care about creatures dying",
+        "P2": "death-matters cards",
+        "P3": "creatures-dying payoffs",
+        "P4": "I'm building around my creatures dying. Anything that interacts with that is interesting to me. This is for Commander.",
+        "P5": "cards that care about creatures hitting the bin"
+      }
     },
     {
       "id": "I29",
@@ -580,7 +702,13 @@
         "copy tokens",
         "copy triggered abilities"
       ],
-      "paraphrases": {}
+      "paraphrases": {
+        "P1": "cards that copy things",
+        "P2": "cards that clone stuff",
+        "P3": "copy effects",
+        "P4": "I like copying things, it's my favourite thing to do in Magic. What's out there? Budget doesn't matter.",
+        "P5": "cards that duplicate things"
+      }
     },
     {
       "id": "I30",
@@ -596,7 +724,13 @@
         "Guttersnipe"
       ],
       "note": "foil is the same trigger with a damage payoff - tests trigger/effect separation under a novel composition",
-      "paraphrases": {}
+      "paraphrases": {
+        "P1": "creatures that create a token whenever you cast an instant or sorcery spell",
+        "P2": "spellslinger payoffs that make bodies",
+        "P3": "token on spellcast",
+        "P4": "I'm on a build with a lot of cheap burn and cantrips, and I want a creature that turns each of those into a body. Ideally in red.",
+        "P5": "creatures that make a token whenever you cast an instant or sorcery"
+      }
     },
     {
       "id": "I31",
@@ -611,7 +745,13 @@
       "absent_foil": [
         "Wilderness Reclamation"
       ],
-      "paraphrases": {}
+      "paraphrases": {
+        "P1": "permanents that untap during each other player's untap step",
+        "P2": "cards that let you act like it's your turn every turn",
+        "P3": "untap on everyone's turn",
+        "P4": "I want to use my tap abilities more than once per turn cycle. Untapping on everybody's turn is the effect. This is for Commander.",
+        "P5": "permanents that untap during every other player's untap step"
+      }
     },
     {
       "id": "I32",
@@ -626,7 +766,13 @@
       "absent_foil": [
         "Sensei's Divining Top"
       ],
-      "paraphrases": {}
+      "paraphrases": {
+        "P1": "cards that let you cast spells from the top of your library",
+        "P2": "top-of-deck advantage engines",
+        "P3": "play off the top",
+        "P4": "I want extra card access without actually drawing. Casting straight off the top is the effect I'm after. Budget is a concern.",
+        "P5": "cards that let you cast spells off the top of your deck"
+      }
     },
     {
       "id": "I33",
@@ -638,7 +784,13 @@
       "witness": [],
       "absent_foil": [],
       "expected_behaviour": "route away from mechanical search, consistently across all five rungs",
-      "paraphrases": {}
+      "paraphrases": {
+        "P1": "what is the best commander for a budget deck",
+        "P2": "best cheap commander to build around",
+        "P3": "best budget commander",
+        "P4": "I'm new to Commander and I have about thirty dollars. Which commander should I build? I like green.",
+        "P5": "which commander is best for a cheap deck"
+      }
     },
     {
       "id": "I34",
@@ -650,7 +802,13 @@
       "witness": [],
       "absent_foil": [],
       "expected_behaviour": "route to attribute search (legality is Scryfall's job, not the graph DSL)",
-      "paraphrases": {}
+      "paraphrases": {
+        "P1": "cards that are banned in Modern",
+        "P2": "what's on the Modern ban list",
+        "P3": "Modern bans",
+        "P4": "I'm putting a Modern deck together and want to avoid anything illegal. Which cards can't I play? Budget matters.",
+        "P5": "cards not legal in Modern because they are banned"
+      }
     },
     {
       "id": "I35",
@@ -662,7 +820,13 @@
       "witness": [],
       "absent_foil": [],
       "expected_behaviour": "charitable reinterpretation (untap STEP) stated explicitly, or a clarifying question - consistently, not five different guesses",
-      "paraphrases": {}
+      "paraphrases": {
+        "P1": "cards that let you untap during your opponent's upkeep",
+        "P2": "cards that untap you on their upkeep",
+        "P3": "untap in opponent upkeep",
+        "P4": "I want to untap my permanents during my opponent's upkeep so I can respond with them. Does that exist? This is for Commander.",
+        "P5": "cards that let you untap during your opponent's upkeep step"
+      }
     },
     {
       "id": "I36",
@@ -697,7 +861,13 @@
       "absent_foil": [
         "Divination"
       ],
-      "paraphrases": {}
+      "paraphrases": {
+        "P1": "cards that make each player draw an additional card",
+        "P2": "symmetrical draw, group hug style",
+        "P3": "everyone draws extra",
+        "P4": "I'm on a group hug build where the whole table benefits. I want extra draw for everyone, not just me. Budget doesn't matter.",
+        "P5": "cards that make every player draw an extra card"
+      }
     },
     {
       "id": "I38",
@@ -711,7 +881,13 @@
       ],
       "absent_foil": [],
       "note": "D3 metric-sensitivity probe - Jaccard is forgiving at this scale",
-      "paraphrases": {}
+      "paraphrases": {
+        "P1": "creatures with an ability that triggers when they enter the battlefield",
+        "P2": "creatures with enter-the-battlefield value",
+        "P3": "ETB creatures",
+        "P4": "I'm building a blink deck so basically every creature needs to do something when it lands. This is for Commander.",
+        "P5": "creatures with an ability that triggers when they come into play"
+      }
     },
     {
       "id": "I39",
@@ -727,7 +903,13 @@
         "Wrath of God"
       ],
       "note": "D3 probe; foil is the non-targeting mass variant",
-      "paraphrases": {}
+      "paraphrases": {
+        "P1": "cards that destroy target creature",
+        "P2": "point-and-kill removal",
+        "P3": "destroy a creature",
+        "P4": "I just need clean single-target creature kill. Something I can point at the scariest thing on board. Ideally in black.",
+        "P5": "cards that destroy a chosen creature"
+      }
     },
     {
       "id": "I40",

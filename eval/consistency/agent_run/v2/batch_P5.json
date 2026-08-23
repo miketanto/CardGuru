@@ -1,0 +1,162 @@
+[
+ {
+  "qid": "I01.P5",
+  "question": "cards that make Treasure artifact tokens"
+ },
+ {
+  "qid": "I02.P5",
+  "question": "cards that shuffle your bin back into your deck"
+ },
+ {
+  "qid": "I03.P5",
+  "question": "cards with an ability you activate by paying life"
+ },
+ {
+  "qid": "I04.P5",
+  "question": "abilities you pay for by sacrificing an artifact"
+ },
+ {
+  "qid": "I05.P5",
+  "question": "creatures that draw you a card when they hit the bin"
+ },
+ {
+  "qid": "I06.P5",
+  "question": "abilities that make creature tokens whenever a land comes into play for you"
+ },
+ {
+  "qid": "I07.P5",
+  "question": "one ability that draws you cards and then makes you pitch cards"
+ },
+ {
+  "qid": "I08.P5",
+  "question": "one ability where every other player loses life and you gain that much"
+ },
+ {
+  "qid": "I09.P5",
+  "question": "creatures with flying that also have an ability triggering when they hit the bin"
+ },
+ {
+  "qid": "I10.P5",
+  "question": "creatures that make tokens and can also sac creatures themselves"
+ },
+ {
+  "qid": "I11.P5",
+  "question": "spells that burn every other player at the table"
+ },
+ {
+  "qid": "I12.P5",
+  "question": "spells that send every creature back to its owner's hand"
+ },
+ {
+  "qid": "I13.P5",
+  "question": "creatures that make creature tokens without sacrificing anything"
+ },
+ {
+  "qid": "I14.P5",
+  "question": "creature removal that does not choose a target"
+ },
+ {
+  "qid": "I15.P5",
+  "question": "green sorceries that search your deck for a land card"
+ },
+ {
+  "qid": "I16.P5",
+  "question": "instants that make creature tokens"
+ },
+ {
+  "qid": "I17.P5",
+  "question": "creatures that have both deathtouch and lifelink"
+ },
+ {
+  "qid": "I18.P5",
+  "question": "permanents that keep drawing you extra cards each turn"
+ },
+ {
+  "qid": "I19.P5",
+  "question": "cards with an ability letting you sacrifice a creature to pay for it"
+ },
+ {
+  "qid": "I20.P5",
+  "question": "cards that return creature cards from a bin into play"
+ },
+ {
+  "qid": "I21.P5",
+  "question": "cards that search your deck for a creature card and put it into your hand"
+ },
+ {
+  "qid": "I22.P5",
+  "question": "spells that kill a creature and can be cast on someone else's turn"
+ },
+ {
+  "qid": "I23.P5",
+  "question": "creatures you can cast on someone else's turn"
+ },
+ {
+  "qid": "I24.P5",
+  "question": "cards that draw you three or more cards at once"
+ },
+ {
+  "qid": "I25.P5",
+  "question": "creatures whose power is set by how many creature cards are in your bin"
+ },
+ {
+  "qid": "I26.P5",
+  "question": "cards that remove things from the game"
+ },
+ {
+  "qid": "I27.P5",
+  "question": "strong removal spells"
+ },
+ {
+  "qid": "I28.P5",
+  "question": "cards that care about creatures hitting the bin"
+ },
+ {
+  "qid": "I29.P5",
+  "question": "cards that duplicate things"
+ },
+ {
+  "qid": "I30.P5",
+  "question": "creatures that make a token whenever you cast an instant or sorcery"
+ },
+ {
+  "qid": "I31.P5",
+  "question": "permanents that untap during every other player's untap step"
+ },
+ {
+  "qid": "I32.P5",
+  "question": "cards that let you cast spells off the top of your deck"
+ },
+ {
+  "qid": "I33.P5",
+  "question": "which commander is best for a cheap deck"
+ },
+ {
+  "qid": "I34.P5",
+  "question": "cards not legal in Modern because they are banned"
+ },
+ {
+  "qid": "I35.P5",
+  "question": "cards that let you untap during your opponent's upkeep step"
+ },
+ {
+  "qid": "I36.P5",
+  "question": "sorcery-speed spells that have flash"
+ },
+ {
+  "qid": "I37.P5",
+  "question": "cards that make every player draw an extra card"
+ },
+ {
+  "qid": "I38.P5",
+  "question": "creatures with an ability that triggers when they come into play"
+ },
+ {
+  "qid": "I39.P5",
+  "question": "cards that destroy a chosen creature"
+ },
+ {
+  "qid": "I40.P5",
+  "question": "cards that stop damage that would hit you"
+ }
+]

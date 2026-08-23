@@ -33,6 +33,11 @@ Queries are JSON objects, one operator per object:
        `from` node — use this to say "one ability does both X and Y".
   {"keyword": "Name"} card has that keyword
   {"card": {"types"|"name"|"manaCost"|"oracle"|"pt": VP}} card-level attributes
+  {"hook": "sac_outlet"} a validated semantic facet (closed list below). Prefer a
+       hook over hand-rolling its structure when one covers the question.
+  {"role": "card_draw"} a deckbuilding role (closed list below). Suffix
+       ":engine" or ":one_shot" to demand repeatability, e.g. "card_draw:engine"
+       for a recurring draw engine as opposed to a one-shot draw spell.
 
 NodeSpec fields (AND-ed): kind ("A" spell/activated line, "T" trigger,
 "S" static, "R" replacement, "K" keyword, "SVar" sub-ability), api (effect
@@ -128,6 +133,17 @@ def build_system_prompt(onto_data: dict, top_n: int = 80,
         f"Keywords: {top(onto_data['keywords'], 80)}\n"
         f"Common params: {top(onto_data['param_keys'], param_keys_n)}\n"
     )
+    # Closed-label operators. These are the ONLY legal hook/role arguments, so
+    # they are always listed in full — truncating them would make the operators
+    # unusable rather than merely harder to use.
+    try:
+        from .recommend import HOOKS
+        from .deck import ROLES
+        vocab += (f"Hooks (for {{\"hook\": ...}}): {', '.join(sorted(HOOKS))}\n"
+                  f"Roles (for {{\"role\": ...}}, optional :engine / :one_shot "
+                  f"suffix): {', '.join(sorted(ROLES))}\n")
+    except ImportError:  # pragma: no cover - concept libraries always present
+        pass
     shots = "\n".join(
         f"Q: {q}\nA: {json.dumps(dsl)}" for q, dsl in EXAMPLES)
     return (
