@@ -1,0 +1,1973 @@
+{
+ "pool": 34611,
+ "params": {
+  "Mode": {
+   "uses": 28467,
+   "distinct": 247,
+   "coverage": 0.82,
+   "values": [
+    "ChangesZone",
+    "Continuous",
+    "Phase",
+    "Attacks",
+    "SpellCast",
+    "DamageDone",
+    "TgtChoose",
+    "CantBlockBy",
+    "ReduceCost",
+    "Transform",
+    "AttackersDeclared",
+    "DamageDoneOnce"
+   ]
+  },
+  "ValidCard": {
+   "uses": 15646,
+   "distinct": 1091,
+   "coverage": 0.773,
+   "values": [
+    "Card.Self",
+    "Creature",
+    "Card",
+    "Instant,Sorcery",
+    "Land.YouCtrl",
+    "Creature.YouCtrl",
+    "Card.YouCtrl",
+    "Card.nonCreature",
+    "Card.AttachedBy",
+    "Creature.EnchantedBy",
+    "Creature.Other+YouCtrl",
+    "Card.IsRemembered"
+   ]
+  },
+  "TriggerZones": {
+   "uses": 9381,
+   "distinct": 8,
+   "coverage": 1.0,
+   "values": [
+    "Battlefield",
+    "Command",
+    "Graveyard",
+    "Exile",
+    "Battlefield,Exile",
+    "Battlefield,Graveyard",
+    "Stack",
+    "Command,Battlefield"
+   ]
+  },
+  "DB": {
+   "uses": 38604,
+   "distinct": 176,
+   "coverage": 0.646,
+   "values": [
+    "ChangeZone",
+    "Cleanup",
+    "Token",
+    "Draw",
+    "PutCounter",
+    "Pump",
+    "DealDamage",
+    "GainLife",
+    "Effect",
+    "Tap",
+    "LoseLife",
+    "Discard"
+   ]
+  },
+  "Duration": {
+   "uses": 1857,
+   "distinct": 28,
+   "coverage": 0.969,
+   "values": [
+    "Permanent",
+    "Perpetual",
+    "UntilYourNextTurn",
+    "UntilHostLeavesPlay",
+    "UntilTheEndOfYourNextTurn",
+    "UntilHostLeavesPlayOrEOT",
+    "UntilEndOfCombat",
+    "UntilEndOfTurn",
+    "UntilUntaps",
+    "AsLongAsControl",
+    "UntilTheEndOfYourNextUntap",
+    "AsLongAsInPlay"
+   ]
+  },
+  "Static": {
+   "uses": 359,
+   "distinct": 1,
+   "coverage": 1.0,
+   "values": [
+    "True"
+   ]
+  },
+  "Defined": {
+   "uses": 16748,
+   "distinct": 279,
+   "coverage": 0.812,
+   "values": [
+    "Self",
+    "You",
+    "Remembered",
+    "Targeted",
+    "Player",
+    "Player.Opponent",
+    "Opponent",
+    "ReplacedCard",
+    "Enchanted",
+    "ParentTarget",
+    "ChosenCard",
+    "TriggeredCardLKICopy"
+   ]
+  },
+  "Zone": {
+   "uses": 272,
+   "distinct": 11,
+   "coverage": 1.0,
+   "values": [
+    "Hand",
+    "Battlefield",
+    "Library",
+    "Graveyard",
+    "Exile",
+    "Battlefield,Graveyard,Exile,Library,Hand",
+    "None",
+    "All",
+    "Battlefield,Hand",
+    "Graveyard,Hand,Library",
+    "Hand,Library"
+   ]
+  },
+  "AB": {
+   "uses": 12124,
+   "distinct": 131,
+   "coverage": 0.751,
+   "values": [
+    "Mana",
+    "Pump",
+    "ChangeZone",
+    "Draw",
+    "Token",
+    "DealDamage",
+    "PutCounter",
+    "Effect",
+    "Animate",
+    "Destroy",
+    "Regenerate",
+    "GainLife"
+   ]
+  },
+  "Event": {
+   "uses": 1693,
+   "distinct": 34,
+   "coverage": 0.966,
+   "values": [
+    "Moved",
+    "DamageDone",
+    "Untap",
+    "Counter",
+    "Draw",
+    "CreateToken",
+    "AddCounter",
+    "GainLife",
+    "BeginPhase",
+    "GameLoss",
+    "ProduceMana",
+    "LifeReduced"
+   ]
+  },
+  "Destination": {
+   "uses": 16154,
+   "distinct": 16,
+   "coverage": 1.0,
+   "values": [
+    "Battlefield",
+    "Hand",
+    "Exile",
+    "Graveyard",
+    "Library",
+    "Any",
+    "Graveyard,Exile",
+    "Ante,Command,Exile,Hand,Library",
+    "Command",
+    "PlanarDeck",
+    "TopOfLibrary",
+    "Ante"
+   ]
+  },
+  "ReplacementResult": {
+   "uses": 842,
+   "distinct": 2,
+   "coverage": 1.0,
+   "values": [
+    "Updated",
+    "Replaced"
+   ]
+  },
+  "ReplaceWith": {
+   "uses": 1294,
+   "distinct": 173,
+   "coverage": 0.772,
+   "values": [
+    "ETBTapped",
+    "LandTapped",
+    "Exile",
+    "DBTap",
+    "DBReplace",
+    "DmgTwice",
+    "Counters",
+    "AddOneMoreCounters",
+    "DBExile",
+    "DoubleToken",
+    "DoDay",
+    "DBRemoveCounters"
+   ]
+  },
+  "Origin": {
+   "uses": 14936,
+   "distinct": 40,
+   "coverage": 0.994,
+   "values": [
+    "Any",
+    "Battlefield",
+    "Graveyard",
+    "Library",
+    "Hand",
+    "Exile",
+    "Stack",
+    "Command",
+    "All",
+    "Graveyard,Exile",
+    "Hand,Graveyard",
+    "Sideboard"
+   ]
+  },
+  "Produced": {
+   "uses": 2502,
+   "distinct": 88,
+   "coverage": 0.811,
+   "values": [
+    "C",
+    "Any",
+    "G",
+    "R",
+    "B",
+    "U",
+    "W",
+    "Combo R G",
+    "Combo B R",
+    "Combo W U",
+    "Combo U B",
+    "Combo Any"
+   ]
+  },
+  "ETB": {
+   "uses": 970,
+   "distinct": 1,
+   "coverage": 1.0,
+   "values": [
+    "True"
+   ]
+  },
+  "LifeAmount": {
+   "uses": 3044,
+   "distinct": 98,
+   "coverage": 0.955,
+   "values": [
+    "1",
+    "2",
+    "X",
+    "3",
+    "4",
+    "5",
+    "Y",
+    "10",
+    "6",
+    "7",
+    "AFLifeLost",
+    "20"
+   ]
+  },
+  "Amount": {
+   "uses": 2427,
+   "distinct": 81,
+   "coverage": 0.956,
+   "values": [
+    "1",
+    "2",
+    "X",
+    "3",
+    "All",
+    "4",
+    "Y",
+    "5",
+    "SacX",
+    "6",
+    "Z",
+    "7"
+   ]
+  },
+  "ValidTgts": {
+   "uses": 13770,
+   "distinct": 1113,
+   "coverage": 0.669,
+   "values": [
+    "Creature",
+    "Creature.YouCtrl",
+    "Player",
+    "Any",
+    "Opponent",
+    "Card",
+    "Creature.OppCtrl",
+    "Artifact",
+    "Permanent",
+    "Land",
+    "Creature.YouOwn",
+    "Creature,Planeswalker"
+   ]
+  },
+  "CounterType": {
+   "uses": 3851,
+   "distinct": 254,
+   "coverage": 0.824,
+   "values": [
+    "P1P1",
+    "ENERGY",
+    "M1M1",
+    "CHARGE",
+    "Stun",
+    "TIME",
+    "LOYALTY",
+    "QUEST",
+    "OIL",
+    "Any",
+    "EachFromSource",
+    "STUN"
+   ]
+  },
+  "CounterNum": {
+   "uses": 3449,
+   "distinct": 51,
+   "coverage": 0.984,
+   "values": [
+    "1",
+    "2",
+    "X",
+    "3",
+    "All",
+    "Y",
+    "4",
+    "5",
+    "Result",
+    "Any",
+    "6",
+    "Z"
+   ]
+  },
+  "Type": {
+   "uses": 1213,
+   "distinct": 80,
+   "coverage": 0.883,
+   "values": [
+    "Spell",
+    "Creature",
+    "Number",
+    "CountSVar",
+    "Orc",
+    "Basic Land",
+    "Zombie",
+    "Ability",
+    "Card.nonLand",
+    "Card",
+    "Goblin",
+    "Calculate"
+   ]
+  },
+  "KW": {
+   "uses": 2366,
+   "distinct": 163,
+   "coverage": 0.79,
+   "values": [
+    "Flying",
+    "Trample",
+    "Indestructible",
+    "Haste",
+    "First Strike",
+    "HIDDEN CARDNAME can't block.",
+    "Deathtouch",
+    "Vigilance",
+    "Lifelink",
+    "Double Strike",
+    "Menace",
+    "Hexproof"
+   ]
+  },
+  "StackDescription": {
+   "uses": 2063,
+   "distinct": 132,
+   "coverage": 0.926,
+   "values": [
+    "SpellDescription",
+    "None",
+    "{c:Targeted} can't be blocked this turn.",
+    "enters tapped.",
+    "REP target creature_{c:Targeted}",
+    "REP Target creature_{c:Targeted}",
+    "{c:ThisTargetedCard}",
+    "{c:Targeted} blocks this turn if able.",
+    "Exile {c:Targeted},",
+    "{p:You} seeks a nonland card.",
+    "{c:Targeted} can't block this turn.",
+    "REP Target opponent_{p:Targeted}"
+   ]
+  },
+  "SP": {
+   "uses": 7638,
+   "distinct": 132,
+   "coverage": 0.712,
+   "values": [
+    "ChangeZone",
+    "Pump",
+    "DealDamage",
+    "Destroy",
+    "Charm",
+    "Draw",
+    "Token",
+    "Counter",
+    "PumpAll",
+    "Dig",
+    "Effect",
+    "PutCounter"
+   ]
+  },
+  "DigNum": {
+   "uses": 1001,
+   "distinct": 21,
+   "coverage": 0.99,
+   "values": [
+    "1",
+    "X",
+    "4",
+    "3",
+    "2",
+    "5",
+    "6",
+    "7",
+    "10",
+    "8",
+    "Y",
+    "Z"
+   ]
+  },
+  "ChangeNum": {
+   "uses": 2327,
+   "distinct": 34,
+   "coverage": 0.98,
+   "values": [
+    "1",
+    "All",
+    "2",
+    "X",
+    "3",
+    "Any",
+    "NumInHand",
+    "NumInLib",
+    "4",
+    "NumInYard",
+    "Y",
+    "XFetch"
+   ]
+  },
+  "Reveal": {
+   "uses": 300,
+   "distinct": 3,
+   "coverage": 1.0,
+   "values": [
+    "True",
+    "False",
+    "All"
+   ]
+  },
+  "ChangeValid": {
+   "uses": 393,
+   "distinct": 131,
+   "coverage": 0.595,
+   "values": [
+    "Creature",
+    "Card",
+    "Land",
+    "Creature,Land",
+    "Artifact",
+    "Permanent",
+    "Card.Land",
+    "Card.Creature",
+    "Instant,Sorcery",
+    "Enchantment",
+    "Creature.cmcLE3",
+    "Card.NamedCard"
+   ]
+  },
+  "DestinationZone": {
+   "uses": 697,
+   "distinct": 7,
+   "coverage": 1.0,
+   "values": [
+    "Exile",
+    "Battlefield",
+    "Hand",
+    "Library",
+    "Graveyard",
+    "Ante",
+    "PlanarDeck"
+   ]
+  },
+  "RememberChanged": {
+   "uses": 1244,
+   "distinct": 2,
+   "coverage": 1.0,
+   "values": [
+    "True",
+    "Card.!token"
+   ]
+  },
+  "ConditionDefined": {
+   "uses": 1188,
+   "distinct": 31,
+   "coverage": 0.955,
+   "values": [
+    "Remembered",
+    "Targeted",
+    "ChosenCard",
+    "Self",
+    "RememberedLKI",
+    "Imprinted",
+    "TriggeredCard",
+    "ParentTarget",
+    "Sacrificed",
+    "TriggeredCardLKICopy",
+    "Collected",
+    "TriggeredAttackerLKICopy"
+   ]
+  },
+  "NumDmg": {
+   "uses": 3311,
+   "distinct": 88,
+   "coverage": 0.963,
+   "values": [
+    "X",
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "Y",
+    "6",
+    "7",
+    "Count$CardPower",
+    "10",
+    "8"
+   ]
+  },
+  "ClearRemembered": {
+   "uses": 2687,
+   "distinct": 2,
+   "coverage": 1.0,
+   "values": [
+    "True",
+    "true"
+   ]
+  },
+  "Affected": {
+   "uses": 5252,
+   "distinct": 805,
+   "coverage": 0.63,
+   "values": [
+    "Card.Self",
+    "Creature.EnchantedBy",
+    "Creature.EquippedBy",
+    "Card.IsRemembered",
+    "Creature.YouCtrl",
+    "Card.EnchantedBy",
+    "You",
+    "Card.EquippedBy",
+    "Card.TopLibrary+YouCtrl",
+    "Creature.Other+YouCtrl",
+    "Card.IsRemembered+nonLand",
+    "Creature"
+   ]
+  },
+  "Optional": {
+   "uses": 1137,
+   "distinct": 3,
+   "coverage": 1.0,
+   "values": [
+    "True",
+    "You",
+    "Targeted"
+   ]
+  },
+  "AddPower": {
+   "uses": 1990,
+   "distinct": 30,
+   "coverage": 0.979,
+   "values": [
+    "1",
+    "2",
+    "X",
+    "3",
+    "-1",
+    "4",
+    "-2",
+    "-X",
+    "AffectedX",
+    "5",
+    "Y",
+    "-3"
+   ]
+  },
+  "AddToughness": {
+   "uses": 1567,
+   "distinct": 24,
+   "coverage": 0.983,
+   "values": [
+    "1",
+    "2",
+    "X",
+    "3",
+    "-1",
+    "4",
+    "-2",
+    "-X",
+    "AffectedX",
+    "5",
+    "Y",
+    "6"
+   ]
+  },
+  "AddKeyword": {
+   "uses": 1861,
+   "distinct": 283,
+   "coverage": 0.654,
+   "values": [
+    "Flying",
+    "Trample",
+    "Haste",
+    "First Strike",
+    "Vigilance",
+    "Menace",
+    "Hexproof",
+    "Indestructible",
+    "Lifelink",
+    "Double Strike",
+    "Deathtouch",
+    "Reach"
+   ]
+  },
+  "Phase": {
+   "uses": 2960,
+   "distinct": 15,
+   "coverage": 0.994,
+   "values": [
+    "Upkeep",
+    "End of Turn",
+    "BeginCombat",
+    "EndCombat",
+    "Main1",
+    "Draw",
+    "Main",
+    "End Of Turn",
+    "Main1,Main2",
+    "Untap",
+    "Cleanup",
+    "Main2"
+   ]
+  },
+  "ValidPlayer": {
+   "uses": 3133,
+   "distinct": 26,
+   "coverage": 0.994,
+   "values": [
+    "You",
+    "Player",
+    "Opponent",
+    "Player.EnchantedController",
+    "Player.Opponent",
+    "Player.EnchantedBy",
+    "Player.IsRemembered",
+    "You.descended",
+    "Player.Chosen",
+    "You.lifeGE1",
+    "Player.IsTriggerRemembered",
+    "Player.controlsCreature.IsRemembered_GE1"
+   ]
+  },
+  "TokenAmount": {
+   "uses": 1003,
+   "distinct": 47,
+   "coverage": 0.96,
+   "values": [
+    "2",
+    "X",
+    "3",
+    "Y",
+    "4",
+    "1",
+    "5",
+    "Z",
+    "Result",
+    "Excess",
+    "7",
+    "TokenX"
+   ]
+  },
+  "TokenOwner": {
+   "uses": 2415,
+   "distinct": 34,
+   "coverage": 0.98,
+   "values": [
+    "You",
+    "TargetedController",
+    "TriggeredCardController",
+    "Targeted",
+    "Player",
+    "Promised",
+    "Player.IsRemembered",
+    "TargetedPlayer",
+    "ImprintedController",
+    "ThisTargetedPlayer",
+    "Opponent",
+    "TriggeredActivator"
+   ]
+  },
+  "Secondary": {
+   "uses": 967,
+   "distinct": 8,
+   "coverage": 1.0,
+   "values": [
+    "True",
+    "Bruna, the Fading Light",
+    "Midnight Scavengers",
+    "Hanweir Garrison",
+    "Phyrexian Dragon Engine",
+    "Argoth, Sanctum of Nature",
+    "The Mightstone and Weakstone",
+    "Fang, Fearless l'Cie"
+   ]
+  },
+  "DestinationZone2": {
+   "uses": 214,
+   "distinct": 5,
+   "coverage": 1.0,
+   "values": [
+    "Graveyard",
+    "Library",
+    "Hand",
+    "Exile",
+    "PlanarDeck"
+   ]
+  },
+  "LibraryPosition": {
+   "uses": 465,
+   "distinct": 15,
+   "coverage": 0.994,
+   "values": [
+    "-1",
+    "0",
+    "2",
+    "1",
+    "X",
+    "6",
+    "4",
+    "Count$Random.0.4",
+    "Count$Random.0.6",
+    "3",
+    "Count$Random.0.8",
+    "Count$Random.0.10"
+   ]
+  },
+  "RestRandomOrder": {
+   "uses": 210,
+   "distinct": 1,
+   "coverage": 1.0,
+   "values": [
+    "True"
+   ]
+  },
+  "Num": {
+   "uses": 287,
+   "distinct": 20,
+   "coverage": 0.972,
+   "values": [
+    "2",
+    "1",
+    "X",
+    "3",
+    "4",
+    "5",
+    "Y",
+    "Excess",
+    "TriggeredSpellAbility$CardManaCostLKI",
+    "10",
+    "8",
+    "Z"
+   ]
+  },
+  "TgtZone": {
+   "uses": 237,
+   "distinct": 10,
+   "coverage": 1.0,
+   "values": [
+    "Graveyard",
+    "Stack",
+    "Stack,Battlefield",
+    "Exile",
+    "Battlefield,Exile",
+    "Battlefield",
+    "Battlefield,Graveyard",
+    "Battlefield,Stack",
+    "Ante",
+    "Battlefield,Stack,Graveyard"
+   ]
+  },
+  "TargetMin": {
+   "uses": 1805,
+   "distinct": 14,
+   "coverage": 0.999,
+   "values": [
+    "0",
+    "2",
+    "1",
+    "X",
+    "Y",
+    "OneEach",
+    "3",
+    "6",
+    "TargetsNum",
+    "TgtNum",
+    "5",
+    "4"
+   ]
+  },
+  "ValidActivatingPlayer": {
+   "uses": 1423,
+   "distinct": 12,
+   "coverage": 1.0,
+   "values": [
+    "You",
+    "Opponent",
+    "Player",
+    "Player.Opponent",
+    "Player.EnchantedBy",
+    "Player.NonActive",
+    "Player.Other",
+    "Player.Active+!IsRemembered",
+    "Opponent.NonActive",
+    "Player.Chosen",
+    "Player.Active",
+    "Player.Opponent+Active"
+   ]
+  },
+  "TargetMax": {
+   "uses": 1797,
+   "distinct": 44,
+   "coverage": 0.979,
+   "values": [
+    "1",
+    "2",
+    "X",
+    "3",
+    "OneEach",
+    "4",
+    "MaxTgts",
+    "MaxTgt",
+    "MaxTargets",
+    "Y",
+    "5",
+    "6"
+   ]
+  },
+  "NumAtt": {
+   "uses": 3326,
+   "distinct": 48,
+   "coverage": 0.968,
+   "values": [
+    "+1",
+    "+2",
+    "+X",
+    "+3",
+    "-1",
+    "-2",
+    "-X",
+    "-3",
+    "+4",
+    "-4",
+    "Double",
+    "+5"
+   ]
+  },
+  "NumDef": {
+   "uses": 2292,
+   "distinct": 43,
+   "coverage": 0.962,
+   "values": [
+    "+1",
+    "+2",
+    "+X",
+    "-1",
+    "+3",
+    "-2",
+    "-X",
+    "+4",
+    "-3",
+    "-4",
+    "+5",
+    "-5"
+   ]
+  },
+  "SacValid": {
+   "uses": 555,
+   "distinct": 104,
+   "coverage": 0.778,
+   "values": [
+    "Creature",
+    "Self",
+    "Land",
+    "Permanent",
+    "Creature.!token",
+    "Creature,Planeswalker",
+    "Artifact",
+    "Enchantment",
+    "Permanent.nonLand",
+    "Creature.attacking",
+    "Creature.Other",
+    "Planeswalker"
+   ]
+  },
+  "IsCurse": {
+   "uses": 1098,
+   "distinct": 1,
+   "coverage": 1.0,
+   "values": [
+    "True"
+   ]
+  },
+  "ScryNum": {
+   "uses": 441,
+   "distinct": 7,
+   "coverage": 1.0,
+   "values": [
+    "1",
+    "2",
+    "3",
+    "X",
+    "4",
+    "Result",
+    "5"
+   ]
+  },
+  "ChangeTypeDesc": {
+   "uses": 356,
+   "distinct": 68,
+   "coverage": 0.826,
+   "values": [
+    "basic land",
+    "creature",
+    "creature cards milled this way",
+    "basic Forest, Plains, or Island",
+    "basic Mountain, Forest, or Plains",
+    "basic Plains, Island, or Swamp",
+    "basic Island, Swamp, or Mountain",
+    "basic Swamp, Mountain, or Forest",
+    "basic Plains, Swamp, or Forest",
+    "basic Forest, Island, or Mountain",
+    "card they own",
+    "basic Swamp, Forest, or Island"
+   ]
+  },
+  "ConditionCheckSVar": {
+   "uses": 799,
+   "distinct": 152,
+   "coverage": 0.753,
+   "values": [
+    "X",
+    "Y",
+    "Resolved",
+    "Excess",
+    "ETBCheckSVar2",
+    "Z",
+    "RaidTest",
+    "NumTimes",
+    "FatefulHour",
+    "LandfallAmount",
+    "YouChose",
+    "Win"
+   ]
+  },
+  "ConditionSVarCompare": {
+   "uses": 610,
+   "distinct": 87,
+   "coverage": 0.679,
+   "values": [
+    "EQ0",
+    "EQ1",
+    "GE1",
+    "EQ2",
+    "GE3",
+    "GE5",
+    "LT1",
+    "GE10",
+    "GE4",
+    "EQ3",
+    "LT2",
+    "GE2"
+   ]
+  },
+  "Condition": {
+   "uses": 496,
+   "distinct": 28,
+   "coverage": 0.948,
+   "values": [
+    "PlayerTurn",
+    "Threshold",
+    "Kicked",
+    "MaxSpeed",
+    "Delirium",
+    "Metalcraft",
+    "NotPlayerTurn",
+    "Blessing",
+    "Hellbent",
+    "OptionalCost",
+    "EnduringStory",
+    "Bargain"
+   ]
+  },
+  "AffectedZone": {
+   "uses": 1077,
+   "distinct": 23,
+   "coverage": 0.987,
+   "values": [
+    "Exile",
+    "Graveyard",
+    "Battlefield",
+    "Library",
+    "Stack",
+    "Hand",
+    "All",
+    "Hand,Graveyard,Library,Exile,Command",
+    "Hand,Graveyard,Exile,Library,Command",
+    "Graveyard,Exile",
+    "Battlefield,Stack",
+    "Exile,Stack"
+   ]
+  },
+  "NumCards": {
+   "uses": 3554,
+   "distinct": 64,
+   "coverage": 0.977,
+   "values": [
+    "1",
+    "2",
+    "X",
+    "3",
+    "4",
+    "7",
+    "Y",
+    "5",
+    "10",
+    "Z",
+    "8",
+    "6"
+   ]
+  },
+  "UnlessCost": {
+   "uses": 682,
+   "distinct": 177,
+   "coverage": 0.566,
+   "values": [
+    "1",
+    "2",
+    "Discard<1/Card>",
+    "3",
+    "Y",
+    "X",
+    "PayLife<3>",
+    "PayLife<2>",
+    "Sac<1/Creature>",
+    "4",
+    "Sac<1/Land>",
+    "PayEnergy<X>"
+   ]
+  },
+  "UnlessPayer": {
+   "uses": 595,
+   "distinct": 33,
+   "coverage": 0.928,
+   "values": [
+    "You",
+    "Remembered",
+    "TargetedController",
+    "Player",
+    "Targeted",
+    "TriggeredPlayer",
+    "TriggeredActivator",
+    "Player.IsRemembered",
+    "RememberedController",
+    "TriggeredCardController",
+    "TriggeredSourceSAController",
+    "EnchantedController"
+   ]
+  },
+  "ConditionCompare": {
+   "uses": 793,
+   "distinct": 35,
+   "coverage": 0.957,
+   "values": [
+    "GE1",
+    "EQ0",
+    "EQ1",
+    "GE2",
+    "LE1",
+    "GE3",
+    "GT2",
+    "LT2",
+    "GE4",
+    "LT3",
+    "LT8",
+    "GE10"
+   ]
+  },
+  "MayPlay": {
+   "uses": 656,
+   "distinct": 2,
+   "coverage": 1.0,
+   "values": [
+    "True",
+    "You"
+   ]
+  },
+  "ActiveZones": {
+   "uses": 657,
+   "distinct": 4,
+   "coverage": 1.0,
+   "values": [
+    "Battlefield",
+    "Command",
+    "Hand",
+    "Graveyard"
+   ]
+  },
+  "Hidden": {
+   "uses": 661,
+   "distinct": 1,
+   "coverage": 1.0,
+   "values": [
+    "True"
+   ]
+  },
+  "RememberObjects": {
+   "uses": 1584,
+   "distinct": 94,
+   "coverage": 0.872,
+   "values": [
+    "Targeted",
+    "Remembered",
+    "RememberedCard",
+    "Self",
+    "RememberedLKI",
+    "TriggeredCard",
+    "TriggeredAttackerLKICopy",
+    "ParentTarget",
+    "ThisTargetedCard",
+    "ChosenCard",
+    "TriggeredNewCardLKICopy",
+    "Imprinted"
+   ]
+  },
+  "StaticAbilities": {
+   "uses": 1219,
+   "distinct": 262,
+   "coverage": 0.619,
+   "values": [
+    "Unblockable",
+    "STPlay",
+    "Play",
+    "KWPump",
+    "MustAttack",
+    "MayPlay",
+    "SNoCombatDamage",
+    "CanAttack",
+    "NoRegen",
+    "ReduceCost",
+    "STCantBeCast",
+    "Exploration"
+   ]
+  },
+  "ExileOnMoved": {
+   "uses": 489,
+   "distinct": 7,
+   "coverage": 1.0,
+   "values": [
+    "Battlefield",
+    "Exile",
+    "Stack",
+    "Graveyard",
+    "Graveyard,Stack",
+    "Graveyard,Exile",
+    "Exile,Stack"
+   ]
+  },
+  "Layer": {
+   "uses": 315,
+   "distinct": 4,
+   "coverage": 1.0,
+   "values": [
+    "CantHappen",
+    "Copy",
+    "Control",
+    "Other"
+   ]
+  },
+  "GainControl": {
+   "uses": 345,
+   "distinct": 9,
+   "coverage": 1.0,
+   "values": [
+    "True",
+    "You",
+    "ChosenPlayer",
+    "Targeted",
+    "DelayTriggerRemembered",
+    "Player.isMonarch",
+    "ParentTarget",
+    "Player.IsRemembered",
+    "TriggeredCardController"
+   ]
+  },
+  "ValidSource": {
+   "uses": 1443,
+   "distinct": 192,
+   "coverage": 0.775,
+   "values": [
+    "Card.Self",
+    "Creature.YouCtrl",
+    "Creature.EquippedBy",
+    "Card.YouCtrl,Emblem.YouCtrl",
+    "SpellAbility.OppCtrl",
+    "You",
+    "Card.AttachedBy",
+    "Creature",
+    "Spell",
+    "SpellAbility.YouCtrl",
+    "Creature.IsRemembered",
+    "Card.OppCtrl,Emblem.OppCtrl"
+   ]
+  },
+  "ValidTarget": {
+   "uses": 1654,
+   "distinct": 121,
+   "coverage": 0.877,
+   "values": [
+    "Player",
+    "Card.Self",
+    "Opponent",
+    "You",
+    "Creature",
+    "Permanent,Player",
+    "Creature.EnchantedBy",
+    "Player,Planeswalker",
+    "Creature.Self",
+    "Player,Battle",
+    "Creature.YouCtrl",
+    "Card.AttachedBy"
+   ]
+  },
+  "CombatDamage": {
+   "uses": 993,
+   "distinct": 2,
+   "coverage": 1.0,
+   "values": [
+    "True",
+    "False"
+   ]
+  },
+  "ValidSA": {
+   "uses": 825,
+   "distinct": 91,
+   "coverage": 0.845,
+   "values": [
+    "Spell",
+    "Spell.Self",
+    "Activated",
+    "SpellAbility.!ManaAbility",
+    "Spell.MayPlaySource",
+    "Activated.!ManaAbility",
+    "Activated.Loyalty",
+    "Spell.cmcLEX",
+    "Instant,Sorcery",
+    "Activated.Exhaust",
+    "Activated.Equip",
+    "Activated.Crew+Vehicle"
+   ]
+  },
+  "Activator": {
+   "uses": 441,
+   "distinct": 11,
+   "coverage": 1.0,
+   "values": [
+    "You",
+    "Player",
+    "Opponent",
+    "Player.Opponent",
+    "Player.IsRemembered",
+    "Player.NonActive",
+    "Player.EnchantedBy",
+    "You.NonActive",
+    "Player.EnchantedController",
+    "Player.Owner",
+    "You.Active"
+   ]
+  },
+  "TargetType": {
+   "uses": 581,
+   "distinct": 20,
+   "coverage": 0.986,
+   "values": [
+    "Spell",
+    "Spell,Activated,Triggered",
+    "Activated.YouCtrl,Triggered.YouCtrl",
+    "Activated,Triggered",
+    "Activated",
+    "Spell.singleTarget",
+    "SpellAbility.singleTarget",
+    "Spell.numTargets EQ1",
+    "Triggered.YouCtrl",
+    "Spell.Colorless,Triggered",
+    "Activated,Triggered,Spell.nonCreature",
+    "SpellAbility.numTargets EQ1"
+   ]
+  },
+  "Tapped": {
+   "uses": 534,
+   "distinct": 1,
+   "coverage": 1.0,
+   "values": [
+    "True"
+   ]
+  },
+  "MayChooseTarget": {
+   "uses": 203,
+   "distinct": 1,
+   "coverage": 1.0,
+   "values": [
+    "True"
+   ]
+  },
+  "EffectZone": {
+   "uses": 906,
+   "distinct": 9,
+   "coverage": 1.0,
+   "values": [
+    "All",
+    "Battlefield",
+    "Command",
+    "Graveyard",
+    "Stack",
+    "Exile",
+    "Graveyard,Hand,Library,Command,Stack",
+    "Exile,Graveyard",
+    "Battlefield,Command"
+   ]
+  },
+  "CharacteristicDefining": {
+   "uses": 268,
+   "distinct": 2,
+   "coverage": 1.0,
+   "values": [
+    "True",
+    "False"
+   ]
+  },
+  "SetPower": {
+   "uses": 475,
+   "distinct": 21,
+   "coverage": 0.964,
+   "values": [
+    "X",
+    "1",
+    "4",
+    "2",
+    "3",
+    "0",
+    "5",
+    "Y",
+    "6",
+    "AffectedX",
+    "7",
+    "9"
+   ]
+  },
+  "SetToughness": {
+   "uses": 415,
+   "distinct": 20,
+   "coverage": 0.961,
+   "values": [
+    "X",
+    "1",
+    "4",
+    "3",
+    "Y",
+    "2",
+    "5",
+    "6",
+    "AffectedX",
+    "10",
+    "8",
+    "9"
+   ]
+  },
+  "ValidBlocker": {
+   "uses": 408,
+   "distinct": 87,
+   "coverage": 0.65,
+   "values": [
+    "Card.Self",
+    "Creature",
+    "Creature.Self",
+    "Creature.powerLE2",
+    "Creature.nonWall",
+    "Creature.powerGE3",
+    "Creature.withFlying",
+    "Creature.IsRemembered",
+    "Creature.Wall",
+    "Creature.powerLTX",
+    "Creature.EnchantedBy",
+    "Creature.nonBlack"
+   ]
+  },
+  "ValidTgtsDesc": {
+   "uses": 296,
+   "distinct": 100,
+   "coverage": 0.618,
+   "values": [
+    "creature you control",
+    "creature an opponent controls",
+    "creature card in your graveyard",
+    "another creature you control",
+    "another creature",
+    "nonland permanent",
+    "Equipment you control",
+    "attacking creature",
+    "artifact or creature",
+    "artifact or enchantment",
+    "nonland permanent an opponent controls",
+    "any other target"
+   ]
+  },
+  "Chooser": {
+   "uses": 278,
+   "distinct": 20,
+   "coverage": 0.971,
+   "values": [
+    "You",
+    "Targeted",
+    "Opponent",
+    "ChosenPlayer",
+    "Remembered",
+    "TriggeredPlayer",
+    "Player.IsRemembered",
+    "TriggeredCardController",
+    "TriggeredTarget",
+    "TriggeredDefendingPlayer",
+    "ImprintedController",
+    "TargetedController"
+   ]
+  },
+  "WithoutManaCost": {
+   "uses": 279,
+   "distinct": 1,
+   "coverage": 1.0,
+   "values": [
+    "True"
+   ]
+  },
+  "ClearImprinted": {
+   "uses": 205,
+   "distinct": 1,
+   "coverage": 1.0,
+   "values": [
+    "True"
+   ]
+  },
+  "ForgetOnMoved": {
+   "uses": 431,
+   "distinct": 8,
+   "coverage": 1.0,
+   "values": [
+    "Exile",
+    "Battlefield",
+    "Stack",
+    "Graveyard",
+    "Graveyard,Stack",
+    "Hand",
+    "Graveyard,Exile",
+    "True"
+   ]
+  },
+  "Valid": {
+   "uses": 330,
+   "distinct": 111,
+   "coverage": 0.564,
+   "values": [
+    "Card.nonLand",
+    "Card.IsRemembered",
+    "Creature",
+    "Land",
+    "Card.YouOwn",
+    "Card.nonLand+YouOwn",
+    "Card.ExiledWithSource",
+    "Land.YouCtrl",
+    "Instant,Sorcery",
+    "Card",
+    "Artifact",
+    "Card.IsImprinted"
+   ]
+  },
+  "ValidDescription": {
+   "uses": 323,
+   "distinct": 90,
+   "coverage": 0.632,
+   "values": [
+    "each creature and each player.",
+    "nonland",
+    "each creature.",
+    "creature",
+    "land",
+    "each creature without flying.",
+    "each creature with flying.",
+    "artifact",
+    "creature card",
+    "instant or sorcery",
+    "each attacking creature.",
+    "nonland card"
+   ]
+  },
+  "Controller": {
+   "uses": 229,
+   "distinct": 21,
+   "coverage": 0.956,
+   "values": [
+    "You",
+    "TargetedController",
+    "TriggeredCardController",
+    "Remembered",
+    "Targeted",
+    "TargetedPlayer",
+    "TriggeredActivator",
+    "TriggeredPlayer",
+    "RememberedController",
+    "ChosenPlayer",
+    "RememberedOwner",
+    "TargetedOrController"
+   ]
+  },
+  "ActivationLimit": {
+   "uses": 292,
+   "distinct": 4,
+   "coverage": 1.0,
+   "values": [
+    "1",
+    "2",
+    "3",
+    "X"
+   ]
+  },
+  "ActivationZone": {
+   "uses": 367,
+   "distinct": 6,
+   "coverage": 1.0,
+   "values": [
+    "Graveyard",
+    "Hand",
+    "Command",
+    "Battlefield",
+    "Exile",
+    "Stack"
+   ]
+  },
+  "SorcerySpeed": {
+   "uses": 532,
+   "distinct": 1,
+   "coverage": 1.0,
+   "values": [
+    "True"
+   ]
+  },
+  "PresentCompare": {
+   "uses": 405,
+   "distinct": 35,
+   "coverage": 0.916,
+   "values": [
+    "EQ0",
+    "GE2",
+    "GE3",
+    "GE4",
+    "EQ1",
+    "GE8",
+    "GE5",
+    "GE7",
+    "GE6",
+    "GE10",
+    "LE2",
+    "EQ2"
+   ]
+  },
+  "OptionalDecider": {
+   "uses": 1580,
+   "distinct": 11,
+   "coverage": 1.0,
+   "values": [
+    "You",
+    "TriggeredCardController",
+    "True",
+    "TriggeredSourceController",
+    "Opponent",
+    "EnchantedController",
+    "TriggeredPlayer",
+    "TriggeredAttackingPlayer",
+    "TriggeredActivator",
+    "TargetedController",
+    "ParentTargetedController"
+   ]
+  },
+  "ValidAttacker": {
+   "uses": 619,
+   "distinct": 48,
+   "coverage": 0.922,
+   "values": [
+    "Creature.Self",
+    "Card.IsRemembered",
+    "Card.Self",
+    "Creature.withoutFlying",
+    "Creature.EnchantedBy",
+    "Creature.EffectSource",
+    "Creature.IsRemembered",
+    "Creature.EquippedBy",
+    "Creature.YouCtrl",
+    "Card.Self+attacking",
+    "Creature",
+    "Creature.powerGE2"
+   ]
+  },
+  "Power": {
+   "uses": 472,
+   "distinct": 19,
+   "coverage": 0.981,
+   "values": [
+    "4",
+    "3",
+    "2",
+    "X",
+    "0",
+    "1",
+    "5",
+    "6",
+    "8",
+    "7",
+    "Y",
+    "10"
+   ]
+  },
+  "Toughness": {
+   "uses": 463,
+   "distinct": 19,
+   "coverage": 0.981,
+   "values": [
+    "4",
+    "3",
+    "1",
+    "2",
+    "5",
+    "X",
+    "0",
+    "Y",
+    "6",
+    "8",
+    "7",
+    "10"
+   ]
+  },
+  "RemoveCreatureTypes": {
+   "uses": 208,
+   "distinct": 1,
+   "coverage": 1.0,
+   "values": [
+    "True"
+   ]
+  },
+  "ClearChosenCard": {
+   "uses": 236,
+   "distinct": 1,
+   "coverage": 1.0,
+   "values": [
+    "True"
+   ]
+  },
+  "CheckSVar": {
+   "uses": 941,
+   "distinct": 119,
+   "coverage": 0.853,
+   "values": [
+    "X",
+    "Y",
+    "RaidTest",
+    "Morbid",
+    "Z",
+    "YouLifeGained",
+    "Celebration",
+    "PackTactics",
+    "FormidableTest",
+    "LifeGained",
+    "YouCastThisTurn",
+    "Count$CommittedCrimeThisTurn.1.0"
+   ]
+  },
+  "SVarCompare": {
+   "uses": 540,
+   "distinct": 62,
+   "coverage": 0.722,
+   "values": [
+    "GE3",
+    "EQ0",
+    "GE2",
+    "GE8",
+    "GE4",
+    "GTY",
+    "EQ1",
+    "LT7",
+    "GE6",
+    "LT1",
+    "GE5",
+    "GE1"
+   ]
+  },
+  "RepeatPlayers": {
+   "uses": 252,
+   "distinct": 27,
+   "coverage": 0.94,
+   "values": [
+    "Player",
+    "Player.Opponent",
+    "Opponent",
+    "Remembered",
+    "Targeted",
+    "ImprintedOwner",
+    "RememberedController",
+    "TargetedAndYou",
+    "OppNonTriggeredDefender",
+    "Player.YourTeam",
+    "ImprintedController",
+    "TargetedController"
+   ]
+  },
+  "Keywords": {
+   "uses": 351,
+   "distinct": 64,
+   "coverage": 0.798,
+   "values": [
+    "Haste",
+    "Flying",
+    "Trample",
+    "Enchant:Creature",
+    "Defender",
+    "First Strike",
+    "Indestructible",
+    "Hexproof",
+    "Deathtouch",
+    "Flying & Haste",
+    "Vigilance",
+    "Reach"
+   ]
+  },
+  "PrecostDesc": {
+   "uses": 294,
+   "distinct": 126,
+   "coverage": 0.551,
+   "values": [
+    "Channel \u2014",
+    "Max speed \u2014",
+    "Threshold \u2014",
+    "Renew \u2014",
+    "Bloodrush \u2014",
+    "Cleave",
+    "Cohort \u2014",
+    "Formidable \u2014",
+    "Delirium \u2014",
+    "Domain \u2014",
+    "Metalcraft \u2014",
+    "Corrupted \u2014"
+   ]
+  },
+  "ChoiceZone": {
+   "uses": 235,
+   "distinct": 12,
+   "coverage": 1.0,
+   "values": [
+    "Hand",
+    "Graveyard",
+    "Exile",
+    "Library",
+    "Battlefield",
+    "Sideboard",
+    "Graveyard,Exile",
+    "Hand,Battlefield",
+    "Hand,Graveyard",
+    "Hand,Library",
+    "None",
+    "Command,Battlefield"
+   ]
+  },
+  "TokenTapped": {
+   "uses": 263,
+   "distinct": 1,
+   "coverage": 1.0,
+   "values": [
+    "True"
+   ]
+  },
+  "ReplacementEffects": {
+   "uses": 443,
+   "distinct": 127,
+   "coverage": 0.637,
+   "values": [
+    "RPrevent",
+    "DontUntap",
+    "RPreventNextFromSource",
+    "SelflessDamage",
+    "ETBCreat",
+    "DamageEvent",
+    "RPrevent1,RPrevent2",
+    "ETBAddCounter",
+    "ReMoved",
+    "DrawReplace",
+    "ReplaceGraveyard",
+    "AntiMagic"
+   ]
+  },
+  "DefinedPlayer": {
+   "uses": 339,
+   "distinct": 29,
+   "coverage": 0.9,
+   "values": [
+    "Targeted",
+    "TargetedController",
+    "You",
+    "Player",
+    "Remembered",
+    "TriggeredPlayer",
+    "RememberedController",
+    "TriggeredTarget",
+    "TargetedPlayer",
+    "Player.IsRemembered",
+    "Player.Opponent",
+    "Player.Other"
+   ]
+  },
+  "DamageSource": {
+   "uses": 205,
+   "distinct": 25,
+   "coverage": 0.927,
+   "values": [
+    "ParentTarget",
+    "Targeted",
+    "EffectSource",
+    "TriggeredCard",
+    "TriggeredCardLKICopy",
+    "Remembered",
+    "TriggeredAttackerLKICopy",
+    "TriggeredSource",
+    "Enchanted",
+    "OriginalHost",
+    "Imprinted",
+    "TriggeredTargetLKICopy"
+   ]
+  },
+  "CharmNum": {
+   "uses": 211,
+   "distinct": 20,
+   "coverage": 0.962,
+   "values": [
+    "2",
+    "3",
+    "Count$Compare Y GE1.2.1",
+    "X",
+    "5",
+    "1",
+    "Y",
+    "4",
+    "MaxUniqueOpponents",
+    "Count$TriggerRememberAmount",
+    "Count$Compare X GE1.2.1",
+    "Count$Hellbent.3.1"
+   ]
+  },
+  "ShuffleNonMandatory": {
+   "uses": 213,
+   "distinct": 1,
+   "coverage": 1.0,
+   "values": [
+    "True"
+   ]
+  },
+  "Mandatory": {
+   "uses": 729,
+   "distinct": 1,
+   "coverage": 1.0,
+   "values": [
+    "True"
+   ]
+  },
+  "Planeswalker": {
+   "uses": 997,
+   "distinct": 2,
+   "coverage": 1.0,
+   "values": [
+    "True",
+    "true"
+   ]
+  },
+  "Ultimate": {
+   "uses": 289,
+   "distinct": 1,
+   "coverage": 1.0,
+   "values": [
+    "True"
+   ]
+  },
+  "Shuffle": {
+   "uses": 359,
+   "distinct": 2,
+   "coverage": 1.0,
+   "values": [
+    "True",
+    "False"
+   ]
+  },
+  "PlayerTurn": {
+   "uses": 206,
+   "distinct": 3,
+   "coverage": 1.0,
+   "values": [
+    "True",
+    "You",
+    "Opponent"
+   ]
+  },
+  "RememberRevealed": {
+   "uses": 218,
+   "distinct": 1,
+   "coverage": 1.0,
+   "values": [
+    "True"
+   ]
+  }
+ }
+}

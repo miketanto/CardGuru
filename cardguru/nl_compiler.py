@@ -78,6 +78,16 @@ Conventions from the Forge card-script data this runs over:
 - Prefer chain over all-of-two-nodes when the question implies one ability
   does both things. Prefer exact api/mode strings from the vocabulary below;
   use params only when needed for precision.
+- CONSTRAIN PARAM VALUES, DO NOT JUST ASSERT THE KEY EXISTS. `{"P": true}`
+  means "this parameter is present with any value at all" — use it only when
+  you genuinely mean any value. If the question names a scope, a zone, or a
+  kind, pin the value: {"ValidPlayers": {"icontains": "Opponent"}}, not
+  {"ValidPlayers": true}. The loose form is why "damage to each opponent"
+  returns board wipes that damage each *creature*.
+- Where the PARAM VALUES section below lists a parameter's actual values,
+  prefer an exact match from that list over a substring guess. "Each opponent"
+  is Defined "Player.Opponent" or "Opponent"; a substring match on "Opponent"
+  also catches single-opponent and triggered-defender forms.
 """
 
 EXAMPLES = [
@@ -121,6 +131,19 @@ def _facet_selectivity(path: str = "research/data/facet_selectivity.json") -> di
         return {}
 
 
+def _param_values(path: str = "research/data/param_values.json") -> dict:
+    """Mined value space per parameter, or {} if not built.
+
+    Regenerate with `python eval/consistency/build_param_values.py` on a dataset
+    bump. Only parameters whose top values cover most of their uses are present.
+    """
+    try:
+        with open(path, encoding="utf-8") as f:
+            return json.load(f).get("params", {})
+    except (OSError, ValueError):
+        return {}
+
+
 def build_system_prompt(onto_data: dict, top_n: int = 80,
                         param_keys_n: int | None = None) -> str:
     """Build the compiler's system prompt from the mined ontology.
@@ -148,6 +171,18 @@ def build_system_prompt(onto_data: dict, top_n: int = 80,
         f"Keywords: {top(onto_data['keywords'], 80)}\n"
         f"Common params: {top(onto_data['param_keys'], param_keys_n)}\n"
     )
+    # Parameter VALUE spaces. Naming the parameters was not enough: the compiler
+    # still had to guess what they contain, and fell back on `true` and loose
+    # substring matches. Only parameters whose top values explain most of their
+    # uses are listed — see eval/consistency/build_param_values.py.
+    pv = _param_values()
+    if pv:
+        lines = [f"  {k}: {', '.join(d['values'])}"
+                 for k, d in sorted(pv.items(), key=lambda t: -t[1]["uses"])]
+        vocab += ("\nPARAM VALUES (the actual values these parameters take, most "
+                  "frequent first;\nprefer an exact match from here over a substring "
+                  "guess):\n" + "\n".join(lines) + "\n")
+
     # Closed-label operators. These are the ONLY legal hook/role arguments, so
     # they are always listed in full — truncating them would make the operators
     # unusable rather than merely harder to use.

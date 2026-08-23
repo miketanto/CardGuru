@@ -1,0 +1,162 @@
+[
+ {
+  "qid": "I01.P3",
+  "question": "treasure makers"
+ },
+ {
+  "qid": "I02.P3",
+  "question": "graveyard-to-library shuffle"
+ },
+ {
+  "qid": "I03.P3",
+  "question": "pay-life costs"
+ },
+ {
+  "qid": "I04.P3",
+  "question": "sacrifice an artifact: cost"
+ },
+ {
+  "qid": "I05.P3",
+  "question": "death-trigger card draw"
+ },
+ {
+  "qid": "I06.P3",
+  "question": "landfall token makers"
+ },
+ {
+  "qid": "I07.P3",
+  "question": "draw then discard"
+ },
+ {
+  "qid": "I08.P3",
+  "question": "lose life, you gain it"
+ },
+ {
+  "qid": "I09.P3",
+  "question": "flying death triggers"
+ },
+ {
+  "qid": "I10.P3",
+  "question": "token maker plus sac outlet"
+ },
+ {
+  "qid": "I11.P3",
+  "question": "damage to each opponent"
+ },
+ {
+  "qid": "I12.P3",
+  "question": "bounce all creatures"
+ },
+ {
+  "qid": "I13.P3",
+  "question": "token makers, no sacrifice"
+ },
+ {
+  "qid": "I14.P3",
+  "question": "non-targeted creature removal"
+ },
+ {
+  "qid": "I15.P3",
+  "question": "green land tutors"
+ },
+ {
+  "qid": "I16.P3",
+  "question": "instant-speed token makers"
+ },
+ {
+  "qid": "I17.P3",
+  "question": "deathtouch lifelink creatures"
+ },
+ {
+  "qid": "I18.P3",
+  "question": "repeatable draw"
+ },
+ {
+  "qid": "I19.P3",
+  "question": "sacrifice outlets"
+ },
+ {
+  "qid": "I20.P3",
+  "question": "reanimate creatures"
+ },
+ {
+  "qid": "I21.P3",
+  "question": "creature tutor to hand"
+ },
+ {
+  "qid": "I22.P3",
+  "question": "instant-speed removal"
+ },
+ {
+  "qid": "I23.P3",
+  "question": "instant-speed creatures"
+ },
+ {
+  "qid": "I24.P3",
+  "question": "draw three or more"
+ },
+ {
+  "qid": "I25.P3",
+  "question": "graveyard-count creatures"
+ },
+ {
+  "qid": "I26.P3",
+  "question": "exile effects"
+ },
+ {
+  "qid": "I27.P3",
+  "question": "good removal"
+ },
+ {
+  "qid": "I28.P3",
+  "question": "creatures-dying payoffs"
+ },
+ {
+  "qid": "I29.P3",
+  "question": "copy effects"
+ },
+ {
+  "qid": "I30.P3",
+  "question": "token on spellcast"
+ },
+ {
+  "qid": "I31.P3",
+  "question": "untap on everyone's turn"
+ },
+ {
+  "qid": "I32.P3",
+  "question": "play off the top"
+ },
+ {
+  "qid": "I33.P3",
+  "question": "best budget commander"
+ },
+ {
+  "qid": "I34.P3",
+  "question": "Modern bans"
+ },
+ {
+  "qid": "I35.P3",
+  "question": "untap in opponent upkeep"
+ },
+ {
+  "qid": "I36.P3",
+  "question": "flash sorceries"
+ },
+ {
+  "qid": "I37.P3",
+  "question": "everyone draws extra"
+ },
+ {
+  "qid": "I38.P3",
+  "question": "ETB creatures"
+ },
+ {
+  "qid": "I39.P3",
+  "question": "destroy a creature"
+ },
+ {
+  "qid": "I40.P3",
+  "question": "damage prevention for yourself"
+ }
+]
