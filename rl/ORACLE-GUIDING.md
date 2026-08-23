@@ -126,4 +126,29 @@ nohup bash rl/oracle_ab.sh > /tmp/oracle_ab.log 2>&1 &
 
 ## 6. Results
 
-*(pending)*
+### 6a. The baseline the whole design turns on
+
+**First corrected reading, `B1Narrow` ck_1024, 32 episodes:
+`value_ev = 0.3465`.**
+
+The critic explains about a third of the variance in the discounted
+terminal outcome. Not zero — it is not predicting a constant — and not
+close to saturated.
+
+**What this number does NOT have is a known ceiling**, and that governs
+how the oracle arm is read. A perfect critic cannot reach 1.0 here: the
+outcome carries irreducible stochasticity from shuffles, the opponent's
+decisions, and hidden information. So "EV went from .35 to .5" cannot be
+scored against 1.0.
+
+That is exactly why the oracle arm is the right comparison rather than
+an absolute target. Removing the agent's uncertainty about the
+opponent's hand — and nothing else — makes the difference between the
+two arms a **decomposition of the unexplained variance**: how much of
+the 65% the critic misses is attributable to hidden information, and
+how much is irreducible or a modelling failure. A small gap says hidden
+information was never the critic's problem, which would be a real
+finding and would send the next lever elsewhere (rollout-delta targets,
+where the signal is measured rather than estimated).
+
+*(arm in progress — full curves below when both complete)*
