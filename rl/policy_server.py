@@ -686,7 +686,12 @@ class Trainer:
             # the server the first time. Chunking bounds the peak
             # regardless of batch size; the server already runs close to
             # its ceiling (HANDOFF-STACK-TIMING.md §5).
-            CH = 512
+            # One epoch, not EPOCHS. The critic sees FRESH data every
+            # update (256 episodes per arm, 8 updates), so re-fitting the
+            # same batch four times buys little and cost 14 min/update on
+            # CPU - 3.7 h for a two-arm probe. Chunk raised to 1024 for
+            # the same reason; peak memory is still bounded.
+            CH, C_EPOCHS = 1024, 1
             n_all = len(self.buf)
             nonempty = sum(1 for o in or_obs if o)
             self.oracle_cover = nonempty / float(n_all)
@@ -719,7 +724,7 @@ class Trainer:
             self.critic_ev = (float(1.0 - (mc - cv).var() / tv)
                               if float(tv) > 1e-8 else float("nan"))
 
-            for _ in range(EPOCHS):
+            for _ in range(C_EPOCHS):
                 for lo in range(0, n_all, CH):
                     hi = min(lo + CH, n_all)
                     self.copt.zero_grad()
