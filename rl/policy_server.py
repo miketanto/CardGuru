@@ -280,6 +280,57 @@ class EntityAttnPolicy(AttnPolicy):
                                      cands, mask, hidden)
 
 
+class OracleCritic(nn.Module):
+    """Asymmetric critic: may see hidden information, never picks actions.
+
+    Suphx's oracle guiding and AlphaStar's opponent-conditioned value are
+    the same move - let the CRITIC see what the policy cannot, because a
+    value function that must guess the opponent's hand is estimating a
+    quantity it has no information about, and with terminal-only reward
+    the critic IS the whole dense credit path (every non-terminal GAE
+    residual is gamma*V(s') - V(s)).
+
+    WHY THIS IS A SEPARATE NETWORK. `EntityAttnPolicy` shares its trunk:
+    `logits = scorer(y[:, 1:])` and `value = value_head(y[:, 0])` read the
+    same transformer output. Adding privileged rows to that observation
+    would put the opponent's hand straight into the policy logits - a
+    cheating agent, and out of distribution at eval where the oracle is
+    absent. Separate parameters make the isolation structural rather than
+    a promise; `rl/oracle_gate.py` asserts it anyway.
+
+    NOTHING TO WITHDRAW. Suphx anneals its oracle away because it distils
+    into the policy. Here the critic only produces `values[t]` for GAE
+    during the update and is never consulted at inference, so there is no
+    withdrawal schedule and no annealing knob.
+
+    The trunk is a composed EntityAttnPolicy rather than a copy of
+    `state_token`: `AttnPolicy.from_state_token` exists precisely because
+    "a copy is a place for the two to drift", and the same argument
+    applies here. Only the used submodules go to the optimiser.
+    """
+
+    def __init__(self, gdim=GDIM, edim=EDIM, d=128, heads=4, layers=2,
+                 n_rtypes=len(RTYPES)):
+        super().__init__()
+        self.gdim, self.edim = gdim, edim
+        self.trunk = EntityAttnPolicy(gdim=gdim, edim=edim, cdim=1, d=d,
+                                      heads=heads, layers=layers,
+                                      lstm=False, n_rtypes=n_rtypes)
+        self.value_head = nn.Sequential(nn.Linear(d, 64), nn.ReLU(),
+                                        nn.Linear(64, 1))
+
+    def used_parameters(self):
+        """Only the state path + the head; the trunk's candidate-scoring
+        submodules are never reached and must not collect optimiser
+        state."""
+        mods = [self.trunk.ent_in, self.trunk.ent_enc, self.trunk.rel_emb,
+                self.trunk.pool, self.trunk.state_in, self.value_head]
+        return [p for m in mods for p in m.parameters()]
+
+    def forward(self, obs):
+        return self.value_head(self.trunk.state_token(obs)).squeeze(-1)
+
+
 def build_net(arch, sdim, cdim, gdim=GDIM, edim=EDIM,
               n_rtypes=len(RTYPES)):
     if arch == "e0":
