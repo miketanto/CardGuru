@@ -151,7 +151,21 @@ public class SocketPolicyClient implements PolicyClient {
                 sb.append('[').append(e[0]).append(',').append(e[1])
                         .append(',').append(e[2]).append(']');
             }
-            sb.append("],\"c\":[");
+            sb.append(']');
+            // CRITIC-ONLY channel. Emitted as its own key so a server
+            // that does not know about it simply ignores it, and so the
+            // policy's own "e" is byte-identical either way.
+            if (view.oracle.length > 0) {
+                sb.append(",\"oe\":[");
+                for (int i = 0; i < view.oracle.length; i++) {
+                    if (i > 0) {
+                        sb.append(',');
+                    }
+                    floats(view.oracle[i]);
+                }
+                sb.append(']');
+            }
+            sb.append(",\"c\":[");
             for (int i = 0; i < candidates.length; i++) {
                 if (i > 0) {
                     sb.append(',');

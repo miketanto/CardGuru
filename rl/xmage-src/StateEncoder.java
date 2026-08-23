@@ -513,13 +513,23 @@ public final class StateEncoder {
         public final float[] globals;
         public final float[][] entities;
         public final int[][] relations;
+        /** opponent-hand rows, CRITIC ONLY. Empty unless -Drl.oracle.
+         *  Never merged into `entities` - see patch_oracle.py. */
+        public final float[][] oracle;
 
         EntityView(float[] g, float[][] e, int[][] r) {
+            this(g, e, r, EMPTY);
+        }
+
+        EntityView(float[] g, float[][] e, int[][] r, float[][] o) {
             globals = g;
             entities = e;
             relations = r;
+            oracle = o;
         }
     }
+
+    private static final float[][] EMPTY = new float[0][];
 
     /** One emitted slot, with its sort keys. */
     private static final class Ent {
@@ -605,8 +615,23 @@ public final class StateEncoder {
             rows[i] = ents.get(i).row;
             index.put(ents.get(i).id, i);
         }
+        float[][] oracleRows = EMPTY;
+        if (ORACLE) {
+            List<Ent> oe = new ArrayList<>();
+            for (Card c : op.getHand().getCards(game)) {
+                oe.add(cardEnt(c, game, false, Z_HAND, 5));
+            }
+            oe.sort(ORDER);
+            if (oe.size() > EMAX) {
+                oe = oe.subList(0, EMAX);
+            }
+            oracleRows = new float[oe.size()][];
+            for (int i = 0; i < oe.size(); i++) {
+                oracleRows[i] = oe.get(i).row;
+            }
+        }
         EntityView view = new EntityView(encodeGlobals(game, me, opp), rows,
-                relations(game, me, opp, index));
+                relations(game, me, opp, index), oracleRows);
         if (DUMP != null) {
             dump(view, game, me, opp);
         }
@@ -627,6 +652,11 @@ public final class StateEncoder {
     private static final boolean DEBUG_UNKNOWN = Boolean.getBoolean("rl.debug");
     private static final java.util.Set<String> UNKNOWN_SEEN =
             java.util.Collections.synchronizedSet(new java.util.HashSet<>());
+
+    /** -Drl.oracle=true: also emit the opponent's hand, for the
+     *  CRITIC ONLY. Class-init like every other rl.* constant, so a
+     *  driver JVM that served one arm cannot serve the other. */
+    public static final boolean ORACLE = Boolean.getBoolean("rl.oracle");
 
     private static final String DUMP = System.getProperty("rl.entityDump");
     private static java.io.PrintWriter dumpOut;
