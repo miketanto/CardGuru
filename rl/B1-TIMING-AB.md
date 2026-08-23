@@ -91,7 +91,58 @@ truncated by its own redirect on every restart, which is why no run in
 this project has a dense training curve; `--log` appends, so these are
 the first two runs with one.
 
-## 3. Results
+## 3. Results — `B1Fast` arm (complete)
 
-*(pending — filled in from the batteries, n=100 per probe, D0+TWIN
-pooled to n=200, Wilson 95%)*
+n=100 per probe; `D0` and `TWIN` pooled to n=200 (§1); Wilson 95%.
+
+| trained | D0+TWIN pooled n=200 | D1 n=100 | instants cast | target choices | under/over |
+|---|---|---|---|---|---|
+| 0 | .000 [.000, .019] | .000 [.000, .037] | 1 | 1 | 0/0 |
+| 512 | .430 [.363, .499] | .410 [.319, .508] | **0** | **0** | 0/96 |
+| 1024 | **.595** [.526, .661] | .540 [.443, .634] | **0** | **0** | 5/77 |
+
+512 → 1024 pooled: **+.165, z=3.30, p=0.0010.** D1: +.130, z=1.84,
+p=0.066.
+
+### 3a. It learned to .595 without ever casting its removal
+
+**Across 300 eval games at ck_512 and 300 more at ck_1024, `instCasts`
+and the entire `tgt*` block are absent from every probe file.**
+`EpisodeRunner` emits the instant block only `if (instantCasts > 0)` and
+the target block only `if (targetCreatureChoices > 0)`, so absent means
+the count is genuinely zero — not that the instrument is missing. It
+fires elsewhere in the same run: `flashThreats=0` prints, because that
+counter is unconditional.
+
+So the arm's whole gain — .000 → .430 → .595 — is combat play. Four
+Cruel Cuts are being played as blanks.
+
+The one exception is the untrained row, and it is worth keeping: at
+`ck_0` the policy cast exactly **one** instant in 300 games, and
+`instOppTurn=1` — that single cast was **at instant speed, on the
+opponent's turn**. The count is in the D1 probe only; an earlier reading
+of this arm checked the D0 probe alone and reported zero, which is why
+`b1_report.py` sums all three probes and stars a key absent from every
+one.
+
+**Training did not make the agent cast its removal at the wrong time. It
+made it stop casting it.** The handoff describes this rung as responding
+to training by casting removal "8× LESS" (25 → 3 casts, n=25 probes). At
+n=100 the endpoint is not 8× less, it is **zero**, and the starting
+point is 1 rather than 25 — the n=25 figures are not reproduced by this
+run and, being different weights from a lost checkpoint, are not
+comparable to it either.
+
+### 3b. `under_over` does not replicate the handoff's reading
+
+`HANDOFF-STACK-TIMING.md` §2b cites `under_over = 7/24` on the old
+B1Fast run as evidence that "this policy is *not* collapsed the same
+way" as Dimir's `0/39` and `0/40`, "which makes the rung more
+informative, not less". This run gives **0/96 at ck_512** — the same
+one-directional collapse as Dimir, at a larger denominator — relaxing to
+**5/77 at ck_1024**. The 7/24 came from n=25 probes. The claim built on
+it should not be carried forward.
+
+## 4. Results — `B1Narrow` arm
+
+*(running — started 00:56)*
