@@ -44,8 +44,17 @@ rm -f "$OUT"
 cp "$RL/$DECK.dck" /home/user/mage/Mage.Tests/ 2>/dev/null || true
 
 # eval only: no --lr, so the net cannot learn from the census games
+# BELT AND BRACES. --frozen stops the server updating or saving; the
+# copy means that even if a future edit re-breaks that, the published
+# checkpoint is not the file being served. Serving the real ckpt under
+# mode=train once took /tmp/rl_b1fast/ck_1024.pt from 1024 to 1129
+# episodes mid-probe (B1-TIMING-AB.md §7).
+SERVE=$(mktemp /tmp/census_serve_XXXX.pt)
+cp "$CKPT" "$SERVE"
+trap 'rm -f "$SERVE"' EXIT
+
 RL_TORCH_THREADS=1 setsid nohup python3 $RL/policy_server.py --port $PORT \
-    --ckpt "$CKPT" --seed 0 --sdim 32 --cdim 94 --arch entattn \
+    --ckpt "$SERVE" --frozen --seed 0 --sdim 32 --cdim 94 --arch entattn \
     --gdim 16 --edim 48 --emax 96 --max-k 96 --threads 1 \
     > /tmp/census_srv_$PORT.log 2>&1 &
 for i in $(seq 1 45); do

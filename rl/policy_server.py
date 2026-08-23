@@ -327,6 +327,7 @@ class Trainer:
         self.opt = torch.optim.Adam(self.net.parameters(), lr=LR)
         self.ckpt = ckpt
         self.log_path = log_path
+        self.frozen = False
         self.episodes_seen = 0
         self.updates = 0
         if ckpt and os.path.exists(ckpt):
@@ -542,6 +543,17 @@ class Trainer:
                 gae = delta + GAMMA * LAM * gae
                 adv[t] = gae
                 ret[t] = gae + values[t]
+        # EXPLAINED VARIANCE of the critic, 1 - Var(ret - V)/Var(ret).
+        # This is the quantity that decides whether a better value
+        # function is worth building: with terminal-only reward every
+        # non-terminal GAE residual is gamma*V(s') - V(s), so the ENTIRE
+        # dense credit path is the critic. If EV is ~0 the path is being
+        # fed noise, and no amount of shaping on top of it can help.
+        # Suphx's oracle guiding and AlphaStar's opponent-conditioned
+        # value both target exactly this number.
+        rv = ret.var()
+        self.last_ev = (float(1.0 - (ret - values).var() / rv)
+                        if float(rv) > 1e-8 else float("nan"))
         if adv.std() > 1e-6:
             adv = (adv - adv.mean()) / (adv.std() + 1e-8)
 
@@ -651,12 +663,14 @@ class Trainer:
         mean_abs_phi = sum(abs(p) for p in phis) / max(1, len(phis))
         line = (f"update={self.updates} episodes={self.episodes_seen} "
                 f"batch_eps={len(self.completed)} steps={n} "
-                f"batch_win_rate={wr:.3f} mean_abs_phi={mean_abs_phi:.3f}")
+                f"batch_win_rate={wr:.3f} mean_abs_phi={mean_abs_phi:.3f} "
+                f"value_ev={getattr(self, 'last_ev', float('nan')):.4f}")
         print("TRAIN|" + line, flush=True)
         if self.log_path:
             with open(self.log_path, "a") as f:
                 f.write(f"{time.time():.0f},{self.updates},{self.episodes_seen},"
-                        f"{n},{wr:.4f}\n")
+                        f"{n},{wr:.4f},"
+                        f"{getattr(self, 'last_ev', float('nan')):.4f}\n")
         self.buf = []
         self.completed = []
         self.ep_start = 0
@@ -860,11 +874,14 @@ def handle(conn, trainer, lock, session):
                 f.write(f'{{"a":{a}}}\n'.encode())
             elif t == "end":
                 if lock is None:
-                    trainer.end_episode(msg["r"], training=(mode == "train"))
+                    trainer.end_episode(msg["r"],
+                                        training=(mode == "train"
+                                                  and not trainer.frozen))
                 else:
                     with lock:
                         trainer.end_episode(msg["r"],
-                                            training=(mode == "train"),
+                                            training=(mode == "train"
+                                                      and not trainer.frozen),
                                             session=session)
                 f.write(b'{"ok":1}\n')
             f.flush()
@@ -926,6 +943,14 @@ if __name__ == "__main__":
     ap.add_argument("--ckpt", default="/tmp/rl_e0.pt")
     ap.add_argument("--seed", type=int, default=0)
     ap.add_argument("--log", default=None)
+    # SAMPLE WITHOUT LEARNING. `training` was purely mode=="train",
+    # independent of --lr, so any sampled probe silently trained the
+    # checkpoint it was measuring and save() overwrote it in place.
+    # That cost a published checkpoint once (B1-TIMING-AB.md §7).
+    ap.add_argument("--frozen", action="store_true",
+                    help="serve sampled actions but never update or "
+                         "save - for probes that need exploration "
+                         "behaviour from a FIXED policy")
     ap.add_argument("--sdim", type=int, default=SDIM)
     ap.add_argument("--cdim", type=int, default=CDIM)
     ap.add_argument("--shape", type=float, default=0.0,
@@ -963,9 +988,11 @@ if __name__ == "__main__":
     # oversubscribed; measured held-time per consult rose 3.40 -> 5.75 ms
     # from conc1 to conc4. Configurable so the trade can be measured.
     torch.set_num_threads(int(os.environ.get("RL_TORCH_THREADS", "2")))
-    serve(args.port, Trainer(args.ckpt, args.seed, args.log,
-                             args.sdim, args.cdim,
-                             args.shape, args.phi_scale, args.arch,
-                             args.desperation,
-                             args.gdim, args.edim, args.emax,
-                             len(RTYPES), args.r0), args.threads)
+    _t = Trainer(args.ckpt, args.seed, args.log,
+                 args.sdim, args.cdim,
+                 args.shape, args.phi_scale, args.arch,
+                 args.desperation,
+                 args.gdim, args.edim, args.emax,
+                 len(RTYPES), args.r0)
+    _t.frozen = args.frozen
+    serve(args.port, _t, args.threads)
