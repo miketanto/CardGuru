@@ -318,3 +318,34 @@ there — which is the same probe-before-build discipline that made
   measurement** — the first time this project has measured what fraction
   of the outcome its critic explains. That number is what any future
   credit-assignment work has to beat, and it did not exist yesterday.
+
+
+## 9. Both arms complete — underpowered, as pre-registered
+
+| arm | cover | critic_ev mean | last | max |
+|---|---|---|---|---|
+| probe0 (control, no privileged input) | 0.000 | **−0.0161** | −0.0992 | +0.0285 |
+| probe1 (oracle, opponent's hand) | 0.710 | **+0.0006** | +0.0159 | +0.0180 |
+
+Nominal delta **+0.017**, and **both arms sit at zero.** §7's rule was
+committed before these numbers existed and it applies without
+adjustment: *if both arms end near 0, the verdict is underpowered, not
+null.*
+
+The one thing worth noting is a shape, not a result: the oracle arm
+never dips (min +0.0), while the control swings to −0.099. That is
+consistent with privileged features making the fit better-conditioned,
+and it is **not** evidence — at this label count it is indistinguishable
+from noise, and quoting it as a trend would be exactly the
+10-game-learning-curve error this project has already retracted once.
+
+**Nothing here says hidden information fails to predict the outcome.**
+256 independent labels cannot support a 700k-parameter critic, so the
+instrument could not have detected the effect if it were there. The
+hypothesis is untested.
+
+`rl/oracle_ridge.py` is the replacement, and it is validated in both
+directions before use (positive control: base −0.03 → oracle +0.58;
+negative control: delta −0.004). Collect a few thousand episodes with
+`--dataset`, fit, and run `--curve` — a delta flat across label counts
+is a null; a delta still growing is a null not yet reached.
