@@ -30,14 +30,14 @@ PORT=${4:-7991}
 ORACLE=${EV_ORACLE:-0}
 SRV_ORACLE=""; DRV_ORACLE=""
 if [ "$ORACLE" = "1" ]; then
-    SRV_ORACLE="--oracle"; DRV_ORACLE="-Drl.oracle=true"
+    SRV_ORACLE="--oracle --oracle-probe"; DRV_ORACLE="-Drl.oracle=true"
 fi
 # SRV_FORCE_ORACLE=1 gives the server a fresh OracleCritic while the
 # DRIVER emits nothing privileged - the control that separates "the
 # critic can see the opponent's hand" from "the critic is a new
 # network". See rl/oracle_arm3.sh.
 if [ "${SRV_FORCE_ORACLE:-0}" = "1" ]; then
-    SRV_ORACLE="--oracle"; DRV_ORACLE=""
+    SRV_ORACLE="--oracle --oracle-probe"; DRV_ORACLE=""
 fi
 OUT=${EV_OUT:-/tmp/rl_ev_$(basename $CKPT .pt)_${DECK}_or${EV_ORACLE:-0}}
 
@@ -73,5 +73,5 @@ RL_PERSIST=1 RL_AUTOSTART=1 RL_CONC=2 timeout 5400 bash $RL/run_driver.sh \
 
 pkill -f "policy_serve[r].py --port $PORT" 2>/dev/null
 echo "ckpt=$CKPT deck=$DECK episodes=$EPS -> $OUT"
-echo "update,episodes,steps,batch_wr,value_ev  (oracle=$ORACLE)"
-awk -F, '{printf "%s,%s,%s,%s,%s\n",$2,$3,$4,$5,$6}' "$OUT/train.csv" 2>/dev/null
+echo "update,episodes,steps,batch_wr,value_ev,critic_ev,cover  (oracle=$ORACLE)"
+awk -F, '{printf "%s,%s,%s,%s,%s,%s,%s\n",$2,$3,$4,$5,$6,$7,$8}' "$OUT/train.csv" 2>/dev/null

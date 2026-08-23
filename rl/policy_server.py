@@ -384,6 +384,7 @@ class Trainer:
         self.oracle_critic = None
         self.copt = None
         self._want_oracle = oracle
+        self.oracle_probe = False
         if oracle:
             if arch != "entattn":
                 raise RuntimeError(
@@ -628,7 +629,8 @@ class Trainer:
         # forward pass never touches the serving path.
         or_obs = [b[8] for b in self.buf] if len(self.buf[0]) > 8 else []
         self.oracle_cover = 0.0
-        if self.oracle_critic is not None and any(o is not None for o in or_obs):
+        if (self.oracle_critic is not None and not self.oracle_probe
+                and any(o is not None for o in or_obs)):
             have = [i for i, o in enumerate(or_obs) if o is not None]
             self.oracle_cover = len(have) / float(len(self.buf))
             with torch.no_grad():
@@ -679,7 +681,24 @@ class Trainer:
                 o is not None for o in or_obs):
             have = [i for i, o in enumerate(or_obs) if o is not None]
             obs_b = EntityObs.stack([or_obs[i] for i in have])
-            tgt = ret[torch.tensor(have)]
+            # MONTE-CARLO, not `ret`. ret = gae + values and gae is built
+            # FROM the critic's own values, so a fresh critic trained on
+            # ret bootstraps off its own noise with nothing anchoring it -
+            # measured diverging -1.47 -> -6.05 over two updates. With
+            # terminal-only reward the MC return is exact, so there is
+            # nothing to gain from bootstrapping here anyway.
+            tgt = mc[torch.tensor(have)]
+            # SCORED BEFORE TRAINING ON THIS BATCH. Measuring after the
+            # four epochs would report in-sample fit, which rises with
+            # capacity whether or not the extra channel carries signal.
+            # This way every reading is a genuine held-out prediction of
+            # episodes the critic has not seen.
+            with torch.no_grad():
+                cv = self.oracle_critic(obs_b)
+            tv = tgt.var()
+            self.critic_ev = (float(1.0 - (tgt - cv).var() / tv)
+                              if float(tv) > 1e-8 else float("nan"))
+            self.oracle_cover = len(have) / float(len(self.buf))
             for _ in range(EPOCHS):
                 self.copt.zero_grad()
                 loss = ((self.oracle_critic(obs_b) - tgt) ** 2).mean()
@@ -799,13 +818,16 @@ class Trainer:
                 f"batch_eps={len(self.completed)} steps={n} "
                 f"batch_win_rate={wr:.3f} mean_abs_phi={mean_abs_phi:.3f} "
                 f"value_ev={getattr(self, 'last_ev', float('nan')):.4f} "
-                f"oracle_cover={getattr(self, 'oracle_cover', 0.0):.3f}")
+                f"oracle_cover={getattr(self, 'oracle_cover', 0.0):.3f} "
+                f"critic_ev={getattr(self, 'critic_ev', float('nan')):.4f}")
         print("TRAIN|" + line, flush=True)
         if self.log_path:
             with open(self.log_path, "a") as f:
                 f.write(f"{time.time():.0f},{self.updates},{self.episodes_seen},"
                         f"{n},{wr:.4f},"
-                        f"{getattr(self, 'last_ev', float('nan')):.4f}\n")
+                        f"{getattr(self, 'last_ev', float('nan')):.4f},"
+                        f"{getattr(self, 'critic_ev', float('nan')):.4f},"
+                        f"{getattr(self, 'oracle_cover', 0.0):.3f}\n")
         self.buf = []
         self.completed = []
         self.ep_start = 0
@@ -1099,6 +1121,8 @@ if __name__ == "__main__":
     # That cost a published checkpoint once (B1-TIMING-AB.md §7).
     ap.add_argument("--oracle", action="store_true",
                     help="asymmetric critic: a SEPARATE value network\n                         reads the opponent's hand (driver must run\n                         -Drl.oracle=true). Training-only - it never\n                         picks an action, so there is nothing to\n                         withdraw at eval.")
+    ap.add_argument("--oracle-probe", action="store_true",
+                    help="train and SCORE the oracle critic but do not\n                         let it supply GAE - a supervised probe of\n                         whether privileged information predicts the\n                         outcome better, with the policy untouched")
     ap.add_argument("--frozen", action="store_true",
                     help="serve sampled actions but never update or "
                          "save - for probes that need exploration "
@@ -1147,4 +1171,5 @@ if __name__ == "__main__":
                  args.gdim, args.edim, args.emax,
                  len(RTYPES), args.r0, args.oracle)
     _t.frozen = args.frozen
+    _t.oracle_probe = args.oracle_probe
     serve(args.port, _t, args.threads)
