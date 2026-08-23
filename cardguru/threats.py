@@ -66,7 +66,7 @@ DISRUPTION = {
 }
 
 
-def analyze_opponent(idx, by_name: dict, commander_rec: dict,
+def analyze_opponent(idx, by_name: dict, commander_rec: dict | None,
                      decklist: list[tuple[str, int]],
                      my_colors: set[str] | None,
                      ci_by_name: dict | None = None,
@@ -148,7 +148,12 @@ def analyze_opponent(idx, by_name: dict, commander_rec: dict,
                          "profile_flags": [k for k in ("hexproof", "shroud",
                                                        "indestructible")
                                            if res["threat"].get(k)],
-                         "answers": [{"card": c, **works[c]} for c in best]})
+                         # `answers` is a DISPLAY list: the 5 most playable.
+                         # `all_answers` is every card that works, untruncated —
+                         # consumers that rank or aggregate must use this one,
+                         # or they inherit the cheapness bias of _playable_key.
+                         "answers": [{"card": c, **works[c]} for c in best],
+                         "all_answers": {c: dict(works[c]) for c in sorted(works)}})
 
     # the sideboard slots that matter: answers working vs EVERY key threat
     coverage = set.intersection(*working_sets) if working_sets else set()

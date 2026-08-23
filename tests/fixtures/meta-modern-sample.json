@@ -1,0 +1,679 @@
+{
+ "archetypes": [
+  {
+   "archetype": "Energy",
+   "decks": 824,
+   "meta_share": 0.1797164667393675,
+   "representative": {
+    "event_date": "2025-05-25",
+    "event_type": "league",
+    "finish_rank": null,
+    "mainboard": [
+     [
+      "Ajani, Nacatl Pariah // Ajani, Nacatl Avenger",
+      4
+     ],
+     [
+      "Arena of Glory",
+      3
+     ],
+     [
+      "Arid Mesa",
+      4
+     ],
+     [
+      "Elegant Parlor",
+      2
+     ],
+     [
+      "Fable of the Mirror-Breaker // Reflection of Kiki-Jiki",
+      2
+     ],
+     [
+      "Flooded Strand",
+      4
+     ],
+     [
+      "Galvanic Discharge",
+      4
+     ],
+     [
+      "Goblin Bombardment",
+      3
+     ],
+     [
+      "Guide of Souls",
+      4
+     ],
+     [
+      "Marsh Flats",
+      3
+     ],
+     [
+      "Mountain",
+      1
+     ],
+     [
+      "Ocelot Pride",
+      4
+     ],
+     [
+      "Phlage, Titan of Fire's Fury",
+      4
+     ],
+     [
+      "Plains",
+      2
+     ],
+     [
+      "Ragavan, Nimble Pilferer",
+      3
+     ],
+     [
+      "Sacred Foundry",
+      3
+     ],
+     [
+      "Seasoned Pyromancer",
+      3
+     ],
+     [
+      "Static Prison",
+      2
+     ],
+     [
+      "Thraben Charm",
+      2
+     ],
+     [
+      "Voice of Victory",
+      2
+     ],
+     [
+      "Windswept Heath",
+      1
+     ]
+    ],
+    "player": "ttdawg",
+    "sideboard": [
+     [
+      "Blood Moon",
+      1
+     ],
+     [
+      "Celestial Purge",
+      1
+     ],
+     [
+      "Clarion Conqueror",
+      1
+     ],
+     [
+      "Deafening Silence",
+      2
+     ],
+     [
+      "Fable of the Mirror-Breaker // Reflection of Kiki-Jiki",
+      1
+     ],
+     [
+      "Ghost Vacuum",
+      1
+     ],
+     [
+      "Molten Rain",
+      3
+     ],
+     [
+      "Obsidian Charmaw",
+      1
+     ],
+     [
+      "Orim's Chant",
+      2
+     ],
+     [
+      "Wear // Tear",
+      1
+     ],
+     [
+      "Wrath of the Skies",
+      1
+     ]
+    ],
+    "source": "mtgo.com_limited_data"
+   },
+   "representative_deck_id": 447892,
+   "representative_similarity": 0.9967114103628596
+  },
+  {
+   "archetype": "Eldrazi",
+   "decks": 579,
+   "meta_share": 0.1262813522355507,
+   "representative": {
+    "event_date": "2025-05-29",
+    "event_type": "league",
+    "finish_rank": null,
+    "mainboard": [
+     [
+      "Ancient Stirrings",
+      3
+     ],
+     [
+      "Bojuka Bog",
+      1
+     ],
+     [
+      "Boseiju, Who Endures",
+      1
+     ],
+     [
+      "Cavern of Souls",
+      1
+     ],
+     [
+      "Commercial District",
+      1
+     ],
+     [
+      "Devourer of Destiny",
+      3
+     ],
+     [
+      "Eldrazi Temple",
+      4
+     ],
+     [
+      "Emrakul, the Promised End",
+      3
+     ],
+     [
+      "Forest",
+      4
+     ],
+     [
+      "Ghost Quarter",
+      1
+     ],
+     [
+      "Kozilek's Command",
+      4
+     ],
+     [
+      "Kozilek's Return",
+      3
+     ],
+     [
+      "Malevolent Rumble",
+      4
+     ],
+     [
+      "Sanctum of Ugin",
+      1
+     ],
+     [
+      "Sire of Seven Deaths",
+      1
+     ],
+     [
+      "Sowing Mycospawn",
+      4
+     ],
+     [
+      "Stomping Ground",
+      1
+     ],
+     [
+      "Talisman of Impulse",
+      4
+     ],
+     [
+      "Ugin's Labyrinth",
+      4
+     ],
+     [
+      "Utopia Sprawl",
+      4
+     ],
+     [
+      "Wooded Foothills",
+      3
+     ],
+     [
+      "World Breaker",
+      2
+     ],
+     [
+      "Writhing Chrysalis",
+      3
+     ]
+    ],
+    "player": "GabbaAndrewTeam",
+    "sideboard": [
+     [
+      "Disruptor Flute",
+      2
+     ],
+     [
+      "Force of Vigor",
+      2
+     ],
+     [
+      "Kozilek's Return",
+      1
+     ],
+     [
+      "Lightning Bolt",
+      2
+     ],
+     [
+      "Stone Rain",
+      4
+     ],
+     [
+      "Trinisphere",
+      4
+     ]
+    ],
+    "source": "mtgo.com_limited_data"
+   },
+   "representative_deck_id": 448388,
+   "representative_similarity": 0.8240349395200284
+  }
+ ],
+ "classifier_version": "rules-99668739d46e",
+ "format": "modern",
+ "labelled_decks": 4566,
+ "play_rate_min_decks": 3,
+ "play_rates": {
+  "Ajani, Nacatl Pariah // Ajani, Nacatl Avenger": {
+   "deck_share": 0.17404580152671756,
+   "decks": 798,
+   "main_copies": 3189,
+   "side_copies": 0
+  },
+  "Ancient Stirrings": {
+   "deck_share": 0.08004362050163577,
+   "decks": 367,
+   "main_copies": 1295,
+   "side_copies": 0
+  },
+  "Arena of Glory": {
+   "deck_share": 0.2569247546346783,
+   "decks": 1178,
+   "main_copies": 2955,
+   "side_copies": 1
+  },
+  "Arid Mesa": {
+   "deck_share": 0.3816793893129771,
+   "decks": 1750,
+   "main_copies": 6264,
+   "side_copies": 0
+  },
+  "Blood Moon": {
+   "deck_share": 0.11428571428571428,
+   "decks": 524,
+   "main_copies": 256,
+   "side_copies": 686
+  },
+  "Bojuka Bog": {
+   "deck_share": 0.07938931297709924,
+   "decks": 364,
+   "main_copies": 232,
+   "side_copies": 132
+  },
+  "Boseiju, Who Endures": {
+   "deck_share": 0.20218102508178845,
+   "decks": 927,
+   "main_copies": 1636,
+   "side_copies": 288
+  },
+  "Cavern of Souls": {
+   "deck_share": 0.12955288985823338,
+   "decks": 594,
+   "main_copies": 1003,
+   "side_copies": 101
+  },
+  "Celestial Purge": {
+   "deck_share": 0.2089422028353326,
+   "decks": 958,
+   "main_copies": 1,
+   "side_copies": 1386
+  },
+  "Clarion Conqueror": {
+   "deck_share": 0.1520174482006543,
+   "decks": 697,
+   "main_copies": 6,
+   "side_copies": 1172
+  },
+  "Commercial District": {
+   "deck_share": 0.0663031624863686,
+   "decks": 304,
+   "main_copies": 311,
+   "side_copies": 0
+  },
+  "Consign to Memory": {
+   "deck_share": 0.45408942202835334,
+   "decks": 2082,
+   "main_copies": 642,
+   "side_copies": 7069
+  },
+  "Counterspell": {
+   "deck_share": 0.1025081788440567,
+   "decks": 470,
+   "main_copies": 1818,
+   "side_copies": 9
+  },
+  "Deafening Silence": {
+   "deck_share": 0.183206106870229,
+   "decks": 840,
+   "main_copies": 0,
+   "side_copies": 1422
+  },
+  "Devourer of Destiny": {
+   "deck_share": 0.10534351145038168,
+   "decks": 483,
+   "main_copies": 1603,
+   "side_copies": 0
+  },
+  "Disruptor Flute": {
+   "deck_share": 0.05539803707742639,
+   "decks": 254,
+   "main_copies": 0,
+   "side_copies": 467
+  },
+  "Eldrazi Temple": {
+   "deck_share": 0.16510359869138494,
+   "decks": 757,
+   "main_copies": 3014,
+   "side_copies": 0
+  },
+  "Elegant Parlor": {
+   "deck_share": 0.22071973827699018,
+   "decks": 1012,
+   "main_copies": 1855,
+   "side_copies": 0
+  },
+  "Emrakul, the Promised End": {
+   "deck_share": 0.09880043620501636,
+   "decks": 453,
+   "main_copies": 1000,
+   "side_copies": 5
+  },
+  "Fable of the Mirror-Breaker // Reflection of Kiki-Jiki": {
+   "deck_share": 0.1766630316248637,
+   "decks": 810,
+   "main_copies": 1808,
+   "side_copies": 6
+  },
+  "Flooded Strand": {
+   "deck_share": 0.40458015267175573,
+   "decks": 1855,
+   "main_copies": 6220,
+   "side_copies": 0
+  },
+  "Force of Vigor": {
+   "deck_share": 0.11799345692475463,
+   "decks": 541,
+   "main_copies": 6,
+   "side_copies": 1066
+  },
+  "Forest": {
+   "deck_share": 0.264340239912759,
+   "decks": 1212,
+   "main_copies": 2519,
+   "side_copies": 120
+  },
+  "Galvanic Discharge": {
+   "deck_share": 0.19323882224645583,
+   "decks": 886,
+   "main_copies": 3518,
+   "side_copies": 0
+  },
+  "Ghost Quarter": {
+   "deck_share": 0.05016357688113413,
+   "decks": 230,
+   "main_copies": 286,
+   "side_copies": 37
+  },
+  "Ghost Vacuum": {
+   "deck_share": 0.14525627044711015,
+   "decks": 666,
+   "main_copies": 5,
+   "side_copies": 738
+  },
+  "Goblin Bombardment": {
+   "deck_share": 0.17295528898582332,
+   "decks": 793,
+   "main_copies": 2363,
+   "side_copies": 0
+  },
+  "Guide of Souls": {
+   "deck_share": 0.1821155943293348,
+   "decks": 835,
+   "main_copies": 3339,
+   "side_copies": 0
+  },
+  "Into the Flood Maw": {
+   "deck_share": 0.10272628135223555,
+   "decks": 471,
+   "main_copies": 96,
+   "side_copies": 783
+  },
+  "Kozilek's Command": {
+   "deck_share": 0.16859323882224644,
+   "decks": 773,
+   "main_copies": 3088,
+   "side_copies": 0
+  },
+  "Kozilek's Return": {
+   "deck_share": 0.05932388222464558,
+   "decks": 272,
+   "main_copies": 710,
+   "side_copies": 222
+  },
+  "Leyline Binding": {
+   "deck_share": 0.07066521264994548,
+   "decks": 324,
+   "main_copies": 1276,
+   "side_copies": 0
+  },
+  "Lightning Bolt": {
+   "deck_share": 0.2113413304252999,
+   "decks": 969,
+   "main_copies": 3300,
+   "side_copies": 199
+  },
+  "Malevolent Rumble": {
+   "deck_share": 0.1193020719738277,
+   "decks": 547,
+   "main_copies": 2121,
+   "side_copies": 0
+  },
+  "Marsh Flats": {
+   "deck_share": 0.29422028353326063,
+   "decks": 1349,
+   "main_copies": 4588,
+   "side_copies": 0
+  },
+  "Molten Rain": {
+   "deck_share": 0.15114503816793892,
+   "decks": 693,
+   "main_copies": 0,
+   "side_copies": 2423
+  },
+  "Mountain": {
+   "deck_share": 0.4451472191930207,
+   "decks": 2041,
+   "main_copies": 3028,
+   "side_copies": 171
+  },
+  "Obsidian Charmaw": {
+   "deck_share": 0.10926935659760087,
+   "decks": 501,
+   "main_copies": 2,
+   "side_copies": 972
+  },
+  "Ocelot Pride": {
+   "deck_share": 0.1812431842966194,
+   "decks": 831,
+   "main_copies": 3324,
+   "side_copies": 0
+  },
+  "Orim's Chant": {
+   "deck_share": 0.2510359869138495,
+   "decks": 1151,
+   "main_copies": 293,
+   "side_copies": 2239
+  },
+  "Phlage, Titan of Fire's Fury": {
+   "deck_share": 0.2791712104689204,
+   "decks": 1280,
+   "main_copies": 4379,
+   "side_copies": 202
+  },
+  "Plains": {
+   "deck_share": 0.386041439476554,
+   "decks": 1770,
+   "main_copies": 3273,
+   "side_copies": 2
+  },
+  "Portable Hole": {
+   "deck_share": 0.07808069792802617,
+   "decks": 358,
+   "main_copies": 891,
+   "side_copies": 150
+  },
+  "Ragavan, Nimble Pilferer": {
+   "deck_share": 0.24143947655398038,
+   "decks": 1107,
+   "main_copies": 3610,
+   "side_copies": 38
+  },
+  "Sacred Foundry": {
+   "deck_share": 0.3179934569247546,
+   "decks": 1458,
+   "main_copies": 3106,
+   "side_copies": 2
+  },
+  "Sanctum of Ugin": {
+   "deck_share": 0.05256270447110142,
+   "decks": 241,
+   "main_copies": 293,
+   "side_copies": 0
+  },
+  "Seasoned Pyromancer": {
+   "deck_share": 0.16510359869138494,
+   "decks": 757,
+   "main_copies": 2118,
+   "side_copies": 1
+  },
+  "Sire of Seven Deaths": {
+   "deck_share": 0.06085059978189749,
+   "decks": 279,
+   "main_copies": 654,
+   "side_copies": 10
+  },
+  "Sowing Mycospawn": {
+   "deck_share": 0.08702290076335878,
+   "decks": 399,
+   "main_copies": 1593,
+   "side_copies": 0
+  },
+  "Static Prison": {
+   "deck_share": 0.16902944383860413,
+   "decks": 775,
+   "main_copies": 1558,
+   "side_copies": 28
+  },
+  "Stomping Ground": {
+   "deck_share": 0.09312977099236641,
+   "decks": 427,
+   "main_copies": 611,
+   "side_copies": 0
+  },
+  "Stone Rain": {
+   "deck_share": 0.03969465648854962,
+   "decks": 182,
+   "main_copies": 12,
+   "side_copies": 626
+  },
+  "Talisman of Impulse": {
+   "deck_share": 0.05387131952017448,
+   "decks": 247,
+   "main_copies": 900,
+   "side_copies": 0
+  },
+  "Thraben Charm": {
+   "deck_share": 0.16815703380588876,
+   "decks": 771,
+   "main_copies": 1435,
+   "side_copies": 30
+  },
+  "Trinisphere": {
+   "deck_share": 0.10229007633587786,
+   "decks": 469,
+   "main_copies": 17,
+   "side_copies": 1186
+  },
+  "Ugin's Labyrinth": {
+   "deck_share": 0.1173391494002181,
+   "decks": 538,
+   "main_copies": 2141,
+   "side_copies": 0
+  },
+  "Utopia Sprawl": {
+   "deck_share": 0.05430752453653217,
+   "decks": 249,
+   "main_copies": 988,
+   "side_copies": 0
+  },
+  "Voice of Victory": {
+   "deck_share": 0.17884405670665213,
+   "decks": 820,
+   "main_copies": 1489,
+   "side_copies": 143
+  },
+  "Wear // Tear": {
+   "deck_share": 0.2732824427480916,
+   "decks": 1253,
+   "main_copies": 0,
+   "side_copies": 1931
+  },
+  "Windswept Heath": {
+   "deck_share": 0.19389312977099238,
+   "decks": 889,
+   "main_copies": 2421,
+   "side_copies": 0
+  },
+  "Wooded Foothills": {
+   "deck_share": 0.2261723009814613,
+   "decks": 1037,
+   "main_copies": 3085,
+   "side_copies": 0
+  },
+  "World Breaker": {
+   "deck_share": 0.0495092693565976,
+   "decks": 227,
+   "main_copies": 380,
+   "side_copies": 6
+  },
+  "Wrath of the Skies": {
+   "deck_share": 0.3173391494002181,
+   "decks": 1455,
+   "main_copies": 546,
+   "side_copies": 2239
+  },
+  "Writhing Chrysalis": {
+   "deck_share": 0.06739367502726282,
+   "decks": 309,
+   "main_copies": 1001,
+   "side_copies": 4
+  }
+ },
+ "total_decks": 4585,
+ "window": {
+  "end": "2025-06-09",
+  "start": "2025-05-01"
+ }
+}

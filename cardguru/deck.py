@@ -43,16 +43,19 @@ def _matches(rec: dict, query: dict) -> bool:
     return ok
 
 
-def cross_synergy(by_name: dict, commander_rec: dict,
+def cross_synergy(by_name: dict, commander_rec: dict | None,
                   decklist: list[tuple[str, int]], max_edges: int = 400) -> dict:
     """Deck-internal synergy graph: EVERY deck card (commander included) gets
     hook detection, and each hooked card's complement queries are tested
     against the other deck cards. An edge (src)-[hook/class]->(dst) means
     dst's structure feeds src's hook — with the machine-readable WHY."""
-    cards = [(commander_rec["name"], commander_rec)]
+    # commander_rec is None for constructed (60-card) decks: there is no
+    # command zone, so the deck's own cards are the whole graph.
+    cards = [(commander_rec["name"], commander_rec)] if commander_rec else []
+    seen = {commander_rec["name"]} if commander_rec else set()
     for name, _count in decklist:
         rec = by_name.get(name)
-        if rec is not None and name != commander_rec["name"]:
+        if rec is not None and name not in seen:
             cards.append((name, rec))
 
     edges = []
@@ -234,7 +237,7 @@ def mana_value(mana_cost: str | None) -> int | None:
     return mv
 
 
-def deck_shape(by_name: dict, commander_rec: dict,
+def deck_shape(by_name: dict, commander_rec: dict | None,
                decklist: list[tuple[str, int]]) -> dict:
     """Mana curve, color-pip demand vs mana sources, gameplan detection, and
     gameplan-conditioned role quotas. Repeatable engines are counted separately
@@ -250,7 +253,8 @@ def deck_shape(by_name: dict, commander_rec: dict,
     texture = {"nonland": 0, "creatures": 0, "interaction": 0, "ramp": 0}
     n_lands = 0
 
-    for h in detect_hooks(commander_rec):
+    # No commander (constructed): hooks come only from the 60, unweighted.
+    for h in detect_hooks(commander_rec) if commander_rec else ():
         hook_counts[h] = hook_counts.get(h, 0) + 2      # commander weighs double
 
     for name, count in decklist:
