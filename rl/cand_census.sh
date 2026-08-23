@@ -23,7 +23,13 @@ DECK=${2:-B1Fast}
 GAMES=${3:-100}
 SEED=${4:-941001}
 PORT=${5:-7981}
-OUT=${CAND_OUT:-/tmp/census_$(basename $CKPT .pt)_${DECK}.jsonl}
+# CAND_MODE=train serves SAMPLED (Gumbel/categorical) instead of argmax.
+# The server is still started without --lr, so it samples and does NOT
+# learn. This is the exploration-vs-credit probe: if the policy never
+# even TRIES the cast under sampling, the failure is exploration; if it
+# tries and the behaviour never grows, the failure is credit assignment.
+MODE=${CAND_MODE:-eval}
+OUT=${CAND_OUT:-/tmp/census_$(basename $CKPT .pt)_${DECK}_${CAND_MODE:-eval}.jsonl}
 
 [ -s "$CKPT" ] || { echo "no such checkpoint: $CKPT"; exit 1; }
 if pgrep -f "[R]LDriverServer" > /dev/null; then
@@ -56,7 +62,7 @@ timeout 5400 bash $RL/run_driver.sh \
     -Drl.noYields=true -Drl.consultBudget=4000 \
     -Drl.encoderV=6 -Drl.blockAudit=true -Drl.candDump=$OUT \
     -Drl.deck=$DECK.dck -Drl.oppDeck=$DECK.dck \
-    -Drl.stopTurn=60 -Drl.mode=eval -Drl.seed=$SEED -Drl.report=0 \
+    -Drl.stopTurn=60 -Drl.mode=$MODE -Drl.seed=$SEED -Drl.report=0 \
     -Drl.out=/tmp/census_sum_$PORT.txt > /tmp/census_drv_$PORT.log 2>&1
 
 pkill -f "policy_serve[r].py --port $PORT" 2>/dev/null
