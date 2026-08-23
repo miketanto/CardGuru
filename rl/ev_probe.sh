@@ -32,6 +32,13 @@ SRV_ORACLE=""; DRV_ORACLE=""
 if [ "$ORACLE" = "1" ]; then
     SRV_ORACLE="--oracle"; DRV_ORACLE="-Drl.oracle=true"
 fi
+# SRV_FORCE_ORACLE=1 gives the server a fresh OracleCritic while the
+# DRIVER emits nothing privileged - the control that separates "the
+# critic can see the opponent's hand" from "the critic is a new
+# network". See rl/oracle_arm3.sh.
+if [ "${SRV_FORCE_ORACLE:-0}" = "1" ]; then
+    SRV_ORACLE="--oracle"; DRV_ORACLE=""
+fi
 OUT=${EV_OUT:-/tmp/rl_ev_$(basename $CKPT .pt)_${DECK}_or${EV_ORACLE:-0}}
 
 [ -s "$CKPT" ] || { echo "no such checkpoint: $CKPT"; exit 1; }

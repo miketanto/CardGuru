@@ -529,9 +529,19 @@ class Trainer:
                 # The privileged observation is built SEPARATELY and only
                 # ever reaches the critic. `s` above - what the policy
                 # sees - is untouched by the oracle rows.
-                if self.oracle_critic is not None and oracle_rows:
-                    store_or = self._entity_obs(
-                        ent[0], list(ent[1]) + list(oracle_rows), ent[2])[0]
+                if self.oracle_critic is not None:
+                    # THE CONTROL FALLS OUT OF THIS. With --oracle set but
+                    # the driver NOT emitting "oe", the critic scores the
+                    # ordinary observation - a FRESH critic with no
+                    # privileged input. That is the arm the comparison
+                    # actually needs: the oracle critic starts from
+                    # scratch while the policy's own value head has 1024
+                    # episodes behind it, so oracle-vs-baseline confounds
+                    # "privileged information" with "new network".
+                    # fresh+oracle vs fresh-no-oracle isolates the former.
+                    rows = (list(ent[1]) + list(oracle_rows)) if oracle_rows \
+                        else ent[1]
+                    store_or = self._entity_obs(ent[0], rows, ent[2])[0]
             else:
                 s = torch.tensor(state).unsqueeze(0)
                 store = s[0]
