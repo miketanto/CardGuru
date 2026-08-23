@@ -531,18 +531,21 @@ class Trainer:
                 # ever reaches the critic. `s` above - what the policy
                 # sees - is untouched by the oracle rows.
                 if self.oracle_critic is not None:
-                    # THE CONTROL FALLS OUT OF THIS. With --oracle set but
-                    # the driver NOT emitting "oe", the critic scores the
-                    # ordinary observation - a FRESH critic with no
-                    # privileged input. That is the arm the comparison
-                    # actually needs: the oracle critic starts from
-                    # scratch while the policy's own value head has 1024
-                    # episodes behind it, so oracle-vs-baseline confounds
-                    # "privileged information" with "new network".
-                    # fresh+oracle vs fresh-no-oracle isolates the former.
-                    rows = (list(ent[1]) + list(oracle_rows)) if oracle_rows \
-                        else ent[1]
-                    store_or = self._entity_obs(ent[0], rows, ent[2])[0]
+                    # ONLY THE PRIVILEGED ROWS, never a second EntityObs.
+                    # Storing a whole parallel observation per step
+                    # doubled the server's largest allocation - `rel` is
+                    # (emax,emax) int64, ~73 KB per step - and the OOM
+                    # killer took the server down mid-probe. The critic's
+                    # batch is rebuilt at update time from the policy's
+                    # own stored observation plus these few rows.
+                    #
+                    # THE CONTROL FALLS OUT OF THIS TOO: with --oracle set
+                    # but the driver not emitting "oe", this is an empty
+                    # list and the critic scores the ordinary observation
+                    # - a fresh critic with no privileged input, which is
+                    # the arm that separates "can see the hand" from "is
+                    # a new network".
+                    store_or = [list(r) for r in (oracle_rows or [])]
             else:
                 s = torch.tensor(state).unsqueeze(0)
                 store = s[0]
@@ -677,35 +680,55 @@ class Trainer:
         mv = mc.var()
         self.last_ev = (float(1.0 - (mc - values).var() / mv)
                         if float(mv) > 1e-8 else float("nan"))
-        if self.oracle_critic is not None and or_obs and any(
-                o is not None for o in or_obs):
-            have = [i for i, o in enumerate(or_obs) if o is not None]
-            obs_b = EntityObs.stack([or_obs[i] for i in have])
-            # MONTE-CARLO, not `ret`. ret = gae + values and gae is built
-            # FROM the critic's own values, so a fresh critic trained on
-            # ret bootstraps off its own noise with nothing anchoring it -
-            # measured diverging -1.47 -> -6.05 over two updates. With
-            # terminal-only reward the MC return is exact, so there is
-            # nothing to gain from bootstrapping here anyway.
-            tgt = mc[torch.tensor(have)]
-            # SCORED BEFORE TRAINING ON THIS BATCH. Measuring after the
-            # four epochs would report in-sample fit, which rises with
-            # capacity whether or not the extra channel carries signal.
-            # This way every reading is a genuine held-out prediction of
-            # episodes the critic has not seen.
+        if self.oracle_critic is not None and or_obs:
+            # CHUNKED. Indexing states.rel would copy an (n, emax, emax)
+            # int64 tensor - ~368 MB at n=5000 - which is what OOM-killed
+            # the server the first time. Chunking bounds the peak
+            # regardless of batch size; the server already runs close to
+            # its ceiling (HANDOFF-STACK-TIMING.md §5).
+            CH = 512
+            n_all = len(self.buf)
+            nonempty = sum(1 for o in or_obs if o)
+            self.oracle_cover = nonempty / float(n_all)
+
+            def _batch(lo, hi):
+                e_b = states.e[lo:hi].clone()
+                m_b = states.mask[lo:hi].clone()
+                for j in range(hi - lo):
+                    rows = or_obs[lo + j]
+                    if not rows:
+                        continue
+                    n = int(m_b[j].sum())
+                    k = min(len(rows), e_b.shape[1] - n)
+                    if k > 0:
+                        e_b[j, n:n + k] = torch.tensor(
+                            rows[:k], dtype=torch.float32)
+                        m_b[j, n:n + k] = True
+                return EntityObs(states.g[lo:hi], e_b, m_b,
+                                 states.rel[lo:hi])
+
+            # HELD OUT: scored before training on the batch, so a reading
+            # is a genuine prediction and not in-sample fit (which rises
+            # with capacity whether or not the channel carries signal).
+            preds = []
             with torch.no_grad():
-                cv = self.oracle_critic(obs_b)
-            tv = tgt.var()
-            self.critic_ev = (float(1.0 - (tgt - cv).var() / tv)
+                for lo in range(0, n_all, CH):
+                    preds.append(self.oracle_critic(_batch(lo, min(lo + CH, n_all))))
+            cv = torch.cat(preds)
+            tv = mc.var()
+            self.critic_ev = (float(1.0 - (mc - cv).var() / tv)
                               if float(tv) > 1e-8 else float("nan"))
-            self.oracle_cover = len(have) / float(len(self.buf))
+
             for _ in range(EPOCHS):
-                self.copt.zero_grad()
-                loss = ((self.oracle_critic(obs_b) - tgt) ** 2).mean()
-                loss.backward()
-                nn.utils.clip_grad_norm_(
-                    self.oracle_critic.used_parameters(), 0.5)
-                self.copt.step()
+                for lo in range(0, n_all, CH):
+                    hi = min(lo + CH, n_all)
+                    self.copt.zero_grad()
+                    loss = ((self.oracle_critic(_batch(lo, hi))
+                             - mc[lo:hi]) ** 2).mean()
+                    loss.backward()
+                    nn.utils.clip_grad_norm_(
+                        self.oracle_critic.used_parameters(), 0.5)
+                    self.copt.step()
 
         if adv.std() > 1e-6:
             adv = (adv - adv.mean()) / (adv.std() + 1e-8)
