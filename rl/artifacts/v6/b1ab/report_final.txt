@@ -1,0 +1,18 @@
+
+=== rl_b1fast ===
+trained D0+TWIN pooled n=200   D1 n=100               instCast  tgtChoice under/over
+0       0.000 [0.000,0.019]    0.000 [0.000,0.037]    1         1         0/0
+512     0.430 [0.363,0.499]    0.410 [0.319,0.508]    0*        0*        0/96
+1024    0.595 [0.526,0.661]    0.540 [0.443,0.634]    0*        0*        5/77
+
+=== rl_b1narrow ===
+trained D0+TWIN pooled n=200   D1 n=100               instCast  tgtChoice under/over
+0       0.000 [0.000,0.019]    0.000 [0.000,0.037]    0*        0*        0/0
+512     0.020 [0.008,0.050]    0.020 [0.006,0.070]    0*        41        0/9
+1024    0.585 [0.516,0.651]    0.580 [0.482,0.672]    0*        86        0/96
+  tgt-by-power @512  chose [0, 0, 13, 0, 0, 0, 0]
+                   legal [0, 0, 30, 0, 0, 0, 0]
+  tgt-by-power @1024  chose [0, 0, 27, 0, 0, 0, 0]
+                   legal [0, 0, 70, 0, 0, 0, 0]
+
+* = key ABSENT from every probe (EpisodeRunner gates the block on >0), i.e. the count is genuinely zero

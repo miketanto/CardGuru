@@ -262,7 +262,7 @@ public class RLPlayer extends ComputerPlayer {
 
     private static synchronized void dumpCands(Game game, UUID me, UUID opp,
                                                String site, float[][] cands,
-                                               String[] names) {
+                                               String[] names, int pick) {
         try {
             if (candOut == null) {
                 candOut = new java.io.PrintWriter(new java.io.BufferedWriter(
@@ -276,6 +276,7 @@ public class RLPlayer extends ComputerPlayer {
              .append(",\"step\":\"").append(game.getTurnStepType())
              .append("\",\"active\":")
              .append(me.equals(game.getActivePlayerId()) ? 1 : 0)
+             .append(",\"pick\":").append(pick)
              .append(",\"names\":[");
             for (int i = 0; i < names.length; i++) {
                 b.append(i > 0 ? "," : "").append('"')
@@ -680,13 +681,6 @@ public class RLPlayer extends ComputerPlayer {
                     card, game);
         }
         if (CAND_DUMP != null) {
-            String[] nm = new String[cands.length];
-            nm[0] = "PASS";
-            for (int i = 0; i < playable.size(); i++) {
-                Card c0 = game.getCard(playable.get(i).getSourceId());
-                nm[i + 1] = c0 == null ? "?" : c0.getName();
-            }
-            dumpCands(game, playerId, opponentId(game), "prio", cands, nm);
             dumpWindow(game, playerId, playable.size(), holdsInstant(game));
         }
         if (consults >= consultBudget) {
@@ -700,6 +694,15 @@ public class RLPlayer extends ComputerPlayer {
         }
         consults++;
         int pick = consult(game, opponentId(game), cands, "prio");
+        if (CAND_DUMP != null) {
+            String[] nm = new String[cands.length];
+            nm[0] = "PASS";
+            for (int i = 0; i < playable.size(); i++) {
+                Card c0 = game.getCard(playable.get(i).getSourceId());
+                nm[i + 1] = c0 == null ? "?" : c0.getName();
+            }
+            dumpCands(game, playerId, opponentId(game), "prio", cands, nm, pick);
+        }
         if (pick <= 0 || pick > playable.size()) {
             pass(game);
             setYieldAfterPass(game);

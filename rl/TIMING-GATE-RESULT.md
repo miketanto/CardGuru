@@ -143,6 +143,25 @@ turn" is consistent with a policy that cannot see timing — and equally
 consistent with a policy that has no mana left when the window arrives.
 These counters do not separate those, and neither did the 2K run's.
 
+> ### CORRECTION — this section's mana claim is wrong for a trained policy
+>
+> The caveat below was the right one to write and it was load-bearing:
+> re-run on the **trained** `B1Fast` `ck_1024` (100 games), the census
+> inverts.
+>
+> | opponent's declare-attackers windows | random policy | **trained ck_1024** |
+> |---|---|---|
+> | total | 451 | 1158 |
+> | ...with anything castable | 4 (0.9%) | **678 (58.5%)** |
+> | ...holding an instant | 116 (25.7%) | 688 (59.4%) |
+> | ...held one and could not cast it | 115/116 | **251/688** |
+>
+> **The trained policy is not tapped out.** It arrives at the opponent's
+> declare-attackers step able to cast its instant in 678 windows per 100
+> games, and casts it zero times. "The gap is MANA, not the encoder" is
+> retracted: it was an artifact of the random collector, exactly as the
+> caveat warned. The gap is a *choice*. See §4b.
+
 **Caveat, and it is a large one: this census is from a RANDOM policy.**
 A random policy taps out for uninteresting reasons. It is the right
 collector for a question about the *emitter* (§2–3), and it is *not*
@@ -150,6 +169,43 @@ authority on what a trained policy does. The same census on a trained
 checkpoint is cheap — it is one `-Drl.candDump` run — and it is the
 single highest-value measurement left open by this doc. It is not run
 here because there is no trained B1 checkpoint left to run it on (§0).
+
+### 4b. Offered 5,504 times, declined 5,504 times
+
+With the chosen index now recorded (`-Drl.candDump` carries `"pick"`),
+the trained `B1Fast` `ck_1024` census over 100 games says:
+
+| | |
+|---|---|
+| priority consults | 15,647 |
+| ...with **Cruel Cut on the menu** | **5,504** |
+| ...in which Cruel Cut was **chosen** | **0** |
+| opp declare-attackers consults with Cruel Cut castable | 243 |
+| ...in which it chose `PASS` | **243 / 243** |
+
+So the three candidate explanations for "never casts its removal"
+resolve cleanly:
+
+- **Not "never offered."** It was offered 5,504 times.
+- **Not mana.** 678 of 1158 opponent declare-attackers windows carried a
+  castable candidate.
+- **Not a collapsed index either** — and this is the sharp part. In the
+  same 5,504 consults the policy cast **every other spell in the deck**:
+  Barony Vampire 49, Cabal Evangel 38, Canal Monitor 41, Dakmor Scorpion
+  48, Dross Crocodile 41, Felhide Minotaur 48, Giant Cockroach 42,
+  Moriok Reaver 48, Swamp 200. Candidates are name-sorted, so Cruel Cut
+  does not sit at a fixed index; this is not index collapse.
+
+**It is a card-specific aversion.** The policy learned to cast every
+creature in the deck and to never, in 5,504 opportunities, cast the one
+instant. `PASS` is 89.7% of all picks (14,041/15,647), which is the same
+shape as the Dimir trace's 83-of-92 passed windows — but the pass rate
+alone would not have shown that one card is singled out.
+
+The comparison that makes this a finding about *timing* rather than
+about a weak card is `B1Narrow`: the identical card at sorcery speed is
+cast 86 times in 300 games. Same cost, same restriction, same slot. See
+`B1-TIMING-AB.md` §5a.
 
 ## 5. LEVEL B — does the step reach the logits at all?
 
