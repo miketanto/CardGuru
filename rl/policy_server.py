@@ -318,6 +318,16 @@ class OracleCritic(nn.Module):
                                       lstm=False, n_rtypes=n_rtypes)
         self.value_head = nn.Sequential(nn.Linear(d, 64), nn.ReLU(),
                                         nn.Linear(64, 1))
+        # ZERO-INIT THE OUTPUT. `state_token` is
+        # glob_in(g) + pool(SUM_i ...) - a SUM over up to EMAX entities -
+        # so an untrained head sits on a large-magnitude input and emits
+        # wildly scaled values. Measured: a fresh critic opened at
+        # held-out EV -1.39 and got WORSE (-5.56) before it got better,
+        # in the arm with NO privileged input at all. Starting at zero
+        # makes the first prediction the mean (EV ~ 0) and lets training
+        # move it up from there instead of down from nowhere.
+        nn.init.zeros_(self.value_head[-1].weight)
+        nn.init.zeros_(self.value_head[-1].bias)
 
     def used_parameters(self):
         """Only the state path + the head; the trunk's candidate-scoring
@@ -691,7 +701,7 @@ class Trainer:
             # same batch four times buys little and cost 14 min/update on
             # CPU - 3.7 h for a two-arm probe. Chunk raised to 1024 for
             # the same reason; peak memory is still bounded.
-            CH, C_EPOCHS = 1024, 1
+            CH, C_EPOCHS = 1024, 2
             n_all = len(self.buf)
             nonempty = sum(1 for o in or_obs if o)
             self.oracle_cover = nonempty / float(n_all)

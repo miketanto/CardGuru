@@ -119,15 +119,21 @@ def level3(cdim, tol):
     critic.eval()
     ents = _rows(6, ps.EDIM, 1)
     g = [0.1] * ps.GDIM
+    # Tested at the TRUNK, not the value. The value head is
+    # deliberately zero-initialised (a summed state token makes an
+    # untrained head emit wildly scaled values), so at init the value is
+    # 0 either way and testing it would fail a critic that is in fact
+    # wired correctly. The oracle rows enter at state_token; that is
+    # where "does the channel reach the network" is answered.
     with torch.no_grad():
-        v_none = float(critic(_obs(critic, g, ents)))
-        v_hand = float(critic(_obs(critic, g, ents + _rows(5, ps.EDIM, 99))))
-    d = abs(v_none - v_hand)
-    print("GATE|O3|critic_value_delta=%.6f (no hand %.4f -> hand %.4f)"
-          % (d, v_none, v_hand))
+        t_none = critic.trunk.state_token(_obs(critic, g, ents))
+        t_hand = critic.trunk.state_token(
+            _obs(critic, g, ents + _rows(5, ps.EDIM, 99)))
+    d = float((t_none - t_hand).abs().max())
+    print("GATE|O3|critic_state_token_delta=%.6f" % d)
     if d < tol:
-        print("GATE|O3|FAIL|the critic's value does not move when the "
-              "opponent's hand appears - the channel is inert")
+        print("GATE|O3|FAIL|the critic's state token does not move when "
+              "the opponent's hand appears - the channel is inert")
         return False
     print("GATE|O3|PASS|the critic reads the oracle channel")
     return True
