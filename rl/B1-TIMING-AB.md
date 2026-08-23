@@ -145,4 +145,35 @@ it should not be carried forward.
 
 ## 4. Results — `B1Narrow` arm
 
-*(running — started 00:56)*
+*(running — ck_0 and ck_512 in; ck_1024 pending)*
+
+| trained | D0+TWIN pooled n=200 | D1 n=100 | removal casts (3 probes) | under/over |
+|---|---|---|---|---|
+| 0 | .000 [.000, .019] | .000 [.000, .037] | 0 | 0/0 |
+| 512 | .020 [.007, .050] | .020 [.006, .070] | **13 + 15 + 13 = 41** | 0/9 |
+
+**Interim, and it inverts the hypothesis: the SORCERY arm casts its
+removal and the INSTANT arm does not.** `B1Fast` is 0 casts in 600 eval
+games; `B1Narrow` is 41 in 300.
+
+The target-by-power census (the instrument `CURRICULUM-LADDER.md` §5
+wanted, and which is built — see the correction there) is clean:
+`tgtChose_p2=13`, `tgtLegal_p2=30`, and **zero at every other power**.
+Defeat is power ≤2 and only power-2 creatures were ever legal targets,
+so the histogram is exactly the shape the restriction implies. The
+policy takes the kill in 13 of 30 windows where one is legal.
+
+**Do not read the .02 win rate as "the sorcery deck is much worse" yet.**
+The dense training curve says something the battery cannot: over the
+same 512 episodes `B1Narrow`'s *sampled* win rate climbs .031 → .219
+with steps/episode reaching 4724, against `B1Fast`'s .344 and 4182. Its
+training play is developing normally; its **greedy** play is not
+(`attackOpportunities` 87 in 100 games against `B1Fast`'s 662, games
+ending at 15.5 turns against 23.2). That is a sampled-vs-argmax
+divergence, which is a knife-edge property of one checkpoint, not
+evidence about the deck.
+
+This is the first thing in the project the dense curve has paid for.
+With three battery points alone the honest reading of `.43` vs `.02`
+would have been "the sorcery arm collapsed", and the training curve
+says it did not.
