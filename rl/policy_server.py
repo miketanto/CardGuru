@@ -395,6 +395,7 @@ class Trainer:
         self.copt = None
         self._want_oracle = oracle
         self.oracle_probe = False
+        self._ds = None
         if oracle:
             if arch != "entattn":
                 raise RuntimeError(
@@ -525,6 +526,35 @@ class Trainer:
         return EntityObs(torch.tensor(g, dtype=torch.float32).unsqueeze(0),
                          e, m, rel)
 
+    def _ds_write(self, ent, oracle_rows):
+        """One pooled row per consult for the offline ridge probe.
+
+        Pooled, not raw: the label count is the number of EPISODES, and a
+        few thousand labels will not support a network (see
+        ORACLE-GUIDING.md §8). Ridge on a fixed-length pooled vector is
+        the capacity the data supports - the same move anvil's frozen
+        probe makes (ADR-0039).
+
+        Collection must run SEQUENTIALLY (--threads 1, RL_CONC unset):
+        records are segmented into episodes by the "end" markers, and
+        concurrent sessions would interleave them.
+        """
+        g, ents, _ = ent
+        n = len(ents)
+        es = [0.0] * self.edim
+        for row in ents:
+            for i, v in enumerate(row):
+                es[i] += v
+        k = len(oracle_rows or [])
+        os_ = [0.0] * self.edim
+        for row in (oracle_rows or []):
+            for i, v in enumerate(row):
+                os_[i] += v
+        self._ds.write(json.dumps({
+            "g": [round(float(x), 5) for x in g],
+            "es": [round(x, 5) for x in es], "en": n,
+            "os": [round(x, 5) for x in os_], "on": k}) + "\n")
+
     def act(self, state, cands, sample, phi=0.0, session=None, ent=None,
             oracle_rows=None):
         # session is None for the single-connection path (unchanged
@@ -533,6 +563,8 @@ class Trainer:
         sink = self if session is None else session
         with torch.no_grad():
             store_or = None
+            if self.entity and getattr(self, '_ds', None) is not None:
+                self._ds_write(ent, oracle_rows)
             if self.entity:
                 # ent = (globals, entity rows, relation edge list)
                 s = self._entity_obs(*ent)      # batch-1 EntityObs
@@ -604,6 +636,9 @@ class Trainer:
             return a
 
     def end_episode(self, reward, training, session=None):
+        if getattr(self, "_ds", None) is not None:
+            self._ds.write(json.dumps({"end": 1, "r": reward}) + "\n")
+            self._ds.flush()
         self.hidden = None          # memory never crosses episodes
         if session is not None:
             session.hidden = None
@@ -1159,6 +1194,8 @@ if __name__ == "__main__":
     # That cost a published checkpoint once (B1-TIMING-AB.md §7).
     ap.add_argument("--oracle", action="store_true",
                     help="asymmetric critic: a SEPARATE value network\n                         reads the opponent's hand (driver must run\n                         -Drl.oracle=true). Training-only - it never\n                         picks an action, so there is nothing to\n                         withdraw at eval.")
+    ap.add_argument("--dataset", default=None,
+                    help="NDJSON of pooled per-consult features plus\n                         episode outcomes, for the OFFLINE ridge\n                         probe. Run sequentially (--threads 1).")
     ap.add_argument("--oracle-probe", action="store_true",
                     help="train and SCORE the oracle critic but do not\n                         let it supply GAE - a supervised probe of\n                         whether privileged information predicts the\n                         outcome better, with the policy untouched")
     ap.add_argument("--frozen", action="store_true",
@@ -1210,4 +1247,5 @@ if __name__ == "__main__":
                  len(RTYPES), args.r0, args.oracle)
     _t.frozen = args.frozen
     _t.oracle_probe = args.oracle_probe
+    _t._ds = open(args.dataset, 'w') if args.dataset else None
     serve(args.port, _t, args.threads)
