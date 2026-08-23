@@ -1,0 +1,3004 @@
+{
+ "version": "consistency-v1-draft",
+ "backend": "recorded",
+ "samples": 1,
+ "summary": {
+  "n_intents": 40,
+  "n_headline": 36,
+  "PC": 0.674,
+  "PC_correct": 0.744,
+  "agreement_at_witness": 0.912,
+  "foil_rate": 0.014,
+  "SC": null,
+  "modal_share": 0.588,
+  "declined_rate": 0.05,
+  "invalid_rate": 0.0,
+  "inverted_disagreement": 0.15,
+  "by_stratum": {
+   "S": {
+    "None": {
+     "n": 4,
+     "PC": 0.6,
+     "PC_correct": null,
+     "agreement_at_witness": null
+    },
+    "S1": {
+     "n": 3,
+     "PC": 0.744,
+     "PC_correct": 0.918,
+     "agreement_at_witness": 0.867
+    },
+    "S2": {
+     "n": 6,
+     "PC": 0.615,
+     "PC_correct": 0.615,
+     "agreement_at_witness": 1.0
+    },
+    "S3": {
+     "n": 5,
+     "PC": 0.664,
+     "PC_correct": 0.701,
+     "agreement_at_witness": 0.96
+    },
+    "S4": {
+     "n": 3,
+     "PC": 0.692,
+     "PC_correct": 0.775,
+     "agreement_at_witness": 0.933
+    },
+    "S5": {
+     "n": 3,
+     "PC": 0.541,
+     "PC_correct": 0.871,
+     "agreement_at_witness": 0.8
+    },
+    "S6": {
+     "n": 3,
+     "PC": 0.726,
+     "PC_correct": 0.615,
+     "agreement_at_witness": 0.667
+    },
+    "S7": {
+     "n": 2,
+     "PC": 0.493,
+     "PC_correct": 0.493,
+     "agreement_at_witness": 1.0
+    },
+    "S8": {
+     "n": 3,
+     "PC": 0.591,
+     "PC_correct": 0.711,
+     "agreement_at_witness": 0.867
+    },
+    "S9": {
+     "n": 4,
+     "PC": 0.959,
+     "PC_correct": 0.959,
+     "agreement_at_witness": 1.0
+    }
+   },
+   "H": {
+    "H00": {
+     "n": 8,
+     "PC": 0.792,
+     "PC_correct": 0.86,
+     "agreement_at_witness": 0.95
+    },
+    "H01": {
+     "n": 3,
+     "PC": 0.842,
+     "PC_correct": 0.842,
+     "agreement_at_witness": 1.0
+    },
+    "H02": {
+     "n": 3,
+     "PC": 0.583,
+     "PC_correct": 0.583,
+     "agreement_at_witness": 1.0
+    },
+    "H03": {
+     "n": 3,
+     "PC": 0.797,
+     "PC_correct": 0.722,
+     "agreement_at_witness": 0.667
+    },
+    "H04": {
+     "n": 4,
+     "PC": 0.502,
+     "PC_correct": 0.678,
+     "agreement_at_witness": 0.85
+    },
+    "H05": {
+     "n": 1,
+     "PC": 1.0,
+     "PC_correct": 1.0,
+     "agreement_at_witness": 1.0
+    },
+    "H06": {
+     "n": 3,
+     "PC": 0.738,
+     "PC_correct": 0.858,
+     "agreement_at_witness": 0.867
+    },
+    "H07": {
+     "n": 2,
+     "PC": 0.493,
+     "PC_correct": 0.493,
+     "agreement_at_witness": 1.0
+    },
+    "H08": {
+     "n": 2,
+     "PC": 0.432,
+     "PC_correct": 0.432,
+     "agreement_at_witness": 1.0
+    },
+    "H10": {
+     "n": 3,
+     "PC": 0.547,
+     "PC_correct": 0.779,
+     "agreement_at_witness": 0.867
+    },
+    "H11": {
+     "n": 2,
+     "PC": null,
+     "PC_correct": null,
+     "agreement_at_witness": null
+    },
+    "H12": {
+     "n": 2,
+     "PC": 0.6,
+     "PC_correct": null,
+     "agreement_at_witness": null
+    }
+   },
+   "prov": {
+    "absent": {
+     "n": 33,
+     "PC": 0.683,
+     "PC_correct": 0.762,
+     "agreement_at_witness": 0.903
+    },
+    "adjacent": {
+     "n": 1,
+     "PC": 0.519,
+     "PC_correct": 0.519,
+     "agreement_at_witness": 1.0
+    },
+    "covered": {
+     "n": 2,
+     "PC": 0.615,
+     "PC_correct": 0.615,
+     "agreement_at_witness": 1.0
+    }
+   },
+   "D_observed": {
+    "D1": {
+     "n": 4,
+     "PC": 0.473,
+     "PC_correct": 0.693,
+     "agreement_at_witness": 0.8
+    },
+    "D2": {
+     "n": 18,
+     "PC": 0.676,
+     "PC_correct": 0.708,
+     "agreement_at_witness": 0.911
+    },
+    "D3": {
+     "n": 12,
+     "PC": 0.739,
+     "PC_correct": 0.805,
+     "agreement_at_witness": 0.933
+    },
+    "None": {
+     "n": 2,
+     "PC": null,
+     "PC_correct": null,
+     "agreement_at_witness": null
+    }
+   }
+  }
+ },
+ "intents": [
+  {
+   "id": "I01",
+   "S": "S1",
+   "H": "H00",
+   "D_declared": "D2",
+   "prov": "absent",
+   "inverted": false,
+   "n_compilations": 5,
+   "compile_fail": 0,
+   "declined": 0,
+   "invalid": 0,
+   "PC": 1.0,
+   "PC_correct": 1.0,
+   "agreement_at_witness": 1.0,
+   "foil_rate": null,
+   "modal_share": 1.0,
+   "disagreement": 0.0,
+   "median_hits": 372,
+   "D_observed": "D3",
+   "witness_resolved": true,
+   "rungs": {
+    "P1": {
+     "question": "cards that create Treasure tokens",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 372,
+     "rep_has_witness": true,
+     "rep_has_foil": null,
+     "notes": []
+    },
+    "P2": {
+     "question": "anything that ramps me off treasure",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 372,
+     "rep_has_witness": true,
+     "rep_has_foil": null,
+     "notes": []
+    },
+    "P3": {
+     "question": "treasure makers",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 372,
+     "rep_has_witness": true,
+     "rep_has_foil": null,
+     "notes": []
+    },
+    "P4": {
+     "question": "I need more fast mana and I'm looking for anything that produces those artifact tokens you sacrifice for mana. This is for Commander.",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 372,
+     "rep_has_witness": true,
+     "rep_has_foil": null,
+     "notes": []
+    },
+    "P5": {
+     "question": "cards that make Treasure artifact tokens",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 372,
+     "rep_has_witness": true,
+     "rep_has_foil": null,
+     "notes": []
+    }
+   }
+  },
+  {
+   "id": "I02",
+   "S": "S1",
+   "H": "H04",
+   "D_declared": "D1",
+   "prov": "absent",
+   "inverted": false,
+   "n_compilations": 5,
+   "compile_fail": 0,
+   "declined": 0,
+   "invalid": 0,
+   "PC": 0.39167076037443443,
+   "PC_correct": 0.9117647058823529,
+   "agreement_at_witness": 0.6,
+   "foil_rate": 0.0,
+   "modal_share": 0.4,
+   "disagreement": 0.6,
+   "median_hits": 177,
+   "D_observed": "D2",
+   "witness_resolved": true,
+   "rungs": {
+    "P1": {
+     "question": "cards that shuffle your graveyard into your library",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 93,
+     "rep_has_witness": false,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P2": {
+     "question": "recursion that recycles everything back in",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 89,
+     "rep_has_witness": false,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P3": {
+     "question": "graveyard-to-library shuffle",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 177,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P4": {
+     "question": "My playgroup runs a lot of graveyard hate and I keep losing my whole yard. I want something that puts my discard pile back into my deck. Budget is a concern.",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 177,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P5": {
+     "question": "cards that shuffle your bin back into your deck",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 204,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    }
+   }
+  },
+  {
+   "id": "I03",
+   "S": "S2",
+   "H": "H01",
+   "D_declared": "D2",
+   "prov": "absent",
+   "inverted": false,
+   "n_compilations": 5,
+   "compile_fail": 0,
+   "declined": 0,
+   "invalid": 0,
+   "PC": 0.7913302962181948,
+   "PC_correct": 0.7913302962181948,
+   "agreement_at_witness": 1.0,
+   "foil_rate": 0.0,
+   "modal_share": 0.4,
+   "disagreement": 0.6,
+   "median_hits": 167,
+   "D_observed": "D2",
+   "witness_resolved": true,
+   "rungs": {
+    "P1": {
+     "question": "cards with an ability that requires paying life as a cost",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 167,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P2": {
+     "question": "abilities you pay for with your own life total",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 157,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P3": {
+     "question": "pay-life costs",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 301,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P4": {
+     "question": "I'm building a deck that treats life as a resource. I want abilities where you spend life to turn them on, not ones that just drain you as an effect. Any colour works.",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 167,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P5": {
+     "question": "cards with an ability you activate by paying life",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 157,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    }
+   }
+  },
+  {
+   "id": "I04",
+   "S": "S2",
+   "H": "H01",
+   "D_declared": "D2",
+   "prov": "absent",
+   "inverted": false,
+   "n_compilations": 5,
+   "compile_fail": 0,
+   "declined": 0,
+   "invalid": 0,
+   "PC": 0.8716577540106952,
+   "PC_correct": 0.8716577540106952,
+   "agreement_at_witness": 1.0,
+   "foil_rate": 0.0,
+   "modal_share": 0.6,
+   "disagreement": 0.4,
+   "median_hits": 147,
+   "D_observed": "D2",
+   "witness_resolved": true,
+   "rungs": {
+    "P1": {
+     "question": "activated abilities that require sacrificing an artifact as part of their cost",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 147,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P2": {
+     "question": "artifact sac outlets",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 187,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P3": {
+     "question": "sacrifice an artifact: cost",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 187,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P4": {
+     "question": "I'm building an artifact deck that wants to eat its own permanents for value. I need the sacrifice to be part of paying for the ability, not something the ability does to my opponents. Colour doesn't matter much.",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 147,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P5": {
+     "question": "abilities you pay for by sacrificing an artifact",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 147,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    }
+   }
+  },
+  {
+   "id": "I05",
+   "S": "S3",
+   "H": "H00",
+   "D_declared": "D2",
+   "prov": "absent",
+   "inverted": false,
+   "n_compilations": 5,
+   "compile_fail": 0,
+   "declined": 0,
+   "invalid": 0,
+   "PC": 0.6429178395496129,
+   "PC_correct": 0.6429178395496129,
+   "agreement_at_witness": 1.0,
+   "foil_rate": 0.0,
+   "modal_share": 0.6,
+   "disagreement": 0.4,
+   "median_hits": 66,
+   "D_observed": "D2",
+   "witness_resolved": true,
+   "rungs": {
+    "P1": {
+     "question": "creatures that draw you a card when they die",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 66,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P2": {
+     "question": "bodies that replace themselves when they get killed",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 224,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P3": {
+     "question": "death-trigger card draw",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 87,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P4": {
+     "question": "I want creatures that aren't card disadvantage when they trade in combat. Something that cantrips on the way out. This is for Commander.",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 66,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P5": {
+     "question": "creatures that draw you a card when they hit the bin",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 66,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    }
+   }
+  },
+  {
+   "id": "I06",
+   "S": "S3",
+   "H": "H00",
+   "D_declared": "D1",
+   "prov": "absent",
+   "inverted": false,
+   "n_compilations": 5,
+   "compile_fail": 0,
+   "declined": 0,
+   "invalid": 0,
+   "PC": 0.8533364661654135,
+   "PC_correct": 0.8533364661654135,
+   "agreement_at_witness": 1.0,
+   "foil_rate": null,
+   "modal_share": 0.4,
+   "disagreement": 0.6,
+   "median_hits": 32,
+   "D_observed": "D2",
+   "witness_resolved": true,
+   "rungs": {
+    "P1": {
+     "question": "abilities that create creature tokens whenever a land enters the battlefield under your control",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 27,
+     "rep_has_witness": true,
+     "rep_has_foil": null,
+     "notes": []
+    },
+    "P2": {
+     "question": "landfall payoffs that go wide",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 38,
+     "rep_has_witness": true,
+     "rep_has_foil": null,
+     "notes": []
+    },
+    "P3": {
+     "question": "landfall token makers",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 32,
+     "rep_has_witness": true,
+     "rep_has_foil": null,
+     "notes": []
+    },
+    "P4": {
+     "question": "I'm on a lands-matter build with a lot of extra land drops. I want payoffs that put bodies down every time a land shows up. Budget doesn't matter.",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 32,
+     "rep_has_witness": true,
+     "rep_has_foil": null,
+     "notes": []
+    },
+    "P5": {
+     "question": "abilities that make creature tokens whenever a land comes into play for you",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 28,
+     "rep_has_witness": true,
+     "rep_has_foil": null,
+     "notes": []
+    }
+   }
+  },
+  {
+   "id": "I07",
+   "S": "S4",
+   "H": "H00",
+   "D_declared": "D2",
+   "prov": "absent",
+   "inverted": false,
+   "n_compilations": 5,
+   "compile_fail": 0,
+   "declined": 0,
+   "invalid": 0,
+   "PC": 0.5207115091201701,
+   "PC_correct": 0.7680692691317726,
+   "agreement_at_witness": 0.8,
+   "foil_rate": 0.0,
+   "modal_share": 0.4,
+   "disagreement": 0.6,
+   "median_hits": 330,
+   "D_observed": "D3",
+   "witness_resolved": true,
+   "rungs": {
+    "P1": {
+     "question": "a single ability that draws cards and then makes you discard cards",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 76,
+     "rep_has_witness": false,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P2": {
+     "question": "looting effects",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 473,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P3": {
+     "question": "draw then discard",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 330,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P4": {
+     "question": "I need to fill my yard while digging for combo pieces. One spell that draws and then makes me pitch is right, rather than two separate effects. This is for Commander.",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 330,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P5": {
+     "question": "one ability that draws you cards and then makes you pitch cards",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 486,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    }
+   }
+  },
+  {
+   "id": "I08",
+   "S": "S4",
+   "H": "H03",
+   "D_declared": "D2",
+   "prov": "absent",
+   "inverted": false,
+   "n_compilations": 5,
+   "compile_fail": 0,
+   "declined": 0,
+   "invalid": 0,
+   "PC": 0.6038674755315694,
+   "PC_correct": 0.6038674755315694,
+   "agreement_at_witness": 1.0,
+   "foil_rate": 0.0,
+   "modal_share": 0.6,
+   "disagreement": 0.4,
+   "median_hits": 119,
+   "D_observed": "D2",
+   "witness_resolved": true,
+   "rungs": {
+    "P1": {
+     "question": "a single ability that makes each opponent lose life and gains you that much life",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 119,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P2": {
+     "question": "drain effects",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 287,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P3": {
+     "question": "lose life, you gain it",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 227,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P4": {
+     "question": "I want the classic drain: opponents lose life and I gain the same amount off one trigger. Two separate abilities that happen to do both things isn't the same thing. This is for a black devotion build.",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 119,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P5": {
+     "question": "one ability where every other player loses life and you gain that much",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 119,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    }
+   }
+  },
+  {
+   "id": "I09",
+   "S": "S5",
+   "H": "H00",
+   "D_declared": "D1",
+   "prov": "absent",
+   "inverted": false,
+   "n_compilations": 5,
+   "compile_fail": 0,
+   "declined": 0,
+   "invalid": 0,
+   "PC": 0.7050847457627119,
+   "PC_correct": 1.0,
+   "agreement_at_witness": 0.8,
+   "foil_rate": 0.0,
+   "modal_share": 0.8,
+   "disagreement": 0.19999999999999996,
+   "median_hits": 115,
+   "D_observed": "D2",
+   "witness_resolved": true,
+   "rungs": {
+    "P1": {
+     "question": "creatures with flying that also have an ability that triggers when they die",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 115,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P2": {
+     "question": "evasive bodies that leave something behind when they go",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 34,
+     "rep_has_witness": false,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P3": {
+     "question": "flying death triggers",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 115,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P4": {
+     "question": "I want fliers that still pay me off after they eat removal. The death trigger matters more than the size. Ideally in white.",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 115,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P5": {
+     "question": "creatures with flying that also have an ability triggering when they hit the bin",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 115,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    }
+   }
+  },
+  {
+   "id": "I10",
+   "S": "S5",
+   "H": "H00",
+   "D_declared": "D2",
+   "prov": "absent",
+   "inverted": false,
+   "n_compilations": 5,
+   "compile_fail": 0,
+   "declined": 0,
+   "invalid": 0,
+   "PC": 0.6125,
+   "PC_correct": 0.6125,
+   "agreement_at_witness": 1.0,
+   "foil_rate": 0.0,
+   "modal_share": 0.4,
+   "disagreement": 0.6,
+   "median_hits": 40,
+   "D_observed": "D2",
+   "witness_resolved": true,
+   "rungs": {
+    "P1": {
+     "question": "creatures that both create creature tokens and have a sacrifice outlet",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 40,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P2": {
+     "question": "commanders that make their own fodder and can eat it",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 20,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P3": {
+     "question": "token maker plus sac outlet",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 64,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P4": {
+     "question": "I want a single card that's a self-contained aristocrats engine - it makes the bodies and it can sacrifice them without needing another card. One card doing both halves, not two cards. This is for Commander.",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 64,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P5": {
+     "question": "creatures that make tokens and can also sac creatures themselves",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 40,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    }
+   }
+  },
+  {
+   "id": "I11",
+   "S": "S6",
+   "H": "H02",
+   "D_declared": "D2",
+   "prov": "covered",
+   "inverted": false,
+   "n_compilations": 5,
+   "compile_fail": 0,
+   "declined": 0,
+   "invalid": 0,
+   "PC": 0.42440518687580864,
+   "PC_correct": 0.42440518687580864,
+   "agreement_at_witness": 1.0,
+   "foil_rate": 0.0,
+   "modal_share": 0.6,
+   "disagreement": 0.4,
+   "median_hits": 250,
+   "D_observed": "D2",
+   "witness_resolved": true,
+   "rungs": {
+    "P1": {
+     "question": "cards that deal damage to each opponent",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 250,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P2": {
+     "question": "stuff that pings the whole table",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 633,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P3": {
+     "question": "damage to each opponent",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 250,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P4": {
+     "question": "I'm building a group-slug deck and I'd like anything that hits every opponent at once with damage. It needs to hit all of them, not just one - targeted burn doesn't help me here. Budget isn't a concern.",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 250,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P5": {
+     "question": "spells that burn every other player at the table",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 13,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    }
+   }
+  },
+  {
+   "id": "I12",
+   "S": "S6",
+   "H": "H02",
+   "D_declared": "D2",
+   "prov": "covered",
+   "inverted": false,
+   "n_compilations": 5,
+   "compile_fail": 0,
+   "declined": 0,
+   "invalid": 0,
+   "PC": 0.8057142857142857,
+   "PC_correct": 0.8057142857142857,
+   "agreement_at_witness": 1.0,
+   "foil_rate": 0.0,
+   "modal_share": 0.8,
+   "disagreement": 0.19999999999999996,
+   "median_hits": 36,
+   "D_observed": "D2",
+   "witness_resolved": true,
+   "rungs": {
+    "P1": {
+     "question": "cards that return all creatures to their owners' hands",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 36,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P2": {
+     "question": "mass bounce",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 70,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P3": {
+     "question": "bounce all creatures",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 36,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P4": {
+     "question": "My deck folds to a wide board. I want a reset that puts every creature back in hand instead of killing them, since I'd rather not give my opponents graveyard value. This is for Commander.",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 36,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P5": {
+     "question": "spells that send every creature back to its owner's hand",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 36,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    }
+   }
+  },
+  {
+   "id": "I13",
+   "S": "S7",
+   "H": "H07",
+   "D_declared": "D2",
+   "prov": "absent",
+   "inverted": false,
+   "n_compilations": 5,
+   "compile_fail": 0,
+   "declined": 0,
+   "invalid": 0,
+   "PC": 0.6750998974241619,
+   "PC_correct": 0.6750998974241619,
+   "agreement_at_witness": 1.0,
+   "foil_rate": 0.0,
+   "modal_share": 0.4,
+   "disagreement": 0.6,
+   "median_hits": 2959,
+   "D_observed": "D3",
+   "witness_resolved": true,
+   "rungs": {
+    "P1": {
+     "question": "creatures that create creature tokens without sacrificing anything",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 1486,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P2": {
+     "question": "token makers that don't eat their own board",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 2959,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P3": {
+     "question": "token makers, no sacrifice",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 2959,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P4": {
+     "question": "I want to go wide without needing fodder to feed in. Making bodies shouldn't cost me other bodies. This is for Commander.",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 3202,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P5": {
+     "question": "creatures that make creature tokens without sacrificing anything",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 1516,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    }
+   }
+  },
+  {
+   "id": "I14",
+   "S": "S7",
+   "H": "H07",
+   "D_declared": "D2",
+   "prov": "absent",
+   "inverted": false,
+   "n_compilations": 5,
+   "compile_fail": 0,
+   "declined": 0,
+   "invalid": 0,
+   "PC": 0.3106160672120778,
+   "PC_correct": 0.3106160672120778,
+   "agreement_at_witness": 1.0,
+   "foil_rate": 0.0,
+   "modal_share": 0.2,
+   "disagreement": 0.8,
+   "median_hits": 536,
+   "D_observed": "D3",
+   "witness_resolved": true,
+   "rungs": {
+    "P1": {
+     "question": "creature removal that does not target",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 453,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P2": {
+     "question": "removal that gets around hexproof",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 1550,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P3": {
+     "question": "non-targeted creature removal",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 563,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P4": {
+     "question": "My opponents keep resolving hexproof and ward threats I can't point anything at. I need answers that kill without choosing a target. Budget is a concern.",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 536,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P5": {
+     "question": "creature removal that does not choose a target",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 396,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    }
+   }
+  },
+  {
+   "id": "I15",
+   "S": "S8",
+   "H": "H04",
+   "D_declared": "D2",
+   "prov": "absent",
+   "inverted": false,
+   "n_compilations": 5,
+   "compile_fail": 0,
+   "declined": 0,
+   "invalid": 0,
+   "PC": 0.533453555332782,
+   "PC_correct": 0.533453555332782,
+   "agreement_at_witness": 1.0,
+   "foil_rate": 0.0,
+   "modal_share": 0.4,
+   "disagreement": 0.6,
+   "median_hits": 117,
+   "D_observed": "D2",
+   "witness_resolved": true,
+   "rungs": {
+    "P1": {
+     "question": "green sorceries that search your library for a land card",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 117,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P2": {
+     "question": "green ramp sorceries that go fetch a land",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 59,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P3": {
+     "question": "green land tutors",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 262,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P4": {
+     "question": "I want basic ramp in my green deck. A sorcery that digs a land out is what I'm after. This is for Commander.",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 60,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P5": {
+     "question": "green sorceries that search your deck for a land card",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 117,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    }
+   }
+  },
+  {
+   "id": "I16",
+   "S": "S8",
+   "H": "H06",
+   "D_declared": "D2",
+   "prov": "absent",
+   "inverted": false,
+   "n_compilations": 5,
+   "compile_fail": 0,
+   "declined": 0,
+   "invalid": 0,
+   "PC": 0.6849918320148308,
+   "PC_correct": 0.6849918320148308,
+   "agreement_at_witness": 1.0,
+   "foil_rate": 0.0,
+   "modal_share": 0.4,
+   "disagreement": 0.6,
+   "median_hits": 301,
+   "D_observed": "D3",
+   "witness_resolved": true,
+   "rungs": {
+    "P1": {
+     "question": "instants that create creature tokens",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 270,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P2": {
+     "question": "token makers I can drop mid-combat",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 301,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P3": {
+     "question": "instant-speed token makers",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 905,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P4": {
+     "question": "I want to make blockers during my opponent's attack instead of telegraphing them on my own turn. Sorceries are too slow. Ideally in white.",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 301,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P5": {
+     "question": "instants that make creature tokens",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 270,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    }
+   }
+  },
+  {
+   "id": "I17",
+   "S": "S9",
+   "H": "H00",
+   "D_declared": "D1",
+   "prov": "absent",
+   "inverted": false,
+   "n_compilations": 5,
+   "compile_fail": 0,
+   "declined": 0,
+   "invalid": 0,
+   "PC": 1.0,
+   "PC_correct": 1.0,
+   "agreement_at_witness": 1.0,
+   "foil_rate": 0.0,
+   "modal_share": 1.0,
+   "disagreement": 0.0,
+   "median_hits": 30,
+   "D_observed": "D2",
+   "witness_resolved": true,
+   "rungs": {
+    "P1": {
+     "question": "creatures with both deathtouch and lifelink",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 30,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P2": {
+     "question": "creatures that trade up and stabilise you doing it",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 30,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P3": {
+     "question": "deathtouch lifelink creatures",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 30,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P4": {
+     "question": "I want a blocker nobody wants to attack into that also pulls my life total back up. Both abilities on one body. Budget matters.",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 30,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P5": {
+     "question": "creatures that have both deathtouch and lifelink",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 30,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    }
+   }
+  },
+  {
+   "id": "I18",
+   "S": "S9",
+   "H": "H05",
+   "D_declared": "D3",
+   "prov": "absent",
+   "inverted": false,
+   "n_compilations": 5,
+   "compile_fail": 0,
+   "declined": 0,
+   "invalid": 0,
+   "PC": 1.0,
+   "PC_correct": 1.0,
+   "agreement_at_witness": 1.0,
+   "foil_rate": 0.0,
+   "modal_share": 1.0,
+   "disagreement": 0.0,
+   "median_hits": 2454,
+   "D_observed": "D3",
+   "witness_resolved": true,
+   "rungs": {
+    "P1": {
+     "question": "cards that provide repeatable card draw every turn rather than a one-time draw",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 2454,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P2": {
+     "question": "draw engines, not cantrips",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 2454,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P3": {
+     "question": "repeatable draw",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 2454,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P4": {
+     "question": "My deck runs out of gas around turn six. I'm looking for something that keeps drawing me extra cards every turn on its own, not a one-shot that refills once and then does nothing. Budget matters.",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 2454,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P5": {
+     "question": "permanents that keep drawing you extra cards each turn",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 2454,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    }
+   }
+  },
+  {
+   "id": "I19",
+   "S": "S9",
+   "H": "H01",
+   "D_declared": "D3",
+   "prov": "absent",
+   "inverted": false,
+   "n_compilations": 5,
+   "compile_fail": 0,
+   "declined": 0,
+   "invalid": 0,
+   "PC": 0.8619136960600375,
+   "PC_correct": 0.8619136960600375,
+   "agreement_at_witness": 1.0,
+   "foil_rate": 0.0,
+   "modal_share": 0.8,
+   "disagreement": 0.19999999999999996,
+   "median_hits": 533,
+   "D_observed": "D3",
+   "witness_resolved": true,
+   "rungs": {
+    "P1": {
+     "question": "cards with an ability that lets you sacrifice a creature as a cost",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 349,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P2": {
+     "question": "sac outlets",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 533,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P3": {
+     "question": "sacrifice outlets",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 533,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P4": {
+     "question": "I'm on an aristocrats build and I need a way to throw my own creatures away at will, ideally repeatable and free. This is for Commander.",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 533,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P5": {
+     "question": "cards with an ability letting you sacrifice a creature to pay for it",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 533,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    }
+   }
+  },
+  {
+   "id": "I20",
+   "S": "S3",
+   "H": "H04",
+   "D_declared": "D2",
+   "prov": "absent",
+   "inverted": false,
+   "n_compilations": 5,
+   "compile_fail": 0,
+   "declined": 0,
+   "invalid": 0,
+   "PC": 0.43900682850573236,
+   "PC_correct": 0.623274470596738,
+   "agreement_at_witness": 0.8,
+   "foil_rate": 0.0,
+   "modal_share": 0.4,
+   "disagreement": 0.6,
+   "median_hits": 403,
+   "D_observed": "D3",
+   "witness_resolved": true,
+   "rungs": {
+    "P1": {
+     "question": "cards that return creature cards from a graveyard to the battlefield",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 412,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P2": {
+     "question": "reanimation spells",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 106,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P3": {
+     "question": "reanimate creatures",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 403,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P4": {
+     "question": "I want to cheat fatties into play after pitching them early. Getting them onto the board matters, not back to my hand. Budget is a concern.",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 82,
+     "rep_has_witness": false,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P5": {
+     "question": "cards that return creature cards from a bin into play",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 403,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    }
+   }
+  },
+  {
+   "id": "I21",
+   "S": "S2",
+   "H": "H04",
+   "D_declared": "D1",
+   "prov": "absent",
+   "inverted": false,
+   "n_compilations": 5,
+   "compile_fail": 0,
+   "declined": 0,
+   "invalid": 0,
+   "PC": 0.6445396145610278,
+   "PC_correct": 0.6445396145610278,
+   "agreement_at_witness": 1.0,
+   "foil_rate": 0.0,
+   "modal_share": 0.8,
+   "disagreement": 0.19999999999999996,
+   "median_hits": 52,
+   "D_observed": "D2",
+   "witness_resolved": true,
+   "rungs": {
+    "P1": {
+     "question": "cards that search your library for a creature card and put it into your hand",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 52,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P2": {
+     "question": "creature tutors that find it to hand",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 52,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P3": {
+     "question": "creature tutor to hand",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 52,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P4": {
+     "question": "I need consistency finding my combo piece. I want it in hand so I can cast it on my own terms rather than dumped straight onto the board. This is for Commander.",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 467,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P5": {
+     "question": "cards that search your deck for a creature card and put it into your hand",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 52,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    }
+   }
+  },
+  {
+   "id": "I22",
+   "S": "S8",
+   "H": "H06",
+   "D_declared": "D3",
+   "prov": "absent",
+   "inverted": false,
+   "n_compilations": 5,
+   "compile_fail": 0,
+   "declined": 0,
+   "invalid": 0,
+   "PC": 0.5542994010287515,
+   "PC_correct": 0.9153736772486772,
+   "agreement_at_witness": 0.6,
+   "foil_rate": 0.0,
+   "modal_share": 0.2,
+   "disagreement": 0.8,
+   "median_hits": 448,
+   "D_observed": "D3",
+   "witness_resolved": true,
+   "rungs": {
+    "P1": {
+     "question": "creature removal that can be cast at instant speed",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 393,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P2": {
+     "question": "removal I can hold up",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 450,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P3": {
+     "question": "instant-speed removal",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 448,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P4": {
+     "question": "I'd rather not tap out on my own turn - I want to kill a creature during someone else's turn, ideally at the end of their turn. Sorceries don't work for this. Any colour is fine.",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 602,
+     "rep_has_witness": false,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P5": {
+     "question": "spells that kill a creature and can be cast on someone else's turn",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 205,
+     "rep_has_witness": false,
+     "rep_has_foil": false,
+     "notes": []
+    }
+   }
+  },
+  {
+   "id": "I23",
+   "S": "S9",
+   "H": "H06",
+   "D_declared": "D2",
+   "prov": "absent",
+   "inverted": false,
+   "n_compilations": 5,
+   "compile_fail": 0,
+   "declined": 0,
+   "invalid": 0,
+   "PC": 0.9746102449888642,
+   "PC_correct": 0.9746102449888642,
+   "agreement_at_witness": 1.0,
+   "foil_rate": 0.0,
+   "modal_share": 0.6,
+   "disagreement": 0.4,
+   "median_hits": 449,
+   "D_observed": "D3",
+   "witness_resolved": true,
+   "rungs": {
+    "P1": {
+     "question": "creatures you can cast at instant speed",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 449,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P2": {
+     "question": "creatures you can ambush blockers with at end of turn",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 449,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P3": {
+     "question": "instant-speed creatures",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 430,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P4": {
+     "question": "I like holding up mana and deploying threats on the end step. A creature I can only cast in my own main phase doesn't do that. Ideally in blue.",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 430,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P5": {
+     "question": "creatures you can cast on someone else's turn",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 449,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    }
+   }
+  },
+  {
+   "id": "I24",
+   "S": "S2",
+   "H": "H08",
+   "D_declared": "D2",
+   "prov": "absent",
+   "inverted": false,
+   "n_compilations": 5,
+   "compile_fail": 0,
+   "declined": 0,
+   "invalid": 0,
+   "PC": 0.543558037898613,
+   "PC_correct": 0.543558037898613,
+   "agreement_at_witness": 1.0,
+   "foil_rate": 0.2,
+   "modal_share": 0.4,
+   "disagreement": 0.6,
+   "median_hits": 299,
+   "D_observed": "D2",
+   "witness_resolved": true,
+   "rungs": {
+    "P1": {
+     "question": "cards that draw three or more cards at once",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 299,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P2": {
+     "question": "big refuels",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 669,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P3": {
+     "question": "draw three or more",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 297,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P4": {
+     "question": "I run out of gas by turn six and need one spell that refills my hand in a single go, not one that trickles cards over time. Budget doesn't matter.",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 551,
+     "rep_has_witness": true,
+     "rep_has_foil": true,
+     "notes": []
+    },
+    "P5": {
+     "question": "cards that draw you three or more cards at once",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 297,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    }
+   }
+  },
+  {
+   "id": "I25",
+   "S": "S2",
+   "H": "H08",
+   "D_declared": "D1",
+   "prov": "absent",
+   "inverted": false,
+   "n_compilations": 5,
+   "compile_fail": 0,
+   "declined": 0,
+   "invalid": 0,
+   "PC": 0.32015713287927894,
+   "PC_correct": 0.32015713287927894,
+   "agreement_at_witness": 1.0,
+   "foil_rate": 0.2,
+   "modal_share": 0.4,
+   "disagreement": 0.6,
+   "median_hits": 28,
+   "D_observed": "D2",
+   "witness_resolved": true,
+   "rungs": {
+    "P1": {
+     "question": "creatures whose power is defined by the number of creature cards in your graveyard",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 5,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P2": {
+     "question": "creatures that get bigger as your yard fills up",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 28,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P3": {
+     "question": "graveyard-count creatures",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 43,
+     "rep_has_witness": true,
+     "rep_has_foil": true,
+     "notes": []
+    },
+    "P4": {
+     "question": "I'm on a self-mill build and I want a threat whose size scales with how much I've dumped. It should read off my own pile. This is for Commander.",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 28,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P5": {
+     "question": "creatures whose power is set by how many creature cards are in your bin",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 5,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    }
+   }
+  },
+  {
+   "id": "I26",
+   "S": null,
+   "H": "H09",
+   "D_declared": null,
+   "prov": "absent",
+   "inverted": true,
+   "n_compilations": 5,
+   "compile_fail": 0,
+   "declined": 0,
+   "invalid": 0,
+   "PC": 0.9333621808740805,
+   "PC_correct": null,
+   "agreement_at_witness": null,
+   "foil_rate": null,
+   "modal_share": 0.8,
+   "disagreement": 0.19999999999999996,
+   "median_hits": 1926,
+   "D_observed": "D3",
+   "witness_resolved": null,
+   "rungs": {
+    "P1": {
+     "question": "cards that exile things",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 1926,
+     "rep_has_witness": null,
+     "rep_has_foil": null,
+     "notes": []
+    },
+    "P2": {
+     "question": "exile stuff",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 1926,
+     "rep_has_witness": null,
+     "rep_has_foil": null,
+     "notes": []
+    },
+    "P3": {
+     "question": "exile effects",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 2311,
+     "rep_has_witness": null,
+     "rep_has_foil": null,
+     "notes": []
+    },
+    "P4": {
+     "question": "I want cards that exile. There's a lot of graveyard recursion in my playgroup so exiling comes up a lot. What's out there?",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 1926,
+     "rep_has_witness": null,
+     "rep_has_foil": null,
+     "notes": []
+    },
+    "P5": {
+     "question": "cards that remove things from the game",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 1926,
+     "rep_has_witness": null,
+     "rep_has_foil": null,
+     "notes": []
+    }
+   }
+  },
+  {
+   "id": "I27",
+   "S": null,
+   "H": "H09",
+   "D_declared": null,
+   "prov": "absent",
+   "inverted": true,
+   "n_compilations": 5,
+   "compile_fail": 0,
+   "declined": 0,
+   "invalid": 0,
+   "PC": 1.0,
+   "PC_correct": null,
+   "agreement_at_witness": null,
+   "foil_rate": null,
+   "modal_share": 1.0,
+   "disagreement": 0.0,
+   "median_hits": 1221,
+   "D_observed": "D3",
+   "witness_resolved": null,
+   "rungs": {
+    "P1": {
+     "question": "efficient removal",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 1221,
+     "rep_has_witness": null,
+     "rep_has_foil": null,
+     "notes": []
+    },
+    "P2": {
+     "question": "the good removal",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 1221,
+     "rep_has_witness": null,
+     "rep_has_foil": null,
+     "notes": []
+    },
+    "P3": {
+     "question": "good removal",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 1221,
+     "rep_has_witness": null,
+     "rep_has_foil": null,
+     "notes": []
+    },
+    "P4": {
+     "question": "I need removal for my deck but I'm not sure what counts as good these days. My playgroup runs a lot of different threats. Budget is a concern.",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 1221,
+     "rep_has_witness": null,
+     "rep_has_foil": null,
+     "notes": []
+    },
+    "P5": {
+     "question": "strong removal spells",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 1221,
+     "rep_has_witness": null,
+     "rep_has_foil": null,
+     "notes": []
+    }
+   }
+  },
+  {
+   "id": "I28",
+   "S": null,
+   "H": "H09",
+   "D_declared": null,
+   "prov": "absent",
+   "inverted": true,
+   "n_compilations": 5,
+   "compile_fail": 0,
+   "declined": 0,
+   "invalid": 0,
+   "PC": 1.0,
+   "PC_correct": null,
+   "agreement_at_witness": null,
+   "foil_rate": null,
+   "modal_share": 1.0,
+   "disagreement": 0.0,
+   "median_hits": 1582,
+   "D_observed": "D3",
+   "witness_resolved": null,
+   "rungs": {
+    "P1": {
+     "question": "cards that care about creatures dying",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 1582,
+     "rep_has_witness": null,
+     "rep_has_foil": null,
+     "notes": []
+    },
+    "P2": {
+     "question": "death-matters cards",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 1582,
+     "rep_has_witness": null,
+     "rep_has_foil": null,
+     "notes": []
+    },
+    "P3": {
+     "question": "creatures-dying payoffs",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 1582,
+     "rep_has_witness": null,
+     "rep_has_foil": null,
+     "notes": []
+    },
+    "P4": {
+     "question": "I'm building around my creatures dying. Anything that interacts with that is interesting to me. This is for Commander.",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 1582,
+     "rep_has_witness": null,
+     "rep_has_foil": null,
+     "notes": []
+    },
+    "P5": {
+     "question": "cards that care about creatures hitting the bin",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 1582,
+     "rep_has_witness": null,
+     "rep_has_foil": null,
+     "notes": []
+    }
+   }
+  },
+  {
+   "id": "I29",
+   "S": null,
+   "H": "H09",
+   "D_declared": null,
+   "prov": "absent",
+   "inverted": true,
+   "n_compilations": 5,
+   "compile_fail": 0,
+   "declined": 0,
+   "invalid": 0,
+   "PC": 0.7441922563417891,
+   "PC_correct": null,
+   "agreement_at_witness": null,
+   "foil_rate": null,
+   "modal_share": 0.6,
+   "disagreement": 0.4,
+   "median_hits": 585,
+   "D_observed": "D3",
+   "witness_resolved": null,
+   "rungs": {
+    "P1": {
+     "question": "cards that copy things",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 585,
+     "rep_has_witness": null,
+     "rep_has_foil": null,
+     "notes": []
+    },
+    "P2": {
+     "question": "cards that clone stuff",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 516,
+     "rep_has_witness": null,
+     "rep_has_foil": null,
+     "notes": []
+    },
+    "P3": {
+     "question": "copy effects",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 749,
+     "rep_has_witness": null,
+     "rep_has_foil": null,
+     "notes": []
+    },
+    "P4": {
+     "question": "I like copying things, it's my favourite thing to do in Magic. What's out there? Budget doesn't matter.",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 585,
+     "rep_has_witness": null,
+     "rep_has_foil": null,
+     "notes": []
+    },
+    "P5": {
+     "question": "cards that duplicate things",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 585,
+     "rep_has_witness": null,
+     "rep_has_foil": null,
+     "notes": []
+    }
+   }
+  },
+  {
+   "id": "I30",
+   "S": "S3",
+   "H": "H10",
+   "D_declared": "D2",
+   "prov": "absent",
+   "inverted": false,
+   "n_compilations": 5,
+   "compile_fail": 0,
+   "declined": 0,
+   "invalid": 0,
+   "PC": 0.3858362895808698,
+   "PC_correct": 0.3858362895808698,
+   "agreement_at_witness": 1.0,
+   "foil_rate": 0.0,
+   "modal_share": 0.4,
+   "disagreement": 0.6,
+   "median_hits": 19,
+   "D_observed": "D1",
+   "witness_resolved": true,
+   "rungs": {
+    "P1": {
+     "question": "creatures that create a token whenever you cast an instant or sorcery spell",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 16,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P2": {
+     "question": "spellslinger payoffs that make bodies",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 177,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P3": {
+     "question": "token on spellcast",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 172,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P4": {
+     "question": "I'm on a build with a lot of cheap burn and cantrips, and I want a creature that turns each of those into a body. Ideally in red.",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 16,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P5": {
+     "question": "creatures that make a token whenever you cast an instant or sorcery",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 19,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    }
+   }
+  },
+  {
+   "id": "I31",
+   "S": "S5",
+   "H": "H10",
+   "D_declared": "D1",
+   "prov": "absent",
+   "inverted": false,
+   "n_compilations": 5,
+   "compile_fail": 0,
+   "declined": 0,
+   "invalid": 0,
+   "PC": 0.30428571428571427,
+   "PC_correct": 1.0,
+   "agreement_at_witness": 0.6,
+   "foil_rate": 0.0,
+   "modal_share": 0.6,
+   "disagreement": 0.4,
+   "median_hits": 15,
+   "D_observed": "D1",
+   "witness_resolved": true,
+   "rungs": {
+    "P1": {
+     "question": "permanents that untap during each other player's untap step",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 15,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P2": {
+     "question": "cards that let you act like it's your turn every turn",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 56,
+     "rep_has_witness": false,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P3": {
+     "question": "untap on everyone's turn",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 15,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P4": {
+     "question": "I want to use my tap abilities more than once per turn cycle. Untapping on everybody's turn is the effect. This is for Commander.",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 0,
+     "rep_has_witness": false,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P5": {
+     "question": "permanents that untap during every other player's untap step",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 15,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    }
+   }
+  },
+  {
+   "id": "I32",
+   "S": "S4",
+   "H": "H10",
+   "D_declared": "D1",
+   "prov": "absent",
+   "inverted": false,
+   "n_compilations": 5,
+   "compile_fail": 0,
+   "declined": 0,
+   "invalid": 0,
+   "PC": 0.9522693032015066,
+   "PC_correct": 0.9522693032015066,
+   "agreement_at_witness": 1.0,
+   "foil_rate": 0.0,
+   "modal_share": 0.6,
+   "disagreement": 0.4,
+   "median_hits": 53,
+   "D_observed": "D2",
+   "witness_resolved": true,
+   "rungs": {
+    "P1": {
+     "question": "cards that let you cast spells from the top of your library",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 54,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P2": {
+     "question": "top-of-deck advantage engines",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 53,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P3": {
+     "question": "play off the top",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 59,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P4": {
+     "question": "I want extra card access without actually drawing. Casting straight off the top is the effect I'm after. Budget is a concern.",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 53,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P5": {
+     "question": "cards that let you cast spells off the top of your deck",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 53,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    }
+   }
+  },
+  {
+   "id": "I33",
+   "S": null,
+   "H": "H11",
+   "D_declared": null,
+   "prov": "absent",
+   "inverted": false,
+   "n_compilations": 5,
+   "compile_fail": 5,
+   "declined": 5,
+   "invalid": 0,
+   "PC": null,
+   "PC_correct": null,
+   "agreement_at_witness": null,
+   "foil_rate": null,
+   "modal_share": null,
+   "disagreement": null,
+   "median_hits": null,
+   "D_observed": null,
+   "witness_resolved": null,
+   "rungs": {
+    "P1": {
+     "question": "what is the best commander for a budget deck",
+     "n_ok": 0,
+     "SC": null,
+     "rep_size": null,
+     "rep_has_witness": null,
+     "rep_has_foil": null,
+     "notes": [
+      {
+       "sample": 0,
+       "error": [
+        "subjective/recommendation question, not a mechanical card search"
+       ],
+       "declined": true
+      }
+     ]
+    },
+    "P2": {
+     "question": "best cheap commander to build around",
+     "n_ok": 0,
+     "SC": null,
+     "rep_size": null,
+     "rep_has_witness": null,
+     "rep_has_foil": null,
+     "notes": [
+      {
+       "sample": 0,
+       "error": [
+        "subjective recommendation, not a mechanical card-search predicate"
+       ],
+       "declined": true
+      }
+     ]
+    },
+    "P3": {
+     "question": "best budget commander",
+     "n_ok": 0,
+     "SC": null,
+     "rep_size": null,
+     "rep_has_witness": null,
+     "rep_has_foil": null,
+     "notes": [
+      {
+       "sample": 0,
+       "error": [
+        "subjective/format ranking, not a mechanical card-search predicate"
+       ],
+       "declined": true
+      }
+     ]
+    },
+    "P4": {
+     "question": "I'm new to Commander and I have about thirty dollars. Which commander should I build? I like green.",
+     "n_ok": 0,
+     "SC": null,
+     "rep_size": null,
+     "rep_has_witness": null,
+     "rep_has_foil": null,
+     "notes": [
+      {
+       "sample": 0,
+       "error": [
+        "deckbuilding/budget recommendation, not a mechanical card search"
+       ],
+       "declined": true
+      }
+     ]
+    },
+    "P5": {
+     "question": "which commander is best for a cheap deck",
+     "n_ok": 0,
+     "SC": null,
+     "rep_size": null,
+     "rep_has_witness": null,
+     "rep_has_foil": null,
+     "notes": [
+      {
+       "sample": 0,
+       "error": [
+        "not a mechanical card search: subjective commander/budget recommendation"
+       ],
+       "declined": true
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "I34",
+   "S": null,
+   "H": "H11",
+   "D_declared": null,
+   "prov": "absent",
+   "inverted": false,
+   "n_compilations": 5,
+   "compile_fail": 5,
+   "declined": 5,
+   "invalid": 0,
+   "PC": null,
+   "PC_correct": null,
+   "agreement_at_witness": null,
+   "foil_rate": null,
+   "modal_share": null,
+   "disagreement": null,
+   "median_hits": null,
+   "D_observed": null,
+   "witness_resolved": null,
+   "rungs": {
+    "P1": {
+     "question": "cards that are banned in Modern",
+     "n_ok": 0,
+     "SC": null,
+     "rep_size": null,
+     "rep_has_witness": null,
+     "rep_has_foil": null,
+     "notes": [
+      {
+       "sample": 0,
+       "error": [
+        "format legality is not represented in the DSL"
+       ],
+       "declined": true
+      }
+     ]
+    },
+    "P2": {
+     "question": "what's on the Modern ban list",
+     "n_ok": 0,
+     "SC": null,
+     "rep_size": null,
+     "rep_has_witness": null,
+     "rep_has_foil": null,
+     "notes": [
+      {
+       "sample": 0,
+       "error": [
+        "format ban-list lookup, not a mechanical card search"
+       ],
+       "declined": true
+      }
+     ]
+    },
+    "P3": {
+     "question": "Modern bans",
+     "n_ok": 0,
+     "SC": null,
+     "rep_size": null,
+     "rep_has_witness": null,
+     "rep_has_foil": null,
+     "notes": [
+      {
+       "sample": 0,
+       "error": [
+        "asks about format legality/banlist, not card mechanics"
+       ],
+       "declined": true
+      }
+     ]
+    },
+    "P4": {
+     "question": "I'm putting a Modern deck together and want to avoid anything illegal. Which cards can't I play? Budget matters.",
+     "n_ok": 0,
+     "SC": null,
+     "rep_size": null,
+     "rep_has_witness": null,
+     "rep_has_foil": null,
+     "notes": [
+      {
+       "sample": 0,
+       "error": [
+        "format legality question; DSL has no legality/banlist predicate"
+       ],
+       "declined": true
+      }
+     ]
+    },
+    "P5": {
+     "question": "cards not legal in Modern because they are banned",
+     "n_ok": 0,
+     "SC": null,
+     "rep_size": null,
+     "rep_has_witness": null,
+     "rep_has_foil": null,
+     "notes": [
+      {
+       "sample": 0,
+       "error": [
+        "format legality/ban list is not part of the ability-graph DSL"
+       ],
+       "declined": true
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "I35",
+   "S": null,
+   "H": "H12",
+   "D_declared": null,
+   "prov": "absent",
+   "inverted": false,
+   "n_compilations": 5,
+   "compile_fail": 0,
+   "declined": 0,
+   "invalid": 0,
+   "PC": 0.6,
+   "PC_correct": null,
+   "agreement_at_witness": null,
+   "foil_rate": null,
+   "modal_share": 0.8,
+   "disagreement": 0.19999999999999996,
+   "median_hits": 0,
+   "D_observed": "D1",
+   "witness_resolved": null,
+   "rungs": {
+    "P1": {
+     "question": "cards that let you untap during your opponent's upkeep",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 0,
+     "rep_has_witness": null,
+     "rep_has_foil": null,
+     "notes": []
+    },
+    "P2": {
+     "question": "cards that untap you on their upkeep",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 28,
+     "rep_has_witness": null,
+     "rep_has_foil": null,
+     "notes": []
+    },
+    "P3": {
+     "question": "untap in opponent upkeep",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 0,
+     "rep_has_witness": null,
+     "rep_has_foil": null,
+     "notes": []
+    },
+    "P4": {
+     "question": "I want to untap my permanents during my opponent's upkeep so I can respond with them. Does that exist? This is for Commander.",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 0,
+     "rep_has_witness": null,
+     "rep_has_foil": null,
+     "notes": []
+    },
+    "P5": {
+     "question": "cards that let you untap during your opponent's upkeep step",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 0,
+     "rep_has_witness": null,
+     "rep_has_foil": null,
+     "notes": []
+    }
+   }
+  },
+  {
+   "id": "I36",
+   "S": null,
+   "H": "H12",
+   "D_declared": "D1",
+   "prov": "absent",
+   "inverted": false,
+   "n_compilations": 5,
+   "compile_fail": 0,
+   "declined": 0,
+   "invalid": 0,
+   "PC": 0.6,
+   "PC_correct": null,
+   "agreement_at_witness": null,
+   "foil_rate": null,
+   "modal_share": 0.8,
+   "disagreement": 0.19999999999999996,
+   "median_hits": 6,
+   "D_observed": "D1",
+   "witness_resolved": null,
+   "rungs": {
+    "P1": {
+     "question": "sorceries with flash",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 6,
+     "rep_has_witness": null,
+     "rep_has_foil": null,
+     "notes": []
+    },
+    "P2": {
+     "question": "sorceries you can cast at instant speed",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 6,
+     "rep_has_witness": null,
+     "rep_has_foil": null,
+     "notes": []
+    },
+    "P3": {
+     "question": "flash sorceries",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 6,
+     "rep_has_witness": null,
+     "rep_has_foil": null,
+     "notes": []
+    },
+    "P4": {
+     "question": "I'm looking for sorceries that have flash so I can cast them on my opponent's turn. Does that exist, and if so which ones are worth playing?",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 6,
+     "rep_has_witness": null,
+     "rep_has_foil": null,
+     "notes": []
+    },
+    "P5": {
+     "question": "sorcery-speed spells that have flash",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 0,
+     "rep_has_witness": null,
+     "rep_has_foil": null,
+     "notes": []
+    }
+   }
+  },
+  {
+   "id": "I37",
+   "S": "S6",
+   "H": "H03",
+   "D_declared": "D1",
+   "prov": "absent",
+   "inverted": false,
+   "n_compilations": 5,
+   "compile_fail": 0,
+   "declined": 0,
+   "invalid": 0,
+   "PC": 0.9475,
+   "PC_correct": null,
+   "agreement_at_witness": 0.0,
+   "foil_rate": 0.0,
+   "modal_share": 0.6,
+   "disagreement": 0.4,
+   "median_hits": 73,
+   "D_observed": "D2",
+   "witness_resolved": true,
+   "rungs": {
+    "P1": {
+     "question": "cards that make each player draw an additional card",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 80,
+     "rep_has_witness": false,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P2": {
+     "question": "symmetrical draw, group hug style",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 73,
+     "rep_has_witness": false,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P3": {
+     "question": "everyone draws extra",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 80,
+     "rep_has_witness": false,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P4": {
+     "question": "I'm on a group hug build where the whole table benefits. I want extra draw for everyone, not just me. Budget doesn't matter.",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 73,
+     "rep_has_witness": false,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P5": {
+     "question": "cards that make every player draw an extra card",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 73,
+     "rep_has_witness": false,
+     "rep_has_foil": false,
+     "notes": []
+    }
+   }
+  },
+  {
+   "id": "I38",
+   "S": "S3",
+   "H": "H00",
+   "D_declared": "D3",
+   "prov": "absent",
+   "inverted": false,
+   "n_compilations": 5,
+   "compile_fail": 0,
+   "declined": 0,
+   "invalid": 0,
+   "PC": 1.0,
+   "PC_correct": 1.0,
+   "agreement_at_witness": 1.0,
+   "foil_rate": null,
+   "modal_share": 1.0,
+   "disagreement": 0.0,
+   "median_hits": 3800,
+   "D_observed": "D3",
+   "witness_resolved": true,
+   "rungs": {
+    "P1": {
+     "question": "creatures with an ability that triggers when they enter the battlefield",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 3800,
+     "rep_has_witness": true,
+     "rep_has_foil": null,
+     "notes": []
+    },
+    "P2": {
+     "question": "creatures with enter-the-battlefield value",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 3800,
+     "rep_has_witness": true,
+     "rep_has_foil": null,
+     "notes": []
+    },
+    "P3": {
+     "question": "ETB creatures",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 3800,
+     "rep_has_witness": true,
+     "rep_has_foil": null,
+     "notes": []
+    },
+    "P4": {
+     "question": "I'm building a blink deck so basically every creature needs to do something when it lands. This is for Commander.",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 3800,
+     "rep_has_witness": true,
+     "rep_has_foil": null,
+     "notes": []
+    },
+    "P5": {
+     "question": "creatures with an ability that triggers when they come into play",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 3800,
+     "rep_has_witness": true,
+     "rep_has_foil": null,
+     "notes": []
+    }
+   }
+  },
+  {
+   "id": "I39",
+   "S": "S1",
+   "H": "H03",
+   "D_declared": "D3",
+   "prov": "absent",
+   "inverted": false,
+   "n_compilations": 5,
+   "compile_fail": 0,
+   "declined": 0,
+   "invalid": 0,
+   "PC": 0.8410546139359698,
+   "PC_correct": 0.8410546139359698,
+   "agreement_at_witness": 1.0,
+   "foil_rate": 0.0,
+   "modal_share": 0.8,
+   "disagreement": 0.19999999999999996,
+   "median_hits": 640,
+   "D_observed": "D3",
+   "witness_resolved": true,
+   "rungs": {
+    "P1": {
+     "question": "cards that destroy target creature",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 640,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P2": {
+     "question": "point-and-kill removal",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 1062,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P3": {
+     "question": "destroy a creature",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 640,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P4": {
+     "question": "I just need clean single-target creature kill. Something I can point at the scariest thing on board. Ideally in black.",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 640,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P5": {
+     "question": "cards that destroy a chosen creature",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 640,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    }
+   }
+  },
+  {
+   "id": "I40",
+   "S": "S2",
+   "H": "H02",
+   "D_declared": "D2",
+   "prov": "adjacent",
+   "inverted": false,
+   "n_compilations": 5,
+   "compile_fail": 0,
+   "declined": 0,
+   "invalid": 0,
+   "PC": 0.5187018744652718,
+   "PC_correct": 0.5187018744652718,
+   "agreement_at_witness": 1.0,
+   "foil_rate": 0.0,
+   "modal_share": 0.4,
+   "disagreement": 0.6,
+   "median_hits": 46,
+   "D_observed": "D2",
+   "witness_resolved": true,
+   "rungs": {
+    "P1": {
+     "question": "cards that prevent damage that would be dealt to you",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 46,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P2": {
+     "question": "cards that let you fog damage aimed at your face",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 86,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P3": {
+     "question": "damage prevention for yourself",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 10,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P4": {
+     "question": "I keep dying to burn and I'd like something that stops damage pointed at me specifically, not at my creatures. Repeatable would be ideal but I'll take one-shots. Ideally in white.",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 52,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P5": {
+     "question": "cards that stop damage that would hit you",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 46,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    }
+   }
+  }
+ ]
+}

@@ -84,10 +84,13 @@ Conventions from the Forge card-script data this runs over:
   kind, pin the value: {"ValidPlayers": {"icontains": "Opponent"}}, not
   {"ValidPlayers": true}. The loose form is why "damage to each opponent"
   returns board wipes that damage each *creature*.
-- Where the PARAM VALUES section below lists a parameter's actual values,
-  prefer an exact match from that list over a substring guess. "Each opponent"
-  is Defined "Player.Opponent" or "Opponent"; a substring match on "Opponent"
-  also catches single-opponent and triggered-defender forms.
+- Scope often lives in the TRIGGER, not in the effect node's params. Values
+  like Self, You, Remembered, Targeted and TriggeredPlayer are contextual —
+  they resolve at runtime and say nothing about how many players are affected.
+  "Each player draws" is frequently a per-player trigger whose Draw node reads
+  Defined$ TriggeredPlayer, so pinning a player value on the effect misses it.
+  Match the trigger's structure for scope; pin values only for genuinely
+  absolute ones such as Player.Opponent.
 """
 
 EXAMPLES = [
@@ -145,7 +148,8 @@ def _param_values(path: str = "research/data/param_values.json") -> dict:
 
 
 def build_system_prompt(onto_data: dict, top_n: int = 80,
-                        param_keys_n: int | None = None) -> str:
+                        param_keys_n: int | None = None,
+                        param_values: bool = False) -> str:
     """Build the compiler's system prompt from the mined ontology.
 
     `param_keys_n` truncates the parameter vocabulary; None emits all of it.
@@ -171,11 +175,25 @@ def build_system_prompt(onto_data: dict, top_n: int = 80,
         f"Keywords: {top(onto_data['keywords'], 80)}\n"
         f"Common params: {top(onto_data['param_keys'], param_keys_n)}\n"
     )
-    # Parameter VALUE spaces. Naming the parameters was not enough: the compiler
-    # still had to guess what they contain, and fell back on `true` and loose
-    # substring matches. Only parameters whose top values explain most of their
-    # uses are listed — see eval/consistency/build_param_values.py.
-    pv = _param_values()
+    # Parameter VALUE spaces — OFF BY DEFAULT, reverted under its own rule.
+    #
+    # Arm D measured this and it did exactly what it was designed to do on
+    # precision: foil rate 0.110 -> 0.014, and the pre-registered R5 target
+    # (H03 scope) improved 0.620 -> 0.659. But agreement@witness fell
+    # 0.963 -> 0.912, tripping the revert condition committed in
+    # eval/consistency/C3b-prediction.md before the run.
+    #
+    # Root cause, from I37: Howling Mine encodes "each player draws" as
+    # Draw/Defined$ TriggeredPlayer — the SCOPE lives in the trigger, not the
+    # node. `Defined`'s most frequent values (Self, You, Remembered, Targeted,
+    # TriggeredPlayer) are CONTEXTUAL: they resolve at runtime and carry no
+    # scope on their own. Listing them taught the compiler to pin exact values
+    # where a structural match was needed, so it stopped finding those cards.
+    #
+    # The data and the miner are kept; what is missing is a contextual-vs-
+    # absolute annotation on the values. Re-enable with param_values=True once
+    # arm E has tested that. See eval/consistency/C3b-results.md.
+    pv = _param_values() if param_values else {}
     if pv:
         lines = [f"  {k}: {', '.join(d['values'])}"
                  for k, d in sorted(pv.items(), key=lambda t: -t[1]["uses"])]
