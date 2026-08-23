@@ -311,3 +311,51 @@ python3 rl/b1_report.py /tmp/rl_b1fast /tmp/rl_b1narrow
 ```
 
 Artifacts: `rl/artifacts/v6/b1ab/`.
+
+
+## 7. Two instrument errors from the follow-up session, recorded
+
+Both were mine, both were caught before publication, and both are the
+kind the ground rules exist to surface.
+
+### 7a. A probe trained the checkpoint it was measuring
+
+`policy_server.py` took `training=(mode == "train")` **independently of
+`--lr`**, and `_finish_update` calls `save()`. So the sampled
+exploration probe (§4c, `CAND_MODE=train`) buffered its own games,
+updated every 32 episodes, and overwrote the checkpoint in place:
+
+    /tmp/rl_b1fast/ck_1024.pt   1024 episodes / 32 updates
+                             -> 1129 episodes / 35 updates
+
+**What this does and does not contaminate.**
+
+- **Safe:** every battery row in §3–§5. Those come from `probe_*.txt`
+  written by the lane before any census ran. Safe too: the argmax census
+  (§4b), which ran with `mode=eval` before the sampled probe existed,
+  and everything on `B1Narrow`, whose `ck_1024` is still 1024/32 because
+  only the eval census ever touched it.
+- **Contaminated:** the sampled exploration numbers in §4c (87 casts in
+  1,097 menu appearances) were measured while the policy was learning
+  from those same games, and **the pristine `B1Fast` `ck_1024` no longer
+  exists on disk.** The qualitative claim — casts under sampling, never
+  under argmax — is not in doubt at this magnitude, but the rate is not
+  a clean measurement and is re-run rather than quoted.
+
+Fixed by `--frozen` (serve sampled actions, never update or save), and
+`cand_census.sh` now additionally serves a `mktemp` copy so a future
+regression cannot reach a published checkpoint at all.
+
+### 7b. The explained-variance instrument was circular
+
+Added `value_ev = 1 - Var(ret - V)/Var(ret)` to the training log as the
+pre-registered readout for oracle guiding. It is worthless as written:
+`ret[t]` is **defined** as `gae[t] + values[t]`, so `ret - values` is
+identically the advantage, and the ratio reports how small GAE's
+advantage is against its own bootstrapped return. Its first reading —
+**0.7664** — looks like a healthy critic and means nothing.
+
+Corrected to score against the Monte-Carlo return,
+`mc[t] = reward * GAMMA^(end-1-t)`, the actual per-consult-discounted
+outcome the state led to. **No EV number is reported in this document
+until it is measured with the corrected instrument.**
