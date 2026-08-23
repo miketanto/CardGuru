@@ -248,3 +248,73 @@ So, pre-committed:
   them mean anything.
 - The absolute level is not the readout and must not be compared to the
   0.361 baseline as though it were.
+
+
+## 8. The control arm answered a different question, and it is the real result
+
+`probe0` (fresh critic, no privileged input, 256 episodes) finished
+**flat at zero**: `critic_ev` mean **−0.016**, range −0.099 to +0.029
+across eight updates, while the trained policy head read **0.344** in
+the very same runs.
+
+The reason is arithmetic, and it invalidates the design rather than the
+hypothesis:
+
+| | |
+|---|---|
+| states the critic trained on | **40,809** |
+| **independent labels** | **256** |
+| critic parameters | ~700k |
+
+**Every state in an episode carries the same terminal outcome**, so the
+effective sample size for predicting that outcome is the number of
+EPISODES, not the number of states. Fitting a 700k-parameter transformer
+to 256 independent labels cannot work, and it did not. The trained
+policy head reaches 0.344 only because it has seen 1024 episodes — still
+just 1024 labels — accumulated across a whole lane.
+
+Per §7's pre-committed rule: **this is underpowered, not null.** Nothing
+here says hidden information fails to predict the outcome. It says this
+instrument cannot tell.
+
+### What the right instrument is
+
+Match capacity to the label count. `anvil` hit the same wall and its
+answer (ADR-0039, ADR-0043) was a **frozen-trunk ridge probe** — ridge /
+kNN / small MLP on a pooled state representation, with a learning-curve
+guard — precisely because a few thousand labels will not support a
+network.
+
+The CardGuru version, and the next thing to build:
+
+1. **Collect once.** One engine run with `-Drl.oracle=true` dumping, per
+   consult, the pooled state features, the privileged rows, and the
+   episode's outcome. Thousands of episodes, not hundreds — the label
+   count is the budget, and it is cheap because no learning happens
+   during collection.
+2. **Fit offline, twice.** Ridge on `[state]` and ridge on
+   `[state ‖ oracle]`, same split, game-grouped holdout so states from
+   one episode cannot straddle train and test — otherwise the shared
+   label leaks and every R² is inflated.
+3. **Compare held-out R².** That is the privileged-information effect,
+   measured at a capacity the data can support, repeatable in seconds,
+   and with no policy in the loop at all.
+
+This is strictly better than what ran tonight: cheaper, better powered,
+seedable, and it isolates the question completely. The online critic is
+only worth building **after** the offline probe says the signal is
+there — which is the same probe-before-build discipline that made
+`timing_gate.py` worth writing.
+
+### What tonight's oracle work does establish
+
+- The full privileged path works end to end: Java emission → `"oe"` wire
+  key → server routing → critic (`oracle_cover` 0.669 treatment /
+  0.000 control).
+- The policy is provably isolated from it (gate levels 1–2).
+- Five implementation failures are documented with their causes, four of
+  which would have produced a plausible-looking wrong number.
+- **`value_ev ≈ 0.34` for the trained policy head is a real, new
+  measurement** — the first time this project has measured what fraction
+  of the outcome its critic explains. That number is what any future
+  credit-assignment work has to beat, and it did not exist yesterday.
