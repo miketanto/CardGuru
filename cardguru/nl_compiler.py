@@ -106,6 +106,21 @@ EXAMPLES = [
 ]
 
 
+def _facet_selectivity(path: str = "research/data/facet_selectivity.json") -> dict:
+    """Mined face-counts per hook/role, or {} if the file isn't built yet.
+
+    Regenerate with `python eval/consistency/build_facet_selectivity.py` after an
+    ontology or dataset bump; stale counts mislead the compiler in the same
+    direction as no counts at all, just less obviously.
+    """
+    try:
+        with open(path, encoding="utf-8") as f:
+            data = json.load(f)
+        return {**data.get("hooks", {}), **data.get("roles", {})}
+    except (OSError, ValueError):
+        return {}
+
+
 def build_system_prompt(onto_data: dict, top_n: int = 80,
                         param_keys_n: int | None = None) -> str:
     """Build the compiler's system prompt from the mined ontology.
@@ -136,12 +151,31 @@ def build_system_prompt(onto_data: dict, top_n: int = 80,
     # Closed-label operators. These are the ONLY legal hook/role arguments, so
     # they are always listed in full — truncating them would make the operators
     # unusable rather than merely harder to use.
+    #
+    # Each is annotated with how many faces it actually matches, because the
+    # names badly understate their breadth: `reanimator` sounds like a precise
+    # "graveyard -> battlefield" predicate but matches 1,227 faces (15x the
+    # precise query, and it includes graveyard -> HAND cards). Advertising these
+    # without their selectivity measurably regressed precision — see
+    # eval/consistency/C0-v2-results.md.
     try:
         from .recommend import HOOKS
         from .deck import ROLES
-        vocab += (f"Hooks (for {{\"hook\": ...}}): {', '.join(sorted(HOOKS))}\n"
-                  f"Roles (for {{\"role\": ...}}, optional :engine / :one_shot "
-                  f"suffix): {', '.join(sorted(ROLES))}\n")
+        sel = _facet_selectivity()
+
+        def _lbl(name):
+            n = sel.get(name)
+            return f"{name} ({n})" if n else name
+        vocab += (
+            "\nSemantic facets. These are BROAD deck-archetype labels, not precise\n"
+            "mechanical predicates; the number after each is how many card faces it\n"
+            "matches out of ~34,600. Use a facet only when the question is itself\n"
+            "archetype-level (\"sac outlets\", \"draw engines\"). For a question that\n"
+            "pins a specific zone, cost, or effect, write the node/chain predicate\n"
+            "instead — a facet will be far too broad.\n"
+            f"Hooks (for {{\"hook\": ...}}): {', '.join(_lbl(h) for h in sorted(HOOKS))}\n"
+            f"Roles (for {{\"role\": ...}}, optional :engine / :one_shot suffix): "
+            f"{', '.join(_lbl(r) for r in sorted(ROLES))}\n")
     except ImportError:  # pragma: no cover - concept libraries always present
         pass
     shots = "\n".join(

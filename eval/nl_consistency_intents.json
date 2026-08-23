@@ -199,7 +199,7 @@
         "Faithless Looting"
       ],
       "absent_foil": [
-        "Windfall"
+        "Divination"
       ],
       "paraphrases": {
         "P1": "a single ability that draws cards and then makes you discard cards",
@@ -207,7 +207,8 @@
         "P3": "draw then discard",
         "P4": "I need to fill my yard while digging for combo pieces. One spell that draws and then makes me pitch is right, rather than two separate effects. This is for Commander.",
         "P5": "one ability that draws you cards and then makes you pitch cards"
-      }
+      },
+      "note": "foil changed from Windfall: Windfall genuinely IS one ability that discards and draws, so it satisfied the intent and the 1.00 foil rate was an authoring error, not a compiler fault. Divination draws without any discard half."
     },
     {
       "id": "I08",
@@ -503,7 +504,7 @@
         "P4": "I want to cheat fatties into play after pitching them early. Getting them onto the board matters, not back to my hand. Budget is a concern.",
         "P5": "cards that return creature cards from a bin into play"
       },
-      "note": "witness swapped off 'Reanimate' \u2014 the card name collides with the natural player term used in P2/P3, which would let the compiler match on the name instead of the mechanic. Witnesses now span the enchantment and sorcery encodings of the same effect."
+      "note": "witness swapped off 'Reanimate' \u2014 the card name collides with the natural player term used in P2/P3, which would let the compiler match on the name instead of the mechanic. Witnesses now span the enchantment and sorcery encodings of the same effect. Foil leak here is REAL: the compiler reaches for hook:reanimator (1,227 faces, includes graveyard->HAND) alongside the precise node query, so Raise Dead comes back on every rung. Motivated annotating facets with selectivity in build_system_prompt."
     },
     {
       "id": "I21",
