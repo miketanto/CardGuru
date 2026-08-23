@@ -206,3 +206,45 @@ randomly-initialised critic are negative by construction (−0.86, −1.06
 on update 1) and say nothing; the comparison is the trajectory across
 eight updates, and **neither arm's number should be quoted before both
 finish.**
+
+
+## 7. A fifth failure, and the reading rule it forces
+
+**The divergence was architectural, not the oracle.** The CONTROL arm —
+fresh critic, no privileged input whatsoever — diverged identically
+(**−1.39 → −5.56**), which rules the channel out as the cause.
+`state_token` is `glob_in(g) + pool(SUM over up to EMAX entities)`, so an
+untrained head sits on a large-magnitude input and emits wildly scaled
+values; the policy's own head had 1024 episodes to learn that scale.
+Zero-initialising the output layer fixes it: the control now opens at
+exactly 0.0000 and stays near zero instead of collapsing.
+
+Running the control is the only reason this was caught. Without it the
+night's conclusion would have been *"privileged information destabilises
+the critic"* — which is false.
+
+It also broke the gate, informatively: level 3 asserted the critic's
+**value** moves when the hand appears, and a zero-initialised head emits
+0 either way, so the gate would have failed a correctly-wired critic.
+The rows enter at `state_token`, so that is where the test belongs
+(delta 7.29).
+
+### The reading rule, committed before the result
+
+After 3 updates the fresh critic sits at **EV ≈ 0** while the trained
+policy head reads **0.33–0.35**. A fresh critic given 256 episodes is
+not going to catch a head trained on 1024, and it is not supposed to —
+**the comparison is `probe1 − probe0`, two fresh critics at identical
+budget, not either against the baseline.**
+
+So, pre-committed:
+
+- If **both arms end near 0**, the honest verdict is **underpowered, not
+  null.** 256 episodes may simply be too few for either critic to learn
+  anything, in which case the experiment has not tested the hypothesis
+  and must be re-run longer before anyone writes "hidden information
+  does not help".
+- Only if **at least one arm clearly leaves zero** does the gap between
+  them mean anything.
+- The absolute level is not the readout and must not be compared to the
+  0.361 baseline as though it were.
