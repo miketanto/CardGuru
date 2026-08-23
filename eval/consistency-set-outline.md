@@ -320,13 +320,24 @@ Axis totals, as actually allocated (checked against `eval/nl_consistency_intents
 - **S** — S1 ×3, S2 ×6, S3 ×5, S4 ×3, S5 ×3, S6 ×3, S7 ×2, S8 ×3, S9 ×4, untagged ×8.
 - **H** — H00 ×8, H01 ×3, H02 ×3, H03 ×3, H04 ×4, H05 ×1, H06 ×3, H07 ×2, H08 ×2,
   H09 ×4, H10 ×3, H11 ×2, H12 ×2.
-- **D** — D1 ×14, D2 ×17, D3 ×2, untagged ×7.
+- **D** — D1 ×10, D2 ×18, D3 ×5, untagged ×7. *(Measured, not declared — see below.)*
 - **prov** — covered ×2, adjacent ×1, absent ×37.
 
-Ten intents (I04, I08, I10, I11, I12, I18, I22, I26, I36, I40) ship with full five-rung
-ladders; the other thirty are one-liners to be laddered during C0.
+**All 40 intents now carry the full five-rung ladder.** The authoring rules in §3 are
+enforced by a scripted check (no witness-name leaks, no verbatim ontology tokens, P3
+within six words, every witness/foil resolving against the pinned index). It earns its
+keep: it caught I20, whose witness was the card *Reanimate* while its slang and terse
+rungs use "reanimation"/"reanimate" as the natural player term — the compiler could have
+matched the card name instead of the mechanic. Witness swapped to Animate Dead + Zombify,
+which also span two encodings of the same effect.
 
-Three of those counts are thinner than the hazard deserves — see §7 items 11–13.
+**D-tags are now measured rather than guessed.** Seven were wrong in the draft, all
+under-estimates: I08, I10, I12, I40 (D1→D2), I22 (D2→D3, 2,364 hits), and I18/I19
+(D2→D3, 2,454 and 533 hits, measurable only once the `hook`/`role` bug was fixed). The
+distribution shifted materially — D1 from 15 to 10, D3 from 2 to 5 — which matters
+because D-regime is what makes a Jaccard number interpretable.
+
+Three counts remain thinner than the hazard deserves — see §7 items 11–13.
 
 ---
 
@@ -388,6 +399,17 @@ Things I left out, with why. Add, override, or tell me the reasoning is wrong.
     both `spec-covered`, so only I40 probes an *uncovered* alternation. If `H02` is the
     stratum C3 ships or dies on (R5), three rows — one of them the sole uncovered case — is
     a thin basis for that decision. This is arguably the most consequential gap in the set.
+
+    **Confirmed by events.** C3 did ship on this stratum (baseline 0.456 → 0.599), and the
+    14-point gain rests on I11 and I40 alone; I12 was exactly flat. Meanwhile the pool
+    turns out to contain many more such families — four `*All`-versus-singular pairs
+    measured, every one with Jaccard < 0.01 (`eval/consistency/C3-ablation.md`). Candidate
+    additions with witnesses already resolved: mass creature destruction
+    (`DestroyAll` 336 vs `Destroy`+`Defined` 189), mass graveyard return (`ChangeZoneAll`
+    69 vs `ChangeZone` 792), counters on each creature (`PutCounterAll` 291 vs
+    `PutCounter` 3,136). "Each player discards" is a useful *negative* control — `DiscardAll`
+    does not exist, so there is no alternation to get wrong. Four more H02 rows would put
+    this stratum on a defensible footing; slots I41–I50 are reserved for exactly this.
 
 **Open slots reserved:** I41–I50 are left unallocated for whatever comes out of this
 review, so additions don't force a re-hash of the numbered rows.
