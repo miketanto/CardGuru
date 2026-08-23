@@ -214,15 +214,26 @@ class Runner:
         return ok
 
     def compile_one(self, question: str, sample: int) -> dict:
+        """Compile once, distinguishing a DECLINE from a FAILURE.
+
+        The compiler returning null is correct behaviour on an out-of-scope
+        question ("cards banned in Modern") and a bug on an in-scope one. v2
+        conflated them and reported a 5% failure rate that was entirely correct
+        refusals, so the two are tracked separately: `declined` means the
+        compiler itself chose not to emit a query, `invalid` means it emitted one
+        the ontology gate rejected.
+        """
         cached = self.cache.get(self.backend.name, question, sample)
         if cached is not None:
             return cached
         query, errors = self.backend.compile(question, sample)
+        declined = query is None
         if query is not None and not errors:
             errors = validate(query, self.onto)
             if errors:
                 query = None
-        rec = {"query": query, "errors": errors}
+        rec = {"query": query, "errors": errors, "declined": declined,
+               "invalid": query is None and not declined}
         self.cache.put(self.backend.name, question, sample, rec)
         return rec
 
@@ -232,7 +243,7 @@ class Runner:
         foil = self.faces_for(intent.get("absent_foil"))
         per_rung = {}
         all_sets: list[frozenset] = []
-        compile_fails = 0
+        compile_fails = n_declined = n_invalid = 0
         total = 0
 
         rep_sets: list[frozenset] = []
@@ -247,7 +258,10 @@ class Runner:
                 c = self.compile_one(q_text, s)
                 if c["query"] is None:
                     compile_fails += 1
-                    notes.append({"sample": s, "error": c["errors"][:1]})
+                    n_declined += bool(c.get("declined"))
+                    n_invalid += bool(c.get("invalid"))
+                    notes.append({"sample": s, "error": c["errors"][:1],
+                                  "declined": bool(c.get("declined"))})
                     continue
                 rs, err = self.execute(c["query"])
                 if err:
@@ -287,6 +301,8 @@ class Runner:
             "inverted": bool(intent.get("inverted")),
             "n_compilations": total,
             "compile_fail": compile_fails,
+            "declined": n_declined,
+            "invalid": n_invalid,
             "PC": pc,
             "PC_correct": pc_correct,
             "agreement_at_witness": (n_with_witness / len(all_sets)) if all_sets and witness else None,
@@ -320,8 +336,15 @@ def aggregate(rows: list[dict]) -> dict:
         "SC": m(sc for r in headline for sc in
                 (v["SC"] for v in r["rungs"].values())),
         "modal_share": m(r["modal_share"] for r in headline),
-        "compile_fail_rate": (
-            sum(r["compile_fail"] for r in rows) / sum(r["n_compilations"] for r in rows)
+        # A decline is the compiler correctly refusing an out-of-scope question;
+        # an invalid is a query the ontology gate rejected. Only the latter is a
+        # failure, and conflating them reported v2 at 5% failures that were all
+        # correct refusals.
+        "declined_rate": (
+            sum(r["declined"] for r in rows) / sum(r["n_compilations"] for r in rows)
+            if sum(r["n_compilations"] for r in rows) else None),
+        "invalid_rate": (
+            sum(r["invalid"] for r in rows) / sum(r["n_compilations"] for r in rows)
             if sum(r["n_compilations"] for r in rows) else None),
         "inverted_disagreement": m(r["disagreement"] for r in inverted),
         "by_stratum": {},
@@ -392,7 +415,8 @@ def main(argv=None):
     print(f"agreement@wit  {s['agreement_at_witness']}")
     print(f"SC             {s['SC']}")
     print(f"foil rate      {s['foil_rate']}")
-    print(f"compile fail   {round(s['compile_fail_rate'], 3) if s['compile_fail_rate'] is not None else None}")
+    print(f"declined       {round(s['declined_rate'], 3)}   <- correct on H11/H12, a bug elsewhere")
+    print(f"invalid        {round(s['invalid_rate'], 3)}   <- the real failure rate")
     print(f"inverted disag {s['inverted_disagreement']}   <- R3: HIGH is correct here")
     return 0
 
