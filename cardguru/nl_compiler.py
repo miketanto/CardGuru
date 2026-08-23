@@ -101,16 +101,32 @@ EXAMPLES = [
 ]
 
 
-def build_system_prompt(onto_data: dict, top_n: int = 80) -> str:
+def build_system_prompt(onto_data: dict, top_n: int = 80,
+                        param_keys_n: int | None = None) -> str:
+    """Build the compiler's system prompt from the mined ontology.
+
+    `param_keys_n` truncates the parameter vocabulary; None emits all of it.
+    It defaults to None because truncation was measured to be actively harmful:
+    frequency-ranking put `ValidPlayer` (rank 25) in the prompt and left
+    `ValidPlayers` (rank 159) out, so every compilation of "damage to each
+    opponent" used the wrong key on `DamageAll` — a query that validates clean,
+    returns hits from its sibling branch, finds the witness, and silently
+    matches nothing on the branch that mattered.
+
+    Emitting the full list measured 0/5 -> 5/5 on that token choice, cut the
+    dead-branch rate from 5.4% to 1.0%, and raised paraphrase consistency on the
+    idiom-alternation stratum from 0.456 to 0.599.
+    See eval/consistency/C3-ablation.md.
+    """
     def top(d, n):
-        return ", ".join(list(d)[:n])
+        return ", ".join(list(d) if n is None else list(d)[:n])
     vocab = (
         f"Effect APIs (by frequency): {top(onto_data['api'], top_n)}\n"
         f"Trigger modes: {top(onto_data['trigger_modes'], 60)}\n"
         f"Static modes: {top(onto_data['static_modes'], 40)}\n"
         f"Replacement events: {top(onto_data['replacement_events'], 34)}\n"
         f"Keywords: {top(onto_data['keywords'], 80)}\n"
-        f"Common params: {top(onto_data['param_keys'], 100)}\n"
+        f"Common params: {top(onto_data['param_keys'], param_keys_n)}\n"
     )
     shots = "\n".join(
         f"Q: {q}\nA: {json.dumps(dsl)}" for q, dsl in EXAMPLES)
