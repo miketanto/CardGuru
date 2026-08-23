@@ -1,0 +1,10 @@
+{"qid": "I04.P3", "question": "sacrifice an artifact: cost", "query": {"node": {"kind": "A", "apiKind": "AB", "params": {"Cost": {"regex": "Sac<[^>]*Artifact"}}}}}
+{"qid": "I08.P3", "question": "lose life, you gain it", "query": {"chain": {"from": {"kind": {"any": ["A", "T", "S", "R"]}}, "to": [{"api": "LoseLife"}, {"api": "GainLife"}]}}}
+{"qid": "I10.P3", "question": "token maker plus sac outlet", "query": {"all": [{"node": {"api": "Token"}}, {"node": {"kind": "A", "apiKind": "AB", "api": "Sacrifice"}}]}}
+{"qid": "I11.P3", "question": "damage to each opponent", "query": {"any": [{"node": {"api": "DamageAll", "params": {"ValidPlayers": {"icontains": "Opponent"}}}}, {"node": {"api": "DealDamage", "params": {"Defined": {"icontains": "Opponent"}}}}]}}
+{"qid": "I12.P3", "question": "bounce all creatures", "query": {"node": {"api": "ChangeZoneAll", "params": {"Origin": {"contains": "Battlefield"}, "Destination": "Hand", "ChangeType": {"contains": "Creature"}}}}}
+{"qid": "I18.P3", "question": "repeatable draw", "query": {"node": {"kind": "A", "apiKind": "AB", "api": "Draw"}}}
+{"qid": "I22.P3", "question": "instant-speed removal", "query": {"all": [{"card": {"types": {"contains": "Instant"}}}, {"any": [{"node": {"api": {"any": ["Destroy", "DestroyAll"]}}}, {"node": {"api": {"any": ["ChangeZone", "ChangeZoneAll"]}, "params": {"Origin": {"contains": "Battlefield"}, "Destination": {"any": ["Exile", "Hand", "Library", "Graveyard"]}}}}]}]}}
+{"qid": "I26.P3", "question": "exile effects", "query": {"any": [{"node": {"api": {"any": ["ChangeZone", "ChangeZoneAll"]}, "params": {"Destination": "Exile"}}}, {"node": {"api": {"any": ["Dig", "DigUntil"]}, "params": {"DestinationZone": {"contains": "Exile"}}}}]}}
+{"qid": "I36.P3", "question": "flash sorceries", "query": {"all": [{"card": {"types": {"contains": "Sorcery"}}}, {"any": [{"keyword": "Flash"}, {"node": {"kind": "S", "mode": "CastWithFlash"}}]}]}}
+{"qid": "I40.P3", "question": "damage prevention for yourself", "query": {"any": [{"node": {"api": "PreventDamage", "params": {"Defined": {"contains": "You"}}}}, {"node": {"api": "PreventDamage", "params": {"ValidTgts": {"contains": "You"}}}}]}}
