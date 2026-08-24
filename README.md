@@ -47,6 +47,11 @@ Plans built on those findings:
   fixed; corpus-wide holdout agreement on sacrifice-cost atoms 52.4% → 78.3%, `{T}`-as-cost
   recall 91.0% → 99.9%; the Disdainful Stroke correctness gate is closed (fail-closed
   `ValidTgts`), and 14 of 15 apparent over-restrictions turn out to be Forge, not the grammar
+- [research/oracle-grammar-m3.md](research/oracle-grammar-m3.md) — M3 adds trigger
+  modes, replacement events and chain edges to a pre-stated frequency rule; criterion
+  re-run on a mechanically generated, **renewable** adversarial slice (6/9 fresh vs
+  Forge 9/9). Cost/target layer is at near-parity (96–99% recall); the mode layer is
+  not — so the merge unit is the field, not the card
 
 Reproduce: `research/scripts/` (pure-Python parser + search prototype;
 `CardGuruFeasibilityTest.java` drops into XMage's `Mage.Tests`). Pins: Forge `670429bf`,
