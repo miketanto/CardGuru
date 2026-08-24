@@ -40,6 +40,9 @@ Plans built on those findings:
   pre-committed kill criterion does not clear.** 3/5 adversarial questions pass on
   verbatim Forge-vocabulary queries (cost/target family, 76–87% agreement); the 2 that
   fail need unimplemented node classes. Grammar's status: labelled fallback, not replacement
+- [research/oracle-grammar-triage.md](research/oracle-grammar-triage.md) — triage of all
+  697 cross-derivation disagreements: 95.4% are grammar debt concentrated in six named
+  bugs, only 3.3% Forge artifacts; burns a01–a05 as a clean measure (see the note there)
 
 Reproduce: `research/scripts/` (pure-Python parser + search prototype;
 `CardGuruFeasibilityTest.java` drops into XMage's `Mage.Tests`). Pins: Forge `670429bf`,

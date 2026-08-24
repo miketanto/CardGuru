@@ -1,0 +1,210 @@
+{
+ "questions": {
+  "a01": {
+   "forge_hits": 1380,
+   "oracle_hits": 1074,
+   "agreed": 1050,
+   "forge_only": {
+    "n": 330,
+    "causes": [
+     {
+      "cause": "cost-atom gap: 'another/other X'",
+      "n": 135,
+      "bucket": "grammar debt",
+      "examples": [
+       "A-Sepulcher Ghoul",
+       "A-Skyclave Shadowcat",
+       "Acolyte of Aclazotz"
+      ]
+     },
+     {
+      "cause": "cost-atom gap: self-sacrifice by card name",
+      "n": 102,
+      "bucket": "grammar debt",
+      "examples": [
+       "A Killer Among Us",
+       "A-Bretagard Stronghold",
+       "A-Haywire Mite"
+      ]
+     },
+     {
+      "cause": "no node emitted (missing effect production)",
+      "n": 48,
+      "bucket": "grammar debt",
+      "examples": [
+       "Aetherjacket",
+       "Amulet of Quoz",
+       "Auriok Replica"
+      ]
+     },
+     {
+      "cause": "cost-atom gap: qualified or uncommon type",
+      "n": 30,
+      "bucket": "grammar debt",
+      "examples": [
+       "Airdrop Condor",
+       "Angel's Herald",
+       "Atogatog"
+      ]
+     },
+     {
+      "cause": "cost-atom gap: compound type ('artifact or creature')",
+      "n": 15,
+      "bucket": "grammar debt",
+      "examples": [
+       "Blood Aspirant",
+       "Chittering Skitterling",
+       "Defiant Salvager"
+      ]
+     }
+    ]
+   },
+   "oracle_only": {
+    "n": 24,
+    "causes": [
+     {
+      "cause": "grammar FP: CARDNAME over-detected (card named after a type)",
+      "n": 16,
+      "bucket": "grammar debt",
+      "examples": [
+       "Deviant Skytech",
+       "Eldrazi Ravager",
+       "Goblin Chirurgeon"
+      ]
+     },
+     {
+      "cause": "query-vocabulary artifact: Forge uses NICKNAME",
+      "n": 7,
+      "bucket": "forge/query artifact",
+      "examples": [
+       "Denethor, Stone Seer",
+       "Jirina, Dauntless General",
+       "Junktown"
+      ]
+     },
+     {
+      "cause": "structure artifact: Forge stores ability as SVar, query wants kind A",
+      "n": 1,
+      "bucket": "forge/query artifact",
+      "examples": [
+       "Susur Secundi, Void Altar"
+      ]
+     }
+    ]
+   }
+  },
+  "a04": {
+   "forge_hits": 1956,
+   "oracle_hits": 1708,
+   "agreed": 1700,
+   "forge_only": {
+    "n": 256,
+    "causes": [
+     {
+      "cause": "no node emitted (missing effect production)",
+      "n": 225,
+      "bucket": "grammar debt",
+      "examples": [
+       "Abstruse Archaic",
+       "Abuna Acolyte",
+       "Adric, Mathematical Genius"
+      ]
+     },
+     {
+      "cause": "cost-atom gap: {T} not recovered",
+      "n": 31,
+      "bucket": "grammar debt",
+      "examples": [
+       "Bighorner Rancher",
+       "Brigid, Doun's Mind",
+       "Brotherhood Scribe"
+      ]
+     }
+    ]
+   },
+   "oracle_only": {
+    "n": 8,
+    "causes": [
+     {
+      "cause": "other",
+      "n": 8,
+      "bucket": "unclassified",
+      "examples": [
+       "Brimstone Mage",
+       "Echo Mage",
+       "Enclave Cryptologist"
+      ]
+     }
+    ]
+   }
+  },
+  "a05": {
+   "forge_hits": 189,
+   "oracle_hits": 176,
+   "agreed": 143,
+   "forge_only": {
+    "n": 46,
+    "causes": [
+     {
+      "cause": "node-ordering bug: Counter demoted to sub-ability",
+      "n": 44,
+      "bucket": "grammar debt",
+      "examples": [
+       "Absorb",
+       "Abstruse Interference",
+       "Access Denied"
+      ]
+     },
+     {
+      "cause": "no Counter node emitted",
+      "n": 1,
+      "bucket": "grammar debt",
+      "examples": [
+       "Double Negative"
+      ]
+     },
+     {
+      "cause": "other",
+      "n": 1,
+      "bucket": "unclassified",
+      "examples": [
+       "Silent Extraction"
+      ]
+     }
+    ]
+   },
+   "oracle_only": {
+    "n": 33,
+    "causes": [
+     {
+      "cause": "grammar FP: post-nominal restriction ignored ('with mana value N')",
+      "n": 18,
+      "bucket": "grammar debt",
+      "examples": [
+       "Change the Equation",
+       "Chilling Screech",
+       "Counterflux"
+      ]
+     },
+     {
+      "cause": "structure artifact: modal spell, Forge nests Counter under Charm",
+      "n": 15,
+      "bucket": "forge/query artifact",
+      "examples": [
+       "Amazing Acrobatics",
+       "Bring the Ending",
+       "Confounding Riddle"
+      ]
+     }
+    ]
+   }
+  }
+ },
+ "totals": {
+  "grammar debt": 665,
+  "forge/query artifact": 23,
+  "unclassified": 9
+ },
+ "total_disagreements": 697,
+ "grammar_debt_pct": 95.4
+}
