@@ -1,0 +1,942 @@
+{
+ "scored_faces": 34156,
+ "skipped_no_oracle": 363,
+ "skipped_no_oracle_and_no_nodes": 363,
+ "exact_bag_match": 30810,
+ "exact_bag_match_pct": 90.2,
+ "exact_bag_match_impl_keywords_counted_pct": 88.78,
+ "match_ignoring_keyword_counts_pct": 90.6,
+ "per_kind": {
+  "A": {
+   "true": 18410,
+   "pred": 18380,
+   "matched": 18253,
+   "recall_pct": 99.15,
+   "precision_pct": 99.31
+  },
+  "T": {
+   "true": 16912,
+   "pred": 16589,
+   "matched": 16411,
+   "recall_pct": 97.04,
+   "precision_pct": 98.93
+  },
+  "S": {
+   "true": 7078,
+   "pred": 9099,
+   "matched": 6539,
+   "recall_pct": 92.38,
+   "precision_pct": 71.87
+  },
+  "R": {
+   "true": 1692,
+   "pred": 1233,
+   "matched": 1184,
+   "recall_pct": 69.98,
+   "precision_pct": 96.03
+  },
+  "K": {
+   "true": 17310,
+   "pred": 16334,
+   "matched": 16139,
+   "recall_pct": 93.24,
+   "precision_pct": 98.81
+  }
+ },
+ "top_mismatch_shapes": [
+  {
+   "delta": {
+    "S": 1
+   },
+   "faces": 629,
+   "pct": 1.84,
+   "examples": [
+    {
+     "name": "Abandon Hope",
+     "types": "Sorcery",
+     "oracle": "As an additional cost to cast this spell, discard X cards.\\nLook at target opponent's hand and choose X cards from it. That player discards those cards.",
+     "pred": {
+      "S": 1,
+      "A": 1
+     },
+     "true": {
+      "A": 1
+     }
+    },
+    {
+     "name": "Abjure",
+     "types": "Instant",
+     "oracle": "As an additional cost to cast this spell, sacrifice a blue permanent.\\nCounter target spell.",
+     "pred": {
+      "S": 1,
+      "A": 1
+     },
+     "true": {
+      "A": 1
+     }
+    },
+    {
+     "name": "Acceptable Losses",
+     "types": "Sorcery",
+     "oracle": "As an additional cost to cast this spell, discard a card at random.\\nAcceptable Losses deals 5 damage to target creature.",
+     "pred": {
+      "S": 1,
+      "A": 1
+     },
+     "true": {
+      "A": 1
+     }
+    },
+    {
+     "name": "Activated Sleeper",
+     "types": "Creature Phyrexian Shapeshifter",
+     "oracle": "Flash\\nYou may have Activated Sleeper enter as a copy of any creature card in a graveyard that was put there from the battlefield this turn, except it's a Phyrexian in addition to its other types.",
+     "pred": {
+      "K": 1,
+      "S": 1
+     },
+     "true": {
+      "K": 1
+     }
+    }
+   ]
+  },
+  {
+   "delta": {
+    "K": -1,
+    "S": 1
+   },
+   "faces": 563,
+   "pct": 1.65,
+   "examples": [
+    {
+     "name": "Adrestia",
+     "types": "Legendary Artifact Vehicle",
+     "oracle": "Islandwalk (This creature can't be blocked as long as defending player controls an Island.)\\nWhenever Adrestia attacks, if an Assassin crewed it this turn, draw a card. Adrestia becomes an Assassin in addition to its oth",
+     "pred": {
+      "S": 1,
+      "T": 1,
+      "K": 1
+     },
+     "true": {
+      "T": 1,
+      "K": 2
+     }
+    },
+    {
+     "name": "Advantageous Proclamation",
+     "types": "Conspiracy",
+     "oracle": "(Start the game with this conspiracy face up in the command zone.)\\nYour minimum deck size is reduced by five.",
+     "pred": {
+      "S": 1
+     },
+     "true": {
+      "K": 1
+     }
+    },
+    {
+     "name": "Aetherflame Wall",
+     "types": "Creature Wall",
+     "oracle": "Defender\\nAetherflame Wall can block creatures with shadow as though they didn't have shadow.\\n{R}: Aetherflame Wall gets +1/+0 until end of turn.",
+     "pred": {
+      "K": 1,
+      "S": 1,
+      "A": 1
+     },
+     "true": {
+      "A": 1,
+      "K": 2
+     }
+    },
+    {
+     "name": "Alabaster Host Intercessor",
+     "types": "Creature Phyrexian Samurai",
+     "oracle": "When Alabaster Host Intercessor enters, exile target creature an opponent controls until Alabaster Host Intercessor leaves the battlefield.\\nPlainscycling {2} ({2}, Discard this card: Search your library for a Plains car",
+     "pred": {
+      "T": 1,
+      "S": 1
+     },
+     "true": {
+      "T": 1,
+      "K": 1
+     }
+    }
+   ]
+  },
+  {
+   "delta": {
+    "S": -1
+   },
+   "faces": 386,
+   "pct": 1.13,
+   "examples": [
+    {
+     "name": "Aether Tunnel",
+     "types": "Enchantment Aura",
+     "oracle": "Enchant creature\\nEnchanted creature gets +1/+0 and can't be blocked.",
+     "pred": {
+      "K": 1,
+      "S": 1
+     },
+     "true": {
+      "S": 2,
+      "K": 1
+     }
+    },
+    {
+     "name": "Airtight Alibi",
+     "types": "Enchantment Aura",
+     "oracle": "Flash\\nEnchant creature\\nWhen Airtight Alibi enters, untap enchanted creature. It gains hexproof until end of turn. If it's suspected, it's no longer suspected.\\nEnchanted creature gets +2/+2 and can't become suspected.",
+     "pred": {
+      "K": 2,
+      "T": 1,
+      "S": 1
+     },
+     "true": {
+      "T": 1,
+      "S": 2,
+      "K": 2
+     }
+    },
+    {
+     "name": "Ajani's Response",
+     "types": "Instant",
+     "oracle": "This spell costs {3} less to cast if it targets a tapped creature.\\nDestroy target creature.",
+     "pred": {
+      "A": 1
+     },
+     "true": {
+      "S": 1,
+      "A": 1
+     }
+    },
+    {
+     "name": "Akawalli, the Seething Tower",
+     "types": "Legendary Creature Fungus",
+     "oracle": "Descend 4 \u2014 As long as there are four or more permanent cards in your graveyard, Akawalli, the Seething Tower gets +2/+2 and has trample.\\nDescend 8 \u2014 As long as there are eight or more permanent cards in your graveyard,",
+     "pred": {
+      "S": 2
+     },
+     "true": {
+      "S": 3
+     }
+    }
+   ]
+  },
+  {
+   "delta": {
+    "R": -1,
+    "S": 1
+   },
+   "faces": 336,
+   "pct": 0.98,
+   "examples": [
+    {
+     "name": "Abby, Merciless Soldier",
+     "types": "Legendary Creature Human Survivor",
+     "oracle": "When you cast this spell, create a number of 1/1 black Fungus Zombie creature tokens named Cordyceps Infected equal to the amount of mana spent to cast it.\\nAbby enters under the control of an opponent of your choice.\\nP",
+     "pred": {
+      "T": 1,
+      "S": 1,
+      "K": 1
+     },
+     "true": {
+      "T": 1,
+      "R": 1,
+      "K": 1
+     }
+    },
+    {
+     "name": "Absolute Virtue",
+     "types": "Legendary Creature Avatar Warrior",
+     "oracle": "This spell can't be countered.\\nFlying\\nYou have protection from each of your opponents. (You can't be dealt damage, enchanted, or targeted by anything controlled by your opponents.)",
+     "pred": {
+      "S": 2,
+      "K": 1
+     },
+     "true": {
+      "R": 1,
+      "S": 1,
+      "K": 1
+     }
+    },
+    {
+     "name": "Absorbing Man and Titania",
+     "types": "Legendary Creature Human Villain",
+     "oracle": "Double all damage that creature sources you control would deal.",
+     "pred": {
+      "S": 1
+     },
+     "true": {
+      "R": 1
+     }
+    },
+    {
+     "name": "Alirios, Enraptured",
+     "types": "Legendary Creature Human",
+     "oracle": "Alirios enters tapped.\\nAlirios doesn't untap during your untap step if you control a Reflection.\\nWhen Alirios enters, create a 3/2 blue Reflection creature token.",
+     "pred": {
+      "R": 1,
+      "S": 1,
+      "T": 1
+     },
+     "true": {
+      "R": 2,
+      "T": 1
+     }
+    }
+   ]
+  },
+  {
+   "delta": {
+    "T": -1
+   },
+   "faces": 253,
+   "pct": 0.74,
+   "examples": [
+    {
+     "name": "Agrus Kos, Spirit of Justice",
+     "types": "Legendary Creature Spirit Detective",
+     "oracle": "Double strike, vigilance\\nWhenever Agrus Kos, Spirit of Justice enters or attacks, choose up to one target creature. If it's suspected, exile it. Otherwise, suspect it. (A suspected creature has menace and can't block.)",
+     "pred": {
+      "K": 2,
+      "T": 1
+     },
+     "true": {
+      "T": 2,
+      "K": 2
+     }
+    },
+    {
+     "name": "Amy's Home",
+     "types": "Plane Earth",
+     "oracle": "When you planeswalk to Amy's Home and at the beginning of your upkeep, you may exile a nonland card from your hand with a number of time counters on it equal to its mana value. If it doesn't have suspend, it gains suspen",
+     "pred": {
+      "T": 2
+     },
+     "true": {
+      "T": 3
+     }
+    },
+    {
+     "name": "Angel of Unity",
+     "types": "Creature Angel Cleric",
+     "oracle": "Flying, lifelink\\nWhenever Angel of Unity enters or you cast a party spell, choose a party creature card in your hand. It perpetually gets +1/+1. (A party card or spell is a Cleric, Rogue, Warrior, or Wizard.)",
+     "pred": {
+      "K": 2,
+      "T": 1
+     },
+     "true": {
+      "T": 2,
+      "K": 2
+     }
+    },
+    {
+     "name": "Animate Dead",
+     "types": "Enchantment Aura",
+     "oracle": "Enchant creature card in a graveyard\\nWhen Animate Dead enters, if it's on the battlefield, it loses \"enchant creature card in a graveyard\" and gains \"enchant creature put onto the battlefield with Animate Dead.\" Return ",
+     "pred": {
+      "K": 1,
+      "T": 1,
+      "S": 1
+     },
+     "true": {
+      "T": 2,
+      "S": 1,
+      "K": 1
+     }
+    }
+   ]
+  },
+  {
+   "delta": {
+    "K": -1,
+    "S": 3
+   },
+   "faces": 124,
+   "pct": 0.36,
+   "examples": [
+    {
+     "name": "Age of Ultron",
+     "types": "Enchantment Saga",
+     "oracle": "(As this Saga enters and after your draw step, add a lore counter. Sacrifice after III.)\\nI \u2014 For each opponent, destroy up to one target nonartifact creature that player controls.\\nII \u2014 For each opponent, you create a 2",
+     "pred": {
+      "S": 3
+     },
+     "true": {
+      "K": 1
+     }
+    },
+    {
+     "name": "Ajani Fells the Godsire",
+     "types": "Enchantment Saga",
+     "oracle": "I \u2014 Exile target creature an opponent controls with power 3 or greater.\\nII \u2014 Create a 2/1 white Cat Warrior creature token, then put a vigilance counter on a creature you control.\\nIII \u2014 Target creature you control gain",
+     "pred": {
+      "S": 3
+     },
+     "true": {
+      "K": 1
+     }
+    },
+    {
+     "name": "Armor Wars",
+     "types": "Enchantment Saga",
+     "oracle": "(As this Saga enters and after your draw step, add a lore counter. Sacrifice after III.)\\nI \u2014 You may draw a card for each artifact you control. If you do, each opponent draws a card.\\nII \u2014 Artifact spells you cast this ",
+     "pred": {
+      "S": 3
+     },
+     "true": {
+      "K": 1
+     }
+    },
+    {
+     "name": "Arni Slays the Troll",
+     "types": "Enchantment Saga",
+     "oracle": "(As this Saga enters and after your draw step, add a lore counter. Sacrifice after III.)\\nI \u2014 Target creature you control fights up to one target creature you don't control.\\nII \u2014 Add {R}. Put two +1/+1 counters on up to",
+     "pred": {
+      "S": 3
+     },
+     "true": {
+      "K": 1
+     }
+    }
+   ]
+  },
+  {
+   "delta": {
+    "K": -1
+   },
+   "faces": 109,
+   "pct": 0.32,
+   "examples": [
+    {
+     "name": "Absorb Vis",
+     "types": "Sorcery",
+     "oracle": "Target player loses 4 life and you gain 4 life.\\nBasic landcycling {1}{B} ({1}{B}, Discard this card: Search your library for a basic land card, reveal it, put it into your hand, then shuffle.)",
+     "pred": {
+      "A": 1
+     },
+     "true": {
+      "A": 1,
+      "K": 1
+     }
+    },
+    {
+     "name": "Akroma, Angel of Wrath",
+     "types": "Legendary Creature Angel",
+     "oracle": "Flying, first strike, vigilance, trample, haste, protection from black and from red",
+     "pred": {
+      "K": 6
+     },
+     "true": {
+      "K": 7
+     }
+    },
+    {
+     "name": "Ancient Excavation",
+     "types": "Instant",
+     "oracle": "Draw cards equal to the number of cards in your hand, then discard a card for each card drawn this way.\\nBasic landcycling {2} ({2}, Discard this card: Search your library for a basic land card, reveal it, put it into yo",
+     "pred": {
+      "A": 1
+     },
+     "true": {
+      "A": 1,
+      "K": 1
+     }
+    },
+    {
+     "name": "Animar, Soul of Elements",
+     "types": "Legendary Creature Elemental",
+     "oracle": "Protection from white and from black\\nWhenever you cast a creature spell, put a +1/+1 counter on Animar, Soul of Elements.\\nCreature spells you cast cost {1} less to cast for each +1/+1 counter on Animar.",
+     "pred": {
+      "K": 1,
+      "T": 1,
+      "S": 1
+     },
+     "true": {
+      "T": 1,
+      "S": 1,
+      "K": 2
+     }
+    }
+   ]
+  },
+  {
+   "delta": {
+    "R": -1
+   },
+   "faces": 94,
+   "pct": 0.28,
+   "examples": [
+    {
+     "name": "Abrupt Decay",
+     "types": "Instant",
+     "oracle": "This spell can't be countered.\\nDestroy target nonland permanent with mana value 3 or less.",
+     "pred": {
+      "A": 1
+     },
+     "true": {
+      "R": 1,
+      "A": 1
+     }
+    },
+    {
+     "name": "Arixmethes, Slumbering Isle",
+     "types": "Legendary Creature Kraken",
+     "oracle": "Arixmethes, Slumbering Isle enters tapped with five slumber counters on it.\\nAs long as Arixmethes has a slumber counter on it, it's a land. (It's not a creature.)\\nWhenever you cast a spell, you may remove a slumber cou",
+     "pred": {
+      "S": 1,
+      "T": 1,
+      "A": 1
+     },
+     "true": {
+      "R": 1,
+      "S": 1,
+      "T": 1,
+      "A": 1
+     }
+    },
+    {
+     "name": "Baloth Prime",
+     "types": "Creature Beast",
+     "oracle": "This creature enters tapped with six stun counters on it. (If a permanent with a stun counter would become untapped, remove one from it instead.)\\nWhenever you sacrifice a land, create a tapped 4/4 green Beast creature t",
+     "pred": {
+      "T": 1,
+      "A": 1
+     },
+     "true": {
+      "R": 1,
+      "T": 1,
+      "A": 1
+     }
+    },
+    {
+     "name": "Banner of Kinship",
+     "types": "Artifact",
+     "oracle": "As this artifact enters, choose a creature type. This artifact enters with a fellowship counter on it for each creature you control of the chosen type.\\nCreatures you control of the chosen type get +1/+1 for each fellows",
+     "pred": {
+      "S": 1
+     },
+     "true": {
+      "R": 1,
+      "S": 1
+     }
+    }
+   ]
+  },
+  {
+   "delta": {
+    "K": -1,
+    "S": 2
+   },
+   "faces": 80,
+   "pct": 0.23,
+   "examples": [
+    {
+     "name": "A Golden Opportunity",
+     "types": "Enchantment Saga",
+     "oracle": "(As this Saga enters and after your draw step, add a lore counter. Sacrifice after III.)\\nI \u2014 Conjure a card named Gilded Goose onto the battlefield.\\nII, III \u2014 You may tap an untapped Bird you control and sacrifice an a",
+     "pred": {
+      "S": 2
+     },
+     "true": {
+      "K": 1
+     }
+    },
+    {
+     "name": "Ballad of the Black Flag",
+     "types": "Enchantment Saga",
+     "oracle": "(As this Saga enters and after your draw step, add a lore counter. Sacrifice after IV.)\\nI, II, III \u2014 Mill three cards. You may put a historic card from among them into your hand. (Artifacts, legendaries, and Sagas are h",
+     "pred": {
+      "S": 2
+     },
+     "true": {
+      "K": 1
+     }
+    },
+    {
+     "name": "Battle at the Helvault",
+     "types": "Enchantment Saga",
+     "oracle": "(As this Saga enters and after your draw step, add a lore counter.)\\nI, II \u2014 For each player, exile up to one target non-Saga, nonland permanent that player controls until Battle at the Helvault leaves the battlefield.\\n",
+     "pred": {
+      "S": 2
+     },
+     "true": {
+      "K": 1
+     }
+    },
+    {
+     "name": "Befriending the Moths",
+     "types": "Enchantment Saga",
+     "oracle": "(As this Saga enters and after your draw step, add a lore counter.)\\nI, II \u2014 Target creature you control gets +1/+1 and gains flying until end of turn.\\nIII \u2014 Exile this Saga, then return it to the battlefield transforme",
+     "pred": {
+      "S": 2
+     },
+     "true": {
+      "K": 1
+     }
+    }
+   ]
+  },
+  {
+   "delta": {
+    "A": -1,
+    "S": 1
+   },
+   "faces": 76,
+   "pct": 0.22,
+   "examples": [
+    {
+     "name": "Abhorrent Oculus",
+     "types": "Creature Eye",
+     "oracle": "As an additional cost to cast this spell, exile six cards from your graveyard.\\nFlying\\nAt the beginning of each opponent's upkeep, manifest dread. (Look at the top two cards of your library. Put one onto the battlefield",
+     "pred": {
+      "S": 1,
+      "K": 1,
+      "T": 1
+     },
+     "true": {
+      "A": 1,
+      "T": 1,
+      "K": 1
+     }
+    },
+    {
+     "name": "Arbiter of Woe",
+     "types": "Creature Demon",
+     "oracle": "As an additional cost to cast this spell, sacrifice a creature.\\nFlying\\nWhen this creature enters, each opponent discards a card and loses 2 life. You draw a card and gain 2 life.",
+     "pred": {
+      "S": 1,
+      "K": 1,
+      "T": 1
+     },
+     "true": {
+      "A": 1,
+      "T": 1,
+      "K": 1
+     }
+    },
+    {
+     "name": "Ashiok, Nightmare Weaver",
+     "types": "Legendary Planeswalker Ashiok",
+     "oracle": "[+2]: Exile the top three cards of target opponent's library.\\n[-X]: Put a creature card with mana value X exiled with Ashiok, Nightmare Weaver onto the battlefield under your control. That creature is a Nightmare in add",
+     "pred": {
+      "A": 2,
+      "S": 1
+     },
+     "true": {
+      "A": 3
+     }
+    },
+    {
+     "name": "Baron Helmut Zemo",
+     "types": "Legendary Creature Human Noble Villain",
+     "oracle": "Whenever you cast a black spell from your hand, Baron Helmut Zemo connives.\\nBoast \u2014 Exile any number of black cards from your graveyard with fifteen or more black mana symbols among their mana costs: Copy those exiled c",
+     "pred": {
+      "T": 1,
+      "S": 1
+     },
+     "true": {
+      "T": 1,
+      "A": 1
+     }
+    }
+   ]
+  },
+  {
+   "delta": {
+    "T": 1
+   },
+   "faces": 64,
+   "pct": 0.19,
+   "examples": [
+    {
+     "name": "Absolver Thrull",
+     "types": "Creature Thrull Cleric",
+     "oracle": "Haunt (When this creature dies, exile it haunting target creature.)\\nWhen Absolver Thrull enters or the creature it haunts dies, destroy target enchantment.",
+     "pred": {
+      "K": 1,
+      "T": 1
+     },
+     "true": {
+      "K": 1
+     }
+    },
+    {
+     "name": "Archfiend of Ifnir",
+     "types": "Creature Demon",
+     "oracle": "Flying\\nWhenever you cycle or discard another card, put a -1/-1 counter on each creature your opponents control.\\nCycling {2} ({2}, Discard this card: Draw a card.)",
+     "pred": {
+      "K": 2,
+      "T": 2
+     },
+     "true": {
+      "T": 1,
+      "K": 2
+     }
+    },
+    {
+     "name": "Athreos, Shroud-Veiled",
+     "types": "Legendary Enchantment Creature God",
+     "oracle": "Indestructible\\nAs long as your devotion to white and black is less than seven, Athreos isn't a creature.\\nAt the beginning of your end step, put a coin counter on another target creature.\\nWhenever a creature with a coi",
+     "pred": {
+      "K": 1,
+      "S": 1,
+      "T": 3
+     },
+     "true": {
+      "S": 1,
+      "T": 2,
+      "K": 1
+     }
+    },
+    {
+     "name": "Baeloth Barrityl, Entertainer",
+     "types": "Legendary Creature Elf Shaman",
+     "oracle": "Creatures your opponents control with power less than Baeloth Barrityl's power are goaded. (They attack each combat if able and attack a player other than you if able.)\\nWhenever a goaded attacking or blocking creature d",
+     "pred": {
+      "S": 1,
+      "T": 2,
+      "K": 1
+     },
+     "true": {
+      "S": 1,
+      "T": 1,
+      "K": 1
+     }
+    }
+   ]
+  },
+  {
+   "delta": {
+    "T": -2
+   },
+   "faces": 61,
+   "pct": 0.18,
+   "examples": [
+    {
+     "name": "Azor's Gateway",
+     "types": "Legendary Artifact",
+     "oracle": "{1}, {T}: Draw a card, then exile a card from your hand. If cards with five or more different mana values are exiled with Azor's Gateway, you gain 5 life, untap Azor's Gateway, and transform it.",
+     "pred": {
+      "A": 1
+     },
+     "true": {
+      "A": 1,
+      "T": 2
+     }
+    },
+    {
+     "name": "Backdraft",
+     "types": "Instant",
+     "oracle": "Choose a player who cast one or more sorcery spells this turn. Backdraft deals damage to that player equal to half the damage dealt by one of those sorcery spells this turn, rounded down.",
+     "pred": {
+      "A": 1
+     },
+     "true": {
+      "T": 2,
+      "A": 1
+     }
+    },
+    {
+     "name": "Celestial Vault",
+     "types": "Artifact",
+     "oracle": "{W}, {T}: Draft a card from Celestial Vault's spellbook and exile it face down.\\n{1}, Sacrifice Celestial Vault: Put each card exiled with Celestial Vault into your hand.",
+     "pred": {
+      "A": 2
+     },
+     "true": {
+      "A": 2,
+      "T": 2
+     }
+    },
+    {
+     "name": "Cemetery Protector",
+     "types": "Creature Human Soldier",
+     "oracle": "Flash\\nWhen Cemetery Protector enters, exile a card from a graveyard.\\nWhenever you play a land or cast a spell, if it shares a card type with the exiled card, create a 1/1 white Human creature token.",
+     "pred": {
+      "K": 1,
+      "T": 2
+     },
+     "true": {
+      "T": 4,
+      "K": 1
+     }
+    }
+   ]
+  },
+  {
+   "delta": {
+    "A": -1
+   },
+   "faces": 48,
+   "pct": 0.14,
+   "examples": [
+    {
+     "name": "Adarkar Unicorn",
+     "types": "Creature Unicorn",
+     "oracle": "{T}: Add {U} or {C}{U}. Spend this mana only to pay cumulative upkeep costs.",
+     "pred": {
+      "A": 1
+     },
+     "true": {
+      "A": 2
+     }
+    },
+    {
+     "name": "Alchemist's Gambit",
+     "types": "Sorcery",
+     "oracle": "Cleave {4}{U}{U}{R} (You may cast this spell for its cleave cost. If you do, remove the words in square brackets.)\\nTake an extra turn after this one. During that turn, damage can't be prevented. [At the beginning of tha",
+     "pred": {
+      "A": 1
+     },
+     "true": {
+      "A": 2
+     }
+    },
+    {
+     "name": "Alchemist's Retrieval",
+     "types": "Instant",
+     "oracle": "Cleave {1}{U} (You may cast this spell for its cleave cost. If you do, remove the words in square brackets.)\\nReturn target nonland permanent [you control] to its owner's hand.",
+     "pred": {
+      "A": 1
+     },
+     "true": {
+      "A": 2
+     }
+    },
+    {
+     "name": "Bridge from Below",
+     "types": "Enchantment",
+     "oracle": "Whenever a nontoken creature is put into your graveyard from the battlefield, if Bridge from Below is in your graveyard, create a 2/2 black Zombie creature token.\\nWhen a creature is put into an opponent's graveyard from",
+     "pred": {
+      "T": 2
+     },
+     "true": {
+      "A": 1,
+      "T": 2
+     }
+    }
+   ]
+  },
+  {
+   "delta": {
+    "S": 1,
+    "T": -1
+   },
+   "faces": 35,
+   "pct": 0.1,
+   "examples": [
+    {
+     "name": "Buzzing Whack-a-Doodle",
+     "types": "Artifact",
+     "oracle": "As Buzzing Whack-a-Doodle enters, you and an opponent each secretly choose Whack or Doodle. Then those choices are revealed. If the choices match, Buzzing Whack-a-Doodle has that ability. Otherwise, it has Buzz.\\n\u2022 Whack",
+     "pred": {
+      "S": 1
+     },
+     "true": {
+      "T": 1
+     }
+    },
+    {
+     "name": "Caged Sun",
+     "types": "Artifact",
+     "oracle": "As Caged Sun enters, choose a color.\\nCreatures you control of the chosen color get +1/+1.\\nWhenever a land's ability causes you to add one or more mana of the chosen color, add an additional one mana of that color.",
+     "pred": {
+      "S": 2,
+      "T": 1
+     },
+     "true": {
+      "S": 1,
+      "T": 2
+     }
+    },
+    {
+     "name": "Case of the Burning Masks",
+     "types": "Enchantment Case",
+     "oracle": "When this Case enters, it deals 3 damage to target creature an opponent controls.\\nTo solve \u2014 Three or more sources you controlled dealt damage this turn. (If unsolved, solve at the beginning of your end step.)\\nSolved \u2014",
+     "pred": {
+      "T": 1,
+      "S": 1,
+      "A": 1
+     },
+     "true": {
+      "T": 2,
+      "A": 1
+     }
+    },
+    {
+     "name": "Case of the Crimson Pulse",
+     "types": "Enchantment Case",
+     "oracle": "When this Case enters, discard a card, then draw two cards.\\nTo solve \u2014 You have no cards in hand. (If unsolved, solve at the beginning of your end step.)\\nSolved \u2014 At the beginning of your upkeep, discard your hand, the",
+     "pred": {
+      "T": 2,
+      "S": 1
+     },
+     "true": {
+      "T": 3
+     }
+    }
+   ]
+  },
+  {
+   "delta": {
+    "K": -2,
+    "S": 1
+   },
+   "faces": 34,
+   "pct": 0.1,
+   "examples": [
+    {
+     "name": "A.I.M. Scientists",
+     "types": "Creature Human Scientist Villain",
+     "oracle": "When this creature enters, it connives. (Draw a card, then discard a card. If you discarded a nonland card, put a +1/+1 counter on this creature.)\\nBasic landcycling {2} ({2}, Discard this card: Search your library for a",
+     "pred": {
+      "T": 1,
+      "S": 1
+     },
+     "true": {
+      "T": 1,
+      "K": 2
+     }
+    },
+    {
+     "name": "Abomination of Llanowar",
+     "types": "Legendary Creature Elf Horror",
+     "oracle": "Vigilance; menace (This creature can't be blocked except by two or more creatures.)\\nAbomination of Llanowar's power and toughness are each equal to the number of Elves you control plus the number of Elf cards in your gr",
+     "pred": {
+      "S": 2
+     },
+     "true": {
+      "S": 1,
+      "K": 2
+     }
+    },
+    {
+     "name": "Aether Membrane",
+     "types": "Creature Wall",
+     "oracle": "Defender; reach (This creature can block creatures with flying.)\\nWhenever Aether Membrane blocks a creature, return that creature to its owner's hand at end of combat.",
+     "pred": {
+      "S": 1,
+      "T": 1
+     },
+     "true": {
+      "T": 1,
+      "K": 2
+     }
+    },
+    {
+     "name": "Ancient Spider",
+     "types": "Creature Spider",
+     "oracle": "First strike; reach (This creature can block creatures with flying.)",
+     "pred": {
+      "S": 1
+     },
+     "true": {
+      "K": 2
+     }
+    }
+   ]
+  }
+ ]
+}

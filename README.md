@@ -30,6 +30,9 @@ Plans built on those findings:
 - [research/answer-frames-and-deck-fingerprints.md](research/answer-frames-and-deck-fingerprints.md) —
   taxonomic vs ontological gaps (the Annul/Disdainful lesson), lifecycle edge-cut framing,
   timing cost profiles, and the per-deck fingerprint-graph proposal
+- [research/oracle-grammar-m0.md](research/oracle-grammar-m0.md) — M0 probe for an
+  oracle-text grammar as a second, Forge-independent derivation of the ability graph:
+  90.2% ability-kind agreement over 34,156 faces, kill criterion did not fire
 
 Reproduce: `research/scripts/` (pure-Python parser + search prototype;
 `CardGuruFeasibilityTest.java` drops into XMage's `Mage.Tests`). Pins: Forge `670429bf`,
