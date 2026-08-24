@@ -58,6 +58,11 @@ TAPX_RE = re.compile(
     r"\btaps?\s+(?P<n>a|an|one|two|three|four|five|\d+|X)\s+untapped\s+"
     r"(?P<what>[A-Za-z][A-Za-z' ]*?)(?:\s+you control)?(?=$|[,:.])", re.I)
 
+# 'Remove three charge counters from this Vehicle' is also a SubCounter cost,
+# not just planeswalker loyalty. Forge names the counter type: CHARGE, P1P1.
+REMOVE_COUNTER_RE = re.compile(
+    r"\bremove\s+(?P<n>a|an|one|two|three|four|\d+|X)\s+(?P<kind>[+\-\d/ ]*?[A-Za-z']*)\s*counters?\s+from\b", re.I)
+COUNTER_TYPE = {'+1/+1': 'P1P1', '-1/-1': 'M1M1', '': 'CHARGE'}
 MINUS_SIGNS = ("-", "\u2212", "\u2013")
 LOYALTY_COST_RE = re.compile(r"^\[?([+\u2212\u2013-]?)(\d+)\]?\s*$")
 LEAD_COUNT_RE = re.compile(
@@ -187,6 +192,12 @@ def cost_atoms(cost_text: str, card_name: str | None) -> str:
         sign, n = lm.group(1), lm.group(2)
         kind = "SubCounter" if sign in MINUS_SIGNS else "AddCounter"
         atoms.append(f"{kind}<{n}/LOYALTY>")
+
+    for rm in REMOVE_COUNTER_RE.finditer(text):
+        kind = (rm.group("kind") or "").strip().lower()
+        ctype = COUNTER_TYPE.get(kind) or (
+            kind.upper() if kind.isalpha() else "CHARGE")
+        atoms.append(f"SubCounter<{_num(rm.group('n'))}/{ctype}>")
 
     for sm in SAC_RE.finditer(text):
         atom = parse_sac_np(sm.group("np") or "", card_name)

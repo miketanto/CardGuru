@@ -1310,20 +1310,6 @@
     "oracle": "Until end of turn, target creature gets +2/+0 and gains \"When this creature dies, return it to the battlefield tapped under its owner's control.\""
    }
   ],
-  "ChoosePlayer": [
-   {
-    "name": "Abby, Merciless Soldier",
-    "oracle": "When you cast this spell, create a number of 1/1 black Fungus Zombie creature tokens named Cordyceps Infected equal to the amount of mana spent to cast it.\\nAbby enters u"
-   },
-   {
-    "name": "Anointed Peacekeeper",
-    "oracle": "Vigilance\\nAs Anointed Peacekeeper enters, look at an opponent's hand, then choose any card name.\\nSpells your opponents cast with the chosen name cost {2} more to cast.\\"
-   },
-   {
-    "name": "Arachne, Psionic Weaver",
-    "oracle": "Web-slinging {W} (You may cast this spell for {W} if you also return a tapped creature you control to its owner's hand.)\\nAs Arachne enters, look at an opponent's hand, t"
-   }
-  ],
   "ChangeZone": [
    {
     "name": "Abby, Merciless Soldier",
@@ -1336,6 +1322,20 @@
    {
     "name": "Aegis of Honor",
     "oracle": "{1}: The next time an instant or sorcery spell would deal damage to you this turn, that spell deals that damage to its controller instead."
+   }
+  ],
+  "ChoosePlayer": [
+   {
+    "name": "Abby, Merciless Soldier",
+    "oracle": "When you cast this spell, create a number of 1/1 black Fungus Zombie creature tokens named Cordyceps Infected equal to the amount of mana spent to cast it.\\nAbby enters u"
+   },
+   {
+    "name": "Anointed Peacekeeper",
+    "oracle": "Vigilance\\nAs Anointed Peacekeeper enters, look at an opponent's hand, then choose any card name.\\nSpells your opponents cast with the chosen name cost {2} more to cast.\\"
+   },
+   {
+    "name": "Arachne, Psionic Weaver",
+    "oracle": "Web-slinging {W} (You may cast this spell for {W} if you also return a tapped creature you control to its owner's hand.)\\nAs Arachne enters, look at an opponent's hand, t"
    }
   ],
   "Untap": [
@@ -1632,20 +1632,6 @@
     "oracle": "Assemble X Contraptions. (To assemble a Contraption, put the top card of your Contraption deck face up onto one of your sprockets.)"
    }
   ],
-  "ChooseNumber": [
-   {
-    "name": "Aether Refinery",
-    "oracle": "If you would get one or more {E}, you get twice that many {E} instead.\\n{T}: You get {E}, then you may pay one or more {E}. If you do, create an X/X black Aetherborn crea"
-   },
-   {
-    "name": "Choice of Damnations",
-    "oracle": "Target opponent chooses a number. You may have that player lose that much life. If you don't, that player sacrifices all but that many permanents."
-   },
-   {
-    "name": "Collective Voyage",
-    "oracle": "Join forces \u2014 Starting with you, each player may pay any amount of mana. Each player searches their library for up to X basic land cards, where X is the total amount of m"
-   }
-  ],
   "ReplaceCounter": [
    {
     "name": "Aether Refinery",
@@ -1658,6 +1644,20 @@
    {
     "name": "Conclave Mentor",
     "oracle": "If one or more +1/+1 counters would be put on a creature you control, that many plus one +1/+1 counters are put on that creature instead.\\nWhen Conclave Mentor dies, you "
+   }
+  ],
+  "ChooseNumber": [
+   {
+    "name": "Aether Refinery",
+    "oracle": "If you would get one or more {E}, you get twice that many {E} instead.\\n{T}: You get {E}, then you may pay one or more {E}. If you do, create an X/X black Aetherborn crea"
+   },
+   {
+    "name": "Choice of Damnations",
+    "oracle": "Target opponent chooses a number. You may have that player lose that much life. If you don't, that player sacrifices all but that many permanents."
+   },
+   {
+    "name": "Collective Voyage",
+    "oracle": "Join forces \u2014 Starting with you, each player may pay any amount of mana. Each player searches their library for up to X basic land cards, where X is the total amount of m"
    }
   ],
   "RemoveCounterAll": [
@@ -1716,20 +1716,6 @@
     "oracle": "Ascendant Acolyte enters with a +1/+1 counter on it for each +1/+1 counter among other creatures you control.\\nAt the beginning of your upkeep, double the number of +1/+1"
    }
   ],
-  "ControlSpell": [
-   {
-    "name": "Aethersnatch",
-    "oracle": "Gain control of target spell. You may choose new targets for it. (If that spell becomes a permanent, it enters under your control.)"
-   },
-   {
-    "name": "Chef's Kiss",
-    "oracle": "Gain control of target spell that targets only a single permanent or player. Copy it, then reselect the targets at random for the spell and the copy. The new targets can'"
-   },
-   {
-    "name": "Commandeer",
-    "oracle": "You may exile two blue cards from your hand rather than pay this spell's mana cost.\\nGain control of target noncreature spell. You may choose new targets for it. (If that"
-   }
-  ],
   "ChangeTargets": [
    {
     "name": "Aethersnatch",
@@ -1742,6 +1728,20 @@
    {
     "name": "Chef's Kiss",
     "oracle": "Gain control of target spell that targets only a single permanent or player. Copy it, then reselect the targets at random for the spell and the copy. The new targets can'"
+   }
+  ],
+  "ControlSpell": [
+   {
+    "name": "Aethersnatch",
+    "oracle": "Gain control of target spell. You may choose new targets for it. (If that spell becomes a permanent, it enters under your control.)"
+   },
+   {
+    "name": "Chef's Kiss",
+    "oracle": "Gain control of target spell that targets only a single permanent or player. Copy it, then reselect the targets at random for the spell and the copy. The new targets can'"
+   },
+   {
+    "name": "Commandeer",
+    "oracle": "You may exile two blue cards from your hand rather than pay this spell's mana cost.\\nGain control of target noncreature spell. You may choose new targets for it. (If that"
    }
   ],
   "MoveCounter": [
@@ -1940,20 +1940,6 @@
     "oracle": "Spells you control can't be countered.\\nAt the beginning of your end step, discover 5. (Exile cards from the top of your library until you exile a nonland card with mana "
    }
   ],
-  "EachDamage": [
-   {
-    "name": "Alpha Brawl",
-    "oracle": "Target creature an opponent controls deals damage equal to its power to each other creature that player controls, then each of those creatures deals damage equal to its p"
-   },
-   {
-    "name": "Band Together",
-    "oracle": "Up to two target creatures you control each deal damage equal to their power to another target creature."
-   },
-   {
-    "name": "Case of the Gateway Express",
-    "oracle": "When this Case enters, choose target creature you don't control. Each creature you control deals 1 damage to that creature.\\nTo solve \u2014 Three or more creatures attacked t"
-   }
-  ],
   "DamageAll": [
    {
     "name": "Alpha Brawl",
@@ -1966,6 +1952,20 @@
    {
     "name": "Bloodfire Infusion",
     "oracle": "Enchant creature you control\\n{R}, Sacrifice enchanted creature: Bloodfire Infusion deals damage equal to the sacrificed creature's power to each creature."
+   }
+  ],
+  "EachDamage": [
+   {
+    "name": "Alpha Brawl",
+    "oracle": "Target creature an opponent controls deals damage equal to its power to each other creature that player controls, then each of those creatures deals damage equal to its p"
+   },
+   {
+    "name": "Band Together",
+    "oracle": "Up to two target creatures you control each deal damage equal to their power to another target creature."
+   },
+   {
+    "name": "Case of the Gateway Express",
+    "oracle": "When this Case enters, choose target creature you don't control. Each creature you control deals 1 damage to that creature.\\nTo solve \u2014 Three or more creatures attacked t"
    }
   ],
   "CopyPermanent": [
@@ -1996,20 +1996,6 @@
     "oracle": "When this creature enters, it endures 1. (Put a +1/+1 counter on it or create a 1/1 white Spirit creature token.)"
    }
   ],
-  "GainControlVariant": [
-   {
-    "name": "Aminatou, the Fateshifter",
-    "oracle": "[+1]: Draw a card, then put a card from your hand on top of your library.\\n[-1]: Exile another target permanent you own, then return it to the battlefield under your cont"
-   },
-   {
-    "name": "Herald of Leshrac",
-    "oracle": "Flying\\nCumulative upkeep\u2014Gain control of a land you don't control. (At the beginning of your upkeep, put an age counter on this permanent, then sacrifice it unless you p"
-   },
-   {
-    "name": "Homeward Path",
-    "oracle": "{T}: Add {C}.\\n{T}: Each player gains control of all creatures they own."
-   }
-  ],
   "ChooseDirection": [
    {
     "name": "Aminatou, the Fateshifter",
@@ -2022,6 +2008,20 @@
    {
     "name": "Teyo, Geometric Tactician",
     "oracle": "When Teyo, Geometric Tactician enters, create a 0/4 white Wall creature token with defender and flying.\\n[+1]: You and target opponent each draw a card.\\n[-2]: Choose lef"
+   }
+  ],
+  "GainControlVariant": [
+   {
+    "name": "Aminatou, the Fateshifter",
+    "oracle": "[+1]: Draw a card, then put a card from your hand on top of your library.\\n[-1]: Exile another target permanent you own, then return it to the battlefield under your cont"
+   },
+   {
+    "name": "Herald of Leshrac",
+    "oracle": "Flying\\nCumulative upkeep\u2014Gain control of a land you don't control. (At the beginning of your upkeep, put an age counter on this permanent, then sacrifice it unless you p"
+   },
+   {
+    "name": "Homeward Path",
+    "oracle": "{T}: Add {C}.\\n{T}: Each player gains control of all creatures they own."
    }
   ],
   "RemoveCounter": [
@@ -2052,20 +2052,6 @@
     "oracle": "I, II, III \u2014 Reveal cards from the top of your library until you reveal a Doctor card, a card with doctor's companion, or a Vehicle card. Put that card into your hand and"
    }
   ],
-  "Dig": [
-   {
-    "name": "Amulet of Quoz",
-    "oracle": "Remove Amulet of Quoz from your deck before playing if you're not playing for ante.\\n{T}, Sacrifice Amulet of Quoz: Target opponent may ante the top card of their library"
-   },
-   {
-    "name": "Archaic's Agony",
-    "oracle": "Converge \u2014 Archaic's Agony deals X damage to target creature, where X is the number of colors of mana spent to cast this spell. Exile cards from the top of your library e"
-   },
-   {
-    "name": "Become Anonymous",
-    "oracle": "Exile target nontoken creature you own and the top two cards of your library in a face-down pile, shuffle that pile, then cloak those cards. They enter tapped. (To cloak "
-   }
-  ],
   "FlipCoin": [
    {
     "name": "Amulet of Quoz",
@@ -2078,6 +2064,20 @@
    {
     "name": "Crazed Firecat",
     "oracle": "When Crazed Firecat enters, flip a coin until you lose a flip. Put a +1/+1 counter on Crazed Firecat for each flip you won."
+   }
+  ],
+  "Dig": [
+   {
+    "name": "Amulet of Quoz",
+    "oracle": "Remove Amulet of Quoz from your deck before playing if you're not playing for ante.\\n{T}, Sacrifice Amulet of Quoz: Target opponent may ante the top card of their library"
+   },
+   {
+    "name": "Archaic's Agony",
+    "oracle": "Converge \u2014 Archaic's Agony deals X damage to target creature, where X is the number of colors of mana spent to cast this spell. Exile cards from the top of your library e"
+   },
+   {
+    "name": "Become Anonymous",
+    "oracle": "Exile target nontoken creature you own and the top two cards of your library in a face-down pile, shuffle that pile, then cloak those cards. They enter tapped. (To cloak "
    }
   ],
   "DayTime": [
@@ -2998,6 +2998,12 @@
     "oracle": "Whenever a creature dies, tap all untapped creatures that share a creature type with it or untap all tapped creatures that share a creature type with it."
    }
   ],
+  "DealDamage": [
+   {
+    "name": "Faerie Dragon",
+    "oracle": "Flying\\n{1}{G}{G}: Perform a random action."
+   }
+  ],
   "GainLife": [
    {
     "name": "Faerie Dragon",
@@ -3010,12 +3016,6 @@
    {
     "name": "Phyrexian Adapter",
     "oracle": "Flying\\nAll Incubator tokens you control become Food, Blood, Clue, Treasure, and Powerstone in addition to their other types, and have the respective abilities of those t"
-   }
-  ],
-  "DealDamage": [
-   {
-    "name": "Faerie Dragon",
-    "oracle": "Flying\\n{1}{G}{G}: Perform a random action."
    }
   ],
   "ChaosEnsues": [

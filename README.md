@@ -59,6 +59,10 @@ Plans built on those findings:
 - [research/oracle-grammar-cycle4.md](research/oracle-grammar-cycle4.md) — best score
   yet (7/10, 82.8% mean recall) and the largest gain came from *deleting* duplicated
   logic: the emitter was re-deriving ability kind instead of calling M0's `classify()`
+- [research/oracle-grammar-cycle5.md](research/oracle-grammar-cycle5.md) — audits every
+  production against the text of the cards it should match: exactly one was authored from
+  a mode's *name* (`AttackersDeclared`, 0%→83.5%); trigger modes now 93.7/81.4. The
+  slices are relabelled as a regression suite — a verdict needs an untouched question source
 
 Reproduce: `research/scripts/` (pure-Python parser + search prototype;
 `CardGuruFeasibilityTest.java` drops into XMage's `Mage.Tests`). Pins: Forge `670429bf`,

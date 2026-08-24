@@ -1,0 +1,83 @@
+{
+ "slice": "nl_questions_adversarial_v6.json",
+ "questions": 4,
+ "oracle_passed": 3,
+ "oracle_pass_pct": 75.0,
+ "oracle_vacuous_empty_results": 0,
+ "forge_passed": 4,
+ "mean_recall_of_forge_hits_pct": 80.9,
+ "rows": [
+  {
+   "id": "b01",
+   "family": "cost",
+   "q": "cards with an activated ability whose cost includes SubCounter",
+   "forge": {
+    "hits": 654,
+    "witness_found": true,
+    "foil_rejected": true
+   },
+   "oracle": {
+    "hits": 334,
+    "witness_found": true,
+    "foil_rejected": true,
+    "vacuous": false
+   },
+   "recall_of_forge_hits_pct": 51.1,
+   "jaccard_pct": 51.1
+  },
+  {
+   "id": "b02",
+   "family": "trigger_mode",
+   "q": "cards with a triggered ability that triggers on Phase",
+   "forge": {
+    "hits": 2294,
+    "witness_found": true,
+    "foil_rejected": true
+   },
+   "oracle": {
+    "hits": 2246,
+    "witness_found": true,
+    "foil_rejected": true,
+    "vacuous": false
+   },
+   "recall_of_forge_hits_pct": 96.6,
+   "jaccard_pct": 95.4
+  },
+  {
+   "id": "b03",
+   "family": "trigger_mode",
+   "q": "cards with a triggered ability that triggers on AttackersDeclared",
+   "forge": {
+    "hits": 233,
+    "witness_found": true,
+    "foil_rejected": true
+   },
+   "oracle": {
+    "hits": 208,
+    "witness_found": false,
+    "foil_rejected": true,
+    "vacuous": false
+   },
+   "recall_of_forge_hits_pct": 78.5,
+   "jaccard_pct": 70.9
+  },
+  {
+   "id": "b04",
+   "family": "replacement_event",
+   "q": "cards with a replacement effect on the Untap event",
+   "forge": {
+    "hits": 155,
+    "witness_found": true,
+    "foil_rejected": true
+   },
+   "oracle": {
+    "hits": 157,
+    "witness_found": true,
+    "foil_rejected": true,
+    "vacuous": false
+   },
+   "recall_of_forge_hits_pct": 97.4,
+   "jaccard_pct": 93.8
+  }
+ ]
+}
