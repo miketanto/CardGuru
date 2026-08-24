@@ -54,7 +54,9 @@ TRIGGER_MODES = [
 
 REPLACEMENT_EVENTS = [
     ("Untap",       r"\bdoesn'?t untap\b|\bdon'?t untap\b"),
-    ("Counter",     r"\bwould be countered\b"),
+    # Forge's R:Event$ Counter is uncounterability -- "this spell can't be
+    # countered" -- not a "would be countered" replacement.
+    ("Counter",     r"\bcan'?t be countered\b"),
     ("Draw",        r"\bif\b[^.]{0,40}\bwould draw\b"),
     ("CreateToken", r"\bwould (?:create|put)\b[^.]{0,40}\btokens?\b"),
     ("AddCounter",  r"\bwould (?:have|get|be put)\b[^.]{0,50}\bcounters?\b"

@@ -11,46 +11,46 @@
   "exact_set_agreement_pct": 71.03
  },
  "static_modes": {
-  "tp": 2618,
-  "fp": 1322,
-  "fn": 699,
-  "precision_pct": 66.45,
-  "recall_pct": 78.93,
-  "faces_with_any": 4015,
-  "exact_set_agreement_pct": 59.88
+  "tp": 2617,
+  "fp": 1301,
+  "fn": 700,
+  "precision_pct": 66.79,
+  "recall_pct": 78.9,
+  "faces_with_any": 3994,
+  "exact_set_agreement_pct": 60.17
  },
  "replacement_events": {
-  "tp": 674,
+  "tp": 708,
   "fp": 26,
-  "fn": 193,
-  "precision_pct": 96.29,
-  "recall_pct": 77.74,
+  "fn": 159,
+  "precision_pct": 96.46,
+  "recall_pct": 81.66,
   "faces_with_any": 877,
-  "exact_set_agreement_pct": 75.6
+  "exact_set_agreement_pct": 79.36
  },
  "node_counts": {
   "R": {
    "forge": 888,
-   "oracle": 707
+   "oracle": 746
   },
   "S": {
    "forge": 3531,
-   "oracle": 4609
+   "oracle": 4570
   }
  },
  "static_mode_detail": [
   {
    "mode": "Continuous",
    "support": 2218,
-   "fp": 1183,
+   "fp": 1162,
    "recall_pct": 95.6,
-   "precision_pct": 64.2
+   "precision_pct": 64.6
   },
   {
    "mode": "ReduceCost",
    "support": 233,
    "fp": 7,
-   "recall_pct": 63.5,
+   "recall_pct": 63.1,
    "precision_pct": 95.5
   },
   {

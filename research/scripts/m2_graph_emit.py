@@ -54,6 +54,8 @@ DISCARD_RE = re.compile(
     r"[A-Za-z][A-Za-z' ]{0,20}?card)", re.I)
 PAYLIFE_RE = re.compile(r"\bpay\s+(?P<n>\d+|X)\s+life\b", re.I)
 
+MINUS_SIGNS = ("-", "\u2212", "\u2013")
+LOYALTY_COST_RE = re.compile(r"^\[?([+\u2212\u2013-]?)(\d+)\]?\s*$")
 LEAD_COUNT_RE = re.compile(
     r"^(?P<n>a|an|one|two|three|four|five|\d+|X)\b\s*", re.I)
 OTHER_RE = re.compile(r"^(another|other)\b\s*", re.I)
@@ -173,11 +175,14 @@ def cost_atoms(cost_text: str, card_name: str | None) -> str:
             atoms.append(s)
     text = MANA_SYM_RE.sub(" ", cost_text)
 
-    m = LOYALTY_BRACKET_RE.match(cost_text.strip()) or LOYALTY_RE.match(cost_text.strip())
-    if m:
-        raw = m.group(0).strip("[]: ")
-        n = raw.lstrip("+-−–") or "0"
-        atoms.append(f"{'SubCounter' if raw[:1] in '-−–' else 'AddCounter'}<{n}/LOYALTY>")
+    # Loyalty costs arrive here WITHOUT their colon -- cost_span() has already
+    # split on it -- so match the bare '[+1]' / '-2' form. Anchoring on the
+    # colon here meant planeswalker costs never emitted a LOYALTY atom at all.
+    lm = LOYALTY_COST_RE.match(cost_text.strip())
+    if lm:
+        sign, n = lm.group(1), lm.group(2)
+        kind = "SubCounter" if sign in MINUS_SIGNS else "AddCounter"
+        atoms.append(f"{kind}<{n}/LOYALTY>")
 
     for sm in SAC_RE.finditer(text):
         atom = parse_sac_np(sm.group("np") or "", card_name)
