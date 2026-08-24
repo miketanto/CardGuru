@@ -114,6 +114,7 @@ Next, in order:
 3. **M3** — `R` nodes with `Event$`, static modes, real chain edges — still the
    work that would let a02/a03 pass at all.
 
-The blocker is unchanged: `api.scryfall.com` is still 403 through the session
-proxy, so the grammar has nothing to parse that Forge does not already cover.
-Everything above is preparation.
+**Superseded:** earlier drafts of this note ended by calling blocked Scryfall
+access the outstanding blocker. That was wrong — the grammar reads oracle text
+from Forge's own `Oracle:` line and never needed Scryfall. See
+[research/scryfall-dependency-reassessed.md](scryfall-dependency-reassessed.md).

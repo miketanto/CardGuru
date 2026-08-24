@@ -63,6 +63,10 @@ Plans built on those findings:
   production against the text of the cards it should match: exactly one was authored from
   a mode's *name* (`AttackersDeclared`, 0%→83.5%); trigger modes now 93.7/81.4. The
   slices are relabelled as a regression suite — a verdict needs an untouched question source
+- [research/scryfall-dependency-reassessed.md](research/scryfall-dependency-reassessed.md) —
+  **correction:** the oracle grammar never needed Scryfall. It reads Forge's own `Oracle:`
+  line, and Forge is a live GitHub feed (92 new card scripts in 18 days). Coverage was
+  always the weak argument; fidelity vs. the implementation ontology is the real one
 
 Reproduce: `research/scripts/` (pure-Python parser + search prototype;
 `CardGuruFeasibilityTest.java` drops into XMage's `Mage.Tests`). Pins: Forge `670429bf`,

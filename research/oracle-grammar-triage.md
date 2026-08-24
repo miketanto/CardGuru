@@ -106,7 +106,7 @@ emitter has six specific bugs, five of them small.
    but 23 cards is not yet an audit signal, and claiming otherwise on this data
    would be overreach.
 
-The larger blocker is unchanged and sits outside all of this: `api.scryfall.com`
-is still 403 through the session proxy (uncertainty #5). Until there is a live
-oracle-text feed, the grammar has nothing to parse that Forge does not already
-cover, and every item above is preparation rather than delivery.
+**Superseded:** earlier drafts of this note ended by calling blocked Scryfall
+access the outstanding blocker. That was wrong — the grammar reads oracle text
+from Forge's own `Oracle:` line and never needed Scryfall. See
+[research/scryfall-dependency-reassessed.md](scryfall-dependency-reassessed.md).

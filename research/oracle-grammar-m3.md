@@ -127,5 +127,10 @@ visible because the slice was regenerated rather than reused.
   bulk recall is high — v2's b06 missed its witness while returning 99.6% of
   Forge's hits. Mean recall of Forge hits is the softer and probably more
   informative number.
-- The blocker is unchanged: `api.scryfall.com` is still 403 through the session
-  proxy, so none of this yet parses a card Forge does not already cover.
+
+## Superseded
+
+Earlier drafts of this note ended by calling blocked Scryfall access the
+outstanding blocker. That was wrong — the grammar reads oracle text
+from Forge's own `Oracle:` line and never needed Scryfall. See
+[research/scryfall-dependency-reassessed.md](scryfall-dependency-reassessed.md).

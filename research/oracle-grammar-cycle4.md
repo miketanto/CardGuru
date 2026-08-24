@@ -102,4 +102,7 @@ failures are individually named.
 Verified: 92 tests pass, M0 90.29%, M1 83.35/76.9 unchanged, M2 params
 94.18/78.25 sac and 99.75/99.75 tap.
 
-Blocker unchanged: `api.scryfall.com` still 403 through the session proxy.
+**Superseded:** earlier drafts of this note ended by calling blocked Scryfall
+access the outstanding blocker. That was wrong — the grammar reads oracle text
+from Forge's own `Oracle:` line and never needed Scryfall. See
+[research/scryfall-dependency-reassessed.md](scryfall-dependency-reassessed.md).

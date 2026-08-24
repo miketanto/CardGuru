@@ -157,3 +157,4 @@ Expected landing remains hybrid, not replacement: Forge graph where a card is
 scripted, grammar graph where it is not, a `derivation` tag on every record, and
 cross-derivation disagreements surfaced as a QA queue rather than silently
 resolved.
+
