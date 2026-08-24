@@ -1,0 +1,179 @@
+{
+ "_comment": "Adversarial slice v2, generated mechanically by eval/gen_adversarial_slice.py. Replaces a01-a05, which were burned by research/oracle-grammar-triage.md. Witness = highest BM25-ranked Forge match; foil = highest BM25-ranked non-match. No question, witness or foil was chosen by hand.",
+ "generator": {
+  "top_n_per_family": 6,
+  "rank_offset": 12,
+  "min_hits": 15,
+  "max_hits": 2500,
+  "min_foil_ratio": 0.45
+ },
+ "questions": [
+  {
+   "id": "b01",
+   "family": "cost",
+   "q": "cards with an activated ability whose cost includes ExileFromGrave",
+   "witness": [
+    "Drivnod, Carnage Dominus"
+   ],
+   "absent": [
+    "Yarok, the Desecrated"
+   ],
+   "forge_hits": 167,
+   "agent_query": {
+    "node": {
+     "kind": "A",
+     "apiKind": "AB",
+     "params": {
+      "Cost": {
+       "regex": "(^|\\s)ExileFromGrave(<|$|\\s)"
+      }
+     }
+    }
+   },
+   "why_adversarial": "foil is the top BM25-ranked card that does NOT match the structural query, so it is lexically confusable with the witness but mechanically different"
+  },
+  {
+   "id": "b02",
+   "family": "cost",
+   "q": "cards with an activated ability whose cost includes paying life",
+   "witness": [
+    "Scientist Supreme of A.I.M."
+   ],
+   "absent": [
+    "Kirol, Attentive First-Year"
+   ],
+   "forge_hits": 157,
+   "agent_query": {
+    "node": {
+     "kind": "A",
+     "apiKind": "AB",
+     "params": {
+      "Cost": {
+       "regex": "(^|\\s)PayLife(<|$|\\s)"
+      }
+     }
+    }
+   },
+   "why_adversarial": "foil is the top BM25-ranked card that does NOT match the structural query, so it is lexically confusable with the witness but mechanically different"
+  },
+  {
+   "id": "b03",
+   "family": "cost",
+   "q": "cards with an activated ability whose cost includes or",
+   "witness": [
+    "Chandra's Regulator"
+   ],
+   "absent": [
+    "Kurkesh, Onakke Ancient"
+   ],
+   "forge_hits": 75,
+   "agent_query": {
+    "node": {
+     "kind": "A",
+     "apiKind": "AB",
+     "params": {
+      "Cost": {
+       "regex": "(^|\\s)or(<|$|\\s)"
+      }
+     }
+    }
+   },
+   "why_adversarial": "foil is the top BM25-ranked card that does NOT match the structural query, so it is lexically confusable with the witness but mechanically different"
+  },
+  {
+   "id": "b04",
+   "family": "trigger_mode",
+   "q": "cards with a triggered ability that triggers on BecomesTarget",
+   "witness": [
+    "Mirror-Shield Hoplite"
+   ],
+   "absent": [
+    "Bill Potts"
+   ],
+   "forge_hits": 117,
+   "agent_query": {
+    "node": {
+     "kind": "T",
+     "mode": "BecomesTarget"
+    }
+   },
+   "why_adversarial": "foil is the top BM25-ranked card that does NOT match the structural query, so it is lexically confusable with the witness but mechanically different"
+  },
+  {
+   "id": "b05",
+   "family": "trigger_mode",
+   "q": "cards with a triggered ability that triggers on Sacrificed",
+   "witness": [
+    "Dina, Essence Brewer"
+   ],
+   "absent": [
+    "Dina, Soul Steeper"
+   ],
+   "forge_hits": 114,
+   "agent_query": {
+    "node": {
+     "kind": "T",
+     "mode": "Sacrificed"
+    }
+   },
+   "why_adversarial": "foil is the top BM25-ranked card that does NOT match the structural query, so it is lexically confusable with the witness but mechanically different"
+  },
+  {
+   "id": "b06",
+   "family": "trigger_mode",
+   "q": "cards with a triggered ability that triggers on Taps",
+   "witness": [
+    "Nanoform Sentinel"
+   ],
+   "absent": [
+    "Mechan Assembler"
+   ],
+   "forge_hits": 110,
+   "agent_query": {
+    "node": {
+     "kind": "T",
+     "mode": "Taps"
+    }
+   },
+   "why_adversarial": "foil is the top BM25-ranked card that does NOT match the structural query, so it is lexically confusable with the witness but mechanically different"
+  },
+  {
+   "id": "b07",
+   "family": "trigger_mode",
+   "q": "cards with a triggered ability that triggers on LifeGained",
+   "witness": [
+    "Dr. Beverly Crusher"
+   ],
+   "absent": [
+    "Virtue of Knowledge"
+   ],
+   "forge_hits": 90,
+   "agent_query": {
+    "node": {
+     "kind": "T",
+     "mode": "LifeGained"
+    }
+   },
+   "why_adversarial": "foil is the top BM25-ranked card that does NOT match the structural query, so it is lexically confusable with the witness but mechanically different"
+  },
+  {
+   "id": "b08",
+   "family": "static_mode",
+   "q": "cards with a static ability of type OptionalCost",
+   "witness": [
+    "Celestial Reunion"
+   ],
+   "absent": [
+    "Kindred Summons"
+   ],
+   "forge_hits": 40,
+   "agent_query": {
+    "node": {
+     "kind": "S",
+     "mode": "OptionalCost"
+    }
+   },
+   "why_adversarial": "foil is the top BM25-ranked card that does NOT match the structural query, so it is lexically confusable with the witness but mechanically different"
+  }
+ ]
+}

@@ -53,6 +53,10 @@ DISCARD_RE = re.compile(
     r"\bdiscard\s+(?P<n>a|an|one|two|three|\d+|X)?\s*(?P<what>card|cards|"
     r"[A-Za-z][A-Za-z' ]{0,20}?card)", re.I)
 PAYLIFE_RE = re.compile(r"\bpay\s+(?P<n>\d+|X)\s+life\b", re.I)
+# 'Tap two untapped creatures you control' -> tapXType<2/Creature>
+TAPX_RE = re.compile(
+    r"\btaps?\s+(?P<n>a|an|one|two|three|four|five|\d+|X)\s+untapped\s+"
+    r"(?P<what>[A-Za-z][A-Za-z' ]*?)(?:\s+you control)?(?=$|[,:.])", re.I)
 
 MINUS_SIGNS = ("-", "\u2212", "\u2013")
 LOYALTY_COST_RE = re.compile(r"^\[?([+\u2212\u2013-]?)(\d+)\]?\s*$")
@@ -188,6 +192,13 @@ def cost_atoms(cost_text: str, card_name: str | None) -> str:
         atom = parse_sac_np(sm.group("np") or "", card_name)
         if atom:
             atoms.append(atom)
+
+    for tm in TAPX_RE.finditer(text):
+        tok = _type_token((tm.group("what") or "").strip())
+        if tok:
+            head, quals = tok
+            sel = f"{head}.{'+'.join(quals)}" if quals else head
+            atoms.append(f"tapXType<{_num(tm.group('n'))}/{sel}>")
 
     for dm in DISCARD_RE.finditer(text):
         atoms.append(f"Discard<{_num(dm.group('n'))}/Card>")

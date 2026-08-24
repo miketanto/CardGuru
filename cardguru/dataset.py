@@ -38,6 +38,12 @@ def build(cardsfolder: str, out_path: str, canonical_index: str | None = None,
         out.write(json.dumps(header) + "\n")
         for face in parse_cardsfolder(cardsfolder):
             rec = face.to_record()
+            # Which derivation produced this graph. The oracle-text grammar
+            # (research/scripts/m2_graph_emit.py) stamps "oracle-grammar";
+            # tagging both lets a merged dataset stay auditable and lets a
+            # field-level merge policy tell the two apart
+            # (research/oracle-grammar-m3.md).
+            rec["derivation"] = "script"
             if face.name:
                 canon = canonical.get(norm_name(face.name))
                 if canon:

@@ -2,13 +2,13 @@
  "split": "holdout",
  "faces_scored": 17140,
  "trigger_modes": {
-  "tp": 5957,
-  "fp": 1013,
-  "fn": 2105,
-  "precision_pct": 85.47,
-  "recall_pct": 73.89,
+  "tp": 6458,
+  "fp": 496,
+  "fn": 1604,
+  "precision_pct": 92.87,
+  "recall_pct": 80.1,
   "faces_with_any": 7177,
-  "exact_set_agreement_pct": 71.03
+  "exact_set_agreement_pct": 78.07
  },
  "static_modes": {
   "tp": 2617,

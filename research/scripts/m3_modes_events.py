@@ -124,8 +124,26 @@ DIES_RE = re.compile(r"\bdies\b|\bput into a graveyard from the battlefield\b", 
 ENTERS_RE = re.compile(r"\benters?\b", re.I)
 
 
+# A triggered ability's mode is decided by its EVENT clause, which ends at the
+# first comma: 'Whenever X deals combat damage to a player, draw a card' is a
+# DamageDone trigger, not a Drawn one. Matching against the whole line let the
+# effect half vote on the mode, which is what made Drawn fire 721 times against
+# Forge's 145.
+EVENT_CLAUSE_RE = re.compile(r"^[^,]{0,160}")
+
+
+def event_clause(line: str) -> str:
+    m = EVENT_CLAUSE_RE.match(line)
+    return m.group(0) if m else line
+
+
 def trigger_mode(line: str) -> str | None:
     """Forge T:Mode$ for a triggered-ability line."""
+    event = event_clause(line)
+    for mode, rx in _COMPILED["trigger"]:
+        if rx.search(event):
+            return mode
+    # Fall back to the whole line only if the event clause named nothing.
     for mode, rx in _COMPILED["trigger"]:
         if rx.search(line):
             return mode
