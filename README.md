@@ -56,6 +56,9 @@ Plans built on those findings:
   the coverage rule measured at its edge: 6/9 in scope vs **1/8 one rank-band outside**,
   a cliff that shows the pre-stated rule is load-bearing; trigger modes 85.5/73.9 →
   92.9/80.1; `derivation` now stamped on both derivations
+- [research/oracle-grammar-cycle4.md](research/oracle-grammar-cycle4.md) — best score
+  yet (7/10, 82.8% mean recall) and the largest gain came from *deleting* duplicated
+  logic: the emitter was re-deriving ability kind instead of calling M0's `classify()`
 
 Reproduce: `research/scripts/` (pure-Python parser + search prototype;
 `CardGuruFeasibilityTest.java` drops into XMage's `Mage.Tests`). Pins: Forge `670429bf`,
