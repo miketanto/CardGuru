@@ -1,0 +1,331 @@
+{
+ "_comment": "Adversarial slice v2, generated mechanically by eval/gen_adversarial_slice.py. Replaces a01-a05, which were burned by research/oracle-grammar-triage.md. Witness = highest BM25-ranked Forge match; foil = highest BM25-ranked non-match. No question, witness or foil was chosen by hand.",
+ "generator": {
+  "top_n_per_family": 6,
+  "min_hits": 15,
+  "max_hits": 2500,
+  "min_foil_ratio": 0.45
+ },
+ "questions": [
+  {
+   "id": "b01",
+   "family": "cost",
+   "q": "cards with an activated ability whose cost includes sacrificing a permanent",
+   "witness": [
+    "Adric, Mathematical Genius"
+   ],
+   "absent": [
+    "Tawnos, Urza's Apprentice"
+   ],
+   "forge_hits": 1763,
+   "agent_query": {
+    "node": {
+     "kind": "A",
+     "apiKind": "AB",
+     "params": {
+      "Cost": {
+       "regex": "(^|\\s)Sac(<|$|\\s)"
+      }
+     }
+    }
+   },
+   "why_adversarial": "foil is the top BM25-ranked card that does NOT match the structural query, so it is lexically confusable with the witness but mechanically different"
+  },
+  {
+   "id": "b02",
+   "family": "cost",
+   "q": "cards with an activated ability whose cost includes B",
+   "witness": [
+    "Tazri, Stalwart Survivor"
+   ],
+   "absent": [
+    "Drana and Linvala"
+   ],
+   "forge_hits": 844,
+   "agent_query": {
+    "node": {
+     "kind": "A",
+     "apiKind": "AB",
+     "params": {
+      "Cost": {
+       "regex": "(^|\\s)B(<|$|\\s)"
+      }
+     }
+    }
+   },
+   "why_adversarial": "foil is the top BM25-ranked card that does NOT match the structural query, so it is lexically confusable with the witness but mechanically different"
+  },
+  {
+   "id": "b03",
+   "family": "cost",
+   "q": "cards with an activated ability whose cost includes R",
+   "witness": [
+    "Tawnos, Urza's Apprentice"
+   ],
+   "absent": [
+    "Echo, Perceptive Prodigy"
+   ],
+   "forge_hits": 817,
+   "agent_query": {
+    "node": {
+     "kind": "A",
+     "apiKind": "AB",
+     "params": {
+      "Cost": {
+       "regex": "(^|\\s)R(<|$|\\s)"
+      }
+     }
+    }
+   },
+   "why_adversarial": "foil is the top BM25-ranked card that does NOT match the structural query, so it is lexically confusable with the witness but mechanically different"
+  },
+  {
+   "id": "b04",
+   "family": "cost",
+   "q": "cards with an activated ability whose cost includes G",
+   "witness": [
+    "Brown Ouphe"
+   ],
+   "absent": [
+    "Rust"
+   ],
+   "forge_hits": 796,
+   "agent_query": {
+    "node": {
+     "kind": "A",
+     "apiKind": "AB",
+     "params": {
+      "Cost": {
+       "regex": "(^|\\s)G(<|$|\\s)"
+      }
+     }
+    }
+   },
+   "why_adversarial": "foil is the top BM25-ranked card that does NOT match the structural query, so it is lexically confusable with the witness but mechanically different"
+  },
+  {
+   "id": "b05",
+   "family": "cost",
+   "q": "cards with an activated ability whose cost includes SubCounter",
+   "witness": [
+    "Peter Parker's Camera"
+   ],
+   "absent": [
+    "Strionic Resonator"
+   ],
+   "forge_hits": 654,
+   "agent_query": {
+    "node": {
+     "kind": "A",
+     "apiKind": "AB",
+     "params": {
+      "Cost": {
+       "regex": "(^|\\s)SubCounter(<|$|\\s)"
+      }
+     }
+    }
+   },
+   "why_adversarial": "foil is the top BM25-ranked card that does NOT match the structural query, so it is lexically confusable with the witness but mechanically different"
+  },
+  {
+   "id": "b06",
+   "family": "trigger_mode",
+   "q": "cards with a triggered ability that triggers on Attacks",
+   "witness": [
+    "Valiant Emberkin"
+   ],
+   "absent": [
+    "Virtue of Knowledge"
+   ],
+   "forge_hits": 1589,
+   "agent_query": {
+    "node": {
+     "kind": "T",
+     "mode": "Attacks"
+    }
+   },
+   "why_adversarial": "foil is the top BM25-ranked card that does NOT match the structural query, so it is lexically confusable with the witness but mechanically different"
+  },
+  {
+   "id": "b07",
+   "family": "trigger_mode",
+   "q": "cards with a triggered ability that triggers on SpellCast",
+   "witness": [
+    "Echoes of Eternity"
+   ],
+   "absent": [
+    "Fractured Realm"
+   ],
+   "forge_hits": 1356,
+   "agent_query": {
+    "node": {
+     "kind": "T",
+     "mode": "SpellCast"
+    }
+   },
+   "why_adversarial": "foil is the top BM25-ranked card that does NOT match the structural query, so it is lexically confusable with the witness but mechanically different"
+  },
+  {
+   "id": "b08",
+   "family": "trigger_mode",
+   "q": "cards with a triggered ability that triggers on DamageDone",
+   "witness": [
+    "Stick, Fearless Mentor"
+   ],
+   "absent": [
+    "Harnesser of Storms"
+   ],
+   "forge_hits": 866,
+   "agent_query": {
+    "node": {
+     "kind": "T",
+     "mode": "DamageDone"
+    }
+   },
+   "why_adversarial": "foil is the top BM25-ranked card that does NOT match the structural query, so it is lexically confusable with the witness but mechanically different"
+  },
+  {
+   "id": "b09",
+   "family": "static_mode",
+   "q": "cards with a static ability of type CantBlockBy",
+   "witness": [
+    "Psychic Paper"
+   ],
+   "absent": [
+    "Spy Kit"
+   ],
+   "forge_hits": 362,
+   "agent_query": {
+    "node": {
+     "kind": "S",
+     "mode": "CantBlockBy"
+    }
+   },
+   "why_adversarial": "foil is the top BM25-ranked card that does NOT match the structural query, so it is lexically confusable with the witness but mechanically different"
+  },
+  {
+   "id": "b10",
+   "family": "static_mode",
+   "q": "cards with a static ability of type AlternativeCost",
+   "witness": [
+    "Outbreak"
+   ],
+   "absent": [
+    "Mutilate"
+   ],
+   "forge_hits": 148,
+   "agent_query": {
+    "node": {
+     "kind": "S",
+     "mode": "AlternativeCost"
+    }
+   },
+   "why_adversarial": "foil is the top BM25-ranked card that does NOT match the structural query, so it is lexically confusable with the witness but mechanically different"
+  },
+  {
+   "id": "b11",
+   "family": "replacement_event",
+   "q": "cards with a replacement effect on the Moved event",
+   "witness": [
+    "Library of Leng"
+   ],
+   "absent": [
+    "Spellbook"
+   ],
+   "forge_hits": 955,
+   "agent_query": {
+    "node": {
+     "kind": "R",
+     "params": {
+      "Event": "Moved"
+     }
+    }
+   },
+   "why_adversarial": "foil is the top BM25-ranked card that does NOT match the structural query, so it is lexically confusable with the witness but mechanically different"
+  },
+  {
+   "id": "b12",
+   "family": "replacement_event",
+   "q": "cards with a replacement effect on the Untap event",
+   "witness": [
+    "Dwarven Patrol"
+   ],
+   "absent": [
+    "Apes of Rath"
+   ],
+   "forge_hits": 155,
+   "agent_query": {
+    "node": {
+     "kind": "R",
+     "params": {
+      "Event": "Untap"
+     }
+    }
+   },
+   "why_adversarial": "foil is the top BM25-ranked card that does NOT match the structural query, so it is lexically confusable with the witness but mechanically different"
+  },
+  {
+   "id": "b13",
+   "family": "replacement_event",
+   "q": "cards with a replacement effect on the Counter event",
+   "witness": [
+    "Last Word"
+   ],
+   "absent": [
+    "Determined"
+   ],
+   "forge_hits": 109,
+   "agent_query": {
+    "node": {
+     "kind": "R",
+     "params": {
+      "Event": "Counter"
+     }
+    }
+   },
+   "why_adversarial": "foil is the top BM25-ranked card that does NOT match the structural query, so it is lexically confusable with the witness but mechanically different"
+  },
+  {
+   "id": "b14",
+   "family": "replacement_event",
+   "q": "cards with a replacement effect on the Draw event",
+   "witness": [
+    "Teferi's Ageless Insight"
+   ],
+   "absent": [
+    "Leela, Sevateem Warrior"
+   ],
+   "forge_hits": 37,
+   "agent_query": {
+    "node": {
+     "kind": "R",
+     "params": {
+      "Event": "Draw"
+     }
+    }
+   },
+   "why_adversarial": "foil is the top BM25-ranked card that does NOT match the structural query, so it is lexically confusable with the witness but mechanically different"
+  },
+  {
+   "id": "b15",
+   "family": "replacement_event",
+   "q": "cards with a replacement effect on the CreateToken event",
+   "witness": [
+    "Doubling Season"
+   ],
+   "absent": [
+    "Vorinclex, Monstrous Raider"
+   ],
+   "forge_hits": 32,
+   "agent_query": {
+    "node": {
+     "kind": "R",
+     "params": {
+      "Event": "CreateToken"
+     }
+    }
+   },
+   "why_adversarial": "foil is the top BM25-ranked card that does NOT match the structural query, so it is lexically confusable with the witness but mechanically different"
+  }
+ ]
+}

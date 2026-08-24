@@ -35,6 +35,9 @@ from m0_oracle_segment import (  # noqa: E402
     load_records, oracle_lines,
 )
 from m1_effect_verbs import PRODUCTIONS, effect_span  # noqa: E402
+from m3_modes_events import (  # noqa: E402
+    chain_edge_type, replacement_event, static_mode, trigger_mode,
+)
 
 # --- cost atoms ---------------------------------------------------------------
 
@@ -313,22 +316,35 @@ def emit_face(rec: dict, lexicon, lower_lex) -> dict:
         activated = is_activated(line)
         if not apis:
             # The ability exists even when no production names its effect.
-            # Dropping the line entirely also dropped its cost, which is what
-            # made cost-shaped queries miss cards whose effect verb happens to
-            # be outside the lexicon. Emit an api-less node instead.
-            if not (activated or TRIGGER_RE.match(line)):
-                continue
+            # Dropping the line entirely also dropped its cost and its mode,
+            # which is what made cost-shaped queries miss cards whose effect
+            # verb happens to be outside the lexicon, and left static
+            # abilities almost entirely unrepresented. Emit an api-less node.
             apis = [None]
+        # M3: ability kind now distinguishes replacement effects, and each kind
+        # carries its Forge mode/event vocabulary.
+        rep = None if (is_spell or activated) else replacement_event(line)
         if TRIGGER_RE.match(line):
             kind, api_kind = "T", None
         elif activated:
             kind, api_kind = "A", "AB"
         elif is_spell:
             kind, api_kind = "A", "SP"
+        elif rep:
+            kind, api_kind = "R", None
         else:
             kind, api_kind = "S", None
 
+        node_mode = None
         params: dict = {}
+        if kind == "T":
+            node_mode = trigger_mode(line)
+        elif kind == "R":
+            params["Event"] = rep[0]
+            params.update(rep[1])
+        elif kind == "S":
+            node_mode, sp = static_mode(line)
+            params.update(sp)
         if activated:
             atoms = cost_atoms(cost_span(line), name)
             if atoms:
@@ -346,11 +362,13 @@ def emit_face(rec: dict, lexicon, lower_lex) -> dict:
             if i == 0:
                 if api_kind:
                     node["apiKind"] = api_kind
+                if node_mode:
+                    node["mode"] = node_mode
                 root_id = node["id"]
             else:
                 node["apiKind"] = "DB"
                 edges.append({"src": root_id, "dst": node["id"],
-                              "type": "SubAbility"})
+                              "type": chain_edge_type(effect, kind == "R")})
             nodes.append(node)
             nid += 1
 
