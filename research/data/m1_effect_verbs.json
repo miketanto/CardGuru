@@ -1141,14 +1141,14 @@
    "fp": 0
   },
   {
-   "api": "DrainMana",
+   "api": "ActivateAbility",
    "support": 1,
    "recall_pct": 0.0,
    "precision_pct": null,
    "fp": 0
   },
   {
-   "api": "ActivateAbility",
+   "api": "DrainMana",
    "support": 1,
    "recall_pct": 0.0,
    "precision_pct": null,
@@ -1310,20 +1310,6 @@
     "oracle": "Until end of turn, target creature gets +2/+0 and gains \"When this creature dies, return it to the battlefield tapped under its owner's control.\""
    }
   ],
-  "ChoosePlayer": [
-   {
-    "name": "Abby, Merciless Soldier",
-    "oracle": "When you cast this spell, create a number of 1/1 black Fungus Zombie creature tokens named Cordyceps Infected equal to the amount of mana spent to cast it.\\nAbby enters u"
-   },
-   {
-    "name": "Anointed Peacekeeper",
-    "oracle": "Vigilance\\nAs Anointed Peacekeeper enters, look at an opponent's hand, then choose any card name.\\nSpells your opponents cast with the chosen name cost {2} more to cast.\\"
-   },
-   {
-    "name": "Arachne, Psionic Weaver",
-    "oracle": "Web-slinging {W} (You may cast this spell for {W} if you also return a tapped creature you control to its owner's hand.)\\nAs Arachne enters, look at an opponent's hand, t"
-   }
-  ],
   "ChangeZone": [
    {
     "name": "Abby, Merciless Soldier",
@@ -1336,6 +1322,20 @@
    {
     "name": "Aegis of Honor",
     "oracle": "{1}: The next time an instant or sorcery spell would deal damage to you this turn, that spell deals that damage to its controller instead."
+   }
+  ],
+  "ChoosePlayer": [
+   {
+    "name": "Abby, Merciless Soldier",
+    "oracle": "When you cast this spell, create a number of 1/1 black Fungus Zombie creature tokens named Cordyceps Infected equal to the amount of mana spent to cast it.\\nAbby enters u"
+   },
+   {
+    "name": "Anointed Peacekeeper",
+    "oracle": "Vigilance\\nAs Anointed Peacekeeper enters, look at an opponent's hand, then choose any card name.\\nSpells your opponents cast with the chosen name cost {2} more to cast.\\"
+   },
+   {
+    "name": "Arachne, Psionic Weaver",
+    "oracle": "Web-slinging {W} (You may cast this spell for {W} if you also return a tapped creature you control to its owner's hand.)\\nAs Arachne enters, look at an opponent's hand, t"
    }
   ],
   "Untap": [
@@ -1632,20 +1632,6 @@
     "oracle": "Assemble X Contraptions. (To assemble a Contraption, put the top card of your Contraption deck face up onto one of your sprockets.)"
    }
   ],
-  "ReplaceCounter": [
-   {
-    "name": "Aether Refinery",
-    "oracle": "If you would get one or more {E}, you get twice that many {E} instead.\\n{T}: You get {E}, then you may pay one or more {E}. If you do, create an X/X black Aetherborn crea"
-   },
-   {
-    "name": "Benevolent Hydra",
-    "oracle": "Benevolent Hydra enters with X +1/+1 counters on it.\\nIf one or more +1/+1 counters would be put on a creature you control, that many plus one +1/+1 counters are put on i"
-   },
-   {
-    "name": "Conclave Mentor",
-    "oracle": "If one or more +1/+1 counters would be put on a creature you control, that many plus one +1/+1 counters are put on that creature instead.\\nWhen Conclave Mentor dies, you "
-   }
-  ],
   "ChooseNumber": [
    {
     "name": "Aether Refinery",
@@ -1658,6 +1644,20 @@
    {
     "name": "Collective Voyage",
     "oracle": "Join forces \u2014 Starting with you, each player may pay any amount of mana. Each player searches their library for up to X basic land cards, where X is the total amount of m"
+   }
+  ],
+  "ReplaceCounter": [
+   {
+    "name": "Aether Refinery",
+    "oracle": "If you would get one or more {E}, you get twice that many {E} instead.\\n{T}: You get {E}, then you may pay one or more {E}. If you do, create an X/X black Aetherborn crea"
+   },
+   {
+    "name": "Benevolent Hydra",
+    "oracle": "Benevolent Hydra enters with X +1/+1 counters on it.\\nIf one or more +1/+1 counters would be put on a creature you control, that many plus one +1/+1 counters are put on i"
+   },
+   {
+    "name": "Conclave Mentor",
+    "oracle": "If one or more +1/+1 counters would be put on a creature you control, that many plus one +1/+1 counters are put on that creature instead.\\nWhen Conclave Mentor dies, you "
    }
   ],
   "RemoveCounterAll": [
@@ -1898,20 +1898,6 @@
     "oracle": "Whenever a player attacks, add six {R}. Until end of combat, you don't lose this mana as steps end.\\n{R}{R}{R}: Target creature gets +3/+0 until end of turn."
    }
   ],
-  "AddPhase": [
-   {
-    "name": "All-Out Assault",
-    "oracle": "Creatures you control get +1/+1 and have deathtouch.\\nWhen this enchantment enters, if it's your main phase, there is an additional combat phase after this phase followed"
-   },
-   {
-    "name": "Aurelia, the Warleader",
-    "oracle": "Flying, vigilance, haste\\nWhenever Aurelia, the Warleader attacks for the first time each turn, untap all creatures you control. After this phase, there is an additional "
-   },
-   {
-    "name": "Balthier and Fran",
-    "oracle": "Reach\\nVehicles you control get +1/+1 and have vigilance and reach.\\nWhenever a Vehicle crewed by Balthier and Fran this turn attacks, if it's the first combat phase of t"
-   }
-  ],
   "UntapAll": [
    {
     "name": "All-Out Assault",
@@ -1924,6 +1910,20 @@
    {
     "name": "Estrid, the Masked",
     "oracle": "[+2]: Untap each enchanted permanent you control.\\n[-1]: Create a white Aura enchantment token named Mask attached to another target permanent. The token has enchant perm"
+   }
+  ],
+  "AddPhase": [
+   {
+    "name": "All-Out Assault",
+    "oracle": "Creatures you control get +1/+1 and have deathtouch.\\nWhen this enchantment enters, if it's your main phase, there is an additional combat phase after this phase followed"
+   },
+   {
+    "name": "Aurelia, the Warleader",
+    "oracle": "Flying, vigilance, haste\\nWhenever Aurelia, the Warleader attacks for the first time each turn, untap all creatures you control. After this phase, there is an additional "
+   },
+   {
+    "name": "Balthier and Fran",
+    "oracle": "Reach\\nVehicles you control get +1/+1 and have vigilance and reach.\\nWhenever a Vehicle crewed by Balthier and Fran this turn attacks, if it's the first combat phase of t"
    }
   ],
   "Discover": [
@@ -1940,20 +1940,6 @@
     "oracle": "Spells you control can't be countered.\\nAt the beginning of your end step, discover 5. (Exile cards from the top of your library until you exile a nonland card with mana "
    }
   ],
-  "DamageAll": [
-   {
-    "name": "Alpha Brawl",
-    "oracle": "Target creature an opponent controls deals damage equal to its power to each other creature that player controls, then each of those creatures deals damage equal to its p"
-   },
-   {
-    "name": "Angrath, Minotaur Pirate",
-    "oracle": "[+2]: Angrath, Minotaur Pirate deals 1 damage to target opponent or planeswalker and each creature that player or that planeswalker's controller controls.\\n[-3]: Return t"
-   },
-   {
-    "name": "Bloodfire Infusion",
-    "oracle": "Enchant creature you control\\n{R}, Sacrifice enchanted creature: Bloodfire Infusion deals damage equal to the sacrificed creature's power to each creature."
-   }
-  ],
   "EachDamage": [
    {
     "name": "Alpha Brawl",
@@ -1966,6 +1952,20 @@
    {
     "name": "Case of the Gateway Express",
     "oracle": "When this Case enters, choose target creature you don't control. Each creature you control deals 1 damage to that creature.\\nTo solve \u2014 Three or more creatures attacked t"
+   }
+  ],
+  "DamageAll": [
+   {
+    "name": "Alpha Brawl",
+    "oracle": "Target creature an opponent controls deals damage equal to its power to each other creature that player controls, then each of those creatures deals damage equal to its p"
+   },
+   {
+    "name": "Angrath, Minotaur Pirate",
+    "oracle": "[+2]: Angrath, Minotaur Pirate deals 1 damage to target opponent or planeswalker and each creature that player or that planeswalker's controller controls.\\n[-3]: Return t"
+   },
+   {
+    "name": "Bloodfire Infusion",
+    "oracle": "Enchant creature you control\\n{R}, Sacrifice enchanted creature: Bloodfire Infusion deals damage equal to the sacrificed creature's power to each creature."
    }
   ],
   "CopyPermanent": [
@@ -1996,20 +1996,6 @@
     "oracle": "When this creature enters, it endures 1. (Put a +1/+1 counter on it or create a 1/1 white Spirit creature token.)"
    }
   ],
-  "ChooseDirection": [
-   {
-    "name": "Aminatou, the Fateshifter",
-    "oracle": "[+1]: Draw a card, then put a card from your hand on top of your library.\\n[-1]: Exile another target permanent you own, then return it to the battlefield under your cont"
-   },
-   {
-    "name": "Order of Succession",
-    "oracle": "Choose left or right. Starting with you and proceeding in the chosen direction, each player chooses a creature controlled by the next player in that direction. Each playe"
-   },
-   {
-    "name": "Teyo, Geometric Tactician",
-    "oracle": "When Teyo, Geometric Tactician enters, create a 0/4 white Wall creature token with defender and flying.\\n[+1]: You and target opponent each draw a card.\\n[-2]: Choose lef"
-   }
-  ],
   "GainControlVariant": [
    {
     "name": "Aminatou, the Fateshifter",
@@ -2022,6 +2008,20 @@
    {
     "name": "Homeward Path",
     "oracle": "{T}: Add {C}.\\n{T}: Each player gains control of all creatures they own."
+   }
+  ],
+  "ChooseDirection": [
+   {
+    "name": "Aminatou, the Fateshifter",
+    "oracle": "[+1]: Draw a card, then put a card from your hand on top of your library.\\n[-1]: Exile another target permanent you own, then return it to the battlefield under your cont"
+   },
+   {
+    "name": "Order of Succession",
+    "oracle": "Choose left or right. Starting with you and proceeding in the chosen direction, each player chooses a creature controlled by the next player in that direction. Each playe"
+   },
+   {
+    "name": "Teyo, Geometric Tactician",
+    "oracle": "When Teyo, Geometric Tactician enters, create a 0/4 white Wall creature token with defender and flying.\\n[+1]: You and target opponent each draw a card.\\n[-2]: Choose lef"
    }
   ],
   "RemoveCounter": [
@@ -2998,6 +2998,12 @@
     "oracle": "Whenever a creature dies, tap all untapped creatures that share a creature type with it or untap all tapped creatures that share a creature type with it."
    }
   ],
+  "DealDamage": [
+   {
+    "name": "Faerie Dragon",
+    "oracle": "Flying\\n{1}{G}{G}: Perform a random action."
+   }
+  ],
   "GainLife": [
    {
     "name": "Faerie Dragon",
@@ -3010,12 +3016,6 @@
    {
     "name": "Phyrexian Adapter",
     "oracle": "Flying\\nAll Incubator tokens you control become Food, Blood, Clue, Treasure, and Powerstone in addition to their other types, and have the respective abilities of those t"
-   }
-  ],
-  "DealDamage": [
-   {
-    "name": "Faerie Dragon",
-    "oracle": "Flying\\n{1}{G}{G}: Perform a random action."
    }
   ],
   "ChaosEnsues": [
@@ -3150,13 +3150,13 @@
     "oracle": "Each player mills two cards. Then you put a creature card from a graveyard onto the battlefield under your control. It's an artifact in addition to its other types.\\nWill"
    }
   ],
-  "DrainMana": [
+  "ActivateAbility": [
    {
     "name": "Pygmy Hippo",
     "oracle": "Whenever Pygmy Hippo attacks and isn't blocked, you may have defending player activate a mana ability of each land they control and lose all unspent mana. If you do, Pygm"
    }
   ],
-  "ActivateAbility": [
+  "DrainMana": [
    {
     "name": "Pygmy Hippo",
     "oracle": "Whenever Pygmy Hippo attacks and isn't blocked, you may have defending player activate a mana ability of each land they control and lose all unspent mana. If you do, Pygm"

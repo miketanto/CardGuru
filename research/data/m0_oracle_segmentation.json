@@ -2,10 +2,10 @@
  "scored_faces": 34156,
  "skipped_no_oracle": 363,
  "skipped_no_oracle_and_no_nodes": 363,
- "exact_bag_match": 30810,
- "exact_bag_match_pct": 90.2,
- "exact_bag_match_impl_keywords_counted_pct": 88.78,
- "match_ignoring_keyword_counts_pct": 90.6,
+ "exact_bag_match": 30839,
+ "exact_bag_match_pct": 90.29,
+ "exact_bag_match_impl_keywords_counted_pct": 88.86,
+ "match_ignoring_keyword_counts_pct": 90.67,
  "per_kind": {
   "A": {
    "true": 18410,
@@ -23,10 +23,10 @@
   },
   "S": {
    "true": 7078,
-   "pred": 9099,
+   "pred": 9070,
    "matched": 6539,
    "recall_pct": 92.38,
-   "precision_pct": 71.87
+   "precision_pct": 72.09
   },
   "R": {
    "true": 1692,
@@ -37,10 +37,10 @@
   },
   "K": {
    "true": 17310,
-   "pred": 16334,
-   "matched": 16139,
-   "recall_pct": 93.24,
-   "precision_pct": 98.81
+   "pred": 16399,
+   "matched": 16203,
+   "recall_pct": 93.6,
+   "precision_pct": 98.8
   }
  },
  "top_mismatch_shapes": [
@@ -106,7 +106,7 @@
     "K": -1,
     "S": 1
    },
-   "faces": 563,
+   "faces": 565,
    "pct": 1.65,
    "examples": [
     {
@@ -406,8 +406,8 @@
    "delta": {
     "K": -1
    },
-   "faces": 109,
-   "pct": 0.32,
+   "faces": 106,
+   "pct": 0.31,
    "examples": [
     {
      "name": "Absorb Vis",
@@ -881,59 +881,59 @@
   },
   {
    "delta": {
-    "K": -2,
-    "S": 1
+    "K": 1,
+    "S": -1
    },
-   "faces": 34,
-   "pct": 0.1,
+   "faces": 29,
+   "pct": 0.08,
    "examples": [
     {
-     "name": "A.I.M. Scientists",
-     "types": "Creature Human Scientist Villain",
-     "oracle": "When this creature enters, it connives. (Draw a card, then discard a card. If you discarded a nonland card, put a +1/+1 counter on this creature.)\\nBasic landcycling {2} ({2}, Discard this card: Search your library for a",
+     "name": "Arms Scavenger",
+     "types": "Creature Human Warrior",
+     "oracle": "At the beginning of your upkeep, draft a card from Arms Scavenger's spellbook, then exile it. Until end of turn, you may play that card.\\nEquip abilities you activate cost {1} less to activate.",
      "pred": {
       "T": 1,
-      "S": 1
+      "K": 1
      },
      "true": {
       "T": 1,
-      "K": 2
+      "S": 1
      }
     },
     {
-     "name": "Abomination of Llanowar",
-     "types": "Legendary Creature Elf Horror",
-     "oracle": "Vigilance; menace (This creature can't be blocked except by two or more creatures.)\\nAbomination of Llanowar's power and toughness are each equal to the number of Elves you control plus the number of Elf cards in your gr",
+     "name": "Auriok Steelshaper",
+     "types": "Creature Human Soldier",
+     "oracle": "Equip costs you pay cost {1} less.\\nAs long as Auriok Steelshaper is equipped, each creature you control that's a Soldier or a Knight gets +1/+1.",
      "pred": {
+      "K": 1,
+      "S": 1
+     },
+     "true": {
       "S": 2
-     },
-     "true": {
-      "S": 1,
-      "K": 2
      }
     },
     {
-     "name": "Aether Membrane",
-     "types": "Creature Wall",
-     "oracle": "Defender; reach (This creature can block creatures with flying.)\\nWhenever Aether Membrane blocks a creature, return that creature to its owner's hand at end of combat.",
+     "name": "Bureau Headmaster",
+     "types": "Creature Human Assassin",
+     "oracle": "Equipment spells you cast cost {1} less to cast.\\nEquip abilities you activate cost {1} less to activate.",
      "pred": {
       "S": 1,
-      "T": 1
+      "K": 1
      },
      "true": {
-      "T": 1,
-      "K": 2
+      "S": 2
      }
     },
     {
-     "name": "Ancient Spider",
-     "types": "Creature Spider",
-     "oracle": "First strike; reach (This creature can block creatures with flying.)",
+     "name": "Champion of the Flame",
+     "types": "Creature Human Warrior",
+     "oracle": "Trample\\nChampion of the Flame gets +2/+2 for each Aura and Equipment attached to it.",
      "pred": {
-      "S": 1
+      "K": 2
      },
      "true": {
-      "K": 2
+      "S": 1,
+      "K": 1
      }
     }
    ]

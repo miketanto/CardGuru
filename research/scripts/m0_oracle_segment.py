@@ -144,7 +144,7 @@ def keyword_tokens(line: str, lexicon: set[str], lower_lex: dict[str, str]):
         key = lower_lex.get(dash_parts[0].strip().lower())
         if key:
             return [key]
-    parts = [p.strip().rstrip(".") for p in line.split(",")]
+    parts = [p.strip().rstrip(".") for p in re.split(r"[,;]", line)]
     if not parts or any(not p for p in parts):
         return None
     found = []

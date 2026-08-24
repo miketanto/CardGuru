@@ -3,19 +3,19 @@
  "faces_scored": 17140,
  "sacrifice_cost_atoms": {
   "tp": 842,
-  "fp": 53,
+  "fp": 52,
   "fn": 234,
-  "precision_pct": 94.08,
+  "precision_pct": 94.18,
   "recall_pct": 78.25,
   "faces_with_any": 1054,
   "exact_set_agreement_pct": 78.27
  },
  "tap_in_activation_cost": {
-  "tp": 2032,
+  "tp": 2030,
   "fp": 5,
-  "fn": 3,
+  "fn": 5,
   "precision_pct": 99.75,
-  "recall_pct": 99.85
+  "recall_pct": 99.75
  },
  "counter_valid_tgts": {
   "faces_with_any": 221,

@@ -40,6 +40,7 @@ import gzip
 import hashlib
 import json
 import os
+import re
 import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -55,6 +56,11 @@ TOP_N_PER_FAMILY = 6
 # slice can be replaced by a DISJOINT one simply by advancing the offset --
 # which is what makes this criterion repeatable, unlike a hand-written set.
 RANK_OFFSET = int(os.environ.get('SLICE_RANK_OFFSET', '0'))
+# Nth-ranked witness/foil instead of the top one. Lets the SAME archetypes
+# yield different exemplars, which is the only axis of variation left once
+# the head of the frequency distribution has been spent.
+WITNESS_RANK_OFFSET = int(os.environ.get('SLICE_WITNESS_OFFSET', '0'))
+ATOM_PAYLOAD_RE = re.compile(r'<[^>]*>')
 MIN_HITS, MAX_HITS = 15, 2500
 MIN_FOIL_RATIO = 0.45
 
@@ -90,8 +96,12 @@ def archetypes(records):
             k = n.get("kind")
             p = n.get("params") or {}
             if k == "A" and n.get("apiKind") == "AB":
-                for atom in (p.get("Cost") or "").split():
-                    head = atom.split("<")[0]
+                # Strip <...> payloads first. They contain spaces and prose
+                # ("Sac<1/Artifact;Creature/artifact or creature>"), so
+                # whitespace-splitting the raw cost string invented junk
+                # archetypes like "or" -- v4's b03.
+                cost = ATOM_PAYLOAD_RE.sub("", p.get("Cost") or "")
+                for head in cost.split():
                     if head and not head.isdigit():
                         cost_atoms[head] += 1
             if k == "T" and n.get("mode"):
@@ -157,16 +167,17 @@ def main(argv):
         if not (MIN_HITS <= len(hits) <= MAX_HITS):
             continue
         ranked = bm25.search(arch["q"], k=400)
-        witness = next((n for n, _ in ranked if n in hits), None)
-        if not witness:
+        matches = [n for n, _ in ranked if n in hits]
+        if len(matches) <= WITNESS_RANK_OFFSET:
             continue
+        witness = matches[WITNESS_RANK_OFFSET]
         # Foil: the card most textually similar to the WITNESS that does not
         # match the structural query. This is the adversarial property.
         near = bm25.search(docs[witness], k=60)
-        foil = next((n for n, _ in near if n not in hits and n != witness
-                     and n in docs), None)
-        if not foil:
+        cands = [n for n, _ in near if n not in hits and n != witness and n in docs]
+        if not cands:
             continue
+        foil = cands[min(WITNESS_RANK_OFFSET, len(cands) - 1)]
         near_scores = dict(near)
         self_score = near_scores.get(witness) or max(near_scores.values(), default=1e-9)
         if near_scores.get(foil, 0) < MIN_FOIL_RATIO * max(self_score, 1e-9):
@@ -195,6 +206,7 @@ def main(argv):
         "generator": {
             "top_n_per_family": TOP_N_PER_FAMILY,
             "rank_offset": RANK_OFFSET,
+            "witness_rank_offset": WITNESS_RANK_OFFSET,
             "min_hits": MIN_HITS, "max_hits": MAX_HITS,
             "min_foil_ratio": MIN_FOIL_RATIO,
         },

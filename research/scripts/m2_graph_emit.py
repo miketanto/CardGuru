@@ -30,9 +30,9 @@ import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from m0_oracle_segment import (  # noqa: E402
-    ABILITY_WORD_RE, COST_LEAD_RE, LOYALTY_BRACKET_RE, LOYALTY_RE,
-    NAMED_COST_RE, TRIGGER_RE, keyword_tokens, load_keyword_lexicon,
-    load_records, oracle_lines,
+    ABILITY_WORD_RE, ALT_COST_RE, COST_LEAD_RE, LOYALTY_BRACKET_RE,
+    LOYALTY_RE, NAMED_COST_RE, TRIGGER_RE, classify, keyword_tokens,
+    load_keyword_lexicon, load_records, oracle_lines,
 )
 from m1_effect_verbs import PRODUCTIONS, effect_span  # noqa: E402
 from m3_modes_events import (  # noqa: E402
@@ -330,6 +330,11 @@ def emit_face(rec: dict, lexicon, lower_lex) -> dict:
         effect = effect_span(raw)
         apis = line_apis(effect)
         activated = is_activated(line)
+        if ALT_COST_RE.search(line):
+            nodes.append({"id": f"ab{nid}", "kind": "S", "mode": "AlternativeCost",
+                          "params": {}})
+            nid += 1
+            continue
         if not apis:
             # The ability exists even when no production names its effect.
             # Dropping the line entirely also dropped its cost and its mode,
@@ -337,27 +342,40 @@ def emit_face(rec: dict, lexicon, lower_lex) -> dict:
             # verb happens to be outside the lexicon, and left static
             # abilities almost entirely unrepresented. Emit an api-less node.
             apis = [None]
-        # M3: ability kind now distinguishes replacement effects, and each kind
-        # carries its Forge mode/event vocabulary.
-        rep = None if (is_spell or activated) else replacement_event(line)
-        if TRIGGER_RE.match(line):
-            kind, api_kind = "T", None
-        elif activated:
-            kind, api_kind = "A", "AB"
-        elif is_spell:
-            kind, api_kind = "A", "SP"
-        elif rep:
-            kind, api_kind = "R", None
-        else:
-            kind, api_kind = "S", None
+        # Kind comes from M0's classifier, which is measured at 90.2% bag
+        # agreement and already knows about Saga chapters (-> K), text Forge
+        # folds into an implementation keyword (-> no node at all), and
+        # replacement templating. Re-deriving it here duplicated that logic
+        # badly: chapter lines and unrecognised keyword lines fell through to
+        # S, which is where most of Continuous's false positives came from.
+        kind = classify(line, is_spell)
+        if kind is None:
+            continue
+        if kind == "K":
+            nodes.append({"id": f"kw{kid}", "kind": "K",
+                          "keyword": "Chapter", "args": [], "raw": raw})
+            kid += 1
+            continue
+        api_kind = "AB" if (kind == "A" and activated) else (
+            "SP" if (kind == "A" and is_spell) else None)
+
+        # M0 and M3 detect replacements by different evidence -- M0 by
+        # templating ('would ... instead'), M3 by the event vocabulary. M0
+        # alone recalls ~70% of R nodes, so a line M0 called static but M3 can
+        # name an event for is promoted rather than lost.
+        rep = replacement_event(line) if kind == "S" else None
+        if rep:
+            kind = "R"
 
         node_mode = None
         params: dict = {}
         if kind == "T":
             node_mode = trigger_mode(line)
         elif kind == "R":
-            params["Event"] = rep[0]
-            params.update(rep[1])
+            # M0 decides that it IS a replacement; M3 names which event.
+            event, rp = replacement_event(line) or ("Moved", {})
+            params["Event"] = event
+            params.update(rp)
         elif kind == "S":
             node_mode, sp = static_mode(line)
             params.update(sp)
