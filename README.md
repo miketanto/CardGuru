@@ -43,6 +43,10 @@ Plans built on those findings:
 - [research/oracle-grammar-triage.md](research/oracle-grammar-triage.md) — triage of all
   697 cross-derivation disagreements: 95.4% are grammar debt concentrated in six named
   bugs, only 3.3% Forge artifacts; burns a01–a05 as a clean measure (see the note there)
+- [research/oracle-grammar-fixes.md](research/oracle-grammar-fixes.md) — all six bugs
+  fixed; corpus-wide holdout agreement on sacrifice-cost atoms 52.4% → 78.3%, `{T}`-as-cost
+  recall 91.0% → 99.9%; the Disdainful Stroke correctness gate is closed (fail-closed
+  `ValidTgts`), and 14 of 15 apparent over-restrictions turn out to be Forge, not the grammar
 
 Reproduce: `research/scripts/` (pure-Python parser + search prototype;
 `CardGuruFeasibilityTest.java` drops into XMage's `Mage.Tests`). Pins: Forge `670429bf`,

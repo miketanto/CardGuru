@@ -1,0 +1,31 @@
+{
+ "split": "holdout",
+ "faces_scored": 17140,
+ "sacrifice_cost_atoms": {
+  "tp": 842,
+  "fp": 53,
+  "fn": 234,
+  "precision_pct": 94.08,
+  "recall_pct": 78.25,
+  "faces_with_any": 1054,
+  "exact_set_agreement_pct": 78.27
+ },
+ "tap_in_activation_cost": {
+  "tp": 2032,
+  "fp": 5,
+  "fn": 3,
+  "precision_pct": 99.75,
+  "recall_pct": 99.85
+ },
+ "counter_valid_tgts": {
+  "faces_with_any": 221,
+  "exact_set_agreement_pct": 73.3,
+  "unrestricted_flag": {
+   "tp": 120,
+   "fp": 1,
+   "fn": 15,
+   "precision_pct": 99.17,
+   "recall_pct": 88.89
+  }
+ }
+}
