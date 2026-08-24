@@ -3,55 +3,55 @@
  "faces_scored": 17140,
  "trigger_modes": {
   "tp": 6566,
-  "fp": 440,
+  "fp": 433,
   "fn": 1496,
-  "precision_pct": 93.72,
+  "precision_pct": 93.81,
   "recall_pct": 81.44,
-  "faces_with_any": 7177,
-  "exact_set_agreement_pct": 79.49
+  "faces_with_any": 7170,
+  "exact_set_agreement_pct": 79.57
  },
  "static_modes": {
-  "tp": 2718,
-  "fp": 1086,
-  "fn": 599,
-  "precision_pct": 71.45,
-  "recall_pct": 81.94,
-  "faces_with_any": 3819,
-  "exact_set_agreement_pct": 65.31
+  "tp": 2681,
+  "fp": 837,
+  "fn": 636,
+  "precision_pct": 76.21,
+  "recall_pct": 80.83,
+  "faces_with_any": 3602,
+  "exact_set_agreement_pct": 68.21
  },
  "replacement_events": {
   "tp": 697,
-  "fp": 85,
+  "fp": 79,
   "fn": 170,
-  "precision_pct": 89.13,
+  "precision_pct": 89.82,
   "recall_pct": 80.39,
-  "faces_with_any": 883,
-  "exact_set_agreement_pct": 77.58
+  "faces_with_any": 877,
+  "exact_set_agreement_pct": 78.11
  },
  "node_counts": {
   "R": {
    "forge": 888,
-   "oracle": 794
+   "oracle": 788
   },
   "S": {
    "forge": 3531,
-   "oracle": 4361
+   "oracle": 3904
   }
  },
  "static_mode_detail": [
   {
    "mode": "Continuous",
    "support": 2218,
-   "fp": 814,
+   "fp": 697,
    "recall_pct": 95.1,
-   "precision_pct": 72.2
+   "precision_pct": 75.2
   },
   {
    "mode": "ReduceCost",
    "support": 233,
-   "fp": 6,
-   "recall_pct": 62.2,
-   "precision_pct": 96.0
+   "fp": 4,
+   "recall_pct": 63.1,
+   "precision_pct": 97.4
   },
   {
    "mode": "CantBlockBy",
@@ -63,9 +63,9 @@
   {
    "mode": "AlternativeCost",
    "support": 74,
-   "fp": 161,
-   "recall_pct": 85.1,
-   "precision_pct": 28.1
+   "fp": 6,
+   "recall_pct": 27.0,
+   "precision_pct": 76.9
   },
   {
    "mode": "CantBlock",
@@ -98,9 +98,9 @@
   {
    "mode": "RaiseCost",
    "support": 40,
-   "fp": 3,
+   "fp": 2,
    "recall_pct": 55.0,
-   "precision_pct": 88.0
+   "precision_pct": 91.7
   },
   {
    "mode": "CastWithFlash",
@@ -119,9 +119,9 @@
   {
    "mode": "OptionalCost",
    "support": 21,
-   "fp": 0,
-   "recall_pct": 0.0,
-   "precision_pct": null
+   "fp": 26,
+   "recall_pct": 19.0,
+   "precision_pct": 13.3
   }
  ]
 }

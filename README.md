@@ -67,6 +67,10 @@ Plans built on those findings:
   **correction:** the oracle grammar never needed Scryfall. It reads Forge's own `Oracle:`
   line, and Forge is a live GitHub feed (92 new card scripts in 18 days). Coverage was
   always the weak argument; fidelity vs. the implementation ontology is the real one
+- [research/oracle-grammar-cycle6.md](research/oracle-grammar-cycle6.md) — two ordering
+  bugs (the ability-word stripper was eating Saga chapter markers; the alt-cost
+  short-circuit ran before `classify()`), static modes 71.5/81.9 → 76.2/80.8, plus a
+  six-class taxonomy of what has actually gone wrong — two classes no aggregate score can see
 
 Reproduce: `research/scripts/` (pure-Python parser + search prototype;
 `CardGuruFeasibilityTest.java` drops into XMage's `Mage.Tests`). Pins: Forge `670429bf`,

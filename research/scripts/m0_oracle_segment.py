@@ -44,7 +44,9 @@ IMPL_KEYWORDS = {
     "HIDDEN", "MayFlashSac", "AllNonLegendaryCreatureNames",
 }
 
-ROMAN = r"(?:I{1,3}|IV|V?I{0,3})"
+# V?I{0,3} matched the empty string, so the old ROMAN could not be used in a
+# lookahead. Tightened to real numerals.
+ROMAN = r"(?:IV|IX|VI{0,3}|XI{0,3}|I{1,3})"
 CHAPTER_RE = re.compile(rf"^{ROMAN}(?:\s*,\s*{ROMAN})*\s*(?:,|—|--|-)\s*", re.I)
 LOYALTY_RE = re.compile(r"^[+−–\-]?\d+\s*:")
 LEVEL_RE = re.compile(r"^LEVEL\s+\d+", re.I)
@@ -52,7 +54,12 @@ BULLET_RE = re.compile(r"^\s*[•*]")
 
 # CR 207.2c ability words ("Landfall — ...") and Universes Beyond flavor names
 # ("Heavy Power Hammer — Whenever ...") are italic, non-functional prefixes.
-ABILITY_WORD_RE = re.compile(r"^[^—\n]{1,44}—\s*(?=[A-Z{])")
+# The negative lookahead matters: a Saga chapter marker ("I — Exile ...") is
+# also short text before an em-dash, and stripping it hid the chapter from
+# CHAPTER_RE, so every chapter line fell through to a static ability.
+ABILITY_WORD_RE = re.compile(
+    rf"^(?!{ROMAN}(?:\s*,\s*{ROMAN})*\s*[,—-])[^—\n]{{1,44}}—\s*(?=[A-Z{{])",
+    re.I)
 
 # 'X enters with N +1/+1 counters' is folded into Forge's implementation-only
 # etbCounter keyword, which the truth bag excludes -- so it yields no node.

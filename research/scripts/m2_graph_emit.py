@@ -341,11 +341,6 @@ def emit_face(rec: dict, lexicon, lower_lex) -> dict:
         effect = effect_span(raw)
         apis = line_apis(effect)
         activated = is_activated(line)
-        if ALT_COST_RE.search(line):
-            nodes.append({"id": f"ab{nid}", "kind": "S", "mode": "AlternativeCost",
-                          "params": {}})
-            nid += 1
-            continue
         if not apis:
             # The ability exists even when no production names its effect.
             # Dropping the line entirely also dropped its cost and its mode,
@@ -390,6 +385,11 @@ def emit_face(rec: dict, lexicon, lower_lex) -> dict:
         elif kind == "S":
             node_mode, sp = static_mode(line)
             params.update(sp)
+            # Applied only to lines classify() already called static. Run as a
+            # pre-classify short-circuit it fired on triggers and keywords too,
+            # costing 182 false AlternativeCost nodes on dev.
+            if node_mode == "Continuous" and ALT_COST_RE.search(line):
+                node_mode = "AlternativeCost"
         if activated:
             atoms = cost_atoms(cost_span(line), name)
             if atoms:

@@ -5,7 +5,7 @@
  "oracle_pass_pct": 75.0,
  "oracle_vacuous_empty_results": 0,
  "forge_passed": 4,
- "mean_recall_of_forge_hits_pct": 80.9,
+ "mean_recall_of_forge_hits_pct": 91.0,
  "rows": [
   {
    "id": "b01",
@@ -17,13 +17,13 @@
     "foil_rejected": true
    },
    "oracle": {
-    "hits": 334,
+    "hits": 621,
     "witness_found": true,
     "foil_rejected": true,
     "vacuous": false
    },
-   "recall_of_forge_hits_pct": 51.1,
-   "jaccard_pct": 51.1
+   "recall_of_forge_hits_pct": 91.6,
+   "jaccard_pct": 88.6
   },
   {
    "id": "b02",
@@ -53,13 +53,13 @@
     "foil_rejected": true
    },
    "oracle": {
-    "hits": 208,
+    "hits": 207,
     "witness_found": false,
     "foil_rejected": true,
     "vacuous": false
    },
    "recall_of_forge_hits_pct": 78.5,
-   "jaccard_pct": 70.9
+   "jaccard_pct": 71.2
   },
   {
    "id": "b04",
@@ -71,13 +71,13 @@
     "foil_rejected": true
    },
    "oracle": {
-    "hits": 157,
+    "hits": 154,
     "witness_found": true,
     "foil_rejected": true,
     "vacuous": false
    },
    "recall_of_forge_hits_pct": 97.4,
-   "jaccard_pct": 93.8
+   "jaccard_pct": 95.6
   }
  ]
 }

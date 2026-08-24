@@ -7,7 +7,7 @@
  "micro_recall_pct": 76.9,
  "api_instances": {
   "tp": 18078,
-  "fp": 3610,
+  "fp": 3611,
   "fn": 5430
  },
  "excluded_non_textual_apis": [
@@ -67,7 +67,7 @@
    "support": 1284,
    "recall_pct": 99.9,
    "precision_pct": 76.3,
-   "fp": 398
+   "fp": 399
   },
   {
    "api": "Mana",
@@ -1716,20 +1716,6 @@
     "oracle": "Ascendant Acolyte enters with a +1/+1 counter on it for each +1/+1 counter among other creatures you control.\\nAt the beginning of your upkeep, double the number of +1/+1"
    }
   ],
-  "ChangeTargets": [
-   {
-    "name": "Aethersnatch",
-    "oracle": "Gain control of target spell. You may choose new targets for it. (If that spell becomes a permanent, it enters under your control.)"
-   },
-   {
-    "name": "Bolt Bend",
-    "oracle": "This spell costs {3} less to cast if you control a creature with power 4 or greater.\\nChange the target of target spell or ability with a single target."
-   },
-   {
-    "name": "Chef's Kiss",
-    "oracle": "Gain control of target spell that targets only a single permanent or player. Copy it, then reselect the targets at random for the spell and the copy. The new targets can'"
-   }
-  ],
   "ControlSpell": [
    {
     "name": "Aethersnatch",
@@ -1742,6 +1728,20 @@
    {
     "name": "Commandeer",
     "oracle": "You may exile two blue cards from your hand rather than pay this spell's mana cost.\\nGain control of target noncreature spell. You may choose new targets for it. (If that"
+   }
+  ],
+  "ChangeTargets": [
+   {
+    "name": "Aethersnatch",
+    "oracle": "Gain control of target spell. You may choose new targets for it. (If that spell becomes a permanent, it enters under your control.)"
+   },
+   {
+    "name": "Bolt Bend",
+    "oracle": "This spell costs {3} less to cast if you control a creature with power 4 or greater.\\nChange the target of target spell or ability with a single target."
+   },
+   {
+    "name": "Chef's Kiss",
+    "oracle": "Gain control of target spell that targets only a single permanent or player. Copy it, then reselect the targets at random for the spell and the copy. The new targets can'"
    }
   ],
   "MoveCounter": [
@@ -1772,20 +1772,6 @@
     "oracle": "Enchant creature\\nWhen this Aura enters, tap enchanted creature.\\nEnchanted creature has \"If this creature would untap during your untap step, remove a +1/+1 counter from"
    }
   ],
-  "ChooseCard": [
-   {
-    "name": "Agitator Ant",
-    "oracle": "At the beginning of your end step, each player may put two +1/+1 counters on a creature they control. Goad each creature that had counters put on it this way. (Until your"
-   },
-   {
-    "name": "Ajani, Nacatl Avenger",
-    "oracle": "[+2]: Put a +1/+1 counter on each Cat you control.\\n[0]: Create a 2/1 white Cat Warrior creature token. When you do, if you control a red permanent other than Ajani, Naca"
-   },
-   {
-    "name": "Ajani's Aid",
-    "oracle": "When Ajani's Aid enters, you may search your library and/or graveyard for a card named Ajani, Valiant Protector, reveal it, and put it into your hand. If you search your "
-   }
-  ],
   "Goad": [
    {
     "name": "Agitator Ant",
@@ -1798,6 +1784,20 @@
    {
     "name": "Besmirch",
     "oracle": "Until end of turn, gain control of target creature and it gains haste. Untap and goad that creature. (Until your next turn, that creature attacks each combat if able and "
+   }
+  ],
+  "ChooseCard": [
+   {
+    "name": "Agitator Ant",
+    "oracle": "At the beginning of your end step, each player may put two +1/+1 counters on a creature they control. Goad each creature that had counters put on it this way. (Until your"
+   },
+   {
+    "name": "Ajani, Nacatl Avenger",
+    "oracle": "[+2]: Put a +1/+1 counter on each Cat you control.\\n[0]: Create a 2/1 white Cat Warrior creature token. When you do, if you control a red permanent other than Ajani, Naca"
+   },
+   {
+    "name": "Ajani's Aid",
+    "oracle": "When Ajani's Aid enters, you may search your library and/or graveyard for a card named Ajani, Valiant Protector, reveal it, and put it into your hand. If you search your "
    }
   ],
   "RevealHand": [
@@ -1898,20 +1898,6 @@
     "oracle": "Whenever a player attacks, add six {R}. Until end of combat, you don't lose this mana as steps end.\\n{R}{R}{R}: Target creature gets +3/+0 until end of turn."
    }
   ],
-  "AddPhase": [
-   {
-    "name": "All-Out Assault",
-    "oracle": "Creatures you control get +1/+1 and have deathtouch.\\nWhen this enchantment enters, if it's your main phase, there is an additional combat phase after this phase followed"
-   },
-   {
-    "name": "Aurelia, the Warleader",
-    "oracle": "Flying, vigilance, haste\\nWhenever Aurelia, the Warleader attacks for the first time each turn, untap all creatures you control. After this phase, there is an additional "
-   },
-   {
-    "name": "Balthier and Fran",
-    "oracle": "Reach\\nVehicles you control get +1/+1 and have vigilance and reach.\\nWhenever a Vehicle crewed by Balthier and Fran this turn attacks, if it's the first combat phase of t"
-   }
-  ],
   "UntapAll": [
    {
     "name": "All-Out Assault",
@@ -1924,6 +1910,20 @@
    {
     "name": "Estrid, the Masked",
     "oracle": "[+2]: Untap each enchanted permanent you control.\\n[-1]: Create a white Aura enchantment token named Mask attached to another target permanent. The token has enchant perm"
+   }
+  ],
+  "AddPhase": [
+   {
+    "name": "All-Out Assault",
+    "oracle": "Creatures you control get +1/+1 and have deathtouch.\\nWhen this enchantment enters, if it's your main phase, there is an additional combat phase after this phase followed"
+   },
+   {
+    "name": "Aurelia, the Warleader",
+    "oracle": "Flying, vigilance, haste\\nWhenever Aurelia, the Warleader attacks for the first time each turn, untap all creatures you control. After this phase, there is an additional "
+   },
+   {
+    "name": "Balthier and Fran",
+    "oracle": "Reach\\nVehicles you control get +1/+1 and have vigilance and reach.\\nWhenever a Vehicle crewed by Balthier and Fran this turn attacks, if it's the first combat phase of t"
    }
   ],
   "Discover": [
@@ -2052,20 +2052,6 @@
     "oracle": "I, II, III \u2014 Reveal cards from the top of your library until you reveal a Doctor card, a card with doctor's companion, or a Vehicle card. Put that card into your hand and"
    }
   ],
-  "FlipCoin": [
-   {
-    "name": "Amulet of Quoz",
-    "oracle": "Remove Amulet of Quoz from your deck before playing if you're not playing for ante.\\n{T}, Sacrifice Amulet of Quoz: Target opponent may ante the top card of their library"
-   },
-   {
-    "name": "Breeches, the Blastmaker",
-    "oracle": "Menace\\nWhenever you cast your second spell each turn, you may sacrifice an artifact. If you do, flip a coin. When you win the flip, copy that spell. You may choose new t"
-   },
-   {
-    "name": "Crazed Firecat",
-    "oracle": "When Crazed Firecat enters, flip a coin until you lose a flip. Put a +1/+1 counter on Crazed Firecat for each flip you won."
-   }
-  ],
   "Dig": [
    {
     "name": "Amulet of Quoz",
@@ -2078,6 +2064,20 @@
    {
     "name": "Become Anonymous",
     "oracle": "Exile target nontoken creature you own and the top two cards of your library in a face-down pile, shuffle that pile, then cloak those cards. They enter tapped. (To cloak "
+   }
+  ],
+  "FlipCoin": [
+   {
+    "name": "Amulet of Quoz",
+    "oracle": "Remove Amulet of Quoz from your deck before playing if you're not playing for ante.\\n{T}, Sacrifice Amulet of Quoz: Target opponent may ante the top card of their library"
+   },
+   {
+    "name": "Breeches, the Blastmaker",
+    "oracle": "Menace\\nWhenever you cast your second spell each turn, you may sacrifice an artifact. If you do, flip a coin. When you win the flip, copy that spell. You may choose new t"
+   },
+   {
+    "name": "Crazed Firecat",
+    "oracle": "When Crazed Firecat enters, flip a coin until you lose a flip. Put a +1/+1 counter on Crazed Firecat for each flip you won."
    }
   ],
   "DayTime": [
@@ -2692,16 +2692,6 @@
     "oracle": "At the beginning of your upkeep, you may search your library for a basic land card, reveal that card, put it into your hand, then shuffle. If you do, you skip your draw s"
    }
   ],
-  "LoseLife": [
-   {
-    "name": "Bronze Tablet",
-    "oracle": "Remove Bronze Tablet from your deck before playing if you're not playing for ante.\\nBronze Tablet enters tapped.\\n{4}, {T}: Exile Bronze Tablet and target nontoken perman"
-   },
-   {
-    "name": "Commander Mustard",
-    "oracle": "Vigilance\\nOther Soldiers you control have vigilance, trample, and haste.\\n{2}{R}{W}: Until end of turn, Soldiers you control gain \"Whenever this creature attacks, it dea"
-   }
-  ],
   "GainOwnership": [
    {
     "name": "Bronze Tablet",
@@ -2710,6 +2700,16 @@
    {
     "name": "Timmerian Fiends",
     "oracle": "Remove Timmerian Fiends from your deck before playing if you're not playing for ante.\\n{B}{B}{B}, Sacrifice Timmerian Fiends: The owner of target artifact may ante the to"
+   }
+  ],
+  "LoseLife": [
+   {
+    "name": "Bronze Tablet",
+    "oracle": "Remove Bronze Tablet from your deck before playing if you're not playing for ante.\\nBronze Tablet enters tapped.\\n{4}, {T}: Exile Bronze Tablet and target nontoken perman"
+   },
+   {
+    "name": "Commander Mustard",
+    "oracle": "Vigilance\\nOther Soldiers you control have vigilance, trample, and haste.\\n{2}{R}{W}: Until end of turn, Soldiers you control gain \"Whenever this creature attacks, it dea"
    }
   ],
   "Scry": [

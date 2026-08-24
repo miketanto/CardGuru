@@ -3,9 +3,9 @@
  "questions": 10,
  "oracle_passed": 7,
  "oracle_pass_pct": 70.0,
- "oracle_vacuous_empty_results": 1,
+ "oracle_vacuous_empty_results": 0,
  "forge_passed": 10,
- "mean_recall_of_forge_hits_pct": 82.8,
+ "mean_recall_of_forge_hits_pct": 85.1,
  "rows": [
   {
    "id": "b01",
@@ -17,12 +17,12 @@
     "foil_rejected": true
    },
    "oracle": {
-    "hits": 1757,
+    "hits": 1758,
     "witness_found": true,
     "foil_rejected": true,
     "vacuous": false
    },
-   "recall_of_forge_hits_pct": 99.2,
+   "recall_of_forge_hits_pct": 99.3,
    "jaccard_pct": 98.8
   },
   {
@@ -53,13 +53,13 @@
     "foil_rejected": true
    },
    "oracle": {
-    "hits": 1906,
+    "hits": 1697,
     "witness_found": true,
     "foil_rejected": true,
     "vacuous": false
    },
    "recall_of_forge_hits_pct": 99.6,
-   "jaccard_pct": 82.7
+   "jaccard_pct": 93.0
   },
   {
    "id": "b04",
@@ -71,13 +71,13 @@
     "foil_rejected": true
    },
    "oracle": {
-    "hits": 1404,
+    "hits": 1394,
     "witness_found": true,
     "foil_rejected": true,
     "vacuous": false
    },
    "recall_of_forge_hits_pct": 96.6,
-   "jaccard_pct": 90.3
+   "jaccard_pct": 91.0
   },
   {
    "id": "b05",
@@ -89,13 +89,13 @@
     "foil_rejected": true
    },
    "oracle": {
-    "hits": 1172,
+    "hits": 1168,
     "witness_found": true,
     "foil_rejected": false,
     "vacuous": false
    },
    "recall_of_forge_hits_pct": 98.2,
-   "jaccard_pct": 71.5
+   "jaccard_pct": 71.8
   },
   {
    "id": "b06",
@@ -107,13 +107,13 @@
     "foil_rejected": true
    },
    "oracle": {
-    "hits": 0,
+    "hits": 207,
     "witness_found": false,
     "foil_rejected": true,
-    "vacuous": true
+    "vacuous": false
    },
-   "recall_of_forge_hits_pct": 0.0,
-   "jaccard_pct": 0.0
+   "recall_of_forge_hits_pct": 78.5,
+   "jaccard_pct": 71.2
   },
   {
    "id": "b07",
@@ -125,13 +125,13 @@
     "foil_rejected": true
    },
    "oracle": {
-    "hits": 343,
+    "hits": 348,
     "witness_found": false,
     "foil_rejected": true,
     "vacuous": false
    },
-   "recall_of_forge_hits_pct": 64.3,
-   "jaccard_pct": 62.8
+   "recall_of_forge_hits_pct": 65.2,
+   "jaccard_pct": 63.8
   },
   {
    "id": "b08",
@@ -143,13 +143,13 @@
     "foil_rejected": true
    },
    "oracle": {
-    "hits": 467,
+    "hits": 53,
     "witness_found": true,
     "foil_rejected": true,
     "vacuous": false
    },
-   "recall_of_forge_hits_pct": 83.8,
-   "jaccard_pct": 25.3
+   "recall_of_forge_hits_pct": 27.0,
+   "jaccard_pct": 24.8
   },
   {
    "id": "b09",
@@ -161,13 +161,13 @@
     "foil_rejected": true
    },
    "oracle": {
-    "hits": 157,
+    "hits": 154,
     "witness_found": true,
     "foil_rejected": true,
     "vacuous": false
    },
    "recall_of_forge_hits_pct": 97.4,
-   "jaccard_pct": 93.8
+   "jaccard_pct": 95.6
   },
   {
    "id": "b10",

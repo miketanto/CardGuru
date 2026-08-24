@@ -2,10 +2,10 @@
  "scored_faces": 34156,
  "skipped_no_oracle": 363,
  "skipped_no_oracle_and_no_nodes": 363,
- "exact_bag_match": 30839,
- "exact_bag_match_pct": 90.29,
- "exact_bag_match_impl_keywords_counted_pct": 88.86,
- "match_ignoring_keyword_counts_pct": 90.67,
+ "exact_bag_match": 30846,
+ "exact_bag_match_pct": 90.31,
+ "exact_bag_match_impl_keywords_counted_pct": 88.88,
+ "match_ignoring_keyword_counts_pct": 91.35,
  "per_kind": {
   "A": {
    "true": 18410,
@@ -16,31 +16,31 @@
   },
   "T": {
    "true": 16912,
-   "pred": 16589,
+   "pred": 16569,
    "matched": 16411,
    "recall_pct": 97.04,
-   "precision_pct": 98.93
+   "precision_pct": 99.05
   },
   "S": {
    "true": 7078,
-   "pred": 9070,
+   "pred": 8485,
    "matched": 6539,
    "recall_pct": 92.38,
-   "precision_pct": 72.09
+   "precision_pct": 77.07
   },
   "R": {
    "true": 1692,
-   "pred": 1233,
+   "pred": 1227,
    "matched": 1184,
    "recall_pct": 69.98,
-   "precision_pct": 96.03
+   "precision_pct": 96.5
   },
   "K": {
    "true": 17310,
-   "pred": 16399,
-   "matched": 16203,
-   "recall_pct": 93.6,
-   "precision_pct": 98.8
+   "pred": 17014,
+   "matched": 16438,
+   "recall_pct": 94.96,
+   "precision_pct": 96.61
   }
  },
  "top_mismatch_shapes": [
@@ -106,8 +106,8 @@
     "K": -1,
     "S": 1
    },
-   "faces": 565,
-   "pct": 1.65,
+   "faces": 558,
+   "pct": 1.63,
    "examples": [
     {
      "name": "Adrestia",
@@ -350,18 +350,17 @@
   },
   {
    "delta": {
-    "K": -1,
-    "S": 3
+    "K": 2
    },
-   "faces": 124,
-   "pct": 0.36,
+   "faces": 145,
+   "pct": 0.42,
    "examples": [
     {
      "name": "Age of Ultron",
      "types": "Enchantment Saga",
      "oracle": "(As this Saga enters and after your draw step, add a lore counter. Sacrifice after III.)\\nI \u2014 For each opponent, destroy up to one target nonartifact creature that player controls.\\nII \u2014 For each opponent, you create a 2",
      "pred": {
-      "S": 3
+      "K": 3
      },
      "true": {
       "K": 1
@@ -372,7 +371,7 @@
      "types": "Enchantment Saga",
      "oracle": "I \u2014 Exile target creature an opponent controls with power 3 or greater.\\nII \u2014 Create a 2/1 white Cat Warrior creature token, then put a vigilance counter on a creature you control.\\nIII \u2014 Target creature you control gain",
      "pred": {
-      "S": 3
+      "K": 3
      },
      "true": {
       "K": 1
@@ -383,7 +382,7 @@
      "types": "Enchantment Saga",
      "oracle": "(As this Saga enters and after your draw step, add a lore counter. Sacrifice after III.)\\nI \u2014 You may draw a card for each artifact you control. If you do, each opponent draws a card.\\nII \u2014 Artifact spells you cast this ",
      "pred": {
-      "S": 3
+      "K": 3
      },
      "true": {
       "K": 1
@@ -394,7 +393,7 @@
      "types": "Enchantment Saga",
      "oracle": "(As this Saga enters and after your draw step, add a lore counter. Sacrifice after III.)\\nI \u2014 Target creature you control fights up to one target creature you don't control.\\nII \u2014 Add {R}. Put two +1/+1 counters on up to",
      "pred": {
-      "S": 3
+      "K": 3
      },
      "true": {
       "K": 1
@@ -406,7 +405,7 @@
    "delta": {
     "K": -1
    },
-   "faces": 106,
+   "faces": 105,
    "pct": 0.31,
    "examples": [
     {
@@ -457,6 +456,61 @@
       "T": 1,
       "S": 1,
       "K": 2
+     }
+    }
+   ]
+  },
+  {
+   "delta": {
+    "K": 1
+   },
+   "faces": 101,
+   "pct": 0.3,
+   "examples": [
+    {
+     "name": "A Golden Opportunity",
+     "types": "Enchantment Saga",
+     "oracle": "(As this Saga enters and after your draw step, add a lore counter. Sacrifice after III.)\\nI \u2014 Conjure a card named Gilded Goose onto the battlefield.\\nII, III \u2014 You may tap an untapped Bird you control and sacrifice an a",
+     "pred": {
+      "K": 2
+     },
+     "true": {
+      "K": 1
+     }
+    },
+    {
+     "name": "Well",
+     "types": "Sorcery",
+     "oracle": "You gain 2 life for each creature you control.\\nFuse (You may cast one or both halves of this card from your hand.)",
+     "pred": {
+      "K": 1,
+      "A": 1
+     },
+     "true": {
+      "A": 1
+     }
+    },
+    {
+     "name": "Dangerous",
+     "types": "Sorcery",
+     "oracle": "All creatures able to block target creature this turn do so.\\nFuse (You may cast one or both halves of this card from your hand.)",
+     "pred": {
+      "K": 1,
+      "A": 1
+     },
+     "true": {
+      "A": 1
+     }
+    },
+    {
+     "name": "Ascent of the Worthy",
+     "types": "Enchantment Saga",
+     "oracle": "(As this Saga enters and after your draw step, add a lore counter. Sacrifice after III.)\\nI, II \u2014 Choose a creature you control. Until your next turn, all damage that would be dealt to creatures you control is dealt to t",
+     "pred": {
+      "K": 2
+     },
+     "true": {
+      "K": 1
      }
     }
    ]
@@ -520,60 +574,6 @@
      "true": {
       "R": 1,
       "S": 1
-     }
-    }
-   ]
-  },
-  {
-   "delta": {
-    "K": -1,
-    "S": 2
-   },
-   "faces": 80,
-   "pct": 0.23,
-   "examples": [
-    {
-     "name": "A Golden Opportunity",
-     "types": "Enchantment Saga",
-     "oracle": "(As this Saga enters and after your draw step, add a lore counter. Sacrifice after III.)\\nI \u2014 Conjure a card named Gilded Goose onto the battlefield.\\nII, III \u2014 You may tap an untapped Bird you control and sacrifice an a",
-     "pred": {
-      "S": 2
-     },
-     "true": {
-      "K": 1
-     }
-    },
-    {
-     "name": "Ballad of the Black Flag",
-     "types": "Enchantment Saga",
-     "oracle": "(As this Saga enters and after your draw step, add a lore counter. Sacrifice after IV.)\\nI, II, III \u2014 Mill three cards. You may put a historic card from among them into your hand. (Artifacts, legendaries, and Sagas are h",
-     "pred": {
-      "S": 2
-     },
-     "true": {
-      "K": 1
-     }
-    },
-    {
-     "name": "Battle at the Helvault",
-     "types": "Enchantment Saga",
-     "oracle": "(As this Saga enters and after your draw step, add a lore counter.)\\nI, II \u2014 For each player, exile up to one target non-Saga, nonland permanent that player controls until Battle at the Helvault leaves the battlefield.\\n",
-     "pred": {
-      "S": 2
-     },
-     "true": {
-      "K": 1
-     }
-    },
-    {
-     "name": "Befriending the Moths",
-     "types": "Enchantment Saga",
-     "oracle": "(As this Saga enters and after your draw step, add a lore counter.)\\nI, II \u2014 Target creature you control gets +1/+1 and gains flying until end of turn.\\nIII \u2014 Exile this Saga, then return it to the battlefield transforme",
-     "pred": {
-      "S": 2
-     },
-     "true": {
-      "K": 1
      }
     }
    ]
