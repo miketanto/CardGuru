@@ -36,6 +36,10 @@ Plans built on those findings:
 - [research/oracle-grammar-m1.md](research/oracle-grammar-m1.md) — M1: effect-verb
   grammar scored on a held-out half — 83.4% precision / 76.9% recall, dev→holdout gap
   0.56pp, 12 of 33 APIs at ≥90/90; the two weakest are the two phase 1 §6 called conflated
+- [research/oracle-grammar-m2.md](research/oracle-grammar-m2.md) — **M2: the
+  pre-committed kill criterion does not clear.** 3/5 adversarial questions pass on
+  verbatim Forge-vocabulary queries (cost/target family, 76–87% agreement); the 2 that
+  fail need unimplemented node classes. Grammar's status: labelled fallback, not replacement
 
 Reproduce: `research/scripts/` (pure-Python parser + search prototype;
 `CardGuruFeasibilityTest.java` drops into XMage's `Mage.Tests`). Pins: Forge `670429bf`,
