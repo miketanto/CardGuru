@@ -33,6 +33,9 @@ Plans built on those findings:
 - [research/oracle-grammar-m0.md](research/oracle-grammar-m0.md) — M0 probe for an
   oracle-text grammar as a second, Forge-independent derivation of the ability graph:
   90.2% ability-kind agreement over 34,156 faces, kill criterion did not fire
+- [research/oracle-grammar-m1.md](research/oracle-grammar-m1.md) — M1: effect-verb
+  grammar scored on a held-out half — 83.4% precision / 76.9% recall, dev→holdout gap
+  0.56pp, 12 of 33 APIs at ≥90/90; the two weakest are the two phase 1 §6 called conflated
 
 Reproduce: `research/scripts/` (pure-Python parser + search prototype;
 `CardGuruFeasibilityTest.java` drops into XMage's `Mage.Tests`). Pins: Forge `670429bf`,

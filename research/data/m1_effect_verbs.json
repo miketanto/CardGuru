@@ -1,0 +1,3232 @@
+{
+ "split": "holdout",
+ "faces_scored": 16976,
+ "exact_api_set_match_pct": 64.59,
+ "truth_fully_covered_pct": 61.02,
+ "micro_precision_pct": 83.35,
+ "micro_recall_pct": 76.9,
+ "api_instances": {
+  "tp": 18078,
+  "fp": 3610,
+  "fn": 5430
+ },
+ "excluded_non_textual_apis": [
+  "Branch",
+  "Charm",
+  "Cleanup",
+  "DebugTargets",
+  "DelayedTrigger",
+  "Effect",
+  "GenericChoice",
+  "ImmediateTrigger",
+  "InternalHaunt",
+  "NoteCounters",
+  "Pull",
+  "Repeat",
+  "RepeatEach",
+  "StoreSVar"
+ ],
+ "per_api": [
+  {
+   "api": "ChangeZone",
+   "support": 2791,
+   "recall_pct": 87.3,
+   "precision_pct": 81.9,
+   "fp": 539
+  },
+  {
+   "api": "Pump",
+   "support": 2206,
+   "recall_pct": 72.7,
+   "precision_pct": 74.5,
+   "fp": 550
+  },
+  {
+   "api": "Draw",
+   "support": 1781,
+   "recall_pct": 99.6,
+   "precision_pct": 97.4,
+   "fp": 48
+  },
+  {
+   "api": "Token",
+   "support": 1651,
+   "recall_pct": 99.5,
+   "precision_pct": 91.4,
+   "fp": 154
+  },
+  {
+   "api": "PutCounter",
+   "support": 1553,
+   "recall_pct": 84.5,
+   "precision_pct": 89.6,
+   "fp": 152
+  },
+  {
+   "api": "DealDamage",
+   "support": 1284,
+   "recall_pct": 99.9,
+   "precision_pct": 76.3,
+   "fp": 398
+  },
+  {
+   "api": "Mana",
+   "support": 1088,
+   "recall_pct": 95.8,
+   "precision_pct": 95.8,
+   "fp": 46
+  },
+  {
+   "api": "GainLife",
+   "support": 821,
+   "recall_pct": 99.6,
+   "precision_pct": 95.1,
+   "fp": 42
+  },
+  {
+   "api": "Tap",
+   "support": 741,
+   "recall_pct": 91.9,
+   "precision_pct": 97.7,
+   "fp": 16
+  },
+  {
+   "api": "Destroy",
+   "support": 724,
+   "recall_pct": 94.3,
+   "precision_pct": 79.9,
+   "fp": 172
+  },
+  {
+   "api": "LoseLife",
+   "support": 555,
+   "recall_pct": 99.6,
+   "precision_pct": 99.1,
+   "fp": 5
+  },
+  {
+   "api": "Discard",
+   "support": 546,
+   "recall_pct": 91.8,
+   "precision_pct": 80.8,
+   "fp": 119
+  },
+  {
+   "api": "PumpAll",
+   "support": 523,
+   "recall_pct": 74.0,
+   "precision_pct": 89.2,
+   "fp": 47
+  },
+  {
+   "api": "Animate",
+   "support": 463,
+   "recall_pct": 35.9,
+   "precision_pct": 76.1,
+   "fp": 52
+  },
+  {
+   "api": "Dig",
+   "support": 452,
+   "recall_pct": 93.8,
+   "precision_pct": 76.5,
+   "fp": 130
+  },
+  {
+   "api": "Sacrifice",
+   "support": 397,
+   "recall_pct": 71.3,
+   "precision_pct": 49.7,
+   "fp": 286
+  },
+  {
+   "api": "ChangeZoneAll",
+   "support": 301,
+   "recall_pct": 40.9,
+   "precision_pct": 93.9,
+   "fp": 8
+  },
+  {
+   "api": "Mill",
+   "support": 278,
+   "recall_pct": 96.8,
+   "precision_pct": 99.6,
+   "fp": 1
+  },
+  {
+   "api": "Counter",
+   "support": 253,
+   "recall_pct": 92.1,
+   "precision_pct": 99.6,
+   "fp": 1
+  },
+  {
+   "api": "Untap",
+   "support": 236,
+   "recall_pct": 63.1,
+   "precision_pct": 70.3,
+   "fp": 63
+  },
+  {
+   "api": "Scry",
+   "support": 212,
+   "recall_pct": 99.1,
+   "precision_pct": 100.0,
+   "fp": 0
+  },
+  {
+   "api": "ChooseCard",
+   "support": 190,
+   "recall_pct": 5.8,
+   "precision_pct": 19.6,
+   "fp": 45
+  },
+  {
+   "api": "DamageAll",
+   "support": 190,
+   "recall_pct": 86.3,
+   "precision_pct": 55.8,
+   "fp": 130
+  },
+  {
+   "api": "CopyPermanent",
+   "support": 181,
+   "recall_pct": 47.0,
+   "precision_pct": 51.2,
+   "fp": 81
+  },
+  {
+   "api": "DestroyAll",
+   "support": 180,
+   "recall_pct": 82.2,
+   "precision_pct": 98.7,
+   "fp": 2
+  },
+  {
+   "api": "GainControl",
+   "support": 166,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "SetState",
+   "support": 162,
+   "recall_pct": 79.6,
+   "precision_pct": 95.6,
+   "fp": 6
+  },
+  {
+   "api": "PutCounterAll",
+   "support": 148,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "Play",
+   "support": 148,
+   "recall_pct": 63.5,
+   "precision_pct": 32.1,
+   "fp": 199
+  },
+  {
+   "api": "Regenerate",
+   "support": 134,
+   "recall_pct": 100.0,
+   "precision_pct": 98.5,
+   "fp": 2
+  },
+  {
+   "api": "CopySpellAbility",
+   "support": 127,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "Attach",
+   "support": 123,
+   "recall_pct": 99.2,
+   "precision_pct": 96.8,
+   "fp": 4
+  },
+  {
+   "api": "Surveil",
+   "support": 111,
+   "recall_pct": 100.0,
+   "precision_pct": 99.1,
+   "fp": 1
+  },
+  {
+   "api": "MakeCard",
+   "support": 96,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "ChooseType",
+   "support": 92,
+   "recall_pct": 59.8,
+   "precision_pct": 98.2,
+   "fp": 1
+  },
+  {
+   "api": "RemoveCounter",
+   "support": 92,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "Clone",
+   "support": 88,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "PeekAndReveal",
+   "support": 80,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "ReplaceEffect",
+   "support": 79,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "ChooseColor",
+   "support": 73,
+   "recall_pct": 69.9,
+   "precision_pct": 89.5,
+   "fp": 6
+  },
+  {
+   "api": "SacrificeAll",
+   "support": 70,
+   "recall_pct": 14.3,
+   "precision_pct": 83.3,
+   "fp": 2
+  },
+  {
+   "api": "DigUntil",
+   "support": 69,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "AnimateAll",
+   "support": 66,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "Investigate",
+   "support": 65,
+   "recall_pct": 100.0,
+   "precision_pct": 100.0,
+   "fp": 0
+  },
+  {
+   "api": "UntapAll",
+   "support": 65,
+   "recall_pct": 64.6,
+   "precision_pct": 84.0,
+   "fp": 8
+  },
+  {
+   "api": "RollDice",
+   "support": 60,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "Fight",
+   "support": 60,
+   "recall_pct": 100.0,
+   "precision_pct": 92.3,
+   "fp": 5
+  },
+  {
+   "api": "AlterAttribute",
+   "support": 60,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "ChoosePlayer",
+   "support": 58,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "Proliferate",
+   "support": 48,
+   "recall_pct": 100.0,
+   "precision_pct": 98.0,
+   "fp": 1
+  },
+  {
+   "api": "NameCard",
+   "support": 46,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "Seek",
+   "support": 46,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "RevealHand",
+   "support": 46,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "FlipCoin",
+   "support": 44,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "PreventDamage",
+   "support": 43,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "Reveal",
+   "support": 40,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "Amass",
+   "support": 37,
+   "recall_pct": 100.0,
+   "precision_pct": 100.0,
+   "fp": 0
+  },
+  {
+   "api": "TapAll",
+   "support": 35,
+   "recall_pct": 80.0,
+   "precision_pct": 93.3,
+   "fp": 2
+  },
+  {
+   "api": "Goad",
+   "support": 35,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "DamageResolve",
+   "support": 35,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "AddPhase",
+   "support": 34,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "Protection",
+   "support": 33,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "BecomeMonarch",
+   "support": 32,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "Phases",
+   "support": 31,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "ChooseSource",
+   "support": 31,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "Shuffle",
+   "support": 30,
+   "recall_pct": 76.7,
+   "precision_pct": 17.6,
+   "fp": 108
+  },
+  {
+   "api": "Draft",
+   "support": 27,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "ChooseNumber",
+   "support": 27,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "Connive",
+   "support": 27,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "AddTurn",
+   "support": 26,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "MultiplyCounter",
+   "support": 26,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "ReplaceDamage",
+   "support": 25,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "RingTemptsYou",
+   "support": 25,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "TapOrUntap",
+   "support": 25,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "Debuff",
+   "support": 24,
+   "recall_pct": 66.7,
+   "precision_pct": 47.1,
+   "fp": 18
+  },
+  {
+   "api": "ReplaceToken",
+   "support": 23,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "LosesGame",
+   "support": 23,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "SetLife",
+   "support": 23,
+   "recall_pct": 73.9,
+   "precision_pct": 100.0,
+   "fp": 0
+  },
+  {
+   "api": "ManaReflected",
+   "support": 23,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "ChangeTargets",
+   "support": 22,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "Explore",
+   "support": 22,
+   "recall_pct": 100.0,
+   "precision_pct": 100.0,
+   "fp": 0
+  },
+  {
+   "api": "WinsGame",
+   "support": 21,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "Discover",
+   "support": 20,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "Manifest",
+   "support": 19,
+   "recall_pct": 100.0,
+   "precision_pct": 54.3,
+   "fp": 16
+  },
+  {
+   "api": "Earthbend",
+   "support": 17,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "Fog",
+   "support": 17,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "Vote",
+   "support": 17,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "EachDamage",
+   "support": 16,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "ExchangeControl",
+   "support": 16,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "Planeswalk",
+   "support": 16,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "Venture",
+   "support": 16,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "Poison",
+   "support": 16,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "ReplaceCounter",
+   "support": 15,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "RemoveFromCombat",
+   "support": 15,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "ReplaceSplitDamage",
+   "support": 15,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "ManifestDread",
+   "support": 15,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "RearrangeTopOfLibrary",
+   "support": 15,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "Intensify",
+   "support": 14,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "TwoPiles",
+   "support": 14,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "Learn",
+   "support": 12,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "PermanentCreature",
+   "support": 12,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "MustBlock",
+   "support": 12,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "OpenAttraction",
+   "support": 12,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "TakeInitiative",
+   "support": 11,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "Incubate",
+   "support": 11,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "Airbend",
+   "support": 10,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "Radiation",
+   "support": 10,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "Clash",
+   "support": 10,
+   "recall_pct": 100.0,
+   "precision_pct": 90.9,
+   "fp": 1
+  },
+  {
+   "api": "ReplaceMana",
+   "support": 10,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "RemoveCounterAll",
+   "support": 9,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "MoveCounter",
+   "support": 9,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "DayTime",
+   "support": 8,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "DigMultiple",
+   "support": 8,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "SkipPhase",
+   "support": 8,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "VillainousChoice",
+   "support": 8,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "AssembleContraption",
+   "support": 7,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "ChangeText",
+   "support": 7,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "TimeTravel",
+   "support": 7,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "ControlSpell",
+   "support": 6,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "Endure",
+   "support": 6,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "GainControlVariant",
+   "support": 6,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "Detain",
+   "support": 6,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "Abandon",
+   "support": 6,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "AddOrRemoveCounter",
+   "support": 6,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "ProtectionAll",
+   "support": 5,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "Heist",
+   "support": 5,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "SkipTurn",
+   "support": 5,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "Meld",
+   "support": 5,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "ChangeCombatants",
+   "support": 5,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "Cloak",
+   "support": 4,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "BecomesBlocked",
+   "support": 4,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "ChaosEnsues",
+   "support": 4,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "ChooseDirection",
+   "support": 3,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "ChooseEvenOdd",
+   "support": 3,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "ControlPlayer",
+   "support": 3,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "EndTurn",
+   "support": 3,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "Blight",
+   "support": 3,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "UnlockDoor",
+   "support": 3,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "BlankLine",
+   "support": 3,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "Recruit",
+   "support": 3,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "ExchangeLife",
+   "support": 2,
+   "recall_pct": 100.0,
+   "precision_pct": 100.0,
+   "fp": 0
+  },
+  {
+   "api": "Balance",
+   "support": 2,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "RemoveFromMatch",
+   "support": 2,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "GainOwnership",
+   "support": 2,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "Unattach",
+   "support": 2,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "LookAt",
+   "support": 1,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "RemoveFromGame",
+   "support": 1,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "PermanentNoncreature",
+   "support": 1,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "Camouflage",
+   "support": 1,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "GameDrawn",
+   "support": 1,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "Regeneration",
+   "support": 1,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "TaporUntapAll",
+   "support": 1,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "ReorderZone",
+   "support": 1,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "RollPlanarDice",
+   "support": 1,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "SwitchBlock",
+   "support": 1,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "SetInMotion",
+   "support": 1,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "Block",
+   "support": 1,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "BidLife",
+   "support": 1,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "LosePerpetual",
+   "support": 1,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "DrainMana",
+   "support": 1,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "ActivateAbility",
+   "support": 1,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "AssignGroup",
+   "support": 1,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "Subgame",
+   "support": 1,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "ChangeSpeed",
+   "support": 1,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "ReverseTurnOrder",
+   "support": 1,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "TapOrUntapAll",
+   "support": 1,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "ChangeX",
+   "support": 1,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "HealDamage",
+   "support": 1,
+   "recall_pct": 0.0,
+   "precision_pct": null,
+   "fp": 0
+  },
+  {
+   "api": "Bolster",
+   "support": 0,
+   "recall_pct": null,
+   "precision_pct": 0.0,
+   "fp": 13
+  },
+  {
+   "api": "Adapt",
+   "support": 0,
+   "recall_pct": null,
+   "precision_pct": 0.0,
+   "fp": 17
+  },
+  {
+   "api": "Monstrosity",
+   "support": 0,
+   "recall_pct": null,
+   "precision_pct": 0.0,
+   "fp": 22
+  },
+  {
+   "api": "CopySpell",
+   "support": 0,
+   "recall_pct": null,
+   "precision_pct": 0.0,
+   "fp": 76
+  },
+  {
+   "api": "Populate",
+   "support": 0,
+   "recall_pct": null,
+   "precision_pct": 0.0,
+   "fp": 15
+  }
+ ],
+ "miss_examples": {
+  "MakeCard": [
+   {
+    "name": "A Golden Opportunity",
+    "oracle": "(As this Saga enters and after your draw step, add a lore counter. Sacrifice after III.)\\nI \u2014 Conjure a card named Gilded Goose onto the battlefield.\\nII, III \u2014 You may t"
+   },
+   {
+    "name": "Anina, Natural Parallelist",
+    "oracle": "Whenever you cast a spell with {X} in its mana cost, conjure a random creature card with mana value X onto the battlefield.\\n{T}: Add {G}{U}. Spend this mana only to cast"
+   },
+   {
+    "name": "Argothian Uprooting",
+    "oracle": "Put two +1/+1 counters on each of X target lands you control. They each become 0/0 Elemental creatures with reach, haste, and \"When this creature leaves the battlefield, "
+   }
+  ],
+  "ChooseType": [
+   {
+    "name": "A Killer Among Us",
+    "oracle": "When A Killer Among Us enters, create a 1/1 white Human creature token, a 1/1 blue Merfolk creature token, and a 1/1 red Goblin creature token. Then secretly choose Human"
+   },
+   {
+    "name": "Arachne, Psionic Weaver",
+    "oracle": "Web-slinging {W} (You may cast this spell for {W} if you also return a tapped creature you control to its owner's hand.)\\nAs Arachne enters, look at an opponent's hand, t"
+   },
+   {
+    "name": "Blood Oath",
+    "oracle": "Choose a card type. Target opponent reveals their hand. Blood Oath deals 3 damage to that player for each card of the chosen type revealed this way. (Artifact, battle, cr"
+   }
+  ],
+  "Earthbend": [
+   {
+    "name": "Aang, Destined Savior",
+    "oracle": "Flying\\nLand creatures you control have vigilance.\\nAt the beginning of combat on your turn, earthbend 2. (Target land you control becomes a 0/0 creature with haste that'"
+   },
+   {
+    "name": "Ba Sing Se",
+    "oracle": "This land enters tapped unless you control a basic land.\\n{T}: Add {G}.\\n{2}{G}, {T}: Earthbend 2. Activate only as a sorcery. (Target land you control becomes a 0/0 crea"
+   },
+   {
+    "name": "Badgermole Cub",
+    "oracle": "When this creature enters, earthbend 1. (Target land you control becomes a 0/0 creature with haste that's still a land. Put a +1/+1 counter on it. When it dies or is exil"
+   }
+  ],
+  "Airbend": [
+   {
+    "name": "Aang, Swift Savior",
+    "oracle": "Flash\\nFlying\\nWhen Aang enters, airbend up to one other target creature or spell. (Exile it. While it's exiled, its owner may cast it for {2} rather than its mana cost.)"
+   },
+   {
+    "name": "Aang, the Last Airbender",
+    "oracle": "Flying\\nWhen Aang enters, airbend up to one other target nonland permanent. (Exile it. While it's exiled, its owner may cast it for {2} rather than its mana cost.)\\nWhene"
+   },
+   {
+    "name": "Airbender Ascension",
+    "oracle": "When this enchantment enters, airbend up to one target creature.\\nWhenever a creature you control enters, put a quest counter on this enchantment.\\nAt the beginning of yo"
+   }
+  ],
+  "Pump": [
+   {
+    "name": "Abandon the Post",
+    "oracle": "Up to two target creatures can't block this turn.\\nFlashback {3}{R} (You may cast this card from your graveyard for its flashback cost. Then exile it.)"
+   },
+   {
+    "name": "Aberrant Mind Sorcerer",
+    "oracle": "Psionic Spells \u2014 When Aberrant Mind Sorcerer enters, choose target instant or sorcery card in your graveyard, then roll a d20.\\n1\u20149 | You may put that card on top of your"
+   },
+   {
+    "name": "Abnormal Endurance",
+    "oracle": "Until end of turn, target creature gets +2/+0 and gains \"When this creature dies, return it to the battlefield tapped under its owner's control.\""
+   }
+  ],
+  "ChoosePlayer": [
+   {
+    "name": "Abby, Merciless Soldier",
+    "oracle": "When you cast this spell, create a number of 1/1 black Fungus Zombie creature tokens named Cordyceps Infected equal to the amount of mana spent to cast it.\\nAbby enters u"
+   },
+   {
+    "name": "Anointed Peacekeeper",
+    "oracle": "Vigilance\\nAs Anointed Peacekeeper enters, look at an opponent's hand, then choose any card name.\\nSpells your opponents cast with the chosen name cost {2} more to cast.\\"
+   },
+   {
+    "name": "Arachne, Psionic Weaver",
+    "oracle": "Web-slinging {W} (You may cast this spell for {W} if you also return a tapped creature you control to its owner's hand.)\\nAs Arachne enters, look at an opponent's hand, t"
+   }
+  ],
+  "ChangeZone": [
+   {
+    "name": "Abby, Merciless Soldier",
+    "oracle": "When you cast this spell, create a number of 1/1 black Fungus Zombie creature tokens named Cordyceps Infected equal to the amount of mana spent to cast it.\\nAbby enters u"
+   },
+   {
+    "name": "Advanced Floral Invocations",
+    "oracle": "Landfall \u2014 Whenever a land you control enters, mill two cards.\\n{B/G}: Level 2\\nWhenever a land you control enters, creature cards in your graveyard perpetually get +1/+1"
+   },
+   {
+    "name": "Aegis of Honor",
+    "oracle": "{1}: The next time an instant or sorcery spell would deal damage to you this turn, that spell deals that damage to its controller instead."
+   }
+  ],
+  "Untap": [
+   {
+    "name": "Abduction",
+    "oracle": "Enchant creature\\nWhen Abduction enters, untap enchanted creature.\\nYou control enchanted creature.\\nWhen enchanted creature dies, return that card to the battlefield und"
+   },
+   {
+    "name": "Animist's Awakening",
+    "oracle": "Reveal the top X cards of your library. Put all land cards from among them onto the battlefield tapped and the rest on the bottom of your library in a random order.\\nSpel"
+   },
+   {
+    "name": "Anje Falkenrath",
+    "oracle": "Haste\\n{T}, Discard a card: Draw a card.\\nWhenever you discard a card, if it has madness, untap Anje Falkenrath."
+   }
+  ],
+  "RollDice": [
+   {
+    "name": "Aberrant Mind Sorcerer",
+    "oracle": "Psionic Spells \u2014 When Aberrant Mind Sorcerer enters, choose target instant or sorcery card in your graveyard, then roll a d20.\\n1\u20149 | You may put that card on top of your"
+   },
+   {
+    "name": "Arcane Investigator",
+    "oracle": "Search the Room \u2014 {5}{U}: Roll a d20.\\n1\u20149 | Draw a card.\\n10\u201420 | Look at the top three cards of your library. Put one of them into your hand and the rest on the bottom "
+   },
+   {
+    "name": "Attempted Murder",
+    "oracle": "Choose target creature. Roll X six-sided dice. For each even result, put two -1/-1 counters on that creature. For each odd result, create a 1/2 blue Bird creature token w"
+   }
+  ],
+  "Animate": [
+   {
+    "name": "Abigale, Eloquent First-Year",
+    "oracle": "Flying, first strike, lifelink\\nWhen Abigale enters, up to one other target creature loses all abilities. Put a flying counter, a first strike counter, and a lifelink cou"
+   },
+   {
+    "name": "Abnormal Endurance",
+    "oracle": "Until end of turn, target creature gets +2/+0 and gains \"When this creature dies, return it to the battlefield tapped under its owner's control.\""
+   },
+   {
+    "name": "Amphibian Accident",
+    "oracle": "Until end of turn, target creature loses all abilities and becomes a blue Frog with base power and toughness 1/1."
+   }
+  ],
+  "AnimateAll": [
+   {
+    "name": "Absorb Energy",
+    "oracle": "Counter target spell. Cards in your hand that share a card type with that spell perpetually gain \"This spell costs {1} less to cast.\""
+   },
+   {
+    "name": "Allosaurus Shepherd",
+    "oracle": "Allosaurus Shepherd can't be countered.\\nGreen spells you control can't be countered.\\n{4}{G}{G}: Until end of turn, each Elf creature you control has base power and toug"
+   },
+   {
+    "name": "Arcane Lighthouse",
+    "oracle": "{T}: Add {C}.\\n{1}, {T}: Until end of turn, creatures your opponents control lose hexproof and shroud and can't have hexproof or shroud."
+   }
+  ],
+  "Clone": [
+   {
+    "name": "Absorb Identity",
+    "oracle": "Return target creature to its owner's hand. You may have Shapeshifters you control become copies of that creature until end of turn."
+   },
+   {
+    "name": "Absorbing Man",
+    "oracle": "Vigilance\\nAt the beginning of your first main phase, until your next turn, Absorbing Man becomes a copy of up to one target artifact, non-Aura enchantment, or land, exce"
+   },
+   {
+    "name": "Altered Ego",
+    "oracle": "This spell can't be countered.\\nYou may have Altered Ego enter as a copy of any creature on the battlefield, except it enters with X additional +1/+1 counters on it."
+   }
+  ],
+  "PreventDamage": [
+   {
+    "name": "Abuna Acolyte",
+    "oracle": "{T}: Prevent the next 1 damage that would be dealt to any target this turn.\\n{T}: Prevent the next 2 damage that would be dealt to target artifact creature this turn."
+   },
+   {
+    "name": "Abuna's Chant",
+    "oracle": "Choose one \u2014\\n\u2022 You gain 5 life.\\n\u2022 Prevent the next 5 damage that would be dealt to target creature this turn.\\nEntwine {2} (Choose both if you pay the entwine cost.)"
+   },
+   {
+    "name": "Angel of Salvation",
+    "oracle": "Flash; convoke (Your creatures can help cast this spell. Each creature you tap while casting this spell pays for {1} or one mana of that creature's color.)\\nFlying\\nWhen "
+   }
+  ],
+  "PutCounterAll": [
+   {
+    "name": "Abzan Ascendancy",
+    "oracle": "When Abzan Ascendancy enters, put a +1/+1 counter on each creature you control.\\nWhenever a nontoken creature you control dies, create a 1/1 white Spirit creature token w"
+   },
+   {
+    "name": "Acid-Spewer Dragon",
+    "oracle": "Flying, deathtouch\\nMegamorph {5}{B}{B} (You may cast this card face down as a 2/2 creature for {3}. Turn it face up any time for its megamorph cost and put a +1/+1 count"
+   },
+   {
+    "name": "Action News Crew",
+    "oracle": "Vigilance\\nChannel \u2014 {6}, Discard this card: Put a +1/+1 counter on each creature you control. Draw a card."
+   }
+  ],
+  "PutCounter": [
+   {
+    "name": "Abzan Charm",
+    "oracle": "Choose one \u2014\\n\u2022 Exile target creature with power 3 or greater.\\n\u2022 You draw two cards and you lose 2 life.\\n\u2022 Distribute two +1/+1 counters among one or two target creatur"
+   },
+   {
+    "name": "Abzan Skycaptain",
+    "oracle": "Flying\\nWhen Abzan Skycaptain dies, bolster 2. (Choose a creature with the least toughness among creatures you control and put two +1/+1 counters on it.)"
+   },
+   {
+    "name": "Advanced Floral Invocations",
+    "oracle": "Landfall \u2014 Whenever a land you control enters, mill two cards.\\n{B/G}: Level 2\\nWhenever a land you control enters, creature cards in your graveyard perpetually get +1/+1"
+   }
+  ],
+  "Learn": [
+   {
+    "name": "Academic Dispute",
+    "oracle": "Target creature blocks this turn if able. You may have it gain reach until end of turn.\\nLearn. (You may reveal a Lesson card you own from outside the game and put it int"
+   },
+   {
+    "name": "Dream Strix",
+    "oracle": "Flying\\nWhen Dream Strix becomes the target of a spell, sacrifice it.\\nWhen Dream Strix dies, learn. (You may reveal a Lesson card you own from outside the game and put i"
+   },
+   {
+    "name": "Enthusiastic Study",
+    "oracle": "Target creature gets +3/+1 and gains trample until end of turn.\\nLearn. (You may reveal a Lesson card you own from outside the game and put it into your hand, or discard "
+   }
+  ],
+  "NameCard": [
+   {
+    "name": "Academic Probation",
+    "oracle": "Choose one \u2014\\n\u2022 Choose a nonland card name. Opponents can't cast spells with the chosen name until your next turn.\\n\u2022 Choose target nonland permanent. Until your next tur"
+   },
+   {
+    "name": "\"Ach! Hans, Run!\"",
+    "oracle": "At the beginning of your upkeep, you may say \"Ach! Hans, run! It's the . . .\" and the name of a creature card. If you do, search your library for a card with that name, p"
+   },
+   {
+    "name": "Alhammarret, High Arbiter",
+    "oracle": "Flying\\nAs Alhammarret, High Arbiter enters, each opponent reveals their hand. You choose the name of a nonland card revealed this way.\\nYour opponents can't cast spells "
+   }
+  ],
+  "Discard": [
+   {
+    "name": "Academy at Tolaria West",
+    "oracle": "At the beginning of your end step, if you have no cards in hand, draw seven cards.\\nWhenever chaos ensues, discard your hand."
+   },
+   {
+    "name": "Ambergris, Citadel Agent",
+    "oracle": "Haste\\nSpecialize {3}\\nWhenever Ambergris, Citadel Agent attacks, you may discard your hand and draw two cards."
+   },
+   {
+    "name": "Ambergris, Agent of Tyranny",
+    "oracle": "Haste\\nWhenever Ambergris, Agent of Law Tyranny attacks, you may discard your hand and draw two cards. When you do, target creature an opponent controls gets -X/-X until "
+   }
+  ],
+  "ReplaceToken": [
+   {
+    "name": "Academy Manufactor",
+    "oracle": "If you would create a Clue, Food, or Treasure token, instead create one of each."
+   },
+   {
+    "name": "Anointed Procession",
+    "oracle": "If an effect would create one or more tokens under your control, it creates twice that many of those tokens instead."
+   },
+   {
+    "name": "Bloodspatter Vampire",
+    "oracle": "Flying\\nIf an opponent would create a Clue, they create a Blood instead. (It's an artifact with \"{1}, {T}, Discard a card, Sacrifice this token: Draw a card.\")"
+   }
+  ],
+  "SacrificeAll": [
+   {
+    "name": "Acidic Dagger",
+    "oracle": "{4}, {T}: Whenever target creature deals combat damage to a non-Wall creature this turn, destroy that non-Wall creature. When the targeted creature leaves the battlefield"
+   },
+   {
+    "name": "Ajani, Nacatl Avenger",
+    "oracle": "[+2]: Put a +1/+1 counter on each Cat you control.\\n[0]: Create a 2/1 white Cat Warrior creature token. When you do, if you control a red permanent other than Ajani, Naca"
+   },
+   {
+    "name": "Angrath, the Flame-Chained",
+    "oracle": "[+1]: Each opponent discards a card and loses 2 life.\\n[-3]: Gain control of target creature until end of turn. Untap it. It gains haste until end of turn. Sacrifice it a"
+   }
+  ],
+  "Radiation": [
+   {
+    "name": "Acquired Mutation",
+    "oracle": "Enchant creature\\nEnchanted creature gets +2/+2 and is goaded. (It attacks each combat if able and attacks a player other than you if able.)\\nWhenever enchanted creature "
+   },
+   {
+    "name": "Feral Ghoul",
+    "oracle": "Menace\\nWhenever another creature you control dies, put a +1/+1 counter on Feral Ghoul.\\nWhen Feral Ghoul dies, each opponent gets a number of rad counters equal to its p"
+   },
+   {
+    "name": "Glowing One",
+    "oracle": "Deathtouch\\nWhenever Glowing One deals combat damage to a player, they get four rad counters.\\nWhenever a player mills a nonland card, you gain 1 life."
+   }
+  ],
+  "GainControl": [
+   {
+    "name": "Act of Authority",
+    "oracle": "When Act of Authority enters, you may exile target artifact or enchantment.\\nAt the beginning of your upkeep, you may exile target artifact or enchantment. If you do, its"
+   },
+   {
+    "name": "Admiral Beckett Brass",
+    "oracle": "Other Pirates you control get +1/+1.\\nAt the beginning of your end step, gain control of target nonland permanent controlled by a player who was dealt combat damage by th"
+   },
+   {
+    "name": "Angrath, the Flame-Chained",
+    "oracle": "[+1]: Each opponent discards a card and loses 2 life.\\n[-3]: Gain control of target creature until end of turn. Untap it. It gains haste until end of turn. Sacrifice it a"
+   }
+  ],
+  "Draft": [
+   {
+    "name": "Adaptive Armorer",
+    "oracle": "Vigilance\\nWhen this creature enters, draft a card from Adaptive Armorer's spellbook and put it onto the battlefield. When an Equipment enters this way, attach it to targ"
+   },
+   {
+    "name": "Arms Scavenger",
+    "oracle": "At the beginning of your upkeep, draft a card from Arms Scavenger's spellbook, then exile it. Until end of turn, you may play that card.\\nEquip abilities you activate cos"
+   },
+   {
+    "name": "Bladehold Cleaver",
+    "oracle": "For Mirrodin!\\nEquipped creature gets +2/+2.\\nWhenever equipped creature dies, draft a card from Bladehold Cleaver's spellbook.\\nEquip {3}."
+   }
+  ],
+  "CopySpellAbility": [
+   {
+    "name": "Adaptive Training Post",
+    "oracle": "Whenever you cast an instant or sorcery spell, if this artifact has fewer than three charge counters on it, put a charge counter on it.\\nRemove three charge counters from"
+   },
+   {
+    "name": "Agrus Kos, Eternal Soldier",
+    "oracle": "Vigilance\\nWhenever Agrus Kos, Eternal Soldier becomes the target of an ability that targets only it, you may pay {1}{R/W}. If you do, copy that ability for each other cr"
+   },
+   {
+    "name": "Ancestral Communion",
+    "oracle": "When you cast this spell while you control your commander, copy this spell. You may choose a new target for the copy.\\nReturn target permanent card from your graveyard to"
+   }
+  ],
+  "PumpAll": [
+   {
+    "name": "Adeliz, the Cinder Wind",
+    "oracle": "Flying, haste\\nWhenever you cast an instant or sorcery spell, Wizards you control get +1/+1 until end of turn."
+   },
+   {
+    "name": "Advanced Floral Invocations",
+    "oracle": "Landfall \u2014 Whenever a land you control enters, mill two cards.\\n{B/G}: Level 2\\nWhenever a land you control enters, creature cards in your graveyard perpetually get +1/+1"
+   },
+   {
+    "name": "Akroma, Vision of Ixidor",
+    "oracle": "Flying, first strike, vigilance, trample\\nAt the beginning of each combat, until end of turn, each other creature you control gets +1/+1 if it has flying, +1/+1 if it has"
+   }
+  ],
+  "Seek": [
+   {
+    "name": "Adherent's Heirloom",
+    "oracle": "When this artifact enters, seek a creature card of the most prevalent creature type in your library.\\n{T}: Add one mana of any color. Spend this mana only to cast a creat"
+   },
+   {
+    "name": "Artillery Enthusiast",
+    "oracle": "Modified creatures you control have menace.\\nWhen Artillery Enthusiast enters, you may discard a card. If you do, seek a card with mana value equal to that card's mana va"
+   },
+   {
+    "name": "Audacious Knuckleblade",
+    "oracle": "Exhaust \u2014 {2}{G}: Seek a card named Audacious Knuckleblade and put it onto the battlefield tapped.\\nExhaust \u2014 {1}{U}: Surveil 2, then untap this creature.\\nExhaust \u2014 {R}:"
+   }
+  ],
+  "ReplaceEffect": [
+   {
+    "name": "Aegis of Honor",
+    "oracle": "{1}: The next time an instant or sorcery spell would deal damage to you this turn, that spell deals that damage to its controller instead."
+   },
+   {
+    "name": "Aether Revolt",
+    "oracle": "Revolt \u2014 As long as a permanent you controlled left the battlefield this turn, if a source you control would deal noncombat damage to an opponent or a permanent an oppone"
+   },
+   {
+    "name": "Alhammarret's Archive",
+    "oracle": "If you would gain life, you gain twice that much life instead.\\nIf you would draw a card except the first one you draw in each of your draw steps, draw two cards instead."
+   }
+  ],
+  "AssembleContraption": [
+   {
+    "name": "Aerial Toastmaster",
+    "oracle": "Flying\\n{3}{W}, Sacrifice another artifact: Aerial Toastmaster assembles a Contraption. (Put the top card of your Contraption deck face up onto one of your sprockets.)"
+   },
+   {
+    "name": "Finders, Keepers",
+    "oracle": "Destroy target creature, then assemble a Contraption. (Put the top card of your Contraption deck face up onto one of your sprockets.)"
+   },
+   {
+    "name": "Incite Insight",
+    "oracle": "Assemble X Contraptions. (To assemble a Contraption, put the top card of your Contraption deck face up onto one of your sprockets.)"
+   }
+  ],
+  "ReplaceCounter": [
+   {
+    "name": "Aether Refinery",
+    "oracle": "If you would get one or more {E}, you get twice that many {E} instead.\\n{T}: You get {E}, then you may pay one or more {E}. If you do, create an X/X black Aetherborn crea"
+   },
+   {
+    "name": "Benevolent Hydra",
+    "oracle": "Benevolent Hydra enters with X +1/+1 counters on it.\\nIf one or more +1/+1 counters would be put on a creature you control, that many plus one +1/+1 counters are put on i"
+   },
+   {
+    "name": "Conclave Mentor",
+    "oracle": "If one or more +1/+1 counters would be put on a creature you control, that many plus one +1/+1 counters are put on that creature instead.\\nWhen Conclave Mentor dies, you "
+   }
+  ],
+  "ChooseNumber": [
+   {
+    "name": "Aether Refinery",
+    "oracle": "If you would get one or more {E}, you get twice that many {E} instead.\\n{T}: You get {E}, then you may pay one or more {E}. If you do, create an X/X black Aetherborn crea"
+   },
+   {
+    "name": "Choice of Damnations",
+    "oracle": "Target opponent chooses a number. You may have that player lose that much life. If you don't, that player sacrifices all but that many permanents."
+   },
+   {
+    "name": "Collective Voyage",
+    "oracle": "Join forces \u2014 Starting with you, each player may pay any amount of mana. Each player searches their library for up to X basic land cards, where X is the total amount of m"
+   }
+  ],
+  "RemoveCounterAll": [
+   {
+    "name": "Aether Snap",
+    "oracle": "Remove all counters from all permanents and exile all tokens."
+   },
+   {
+    "name": "Alaundo the Seer",
+    "oracle": "{T}:Draw a card, then exile a card from your hand and put a number of time counters on it equal to its mana value. It gains \"When the last time counter is removed from th"
+   },
+   {
+    "name": "Dust of Moments",
+    "oracle": "Choose one \u2014\\n\u2022 Remove two time counters from each permanent and each suspended card.\\n\u2022 Put two time counters on each permanent with a time counter on it and each suspen"
+   }
+  ],
+  "Destroy": [
+   {
+    "name": "Aether Storm",
+    "oracle": "Creature spells can't be cast.\\nPay 4 life: Destroy Aether Storm. It can't be regenerated. Any player may activate this ability."
+   },
+   {
+    "name": "Aetherjacket",
+    "oracle": "Flying, vigilance\\n{2}, {T}, Sacrifice this creature: Destroy another target artifact. Activate only as a sorcery."
+   },
+   {
+    "name": "Arachnus Web",
+    "oracle": "Enchant creature\\nEnchanted creature can't attack or block, and its activated abilities can't be activated.\\nAt the beginning of the end step, if enchanted creature's pow"
+   }
+  ],
+  "AddTurn": [
+   {
+    "name": "Aetherflux Car",
+    "oracle": "Flying\\nWhenever you cast a spell, put charge counters equal to four times that spell's mana value on this Vehicle.\\nRemove 121 charge counters from this Vehicle: Take an"
+   },
+   {
+    "name": "Alchemist's Gambit",
+    "oracle": "Cleave {4}{U}{U}{R} (You may cast this spell for its cleave cost. If you do, remove the words in square brackets.)\\nTake an extra turn after this one. During that turn, d"
+   },
+   {
+    "name": "Chance for Glory",
+    "oracle": "Creatures you control gain indestructible. Take an extra turn after this one. At the beginning of that turn's end step, you lose the game."
+   }
+  ],
+  "MultiplyCounter": [
+   {
+    "name": "Aetheric Amplifier",
+    "oracle": "{T}: Add one mana of any color.\\n{4}, {T}: Choose one. Activate only as a sorcery.\\n\u2022 Double the number of each kind of counter on target permanent.\\n\u2022 Double the number "
+   },
+   {
+    "name": "Arcade Cabinet",
+    "oracle": "When this artifact enters, put a +1/+1 counter on each of up to four target creatures.\\n{2}, {T}, Sacrifice a token: Double the number of each kind of counter on target c"
+   },
+   {
+    "name": "Ascendant Acolyte",
+    "oracle": "Ascendant Acolyte enters with a +1/+1 counter on it for each +1/+1 counter among other creatures you control.\\nAt the beginning of your upkeep, double the number of +1/+1"
+   }
+  ],
+  "ChangeTargets": [
+   {
+    "name": "Aethersnatch",
+    "oracle": "Gain control of target spell. You may choose new targets for it. (If that spell becomes a permanent, it enters under your control.)"
+   },
+   {
+    "name": "Bolt Bend",
+    "oracle": "This spell costs {3} less to cast if you control a creature with power 4 or greater.\\nChange the target of target spell or ability with a single target."
+   },
+   {
+    "name": "Chef's Kiss",
+    "oracle": "Gain control of target spell that targets only a single permanent or player. Copy it, then reselect the targets at random for the spell and the copy. The new targets can'"
+   }
+  ],
+  "ControlSpell": [
+   {
+    "name": "Aethersnatch",
+    "oracle": "Gain control of target spell. You may choose new targets for it. (If that spell becomes a permanent, it enters under your control.)"
+   },
+   {
+    "name": "Chef's Kiss",
+    "oracle": "Gain control of target spell that targets only a single permanent or player. Copy it, then reselect the targets at random for the spell and the copy. The new targets can'"
+   },
+   {
+    "name": "Commandeer",
+    "oracle": "You may exile two blue cards from your hand rather than pay this spell's mana cost.\\nGain control of target noncreature spell. You may choose new targets for it. (If that"
+   }
+  ],
+  "MoveCounter": [
+   {
+    "name": "Afiya Grove",
+    "oracle": "Afiya Grove enters with three +1/+1 counters on it.\\nAt the beginning of your upkeep, move a +1/+1 counter from Afiya Grove onto target creature.\\nWhen Afiya Grove has no"
+   },
+   {
+    "name": "Agent's Toolkit",
+    "oracle": "Agent's Toolkit enters with a +1/+1 counter, a flying counter, a deathtouch counter, and a shield counter on it. (If it would be dealt damage or destroyed, remove a shiel"
+   },
+   {
+    "name": "Combine Guildmage",
+    "oracle": "{1}{G}, {T}: This turn, each creature you control enters with an additional +1/+1 counter on it.\\n{1}{U}, {T}: Move a +1/+1 counter from target creature you control onto "
+   }
+  ],
+  "Tap": [
+   {
+    "name": "Aggressive Crag",
+    "oracle": "At the beginning of your combat step, tap Aggressive Crag.\\n{T}: Add {R} or {W}."
+   },
+   {
+    "name": "Amazing Acrobatics",
+    "oracle": "Choose one or both \u2014\\n\u2022 Counter target spell.\\n\u2022 Tap one or two target creatures."
+   },
+   {
+    "name": "Bewitching Leechcraft",
+    "oracle": "Enchant creature\\nWhen this Aura enters, tap enchanted creature.\\nEnchanted creature has \"If this creature would untap during your untap step, remove a +1/+1 counter from"
+   }
+  ],
+  "ChooseCard": [
+   {
+    "name": "Agitator Ant",
+    "oracle": "At the beginning of your end step, each player may put two +1/+1 counters on a creature they control. Goad each creature that had counters put on it this way. (Until your"
+   },
+   {
+    "name": "Ajani, Nacatl Avenger",
+    "oracle": "[+2]: Put a +1/+1 counter on each Cat you control.\\n[0]: Create a 2/1 white Cat Warrior creature token. When you do, if you control a red permanent other than Ajani, Naca"
+   },
+   {
+    "name": "Ajani's Aid",
+    "oracle": "When Ajani's Aid enters, you may search your library and/or graveyard for a card named Ajani, Valiant Protector, reveal it, and put it into your hand. If you search your "
+   }
+  ],
+  "Goad": [
+   {
+    "name": "Agitator Ant",
+    "oracle": "At the beginning of your end step, each player may put two +1/+1 counters on a creature they control. Goad each creature that had counters put on it this way. (Until your"
+   },
+   {
+    "name": "Alela, Cunning Conqueror",
+    "oracle": "Flying\\nWhenever you cast your first spell during each opponent's turn, create a 1/1 black Faerie Rogue creature token with flying.\\nWhenever one or more Faeries you cont"
+   },
+   {
+    "name": "Besmirch",
+    "oracle": "Until end of turn, gain control of target creature and it gains haste. Untap and goad that creature. (Until your next turn, that creature attacks each combat if able and "
+   }
+  ],
+  "RevealHand": [
+   {
+    "name": "Agonizing Remorse",
+    "oracle": "Target opponent reveals their hand. You choose a nonland card from it or a card from their graveyard. Exile that card. You lose 1 life."
+   },
+   {
+    "name": "Alhammarret, High Arbiter",
+    "oracle": "Flying\\nAs Alhammarret, High Arbiter enters, each opponent reveals their hand. You choose the name of a nonland card revealed this way.\\nYour opponents can't cast spells "
+   },
+   {
+    "name": "Anointed Peacekeeper",
+    "oracle": "Vigilance\\nAs Anointed Peacekeeper enters, look at an opponent's hand, then choose any card name.\\nSpells your opponents cast with the chosen name cost {2} more to cast.\\"
+   }
+  ],
+  "AlterAttribute": [
+   {
+    "name": "Agrus Kos, Spirit of Justice",
+    "oracle": "Double strike, vigilance\\nWhenever Agrus Kos, Spirit of Justice enters or attacks, choose up to one target creature. If it's suspected, exile it. Otherwise, suspect it. ("
+   },
+   {
+    "name": "Aven Interrupter",
+    "oracle": "Flash\\nFlying\\nWhen Aven Interrupter enters, exile target spell. It becomes plotted. (Its owner may cast it as a sorcery on a later turn without paying its mana cost.)\\nS"
+   },
+   {
+    "name": "Case of the Crimson Pulse",
+    "oracle": "When this Case enters, discard a card, then draw two cards.\\nTo solve \u2014 You have no cards in hand. (If unsolved, solve at the beginning of your end step.)\\nSolved \u2014 At th"
+   }
+  ],
+  "ChangeZoneAll": [
+   {
+    "name": "Ajani, Strength of the Pride",
+    "oracle": "[+1]: You gain life equal to the number of creatures you control plus the number of planeswalkers you control.\\n[-2]: Create a 2/2 white Cat Soldier creature token named "
+   },
+   {
+    "name": "Apple of Eden, Isu Relic",
+    "oracle": "{T}, Pay 4 life, Sacrifice Apple of Eden: Look at target opponent's hand and exile those cards face down. You may play those cards this turn, and mana of any type can be "
+   },
+   {
+    "name": "Archangel's Light",
+    "oracle": "You gain 2 life for each card in your graveyard, then shuffle your graveyard into your library."
+   }
+  ],
+  "ProtectionAll": [
+   {
+    "name": "Akroma's Blessing",
+    "oracle": "Choose a color. Creatures you control gain protection from the chosen color until end of turn.\\nCycling {W} ({W}, Discard this card: Draw a card.)"
+   },
+   {
+    "name": "Faith's Shield",
+    "oracle": "Target permanent you control gains protection from the color of your choice until end of turn.\\nFateful hour \u2014 If you have 5 or less life, instead you and each permanent "
+   },
+   {
+    "name": "Glory",
+    "oracle": "Flying\\n{2}{W}: Choose a color. Creatures you control gain protection from the chosen color until end of turn. Activate only if Glory is in your graveyard."
+   }
+  ],
+  "Play": [
+   {
+    "name": "Alaundo the Seer",
+    "oracle": "{T}:Draw a card, then exile a card from your hand and put a number of time counters on it equal to its mana value. It gains \"When the last time counter is removed from th"
+   },
+   {
+    "name": "Amped Raptor",
+    "oracle": "First strike\\nWhen Amped Raptor enters, you get {E}{E} (two energy counters). Then if you cast it from your hand, exile cards from the top of your library until you exile"
+   },
+   {
+    "name": "Arcane Bombardment",
+    "oracle": "Whenever you cast your first instant or sorcery spell each turn, exile an instant or sorcery card at random from your graveyard. Then copy each card exiled with Arcane Bo"
+   }
+  ],
+  "LosesGame": [
+   {
+    "name": "Alchemist's Gambit",
+    "oracle": "Cleave {4}{U}{U}{R} (You may cast this spell for its cleave cost. If you do, remove the words in square brackets.)\\nTake an extra turn after this one. During that turn, d"
+   },
+   {
+    "name": "Amulet of Quoz",
+    "oracle": "Remove Amulet of Quoz from your deck before playing if you're not playing for ante.\\n{T}, Sacrifice Amulet of Quoz: Target opponent may ante the top card of their library"
+   },
+   {
+    "name": "Angel of Destiny",
+    "oracle": "Flying, double strike\\nWhenever a creature you control deals combat damage to a player, you and that player each gain that much life.\\nAt the beginning of your end step, "
+   }
+  ],
+  "Mana": [
+   {
+    "name": "Alena, Kessig Trapper",
+    "oracle": "First strike\\n{T}: Add an amount of {R} equal to the greatest power among creatures you control that entered this turn.\\nPartner (You can have two commanders if both have"
+   },
+   {
+    "name": "Apex of Power",
+    "oracle": "Exile the top seven cards of your library. Until end of turn, you may cast spells from among them.\\nIf this spell was cast from your hand, add ten mana of any one color."
+   },
+   {
+    "name": "Avatar Roku, Firebender",
+    "oracle": "Whenever a player attacks, add six {R}. Until end of combat, you don't lose this mana as steps end.\\n{R}{R}{R}: Target creature gets +3/+0 until end of turn."
+   }
+  ],
+  "AddPhase": [
+   {
+    "name": "All-Out Assault",
+    "oracle": "Creatures you control get +1/+1 and have deathtouch.\\nWhen this enchantment enters, if it's your main phase, there is an additional combat phase after this phase followed"
+   },
+   {
+    "name": "Aurelia, the Warleader",
+    "oracle": "Flying, vigilance, haste\\nWhenever Aurelia, the Warleader attacks for the first time each turn, untap all creatures you control. After this phase, there is an additional "
+   },
+   {
+    "name": "Balthier and Fran",
+    "oracle": "Reach\\nVehicles you control get +1/+1 and have vigilance and reach.\\nWhenever a Vehicle crewed by Balthier and Fran this turn attacks, if it's the first combat phase of t"
+   }
+  ],
+  "UntapAll": [
+   {
+    "name": "All-Out Assault",
+    "oracle": "Creatures you control get +1/+1 and have deathtouch.\\nWhen this enchantment enters, if it's your main phase, there is an additional combat phase after this phase followed"
+   },
+   {
+    "name": "Essence of Antiquity",
+    "oracle": "Disguise {2}{W} (You may cast this card face down for {3} as a 2/2 creature with ward {2}. Turn it face up any time for its disguise cost.)\\nWhen Essence of Antiquity is "
+   },
+   {
+    "name": "Estrid, the Masked",
+    "oracle": "[+2]: Untap each enchanted permanent you control.\\n[-1]: Create a white Aura enchantment token named Mask attached to another target permanent. The token has enchant perm"
+   }
+  ],
+  "Discover": [
+   {
+    "name": "Aloy, Savior of Meridian",
+    "oracle": "Vigilance, reach\\nIn You, All Things Are Possible \u2014 Whenever one or more artifact creatures you control attack, discover X, where X is the greatest power among them. (Exi"
+   },
+   {
+    "name": "Caparocti Sunborn",
+    "oracle": "Whenever Caparocti Sunborn attacks, you may tap two untapped artifacts and/or creatures you control. If you do, discover 3. (Exile cards from the top of your library unti"
+   },
+   {
+    "name": "Chimil, the Inner Sun",
+    "oracle": "Spells you control can't be countered.\\nAt the beginning of your end step, discover 5. (Exile cards from the top of your library until you exile a nonland card with mana "
+   }
+  ],
+  "DamageAll": [
+   {
+    "name": "Alpha Brawl",
+    "oracle": "Target creature an opponent controls deals damage equal to its power to each other creature that player controls, then each of those creatures deals damage equal to its p"
+   },
+   {
+    "name": "Angrath, Minotaur Pirate",
+    "oracle": "[+2]: Angrath, Minotaur Pirate deals 1 damage to target opponent or planeswalker and each creature that player or that planeswalker's controller controls.\\n[-3]: Return t"
+   },
+   {
+    "name": "Bloodfire Infusion",
+    "oracle": "Enchant creature you control\\n{R}, Sacrifice enchanted creature: Bloodfire Infusion deals damage equal to the sacrificed creature's power to each creature."
+   }
+  ],
+  "EachDamage": [
+   {
+    "name": "Alpha Brawl",
+    "oracle": "Target creature an opponent controls deals damage equal to its power to each other creature that player controls, then each of those creatures deals damage equal to its p"
+   },
+   {
+    "name": "Band Together",
+    "oracle": "Up to two target creatures you control each deal damage equal to their power to another target creature."
+   },
+   {
+    "name": "Case of the Gateway Express",
+    "oracle": "When this Case enters, choose target creature you don't control. Each creature you control deals 1 damage to that creature.\\nTo solve \u2014 Three or more creatures attacked t"
+   }
+  ],
+  "CopyPermanent": [
+   {
+    "name": "Alta\u00efr Ibn-La'Ahad",
+    "oracle": "First strike\\nWhenever Alta\u00efr Ibn-La'Ahad attacks, exile up to one target Assassin creature card from your graveyard with a memory counter on it. Then for each creature c"
+   },
+   {
+    "name": "Arboreal Alliance",
+    "oracle": "When Arboreal Alliance enters, create an X/X green Treefolk creature token.\\nWhenever you attack with one or more Elves, populate. (Create a token that's a copy of a crea"
+   },
+   {
+    "name": "Ashling's Command",
+    "oracle": "Choose two \u2014\\n\u2022 Create a token that's a copy of target Elemental you control.\\n\u2022 Target player draws two cards.\\n\u2022 Ashling's Command deals 2 damage to each creature targe"
+   }
+  ],
+  "Endure": [
+   {
+    "name": "Amber-Plate Ainok",
+    "oracle": "Double team\\nAt the beginning of your second main phase, if this creature is tapped, it endures 1."
+   },
+   {
+    "name": "Dusyut Earthcarver",
+    "oracle": "Reach\\nWhen this creature enters, it endures 3. (Put three +1/+1 counters on it or create a 3/3 white Spirit creature token.)"
+   },
+   {
+    "name": "Fortress Kin-Guard",
+    "oracle": "When this creature enters, it endures 1. (Put a +1/+1 counter on it or create a 1/1 white Spirit creature token.)"
+   }
+  ],
+  "ChooseDirection": [
+   {
+    "name": "Aminatou, the Fateshifter",
+    "oracle": "[+1]: Draw a card, then put a card from your hand on top of your library.\\n[-1]: Exile another target permanent you own, then return it to the battlefield under your cont"
+   },
+   {
+    "name": "Order of Succession",
+    "oracle": "Choose left or right. Starting with you and proceeding in the chosen direction, each player chooses a creature controlled by the next player in that direction. Each playe"
+   },
+   {
+    "name": "Teyo, Geometric Tactician",
+    "oracle": "When Teyo, Geometric Tactician enters, create a 0/4 white Wall creature token with defender and flying.\\n[+1]: You and target opponent each draw a card.\\n[-2]: Choose lef"
+   }
+  ],
+  "GainControlVariant": [
+   {
+    "name": "Aminatou, the Fateshifter",
+    "oracle": "[+1]: Draw a card, then put a card from your hand on top of your library.\\n[-1]: Exile another target permanent you own, then return it to the battlefield under your cont"
+   },
+   {
+    "name": "Herald of Leshrac",
+    "oracle": "Flying\\nCumulative upkeep\u2014Gain control of a land you don't control. (At the beginning of your upkeep, put an age counter on this permanent, then sacrifice it unless you p"
+   },
+   {
+    "name": "Homeward Path",
+    "oracle": "{T}: Add {C}.\\n{T}: Each player gains control of all creatures they own."
+   }
+  ],
+  "RemoveCounter": [
+   {
+    "name": "Ammit Eternal",
+    "oracle": "Afflict 3 (Whenever this creature becomes blocked, defending player loses 3 life.)\\nWhenever an opponent casts a spell, put a -1/-1 counter on Ammit Eternal.\\nWhenever Am"
+   },
+   {
+    "name": "Amy Pond",
+    "oracle": "Partner with Rory Williams (When this creature enters, target player may put Rory into their hand from their library, then shuffle.)\\nWhenever Amy Pond deals combat damag"
+   },
+   {
+    "name": "Archfiend of the Dross",
+    "oracle": "Flying\\nArchfiend of the Dross enters with four oil counters on it.\\nAt the beginning of your upkeep, remove an oil counter from Archfiend of the Dross. Then if it has no"
+   }
+  ],
+  "DigUntil": [
+   {
+    "name": "Amped Raptor",
+    "oracle": "First strike\\nWhen Amped Raptor enters, you get {E}{E} (two energy counters). Then if you cast it from your hand, exile cards from the top of your library until you exile"
+   },
+   {
+    "name": "Amplifire",
+    "oracle": "At the beginning of your upkeep, reveal cards from the top of your library until you reveal a creature card. Until your next turn, Amplifire's base power becomes twice th"
+   },
+   {
+    "name": "An Unearthly Child",
+    "oracle": "I, II, III \u2014 Reveal cards from the top of your library until you reveal a Doctor card, a card with doctor's companion, or a Vehicle card. Put that card into your hand and"
+   }
+  ],
+  "Dig": [
+   {
+    "name": "Amulet of Quoz",
+    "oracle": "Remove Amulet of Quoz from your deck before playing if you're not playing for ante.\\n{T}, Sacrifice Amulet of Quoz: Target opponent may ante the top card of their library"
+   },
+   {
+    "name": "Archaic's Agony",
+    "oracle": "Converge \u2014 Archaic's Agony deals X damage to target creature, where X is the number of colors of mana spent to cast this spell. Exile cards from the top of your library e"
+   },
+   {
+    "name": "Become Anonymous",
+    "oracle": "Exile target nontoken creature you own and the top two cards of your library in a face-down pile, shuffle that pile, then cloak those cards. They enter tapped. (To cloak "
+   }
+  ],
+  "FlipCoin": [
+   {
+    "name": "Amulet of Quoz",
+    "oracle": "Remove Amulet of Quoz from your deck before playing if you're not playing for ante.\\n{T}, Sacrifice Amulet of Quoz: Target opponent may ante the top card of their library"
+   },
+   {
+    "name": "Breeches, the Blastmaker",
+    "oracle": "Menace\\nWhenever you cast your second spell each turn, you may sacrifice an artifact. If you do, flip a coin. When you win the flip, copy that spell. You may choose new t"
+   },
+   {
+    "name": "Crazed Firecat",
+    "oracle": "When Crazed Firecat enters, flip a coin until you lose a flip. Put a +1/+1 counter on Crazed Firecat for each flip you won."
+   }
+  ],
+  "DayTime": [
+   {
+    "name": "Angel of Eternal Dawn",
+    "oracle": "Flying\\nWhen Angel of Eternal Dawn enters, it becomes day.\\nIt can't become night.\\nYour opponents can't cast spells with mana value greater than the number of turns they"
+   },
+   {
+    "name": "Brimstone Vandal",
+    "oracle": "Menace (This creature can't be blocked except by two or more creatures.)\\nIf it's neither day nor night, it becomes day as Brimstone Vandal enters.\\nWhenever day becomes "
+   },
+   {
+    "name": "Celestus Sanctifier",
+    "oracle": "If it's neither day nor night, it becomes day as Celestus Sanctifier enters.\\nWhenever day becomes night or night becomes day, look at the top two cards of your library. "
+   }
+  ],
+  "Mill": [
+   {
+    "name": "Angel of Suffering",
+    "oracle": "Flying\\nIf damage would be dealt to you, prevent that damage and mill twice that many cards."
+   },
+   {
+    "name": "Archive Trap",
+    "oracle": "If an opponent searched their library this turn, you may pay {0} rather than pay this spell's mana cost.\\nTarget opponent mills thirteen cards."
+   },
+   {
+    "name": "Cut Your Losses",
+    "oracle": "Casualty 2 (As you cast this spell, you may sacrifice a creature with power 2 or greater. When you do, copy this spell and you may choose new targets for the copy.)\\nTarg"
+   }
+  ],
+  "Protection": [
+   {
+    "name": "Angelic Intervention",
+    "oracle": "Target creature or planeswalker you control gains protection from colorless or from the color of your choice until end of turn. If it's a creature, put a +1/+1 counter on"
+   },
+   {
+    "name": "Apostle's Blessing",
+    "oracle": "({W/P} can be paid with either {W} or 2 life.)\\nTarget artifact or creature you control gains protection from artifacts or from the color of your choice until end of turn"
+   },
+   {
+    "name": "Aven Liberator",
+    "oracle": "Flying\\nMorph {3}{W} (You may cast this card face down as a 2/2 creature for {3}. Turn it face up any time for its morph cost.)\\nWhen Aven Liberator is turned face up, ta"
+   }
+  ],
+  "Fog": [
+   {
+    "name": "Angelsong",
+    "oracle": "Prevent all combat damage that would be dealt this turn.\\nCycling {2} ({2}, Discard this card: Draw a card.)"
+   },
+   {
+    "name": "Blunt the Assault",
+    "oracle": "You gain 1 life for each creature on the battlefield. Prevent all combat damage that would be dealt this turn."
+   },
+   {
+    "name": "Clinging Mists",
+    "oracle": "Prevent all combat damage that would be dealt this turn.\\nFateful hour \u2014 If you have 5 or less life, tap all attacking creatures. Those creatures don't untap during their"
+   }
+  ],
+  "DamageResolve": [
+   {
+    "name": "Angrath, Minotaur Pirate",
+    "oracle": "[+2]: Angrath, Minotaur Pirate deals 1 damage to target opponent or planeswalker and each creature that player or that planeswalker's controller controls.\\n[-3]: Return t"
+   },
+   {
+    "name": "Assembled Alphas",
+    "oracle": "Whenever Assembled Alphas blocks or becomes blocked by a creature, Assembled Alphas deals 3 damage to that creature and 3 damage to that creature's controller."
+   },
+   {
+    "name": "Bonfire of the Damned",
+    "oracle": "Bonfire of the Damned deals X damage to target player or planeswalker and each creature that player or that planeswalker's controller controls.\\nMiracle {X}{R} (You may c"
+   }
+  ],
+  "WinsGame": [
+   {
+    "name": "Approach of the Second Sun",
+    "oracle": "If this spell was cast from your hand and you've cast another spell named Approach of the Second Sun this game, you win the game. Otherwise, put Approach of the Second Su"
+   },
+   {
+    "name": "Call the Spirit Dragons",
+    "oracle": "Dragons you control have indestructible.\\nAt the beginning of your upkeep, for each color, put a +1/+1 counter on a Dragon you control of that color. If you put +1/+1 cou"
+   },
+   {
+    "name": "Celestial Convergence",
+    "oracle": "Celestial Convergence enters with seven omen counters on it.\\nAt the beginning of your upkeep, remove an omen counter from Celestial Convergence. If there are no omen cou"
+   }
+  ],
+  "PermanentCreature": [
+   {
+    "name": "Arbiter of Woe",
+    "oracle": "As an additional cost to cast this spell, sacrifice a creature.\\nFlying\\nWhen this creature enters, each opponent discards a card and loses 2 life. You draw a card and ga"
+   },
+   {
+    "name": "Fear of Abduction",
+    "oracle": "As an additional cost to cast this spell, exile a creature you control.\\nFlying\\nWhen Fear of Abduction enters, exile target creature an opponent controls.\\nWhen Fear of "
+   },
+   {
+    "name": "Fear of Exposure",
+    "oracle": "As an additional cost to cast this spell, tap two untapped creatures and/or lands you control.\\nTrample"
+   }
+  ],
+  "Reveal": [
+   {
+    "name": "Arcane Savant",
+    "oracle": "Before you shuffle your deck to start the game, you may reveal this card from your deck and exile an instant or sorcery card you drafted that isn't in your deck.\\nWhen Ar"
+   },
+   {
+    "name": "Arsenal Thresher",
+    "oracle": "As Arsenal Thresher enters, you may reveal any number of other artifact cards from your hand. Arsenal Thresher enters with a +1/+1 counter on it for each card revealed th"
+   },
+   {
+    "name": "Boareskyr Tollkeeper",
+    "oracle": "When Boareskyr Tollkeeper enters, target opponent reveals all creature and land cards in their hand. Choose one of them. That card perpetually gains \"This permanent enter"
+   }
+  ],
+  "SetState": [
+   {
+    "name": "Arcee, Sharpshooter",
+    "oracle": "More Than Meets the Eye {R}{W} (You may cast this card converted for {R}{W}.)\\nFirst strike\\n{1}, Remove one or more +1/+1 counters from Arcee: It deals that much damage "
+   },
+   {
+    "name": "Backslide",
+    "oracle": "Turn target creature with a morph ability face down.\\nCycling {U} ({U}, Discard this card: Draw a card.)"
+   },
+   {
+    "name": "Blaster, Combat DJ",
+    "oracle": "More Than Meets the Eye {1}{R}{G} (You may cast this card converted for {1}{R}{G}.)\\nOther nontoken artifact creatures and Vehicles you control have modular 1. (They ente"
+   }
+  ],
+  "Shuffle": [
+   {
+    "name": "Archdruid's Charm",
+    "oracle": "Choose one \u2014\\n\u2022 Search your library for a creature or land card and reveal it. Put it onto the battlefield tapped if it's a land card. Otherwise, put it into your hand. T"
+   },
+   {
+    "name": "Celestial Reunion",
+    "oracle": "As an additional cost to cast this spell, you may choose a creature type and behold two creatures of that type.\\nSearch your library for a creature card with mana value X"
+   },
+   {
+    "name": "Grim Reminder",
+    "oracle": "Search your library for a nonland card and reveal it. Each opponent who cast a spell this turn with the same name as that card loses 6 life. Then shuffle.\\n{B}{B}: Return"
+   }
+  ],
+  "Detain": [
+   {
+    "name": "Archon of the Triumvirate",
+    "oracle": "Flying\\nWhenever Archon of the Triumvirate attacks, detain up to two target nonland permanents your opponents control. (Until your next turn, those permanents can't attac"
+   },
+   {
+    "name": "Azorius Arrester",
+    "oracle": "When Azorius Arrester enters, detain target creature an opponent controls. (Until your next turn, that creature can't attack or block and its activated abilities can't be"
+   },
+   {
+    "name": "Azorius Justiciar",
+    "oracle": "When Azorius Justiciar enters, detain up to two target creatures your opponents control. (Until your next turn, those creatures can't attack or block and their activated "
+   }
+  ],
+  "Intensify": [
+   {
+    "name": "Arek, False Goldwarden",
+    "oracle": "Starting intensity 0\\nWhenever another creature you control enters, perpetually increase the intensity of Arek and all cards named Arek, False Goldwarden in your graveyar"
+   },
+   {
+    "name": "Awestruck Cygnet",
+    "oracle": "Starting intensity 0\\nWhenever another creature you control with flying enters, if this creature is named Awestruck Cygnet, cards you own named Awestruck Cygnet intensify"
+   },
+   {
+    "name": "Chittering Skullspeaker",
+    "oracle": "Starting intensity 0\\nWhen Chittering Skullspeaker enters, cards you own named Chittering Skullspeaker intensify by 1. Then you draw X cards and lose X life, where X is C"
+   }
+  ],
+  "ChangeText": [
+   {
+    "name": "Artificial Evolution",
+    "oracle": "Change the text of target spell or permanent by replacing all instances of one creature type with another. The new creature type can't be Wall. (This effect lasts indefin"
+   },
+   {
+    "name": "Crystal Spray",
+    "oracle": "Change the text of target spell or permanent by replacing all instances of one color word with another or one basic land type with another until end of turn.\\nDraw a card"
+   },
+   {
+    "name": "Glamerdye",
+    "oracle": "Change the text of target spell or permanent by replacing all instances of one color word with another.\\nRetrace (You may cast this card from your graveyard by discarding"
+   }
+  ],
+  "ChooseEvenOdd": [
+   {
+    "name": "Ashling's Prerogative",
+    "oracle": "As Ashling's Prerogative enters, choose odd or even. (Zero is even.)\\nEach creature with mana value of the chosen quality has haste.\\nEach creature without mana value of "
+   },
+   {
+    "name": "Mutinous Massacre",
+    "oracle": "Choose odd or even. Destroy each creature with mana value of the chosen quality. Then gain control of all creatures until end of turn. Untap them. They gain haste until e"
+   },
+   {
+    "name": "Thanos, the Mad Titan",
+    "oracle": "Deathtouch, lifelink\\nPower-up \u2014 {C}{W}{U}{B}{R}{G}: Put two +1/+1 counters on Thanos. Choose odd or even. Destroy each other creature with mana value of the chosen quali"
+   }
+  ],
+  "PeekAndReveal": [
+   {
+    "name": "Atraxa, Grand Unifier",
+    "oracle": "Flying, vigilance, deathtouch, lifelink\\nWhen Atraxa, Grand Unifier enters, reveal the top ten cards of your library. For each card type, you may put a card of that type "
+   },
+   {
+    "name": "Birthing Ritual",
+    "oracle": "At the beginning of your end step, if you control a creature, look at the top seven cards of your library. Then you may sacrifice a creature. If you do, you may put a cre"
+   },
+   {
+    "name": "Brutal Deceiver",
+    "oracle": "{1}: Look at the top card of your library.\\n{2}: Reveal the top card of your library. If it's a land card, Brutal Deceiver gets +1/+0 and gains first strike until end of "
+   }
+  ],
+  "TapAll": [
+   {
+    "name": "Aurelia's Fury",
+    "oracle": "Aurelia's Fury deals X damage divided as you choose among any number of targets. Tap each creature dealt damage this way. Players dealt damage this way can't cast noncrea"
+   },
+   {
+    "name": "Dread Wight",
+    "oracle": "At end of combat, put a paralyzation counter on each creature blocking or blocked by Dread Wight and tap those creatures. Each of those creatures doesn't untap during its"
+   },
+   {
+    "name": "Pathway Arrows",
+    "oracle": "Equipped creature has \"{2}, {T}: This creature deals 1 damage to target creature. If a colorless creature is dealt damage this way, tap it.\"\\nEquip {2}"
+   }
+  ],
+  "ChooseColor": [
+   {
+    "name": "Avacyn, Guardian Angel",
+    "oracle": "Flying, vigilance\\n{1}{W}: Prevent all damage that would be dealt to another target creature this turn by sources of the color of your choice.\\n{5}{W}{W}: Prevent all dam"
+   },
+   {
+    "name": "Foraging Wickermaw",
+    "oracle": "When this creature enters, surveil 1. (Look at the top card of your library. You may put it into your graveyard.)\\n{1}: Add one mana of any color. This creature becomes t"
+   },
+   {
+    "name": "Govern the Guildless",
+    "oracle": "Gain control of target monocolored creature.\\nForecast \u2014 {1}{U}, Reveal Govern the Guildless from your hand: Target creature becomes the color or colors of your choice un"
+   }
+  ],
+  "MustBlock": [
+   {
+    "name": "Avalanche Tusker",
+    "oracle": "Whenever Avalanche Tusker attacks, target creature defending player controls blocks it this combat if able."
+   },
+   {
+    "name": "Blaze of Glory",
+    "oracle": "Cast this spell only during combat before blockers are declared.\\nTarget creature defending player controls can block any number of creatures this turn. It blocks each at"
+   },
+   {
+    "name": "Burning-Tree Bloodscale",
+    "oracle": "Bloodthirst 1 (If an opponent was dealt damage this turn, this creature enters with a +1/+1 counter on it.)\\n{2}{R}: Target creature can't block Burning-Tree Bloodscale t"
+   }
+  ],
+  "ExchangeControl": [
+   {
+    "name": "Avarice Totem",
+    "oracle": "{5}: Exchange control of Avarice Totem and target nonland permanent."
+   },
+   {
+    "name": "Cliffside Market",
+    "oracle": "When you planeswalk to Cliffside Market or at the beginning of your upkeep, you may exchange life totals with target player.\\nWhenever chaos ensues, exchange control of t"
+   },
+   {
+    "name": "Confusion in the Ranks",
+    "oracle": "Whenever an artifact, creature, or enchantment enters, its controller chooses target permanent another player controls that shares a card type with it. Exchange control o"
+   }
+  ],
+  "LookAt": [
+   {
+    "name": "Aven Soulgazer",
+    "oracle": "Flying\\n{2}{W}: Look at target face-down creature."
+   }
+  ],
+  "TakeInitiative": [
+   {
+    "name": "Avenging Hunter",
+    "oracle": "Trample\\nWhen Avenging Hunter enters, you take the initiative."
+   },
+   {
+    "name": "Bloodboil Sorcerer",
+    "oracle": "Whenever Bloodboil Sorcerer enters, you take the initiative.\\nCrown of Madness \u2014 {1}{R}, Sacrifice an artifact or creature: Goad target creature. (Until your next turn, t"
+   },
+   {
+    "name": "Explore the Underdark",
+    "oracle": "Search your library for up to two basic land cards and/or Gate cards, put them onto the battlefield tapped, then shuffle.\\nYou take the initiative."
+   }
+  ],
+  "RemoveFromGame": [
+   {
+    "name": "AWOL",
+    "oracle": "Exile target attacking creature. Then remove it from the game. Then put it into the absolutely-removed-from-the-freaking-game-forever zone."
+   }
+  ],
+  "Heist": [
+   {
+    "name": "Axavar, Fate Thief",
+    "oracle": "Void \u2014 At the beginning of your end step, if a nonland permanent left the battlefield this turn or a spell was warped this turn, discard a card, then heist target opponen"
+   },
+   {
+    "name": "Grave Expectations",
+    "oracle": "Choose one \u2014\\n\u2022 Heist target opponent's library.\\n\u2022 Exile up to three target cards from your opponents' graveyards. You gain 3 life."
+   },
+   {
+    "name": "Polterheist",
+    "oracle": "Ward\u2014Pay 3 life.\\nWhenever Polterheist attacks, heist target opponent's library."
+   }
+  ],
+  "Counter": [
+   {
+    "name": "Azorius Guildmage",
+    "oracle": "{2}{W}: Tap target creature.\\n{2}{U}: Counter target activated ability. (Mana abilities can't be targeted.)"
+   },
+   {
+    "name": "Brain Gorgers",
+    "oracle": "When you cast this spell, any player may sacrifice a creature. If a player does, counter Brain Gorgers.\\nMadness {1}{B} (If you discard this card, discard it into exile. "
+   },
+   {
+    "name": "Consign to Memory",
+    "oracle": "Replicate {1} (When you cast this spell, copy it for each time you paid its replicate cost. You may choose new targets for the copies.)\\nCounter target triggered ability "
+   }
+  ],
+  "Planeswalk": [
+   {
+    "name": "Bad Wolf Bay",
+    "oracle": "At the beginning of combat on your turn, exile up to one target creature. Return it to the battlefield under its owner's control at the beginning of the next end step.\\nW"
+   },
+   {
+    "name": "Fixed Point in Time",
+    "oracle": "When you encounter Fixed Point in Time, until your next turn, if a player would planeswalk as a result of rolling the planar die, chaos ensues instead. (Then planeswalk a"
+   },
+   {
+    "name": "Interplanar Tunnel",
+    "oracle": "When you encounter Interplanar Tunnel, reveal cards from the top of your planar deck until you reveal five plane cards. Put a plane card from among them on top of your pl"
+   }
+  ],
+  "Balance": [
+   {
+    "name": "Balance",
+    "oracle": "Each player chooses a number of lands they control equal to the number of lands controlled by the player who controls the fewest, then sacrifices the rest. Players discar"
+   },
+   {
+    "name": "Balancing Act",
+    "oracle": "Each player chooses a number of permanents they control equal to the number of permanents controlled by the player who controls the fewest, then sacrifices the rest. Each"
+   }
+  ],
+  "Venture": [
+   {
+    "name": "Bar the Gate",
+    "oracle": "Counter target creature or planeswalker spell. Venture into the dungeon. (Enter the first room or advance to the next room.)"
+   },
+   {
+    "name": "Barrowin of Clan Undurr",
+    "oracle": "When Barrowin of Clan Undurr enters, venture into the dungeon. (Enter the first room or advance to the next room.)\\nWhenever Barrowin of Clan Undurr attacks, return up to"
+   },
+   {
+    "name": "Clattering Skeletons",
+    "oracle": "When Clattering Skeletons dies, venture into the dungeon. (Enter the first room or advance to the next room.)"
+   }
+  ],
+  "Connive": [
+   {
+    "name": "Baron Helmut Zemo",
+    "oracle": "Whenever you cast a black spell from your hand, Baron Helmut Zemo connives.\\nBoast \u2014 Exile any number of black cards from your graveyard with fifteen or more black mana s"
+   },
+   {
+    "name": "Change of Plans",
+    "oracle": "Each of X target creatures you control connive. You may have any number of them phase out. (To have a creature connive, draw a card, then discard a card. If you discarded"
+   },
+   {
+    "name": "Copycrook",
+    "oracle": "You may have Copycrook enter as a copy of any creature on the battlefield, except it has \"Whenever this creature attacks, it connives.\" (Draw a card, then discard a card."
+   }
+  ],
+  "ReplaceDamage": [
+   {
+    "name": "Battletide Alchemist",
+    "oracle": "If a source would deal damage to a player, you may prevent X of that damage, where X is the number of Clerics you control."
+   },
+   {
+    "name": "Cover of Winter",
+    "oracle": "Cumulative upkeep {S} (At the beginning of your upkeep, put an age counter on this permanent, then sacrifice it unless you pay its upkeep cost for each age counter on it."
+   },
+   {
+    "name": "Dark Sphere",
+    "oracle": "{T}, Sacrifice Dark Sphere: The next time a source of your choice would deal damage to you this turn, prevent half that damage, rounded down."
+   }
+  ],
+  "SetLife": [
+   {
+    "name": "Beacon of Immortality",
+    "oracle": "Double target player's life total. Shuffle Beacon of Immortality into its owner's library."
+   },
+   {
+    "name": "Celestial Mantle",
+    "oracle": "Enchant creature\\nEnchanted creature gets +3/+3.\\nWhenever enchanted creature deals combat damage to a player, double its controller's life total."
+   },
+   {
+    "name": "Loxodon Lifechanter",
+    "oracle": "When Loxodon Lifechanter enters, you may have your life total become the total toughness of creatures you control.\\n{5}{W}: Loxodon Lifechanter gets +X/+X until end of tu"
+   }
+  ],
+  "Cloak": [
+   {
+    "name": "Become Anonymous",
+    "oracle": "Exile target nontoken creature you own and the top two cards of your library in a face-down pile, shuffle that pile, then cloak those cards. They enter tapped. (To cloak "
+   },
+   {
+    "name": "Roalesk, Prime Specimen",
+    "oracle": "Flying\\nWhenever Roalesk, Prime Specimen or another permanent you control is turned face up, you may pay {X}. If you do, if X is 1 or more, conjure a duplicate of a rando"
+   },
+   {
+    "name": "Sleuth Instructor",
+    "oracle": "Disguise {1}{W}\\nWhenever Sleuth Instructor or another permanent you control is turned face up, seek a non-Elephant creature card with mana value 3 or less and cloak it. "
+   }
+  ],
+  "DigMultiple": [
+   {
+    "name": "Benefaction of Rhonas",
+    "oracle": "Reveal the top five cards of your library. You may put a creature card and/or an enchantment card from among them into your hand. Put the rest into your graveyard."
+   },
+   {
+    "name": "Gift of the Gargantuan",
+    "oracle": "Look at the top four cards of your library. You may reveal a creature card and/or a land card from among them and put the revealed cards into your hand. Put the rest on t"
+   },
+   {
+    "name": "Green Sun's Twilight",
+    "oracle": "Reveal the top X plus one cards of your library. Choose a creature card and/or a land card from among them. Put those cards into your hand and the rest on the bottom of y"
+   }
+  ],
+  "ManaReflected": [
+   {
+    "name": "Benthic Explorers",
+    "oracle": "{T}, Untap a tapped land an opponent controls: Add one mana of any type that land could produce."
+   },
+   {
+    "name": "Cactus Preserve",
+    "oracle": "Cactus Preserve enters tapped.\\n{T}: Add one mana of any type that a land you control could produce.\\n{3}: Until end of turn, Cactus Preserve becomes an X/X green Plant c"
+   },
+   {
+    "name": "Chrome Mox",
+    "oracle": "Imprint \u2014 When Chrome Mox enters, you may exile a nonartifact, nonland card from your hand.\\n{T}: Add one mana of any of the exiled card's colors."
+   }
+  ],
+  "RingTemptsYou": [
+   {
+    "name": "Bilbo, Retired Burglar",
+    "oracle": "When Bilbo, Retired Burglar enters or leaves the battlefield, the Ring tempts you.\\nWhenever Bilbo deals combat damage to a player, create a Treasure token."
+   },
+   {
+    "name": "Breaking of the Fellowship",
+    "oracle": "Target creature an opponent controls deals damage equal to its power to another target creature that player controls. The Ring tempts you."
+   },
+   {
+    "name": "D\u00fanedain Rangers",
+    "oracle": "Landfall \u2014 Whenever a land you control enters, if you don't control a Ring-bearer, the Ring tempts you."
+   }
+  ],
+  "RemoveFromCombat": [
+   {
+    "name": "Bill Ferny, Bree Swindler",
+    "oracle": "Whenever Bill Ferny, Bree Swindler becomes blocked, choose one \u2014\\n\u2022 Create a Treasure token. (It's an artifact with \"{T}, Sacrifice this token: Add one mana of any color."
+   },
+   {
+    "name": "Disharmony",
+    "oracle": "Cast this spell only during combat before blockers are declared.\\nUntap target attacking creature and remove it from combat. Gain control of that creature until end of tu"
+   },
+   {
+    "name": "Goblin Cadets",
+    "oracle": "Whenever Goblin Cadets blocks or becomes blocked, target opponent gains control of it. (This removes Goblin Cadets from combat.)"
+   }
+  ],
+  "RemoveFromMatch": [
+   {
+    "name": "Blacker Lotus",
+    "oracle": "{T}: Tear Blacker Lotus into pieces. Add four mana of any one color. Remove the pieces from the game."
+   },
+   {
+    "name": "Look at Me, I'm the DCI",
+    "oracle": "Ban a card other than a basic land card for the rest of the match. (All cards with that name in any zone or sideboard are removed from the match.)"
+   }
+  ],
+  "DestroyAll": [
+   {
+    "name": "Blast Zone",
+    "oracle": "Blast Zone enters with a charge counter on it.\\n{T}: Add {C}.\\n{X}{X}, {T}: Put X charge counters on Blast Zone.\\n{3}, {T}, Sacrifice Blast Zone: Destroy each nonland per"
+   },
+   {
+    "name": "Blow Your House Down",
+    "oracle": "Up to three target creatures can't block this turn. Destroy any of them that are Walls."
+   },
+   {
+    "name": "Call to the Void",
+    "oracle": "Each player secretly chooses a creature they control and a creature they don't control. Then those choices are revealed. Destroy each creature chosen this way."
+   }
+  ],
+  "Incubate": [
+   {
+    "name": "Blight Titan",
+    "oracle": "Deathtouch\\nWhenever Blight Titan enters or attacks, mill two cards, then incubate X, where X is the number of creature cards in your graveyard. (Create an Incubator toke"
+   },
+   {
+    "name": "Compleated Huntmaster",
+    "oracle": "{1}, {T}, Sacrifice another creature or artifact: Incubate 3. (Create an Incubator token with three +1/+1 counters on it and \"{2}: Transform this token.\" It transforms in"
+   },
+   {
+    "name": "Converter Beast",
+    "oracle": "When Converter Beast enters, incubate 5. (Create an Incubator token with five +1/+1 counters on it and \"{2}: Transform this token.\" It transforms into a 0/0 Phyrexian art"
+   }
+  ],
+  "Phases": [
+   {
+    "name": "Blink Dog",
+    "oracle": "Double strike\\nTeleport \u2014 {3}{W}: Blink Dog phases out. (Treat it and anything attached to it as though they don't exist until your next turn.)"
+   },
+   {
+    "name": "Change of Plans",
+    "oracle": "Each of X target creatures you control connive. You may have any number of them phase out. (To have a creature connive, draw a card, then discard a card. If you discarded"
+   },
+   {
+    "name": "Crystal Golem",
+    "oracle": "At the beginning of your end step, Crystal Golem phases out. (While it's phased out, it's treated as though it doesn't exist. It phases in before you untap during your ne"
+   }
+  ],
+  "Sacrifice": [
+   {
+    "name": "Blistering Firecat",
+    "oracle": "Trample, haste\\nAt the beginning of the end step, sacrifice Blistering Firecat.\\nMorph {R}{R} (You may cast this card face down as a 2/2 creature for {3}. Turn it face up"
+   },
+   {
+    "name": "Bog Serpent",
+    "oracle": "Bog Serpent can't attack unless defending player controls a Swamp.\\nWhen you control no Swamps, sacrifice Bog Serpent."
+   },
+   {
+    "name": "Breeding Pit",
+    "oracle": "At the beginning of your upkeep, sacrifice Breeding Pit unless you pay {B}{B}.\\nAt the beginning of your end step, create a 0/1 black Thrull creature token."
+   }
+  ],
+  "ChooseSource": [
+   {
+    "name": "Bone Mask",
+    "oracle": "{2}, {T}: The next time a source of your choice would deal damage to you this turn, prevent that damage. Exile cards from the top of your library equal to the damage prev"
+   },
+   {
+    "name": "Burrenton Forge-Tender",
+    "oracle": "Protection from red\\nSacrifice Burrenton Forge-Tender: Prevent all damage a red source of your choice would deal this turn."
+   },
+   {
+    "name": "Cho-Arrim Alchemist",
+    "oracle": "{1}{W}{W}, {T}, Discard a card: The next time a source of your choice would deal damage to you this turn, prevent that damage. You gain life equal to the damage prevented"
+   }
+  ],
+  "TwoPiles": [
+   {
+    "name": "Boneyard Parley",
+    "oracle": "Exile up to five target creature cards from graveyards. An opponent separates those cards into two piles. Put all cards from the pile of your choice onto the battlefield "
+   },
+   {
+    "name": "Curator of Destinies",
+    "oracle": "This spell can't be countered.\\nFlying\\nWhen this creature enters, look at the top five cards of your library and separate them into a face-down pile and a face-up pile. "
+   },
+   {
+    "name": "Death or Glory",
+    "oracle": "Separate all creature cards in your graveyard into two piles. Exile the pile of an opponent's choice and return the other to the battlefield."
+   }
+  ],
+  "TapOrUntap": [
+   {
+    "name": "Bounding Krasis",
+    "oracle": "Flash (You may cast this spell any time you could cast an instant.)\\nWhen Bounding Krasis enters, you may tap or untap target creature."
+   },
+   {
+    "name": "Coral Trickster",
+    "oracle": "Morph {U} (You may cast this card face down as a 2/2 creature for {3}. Turn it face up any time for its morph cost.)\\nWhen Coral Trickster is turned face up, you may tap "
+   },
+   {
+    "name": "Dee Kay, Finder of the Lost",
+    "oracle": "When Dee Kay, Finder of the Lost enters the battlefield, open an Attraction.\\nWhenever you roll a 2, each opponent loses 1 life and you gain 1 life.\\nWhenever you roll a "
+   }
+  ],
+  "Abandon": [
+   {
+    "name": "Bow to My Command",
+    "oracle": "(An ongoing scheme remains face up until it's abandoned.)\\nAs you set this scheme in motion, choose an opponent.\\nCreatures the chosen player controls can't attack you or"
+   },
+   {
+    "name": "My Champion Stands Supreme",
+    "oracle": "(An ongoing scheme remains face up until it's abandoned.)\\nYour commander has ward {2}.\\nWhenever your commander attacks, put two +1/+1 counters on it.\\nWhen your command"
+   },
+   {
+    "name": "My Laughter Echoes",
+    "oracle": "(An ongoing scheme remains face up until it's abandoned.)\\nWhenever you set a non-ongoing scheme in motion, you may abandon this scheme. If you do, set that scheme in mot"
+   }
+  ],
+  "PermanentNoncreature": [
+   {
+    "name": "Bridge from Below",
+    "oracle": "Whenever a nontoken creature is put into your graveyard from the battlefield, if Bridge from Below is in your graveyard, create a 2/2 black Zombie creature token.\\nWhen a"
+   }
+  ],
+  "SkipPhase": [
+   {
+    "name": "Brine Elemental",
+    "oracle": "Morph {5}{U}{U} (You may cast this card face down as a 2/2 creature for {3}. Turn it face up any time for its morph cost.)\\nWhen Brine Elemental is turned face up, each o"
+   },
+   {
+    "name": "Dovin, Architect of Law",
+    "oracle": "[+1]: You gain 2 life and draw a card.\\n[-1]: Tap target creature. It doesn't untap during its controller's next untap step.\\n[-9]: Tap all permanents target opponent con"
+   },
+   {
+    "name": "Elfhame Sanctuary",
+    "oracle": "At the beginning of your upkeep, you may search your library for a basic land card, reveal that card, put it into your hand, then shuffle. If you do, you skip your draw s"
+   }
+  ],
+  "LoseLife": [
+   {
+    "name": "Bronze Tablet",
+    "oracle": "Remove Bronze Tablet from your deck before playing if you're not playing for ante.\\nBronze Tablet enters tapped.\\n{4}, {T}: Exile Bronze Tablet and target nontoken perman"
+   },
+   {
+    "name": "Commander Mustard",
+    "oracle": "Vigilance\\nOther Soldiers you control have vigilance, trample, and haste.\\n{2}{R}{W}: Until end of turn, Soldiers you control gain \"Whenever this creature attacks, it dea"
+   }
+  ],
+  "GainOwnership": [
+   {
+    "name": "Bronze Tablet",
+    "oracle": "Remove Bronze Tablet from your deck before playing if you're not playing for ante.\\nBronze Tablet enters tapped.\\n{4}, {T}: Exile Bronze Tablet and target nontoken perman"
+   },
+   {
+    "name": "Timmerian Fiends",
+    "oracle": "Remove Timmerian Fiends from your deck before playing if you're not playing for ante.\\n{B}{B}{B}, Sacrifice Timmerian Fiends: The owner of target artifact may ante the to"
+   }
+  ],
+  "Scry": [
+   {
+    "name": "Bumi, King of Three Trials",
+    "oracle": "When Bumi enters, choose up to X, where X is the number of Lesson cards in your graveyard \u2014\\n\u2022 Put three +1/+1 counters on Bumi.\\n\u2022 Target player scries 3.\\n\u2022 Earthbend 3"
+   },
+   {
+    "name": "Gardens of Tranquil Repose",
+    "oracle": "Suspended Animation \u2014 Whenever a creature dies, exile it. Its controller scries 1.\\nWhenever chaos ensues, create X 3/3 black Dalek artifact creature tokens with menace, "
+   }
+  ],
+  "Camouflage": [
+   {
+    "name": "Camouflage",
+    "oracle": "Cast this spell only during your declare attackers step.\\nThis turn, instead of declaring blockers, each defending player chooses any number of creatures they control and"
+   }
+  ],
+  "Vote": [
+   {
+    "name": "Capital Punishment",
+    "oracle": "Council's dilemma \u2014 Starting with you, each player votes for death or taxes. Each opponent sacrifices a creature for each death vote and discards a card for each taxes vo"
+   },
+   {
+    "name": "Council Guardian",
+    "oracle": "Will of the council \u2014 When Council Guardian enters, starting with you, each player votes for blue, black, red, or green. Council Guardian gains protection from each color"
+   },
+   {
+    "name": "Council's Judgment",
+    "oracle": "Will of the council \u2014 Starting with you, each player votes for a nonland permanent you don't control. Exile each permanent with the most votes or tied for most votes."
+   }
+  ],
+  "ReplaceSplitDamage": [
+   {
+    "name": "Captain's Maneuver",
+    "oracle": "The next X damage that would be dealt to target creature, planeswalker, or player this turn is dealt to another target creature, planeswalker, or player instead."
+   },
+   {
+    "name": "Carom",
+    "oracle": "The next 1 damage that would be dealt to target creature this turn is dealt to another target creature instead.\\nDraw a card."
+   },
+   {
+    "name": "Daughter of Autumn",
+    "oracle": "{W}: The next 1 damage that would be dealt to target white creature this turn is dealt to Daughter of Autumn instead."
+   }
+  ],
+  "Poison": [
+   {
+    "name": "Caress of Phyrexia",
+    "oracle": "Target player draws three cards, loses 3 life, and gets three poison counters."
+   },
+   {
+    "name": "Decimator Web",
+    "oracle": "{4}, {T}: Target opponent loses 2 life, gets a poison counter, then mills six cards."
+   },
+   {
+    "name": "Etali, Primal Sickness",
+    "oracle": "Trample, indestructible\\nWhenever Etali deals combat damage to a player, they get that many poison counters. (A player with ten or more poison counters loses the game.)"
+   }
+  ],
+  "GameDrawn": [
+   {
+    "name": "Celestial Convergence",
+    "oracle": "Celestial Convergence enters with seven omen counters on it.\\nAt the beginning of your upkeep, remove an omen counter from Celestial Convergence. If there are no omen cou"
+   }
+  ],
+  "Debuff": [
+   {
+    "name": "Cephalid Snitch",
+    "oracle": "Sacrifice Cephalid Snitch: Target creature loses protection from black until end of turn."
+   },
+   {
+    "name": "Elder Land Wurm",
+    "oracle": "Defender, trample\\nWhen Elder Land Wurm blocks, it loses defender."
+   },
+   {
+    "name": "Glittering Lion",
+    "oracle": "Prevent all damage that would be dealt to Glittering Lion.\\n{3}: Until end of turn, Glittering Lion loses \"Prevent all damage that would be dealt to Glittering Lion.\" Any"
+   }
+  ],
+  "BecomeMonarch": [
+   {
+    "name": "Champions of Minas Tirith",
+    "oracle": "When Champions of Minas Tirith enters, you become the monarch.\\nAt the beginning of combat on each opponent's turn, if you're the monarch, that opponent may pay {X}, wher"
+   },
+   {
+    "name": "Coin of Fate",
+    "oracle": "When this artifact enters, surveil 1.\\n{3}{W}, {T}, Exile two creature cards from your graveyard, Sacrifice this artifact: An opponent chooses one of the exiled cards. Yo"
+   },
+   {
+    "name": "Court of Ardenvale",
+    "oracle": "When Court of Ardenvale enters, you become the monarch.\\nAt the beginning of your upkeep, return target permanent card with mana value 3 or less from your graveyard to yo"
+   }
+  ],
+  "BecomesBlocked": [
+   {
+    "name": "Choking Vines",
+    "oracle": "Cast this spell only during the declare blockers step.\\nX target attacking creatures become blocked. Choking Vines deals 1 damage to each of those creatures. (This spell "
+   },
+   {
+    "name": "Curtain of Light",
+    "oracle": "Cast this spell only during combat after blockers are declared.\\nTarget unblocked attacking creature becomes blocked. (This spell works on creatures that can't be blocked"
+   },
+   {
+    "name": "Dazzling Beauty",
+    "oracle": "Cast this spell only during the declare blockers step.\\nTarget unblocked attacking creature becomes blocked. (This spell works on creatures that can't be blocked.)\\nDraw "
+   }
+  ],
+  "SkipTurn": [
+   {
+    "name": "Chronatog Avatar",
+    "oracle": "Hand -1, life +1\\nYou have no maximum hand size.\\n{0}: Draw three cards. You skip your next turn. Activate only once each turn."
+   },
+   {
+    "name": "Chronatog Totem",
+    "oracle": "{T}: Add {U}.\\n{1}{U}: Chronatog Totem becomes a 1/2 blue Atog artifact creature until end of turn.\\n{0}: Chronatog Totem gets +3/+3 until end of turn. You skip your next"
+   },
+   {
+    "name": "Lethal Vapors",
+    "oracle": "Whenever a creature enters, destroy it.\\n{0}: Destroy Lethal Vapors. You skip your next turn. Any player may activate this ability."
+   }
+  ],
+  "Regeneration": [
+   {
+    "name": "Clergy of the Holy Nimbus",
+    "oracle": "If Clergy of the Holy Nimbus would be destroyed, regenerate it.\\n{1}: Clergy of the Holy Nimbus can't be regenerated this turn. Only your opponents may activate this abil"
+   }
+  ],
+  "OpenAttraction": [
+   {
+    "name": "Coming Attraction",
+    "oracle": "Search your library for a basic land card, put it onto the battlefield tapped, then shuffle. Open an Attraction. (Put the top card of your Attraction deck onto the battle"
+   },
+   {
+    "name": "Dee Kay, Finder of the Lost",
+    "oracle": "When Dee Kay, Finder of the Lost enters the battlefield, open an Attraction.\\nWhenever you roll a 2, each opponent loses 1 life and you gain 1 life.\\nWhenever you roll a "
+   },
+   {
+    "name": "Draconian Gate-Bot",
+    "oracle": "When Draconian Gate-Bot enters the battlefield, choose one \u2014\\n\u2022 Open an Attraction. (Put the top card of your Attraction deck onto the battlefield.)\\n\u2022 Destroy target Att"
+   }
+  ],
+  "ManifestDread": [
+   {
+    "name": "Conductive Machete",
+    "oracle": "When Conductive Machete enters, manifest dread, then attach Conductive Machete to that creature. (Look at the top two cards of your library. Put one onto the battlefield "
+   },
+   {
+    "name": "Curator Beastie",
+    "oracle": "Reach\\nColorless creatures you control enter with two additional +1/+1 counters on them.\\nWhenever Curator Beastie enters or attacks, manifest dread. (Look at the top two"
+   },
+   {
+    "name": "Defiant Survivor",
+    "oracle": "Survival \u2014 At the beginning of your second main phase, if Defiant Survivor is tapped, manifest dread. (Look at the top two cards of your library. Put one onto the battlef"
+   }
+  ],
+  "ControlPlayer": [
+   {
+    "name": "Construct a Cosmic Cube",
+    "oracle": "Whenever you draw your second card each turn, create a 2/1 black Villain creature token with menace and put a plan counter on this enchantment.\\nWhen the seventh plan cou"
+   },
+   {
+    "name": "Cruel Entertainment",
+    "oracle": "Choose target player and another target player. The first player controls the second player during the second player's next turn, and the second player controls the first"
+   },
+   {
+    "name": "Secret of Bloodbending",
+    "oracle": "As an additional cost to cast this spell, you may waterbend {10}.\\nYou control target opponent during their next combat phase. If this spell's additional cost was paid, y"
+   }
+  ],
+  "TimeTravel": [
+   {
+    "name": "Coward",
+    "oracle": "Target creature can't block this turn and becomes a Coward in addition to its other types until end of turn.\\nTime travel."
+   },
+   {
+    "name": "Rotating Fireplace",
+    "oracle": "Rotating Fireplace enters tapped with a time counter on it.\\n{T}: Add an amount of {C} equal to the number of time counters on Rotating Fireplace.\\n{4}, {T}: Time travel."
+   },
+   {
+    "name": "The Girl in the Fireplace",
+    "oracle": "(As this Saga enters and after your draw step, add a lore counter. Sacrifice after III.)\\nI \u2014 Create a 1/1 white Human Noble creature token with vanishing 3 and \"Prevent "
+   }
+  ],
+  "Token": [
+   {
+    "name": "Crumb and Get It",
+    "oracle": "Gift a Food (You may promise an opponent a gift as you cast this spell. If you do, they create a Food token before its other effects. It's an artifact with \"{2}, {T}, Sac"
+   },
+   {
+    "name": "Elvish Champion Avatar",
+    "oracle": "Hand +0, life -5\\nYou begin the game with a 1/1 green Elf creature token on the battlefield. It has \"{T}: Add {G}.\""
+   },
+   {
+    "name": "Garruk the Slayer",
+    "oracle": "[0]: Put a 2/2 green Wolf creature token onto the battlefield.\\n[+4]: Target Wolf creature gets +1/+0 and gains deathtouch until end of turn.\\n[-10]: Destroy target creat"
+   }
+  ],
+  "RearrangeTopOfLibrary": [
+   {
+    "name": "Crystal Seer",
+    "oracle": "When Crystal Seer enters, look at the top four cards of your library, then put them back in any order.\\n{4}{U}: Return Crystal Seer to its owner's hand."
+   },
+   {
+    "name": "Dewdrop Spy",
+    "oracle": "Flash\\nFlying\\nWhen Dewdrop Spy enters, look at the top card of target player's library."
+   },
+   {
+    "name": "Discombobulate",
+    "oracle": "Counter target spell. Look at the top four cards of your library, then put them back in any order."
+   }
+  ],
+  "VillainousChoice": [
+   {
+    "name": "Davros, Dalek Creator",
+    "oracle": "Menace\\nAt the beginning of your end step, create a 3/3 black Dalek artifact creature token with menace if an opponent lost 3 or more life this turn. Then each opponent w"
+   },
+   {
+    "name": "Dr. Eggman",
+    "oracle": "Flying\\nAt the beginning of your end step, draw a card. Then each opponent faces a villainous choice \u2014 That player discards a card, or you may put a Construct, Robot, or "
+   },
+   {
+    "name": "Ensnared by the Mara",
+    "oracle": "Each opponent faces a villainous choice \u2014 They exile cards from the top of their library until they exile a nonland card, then you may cast that card without paying its m"
+   }
+  ],
+  "EndTurn": [
+   {
+    "name": "Day's Undoing",
+    "oracle": "Each player shuffles their hand and graveyard into their library, then draws seven cards. If it's your turn, end the turn. (Exile all spells and abilities from the stack,"
+   },
+   {
+    "name": "Hurkyl's Final Meditation",
+    "oracle": "As long as it's not your turn, this spell costs {3} more to cast.\\nReturn all nonland permanents to their owners' hands. End the turn. (Exile all spells and abilities fro"
+   },
+   {
+    "name": "Obeka, Brute Chronologist",
+    "oracle": "{T}: The player whose turn it is may end the turn. (Exile all spells and abilities from the stack. The player whose turn it is discards down to their maximum hand size. D"
+   }
+  ],
+  "Draw": [
+   {
+    "name": "Dewdrop Cure",
+    "oracle": "Gift a card (You may promise an opponent a gift as you cast this spell. If you do, they draw a card before its other effects.)\\nReturn up to two target creature cards eac"
+   },
+   {
+    "name": "Kamigawa Charm",
+    "oracle": "Choose one \u2014\\n\u2022 Dosan's Oldest Chant (Gain 6 life, draw a card.)\\n\u2022 Kodama's Reach (Search for two basic lands, put one onto the battlefield tapped and one to hand.)\\n\u2022 T"
+   },
+   {
+    "name": "Peerless Recycling",
+    "oracle": "Gift a card (You may promise an opponent a gift as you cast this spell. If you do, they draw a card before its other effects.)\\nReturn target permanent card from your gra"
+   }
+  ],
+  "Blight": [
+   {
+    "name": "Dose of Dawnglow",
+    "oracle": "Return target creature card from your graveyard to the battlefield. Then if it isn't your main phase, blight 2. (Put two -1/-1 counters on a creature you control.)"
+   },
+   {
+    "name": "High Perfect Morcant",
+    "oracle": "Whenever High Perfect Morcant or another Elf you control enters, each opponent blights 1. (They each put a -1/-1 counter on a creature they control.)\\nTap three untapped "
+   },
+   {
+    "name": "Sinister Gnarlbark",
+    "oracle": "At the beginning of your end step, draw a card and blight 1. (Put a -1/-1 counter on a creature you control.)"
+   }
+  ],
+  "AddOrRemoveCounter": [
+   {
+    "name": "Dramatist's Puppet",
+    "oracle": "When Dramatist's Puppet enters, for each kind of counter on target permanent, put another counter of that kind on it or remove one from it."
+   },
+   {
+    "name": "Guile, Sonic Soldier",
+    "oracle": "Whenever Guile, Sonic Soldier enters or attacks, put a charge counter on him or remove one from him. When you remove a counter this way, choose one\u2014\\n\u2022 Sonic Boom \u2014 Guile"
+   },
+   {
+    "name": "Jhoira's Timebug",
+    "oracle": "{T}: Choose target permanent you control or suspended card you own. If that permanent or card has a time counter on it, you may remove a time counter from it or put anoth"
+   }
+  ],
+  "TaporUntapAll": [
+   {
+    "name": "Faces of the Past",
+    "oracle": "Whenever a creature dies, tap all untapped creatures that share a creature type with it or untap all tapped creatures that share a creature type with it."
+   }
+  ],
+  "GainLife": [
+   {
+    "name": "Faerie Dragon",
+    "oracle": "Flying\\n{1}{G}{G}: Perform a random action."
+   },
+   {
+    "name": "Kamigawa Charm",
+    "oracle": "Choose one \u2014\\n\u2022 Dosan's Oldest Chant (Gain 6 life, draw a card.)\\n\u2022 Kodama's Reach (Search for two basic lands, put one onto the battlefield tapped and one to hand.)\\n\u2022 T"
+   },
+   {
+    "name": "Phyrexian Adapter",
+    "oracle": "Flying\\nAll Incubator tokens you control become Food, Blood, Clue, Treasure, and Powerstone in addition to their other types, and have the respective abilities of those t"
+   }
+  ],
+  "DealDamage": [
+   {
+    "name": "Faerie Dragon",
+    "oracle": "Flying\\n{1}{G}{G}: Perform a random action."
+   }
+  ],
+  "ChaosEnsues": [
+   {
+    "name": "Fixed Point in Time",
+    "oracle": "When you encounter Fixed Point in Time, until your next turn, if a player would planeswalk as a result of rolling the planar die, chaos ensues instead. (Then planeswalk a"
+   },
+   {
+    "name": "Path of the Enigma",
+    "oracle": "Target player draws four cards.\\nWill of the Planeswalkers \u2014 Starting with you, each player votes for planeswalk or chaos. If planeswalk gets more votes, planeswalk. If c"
+   },
+   {
+    "name": "Path of the Pyromancer",
+    "oracle": "Discard all the cards in your hand. Add {R} for each card discarded this way, then draw that many cards plus one.\\nWill of the Planeswalkers \u2014 Starting with you, each pla"
+   }
+  ],
+  "Attach": [
+   {
+    "name": "Flanking Licid",
+    "oracle": "{R}, {T}: Flanking Licid loses this ability and becomes a creature enchantment that reads \"Enchanted creature gains flanking\" instead of a creature. Move Flanking Licid o"
+   }
+  ],
+  "ReorderZone": [
+   {
+    "name": "Fossil Find",
+    "oracle": "Return a card at random from your graveyard to your hand, then reorder your graveyard as you choose."
+   }
+  ],
+  "RollPlanarDice": [
+   {
+    "name": "Fractured Powerstone",
+    "oracle": "{T}: Add {C}.\\n{T}: Roll the planar die. Activate only as a sorcery."
+   }
+  ],
+  "SwitchBlock": [
+   {
+    "name": "General Jarkeld",
+    "oracle": "{T}: Choose two target blocked attacking creatures. If each of those creatures could be blocked by all creatures that the other is blocked by, each creature that's blocki"
+   }
+  ],
+  "UnlockDoor": [
+   {
+    "name": "Ghostly Keybearer",
+    "oracle": "Flying\\nWhenever Ghostly Keybearer deals combat damage to a player, unlock a locked door of up to one target Room you control."
+   },
+   {
+    "name": "Keys to the House",
+    "oracle": "{1}, {T}, Sacrifice Keys to the House: Search your library for a basic land card, reveal it, put it into your hand, then shuffle.\\n{3}, {T}, Sacrifice Keys to the House: "
+   },
+   {
+    "name": "Marina Vendrell",
+    "oracle": "When Marina Vendrell enters, reveal the top seven cards of your library. Put all enchantment cards from among them into your hand and the rest on the bottom of your libra"
+   }
+  ],
+  "Meld": [
+   {
+    "name": "Gisela, the Broken Blade",
+    "oracle": "Flying, first strike, lifelink\\nAt the beginning of your end step, if you both own and control Gisela, the Broken Blade and a creature named Bruna, the Fading Light, exil"
+   },
+   {
+    "name": "Hanweir Battlements",
+    "oracle": "{T}: Add {C}.\\n{R}, {T}: Target creature gains haste until end of turn.\\n{3}{R}{R}, {T}: If you both own and control Hanweir Battlements and a creature named Hanweir Garr"
+   },
+   {
+    "name": "Mishra, Claimed by Gix",
+    "oracle": "Whenever you attack, each opponent loses X life and you gain X life, where X is the number of attacking creatures. If Mishra, Claimed by Gix and a creature named Phyrexia"
+   }
+  ],
+  "ChangeCombatants": [
+   {
+    "name": "Kari Zev, Crew of Two",
+    "oracle": "Menace, haste\\nWhenever Kari Zev attacks while you don't control a legendary Monkey, conjure a card named Ragavan, Nimble Pilferer onto the battlefield tapped and attacki"
+   },
+   {
+    "name": "Portal Mage",
+    "oracle": "Flash\\nWhen Portal Mage enters during the declare attackers step, you may reselect which player or permanent target attacking creature is attacking. (It can't attack its "
+   },
+   {
+    "name": "Portal Manipulator",
+    "oracle": "Flash\\nWhen Portal Manipulator enters during the declare attackers step, choose target player and any number of target attacking creatures their opponents control. Those "
+   }
+  ],
+  "ReplaceMana": [
+   {
+    "name": "Mana Reflection",
+    "oracle": "If you tap a permanent for mana, it produces twice as much of that mana instead."
+   },
+   {
+    "name": "Mirri",
+    "oracle": "Hand +0, life +5\\nIf a basic land you control is tapped for mana, it produces mana of a color of your choice instead of any other type."
+   },
+   {
+    "name": "Naked Singularity",
+    "oracle": "Cumulative upkeep {3} (At the beginning of your upkeep, put an age counter on this permanent, then sacrifice it unless you pay its upkeep cost for each age counter on it."
+   }
+  ],
+  "SetInMotion": [
+   {
+    "name": "My Laughter Echoes",
+    "oracle": "(An ongoing scheme remains face up until it's abandoned.)\\nWhenever you set a non-ongoing scheme in motion, you may abandon this scheme. If you do, set that scheme in mot"
+   }
+  ],
+  "Block": [
+   {
+    "name": "Noble Ox",
+    "oracle": "Flash\\nWhen Noble Ox enters the battlefield, all unblocked creatures attacking you become blocked by Noble Ox.\\nNoble Ox can block any number of creatures."
+   }
+  ],
+  "BidLife": [
+   {
+    "name": "Pain's Reward",
+    "oracle": "Each player may bid life. You start the bidding with a bid of any number. In turn order, each player may top the high bid. The bidding ends if the high bid stands. The hi"
+   }
+  ],
+  "LosePerpetual": [
+   {
+    "name": "Pass the Torch",
+    "oracle": "Pass the Torch deals 2 damage to any target. Choose a creature card in your hand. It perpetually gains \"Whenever this creature deals combat damage to a player, you may ca"
+   }
+  ],
+  "BlankLine": [
+   {
+    "name": "Path of the Enigma",
+    "oracle": "Target player draws four cards.\\nWill of the Planeswalkers \u2014 Starting with you, each player votes for planeswalk or chaos. If planeswalk gets more votes, planeswalk. If c"
+   },
+   {
+    "name": "Path of the Pyromancer",
+    "oracle": "Discard all the cards in your hand. Add {R} for each card discarded this way, then draw that many cards plus one.\\nWill of the Planeswalkers \u2014 Starting with you, each pla"
+   },
+   {
+    "name": "Path of the Schemer",
+    "oracle": "Each player mills two cards. Then you put a creature card from a graveyard onto the battlefield under your control. It's an artifact in addition to its other types.\\nWill"
+   }
+  ],
+  "DrainMana": [
+   {
+    "name": "Pygmy Hippo",
+    "oracle": "Whenever Pygmy Hippo attacks and isn't blocked, you may have defending player activate a mana ability of each land they control and lose all unspent mana. If you do, Pygm"
+   }
+  ],
+  "ActivateAbility": [
+   {
+    "name": "Pygmy Hippo",
+    "oracle": "Whenever Pygmy Hippo attacks and isn't blocked, you may have defending player activate a mana ability of each land they control and lose all unspent mana. If you do, Pygm"
+   }
+  ],
+  "AssignGroup": [
+   {
+    "name": "Regna's Sanction",
+    "oracle": "For each player, choose friend or foe. Each friend puts a +1/+1 counter on each creature they control. Each foe chooses one untapped creature they control, then taps the "
+   }
+  ],
+  "Subgame": [
+   {
+    "name": "Shahrazad",
+    "oracle": "Players play a Magic subgame, using their libraries as their decks. Each player who doesn't win the subgame loses half their life, rounded up."
+   }
+  ],
+  "ChangeSpeed": [
+   {
+    "name": "Spikeshell Harrier",
+    "oracle": "When this creature enters, return target creature or Vehicle an opponent controls to its owner's hand. If that opponent's speed is greater than each other player's speed,"
+   }
+  ],
+  "Unattach": [
+   {
+    "name": "Stolen Uniform",
+    "oracle": "Choose target creature you control and target Equipment. Gain control of that Equipment until end of turn. Attach it to the chosen creature. When you lose control of that"
+   },
+   {
+    "name": "Unexpected Request",
+    "oracle": "Gain control of target creature until end of turn. Untap that creature. It gains haste until end of turn. You may attach an Equipment you control to that creature. If you"
+   }
+  ],
+  "ReverseTurnOrder": [
+   {
+    "name": "Time Distortion",
+    "oracle": "When you encounter Time Distortion, reverse the game's turn order. (For example, if play had proceeded clockwise around the table, it now goes counterclockwise. Then plan"
+   }
+  ],
+  "TapOrUntapAll": [
+   {
+    "name": "Turnabout",
+    "oracle": "Choose artifact, creature, or land. Tap all untapped permanents of the chosen type target player controls, or untap all tapped permanents of that type that player control"
+   }
+  ],
+  "ChangeX": [
+   {
+    "name": "Unbound Flourishing",
+    "oracle": "Whenever you cast a permanent spell with a mana cost that contains {X}, double the value of X.\\nWhenever you cast an instant or sorcery spell or activate an ability, if t"
+   }
+  ],
+  "Recruit": [
+   {
+    "name": "Bard's Company",
+    "oracle": "You may cast this spell as though it had flash if you control a Human.\\nOther creatures you control get +1/+1.\\nWhenever this creature enters or attacks, recruit. (Draw a"
+   },
+   {
+    "name": "Celebrate the Mountain-king",
+    "oracle": "When this enchantment enters, for each opponent, exile up to one target nonland permanent that player controls until this enchantment leaves the battlefield.\\nWhen this e"
+   },
+   {
+    "name": "Patient Instructor",
+    "oracle": "Vigilance\\nWhen this creature enters, recruit. (Draw a card, then discard a card. If you discarded a nonland card, create a 1/1 white Human Soldier creature token.)"
+   }
+  ],
+  "HealDamage": [
+   {
+    "name": "Wolverine, Fierce Fighter",
+    "oracle": "Haste\\nWhen Wolverine enters, he fights up to one other target creature.\\nIf damage would be dealt to Wolverine, instead that damage is dealt, but all other damage alread"
+   }
+  ]
+ }
+}
