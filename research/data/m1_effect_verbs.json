@@ -1141,14 +1141,14 @@
    "fp": 0
   },
   {
-   "api": "ActivateAbility",
+   "api": "DrainMana",
    "support": 1,
    "recall_pct": 0.0,
    "precision_pct": null,
    "fp": 0
   },
   {
-   "api": "DrainMana",
+   "api": "ActivateAbility",
    "support": 1,
    "recall_pct": 0.0,
    "precision_pct": null,
@@ -1310,20 +1310,6 @@
     "oracle": "Until end of turn, target creature gets +2/+0 and gains \"When this creature dies, return it to the battlefield tapped under its owner's control.\""
    }
   ],
-  "ChangeZone": [
-   {
-    "name": "Abby, Merciless Soldier",
-    "oracle": "When you cast this spell, create a number of 1/1 black Fungus Zombie creature tokens named Cordyceps Infected equal to the amount of mana spent to cast it.\\nAbby enters u"
-   },
-   {
-    "name": "Advanced Floral Invocations",
-    "oracle": "Landfall \u2014 Whenever a land you control enters, mill two cards.\\n{B/G}: Level 2\\nWhenever a land you control enters, creature cards in your graveyard perpetually get +1/+1"
-   },
-   {
-    "name": "Aegis of Honor",
-    "oracle": "{1}: The next time an instant or sorcery spell would deal damage to you this turn, that spell deals that damage to its controller instead."
-   }
-  ],
   "ChoosePlayer": [
    {
     "name": "Abby, Merciless Soldier",
@@ -1336,6 +1322,20 @@
    {
     "name": "Arachne, Psionic Weaver",
     "oracle": "Web-slinging {W} (You may cast this spell for {W} if you also return a tapped creature you control to its owner's hand.)\\nAs Arachne enters, look at an opponent's hand, t"
+   }
+  ],
+  "ChangeZone": [
+   {
+    "name": "Abby, Merciless Soldier",
+    "oracle": "When you cast this spell, create a number of 1/1 black Fungus Zombie creature tokens named Cordyceps Infected equal to the amount of mana spent to cast it.\\nAbby enters u"
+   },
+   {
+    "name": "Advanced Floral Invocations",
+    "oracle": "Landfall \u2014 Whenever a land you control enters, mill two cards.\\n{B/G}: Level 2\\nWhenever a land you control enters, creature cards in your graveyard perpetually get +1/+1"
+   },
+   {
+    "name": "Aegis of Honor",
+    "oracle": "{1}: The next time an instant or sorcery spell would deal damage to you this turn, that spell deals that damage to its controller instead."
    }
   ],
   "Untap": [
@@ -1716,20 +1716,6 @@
     "oracle": "Ascendant Acolyte enters with a +1/+1 counter on it for each +1/+1 counter among other creatures you control.\\nAt the beginning of your upkeep, double the number of +1/+1"
    }
   ],
-  "ChangeTargets": [
-   {
-    "name": "Aethersnatch",
-    "oracle": "Gain control of target spell. You may choose new targets for it. (If that spell becomes a permanent, it enters under your control.)"
-   },
-   {
-    "name": "Bolt Bend",
-    "oracle": "This spell costs {3} less to cast if you control a creature with power 4 or greater.\\nChange the target of target spell or ability with a single target."
-   },
-   {
-    "name": "Chef's Kiss",
-    "oracle": "Gain control of target spell that targets only a single permanent or player. Copy it, then reselect the targets at random for the spell and the copy. The new targets can'"
-   }
-  ],
   "ControlSpell": [
    {
     "name": "Aethersnatch",
@@ -1742,6 +1728,20 @@
    {
     "name": "Commandeer",
     "oracle": "You may exile two blue cards from your hand rather than pay this spell's mana cost.\\nGain control of target noncreature spell. You may choose new targets for it. (If that"
+   }
+  ],
+  "ChangeTargets": [
+   {
+    "name": "Aethersnatch",
+    "oracle": "Gain control of target spell. You may choose new targets for it. (If that spell becomes a permanent, it enters under your control.)"
+   },
+   {
+    "name": "Bolt Bend",
+    "oracle": "This spell costs {3} less to cast if you control a creature with power 4 or greater.\\nChange the target of target spell or ability with a single target."
+   },
+   {
+    "name": "Chef's Kiss",
+    "oracle": "Gain control of target spell that targets only a single permanent or player. Copy it, then reselect the targets at random for the spell and the copy. The new targets can'"
    }
   ],
   "MoveCounter": [
@@ -1898,20 +1898,6 @@
     "oracle": "Whenever a player attacks, add six {R}. Until end of combat, you don't lose this mana as steps end.\\n{R}{R}{R}: Target creature gets +3/+0 until end of turn."
    }
   ],
-  "UntapAll": [
-   {
-    "name": "All-Out Assault",
-    "oracle": "Creatures you control get +1/+1 and have deathtouch.\\nWhen this enchantment enters, if it's your main phase, there is an additional combat phase after this phase followed"
-   },
-   {
-    "name": "Essence of Antiquity",
-    "oracle": "Disguise {2}{W} (You may cast this card face down for {3} as a 2/2 creature with ward {2}. Turn it face up any time for its disguise cost.)\\nWhen Essence of Antiquity is "
-   },
-   {
-    "name": "Estrid, the Masked",
-    "oracle": "[+2]: Untap each enchanted permanent you control.\\n[-1]: Create a white Aura enchantment token named Mask attached to another target permanent. The token has enchant perm"
-   }
-  ],
   "AddPhase": [
    {
     "name": "All-Out Assault",
@@ -1924,6 +1910,20 @@
    {
     "name": "Balthier and Fran",
     "oracle": "Reach\\nVehicles you control get +1/+1 and have vigilance and reach.\\nWhenever a Vehicle crewed by Balthier and Fran this turn attacks, if it's the first combat phase of t"
+   }
+  ],
+  "UntapAll": [
+   {
+    "name": "All-Out Assault",
+    "oracle": "Creatures you control get +1/+1 and have deathtouch.\\nWhen this enchantment enters, if it's your main phase, there is an additional combat phase after this phase followed"
+   },
+   {
+    "name": "Essence of Antiquity",
+    "oracle": "Disguise {2}{W} (You may cast this card face down for {3} as a 2/2 creature with ward {2}. Turn it face up any time for its disguise cost.)\\nWhen Essence of Antiquity is "
+   },
+   {
+    "name": "Estrid, the Masked",
+    "oracle": "[+2]: Untap each enchanted permanent you control.\\n[-1]: Create a white Aura enchantment token named Mask attached to another target permanent. The token has enchant perm"
    }
   ],
   "Discover": [
@@ -2998,12 +2998,6 @@
     "oracle": "Whenever a creature dies, tap all untapped creatures that share a creature type with it or untap all tapped creatures that share a creature type with it."
    }
   ],
-  "DealDamage": [
-   {
-    "name": "Faerie Dragon",
-    "oracle": "Flying\\n{1}{G}{G}: Perform a random action."
-   }
-  ],
   "GainLife": [
    {
     "name": "Faerie Dragon",
@@ -3016,6 +3010,12 @@
    {
     "name": "Phyrexian Adapter",
     "oracle": "Flying\\nAll Incubator tokens you control become Food, Blood, Clue, Treasure, and Powerstone in addition to their other types, and have the respective abilities of those t"
+   }
+  ],
+  "DealDamage": [
+   {
+    "name": "Faerie Dragon",
+    "oracle": "Flying\\n{1}{G}{G}: Perform a random action."
    }
   ],
   "ChaosEnsues": [
@@ -3150,13 +3150,13 @@
     "oracle": "Each player mills two cards. Then you put a creature card from a graveyard onto the battlefield under your control. It's an artifact in addition to its other types.\\nWill"
    }
   ],
-  "ActivateAbility": [
+  "DrainMana": [
    {
     "name": "Pygmy Hippo",
     "oracle": "Whenever Pygmy Hippo attacks and isn't blocked, you may have defending player activate a mana ability of each land they control and lose all unspent mana. If you do, Pygm"
    }
   ],
-  "DrainMana": [
+  "ActivateAbility": [
    {
     "name": "Pygmy Hippo",
     "oracle": "Whenever Pygmy Hippo attacks and isn't blocked, you may have defending player activate a mana ability of each land they control and lose all unspent mana. If you do, Pygm"

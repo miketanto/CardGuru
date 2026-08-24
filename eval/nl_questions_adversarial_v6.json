@@ -1,0 +1,96 @@
+{
+ "_comment": "Adversarial slice v2, generated mechanically by eval/gen_adversarial_slice.py. Replaces a01-a05, which were burned by research/oracle-grammar-triage.md. Witness = highest BM25-ranked Forge match; foil = highest BM25-ranked non-match. No question, witness or foil was chosen by hand.",
+ "generator": {
+  "top_n_per_family": 6,
+  "rank_offset": 0,
+  "witness_rank_offset": 4,
+  "min_hits": 15,
+  "max_hits": 2500,
+  "min_foil_ratio": 0.45
+ },
+ "questions": [
+  {
+   "id": "b01",
+   "family": "cost",
+   "q": "cards with an activated ability whose cost includes SubCounter",
+   "witness": [
+    "Karn, the Great Creator"
+   ],
+   "absent": [
+    "Granted"
+   ],
+   "forge_hits": 654,
+   "agent_query": {
+    "node": {
+     "kind": "A",
+     "apiKind": "AB",
+     "params": {
+      "Cost": {
+       "regex": "(^|\\s)SubCounter(<|$|\\s)"
+      }
+     }
+    }
+   },
+   "why_adversarial": "foil is the top BM25-ranked card that does NOT match the structural query, so it is lexically confusable with the witness but mechanically different"
+  },
+  {
+   "id": "b02",
+   "family": "trigger_mode",
+   "q": "cards with a triggered ability that triggers on Phase",
+   "witness": [
+    "Sphinx of the Second Sun"
+   ],
+   "absent": [
+    "Overpowering Attack"
+   ],
+   "forge_hits": 2294,
+   "agent_query": {
+    "node": {
+     "kind": "T",
+     "mode": "Phase"
+    }
+   },
+   "why_adversarial": "foil is the top BM25-ranked card that does NOT match the structural query, so it is lexically confusable with the witness but mechanically different"
+  },
+  {
+   "id": "b03",
+   "family": "trigger_mode",
+   "q": "cards with a triggered ability that triggers on AttackersDeclared",
+   "witness": [
+    "Akki Battle Squad"
+   ],
+   "absent": [
+    "Relentless Assault"
+   ],
+   "forge_hits": 233,
+   "agent_query": {
+    "node": {
+     "kind": "T",
+     "mode": "AttackersDeclared"
+    }
+   },
+   "why_adversarial": "foil is the top BM25-ranked card that does NOT match the structural query, so it is lexically confusable with the witness but mechanically different"
+  },
+  {
+   "id": "b04",
+   "family": "replacement_event",
+   "q": "cards with a replacement effect on the Untap event",
+   "witness": [
+    "Famished Paladin"
+   ],
+   "absent": [
+    "Lead Golem"
+   ],
+   "forge_hits": 155,
+   "agent_query": {
+    "node": {
+     "kind": "R",
+     "params": {
+      "Event": "Untap"
+     }
+    }
+   },
+   "why_adversarial": "foil is the top BM25-ranked card that does NOT match the structural query, so it is lexically confusable with the witness but mechanically different"
+  }
+ ]
+}

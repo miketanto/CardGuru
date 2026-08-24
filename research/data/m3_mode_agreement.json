@@ -2,22 +2,22 @@
  "split": "holdout",
  "faces_scored": 17140,
  "trigger_modes": {
-  "tp": 6458,
-  "fp": 496,
-  "fn": 1604,
-  "precision_pct": 92.87,
-  "recall_pct": 80.1,
+  "tp": 6566,
+  "fp": 440,
+  "fn": 1496,
+  "precision_pct": 93.72,
+  "recall_pct": 81.44,
   "faces_with_any": 7177,
-  "exact_set_agreement_pct": 78.07
+  "exact_set_agreement_pct": 79.49
  },
  "static_modes": {
-  "tp": 2644,
-  "fp": 1144,
-  "fn": 673,
-  "precision_pct": 69.8,
-  "recall_pct": 79.71,
+  "tp": 2718,
+  "fp": 1086,
+  "fn": 599,
+  "precision_pct": 71.45,
+  "recall_pct": 81.94,
   "faces_with_any": 3819,
-  "exact_set_agreement_pct": 63.79
+  "exact_set_agreement_pct": 65.31
  },
  "replacement_events": {
   "tp": 697,
@@ -42,9 +42,9 @@
   {
    "mode": "Continuous",
    "support": 2218,
-   "fp": 876,
+   "fp": 814,
    "recall_pct": 95.1,
-   "precision_pct": 70.7
+   "precision_pct": 72.2
   },
   {
    "mode": "ReduceCost",
@@ -56,9 +56,9 @@
   {
    "mode": "CantBlockBy",
    "support": 164,
-   "fp": 13,
-   "recall_pct": 30.5,
-   "precision_pct": 79.4
+   "fp": 17,
+   "recall_pct": 46.3,
+   "precision_pct": 81.7
   },
   {
    "mode": "AlternativeCost",
@@ -85,7 +85,7 @@
    "mode": "CantBeCast",
    "support": 52,
    "fp": 0,
-   "recall_pct": 7.7,
+   "recall_pct": 84.6,
    "precision_pct": 100.0
   },
   {

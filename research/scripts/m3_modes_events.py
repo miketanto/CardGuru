@@ -38,12 +38,20 @@ import re
 TRIGGER_MODES = [
     ("Phase",             r"^at the (?:beginning|end) of\b|^at end of turn\b"),
     ("ChaosEnsues",       r"\bchaos ensues\b"),
-    ("AttackersDeclared", r"\battackers are declared\b"),
+    # Authored from card text, not from the mode name: no card says
+    # "attackers are declared". The player-level attack event reads
+    # "Whenever you attack", "Whenever you attack with one or more ...",
+    # "Whenever one or more creatures you control attack".
+    ("AttackersDeclared", r"\bwhenever you attack\b"
+                          r"|\bone or more creatures?[^,]{0,30}\battacks?\b"
+                          r"|\bwhenever a player attacks\b"),
     ("AttackerBlocked",   r"\bbecomes? blocked\b"),
     ("Attacks",           r"\battacks?\b"),
     ("SpellCast",         r"\bcasts?\b[^,]{0,40}\bspell\b|\byou cast\b"),
     ("DamageDone",        r"\bdeals?\b[^,]{0,30}\bdamage\b"),
-    ("Drawn",             r"\bdraws?\b\s+(?:a\s+)?cards?\b"),
+    # Safe to broaden now that modes match the event clause only:
+    # "draw your second card each turn" is the dominant missed wording.
+    ("Drawn",             r"\bdraws?\b[^,]{0,25}\bcards?\b"),
     ("ChangesZone",       r"\benters?\b|\bdies\b|\bleaves? the battlefield\b"
                           r"|\bis put into\b|\bput into a graveyard\b"),
 ]
@@ -94,13 +102,18 @@ ZONE_WORDS = [
 STATIC_MODES = [
     ("Panharmonicon",   r"\btriggers? an additional time\b"
                         r"|\btrigger an additional time\b"),
-    # 'can't be blocked except by ...' was tried here and made static-mode
-    # precision worse (71.8 -> 66.5 on dev); Forge models most of those as
-    # Continuous. Left out deliberately.
-    ("CantBlockBy",     r"\bcan'?t be blocked by\b"),
+    # 'except by' / 'can block only' were tried once before the emitter took
+    # its kind from M0's classifier and cost 5 points of static-mode precision.
+    # Re-tried after that change and audited from card text: the misses are
+    # dominated by exactly these two wordings, so they are back in.
+    ("CantBlockBy",     r"\bcan'?t be blocked by\b"
+                        r"|\bcan'?t be blocked except by\b"
+                        r"|\bcan block only\b"),
     ("MinMaxBlocker",   r"\bcan'?t be blocked by more than\b|\bmust be blocked by\b"),
-    ("CantBeActivated", r"\babilities can'?t be activated\b"),
-    ("CantBeCast",      r"\bcan'?t be cast\b"),
+    ("CantBeActivated", r"\bcan'?t be activated\b"),
+    # Active voice dominates: "Your opponents can't cast spells", not
+    # "can't be cast".
+    ("CantBeCast",      r"\bcan'?t be cast\b|\bcan'?t cast\b"),
     ("CastWithFlash",   r"\bas though it had flash\b|\bas though they had flash\b"),
     ("ReduceCost",      r"\bcosts?\b[^.]{0,25}\bless to cast\b"),
     ("RaiseCost",       r"\bcosts?\b[^.]{0,25}\bmore to cast\b"),
