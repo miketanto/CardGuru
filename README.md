@@ -52,6 +52,10 @@ Plans built on those findings:
   re-run on a mechanically generated, **renewable** adversarial slice (6/9 fresh vs
   Forge 9/9). Cost/target layer is at near-parity (96–99% recall); the mode layer is
   not — so the merge unit is the field, not the card
+- [research/oracle-grammar-coverage-boundary.md](research/oracle-grammar-coverage-boundary.md) —
+  the coverage rule measured at its edge: 6/9 in scope vs **1/8 one rank-band outside**,
+  a cliff that shows the pre-stated rule is load-bearing; trigger modes 85.5/73.9 →
+  92.9/80.1; `derivation` now stamped on both derivations
 
 Reproduce: `research/scripts/` (pure-Python parser + search prototype;
 `CardGuruFeasibilityTest.java` drops into XMage's `Mage.Tests`). Pins: Forge `670429bf`,

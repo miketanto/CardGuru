@@ -1,0 +1,155 @@
+{
+ "slice": "nl_questions_adversarial_v4.json",
+ "questions": 8,
+ "oracle_passed": 1,
+ "oracle_pass_pct": 12.5,
+ "oracle_vacuous_empty_results": 5,
+ "forge_passed": 8,
+ "mean_recall_of_forge_hits_pct": 21.3,
+ "rows": [
+  {
+   "id": "b01",
+   "family": "cost",
+   "q": "cards with an activated ability whose cost includes ExileFromGrave",
+   "forge": {
+    "hits": 167,
+    "witness_found": true,
+    "foil_rejected": true
+   },
+   "oracle": {
+    "hits": 0,
+    "witness_found": false,
+    "foil_rejected": true,
+    "vacuous": true
+   },
+   "recall_of_forge_hits_pct": 0.0,
+   "jaccard_pct": 0.0
+  },
+  {
+   "id": "b02",
+   "family": "cost",
+   "q": "cards with an activated ability whose cost includes paying life",
+   "forge": {
+    "hits": 157,
+    "witness_found": true,
+    "foil_rejected": true
+   },
+   "oracle": {
+    "hits": 155,
+    "witness_found": true,
+    "foil_rejected": true,
+    "vacuous": false
+   },
+   "recall_of_forge_hits_pct": 98.1,
+   "jaccard_pct": 97.5
+  },
+  {
+   "id": "b03",
+   "family": "cost",
+   "q": "cards with an activated ability whose cost includes or",
+   "forge": {
+    "hits": 75,
+    "witness_found": true,
+    "foil_rejected": true
+   },
+   "oracle": {
+    "hits": 40,
+    "witness_found": false,
+    "foil_rejected": true,
+    "vacuous": false
+   },
+   "recall_of_forge_hits_pct": 52.0,
+   "jaccard_pct": 51.3
+  },
+  {
+   "id": "b04",
+   "family": "trigger_mode",
+   "q": "cards with a triggered ability that triggers on BecomesTarget",
+   "forge": {
+    "hits": 117,
+    "witness_found": true,
+    "foil_rejected": true
+   },
+   "oracle": {
+    "hits": 0,
+    "witness_found": false,
+    "foil_rejected": true,
+    "vacuous": true
+   },
+   "recall_of_forge_hits_pct": 0.0,
+   "jaccard_pct": 0.0
+  },
+  {
+   "id": "b05",
+   "family": "trigger_mode",
+   "q": "cards with a triggered ability that triggers on Sacrificed",
+   "forge": {
+    "hits": 114,
+    "witness_found": true,
+    "foil_rejected": true
+   },
+   "oracle": {
+    "hits": 0,
+    "witness_found": false,
+    "foil_rejected": true,
+    "vacuous": true
+   },
+   "recall_of_forge_hits_pct": 0.0,
+   "jaccard_pct": 0.0
+  },
+  {
+   "id": "b06",
+   "family": "trigger_mode",
+   "q": "cards with a triggered ability that triggers on Taps",
+   "forge": {
+    "hits": 110,
+    "witness_found": true,
+    "foil_rejected": true
+   },
+   "oracle": {
+    "hits": 0,
+    "witness_found": false,
+    "foil_rejected": true,
+    "vacuous": true
+   },
+   "recall_of_forge_hits_pct": 0.0,
+   "jaccard_pct": 0.0
+  },
+  {
+   "id": "b07",
+   "family": "trigger_mode",
+   "q": "cards with a triggered ability that triggers on LifeGained",
+   "forge": {
+    "hits": 90,
+    "witness_found": true,
+    "foil_rejected": true
+   },
+   "oracle": {
+    "hits": 0,
+    "witness_found": false,
+    "foil_rejected": true,
+    "vacuous": true
+   },
+   "recall_of_forge_hits_pct": 0.0,
+   "jaccard_pct": 0.0
+  },
+  {
+   "id": "b08",
+   "family": "static_mode",
+   "q": "cards with a static ability of type OptionalCost",
+   "forge": {
+    "hits": 40,
+    "witness_found": true,
+    "foil_rejected": true
+   },
+   "oracle": {
+    "hits": 59,
+    "witness_found": false,
+    "foil_rejected": true,
+    "vacuous": false
+   },
+   "recall_of_forge_hits_pct": 20.0,
+   "jaccard_pct": 8.8
+  }
+ ]
+}
