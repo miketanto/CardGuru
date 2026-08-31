@@ -1,0 +1,13 @@
+{
+  "_comment": "SYNTHETIC schema fixture, not a card database. Card names are invented; only the FIELD SHAPE and a few real facet values (domains, keywords) matter, because the point under test is that the lexicon is mined from whatever data it is given. Replace with a real dump from Riftcodex / RiftScribe / apitcg.",
+  "cards": [
+    {"name": "Fixture Scout",     "domains": ["Calm"],  "types": ["Unit"],  "keywords": ["Ambush"],           "cost": 2, "might": 3, "text": "Enters ready."},
+    {"name": "Fixture Duelist",   "domains": ["Calm"],  "types": ["Unit"],  "keywords": ["Ambush", "Shield"], "cost": 4, "might": 5, "text": "Deals damage first."},
+    {"name": "Fixture Sentinel",  "domains": ["Calm"],  "types": ["Unit"],  "keywords": ["Tank"],             "cost": 3, "might": 4, "text": "Must be challenged."},
+    {"name": "Fixture Raider",    "domains": ["Fury"],  "types": ["Unit"],  "keywords": ["Ambush"],           "cost": 2, "might": 2, "text": "Strikes on arrival."},
+    {"name": "Fixture Oracle",    "domains": ["Mind"],  "types": ["Unit"],  "keywords": ["Vision"],           "cost": 5, "might": 4, "text": "Look at the top card."},
+    {"name": "Fixture Stillness", "domains": ["Calm"],  "types": ["Spell"], "keywords": [],                   "cost": 1, "might": 0, "text": "Ready a unit."},
+    {"name": "Fixture Bulwark",   "domains": ["Body"],  "types": ["Gear"],  "keywords": ["Shield"],           "cost": 3, "might": 0, "text": "Equipped unit gains Shield."},
+    {"name": "Fixture Ambusher",  "domains": ["Chaos"], "types": ["Unit"],  "keywords": ["Ambush", "Hidden"], "cost": 6, "might": 7, "text": "Cannot be blocked."}
+  ]
+}

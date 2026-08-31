@@ -230,16 +230,103 @@ Reusing `plan/eval.md` §D verbatim, applied per game:
 
 MTG cleared this by +60 points. No other game gets a free pass on MTG's result.
 
+## 4a. Built: `cardguru find` — lexicon-driven NL-ish search
+
+The clarified bar was not DSL compilation. It was: *type "Card in Calm that has ambush",
+get cards back* — and for an attribute-shaped game that is good enough on its own.
+`cardguru/nlsearch.py` implements it, no model and no per-game code.
+
+The trick is that **the lexicon is mined from the card dump, not authored**. Every distinct
+value of every declared facet becomes a searchable term tagged with the facet it came from, so
+"Calm" is findable for the same reason "Blue" is: it is printed on the cards.
+
+```
+$ python -m cardguru find "card in calm that has ambush" \
+      --profile profiles/riftbound.json --corpus <riftbound dump>
+# domain = Calm AND keyword = Ambush
+...
+$ python -m cardguru find "legendary green creature with trample costing 4 or less"
+# supertype = Legendary AND color = Green AND type = Creature
+#   AND keyword = Trample AND cost <= 4
+Mowu, Loyal Companion   [Green | Creature | Legendary]
+-- 3 cards matched (2539 in corpus, lexicon 567 terms; index 0.01s, query 5ms)
+```
+
+Adding a game is a **field-mapping profile** (`profiles/riftbound.json`, ~20 lines, asserting
+no card values at all) plus a card dump. `tests/test_nlsearch.py::test_lexicon_comes_from_the_corpus`
+asserts that "Calm" and "Ambush" appear nowhere in the profile — they are searchable purely
+because they are in the data, which is what keeps the profile correct across set releases.
+
+What the parser handles, all from a closed grammar rather than a model:
+
+| | example | reading |
+|---|---|---|
+| facets | `card in calm that has ambush` | `domain = Calm AND keyword = Ambush` |
+| prepositions steer ambiguity | `in blue` vs `with flash` | same shape, two different facets |
+| negation | `cards in white without flying` | `color = White AND NOT keyword = Flying` |
+| disjunction | `black or red creature with lifelink` | `(color = Black OR color = Red) AND …` |
+| numerics | `blue instant that costs 2 or less` | `color = Blue AND type = Instant AND cost <= 2` |
+| stemming | `costing`, `units`, `sagas` | `cost`, `Unit`, `Saga` |
+| typos | `creature with flyng` | `keyword = Flying`, **flagged at 0.909 confidence** |
+| absence | `colorless artifact` | `color is empty` (a null alias, not a value) |
+
+Every response carries its reading, the spans it could not bind, and a confidence per fuzzy
+match. A wrong interpretation is visible and correctable; it is never silent. That property is
+what makes this honest enough to ship without a model behind it.
+
+### Measured, including where it breaks
+
+`eval/nlsearch_probe.py`, run over the 2,539-card frozen index in `eval/rulesguru/`:
+
+- **Attribute-shaped questions: 20/20 fully bound.** (One binds cleanly and returns zero cards —
+  there are 65 Zombies in that corpus and none with Menace. A correct empty answer is not a
+  parse failure, and the probe scores it accordingly.)
+- **Structure-shaped questions: 5/5 correctly fall through**, leaving their content words
+  visibly unbound — "sacrifice … as a cost", "play lands from your graveyard", "counter target
+  spell and nothing else". This is the boundary, and it is the *right* boundary: those are
+  ability-graph questions and they still belong to the query DSL. A clean-looking parse there
+  would be false confidence, so the probe scores a clean parse on that slice as a failure.
+
+Two bugs the probe caught and the tests now pin:
+
+- fuzzy matching on a multi-word span silently ate its neighbour (`"red creature"` matched
+  `Creature` and dropped the colour) — fuzzy is now single-token only;
+- `"create"` matched the keyword `Creature` at 0.857 — the floor moved to 0.87 with a
+  length-delta guard, because a typo does not change a word's length much.
+
+### Where the honest limits are
+
+- **Synonymy is not solved.** Trigram + `SequenceMatcher` catches typos and morphology, not
+  "sneaky" → `Ambush`. That is either an authored `aliases` table in the profile (cheap, dozens
+  of entries, which is how `colorless` and `flier` are handled today) or a sentence embedding
+  over these same lexicon entries — `Lexicon.lookup` is the seam, and its interface does not
+  change either way.
+- **Free text is a fallback, not a feature.** Residual words are scored against card text, but
+  a question that is *mostly* residual is a question this layer should decline rather than
+  answer. It currently reports them; it does not yet refuse.
+- **Facet collision across games.** A term that is a subtype in one game and a keyword in
+  another is fine (lexicons are per-game), but within one game a colliding term resolves by
+  rarity then declared priority. Prepositions override it. Good enough so far; measure before
+  trusting it on a game with messier vocabulary.
+
 ## 5. Staging
 
-1. **Cut the serving-path LLM dependency.** Add `search-by-example` (structural kNN over
-   promoted `face_vector`) and a template-retrieval front door over the ~85 existing labeled
-   queries. Keep `ask` as an optional extra, not a dependency.
-2. **Prove game-neutrality with a second game before generalizing the framework.** Pick the
-   tier-2 candidate with the best-measured text templating. Write its adapter against the
-   existing record format and run the ablation *before* porting any knowledge layer.
-3. **Only if step 2 clears the kill criterion**, extract the plugin boundary — adapters,
+1. ~~**Cut the serving-path LLM dependency.**~~ Done for the attribute tier: `cardguru find`
+   (§4a) answers property questions with no model. Still open: `search-by-example` (structural
+   kNN over a promoted `face_vector`) and a template-retrieval front door over the ~85 existing
+   labeled queries, which together would cover the mechanical tier. `ask` becomes an optional
+   extra rather than a dependency.
+2. **Get a real dump behind the Riftbound profile.** The profile and the engine are done and
+   tested; what is missing is data (the card APIs are blocked from this sandbox). This is an
+   afternoon: normalize a Riftcodex/RiftScribe/apitcg dump to the profile's field names and the
+   lexicon builds itself. **This step needs no graph at all** — which is the finding: an
+   attribute-shaped game gets a working search API before anyone writes a parser for it.
+
+3. **Only then ask whether that game needs a graph**, by running the §4 kill criterion. Build
+   its ability-graph adapter *after* the ablation says text is insufficient, not before.
+4. **Only if step 3 clears the kill criterion**, extract the plugin boundary — adapters,
    per-game ontology, zones-as-data, knowledge-layer plugin API.
-4. **The cross-game structural embedding is a research bet, not a given.** "Find One Piece's
+
+5. **The cross-game structural embedding is a research bet, not a given.** "Find One Piece's
    Counterspell" is a genuinely novel API that nobody ships, and it depends on a game-neutral
    node taxonomy being real rather than aspirational. Probe it on two games before pricing it.

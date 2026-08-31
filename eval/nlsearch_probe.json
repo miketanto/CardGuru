@@ -1,0 +1,333 @@
+{
+ "corpus": 2539,
+ "lexicon_terms": 567,
+ "attribute": [
+  {
+   "q": "card in blue that has flash",
+   "reading": "color = Blue AND keyword = Flash",
+   "clean": true,
+   "unparsed": [],
+   "hits": 24,
+   "sample": [
+    "All Aboard",
+    "Crafty Cutpurse",
+    "Crystacean"
+   ]
+  },
+  {
+   "q": "green creature with trample",
+   "reading": "color = Green AND type = Creature AND keyword = Trample",
+   "clean": true,
+   "unparsed": [],
+   "hits": 41,
+   "sample": [
+    "Amarant Coral",
+    "Ancient Imperiosaur",
+    "Argothian Swine"
+   ]
+  },
+  {
+   "q": "legendary human wizard",
+   "reading": "supertype = Legendary AND subtype = Human AND subtype = Wizard",
+   "clean": true,
+   "unparsed": [],
+   "hits": 18,
+   "sample": [
+    "Aminatou, Veil Piercer",
+    "Asmoranomardicadaistinaculdacar",
+    "Baral, Chief of Compliance"
+   ]
+  },
+  {
+   "q": "blue instant that costs 2 or less",
+   "reading": "color = Blue AND type = Instant AND cost <= 2",
+   "clean": true,
+   "unparsed": [],
+   "hits": 63,
+   "sample": [
+    "Arcane Denial",
+    "Artificial Evolution",
+    "Aura Finesse"
+   ]
+  },
+  {
+   "q": "red creature with power 4 or more",
+   "reading": "color = Red AND type = Creature AND power >= 4",
+   "clean": true,
+   "unparsed": [],
+   "hits": 106,
+   "sample": [
+    "Akroma, Angel of Fury",
+    "Amarant Coral",
+    "Ashcloud Phoenix"
+   ]
+  },
+  {
+   "q": "artifact with equip",
+   "reading": "type = Artifact AND keyword = Equip",
+   "clean": true,
+   "unparsed": [],
+   "hits": 47,
+   "sample": [
+    "Avacyn's Collar",
+    "Barbed Batterfist",
+    "Barrow-Blade"
+   ]
+  },
+  {
+   "q": "cards in white without flying",
+   "reading": "color = White AND NOT keyword = Flying",
+   "clean": true,
+   "unparsed": [],
+   "hits": 450,
+   "sample": [
+    "Abolish",
+    "Absorb",
+    "Abzan Runemark"
+   ]
+  },
+  {
+   "q": "black or red creature with lifelink",
+   "reading": "(color = Black OR color = Red) AND type = Creature AND keyword = Lifelink",
+   "clean": true,
+   "unparsed": [],
+   "hits": 16,
+   "sample": [
+    "Blood Operative",
+    "Breathless Knight",
+    "Charity Extractor"
+   ]
+  },
+  {
+   "q": "white enchantment",
+   "reading": "color = White AND type = Enchantment",
+   "clean": true,
+   "unparsed": [],
+   "hits": 94,
+   "sample": [
+    "Abzan Runemark",
+    "Angelic Gift",
+    "Anointed Procession"
+   ]
+  },
+  {
+   "q": "legendary artifact creature",
+   "reading": "supertype = Legendary AND type = Artifact AND type = Creature",
+   "clean": true,
+   "unparsed": [],
+   "hits": 6,
+   "sample": [
+    "Brudiclad, Telchor Engineer",
+    "Memnarch",
+    "Reaper King"
+   ]
+  },
+  {
+   "q": "green creature with reach and vigilance",
+   "reading": "color = Green AND type = Creature AND keyword = Reach AND keyword = Vigilance",
+   "clean": true,
+   "unparsed": [],
+   "hits": 1,
+   "sample": [
+    "Zacama, Primal Calamity"
+   ]
+  },
+  {
+   "q": "blue or black instant costing 1",
+   "reading": "(color = Blue OR color = Black) AND type = Instant AND cost == 1",
+   "clean": true,
+   "unparsed": [],
+   "hits": 37,
+   "sample": [
+    "Artificial Evolution",
+    "Aura Finesse",
+    "Beckon Apparition"
+   ]
+  },
+  {
+   "q": "creature with deathtouch and lifelink",
+   "reading": "type = Creature AND keyword = Deathtouch AND keyword = Lifelink",
+   "clean": true,
+   "unparsed": [],
+   "hits": 3,
+   "sample": [
+    "Cloak and Dagger, Entwined",
+    "Nethroi, Apex of Death",
+    "Yarok, the Desecrated"
+   ]
+  },
+  {
+   "q": "snow land",
+   "reading": "supertype = Snow AND type = Land",
+   "clean": true,
+   "unparsed": [],
+   "hits": 7,
+   "sample": [
+    "Alpine Meadow",
+    "Dark Depths",
+    "Snow-Covered Forest"
+   ]
+  },
+  {
+   "q": "elf druid",
+   "reading": "subtype = Elf AND subtype = Druid",
+   "clean": true,
+   "unparsed": [],
+   "hits": 18,
+   "sample": [
+    "Beast Whisperer",
+    "Bloom Tender",
+    "Cairn Wanderer"
+   ]
+  },
+  {
+   "q": "red sorcery costing 3 or less",
+   "reading": "color = Red AND type = Sorcery AND cost <= 3",
+   "clean": true,
+   "unparsed": [],
+   "hits": 45,
+   "sample": [
+    "Abandon the Post",
+    "Act of Treason",
+    "Anger of the Gods"
+   ]
+  },
+  {
+   "q": "zombie with menace",
+   "reading": "subtype = Zombie AND keyword = Menace",
+   "clean": true,
+   "unparsed": [],
+   "hits": 0,
+   "sample": []
+  },
+  {
+   "q": "planeswalker in white",
+   "reading": "type = Planeswalker AND color = White",
+   "clean": true,
+   "unparsed": [],
+   "hits": 18,
+   "sample": [
+    "Ajani, Mentor of Heroes",
+    "Ajani, Sleeper Agent",
+    "Elspeth, Knight-Errant"
+   ]
+  },
+  {
+   "q": "creature with ward",
+   "reading": "type = Creature AND keyword = Ward",
+   "clean": true,
+   "unparsed": [],
+   "hits": 6,
+   "sample": [
+    "Adrix and Nev, Twincasters",
+    "Ancient Imperiosaur",
+    "Chaplain of Alms"
+   ]
+  },
+  {
+   "q": "colorless artifact with cost 2",
+   "reading": "color is empty AND type = Artifact AND cost == 2",
+   "clean": true,
+   "unparsed": [],
+   "hits": 55,
+   "sample": [
+    "Alpha Myr",
+    "Altar of Dementia",
+    "Arcbound Ravager"
+   ]
+  }
+ ],
+ "structural": [
+  {
+   "q": "creatures that sacrifice a creature as a cost to add mana",
+   "reading": "type = Creature  (~\"creatures\", 0.95) AND type = Creature",
+   "clean": false,
+   "unparsed": [
+    "sacrifice",
+    "as",
+    "cost",
+    "to",
+    "add",
+    "mana"
+   ],
+   "hits": 927,
+   "sample": [
+    "Apex Devastator",
+    "Kalitas, Traitor of Ghet",
+    "Sakashima the Impostor"
+   ]
+  },
+  {
+   "q": "cards that double the tokens you create",
+   "reading": "keyword = Double",
+   "clean": false,
+   "unparsed": [
+    "tokens",
+    "you",
+    "create"
+   ],
+   "hits": 7,
+   "sample": [
+    "Enduring Angel",
+    "Gisela, Blade of Goldnight",
+    "Goblin Charbelcher"
+   ]
+  },
+  {
+   "q": "spells that counter target spell and nothing else",
+   "reading": "(everything)",
+   "clean": false,
+   "unparsed": [
+    "spells",
+    "counter",
+    "target",
+    "spell",
+    "nothing",
+    "else"
+   ],
+   "hits": 1359,
+   "sample": [
+    "Counterspell",
+    "Spellskite",
+    "Blurred Mongoose"
+   ]
+  },
+  {
+   "q": "sagas whose chapters put a creature onto the battlefield",
+   "reading": "subtype = Saga  (~\"sagas\", 0.95) AND type = Creature",
+   "clean": false,
+   "unparsed": [
+    "whose",
+    "chapters",
+    "put",
+    "onto",
+    "battlefield"
+   ],
+   "hits": 3,
+   "sample": [
+    "Summon: Fenrir",
+    "Summon: Esper Maduin",
+    "Summon: G.F. Cerberus"
+   ]
+  },
+  {
+   "q": "cards that let you play lands from your graveyard",
+   "reading": "type = Land  (~\"lands\", 0.95)",
+   "clean": false,
+   "unparsed": [
+    "let",
+    "you",
+    "play",
+    "from",
+    "your",
+    "graveyard"
+   ],
+   "hits": 78,
+   "sample": [
+    "Academy Ruins",
+    "Gemstone Caverns",
+    "Havengul Mystery"
+   ]
+  }
+ ]
+}

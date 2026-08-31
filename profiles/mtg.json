@@ -1,0 +1,23 @@
+{
+  "game": "mtg",
+  "id_field": "name",
+  "text_fields": ["text", "type"],
+  "facets": {
+    "color":     {"field": "colors",     "prepositions": ["in", "color", "colored"], "priority": 0,
+                  "aliases": {"w": "White", "u": "Blue", "b": "Black", "r": "Red", "g": "Green",
+                              "colorless": null, "colourless": null}},
+    "type":      {"field": "types",      "prepositions": ["type"], "priority": 1},
+    "supertype": {"field": "supertypes", "priority": 2},
+    "keyword":   {"field": "keywords",   "prepositions": ["with", "has", "have", "having", "keyword"],
+                  "priority": 3,
+                  "aliases": {"flier": "Flying", "flyer": "Flying", "flies": "Flying",
+                              "unblockable": "Menace", "regenerates": "Regenerate"}},
+    "subtype":   {"field": "subtypes",   "prepositions": ["tribe", "tribal"], "priority": 4},
+    "layout":    {"field": "layout",     "multi": false, "priority": 9}
+  },
+  "numerics": {
+    "cost":      {"field": "manaValue", "aliases": ["costs", "mana value", "mv", "cmc", "mana cost"]},
+    "power":     {"field": "power",     "aliases": ["attack", "pow"]},
+    "toughness": {"field": "toughness", "aliases": ["tough", "defense"]}
+  }
+}

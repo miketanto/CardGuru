@@ -3,6 +3,7 @@
   python -m cardguru build  --cardsfolder PATH [--canonical INDEX.json] [--pin SHA] [--out data/dataset.jsonl.gz]
   python -m cardguru search QUERY.json [--dataset PATH] [--limit N] [--explain] [--json]
   python -m cardguru show   "Card Name" [--dataset PATH]
+  python -m cardguru find   "blue creature with flash" [--profile P] [--corpus C]
   python -m cardguru stats  [--dataset PATH]
 """
 from __future__ import annotations
@@ -89,6 +90,39 @@ def cmd_ask(args):
             for line in explain(rec, h["evidence"]):
                 print(f"    {line}")
     print(f"-- {len(hits)} faces matched", file=sys.stderr)
+
+
+def cmd_find(args):
+    from .nlsearch import GameProfile, build_lexicon, load_corpus, run
+    profile = GameProfile.load(args.profile)
+    corpus = load_corpus(args.corpus)
+    t0 = time.time()
+    lex = build_lexicon(corpus, profile)
+    t_lex = time.time() - t0
+    t0 = time.time()
+    res = run(args.question, corpus, profile, lex, limit=args.limit,
+              fuzzy=not args.no_fuzzy)
+    t_run = time.time() - t0
+    if args.json:
+        json.dump(res, sys.stdout, indent=1)
+        print()
+        return
+    print(f"# {res['interpretation']}")
+    for card in res["results"]:
+        bits = []
+        for f in profile.facets:
+            v = card.get(f.field)
+            if v:
+                bits.append(", ".join(map(str, v)) if isinstance(v, list) else str(v))
+        print(f"{card.get(profile.id_field)}  [{' | '.join(bits[:3])}]")
+    for warn in res["low_confidence"]:
+        print(f"  ? read \"{warn['span']}\" as {warn['read_as']} "
+              f"(confidence {warn['confidence']})", file=sys.stderr)
+    if res["unparsed"]:
+        print(f"  ? ignored: {', '.join(res['unparsed'])}", file=sys.stderr)
+    print(f"-- {res['total']} cards matched, showing {len(res['results'])} "
+          f"({len(corpus)} in corpus, lexicon {len(lex.terms)} terms; "
+          f"index {t_lex:.2f}s, query {t_run * 1000:.0f}ms)", file=sys.stderr)
 
 
 def cmd_adjudicate(args):
@@ -570,6 +604,19 @@ def main(argv=None):
     a.add_argument("--compile-only", action="store_true",
                    help="print the compiled query without running it")
     a.set_defaults(fn=cmd_ask)
+
+    fd = sub.add_parser("find",
+                        help="natural-language-ish attribute search (any game)")
+    fd.add_argument("question")
+    fd.add_argument("--profile", default="profiles/mtg.json",
+                    help="game profile JSON (field->facet mapping)")
+    fd.add_argument("--corpus", default="eval/rulesguru/cards_index.json",
+                    help="card dump: JSON list, name-keyed object, or JSONL")
+    fd.add_argument("--limit", type=int, default=20)
+    fd.add_argument("--no-fuzzy", action="store_true",
+                    help="exact/stemmed matching only, no typo correction")
+    fd.add_argument("--json", action="store_true")
+    fd.set_defaults(fn=cmd_find)
 
     ad = sub.add_parser("adjudicate", help="run scenario JSON files through the XMage driver")
     ad.add_argument("scenarios", nargs="+", help="scenario JSON files")
