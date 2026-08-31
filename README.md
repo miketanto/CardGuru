@@ -30,6 +30,9 @@ Plans built on those findings:
 - [research/answer-frames-and-deck-fingerprints.md](research/answer-frames-and-deck-fingerprints.md) —
   taxonomic vs ontological gaps (the Annul/Disdainful lesson), lifecycle edge-cut framing,
   timing cost profiles, and the per-deck fingerprint-graph proposal
+- [plan/no-llm-multigame.md](plan/no-llm-multigame.md) — what the system looks like with
+  no LLM on the serving path, and what a per-game (MTG / Riftbound / One Piece) search API
+  would cost
 
 Reproduce: `research/scripts/` (pure-Python parser + search prototype;
 `CardGuruFeasibilityTest.java` drops into XMage's `Mage.Tests`). Pins: Forge `670429bf`,
