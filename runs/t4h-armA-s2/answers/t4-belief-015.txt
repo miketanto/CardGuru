@@ -1,0 +1,5 @@
+[
+  {"do": "attack", "turn": 1, "player": "A", "attacker": "Cliffhaven Sell-Sword"},
+  {"do": "attack", "turn": 1, "player": "A", "attacker": "Swab Goblin"},
+  {"do": "cast", "turn": 1, "phase": "POSTCOMBAT_MAIN", "player": "A", "card": "Searing Spear", "target_player": "B"}
+]

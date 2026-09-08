@@ -1,0 +1,119 @@
+{
+ "benchmark": "t4-belief v1 (20 hidden-information puzzles, engine-admitted 20/20 xmage)",
+ "comparison": "haiku 7 seeds: arm a (single answer) vs arm c (search, 3-5 candidates, linear-value argmax), responses BELIEVED (believe.py), not enumerated",
+ "model": "claude-haiku-4-5 (in-session subagents; linear value, no LLM scorer)",
+ "grading": "xmage strict-choose; a line wins only against every believed opponent response",
+ "date": "2026-09-08",
+ "seeds": 7,
+ "repair_protocol": "bounded repair on validation/format failures only (bad phase, nonexistent permanent name, mis-expressed player target); executed strategic losses never repaired; pre-repair results preserved per run",
+ "results": {
+  "per_seed": {
+   "s1": {
+    "a": {
+     "pre_repair": 19,
+     "post_repair": 19
+    },
+    "c": {
+     "pre_repair": 18,
+     "post_repair": 20
+    }
+   },
+   "s2": {
+    "a": {
+     "pre_repair": 18,
+     "post_repair": 19
+    },
+    "c": {
+     "pre_repair": 20,
+     "post_repair": 20
+    }
+   },
+   "s3": {
+    "a": {
+     "pre_repair": 17,
+     "post_repair": 17
+    },
+    "c": {
+     "pre_repair": 20,
+     "post_repair": 20
+    }
+   },
+   "s4": {
+    "a": {
+     "pre_repair": 18,
+     "post_repair": 18
+    },
+    "c": {
+     "pre_repair": 18,
+     "post_repair": 19
+    }
+   },
+   "s5": {
+    "a": {
+     "pre_repair": 16,
+     "post_repair": 16
+    },
+    "c": {
+     "pre_repair": 19,
+     "post_repair": 20
+    }
+   },
+   "s6": {
+    "a": {
+     "pre_repair": 16,
+     "post_repair": 16
+    },
+    "c": {
+     "pre_repair": 20,
+     "post_repair": 20
+    }
+   },
+   "s7": {
+    "a": {
+     "pre_repair": 17,
+     "post_repair": 19
+    },
+    "c": {
+     "pre_repair": 20,
+     "post_repair": 20
+    }
+   }
+  },
+  "pre_repair": {
+   "a_total": "121/140",
+   "c_total": "135/140",
+   "a_mean": 17.29,
+   "c_mean": 19.29,
+   "per_seed_diff_c_minus_a": [
+    -1,
+    2,
+    3,
+    0,
+    3,
+    4,
+    3
+   ],
+   "sum_diff": 14,
+   "exact_sign_flip_p_one_sided": 0.0312
+  },
+  "post_repair": {
+   "a_total": "124/140",
+   "c_total": "139/140",
+   "a_mean": 17.71,
+   "c_mean": 19.86,
+   "per_seed_diff_c_minus_a": [
+    1,
+    1,
+    3,
+    1,
+    4,
+    4,
+    1
+   ],
+   "sum_diff": 15,
+   "exact_sign_flip_p_one_sided": 0.0078
+  }
+ },
+ "headline": "search beats single-answer on ALL 7 seeds post-repair: 139/140 (99.3%) vs 124/140 (88.6%), exact paired sign-flip p=0.0078 (minimum attainable at n=7); pre-repair 135/140 vs 121/140, p=0.031. The T4 seed-1 exploratory claim replicates: the scaffold, not the model, closes the hidden-information gap.",
+ "runs": "runs/t4h-arm{A,C}-s{1..7}"
+}

@@ -1,0 +1,171 @@
+{
+ "puzzles": 20,
+ "answered": 20,
+ "wins": 17,
+ "invalid_or_unparsed": 1,
+ "missing": [],
+ "results": [
+  {
+   "id": "t4-belief-001",
+   "win": true,
+   "reasons": [
+    "life(B)=-3 want max=0"
+   ],
+   "engine": "xmage"
+  },
+  {
+   "id": "t4-belief-002",
+   "win": true,
+   "reasons": [
+    "life(B)=-3 want max=0"
+   ],
+   "engine": "xmage"
+  },
+  {
+   "id": "t4-belief-003",
+   "win": false,
+   "reasons": [
+    "beaten by opponent response #2",
+    "life(B)=3 want max=0"
+   ],
+   "engine": "xmage"
+  },
+  {
+   "id": "t4-belief-004",
+   "win": true,
+   "reasons": [
+    "life(B)=-3 want max=0"
+   ],
+   "engine": "xmage"
+  },
+  {
+   "id": "t4-belief-005",
+   "win": true,
+   "reasons": [
+    "life(B)=-3 want max=0"
+   ],
+   "engine": "xmage"
+  },
+  {
+   "id": "t4-belief-006",
+   "win": true,
+   "reasons": [
+    "life(B)=-4 want max=0"
+   ],
+   "engine": "xmage"
+  },
+  {
+   "id": "t4-belief-007",
+   "win": true,
+   "reasons": [
+    "life(B)=-3 want max=0"
+   ],
+   "engine": "xmage"
+  },
+  {
+   "id": "t4-belief-008",
+   "win": true,
+   "reasons": [
+    "life(B)=0 want max=0"
+   ],
+   "engine": "xmage"
+  },
+  {
+   "id": "t4-belief-009",
+   "win": true,
+   "reasons": [
+    "life(B)=-3 want max=0"
+   ],
+   "engine": "xmage"
+  },
+  {
+   "id": "t4-belief-010",
+   "win": true,
+   "reasons": [
+    "life(B)=-3 want max=0"
+   ],
+   "engine": "xmage"
+  },
+  {
+   "id": "t4-belief-011",
+   "win": true,
+   "reasons": [
+    "life(B)=-4 want max=0"
+   ],
+   "engine": "xmage"
+  },
+  {
+   "id": "t4-belief-012",
+   "win": true,
+   "reasons": [
+    "life(B)=-3 want max=0"
+   ],
+   "engine": "xmage"
+  },
+  {
+   "id": "t4-belief-013",
+   "win": true,
+   "reasons": [
+    "life(B)=-4 want max=0"
+   ],
+   "engine": "xmage"
+  },
+  {
+   "id": "t4-belief-014",
+   "win": false,
+   "reasons": [
+    "beaten by opponent response #0",
+    "run did not execute: AssertionError: No permanents found called Caracal that match the filter criteria \"permanent you control\""
+   ],
+   "engine": "xmage"
+  },
+  {
+   "id": "t4-belief-015",
+   "win": false,
+   "reasons": [
+    "invalid line: actions[2]: bad phase 'COMBAT'"
+   ],
+   "engine": null
+  },
+  {
+   "id": "t4-belief-016",
+   "win": true,
+   "reasons": [
+    "life(B)=-4 want max=0"
+   ],
+   "engine": "xmage"
+  },
+  {
+   "id": "t4-belief-017",
+   "win": true,
+   "reasons": [
+    "life(B)=-5 want max=0"
+   ],
+   "engine": "xmage"
+  },
+  {
+   "id": "t4-belief-018",
+   "win": true,
+   "reasons": [
+    "life(B)=-4 want max=0"
+   ],
+   "engine": "xmage"
+  },
+  {
+   "id": "t4-belief-019",
+   "win": true,
+   "reasons": [
+    "life(B)=-3 want max=0"
+   ],
+   "engine": "xmage"
+  },
+  {
+   "id": "t4-belief-020",
+   "win": true,
+   "reasons": [
+    "life(B)=-3 want max=0"
+   ],
+   "engine": "xmage"
+  }
+ ]
+}

@@ -1,0 +1,21 @@
+[
+  [
+    {"do": "cast", "turn": 1, "phase": "PRECOMBAT_MAIN", "player": "A", "card": "Incinerate"},
+    {"do": "target", "player": "A", "value": "Coral Commando"},
+    {"do": "wait_stack", "turn": 1, "phase": "PRECOMBAT_MAIN"},
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Canal Monitor"}
+  ],
+  [
+    {"do": "cast", "turn": 1, "phase": "PRECOMBAT_MAIN", "player": "A", "card": "Incinerate"},
+    {"do": "target", "player": "A", "value": "Coral Commando"},
+    {"do": "wait_stack", "turn": 1, "phase": "PRECOMBAT_MAIN"},
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Canal Monitor"},
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Staunch Shieldmate"}
+  ],
+  [
+    {"do": "cast", "turn": 1, "phase": "PRECOMBAT_MAIN", "player": "A", "card": "Incinerate", "target_player": "B"},
+    {"do": "wait_stack", "turn": 1, "phase": "PRECOMBAT_MAIN"},
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Canal Monitor"},
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Staunch Shieldmate"}
+  ]
+]

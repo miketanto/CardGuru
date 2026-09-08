@@ -1,0 +1,7 @@
+[
+  {"do": "cast", "turn": 1, "phase": "PRECOMBAT_MAIN", "player": "A", "card": "Incinerate", "target_player": "B"},
+  {"do": "wait_stack", "turn": 1, "phase": "PRECOMBAT_MAIN"},
+  {"do": "attack", "turn": 1, "player": "A", "attacker": "Terrain Elemental"},
+  {"do": "attack", "turn": 1, "player": "A", "attacker": "Talas Merchant"},
+  {"do": "attack", "turn": 1, "player": "A", "attacker": "Hurloon Minotaur"}
+]

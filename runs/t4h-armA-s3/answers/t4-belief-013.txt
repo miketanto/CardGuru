@@ -1,0 +1,4 @@
+[
+  {"do": "attack", "turn": 1, "player": "A", "attacker": "Regathan Firecat"},
+  {"do": "attack", "turn": 1, "player": "A", "attacker": "Bastion Enforcer"}
+]

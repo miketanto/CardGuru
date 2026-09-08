@@ -1,0 +1,6 @@
+[
+  {"do": "attack", "turn": 1, "player": "A", "attacker": "Swordwise Centaur"},
+  {"do": "attack", "turn": 1, "player": "A", "attacker": "Gorilla Warrior"},
+  {"do": "attack", "turn": 1, "player": "A", "attacker": "Falkenrath Reaver"},
+  {"do": "cast", "turn": 1, "phase": "POSTCOMBAT_MAIN", "player": "A", "card": "Searing Spear", "target_player": "B"}
+]

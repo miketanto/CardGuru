@@ -161,17 +161,36 @@ all additive, like the live-matches merge). Its report will name the verified
 
 ## Next steps (priority order)
 
-1. **Put `mage-player-ai-mad` on the `Mage.Tests` classpath and seat
-   `ComputerPlayer6` (MAD) as playerB.** Until this, the live opponent is
-   passive and no live win/loss means anything. This unblocks 2–4.
-2. A real constructed deck (replace the hardcoded mono-red plumbing deck) so
-   live win/loss becomes a strength signal.
-3. Externalize in-cast sub-choices (targets/mana/X) for full LLM control — the
-   live-match feasibility doc names this as the last blocker.
-4. Pay down seeds debt (≥7) on the arm comparisons that would go in a writeup.
-5. Then: mage-bench ladder for external Elo; the arm (d) LLM-value ablation
-   once a tier gives it headroom.
+1. ~~MAD opponent~~ **DONE** (`a7cb984`): the classpath fear was moot —
+   mage-player-ai-mad reaches Mage.Tests transitively via mage-server (runtime
+   scope IS on the test classpath; that's why TestComputerPlayer7 compiled all
+   along). The driver seats TestPlayer(TestComputerPlayer7 skill 6,
+   setAIPlayer(true)) as playerB in interactive mode, same seating as XMage's
+   CardTestPlayerBaseAI. `--opp passive` restores the old opponent;
+   `--opp-skill` sets depth. Verified: pass policy loses to MAD in 18 turns
+   (it develops and attacks; the passive game could only deck out ~turn 144).
+2. ~~Real deck~~ **DONE** (`f378ea9`): `--deck-a/--deck-b` take a .dck path, a
+   meta-deck .json, or an archetype name in meta_decks/ (resolve_deck converts
+   the believe.py corpus format; DckDeckImporter name-searches placeholder set
+   codes). Verified live: belief@mono_red_aggro vs MAD@mono_green_stompy,
+   22 turns, clean.
+3. ~~Sub-choices~~ **DONE** (`47f2114`): `--subchoices` externalizes in-cast
+   targets/X/modes/yes-no/named choices over the spool (new request kinds:
+   target/choose/announce_x/mode/use/choice — see subchoice_policy for
+   shapes). Nested ask() works because the game loop is synchronous. Trivial
+   picks stay with the AI; malformed answers fall back to the AI (logged).
+   Verified live: target+choose served externally in a 21-turn game.
+4. ~~T4 seeds debt~~ **DONE**: 7 seeds × arms a/c, 240 haiku subagents,
+   engine-graded. **Search beats single-answer on ALL 7 seeds post-repair:
+   139/140 vs 124/140, exact sign-flip p=0.0078** (pre-repair 135/140 vs
+   121/140, p=0.031). Record: research/data/eval_t4_ac_haiku_7seed_*.json,
+   runs/t4h-arm{A,C}-s{1..7}. T2 (a/b/c × 30 puzzles) and T3 seeds are still
+   single-seed — pay down before any writeup claim about those tiers.
+5. Live-match strength testing vs MAD (the new bar: our heuristic policies
+   lose every live game to MAD — win/loss is finally a real signal); then the
+   mage-bench ladder for external Elo; the arm (d) LLM-value ablation once a
+   tier gives it headroom.
 
 Done since first draft: `agent/live-minimax` merged (`538a2ad`); sim-backed
 minimax over attacks shipped (`docs/live-minimax.md`); COMPUTER_MAD overclaim
-corrected.
+corrected; items 1–4 above (this session).

@@ -1,0 +1,363 @@
+{
+ "puzzles": 20,
+ "answered": 20,
+ "wins": 19,
+ "invalid_or_unparsed": 1,
+ "missing": [],
+ "results": [
+  {
+   "id": "t4-belief-001",
+   "win": true,
+   "reasons": [
+    "life(B)=-3 want max=0"
+   ],
+   "engine": "xmage",
+   "candidates": 3,
+   "picked": 0,
+   "responses": 3,
+   "scores": [
+    1026.0,
+    1026.0,
+    -4.0
+   ],
+   "candidate_errors": 0
+  },
+  {
+   "id": "t4-belief-002",
+   "win": true,
+   "reasons": [
+    "life(B)=-3 want max=0"
+   ],
+   "engine": "xmage",
+   "candidates": 4,
+   "picked": 0,
+   "responses": 3,
+   "scores": [
+    1026.0,
+    1026.0,
+    1026.0,
+    1026.0
+   ],
+   "candidate_errors": 0
+  },
+  {
+   "id": "t4-belief-003",
+   "win": true,
+   "reasons": [
+    "life(B)=-3 want max=0"
+   ],
+   "engine": "xmage",
+   "candidates": 4,
+   "picked": 0,
+   "responses": 3,
+   "scores": [
+    1028.0,
+    -1.0,
+    8.0,
+    8.0
+   ],
+   "candidate_errors": 0
+  },
+  {
+   "id": "t4-belief-004",
+   "win": true,
+   "reasons": [
+    "life(B)=-3 want max=0"
+   ],
+   "engine": "xmage",
+   "candidates": 4,
+   "picked": 0,
+   "responses": 3,
+   "scores": [
+    1028.0,
+    18.0,
+    8.0,
+    1028.0
+   ],
+   "candidate_errors": 0
+  },
+  {
+   "id": "t4-belief-005",
+   "win": true,
+   "reasons": [
+    "life(B)=-3 want max=0"
+   ],
+   "engine": "xmage",
+   "candidates": 4,
+   "picked": 1,
+   "responses": 3,
+   "scores": [
+    null,
+    1026.0,
+    null,
+    null
+   ],
+   "candidate_errors": 3
+  },
+  {
+   "id": "t4-belief-006",
+   "win": true,
+   "reasons": [
+    "life(B)=-4 want max=0"
+   ],
+   "engine": "xmage",
+   "candidates": 4,
+   "picked": 0,
+   "responses": 3,
+   "scores": [
+    1026.0,
+    1026.0,
+    1026.0,
+    -7.0
+   ],
+   "candidate_errors": 0
+  },
+  {
+   "id": "t4-belief-007",
+   "win": true,
+   "reasons": [
+    "life(B)=-3 want max=0"
+   ],
+   "engine": "xmage",
+   "candidates": 3,
+   "picked": 0,
+   "responses": 3,
+   "scores": [
+    1028.0,
+    1028.0,
+    null
+   ],
+   "candidate_errors": 1
+  },
+  {
+   "id": "t4-belief-008",
+   "win": true,
+   "reasons": [
+    "life(B)=-3 want max=0"
+   ],
+   "engine": "xmage",
+   "candidates": 3,
+   "picked": 0,
+   "responses": 3,
+   "scores": [
+    1028.0,
+    1028.0,
+    1028.0
+   ],
+   "candidate_errors": 0
+  },
+  {
+   "id": "t4-belief-009",
+   "win": true,
+   "reasons": [
+    "life(B)=-3 want max=0"
+   ],
+   "engine": "xmage",
+   "candidates": 5,
+   "picked": 1,
+   "responses": 3,
+   "scores": [
+    -4.0,
+    1026.0,
+    1026.0,
+    6.0,
+    1026.0
+   ],
+   "candidate_errors": 0
+  },
+  {
+   "id": "t4-belief-010",
+   "win": true,
+   "reasons": [
+    "life(B)=-3 want max=0"
+   ],
+   "engine": "xmage",
+   "candidates": 4,
+   "picked": 0,
+   "responses": 3,
+   "scores": [
+    1028.0,
+    -2.0,
+    1028.0,
+    1028.0
+   ],
+   "candidate_errors": 0
+  },
+  {
+   "id": "t4-belief-011",
+   "win": true,
+   "reasons": [
+    "life(B)=-4 want max=0"
+   ],
+   "engine": "xmage",
+   "candidates": 4,
+   "picked": 0,
+   "responses": 3,
+   "scores": [
+    1028.0,
+    -2.0,
+    -2.0,
+    1028.0
+   ],
+   "candidate_errors": 0
+  },
+  {
+   "id": "t4-belief-012",
+   "win": true,
+   "reasons": [
+    "life(B)=-3 want max=0"
+   ],
+   "engine": "xmage",
+   "candidates": 4,
+   "picked": 0,
+   "responses": 3,
+   "scores": [
+    1026.0,
+    1026.0,
+    6.0,
+    -3.0
+   ],
+   "candidate_errors": 0
+  },
+  {
+   "id": "t4-belief-013",
+   "win": true,
+   "reasons": [
+    "life(B)=-4 want max=0"
+   ],
+   "engine": "xmage",
+   "candidates": 3,
+   "picked": 0,
+   "responses": 3,
+   "scores": [
+    1026.0,
+    1026.0,
+    -4.0
+   ],
+   "candidate_errors": 0
+  },
+  {
+   "id": "t4-belief-014",
+   "win": true,
+   "reasons": [
+    "life(B)=-3 want max=0"
+   ],
+   "engine": "xmage",
+   "candidates": 5,
+   "picked": 0,
+   "responses": 3,
+   "scores": [
+    1026.0,
+    -4.0,
+    6.0,
+    1026.0,
+    -24.0
+   ],
+   "candidate_errors": 0
+  },
+  {
+   "id": "t4-belief-015",
+   "win": true,
+   "reasons": [
+    "life(B)=-3 want max=0"
+   ],
+   "engine": "xmage",
+   "candidates": 4,
+   "picked": 0,
+   "responses": 3,
+   "scores": [
+    1026.0,
+    1026.0,
+    6.0,
+    1026.0
+   ],
+   "candidate_errors": 0
+  },
+  {
+   "id": "t4-belief-016",
+   "win": false,
+   "reasons": [
+    "all candidates failed: invalid: actions[3]: bad phase 'COMBAT'; invalid: actions[4]: bad phase 'COMBAT'; invalid: actions[5]: bad phase 'COMBAT'"
+   ],
+   "engine": null,
+   "candidates": 3,
+   "scores": [
+    null,
+    null,
+    null
+   ]
+  },
+  {
+   "id": "t4-belief-017",
+   "win": true,
+   "reasons": [
+    "life(B)=-5 want max=0"
+   ],
+   "engine": "xmage",
+   "candidates": 4,
+   "picked": 1,
+   "responses": 3,
+   "scores": [
+    -4.0,
+    1026.0,
+    -3.0,
+    -14.0
+   ],
+   "candidate_errors": 0
+  },
+  {
+   "id": "t4-belief-018",
+   "win": true,
+   "reasons": [
+    "life(B)=-4 want max=0"
+   ],
+   "engine": "xmage",
+   "candidates": 3,
+   "picked": 0,
+   "responses": 3,
+   "scores": [
+    1028.0,
+    1028.0,
+    null
+   ],
+   "candidate_errors": 1
+  },
+  {
+   "id": "t4-belief-019",
+   "win": true,
+   "reasons": [
+    "life(B)=-3 want max=0"
+   ],
+   "engine": "xmage",
+   "candidates": 5,
+   "picked": 0,
+   "responses": 3,
+   "scores": [
+    1026.0,
+    1026.0,
+    6.0,
+    1026.0,
+    -3.0
+   ],
+   "candidate_errors": 0
+  },
+  {
+   "id": "t4-belief-020",
+   "win": true,
+   "reasons": [
+    "life(B)=-3 want max=0"
+   ],
+   "engine": "xmage",
+   "candidates": 4,
+   "picked": 0,
+   "responses": 3,
+   "scores": [
+    1028.0,
+    1028.0,
+    8.0,
+    -2.0
+   ],
+   "candidate_errors": 0
+  }
+ ]
+}

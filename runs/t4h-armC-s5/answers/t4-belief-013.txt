@@ -1,0 +1,18 @@
+[
+  [
+    {"do": "cast", "turn": 1, "phase": "PRECOMBAT_MAIN", "player": "A", "card": "Searing Spear", "target_player": "B"},
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Regathan Firecat"},
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Bastion Enforcer"}
+  ],
+  [
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Regathan Firecat"},
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Bastion Enforcer"},
+    {"do": "cast", "turn": 1, "phase": "POSTCOMBAT_MAIN", "player": "A", "card": "Searing Spear", "target_player": "B"}
+  ],
+  [
+    {"do": "cast", "turn": 1, "phase": "PRECOMBAT_MAIN", "player": "A", "card": "Searing Spear"},
+    {"do": "target", "player": "A", "value": "Coral Commando"},
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Regathan Firecat"},
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Bastion Enforcer"}
+  ]
+]

@@ -1,0 +1,28 @@
+{
+ "arm": "c",
+ "mode": "bare",
+ "seed": 6,
+ "search": true,
+ "puzzles": [
+  "t4-belief-001",
+  "t4-belief-002",
+  "t4-belief-003",
+  "t4-belief-004",
+  "t4-belief-005",
+  "t4-belief-006",
+  "t4-belief-007",
+  "t4-belief-008",
+  "t4-belief-009",
+  "t4-belief-010",
+  "t4-belief-011",
+  "t4-belief-012",
+  "t4-belief-013",
+  "t4-belief-014",
+  "t4-belief-015",
+  "t4-belief-016",
+  "t4-belief-017",
+  "t4-belief-018",
+  "t4-belief-019",
+  "t4-belief-020"
+ ]
+}
