@@ -1,0 +1,33 @@
+[
+  [
+    {"do": "cast", "turn": 1, "phase": "PRECOMBAT_MAIN", "player": "A", "card": "Incinerate", "target_player": "B"},
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Regal Unicorn"},
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Gloom Pangolin"},
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Armored Wolf-Rider"}
+  ],
+  [
+    {"do": "cast", "turn": 1, "phase": "PRECOMBAT_MAIN", "player": "A", "card": "Shock", "target_player": "B"},
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Regal Unicorn"},
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Gloom Pangolin"},
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Armored Wolf-Rider"}
+  ],
+  [
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Regal Unicorn"},
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Gloom Pangolin"},
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Armored Wolf-Rider"}
+  ],
+  [
+    {"do": "cast", "turn": 1, "phase": "PRECOMBAT_MAIN", "player": "A", "card": "Incinerate"},
+    {"do": "target", "player": "A", "value": "Craw Wurm"},
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Regal Unicorn"},
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Gloom Pangolin"},
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Armored Wolf-Rider"}
+  ],
+  [
+    {"do": "cast", "turn": 1, "phase": "PRECOMBAT_MAIN", "player": "A", "card": "Shock"},
+    {"do": "target", "player": "A", "value": "Craw Wurm"},
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Regal Unicorn"},
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Gloom Pangolin"},
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Armored Wolf-Rider"}
+  ]
+]

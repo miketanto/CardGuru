@@ -1,0 +1,22 @@
+[
+  [
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Kalonian Tusker"},
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Knight of the Keep"},
+    {"do": "cast", "turn": 1, "phase": "POSTCOMBAT_MAIN", "player": "A", "card": "Incinerate", "target_player": "B"}
+  ],
+  [
+    {"do": "cast", "turn": 1, "phase": "PRECOMBAT_MAIN", "player": "A", "card": "Incinerate", "target_player": "B"},
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Kalonian Tusker"},
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Knight of the Keep"}
+  ],
+  [
+    {"do": "cast", "turn": 1, "phase": "PRECOMBAT_MAIN", "player": "A", "card": "Incinerate", "target": "Enormous Baloth"},
+    {"do": "wait_stack", "turn": 1, "phase": "PRECOMBAT_MAIN"},
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Kalonian Tusker"},
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Knight of the Keep"}
+  ],
+  [
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Kalonian Tusker"},
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Knight of the Keep"}
+  ]
+]

@@ -1,0 +1,29 @@
+[
+  [
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Bear Cub"},
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Ancient Carp"},
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Queen's Bay Soldier"},
+    {"do": "cast", "turn": 1, "phase": "POSTCOMBAT_MAIN", "player": "A", "card": "Lightning Bolt", "target_player": "B"}
+  ],
+  [
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Bear Cub"},
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Ancient Carp"},
+    {"do": "cast", "turn": 1, "phase": "POSTCOMBAT_MAIN", "player": "A", "card": "Lightning Bolt", "target_player": "B"}
+  ],
+  [
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Bear Cub"},
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Ancient Carp"},
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Queen's Bay Soldier"},
+    {"do": "cast", "turn": 1, "phase": "POSTCOMBAT_MAIN", "player": "A", "card": "Flame Slash"},
+    {"do": "target", "player": "A", "value": "Craw Wurm"}
+  ],
+  [
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Bear Cub"},
+    {"do": "cast", "turn": 1, "phase": "POSTCOMBAT_MAIN", "player": "A", "card": "Lightning Bolt", "target_player": "B"}
+  ],
+  [
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Bear Cub"},
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Queen's Bay Soldier"},
+    {"do": "cast", "turn": 1, "phase": "POSTCOMBAT_MAIN", "player": "A", "card": "Lightning Bolt", "target_player": "B"}
+  ]
+]

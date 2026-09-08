@@ -1,0 +1,27 @@
+[
+  [
+    {"do": "cast", "turn": 1, "phase": "PRECOMBAT_MAIN", "player": "A", "card": "Lightning Bolt", "target_player": "B"},
+    {"do": "cast", "turn": 1, "phase": "PRECOMBAT_MAIN", "player": "A", "card": "Shock", "target_player": "B"},
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Goblin Piker"}
+  ],
+  [
+    {"do": "cast", "turn": 1, "phase": "PRECOMBAT_MAIN", "player": "A", "card": "Lightning Bolt", "target_player": "B"},
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Goblin Piker"},
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Border Guard"},
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Gloom Pangolin"}
+  ],
+  [
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Goblin Piker"},
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Border Guard"},
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Gloom Pangolin"},
+    {"do": "cast", "turn": 1, "phase": "POSTCOMBAT_MAIN", "player": "A", "card": "Lightning Bolt", "target_player": "B"},
+    {"do": "cast", "turn": 1, "phase": "POSTCOMBAT_MAIN", "player": "A", "card": "Shock", "target_player": "B"}
+  ],
+  [
+    {"do": "cast", "turn": 1, "phase": "PRECOMBAT_MAIN", "player": "A", "card": "Lightning Bolt", "target_player": "B"},
+    {"do": "cast", "turn": 1, "phase": "PRECOMBAT_MAIN", "player": "A", "card": "Shock", "target_player": "B"},
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Goblin Piker"},
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Border Guard"},
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Gloom Pangolin"}
+  ]
+]

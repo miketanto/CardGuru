@@ -1,0 +1,534 @@
+{
+ "benchmark": "t2 choice-traps v1 (30 puzzles, engine-admitted 30/30 xmage)",
+ "arm": "c (bare board + 3-5 candidate lines, all simulated, linear value picks)",
+ "model": "claude-haiku-4-5 (in-session subagents; value function is pure Python)",
+ "grading_engine": "xmage (strict-choose, winner short-circuit driver)",
+ "date": "2026-09-08",
+ "seeds_run": 1,
+ "aggregate": {
+  "wins": 30,
+  "attempts": 30,
+  "win_rate": 1.0
+ },
+ "comparison_same_model_same_seed": {
+  "arm_a_bare": "28/30",
+  "arm_b_annotated": "28/30",
+  "arm_c_search": "30/30"
+ },
+ "search_stats": {
+  "candidates_simulated": 114,
+  "engine_vetoed": 13,
+  "puzzles_where_veto_fired": 7
+ },
+ "reading": [
+  "Pre-registered prediction confirmed: arm (c) >= arm (a) at the same model, closing every arm-a and arm-b loss. haiku+search ties fable-without-search (both 30/30 on T2).",
+  "The veto did real work: on t2-right-burn-017 three of four candidates over-cast and died in simulation; the single legal candidate won and was picked. On t2-face-not-decoy-013 an executed-but-losing candidate scored -1 against ~1028 for wins \u2014 the linear value ranked correctly with no LLM call.",
+  "Cost of search at this depth: one model turn per puzzle (same as arms a/b, slightly longer output) plus ~3.8 engine rollouts per decision at ~0.1-12s each."
+ ],
+ "results": [
+  {
+   "id": "t2-creature-only-003",
+   "win": true,
+   "reasons": [
+    "life(B)=0 want max=0"
+   ],
+   "engine": "xmage",
+   "candidates": 4,
+   "picked": 0,
+   "scores": [
+    1029.0,
+    1029.0,
+    1029.0,
+    1029.0
+   ],
+   "candidate_errors": 0
+  },
+  {
+   "id": "t2-creature-only-006",
+   "win": true,
+   "reasons": [
+    "life(B)=0 want max=0"
+   ],
+   "engine": "xmage",
+   "candidates": 4,
+   "picked": 0,
+   "scores": [
+    1029.0,
+    1029.0,
+    0.0,
+    -1.0
+   ],
+   "candidate_errors": 0
+  },
+  {
+   "id": "t2-creature-only-009",
+   "win": true,
+   "reasons": [
+    "life(B)=0 want max=0"
+   ],
+   "engine": "xmage",
+   "candidates": 5,
+   "picked": 0,
+   "scores": [
+    1029.0,
+    9.0,
+    -1.0,
+    -11.0,
+    9.0
+   ],
+   "candidate_errors": 0
+  },
+  {
+   "id": "t2-creature-only-012",
+   "win": true,
+   "reasons": [
+    "life(B)=0 want max=0"
+   ],
+   "engine": "xmage",
+   "candidates": 3,
+   "picked": 0,
+   "scores": [
+    1029.0,
+    1029.0,
+    9.0
+   ],
+   "candidate_errors": 0
+  },
+  {
+   "id": "t2-creature-only-015",
+   "win": true,
+   "reasons": [
+    "life(B)=0 want max=0"
+   ],
+   "engine": "xmage",
+   "candidates": 4,
+   "picked": 0,
+   "scores": [
+    1029.0,
+    1029.0,
+    -1.0,
+    0.0
+   ],
+   "candidate_errors": 0
+  },
+  {
+   "id": "t2-creature-only-018",
+   "win": true,
+   "reasons": [
+    "life(B)=0 want max=0"
+   ],
+   "engine": "xmage",
+   "candidates": 4,
+   "picked": 0,
+   "scores": [
+    1029.0,
+    1029.0,
+    1029.0,
+    null
+   ],
+   "candidate_errors": 1
+  },
+  {
+   "id": "t2-creature-only-021",
+   "win": true,
+   "reasons": [
+    "life(B)=0 want max=0"
+   ],
+   "engine": "xmage",
+   "candidates": 4,
+   "picked": 0,
+   "scores": [
+    1029.0,
+    1029.0,
+    null,
+    null
+   ],
+   "candidate_errors": 2
+  },
+  {
+   "id": "t2-creature-only-024",
+   "win": true,
+   "reasons": [
+    "life(B)=0 want max=0"
+   ],
+   "engine": "xmage",
+   "candidates": 3,
+   "picked": 0,
+   "scores": [
+    1031.0,
+    1031.0,
+    1031.0
+   ],
+   "candidate_errors": 0
+  },
+  {
+   "id": "t2-creature-only-027",
+   "win": true,
+   "reasons": [
+    "life(B)=0 want max=0"
+   ],
+   "engine": "xmage",
+   "candidates": 4,
+   "picked": 0,
+   "scores": [
+    1027.0,
+    1027.0,
+    1027.0,
+    1027.0
+   ],
+   "candidate_errors": 0
+  },
+  {
+   "id": "t2-creature-only-030",
+   "win": true,
+   "reasons": [
+    "life(B)=0 want max=0"
+   ],
+   "engine": "xmage",
+   "candidates": 3,
+   "picked": 0,
+   "scores": [
+    1031.0,
+    1031.0,
+    null
+   ],
+   "candidate_errors": 1
+  },
+  {
+   "id": "t2-face-not-decoy-001",
+   "win": true,
+   "reasons": [
+    "life(B)=0 want max=0"
+   ],
+   "engine": "xmage",
+   "candidates": 3,
+   "picked": 0,
+   "scores": [
+    1034.0,
+    1034.0,
+    1034.0
+   ],
+   "candidate_errors": 0
+  },
+  {
+   "id": "t2-face-not-decoy-004",
+   "win": true,
+   "reasons": [
+    "life(B)=0 want max=0"
+   ],
+   "engine": "xmage",
+   "candidates": 3,
+   "picked": 0,
+   "scores": [
+    1026.0,
+    1026.0,
+    6.0
+   ],
+   "candidate_errors": 0
+  },
+  {
+   "id": "t2-face-not-decoy-007",
+   "win": true,
+   "reasons": [
+    "life(B)=0 want max=0"
+   ],
+   "engine": "xmage",
+   "candidates": 4,
+   "picked": 0,
+   "scores": [
+    1030.0,
+    1030.0,
+    1030.0,
+    1030.0
+   ],
+   "candidate_errors": 0
+  },
+  {
+   "id": "t2-face-not-decoy-010",
+   "win": true,
+   "reasons": [
+    "life(B)=0 want max=0"
+   ],
+   "engine": "xmage",
+   "candidates": 3,
+   "picked": 0,
+   "scores": [
+    1032.0,
+    1032.0,
+    1032.0
+   ],
+   "candidate_errors": 0
+  },
+  {
+   "id": "t2-face-not-decoy-013",
+   "win": true,
+   "reasons": [
+    "life(B)=0 want max=0"
+   ],
+   "engine": "xmage",
+   "candidates": 4,
+   "picked": 0,
+   "scores": [
+    1028.0,
+    1028.0,
+    null,
+    -1.0
+   ],
+   "candidate_errors": 1
+  },
+  {
+   "id": "t2-face-not-decoy-016",
+   "win": true,
+   "reasons": [
+    "life(B)=0 want max=0"
+   ],
+   "engine": "xmage",
+   "candidates": 5,
+   "picked": 0,
+   "scores": [
+    1026.0,
+    1026.0,
+    1026.0,
+    1026.0,
+    1026.0
+   ],
+   "candidate_errors": 0
+  },
+  {
+   "id": "t2-face-not-decoy-019",
+   "win": true,
+   "reasons": [
+    "life(B)=0 want max=0"
+   ],
+   "engine": "xmage",
+   "candidates": 3,
+   "picked": 0,
+   "scores": [
+    1030.0,
+    1030.0,
+    1030.0
+   ],
+   "candidate_errors": 0
+  },
+  {
+   "id": "t2-face-not-decoy-022",
+   "win": true,
+   "reasons": [
+    "life(B)=0 want max=0"
+   ],
+   "engine": "xmage",
+   "candidates": 4,
+   "picked": 0,
+   "scores": [
+    1032.0,
+    1032.0,
+    1032.0,
+    1032.0
+   ],
+   "candidate_errors": 0
+  },
+  {
+   "id": "t2-face-not-decoy-025",
+   "win": true,
+   "reasons": [
+    "life(B)=0 want max=0"
+   ],
+   "engine": "xmage",
+   "candidates": 2,
+   "picked": 0,
+   "scores": [
+    1026.0,
+    1026.0
+   ],
+   "candidate_errors": 0
+  },
+  {
+   "id": "t2-face-not-decoy-028",
+   "win": true,
+   "reasons": [
+    "life(B)=0 want max=0"
+   ],
+   "engine": "xmage",
+   "candidates": 3,
+   "picked": 0,
+   "scores": [
+    1030.0,
+    1030.0,
+    1030.0
+   ],
+   "candidate_errors": 0
+  },
+  {
+   "id": "t2-right-burn-002",
+   "win": true,
+   "reasons": [
+    "life(B)=0 want max=0"
+   ],
+   "engine": "xmage",
+   "candidates": 4,
+   "picked": 0,
+   "scores": [
+    1029.0,
+    1029.0,
+    1029.0,
+    1029.0
+   ],
+   "candidate_errors": 0
+  },
+  {
+   "id": "t2-right-burn-005",
+   "win": true,
+   "reasons": [
+    "life(B)=0 want max=0"
+   ],
+   "engine": "xmage",
+   "candidates": 4,
+   "picked": 0,
+   "scores": [
+    1027.0,
+    1027.0,
+    17.0,
+    -2.0
+   ],
+   "candidate_errors": 0
+  },
+  {
+   "id": "t2-right-burn-008",
+   "win": true,
+   "reasons": [
+    "life(B)=0 want max=0"
+   ],
+   "engine": "xmage",
+   "candidates": 5,
+   "picked": 0,
+   "scores": [
+    1029.0,
+    1029.0,
+    19.0,
+    9.0,
+    0.0
+   ],
+   "candidate_errors": 0
+  },
+  {
+   "id": "t2-right-burn-011",
+   "win": true,
+   "reasons": [
+    "life(B)=0 want max=0"
+   ],
+   "engine": "xmage",
+   "candidates": 4,
+   "picked": 1,
+   "scores": [
+    null,
+    1029.0,
+    null,
+    null
+   ],
+   "candidate_errors": 3
+  },
+  {
+   "id": "t2-right-burn-014",
+   "win": true,
+   "reasons": [
+    "life(B)=0 want max=0"
+   ],
+   "engine": "xmage",
+   "candidates": 4,
+   "picked": 0,
+   "scores": [
+    1027.0,
+    1027.0,
+    17.0,
+    17.0
+   ],
+   "candidate_errors": 0
+  },
+  {
+   "id": "t2-right-burn-017",
+   "win": true,
+   "reasons": [
+    "life(B)=0 want max=0"
+   ],
+   "engine": "xmage",
+   "candidates": 4,
+   "picked": 3,
+   "scores": [
+    null,
+    null,
+    null,
+    1031.0
+   ],
+   "candidate_errors": 3
+  },
+  {
+   "id": "t2-right-burn-020",
+   "win": true,
+   "reasons": [
+    "life(B)=0 want max=0"
+   ],
+   "engine": "xmage",
+   "candidates": 4,
+   "picked": 0,
+   "scores": [
+    1029.0,
+    19.0,
+    0.0,
+    19.0
+   ],
+   "candidate_errors": 0
+  },
+  {
+   "id": "t2-right-burn-023",
+   "win": true,
+   "reasons": [
+    "life(B)=0 want max=0"
+   ],
+   "engine": "xmage",
+   "candidates": 4,
+   "picked": 0,
+   "scores": [
+    1029.0,
+    1029.0,
+    null,
+    null
+   ],
+   "candidate_errors": 2
+  },
+  {
+   "id": "t2-right-burn-026",
+   "win": true,
+   "reasons": [
+    "life(B)=0 want max=0"
+   ],
+   "engine": "xmage",
+   "candidates": 4,
+   "picked": 0,
+   "scores": [
+    1029.0,
+    1029.0,
+    19.0,
+    0.0
+   ],
+   "candidate_errors": 0
+  },
+  {
+   "id": "t2-right-burn-029",
+   "win": true,
+   "reasons": [
+    "life(B)=0 want max=0"
+   ],
+   "engine": "xmage",
+   "candidates": 5,
+   "picked": 0,
+   "scores": [
+    1031.0,
+    21.0,
+    2.0,
+    1.0,
+    1.0
+   ],
+   "candidate_errors": 0
+  }
+ ]
+}
