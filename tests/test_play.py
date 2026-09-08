@@ -226,3 +226,58 @@ def test_belief_policy_defers_other_decisions_to_dumb():
 def test_looks_like_land_distinguishes_creatures():
     assert _looks_like_land({"name": "Mountain", "tapped": False})
     assert not _looks_like_land({"name": "Bear", "power": 2, "toughness": 2})
+
+
+# -- resolve_deck ----------------------------------------------------------
+
+from cardguru.play import resolve_deck
+
+
+def test_resolve_deck_passes_dck_through():
+    with tempfile.NamedTemporaryFile(suffix=".dck", delete=False) as f:
+        f.write(b"NAME:x\n1 [M15:1] Mountain\n")
+    try:
+        assert resolve_deck(f.name) == os.path.abspath(f.name)
+    finally:
+        os.unlink(f.name)
+
+
+def test_resolve_deck_converts_meta_json_to_dck():
+    deck = {"archetype": "Test Aggro", "cards": {"Mountain": 20, "Raging Goblin": 40}}
+    with tempfile.NamedTemporaryFile(suffix=".json", mode="w",
+                                     delete=False) as f:
+        json.dump(deck, f)
+    try:
+        dck = resolve_deck(f.name)
+        with open(dck, encoding="utf-8") as g:
+            lines = g.read().splitlines()
+        assert lines[0] == "NAME:Test Aggro"
+        assert "20 [M15:1] Mountain" in lines
+        assert "40 [M15:1] Raging Goblin" in lines
+        os.unlink(dck)
+    finally:
+        os.unlink(f.name)
+
+
+def test_resolve_deck_looks_up_archetype_in_corpus_dir():
+    with tempfile.TemporaryDirectory() as d:
+        with open(os.path.join(d, "burn.json"), "w") as f:
+            json.dump({"cards": {"Mountain": 60}}, f)
+        dck = resolve_deck("burn", corpus_dir=d)
+        with open(dck, encoding="utf-8") as g:
+            assert "60 [M15:1] Mountain" in g.read()
+        os.unlink(dck)
+
+
+def test_resolve_deck_rejects_missing_and_empty():
+    import pytest
+    with pytest.raises(FileNotFoundError):
+        resolve_deck("no_such_archetype", corpus_dir="meta_decks")
+    with tempfile.NamedTemporaryFile(suffix=".json", mode="w",
+                                     delete=False) as f:
+        json.dump({"archetype": "empty"}, f)
+    try:
+        with pytest.raises(ValueError):
+            resolve_deck(f.name)
+    finally:
+        os.unlink(f.name)

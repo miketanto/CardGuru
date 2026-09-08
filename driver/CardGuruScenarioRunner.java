@@ -255,9 +255,18 @@ public class CardGuruScenarioRunner extends CardTestPlayerBase {
     protected Game createNewGameAndPlayers()
             throws mage.game.GameException, java.io.FileNotFoundException {
         if (System.getProperty("cardguru.interactive.spool") != null) {
-            String deck = writeInteractiveDeck();
-            deckNameA = deck;
-            deckNameB = deck;
+            // Real constructed decks: -Dcardguru.deck.a / -Dcardguru.deck.b
+            // point at .dck files (the Python side converts meta_decks/*.json).
+            // Either seat falls back to the mono-red plumbing deck.
+            String deckA = System.getProperty("cardguru.deck.a");
+            String deckB = System.getProperty("cardguru.deck.b");
+            String fallback = (deckA == null || deckB == null)
+                    ? writeInteractiveDeck() : null;
+            deckNameA = deckA != null ? deckA : fallback;
+            deckNameB = deckB != null ? deckB : fallback;
+            System.out.println("[CardGuru] decks: A="
+                    + new File(deckNameA).getName()
+                    + " B=" + new File(deckNameB).getName());
         }
         return super.createNewGameAndPlayers();
     }

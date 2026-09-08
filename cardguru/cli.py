@@ -278,7 +278,9 @@ def cmd_play(args):
     tally = play_matches(args.games, policy=policy, mage_repo=args.mage_repo,
                          minimax=minimax,
                          opp_blockers=getattr(args, "opp_blockers", 0),
-                         opp=opp, opp_skill=getattr(args, "opp_skill", 6))
+                         opp=opp, opp_skill=getattr(args, "opp_skill", 6),
+                         deck_a=getattr(args, "deck_a", None),
+                         deck_b=getattr(args, "deck_b", None))
     json.dump(tally, sys.stdout, indent=1)
     print()
     label = f"{args.policy}+minimax" if minimax else args.policy
@@ -1046,6 +1048,12 @@ def main(argv=None):
                     help="run the driver's simulation-backed minimax search at "
                          "the declare-attackers decision (attacks are chosen by "
                          "engine rollout, not by --policy); see docs/live-minimax.md")
+    pl.add_argument("--deck-a", dest="deck_a", default=None,
+                    help="deck for our seat: a .dck path, a meta-deck .json "
+                         "path, or an archetype name in meta_decks/ (e.g. "
+                         "mono_red_aggro); default = plumbing mono-red")
+    pl.add_argument("--deck-b", dest="deck_b", default=None,
+                    help="deck for the opponent seat (same forms as --deck-a)")
     pl.add_argument("--opp", choices=["mad", "passive"], default="mad",
                     help="live opponent: mad=XMage's real alpha-beta AI "
                          "(ComputerPlayer7; win/loss is a strength signal), "

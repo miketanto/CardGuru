@@ -37,6 +37,39 @@ from .adjudicate import ensure_driver
 Policy = Callable[[dict], dict]
 
 
+def resolve_deck(spec: str, corpus_dir: str = "meta_decks") -> str:
+    """Resolve a deck spec to a .dck file path the driver can seat.
+
+    Accepts, in order of checking: a .dck path (passed through), a meta-deck
+    .json path, or a bare archetype name looked up as
+    <corpus_dir>/<name>.json. JSON decks ({"cards": {name: count}}, the
+    believe.py corpus format) are converted to a temp .dck. Set codes are
+    placeholders -- DckDeckImporter falls back to name search.
+    """
+    if spec.endswith(".dck"):
+        if not os.path.isfile(spec):
+            raise FileNotFoundError(f"deck file not found: {spec}")
+        return os.path.abspath(spec)
+    path = spec if spec.endswith(".json") \
+        else os.path.join(corpus_dir, spec + ".json")
+    if not os.path.isfile(path):
+        raise FileNotFoundError(
+            f"deck not found: {spec!r} (no .dck/.json file and no "
+            f"{os.path.join(corpus_dir, spec + '.json')})")
+    with open(path, encoding="utf-8") as f:
+        deck = json.load(f)
+    cards = deck.get("cards")
+    if not cards:
+        raise ValueError(f"{path}: no 'cards' map")
+    name = deck.get("archetype", os.path.basename(path))
+    lines = [f"NAME:{name}"]
+    lines += [f"{n} [M15:1] {card}" for card, n in cards.items()]
+    fd, dck = tempfile.mkstemp(prefix="cardguru-deck-", suffix=".dck")
+    with os.fdopen(fd, "w", encoding="utf-8") as f:
+        f.write("\n".join(lines) + "\n")
+    return dck
+
+
 def dumb_policy(request: dict) -> dict:
     """A deterministic, no-LLM policy that plays a full aggro game.
 
@@ -166,7 +199,8 @@ class MatchClient:
     def __init__(self, mage_repo: Optional[str] = None,
                  warmup_timeout: int = 300, minimax: bool = False,
                  opp_blockers: int = 0, opp: str = "mad",
-                 opp_skill: int = 6):
+                 opp_skill: int = 6, deck_a: Optional[str] = None,
+                 deck_b: Optional[str] = None):
         self.mage_repo = mage_repo or os.environ.get("CARDGURU_MAGE_REPO")
         if not self.mage_repo or not os.path.isdir(self.mage_repo):
             raise RuntimeError("XMage checkout not found: set "
@@ -191,6 +225,11 @@ class MatchClient:
             raise ValueError(f"unknown opponent kind: {opp!r}")
         self.opp = opp
         self.opp_skill = opp_skill
+        # Deck specs (see resolve_deck); None seats the driver's mono-red
+        # plumbing deck for that seat. Resolved at launch so a bad spec fails
+        # fast in Python, not 40s into a JVM warmup.
+        self.deck_a = resolve_deck(deck_a) if deck_a else None
+        self.deck_b = resolve_deck(deck_b) if deck_b else None
         self.spool: Optional[str] = None
         self.proc: Optional[subprocess.Popen] = None
 
@@ -211,6 +250,10 @@ class MatchClient:
             cmd.append("-Dcardguru.opp=passive")
         elif self.opp_skill != 6:
             cmd.append(f"-Dcardguru.opp.skill={self.opp_skill}")
+        if self.deck_a:
+            cmd.append(f"-Dcardguru.deck.a={self.deck_a}")
+        if self.deck_b:
+            cmd.append(f"-Dcardguru.deck.b={self.deck_b}")
         self.proc = subprocess.Popen(
             cmd, cwd=self.mage_repo, stdout=subprocess.DEVNULL,
             stderr=subprocess.DEVNULL)
@@ -334,7 +377,9 @@ class MatchClient:
 def play_matches(n: int, policy: Policy = dumb_policy,
                  mage_repo: Optional[str] = None,
                  minimax: bool = False, opp_blockers: int = 0,
-                 opp: str = "mad", opp_skill: int = 6) -> dict:
+                 opp: str = "mad", opp_skill: int = 6,
+                 deck_a: Optional[str] = None,
+                 deck_b: Optional[str] = None) -> dict:
     """Play N games with `policy` vs the AI; return a win/loss tally.
 
     One JVM per game (a fresh MatchClient each match). Games that error before a
@@ -350,7 +395,8 @@ def play_matches(n: int, policy: Policy = dumb_policy,
     for i in range(n):
         with MatchClient(mage_repo, minimax=minimax,
                          opp_blockers=opp_blockers, opp=opp,
-                         opp_skill=opp_skill) as m:
+                         opp_skill=opp_skill, deck_a=deck_a,
+                         deck_b=deck_b) as m:
             result = m.play(policy)
             if minimax:
                 trace = m.read_trace()
