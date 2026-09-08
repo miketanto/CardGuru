@@ -6,18 +6,27 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import mage.abilities.Ability;
+import mage.abilities.ActivatedAbility;
 import mage.cards.Card;
 import mage.constants.PhaseStep;
+import mage.constants.RangeOfInfluence;
 import mage.constants.Zone;
+import mage.game.Game;
+import mage.game.combat.CombatGroup;
 import mage.game.permanent.Permanent;
 import org.junit.Test;
+import org.mage.test.player.TestComputerPlayer;
 import org.mage.test.player.TestPlayer;
 import org.mage.test.serverside.base.CardTestPlayerBase;
 
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.UUID;
 
 /**
  * CardGuru scenario driver: executes engine-neutral scenario JSON files
@@ -39,6 +48,11 @@ public class CardGuruScenarioRunner extends CardTestPlayerBase {
 
     @Test
     public void runScenarios() throws Exception {
+        String interactive = System.getProperty("cardguru.interactive.spool");
+        if (interactive != null) {
+            playInteractive(interactive);
+            return;
+        }
         String spool = System.getProperty("cardguru.server.spool");
         if (spool != null) {
             serve(spool);
@@ -119,6 +133,85 @@ public class CardGuruScenarioRunner extends CardTestPlayerBase {
                 f.delete();
             }
         }
+    }
+
+    /**
+     * Interactive mode: play ONE real 1v1 game to its natural end, with
+     * playerA driven externally through a spool directory and playerB the
+     * built-in AI. Unlike the scenario adjudicator this executes no
+     * predetermined script — every decision playerA must make (mulligan,
+     * priority, attackers, blockers) is serialized to spool/request/<n>.json,
+     * the JVM blocks until spool/response/<n>.json appears, and the answer is
+     * applied to the live game. The winner lands in spool/result.json.
+     *
+     * The atomic tmp-then-rename + READY/SHUTDOWN conventions mirror serve().
+     * The whole game runs synchronously on this thread (see
+     * docs/live-match-feasibility.md), so blocking a decision callback simply
+     * parks the game until the external policy answers.
+     */
+    private void playInteractive(String spool) throws Exception {
+        new File(spool, "request").mkdirs();
+        new File(spool, "response").mkdirs();
+        // playerA is already an InteractiveTestPlayer (see createNewPlayer,
+        // which reads the same system property during @Before setup).
+        playerB.setAIPlayer(true);   // real built-in AI opponent
+        // Run to the natural end of the game rather than a scripted stop.
+        setStopAt(200, PhaseStep.UNTAP);
+        // TestPlayer's endless-loop guard (maxCallsWithoutAction, default 400)
+        // counts priority calls that don't mutate the scripted-actions list.
+        // A pure-AI player (playerB) never mutates it -- its plays happen
+        // inside the wrapped ComputerPlayer -- so the counter accumulates for a
+        // whole game and trips mid-match. A real game always terminates on its
+        // own (a win, or a deck-out loss), so raise the cap well past any
+        // realistic game length. playerA bypasses the guard entirely (its
+        // priority() override does not call the base method).
+        playerA.setMaxCallsWithoutAction(1_000_000);
+        playerB.setMaxCallsWithoutAction(1_000_000);
+
+        new File(spool, "READY").createNewFile();
+        System.out.println("[CardGuru] interactive game starting, spool=" + spool);
+
+        JsonObject result = new JsonObject();
+        try {
+            execute();
+            result.addProperty("status", "completed");
+        } catch (Throwable e) {
+            result.addProperty("status", "error");
+            result.addProperty("error", e.getClass().getSimpleName() + ": " + e.getMessage());
+        }
+        if (currentGame != null && currentGame.hasEnded()) {
+            String w = String.valueOf(currentGame.getWinner());
+            if (w.contains(playerA.getName())) {
+                result.addProperty("winner", "A");
+            } else if (w.contains(playerB.getName())) {
+                result.addProperty("winner", "B");
+            }
+        }
+        result.addProperty("turns", currentGame != null ? currentGame.getTurnNum() : 0);
+
+        File tmp = new File(spool, "result.json.tmp");
+        try (FileWriter w = new FileWriter(tmp)) {
+            GSON.toJson(result, w);
+        }
+        tmp.renameTo(new File(spool, "result.json"));
+        // DONE sentinel: unblocks a client that is polling for the next request.
+        new File(spool, "DONE").createNewFile();
+        System.out.println("[CardGuru] interactive game over: " + result);
+    }
+
+    /**
+     * Seat playerA as an externally-driven player when interactive mode is
+     * active. Called from the @Before setup (createNewGameAndPlayers ->
+     * createPlayer -> createNewPlayer) before the test body runs, so the
+     * decision comes from the system property, not the test method.
+     */
+    @Override
+    protected TestPlayer createNewPlayer(String playerName, RangeOfInfluence range) {
+        String spool = System.getProperty("cardguru.interactive.spool");
+        if (spool != null && playerName.equals("PlayerA")) {
+            return new InteractiveTestPlayer(new TestComputerPlayer(playerName, range), spool);
+        }
+        return super.createNewPlayer(playerName, range);
     }
 
     private JsonObject runOne(File file) {
@@ -403,5 +496,258 @@ public class CardGuruScenarioRunner extends CardTestPlayerBase {
         s.add("exile", ex);
         s.addProperty("hand_count", p.getHand().size());
         return s;
+    }
+}
+
+/**
+ * A TestPlayer whose top-level decisions come from outside the JVM.
+ *
+ * Non-strict TestPlayer already routes unscripted sub-choices (spell targets,
+ * mana payment, X, modes) to its wrapped ComputerPlayer -- see
+ * chooseStrictModeFailed, a no-op when canChooseByComputer() (i.e. not strict).
+ * So only the four decisions the base class does NOT delegate need overriding
+ * here: priority, attackers, blockers, mulligan. Each override serializes the
+ * request + observable state to spool/request/<seq>.json and blocks reading
+ * spool/response/<seq>.json, then applies the answer with the very same engine
+ * primitives the base harness uses (getPlayable/activateAbility,
+ * declareAttacker, declareBlocker).
+ *
+ * MVP boundary (docs/live-match-feasibility.md): in-cast target/mana/X are the
+ * AI's for now; the top-level line is the external policy's.
+ */
+class InteractiveTestPlayer extends TestPlayer {
+
+    private static final Gson GSON = new Gson();
+    private static final long DECISION_TIMEOUT_MS = 120_000;
+
+    private final String spool;
+    private int seq = 0;
+
+    InteractiveTestPlayer(TestComputerPlayer computerPlayer, String spool) {
+        super(computerPlayer);
+        this.spool = spool;
+    }
+
+    /** Write the request atomically, block for the response, return it. */
+    private JsonObject ask(JsonObject request) {
+        seq++;
+        request.addProperty("seq", seq);
+        File reqDir = new File(spool, "request");
+        File respDir = new File(spool, "response");
+        reqDir.mkdirs();
+        respDir.mkdirs();
+        File tmp = new File(reqDir, seq + ".json.tmp");
+        try (FileWriter w = new FileWriter(tmp)) {
+            GSON.toJson(request, w);
+        } catch (Exception e) {
+            throw new RuntimeException("interactive: cannot write request " + seq, e);
+        }
+        tmp.renameTo(new File(reqDir, seq + ".json"));
+
+        File resp = new File(respDir, seq + ".json");
+        long deadline = System.currentTimeMillis() + DECISION_TIMEOUT_MS;
+        while (!resp.exists()) {
+            if (new File(spool, "SHUTDOWN").exists()) {
+                throw new RuntimeException("interactive: SHUTDOWN while awaiting response " + seq);
+            }
+            if (System.currentTimeMillis() > deadline) {
+                throw new RuntimeException("interactive: timed out awaiting response " + seq);
+            }
+            try {
+                Thread.sleep(20);
+            } catch (InterruptedException ie) {
+                Thread.currentThread().interrupt();
+                throw new RuntimeException("interactive: interrupted awaiting response " + seq, ie);
+            }
+        }
+        JsonObject out;
+        try (FileReader r = new FileReader(resp)) {
+            out = JsonParser.parseReader(r).getAsJsonObject();
+        } catch (Exception e) {
+            throw new RuntimeException("interactive: cannot read response " + seq, e);
+        }
+        resp.delete();
+        return out;
+    }
+
+    private JsonObject baseRequest(String kind, Game game) {
+        JsonObject req = new JsonObject();
+        req.addProperty("kind", kind);
+        req.addProperty("turn", game.getTurnNum());
+        req.addProperty("phase", String.valueOf(game.getTurnStepType()));
+        req.addProperty("active", game.getActivePlayerId().equals(this.getId()) ? "A" : "B");
+        req.add("state", observableState(game));
+        return req;
+    }
+
+    /** Both players' public state, plus this (driven) player's own hand. */
+    private JsonObject observableState(Game game) {
+        JsonObject state = new JsonObject();
+        for (UUID pid : game.getPlayerList()) {
+            mage.players.Player p = game.getPlayer(pid);
+            if (p == null) {
+                continue;
+            }
+            JsonObject s = new JsonObject();
+            s.addProperty("life", p.getLife());
+            JsonArray bf = new JsonArray();
+            for (Permanent perm : game.getBattlefield().getAllActivePermanents(pid)) {
+                JsonObject o = new JsonObject();
+                o.addProperty("name", perm.getName());
+                o.addProperty("tapped", perm.isTapped());
+                if (perm.isCreature(game)) {
+                    o.addProperty("power", perm.getPower().getValue());
+                    o.addProperty("toughness", perm.getToughness().getValue());
+                }
+                bf.add(o);
+            }
+            s.add("battlefield", bf);
+            JsonArray gy = new JsonArray();
+            for (Card c : p.getGraveyard().getCards(game)) {
+                gy.add(c.getName());
+            }
+            s.add("graveyard", gy);
+            s.addProperty("hand_count", p.getHand().size());
+            if (pid.equals(this.getId())) {
+                JsonArray hand = new JsonArray();
+                for (Card c : p.getHand().getCards(game)) {
+                    hand.add(c.getName());
+                }
+                s.add("hand", hand);
+            }
+            state.add(pid.equals(this.getId()) ? "A" : "B", s);
+        }
+        return state;
+    }
+
+    @Override
+    public boolean chooseMulligan(Game game) {
+        JsonObject req = baseRequest("mulligan", game);
+        req.addProperty("hand_count", getComputerPlayer().getHand().size());
+        JsonObject resp = ask(req);
+        return resp.has("mulligan") && resp.get("mulligan").getAsBoolean();
+    }
+
+    @Override
+    public boolean priority(Game game) {
+        List<ActivatedAbility> playable = getComputerPlayer().getPlayable(game, true, Zone.ALL, false);
+        JsonObject req = baseRequest("priority", game);
+        JsonArray opts = new JsonArray();
+        JsonObject pass = new JsonObject();
+        pass.addProperty("index", 0);
+        pass.addProperty("action", "pass");
+        pass.addProperty("text", "pass priority");
+        opts.add(pass);
+        int i = 1;
+        for (ActivatedAbility a : playable) {
+            JsonObject o = new JsonObject();
+            o.addProperty("index", i++);
+            o.addProperty("action", "activate");
+            o.addProperty("text", String.valueOf(a));
+            opts.add(o);
+        }
+        req.add("options", opts);
+
+        JsonObject resp = ask(req);
+        int choice = resp.has("choice") ? resp.get("choice").getAsInt() : 0;
+        if (choice >= 1 && choice <= playable.size()) {
+            ActivatedAbility chosen = playable.get(choice - 1).copy();
+            if (getComputerPlayer().activateAbility(chosen, game)) {
+                return true;
+            }
+        }
+        getComputerPlayer().pass(game);
+        return false;
+    }
+
+    @Override
+    public void selectAttackers(Game game, UUID attackingPlayerId) {
+        List<Permanent> attackers = getComputerPlayer().getAvailableAttackers(game);
+        UUID defenderId = null;
+        for (UUID d : game.getCombat().getDefenders()) {
+            defenderId = d;
+        }
+        if (defenderId == null) {
+            for (UUID pid : game.getOpponents(this.getId())) {
+                defenderId = pid;
+            }
+        }
+
+        JsonObject req = baseRequest("attackers", game);
+        JsonArray opts = new JsonArray();
+        int i = 0;
+        for (Permanent p : attackers) {
+            JsonObject o = new JsonObject();
+            o.addProperty("index", i++);
+            o.addProperty("name", p.getName());
+            o.addProperty("power", p.getPower().getValue());
+            o.addProperty("toughness", p.getToughness().getValue());
+            opts.add(o);
+        }
+        req.add("options", opts);
+
+        JsonObject resp = ask(req);
+        if (resp.has("attackers")) {
+            for (JsonElement e : resp.getAsJsonArray("attackers")) {
+                int idx = e.getAsInt();
+                if (idx >= 0 && idx < attackers.size()) {
+                    Permanent atk = attackers.get(idx);
+                    if (defenderId != null && atk.canAttack(defenderId, game)) {
+                        getComputerPlayer().declareAttacker(atk.getId(), defenderId, game, false);
+                    }
+                }
+            }
+        }
+    }
+
+    @Override
+    public void selectBlockers(Ability source, Game game, UUID defendingPlayerId) {
+        List<Permanent> blockers = getComputerPlayer().getAvailableBlockers(game);
+        List<Permanent> attackers = new ArrayList<>();
+        for (CombatGroup grp : game.getCombat().getGroups()) {
+            for (UUID aid : grp.getAttackers()) {
+                Permanent a = game.getPermanent(aid);
+                if (a != null) {
+                    attackers.add(a);
+                }
+            }
+        }
+
+        JsonObject req = baseRequest("blockers", game);
+        JsonArray blockerOpts = new JsonArray();
+        int bi = 0;
+        for (Permanent p : blockers) {
+            JsonObject o = new JsonObject();
+            o.addProperty("index", bi++);
+            o.addProperty("name", p.getName());
+            o.addProperty("power", p.getPower().getValue());
+            o.addProperty("toughness", p.getToughness().getValue());
+            blockerOpts.add(o);
+        }
+        req.add("blockers", blockerOpts);
+        JsonArray attackerOpts = new JsonArray();
+        int ai = 0;
+        for (Permanent p : attackers) {
+            JsonObject o = new JsonObject();
+            o.addProperty("index", ai++);
+            o.addProperty("name", p.getName());
+            o.addProperty("power", p.getPower().getValue());
+            o.addProperty("toughness", p.getToughness().getValue());
+            attackerOpts.add(o);
+        }
+        req.add("attackers", attackerOpts);
+
+        JsonObject resp = ask(req);
+        if (resp.has("blocks")) {
+            for (JsonElement e : resp.getAsJsonArray("blocks")) {
+                JsonArray pair = e.getAsJsonArray();
+                int b = pair.get(0).getAsInt();
+                int a = pair.get(1).getAsInt();
+                if (b >= 0 && b < blockers.size() && a >= 0 && a < attackers.size()) {
+                    getComputerPlayer().declareBlocker(defendingPlayerId,
+                            blockers.get(b).getId(), attackers.get(a).getId(), game);
+                }
+            }
+        }
     }
 }
