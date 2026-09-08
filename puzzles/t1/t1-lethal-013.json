@@ -1,0 +1,65 @@
+{
+ "id": "t1-lethal-013",
+ "tier": 1,
+ "description": "Find lethal: 2 life across 2 attackers",
+ "trap": null,
+ "notes": "variant=combat; generated seed-deterministically, win proved by brute force over attack and burn subsets",
+ "turn": 1,
+ "players": {
+  "A": {
+   "life": 20,
+   "battlefield": [
+    {
+     "card": "Eager Cadet"
+    },
+    {
+     "card": "Scarwood Goblins"
+    }
+   ],
+   "hand": []
+  },
+  "B": {
+   "life": 2,
+   "battlefield": [
+    {
+     "card": "Island",
+     "count": 3,
+     "tapped": true
+    },
+    {
+     "card": "Sea Scryer",
+     "tapped": true
+    }
+   ]
+  }
+ },
+ "win": [
+  {
+   "metric": "life",
+   "player": "B",
+   "max": 0
+  }
+ ],
+ "known_good": [
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Eager Cadet"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Scarwood Goblins"
+  }
+ ],
+ "known_bad": [
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Eager Cadet"
+  }
+ ]
+}

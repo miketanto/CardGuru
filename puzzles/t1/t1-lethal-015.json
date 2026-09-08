@@ -1,0 +1,97 @@
+{
+ "id": "t1-lethal-015",
+ "tier": 1,
+ "description": "Find lethal: 9 life across 3 attackers and burn in hand",
+ "trap": null,
+ "notes": "variant=combat+burn; generated seed-deterministically, win proved by brute force over attack and burn subsets",
+ "turn": 1,
+ "players": {
+  "A": {
+   "life": 20,
+   "battlefield": [
+    {
+     "card": "Regathan Firecat"
+    },
+    {
+     "card": "Horned Turtle"
+    },
+    {
+     "card": "Gorilla Warrior"
+    },
+    {
+     "card": "Mountain",
+     "count": 4
+    }
+   ],
+   "hand": [
+    "Lightning Strike",
+    "Incinerate"
+   ]
+  },
+  "B": {
+   "life": 9,
+   "battlefield": [
+    {
+     "card": "Island",
+     "count": 2,
+     "tapped": true
+    },
+    {
+     "card": "Coral Merfolk",
+     "tapped": true
+    }
+   ]
+  }
+ },
+ "win": [
+  {
+   "metric": "life",
+   "player": "B",
+   "max": 0
+  }
+ ],
+ "known_good": [
+  {
+   "do": "cast",
+   "turn": 1,
+   "phase": "PRECOMBAT_MAIN",
+   "player": "A",
+   "card": "Lightning Strike",
+   "target_player": "B"
+  },
+  {
+   "do": "cast",
+   "turn": 1,
+   "phase": "PRECOMBAT_MAIN",
+   "player": "A",
+   "card": "Incinerate",
+   "target_player": "B"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Regathan Firecat"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Horned Turtle"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Gorilla Warrior"
+  }
+ ],
+ "known_bad": [
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Horned Turtle"
+  }
+ ]
+}

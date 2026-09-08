@@ -1,0 +1,97 @@
+{
+ "id": "t1-lethal-022",
+ "tier": 1,
+ "description": "Find lethal: 18 life across 3 attackers and burn in hand",
+ "trap": null,
+ "notes": "variant=combat+burn; generated seed-deterministically, win proved by brute force over attack and burn subsets",
+ "turn": 1,
+ "players": {
+  "A": {
+   "life": 20,
+   "battlefield": [
+    {
+     "card": "Bonebreaker Giant"
+    },
+    {
+     "card": "Coral Commando"
+    },
+    {
+     "card": "Canal Monitor"
+    },
+    {
+     "card": "Mountain",
+     "count": 3
+    }
+   ],
+   "hand": [
+    "Lightning Bolt",
+    "Searing Spear"
+   ]
+  },
+  "B": {
+   "life": 18,
+   "battlefield": [
+    {
+     "card": "Island",
+     "count": 2,
+     "tapped": true
+    },
+    {
+     "card": "Merfolk of the Pearl Trident",
+     "tapped": true
+    }
+   ]
+  }
+ },
+ "win": [
+  {
+   "metric": "life",
+   "player": "B",
+   "max": 0
+  }
+ ],
+ "known_good": [
+  {
+   "do": "cast",
+   "turn": 1,
+   "phase": "PRECOMBAT_MAIN",
+   "player": "A",
+   "card": "Lightning Bolt",
+   "target_player": "B"
+  },
+  {
+   "do": "cast",
+   "turn": 1,
+   "phase": "PRECOMBAT_MAIN",
+   "player": "A",
+   "card": "Searing Spear",
+   "target_player": "B"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Bonebreaker Giant"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Coral Commando"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Canal Monitor"
+  }
+ ],
+ "known_bad": [
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Coral Commando"
+  }
+ ]
+}

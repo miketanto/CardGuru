@@ -1,0 +1,101 @@
+{
+ "id": "t1-lethal-006",
+ "tier": 1,
+ "description": "Find lethal: 15 life across 4 attackers and burn in hand",
+ "trap": null,
+ "notes": "variant=combat+burn; generated seed-deterministically, win proved by brute force over attack and burn subsets",
+ "turn": 1,
+ "players": {
+  "A": {
+   "life": 20,
+   "battlefield": [
+    {
+     "card": "Rhox Brute"
+    },
+    {
+     "card": "Bastion Enforcer"
+    },
+    {
+     "card": "Minotaur Warrior"
+    },
+    {
+     "card": "Barony Vampire"
+    },
+    {
+     "card": "Mountain",
+     "count": 2
+    }
+   ],
+   "hand": [
+    "Searing Spear"
+   ]
+  },
+  "B": {
+   "life": 15,
+   "battlefield": [
+    {
+     "card": "Island",
+     "count": 4,
+     "tapped": true
+    },
+    {
+     "card": "Cloud Sprite",
+     "tapped": true
+    },
+    {
+     "card": "Coral Merfolk",
+     "tapped": true
+    }
+   ]
+  }
+ },
+ "win": [
+  {
+   "metric": "life",
+   "player": "B",
+   "max": 0
+  }
+ ],
+ "known_good": [
+  {
+   "do": "cast",
+   "turn": 1,
+   "phase": "PRECOMBAT_MAIN",
+   "player": "A",
+   "card": "Searing Spear",
+   "target_player": "B"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Rhox Brute"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Bastion Enforcer"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Minotaur Warrior"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Barony Vampire"
+  }
+ ],
+ "known_bad": [
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Minotaur Warrior"
+  }
+ ]
+}

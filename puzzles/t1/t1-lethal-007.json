@@ -1,0 +1,74 @@
+{
+ "id": "t1-lethal-007",
+ "tier": 1,
+ "description": "Find lethal: 3 life across 3 attackers",
+ "trap": null,
+ "notes": "variant=combat; generated seed-deterministically, win proved by brute force over attack and burn subsets",
+ "turn": 1,
+ "players": {
+  "A": {
+   "life": 20,
+   "battlefield": [
+    {
+     "card": "Gray Ogre"
+    },
+    {
+     "card": "Fugitive Wizard"
+    },
+    {
+     "card": "Felhide Minotaur"
+    }
+   ],
+   "hand": []
+  },
+  "B": {
+   "life": 3,
+   "battlefield": [
+    {
+     "card": "Island",
+     "count": 4,
+     "tapped": true
+    },
+    {
+     "card": "Cloud Sprite",
+     "tapped": true
+    }
+   ]
+  }
+ },
+ "win": [
+  {
+   "metric": "life",
+   "player": "B",
+   "max": 0
+  }
+ ],
+ "known_good": [
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Gray Ogre"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Fugitive Wizard"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Felhide Minotaur"
+  }
+ ],
+ "known_bad": [
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Fugitive Wizard"
+  }
+ ]
+}

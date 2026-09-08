@@ -1,0 +1,87 @@
+{
+ "id": "t1-lethal-018",
+ "tier": 1,
+ "description": "Find lethal: 13 life across 4 attackers",
+ "trap": null,
+ "notes": "variant=combat; generated seed-deterministically, win proved by brute force over attack and burn subsets",
+ "turn": 1,
+ "players": {
+  "A": {
+   "life": 20,
+   "battlefield": [
+    {
+     "card": "Headless Horseman"
+    },
+    {
+     "card": "Headwater Sentries"
+    },
+    {
+     "card": "Highborn Vampire"
+    },
+    {
+     "card": "Canal Monitor"
+    }
+   ],
+   "hand": []
+  },
+  "B": {
+   "life": 13,
+   "battlefield": [
+    {
+     "card": "Island",
+     "count": 2,
+     "tapped": true
+    },
+    {
+     "card": "Merfolk of the Pearl Trident",
+     "tapped": true
+    },
+    {
+     "card": "Sea Scryer",
+     "tapped": true
+    }
+   ]
+  }
+ },
+ "win": [
+  {
+   "metric": "life",
+   "player": "B",
+   "max": 0
+  }
+ ],
+ "known_good": [
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Headless Horseman"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Headwater Sentries"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Highborn Vampire"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Canal Monitor"
+  }
+ ],
+ "known_bad": [
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Headless Horseman"
+  }
+ ]
+}

@@ -1,0 +1,74 @@
+{
+ "id": "t1-lethal-012",
+ "tier": 1,
+ "description": "Find lethal: 7 life across 3 attackers",
+ "trap": null,
+ "notes": "variant=combat; generated seed-deterministically, win proved by brute force over attack and burn subsets",
+ "turn": 1,
+ "players": {
+  "A": {
+   "life": 20,
+   "battlefield": [
+    {
+     "card": "Plated Wurm"
+    },
+    {
+     "card": "Golden Bear"
+    },
+    {
+     "card": "Ancient Crab"
+    }
+   ],
+   "hand": []
+  },
+  "B": {
+   "life": 7,
+   "battlefield": [
+    {
+     "card": "Island",
+     "count": 3,
+     "tapped": true
+    },
+    {
+     "card": "Merfolk of the Pearl Trident",
+     "tapped": true
+    }
+   ]
+  }
+ },
+ "win": [
+  {
+   "metric": "life",
+   "player": "B",
+   "max": 0
+  }
+ ],
+ "known_good": [
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Plated Wurm"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Golden Bear"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Ancient Crab"
+  }
+ ],
+ "known_bad": [
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Ancient Crab"
+  }
+ ]
+}

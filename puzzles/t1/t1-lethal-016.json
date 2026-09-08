@@ -1,0 +1,87 @@
+{
+ "id": "t1-lethal-016",
+ "tier": 1,
+ "description": "Find lethal: 7 life across 4 attackers",
+ "trap": null,
+ "notes": "variant=combat; generated seed-deterministically, win proved by brute force over attack and burn subsets",
+ "turn": 1,
+ "players": {
+  "A": {
+   "life": 20,
+   "battlefield": [
+    {
+     "card": "Elvish Warrior"
+    },
+    {
+     "card": "Amphin Cutthroat"
+    },
+    {
+     "card": "Knight of the Keep"
+    },
+    {
+     "card": "Naga Eternal"
+    }
+   ],
+   "hand": []
+  },
+  "B": {
+   "life": 7,
+   "battlefield": [
+    {
+     "card": "Island",
+     "count": 3,
+     "tapped": true
+    },
+    {
+     "card": "Merfolk of the Pearl Trident",
+     "tapped": true
+    },
+    {
+     "card": "Sea Scryer",
+     "tapped": true
+    }
+   ]
+  }
+ },
+ "win": [
+  {
+   "metric": "life",
+   "player": "B",
+   "max": 0
+  }
+ ],
+ "known_good": [
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Elvish Warrior"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Amphin Cutthroat"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Knight of the Keep"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Naga Eternal"
+  }
+ ],
+ "known_bad": [
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Elvish Warrior"
+  }
+ ]
+}

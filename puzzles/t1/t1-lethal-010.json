@@ -1,0 +1,87 @@
+{
+ "id": "t1-lethal-010",
+ "tier": 1,
+ "description": "Find lethal: 10 life across 4 attackers",
+ "trap": null,
+ "notes": "variant=combat; generated seed-deterministically, win proved by brute force over attack and burn subsets",
+ "turn": 1,
+ "players": {
+  "A": {
+   "life": 20,
+   "battlefield": [
+    {
+     "card": "Moriok Reaver"
+    },
+    {
+     "card": "Glory Seeker"
+    },
+    {
+     "card": "Goblin Roughrider"
+    },
+    {
+     "card": "Raptor Companion"
+    }
+   ],
+   "hand": []
+  },
+  "B": {
+   "life": 10,
+   "battlefield": [
+    {
+     "card": "Island",
+     "count": 3,
+     "tapped": true
+    },
+    {
+     "card": "Merfolk of the Pearl Trident",
+     "tapped": true
+    },
+    {
+     "card": "Sea Scryer",
+     "tapped": true
+    }
+   ]
+  }
+ },
+ "win": [
+  {
+   "metric": "life",
+   "player": "B",
+   "max": 0
+  }
+ ],
+ "known_good": [
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Moriok Reaver"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Glory Seeker"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Goblin Roughrider"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Raptor Companion"
+  }
+ ],
+ "known_bad": [
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Glory Seeker"
+  }
+ ]
+}

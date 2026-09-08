@@ -1,0 +1,83 @@
+{
+ "id": "t1-lethal-017",
+ "tier": 1,
+ "description": "Find lethal: 11 life across 4 attackers",
+ "trap": null,
+ "notes": "variant=combat; generated seed-deterministically, win proved by brute force over attack and burn subsets",
+ "turn": 1,
+ "players": {
+  "A": {
+   "life": 20,
+   "battlefield": [
+    {
+     "card": "Great-Horn Krushok"
+    },
+    {
+     "card": "Obsidian Giant"
+    },
+    {
+     "card": "Minotaur Warrior"
+    },
+    {
+     "card": "Gnarled Mass"
+    }
+   ],
+   "hand": []
+  },
+  "B": {
+   "life": 11,
+   "battlefield": [
+    {
+     "card": "Island",
+     "count": 4,
+     "tapped": true
+    },
+    {
+     "card": "Sea Scryer",
+     "tapped": true
+    }
+   ]
+  }
+ },
+ "win": [
+  {
+   "metric": "life",
+   "player": "B",
+   "max": 0
+  }
+ ],
+ "known_good": [
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Great-Horn Krushok"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Obsidian Giant"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Minotaur Warrior"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Gnarled Mass"
+  }
+ ],
+ "known_bad": [
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Minotaur Warrior"
+  }
+ ]
+}

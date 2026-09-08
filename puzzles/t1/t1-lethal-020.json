@@ -1,0 +1,101 @@
+{
+ "id": "t1-lethal-020",
+ "tier": 1,
+ "description": "Find lethal: 8 life across 4 attackers and burn in hand",
+ "trap": null,
+ "notes": "variant=combat+burn; generated seed-deterministically, win proved by brute force over attack and burn subsets",
+ "turn": 1,
+ "players": {
+  "A": {
+   "life": 20,
+   "battlefield": [
+    {
+     "card": "Coral Merfolk"
+    },
+    {
+     "card": "Loxodon Wayfarer"
+    },
+    {
+     "card": "Cabal Evangel"
+    },
+    {
+     "card": "Great Hart"
+    },
+    {
+     "card": "Mountain",
+     "count": 1
+    }
+   ],
+   "hand": [
+    "Shock"
+   ]
+  },
+  "B": {
+   "life": 8,
+   "battlefield": [
+    {
+     "card": "Island",
+     "count": 3,
+     "tapped": true
+    },
+    {
+     "card": "Coral Merfolk",
+     "tapped": true
+    },
+    {
+     "card": "Cloud Sprite",
+     "tapped": true
+    }
+   ]
+  }
+ },
+ "win": [
+  {
+   "metric": "life",
+   "player": "B",
+   "max": 0
+  }
+ ],
+ "known_good": [
+  {
+   "do": "cast",
+   "turn": 1,
+   "phase": "PRECOMBAT_MAIN",
+   "player": "A",
+   "card": "Shock",
+   "target_player": "B"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Coral Merfolk"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Loxodon Wayfarer"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Cabal Evangel"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Great Hart"
+  }
+ ],
+ "known_bad": [
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Loxodon Wayfarer"
+  }
+ ]
+}

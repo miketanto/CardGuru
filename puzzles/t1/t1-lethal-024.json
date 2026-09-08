@@ -1,0 +1,87 @@
+{
+ "id": "t1-lethal-024",
+ "tier": 1,
+ "description": "Find lethal: 7 life across 4 attackers",
+ "trap": null,
+ "notes": "variant=combat; generated seed-deterministically, win proved by brute force over attack and burn subsets",
+ "turn": 1,
+ "players": {
+  "A": {
+   "life": 20,
+   "battlefield": [
+    {
+     "card": "Great Hart"
+    },
+    {
+     "card": "Dakmor Scorpion"
+    },
+    {
+     "card": "Gorilla Warrior"
+    },
+    {
+     "card": "Scathe Zombies"
+    }
+   ],
+   "hand": []
+  },
+  "B": {
+   "life": 7,
+   "battlefield": [
+    {
+     "card": "Island",
+     "count": 2,
+     "tapped": true
+    },
+    {
+     "card": "Coral Merfolk",
+     "tapped": true
+    },
+    {
+     "card": "Cloud Sprite",
+     "tapped": true
+    }
+   ]
+  }
+ },
+ "win": [
+  {
+   "metric": "life",
+   "player": "B",
+   "max": 0
+  }
+ ],
+ "known_good": [
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Great Hart"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Dakmor Scorpion"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Gorilla Warrior"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Scathe Zombies"
+  }
+ ],
+ "known_bad": [
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Great Hart"
+  }
+ ]
+}

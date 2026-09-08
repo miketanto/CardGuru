@@ -677,6 +677,69 @@ def cmd_stats(args):
     }, indent=1))
 
 
+def _puzzle_runner(args):
+    """local -> LocalRunner over the card store; xmage -> batch adjudicator."""
+    if args.engine == "local":
+        from .cardstore import CardStore
+        from .localrunner import LocalRunner
+        return LocalRunner(CardStore.open(args.db)).run_scenarios
+    from .adjudicate import run_scenarios
+    from .puzzle import run_scenarios_from_specs
+    return lambda specs: run_scenarios_from_specs(specs, run_scenarios,
+                                                  args.mage_repo)
+
+
+def cmd_puzzle_gen(args):
+    from .cardstore import CardStore
+    from .puzzlegen import generate, write_puzzles
+
+    store = CardStore.open(args.db)
+    if store is None:
+        sys.exit(f"card store not found at {args.db} "
+                 "(build it with: python -m cardguru cardstore)")
+    paths = write_puzzles(generate(store, count=args.count, seed=args.seed),
+                          args.out)
+    print(f"wrote {len(paths)} puzzles to {args.out}/")
+
+
+def cmd_puzzle_validate(args):
+    from .puzzle import load_puzzles
+
+    specs = load_puzzles(args.puzzles)  # raises with the file and reason
+    print(f"{len(specs)} puzzle(s) structurally valid")
+
+
+def cmd_puzzle_admit(args):
+    from .puzzle import admit, load_puzzles
+
+    reports = admit(load_puzzles(args.puzzles), runner=_puzzle_runner(args))
+    json.dump(reports, sys.stdout, indent=1)
+    print()
+    rejected = [r for r in reports if not r["admitted"]]
+    engines = sorted({r["engine"] for r in reports if r["engine"]})
+    print(f"-- {len(reports) - len(rejected)}/{len(reports)} admitted "
+          f"(engine: {', '.join(engines) or 'none'})", file=sys.stderr)
+    if any(e != "xmage" for e in engines):
+        print("-- provisional: not engine-verified; rerun with "
+              "--engine xmage before publishing numbers", file=sys.stderr)
+    if rejected:
+        sys.exit(1)
+
+
+def cmd_puzzle_grade(args):
+    from .puzzle import grade, load_puzzles
+
+    with open(args.lines, encoding="utf-8") as f:
+        lines = json.load(f)
+    specs = [s for s in load_puzzles(args.puzzles) if s["id"] in lines]
+    pairs = [(s, lines[s["id"]]) for s in specs]
+    verdicts = grade(pairs, runner=_puzzle_runner(args))
+    json.dump(verdicts, sys.stdout, indent=1)
+    print()
+    wins = sum(1 for v in verdicts if v["win"])
+    print(f"-- {wins}/{len(verdicts)} lines win", file=sys.stderr)
+
+
 def main(argv=None):
     p = argparse.ArgumentParser(prog="cardguru")
     sub = p.add_subparsers(dest="cmd", required=True)
@@ -861,6 +924,33 @@ def main(argv=None):
     st = sub.add_parser("stats", help="dataset statistics")
     st.add_argument("--dataset", default=DEFAULT_DATASET)
     st.set_defaults(fn=cmd_stats)
+
+    pz = sub.add_parser("puzzle", help="decision puzzles: generate, admit, grade")
+    pzsub = pz.add_subparsers(dest="puzzle_cmd", required=True)
+    pg = pzsub.add_parser("gen", help="generate tier-1 lethal puzzles")
+    pg.add_argument("--count", type=int, default=30)
+    pg.add_argument("--seed", type=int, default=7)
+    pg.add_argument("--out", default="puzzles/t1")
+    pg.add_argument("--db", default=DEFAULT_CARDDB)
+    pg.set_defaults(fn=cmd_puzzle_gen)
+    pv = pzsub.add_parser("validate", help="structural validation of puzzle files")
+    pv.add_argument("puzzles", nargs="+")
+    pv.set_defaults(fn=cmd_puzzle_validate)
+    pa = pzsub.add_parser("admit",
+                          help="instrument check: known_good wins, known_bad loses")
+    pa.add_argument("puzzles", nargs="+")
+    pa.add_argument("--engine", choices=["local", "xmage"], default="local")
+    pa.add_argument("--mage-repo", help="XMage checkout for --engine xmage")
+    pa.add_argument("--db", default=DEFAULT_CARDDB)
+    pa.set_defaults(fn=cmd_puzzle_admit)
+    pr = pzsub.add_parser("grade", help="grade proposed lines against puzzles")
+    pr.add_argument("puzzles", nargs="+")
+    pr.add_argument("--lines", required=True,
+                    help="JSON file: {puzzle_id: [actions...]}")
+    pr.add_argument("--engine", choices=["local", "xmage"], default="local")
+    pr.add_argument("--mage-repo")
+    pr.add_argument("--db", default=DEFAULT_CARDDB)
+    pr.set_defaults(fn=cmd_puzzle_grade)
 
     args = p.parse_args(argv)
     args.fn(args)
