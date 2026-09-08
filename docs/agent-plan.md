@@ -301,3 +301,19 @@ point below.
 - **Subagent runs drift from API behavior** → the bridge's own rule already
   covers this: raw answers, no cleaning, no tool access, no goldens; and P5
   runs a small API-client spot-check of one tier before any external claim.
+
+### P5 live matches — DONE (bridge + merge + beliefs wired) 2026-09-08
+
+Interactive bridge shipped on `agent/live-matches`, merged into
+`build/stackwise-p0` (driver now carries scenario + server + interactive
+modes). A full game runs vs the built-in AI (COMPUTER_MAD) with each
+decision served from Python; `belief_policy` reads the opponent, classifies
+via believe.py, and plays around unseen removal at the attackers step.
+`play --policy dumb|belief` both complete real games (integration proof, not
+a strength claim — plumbing deck favors the driven seat). Suite 304 green.
+
+**Next real work:** (1) a fork-the-state/rollout primitive so the live loop
+can run propose-simulate-pick (not just a heuristic); (2) a real constructed
+deck instead of the hardcoded plumbing deck; (3) externalize in-cast
+sub-choices (targets/mana/X) for full LLM control; then the mage-bench
+ladder for external Elo, and the seeds debt (>=7) before any published claim.
