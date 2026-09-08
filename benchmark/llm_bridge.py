@@ -24,6 +24,40 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from cardguru import believe  # noqa: E402
 from cardguru.play import MatchClient, dumb_policy  # noqa: E402
 
+# Rules-and-protocol system context shipped with every escalation, so the
+# answering LLM reasons from stated rules rather than memorized Magic. Game
+# three was lost partly to facts missing from the request (casting costs,
+# the tapped-out crackback); this block states them.
+RULES_CONTEXT = """\
+You are playing Magic: The Gathering as player A in a live game. Rules facts
+that MUST inform every decision:
+- Turn order: untap, upkeep, draw, main, combat (declare attackers ->
+  declare blockers -> damage), second main, end. Priority passes back and
+  forth inside every step; 'pass' advances the game.
+- Casting a spell taps your lands automatically to pay its cost. You never
+  need to activate mana abilities by hand unless you want floating mana.
+- ATTACKING TAPS the attacker (no vigilance here). Tapped creatures CANNOT
+  block. Your attackers stay tapped until your next untap step, so an
+  all-out attack leaves you unable to block the counter-attack.
+- Creatures cast this turn have summoning sickness: they cannot attack
+  (state marks them summoning_sick) but they CAN block.
+- Blocked attackers deal damage to their blockers, not the player (no
+  trample anywhere in these decks). A 1/1 chump-block absorbs the whole hit.
+- Combat tricks (pumps) can be cast after blockers are declared.
+- State fields: every card shows cost/types/text; 'tapped' and
+  'summoning_sick' are authoritative. Trust the option menu for what is
+  castable NOW -- if a spell is not offered, you cannot pay for it.
+Response schemas by request kind:
+  mulligan  -> {"mulligan": true|false}
+  priority  -> {"choice": <option index>}      (0 is always pass)
+  attackers -> {"attackers": [<option indices>]}   ([] = no attack)
+  blockers  -> {"blocks": [[blockerIdx, attackerIdx], ...]}  (two pairs on
+               one attacker = double block; [] = no blocks)
+  target    -> {"targets": [<option indices>]}
+  announce_x-> {"x": <int>}   mode/choice -> {"choice": <index>}   use -> {"use": bool}
+Add a short "why" field to every response; it is logged, not sent to the engine.
+"""
+
 
 def main():
     ap = argparse.ArgumentParser()
@@ -33,6 +67,9 @@ def main():
     ap.add_argument("--esc-dir", required=True)
     ap.add_argument("--log", required=True)
     ap.add_argument("--timeout", type=float, default=100.0)
+    ap.add_argument("--minimax", action="store_true",
+                    help="let the in-JVM search take the attack decision "
+                         "(default: the LLM decides attacks)")
     args = ap.parse_args()
 
     os.makedirs(args.esc_dir, exist_ok=True)
@@ -60,7 +97,7 @@ def main():
     def escalate(request):
         seq["n"] += 1
         n = seq["n"]
-        payload = {"seq": n, "request": request,
+        payload = {"seq": n, "context": RULES_CONTEXT, "request": request,
                    "belief": belief_summary(request)}
         tmp = os.path.join(args.esc_dir, f"req-{n}.json.tmp")
         with open(tmp, "w", encoding="utf-8") as f:
@@ -104,7 +141,7 @@ def main():
         log({"source": source, "request": request, "response": resp})
         return resp
 
-    with MatchClient(args.mage_repo, minimax=True, subchoices=True,
+    with MatchClient(args.mage_repo, minimax=args.minimax, subchoices=True,
                      deck_a=args.deck_a, deck_b=args.deck_b) as m:
         result = m.play(policy)
         trace = m.read_trace()

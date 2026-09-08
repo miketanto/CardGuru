@@ -723,7 +723,10 @@ class InteractiveTestPlayer extends TestPlayer {
         return req;
     }
 
-    /** Both players' public state, plus this (driven) player's own hand. */
+    /** Both players' public state, plus this (driven) player's own hand.
+     *  Cards render with cost, types, and rules text (like the puzzle
+     *  encoder) — an LLM policy cannot be assumed to know cards by name,
+     *  and game three was misplayed off a misremembered casting cost. */
     private JsonObject observableState(Game game) {
         JsonObject state = new JsonObject();
         for (UUID pid : game.getPlayerList()) {
@@ -741,6 +744,13 @@ class InteractiveTestPlayer extends TestPlayer {
                 if (perm.isCreature(game)) {
                     o.addProperty("power", perm.getPower().getValue());
                     o.addProperty("toughness", perm.getToughness().getValue());
+                    // "can it attack right now" fact the LLM needs
+                    o.addProperty("summoning_sick", perm.hasSummoningSickness());
+                }
+                o.addProperty("types", String.valueOf(perm.getCardType(game)));
+                String rules = String.join(" ; ", perm.getRules(game));
+                if (!rules.isEmpty()) {
+                    o.addProperty("text", rules);
                 }
                 bf.add(o);
             }
@@ -754,7 +764,19 @@ class InteractiveTestPlayer extends TestPlayer {
             if (pid.equals(this.getId())) {
                 JsonArray hand = new JsonArray();
                 for (Card c : p.getHand().getCards(game)) {
-                    hand.add(c.getName());
+                    JsonObject o = new JsonObject();
+                    o.addProperty("name", c.getName());
+                    o.addProperty("cost", c.getManaCost().getText());
+                    o.addProperty("types", String.valueOf(c.getCardType(game)));
+                    if (c.isCreature(game)) {
+                        o.addProperty("power", c.getPower().getValue());
+                        o.addProperty("toughness", c.getToughness().getValue());
+                    }
+                    String rules = String.join(" ; ", c.getRules(game));
+                    if (!rules.isEmpty()) {
+                        o.addProperty("text", rules);
+                    }
+                    hand.add(o);
                 }
                 s.add("hand", hand);
             }
