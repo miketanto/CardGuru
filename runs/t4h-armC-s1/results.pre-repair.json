@@ -1,0 +1,343 @@
+{
+ "puzzles": 20,
+ "answered": 19,
+ "wins": 18,
+ "invalid_or_unparsed": 1,
+ "missing": [
+  "t4-belief-004"
+ ],
+ "results": [
+  {
+   "id": "t4-belief-001",
+   "win": true,
+   "reasons": [
+    "life(B)=-3 want max=0"
+   ],
+   "engine": "xmage",
+   "candidates": 3,
+   "picked": 1,
+   "responses": 3,
+   "scores": [
+    -4.0,
+    1026.0,
+    -4.0
+   ],
+   "candidate_errors": 0
+  },
+  {
+   "id": "t4-belief-002",
+   "win": true,
+   "reasons": [
+    "life(B)=-3 want max=0"
+   ],
+   "engine": "xmage",
+   "candidates": 4,
+   "picked": 0,
+   "responses": 3,
+   "scores": [
+    1026.0,
+    null,
+    1026.0,
+    1026.0
+   ],
+   "candidate_errors": 1
+  },
+  {
+   "id": "t4-belief-003",
+   "win": true,
+   "reasons": [
+    "life(B)=0 want max=0"
+   ],
+   "engine": "xmage",
+   "candidates": 5,
+   "picked": 0,
+   "responses": 3,
+   "scores": [
+    1028.0,
+    1028.0,
+    1028.0,
+    1028.0,
+    8.0
+   ],
+   "candidate_errors": 0
+  },
+  {
+   "id": "t4-belief-005",
+   "win": true,
+   "reasons": [
+    "life(B)=-3 want max=0"
+   ],
+   "engine": "xmage",
+   "candidates": 5,
+   "picked": 0,
+   "responses": 3,
+   "scores": [
+    1026.0,
+    -3.0,
+    -4.0,
+    -3.0,
+    -33.0
+   ],
+   "candidate_errors": 0
+  },
+  {
+   "id": "t4-belief-006",
+   "win": true,
+   "reasons": [
+    "life(B)=-4 want max=0"
+   ],
+   "engine": "xmage",
+   "candidates": 4,
+   "picked": 0,
+   "responses": 3,
+   "scores": [
+    1026.0,
+    1026.0,
+    null,
+    6.0
+   ],
+   "candidate_errors": 1
+  },
+  {
+   "id": "t4-belief-007",
+   "win": true,
+   "reasons": [
+    "life(B)=-3 want max=0"
+   ],
+   "engine": "xmage",
+   "candidates": 4,
+   "picked": 0,
+   "responses": 3,
+   "scores": [
+    1028.0,
+    1028.0,
+    1028.0,
+    1028.0
+   ],
+   "candidate_errors": 0
+  },
+  {
+   "id": "t4-belief-008",
+   "win": true,
+   "reasons": [
+    "life(B)=-3 want max=0"
+   ],
+   "engine": "xmage",
+   "candidates": 3,
+   "picked": 1,
+   "responses": 3,
+   "scores": [
+    -2.0,
+    1028.0,
+    8.0
+   ],
+   "candidate_errors": 0
+  },
+  {
+   "id": "t4-belief-009",
+   "win": true,
+   "reasons": [
+    "life(B)=0 want max=0"
+   ],
+   "engine": "xmage",
+   "candidates": 4,
+   "picked": 0,
+   "responses": 3,
+   "scores": [
+    1026.0,
+    -3.0,
+    -4.0,
+    6.0
+   ],
+   "candidate_errors": 0
+  },
+  {
+   "id": "t4-belief-010",
+   "win": true,
+   "reasons": [
+    "life(B)=-3 want max=0"
+   ],
+   "engine": "xmage",
+   "candidates": 5,
+   "picked": 0,
+   "responses": 3,
+   "scores": [
+    1028.0,
+    -22.0,
+    -12.0,
+    -2.0,
+    -2.0
+   ],
+   "candidate_errors": 0
+  },
+  {
+   "id": "t4-belief-011",
+   "win": true,
+   "reasons": [
+    "life(B)=-4 want max=0"
+   ],
+   "engine": "xmage",
+   "candidates": 3,
+   "picked": 0,
+   "responses": 3,
+   "scores": [
+    1028.0,
+    -2.0,
+    1028.0
+   ],
+   "candidate_errors": 0
+  },
+  {
+   "id": "t4-belief-012",
+   "win": true,
+   "reasons": [
+    "life(B)=-3 want max=0"
+   ],
+   "engine": "xmage",
+   "candidates": 4,
+   "picked": 0,
+   "responses": 3,
+   "scores": [
+    1026.0,
+    1026.0,
+    1026.0,
+    1026.0
+   ],
+   "candidate_errors": 0
+  },
+  {
+   "id": "t4-belief-013",
+   "win": true,
+   "reasons": [
+    "life(B)=-4 want max=0"
+   ],
+   "engine": "xmage",
+   "candidates": 4,
+   "picked": 0,
+   "responses": 3,
+   "scores": [
+    1026.0,
+    1026.0,
+    -4.0,
+    1026.0
+   ],
+   "candidate_errors": 0
+  },
+  {
+   "id": "t4-belief-014",
+   "win": true,
+   "reasons": [
+    "life(B)=-3 want max=0"
+   ],
+   "engine": "xmage",
+   "candidates": 3,
+   "picked": 0,
+   "responses": 3,
+   "scores": [
+    1026.0,
+    -4.0,
+    1026.0
+   ],
+   "candidate_errors": 0
+  },
+  {
+   "id": "t4-belief-015",
+   "win": true,
+   "reasons": [
+    "life(B)=-3 want max=0"
+   ],
+   "engine": "xmage",
+   "candidates": 3,
+   "picked": 0,
+   "responses": 3,
+   "scores": [
+    1026.0,
+    null,
+    null
+   ],
+   "candidate_errors": 2
+  },
+  {
+   "id": "t4-belief-016",
+   "win": true,
+   "reasons": [
+    "life(B)=-4 want max=0"
+   ],
+   "engine": "xmage",
+   "candidates": 2,
+   "picked": 0,
+   "responses": 3,
+   "scores": [
+    1028.0,
+    -2.0
+   ],
+   "candidate_errors": 0
+  },
+  {
+   "id": "t4-belief-017",
+   "win": true,
+   "reasons": [
+    "life(B)=-5 want max=0"
+   ],
+   "engine": "xmage",
+   "candidates": 4,
+   "picked": 1,
+   "responses": 3,
+   "scores": [
+    16.0,
+    1026.0,
+    -14.0,
+    -4.0
+   ],
+   "candidate_errors": 0
+  },
+  {
+   "id": "t4-belief-018",
+   "win": true,
+   "reasons": [
+    "life(B)=-4 want max=0"
+   ],
+   "engine": "xmage",
+   "candidates": 3,
+   "picked": 0,
+   "responses": 3,
+   "scores": [
+    1028.0,
+    1028.0,
+    1028.0
+   ],
+   "candidate_errors": 0
+  },
+  {
+   "id": "t4-belief-019",
+   "win": false,
+   "reasons": [
+    "all candidates failed: AssertionError: PlayerA - Targets list was setup by addTarget with [B], but not used\nCard: Cast Searing Spear\nAbility: SpellAbility ({this} deals 3 damage to any target.)\nTarget: selected 0, more possible 5, TargetAnyTarget (Select any target)\nYou must implement target class support in TestPlayer, \"filter instanceof\", or setup good targets; AssertionError: No permanents found called Coral Commando that match the filter criteria \"permanent you control\"; AssertionError: PlayerA - Targets list was setup by addTarget with [B], but not used\nCard: Cast Searing Spear\nAbility: SpellAbility ({this} deals 3 damage to any target.)\nTarget: selected 0, more possible 3, TargetAnyTarget (Select any target)\nYou must implement target class support in TestPlayer, \"filter instanceof\", or setup good targets"
+   ],
+   "engine": null,
+   "candidates": 3,
+   "scores": [
+    null,
+    null,
+    null
+   ]
+  },
+  {
+   "id": "t4-belief-020",
+   "win": true,
+   "reasons": [
+    "life(B)=0 want max=0"
+   ],
+   "engine": "xmage",
+   "candidates": 3,
+   "picked": 0,
+   "responses": 3,
+   "scores": [
+    1028.0,
+    1028.0,
+    -2.0
+   ],
+   "candidate_errors": 0
+  }
+ ]
+}

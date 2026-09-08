@@ -1,0 +1,548 @@
+{
+ "benchmark": "t4-belief v1 (20 hidden-information puzzles, engine-admitted 20/20 xmage)",
+ "comparison": "haiku seed 1: single-answer vs search, responses BELIEVED (materialized by believe.py), not enumerated",
+ "model": "claude-haiku-4-5 (in-session subagents; linear value, no LLM scorer)",
+ "grading": "xmage strict-choose on a dedicated 2nd checkout (mage-beliefs); a line wins only against the believed opponent responses",
+ "date": "2026-09-08",
+ "arms": {
+  "a_single_answer": {
+   "wins": "19/20",
+   "loss": "t4-belief-016 \u2014 burned the blocker instead of the face, so the believed removal response left the opponent at 3 (a real hidden-information misplay)"
+  },
+  "c_search_no_repair": {
+   "wins": "18/20",
+   "note": "recovered 016 (search picks a line that survives the believed Bolt), but hit two harness/format misses: t4-belief-019 all candidates targeted the player with a target action instead of target_player (engine 'Targets list ... not used'); t4-belief-004 answer file missing (agent emitted JSON inline)"
+  },
+  "c_search_plus_repair": {
+   "wins": "20/20",
+   "note": "one bounded repair carrying the engine's target message fixed 019; a fresh write fixed 004 \u2014 both harness/format, not strategy"
+  }
+ },
+ "reading": [
+  "The belief instrument is real: 20/20 engine admission confirms believe.py-materialized instant-speed removal resolves in the DECLARE_ATTACKERS step and grades under minimax.",
+  "Search over BELIEVED responses recovers the one genuine hidden-information misplay (016): single-answer burned the blocker; search kept a face-burn line that survives the unseen Bolt. This is the PokeChamp opponent-model result under hidden information \u2014 the harness plays around removal it never sees.",
+  "Ceiling effect: haiku already plays around unseen removal on 19/20, so the strategic discrimination is one puzzle at this difficulty. The remaining arm-c misses were format, not reasoning \u2014 the same shared-author class search cannot hedge and repair removes."
+ ],
+ "caveats": [
+  "one seed; near the instrument ceiling (arm a 19/20). A firmer rate needs more seeds or harder hidden-info puzzles (multiple believed tricks, deeper pools)."
+ ],
+ "arm_a_results": [
+  {
+   "id": "t4-belief-001",
+   "win": true,
+   "reasons": [
+    "life(B)=-3 want max=0"
+   ],
+   "engine": "xmage"
+  },
+  {
+   "id": "t4-belief-002",
+   "win": true,
+   "reasons": [
+    "life(B)=-3 want max=0"
+   ],
+   "engine": "xmage"
+  },
+  {
+   "id": "t4-belief-003",
+   "win": true,
+   "reasons": [
+    "life(B)=-3 want max=0"
+   ],
+   "engine": "xmage"
+  },
+  {
+   "id": "t4-belief-004",
+   "win": true,
+   "reasons": [
+    "life(B)=-3 want max=0"
+   ],
+   "engine": "xmage"
+  },
+  {
+   "id": "t4-belief-005",
+   "win": true,
+   "reasons": [
+    "life(B)=-3 want max=0"
+   ],
+   "engine": "xmage"
+  },
+  {
+   "id": "t4-belief-006",
+   "win": true,
+   "reasons": [
+    "life(B)=-4 want max=0"
+   ],
+   "engine": "xmage"
+  },
+  {
+   "id": "t4-belief-007",
+   "win": true,
+   "reasons": [
+    "life(B)=-3 want max=0"
+   ],
+   "engine": "xmage"
+  },
+  {
+   "id": "t4-belief-008",
+   "win": true,
+   "reasons": [
+    "life(B)=-3 want max=0"
+   ],
+   "engine": "xmage"
+  },
+  {
+   "id": "t4-belief-009",
+   "win": true,
+   "reasons": [
+    "life(B)=-3 want max=0"
+   ],
+   "engine": "xmage"
+  },
+  {
+   "id": "t4-belief-010",
+   "win": true,
+   "reasons": [
+    "life(B)=0 want max=0"
+   ],
+   "engine": "xmage"
+  },
+  {
+   "id": "t4-belief-011",
+   "win": true,
+   "reasons": [
+    "life(B)=-4 want max=0"
+   ],
+   "engine": "xmage"
+  },
+  {
+   "id": "t4-belief-012",
+   "win": true,
+   "reasons": [
+    "life(B)=-3 want max=0"
+   ],
+   "engine": "xmage"
+  },
+  {
+   "id": "t4-belief-013",
+   "win": true,
+   "reasons": [
+    "life(B)=-4 want max=0"
+   ],
+   "engine": "xmage"
+  },
+  {
+   "id": "t4-belief-014",
+   "win": true,
+   "reasons": [
+    "life(B)=0 want max=0"
+   ],
+   "engine": "xmage"
+  },
+  {
+   "id": "t4-belief-015",
+   "win": true,
+   "reasons": [
+    "life(B)=-3 want max=0"
+   ],
+   "engine": "xmage"
+  },
+  {
+   "id": "t4-belief-016",
+   "win": false,
+   "reasons": [
+    "beaten by opponent response #2",
+    "life(B)=3 want max=0"
+   ],
+   "engine": "xmage"
+  },
+  {
+   "id": "t4-belief-017",
+   "win": true,
+   "reasons": [
+    "life(B)=-5 want max=0"
+   ],
+   "engine": "xmage"
+  },
+  {
+   "id": "t4-belief-018",
+   "win": true,
+   "reasons": [
+    "life(B)=-4 want max=0"
+   ],
+   "engine": "xmage"
+  },
+  {
+   "id": "t4-belief-019",
+   "win": true,
+   "reasons": [
+    "life(B)=-3 want max=0"
+   ],
+   "engine": "xmage"
+  },
+  {
+   "id": "t4-belief-020",
+   "win": true,
+   "reasons": [
+    "life(B)=-3 want max=0"
+   ],
+   "engine": "xmage"
+  }
+ ],
+ "arm_c_results": [
+  {
+   "id": "t4-belief-001",
+   "win": true,
+   "reasons": [
+    "life(B)=-3 want max=0"
+   ],
+   "engine": "xmage",
+   "candidates": 3,
+   "picked": 1,
+   "responses": 3,
+   "scores": [
+    -4.0,
+    1026.0,
+    -4.0
+   ],
+   "candidate_errors": 0
+  },
+  {
+   "id": "t4-belief-002",
+   "win": true,
+   "reasons": [
+    "life(B)=-3 want max=0"
+   ],
+   "engine": "xmage",
+   "candidates": 4,
+   "picked": 0,
+   "responses": 3,
+   "scores": [
+    1026.0,
+    null,
+    1026.0,
+    1026.0
+   ],
+   "candidate_errors": 1
+  },
+  {
+   "id": "t4-belief-003",
+   "win": true,
+   "reasons": [
+    "life(B)=0 want max=0"
+   ],
+   "engine": "xmage",
+   "candidates": 5,
+   "picked": 0,
+   "responses": 3,
+   "scores": [
+    1028.0,
+    1028.0,
+    1028.0,
+    1028.0,
+    8.0
+   ],
+   "candidate_errors": 0
+  },
+  {
+   "id": "t4-belief-004",
+   "win": true,
+   "reasons": [
+    "life(B)=-3 want max=0"
+   ],
+   "engine": "xmage",
+   "candidates": 4,
+   "picked": 0,
+   "responses": 3,
+   "scores": [
+    1028.0,
+    null,
+    1028.0,
+    18.0
+   ],
+   "candidate_errors": 1
+  },
+  {
+   "id": "t4-belief-005",
+   "win": true,
+   "reasons": [
+    "life(B)=-3 want max=0"
+   ],
+   "engine": "xmage",
+   "candidates": 5,
+   "picked": 0,
+   "responses": 3,
+   "scores": [
+    1026.0,
+    -3.0,
+    -4.0,
+    -3.0,
+    -33.0
+   ],
+   "candidate_errors": 0
+  },
+  {
+   "id": "t4-belief-006",
+   "win": true,
+   "reasons": [
+    "life(B)=-4 want max=0"
+   ],
+   "engine": "xmage",
+   "candidates": 4,
+   "picked": 0,
+   "responses": 3,
+   "scores": [
+    1026.0,
+    1026.0,
+    null,
+    6.0
+   ],
+   "candidate_errors": 1
+  },
+  {
+   "id": "t4-belief-007",
+   "win": true,
+   "reasons": [
+    "life(B)=-3 want max=0"
+   ],
+   "engine": "xmage",
+   "candidates": 4,
+   "picked": 0,
+   "responses": 3,
+   "scores": [
+    1028.0,
+    1028.0,
+    1028.0,
+    1028.0
+   ],
+   "candidate_errors": 0
+  },
+  {
+   "id": "t4-belief-008",
+   "win": true,
+   "reasons": [
+    "life(B)=-3 want max=0"
+   ],
+   "engine": "xmage",
+   "candidates": 3,
+   "picked": 1,
+   "responses": 3,
+   "scores": [
+    -2.0,
+    1028.0,
+    8.0
+   ],
+   "candidate_errors": 0
+  },
+  {
+   "id": "t4-belief-009",
+   "win": true,
+   "reasons": [
+    "life(B)=0 want max=0"
+   ],
+   "engine": "xmage",
+   "candidates": 4,
+   "picked": 0,
+   "responses": 3,
+   "scores": [
+    1026.0,
+    -3.0,
+    -4.0,
+    6.0
+   ],
+   "candidate_errors": 0
+  },
+  {
+   "id": "t4-belief-010",
+   "win": true,
+   "reasons": [
+    "life(B)=-3 want max=0"
+   ],
+   "engine": "xmage",
+   "candidates": 5,
+   "picked": 0,
+   "responses": 3,
+   "scores": [
+    1028.0,
+    -22.0,
+    -12.0,
+    -2.0,
+    -2.0
+   ],
+   "candidate_errors": 0
+  },
+  {
+   "id": "t4-belief-011",
+   "win": true,
+   "reasons": [
+    "life(B)=-4 want max=0"
+   ],
+   "engine": "xmage",
+   "candidates": 3,
+   "picked": 0,
+   "responses": 3,
+   "scores": [
+    1028.0,
+    -2.0,
+    1028.0
+   ],
+   "candidate_errors": 0
+  },
+  {
+   "id": "t4-belief-012",
+   "win": true,
+   "reasons": [
+    "life(B)=-3 want max=0"
+   ],
+   "engine": "xmage",
+   "candidates": 4,
+   "picked": 0,
+   "responses": 3,
+   "scores": [
+    1026.0,
+    1026.0,
+    1026.0,
+    1026.0
+   ],
+   "candidate_errors": 0
+  },
+  {
+   "id": "t4-belief-013",
+   "win": true,
+   "reasons": [
+    "life(B)=-4 want max=0"
+   ],
+   "engine": "xmage",
+   "candidates": 4,
+   "picked": 0,
+   "responses": 3,
+   "scores": [
+    1026.0,
+    1026.0,
+    -4.0,
+    1026.0
+   ],
+   "candidate_errors": 0
+  },
+  {
+   "id": "t4-belief-014",
+   "win": true,
+   "reasons": [
+    "life(B)=-3 want max=0"
+   ],
+   "engine": "xmage",
+   "candidates": 3,
+   "picked": 0,
+   "responses": 3,
+   "scores": [
+    1026.0,
+    -4.0,
+    1026.0
+   ],
+   "candidate_errors": 0
+  },
+  {
+   "id": "t4-belief-015",
+   "win": true,
+   "reasons": [
+    "life(B)=-3 want max=0"
+   ],
+   "engine": "xmage",
+   "candidates": 3,
+   "picked": 0,
+   "responses": 3,
+   "scores": [
+    1026.0,
+    null,
+    null
+   ],
+   "candidate_errors": 2
+  },
+  {
+   "id": "t4-belief-016",
+   "win": true,
+   "reasons": [
+    "life(B)=-4 want max=0"
+   ],
+   "engine": "xmage",
+   "candidates": 2,
+   "picked": 0,
+   "responses": 3,
+   "scores": [
+    1028.0,
+    -2.0
+   ],
+   "candidate_errors": 0
+  },
+  {
+   "id": "t4-belief-017",
+   "win": true,
+   "reasons": [
+    "life(B)=-5 want max=0"
+   ],
+   "engine": "xmage",
+   "candidates": 4,
+   "picked": 1,
+   "responses": 3,
+   "scores": [
+    16.0,
+    1026.0,
+    -14.0,
+    -4.0
+   ],
+   "candidate_errors": 0
+  },
+  {
+   "id": "t4-belief-018",
+   "win": true,
+   "reasons": [
+    "life(B)=-4 want max=0"
+   ],
+   "engine": "xmage",
+   "candidates": 3,
+   "picked": 0,
+   "responses": 3,
+   "scores": [
+    1028.0,
+    1028.0,
+    1028.0
+   ],
+   "candidate_errors": 0
+  },
+  {
+   "id": "t4-belief-019",
+   "win": true,
+   "reasons": [
+    "life(B)=-3 want max=0"
+   ],
+   "engine": "xmage",
+   "candidates": 3,
+   "picked": 0,
+   "responses": 3,
+   "scores": [
+    1026.0,
+    1026.0,
+    6.0
+   ],
+   "candidate_errors": 0
+  },
+  {
+   "id": "t4-belief-020",
+   "win": true,
+   "reasons": [
+    "life(B)=0 want max=0"
+   ],
+   "engine": "xmage",
+   "candidates": 3,
+   "picked": 0,
+   "responses": 3,
+   "scores": [
+    1028.0,
+    1028.0,
+    -2.0
+   ],
+   "candidate_errors": 0
+  }
+ ],
+ "arm_c_pre_repair_wins": 18
+}

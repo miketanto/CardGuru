@@ -1,0 +1,34 @@
+[
+  [
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Trained Armodon"},
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Wetland Sambar"},
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Felhide Minotaur"},
+    {"do": "wait_stack", "turn": 1, "phase": "POSTCOMBAT_MAIN"},
+    {"do": "cast", "turn": 1, "phase": "POSTCOMBAT_MAIN", "player": "A", "card": "Searing Spear", "target_player": "B"}
+  ],
+  [
+    {"do": "cast", "turn": 1, "phase": "PRECOMBAT_MAIN", "player": "A", "card": "Searing Spear", "target_player": "B"},
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Trained Armodon"},
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Wetland Sambar"},
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Felhide Minotaur"}
+  ],
+  [
+    {"do": "cast", "turn": 1, "phase": "PRECOMBAT_MAIN", "player": "A", "card": "Searing Spear", "target_player": "B"},
+    {"do": "wait_stack", "turn": 1, "phase": "PRECOMBAT_MAIN"},
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Trained Armodon"},
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Wetland Sambar"},
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Felhide Minotaur"}
+  ],
+  [
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Wetland Sambar"},
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Felhide Minotaur"},
+    {"do": "wait_stack", "turn": 1, "phase": "POSTCOMBAT_MAIN"},
+    {"do": "cast", "turn": 1, "phase": "POSTCOMBAT_MAIN", "player": "A", "card": "Searing Spear", "target_player": "B"}
+  ],
+  [
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Trained Armodon"},
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Felhide Minotaur"},
+    {"do": "wait_stack", "turn": 1, "phase": "POSTCOMBAT_MAIN"},
+    {"do": "cast", "turn": 1, "phase": "POSTCOMBAT_MAIN", "player": "A", "card": "Searing Spear", "target_player": "B"}
+  ]
+]
