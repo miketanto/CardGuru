@@ -211,10 +211,20 @@ signal) removes that class, firing only on validation failures, never on
 executed losses. Instrument v2 findings folded in: the impossible-response
 rule (a scripted block by a blocker the line killed is the opponent losing
 an option, not the line losing) and required-field action validation.
-Deferred within P4: `believe.py` hidden-information archetype inference —
-T3 uses enumerated responses, which is minimax without beliefs; beliefs
-enter when responses must be *guessed* from a believed decklist (P5's live
-matches, or a T4 with hidden hands).
+**believe.py + T4 DONE 2026-09-08** (`11fda6f`, `072913d`): the
+hidden-information step. `believe.py` classifies cards seen into a
+posterior over a meta corpus (`meta_decks/`, 3 archetypes), subtracts seen
+to get the hidden pool, determinizes hands, and — the payoff —
+`materialize_responses` turns the believed archetype into concrete
+`opponent_responses` (its single best instant-speed removal, seated in
+hand). Tier 4 (`generate_t4`, 20 puzzles) hides the opponent's hand and
+gives only cards_seen; the response set is BELIEVED, not enumerated, and
+drops into the existing minimax grading. Robust line keeps face-burn reach
+that beats "they Bolt your biggest attacker"; greedy loses to it. Belief
+logic is engine-free (6 tests) and generation has an engine-independent
+face-damage proof gate; **engine admission + the a/c arm runs are deferred
+until the shared XMage checkout is free** (the parallel live-matches
+worktree holds it — running the driver from both clobbers). 290 tests green.
 - `cardguru/believe.py`: archetype prior from a small `data/meta_decks/`
   corpus; believed-list updates from cards seen; K determinization samples.
 - Response round: subagent-as-opponent proposes responses per line (prompted
