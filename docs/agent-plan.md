@@ -172,7 +172,22 @@ exploratory; ≥7 seeds or a harder tier before any published claim.
 - **Exit:** an honest verdict on "does structured knowledge alone help?" —
   either direction is publishable; the repo's methodology holds us to it.
 
-### P3 — Search, linear value first (no new model turns)
+### P3 — Search, linear value first (no new model turns) — **arm (c) DONE 2026-09-08**
+
+Result (`research/data/eval_t2_armC_haiku_2026-09-08.json`): **haiku arm (c)
+is 30/30 on T2 — the pre-registered prediction confirmed.** Same model,
+same seed, same instrument: bare 28/30, annotated 28/30, search+linear
+30/30. 114 candidates simulated, 13 engine-vetoed across 7 puzzles; on
+`t2-right-burn-017` three of four candidates over-cast and died in
+simulation while the lone legal line won. haiku+search ties
+fable-without-search. Built: `value.py` (5-term linear scorer, wins
+dominate, errors score None), search mode in `puzzlerun` (3-5 candidate
+lines, one engine batch, audited picks), `--search` CLI flags. Encoder
+context gaps closed the same day (no-summoning-sickness note; graveyard/
+exile rendering) — instrument v2. Remaining in P3: arm (d) (LLM value over
+the same outcomes) when a tier exists where the linear pick is ever wrong —
+on T2 it never was, so c-vs-d needs T3 positions where "which winning line"
+or "least-bad loss" is a real question.
 - `cardguru/value.py`: the **linear scorer** — life trajectory, clock delta,
   centrality-weighted board delta, cards held — pure Python over outcome JSON.
 - Round structure for **arm (c)**: subagent proposes 3–5 lines (one turn),
