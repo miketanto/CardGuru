@@ -59,10 +59,21 @@ matching). Model turns in testing are in-session Claude subagents (the
   sees (`research/data/eval_t4_ac_haiku_2026-09-08.json`).
 - **P5** driver **server mode** (persistent JVM, spool protocol,
   `--engine xmage-server`, ~3–4.5s/grade after one warmup) + **interactive
-  mode** (real 1v1 game vs built-in AI `COMPUTER_MAD`, decisions over spool).
-  `cardguru/play.py` MatchClient + policies. `belief_policy` reads the live
-  opponent, classifies via believe.py, plays around unseen removal. Verified:
-  `play --policy dumb|belief` complete full games vs the AI.
+  mode** (real 1v1 game, decisions over spool) + **live minimax** (`--minimax`:
+  sim-backed max-over-min at declare-attackers via `createSimulationForAI`,
+  `GameStateEvaluator2` leaf; PokeChamp-shaped, engine-executed leaves; see
+  `docs/live-minimax.md`). `cardguru/play.py` MatchClient + policies
+  (dumb/pass/belief) and `--minimax`. `belief_policy` reads the live opponent,
+  classifies via believe.py, plays around unseen removal.
+  **CORRECTION: the live opponent is PASSIVE, not COMPUTER_MAD.**
+  `TestComputerPlayer extends ComputerPlayer` (base), whose `priority()` just
+  `pass(game)`s, and `mage-player-ai-mad` (the real alpha-beta ComputerPlayer6)
+  is NOT on the Mage.Tests classpath. So the opponent never plays/blocks —
+  every live "win" (dumb/belief/minimax) is integration proof only, NOT
+  strength. The minimax search is nonetheless real: the `--opp-blockers N`
+  scaffold seats blockers and shows a genuine max-over-min declining a bad
+  attack. #1 next step: put `mage-player-ai-mad` on the classpath, seat
+  `ComputerPlayer6` as playerB.
 
 Result records: `research/data/eval_t{1,2,3,4}_*.json`. Full narrative +
 concrete examples: the **research log artifact**
@@ -150,11 +161,17 @@ all additive, like the live-matches merge). Its report will name the verified
 
 ## Next steps (priority order)
 
-1. Merge `agent/live-minimax`; confirm the sim-backed minimax plays real games.
+1. **Put `mage-player-ai-mad` on the `Mage.Tests` classpath and seat
+   `ComputerPlayer6` (MAD) as playerB.** Until this, the live opponent is
+   passive and no live win/loss means anything. This unblocks 2–4.
 2. A real constructed deck (replace the hardcoded mono-red plumbing deck) so
-   live win/loss becomes a strength signal, not just plumbing proof.
+   live win/loss becomes a strength signal.
 3. Externalize in-cast sub-choices (targets/mana/X) for full LLM control — the
    live-match feasibility doc names this as the last blocker.
 4. Pay down seeds debt (≥7) on the arm comparisons that would go in a writeup.
 5. Then: mage-bench ladder for external Elo; the arm (d) LLM-value ablation
    once a tier gives it headroom.
+
+Done since first draft: `agent/live-minimax` merged (`538a2ad`); sim-backed
+minimax over attacks shipped (`docs/live-minimax.md`); COMPUTER_MAD overclaim
+corrected.
