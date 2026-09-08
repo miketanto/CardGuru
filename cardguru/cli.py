@@ -695,13 +695,15 @@ def _puzzle_runner(args):
 
 def cmd_puzzle_gen(args):
     from .cardstore import CardStore
-    from .puzzlegen import generate, generate_t2, generate_t3, write_puzzles
+    from .puzzlegen import (generate, generate_t2, generate_t3,
+                            generate_t4, write_puzzles)
 
     store = CardStore.open(args.db)
     if store is None:
         sys.exit(f"card store not found at {args.db} "
                  "(build it with: python -m cardguru cardstore)")
-    gen = {1: generate, 2: generate_t2, 3: generate_t3}[args.tier]
+    gen = {1: generate, 2: generate_t2, 3: generate_t3,
+           4: generate_t4}[args.tier]
     out = args.out or f"puzzles/t{args.tier}"
     paths = write_puzzles(gen(store, count=args.count, seed=args.seed), out)
     print(f"wrote {len(paths)} tier-{args.tier} puzzles to {out}/")
@@ -961,7 +963,7 @@ def main(argv=None):
     pz = sub.add_parser("puzzle", help="decision puzzles: generate, admit, grade")
     pzsub = pz.add_subparsers(dest="puzzle_cmd", required=True)
     pg = pzsub.add_parser("gen", help="generate puzzles (tier 1 or 2)")
-    pg.add_argument("--tier", type=int, choices=[1, 2, 3], default=1)
+    pg.add_argument("--tier", type=int, choices=[1, 2, 3, 4], default=1)
     pg.add_argument("--count", type=int, default=30)
     pg.add_argument("--seed", type=int, default=7)
     pg.add_argument("--out", default=None,

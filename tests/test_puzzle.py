@@ -328,3 +328,39 @@ def test_validate_line_catches_missing_required_fields():
                          [{"do": "attack", "turn": 1,
                            "attacker": "Test Bear"}])   # no player
     assert any("missing 'player'" in e for e in errs)
+
+
+def test_materialize_responses_emits_one_best_removal():
+    from cardguru import believe
+    deck = {"tricks": [{"card": "Shock", "kind": "removal", "damage": 2},
+                       {"card": "Bolt", "kind": "removal", "damage": 3},
+                       {"card": "Growth", "kind": "pump", "power": 3}]}
+    atk = [("Big", 4, 3), ("Small", 2, 2)]   # (name, power, toughness)
+    rs = believe.materialize_responses(deck, "Blocker", atk)
+    casts = [x for r in rs for x in r if x.get("do") == "cast"]
+    assert len(casts) == 1 and casts[0]["card"] == "Bolt"  # best removal only
+    # it targets Big (most power removed; Bolt's 3 >= Big's toughness 3)
+    tgt = [x for r in rs for x in r if x.get("do") == "target"][0]
+    assert tgt["value"] == "Big"
+    assert believe.best_removal_card(deck, atk) == "Bolt"
+    # pump-only deck yields no removal response
+    pump = {"tricks": [{"card": "Growth", "kind": "pump", "power": 3}]}
+    assert believe.best_removal_card(pump, atk) is None
+
+
+@needs_real_store
+def test_t4_belief_puzzles_are_deterministic_and_proved():
+    from cardguru.puzzlegen import generate_t4
+    store = cs.CardStore(REAL_DB)
+    a = generate_t4(store, count=20, seed=23)
+    b = generate_t4(store, count=20, seed=23)
+    assert json.dumps(a, sort_keys=True) == json.dumps(b, sort_keys=True)
+    for p in a:
+        assert p["tier"] == 4 and validate_puzzle(p) == []
+        assert p["belief"]["seen"] and p["belief"]["archetype"]
+        rs = p["opponent_responses"]
+        casts = [x for r in rs for x in r if x.get("do") == "cast"]
+        assert len(casts) == 1                      # one materialized removal
+        assert casts[0]["card"] in p["players"]["B"]["hand"]  # and it is seated
+        # the removal response must reduce the agent below lethal (the trap)
+        assert p["known_bad"] and p["known_good"] != p["known_bad"]

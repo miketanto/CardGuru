@@ -1,0 +1,135 @@
+{
+ "id": "t4-belief-018",
+ "tier": 4,
+ "description": "Win through hidden information: opponent at 7, believed Mono-Red Aggro (could hold removal)",
+ "trap": "attacking all-in deals 8 and beats no block, but the believed deck can Bolt your Nettle Swine \u2014 hold reach",
+ "notes": "family=belief; opponent_responses are BELIEVED, not seen \u2014 materialized by believe.py from cards_seen + meta corpus",
+ "turn": 1,
+ "belief": {
+  "seen": [
+   "Monastery Swiftspear",
+   "Bonebreaker Giant"
+  ],
+  "archetype": "Mono-Red Aggro",
+  "corpus": "meta_decks"
+ },
+ "players": {
+  "A": {
+   "life": 20,
+   "battlefield": [
+    {
+     "card": "Nettle Swine"
+    },
+    {
+     "card": "Swab Goblin"
+    },
+    {
+     "card": "Undead Minotaur"
+    },
+    {
+     "card": "Mountain",
+     "count": 2
+    }
+   ],
+   "hand": [
+    "Searing Spear"
+   ]
+  },
+  "B": {
+   "life": 7,
+   "battlefield": [
+    {
+     "card": "Mountain",
+     "count": 1
+    },
+    {
+     "card": "Coral Commando"
+    }
+   ],
+   "hand": [
+    "Lightning Bolt"
+   ]
+  }
+ },
+ "win": [
+  {
+   "metric": "life",
+   "player": "B",
+   "max": 0
+  }
+ ],
+ "opponent_responses": [
+  [],
+  [
+   {
+    "do": "block",
+    "turn": 1,
+    "player": "B",
+    "blocker": "Coral Commando",
+    "attacker": "Nettle Swine"
+   }
+  ],
+  [
+   {
+    "do": "cast",
+    "turn": 1,
+    "phase": "DECLARE_ATTACKERS",
+    "player": "B",
+    "card": "Lightning Bolt"
+   },
+   {
+    "do": "target",
+    "player": "B",
+    "value": "Nettle Swine"
+   }
+  ]
+ ],
+ "known_good": [
+  {
+   "do": "cast",
+   "turn": 1,
+   "phase": "PRECOMBAT_MAIN",
+   "player": "A",
+   "card": "Searing Spear",
+   "target_player": "B"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Nettle Swine"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Swab Goblin"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Undead Minotaur"
+  }
+ ],
+ "known_bad": [
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Nettle Swine"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Swab Goblin"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Undead Minotaur"
+  }
+ ]
+}

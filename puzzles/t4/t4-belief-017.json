@@ -1,0 +1,120 @@
+{
+ "id": "t4-belief-017",
+ "tier": 4,
+ "description": "Win through hidden information: opponent at 4, believed Mono-Red Aggro (could hold removal)",
+ "trap": "attacking all-in deals 6 and beats no block, but the believed deck can Bolt your Canal Monitor \u2014 hold reach",
+ "notes": "family=belief; opponent_responses are BELIEVED, not seen \u2014 materialized by believe.py from cards_seen + meta corpus",
+ "turn": 1,
+ "belief": {
+  "seen": [
+   "Monastery Swiftspear",
+   "Bonebreaker Giant"
+  ],
+  "archetype": "Mono-Red Aggro",
+  "corpus": "meta_decks"
+ },
+ "players": {
+  "A": {
+   "life": 20,
+   "battlefield": [
+    {
+     "card": "Canal Monitor"
+    },
+    {
+     "card": "Staunch Shieldmate"
+    },
+    {
+     "card": "Mountain",
+     "count": 2
+    }
+   ],
+   "hand": [
+    "Incinerate"
+   ]
+  },
+  "B": {
+   "life": 4,
+   "battlefield": [
+    {
+     "card": "Mountain",
+     "count": 1
+    },
+    {
+     "card": "Coral Commando"
+    }
+   ],
+   "hand": [
+    "Lightning Bolt"
+   ]
+  }
+ },
+ "win": [
+  {
+   "metric": "life",
+   "player": "B",
+   "max": 0
+  }
+ ],
+ "opponent_responses": [
+  [],
+  [
+   {
+    "do": "block",
+    "turn": 1,
+    "player": "B",
+    "blocker": "Coral Commando",
+    "attacker": "Canal Monitor"
+   }
+  ],
+  [
+   {
+    "do": "cast",
+    "turn": 1,
+    "phase": "DECLARE_ATTACKERS",
+    "player": "B",
+    "card": "Lightning Bolt"
+   },
+   {
+    "do": "target",
+    "player": "B",
+    "value": "Canal Monitor"
+   }
+  ]
+ ],
+ "known_good": [
+  {
+   "do": "cast",
+   "turn": 1,
+   "phase": "PRECOMBAT_MAIN",
+   "player": "A",
+   "card": "Incinerate",
+   "target_player": "B"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Canal Monitor"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Staunch Shieldmate"
+  }
+ ],
+ "known_bad": [
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Canal Monitor"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Staunch Shieldmate"
+  }
+ ]
+}

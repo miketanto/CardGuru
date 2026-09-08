@@ -277,8 +277,8 @@ def _cast_at_creature(name, target):
 
 
 def _attacks(attackers):
-    return [{"do": "attack", "turn": 1, "player": "A", "attacker": name}
-            for name, _ in attackers]
+    return [{"do": "attack", "turn": 1, "player": "A", "attacker": a[0]}
+            for a in attackers]
 
 
 def _t2_face_not_decoy(rng, creatures, burn, cburn, baits, n):
@@ -452,6 +452,140 @@ def _t3_one(rng, creatures, burn, n) -> dict | None:
         "players": {"A": {"life": 20, "battlefield": battlefield,
                           "hand": [name_s]},
                     "B": {"life": life, "battlefield": b_field}},
+        "win": [{"metric": "life", "player": "B", "max": 0}],
+        "opponent_responses": responses,
+        "known_good": good, "known_bad": bad,
+    }
+
+
+
+# --- tier 4: minimax over BELIEVED (not enumerated) responses -------------
+#
+# T3 handed the agent the opponent's responses. T4 hides the opponent's hand
+# and gives only cards seen: the response set is derived by believe.py from
+# the *believed* archetype. If the meta says the opponent's deck can hold
+# instant-speed removal, the robust line must beat "they kill your biggest
+# attacker" even though you never see the removal — because the archetype
+# could hold it. That is the hidden-information skill: keep reach for the
+# interaction you cannot see.
+#
+# Math (burn B at the face, biggest attacker power M, total power T):
+#   life = T - M + B, with M >= B and the biggest attacker's toughness <=
+#   the believed removal's damage (so removal can kill it, matching the
+#   block reduction). Then:
+#     greedy attack-all beats no-block (T >= life) but loses to block-biggest
+#     and to removal-on-biggest (T - M < life);
+#     robust attack-all + face burn beats every response ((T-M)+B >= life).
+# Responses (no-block, block-biggest, removal-on-biggest) come from
+# believe.materialize_responses — belief chooses the set, minimax grades it.
+# Engine-only (untapped defender + instant-speed cast); admit with xmage.
+
+def _pt(store, name):
+    row = store.resolve(name)
+    return int(row["power"]), int(row["toughness"])
+
+
+def generate_t4(store, count: int = 20, seed: int = 23,
+                corpus_path: str = "meta_decks") -> list[dict]:
+    from . import believe
+
+    rng = random.Random(seed)
+    corpus = believe.load_corpus(corpus_path)
+    red = next((d for d in corpus if d["archetype"] == "Mono-Red Aggro"), None)
+    if red is None:
+        raise RuntimeError("tier-4 needs the Mono-Red Aggro meta deck")
+    removal = max((t for t in red["tricks"] if t["kind"] == "removal"),
+                  key=lambda t: t["damage"])
+    burn_dmg = 3
+    # attacker candidates: vanilla, toughness <= removal damage so it can be
+    # killed, with a curated biggest whose power >= burn so life <= total
+    pool = [(n, *_pt(store, n)) for n, _ in _vanilla_pool(store, limit=400)]
+    small = [(n, p, t) for n, p, t in pool if t <= removal["damage"] and p <= 5]
+    bigs = [(n, p, t) for n, p, t in small if p >= burn_dmg]
+    seen_cards = ["Monastery Swiftspear", "Bonebreaker Giant"]  # pins mono-red
+    blockers = ["Canal Monitor", "Coral Commando"]
+    burns = ["Searing Spear", "Incinerate"]
+
+    puzzles, attempt = [], 0
+    while len(puzzles) < count and attempt < count * 40:
+        attempt += 1
+        spec = _t4_one(rng, red, removal, burn_dmg, small, bigs, seen_cards,
+                       blockers, burns, len(puzzles) + 1, store)
+        if spec is not None:
+            puzzles.append(spec)
+    if len(puzzles) < count:
+        raise RuntimeError(f"only generated {len(puzzles)}/{count} t4 puzzles")
+    return puzzles
+
+
+def _t4_one(rng, red, removal, burn_dmg, small, bigs, seen_cards, blockers,
+            burns, n, store):
+    from . import believe
+
+    if len(small) < 2 or not bigs:
+        return None
+    biggest = rng.choice(bigs)
+    others = rng.sample([c for c in small if c[0] != biggest[0]],
+                        rng.randint(1, 2))
+    attackers = [biggest] + others
+    powers = [p for _, p, _ in attackers]
+    total, M = sum(powers), biggest[1]
+    life = total - M + burn_dmg
+    if life <= total - M or life > total:   # greedy must beat no-block, lose to reduction
+        return None
+    burn = rng.choice(burns)
+    burn_cost = int(store.resolve(burn)["cmc"])
+    blocker = rng.choice(blockers)
+    responses = believe.materialize_responses(red, blocker, attackers)
+    removal_card = believe.best_removal_card(red, attackers)
+    # the biggest attacker must be the removal's chosen target (worst case)
+    if removal_card is None or not any(
+            x.get("do") == "target" and x.get("value") == biggest[0]
+            for a in responses for x in a):
+        return None
+
+    # engine-independent proof: face damage of each line against each
+    # response must match the intended verdict. Faithful for vanilla boards
+    # (blocked/removed attacker deals no face damage), so a construction bug
+    # drops the puzzle instead of shipping a broken instrument.
+    def face_damage(with_burn: bool, response: list) -> int:
+        dmg = total + (burn_dmg if with_burn else 0)
+        for act in response:
+            if act.get("do") == "block":
+                dmg -= next(p for nm, p, _ in attackers
+                            if nm == act["attacker"])
+            elif act.get("do") == "target":
+                dmg -= next(p for nm, p, _ in attackers
+                            if nm == act["value"])
+        return dmg
+    good_wins_all = all(face_damage(True, r) >= life for r in responses)
+    bad_beats_noblock = face_damage(False, []) >= life
+    bad_loses_somewhere = any(face_damage(False, r) < life for r in responses)
+    if not (good_wins_all and bad_beats_noblock and bad_loses_somewhere):
+        return None
+
+    battlefield = [{"card": name} for name, _, _ in attackers]
+    battlefield.append({"card": "Mountain", "count": burn_cost})
+    b_field = [{"card": "Mountain", "count": 1},            # for the believed Bolt
+               {"card": blocker}]                          # untapped blocker
+    good = [_cast_face(burn)] + _attacks(attackers)
+    bad = _attacks(attackers)
+    return {
+        "id": f"t4-belief-{n:03d}", "tier": 4,
+        "description": f"Win through hidden information: opponent at {life}, "
+                       "believed Mono-Red Aggro (could hold removal)",
+        "trap": f"attacking all-in deals {total} and beats no block, but the "
+                f"believed deck can Bolt your {biggest[0]} — hold reach",
+        "notes": "family=belief; opponent_responses are BELIEVED, not seen — "
+                 "materialized by believe.py from cards_seen + meta corpus",
+        "turn": 1,
+        "belief": {"seen": seen_cards, "archetype": red["archetype"],
+                   "corpus": "meta_decks"},
+        "players": {
+            "A": {"life": 20, "battlefield": battlefield, "hand": [burn]},
+            "B": {"life": life, "battlefield": b_field,
+                  "hand": [removal_card]},   # the believed removal, materialized
+        },
         "win": [{"metric": "life", "player": "B", "max": 0}],
         "opponent_responses": responses,
         "known_good": good, "known_bad": bad,

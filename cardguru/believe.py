@@ -24,7 +24,8 @@ The pipeline, each step pure and testable:
                                 their untapped creatures allow.
 
 A "meta deck" is a small JSON: {"archetype", "cards": {name: count},
-"tricks": [{card, kind, ...}]}. The corpus lives in data/meta_decks/.
+"tricks": [{card, kind, ...}]}. The corpus lives in meta_decks/ (kept out
+of the gitignored data/ tree since it is source, not a build artifact).
 `tricks` names the deck's known instant-speed combat interaction so the
 sampler can ask "is a trick live in this determinization?" without parsing
 oracle text here (the encoder already renders text; belief is about
@@ -150,6 +151,69 @@ def response_probability(seen: list[str], corpus: list[dict], hand_size: int,
     return {"archetype": top["archetype"], "p": top["p"],
             "remaining": remaining, "hands": hands,
             "trick_rate": live / len(hands) if hands else 0.0}
+
+
+def materialize_responses(deck: dict, blocker: str,
+                          attackers: list[tuple[str, int, int]]) -> list[dict]:
+    """Turn a believed deck into concrete opponent_responses for grading.
+
+    The opponent's hand is never seen, so we cannot know which response
+    they *will* make — but the believed archetype bounds which they COULD.
+    We emit every response the belief says is possible, and minimax grading
+    requires the line to beat all of them:
+
+      - no block (always possible)
+      - block the biggest attacker with `blocker` (if the opponent has one)
+      - the opponent's single BEST removal: across the removal tricks the
+        deck can hold, the one cast on the attacker that removes the most
+        power. Killing an attacker removes its combat damage, which is what
+        actually changes lethal math (a mere pump on a blocker does not: a
+        blocked attacker deals no face damage either way). Only the best is
+        emitted — the opponent makes one response, and the worst case for
+        the agent is their strongest answer.
+
+    `attackers` is (name, power, toughness) for the agent's creatures, so
+    the materializer can pick the removal's best target. Responses are scripted
+    action lists mergeable into the agent's line, exactly like the
+    enumerated T3 responses — belief changes where the set comes from, not
+    how it grades. The generator seats the trick + a matching untapped land
+    on the opponent so each scripted cast is legal; the trick is cast in
+    the DECLARE_ATTACKERS step, before combat damage.
+    """
+    responses = [[]]
+    if blocker and attackers:
+        biggest = max(attackers, key=lambda a: a[1])[0]
+        responses.append([{"do": "block", "turn": 1, "player": "B",
+                           "blocker": blocker, "attacker": biggest}])
+    best = None  # (power_removed, trick_card, target_name)
+    for trick in deck.get("tricks", []):
+        if trick.get("kind") != "removal":
+            continue
+        dmg = trick.get("damage", 0)
+        killable = [(name, p, t) for name, p, t in attackers if t <= dmg]
+        if not killable:
+            continue
+        name, p, _ = max(killable, key=lambda a: a[1])
+        if best is None or p > best[0]:
+            best = (p, trick["card"], name)
+    if best is not None:
+        _, card, target = best
+        responses.append([
+            {"do": "cast", "turn": 1, "phase": "DECLARE_ATTACKERS",
+             "player": "B", "card": card},
+            {"do": "target", "player": "B", "value": target},
+        ])
+    return responses
+
+
+def best_removal_card(deck: dict, attackers: list[tuple[str, int, int]]):
+    """The card materialize_responses will use for the removal response, so
+    the generator can seat exactly that card in the opponent's hand."""
+    for r in materialize_responses(deck, "", attackers):
+        for a in r:
+            if a.get("do") == "cast":
+                return a["card"]
+    return None
 
 
 def _is_basic(name: str) -> bool:
