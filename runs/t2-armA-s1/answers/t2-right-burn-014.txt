@@ -1,0 +1,6 @@
+[
+  {"do": "attack", "turn": 1, "player": "A", "attacker": "Hulking Devil"},
+  {"do": "attack", "turn": 1, "player": "A", "attacker": "Ordinary Bear"},
+  {"do": "cast", "turn": 1, "phase": "POSTCOMBAT_MAIN", "player": "A", "card": "Lightning Bolt", "target_player": "B"},
+  {"do": "wait_stack", "turn": 1, "phase": "POSTCOMBAT_MAIN"}
+]

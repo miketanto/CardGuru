@@ -1,0 +1,7 @@
+[
+  {"do": "cast", "turn": 1, "phase": "PRECOMBAT_MAIN", "player": "A", "card": "Incinerate", "target_player": "B"},
+  {"do": "wait_stack", "turn": 1, "phase": "PRECOMBAT_MAIN"},
+  {"do": "attack", "turn": 1, "player": "A", "attacker": "Frost Ogre"},
+  {"do": "attack", "turn": 1, "player": "A", "attacker": "Looming Altisaur"},
+  {"do": "attack", "turn": 1, "player": "A", "attacker": "Defiant Khenra"}
+]

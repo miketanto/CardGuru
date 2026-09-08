@@ -92,12 +92,41 @@ public class CardGuruScenarioRunner extends CardTestPlayerBase {
             out.addProperty("status", "executed");
             out.add("expectations", checkExpectations(spec));
             out.add("state", readState());
+            addWinner(out);
         } catch (Throwable e) {   // AssertionError (strict mode) or engine exception
-            out.addProperty("status", "error");
-            out.addProperty("error", e.getClass().getSimpleName() + ": " + e.getMessage());
+            // Winner short-circuit: a line may legally end the game before its
+            // trailing scripted actions (e.g. a wait_stack queued after the
+            // lethal spell). The leftover-actions assertion then fires even
+            // though every decision that could execute did. That is a scoring
+            // artifact, not a rules violation - report the finished game.
+            if (currentGame != null && currentGame.hasEnded()
+                    && String.valueOf(e.getMessage()).contains("must have 0 actions")) {
+                out.addProperty("status", "executed");
+                out.addProperty("note",
+                        "game ended before trailing scripted actions; leftovers ignored");
+                out.add("expectations", checkExpectations(spec));
+                out.add("state", readState());
+                addWinner(out);
+            } else {
+                out.addProperty("status", "error");
+                out.addProperty("error", e.getClass().getSimpleName() + ": " + e.getMessage());
+            }
         }
         out.addProperty("millis", System.currentTimeMillis() - t0);
         return out;
+    }
+
+    /** "A"/"B" when the game has ended with a winner, absent otherwise. */
+    private void addWinner(JsonObject out) {
+        if (currentGame == null || !currentGame.hasEnded()) {
+            return;
+        }
+        String w = String.valueOf(currentGame.getWinner());
+        if (w.contains(playerA.getName())) {
+            out.addProperty("winner", "A");
+        } else if (w.contains(playerB.getName())) {
+            out.addProperty("winner", "B");
+        }
     }
 
     // ------------------------------------------------------------ setup

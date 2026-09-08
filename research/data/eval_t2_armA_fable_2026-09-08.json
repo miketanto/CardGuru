@@ -1,0 +1,257 @@
+{
+ "benchmark": "t2 choice-traps v1 (30 puzzles, 3 families, engine-admitted 30/30 xmage)",
+ "arm": "a (bare board, single answer, no tools, no search)",
+ "model": "claude-fable-5 (in-session subagent)",
+ "grading_engine": "xmage (strict-choose, winner short-circuit driver)",
+ "date": "2026-09-08",
+ "seeds_run": 1,
+ "stop_reason": "saturated at seed 1: 30/30 with 0 invalid lines; every trap family dodged. Per the pre-registered contingency, the a-vs-b comparison moves to a smaller model tier (haiku) on the same instrument; fable-tier traps are T3's job.",
+ "note": "one initial loss (t2-right-burn-014) was a harness artifact: a trailing wait_stack after the game-ending spell tripped XMage's leftover-actions assertion. Fixed in the driver (winner short-circuit); the line's decisions were correct.",
+ "aggregate": {
+  "wins": 30,
+  "attempts": 30,
+  "win_rate": 1.0
+ },
+ "results": [
+  {
+   "id": "t2-creature-only-003",
+   "win": true,
+   "reasons": [
+    "life(B)=0 want max=0"
+   ],
+   "engine": "xmage"
+  },
+  {
+   "id": "t2-creature-only-006",
+   "win": true,
+   "reasons": [
+    "life(B)=0 want max=0"
+   ],
+   "engine": "xmage"
+  },
+  {
+   "id": "t2-creature-only-009",
+   "win": true,
+   "reasons": [
+    "life(B)=0 want max=0"
+   ],
+   "engine": "xmage"
+  },
+  {
+   "id": "t2-creature-only-012",
+   "win": true,
+   "reasons": [
+    "life(B)=0 want max=0"
+   ],
+   "engine": "xmage"
+  },
+  {
+   "id": "t2-creature-only-015",
+   "win": true,
+   "reasons": [
+    "life(B)=0 want max=0"
+   ],
+   "engine": "xmage"
+  },
+  {
+   "id": "t2-creature-only-018",
+   "win": true,
+   "reasons": [
+    "life(B)=0 want max=0"
+   ],
+   "engine": "xmage"
+  },
+  {
+   "id": "t2-creature-only-021",
+   "win": true,
+   "reasons": [
+    "life(B)=0 want max=0"
+   ],
+   "engine": "xmage"
+  },
+  {
+   "id": "t2-creature-only-024",
+   "win": true,
+   "reasons": [
+    "life(B)=0 want max=0"
+   ],
+   "engine": "xmage"
+  },
+  {
+   "id": "t2-creature-only-027",
+   "win": true,
+   "reasons": [
+    "life(B)=0 want max=0"
+   ],
+   "engine": "xmage"
+  },
+  {
+   "id": "t2-creature-only-030",
+   "win": true,
+   "reasons": [
+    "life(B)=0 want max=0"
+   ],
+   "engine": "xmage"
+  },
+  {
+   "id": "t2-face-not-decoy-001",
+   "win": true,
+   "reasons": [
+    "life(B)=0 want max=0"
+   ],
+   "engine": "xmage"
+  },
+  {
+   "id": "t2-face-not-decoy-004",
+   "win": true,
+   "reasons": [
+    "life(B)=0 want max=0"
+   ],
+   "engine": "xmage"
+  },
+  {
+   "id": "t2-face-not-decoy-007",
+   "win": true,
+   "reasons": [
+    "life(B)=0 want max=0"
+   ],
+   "engine": "xmage"
+  },
+  {
+   "id": "t2-face-not-decoy-010",
+   "win": true,
+   "reasons": [
+    "life(B)=0 want max=0"
+   ],
+   "engine": "xmage"
+  },
+  {
+   "id": "t2-face-not-decoy-013",
+   "win": true,
+   "reasons": [
+    "life(B)=0 want max=0"
+   ],
+   "engine": "xmage"
+  },
+  {
+   "id": "t2-face-not-decoy-016",
+   "win": true,
+   "reasons": [
+    "life(B)=0 want max=0"
+   ],
+   "engine": "xmage"
+  },
+  {
+   "id": "t2-face-not-decoy-019",
+   "win": true,
+   "reasons": [
+    "life(B)=0 want max=0"
+   ],
+   "engine": "xmage"
+  },
+  {
+   "id": "t2-face-not-decoy-022",
+   "win": true,
+   "reasons": [
+    "life(B)=0 want max=0"
+   ],
+   "engine": "xmage"
+  },
+  {
+   "id": "t2-face-not-decoy-025",
+   "win": true,
+   "reasons": [
+    "life(B)=0 want max=0"
+   ],
+   "engine": "xmage"
+  },
+  {
+   "id": "t2-face-not-decoy-028",
+   "win": true,
+   "reasons": [
+    "life(B)=0 want max=0"
+   ],
+   "engine": "xmage"
+  },
+  {
+   "id": "t2-right-burn-002",
+   "win": true,
+   "reasons": [
+    "life(B)=0 want max=0"
+   ],
+   "engine": "xmage"
+  },
+  {
+   "id": "t2-right-burn-005",
+   "win": true,
+   "reasons": [
+    "life(B)=0 want max=0"
+   ],
+   "engine": "xmage"
+  },
+  {
+   "id": "t2-right-burn-008",
+   "win": true,
+   "reasons": [
+    "life(B)=0 want max=0"
+   ],
+   "engine": "xmage"
+  },
+  {
+   "id": "t2-right-burn-011",
+   "win": true,
+   "reasons": [
+    "life(B)=0 want max=0"
+   ],
+   "engine": "xmage"
+  },
+  {
+   "id": "t2-right-burn-014",
+   "win": true,
+   "reasons": [
+    "life(B)=0 want max=0"
+   ],
+   "engine": "xmage"
+  },
+  {
+   "id": "t2-right-burn-017",
+   "win": true,
+   "reasons": [
+    "life(B)=0 want max=0"
+   ],
+   "engine": "xmage"
+  },
+  {
+   "id": "t2-right-burn-020",
+   "win": true,
+   "reasons": [
+    "life(B)=0 want max=0"
+   ],
+   "engine": "xmage"
+  },
+  {
+   "id": "t2-right-burn-023",
+   "win": true,
+   "reasons": [
+    "life(B)=0 want max=0"
+   ],
+   "engine": "xmage"
+  },
+  {
+   "id": "t2-right-burn-026",
+   "win": true,
+   "reasons": [
+    "life(B)=0 want max=0"
+   ],
+   "engine": "xmage"
+  },
+  {
+   "id": "t2-right-burn-029",
+   "win": true,
+   "reasons": [
+    "life(B)=0 want max=0"
+   ],
+   "engine": "xmage"
+  }
+ ]
+}

@@ -1,0 +1,6 @@
+[
+  {"do": "cast", "turn": 1, "phase": "PRECOMBAT_MAIN", "player": "A", "card": "Lightning Strike", "target_player": "B"},
+  {"do": "wait_stack", "turn": 1, "phase": "PRECOMBAT_MAIN"},
+  {"do": "attack", "turn": 1, "player": "A", "attacker": "Cyclops of One-Eyed Pass"},
+  {"do": "attack", "turn": 1, "player": "A", "attacker": "Rowan Treefolk"}
+]
