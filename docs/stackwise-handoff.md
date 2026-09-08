@@ -186,10 +186,19 @@ all additive, like the live-matches merge). Its report will name the verified
    121/140, p=0.031). Record: research/data/eval_t4_ac_haiku_7seed_*.json,
    runs/t4h-arm{A,C}-s{1..7}. T2 (a/b/c × 30 puzzles) and T3 seeds are still
    single-seed — pay down before any writeup claim about those tiers.
-5. Live-match strength testing vs MAD (the new bar: our heuristic policies
-   lose every live game to MAD — win/loss is finally a real signal); then the
-   mage-bench ladder for external Elo; the arm (d) LLM-value ablation once a
-   tier gives it headroom.
+5. ~~Live-match strength testing~~ **STARTED, first results in**:
+   Phase-1 ladder (120 games): no-LLM scaffold wins ~4% vs MAD (dumb 0/40,
+   belief 3/40, belief+minimax 0/40; research/data/live_ladder_*.jsonl).
+   LLM-in-the-loop via benchmark/llm_bridge.py (escalation spool, decisions
+   answered by the orchestrating session): game 3 lost turn 18 with MAD at
+   2 (search's tapped-out all-in — its GameStateEvaluator2 leaf cannot
+   price the crackback); game 4 **WON turn 15, first ever vs MAD**, after
+   three fixes: observableState renders cost/types/text + summoning_sick,
+   RULES_CONTEXT system block per escalation, and LLM-owned attacks
+   (--minimax now opt-in). Logs research/data/llm_demo_game*.jsonl; replay
+   artifacts exist for games 1/3/4. Next: more LLM games for a win rate,
+   the arm (d) LLM leaf evaluator (game 3 is its motivating example),
+   render block assignments in state, T2/T3 seeds debt.
 
 Done since first draft: `agent/live-minimax` merged (`538a2ad`); sim-backed
 minimax over attacks shipped (`docs/live-minimax.md`); COMPUTER_MAD overclaim
