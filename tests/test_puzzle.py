@@ -207,3 +207,44 @@ def test_generated_burn_variant_requires_the_burn():
         attacks_only = [a for a in spec["known_good"] if a["do"] == "attack"]
         [v] = grade([(spec, attacks_only)], runner=runner.run_scenarios)
         assert not v["win"], f"{spec['id']}: lethal without burn"
+
+
+@needs_real_store
+def test_t2_generation_is_deterministic_and_balanced():
+    from cardguru.puzzlegen import generate_t2
+    store = cs.CardStore(REAL_DB)
+    a = generate_t2(store, count=30, seed=11)
+    b = generate_t2(store, count=30, seed=11)
+    assert json.dumps(a, sort_keys=True) == json.dumps(b, sort_keys=True)
+    fams = {}
+    for p in a:
+        fams[p["id"].rsplit("-", 1)[0]] = fams.get(p["id"].rsplit("-", 1)[0], 0) + 1
+        assert p["tier"] == 2 and p["trap"], "every t2 puzzle names its trap"
+        assert validate_puzzle(p) == []
+    assert fams == {"t2-creature-only": 10, "t2-face-not-decoy": 10,
+                    "t2-right-burn": 10}
+
+
+@needs_real_store
+def test_t2_defender_creatures_are_always_tapped():
+    # spike-block-unscripted: strict-choose auto-declines blocks, so an
+    # untapped defender would teach the agent an engine artifact.
+    from cardguru.puzzlegen import generate_t2
+    store = cs.CardStore(REAL_DB)
+    runner = LocalRunner(store)
+    for p in generate_t2(store, count=30, seed=11):
+        for entry in p["players"]["B"]["battlefield"]:
+            if runner.is_creature(entry["card"]):
+                assert entry.get("tapped"), f"{p['id']}: untapped defender"
+
+
+@needs_real_store
+def test_t2_admission_holds_under_the_local_runner_too():
+    # Verdict-level agreement only: family A/C bad lines lose locally via
+    # unsupported-action errors rather than the engine's shortfall, but a
+    # loss is a loss — the instrument check is good-wins-and-bad-loses.
+    from cardguru.puzzlegen import generate_t2
+    store = cs.CardStore(REAL_DB)
+    reports = admit(generate_t2(store, count=12, seed=11),
+                    runner=LocalRunner(store).run_scenarios)
+    assert all(r["admitted"] for r in reports)
