@@ -198,8 +198,6 @@ public class CardGuruScenarioRunner extends CardTestPlayerBase {
             }
         }
 
-        // Run to the natural end of the game rather than a scripted stop.
-        setStopAt(200, PhaseStep.UNTAP);
         // TestPlayer's endless-loop guard (maxCallsWithoutAction, default 400)
         // counts priority calls that don't mutate the scripted-actions list.
         // A pure-AI player (playerB) never mutates it -- its plays happen
@@ -216,7 +214,24 @@ public class CardGuruScenarioRunner extends CardTestPlayerBase {
 
         JsonObject result = new JsonObject();
         try {
-            execute();
+            // Start a REAL game, not the test harness's execute(): testMode
+            // suppresses GameImpl's drawHand, so hands only ever come from
+            // scenario cheat commands — interactive games started with EMPTY
+            // hands, both sides drew up from zero, and canTakeMulligan (hand
+            // non-empty) meant chooseMulligan could never fire. With testMode
+            // off the engine deals real 7-card hands and runs the actual
+            // London mulligan phase, which reaches the spool via
+            // chooseMulligan. Mirrors execute()'s essential lines; the cheat
+            // block is intentionally dropped (so the opp_blockers scaffold is
+            // inert here — it was passive-opponent plumbing anyway).
+            for (Player p : currentGame.getPlayers().values()) {
+                p.updateRange(currentGame);
+            }
+            gameOptions.testMode = false;
+            gameOptions.stopOnTurn = 200;   // natural end, not a scripted stop
+            gameOptions.stopAtStep = PhaseStep.UNTAP;
+            currentGame.setGameOptions(gameOptions);
+            currentGame.start(playerA.getId());
             result.addProperty("status", "completed");
         } catch (Throwable e) {
             result.addProperty("status", "error");

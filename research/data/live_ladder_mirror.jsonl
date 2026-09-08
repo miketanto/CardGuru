@@ -1,0 +1,60 @@
+{"deck_a": "mono_red_aggro", "deck_b": "mono_red_aggro", "policy": "dumb", "game": 0, "status": "completed", "winner": "B", "turns": 30, "seconds": 28.0}
+{"deck_a": "mono_red_aggro", "deck_b": "mono_red_aggro", "policy": "dumb", "game": 1, "status": "completed", "winner": "B", "turns": 30, "seconds": 23.8}
+{"deck_a": "mono_red_aggro", "deck_b": "mono_red_aggro", "policy": "dumb", "game": 2, "status": "completed", "winner": "B", "turns": 18, "seconds": 20.6}
+{"deck_a": "mono_red_aggro", "deck_b": "mono_red_aggro", "policy": "dumb", "game": 3, "status": "completed", "winner": "B", "turns": 18, "seconds": 22.4}
+{"deck_a": "mono_red_aggro", "deck_b": "mono_red_aggro", "policy": "dumb", "game": 4, "status": "completed", "winner": "B", "turns": 20, "seconds": 22.9}
+{"deck_a": "mono_red_aggro", "deck_b": "mono_red_aggro", "policy": "dumb", "game": 5, "status": "completed", "winner": "B", "turns": 26, "seconds": 22.3}
+{"deck_a": "mono_red_aggro", "deck_b": "mono_red_aggro", "policy": "dumb", "game": 6, "status": "completed", "winner": "B", "turns": 24, "seconds": 21.1}
+{"deck_a": "mono_red_aggro", "deck_b": "mono_red_aggro", "policy": "dumb", "game": 7, "status": "completed", "winner": "B", "turns": 28, "seconds": 21.2}
+{"deck_a": "mono_red_aggro", "deck_b": "mono_red_aggro", "policy": "dumb", "game": 8, "status": "completed", "winner": "B", "turns": 16, "seconds": 18.0}
+{"deck_a": "mono_red_aggro", "deck_b": "mono_red_aggro", "policy": "dumb", "game": 9, "status": "completed", "winner": "B", "turns": 20, "seconds": 18.3}
+{"deck_a": "mono_red_aggro", "deck_b": "mono_red_aggro", "policy": "dumb", "game": 10, "status": "completed", "winner": "B", "turns": 20, "seconds": 18.1}
+{"deck_a": "mono_red_aggro", "deck_b": "mono_red_aggro", "policy": "dumb", "game": 11, "status": "completed", "winner": "B", "turns": 26, "seconds": 35.2}
+{"deck_a": "mono_red_aggro", "deck_b": "mono_red_aggro", "policy": "dumb", "game": 12, "status": "completed", "winner": "B", "turns": 20, "seconds": 50.3}
+{"deck_a": "mono_red_aggro", "deck_b": "mono_red_aggro", "policy": "dumb", "game": 13, "status": "completed", "winner": "B", "turns": 20, "seconds": 22.1}
+{"deck_a": "mono_red_aggro", "deck_b": "mono_red_aggro", "policy": "dumb", "game": 14, "status": "completed", "winner": "B", "turns": 20, "seconds": 24.9}
+{"deck_a": "mono_red_aggro", "deck_b": "mono_red_aggro", "policy": "dumb", "game": 15, "status": "completed", "winner": "B", "turns": 22, "seconds": 20.6}
+{"deck_a": "mono_red_aggro", "deck_b": "mono_red_aggro", "policy": "dumb", "game": 16, "status": "completed", "winner": "B", "turns": 30, "seconds": 22.2}
+{"deck_a": "mono_red_aggro", "deck_b": "mono_red_aggro", "policy": "dumb", "game": 17, "status": "completed", "winner": "B", "turns": 20, "seconds": 14.7}
+{"deck_a": "mono_red_aggro", "deck_b": "mono_red_aggro", "policy": "dumb", "game": 18, "status": "completed", "winner": "B", "turns": 28, "seconds": 17.4}
+{"deck_a": "mono_red_aggro", "deck_b": "mono_red_aggro", "policy": "dumb", "game": 19, "status": "completed", "winner": "B", "turns": 20, "seconds": 14.8}
+{"deck_a": "mono_red_aggro", "deck_b": "mono_red_aggro", "policy": "belief", "game": 0, "status": "completed", "winner": "B", "turns": 20, "seconds": 17.0}
+{"deck_a": "mono_red_aggro", "deck_b": "mono_red_aggro", "policy": "belief", "game": 1, "status": "completed", "winner": "B", "turns": 22, "seconds": 20.2}
+{"deck_a": "mono_red_aggro", "deck_b": "mono_red_aggro", "policy": "belief", "game": 2, "status": "completed", "winner": "B", "turns": 20, "seconds": 14.8}
+{"deck_a": "mono_red_aggro", "deck_b": "mono_red_aggro", "policy": "belief", "game": 3, "status": "completed", "winner": "B", "turns": 18, "seconds": 15.0}
+{"deck_a": "mono_red_aggro", "deck_b": "mono_red_aggro", "policy": "belief", "game": 4, "status": "completed", "winner": "A", "turns": 23, "seconds": 15.6}
+{"deck_a": "mono_red_aggro", "deck_b": "mono_red_aggro", "policy": "belief", "game": 5, "status": "completed", "winner": "B", "turns": 26, "seconds": 17.1}
+{"deck_a": "mono_red_aggro", "deck_b": "mono_red_aggro", "policy": "belief", "game": 6, "status": "completed", "winner": "B", "turns": 28, "seconds": 20.1}
+{"deck_a": "mono_red_aggro", "deck_b": "mono_red_aggro", "policy": "belief", "game": 7, "status": "completed", "winner": "B", "turns": 22, "seconds": 19.8}
+{"deck_a": "mono_red_aggro", "deck_b": "mono_red_aggro", "policy": "belief", "game": 8, "status": "completed", "winner": "B", "turns": 24, "seconds": 21.5}
+{"deck_a": "mono_red_aggro", "deck_b": "mono_red_aggro", "policy": "belief", "game": 9, "status": "completed", "winner": "B", "turns": 22, "seconds": 22.3}
+{"deck_a": "mono_red_aggro", "deck_b": "mono_red_aggro", "policy": "belief", "game": 10, "status": "completed", "winner": "B", "turns": 18, "seconds": 18.2}
+{"deck_a": "mono_red_aggro", "deck_b": "mono_red_aggro", "policy": "belief", "game": 11, "status": "completed", "winner": "B", "turns": 28, "seconds": 21.6}
+{"deck_a": "mono_red_aggro", "deck_b": "mono_red_aggro", "policy": "belief", "game": 12, "status": "completed", "winner": "B", "turns": 22, "seconds": 25.4}
+{"deck_a": "mono_red_aggro", "deck_b": "mono_red_aggro", "policy": "belief", "game": 13, "status": "completed", "winner": "B", "turns": 20, "seconds": 27.3}
+{"deck_a": "mono_red_aggro", "deck_b": "mono_red_aggro", "policy": "belief", "game": 14, "status": "completed", "winner": "A", "turns": 33, "seconds": 46.3}
+{"deck_a": "mono_red_aggro", "deck_b": "mono_red_aggro", "policy": "belief", "game": 15, "status": "completed", "winner": "B", "turns": 36, "seconds": 57.3}
+{"deck_a": "mono_red_aggro", "deck_b": "mono_red_aggro", "policy": "belief", "game": 16, "status": "completed", "winner": "B", "turns": 20, "seconds": 36.2}
+{"deck_a": "mono_red_aggro", "deck_b": "mono_red_aggro", "policy": "belief", "game": 17, "status": "completed", "winner": "B", "turns": 22, "seconds": 26.5}
+{"deck_a": "mono_red_aggro", "deck_b": "mono_red_aggro", "policy": "belief", "game": 18, "status": "completed", "winner": "B", "turns": 18, "seconds": 21.8}
+{"deck_a": "mono_red_aggro", "deck_b": "mono_red_aggro", "policy": "belief", "game": 19, "status": "completed", "winner": "B", "turns": 22, "seconds": 23.4}
+{"deck_a": "mono_red_aggro", "deck_b": "mono_red_aggro", "policy": "belief_minimax", "game": 0, "status": "completed", "winner": "B", "turns": 22, "minimax_decisions": 3, "seconds": 21.2}
+{"deck_a": "mono_red_aggro", "deck_b": "mono_red_aggro", "policy": "belief_minimax", "game": 1, "status": "completed", "winner": "B", "turns": 20, "minimax_decisions": 5, "seconds": 19.4}
+{"deck_a": "mono_red_aggro", "deck_b": "mono_red_aggro", "policy": "belief_minimax", "game": 2, "status": "completed", "winner": "B", "turns": 22, "minimax_decisions": 6, "seconds": 19.7}
+{"deck_a": "mono_red_aggro", "deck_b": "mono_red_aggro", "policy": "belief_minimax", "game": 3, "status": "completed", "winner": "B", "turns": 30, "minimax_decisions": 6, "seconds": 22.5}
+{"deck_a": "mono_red_aggro", "deck_b": "mono_red_aggro", "policy": "belief_minimax", "game": 4, "status": "completed", "winner": "B", "turns": 10, "minimax_decisions": 3, "seconds": 19.4}
+{"deck_a": "mono_red_aggro", "deck_b": "mono_red_aggro", "policy": "belief_minimax", "game": 5, "status": "completed", "winner": "B", "turns": 10, "minimax_decisions": 4, "seconds": 23.9}
+{"deck_a": "mono_red_aggro", "deck_b": "mono_red_aggro", "policy": "belief_minimax", "game": 6, "status": "completed", "winner": "B", "turns": 10, "minimax_decisions": 0, "seconds": 21.2}
+{"deck_a": "mono_red_aggro", "deck_b": "mono_red_aggro", "policy": "belief_minimax", "game": 7, "status": "completed", "winner": "B", "turns": 8, "minimax_decisions": 2, "seconds": 17.0}
+{"deck_a": "mono_red_aggro", "deck_b": "mono_red_aggro", "policy": "belief_minimax", "game": 8, "status": "completed", "winner": "B", "turns": 8, "minimax_decisions": 0, "seconds": 15.3}
+{"deck_a": "mono_red_aggro", "deck_b": "mono_red_aggro", "policy": "belief_minimax", "game": 9, "status": "completed", "winner": "B", "turns": 10, "minimax_decisions": 1, "seconds": 13.7}
+{"deck_a": "mono_red_aggro", "deck_b": "mono_red_aggro", "policy": "belief_minimax", "game": 10, "status": "completed", "winner": "B", "turns": 8, "minimax_decisions": 0, "seconds": 12.9}
+{"deck_a": "mono_red_aggro", "deck_b": "mono_red_aggro", "policy": "belief_minimax", "game": 11, "status": "completed", "winner": "B", "turns": 24, "minimax_decisions": 3, "seconds": 20.2}
+{"deck_a": "mono_red_aggro", "deck_b": "mono_red_aggro", "policy": "belief_minimax", "game": 12, "status": "completed", "winner": "B", "turns": 10, "minimax_decisions": 0, "seconds": 12.4}
+{"deck_a": "mono_red_aggro", "deck_b": "mono_red_aggro", "policy": "belief_minimax", "game": 13, "status": "completed", "winner": "B", "turns": 10, "minimax_decisions": 1, "seconds": 17.7}
+{"deck_a": "mono_red_aggro", "deck_b": "mono_red_aggro", "policy": "belief_minimax", "game": 14, "status": "completed", "winner": "B", "turns": 16, "minimax_decisions": 1, "seconds": 17.5}
+{"deck_a": "mono_red_aggro", "deck_b": "mono_red_aggro", "policy": "belief_minimax", "game": 15, "status": "completed", "winner": "B", "turns": 8, "minimax_decisions": 4, "seconds": 18.4}
+{"deck_a": "mono_red_aggro", "deck_b": "mono_red_aggro", "policy": "belief_minimax", "game": 16, "status": "completed", "winner": "B", "turns": 12, "minimax_decisions": 1, "seconds": 15.0}
+{"deck_a": "mono_red_aggro", "deck_b": "mono_red_aggro", "policy": "belief_minimax", "game": 17, "status": "completed", "winner": "B", "turns": 14, "minimax_decisions": 6, "seconds": 16.4}
+{"deck_a": "mono_red_aggro", "deck_b": "mono_red_aggro", "policy": "belief_minimax", "game": 18, "status": "completed", "winner": "B", "turns": 12, "minimax_decisions": 0, "seconds": 15.2}
+{"deck_a": "mono_red_aggro", "deck_b": "mono_red_aggro", "policy": "belief_minimax", "game": 19, "status": "completed", "winner": "B", "turns": 10, "minimax_decisions": 1, "seconds": 14.3}

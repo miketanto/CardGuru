@@ -70,8 +70,14 @@ def main():
         deadline = time.time() + args.timeout
         while time.time() < deadline:
             if os.path.exists(resp_path):
-                with open(resp_path, encoding="utf-8") as f:
-                    return json.load(f)
+                # The answerer may not write atomically: reading between
+                # creat and the final byte gives empty/partial JSON. Treat
+                # that as not-ready and poll again (game one died to this).
+                try:
+                    with open(resp_path, encoding="utf-8") as f:
+                        return json.load(f)
+                except (json.JSONDecodeError, OSError):
+                    pass
             time.sleep(0.2)
         return None
 
