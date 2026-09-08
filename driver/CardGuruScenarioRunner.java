@@ -14,7 +14,13 @@ import mage.constants.RangeOfInfluence;
 import mage.constants.Zone;
 import mage.game.Game;
 import mage.game.combat.CombatGroup;
+import mage.game.events.GameEvent;
 import mage.game.permanent.Permanent;
+import mage.game.turn.CombatDamageStep;
+import mage.game.turn.EndOfCombatStep;
+import mage.game.turn.Step;
+import mage.player.ai.score.GameStateEvaluator2;
+import mage.players.Player;
 import org.junit.Test;
 import org.mage.test.player.TestComputerPlayer;
 import org.mage.test.player.TestPlayer;
@@ -25,7 +31,9 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -205,11 +213,64 @@ public class CardGuruScenarioRunner extends CardTestPlayerBase {
      * createPlayer -> createNewPlayer) before the test body runs, so the
      * decision comes from the system property, not the test method.
      */
+    /**
+     * Interactive games need a deck with actual creatures on both sides, or no
+     * combat (and so no attack decision to search) ever happens. The harness
+     * default "RB Aggro.dck" is a misnomer -- it is 71 Mountains, zero
+     * creatures -- so an interactive match just decks out over ~144 turns with
+     * nobody attacking. For interactive mode we write a small real mono-red
+     * aggro list to a temp file and seat BOTH players with it: playerA gets
+     * attackers to search over, and playerB gets creatures so the simulated
+     * min-layer has real blockers to weigh. Scenario/server modes are untouched
+     * (they build their own battlefields via addCard).
+     */
+    @Override
+    protected Game createNewGameAndPlayers()
+            throws mage.game.GameException, java.io.FileNotFoundException {
+        if (System.getProperty("cardguru.interactive.spool") != null) {
+            String deck = writeInteractiveDeck();
+            deckNameA = deck;
+            deckNameB = deck;
+        }
+        return super.createNewGameAndPlayers();
+    }
+
+    /** Write the interactive plumbing deck to a temp .dck and return its path.
+     *  Set codes are placeholders; DckDeckImporter falls back to name search. */
+    private String writeInteractiveDeck() {
+        String contents = String.join("\n",
+                "NAME:CardGuru Mono-Red Aggro (plumbing)",
+                "24 [M15:1] Mountain",
+                "8 [M15:1] Raging Goblin",
+                "8 [M15:1] Goblin Raider",
+                "8 [M15:1] Onakke Ogre",
+                "6 [M15:1] Canyon Minotaur",
+                "6 [M15:1] Hill Giant",
+                "");
+        try {
+            File f = File.createTempFile("cardguru-aggro-", ".dck");
+            f.deleteOnExit();
+            try (FileWriter w = new FileWriter(f)) {
+                w.write(contents);
+            }
+            return f.getAbsolutePath();
+        } catch (Exception e) {
+            throw new RuntimeException("cannot write interactive deck", e);
+        }
+    }
+
     @Override
     protected TestPlayer createNewPlayer(String playerName, RangeOfInfluence range) {
         String spool = System.getProperty("cardguru.interactive.spool");
         if (spool != null && playerName.equals("PlayerA")) {
-            return new InteractiveTestPlayer(new TestComputerPlayer(playerName, range), spool);
+            // cardguru.minimax=attacks turns on the in-driver simulation-backed
+            // search at the declare-attackers decision (see InteractiveTestPlayer
+            // and docs/live-minimax.md). Any other value leaves attackers on the
+            // external spool policy like the other decisions.
+            boolean minimaxAttacks =
+                    "attacks".equals(System.getProperty("cardguru.minimax"));
+            return new InteractiveTestPlayer(new TestComputerPlayer(playerName, range),
+                    spool, minimaxAttacks);
         }
         return super.createNewPlayer(playerName, range);
     }
@@ -521,11 +582,14 @@ class InteractiveTestPlayer extends TestPlayer {
     private static final long DECISION_TIMEOUT_MS = 120_000;
 
     private final String spool;
+    private final boolean minimaxAttacks;
     private int seq = 0;
 
-    InteractiveTestPlayer(TestComputerPlayer computerPlayer, String spool) {
+    InteractiveTestPlayer(TestComputerPlayer computerPlayer, String spool,
+                          boolean minimaxAttacks) {
         super(computerPlayer);
         this.spool = spool;
+        this.minimaxAttacks = minimaxAttacks;
     }
 
     /** Write the request atomically, block for the response, return it. */
@@ -673,6 +737,15 @@ class InteractiveTestPlayer extends TestPlayer {
             }
         }
 
+        // Simulation-backed minimax over the attack decision (design A in
+        // docs/live-minimax.md): the search itself is the agent for attacks, so
+        // the external spool policy is NOT consulted here. Every other decision
+        // still round-trips to Python.
+        if (minimaxAttacks) {
+            minimaxSelectAttackers(game, defenderId, attackers);
+            return;
+        }
+
         JsonObject req = baseRequest("attackers", game);
         JsonArray opts = new JsonArray();
         int i = 0;
@@ -748,6 +821,331 @@ class InteractiveTestPlayer extends TestPlayer {
                             blockers.get(b).getId(), attackers.get(a).getId(), game);
                 }
             }
+        }
+    }
+
+    // ==================================================================
+    // Simulation-backed minimax over the declare-attackers decision.
+    //
+    // A real depth-~1.5 game tree, all rooted on the engine's own rollout
+    // primitive Game.createSimulationForAI() (a full deep game copy flagged
+    // simulation=true; see GameImpl.createSimulationForAI and
+    // docs/live-minimax.md):
+    //
+    //   MAX layer  : our candidate attack sets (all-attack, hold-one-back for
+    //                each creature, attack-none -- a handful, not 2^n).
+    //   engine     : declare that exact set on a COPY and resolve combat there.
+    //   MIN layer  : the opponent's block response, enumerated on the copy and
+    //                chosen to MINIMISE our leaf value (which is exactly what
+    //                the built-in AI's block heuristic optimises -- the MAD
+    //                block chooser maximises GameStateEvaluator2 for the
+    //                blocker, i.e. minimises it for us). See the deviation note
+    //                in docs/live-minimax.md.
+    //   LEAF       : GameStateEvaluator2.evaluate(us, copy) on the resolved
+    //                copy, plus our own life/board terms for the JSON trace.
+    //
+    // We back up max-over-min and apply the argmax set to the REAL game with
+    // the same declareAttacker primitive the harness uses everywhere else.
+    // ==================================================================
+
+    /** Cap on enumerated opponent block responses per attack set (keeps the
+     *  min-layer a real-but-bounded search, matching the max-layer's handful). */
+    private static final int MAX_BLOCK_RESPONSES = 16;
+
+    private void minimaxSelectAttackers(Game game, UUID defenderId,
+                                        List<Permanent> attackers) {
+        UUID myId = this.getId();
+        List<List<Integer>> candidates = candidateAttackSets(attackers.size());
+
+        JsonArray candLog = new JsonArray();
+        List<Integer> best = candidates.isEmpty() ? new ArrayList<>() : candidates.get(0);
+        double bestValue = Double.NEGATIVE_INFINITY;
+        JsonObject bestLeaf = null;
+        int bestResponses = 0;
+
+        for (List<Integer> set : candidates) {
+            AttackEval ev = evaluateAttackSet(game, myId, defenderId, attackers, set);
+            JsonObject c = new JsonObject();
+            c.addProperty("label", labelFor(set, attackers));
+            c.addProperty("attacker_count", set.size());
+            c.addProperty("value", ev.value);           // max-over-min backed-up value
+            c.addProperty("block_responses", ev.numResponses);
+            c.add("leaf", ev.leaf);                      // our own life/board terms
+            candLog.add(c);
+            if (ev.value > bestValue) {
+                bestValue = ev.value;
+                best = set;
+                bestLeaf = ev.leaf;
+                bestResponses = ev.numResponses;
+            }
+        }
+
+        // Apply the argmax attack set to the REAL game.
+        for (int idx : best) {
+            Permanent atk = attackers.get(idx);
+            if (defenderId != null && atk.canAttack(defenderId, game)) {
+                getComputerPlayer().declareAttacker(atk.getId(), defenderId, game, false);
+            }
+        }
+
+        // Record the decision: how many candidates were simulated and which was
+        // chosen (the search's proof-of-work). One JSON object per line in
+        // spool/minimax.jsonl for the Python side to read after the game.
+        JsonObject decision = new JsonObject();
+        decision.addProperty("turn", game.getTurnNum());
+        decision.addProperty("available_attackers", attackers.size());
+        decision.addProperty("candidate_sets", candidates.size());
+        decision.addProperty("chosen", labelFor(best, attackers));
+        decision.addProperty("chosen_value", bestValue);
+        decision.addProperty("chosen_block_responses", bestResponses);
+        if (bestLeaf != null) {
+            decision.add("chosen_leaf", bestLeaf);
+        }
+        decision.add("candidates", candLog);
+        appendTrace(decision);
+        System.out.println("[CardGuru][minimax] turn " + game.getTurnNum()
+                + ": simulated " + candidates.size() + " attack set(s), chose '"
+                + labelFor(best, attackers) + "' (value=" + bestValue + ")");
+    }
+
+    /** The handful of attack sets we search: attack-none, all-attack, and
+     *  hold-one-creature-back for each creature. Deduplicated (with 0 or 1
+     *  creatures several of these coincide). Indices are into the attacker list. */
+    private List<List<Integer>> candidateAttackSets(int n) {
+        List<List<Integer>> sets = new ArrayList<>();
+        Set<String> seen = new HashSet<>();
+
+        List<Integer> none = new ArrayList<>();
+        addUnique(sets, seen, none);
+
+        List<Integer> all = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            all.add(i);
+        }
+        addUnique(sets, seen, all);
+
+        for (int hold = 0; hold < n; hold++) {
+            List<Integer> s = new ArrayList<>();
+            for (int i = 0; i < n; i++) {
+                if (i != hold) {
+                    s.add(i);
+                }
+            }
+            addUnique(sets, seen, s);
+        }
+        return sets;
+    }
+
+    private static void addUnique(List<List<Integer>> sets, Set<String> seen,
+                                  List<Integer> set) {
+        String key = set.toString();
+        if (seen.add(key)) {
+            sets.add(set);
+        }
+    }
+
+    private String labelFor(List<Integer> set, List<Permanent> attackers) {
+        if (set.isEmpty()) {
+            return "attack-none";
+        }
+        if (set.size() == attackers.size()) {
+            return "attack-all";
+        }
+        List<String> names = new ArrayList<>();
+        for (int i = 0; i < attackers.size(); i++) {
+            if (!set.contains(i)) {
+                names.add(attackers.get(i).getName());
+            }
+        }
+        return "hold[" + String.join(",", names) + "]";
+    }
+
+    /** Backed-up value of one attack set, and the leaf terms of the opponent's
+     *  best (min) response, for the trace. */
+    private static final class AttackEval {
+        final double value;
+        final int numResponses;
+        final JsonObject leaf;
+        AttackEval(double value, int numResponses, JsonObject leaf) {
+            this.value = value;
+            this.numResponses = numResponses;
+            this.leaf = leaf;
+        }
+    }
+
+    /**
+     * MAX-node child: declare `set` on a fresh copy, enumerate the opponent's
+     * block responses, resolve each on its own copy, and return the MIN over
+     * responses of our leaf value (the opponent picking its best block).
+     */
+    private AttackEval evaluateAttackSet(Game game, UUID myId, UUID defenderId,
+                                         List<Permanent> attackers, List<Integer> set) {
+        Game afterAttack = game.createSimulationForAI();
+        for (int idx : set) {
+            Permanent atk = attackers.get(idx);
+            Permanent simAtk = afterAttack.getPermanent(atk.getId());
+            if (simAtk != null && defenderId != null
+                    && simAtk.canAttack(defenderId, afterAttack)) {
+                afterAttack.getPlayer(myId)
+                        .declareAttacker(atk.getId(), defenderId, afterAttack, false);
+            }
+        }
+        afterAttack.checkStateAndTriggered();
+        resolveStack(afterAttack);
+
+        List<List<UUID[]>> responses = enumerateBlockResponses(afterAttack, defenderId);
+
+        double worstForUs = Double.POSITIVE_INFINITY;
+        JsonObject worstLeaf = null;
+        for (List<UUID[]> resp : responses) {
+            Game leaf = afterAttack.copy();
+            applyBlocksAndResolveCombat(leaf, defenderId, resp);
+            double v = GameStateEvaluator2.evaluate(myId, leaf).getTotalScore();
+            if (v < worstForUs) {
+                worstForUs = v;
+                worstLeaf = leafTerms(leaf, myId, defenderId, v);
+            }
+        }
+        return new AttackEval(worstForUs, responses.size(), worstLeaf);
+    }
+
+    /**
+     * The opponent's candidate block responses, as lists of {blockerId,
+     * attackerId} pairs on the post-attack copy: no-block, each legal single
+     * 1-1 block, and a greedy "block the biggest threat with every blocker"
+     * full assignment. A handful, bounded by MAX_BLOCK_RESPONSES -- a real
+     * min-layer, not the full block lattice (documented scope).
+     */
+    private List<List<UUID[]>> enumerateBlockResponses(Game afterAttack, UUID defenderId) {
+        List<List<UUID[]>> responses = new ArrayList<>();
+        responses.add(new ArrayList<>());   // no block is always an option
+
+        List<Permanent> declared = new ArrayList<>();
+        for (CombatGroup grp : afterAttack.getCombat().getGroups()) {
+            for (UUID aid : grp.getAttackers()) {
+                Permanent a = afterAttack.getPermanent(aid);
+                if (a != null) {
+                    declared.add(a);
+                }
+            }
+        }
+        Player defender = afterAttack.getPlayer(defenderId);
+        if (defender == null || declared.isEmpty()) {
+            return responses;
+        }
+        List<Permanent> blockers = defender.getAvailableBlockers(afterAttack);
+
+        // single 1-1 blocks
+        for (Permanent b : blockers) {
+            for (Permanent a : declared) {
+                if (b.canBlock(a.getId(), afterAttack)) {
+                    List<UUID[]> r = new ArrayList<>();
+                    r.add(new UUID[]{b.getId(), a.getId()});
+                    responses.add(r);
+                    if (responses.size() >= MAX_BLOCK_RESPONSES) {
+                        return responses;
+                    }
+                }
+            }
+        }
+
+        // greedy full block: each blocker onto the highest-power attacker it can
+        // still block, one blocker per attacker (a coherent "block to stabilise"
+        // response rather than a scatter of singletons)
+        List<Permanent> byPower = new ArrayList<>(declared);
+        byPower.sort((x, y) -> y.getPower().getValue() - x.getPower().getValue());
+        List<UUID[]> greedy = new ArrayList<>();
+        Set<UUID> takenAttackers = new HashSet<>();
+        for (Permanent b : blockers) {
+            for (Permanent a : byPower) {
+                if (!takenAttackers.contains(a.getId())
+                        && b.canBlock(a.getId(), afterAttack)) {
+                    greedy.add(new UUID[]{b.getId(), a.getId()});
+                    takenAttackers.add(a.getId());
+                    break;
+                }
+            }
+        }
+        if (greedy.size() > 1) {
+            responses.add(greedy);
+        }
+        return responses;
+    }
+
+    /** Apply one block response on a leaf copy and run combat to end-of-combat,
+     *  mirroring CombatUtil.willItSurviveSimulation's proven resolution recipe. */
+    private void applyBlocksAndResolveCombat(Game leaf, UUID defenderId,
+                                             List<UUID[]> resp) {
+        Player defender = leaf.getPlayer(defenderId);
+        for (UUID[] pair : resp) {
+            Permanent b = leaf.getPermanent(pair[0]);
+            Permanent a = leaf.getPermanent(pair[1]);
+            if (defender != null && b != null && a != null
+                    && b.canBlock(a.getId(), leaf)) {
+                defender.declareBlocker(defenderId, pair[0], pair[1], leaf);
+            }
+        }
+        leaf.fireEvent(GameEvent.getEvent(GameEvent.EventType.DECLARED_BLOCKERS,
+                defenderId, defenderId));
+        leaf.checkStateAndTriggered();
+        resolveStack(leaf);
+        simulateStep(leaf, new CombatDamageStep(true));
+        simulateStep(leaf, new CombatDamageStep(false));
+        simulateStep(leaf, new EndOfCombatStep());
+        leaf.checkStateAndTriggered();
+        resolveStack(leaf);
+    }
+
+    /** Resolve the whole stack, applying effects between resolves. */
+    private static void resolveStack(Game g) {
+        int guard = 0;
+        while (!g.getStack().isEmpty() && guard++ < 100) {
+            g.getStack().resolve(g);
+            g.applyEffects();
+        }
+    }
+
+    /** Advance one turn Step on a simulation copy (private in CombatUtil, so
+     *  replicated here verbatim): set the step, begin it, drain the stack, end
+     *  it. */
+    private static void simulateStep(Game sim, Step step) {
+        sim.getPhase().setStep(step);
+        if (!step.skipStep(sim, sim.getActivePlayerId())) {
+            step.beginStep(sim, sim.getActivePlayerId());
+            resolveStack(sim);
+            step.endStep(sim, sim.getActivePlayerId());
+        }
+    }
+
+    /** Our own life/board leaf terms (the value.py SPIRIT: score from A's seat
+     *  off public outcome state) alongside the engine's own scalar score. */
+    private JsonObject leafTerms(Game leaf, UUID myId, UUID defenderId, double engineScore) {
+        JsonObject o = new JsonObject();
+        Player me = leaf.getPlayer(myId);
+        Player opp = leaf.getPlayer(defenderId);
+        o.addProperty("engine_score", engineScore);
+        if (me != null) {
+            o.addProperty("a_life", me.getLife());
+            o.addProperty("a_board",
+                    leaf.getBattlefield().getAllActivePermanents(myId).size());
+        }
+        if (opp != null) {
+            o.addProperty("b_life", opp.getLife());
+            o.addProperty("b_board",
+                    leaf.getBattlefield().getAllActivePermanents(defenderId).size());
+        }
+        return o;
+    }
+
+    /** Append one decision record as a JSON line to spool/minimax.jsonl. */
+    private void appendTrace(JsonObject record) {
+        File log = new File(spool, "minimax.jsonl");
+        try (FileWriter w = new FileWriter(log, true)) {
+            w.write(GSON.toJson(record));
+            w.write("\n");
+        } catch (Exception e) {
+            // A trace failure must never abort a real game; just note it.
+            System.out.println("[CardGuru][minimax] trace write failed: " + e);
         }
     }
 }

@@ -273,10 +273,13 @@ def cmd_play(args):
         policy = belief_policy()   # loads meta_decks/, plays around unseen removal
     else:
         policy = {"dumb": dumb_policy, "pass": pass_policy}[args.policy]
-    tally = play_matches(args.games, policy=policy, mage_repo=args.mage_repo)
+    minimax = getattr(args, "minimax", False)
+    tally = play_matches(args.games, policy=policy, mage_repo=args.mage_repo,
+                         minimax=minimax)
     json.dump(tally, sys.stdout, indent=1)
     print()
-    print(f"-- {args.policy} policy vs COMPUTER_MAD: "
+    label = f"{args.policy}+minimax" if minimax else args.policy
+    print(f"-- {label} policy vs COMPUTER_MAD: "
           f"{tally['wins']}W / {tally['losses']}L / {tally['errors']}E "
           f"over {tally['games']} game(s)", file=sys.stderr)
 
@@ -1034,6 +1037,10 @@ def main(argv=None):
                     help="decision policy (no LLM): dumb=develop+swing, "
                          "pass=do nothing")
     pl.add_argument("--mage-repo", help="XMage checkout (or env CARDGURU_MAGE_REPO)")
+    pl.add_argument("--minimax", action="store_true",
+                    help="run the driver's simulation-backed minimax search at "
+                         "the declare-attackers decision (attacks are chosen by "
+                         "engine rollout, not by --policy); see docs/live-minimax.md")
     pl.set_defaults(fn=cmd_play)
 
     args = p.parse_args(argv)
