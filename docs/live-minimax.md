@@ -212,6 +212,41 @@ A single decision's full record (the search's proof-of-work, from
 `block_responses: 1` because the opponent had no blockers (`b_board: 0`) — see
 the limitation below on why the live opponent never develops a board.
 
+### Demonstrating the min-layer (opponent-blocker scaffold)
+
+Because the live opponent never develops a board, the block min-layer above only
+ever sees the no-block response. To exercise and *demonstrate* the min-layer,
+`--opp-blockers N` (driver `-Dcardguru.minimax.opp_blockers=N`) seats N vanilla
+3/3 blockers (Canyon Minotaur) on the opponent's battlefield at game start —
+purely a plumbing scaffold; the live opponent still never blocks, this only
+gives the *simulated* opponent something to block with.
+
+```
+$ python3 -m cardguru play --games 1 --policy dumb --minimax --opp-blockers 3
+# 38 attack decisions, ALL 38 weighing >1 block response
+```
+
+A representative decision — our lone 1/1 attacker into three 3/3s:
+
+```json
+{ "turn": 47, "available_attackers": 1, "candidate_sets": 2,
+  "chosen": "attack-none", "chosen_value": 1140.0,
+  "candidates": [
+    {"label": "attack-none", "value": 1140.0, "block_responses": 1,
+     "leaf": {"b_board": 3, "a_board": 16}},
+    {"label": "attack-all",  "value": 120.0,  "block_responses": 4,
+     "leaf": {"b_board": 3, "a_board": 15}} ] }
+```
+
+The max-layer now genuinely reasons about the min-layer: `attack-all` enumerates
+**4** block responses (no-block + three legal 1-1 blocks), and the opponent's
+*best* block (the min) trades a free 3/3 for our 1/1 — collapsing that branch's
+value from 1140 to 120. So the search **declines the attack** (`attack-none`),
+which no static "swing with everything" policy would do. Over the whole game the
+1/1s stay home against the 3/3 wall and playerA wins on the opponent's deck-out
+(`turns: 122`). This is the search demonstrably *doing something* — a real
+max-over-min changing the decision.
+
 ## Limitations (honest scope)
 
 - **Only attacks, only depth ~1.5.** No priority/spell search, no look-ahead past
