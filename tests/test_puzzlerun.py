@@ -43,9 +43,18 @@ def test_bare_render_shows_facts_not_advice(store):
     assert "lethal" not in text.lower() and "clock" not in text.lower()
 
 
-def test_annotated_mode_is_a_loud_gap_until_p2(store):
-    with pytest.raises(NotImplementedError):
-        Encoder(store).render(make_puzzle(), mode="annotated")
+def test_annotated_mode_adds_facts_never_advice(store):
+    text = Encoder(store).render(make_puzzle(), mode="annotated")
+    assert "COMPUTED" in text and "not advice" in text
+    assert "your full attack: 5 combat damage" in text      # Bear 2 + Ox 3
+    assert "opponent at 6: a full attack alone leaves them at 1" in text
+    assert "your untapped lands: 1" in text
+    assert "Test Shock ({R}): 2 damage, may target a player" in text
+    # facts, not instructions: no imperative line recommendations
+    for verb in ("you should", "best line", "recommended"):
+        assert verb not in text.lower()
+    # bare mode must NOT contain the computed layer
+    assert "COMPUTED" not in Encoder(store).render(make_puzzle())
 
 
 def test_unknown_cards_degrade_the_prompt_not_the_run(store):
