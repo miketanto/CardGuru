@@ -62,7 +62,25 @@ through the damage math before we ever ask an agent).
 
 ## Phases
 
-### P0 — Puzzle format + grader (no agent, no new Java)
+### P0 — Puzzle format + grader (no agent, no new Java) — **DONE 2026-09-08**
+
+Status: `cardguru/puzzle.py` (format/splice/grade/admit), `cardguru/
+localrunner.py` (provisional tier-1 grader; see below), `cardguru/
+puzzlegen.py` (generator with brute-force win proofs), `puzzle` CLI,
+30 T1 puzzles in `puzzles/t1/` at 30/30 admitted, 15 tests. Two findings:
+
+- **Blocks are decisions.** Strict-choose XMage fails on any unscripted
+  decision, and the defender's blocks depend on the agent's attackers — so
+  T1 boards guarantee the defender has NO untapped creatures. T2 "block
+  correctly" puzzles put the *agent* on defense (its blocks are its line);
+  puzzles that need a *defending opponent policy* wait for P4's response
+  rounds.
+- **Grading runs before the engine does.** No XMage checkout is configured
+  yet, so admission ran through a local combat-arithmetic runner that
+  executes exactly the tier-1 slice and errors loudly outside it. Every
+  such grade is stamped `engine: local-combat` and the CLI calls it
+  provisional; re-admission with `--engine xmage` is a standing TODO before
+  any published number.
 - `puzzles/` format: a scenario minus `actions`, plus `win:[...]` checks and
   `tier`, `trap`, `notes` fields (mirroring the benchmark questions' schema).
 - `cardguru/puzzle.py`: splice a proposed line into a puzzle → scenario;
