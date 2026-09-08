@@ -226,7 +226,20 @@ matches, or a T4 with hidden hands).
   where worst-case reasoning is the tested skill. If it doesn't, we learn that
   before building any live-match plumbing.
 
-### P5 — Live matches (the Java finally happens)
+### P5 — Live matches (the Java finally happens) — **server mode DONE 2026-09-08**
+
+Driver server mode shipped and verified (`0d810f5`): persistent JVM via a
+spool directory (`-Dcardguru.server.spool`), atomic file handshake, READY/
+SHUTDOWN markers, `reset()` between runs; Python `MageServer` wraps it with
+atexit cleanup and a process-wide singleton; CLI `--engine xmage-server`.
+A full 30-puzzle T3 minimax grade (~350 scenarios) runs in 3–4.5s after a
+one-time ~7s warmup, identical verdicts to batch mode. This is the
+decision-loop latency the interactive match loop needs. **Remaining in P5:
+the interactive bridge** — a genuinely new capability (drive XMage's real
+game loop against `COMPUTER_MAD`, injecting the agent's decision at each
+priority) rather than executing a predetermined script. That is the first
+step that is NOT a variation of the scenario adjudicator, and the fork
+point below.
 - Driver server mode (~100 LOC: persistent JVM, socket loop) + richer state
   dump + winner short-circuit, per `docs/agent-design.md`.
 - `cardguru/play.py` match loop vs XMage `COMPUTER_MAD`, fixed Standard
