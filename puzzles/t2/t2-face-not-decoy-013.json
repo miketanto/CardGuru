@@ -1,0 +1,97 @@
+{
+ "id": "t2-face-not-decoy-013",
+ "tier": 2,
+ "description": "Win this turn: 9 life, a choice to get right",
+ "trap": "burning the Enormous Baloth instead of the face comes up 3 short",
+ "notes": "family=face_not_decoy; all burn must be lethal-directed; bait creature is tapped and harmless",
+ "turn": 1,
+ "players": {
+  "A": {
+   "life": 20,
+   "battlefield": [
+    {
+     "card": "Kalonian Tusker"
+    },
+    {
+     "card": "Knight of the Keep"
+    },
+    {
+     "card": "Mountain",
+     "count": 2
+    }
+   ],
+   "hand": [
+    "Incinerate"
+   ]
+  },
+  "B": {
+   "life": 9,
+   "battlefield": [
+    {
+     "card": "Island",
+     "count": 3,
+     "tapped": true
+    },
+    {
+     "card": "Enormous Baloth",
+     "tapped": true
+    }
+   ]
+  }
+ },
+ "win": [
+  {
+   "metric": "life",
+   "player": "B",
+   "max": 0
+  }
+ ],
+ "known_good": [
+  {
+   "do": "cast",
+   "turn": 1,
+   "phase": "PRECOMBAT_MAIN",
+   "player": "A",
+   "card": "Incinerate",
+   "target_player": "B"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Kalonian Tusker"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Knight of the Keep"
+  }
+ ],
+ "known_bad": [
+  {
+   "do": "cast",
+   "turn": 1,
+   "phase": "PRECOMBAT_MAIN",
+   "player": "A",
+   "card": "Incinerate"
+  },
+  {
+   "do": "target",
+   "player": "A",
+   "value": "Enormous Baloth"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Kalonian Tusker"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Knight of the Keep"
+  }
+ ]
+}

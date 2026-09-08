@@ -1,0 +1,94 @@
+{
+ "id": "t2-creature-only-021",
+ "tier": 2,
+ "description": "Win this turn: 11 life, a choice to get right",
+ "trap": "Roast deals more damage but only targets creatures; pointing it at the face fails",
+ "notes": "family=creature_only; known_bad's cast is illegal \u2014 the engine refuses it (observed: silently skipped, not errored) and the attack alone falls short",
+ "turn": 1,
+ "players": {
+  "A": {
+   "life": 20,
+   "battlefield": [
+    {
+     "card": "Cyclops of One-Eyed Pass"
+    },
+    {
+     "card": "Rowan Treefolk"
+    },
+    {
+     "card": "Mountain",
+     "count": 2
+    }
+   ],
+   "hand": [
+    "Lightning Strike",
+    "Roast"
+   ]
+  },
+  "B": {
+   "life": 11,
+   "battlefield": [
+    {
+     "card": "Island",
+     "count": 4,
+     "tapped": true
+    },
+    {
+     "card": "Enormous Baloth",
+     "tapped": true
+    }
+   ]
+  }
+ },
+ "win": [
+  {
+   "metric": "life",
+   "player": "B",
+   "max": 0
+  }
+ ],
+ "known_good": [
+  {
+   "do": "cast",
+   "turn": 1,
+   "phase": "PRECOMBAT_MAIN",
+   "player": "A",
+   "card": "Lightning Strike",
+   "target_player": "B"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Cyclops of One-Eyed Pass"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Rowan Treefolk"
+  }
+ ],
+ "known_bad": [
+  {
+   "do": "cast",
+   "turn": 1,
+   "phase": "PRECOMBAT_MAIN",
+   "player": "A",
+   "card": "Roast",
+   "target_player": "B"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Cyclops of One-Eyed Pass"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Rowan Treefolk"
+  }
+ ]
+}

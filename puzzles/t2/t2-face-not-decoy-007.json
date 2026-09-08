@@ -1,0 +1,114 @@
+{
+ "id": "t2-face-not-decoy-007",
+ "tier": 2,
+ "description": "Win this turn: 10 life, a choice to get right",
+ "trap": "burning the Vizzerdrix instead of the face comes up 3 short",
+ "notes": "family=face_not_decoy; all burn must be lethal-directed; bait creature is tapped and harmless",
+ "turn": 1,
+ "players": {
+  "A": {
+   "life": 20,
+   "battlefield": [
+    {
+     "card": "Jibbirik Omnivore"
+    },
+    {
+     "card": "Pensive Minotaur"
+    },
+    {
+     "card": "Mountain",
+     "count": 3
+    }
+   ],
+   "hand": [
+    "Searing Spear",
+    "Shock"
+   ]
+  },
+  "B": {
+   "life": 10,
+   "battlefield": [
+    {
+     "card": "Island",
+     "count": 3,
+     "tapped": true
+    },
+    {
+     "card": "Vizzerdrix",
+     "tapped": true
+    }
+   ]
+  }
+ },
+ "win": [
+  {
+   "metric": "life",
+   "player": "B",
+   "max": 0
+  }
+ ],
+ "known_good": [
+  {
+   "do": "cast",
+   "turn": 1,
+   "phase": "PRECOMBAT_MAIN",
+   "player": "A",
+   "card": "Searing Spear",
+   "target_player": "B"
+  },
+  {
+   "do": "cast",
+   "turn": 1,
+   "phase": "PRECOMBAT_MAIN",
+   "player": "A",
+   "card": "Shock",
+   "target_player": "B"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Jibbirik Omnivore"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Pensive Minotaur"
+  }
+ ],
+ "known_bad": [
+  {
+   "do": "cast",
+   "turn": 1,
+   "phase": "PRECOMBAT_MAIN",
+   "player": "A",
+   "card": "Searing Spear"
+  },
+  {
+   "do": "target",
+   "player": "A",
+   "value": "Vizzerdrix"
+  },
+  {
+   "do": "cast",
+   "turn": 1,
+   "phase": "PRECOMBAT_MAIN",
+   "player": "A",
+   "card": "Shock",
+   "target_player": "B"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Jibbirik Omnivore"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Pensive Minotaur"
+  }
+ ]
+}

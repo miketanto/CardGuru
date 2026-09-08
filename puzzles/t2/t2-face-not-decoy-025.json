@@ -1,0 +1,97 @@
+{
+ "id": "t2-face-not-decoy-025",
+ "tier": 2,
+ "description": "Win this turn: 9 life, a choice to get right",
+ "trap": "burning the Enormous Baloth instead of the face comes up 3 short",
+ "notes": "family=face_not_decoy; all burn must be lethal-directed; bait creature is tapped and harmless",
+ "turn": 1,
+ "players": {
+  "A": {
+   "life": 20,
+   "battlefield": [
+    {
+     "card": "Knight Errant"
+    },
+    {
+     "card": "Minotaur Abomination"
+    },
+    {
+     "card": "Mountain",
+     "count": 1
+    }
+   ],
+   "hand": [
+    "Lightning Bolt"
+   ]
+  },
+  "B": {
+   "life": 9,
+   "battlefield": [
+    {
+     "card": "Island",
+     "count": 2,
+     "tapped": true
+    },
+    {
+     "card": "Enormous Baloth",
+     "tapped": true
+    }
+   ]
+  }
+ },
+ "win": [
+  {
+   "metric": "life",
+   "player": "B",
+   "max": 0
+  }
+ ],
+ "known_good": [
+  {
+   "do": "cast",
+   "turn": 1,
+   "phase": "PRECOMBAT_MAIN",
+   "player": "A",
+   "card": "Lightning Bolt",
+   "target_player": "B"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Knight Errant"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Minotaur Abomination"
+  }
+ ],
+ "known_bad": [
+  {
+   "do": "cast",
+   "turn": 1,
+   "phase": "PRECOMBAT_MAIN",
+   "player": "A",
+   "card": "Lightning Bolt"
+  },
+  {
+   "do": "target",
+   "player": "A",
+   "value": "Enormous Baloth"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Knight Errant"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Minotaur Abomination"
+  }
+ ]
+}

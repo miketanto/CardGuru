@@ -1,0 +1,129 @@
+{
+ "id": "t2-face-not-decoy-022",
+ "tier": 2,
+ "description": "Win this turn: 14 life, a choice to get right",
+ "trap": "burning the Craw Wurm instead of the face comes up 2 short",
+ "notes": "family=face_not_decoy; all burn must be lethal-directed; bait creature is tapped and harmless",
+ "turn": 1,
+ "players": {
+  "A": {
+   "life": 20,
+   "battlefield": [
+    {
+     "card": "Knight of New Benalia"
+    },
+    {
+     "card": "Nettle Swine"
+    },
+    {
+     "card": "Blind Phantasm"
+    },
+    {
+     "card": "Mountain",
+     "count": 3
+    }
+   ],
+   "hand": [
+    "Shock",
+    "Incinerate"
+   ]
+  },
+  "B": {
+   "life": 14,
+   "battlefield": [
+    {
+     "card": "Island",
+     "count": 2,
+     "tapped": true
+    },
+    {
+     "card": "Craw Wurm",
+     "tapped": true
+    }
+   ]
+  }
+ },
+ "win": [
+  {
+   "metric": "life",
+   "player": "B",
+   "max": 0
+  }
+ ],
+ "known_good": [
+  {
+   "do": "cast",
+   "turn": 1,
+   "phase": "PRECOMBAT_MAIN",
+   "player": "A",
+   "card": "Shock",
+   "target_player": "B"
+  },
+  {
+   "do": "cast",
+   "turn": 1,
+   "phase": "PRECOMBAT_MAIN",
+   "player": "A",
+   "card": "Incinerate",
+   "target_player": "B"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Knight of New Benalia"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Nettle Swine"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Blind Phantasm"
+  }
+ ],
+ "known_bad": [
+  {
+   "do": "cast",
+   "turn": 1,
+   "phase": "PRECOMBAT_MAIN",
+   "player": "A",
+   "card": "Shock"
+  },
+  {
+   "do": "target",
+   "player": "A",
+   "value": "Craw Wurm"
+  },
+  {
+   "do": "cast",
+   "turn": 1,
+   "phase": "PRECOMBAT_MAIN",
+   "player": "A",
+   "card": "Incinerate",
+   "target_player": "B"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Knight of New Benalia"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Nettle Swine"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Blind Phantasm"
+  }
+ ]
+}

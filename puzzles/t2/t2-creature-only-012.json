@@ -1,0 +1,94 @@
+{
+ "id": "t2-creature-only-012",
+ "tier": 2,
+ "description": "Win this turn: 8 life, a choice to get right",
+ "trap": "Lava Coil deals more damage but only targets creatures; pointing it at the face fails",
+ "notes": "family=creature_only; known_bad's cast is illegal \u2014 the engine refuses it (observed: silently skipped, not errored) and the attack alone falls short",
+ "turn": 1,
+ "players": {
+  "A": {
+   "life": 20,
+   "battlefield": [
+    {
+     "card": "Felhide Minotaur"
+    },
+    {
+     "card": "Regathan Firecat"
+    },
+    {
+     "card": "Mountain",
+     "count": 2
+    }
+   ],
+   "hand": [
+    "Shock",
+    "Lava Coil"
+   ]
+  },
+  "B": {
+   "life": 8,
+   "battlefield": [
+    {
+     "card": "Island",
+     "count": 2,
+     "tapped": true
+    },
+    {
+     "card": "Craw Wurm",
+     "tapped": true
+    }
+   ]
+  }
+ },
+ "win": [
+  {
+   "metric": "life",
+   "player": "B",
+   "max": 0
+  }
+ ],
+ "known_good": [
+  {
+   "do": "cast",
+   "turn": 1,
+   "phase": "PRECOMBAT_MAIN",
+   "player": "A",
+   "card": "Shock",
+   "target_player": "B"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Felhide Minotaur"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Regathan Firecat"
+  }
+ ],
+ "known_bad": [
+  {
+   "do": "cast",
+   "turn": 1,
+   "phase": "PRECOMBAT_MAIN",
+   "player": "A",
+   "card": "Lava Coil",
+   "target_player": "B"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Felhide Minotaur"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Regathan Firecat"
+  }
+ ]
+}
