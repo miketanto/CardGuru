@@ -135,7 +135,25 @@ that any winning line counts, no golden-line matching anywhere.
 - **Exit:** arm (a) T1 number recorded in `research/data/`, with per-puzzle
   outcomes and the failed lines kept (they seed T2's trap list).
 
-### P2 — Annotations A/B (the thesis in miniature)
+### P2 — Annotations A/B (the thesis in miniature) — **T2 built 2026-09-08**
+
+Status: 30 tier-2 choice-trap puzzles in `puzzles/t2/`, 10 per family,
+admitted 30/30 through strict-choose XMage (and at the verdict level
+through the local runner). Families: `face-not-decoy`, `right-burn`,
+`creature-only` — every board a forced win where one plausible wrong
+choice loses. Two engine findings folded in:
+
+- `spike-block-unscripted`: strict-choose **auto-declines** a defender's
+  unscripted blocks. So no trap is premised on "they would block", and
+  every tier-2 defender creature is tapped (enforced by test) so the
+  engine artifact never contradicts real Magic. Remove-the-blocker traps
+  wait for a scripted-opponent mechanism (P4's response rounds).
+- A creature-only spell cast at a player is refused *silently* (the cast
+  never happens; status stays `executed`), not errored — the trap still
+  loses by shortfall, and the notes record the observed mechanism.
+
+Remaining for P2: annotated encoder mode (verdicts/clock into the prompt),
+then the a-vs-b run on T2 with ≥7 seeds and the permutation test.
 - `cardguru/lines.py`: parse/validate proposed lines client-side (reuse
   `validate_scenario` + mana arithmetic); illegal → one bounded retry with the
   validator's message, exactly like the compile loop's repair signal.
