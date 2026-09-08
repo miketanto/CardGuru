@@ -70,12 +70,43 @@ def main():
     ap.add_argument("--minimax", action="store_true",
                     help="let the in-JVM search take the attack decision "
                          "(default: the LLM decides attacks)")
+    ap.add_argument("--compact", action="store_true",
+                    help="persistent-pilot mode: no per-request rules context, "
+                         "card oracle text sent once per name (card_reference), "
+                         "state stripped to name/tapped/pt/sick afterwards")
     args = ap.parse_args()
 
     os.makedirs(args.esc_dir, exist_ok=True)
     corpus = believe.load_corpus()
     rng = random.Random(0)
     seq = {"n": 0}
+    seen_cards: set = set()
+
+    def compact_state(request):
+        """First appearance of a card name -> full facts into card_reference;
+        afterwards the state carries name/tapped/pt/summoning_sick only."""
+        reference = {}
+
+        def strip(card):
+            name = card.get("name")
+            if name and name not in seen_cards:
+                seen_cards.add(name)
+                ref = {k: card[k] for k in ("cost", "types", "text",
+                                            "power", "toughness") if k in card}
+                if ref:
+                    reference[name] = ref
+            return {k: card[k] for k in ("name", "tapped", "power",
+                                         "toughness", "summoning_sick")
+                    if k in card}
+
+        state = request.get("state") or {}
+        for side in state.values():
+            if isinstance(side.get("battlefield"), list):
+                side["battlefield"] = [strip(c) for c in side["battlefield"]]
+            if isinstance(side.get("hand"), list):
+                side["hand"] = [strip(c) if isinstance(c, dict) else c
+                                for c in side["hand"]]
+        return reference
 
     def log(row):
         row["ts"] = round(time.time(), 1)
@@ -97,8 +128,14 @@ def main():
     def escalate(request):
         seq["n"] += 1
         n = seq["n"]
-        payload = {"seq": n, "context": RULES_CONTEXT, "request": request,
+        payload = {"seq": n, "request": request,
                    "belief": belief_summary(request)}
+        if args.compact:
+            ref = compact_state(request)
+            if ref:
+                payload["card_reference"] = ref
+        else:
+            payload["context"] = RULES_CONTEXT
         tmp = os.path.join(args.esc_dir, f"req-{n}.json.tmp")
         with open(tmp, "w", encoding="utf-8") as f:
             json.dump(payload, f, indent=1)
