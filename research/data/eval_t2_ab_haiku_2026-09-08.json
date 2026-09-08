@@ -1,0 +1,523 @@
+{
+ "benchmark": "t2 choice-traps v1 (30 puzzles, engine-admitted 30/30 xmage)",
+ "comparison": "arm a (bare) vs arm b (annotated) at haiku tier, seed 1",
+ "model": "claude-haiku-4-5 (in-session subagents)",
+ "grading_engine": "xmage (strict-choose, winner short-circuit driver)",
+ "date": "2026-09-08",
+ "seeds_run": 1,
+ "aggregate": {
+  "a": "28/30",
+  "b": "28/30"
+ },
+ "by_family": {
+  "a": {
+   "creature-only": "9/10",
+   "face-not-decoy": "10/10",
+   "right-burn": "9/10"
+  },
+  "b": {
+   "creature-only": "10/10",
+   "face-not-decoy": "10/10",
+   "right-burn": "8/10"
+  }
+ },
+ "reading": [
+  "No aggregate arm difference at one seed; both arms sit near the instrument's ceiling (28/30), so 2-loss margins are noise-dominated.",
+  "Every loss in both arms is the SAME failure mode: casting a second burn spell past available mana, dying as a strict-mode unexecutable cast. One arm-b agent did this against an explicit 'you cannot cast everything' annotation (t2-right-burn-029).",
+  "Weak directional support for the pre-registered prediction: annotations closed creature-only (9/10 -> 10/10); the target-legality trap never bit arm b.",
+  "The dominant failure is exactly what one engine rollout catches: an over-cast line fails in simulation, and P3's search arm would discard it mechanically, with no LLM improvement required. That is the strongest argument yet for the search layer."
+ ],
+ "next": "either more seeds to estimate rates, harder T2 variants to open headroom, or proceed to P3 where arm (c) should eliminate the observed failure mode by construction.",
+ "arms": {
+  "A": {
+   "wins": 28,
+   "results": [
+    {
+     "id": "t2-creature-only-003",
+     "win": false,
+     "reasons": [
+      "run did not execute: AssertionError: Can't find ability to activate command: Cast Incinerate$targetPlayer=PlayerB"
+     ],
+     "engine": "xmage"
+    },
+    {
+     "id": "t2-creature-only-006",
+     "win": true,
+     "reasons": [
+      "life(B)=0 want max=0"
+     ],
+     "engine": "xmage"
+    },
+    {
+     "id": "t2-creature-only-009",
+     "win": true,
+     "reasons": [
+      "life(B)=0 want max=0"
+     ],
+     "engine": "xmage"
+    },
+    {
+     "id": "t2-creature-only-012",
+     "win": true,
+     "reasons": [
+      "life(B)=0 want max=0"
+     ],
+     "engine": "xmage"
+    },
+    {
+     "id": "t2-creature-only-015",
+     "win": true,
+     "reasons": [
+      "life(B)=0 want max=0"
+     ],
+     "engine": "xmage"
+    },
+    {
+     "id": "t2-creature-only-018",
+     "win": true,
+     "reasons": [
+      "life(B)=0 want max=0"
+     ],
+     "engine": "xmage"
+    },
+    {
+     "id": "t2-creature-only-021",
+     "win": true,
+     "reasons": [
+      "life(B)=0 want max=0"
+     ],
+     "engine": "xmage"
+    },
+    {
+     "id": "t2-creature-only-024",
+     "win": true,
+     "reasons": [
+      "life(B)=0 want max=0"
+     ],
+     "engine": "xmage"
+    },
+    {
+     "id": "t2-creature-only-027",
+     "win": true,
+     "reasons": [
+      "life(B)=0 want max=0"
+     ],
+     "engine": "xmage"
+    },
+    {
+     "id": "t2-creature-only-030",
+     "win": true,
+     "reasons": [
+      "life(B)=0 want max=0"
+     ],
+     "engine": "xmage"
+    },
+    {
+     "id": "t2-face-not-decoy-001",
+     "win": true,
+     "reasons": [
+      "life(B)=0 want max=0"
+     ],
+     "engine": "xmage"
+    },
+    {
+     "id": "t2-face-not-decoy-004",
+     "win": true,
+     "reasons": [
+      "life(B)=0 want max=0"
+     ],
+     "engine": "xmage"
+    },
+    {
+     "id": "t2-face-not-decoy-007",
+     "win": true,
+     "reasons": [
+      "life(B)=0 want max=0"
+     ],
+     "engine": "xmage"
+    },
+    {
+     "id": "t2-face-not-decoy-010",
+     "win": true,
+     "reasons": [
+      "life(B)=0 want max=0"
+     ],
+     "engine": "xmage"
+    },
+    {
+     "id": "t2-face-not-decoy-013",
+     "win": true,
+     "reasons": [
+      "life(B)=0 want max=0"
+     ],
+     "engine": "xmage"
+    },
+    {
+     "id": "t2-face-not-decoy-016",
+     "win": true,
+     "reasons": [
+      "life(B)=0 want max=0"
+     ],
+     "engine": "xmage"
+    },
+    {
+     "id": "t2-face-not-decoy-019",
+     "win": true,
+     "reasons": [
+      "life(B)=0 want max=0"
+     ],
+     "engine": "xmage"
+    },
+    {
+     "id": "t2-face-not-decoy-022",
+     "win": true,
+     "reasons": [
+      "life(B)=0 want max=0"
+     ],
+     "engine": "xmage"
+    },
+    {
+     "id": "t2-face-not-decoy-025",
+     "win": true,
+     "reasons": [
+      "life(B)=0 want max=0"
+     ],
+     "engine": "xmage"
+    },
+    {
+     "id": "t2-face-not-decoy-028",
+     "win": true,
+     "reasons": [
+      "life(B)=0 want max=0"
+     ],
+     "engine": "xmage"
+    },
+    {
+     "id": "t2-right-burn-002",
+     "win": false,
+     "reasons": [
+      "run did not execute: AssertionError: Can't find ability to activate command: Cast Incinerate$targetPlayer=PlayerB"
+     ],
+     "engine": "xmage"
+    },
+    {
+     "id": "t2-right-burn-005",
+     "win": true,
+     "reasons": [
+      "life(B)=0 want max=0"
+     ],
+     "engine": "xmage"
+    },
+    {
+     "id": "t2-right-burn-008",
+     "win": true,
+     "reasons": [
+      "life(B)=0 want max=0"
+     ],
+     "engine": "xmage"
+    },
+    {
+     "id": "t2-right-burn-011",
+     "win": true,
+     "reasons": [
+      "life(B)=0 want max=0"
+     ],
+     "engine": "xmage"
+    },
+    {
+     "id": "t2-right-burn-014",
+     "win": true,
+     "reasons": [
+      "life(B)=0 want max=0"
+     ],
+     "engine": "xmage"
+    },
+    {
+     "id": "t2-right-burn-017",
+     "win": true,
+     "reasons": [
+      "life(B)=0 want max=0"
+     ],
+     "engine": "xmage"
+    },
+    {
+     "id": "t2-right-burn-020",
+     "win": true,
+     "reasons": [
+      "life(B)=0 want max=0"
+     ],
+     "engine": "xmage"
+    },
+    {
+     "id": "t2-right-burn-023",
+     "win": true,
+     "reasons": [
+      "life(B)=0 want max=0"
+     ],
+     "engine": "xmage"
+    },
+    {
+     "id": "t2-right-burn-026",
+     "win": true,
+     "reasons": [
+      "life(B)=0 want max=0"
+     ],
+     "engine": "xmage"
+    },
+    {
+     "id": "t2-right-burn-029",
+     "win": true,
+     "reasons": [
+      "life(B)=0 want max=0"
+     ],
+     "engine": "xmage"
+    }
+   ]
+  },
+  "B": {
+   "wins": 28,
+   "results": [
+    {
+     "id": "t2-creature-only-003",
+     "win": true,
+     "reasons": [
+      "life(B)=0 want max=0"
+     ],
+     "engine": "xmage"
+    },
+    {
+     "id": "t2-creature-only-006",
+     "win": true,
+     "reasons": [
+      "life(B)=0 want max=0"
+     ],
+     "engine": "xmage"
+    },
+    {
+     "id": "t2-creature-only-009",
+     "win": true,
+     "reasons": [
+      "life(B)=0 want max=0"
+     ],
+     "engine": "xmage"
+    },
+    {
+     "id": "t2-creature-only-012",
+     "win": true,
+     "reasons": [
+      "life(B)=0 want max=0"
+     ],
+     "engine": "xmage"
+    },
+    {
+     "id": "t2-creature-only-015",
+     "win": true,
+     "reasons": [
+      "life(B)=0 want max=0"
+     ],
+     "engine": "xmage"
+    },
+    {
+     "id": "t2-creature-only-018",
+     "win": true,
+     "reasons": [
+      "life(B)=0 want max=0"
+     ],
+     "engine": "xmage"
+    },
+    {
+     "id": "t2-creature-only-021",
+     "win": true,
+     "reasons": [
+      "life(B)=0 want max=0"
+     ],
+     "engine": "xmage"
+    },
+    {
+     "id": "t2-creature-only-024",
+     "win": true,
+     "reasons": [
+      "life(B)=0 want max=0"
+     ],
+     "engine": "xmage"
+    },
+    {
+     "id": "t2-creature-only-027",
+     "win": true,
+     "reasons": [
+      "life(B)=0 want max=0"
+     ],
+     "engine": "xmage"
+    },
+    {
+     "id": "t2-creature-only-030",
+     "win": true,
+     "reasons": [
+      "life(B)=0 want max=0"
+     ],
+     "engine": "xmage"
+    },
+    {
+     "id": "t2-face-not-decoy-001",
+     "win": true,
+     "reasons": [
+      "life(B)=0 want max=0"
+     ],
+     "engine": "xmage"
+    },
+    {
+     "id": "t2-face-not-decoy-004",
+     "win": true,
+     "reasons": [
+      "life(B)=0 want max=0"
+     ],
+     "engine": "xmage"
+    },
+    {
+     "id": "t2-face-not-decoy-007",
+     "win": true,
+     "reasons": [
+      "life(B)=0 want max=0"
+     ],
+     "engine": "xmage"
+    },
+    {
+     "id": "t2-face-not-decoy-010",
+     "win": true,
+     "reasons": [
+      "life(B)=0 want max=0"
+     ],
+     "engine": "xmage"
+    },
+    {
+     "id": "t2-face-not-decoy-013",
+     "win": true,
+     "reasons": [
+      "life(B)=0 want max=0"
+     ],
+     "engine": "xmage"
+    },
+    {
+     "id": "t2-face-not-decoy-016",
+     "win": true,
+     "reasons": [
+      "life(B)=0 want max=0"
+     ],
+     "engine": "xmage"
+    },
+    {
+     "id": "t2-face-not-decoy-019",
+     "win": true,
+     "reasons": [
+      "life(B)=0 want max=0"
+     ],
+     "engine": "xmage"
+    },
+    {
+     "id": "t2-face-not-decoy-022",
+     "win": true,
+     "reasons": [
+      "life(B)=0 want max=0"
+     ],
+     "engine": "xmage"
+    },
+    {
+     "id": "t2-face-not-decoy-025",
+     "win": true,
+     "reasons": [
+      "life(B)=0 want max=0"
+     ],
+     "engine": "xmage"
+    },
+    {
+     "id": "t2-face-not-decoy-028",
+     "win": true,
+     "reasons": [
+      "life(B)=0 want max=0"
+     ],
+     "engine": "xmage"
+    },
+    {
+     "id": "t2-right-burn-002",
+     "win": false,
+     "reasons": [
+      "run did not execute: AssertionError: Can't find ability to activate command: Cast Incinerate$targetPlayer=PlayerB"
+     ],
+     "engine": "xmage"
+    },
+    {
+     "id": "t2-right-burn-005",
+     "win": true,
+     "reasons": [
+      "life(B)=0 want max=0"
+     ],
+     "engine": "xmage"
+    },
+    {
+     "id": "t2-right-burn-008",
+     "win": true,
+     "reasons": [
+      "life(B)=0 want max=0"
+     ],
+     "engine": "xmage"
+    },
+    {
+     "id": "t2-right-burn-011",
+     "win": true,
+     "reasons": [
+      "life(B)=0 want max=0"
+     ],
+     "engine": "xmage"
+    },
+    {
+     "id": "t2-right-burn-014",
+     "win": true,
+     "reasons": [
+      "life(B)=0 want max=0"
+     ],
+     "engine": "xmage"
+    },
+    {
+     "id": "t2-right-burn-017",
+     "win": true,
+     "reasons": [
+      "life(B)=0 want max=0"
+     ],
+     "engine": "xmage"
+    },
+    {
+     "id": "t2-right-burn-020",
+     "win": true,
+     "reasons": [
+      "life(B)=0 want max=0"
+     ],
+     "engine": "xmage"
+    },
+    {
+     "id": "t2-right-burn-023",
+     "win": true,
+     "reasons": [
+      "life(B)=0 want max=0"
+     ],
+     "engine": "xmage"
+    },
+    {
+     "id": "t2-right-burn-026",
+     "win": true,
+     "reasons": [
+      "life(B)=0 want max=0"
+     ],
+     "engine": "xmage"
+    },
+    {
+     "id": "t2-right-burn-029",
+     "win": false,
+     "reasons": [
+      "run did not execute: AssertionError: Can't find ability to activate command: Cast Incinerate$targetPlayer=PlayerB"
+     ],
+     "engine": "xmage"
+    }
+   ]
+  }
+ }
+}

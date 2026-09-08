@@ -1,0 +1,5 @@
+[
+  {"do": "cast", "turn": 1, "phase": "PRECOMBAT_MAIN", "player": "A", "card": "Incinerate", "target_player": "B"},
+  {"do": "attack", "turn": 1, "player": "A", "attacker": "Kalonian Tusker"},
+  {"do": "attack", "turn": 1, "player": "A", "attacker": "Knight of the Keep"}
+]
