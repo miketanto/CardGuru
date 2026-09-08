@@ -1,0 +1,14 @@
+{
+ "archetype": "Mono-Green Stompy",
+ "colors": "G",
+ "cards": {
+  "Forest": 20, "Kird Ape": 4, "Nessian Courser": 4, "Rumbling Baloth": 4,
+  "Craw Wurm": 3, "Enormous Baloth": 2, "Giant Growth": 4, "Titanic Growth": 3,
+  "Might of Oaks": 2, "Alpine Grizzly": 4, "Grizzly Bears": 4, "Redwood Treefolk": 2
+ },
+ "tricks": [
+  {"card": "Giant Growth", "kind": "pump", "power": 3, "toughness": 3, "cost": 1},
+  {"card": "Titanic Growth", "kind": "pump", "power": 4, "toughness": 4, "cost": 2},
+  {"card": "Might of Oaks", "kind": "pump", "power": 7, "toughness": 7, "cost": 4}
+ ]
+}

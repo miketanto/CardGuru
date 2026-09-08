@@ -1,0 +1,16 @@
+{
+ "archetype": "Mono-Red Aggro",
+ "colors": "R",
+ "cards": {
+  "Mountain": 20, "Monastery Swiftspear": 4, "Kird Ape": 4,
+  "Bonebreaker Giant": 4, "Coral Commando": 2, "Shock": 4,
+  "Lightning Bolt": 4, "Searing Spear": 3, "Incinerate": 3,
+  "Brute Force": 3, "Monstrous Rage": 3, "Dragon Fodder": 3, "Canal Monitor": 3
+ },
+ "tricks": [
+  {"card": "Brute Force", "kind": "pump", "power": 3, "toughness": 3, "cost": 1},
+  {"card": "Monstrous Rage", "kind": "pump", "power": 2, "toughness": 0, "cost": 1},
+  {"card": "Shock", "kind": "removal", "damage": 2, "cost": 1},
+  {"card": "Lightning Bolt", "kind": "removal", "damage": 3, "cost": 1}
+ ]
+}

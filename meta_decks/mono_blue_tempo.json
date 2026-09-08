@@ -1,0 +1,10 @@
+{
+ "archetype": "Mono-Blue Tempo",
+ "colors": "U",
+ "cards": {
+  "Island": 20, "Merfolk of the Pearl Trident": 4, "Cloud Sprite": 4,
+  "Sea Scryer": 4, "Coral Merfolk": 4, "Headwater Sentries": 4,
+  "Vizzerdrix": 2, "Ancient Crab": 4, "Plated Seastrider": 4
+ },
+ "tricks": []
+}
