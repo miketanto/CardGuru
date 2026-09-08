@@ -131,12 +131,28 @@ subtleties). This is the "smallest working alternative" the brief explicitly
 permits, and it keeps the driver a single self-contained file on the existing
 classpath.
 
-A second consequence is worth stating plainly: because playerB's live combat
-callbacks are the base stubs, **the live opponent never actually blocks or
-attacks in the real game** — it only plays lands/spells at priority. So the
-minimax search's min-layer is real (it weighs blocks the opponent *could* make),
-but the *live* game does not exercise the opponent's blocking. See
-"Limitations".
+A second, larger consequence surfaced when the games actually ran: base
+`ComputerPlayer.priority` is itself a stub —
+
+```java
+public boolean priority(Game game) {
+    // minimum implementation for do nothing
+    pass(game);
+    return false;
+}
+```
+
+(`.../ai/ComputerPlayer.java:388`). The real *playing* AI (cast a spell, play a
+land, attack, block) lives **entirely** in `ComputerPlayer6`, which overrides
+`priority` with its simulation loop. So the seated `TestComputerPlayer`
+opponent, `setAIPlayer(true)` or not, **passes every priority and declares no
+attackers and no blockers** — across a full 39-turn game it kept **zero
+permanents** (verified in the trace: `b_board=0` every decision, `b_life`
+ticking down only from our chip damage). The live opponent is effectively a
+do-nothing player. The minimax search's min-layer is therefore *correct code*
+that ran on every decision, but because the live opponent never develops
+blockers, it almost always finds only the no-block response. See "Limitations"
+— this is the single biggest one.
 
 ## Exposure (design A — in-driver search)
 
@@ -164,15 +180,50 @@ python3 -m cardguru play --games 2 --policy dumb --minimax \
 `--minimax` launches the driver with `-Dcardguru.minimax=attacks` and uses the
 `dumb` policy for the non-attack decisions the search does not own.
 
+## Verified end to end (2026-09-08)
+
+Built and run, not reasoned about. `mvn -pl Mage.Tests test-compile` is clean
+(the driver + `InteractiveTestPlayer$AttackEval` compile). Two full games
+played to a natural winner:
+
+```
+$ python3 -m cardguru play --games 2 --policy dumb --minimax
+-- dumb+minimax policy vs COMPUTER_MAD: 2W / 0L / 0E over 2 game(s)
+  game1: winner=A turns=31 attack_decisions=11 total_candidate_sets=41
+  game2: winner=A turns=27 attack_decisions=11 total_candidate_sets=36
+```
+
+A single decision's full record (the search's proof-of-work, from
+`spool/minimax.jsonl`), showing the max-layer choosing `attack-all` over
+`attack-none` because the rollout leaf leaves the opponent one life lower:
+
+```json
+{ "turn": 5, "available_attackers": 1, "candidate_sets": 2,
+  "chosen": "attack-all", "chosen_value": 1487.0, "chosen_block_responses": 1,
+  "chosen_leaf": {"engine_score": 1487.0, "a_life": 20, "a_board": 2,
+                  "b_life": 19, "b_board": 0},
+  "candidates": [
+    {"label": "attack-none", "value": 1417.0, "block_responses": 1,
+     "leaf": {"a_life": 20, "b_life": 20, "a_board": 2, "b_board": 0}},
+    {"label": "attack-all",  "value": 1487.0, "block_responses": 1,
+     "leaf": {"a_life": 20, "b_life": 19, "a_board": 2, "b_board": 0}} ] }
+```
+
+`block_responses: 1` because the opponent had no blockers (`b_board: 0`) — see
+the limitation below on why the live opponent never develops a board.
+
 ## Limitations (honest scope)
 
 - **Only attacks, only depth ~1.5.** No priority/spell search, no look-ahead past
   the opponent's block. That is the intended PokeChamp-shaped scope.
-- **The live opponent does not block or attack.** The seated `TestComputerPlayer`
-  has no-op combat callbacks (see deviation above); it is the base AI, not
-  COMPUTER_MAD. Win/loss is therefore **integration evidence, not an agent
-  strength result** — and the deck is a tiny hardcoded mono-red aggro list
-  (`writeInteractiveDeck`) chosen so combat happens at all.
+- **The live opponent does nothing.** The seated `TestComputerPlayer` is the
+  base AI, whose `priority`/`selectAttackers`/`selectBlockers` are all
+  do-nothing stubs (the playing AI is `ComputerPlayer6`/MAD only). It plays no
+  lands or spells, and never attacks or blocks. Win/loss is therefore **pure
+  integration evidence, not an agent strength result** — playerA wins by
+  unopposed chip damage. The deck is a tiny hardcoded mono-red aggro list
+  (`writeInteractiveDeck`) chosen so playerA at least has creatures to attack
+  and search over.
 - **The min-layer approximates the MAD block AI** by value-minimisation over a
   bounded, mostly 1-1 block enumeration; it does not reproduce MAD's
   multi-blocker/trigger handling.
@@ -183,9 +234,14 @@ python3 -m cardguru play --games 2 --policy dumb --minimax \
 ## The single biggest limitation
 
 The min-layer is a real engine rollout, but the **live** opponent it plays
-against cannot block (base-AI stub combat), so the search's cleverness is never
-truly pressure-tested in the games it wins. Making the live opponent block —
-either by putting `mage-player-ai-mad` on the test classpath and seating a
-`ComputerPlayer6`, or by driving the same value-minimising block chooser from
-playerB's `selectBlockers` — is the one change that would turn this from "a
-verified real search" into "a search demonstrably beating a blocking opponent".
+against does nothing at all — base `ComputerPlayer` passes every priority and
+has stub combat, so it never develops a board, never attacks, and never blocks.
+The search runs correctly on every turn, but with an empty opposing board it
+almost always sees only the no-block response, so its max-over-min collapses to
+"attack for the most damage" and is never truly pressure-tested in the games it
+wins. The one change that would make this a search *demonstrably beating a real
+opponent* is to seat `ComputerPlayer6` (the MAD AI) as playerB — which means
+putting `mage-player-ai-mad` on the `Mage.Tests` classpath (a pom edit the
+single-file driver deployment currently avoids) and seating it in place of the
+base `TestComputerPlayer`. Everything upstream of that — the copy-based rollout,
+the tree, the leaf evaluation — is already real.
