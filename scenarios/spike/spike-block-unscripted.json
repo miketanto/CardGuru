@@ -1,0 +1,16 @@
+{
+  "id": "spike-block-unscripted",
+  "description": "T2 design question: defender has an untapped creature and NO block script. Does strict-choose auto-decline blocks, auto-block, or fail the run? Expectations assume auto-decline (attack connects unblocked).",
+  "players": {
+    "A": {"life": 20, "battlefield": [{"card": "Grizzly Bears"}]},
+    "B": {"life": 20, "battlefield": [{"card": "Hill Giant"}]}
+  },
+  "actions": [
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Grizzly Bears"}
+  ],
+  "stop": {"turn": 1, "phase": "END_TURN"},
+  "expect": [
+    {"check": "life", "player": "B", "value": 18},
+    {"check": "permanent_count", "player": "A", "card": "Grizzly Bears", "count": 1}
+  ]
+}
