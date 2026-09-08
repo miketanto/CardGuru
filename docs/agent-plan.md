@@ -226,7 +226,25 @@ matches, or a T4 with hidden hands).
   where worst-case reasoning is the tested skill. If it doesn't, we learn that
   before building any live-match plumbing.
 
-### P5 — Live matches (the Java finally happens) — **server mode DONE 2026-09-08**
+### P5 — Live matches (the Java finally happens) — **interactive bridge DONE 2026-09-08**
+
+Interactive bridge shipped and verified (`docs/live-match-feasibility.md`):
+feasibility verdict is FEASIBLE — a `TestPlayer` subclass drives playerA
+externally by blocking on a spool round-trip inside each synchronous decision
+callback, while playerB is the real built-in AI via `setAIPlayer(true)`. Driver
+gained an `interactive` mode (`-Dcardguru.interactive.spool=DIR`) with a new
+`InteractiveTestPlayer` overriding only the four top-level decisions the base
+harness does not auto-delegate (priority/attackers/blockers/mulligan);
+unscripted sub-choices (targets/mana/X) fall to the wrapped AI in non-strict
+mode. Python `cardguru/play.py` (`MatchClient`, `dumb_policy`, `play_matches`)
++ `play` CLI plays real games with NO LLM. Proven end to end: one
+`--policy dumb` game ran to a natural winner
+(`{"status":"completed","winner":"A","turns":144}`), every playerA decision
+served from Python. The one remaining piece for a *full* LLM-driven match is
+externalizing in-cast target/mana/X sub-choices (currently the AI's) — same
+spool round-trip, but a logical "line" must span nested request/response hops.
+
+
 
 Driver server mode shipped and verified (`0d810f5`): persistent JVM via a
 spool directory (`-Dcardguru.server.spool`), atomic file handshake, READY/

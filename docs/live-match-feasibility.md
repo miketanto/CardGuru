@@ -136,6 +136,26 @@ which is fine for a mono-red aggro plumbing deck (mostly creatures + face
 burn) but not for a control agent. This is the one piece to build next, and it
 does not change any of the four facts above.
 
+## Verified end to end (2026-09-08)
+
+Built and run, not just reasoned about. `mvn -pl Mage.Tests test-compile` is
+clean; `python -m cardguru play --games 1 --policy dumb` played a complete real
+game — playerA driven from Python by the no-LLM `dumb_policy`, playerB the
+built-in AI — to a natural winner: `{"status":"completed","winner":"A",
+"turns":144}`. Every playerA mulligan/priority/attack/block in that game came
+from outside the JVM over the spool.
+
+One engine gotcha surfaced and fixed along the way: `TestPlayer`'s endless-loop
+guard (`maxCallsWithoutAction`, default 400) counts priority calls that don't
+mutate the *scripted-actions* list. A pure-AI `TestPlayer` (playerB) never
+mutates that list — its plays live inside the wrapped `ComputerPlayer` — so the
+counter climbs for the whole game and trips mid-match (first run died on turn
+51 with "Too much priority calls to PlayerB"). A real game always terminates on
+its own (win, or deck-out loss), so the driver raises the cap to 1e6 on both
+seats; playerA is immune anyway since its `priority()` override never calls the
+base method. The 144-turn length is just the mono-red mirror grinding toward
+deck-out under a deliberately dumb policy, not a stall.
+
 ## Rejected alternatives (and why the chosen path wins)
 
 - **Drive `GameController` directly:** `GameController` is the *server*

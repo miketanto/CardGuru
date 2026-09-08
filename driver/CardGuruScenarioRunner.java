@@ -157,6 +157,16 @@ public class CardGuruScenarioRunner extends CardTestPlayerBase {
         playerB.setAIPlayer(true);   // real built-in AI opponent
         // Run to the natural end of the game rather than a scripted stop.
         setStopAt(200, PhaseStep.UNTAP);
+        // TestPlayer's endless-loop guard (maxCallsWithoutAction, default 400)
+        // counts priority calls that don't mutate the scripted-actions list.
+        // A pure-AI player (playerB) never mutates it -- its plays happen
+        // inside the wrapped ComputerPlayer -- so the counter accumulates for a
+        // whole game and trips mid-match. A real game always terminates on its
+        // own (a win, or a deck-out loss), so raise the cap well past any
+        // realistic game length. playerA bypasses the guard entirely (its
+        // priority() override does not call the base method).
+        playerA.setMaxCallsWithoutAction(1_000_000);
+        playerB.setMaxCallsWithoutAction(1_000_000);
 
         new File(spool, "READY").createNewFile();
         System.out.println("[CardGuru] interactive game starting, spool=" + spool);
