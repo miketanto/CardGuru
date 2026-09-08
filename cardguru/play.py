@@ -101,9 +101,43 @@ def dumb_policy(request: dict) -> dict:
         return {"attackers": [o["index"] for o in request.get("options", [])]}
     if kind == "blockers":
         return {"blocks": []}  # no blocks
+    sub = subchoice_policy(request)
+    if sub is not None:
+        return sub
     # Unknown decision kind: the safest no-op is an empty response, which the
     # driver reads as "no selection" (pass / no attackers / no blocks).
     return {}
+
+
+def subchoice_policy(request: dict) -> Optional[dict]:
+    """Fixed-rule answers for the in-cast sub-choice requests the driver
+    emits with subchoices=external (kinds: target/choose/announce_x/mode/
+    use/choice). Aggro-flavored defaults so the no-LLM policies stay playable
+    with full external control on: point damage at the opponent (their face
+    first), X as big as possible, first mode, follow the engine's own
+    good/bad hint on yes/no. Returns None for kinds it does not know.
+    """
+    kind = request.get("kind")
+    if kind in ("target", "choose"):
+        options = request.get("options", [])
+        need = max(request.get("min", 0), 1 if options else 0)
+        need = min(need, request.get("max", need) or need)
+
+        def rank(o):  # opponent player, then opponent permanents, then rest
+            owner_b = o.get("owner") == "B"
+            return (not owner_b, o.get("kind") != "player" if owner_b else True,
+                    o.get("index", 0))
+        picked = [o["index"] for o in sorted(options, key=rank)[:need]]
+        return {"targets": picked}
+    if kind == "announce_x":
+        return {"x": request.get("max", request.get("min", 0))}
+    if kind == "mode":
+        return {"choice": 0}
+    if kind == "use":
+        return {"use": bool(request.get("good_outcome"))}
+    if kind == "choice":
+        return {"choice": 0}
+    return None
 
 
 def belief_policy(corpus=None, rng=None) -> "Policy":
@@ -200,7 +234,7 @@ class MatchClient:
                  warmup_timeout: int = 300, minimax: bool = False,
                  opp_blockers: int = 0, opp: str = "mad",
                  opp_skill: int = 6, deck_a: Optional[str] = None,
-                 deck_b: Optional[str] = None):
+                 deck_b: Optional[str] = None, subchoices: bool = False):
         self.mage_repo = mage_repo or os.environ.get("CARDGURU_MAGE_REPO")
         if not self.mage_repo or not os.path.isdir(self.mage_repo):
             raise RuntimeError("XMage checkout not found: set "
@@ -230,6 +264,11 @@ class MatchClient:
         # fast in Python, not 40s into a JVM warmup.
         self.deck_a = resolve_deck(deck_a) if deck_a else None
         self.deck_b = resolve_deck(deck_b) if deck_b else None
+        # With subchoices on, the driver externalizes in-cast decisions
+        # (targets, X, modes, yes/no, named choices) as extra request kinds
+        # over the same spool -- full-line control for the policy. See
+        # subchoice_policy for the shapes.
+        self.subchoices = subchoices
         self.spool: Optional[str] = None
         self.proc: Optional[subprocess.Popen] = None
 
@@ -254,6 +293,8 @@ class MatchClient:
             cmd.append(f"-Dcardguru.deck.a={self.deck_a}")
         if self.deck_b:
             cmd.append(f"-Dcardguru.deck.b={self.deck_b}")
+        if self.subchoices:
+            cmd.append("-Dcardguru.subchoices=external")
         self.proc = subprocess.Popen(
             cmd, cwd=self.mage_repo, stdout=subprocess.DEVNULL,
             stderr=subprocess.DEVNULL)
@@ -379,7 +420,8 @@ def play_matches(n: int, policy: Policy = dumb_policy,
                  minimax: bool = False, opp_blockers: int = 0,
                  opp: str = "mad", opp_skill: int = 6,
                  deck_a: Optional[str] = None,
-                 deck_b: Optional[str] = None) -> dict:
+                 deck_b: Optional[str] = None,
+                 subchoices: bool = False) -> dict:
     """Play N games with `policy` vs the AI; return a win/loss tally.
 
     One JVM per game (a fresh MatchClient each match). Games that error before a
@@ -396,7 +438,7 @@ def play_matches(n: int, policy: Policy = dumb_policy,
         with MatchClient(mage_repo, minimax=minimax,
                          opp_blockers=opp_blockers, opp=opp,
                          opp_skill=opp_skill, deck_a=deck_a,
-                         deck_b=deck_b) as m:
+                         deck_b=deck_b, subchoices=subchoices) as m:
             result = m.play(policy)
             if minimax:
                 trace = m.read_trace()

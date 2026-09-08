@@ -6,9 +6,14 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import mage.MageObject;
 import mage.abilities.Ability;
 import mage.abilities.ActivatedAbility;
+import mage.abilities.Mode;
+import mage.abilities.Modes;
 import mage.cards.Card;
+import mage.choices.Choice;
+import mage.constants.Outcome;
 import mage.constants.PhaseStep;
 import mage.constants.RangeOfInfluence;
 import mage.constants.Zone;
@@ -21,6 +26,7 @@ import mage.game.turn.EndOfCombatStep;
 import mage.game.turn.Step;
 import mage.player.ai.score.GameStateEvaluator2;
 import mage.players.Player;
+import mage.target.Target;
 import org.junit.Test;
 import org.mage.test.player.TestComputerPlayer;
 import org.mage.test.player.TestComputerPlayer7;
@@ -30,10 +36,12 @@ import org.mage.test.serverside.base.CardTestPlayerBase;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
@@ -691,7 +699,11 @@ class InteractiveTestPlayer extends TestPlayer {
         req.addProperty("kind", kind);
         req.addProperty("turn", game.getTurnNum());
         req.addProperty("phase", String.valueOf(game.getTurnStepType()));
-        req.addProperty("active", game.getActivePlayerId().equals(this.getId()) ? "A" : "B");
+        // Sub-choices can fire pre-game (mulligan-time scry, opening choices)
+        // when there is no active player yet.
+        UUID activeId = game.getActivePlayerId();
+        req.addProperty("active", activeId == null ? "-"
+                : activeId.equals(this.getId()) ? "A" : "B");
         req.add("state", observableState(game));
         return req;
     }
@@ -774,6 +786,229 @@ class InteractiveTestPlayer extends TestPlayer {
         }
         getComputerPlayer().pass(game);
         return false;
+    }
+
+    // ---- in-cast sub-choices (targets / X / modes / yes-no / named) ------
+    //
+    // Non-strict TestPlayer routes these to the wrapped ComputerPlayer, so
+    // until now targeted spells were the AI's choice even when the external
+    // policy picked the cast (the "last blocker" in
+    // docs/live-match-feasibility.md). With -Dcardguru.subchoices=external
+    // they go over the spool instead: each fires nested inside the
+    // activateAbility a priority answer triggered, and since the whole game
+    // runs synchronously on this thread a nested ask() is just one more
+    // round-trip. Trivial picks (<=1 legal option, or X where min==max) stay
+    // with the AI to keep chatter down; a malformed/underfilled answer falls
+    // back to the AI too (logged), so a bad policy answer degrades instead of
+    // wedging the game.
+
+    private final boolean externalSubchoices =
+            "external".equals(System.getProperty("cardguru.subchoices"));
+
+    private JsonObject describeTargetOption(int index, UUID id, Game game) {
+        JsonObject o = new JsonObject();
+        o.addProperty("index", index);
+        mage.players.Player p = game.getPlayer(id);
+        if (p != null) {
+            String owner = p.getId().equals(getId()) ? "A" : "B";
+            o.addProperty("kind", "player");
+            o.addProperty("owner", owner);
+            o.addProperty("text", "player " + owner + " (life " + p.getLife() + ")");
+            return o;
+        }
+        Permanent perm = game.getPermanent(id);
+        if (perm != null) {
+            String owner = perm.getControllerId().equals(getId()) ? "A" : "B";
+            String text = perm.getName();
+            if (perm.isCreature(game)) {
+                text += " " + perm.getPower().getValue()
+                        + "/" + perm.getToughness().getValue();
+            }
+            o.addProperty("kind", "permanent");
+            o.addProperty("owner", owner);
+            o.addProperty("text", text + " (" + owner + ")");
+            return o;
+        }
+        MageObject obj = game.getObject(id);
+        o.addProperty("kind", "object");
+        o.addProperty("text", obj != null ? obj.getName() : String.valueOf(id));
+        return o;
+    }
+
+    /** Ask the policy to pick targets. Returns false when there was nothing
+     *  to decide or the answer under-filled the minimum — the caller then
+     *  delegates to the AI, which completes whatever was already added. */
+    private boolean externalChooseTarget(String kind, Outcome outcome,
+                                         Target target, Ability source, Game game) {
+        List<UUID> possible = new ArrayList<>(target.possibleTargets(
+                target.getAffectedAbilityControllerId(getId()), source, game));
+        int min = target.getMinNumberOfTargets();
+        int max = target.getMaxNumberOfTargets();
+        if (possible.isEmpty() || (possible.size() == 1 && min >= 1)) {
+            return false;   // forced or impossible: no real decision
+        }
+        JsonObject req = baseRequest(kind, game);
+        req.addProperty("prompt", target.getMessage(game));
+        req.addProperty("ability", String.valueOf(source));
+        req.addProperty("outcome", String.valueOf(outcome));
+        req.addProperty("min", min);
+        req.addProperty("max", max);
+        JsonArray opts = new JsonArray();
+        for (int i = 0; i < possible.size(); i++) {
+            opts.add(describeTargetOption(i, possible.get(i), game));
+        }
+        req.add("options", opts);
+        JsonObject resp = ask(req);
+        if (resp.has("targets")) {
+            for (JsonElement e : resp.getAsJsonArray("targets")) {
+                int idx = e.getAsInt();
+                if (idx >= 0 && idx < possible.size()
+                        && target.getTargets().size() < max) {
+                    target.addTarget(possible.get(idx), source, game);
+                }
+            }
+        }
+        if (target.getTargets().size() < min) {
+            System.out.println("[CardGuru][subchoice] " + kind
+                    + " answer under-filled (" + target.getTargets().size()
+                    + "/" + min + "), AI completes");
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public boolean chooseTarget(Outcome outcome, Target target, Ability source, Game game) {
+        if (externalSubchoices
+                && externalChooseTarget("target", outcome, target, source, game)) {
+            return true;
+        }
+        return super.chooseTarget(outcome, target, source, game);
+    }
+
+    @Override
+    public boolean choose(Outcome outcome, Target target, Ability source,
+                          Game game, Map<String, Serializable> options) {
+        if (externalSubchoices
+                && externalChooseTarget("choose", outcome, target, source, game)) {
+            return true;
+        }
+        return super.choose(outcome, target, source, game, options);
+    }
+
+    @Override
+    public int announceX(int min, int max, String message, Game game,
+                         Ability source, boolean isManaPay) {
+        if (externalSubchoices && max > min) {
+            JsonObject req = baseRequest("announce_x", game);
+            req.addProperty("prompt", message);
+            req.addProperty("ability", String.valueOf(source));
+            req.addProperty("min", min);
+            req.addProperty("max", max);
+            req.addProperty("mana_pay", isManaPay);
+            JsonObject resp = ask(req);
+            int x = resp.has("x") ? resp.get("x").getAsInt() : min;
+            return Math.max(min, Math.min(max, x));
+        }
+        return super.announceX(min, max, message, game, source, isManaPay);
+    }
+
+    @Override
+    public Mode chooseMode(Modes modes, Ability source, Game game) {
+        if (externalSubchoices) {
+            List<Mode> avail = new ArrayList<>(modes.getAvailableModes(source, game));
+            if (avail.size() > 1) {
+                JsonObject req = baseRequest("mode", game);
+                req.addProperty("ability", String.valueOf(source));
+                JsonArray opts = new JsonArray();
+                for (int i = 0; i < avail.size(); i++) {
+                    JsonObject o = new JsonObject();
+                    o.addProperty("index", i);
+                    o.addProperty("text", avail.get(i).getEffects().getText(avail.get(i)));
+                    opts.add(o);
+                }
+                req.add("options", opts);
+                JsonObject resp = ask(req);
+                int c = resp.has("choice") ? resp.get("choice").getAsInt() : -1;
+                if (c >= 0 && c < avail.size()) {
+                    return avail.get(c);
+                }
+                System.out.println("[CardGuru][subchoice] bad mode answer, AI picks");
+            }
+        }
+        return super.chooseMode(modes, source, game);
+    }
+
+    @Override
+    public boolean chooseUse(Outcome outcome, String message, Ability source, Game game) {
+        if (externalSubchoices) {
+            return externalChooseUse(outcome, message, null, game, source);
+        }
+        return super.chooseUse(outcome, message, source, game);
+    }
+
+    @Override
+    public boolean chooseUse(Outcome outcome, String message, String secondMessage,
+                             String trueText, String falseText, Ability source, Game game) {
+        if (externalSubchoices) {
+            return externalChooseUse(outcome, message, secondMessage, game, source);
+        }
+        return super.chooseUse(outcome, message, secondMessage, trueText, falseText,
+                source, game);
+    }
+
+    private boolean externalChooseUse(Outcome outcome, String message,
+                                      String secondMessage, Game game, Ability source) {
+        JsonObject req = baseRequest("use", game);
+        req.addProperty("prompt", message
+                + (secondMessage != null ? " " + secondMessage : ""));
+        req.addProperty("ability", String.valueOf(source));
+        // The engine's own hint on whether saying yes helps the chooser —
+        // the same signal ComputerPlayer.chooseUse decides by.
+        req.addProperty("good_outcome", outcome != null && outcome.isGood());
+        JsonObject resp = ask(req);
+        return resp.has("use") && resp.get("use").getAsBoolean();
+    }
+
+    @Override
+    public boolean choose(Outcome outcome, Choice choice, Game game) {
+        if (externalSubchoices && choice != null) {
+            List<String> keys = null;
+            List<String> texts;
+            if (choice.isKeyChoice()) {
+                keys = new ArrayList<>(choice.getKeyChoices().keySet());
+                texts = new ArrayList<>();
+                for (String k : keys) {
+                    texts.add(choice.getKeyChoices().get(k));
+                }
+            } else {
+                texts = new ArrayList<>(choice.getChoices());
+            }
+            if (texts.size() > 1) {
+                JsonObject req = baseRequest("choice", game);
+                req.addProperty("prompt", String.valueOf(choice.getMessage()));
+                JsonArray opts = new JsonArray();
+                for (int i = 0; i < texts.size(); i++) {
+                    JsonObject o = new JsonObject();
+                    o.addProperty("index", i);
+                    o.addProperty("text", texts.get(i));
+                    opts.add(o);
+                }
+                req.add("options", opts);
+                JsonObject resp = ask(req);
+                int c = resp.has("choice") ? resp.get("choice").getAsInt() : -1;
+                if (c >= 0 && c < texts.size()) {
+                    if (keys != null) {
+                        choice.setChoiceByKey(keys.get(c));
+                    } else {
+                        choice.setChoice(texts.get(c));
+                    }
+                    return true;
+                }
+                System.out.println("[CardGuru][subchoice] bad choice answer, AI picks");
+            }
+        }
+        return super.choose(outcome, choice, game);
     }
 
     @Override

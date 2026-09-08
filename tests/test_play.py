@@ -281,3 +281,48 @@ def test_resolve_deck_rejects_missing_and_empty():
             resolve_deck(f.name)
     finally:
         os.unlink(f.name)
+
+
+# -- subchoice_policy ------------------------------------------------------
+
+from cardguru.play import subchoice_policy
+
+
+def test_subchoice_target_prefers_opponent_face():
+    req = {"kind": "target", "min": 1, "max": 1, "options": [
+        {"index": 0, "kind": "permanent", "owner": "A", "text": "Kird Ape 2/2 (A)"},
+        {"index": 1, "kind": "permanent", "owner": "B", "text": "Bear 2/2 (B)"},
+        {"index": 2, "kind": "player", "owner": "B", "text": "player B (life 20)"},
+    ]}
+    assert subchoice_policy(req) == {"targets": [2]}
+
+
+def test_subchoice_target_takes_min_when_multiple_required():
+    req = {"kind": "target", "min": 2, "max": 2, "options": [
+        {"index": 0, "kind": "permanent", "owner": "B", "text": "x"},
+        {"index": 1, "kind": "permanent", "owner": "A", "text": "y"},
+        {"index": 2, "kind": "player", "owner": "B", "text": "z"},
+    ]}
+    assert subchoice_policy(req) == {"targets": [2, 0]}
+
+
+def test_subchoice_x_is_greedy():
+    assert subchoice_policy({"kind": "announce_x", "min": 0, "max": 4}) == {"x": 4}
+
+
+def test_subchoice_use_follows_engine_hint():
+    assert subchoice_policy({"kind": "use", "good_outcome": True}) == {"use": True}
+    assert subchoice_policy({"kind": "use", "good_outcome": False}) == {"use": False}
+
+
+def test_subchoice_mode_and_choice_take_first():
+    assert subchoice_policy({"kind": "mode", "options": []}) == {"choice": 0}
+    assert subchoice_policy({"kind": "choice", "options": []}) == {"choice": 0}
+
+
+def test_subchoice_unknown_kind_is_none():
+    assert subchoice_policy({"kind": "priority"}) is None
+
+
+def test_dumb_policy_answers_subchoices():
+    assert dumb_policy({"kind": "announce_x", "min": 1, "max": 3}) == {"x": 3}

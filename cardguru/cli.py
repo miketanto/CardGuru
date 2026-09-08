@@ -280,7 +280,8 @@ def cmd_play(args):
                          opp_blockers=getattr(args, "opp_blockers", 0),
                          opp=opp, opp_skill=getattr(args, "opp_skill", 6),
                          deck_a=getattr(args, "deck_a", None),
-                         deck_b=getattr(args, "deck_b", None))
+                         deck_b=getattr(args, "deck_b", None),
+                         subchoices=getattr(args, "subchoices", False))
     json.dump(tally, sys.stdout, indent=1)
     print()
     label = f"{args.policy}+minimax" if minimax else args.policy
@@ -1048,6 +1049,10 @@ def main(argv=None):
                     help="run the driver's simulation-backed minimax search at "
                          "the declare-attackers decision (attacks are chosen by "
                          "engine rollout, not by --policy); see docs/live-minimax.md")
+    pl.add_argument("--subchoices", action="store_true",
+                    help="externalize in-cast sub-choices (targets, X, modes, "
+                         "yes/no, named choices) to the policy instead of the "
+                         "wrapped AI -- full-line control")
     pl.add_argument("--deck-a", dest="deck_a", default=None,
                     help="deck for our seat: a .dck path, a meta-deck .json "
                          "path, or an archetype name in meta_decks/ (e.g. "
