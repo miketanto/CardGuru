@@ -14,7 +14,11 @@ import json
 
 from .querydsl import NODE_SPEC_KEYS
 
-QUERY_OPS = {"all", "any", "not", "node", "chain", "keyword", "card"}
+QUERY_OPS = {"all", "any", "not", "node", "chain", "keyword", "card",
+             "hook", "role"}
+# Repeatability suffix on a role facet ("card_draw:engine"). Mirrors the values
+# cardguru.deck.detect_roles assigns.
+ROLE_KINDS = {"engine", "one_shot"}
 CARD_FIELDS = {"name", "types", "manaCost", "oracle", "pt"}
 KINDS = {"A", "T", "S", "R", "K", "SVar", "SVarCount", "SVarValue"}
 API_KINDS = {"SP", "AB", "DB"}
@@ -126,4 +130,27 @@ def validate(query, onto: Ontology, path: str = "$") -> list[str]:
         else:
             for f in set(arg) - CARD_FIELDS:
                 errors.append(f"{path}.card: unknown field '{f}'")
+    elif op == "hook":
+        # Imported lazily: recommend/deck pull in the search stack, and the
+        # validator is imported from there.
+        from .recommend import HOOKS
+
+        if not isinstance(arg, str):
+            errors.append(f"{path}.hook: must be a string")
+        elif arg not in HOOKS:
+            errors.append(f"{path}.hook: unknown hook '{arg}' "
+                          f"(one of {sorted(HOOKS)})")
+    elif op == "role":
+        from .deck import ROLES
+
+        if not isinstance(arg, str):
+            errors.append(f"{path}.role: must be a string")
+        else:
+            name, _, kind = arg.partition(":")
+            if name not in ROLES:
+                errors.append(f"{path}.role: unknown role '{name}' "
+                              f"(one of {sorted(ROLES)})")
+            if kind and kind not in ROLE_KINDS:
+                errors.append(f"{path}.role: unknown repeatability '{kind}' "
+                              f"(one of {sorted(ROLE_KINDS)})")
     return errors

@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CardGuru — mechanical search</title>
+<style>
+  :root {
+    --paper:#F7F4F8; --surface:#fff; --sunken:#EFEAF1;
+    --ink:#17151B; --muted:#6C6472; --rule:#E0D9E4; --rule-strong:#C9BFD0;
+    --orchid:#A02B6E; --simulated:#0E7C64; --caution:#9A5F08; --caution-bg:#F6EBD8;
+    --serif: ui-serif, "Iowan Old Style", Palatino, Georgia, serif;
+    --sans: system-ui, -apple-system, "Segoe UI", sans-serif;
+    --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --paper:#131117; --surface:#1B181F; --sunken:#221E28;
+      --ink:#EDE8F0; --muted:#9E94A6; --rule:#2E2836; --rule-strong:#463D50;
+      --orchid:#E97FB4; --simulated:#4FC7A8; --caution:#E0A44E; --caution-bg:#33270F;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin:0; background:var(--paper); color:var(--ink);
+    font-family:var(--sans); font-size:15px; line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  header {
+    border-bottom:1px solid var(--rule); background:var(--surface);
+    padding:1rem 1.25rem; display:flex; flex-wrap:wrap; gap:.75rem 1.25rem; align-items:baseline;
+  }
+  .mark { font-family:var(--serif); font-size:1.2rem; font-weight:600; }
+  .mark span { color:var(--orchid); }
+  .tuple { font-family:var(--mono); font-size:.72rem; color:var(--muted); display:flex; gap:1rem; flex-wrap:wrap; }
+  .tuple b { color:var(--ink); font-weight:500; }
+
+  .layout { display:grid; gap:1px; background:var(--rule); grid-template-columns:1fr; min-height:calc(100vh - 60px); }
+  @media (min-width:56rem) { .layout { grid-template-columns:22rem 1fr; } }
+  .pane { background:var(--paper); padding:1.1rem 1.25rem; min-width:0; }
+  .pane.results { background:var(--paper); }
+
+  h2 { font-family:var(--serif); font-size:1.05rem; margin:0 0 .2rem; }
+  .hint { font-size:.82rem; color:var(--muted); margin:0 0 .9rem; }
+
+  /* question library */
+  .q { width:100%; text-align:left; font:inherit; font-size:.86rem;
+       background:var(--surface); color:var(--ink);
+       border:1px solid var(--rule); padding:.55rem .65rem; margin-bottom:.4rem; cursor:pointer; }
+  .q:hover { border-color:var(--orchid); }
+  .q:focus-visible { outline:2px solid var(--orchid); outline-offset:2px; }
+  .q.on { border-color:var(--orchid); background:var(--sunken); }
+  .q .tag { font-family:var(--mono); font-size:.62rem; letter-spacing:.06em;
+            text-transform:uppercase; color:var(--caution); border:1px dashed var(--caution);
+            background:var(--caution-bg); padding:0 .25rem; margin-left:.35rem; white-space:nowrap; }
+
+  /* inputs */
+  label.lbl { font-family:var(--mono); font-size:.68rem; letter-spacing:.1em;
+              text-transform:uppercase; color:var(--muted); display:block; margin:1.2rem 0 .35rem; }
+  input[type=text], textarea {
+    width:100%; font:inherit; background:var(--surface); color:var(--ink);
+    border:1px solid var(--rule); padding:.5rem .6rem;
+  }
+  textarea { font-family:var(--mono); font-size:.78rem; min-height:9rem; resize:vertical; }
+  input[type=text]:focus, textarea:focus { outline:none; border-color:var(--orchid); }
+  input[disabled] { opacity:.55; cursor:not-allowed; }
+  .btn { font:inherit; font-size:.85rem; padding:.4rem .9rem; cursor:pointer;
+         background:var(--orchid); color:#fff; border:1px solid var(--orchid); }
+  .btn:hover { filter:brightness(1.08); }
+  .btn:focus-visible { outline:2px solid var(--ink); outline-offset:2px; }
+  .btn.ghost { background:transparent; color:var(--ink); border-color:var(--rule-strong); }
+  .actions { display:flex; gap:.5rem; margin-top:.6rem; flex-wrap:wrap; }
+
+  /* results */
+  .bar { display:flex; flex-wrap:wrap; gap:.4rem 1.2rem; align-items:baseline;
+         font-size:.84rem; color:var(--muted); margin-bottom:.9rem; }
+  .bar strong { color:var(--ink); font-variant-numeric:tabular-nums; }
+  .row { background:var(--surface); border:1px solid var(--rule); padding:.7rem .8rem; margin-bottom:.5rem; }
+  .row-top { display:flex; flex-wrap:wrap; gap:.5rem; align-items:baseline; }
+  .row-name { font-family:var(--serif); font-size:1.02rem; font-weight:600; }
+  .row-name a { color:inherit; text-decoration:none; border-bottom:1px solid var(--rule-strong); }
+  .row-name a:hover { color:var(--orchid); border-color:var(--orchid); }
+  .row-cost { font-family:var(--mono); font-size:.78rem; color:var(--muted); }
+  .row-type { font-size:.8rem; color:var(--muted); }
+  .ev { font-family:var(--mono); font-size:.74rem; background:var(--sunken);
+        border-left:3px solid var(--orchid); padding:.35rem .5rem; margin-top:.45rem;
+        overflow-x:auto; white-space:pre; }
+  .unjoined { font-family:var(--mono); font-size:.62rem; color:var(--caution);
+              border:1px dashed var(--caution); padding:0 .25rem; }
+  .err { background:var(--caution-bg); border:1px dashed var(--caution); color:var(--caution);
+         padding:.7rem .8rem; font-size:.85rem; }
+  .err ul { margin:.4rem 0 0; padding-left:1.1rem; font-family:var(--mono); font-size:.76rem; }
+  .empty { color:var(--muted); font-size:.9rem; }
+  .gap { background:var(--caution-bg); border:1px dashed var(--caution);
+         padding:.6rem .7rem; font-size:.8rem; margin-bottom:.9rem; color:var(--ink); }
+  .gap b { color:var(--caution); }
+  /* zero-hit diagnosis: the clause that killed the query, named */
+  .diag { background:var(--surface); border:1px solid var(--rule);
+          border-left:3px solid var(--caution); padding:.7rem .8rem; font-size:.85rem; }
+  .diag b { color:var(--caution); }
+  .diag ul { margin:.4rem 0 .7rem; padding-left:1.1rem; }
+  .diag li { font-family:var(--mono); font-size:.78rem; }
+  .diag pre { margin:0; font-family:var(--mono); font-size:.72rem; line-height:1.6;
+              background:var(--sunken); padding:.5rem .6rem; overflow-x:auto; }
+</style>
+</head>
+<body>
+
+<header>
+  <span class="mark">Card<span>Guru</span></span>
+  <span class="tuple" id="tuple"></span>
+</header>
+
+<div class="layout">
+  <div class="pane">
+    <h2>Ask a question</h2>
+    <p class="hint" id="nlhint">Checking…</p>
+    <input type="text" id="nl" placeholder="e.g. cards that make a token when they deal combat damage" disabled>
+
+    <label class="lbl" for="qlist">Question library</label>
+    <p class="hint">Pre-compiled from the benchmark. Click to run.</p>
+    <div id="qlist"></div>
+
+    <label class="lbl" for="dsl">Or write a query</label>
+    <textarea id="dsl" spellcheck="false"></textarea>
+    <div class="actions">
+      <button class="btn" id="run">Run query</button>
+      <button class="btn ghost" id="clear">Clear</button>
+    </div>
+  </div>
+
+  <div class="pane results">
+    <div id="out"><p class="empty">Pick a question on the left, or write a query and hit Run.</p></div>
+  </div>
+</div>
+
+<script>
+const $ = s => document.querySelector(s);
+let QUESTIONS = [];
+
+function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+
+async function boot(){
+  const r = await fetch('/api/questions');
+  const d = await r.json();
+  QUESTIONS = d.questions;
+  const m = d.meta;
+  $('#tuple').innerHTML =
+    `<span>forge <b>${esc(m.forge_pin||'?')}</b></span>` +
+    `<span>faces <b>${(m.faces||0).toLocaleString()}</b></span>` +
+    (m.scryfall ? `<span>oracle <b>${esc(String(m.scryfall).slice(0,10))}</b></span>` : '');
+
+  if (m.nl_enabled) {
+    $('#nl').disabled = false;
+    $('#nlhint').textContent = 'Plain English. Compiled to a query, then run.';
+  } else {
+    $('#nlhint').innerHTML = 'Disabled — needs <code>ANTHROPIC_API_KEY</code>. Use the library or write a query below.';
+  }
+
+  $('#qlist').innerHTML = QUESTIONS.map((q,i) =>
+    `<button class="q" data-i="${i}">${esc(q.question)}` +
+    (q.status !== 'compiled' ? `<span class="tag">${esc(q.status)}</span>` : '') +
+    `</button>`).join('');
+
+  document.querySelectorAll('.q').forEach(b => b.addEventListener('click', () => {
+    document.querySelectorAll('.q').forEach(x => x.classList.remove('on'));
+    b.classList.add('on');
+    const q = QUESTIONS[+b.dataset.i];
+    $('#dsl').value = JSON.stringify(q.query, null, 1);
+    run(q.query, q);
+  }));
+}
+
+function render(d, q){
+  const out = $('#out');
+  if (!d.ok) {
+    out.innerHTML = `<div class="err"><b>Query rejected</b><ul>` +
+      (d.errors||[]).map(e => `<li>${esc(e)}</li>`).join('') + `</ul></div>`;
+    return;
+  }
+  let head = '';
+  if (d.anchor_note) {
+    head += `<div class="gap"><b>Name corrected.</b> ${esc(d.anchor_note)}</div>`;
+  }
+  if (q && q.status !== 'compiled' && q.gap) {
+    head = `<div class="gap"><b>Partial answer.</b> ${esc(q.gap.slice(0,320))}…</div>`;
+  }
+  if (!d.total) {
+    let diag = '';
+    if (d.diagnosis) {
+      const killers = d.diagnosis.killers || [];
+      diag = `<div class="diag">` +
+        (killers.length
+          ? `<b>${killers.length === 1 ? 'This clause' : 'These clauses'} matched nothing, ` +
+            `which forces the whole query to zero:</b><ul>` +
+            killers.map(k => `<li>${esc(k)}</li>`).join('') + `</ul>`
+          : `<b>Every clause matched cards, but no card matched all of them together.</b>`) +
+        `<pre>${d.diagnosis.lines.map(esc).join('\n')}</pre></div>`;
+    }
+    out.innerHTML = head + `<p class="empty">No cards matched.</p>` + diag;
+    return;
+  }
+  let narrow = '';
+  if (d.near_misses) {
+    narrow = `<div class="diag"><b>Only ${d.total} matched — one filter may be too narrow.</b>` +
+      `<pre>${d.near_misses.lines.map(esc).join('\n')}</pre></div>`;
+  }
+  const bar = `<div class="bar">
+      <span><strong>${d.total.toLocaleString()}</strong> faces matched</span>
+      ${d.truncated ? `<span>showing first <strong>${d.shown}</strong></span>` : ''}
+    </div>`;
+  const rows = d.hits.map(h => `
+    <div class="row">
+      <div class="row-top">
+        <span class="row-name">${h.scryfall_uri
+            ? `<a href="${esc(h.scryfall_uri)}" target="_blank" rel="noopener">${esc(h.name)}</a>`
+            : esc(h.name)}</span>
+        ${h.manaCost ? `<span class="row-cost">${esc(h.manaCost)}</span>` : ''}
+        <span class="row-type">${esc(h.types)}</span>
+        ${h.join === 'unjoined' ? `<span class="unjoined">no card data</span>` : ''}
+      </div>
+      ${(h.evidence||[]).length ? `<div class="ev">${h.evidence.map(esc).join('\n')}</div>` : ''}
+    </div>`).join('');
+  out.innerHTML = head + narrow + bar + rows;
+}
+
+async function run(query, q){
+  $('#out').innerHTML = '<p class="empty">Searching…</p>';
+  try {
+    const r = await fetch('/api/search', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({query})
+    });
+    render(await r.json(), q);
+  } catch (e) {
+    $('#out').innerHTML = `<div class="err"><b>Request failed</b><ul><li>${esc(e)}</li></ul></div>`;
+  }
+}
+
+$('#run').addEventListener('click', () => {
+  const raw = $('#dsl').value.trim();
+  if (!raw) return;
+  let query;
+  try { query = JSON.parse(raw); }
+  catch (e) {
+    $('#out').innerHTML = `<div class="err"><b>That isn't valid JSON</b><ul><li>${esc(e.message)}</li></ul></div>`;
+    return;
+  }
+  if (query.query) query = query.query;   // accept a whole saved query file
+  run(query, null);
+});
+
+$('#clear').addEventListener('click', () => {
+  $('#dsl').value = '';
+  document.querySelectorAll('.q').forEach(x => x.classList.remove('on'));
+  $('#out').innerHTML = '<p class="empty">Pick a question on the left, or write a query and hit Run.</p>';
+});
+
+$('#nl').addEventListener('keydown', async ev => {
+  if (ev.key !== 'Enter') return;
+  const question = ev.target.value.trim();
+  if (!question) return;
+  $('#out').innerHTML = '<p class="empty">Compiling…</p>';
+  const r = await fetch('/api/ask', {
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({question})
+  });
+  const d = await r.json();
+  if (d.compiled) $('#dsl').value = JSON.stringify(d.compiled, null, 1);
+  render(d, null);
+});
+
+boot();
+</script>
+</body>
+</html>

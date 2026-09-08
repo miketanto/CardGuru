@@ -84,3 +84,58 @@ def test_token_groups_prune_conservatively():
     assert required_token_groups({"not": {"node": {"api": "Token"}}}) == []
     assert required_token_groups(
         {"any": [{"node": {"api": "Token"}}, {"card": {"types": "Land"}}]}) == []
+
+
+# --- SVarValue.value matching -------------------------------------------
+# Doubling Season and Hardened Scales are structurally identical on the
+# counter branch: both are R|Event$ AddCounter -> ReplaceWith -> api
+# ReplaceCounter. The operator lives only in the referenced SVarValue.
+
+DOUBLING_SEASON = {
+    "name": "Doubling Season", "types": "Enchantment",
+    "nodes": [
+        {"id": "ab1", "kind": "R", "params": {"Event": "AddCounter",
+                                              "ReplaceWith": "DoubleCounters"}},
+        {"id": "DoubleCounters", "kind": "SVar", "api": "ReplaceCounter",
+         "params": {"Amount": "Y"}},
+        {"id": "Y", "kind": "SVarValue", "value": "ReplaceCount$CounterNum/Twice"},
+    ],
+    "edges": [{"src": "ab1", "dst": "DoubleCounters", "type": "ReplaceWith"},
+              {"src": "DoubleCounters", "dst": "Y", "type": "ref:Amount"}],
+}
+
+HARDENED_SCALES = {
+    "name": "Hardened Scales", "types": "Enchantment",
+    "nodes": [
+        {"id": "ab0", "kind": "R", "params": {"Event": "AddCounter",
+                                              "ReplaceWith": "AddOneMore"}},
+        {"id": "AddOneMore", "kind": "SVar", "api": "ReplaceCounter",
+         "params": {"Amount": "X"}},
+        {"id": "X", "kind": "SVarValue", "value": "ReplaceCount$CounterNum/Plus.1"},
+    ],
+    "edges": [{"src": "ab0", "dst": "AddOneMore", "type": "ReplaceWith"},
+              {"src": "AddOneMore", "dst": "X", "type": "ref:Amount"}],
+}
+
+DOUBLERS = {"node": {"kind": "SVarValue", "value": {"contains": "/Twice"}}}
+INCREMENTERS = {"node": {"kind": "SVarValue", "value": {"contains": "/Plus."}}}
+
+
+def test_value_separates_doubling_from_incrementing():
+    assert evaluate(DOUBLERS, CardGraph(DOUBLING_SEASON))[0]
+    assert not evaluate(DOUBLERS, CardGraph(HARDENED_SCALES))[0]
+    assert evaluate(INCREMENTERS, CardGraph(HARDENED_SCALES))[0]
+    assert not evaluate(INCREMENTERS, CardGraph(DOUBLING_SEASON))[0]
+
+
+def test_structural_shape_alone_cannot_separate_them():
+    """Guards the premise: without `value` these two are indistinguishable."""
+    shape = {"node": {"kind": "SVar", "api": "ReplaceCounter"}}
+    assert evaluate(shape, CardGraph(DOUBLING_SEASON))[0]
+    assert evaluate(shape, CardGraph(HARDENED_SCALES))[0]
+
+
+def test_value_exact_match():
+    q = {"node": {"kind": "SVarValue", "value": "ReplaceCount$CounterNum/Twice"}}
+    assert evaluate(q, CardGraph(DOUBLING_SEASON))[0]
+    assert not evaluate(q, CardGraph(HARDENED_SCALES))[0]

@@ -1,6 +1,6 @@
 # Mechanical-search benchmark report
 
-Dataset: `dataset.jsonl.gz` (34519 faces, pin `670429bf9f77`), index load 4.1s.
+Dataset: `dataset.jsonl.gz` (34519 faces, pin `670429bf`), index load 0.7s.
 
 
 | query | hits | goldens |
@@ -31,7 +31,7 @@ Baseline = best-effort oracle-text regex (stand-in for Scryfall `o:` search).
 
 *Combat-damage-to-a-player trigger whose effect chain creates a token*
 
-- structural hits: **101** (3 ms)
+- structural hits: **101** (2 ms)
 - goldens: present 3/3, absent-respected 3/3
 - sample: A-Prosperous Thief, Ancient Copper Dragon, Ancient Gold Dragon, Ant-Man, Elusive Avenger, Aya of Alexandria, Battle Angels of Tyr, Beamtown Beatstick, Bejeweled Warg
 - baseline regex `deals combat damage to a player[^.]*,[^.]*create`: 79 hits — agree 64, structural-only 37, regex-only 15
@@ -42,7 +42,7 @@ Baseline = best-effort oracle-text regex (stand-in for Scryfall `o:` search).
 
 *One ability chain both exiles from the library and grants may-play*
 
-- structural hits: **268** (10 ms)
+- structural hits: **268** (6 ms)
 - goldens: present 4/4, absent-respected 2/2
 - sample: A-Ardent Dustspeaker, A-Nashi, Moon Sage's Scion, A-Visions of Phyrexia, Abbot of Keral Keep, Act on Impulse, Aerial Caravan, Alania's Pathmaker, Aminatou's Augury
 - baseline regex `exile the top [^.]*librar[^.]*\.[^.]*may (play|cast)`: 238 hits — agree 190, structural-only 78, regex-only 48
@@ -53,7 +53,7 @@ Baseline = best-effort oracle-text regex (stand-in for Scryfall `o:` search).
 
 *Activated ability: sacrificing a creature in the cost, mana in the effect*
 
-- structural hits: **34** (158 ms)
+- structural hits: **34** (60 ms)
 - goldens: present 3/3, absent-respected 2/2
 - sample: Ashnod's Altar, Basal Sliver, Basal Thrull, Blood Pet, Blood Vassal, Catalyst Elemental, Coal Golem, Composite Golem
 - baseline regex `sacrifice [^.:]*creature[^.:]*: add`: 70 hits — agree 11, structural-only 23, regex-only 59
@@ -64,7 +64,7 @@ Baseline = best-effort oracle-text regex (stand-in for Scryfall `o:` search).
 
 *ETB trigger draining each opponent (they lose life, you gain) in one chain*
 
-- structural hits: **24** (8 ms)
+- structural hits: **24** (3 ms)
 - goldens: present 1/1, absent-respected 2/2
 - sample: A-Cauldron Familiar, Arbiter of Woe, Arrogant Outlaw, Ayara, First of Locthwain, Cauldron Familiar, Corroding Dragonstorm, Dawnhand Eulogist, Diregraf Scavenger
 
@@ -72,7 +72,7 @@ Baseline = best-effort oracle-text regex (stand-in for Scryfall `o:` search).
 
 *Self-dies trigger that creates token(s)*
 
-- structural hits: **167** (17 ms)
+- structural hits: **167** (12 ms)
 - goldens: present 2/2, absent-respected 2/2
 - sample: A-Hobbling Zombie, Adorned Crocodile, Agents of HYDRA, Ambitious Augmenter, Anax, Hardened in the Forge, Ancient Adamantoise, Ancient Stone Idol, Atsushi, the Blazing Sky
 - baseline regex `when (this creature|[A-Z][^ ]*) dies[^.]*create`: 42 hits — agree 24, structural-only 143, regex-only 18
@@ -83,7 +83,7 @@ Baseline = best-effort oracle-text regex (stand-in for Scryfall `o:` search).
 
 *Trigger on casting a spell that copies the spell*
 
-- structural hits: **93** (2 ms)
+- structural hits: **93** (1 ms)
 - goldens: present 2/2, absent-respected 2/2
 - sample: A-Leyline of Resonance, A-Mentor's Guidance, Alania, Divergent Storm, Ancestral Communion, Archmage of Echoes, Aziza, Mage Tower Captain, Banish into Fable, Beamsplitter Mage
 
@@ -91,7 +91,7 @@ Baseline = best-effort oracle-text regex (stand-in for Scryfall `o:` search).
 
 *Landfall trigger (land you control enters) that creates a token*
 
-- structural hits: **32** (14 ms)
+- structural hits: **32** (8 ms)
 - goldens: present 3/3, absent-respected 2/2
 - sample: Akoum Stonewaker, Chocobo Racetrack, Curse of the Restless Dead, Dancing from Dark to Dawn, Dragonback Assault, Elfsworn Giant, Emeria Angel, Eusocial Engineering
 
@@ -110,7 +110,7 @@ Baseline = best-effort oracle-text regex (stand-in for Scryfall `o:` search).
 
 *Replacement effect modifying counters being put on permanents*
 
-- structural hits: **30** (1 ms)
+- structural hits: **30** (0 ms)
 - goldens: present 3/3, absent-respected 1/1
 - sample: Aether Refinery, Benevolent Hydra, Branching Evolution, Caradora, Heart of Alacria, Conclave Mentor, Corpsejack Menace, Doc Samson, Super Psychiatrist, Doubling Season
 
@@ -118,7 +118,7 @@ Baseline = best-effort oracle-text regex (stand-in for Scryfall `o:` search).
 
 *Activated ability usable only from the graveyard*
 
-- structural hits: **209** (3 ms)
+- structural hits: **209** (2 ms)
 - goldens: present 2/2, absent-respected 2/2
 - sample: A-Cauldron Familiar, A-Cobbled Lancer, A-Earthquake Dragon, A-Llanowar Greenwidow, A-Narfi, Betrayer King, Abzan Devotee, Adorned Crocodile, Advanced Stitchwing
 
@@ -145,7 +145,7 @@ Baseline = best-effort oracle-text regex (stand-in for Scryfall `o:` search).
 
 *Static ability reducing the cost of creature spells*
 
-- structural hits: **56** (7 ms)
+- structural hits: **56** (4 ms)
 - goldens: present 2/2, absent-respected 1/1
 - sample: Agatha of the Vile Cauldron, Animar, Soul of Elements, Artist's Talent, Biomancer's Familiar, Blood Funnel, Bontu's Monument, Centaur Omenreader, Conduit of Ruin
 
@@ -153,7 +153,7 @@ Baseline = best-effort oracle-text regex (stand-in for Scryfall `o:` search).
 
 *Any ability granting an extra turn*
 
-- structural hits: **65** (1 ms)
+- structural hits: **65** (0 ms)
 - goldens: present 3/3, absent-respected 1/1
 - sample: A-Alrund's Epiphany, Aetherflux Car, Alchemist's Gambit, All in Good Time, Alrund's Epiphany, Avatar Kuruk, Beacon of Tomorrows, Capture of Jingzhou
 - baseline regex `extra turn`: 67 hits — agree 64, structural-only 1, regex-only 3
@@ -172,7 +172,7 @@ Baseline = best-effort oracle-text regex (stand-in for Scryfall `o:` search).
 
 *Saga whose chapter chain fetches from library to battlefield*
 
-- structural hits: **8** (4 ms)
+- structural hits: **8** (2 ms)
 - goldens: present 1/1, absent-respected 1/1
 - sample: Binding the Old Gods, Fugitive of the Judoon, Summon: Fenrir, The Hunger Tide Rises, The Legend of Arena, The Weatherseed Treaty, There and Back Again, Urza's Saga
 
@@ -180,7 +180,7 @@ Baseline = best-effort oracle-text regex (stand-in for Scryfall `o:` search).
 
 *Activated ability with discarding a card in the cost*
 
-- structural hits: **383** (57 ms)
+- structural hits: **383** (31 ms)
 - goldens: present 2/2, absent-respected 2/2
 - sample: A-Mishra, Excavation Prodigy, A-Soul of Windgrace, Action News Crew, Advanced Stitchwing, Aeromoeba, Alexi, Zephyr Mage, Altanak, the Thrice-Called, Amok
 
@@ -188,7 +188,7 @@ Baseline = best-effort oracle-text regex (stand-in for Scryfall `o:` search).
 
 *Spell or ETB chain searching a land from library onto the battlefield*
 
-- structural hits: **290** (35 ms)
+- structural hits: **290** (17 ms)
 - goldens: present 4/4, absent-respected 2/2
 - sample: A-Navigation Orb, A-Scout the Wilderness, Aerial Surveyor, Alpine Guide, Arid Mesa, Assassin's Trophy, Atalan Jackal, Avatar of Growth
 
@@ -196,7 +196,7 @@ Baseline = best-effort oracle-text regex (stand-in for Scryfall `o:` search).
 
 *Attack trigger that creates token(s)*
 
-- structural hits: **161** (4 ms)
+- structural hits: **161** (2 ms)
 - goldens: present 2/2, absent-respected 2/2
 - sample: A-Acererak the Archlich, A-Goldspan Dragon, A-Rulik Mons, Warren Chief, Aang and Katara, Acererak the Archlich, Aether Chaser, Aether Herder, Aether Inspector
 
@@ -204,7 +204,7 @@ Baseline = best-effort oracle-text regex (stand-in for Scryfall `o:` search).
 
 *Replacement sending cards to exile instead of the graveyard*
 
-- structural hits: **81** (4 ms)
+- structural hits: **81** (2 ms)
 - goldens: present 1/1, absent-respected 1/1
 - sample: A-Brinebound Gift, A-Catlike Curiosity, A-Departed Soulkeeper, A-Dorothea's Retribution, A-Etching of Kumano, A-Gutter Shortcut, A-Lanterns' Lift, A-Spectral Binding
 

@@ -29,7 +29,15 @@ NodeSpec fields (all optional, AND-ed):
   mode      trigger/static mode, e.g. "DamageDone"  (VP allowed)
   keyword   keyword-node name (kind K)         (VP allowed)
   count     Count$ expression (kind SVarCount) (VP allowed)
+  value     raw SVar value    (kind SVarValue) (VP allowed)
   params    {ParamName: VP}   parameter predicates
+
+`value` is where arithmetic operators live. Doubling Season and Hardened
+Scales are structurally identical on the counter branch — both are
+R|Event$ AddCounter -> ReplaceWith -> api ReplaceCounter — and differ only in
+the referenced SVarValue: "ReplaceCount$CounterNum/Twice" vs
+".../Plus.1". Without this field, doubling-vs-incrementing is reachable only
+by falling back to a card.oracle text regex, which defeats the point.
 
 VP (value predicate): exact string, or
   {"contains": s} | {"icontains": s} | {"regex": r} | {"any": [VP, ...]} | true (key exists)
@@ -69,14 +77,15 @@ def match_value(pred, value) -> bool:
 
 # ---------------------------------------------------------------- node spec
 
-NODE_SPEC_KEYS = {"kind", "api", "apiKind", "mode", "keyword", "count", "params"}
+NODE_SPEC_KEYS = {"kind", "api", "apiKind", "mode", "keyword", "count", "value",
+                  "params"}
 
 
 def match_node(spec: dict, node: dict) -> bool:
     unknown = set(spec) - NODE_SPEC_KEYS
     if unknown:
         raise QueryError(f"unknown NodeSpec fields: {sorted(unknown)}")
-    for f in ("kind", "api", "apiKind", "mode", "keyword", "count"):
+    for f in ("kind", "api", "apiKind", "mode", "keyword", "count", "value"):
         if f in spec and not match_value(spec[f], node.get(f)):
             return False
     for pk, vp in (spec.get("params") or {}).items():

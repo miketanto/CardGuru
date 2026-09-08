@@ -1,0 +1,1151 @@
+{
+ "note": "NL->DSL execution-accuracy A/B, 2026-08-07. Opus seed3 discarded: API credit exhausted mid-run, not a model result. See docs/handoff.md 4b and research/execution-feedback.md.",
+ "aggregates": {
+  "haiku/off/seed1": {
+   "n": 40,
+   "n_scorable": 37,
+   "n_excluded": 3,
+   "excluded_ids": [
+    "triggers-off-state-based-actions",
+    "triggers-on-opponent-voluntary-choice",
+    "infinite-combo-enablers"
+   ],
+   "compiled": 39,
+   "passed": 9,
+   "pass_rate": 0.24324324324324326,
+   "present_total": 107,
+   "present_found": 38,
+   "recall": 0.35514018691588783,
+   "absent_total": 38,
+   "absent_respected": 36,
+   "absent_rate": 0.9473684210526315,
+   "mean_overlap": 0.25069794070601126,
+   "n_overlap": 36,
+   "zero_hit": 15
+  },
+  "haiku/off/seed2": {
+   "n": 40,
+   "n_scorable": 37,
+   "n_excluded": 3,
+   "excluded_ids": [
+    "triggers-off-state-based-actions",
+    "triggers-on-opponent-voluntary-choice",
+    "infinite-combo-enablers"
+   ],
+   "compiled": 39,
+   "passed": 14,
+   "pass_rate": 0.3783783783783784,
+   "present_total": 107,
+   "present_found": 52,
+   "recall": 0.48598130841121495,
+   "absent_total": 38,
+   "absent_respected": 36,
+   "absent_rate": 0.9473684210526315,
+   "mean_overlap": 0.35121138801248386,
+   "n_overlap": 36,
+   "zero_hit": 10
+  },
+  "haiku/off/seed3": {
+   "n": 40,
+   "n_scorable": 37,
+   "n_excluded": 3,
+   "excluded_ids": [
+    "triggers-off-state-based-actions",
+    "triggers-on-opponent-voluntary-choice",
+    "infinite-combo-enablers"
+   ],
+   "compiled": 39,
+   "passed": 11,
+   "pass_rate": 0.2972972972972973,
+   "present_total": 107,
+   "present_found": 49,
+   "recall": 0.45794392523364486,
+   "absent_total": 38,
+   "absent_respected": 34,
+   "absent_rate": 0.8947368421052632,
+   "mean_overlap": 0.2807383982683715,
+   "n_overlap": 36,
+   "zero_hit": 12
+  },
+  "haiku/zero/seed1": {
+   "n": 40,
+   "n_scorable": 37,
+   "n_excluded": 3,
+   "excluded_ids": [
+    "triggers-off-state-based-actions",
+    "triggers-on-opponent-voluntary-choice",
+    "infinite-combo-enablers"
+   ],
+   "compiled": 40,
+   "passed": 13,
+   "pass_rate": 0.35135135135135137,
+   "present_total": 107,
+   "present_found": 59,
+   "recall": 0.5514018691588785,
+   "absent_total": 38,
+   "absent_respected": 31,
+   "absent_rate": 0.8157894736842105,
+   "mean_overlap": 0.3299180924556701,
+   "n_overlap": 37,
+   "zero_hit": 4
+  },
+  "haiku/zero/seed2": {
+   "n": 40,
+   "n_scorable": 37,
+   "n_excluded": 3,
+   "excluded_ids": [
+    "triggers-off-state-based-actions",
+    "triggers-on-opponent-voluntary-choice",
+    "infinite-combo-enablers"
+   ],
+   "compiled": 40,
+   "passed": 15,
+   "pass_rate": 0.40540540540540543,
+   "present_total": 107,
+   "present_found": 63,
+   "recall": 0.5887850467289719,
+   "absent_total": 38,
+   "absent_respected": 32,
+   "absent_rate": 0.8421052631578947,
+   "mean_overlap": 0.3206108382145099,
+   "n_overlap": 37,
+   "zero_hit": 5
+  },
+  "haiku/zero/seed3": {
+   "n": 40,
+   "n_scorable": 37,
+   "n_excluded": 3,
+   "excluded_ids": [
+    "triggers-off-state-based-actions",
+    "triggers-on-opponent-voluntary-choice",
+    "infinite-combo-enablers"
+   ],
+   "compiled": 40,
+   "passed": 14,
+   "pass_rate": 0.3783783783783784,
+   "present_total": 107,
+   "present_found": 58,
+   "recall": 0.5420560747663551,
+   "absent_total": 38,
+   "absent_respected": 33,
+   "absent_rate": 0.868421052631579,
+   "mean_overlap": 0.34548673388985424,
+   "n_overlap": 37,
+   "zero_hit": 4
+  },
+  "haiku/full/seed1": {
+   "n": 40,
+   "n_scorable": 37,
+   "n_excluded": 3,
+   "excluded_ids": [
+    "triggers-off-state-based-actions",
+    "triggers-on-opponent-voluntary-choice",
+    "infinite-combo-enablers"
+   ],
+   "compiled": 40,
+   "passed": 16,
+   "pass_rate": 0.43243243243243246,
+   "present_total": 107,
+   "present_found": 63,
+   "recall": 0.5887850467289719,
+   "absent_total": 38,
+   "absent_respected": 36,
+   "absent_rate": 0.9473684210526315,
+   "mean_overlap": 0.4009647735250838,
+   "n_overlap": 37,
+   "zero_hit": 1
+  },
+  "haiku/full/seed2": {
+   "n": 40,
+   "n_scorable": 37,
+   "n_excluded": 3,
+   "excluded_ids": [
+    "triggers-off-state-based-actions",
+    "triggers-on-opponent-voluntary-choice",
+    "infinite-combo-enablers"
+   ],
+   "compiled": 40,
+   "passed": 14,
+   "pass_rate": 0.3783783783783784,
+   "present_total": 107,
+   "present_found": 61,
+   "recall": 0.5700934579439252,
+   "absent_total": 38,
+   "absent_respected": 33,
+   "absent_rate": 0.868421052631579,
+   "mean_overlap": 0.3987898103179325,
+   "n_overlap": 37,
+   "zero_hit": 3
+  },
+  "haiku/full/seed3": {
+   "n": 40,
+   "n_scorable": 37,
+   "n_excluded": 3,
+   "excluded_ids": [
+    "triggers-off-state-based-actions",
+    "triggers-on-opponent-voluntary-choice",
+    "infinite-combo-enablers"
+   ],
+   "compiled": 40,
+   "passed": 14,
+   "pass_rate": 0.3783783783783784,
+   "present_total": 107,
+   "present_found": 53,
+   "recall": 0.4953271028037383,
+   "absent_total": 38,
+   "absent_respected": 33,
+   "absent_rate": 0.868421052631579,
+   "mean_overlap": 0.31333510904266487,
+   "n_overlap": 37,
+   "zero_hit": 5
+  },
+  "opus/off/seed1": {
+   "n": 40,
+   "n_scorable": 37,
+   "n_excluded": 3,
+   "excluded_ids": [
+    "triggers-off-state-based-actions",
+    "triggers-on-opponent-voluntary-choice",
+    "infinite-combo-enablers"
+   ],
+   "compiled": 40,
+   "passed": 19,
+   "pass_rate": 0.5135135135135135,
+   "present_total": 107,
+   "present_found": 70,
+   "recall": 0.6542056074766355,
+   "absent_total": 38,
+   "absent_respected": 36,
+   "absent_rate": 0.9473684210526315,
+   "mean_overlap": 0.576287872586324,
+   "n_overlap": 37,
+   "zero_hit": 4
+  },
+  "opus/off/seed2": {
+   "n": 40,
+   "n_scorable": 37,
+   "n_excluded": 3,
+   "excluded_ids": [
+    "triggers-off-state-based-actions",
+    "triggers-on-opponent-voluntary-choice",
+    "infinite-combo-enablers"
+   ],
+   "compiled": 40,
+   "passed": 20,
+   "pass_rate": 0.5405405405405406,
+   "present_total": 107,
+   "present_found": 77,
+   "recall": 0.719626168224299,
+   "absent_total": 38,
+   "absent_respected": 35,
+   "absent_rate": 0.9210526315789473,
+   "mean_overlap": 0.6312814983617704,
+   "n_overlap": 37,
+   "zero_hit": 2
+  },
+  "opus/zero/seed1": {
+   "n": 40,
+   "n_scorable": 37,
+   "n_excluded": 3,
+   "excluded_ids": [
+    "triggers-off-state-based-actions",
+    "triggers-on-opponent-voluntary-choice",
+    "infinite-combo-enablers"
+   ],
+   "compiled": 40,
+   "passed": 21,
+   "pass_rate": 0.5675675675675675,
+   "present_total": 107,
+   "present_found": 80,
+   "recall": 0.7476635514018691,
+   "absent_total": 38,
+   "absent_respected": 35,
+   "absent_rate": 0.9210526315789473,
+   "mean_overlap": 0.6777317380064004,
+   "n_overlap": 37,
+   "zero_hit": 0
+  },
+  "opus/zero/seed2": {
+   "n": 40,
+   "n_scorable": 37,
+   "n_excluded": 3,
+   "excluded_ids": [
+    "triggers-off-state-based-actions",
+    "triggers-on-opponent-voluntary-choice",
+    "infinite-combo-enablers"
+   ],
+   "compiled": 40,
+   "passed": 21,
+   "pass_rate": 0.5675675675675675,
+   "present_total": 107,
+   "present_found": 76,
+   "recall": 0.7102803738317757,
+   "absent_total": 38,
+   "absent_respected": 35,
+   "absent_rate": 0.9210526315789473,
+   "mean_overlap": 0.5998268234721186,
+   "n_overlap": 37,
+   "zero_hit": 0
+  }
+ },
+ "per_question": {
+  "attack-trigger-makes-token": {
+   "scorable": true,
+   "passed_in": [],
+   "failed_in": [
+    "haiku/off/seed1",
+    "haiku/off/seed2",
+    "haiku/off/seed3",
+    "haiku/zero/seed1",
+    "haiku/zero/seed2",
+    "haiku/zero/seed3",
+    "haiku/full/seed1",
+    "haiku/full/seed2",
+    "haiku/full/seed3",
+    "opus/off/seed1",
+    "opus/off/seed2",
+    "opus/zero/seed1",
+    "opus/zero/seed2"
+   ],
+   "pass_count": 0,
+   "n_runs": 13
+  },
+  "death-trigger-drain": {
+   "scorable": true,
+   "passed_in": [],
+   "failed_in": [
+    "haiku/off/seed1",
+    "haiku/off/seed2",
+    "haiku/off/seed3",
+    "haiku/zero/seed1",
+    "haiku/zero/seed2",
+    "haiku/zero/seed3",
+    "haiku/full/seed1",
+    "haiku/full/seed2",
+    "haiku/full/seed3",
+    "opus/off/seed1",
+    "opus/off/seed2",
+    "opus/zero/seed1",
+    "opus/zero/seed2"
+   ],
+   "pass_count": 0,
+   "n_runs": 13
+  },
+  "etb-creature-pings-opponents": {
+   "scorable": true,
+   "passed_in": [
+    "haiku/zero/seed1",
+    "haiku/full/seed1",
+    "opus/off/seed2",
+    "opus/zero/seed2"
+   ],
+   "failed_in": [
+    "haiku/off/seed1",
+    "haiku/off/seed2",
+    "haiku/off/seed3",
+    "haiku/zero/seed2",
+    "haiku/zero/seed3",
+    "haiku/full/seed2",
+    "haiku/full/seed3",
+    "opus/off/seed1",
+    "opus/zero/seed1"
+   ],
+   "pass_count": 4,
+   "n_runs": 13
+  },
+  "landfall-payoffs": {
+   "scorable": true,
+   "passed_in": [],
+   "failed_in": [
+    "haiku/off/seed1",
+    "haiku/off/seed2",
+    "haiku/off/seed3",
+    "haiku/zero/seed1",
+    "haiku/zero/seed2",
+    "haiku/zero/seed3",
+    "haiku/full/seed1",
+    "haiku/full/seed2",
+    "haiku/full/seed3",
+    "opus/off/seed1",
+    "opus/off/seed2",
+    "opus/zero/seed1",
+    "opus/zero/seed2"
+   ],
+   "pass_count": 0,
+   "n_runs": 13
+  },
+  "magecraft-style-payoff": {
+   "scorable": true,
+   "passed_in": [],
+   "failed_in": [
+    "haiku/off/seed1",
+    "haiku/off/seed2",
+    "haiku/off/seed3",
+    "haiku/zero/seed1",
+    "haiku/zero/seed2",
+    "haiku/zero/seed3",
+    "haiku/full/seed1",
+    "haiku/full/seed2",
+    "haiku/full/seed3",
+    "opus/off/seed1",
+    "opus/off/seed2",
+    "opus/zero/seed1",
+    "opus/zero/seed2"
+   ],
+   "pass_count": 0,
+   "n_runs": 13
+  },
+  "opponent-draw-punisher": {
+   "scorable": true,
+   "passed_in": [
+    "haiku/off/seed3",
+    "haiku/zero/seed2",
+    "haiku/zero/seed3",
+    "haiku/full/seed2",
+    "haiku/full/seed3",
+    "opus/off/seed2",
+    "opus/zero/seed1",
+    "opus/zero/seed2"
+   ],
+   "failed_in": [
+    "haiku/off/seed1",
+    "haiku/off/seed2",
+    "haiku/zero/seed1",
+    "haiku/full/seed1",
+    "opus/off/seed1"
+   ],
+   "pass_count": 8,
+   "n_runs": 13
+  },
+  "sacrifice-artifact-as-cost": {
+   "scorable": true,
+   "passed_in": [
+    "haiku/off/seed1",
+    "haiku/off/seed2",
+    "haiku/off/seed3",
+    "haiku/zero/seed1",
+    "haiku/zero/seed2",
+    "haiku/zero/seed3",
+    "haiku/full/seed1",
+    "haiku/full/seed2",
+    "haiku/full/seed3",
+    "opus/off/seed1",
+    "opus/off/seed2",
+    "opus/zero/seed1",
+    "opus/zero/seed2"
+   ],
+   "failed_in": [],
+   "pass_count": 13,
+   "n_runs": 13
+  },
+  "discard-as-activation-cost": {
+   "scorable": true,
+   "passed_in": [
+    "haiku/off/seed1",
+    "haiku/off/seed2",
+    "haiku/off/seed3",
+    "haiku/zero/seed1",
+    "haiku/zero/seed2",
+    "haiku/zero/seed3",
+    "haiku/full/seed1",
+    "haiku/full/seed2",
+    "haiku/full/seed3",
+    "opus/off/seed1",
+    "opus/off/seed2",
+    "opus/zero/seed1",
+    "opus/zero/seed2"
+   ],
+   "failed_in": [],
+   "pass_count": 13,
+   "n_runs": 13
+  },
+  "pay-life-activation-cost": {
+   "scorable": true,
+   "passed_in": [
+    "haiku/off/seed1",
+    "haiku/off/seed2",
+    "haiku/off/seed3",
+    "haiku/zero/seed1",
+    "haiku/zero/seed2",
+    "haiku/zero/seed3",
+    "haiku/full/seed1",
+    "haiku/full/seed2",
+    "haiku/full/seed3",
+    "opus/off/seed1",
+    "opus/off/seed2",
+    "opus/zero/seed1",
+    "opus/zero/seed2"
+   ],
+   "failed_in": [],
+   "pass_count": 13,
+   "n_runs": 13
+  },
+  "exile-from-graveyard-as-cost": {
+   "scorable": true,
+   "passed_in": [
+    "opus/off/seed1"
+   ],
+   "failed_in": [
+    "haiku/off/seed1",
+    "haiku/off/seed2",
+    "haiku/off/seed3",
+    "haiku/zero/seed1",
+    "haiku/zero/seed2",
+    "haiku/zero/seed3",
+    "haiku/full/seed1",
+    "haiku/full/seed2",
+    "haiku/full/seed3",
+    "opus/off/seed2",
+    "opus/zero/seed1",
+    "opus/zero/seed2"
+   ],
+   "pass_count": 1,
+   "n_runs": 13
+  },
+  "tap-other-creatures-as-cost": {
+   "scorable": true,
+   "passed_in": [
+    "opus/zero/seed1"
+   ],
+   "failed_in": [
+    "haiku/off/seed1",
+    "haiku/off/seed2",
+    "haiku/off/seed3",
+    "haiku/zero/seed1",
+    "haiku/zero/seed2",
+    "haiku/zero/seed3",
+    "haiku/full/seed1",
+    "haiku/full/seed2",
+    "haiku/full/seed3",
+    "opus/off/seed1",
+    "opus/off/seed2",
+    "opus/zero/seed2"
+   ],
+   "pass_count": 1,
+   "n_runs": 13
+  },
+  "tax-opponent-spells": {
+   "scorable": true,
+   "passed_in": [
+    "haiku/off/seed1",
+    "haiku/off/seed2",
+    "haiku/zero/seed1",
+    "haiku/zero/seed2",
+    "haiku/zero/seed3",
+    "haiku/full/seed1",
+    "haiku/full/seed2",
+    "haiku/full/seed3",
+    "opus/off/seed1",
+    "opus/off/seed2",
+    "opus/zero/seed1",
+    "opus/zero/seed2"
+   ],
+   "failed_in": [
+    "haiku/off/seed3"
+   ],
+   "pass_count": 12,
+   "n_runs": 13
+  },
+  "one-spell-per-turn-rule": {
+   "scorable": true,
+   "passed_in": [
+    "haiku/off/seed2",
+    "haiku/zero/seed1",
+    "haiku/zero/seed2",
+    "haiku/zero/seed3",
+    "haiku/full/seed1",
+    "opus/off/seed1",
+    "opus/off/seed2",
+    "opus/zero/seed1",
+    "opus/zero/seed2"
+   ],
+   "failed_in": [
+    "haiku/off/seed1",
+    "haiku/off/seed3",
+    "haiku/full/seed2",
+    "haiku/full/seed3"
+   ],
+   "pass_count": 9,
+   "n_runs": 13
+  },
+  "cast-from-top-of-library": {
+   "scorable": true,
+   "passed_in": [
+    "haiku/off/seed1",
+    "haiku/off/seed2",
+    "haiku/off/seed3",
+    "haiku/zero/seed1",
+    "haiku/zero/seed2",
+    "haiku/zero/seed3",
+    "haiku/full/seed1",
+    "haiku/full/seed2",
+    "opus/off/seed1",
+    "opus/off/seed2",
+    "opus/zero/seed1",
+    "opus/zero/seed2"
+   ],
+   "failed_in": [
+    "haiku/full/seed3"
+   ],
+   "pass_count": 12,
+   "n_runs": 13
+  },
+  "flash-permission-static": {
+   "scorable": true,
+   "passed_in": [],
+   "failed_in": [
+    "haiku/off/seed1",
+    "haiku/off/seed2",
+    "haiku/off/seed3",
+    "haiku/zero/seed1",
+    "haiku/zero/seed2",
+    "haiku/zero/seed3",
+    "haiku/full/seed1",
+    "haiku/full/seed2",
+    "haiku/full/seed3",
+    "opus/off/seed1",
+    "opus/off/seed2",
+    "opus/zero/seed1",
+    "opus/zero/seed2"
+   ],
+   "pass_count": 0,
+   "n_runs": 13
+  },
+  "global-untap-denial": {
+   "scorable": true,
+   "passed_in": [],
+   "failed_in": [
+    "haiku/off/seed1",
+    "haiku/off/seed2",
+    "haiku/off/seed3",
+    "haiku/zero/seed1",
+    "haiku/zero/seed2",
+    "haiku/zero/seed3",
+    "haiku/full/seed1",
+    "haiku/full/seed2",
+    "haiku/full/seed3",
+    "opus/off/seed1",
+    "opus/off/seed2",
+    "opus/zero/seed1",
+    "opus/zero/seed2"
+   ],
+   "pass_count": 0,
+   "n_runs": 13
+  },
+  "dies-exile-instead": {
+   "scorable": true,
+   "passed_in": [
+    "haiku/off/seed1",
+    "haiku/off/seed2",
+    "haiku/zero/seed3",
+    "haiku/full/seed1",
+    "haiku/full/seed2",
+    "haiku/full/seed3",
+    "opus/off/seed1",
+    "opus/off/seed2",
+    "opus/zero/seed1",
+    "opus/zero/seed2"
+   ],
+   "failed_in": [
+    "haiku/off/seed3",
+    "haiku/zero/seed1",
+    "haiku/zero/seed2"
+   ],
+   "pass_count": 10,
+   "n_runs": 13
+  },
+  "redirect-damage-to-a-permanent": {
+   "scorable": true,
+   "passed_in": [],
+   "failed_in": [
+    "haiku/off/seed1",
+    "haiku/off/seed2",
+    "haiku/off/seed3",
+    "haiku/zero/seed1",
+    "haiku/zero/seed2",
+    "haiku/zero/seed3",
+    "haiku/full/seed1",
+    "haiku/full/seed2",
+    "haiku/full/seed3",
+    "opus/off/seed1",
+    "opus/off/seed2",
+    "opus/zero/seed1",
+    "opus/zero/seed2"
+   ],
+   "pass_count": 0,
+   "n_runs": 13
+  },
+  "fog-effects": {
+   "scorable": true,
+   "passed_in": [
+    "haiku/off/seed1",
+    "haiku/off/seed2",
+    "haiku/off/seed3",
+    "haiku/zero/seed1",
+    "haiku/zero/seed2",
+    "haiku/zero/seed3",
+    "haiku/full/seed1",
+    "haiku/full/seed2",
+    "haiku/full/seed3",
+    "opus/off/seed1",
+    "opus/off/seed2",
+    "opus/zero/seed1",
+    "opus/zero/seed2"
+   ],
+   "failed_in": [],
+   "pass_count": 13,
+   "n_runs": 13
+  },
+  "draw-replacement-effects": {
+   "scorable": true,
+   "passed_in": [
+    "haiku/off/seed2",
+    "haiku/zero/seed1",
+    "haiku/zero/seed2",
+    "haiku/zero/seed3",
+    "haiku/full/seed1",
+    "haiku/full/seed2",
+    "haiku/full/seed3",
+    "opus/off/seed1",
+    "opus/off/seed2",
+    "opus/zero/seed1",
+    "opus/zero/seed2"
+   ],
+   "failed_in": [
+    "haiku/off/seed1",
+    "haiku/off/seed3"
+   ],
+   "pass_count": 11,
+   "n_runs": 13
+  },
+  "damage-multipliers": {
+   "scorable": true,
+   "passed_in": [
+    "haiku/off/seed2",
+    "haiku/off/seed3",
+    "haiku/zero/seed2",
+    "opus/off/seed1",
+    "opus/zero/seed1",
+    "opus/zero/seed2"
+   ],
+   "failed_in": [
+    "haiku/off/seed1",
+    "haiku/zero/seed1",
+    "haiku/zero/seed3",
+    "haiku/full/seed1",
+    "haiku/full/seed2",
+    "haiku/full/seed3",
+    "opus/off/seed2"
+   ],
+   "pass_count": 6,
+   "n_runs": 13
+  },
+  "enters-as-a-copy": {
+   "scorable": true,
+   "passed_in": [
+    "haiku/off/seed3",
+    "haiku/zero/seed2",
+    "haiku/full/seed3",
+    "opus/off/seed1",
+    "opus/off/seed2",
+    "opus/zero/seed1",
+    "opus/zero/seed2"
+   ],
+   "failed_in": [
+    "haiku/off/seed1",
+    "haiku/off/seed2",
+    "haiku/zero/seed1",
+    "haiku/zero/seed3",
+    "haiku/full/seed1",
+    "haiku/full/seed2"
+   ],
+   "pass_count": 7,
+   "n_runs": 13
+  },
+  "reanimate-on-a-trigger": {
+   "scorable": true,
+   "passed_in": [],
+   "failed_in": [
+    "haiku/off/seed1",
+    "haiku/off/seed2",
+    "haiku/off/seed3",
+    "haiku/zero/seed1",
+    "haiku/zero/seed2",
+    "haiku/zero/seed3",
+    "haiku/full/seed1",
+    "haiku/full/seed2",
+    "haiku/full/seed3",
+    "opus/off/seed1",
+    "opus/off/seed2",
+    "opus/zero/seed1",
+    "opus/zero/seed2"
+   ],
+   "pass_count": 0,
+   "n_runs": 13
+  },
+  "blink-effects": {
+   "scorable": true,
+   "passed_in": [
+    "haiku/zero/seed1",
+    "haiku/zero/seed3",
+    "haiku/full/seed2",
+    "haiku/full/seed3",
+    "opus/off/seed1",
+    "opus/off/seed2",
+    "opus/zero/seed1",
+    "opus/zero/seed2"
+   ],
+   "failed_in": [
+    "haiku/off/seed1",
+    "haiku/off/seed2",
+    "haiku/off/seed3",
+    "haiku/zero/seed2",
+    "haiku/full/seed1"
+   ],
+   "pass_count": 8,
+   "n_runs": 13
+  },
+  "tutor-to-top-of-library": {
+   "scorable": true,
+   "passed_in": [
+    "haiku/off/seed2",
+    "haiku/off/seed3",
+    "haiku/zero/seed1",
+    "haiku/zero/seed2",
+    "haiku/zero/seed3",
+    "haiku/full/seed1",
+    "haiku/full/seed2",
+    "haiku/full/seed3",
+    "opus/off/seed1",
+    "opus/off/seed2",
+    "opus/zero/seed1",
+    "opus/zero/seed2"
+   ],
+   "failed_in": [
+    "haiku/off/seed1"
+   ],
+   "pass_count": 12,
+   "n_runs": 13
+  },
+  "cast-from-graveyard-permanents": {
+   "scorable": true,
+   "passed_in": [],
+   "failed_in": [
+    "haiku/off/seed1",
+    "haiku/off/seed2",
+    "haiku/off/seed3",
+    "haiku/zero/seed1",
+    "haiku/zero/seed2",
+    "haiku/zero/seed3",
+    "haiku/full/seed1",
+    "haiku/full/seed2",
+    "haiku/full/seed3",
+    "opus/off/seed1",
+    "opus/off/seed2",
+    "opus/zero/seed1",
+    "opus/zero/seed2"
+   ],
+   "pass_count": 0,
+   "n_runs": 13
+  },
+  "play-lands-from-graveyard": {
+   "scorable": true,
+   "passed_in": [
+    "haiku/full/seed3",
+    "opus/off/seed1",
+    "opus/off/seed2",
+    "opus/zero/seed1",
+    "opus/zero/seed2"
+   ],
+   "failed_in": [
+    "haiku/off/seed1",
+    "haiku/off/seed2",
+    "haiku/off/seed3",
+    "haiku/zero/seed1",
+    "haiku/zero/seed2",
+    "haiku/zero/seed3",
+    "haiku/full/seed1",
+    "haiku/full/seed2"
+   ],
+   "pass_count": 5,
+   "n_runs": 13
+  },
+  "removal-that-never-says-destroy": {
+   "scorable": true,
+   "passed_in": [],
+   "failed_in": [
+    "haiku/off/seed1",
+    "haiku/off/seed2",
+    "haiku/off/seed3",
+    "haiku/zero/seed1",
+    "haiku/zero/seed2",
+    "haiku/zero/seed3",
+    "haiku/full/seed1",
+    "haiku/full/seed2",
+    "haiku/full/seed3",
+    "opus/off/seed1",
+    "opus/off/seed2",
+    "opus/zero/seed1",
+    "opus/zero/seed2"
+   ],
+   "pass_count": 0,
+   "n_runs": 13
+  },
+  "counter-doubling": {
+   "scorable": true,
+   "passed_in": [
+    "haiku/zero/seed2",
+    "haiku/full/seed1",
+    "opus/zero/seed1",
+    "opus/zero/seed2"
+   ],
+   "failed_in": [
+    "haiku/off/seed1",
+    "haiku/off/seed2",
+    "haiku/off/seed3",
+    "haiku/zero/seed1",
+    "haiku/zero/seed3",
+    "haiku/full/seed2",
+    "haiku/full/seed3",
+    "opus/off/seed1",
+    "opus/off/seed2"
+   ],
+   "pass_count": 4,
+   "n_runs": 13
+  },
+  "token-doubling": {
+   "scorable": true,
+   "passed_in": [
+    "haiku/full/seed1",
+    "haiku/full/seed2",
+    "opus/off/seed2"
+   ],
+   "failed_in": [
+    "haiku/off/seed1",
+    "haiku/off/seed2",
+    "haiku/off/seed3",
+    "haiku/zero/seed1",
+    "haiku/zero/seed2",
+    "haiku/zero/seed3",
+    "haiku/full/seed3",
+    "opus/off/seed1",
+    "opus/zero/seed1",
+    "opus/zero/seed2"
+   ],
+   "pass_count": 3,
+   "n_runs": 13
+  },
+  "proliferate-payoffs": {
+   "scorable": true,
+   "passed_in": [
+    "haiku/off/seed1",
+    "haiku/off/seed2",
+    "haiku/off/seed3",
+    "haiku/zero/seed1",
+    "haiku/zero/seed2",
+    "haiku/zero/seed3",
+    "haiku/full/seed1",
+    "haiku/full/seed2",
+    "haiku/full/seed3",
+    "opus/off/seed1",
+    "opus/off/seed2",
+    "opus/zero/seed1",
+    "opus/zero/seed2"
+   ],
+   "failed_in": [],
+   "pass_count": 13,
+   "n_runs": 13
+  },
+  "move-counters-between-permanents": {
+   "scorable": true,
+   "passed_in": [],
+   "failed_in": [
+    "haiku/off/seed1",
+    "haiku/off/seed2",
+    "haiku/off/seed3",
+    "haiku/zero/seed1",
+    "haiku/zero/seed2",
+    "haiku/zero/seed3",
+    "haiku/full/seed1",
+    "haiku/full/seed2",
+    "haiku/full/seed3",
+    "opus/off/seed1",
+    "opus/off/seed2",
+    "opus/zero/seed1",
+    "opus/zero/seed2"
+   ],
+   "pass_count": 0,
+   "n_runs": 13
+  },
+  "triggers-off-state-based-actions": {
+   "scorable": false,
+   "passed_in": [],
+   "failed_in": [
+    "haiku/off/seed1",
+    "haiku/off/seed2",
+    "haiku/off/seed3",
+    "haiku/zero/seed1",
+    "haiku/zero/seed2",
+    "haiku/zero/seed3",
+    "haiku/full/seed1",
+    "haiku/full/seed2",
+    "haiku/full/seed3",
+    "opus/off/seed1",
+    "opus/off/seed2",
+    "opus/zero/seed1",
+    "opus/zero/seed2"
+   ],
+   "pass_count": 0,
+   "n_runs": 13
+  },
+  "dies-then-tutor-to-battlefield": {
+   "scorable": true,
+   "passed_in": [
+    "opus/off/seed1",
+    "opus/off/seed2",
+    "opus/zero/seed1",
+    "opus/zero/seed2"
+   ],
+   "failed_in": [
+    "haiku/off/seed1",
+    "haiku/off/seed2",
+    "haiku/off/seed3",
+    "haiku/zero/seed1",
+    "haiku/zero/seed2",
+    "haiku/zero/seed3",
+    "haiku/full/seed1",
+    "haiku/full/seed2",
+    "haiku/full/seed3"
+   ],
+   "pass_count": 4,
+   "n_runs": 13
+  },
+  "impulse-exile-then-cast": {
+   "scorable": true,
+   "passed_in": [],
+   "failed_in": [
+    "haiku/off/seed1",
+    "haiku/off/seed2",
+    "haiku/off/seed3",
+    "haiku/zero/seed1",
+    "haiku/zero/seed2",
+    "haiku/zero/seed3",
+    "haiku/full/seed1",
+    "haiku/full/seed2",
+    "haiku/full/seed3",
+    "opus/off/seed1",
+    "opus/off/seed2",
+    "opus/zero/seed1",
+    "opus/zero/seed2"
+   ],
+   "pass_count": 0,
+   "n_runs": 13
+  },
+  "untap-on-other-players-turns": {
+   "scorable": true,
+   "passed_in": [],
+   "failed_in": [
+    "haiku/off/seed1",
+    "haiku/off/seed2",
+    "haiku/off/seed3",
+    "haiku/zero/seed1",
+    "haiku/zero/seed2",
+    "haiku/zero/seed3",
+    "haiku/full/seed1",
+    "haiku/full/seed2",
+    "haiku/full/seed3",
+    "opus/off/seed1",
+    "opus/off/seed2",
+    "opus/zero/seed1",
+    "opus/zero/seed2"
+   ],
+   "pass_count": 0,
+   "n_runs": 13
+  },
+  "sac-outlet-that-refills": {
+   "scorable": true,
+   "passed_in": [
+    "haiku/off/seed1",
+    "haiku/off/seed2",
+    "haiku/off/seed3",
+    "haiku/zero/seed1",
+    "haiku/zero/seed2",
+    "haiku/zero/seed3",
+    "haiku/full/seed1",
+    "haiku/full/seed2",
+    "haiku/full/seed3",
+    "opus/off/seed1",
+    "opus/off/seed2",
+    "opus/zero/seed1",
+    "opus/zero/seed2"
+   ],
+   "failed_in": [],
+   "pass_count": 13,
+   "n_runs": 13
+  },
+  "triggers-on-opponent-voluntary-choice": {
+   "scorable": false,
+   "passed_in": [],
+   "failed_in": [
+    "haiku/off/seed1",
+    "haiku/off/seed2",
+    "haiku/off/seed3",
+    "haiku/zero/seed1",
+    "haiku/zero/seed2",
+    "haiku/zero/seed3",
+    "haiku/full/seed1",
+    "haiku/full/seed2",
+    "haiku/full/seed3",
+    "opus/off/seed1",
+    "opus/off/seed2",
+    "opus/zero/seed1",
+    "opus/zero/seed2"
+   ],
+   "pass_count": 0,
+   "n_runs": 13
+  },
+  "infinite-combo-enablers": {
+   "scorable": false,
+   "passed_in": [],
+   "failed_in": [
+    "haiku/off/seed1",
+    "haiku/off/seed2",
+    "haiku/off/seed3",
+    "haiku/zero/seed1",
+    "haiku/zero/seed2",
+    "haiku/zero/seed3",
+    "haiku/full/seed1",
+    "haiku/full/seed2",
+    "haiku/full/seed3",
+    "opus/off/seed1",
+    "opus/off/seed2",
+    "opus/zero/seed1",
+    "opus/zero/seed2"
+   ],
+   "pass_count": 0,
+   "n_runs": 13
+  },
+  "activate-repeatedly-no-tap": {
+   "scorable": true,
+   "passed_in": [
+    "haiku/off/seed2",
+    "haiku/full/seed1",
+    "opus/off/seed1",
+    "opus/off/seed2",
+    "opus/zero/seed1",
+    "opus/zero/seed2"
+   ],
+   "failed_in": [
+    "haiku/off/seed1",
+    "haiku/off/seed3",
+    "haiku/zero/seed1",
+    "haiku/zero/seed2",
+    "haiku/zero/seed3",
+    "haiku/full/seed2",
+    "haiku/full/seed3"
+   ],
+   "pass_count": 6,
+   "n_runs": 13
+  }
+ }
+}

@@ -3,3 +3,6 @@ corpus/mage_tests_seed.jsonl
 /data/
 __pycache__/
 .pytest_cache/
+.DS_Store
+benchmark/agent_runs/
+benchmark/eval_report_*.md

@@ -61,6 +61,41 @@ def _cost(n):
 # hook -> describe, detect(rec), complements {class: query DSL}
 # Complement queries are deliberately structural: they match what a card DOES.
 
+def _detect_disrupts_spells(rec):
+    """Interferes with an opponent's spell while it is on the stack, or taxes
+    what they can cast.
+
+    This is a *functional* class with no single structural signature — Forge
+    expresses it at least four unrelated ways, and new sets keep adding more
+    (Airbend arrived with the Avatar set). Enumerating them in an LLM prompt
+    doesn't survive the next set; one detector does.
+
+        api Counter                        classic counterspells       (514)
+        api Airbend                        exile a spell, recastable    (13)
+        ChangeZone off the Stack           "exile target spell"          (9)
+        static RaiseCost vs an Opponent    tax effects                  (90)
+
+    Aven Interrupter is the case that motivated this: it disrupts twice (an
+    ETB that exiles a spell, plus an opponent-facing RaiseCost static) and
+    matches none of the above except through this hook.
+    """
+    for n in _nodes(rec):
+        p = _params(n)
+        if n.get("api") in ("Counter", "Airbend"):
+            return True
+        if n.get("api") == "ChangeZone" and (
+                p.get("TargetType") == "Spell"
+                or "Stack" in str(p.get("Origin", ""))
+                or "Stack" in str(p.get("TgtZone", ""))):
+            return True
+        # A cost-raiser only counts as disruption when aimed at an opponent —
+        # plenty of statics raise costs for everyone or for the controller.
+        if n.get("kind") == "S" and p.get("Mode") == "RaiseCost" \
+                and "Opponent" in str(p.get("Activator", "")):
+            return True
+    return False
+
+
 def _detect_makes_tokens(rec):
     return has_api(rec, "Token")
 
@@ -347,6 +382,18 @@ _REANIMATE_Q = {"node": {"api": "ChangeZone",
 _SELF_MILL_Q = {"node": {"api": "Mill"}}
 
 HOOKS = {
+    "disrupts_spells": {
+        "describe": "interferes with opponents' spells (counter, exile off the "
+                    "stack, or tax)",
+        "detect": _detect_disrupts_spells,
+        # Deliberately no complements. Every other hook here names a real
+        # synergy — token-doubling genuinely pays off token-making. Nothing
+        # "pays off" holding counterspells; disruption is a role you fill, not
+        # an engine you build around. Inventing complements to fill the slot
+        # put 13 spurious enabler->payoff edges into the deck-fingerprint graph
+        # and made a 2-card disruption package outrank the actual game plan.
+        # This hook exists as a *search facet* only.
+        "complements": {}},
     "makes_tokens": {
         "describe": "creates tokens",
         "detect": _detect_makes_tokens,

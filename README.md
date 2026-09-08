@@ -1,5 +1,13 @@
 # CardGuru — MTG rules-verified search & judge engine
 
+**Picking up mid-stream? Read [docs/handoff.md](docs/handoff.md)** — current state,
+defects found, architecture assessment, and the argued next step. It points at
+[nl-to-dsl-research-brief.md](nl-to-dsl-research-brief.md) (prior art on semantic
+parsing / text-to-SQL) and `research/agent-compiler-round2.md` (the repair loop,
+already measured at 18/20 → 19/20). Read those before changing the compiler.
+Graph-layer questions are formalized separately in
+[graph-upgrades-research-brief.md](graph-upgrades-research-brief.md).
+
 **New machine? Start here: [docs/getting-started.md](docs/getting-started.md)** —
 clone-to-working-search in four steps (the dataset is rebuilt locally, not shipped).
 
@@ -41,10 +49,19 @@ Stdlib-only Python package: hardened Forge DSL parser (keyword nodes with Saga/C
 extraction), JSON query DSL with evidence-returning evaluation, postings index with candidate
 pruning, CLI. See [docs/query-dsl.md](docs/query-dsl.md).
 
+**Scryfall card store** (`cardguru/cardstore.py`, SQLite, stdlib): the attribute tier, kept as
+a separate artifact from the graph dataset so `forge_commit` and `oracle_data_date` stay
+independent axes of the version tuple. Join rate **99.83%** (34,461 / 34,519 faces at pin
+`670429bf`); the 58 misses are labeled, not aliased — 17 Alchemy `A-` rebalances are
+*mechanically distinct cards* and must never inherit the paper card's oracle text.
+
 ```bash
 python -m cardguru build --cardsfolder <forge>/forge-gui/res/cardsfolder \
-    --canonical <index.json> --pin <forge-commit>
+    --pin <forge-commit>
+python -m cardguru cardstore --download   # Scryfall attribute tier -> data/cards.sqlite
+python -m cardguru join                   # Forge->Scryfall match report (99.83%)
 python -m cardguru search queries/q1_combat_damage_token.json --explain
+python -m cardguru serve                  # web UI at http://127.0.0.1:8000
 python -m pytest tests/          # unit + integration goldens
 python benchmark/run.py          # 20-query golden benchmark -> benchmark/report.md
 

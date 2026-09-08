@@ -1,6 +1,8 @@
 """CardGuru CLI.
 
-  python -m cardguru build  --cardsfolder PATH [--canonical INDEX.json] [--pin SHA] [--out data/dataset.jsonl.gz]
+  python -m cardguru build     --cardsfolder PATH [--canonical INDEX.json] [--pin SHA] [--out data/dataset.jsonl.gz]
+  python -m cardguru cardstore [--download] [--scryfall PATH] [--db PATH]
+  python -m cardguru join      [--dataset PATH] [--db PATH] [--report PATH] [--resolve-misses]
   python -m cardguru search QUERY.json [--dataset PATH] [--limit N] [--explain] [--json]
   python -m cardguru show   "Card Name" [--dataset PATH]
   python -m cardguru stats  [--dataset PATH]
@@ -16,6 +18,9 @@ from . import dataset as ds
 from .index import SearchIndex, explain
 
 DEFAULT_DATASET = "data/dataset.jsonl.gz"
+DEFAULT_CARDDB = "data/cards.sqlite"
+DEFAULT_SCRYFALL = "data/scryfall-oracle-cards.jsonl.gz"
+DEFAULT_ALIASES = "data/aliases.json"
 
 
 def cmd_build(args):
@@ -24,6 +29,132 @@ def cmd_build(args):
                      source_pin=args.pin)
     stats["seconds"] = round(time.time() - t0, 1)
     print(json.dumps(stats, indent=1))
+
+
+def load_color_identity(ci_index: str | None, db_path: str = DEFAULT_CARDDB):
+    """Color identity (and the printing-count prior, when available).
+
+    Prefers an explicit --ci-index; otherwise falls back to the Scryfall card
+    store. The store has no printing counts — oracle-cards is one row per
+    oracle card — so that prior is reported as unavailable rather than
+    silently zeroed.
+    """
+    if ci_index:
+        with open(ci_index, encoding="utf-8") as f:
+            db = json.load(f)["cards"]
+        return ({n: c.get("ci", "") for n, c in db.items()},
+                {n: c.get("*", []) for n, c in db.items()}, ci_index)
+
+    from .cardstore import CardStore
+    store = CardStore.open(db_path)
+    if store is None:
+        raise SystemExit(
+            f"no color-identity source: pass --ci-index, or build the card "
+            f"store with `python -m cardguru cardstore --download`")
+    # Scryfall returns "GW"; the rest of the codebase assumes the old index's
+    # lowercase convention (recommend.CI_ORDER == "wubrg").
+    ci = {row["name"]: (row["color_identity"] or "").lower() for row in
+          store.conn.execute("SELECT name, color_identity FROM cards")}
+    return ci, {}, db_path
+
+
+def cmd_cardstore(args):
+    from . import join as jn
+    from . import cardstore as cs
+
+    snapshot = args.snapshot
+    if args.download:
+        info = jn.download_bulk(args.scryfall)
+        snapshot = snapshot or info["updated_at"]
+        print(f"downloaded {info['size'] / 1e6:.1f} MB "
+              f"(snapshot {info['updated_at']})", file=sys.stderr)
+    t0 = time.time()
+    stats = cs.build(args.scryfall, args.db, snapshot_date=snapshot,
+                     aliases_path=args.aliases)
+    stats["seconds"] = round(time.time() - t0, 1)
+    stats["db"] = args.db
+    print(json.dumps(stats, indent=1))
+
+
+def cmd_join(args):
+    from . import join as jn
+    from .cardstore import CardStore
+
+    store = CardStore.open(args.db)
+    if store is None:
+        raise SystemExit(f"no card store at {args.db}; run `cardguru cardstore "
+                         f"--download` first")
+    rep = jn.report(args.dataset, store)
+    if args.report:
+        with open(args.report, "w", encoding="utf-8") as f:
+            json.dump(rep, f, indent=1, ensure_ascii=False)
+            f.write("\n")
+    summary = {k: rep[k] for k in
+               ("forge_pin", "scryfall_snapshot", "total_faces", "matched",
+                "match_rate", "by_class")}
+    print(json.dumps(summary, indent=1))
+    if args.resolve_misses:
+        out = jn.resolve_candidates(rep["misses"], args.candidates)
+        print(json.dumps(out, indent=1), file=sys.stderr)
+
+
+def cmd_similar(args):
+    from .similar import similar
+
+    idx = SearchIndex.load(args.dataset)
+    rec, query, hits, exact, opts = similar(idx, args.card, limit=args.limit,
+                                            ability=args.ability)
+    if not exact:
+        print(f"# no exact match for {args.card!r} - using {rec['name']!r}",
+              file=sys.stderr)
+    print(f"# like {rec['name']}  [{rec.get('manaCost')}] {rec.get('types')}")
+    print(f"# signature: {json.dumps(query)}", file=sys.stderr)
+    for h in hits:
+        print(f"{h['name']}  [{h.get('types','')}]")
+    print(f"-- {len(hits)} similar", file=sys.stderr)
+    if len(opts) > 1 and args.ability is None:
+        print(f"-- {rec['name']} has {len(opts)} distinguishable abilities; "
+              f"--ability N to match on just one:", file=sys.stderr)
+        for i, o in enumerate(opts, 1):
+            print(f"     {i}. reaches {o['reaches']:5}  "
+                  f"{json.dumps(o['spec'])[:88]}", file=sys.stderr)
+
+
+def cmd_shapes(args):
+    from .shapes import build, overloaded, render_facet
+
+    sh = build(args.dataset, args.out, min_total=args.min_total)
+    m = sh["_meta"]
+    print(f"{m['modes']} overloaded modes, {m['apis']} overloaded apis "
+          f"-> {args.out} ({m['bytes'] / 1024:.0f} KB)")
+    if args.facet:
+        kind = "api" if args.facet in sh.get("api", {}) else "mode"
+        print("\n".join(render_facet(sh, kind, args.facet)))
+        return
+    print("\nMost overloaded modes (bare mode conflates N distinct meanings):")
+    for facet, n, total in overloaded(sh, "mode", args.top):
+        print(f"  {n:3} shapes  {total:6} nodes  {facet}")
+
+
+def cmd_families(args):
+    from .families import build, render
+
+    fams = build(args.dataset, args.out)
+    m = fams["_meta"]
+    print(f"{m['families']} disjunctive families over {m['facets_considered']} "
+          f"facets -> {args.out} ({m['bytes'] / 1024:.0f} KB)")
+    lines = render(fams, kind=args.kind)
+    if args.anchor:
+        lines = [l for l in lines if f"[{args.anchor}" in l or f"/{args.anchor}]" in l]
+    print("\n".join(lines[:args.top]))
+
+
+def cmd_serve(args):
+    from .server import serve
+
+    serve(args.dataset, args.db, args.questions, args.ontology,
+          host=args.host, port=args.port, verbose=args.verbose,
+          signals=args.signals)
 
 
 def cmd_search(args):
@@ -66,21 +197,33 @@ def cmd_show(args):
 
 
 def cmd_ask(args):
-    from .nl_compiler import compile_question
+    from .nl_compiler import MODEL, compile_question
+    from .repair import make_checker
 
-    result = compile_question(args.question, args.ontology, model=args.model)
+    # The index is loaded up front now: the compile loop executes each
+    # candidate query and repairs on what came back, so it needs the corpus
+    # before compiling rather than after.
+    idx = SearchIndex.load(args.dataset)
+    result = compile_question(args.question, args.ontology,
+                              model=args.model or MODEL,
+                              use_cache=not args.no_cache,
+                              checker=make_checker(idx, args.signals))
     if not result.ok:
         print("compilation failed:", file=sys.stderr)
         for line in result.errors:
             print(f"  {line}", file=sys.stderr)
         sys.exit(1)
-    print(f"# compiled query ({len(result.attempts)} attempt(s)):", file=sys.stderr)
+    note = f"# compiled query ({len(result.attempts)} attempt(s)"
+    if result.checks:
+        note += f", execution {result.checks}"
+    if result.exhausted:
+        note += ", best-effort: retries exhausted"
+    print(note + "):", file=sys.stderr)
     print(json.dumps(result.query, indent=1), file=sys.stderr)
     if args.compile_only:
         json.dump(result.query, sys.stdout, indent=1)
         print()
         return
-    idx = SearchIndex.load(args.dataset)
     hits = list(idx.search(result.query, limit=args.limit))
     for h in hits:
         rec = h["record"]
@@ -187,9 +330,7 @@ def cmd_recommend(args):
     if not rec:
         print(f"unknown card: {args.commander}", file=sys.stderr)
         sys.exit(1)
-    with open(args.ci_index, encoding="utf-8") as f:
-        db = json.load(f)["cards"]
-    ci = {n: c.get("ci", "") for n, c in db.items()}
+    ci, _, _ = load_color_identity(args.ci_index)
     res = recommend(idx, rec, ci)
     print(f"# {res['commander']}  [color identity: {res['color_identity'] or 'colorless'}]")
     if not res["hooks"]:
@@ -342,10 +483,10 @@ def cmd_deck(args):
 
     if args.suggest:
         from .deck import suggest
-        with open(args.ci_index, encoding="utf-8") as f:
-            db = json.load(f)["cards"]
-        ci = {n: c.get("ci", "") for n, c in db.items()}
-        printings = {n: c.get("*", []) for n, c in db.items()}
+        ci, printings, src = load_color_identity(args.ci_index)
+        if not printings:
+            print(f"note: color identity from {src}; printing-count prior "
+                  f"unavailable (pass --ci-index to restore it)", file=sys.stderr)
         sg = suggest(idx, by_name, rec, decklist, ci, printings, args.suggest,
                      shape=shape)
         print(f"\n== top {args.suggest} suggested additions "
@@ -547,6 +688,64 @@ def main(argv=None):
     b.add_argument("--out", default=DEFAULT_DATASET)
     b.set_defaults(fn=cmd_build)
 
+    cs_ = sub.add_parser("cardstore", help="build the Scryfall card store (attribute tier)")
+    cs_.add_argument("--download", action="store_true",
+                     help="fetch the current Scryfall oracle-cards bulk file first")
+    cs_.add_argument("--scryfall", default=DEFAULT_SCRYFALL)
+    cs_.add_argument("--db", default=DEFAULT_CARDDB)
+    cs_.add_argument("--aliases", default=DEFAULT_ALIASES,
+                     help="hand-reviewed alias table; only status='confirmed' rows apply")
+    cs_.add_argument("--snapshot", help="oracle data date stamped into the store")
+    cs_.set_defaults(fn=cmd_cardstore)
+
+    jo = sub.add_parser("join", help="report Forge->Scryfall match rate and misses")
+    jo.add_argument("--dataset", default=DEFAULT_DATASET)
+    jo.add_argument("--db", default=DEFAULT_CARDDB)
+    jo.add_argument("--report", default="data/join_report.json")
+    jo.add_argument("--resolve-misses", action="store_true",
+                    help="query Scryfall fuzzy for each miss; writes review candidates")
+    jo.add_argument("--candidates", default="data/alias_candidates.json")
+    jo.set_defaults(fn=cmd_join)
+
+    si = sub.add_parser("similar", help='cards structurally like a given card')
+    si.add_argument("card")
+    si.add_argument("--dataset", default=DEFAULT_DATASET)
+    si.add_argument("--limit", type=int)
+    si.add_argument("--ability", type=int,
+                    help="match on one ability only (see the list printed after a run)")
+    si.set_defaults(fn=cmd_similar)
+
+    sp = sub.add_parser("shapes", help="mine param-shape clusters from the dataset")
+    sp.add_argument("--dataset", default=DEFAULT_DATASET)
+    sp.add_argument("--out", default="data/shapes.json")
+    sp.add_argument("--min-total", type=int, default=8)
+    sp.add_argument("--top", type=int, default=15)
+    sp.add_argument("--facet", help="print the shape table for one mode/api")
+    sp.set_defaults(fn=cmd_shapes)
+
+    fm = sub.add_parser("families",
+                        help="mine disjunctive api/mode families from the dataset")
+    fm.add_argument("--dataset", default=DEFAULT_DATASET)
+    fm.add_argument("--out", default="data/families.json")
+    fm.add_argument("--kind", choices=("api", "mode"))
+    fm.add_argument("--anchor", help="only families with this anchor word")
+    fm.add_argument("--top", type=int, default=40)
+    fm.set_defaults(fn=cmd_families)
+
+    sv = sub.add_parser("serve", help="web UI for mechanical search")
+    sv.add_argument("--dataset", default=DEFAULT_DATASET)
+    sv.add_argument("--db", default=DEFAULT_CARDDB)
+    sv.add_argument("--questions", default="benchmark/compiled_questions.json",
+                    help="preset question library shown in the sidebar")
+    sv.add_argument("--ontology", default="research/data/ontology.json")
+    sv.add_argument("--host", default="127.0.0.1")
+    sv.add_argument("--port", type=int, default=8000)
+    sv.add_argument("-v", "--verbose", action="store_true",
+                    help="log every query, compiled output, and zero-hit diagnosis")
+    sv.add_argument("--signals", choices=("off", "zero", "full"), default="zero",
+                    help="execution feedback in the compile loop (see `ask`)")
+    sv.set_defaults(fn=cmd_serve)
+
     s = sub.add_parser("search", help="run a DSL query")
     s.add_argument("query", help="query JSON file")
     s.add_argument("--dataset", default=DEFAULT_DATASET)
@@ -564,11 +763,20 @@ def main(argv=None):
     a.add_argument("question")
     a.add_argument("--dataset", default=DEFAULT_DATASET)
     a.add_argument("--ontology", default="research/data/ontology.json")
-    a.add_argument("--model", default="claude-opus-5")
+    a.add_argument("--model", default=None,
+                   help="default is the cheapest model; override per call "
+                        "or set CARDGURU_MODEL")
+    a.add_argument("--no-cache", action="store_true",
+                   help="force a live API call instead of reusing a cached compile")
     a.add_argument("--limit", type=int)
     a.add_argument("--explain", action="store_true")
     a.add_argument("--compile-only", action="store_true",
                    help="print the compiled query without running it")
+    a.add_argument("--signals", choices=("off", "zero", "full"), default="zero",
+                   help="execution feedback in the compile loop: off = retry "
+                        "on validation errors only (pre-2026-08 behaviour); "
+                        "zero = also repair queries that return no cards; "
+                        "full = also report over-narrow parameters")
     a.set_defaults(fn=cmd_ask)
 
     ad = sub.add_parser("adjudicate", help="run scenario JSON files through the XMage driver")
@@ -609,7 +817,8 @@ def main(argv=None):
                     help="show top-N cut candidates (low synergy, no needed role)")
     dk.add_argument("--fix", action="store_true",
                     help="prescribe swaps for measured deficits and re-simulate")
-    dk.add_argument("--ci-index", default="/home/user/mse/index/index.json")
+    dk.add_argument("--ci-index", default=None,
+                    help="canonical index with color identity + printing counts; defaults to the Scryfall card store")
     dk.add_argument("--dataset", default=DEFAULT_DATASET)
     dk.set_defaults(fn=cmd_deck)
 
@@ -644,8 +853,8 @@ def main(argv=None):
 
     rc = sub.add_parser("recommend", help="commander synergy recommendations")
     rc.add_argument("commander", help="commander card name")
-    rc.add_argument("--ci-index", default="/home/user/mse/index/index.json",
-                    help="canonical card index with color identities")
+    rc.add_argument("--ci-index", default=None,
+                    help="canonical card index with color identities; defaults to the Scryfall card store")
     rc.add_argument("--dataset", default=DEFAULT_DATASET)
     rc.set_defaults(fn=cmd_recommend)
 

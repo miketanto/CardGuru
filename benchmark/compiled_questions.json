@@ -1,0 +1,2276 @@
+[
+ {
+  "id": "attack-trigger-makes-token",
+  "question": "creatures that spit out a token whenever they attack",
+  "status": "compiled",
+  "query": {
+   "all": [
+    {
+     "card": {
+      "types": {
+       "contains": "Creature"
+      }
+     }
+    },
+    {
+     "chain": {
+      "from": {
+       "kind": "T",
+       "mode": {
+        "any": [
+         "Attacks",
+         "AttackersDeclared",
+         "AttackersDeclaredOneTarget"
+        ]
+       }
+      },
+      "to": {
+       "api": "Token"
+      }
+     }
+    }
+   ]
+  },
+  "gap": null,
+  "hits": 164,
+  "golden_present": {
+   "pass": true,
+   "missing": []
+  },
+  "golden_absent": {
+   "pass": true,
+   "leaked": []
+  },
+  "sample": [
+   "A-Acererak the Archlich",
+   "A-Goldspan Dragon",
+   "A-Rulik Mons, Warren Chief",
+   "Aang and Katara",
+   "Acererak the Archlich",
+   "Adeline, Resplendent Cathar",
+   "Aether Chaser",
+   "Aether Herder"
+  ],
+  "judgment_calls": [
+   "Counted 'Whenever you attack' (Forge mode AttackersDeclared) as an attack trigger alongside 'Whenever ~ attacks' (mode Attacks), per the question author's note about Adeline.",
+   "Required the card itself to be a Creature ('creatures that spit out a token'), which excludes Vehicles/equipment that make tokens on attack.",
+   "Did not require the token to be a creature token or to be tapped/attacking."
+  ],
+  "baseline_regex": "whenever .{0,60}attacks[^.]*create"
+ },
+ {
+  "id": "death-trigger-drain",
+  "question": "Whenever a creature dies, each opponent loses life and I gain it. What are all the Blood Artist effects?",
+  "status": "compiled",
+  "query": {
+   "chain": {
+    "from": {
+     "kind": "T",
+     "mode": "ChangesZone",
+     "params": {
+      "Origin": "Battlefield",
+      "Destination": "Graveyard",
+      "ValidCard": {
+       "contains": "Creature"
+      }
+     }
+    },
+    "to": [
+     {
+      "api": {
+       "any": [
+        "LoseLife",
+        "DealDamage",
+        "DamageAll"
+       ]
+      }
+     },
+     {
+      "api": "GainLife",
+      "params": {
+       "Defined": "You"
+      }
+     }
+    ]
+   }
+  },
+  "gap": null,
+  "hits": 26,
+  "golden_present": {
+   "pass": true,
+   "missing": []
+  },
+  "golden_absent": {
+   "pass": true,
+   "leaked": []
+  },
+  "sample": [
+   "A-Blood Artist",
+   "Al Bhed Salvagers",
+   "Arnyn, Deathbloom Botanist",
+   "Axelrod Gunnarson",
+   "Bastion of Remembrance",
+   "Blood Artist",
+   "Boggart Mischief",
+   "Cauldron of Essence"
+  ],
+  "judgment_calls": [
+   "Read 'each opponent loses life' loosely: Blood Artist is scripted LoseLife|ValidTgts$ Player (target ANY player), so requiring Defined$ Player.Opponent would drop the card the question is named after. I accept any life-loss/damage sub-ability.",
+   "Accepted DealDamage/DamageAll as a substitute for LoseLife so Vindictive Vampire (deals damage rather than draining) is included, per the owner's vetting note.",
+   "Required the lifegain to be Defined$ You, so symmetric 'each player gains' drains are excluded.",
+   "Did not require the dying creature to be yours: ValidCard just has to contain 'Creature', so both 'a creature' and 'a creature you control' versions match."
+  ],
+  "baseline_regex": "whenever[^.]*dies[^.]*(loses? \\d+ life|lose \\d+ life)[^.]*gain"
+ },
+ {
+  "id": "etb-creature-pings-opponents",
+  "question": "permanents that ping each opponent whenever another creature enters under my control",
+  "status": "compiled",
+  "query": {
+   "all": [
+    {
+     "not": {
+      "card": {
+       "types": {
+        "regex": "Instant|Sorcery"
+       }
+      }
+     }
+    },
+    {
+     "any": [
+      {
+       "chain": {
+        "from": {
+         "kind": "T",
+         "mode": "ChangesZone",
+         "params": {
+          "Destination": "Battlefield",
+          "ValidCard": {
+           "regex": "Creature.*YouCtrl"
+          }
+         }
+        },
+        "to": {
+         "api": {
+          "any": [
+           "DealDamage",
+           "DamageAll",
+           "LoseLife"
+          ]
+         },
+         "params": {
+          "Defined": {
+           "contains": "Opponent"
+          }
+         }
+        }
+       }
+      },
+      {
+       "chain": {
+        "from": {
+         "kind": "T",
+         "mode": "ChangesZone",
+         "params": {
+          "Destination": "Battlefield",
+          "ValidCard": {
+           "regex": "Creature.*YouCtrl"
+          }
+         }
+        },
+        "to": {
+         "api": {
+          "any": [
+           "DealDamage",
+           "DamageAll",
+           "LoseLife"
+          ]
+         },
+         "params": {
+          "ValidPlayers": {
+           "contains": "Opponent"
+          }
+         }
+        }
+       }
+      },
+      {
+       "chain": {
+        "from": {
+         "kind": "T",
+         "mode": "ChangesZone",
+         "params": {
+          "Destination": "Battlefield",
+          "ValidCard": {
+           "regex": "Creature.*YouCtrl"
+          }
+         }
+        },
+        "to": {
+         "api": {
+          "any": [
+           "DealDamage",
+           "DamageAll"
+          ]
+         },
+         "params": {
+          "ValidTgts": {
+           "regex": "Any|Player|Opponent"
+          }
+         }
+        }
+       }
+      }
+     ]
+    }
+   ]
+  },
+  "gap": null,
+  "hits": 22,
+  "golden_present": {
+   "pass": true,
+   "missing": []
+  },
+  "golden_absent": {
+   "pass": true,
+   "leaked": []
+  },
+  "sample": [
+   "Agate Instigator",
+   "Ayara, First of Locthwain",
+   "Corpse Knight",
+   "Electropotence",
+   "General Kreat, the Boltbringer",
+   "Glaring Fleshraker",
+   "Impact Tremors",
+   "Molten Gatekeeper"
+  ],
+  "judgment_calls": [
+   "Golden card Warstorm Surge deals damage to 'any target' (ValidTgts$ Any), not specifically to each opponent, so I added a third branch accepting free-target damage. Without it Warstorm Surge is missed. This loosens 'ping each opponent' to 'ping something, opponents included'.",
+   "'permanents' enforced negatively as 'not Instant and not Sorcery' — the DSL has no positive 'is a permanent' predicate.",
+   "Did not require 'another' creature; Impact Tremors' Creature.YouCtrl and Purphoros' Creature.Other+YouCtrl both match."
+  ],
+  "baseline_regex": "whenever (a|another) creature[^.]*enters[^.]*deals \\d+ damage to each opponent"
+ },
+ {
+  "id": "landfall-payoffs",
+  "question": "what gets me value every time a land hits the battlefield?",
+  "status": "compiled",
+  "query": {
+   "node": {
+    "kind": "T",
+    "mode": "ChangesZone",
+    "params": {
+     "Destination": "Battlefield",
+     "ValidCard": {
+      "regex": "Land"
+     }
+    }
+   }
+  },
+  "gap": null,
+  "hits": 213,
+  "golden_present": {
+   "pass": true,
+   "missing": []
+  },
+  "golden_absent": {
+   "pass": true,
+   "leaked": []
+  },
+  "sample": [
+   "A-Druid Class",
+   "A-Omnath, Locus of Creation",
+   "A-Phylath, World Sculptor",
+   "A-Tatyova, Steward of Tides",
+   "Admonition Angel",
+   "Advanced Floral Invocations",
+   "Adventuring Gear",
+   "Aesi, Tyrant of Gyre Strait"
+  ],
+  "judgment_calls": [
+   "'gets me value' is not modelled at all, so I compiled only the trigger condition (a land entering the battlefield) and imposed no constraint on the payoff. This is the honest structural core of the question; every landfall trigger matches regardless of what it does.",
+   "Landfall is NOT a keyword node in Forge — every landfall card is a plain ChangesZone trigger on Land — so the keyword-vs-spelled-out split the question worries about does not exist in this ontology.",
+   "Did not require Land.YouCtrl; a few cards trigger on any land entering."
+  ],
+  "baseline_regex": "landfall|whenever a land[^.]*enters"
+ },
+ {
+  "id": "magecraft-style-payoff",
+  "question": "cards that do something every time I cast an instant or sorcery",
+  "status": "compiled",
+  "query": {
+   "node": {
+    "kind": "T",
+    "mode": {
+     "any": [
+      "SpellCast",
+      "SpellCastOrCopy",
+      "SpellAbilityCast"
+     ]
+    },
+    "params": {
+     "ValidActivatingPlayer": {
+      "contains": "You"
+     },
+     "ValidCard": {
+      "regex": "Instant|Sorcery|nonCreature"
+     }
+    }
+   }
+  },
+  "gap": null,
+  "hits": 340,
+  "golden_present": {
+   "pass": true,
+   "missing": []
+  },
+  "golden_absent": {
+   "pass": true,
+   "leaked": []
+  },
+  "sample": [
+   "A-Dragon's Rage Channeler",
+   "A-Leyline of Resonance",
+   "A-Master of Winds",
+   "A-Rockslide Sorcerer",
+   "A-Spell Satchel",
+   "A-Symmetry Sage",
+   "A-Umara Mystic",
+   "A-Vivi Ornitier"
+  ],
+  "judgment_calls": [
+   "Included ValidCard$ Card.nonCreature so Monastery Mentor (a golden) matches; that widens the question from 'instant or sorcery' to 'noncreature', which also pulls in artifact/enchantment-cast payoffs.",
+   "Magecraft is not a keyword node either — it is mode SpellCastOrCopy — so the keyword/spelled-out distinction is already collapsed by the parser.",
+   "Required ValidActivatingPlayer to contain 'You' ('every time I cast')."
+  ],
+  "baseline_regex": "magecraft|whenever you cast (an instant or sorcery|a noncreature) spell"
+ },
+ {
+  "id": "opponent-draw-punisher",
+  "question": "Cards that punish opponents for drawing cards",
+  "status": "compiled",
+  "query": {
+   "chain": {
+    "from": {
+     "kind": "T",
+     "mode": "Drawn",
+     "params": {
+      "ValidCard": {
+       "regex": "Opp"
+      }
+     }
+    },
+    "to": {
+     "api": {
+      "any": [
+       "LoseLife",
+       "DealDamage",
+       "DamageAll",
+       "Mill",
+       "Discard"
+      ]
+     }
+    }
+   }
+  },
+  "gap": null,
+  "hits": 10,
+  "golden_present": {
+   "pass": true,
+   "missing": []
+  },
+  "golden_absent": {
+   "pass": true,
+   "leaked": []
+  },
+  "sample": [
+   "A-Orcish Bowmasters",
+   "Fate Unraveler",
+   "Kederekt Parasite",
+   "Nekusar, the Mindrazer",
+   "Ob Nixilis, the Hate-Twisted",
+   "Orcish Bowmasters",
+   "Razorkin Needlehead",
+   "Scrawling Crawler"
+  ],
+  "judgment_calls": [
+   "Read 'punish' as an enumerated set of harmful effects (life loss, damage, mill, discard) rather than a semantic category — the DSL has no notion of 'bad for the affected player'.",
+   "Matched the opponent restriction through ValidCard$ Card.OppOwn / OppCtrl via regex 'Opp'.",
+   "Notion Thief is correctly excluded because it is a draw replacement (kind R), not a trigger."
+  ],
+  "baseline_regex": "whenever (an opponent|a player) draws a card[^.]*(loses \\d+ life|deals \\d+ damage)"
+ },
+ {
+  "id": "sacrifice-artifact-as-cost",
+  "question": "o:'sacrifice an artifact' as an activation cost, not an effect",
+  "status": "compiled",
+  "query": {
+   "node": {
+    "kind": "A",
+    "apiKind": "AB",
+    "params": {
+     "Cost": {
+      "regex": "Sac<[^>]*Artifact"
+     }
+    }
+   }
+  },
+  "gap": null,
+  "hits": 147,
+  "golden_present": {
+   "pass": true,
+   "missing": []
+  },
+  "golden_absent": {
+   "pass": true,
+   "leaked": []
+  },
+  "sample": [
+   "Acolyte of Aclazotz",
+   "Aerial Toastmaster",
+   "Ahriman",
+   "Akki Scrapchomper",
+   "Arcbound Ravager",
+   "Atog",
+   "Audacious Reshapers",
+   "Ayara, Widow of the Realm"
+  ],
+  "judgment_calls": [
+   "Restricted to kind A + apiKind AB, i.e. activated abilities printed on the card, because the question says 'activation cost'. This deliberately excludes spells with 'as an additional cost, sacrifice an artifact' (SP lines, ~24 more cards).",
+   "IMPORTANT ontology finding: restricting to kind A is load-bearing. Forge also scripts 'you may discard/sacrifice X. If you do, ...' inside triggers as an SVar node with a Cost$ param, so a bare params.Cost match silently pulls in effect-position sacrifices. kind A is what separates cost position from effect position.",
+   "Did not require the sacrificed artifact to be another artifact (Sac<1/CARDNAME> on artifacts also matches if written as Artifact)."
+  ],
+  "baseline_regex": "sacrifice an artifact[^.]*:"
+ },
+ {
+  "id": "discard-as-activation-cost",
+  "question": "creatures with an ability I pay for by discarding a card",
+  "status": "compiled",
+  "query": {
+   "all": [
+    {
+     "card": {
+      "types": {
+       "contains": "Creature"
+      }
+     }
+    },
+    {
+     "node": {
+      "kind": "A",
+      "apiKind": "AB",
+      "params": {
+       "Cost": {
+        "regex": "Discard<"
+       }
+      }
+     }
+    }
+   ]
+  },
+  "gap": null,
+  "hits": 289,
+  "golden_present": {
+   "pass": true,
+   "missing": []
+  },
+  "golden_absent": {
+   "pass": true,
+   "leaked": []
+  },
+  "sample": [
+   "A-Mishra, Excavation Prodigy",
+   "A-Soul of Windgrace",
+   "Action News Crew",
+   "Advanced Stitchwing",
+   "Aeromoeba",
+   "Alexi, Zephyr Mage",
+   "Altanak, the Thrice-Called",
+   "Amugaba"
+  ],
+  "judgment_calls": [
+   "kind A restriction is essential: Academy Raider's 'you may discard a card. If you do, draw' is scripted as an SVar with Cost$ Discard<1/Card>, i.e. Forge uses the cost machinery for 'if you do' effects. Without kind A the query returns 371 hits including these false positives; with it, 289.",
+   "Merfolk Looter is correctly excluded (its discard is a SubAbility, no Cost).",
+   "Included discard costs on granted/alternative abilities only if they appear on a top-level A line."
+  ],
+  "baseline_regex": "discard (a|two|three|X) cards?[^.:]*:"
+ },
+ {
+  "id": "pay-life-activation-cost",
+  "question": "abilities where you pay life as part of the cost",
+  "status": "compiled",
+  "query": {
+   "node": {
+    "kind": "A",
+    "apiKind": "AB",
+    "params": {
+     "Cost": {
+      "regex": "PayLife<"
+     }
+    }
+   }
+  },
+  "gap": null,
+  "hits": 157,
+  "golden_present": {
+   "pass": true,
+   "missing": []
+  },
+  "golden_absent": {
+   "pass": true,
+   "leaked": []
+  },
+  "sample": [
+   "Adanto Vanguard",
+   "Aether Storm",
+   "Aetherflux Reservoir",
+   "Apple of Eden, Isu Relic",
+   "Arco-Flagellant",
+   "Arguel's Blood Fast",
+   "Arid Mesa",
+   "Avacyn and Griselbrand"
+  ],
+  "judgment_calls": [
+   "Scoped to activated abilities (kind A, apiKind AB) per 'abilities'; this keeps fetchlands in, which the question author flagged as a large boring chunk. I did not exclude lands because the question did not ask me to.",
+   "Excludes spells with 'as an additional cost, pay N life' (SP lines) and excludes alternative costs like Phyrexian mana, which Forge encodes in the mana cost string, not in Cost$.",
+   "Bitterblossom correctly excluded: its life loss is a LoseLife sub-ability of a trigger, not a Cost$."
+  ],
+  "baseline_regex": "pay \\d+ life[^.:]*:"
+ },
+ {
+  "id": "exile-from-graveyard-as-cost",
+  "question": "anything where the cost is exiling cards out of your own graveyard",
+  "status": "compiled",
+  "query": {
+   "any": [
+    {
+     "node": {
+      "params": {
+       "Cost": {
+        "regex": "ExileFromGrave<"
+       }
+      }
+     }
+    },
+    {
+     "keyword": "Delve"
+    },
+    {
+     "keyword": "Escape"
+    }
+   ]
+  },
+  "gap": null,
+  "hits": 277,
+  "golden_present": {
+   "pass": true,
+   "missing": []
+  },
+  "golden_absent": {
+   "pass": true,
+   "leaked": []
+  },
+  "sample": [
+   "A-Cobbled Lancer",
+   "A-Tome Shredder",
+   "Abhorrent Oculus",
+   "Adorned Crocodile",
+   "Aegis Sculptor",
+   "Afterlife from the Loam",
+   "Agent of Kotis",
+   "Alchemist's Assistant"
+  ],
+  "judgment_calls": [
+   "Followed the question's scoping field: Delve and Escape count. Both are K nodes; Escape's ExileFromGrave cost lives in the keyword's args array, which NodeSpec cannot read, so I matched the keyword by name instead.",
+   "Used ExileFromGrave (your own graveyard) and deliberately excluded ExileAnyGrave (17 cards, 'exile a card from a graveyard'), because the question says 'your own graveyard'.",
+   "Did NOT restrict to kind A here: unlike the sacrifice/discard rows, ExileFromGrave in a Cost$ is essentially always a real cost, and restricting would have dropped granted-ability cases."
+  ],
+  "baseline_regex": "delve|escape—|exile (\\w+|\\d+) (other )?cards? from your graveyard"
+ },
+ {
+  "id": "tap-other-creatures-as-cost",
+  "question": "cards where you tap OTHER untapped creatures you control to pay for something",
+  "status": "compiled",
+  "query": {
+   "any": [
+    {
+     "node": {
+      "kind": "A",
+      "params": {
+       "Cost": {
+        "regex": "tapXType<[0-9X]+/[^>]*Creature"
+       }
+      }
+     }
+    },
+    {
+     "keyword": "Crew"
+    },
+    {
+     "keyword": "Convoke"
+    }
+   ]
+  },
+  "gap": null,
+  "hits": 383,
+  "golden_present": {
+   "pass": true,
+   "missing": []
+  },
+  "golden_absent": {
+   "pass": true,
+   "leaked": []
+  },
+  "sample": [
+   "A-Capenna Express",
+   "A-Dungeon Descent",
+   "A-Esika's Chariot",
+   "Adaptive Gemguard",
+   "Adrestia",
+   "Adventurer's Airship",
+   "Aerial Boost",
+   "Aerial Surveyor"
+  ],
+  "judgment_calls": [
+   "Crew and Convoke are keyword nodes with no readable cost payload, so they are matched by name; the query asserts (correctly, from the rules) that both are tap-other-creatures costs.",
+   "Heart of Kiran matches via Crew even though its alternative cost is a loyalty-counter removal.",
+   "Cryptolith Rite is correctly excluded: it grants an ability whose cost is 'T' (tap yourself), not tapXType."
+  ],
+  "baseline_regex": "crew \\d|convoke|tap an untapped creature you control"
+ },
+ {
+  "id": "tax-opponent-spells",
+  "question": "stax pieces that tax my opponents' spells without taxing mine",
+  "status": "compiled",
+  "query": {
+   "node": {
+    "kind": "S",
+    "mode": "RaiseCost",
+    "params": {
+     "Activator": {
+      "regex": "Opponent"
+     }
+    }
+   }
+  },
+  "gap": null,
+  "hits": 23,
+  "golden_present": {
+   "pass": true,
+   "missing": []
+  },
+  "golden_absent": {
+   "pass": true,
+   "leaked": []
+  },
+  "sample": [
+   "Anointed Peacekeeper",
+   "Aura of Silence",
+   "Aven Interrupter",
+   "Boreal Elemental",
+   "Catalyst Stone",
+   "Charix, the Raging Isle",
+   "Dovin, Hand of Control",
+   "Elderwood Scion"
+  ],
+  "judgment_calls": [
+   "The asymmetry is expressed exactly: Forge's RaiseCost static carries an Activator$ argument, and Grand Arbiter's is Opponent while Thalia's and Sphere of Resistance's is absent. This is the affected-player argument the question was probing, and the system does model it.",
+   "Caveat the owner should note: the DSL has no 'this parameter is absent' predicate, so I cannot additionally assert that the card has no OTHER, symmetric RaiseCost clause. All 23 hits happen to be one-sided, but the query would not catch a hybrid card.",
+   "Cost-increase-on-activated-abilities and 'spells cost more unless' variants are not included."
+  ],
+  "baseline_regex": "spells your opponents cast cost \\{\\d\\} more"
+ },
+ {
+  "id": "one-spell-per-turn-rule",
+  "question": "permanents that change the rules about how many spells people can cast per turn",
+  "status": "compiled",
+  "query": {
+   "node": {
+    "kind": "S",
+    "mode": "CantBeCast",
+    "params": {
+     "NumLimitEachTurn": true
+    }
+   }
+  },
+  "gap": null,
+  "hits": 16,
+  "golden_present": {
+   "pass": true,
+   "missing": []
+  },
+  "golden_absent": {
+   "pass": true,
+   "leaked": []
+  },
+  "sample": [
+   "A-Fires of Invention",
+   "Arcane Laboratory",
+   "Archon of Emeria",
+   "Colfenor's Plans",
+   "Curse of Exhaustion",
+   "Deafening Silence",
+   "Eidolon of Rhetoric",
+   "Ethersworn Canonist"
+  ],
+  "judgment_calls": [
+   "Forge encodes exactly this rule change as CantBeCast + NumLimitEachTurn$ N, so the query is a direct hit on the concept with no paraphrase risk.",
+   "Interpreted 'change the rules about how many spells' as restricting the count. No card in the pool raises a per-turn spell limit, so the 'more spells' direction is vacuous rather than missing.",
+   "Includes one-sided versions (Colfenor's Plans: 'you can't cast more than one'), which the question's wording ('people') arguably permits."
+  ],
+  "baseline_regex": "can't cast more than one spell each turn"
+ },
+ {
+  "id": "cast-from-top-of-library",
+  "question": "stuff that lets me play cards off the top of my library",
+  "status": "compiled",
+  "query": {
+   "node": {
+    "kind": {
+     "any": [
+      "S",
+      "SVar"
+     ]
+    },
+    "mode": "Continuous",
+    "params": {
+     "Affected": {
+      "contains": "TopLibrary"
+     },
+     "MayPlay": "True"
+    }
+   }
+  },
+  "gap": null,
+  "hits": 59,
+  "golden_present": {
+   "pass": true,
+   "missing": []
+  },
+  "golden_absent": {
+   "pass": true,
+   "leaked": []
+  },
+  "sample": [
+   "Assemble the Players",
+   "Augur of Autumn",
+   "Benjamin Sisko, Besieged",
+   "Bolas's Citadel",
+   "Case of the Locked Hothouse",
+   "Case of the Lost Witness",
+   "Cemetery Illuminator",
+   "Chittering Illuminator"
+  ],
+  "judgment_calls": [
+   "MayPlay$ True + Affected$ ...TopLibrary is a precise structural signature for 'casting permission from the top of your library'; this is exactly the permission-vs-draw distinction the question asks for.",
+   "Included kind SVar so effects that grant the permission through an Effect (temporary top-of-library permission) also match.",
+   "Sensei's Divining Top correctly excluded (no MayPlay). Impulse-exile effects excluded because their Affected zone is Exile, not TopLibrary."
+  ],
+  "baseline_regex": "(play|cast)[^.]{0,60}from the top of your library"
+ },
+ {
+  "id": "flash-permission-static",
+  "question": "anything that lets me cast my spells at instant speed",
+  "status": "compiled",
+  "query": {
+   "any": [
+    {
+     "node": {
+      "kind": "S",
+      "mode": "CastWithFlash"
+     }
+    },
+    {
+     "node": {
+      "kind": "S",
+      "mode": "Continuous",
+      "params": {
+       "AddKeyword": {
+        "contains": "Flash"
+       },
+       "AffectedZone": {
+        "contains": "Hand"
+       }
+      }
+     }
+    }
+   ]
+  },
+  "gap": null,
+  "hits": 58,
+  "golden_present": {
+   "pass": true,
+   "missing": []
+  },
+  "golden_absent": {
+   "pass": true,
+   "leaked": []
+  },
+  "sample": [
+   "Akoum",
+   "Bard's Company",
+   "Blur of Heroism",
+   "Breath of the Sleepless",
+   "Captain Mar-Vell, Space-Born",
+   "Dragon Grip",
+   "Fated Clash",
+   "Final-Word Phantom"
+  ],
+  "judgment_calls": [
+   "Two structures had to be unioned: mode CastWithFlash (Vedalken Orrery, Leyline of Anticipation) and 'grant the Flash keyword to cards in non-battlefield zones' (Teferi, Mage of Zhalfir). The question treats them as one thing; Forge does not.",
+   "Restricted to kind S. Quicken's one-shot version lives in an Effect (kind SVar) with the same mode CastWithFlash — allowing SVar makes Quicken leak. kind S is what encodes 'continuous permission from a permanent'.",
+   "Teferi only grants flash to creature cards you own, so 'my spells' is read generously."
+  ],
+  "baseline_regex": "as though (it|they|they had|it had) ?(had )?flash"
+ },
+ {
+  "id": "global-untap-denial",
+  "question": "cards that stop permanents from untapping during untap steps",
+  "status": "compiled",
+  "query": {
+   "any": [
+    {
+     "node": {
+      "kind": "R",
+      "params": {
+       "Event": "Untap",
+       "Layer": "CantHappen"
+      }
+     }
+    },
+    {
+     "node": {
+      "params": {
+       "AddKeyword": {
+        "regex": "UntapAdjust|OnlyUntapChosen"
+       }
+      }
+     }
+    },
+    {
+     "node": {
+      "kind": "R",
+      "params": {
+       "Event": "BeginPhase",
+       "Phase": "Untap",
+       "Skip": "True"
+      }
+     }
+    }
+   ]
+  },
+  "gap": null,
+  "hits": 166,
+  "golden_present": {
+   "pass": true,
+   "missing": []
+  },
+  "golden_absent": {
+   "pass": true,
+   "leaked": []
+  },
+  "sample": [
+   "Alirios, Enraptured",
+   "Altar Golem",
+   "An-Zerrin Ruins",
+   "Apathy",
+   "Arena of the Ancients",
+   "Back to Basics",
+   "Basalt Monolith",
+   "Battered Golem"
+  ],
+  "judgment_calls": [
+   "Read the question literally ('stop permanents from untapping during untap steps'), so the 166 hits include per-permanent effects like Basalt Monolith and enchant-a-creature tap-downs as well as the global orbs the goldens name.",
+   "Three distinct Forge structures are unioned: R|Event$ Untap|Layer$ CantHappen (the true 'doesn't untap' replacement, 153 nodes), AddKeyword$ UntapAdjust:Type:N (Winter/Static Orb), and R|Event$ BeginPhase|Phase$ Untap|Skip$ True (Stasis).",
+   "A narrower 'global rule-modifier only' reading (drop the first branch) gives 13 hits and still passes all goldens; the owner may prefer it.",
+   "Excluded the one-shot 'tap it and it doesn't untap next untap step' pump keyword (KW$ HIDDEN ...), which would have added ~110 more."
+  ],
+  "baseline_regex": "(doesn't|don't|can't) untap[^.]{0,40}untap step|skip[^.]{0,20}untap step"
+ },
+ {
+  "id": "dies-exile-instead",
+  "question": "permanents that replace things going to the graveyard with exile",
+  "status": "compiled",
+  "query": {
+   "all": [
+    {
+     "not": {
+      "card": {
+       "types": {
+        "regex": "Instant|Sorcery"
+       }
+      }
+     }
+    },
+    {
+     "chain": {
+      "from": {
+       "kind": "R",
+       "params": {
+        "Event": "Moved",
+        "Destination": "Graveyard"
+       }
+      },
+      "to": {
+       "api": {
+        "any": [
+         "ChangeZone",
+         "ChangeZoneAll"
+        ]
+       },
+       "params": {
+        "Destination": "Exile"
+       }
+      }
+     }
+    }
+   ]
+  },
+  "gap": null,
+  "hits": 79,
+  "golden_present": {
+   "pass": true,
+   "missing": []
+  },
+  "golden_absent": {
+   "pass": true,
+   "leaked": []
+  },
+  "sample": [
+   "A-Brinebound Gift",
+   "A-Catlike Curiosity",
+   "A-Departed Soulkeeper",
+   "A-Dorothea's Retribution",
+   "A-Etching of Kumano",
+   "A-Gutter Shortcut",
+   "A-Lanterns' Lift",
+   "A-Spectral Binding"
+  ],
+  "judgment_calls": [
+   "The 'instead' vs 'can't' vs 'one-shot' distinction the question is really about IS modelled: Grafdigger's Cage is a Moved replacement with Prevent$ True + Layer$ CantHappen and no ReplaceWith chain, so it does not reach an exile sub-ability and is correctly excluded. Bojuka Bog's exile is a trigger, not an R node.",
+   "'permanents' enforced as not-Instant/not-Sorcery.",
+   "Includes self-only replacements (e.g. 'if this creature would die, exile it instead'), which the question's wording permits."
+  ],
+  "baseline_regex": "would be put into (a|an opponent's|your) graveyard[^.]*exile (it|that card|them) instead"
+ },
+ {
+  "id": "redirect-damage-to-a-permanent",
+  "question": "Is there anything that soaks up damage aimed at me and takes it instead?",
+  "status": "partial",
+  "query": {
+   "any": [
+    {
+     "node": {
+      "kind": "R",
+      "params": {
+       "Event": "DamageDone",
+       "DamageTarget": true
+      }
+     }
+    },
+    {
+     "node": {
+      "api": "ReplaceSplitDamage"
+     }
+    },
+    {
+     "node": {
+      "api": "ReplaceEffect",
+      "params": {
+       "VarName": "Affected"
+      }
+     }
+    },
+    {
+     "node": {
+      "api": "DealDamage",
+      "params": {
+       "DamageSource": "EffectSource"
+      }
+     }
+    }
+   ]
+  },
+  "gap": "Only the battlefield-resident redirection replacement (Palisade Giant: R|Event$ DamageDone|DamageTarget$ Self) is expressed directly. Harm's Way and Deflecting Palm create their replacement at resolution via `DB$ Effect | ReplacementEffects$ <SVarName>`, and Forge stores that replacement as a RAW STRING in an SVarValue node ('Event$ DamageDone | ValidTarget$ You | ReplaceWith$ ...'). NodeSpec has no field for an SVarValue's `value` (only SVarCount's `count` is matchable), so the entire body of an Effect-created replacement effect is invisible to the DSL. I could only reach those two cards by proxy, matching their payload sub-abilities (api ReplaceSplitDamage, and api DealDamage with DamageSource$ EffectSource). Consequences: (a) the crucial 'aimed at me' restriction (ValidTarget$ You) cannot be checked on those cards at all, so pure damage-prevention shields and reflect-to-any-target effects are indistinguishable; (b) the query is a union of three structural proxies rather than one predicate. Two fixes would close this: a `value` field on NodeSpec, and parsing inline ReplacementEffects$ strings into real R nodes with edges.",
+  "hits": 68,
+  "golden_present": {
+   "pass": true,
+   "missing": []
+  },
+  "golden_absent": {
+   "pass": true,
+   "leaked": []
+  },
+  "sample": [
+   "Aegis of Honor",
+   "Ancient Adamantoise",
+   "Ascent of the Worthy",
+   "Beacon of Destiny",
+   "Blood of the Martyr",
+   "Captain's Maneuver",
+   "Carom",
+   "Channel Harm"
+  ],
+  "judgment_calls": [
+   "Accepted both 'redirected to a permanent' (Palisade Giant) and 'prevented then dealt back' (Deflecting Palm) as 'soaks up damage and takes it instead', since the question's goldens include both.",
+   "The 68-hit result set is coherent (Comeuppance, Divine Deflection, Beacon of Destiny, Eye for an Eye ...) but is reached partly by proxy, not by expressing the question."
+  ],
+  "baseline_regex": "(is dealt to|deals that damage to|deals that much damage to)[^.]{0,40}instead|redirect"
+ },
+ {
+  "id": "fog-effects",
+  "question": "fog effects - prevent all combat damage this turn",
+  "status": "compiled",
+  "query": {
+   "node": {
+    "api": "Fog"
+   }
+  },
+  "gap": null,
+  "hits": 34,
+  "golden_present": {
+   "pass": true,
+   "missing": []
+  },
+  "golden_absent": {
+   "pass": true,
+   "leaked": []
+  },
+  "sample": [
+   "Angelsong",
+   "Angus Mackenzie",
+   "Batwing Brume",
+   "Blessed Respite",
+   "Blunt the Assault",
+   "Clinging Mists",
+   "Constant Mists",
+   "Darkness"
+  ],
+  "judgment_calls": [
+   "Forge has a dedicated Fog API meaning exactly 'prevent all combat damage that would be dealt this turn', so the compile is exact. I checked the parameter distribution: Fog nodes carry no target/source restriction params at all, so the 'prevents only damage dealt to you / only from attackers' variants the question worried about are NOT in this set — they use PreventDamage instead and are already excluded.",
+   "Includes Fog effects on permanents and with activation costs (Constant Mists, Angus Mackenzie), not just instants."
+  ],
+  "baseline_regex": "prevent all combat damage that would be dealt this turn"
+ },
+ {
+  "id": "draw-replacement-effects",
+  "question": "cards that change what happens when I draw a card",
+  "status": "compiled",
+  "query": {
+   "node": {
+    "kind": "R",
+    "params": {
+     "Event": {
+      "any": [
+       "Draw",
+       "DrawCards"
+      ]
+     }
+    }
+   }
+  },
+  "gap": null,
+  "hits": 39,
+  "golden_present": {
+   "pass": true,
+   "missing": []
+  },
+  "golden_absent": {
+   "pass": true,
+   "leaked": []
+  },
+  "sample": [
+   "Abundance",
+   "Alhammarret's Archive",
+   "Alms Collector",
+   "Archmage Ascension",
+   "Asmodeus the Archfiend",
+   "Bard, King of Dale",
+   "Blood Scrivener",
+   "Booby Trap"
+  ],
+  "judgment_calls": [
+   "Forge has a first-class replacement Event$ Draw, so 'if you would draw a card, instead...' is a direct structural match; Howling Mine (an extra-draw trigger) is excluded automatically.",
+   "Included both directions of change (replace the draw, and draw more instead), since 'change what happens when I draw' covers both. Alhammarret's Archive is the latter.",
+   "Did not restrict to ValidPlayer$ You, so opponent-facing draw replacements (Hullbreacher, Notion Thief) are included."
+  ],
+  "baseline_regex": "if (you|a player|an opponent) would draw"
+ },
+ {
+  "id": "damage-multipliers",
+  "question": "anything that makes damage hit for double or triple",
+  "status": "partial",
+  "query": {
+   "all": [
+    {
+     "chain": {
+      "from": {
+       "kind": "R",
+       "params": {
+        "Event": "DamageDone"
+       }
+      },
+      "to": {
+       "api": "ReplaceEffect",
+       "params": {
+        "VarName": "DamageAmount"
+       }
+      }
+     }
+    },
+    {
+     "card": {
+      "oracle": {
+       "regex": "(?i)(double|triple|twice|three times) that (much )?damage"
+      }
+     }
+    }
+   ]
+  },
+  "gap": "The arithmetic operator is unreachable. Furnace of Rath and Torbran are node-for-node IDENTICAL in the graph: both are R|Event$ DamageDone -> ReplaceWith -> SVar api ReplaceEffect|VarName$ DamageAmount|VarValue$ X. The only difference is the referenced SVar's value string, 'ReplaceCount$DamageAmount/Twice' vs 'ReplaceCount$DamageAmount/Plus.2', and those nodes are kind SVarValue whose `value` field is not exposed in NodeSpec (only SVarCount exposes `count`). The pure structural query returns 57 hits and leaks Torbran. To satisfy the golden I had to bolt on a card.oracle regex — i.e. the discriminating half of this question is answered by text search, not by structure. Fix: expose SVarValue.value as a matchable NodeSpec field (or classify ReplaceCount modifiers into the parsed node).",
+  "hits": 27,
+  "golden_present": {
+   "pass": true,
+   "missing": []
+  },
+  "golden_absent": {
+   "pass": true,
+   "leaked": []
+  },
+  "sample": [
+   "Angrath's Marauders",
+   "Anthem of Rakdos",
+   "Bitter Feud",
+   "Calamity Bearer",
+   "Charging Tuskodon",
+   "City on Fire",
+   "Curse of Bloodletting",
+   "Dictate of the Twin Gods"
+  ],
+  "judgment_calls": [
+   "The structural half (damage-amount replacement effects) is exact and worth 57 hits; the multiplier-vs-adder half is oracle-text regex.",
+   "Symmetric (Furnace of Rath) and one-sided (Fiery Emancipation, Gisela) multipliers are both included — the question said 'anything that makes damage hit for double or triple' without specifying sidedness."
+  ],
+  "baseline_regex": "(double|triple|twice|three times) that (much )?damage"
+ },
+ {
+  "id": "enters-as-a-copy",
+  "question": "creatures that come into play as a copy of something already on the battlefield",
+  "status": "compiled",
+  "query": {
+   "all": [
+    {
+     "card": {
+      "types": {
+       "contains": "Creature"
+      }
+     }
+    },
+    {
+     "chain": {
+      "from": {
+       "kind": "K",
+       "keyword": "ETBReplacement"
+      },
+      "to": {
+       "api": "Clone"
+      }
+     }
+    }
+   ]
+  },
+  "gap": null,
+  "hits": 53,
+  "golden_present": {
+   "pass": true,
+   "missing": []
+  },
+  "golden_absent": {
+   "pass": true,
+   "leaked": []
+  },
+  "sample": [
+   "Activated Sleeper",
+   "Altered Ego",
+   "Auton Soldier",
+   "Body Double",
+   "Callidus Assassin",
+   "Chameleon, Master of Disguise",
+   "Clever Impersonator",
+   "Clone"
+  ],
+  "judgment_calls": [
+   "The copy-as-it-enters replacement is a K node named ETBReplacement whose args ['Copy','DBCopy','Optional'] are unreadable by NodeSpec, but the K node has a real chain edge to the Clone sub-ability, so the chain expresses the concept exactly and separates it from ETB triggers that create copy TOKENS (api CopyPermanent).",
+   "Clever Impersonator matches (it copies any nonland permanent), consistent with the owner's move to expect_present.",
+   "Restricted to Creature cards per 'creatures that come into play'; this excludes copy-artifacts and copy-enchantments that use the same structure."
+  ],
+  "baseline_regex": "enters? (the battlefield )?as a copy"
+ },
+ {
+  "id": "reanimate-on-a-trigger",
+  "question": "permanents that pull a creature out of my graveyard onto the battlefield when something happens",
+  "status": "compiled",
+  "query": {
+   "all": [
+    {
+     "not": {
+      "card": {
+       "types": {
+        "regex": "Instant|Sorcery"
+       }
+      }
+     }
+    },
+    {
+     "chain": {
+      "from": {
+       "kind": "T"
+      },
+      "to": {
+       "api": {
+        "any": [
+         "ChangeZone",
+         "ChangeZoneAll"
+        ]
+       },
+       "params": {
+        "Origin": {
+         "contains": "Graveyard"
+        },
+        "Destination": "Battlefield"
+       }
+      }
+     }
+    }
+   ]
+  },
+  "gap": null,
+  "hits": 400,
+  "golden_present": {
+   "pass": true,
+   "missing": []
+  },
+  "golden_absent": {
+   "pass": true,
+   "leaked": []
+  },
+  "sample": [
+   "\"Lifetime\" Pass Holder",
+   "A-Soul of Windgrace",
+   "Abduction",
+   "Abiding Grace",
+   "Accursed Witch",
+   "Aclazotz, Deepest Betrayal",
+   "Admiral Brass, Unsinkable",
+   "Aerith, Last Ancient"
+  ],
+  "judgment_calls": [
+   "I did NOT restrict the returned card to a creature. Sun Titan (a golden) is scripted with ValidTgts$ Permanent.YouOwn+cmcLE3, so any 'Creature' filter drops it. The vetted goldens therefore force the broader 'anything from graveyard to battlefield on a trigger' reading, and the 400-hit result reflects that.",
+   "Includes self-recursion triggers (a creature that returns itself from the graveyard on a trigger), which literally satisfies the question.",
+   "Raise Dead correctly excluded on two counts: Destination Hand, and no trigger."
+  ],
+  "baseline_regex": "return target creature card from your graveyard to the battlefield"
+ },
+ {
+  "id": "blink-effects",
+  "question": "blink effects - exile my own creature and bring it right back",
+  "status": "compiled",
+  "query": {
+   "chain": {
+    "from": {
+     "kind": {
+      "any": [
+       "A",
+       "T"
+      ]
+     }
+    },
+    "to": [
+     {
+      "api": "ChangeZone",
+      "params": {
+       "Origin": {
+        "contains": "Battlefield"
+       },
+       "Destination": "Exile"
+      }
+     },
+     {
+      "api": "ChangeZone",
+      "params": {
+       "Origin": {
+        "regex": "Exile|All"
+       },
+       "Destination": "Battlefield"
+      }
+     }
+    ]
+   }
+  },
+  "gap": null,
+  "hits": 181,
+  "golden_present": {
+   "pass": true,
+   "missing": []
+  },
+  "golden_absent": {
+   "pass": true,
+   "leaked": []
+  },
+  "sample": [
+   "Abuelo, Ancestral Echo",
+   "Acrobatic Maneuver",
+   "Aethergeode Miner",
+   "Aetherling",
+   "Against All Odds",
+   "Airbender Ascension",
+   "Ajani, Nacatl Pariah",
+   "All Aboard"
+  ],
+  "judgment_calls": [
+   "The multi-target chain is exactly the right tool here: both the exile and the return must hang off the SAME ability, which is what separates Cloudshift from Swords to Plowshares.",
+   "Did not require the exiled permanent to be a creature you control: Flickerwisp (a golden) exiles 'another target permanent', any controller.",
+   "All return timings count (immediate, next end step via DelayedTrigger, end of turn), per the question author's open note — the DelayedTrigger is traversed as a normal chain edge so timing is not distinguished.",
+   "Includes ETB blink creatures, blink spells and repeatable blink permanents alike."
+  ],
+  "baseline_regex": "exile target[^.]{0,40}(creature|permanent)[^.]*return (it|that card|them)[^.]*battlefield"
+ },
+ {
+  "id": "tutor-to-top-of-library",
+  "question": "tutors that put the card on top of my library instead of in my hand",
+  "status": "compiled",
+  "query": {
+   "node": {
+    "api": "ChangeZone",
+    "params": {
+     "Origin": "Library",
+     "Destination": "Library",
+     "LibraryPosition": "0"
+    }
+   }
+  },
+  "gap": null,
+  "hits": 51,
+  "golden_present": {
+   "pass": true,
+   "missing": []
+  },
+  "golden_absent": {
+   "pass": true,
+   "leaked": []
+  },
+  "sample": [
+   "1996 World Champion",
+   "Ainok Guide",
+   "Boggart Harbinger",
+   "Bringer of the Black Dawn",
+   "Brutalizer Exarch",
+   "Campus Guide",
+   "Compass Gnome",
+   "Conduit of Ruin"
+  ],
+  "judgment_calls": [
+   "Library->Library with LibraryPosition$ 0 is an exact structural signature for 'search and put on top'; Demonic Tutor (Destination Hand) is excluded with no ambiguity.",
+   "Includes creatures/permanents with tutor-to-top abilities (Bringer of the Black Dawn, Conduit of Ruin), not just the classic instant cycle — the question said 'tutors', not 'tutor spells'."
+  ],
+  "baseline_regex": "search your library for[^.]*put (that|the) card on top"
+ },
+ {
+  "id": "cast-from-graveyard-permanents",
+  "question": "permanents that let me cast spells straight out of my graveyard",
+  "status": "compiled",
+  "query": {
+   "all": [
+    {
+     "not": {
+      "card": {
+       "types": {
+        "regex": "Instant|Sorcery"
+       }
+      }
+     }
+    },
+    {
+     "any": [
+      {
+       "node": {
+        "kind": "S",
+        "mode": "Continuous",
+        "params": {
+         "MayPlay": "True",
+         "AffectedZone": {
+          "contains": "Graveyard"
+         },
+         "Affected": {
+          "regex": "Permanent|Creature|Artifact|Enchantment|Planeswalker|Instant|Sorcery|Card"
+         }
+        }
+       }
+      },
+      {
+       "node": {
+        "kind": "S",
+        "mode": "Continuous",
+        "params": {
+         "AddKeyword": {
+          "regex": "Flashback|Escape|Jump-start|Retrace|Disturb|Encore"
+         },
+         "AffectedZone": {
+          "contains": "Graveyard"
+         }
+        }
+       }
+      }
+     ]
+    }
+   ]
+  },
+  "gap": null,
+  "hits": 74,
+  "golden_present": {
+   "pass": true,
+   "missing": []
+  },
+  "golden_absent": {
+   "pass": true,
+   "leaked": []
+  },
+  "sample": [
+   "A-Demilich",
+   "A-Fires of Invention",
+   "A-Lier, Disciple of the Drowned",
+   "Abandoned Sarcophagus",
+   "Alien Symbiosis",
+   "Aluren",
+   "Arcade Gannon",
+   "As Foretold"
+  ],
+  "judgment_calls": [
+   "Two structures unioned: a direct MayPlay permission whose AffectedZone is Graveyard (Muldrotha, Lurrus), and a static that GRANTS a graveyard-casting keyword to cards in your graveyard (Underworld Breach grants Escape via AddKeyword).",
+   "The AddKeyword branch relies on a hand-written list of graveyard-casting keywords; the ontology does not group them, so this list is my semantics, not the system's.",
+   "The Affected regex excludes Land-only permissions so Crucible of Worlds (which is the next question) does not answer this one.",
+   "Snapcaster Mage correctly excluded: it grants Flashback via a targeted Pump with PumpZone$ Graveyard, not a static."
+  ],
+  "baseline_regex": "you may cast[^.]{0,80}from your graveyard"
+ },
+ {
+  "id": "play-lands-from-graveyard",
+  "question": "how do I replay lands from my graveyard",
+  "status": "compiled",
+  "query": {
+   "node": {
+    "kind": "S",
+    "mode": "Continuous",
+    "params": {
+     "MayPlay": "True",
+     "AffectedZone": {
+      "contains": "Graveyard"
+     },
+     "Affected": {
+      "regex": "^Land"
+     }
+    }
+   }
+  },
+  "gap": null,
+  "hits": 13,
+  "golden_present": {
+   "pass": true,
+   "missing": []
+  },
+  "golden_absent": {
+   "pass": true,
+   "leaked": []
+  },
+  "sample": [
+   "Ancient Greenwarden",
+   "Conduit of Worlds",
+   "Coram, the Undertaker",
+   "Crucible of Worlds",
+   "Icetill Explorer",
+   "Kagha, Shadow Archdruid",
+   "Mole Man, Moloid Master",
+   "Muldrotha, the Gravetide"
+  ],
+  "judgment_calls": [
+   "Exact match: MayPlay static, AffectedZone Graveyard, Affected starting with Land. 13 hits, all genuine.",
+   "Azusa and Exploration are excluded structurally — they use AdjustLandPlays$ N on the player, a completely different parameter, which is precisely the false-friend the question was probing."
+  ],
+  "baseline_regex": "you may play lands? from your graveyard"
+ },
+ {
+  "id": "removal-that-never-says-destroy",
+  "question": "removal spells that get rid of a creature without ever saying destroy or exile",
+  "status": "partial",
+  "query": {
+   "all": [
+    {
+     "card": {
+      "types": {
+       "regex": "Instant|Sorcery"
+      }
+     }
+    },
+    {
+     "any": [
+      {
+       "node": {
+        "api": "ChangeZone",
+        "params": {
+         "Origin": {
+          "contains": "Battlefield"
+         },
+         "Destination": {
+          "any": [
+           "Hand",
+           "Library"
+          ]
+         },
+         "ValidTgts": {
+          "contains": "Creature"
+         }
+        }
+       }
+      },
+      {
+       "node": {
+        "api": {
+         "any": [
+          "Sacrifice",
+          "SacrificeAll"
+         ]
+        },
+        "params": {
+         "SacValid": {
+          "contains": "Creature"
+         }
+        }
+       }
+      },
+      {
+       "node": {
+        "api": {
+         "any": [
+          "Pump",
+          "PumpAll",
+          "Debuff"
+         ]
+        },
+        "params": {
+         "NumDef": {
+          "regex": "^-"
+         }
+        }
+       }
+      }
+     ]
+    },
+    {
+     "not": {
+      "node": {
+       "api": {
+        "any": [
+         "Destroy",
+         "DestroyAll"
+        ]
+       }
+      }
+     }
+    },
+    {
+     "not": {
+      "node": {
+       "params": {
+        "Destination": "Exile"
+       }
+      }
+     }
+    },
+    {
+     "not": {
+      "node": {
+       "params": {
+        "DestinationZone": "Exile"
+       }
+      }
+     }
+    }
+   ]
+  },
+  "gap": "Two separate shortfalls. (1) The negation half works fine — {not: {node: ...}} over api Destroy and over Destination$ Exile is card-scoped and does exactly what the question asks. (2) The POSITIVE half does not exist in the DSL: there is no semantic class 'gets rid of a creature'. I had to hand-enumerate three shapes (bounce/tuck, edict-sacrifice, negative-toughness pump). That enumeration is my knowledge, not the ontology's; the system cannot be asked for 'removal' as a function, and the result (457 hits) has no ranking or relevance notion, so marginal shrink effects sit next to real removal. A `role`/`hook` facet for removal exists elsewhere in the codebase (cardguru.deck.ROLES, cardguru.recommend.HOOKS) but the query VALIDATOR rejects the `role` and `hook` operators, so they are unusable in a validated query. ALSO: the golden itself is wrong — see judgment_calls.",
+  "hits": 457,
+  "golden_present": {
+   "pass": false,
+   "missing": [
+    "Pongify"
+   ]
+  },
+  "golden_absent": {
+   "pass": true,
+   "leaked": []
+  },
+  "sample": [
+   "A-Deal Gone Bad",
+   "A-Eyes of the Beholder",
+   "Absorb Identity",
+   "Aether Burst",
+   "Aether Mutation",
+   "Aether Tide",
+   "Aethertow",
+   "Afflict"
+  ],
+  "judgment_calls": [
+   "GOLDEN FAILURE THAT IS NOT A QUERY BUG: Pongify is scripted (and printed) as 'Destroy target creature. It can't be regenerated. Its controller creates a 3/3 Ape.' Its Forge node is SP$ Destroy. It literally says destroy, so it cannot satisfy 'without ever saying destroy'. Any honest query must exclude it. The expect_present entry is incorrect; the owner should replace Pongify with e.g. Rapid Hybridization (same problem), or better, Reality Shift / Snakeskin Veil-style... in practice a correct golden would be Diabolic Edict, Chainer's Edict, Unsummon, Tribute to Hunger.",
+   "Restricted to Instant/Sorcery per 'removal spells'.",
+   "Chose bounce, edict and -X/-X as the removal shapes; did not include tap-down, counter-on-the-stack, or fight/damage (damage would have swamped the result and 'deals damage' is arguably not 'gets rid of').",
+   "Did not exclude cards that merely contain the word destroy in reminder text — the exclusion is on the Destroy API, which is stricter and more correct than the oracle-text version of the question."
+  ],
+  "baseline_regex": "(?s)^(?!.*\\b(destroy|exile)\\b).*\\b(sacrifices a creature|return target creature[^.]*owner)"
+ },
+ {
+  "id": "counter-doubling",
+  "question": "cards that double the +1/+1 counters I put on things",
+  "status": "partial",
+  "query": {
+   "all": [
+    {
+     "chain": {
+      "from": {
+       "kind": "R",
+       "params": {
+        "Event": "AddCounter"
+       }
+      },
+      "to": {
+       "api": "ReplaceCounter"
+      }
+     }
+    },
+    {
+     "card": {
+      "oracle": {
+       "regex": "(?i)(twice|double|triple|three times) that many"
+      }
+     }
+    }
+   ]
+  },
+  "gap": "Identical to the damage-multiplier gap. Doubling Season and Hardened Scales are structurally indistinguishable: both are R|Event$ AddCounter -> ReplaceWith -> api ReplaceCounter|Amount$ <SVar>. The operator lives in an SVarValue node ('ReplaceCount$CounterNum/Twice' vs 'ReplaceCount$CounterNum/Plus.1'), and NodeSpec exposes no `value` field for SVarValue nodes. The pure structural query is 30 hits and leaks Hardened Scales (which the question explicitly designates a precision failure). I closed it with a card.oracle regex, i.e. text search. Fix: expose SVarValue.value, or have the parser lift the ReplaceCount modifier (Twice/Thrice/Plus.N/Minus.N) onto the ReplaceCounter/ReplaceEffect node as a parameter.",
+  "hits": 10,
+  "golden_present": {
+   "pass": true,
+   "missing": []
+  },
+  "golden_absent": {
+   "pass": true,
+   "leaked": []
+  },
+  "sample": [
+   "Aether Refinery",
+   "Branching Evolution",
+   "Corpsejack Menace",
+   "Doubling Season",
+   "Loading Zone",
+   "Primal Vigor",
+   "Selesnya Loft Gardens",
+   "Shang-Chi, Martial Mentor"
+  ],
+  "judgment_calls": [
+   "The structural half also does not distinguish +1/+1 counters from all counters; Vorinclex and Doubling Season double every counter type while Corpsejack Menace and Branching Evolution are +1/+1-only. I did not filter on ValidCounterType because that would have dropped Doubling Season and Vorinclex.",
+   "The oracle fallback ('twice/double that many') is what excludes Hardened Scales, Conclave Mentor and Halving Season."
+  ],
+  "baseline_regex": "(twice|double|three times) that many[^.]{0,20}counters"
+ },
+ {
+  "id": "token-doubling",
+  "question": "token doublers",
+  "status": "compiled",
+  "query": {
+   "chain": {
+    "from": {
+     "kind": "R",
+     "params": {
+      "Event": "CreateToken"
+     }
+    },
+    "to": {
+     "api": "ReplaceToken"
+    }
+   }
+  },
+  "gap": null,
+  "hits": 32,
+  "golden_present": {
+   "pass": true,
+   "missing": []
+  },
+  "golden_absent": {
+   "pass": true,
+   "leaked": []
+  },
+  "sample": [
+   "Academy Manufactor",
+   "Adrix and Nev, Twincasters",
+   "Anointed Procession",
+   "Bard, King of Dale",
+   "Bilbo, Fellow Conspirator",
+   "Bloodspatter Vampire",
+   "Case of the Pilfered Proof",
+   "Chatterfang, Squirrel General"
+  ],
+  "judgment_calls": [
+   "Unlike counter-doubling, Forge gives token replacement a dedicated ReplaceToken API, so the structure alone is enough and no oracle fallback is needed.",
+   "32 hits include non-doubling token replacements (Divine Visitation, Academy Manufactor, Xorn) — they replace token creation without multiplying. A stricter reading of 'token doublers' would need the same SVarValue arithmetic that is unavailable, but here the result set is small enough to be useful and Second Harvest (a copy effect, api CopyPermanent) is correctly excluded."
+  ],
+  "baseline_regex": "(twice|double) that many[^.]{0,20}tokens"
+ },
+ {
+  "id": "proliferate-payoffs",
+  "question": "cards that proliferate off a trigger rather than as a one-shot spell",
+  "status": "compiled",
+  "query": {
+   "chain": {
+    "from": {
+     "kind": "T"
+    },
+    "to": {
+     "api": "Proliferate"
+    }
+   }
+  },
+  "gap": null,
+  "hits": 44,
+  "golden_present": {
+   "pass": true,
+   "missing": []
+  },
+  "golden_absent": {
+   "pass": true,
+   "leaked": []
+  },
+  "sample": [
+   "Adaptive Sporesinger",
+   "Agent Frank Horrigan",
+   "Atraxa, Praetors' Voice",
+   "Blightbelly Rat",
+   "Bloated Contaminator",
+   "Bloom Hulk",
+   "Brimaz, Blight of Oreskos",
+   "Cacophony Scamp"
+  ],
+  "judgment_calls": [
+   "The trigger-vs-activated-vs-spell distinction is exactly what kind T + chain expresses, and it is the whole discriminating work in this question. Contagion Clasp's proliferate hangs off an A node and is excluded.",
+   "A card with BOTH a proliferate trigger and a proliferate activated ability would match; the question says 'proliferate off a trigger', which I read as 'has one', not 'only has one'."
+  ],
+  "baseline_regex": "(whenever|at the beginning of)[^.]*proliferate"
+ },
+ {
+  "id": "move-counters-between-permanents",
+  "question": "anything that physically moves counters from one permanent to another",
+  "status": "compiled",
+  "query": {
+   "any": [
+    {
+     "node": {
+      "api": "MoveCounter"
+     }
+    },
+    {
+     "chain": {
+      "from": {
+       "kind": "A",
+       "params": {
+        "Cost": {
+         "regex": "RemoveAnyCounter<|SubCounter<[0-9X]+/(?!LOYALTY)"
+        }
+       }
+      },
+      "to": {
+       "api": {
+        "any": [
+         "PutCounter",
+         "PutCounterAll"
+        ]
+       }
+      }
+     }
+    }
+   ]
+  },
+  "gap": null,
+  "hits": 66,
+  "golden_present": {
+   "pass": true,
+   "missing": []
+  },
+  "golden_absent": {
+   "pass": true,
+   "leaked": []
+  },
+  "sample": [
+   "Aetherborn Marauder",
+   "Afiya Grove",
+   "Agent's Toolkit",
+   "Arcbound Fiend",
+   "Arwen, Mortal Queen",
+   "Benevolent Hydra",
+   "Bioshift",
+   "Black Panther, Wakandan King"
+  ],
+  "judgment_calls": [
+   "Two of the question's three shapes map to one API (MoveCounter). The third — 'remove a counter ... put a counter on' — is not a move at all in Forge; Power Conduit is a Charm whose COST is RemoveAnyCounter and whose effects are PutCounter. I expressed that as a chain from a counter-removal cost to a counter-placing effect, which is the structural reading of the question's own third phrasing.",
+   "Excluded SubCounter<n/LOYALTY> in the cost regex so planeswalker minus-abilities that put counters are not counted as counter-moving.",
+   "The Ozolith matches on its MoveCounter ability; its 'put those counters on' trigger uses PutCounter|CounterType$ EachFromSource, a fourth shape the question did not mention."
+  ],
+  "baseline_regex": "move (a|all|those|any number of|X) counters? (from|onto)"
+ },
+ {
+  "id": "triggers-off-state-based-actions",
+  "question": "abilities that trigger off a state-based action, like a creature hitting 0 toughness or a player hitting 0 life",
+  "status": "unexpressible",
+  "query": null,
+  "gap": "Nothing in the ability graph encodes rules-layer causation. A trigger node records WHAT happened (mode ChangesZone Battlefield->Graveyard, mode Destroyed, mode LosesGame, mode DamageDone) but never WHY, so a creature dying to a state-based action (0 toughness, lethal damage, legend rule) and a creature dying to a sacrifice effect produce the same ChangesZone trigger. There is no `cause`, `sba`, or `event-source` attribute on any node, and no ontology term for state-based action — the mined vocabulary (191 APIs, 137 trigger modes, 34 replacement events) contains no such concept. The closest expressible thing is a disjunction of death/loses-game/destroyed triggers, which is precisely the 'return every death trigger' non-answer the question author predicted, so I have not written it. Note also that both golden lists are empty, so no query could be validated against this row anyway. Closing this would require a rules-model layer above the Forge script, not a new DSL predicate.",
+  "hits": null,
+  "golden_present": {
+   "pass": true,
+   "missing": []
+  },
+  "golden_absent": {
+   "pass": true,
+   "leaked": []
+  },
+  "sample": [],
+  "judgment_calls": [
+   "Deliberately did not emit a proxy query. Returning all ChangesZone-to-graveyard triggers would look like an answer and is not one; the question asks for a rules category the corpus does not record.",
+   "This row is a correct refusal, not a failure — the question is flagged suspect_unanswerable and it is."
+  ],
+  "baseline_regex": null
+ },
+ {
+  "id": "dies-then-tutor-to-battlefield",
+  "question": "creatures that when they die go find other creatures in my deck and put them straight onto the battlefield",
+  "status": "compiled",
+  "query": {
+   "all": [
+    {
+     "card": {
+      "types": {
+       "contains": "Creature"
+      }
+     }
+    },
+    {
+     "chain": {
+      "from": {
+       "kind": "T",
+       "mode": "ChangesZone",
+       "params": {
+        "ValidCard": {
+         "contains": "Card.Self"
+        },
+        "Origin": "Battlefield",
+        "Destination": "Graveyard"
+       }
+      },
+      "to": {
+       "api": {
+        "any": [
+         "ChangeZone",
+         "ChangeZoneAll"
+        ]
+       },
+       "params": {
+        "Origin": {
+         "contains": "Library"
+        },
+        "Destination": "Battlefield",
+        "ChangeType": {
+         "contains": "Creature"
+        }
+       }
+      }
+     }
+    }
+   ]
+  },
+  "gap": null,
+  "hits": 1,
+  "golden_present": {
+   "pass": true,
+   "missing": []
+  },
+  "golden_absent": {
+   "pass": true,
+   "leaked": []
+  },
+  "sample": [
+   "Protean Hulk"
+  ],
+  "judgment_calls": [
+   "All three links the question demands are expressed in one chain: self-death trigger, library search, battlefield destination, plus ChangeType containing Creature for 'other creatures'.",
+   "Result is exactly one card (Protean Hulk). Dropping the ChangeType filter gives 10 (Academy Rector -> enchantment, Seedguide Ash / Veteran Explorer -> lands, etc.), which is the same question without 'creatures'. I kept the strict version because the question says creatures.",
+   "'other creatures' is not enforced (a card that fetched itself would match), but no such card exists."
+  ],
+  "baseline_regex": "when[^.]{0,30}dies, search your library for[^.]{0,80}creature cards?[^.]{0,80}onto the battlefield"
+ },
+ {
+  "id": "impulse-exile-then-cast",
+  "question": "cards that exile the top of my library and let me play those cards, but only for a limited time",
+  "status": "partial",
+  "query": {
+   "any": [
+    {
+     "chain": {
+      "from": {
+       "kind": {
+        "any": [
+         "A",
+         "T",
+         "S",
+         "R"
+        ]
+       }
+      },
+      "to": [
+       {
+        "api": {
+         "any": [
+          "Dig",
+          "DigUntil",
+          "Mill",
+          "ChangeZone"
+         ]
+        },
+        "params": {
+         "DestinationZone": {
+          "contains": "Exile"
+         }
+        }
+       },
+       {
+        "mode": "Continuous",
+        "params": {
+         "MayPlay": "True"
+        }
+       }
+      ]
+     }
+    },
+    {
+     "chain": {
+      "from": {
+       "kind": {
+        "any": [
+         "A",
+         "T",
+         "S",
+         "R"
+        ]
+       }
+      },
+      "to": [
+       {
+        "api": {
+         "any": [
+          "Dig",
+          "DigUntil",
+          "Mill",
+          "ChangeZone"
+         ]
+        },
+        "params": {
+         "DestinationZone": {
+          "contains": "Exile"
+         }
+        }
+       },
+       {
+        "api": "Play",
+        "params": {
+         "ValidZone": {
+          "contains": "Exile"
+         }
+        }
+       }
+      ]
+     }
+    }
+   ]
+  },
+  "gap": "The 'only for a limited time' clause is not expressed. Exile-from-library and may-play are both structural and chain correctly, but the time limit lives in a Duration$ param on the Effect node (e.g. Light Up the Stage's Duration$ UntilTheEndOfYourNextTurn) that some impulse cards do not have at all — Chandra, Torch of Defiance grants the permission for that resolution only, with no Duration param, and Gonti / Thief of Sanity grant it for as long as the card remains exiled. Because the DSL cannot say 'this parameter is absent' and cannot compare durations, I cannot separate 'until end of turn' impulse draw from open-ended exile-and-play. The 292-hit set therefore mixes both. Fix: either a duration-class attribute on Effect nodes, or a param-absence / param-comparison predicate.",
+  "hits": 292,
+  "golden_present": {
+   "pass": true,
+   "missing": []
+  },
+  "golden_absent": {
+   "pass": true,
+   "leaked": []
+  },
+  "sample": [
+   "A-Ardent Dustspeaker",
+   "A-Nashi, Moon Sage's Scion",
+   "A-Visions of Phyrexia",
+   "Abbot of Keral Keep",
+   "Act on Impulse",
+   "Aerial Caravan",
+   "Alania's Pathmaker",
+   "Aminatou's Augury"
+  ],
+  "judgment_calls": [
+   "Needed a second chain branch for api Play|ValidZone$ Exile: Chandra, Torch of Defiance grants the cast permission through a Play sub-ability rather than a Continuous MayPlay static, so the existing benchmark impulse query (queries/q2_impulse_exile.json) misses her. That is an ontology finding — 'you may cast that card' has two unrelated encodings.",
+   "Bomat Courier is correctly excluded (it exiles and later returns to HAND; no play permission).",
+   "Did not require the exile to be from the top of the library specifically."
+  ],
+  "baseline_regex": "exile the top[^.]{0,60}librar[^.]*(until|this turn)[^.]*you may (play|cast)"
+ },
+ {
+  "id": "untap-on-other-players-turns",
+  "question": "what lets me untap my stuff on other people's turns so I can use tap abilities more than once a round?",
+  "status": "partial",
+  "query": {
+   "any": [
+    {
+     "node": {
+      "mode": "UntapOtherPlayer"
+     }
+    },
+    {
+     "chain": {
+      "from": {
+       "kind": "T",
+       "mode": "Phase",
+       "params": {
+        "Phase": {
+         "any": [
+          "End of Turn",
+          "Untap"
+         ]
+        },
+        "ValidPlayer": true
+       }
+      },
+      "to": {
+       "api": {
+        "any": [
+         "Untap",
+         "UntapAll"
+        ]
+       }
+      }
+     }
+    }
+   ]
+  },
+  "gap": "The question asks for a GOAL ('so I can use tap abilities more than once a round'), and the two goldens satisfy it by different mechanisms. Seedborn Muse is expressible exactly (static mode UntapOtherPlayer). Wilderness Reclamation is not: it untaps your lands at YOUR end step, and the fact that this yields mana on opponents' turns is a play-pattern inference that appears nowhere in the graph. To include it I unioned in a generic 'end-step/untap-step Phase trigger that untaps', which is a different structure and drags in ~34 cards, several of which (Voltaic Servant, Betor) do not serve the stated goal. The DSL has no way to express 'untapped while it is not my turn' or 'available for reuse', and no way to relate an untap event to a subsequent activation.",
+  "hits": 36,
+  "golden_present": {
+   "pass": true,
+   "missing": []
+  },
+  "golden_absent": {
+   "pass": true,
+   "leaked": []
+  },
+  "sample": [
+   "Bender's Waterskin",
+   "Betor, Kin to All",
+   "Caetus, Sea Tyrant of Segovia",
+   "Deepchannel Duelist",
+   "Drumbellower",
+   "Endbringer",
+   "Foreboding Statue",
+   "Horizon Boughs"
+  ],
+  "judgment_calls": [
+   "Kept Wilderness Reclamation by widening rather than dropping it, since it is a vetted golden; recorded the widening rather than pretending the two are one structure.",
+   "Required ValidPlayer to exist on the Phase trigger, which keeps it to player-scoped upkeep/end-step triggers.",
+   "Unwind is correctly excluded (a counterspell that untaps lands as a one-shot resolution effect, no Phase trigger)."
+  ],
+  "baseline_regex": "untap[^.]{0,60}during each other player's untap step|at the beginning of (your|each) end step, untap"
+ },
+ {
+  "id": "sac-outlet-that-refills",
+  "question": "free sac outlets that also replace the creature I sacrificed",
+  "status": "compiled",
+  "query": {
+   "any": [
+    {
+     "chain": {
+      "from": {
+       "kind": "A",
+       "apiKind": "AB",
+       "params": {
+        "Cost": {
+         "regex": "^Sac<[0-9X]+/Creature[^>]*>$"
+        }
+       }
+      },
+      "to": {
+       "api": {
+        "any": [
+         "Draw",
+         "Token"
+        ]
+       }
+      }
+     }
+    },
+    {
+     "chain": {
+      "from": {
+       "kind": "A",
+       "apiKind": "AB",
+       "params": {
+        "Cost": {
+         "regex": "^Sac<[0-9X]+/Creature[^>]*>$"
+        }
+       }
+      },
+      "to": {
+       "api": "ChangeZone",
+       "params": {
+        "Destination": "Battlefield"
+       }
+      }
+     }
+    }
+   ]
+  },
+  "gap": null,
+  "hits": 5,
+  "golden_present": {
+   "pass": true,
+   "missing": []
+  },
+  "golden_absent": {
+   "pass": true,
+   "leaked": []
+  },
+  "sample": [
+   "Akul the Unrepentant",
+   "Greater Good",
+   "Ormendahl, the Corrupter",
+   "Shilgengar, Sire of Famine",
+   "Tooth and Claw"
+  ],
+  "judgment_calls": [
+   "All three player-jargon constraints turned out to be expressible: 'free' as a Cost$ that is ANCHORED to contain only the sacrifice (regex ^Sac<...>$, no mana, no tap), 'sac outlet' as Sac<n/Creature> (not Sac<n/CARDNAME>, which would be one-shot self-sacrifice), and 'replaces the creature' as a chain to Draw / Token / put-onto-battlefield.",
+   "The question left expect_present empty because the author could not name a card. The query found five and they check out: Greater Good ('Sacrifice a creature: Draw cards equal to its power, then discard three'), Ormendahl, the Corrupter ('Sacrifice another creature: Draw a card'), Shilgengar (makes a Blood token), Tooth and Claw (sac two, make a 3/1), Akul the Unrepentant (sac three, put a creature from hand onto the battlefield).",
+   "Two are debatable and the owner should look: Akul has 'only once each turn' (not enforced — see the activate-repeatedly row for why), and Tooth and Claw / Akul consume more than one creature, so 'replaces the creature I sacrificed' is not net-neutral.",
+   "Ashnod's Altar (produces Mana) and Viscera Seer (Scry) are correctly excluded — neither replaces the body."
+  ],
+  "baseline_regex": "sacrifice (a|another) creature: (draw|create)"
+ },
+ {
+  "id": "triggers-on-opponent-voluntary-choice",
+  "question": "cards that only trigger when an opponent chooses to do something voluntarily",
+  "status": "unexpressible",
+  "query": null,
+  "gap": "Voluntariness is not an attribute of anything in the graph. Forge trigger nodes carry WHO (ValidActivatingPlayer, AttackingPlayer, ValidPlayer) and WHAT (mode), but nothing distinguishes an event a player chose to cause from one that happened to them. OptionalDecider$ exists but marks whether the CONTROLLER of the trigger may decline its effect — it is about your choice on resolution, not the opponent's choice to cause the trigger. I could hand-write a proxy: triggers restricted to an opponent whose mode is drawn from a list I consider player-initiated (SpellCast, LandPlayed, Attacks, ActivateAbility, Cycled, CommitCrime ...) versus ones I consider involuntary (DamageDone, LifeLost, Discarded-by-effect, Milled). But that taxonomy would come entirely from me — the ontology's 137 trigger modes carry no volition flag and no grouping — so the query would be a laundering of my own judgment, not a compiled question. Both golden lists are empty, so it could not be validated either. This is the correct 'system should push back' case.",
+  "hits": null,
+  "golden_present": {
+   "pass": true,
+   "missing": []
+  },
+  "golden_absent": {
+   "pass": true,
+   "leaked": []
+  },
+  "sample": [],
+  "judgment_calls": [
+   "Did not emit the proxy query, on purpose: an authoritative-looking answer here is exactly the hallucination signal the question was designed to detect.",
+   "Worth noting the near-miss: the WHO half ('an opponent') IS expressible via ValidActivatingPlayer$ Opponent / ValidPlayer$ Opponent. Only the 'voluntarily' half is missing."
+  ],
+  "baseline_regex": null
+ },
+ {
+  "id": "infinite-combo-enablers",
+  "question": "what goes infinite with an untapper like Kiki-Jiki?",
+  "status": "unexpressible",
+  "query": null,
+  "gap": "Structurally out of reach at the evaluator level, not just the vocabulary level. cardguru.querydsl.evaluate() takes one CardGraph — a single card face — and every operator (node/chain/keyword/card) is scoped to that one graph. There is no join, no pair enumeration, no cross-card edge, and no notion of a loop or of repeatability across cards. Answering 'what goes infinite with Kiki-Jiki' needs (a) a second card in scope, (b) a model of the untap/copy interaction, and (c) loop detection over the combined effect graph. None of the three exist. Even the single-card half ('creatures with an ETB that untaps or produces value') would be a different question. Also note the question names a specific card, which the DSL can match (card.name) but cannot reason about.",
+  "hits": null,
+  "golden_present": {
+   "pass": true,
+   "missing": []
+  },
+  "golden_absent": {
+   "pass": true,
+   "leaked": []
+  },
+  "sample": [],
+  "judgment_calls": [
+   "Declined rather than returning 'creatures with a useful ETB', which would be a plausible-looking non-answer.",
+   "This gap is architectural (per-face evaluation) and is the only one on this list that a new predicate could not fix."
+  ],
+  "baseline_regex": null
+ },
+ {
+  "id": "activate-repeatedly-no-tap",
+  "question": "abilities I can activate as many times as I have mana for - nothing in the cost that limits it",
+  "status": "partial",
+  "query": {
+   "all": [
+    {
+     "node": {
+      "kind": "A",
+      "apiKind": "AB",
+      "params": {
+       "Cost": {
+        "regex": "^(?!.*(?:\\bT\\b|\\bQ\\b|Sac<|SubCounter<|Discard<|ExileFromGrave<|ExileFromHand<|Exile<|RemoveAnyCounter<|Unattach|tapXType<|PayLife<|Reveal<|Return<|AddCounter<))"
+       }
+      }
+     }
+    },
+    {
+     "not": {
+      "node": {
+       "kind": "A",
+       "params": {
+        "ActivationLimit": true
+       }
+      }
+     }
+    },
+    {
+     "not": {
+      "node": {
+       "kind": "S",
+       "mode": "Activations"
+      }
+     }
+    }
+   ]
+  },
+  "gap": "Two distinct shortfalls, both about negation granularity. (1) The 'nothing in the cost that limits it' half IS expressible, but only by smuggling the negation into a Python regex negative lookahead on the Cost string (^(?!.*(\\bT\\b|Sac<|SubCounter<|...))). That works because Cost is one flat string, but it means the exclusion list is hand-written by me and would silently miss any cost token I forgot; the DSL itself has no 'cost does not contain component X' predicate and no cost decomposition. (2) The 'once each turn' rider CANNOT be excluded per-node: NodeSpec can only assert a parameter is PRESENT, never absent, so {not: {node: {...ActivationLimit: true}}} has to be evaluated at CARD scope. A card with two activated abilities, one limited and one not, is therefore wrongly rejected. Recall is also unbounded — 2307 hits — because the question has no positive content; nothing in the DSL can rank or restrict to 'interesting' repeatable abilities.",
+  "hits": 2307,
+  "golden_present": {
+   "pass": true,
+   "missing": []
+  },
+  "golden_absent": {
+   "pass": true,
+   "leaked": []
+  },
+  "sample": [
+   "A-Faceless Haven",
+   "A-Futurist Operative",
+   "A-Geology Enthusiast",
+   "A-Kargan Intimidator",
+   "A-Llanowar Greenwidow",
+   "A-Narfi, Betrayer King",
+   "A-Paragon of Modernity",
+   "A-Pseudodragon Familiar"
+  ],
+  "judgment_calls": [
+   "Both expect_absent cards are correctly excluded: Icy Manipulator (Cost 1 T) and Hangarback Walker (Cost 1 1 T, and SubCounter). expect_present was empty.",
+   "Read 'nothing in the cost that limits it' as: no tap/untap symbol, no sacrifice, no counter removal or addition, no discard, no exile-from-anywhere, no life payment, no reveal/return. Mana and generic {X} are allowed.",
+   "Did not exclude sorcery-speed-only abilities (SorcerySpeed$ True) — that limits WHEN, not HOW MANY TIMES, and the question is about cost components.",
+   "2307 hits is most of the pool's mana-cost-only activated abilities. The question author's suspicion that this is ill-posed on recall grounds is correct."
+  ],
+  "baseline_regex": "(?m)^\\{[0-9WUBRGCXSP/]+\\}: "
+ }
+]

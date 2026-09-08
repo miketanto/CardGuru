@@ -37,9 +37,9 @@ python -m cardguru build \
     --out data/dataset.jsonl.gz
 ```
 
-Takes ~1 minute, writes ~6 MB. The optional `--canonical index.json`
-join (Scryfall-derived canonical names) improves name matching but
-nothing in the test suite depends on it.
+Takes ~5 seconds, writes ~6 MB. The `--canonical index.json` flag is the
+older MTGJSON-derivative name join and is superseded by the Scryfall card
+store in step 3b — skip it.
 
 Environment knobs (only needed if paths differ from the defaults):
 - `CARDGURU_DATASET` — dataset path (default `data/dataset.jsonl.gz`)
@@ -47,13 +47,89 @@ Environment knobs (only needed if paths differ from the defaults):
   `/home/user/forge-src/forge-gui/res/tokenscripts`; set this on a new
   machine or token-aware tests/features degrade gracefully)
 
+## 3b. Build the Scryfall card store (the attribute tier)
+
+Needs network access to `api.scryfall.com` / `data.scryfall.io`. Downloads the
+`oracle-cards` bulk file (~24 MB gzipped) and builds a SQLite store (~115 MB):
+
+```bash
+python -m cardguru cardstore --download
+python -m cardguru join            # match report, writes data/join_report.json
+```
+
+The store is a *separate artifact* from `dataset.jsonl.gz` on purpose: Forge
+and Scryfall refresh on different cadences, and `forge_commit` /
+`oracle_data_date` are independent axes of the version tuple
+([architecture §4](../plan/architecture.md)). Nothing in the graph-search path
+requires the store — `CardStore.open()` returns `None` when it is absent and
+callers degrade gracefully.
+
+Current join rate against pin `670429bf`: **99.83%** (34,461 / 34,519 faces).
+The 58 unmatched faces are left unjoined and labeled, not aliased:
+
+| class | n | why |
+|---|---|---|
+| `alchemy-rebalance` | 17 | `A-<name>` is a mechanically *different* card; inheriting the paper card's oracle text would be wrong |
+| `absent` | 41 | Universes Beyond names Scryfall lists under their Universes Within counterpart, plus cards from the upcoming-set branch the Forge pin tracks |
+
+`data/aliases.json` is optional and empty by default. Only rows with
+`status: "confirmed"` are ever applied; `cardguru join --resolve-misses`
+generates *candidates* from Scryfall's fuzzy endpoint for human review, and
+that endpoint returns near-name false positives (`Drake Stone` → `Stone
+Drake`), so nothing is auto-applied.
+
 ## 4. Verify
 
 ```bash
-python -m pytest tests/        # 91 tests; integration goldens auto-skip
+python -m pytest tests/        # 120 tests; integration goldens auto-skip
                                # if the dataset is missing - build first
 python benchmark/run.py        # 20-query golden benchmark
 ```
+
+## 4b. Try it in a browser
+
+```bash
+python -m cardguru serve
+```
+
+Then open <http://127.0.0.1:8000>. Loads the index once (~0.6 s) and answers
+from memory, so queries return in milliseconds.
+
+- **Question library** — the compiled benchmark questions
+  (`benchmark/compiled_questions.json`), click to run. Rows marked `partial`
+  show what the query does *not* capture, rather than pretending to be a
+  complete answer.
+- **Query box** — hand-written DSL, validated against the ontology before it
+  runs; rejects name the offending token.
+- **English box** — needs `ANTHROPIC_API_KEY`. Without it the box is disabled
+  and says so; everything else still works.
+
+Bound to `127.0.0.1` deliberately: it is an unauthenticated query endpoint.
+
+**Debugging an empty result.** A query returning 0 cards is the least
+informative answer possible, so it explains itself: every branch is re-run
+independently and the clause responsible is named.
+
+```bash
+python -m cardguru serve --verbose   # logs each query, the compiled DSL, and the diagnosis
+```
+
+```
+all                                                          0
+  node api="Counter"                                       514
+  card types contains "Blue"                                 0  <- KILLER (zero, inside an all)
+```
+
+A single zero-hit branch inside an `all` forces the whole query to zero no
+matter how healthy the rest is — that is the common failure and it is
+invisible without this. When *no* branch is empty but the result still is, the
+diagnosis says so instead: the clauses are individually fine and simply never
+describe the same card.
+
+**Two Forge field traps this exists to catch.** `types` is only the type line
+(`Instant`, `Creature Human Wizard`) and never contains a color; colour lives
+in `manaCost` (`U U`, `1 U`). And mana value is not numerically comparable —
+`manaCost` is a plain string with no `cmc` field and no `<=` operator.
 
 ## 5. Use the tools
 
@@ -71,6 +147,10 @@ python -m cardguru windows "Combustion Technique"
 python -m cardguru threats "Kaito, Bane of Nightmares" --list decks/dimir_deck.txt
 python -m cardguru fingerprint --list decks/jeskai_deck.txt
 python -m cardguru gaps --top 20
+
+# commander synergy — color identity comes from the card store (step 3b);
+# --ci-index is optional now, needed only for the printing-count prior
+python -m cardguru recommend "Teysa Karlov"
 ```
 
 ## 6. Optional: engine adjudication (not needed for search)

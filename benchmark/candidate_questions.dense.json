@@ -1,0 +1,1256 @@
+[
+ {
+  "id": "attack-trigger-makes-token",
+  "question": "creatures that spit out a token whenever they attack",
+  "mechanical_area": "1 - triggered-ability chains",
+  "difficulty": "easy",
+  "expect_present": [
+   "Hanweir Garrison",
+   "Brimaz, King of Oreskos",
+   "Adeline, Resplendent Cathar",
+   "Altaïr Ibn-La'Ahad",
+   "Anikthea, Hand of Erebos",
+   "Calamity, Galloping Inferno",
+   "Flamerush Rider",
+   "Furnace-Blessed Conqueror",
+   "Ghired, Conclave Exile",
+   "Grub, Notorious Auntie",
+   "Gyrus, Waker of Corpses",
+   "Krothuss, Lord of the Deep",
+   "Living Laser",
+   "Loki, the Deceiver",
+   "Mardu Siegebreaker",
+   "Mirror-Style Master",
+   "Nacatl War-Pride",
+   "Phantom Steed",
+   "Redoubled Stormsinger",
+   "Satya, Aetherflux Genius",
+   "Sauron, the Necromancer",
+   "Shredder, Shadow Master",
+   "Sin, Spira's Punishment"
+  ],
+  "expect_absent": [
+   "Krenko, Mob Boss"
+  ],
+  "trap": "The trigger is worded as 'whenever ~ attacks', 'whenever you attack', and 'whenever ~ and/or another creature attacks', and Krenko makes tokens off a tap ability rather than an attack trigger.",
+  "suspect_unanswerable": false,
+  "notes": "Adeline reads 'Whenever you attack' rather than 'Whenever Adeline attacks' - vetter should decide whether that counts. I think it should.",
+  "unclear": [
+   "Arna Kennerüd, Skycaptain",
+   "Great Goblin, Foul-Hearted",
+   "Shagrat, Loot Bearer"
+  ]
+ },
+ {
+  "id": "death-trigger-drain",
+  "question": "Whenever a creature dies, each opponent loses life and I gain it. What are all the Blood Artist effects?",
+  "mechanical_area": "1 - triggered-ability chains",
+  "difficulty": "easy",
+  "expect_present": [
+   "Blood Artist",
+   "Zulaport Cutthroat",
+   "Bastion of Remembrance",
+   "Vindictive Vampire"
+  ],
+  "expect_absent": [],
+  "trap": "Some versions drain every player, some only opponents, some only your own creatures, and some phrase it as 'target player loses 1 life' - text search for one phrasing badly under-matches. Vindictive Vampire is a near-miss only if you require lifegain (it deals damage instead of draining and does not gain you life on all printings - vetter should confirm).",
+  "suspect_unanswerable": false,
+  "notes": "[vetted by owner 2026-08-07] Vindictive Vampire moved expect_absent -> expect_present. expect_absent here is genuinely borderline; consider dropping it rather than risking a wrong golden."
+ },
+ {
+  "id": "etb-creature-pings-opponents",
+  "question": "permanents that ping each opponent whenever another creature enters under my control",
+  "mechanical_area": "1 - triggered-ability chains",
+  "difficulty": "medium",
+  "expect_present": [
+   "Impact Tremors",
+   "Purphoros, God of the Forge",
+   "Warstorm Surge"
+  ],
+  "expect_absent": [
+   "Goblin Bombardment",
+   "Aether Flash",
+   "Flame-Kin War Scout",
+   "Flametongue Kavu Avatar",
+   "Halana, Kessig Ranger",
+   "Immersturm",
+   "Marauding Raptor",
+   "Rampaging Ferocidon"
+  ],
+  "trap": "The trigger condition (creature ETB) and the effect (damage to opponents) are two separate clauses that plain text search cannot bind together; Goblin Bombardment deals the same damage but off a sacrifice cost, not an ETB trigger.",
+  "suspect_unanswerable": false,
+  "notes": "",
+  "unclear": [
+   "Ayara, First of Locthwain",
+   "Corpse Knight",
+   "Flayer of the Hatebound",
+   "Mogg Bombers",
+   "Pandemonium",
+   "Wispdrinker Vampire"
+  ]
+ },
+ {
+  "id": "landfall-payoffs",
+  "question": "what gets me value every time a land hits the battlefield?",
+  "mechanical_area": "1 - triggered-ability chains",
+  "difficulty": "easy",
+  "expect_present": [
+   "Lotus Cobra",
+   "Tireless Tracker",
+   "Avenger of Zendikar"
+  ],
+  "expect_absent": [
+   "Azusa, Lost but Seeking",
+   "Akki Raider",
+   "Beifong's Bounty Hunters",
+   "Case of the Locked Hothouse",
+   "Countryside Crusher",
+   "Dryad of the Ilysian Grove",
+   "Escape to the Wilds",
+   "Exploration Broodship",
+   "Hearthhull, the Worldseed",
+   "Hugs, Grisly Guardian",
+   "Journey of Discovery",
+   "Kiora, the Crashing Wave",
+   "Loot, Exuberant Explorer",
+   "Mina and Denn, Wildborn",
+   "Nahiri's Lithoforming",
+   "Oasis of Renewal",
+   "Pedantic Learning",
+   "Princess Yue",
+   "Rites of Flourishing",
+   "Sand Scout",
+   "Skola Grovedancer",
+   "Song of Creation",
+   "Sword of Forge and Frontier",
+   "Thalia and The Gitrog Monster",
+   "Thendar, the Overminer",
+   "Till and Tend",
+   "Titania, Protector of Argoth",
+   "Turntimber Sower",
+   "Urban Evolution"
+  ],
+  "trap": "Half these cards say 'Landfall' as a keyword and half spell out 'Whenever a land enters the battlefield under your control'; Azusa is the classic false friend since it enables land drops but has no trigger at all.",
+  "suspect_unanswerable": false,
+  "notes": "",
+  "unclear": [
+   "Deep Gnome Terramancer",
+   "Flubs, the Fool"
+  ]
+ },
+ {
+  "id": "magecraft-style-payoff",
+  "question": "cards that do something every time I cast an instant or sorcery",
+  "mechanical_area": "1 - triggered-ability chains",
+  "difficulty": "medium",
+  "expect_present": [
+   "Young Pyromancer",
+   "Storm-Kiln Artist",
+   "Archmage Emeritus",
+   "Monastery Mentor",
+   "Guttersnipe",
+   "April O'Neil, Human Element",
+   "Ashling, Flame Dancer",
+   "Dragonsguard Elite",
+   "Elemental Expressionist",
+   "Eye of the Storm",
+   "Glacierwood Siege",
+   "Lilah, Undefeated Slickshot",
+   "Nightmares and Daydreams",
+   "Octavia, Living Thesis",
+   "Prismari Apprentice",
+   "Professor Onyx",
+   "Quandrix Pledgemage",
+   "Ral, Storm Conduit",
+   "Rod of Absorption",
+   "Sedgemoor Witch",
+   "Silverquill Pledgemage",
+   "Symmetry Sage",
+   "Witherbloom Pledgemage"
+  ],
+  "expect_absent": [
+   "A-Maelstrom Muse",
+   "Curse of Echoes",
+   "Ichneumon Druid",
+   "Ink-Treader Nephilim",
+   "Jaya, Fiery Negotiator",
+   "Mage Hunter",
+   "Mirrorwing Dragon",
+   "Soulfire Grand Master",
+   "Will Kenrith"
+  ],
+  "trap": "Magecraft keyword vs spelled-out 'Whenever you cast an instant or sorcery spell' vs 'Whenever you cast a noncreature spell' - three phrasings for one structural pattern. Guttersnipe is arguably a true positive (it triggers on instants/sorceries) so it may need to move to expect_present.",
+  "suspect_unanswerable": false,
+  "notes": "[vetted by owner 2026-08-07] Guttersnipe moved expect_absent -> expect_present. Guttersnipe is a bad absent - vetter should probably move it to present or delete it. Flagging honestly.",
+  "unclear": [
+   "A-Sorcerer Class",
+   "Great Hall of the Biblioplex",
+   "The Mirari Conjecture"
+  ]
+ },
+ {
+  "id": "opponent-draw-punisher",
+  "question": "Cards that punish opponents for drawing cards",
+  "mechanical_area": "1 - triggered-ability chains",
+  "difficulty": "medium",
+  "expect_present": [
+   "Underworld Dreams",
+   "Fate Unraveler",
+   "Nekusar, the Mindrazer"
+  ],
+  "expect_absent": [
+   "Notion Thief"
+  ],
+  "trap": "'Punish' is a paraphrase - the cards say 'deals 1 damage to that player' or 'loses 1 life'. Notion Thief looks related but is a draw-replacement effect with no trigger, so it fails a structural trigger->effect match.",
+  "suspect_unanswerable": false,
+  "notes": ""
+ },
+ {
+  "id": "sacrifice-artifact-as-cost",
+  "question": "o:'sacrifice an artifact' as an activation cost, not an effect",
+  "mechanical_area": "2 - activated-ability cost structures",
+  "difficulty": "medium",
+  "expect_present": [
+   "Arcbound Ravager",
+   "Atog",
+   "Krark-Clan Ironworks",
+   "Clan Crafter"
+  ],
+  "expect_absent": [
+   "Shatter",
+   "A Golden Opportunity",
+   "Ace, Fearless Rebel",
+   "Beetle-Headed Merchants",
+   "Benthic Criminologists",
+   "Buzzard-Wasp Colony",
+   "Chipper Chopper",
+   "Cornered Crook",
+   "Daretti, Rocketeer Engineer",
+   "Dire Blunderbuss",
+   "Glorifier of Suffering",
+   "Gut, True Soul Zealot",
+   "Hei Bai, Spirit of Balance",
+   "In the Pale Moonlight",
+   "Ironclad Revolutionary",
+   "Kill-Zone Acrobat",
+   "Kuldotha Flamefiend",
+   "Mica, Reader of Ruins",
+   "Mukotai Soulripper",
+   "Namazu Trader",
+   "Riveting Rigger",
+   "Selfcraft Mechan",
+   "Seraph of New Phyrexia",
+   "Sokenzan Smelter",
+   "Swarm Culler",
+   "The Sackville-Bagginses",
+   "Undercity Eliminator",
+   "Wyll of the Celestial Pact",
+   "Wyll of the Elder Pact",
+   "Wyll of the Fey Pact"
+  ],
+  "trap": "The exact same words appear as a cost (before the colon) and as an instruction in an effect ('sacrifice an artifact: ...' vs 'you may sacrifice an artifact'), and text search cannot see the colon boundary.",
+  "suspect_unanswerable": false,
+  "notes": "Deliberately phrased in Scryfall-ese to vary register. Good probe of whether the system models cost-vs-effect position."
+ },
+ {
+  "id": "discard-as-activation-cost",
+  "question": "creatures with an ability I pay for by discarding a card",
+  "mechanical_area": "2 - activated-ability cost structures",
+  "difficulty": "medium",
+  "expect_present": [
+   "Wild Mongrel",
+   "Putrid Imp"
+  ],
+  "expect_absent": [
+   "Merfolk Looter"
+  ],
+  "trap": "Merfolk Looter is the canonical trap: 'T: Draw a card, then discard a card' has the discard as an effect, not a cost, so a naive o:discard search over-matches badly.",
+  "suspect_unanswerable": false,
+  "notes": "Zombie Infestation fits the pattern but is an enchantment, so excluded from expect_present given the 'creatures' constraint."
+ },
+ {
+  "id": "pay-life-activation-cost",
+  "question": "abilities where you pay life as part of the cost",
+  "mechanical_area": "2 - activated-ability cost structures",
+  "difficulty": "medium",
+  "expect_present": [
+   "Necropotence",
+   "Griselbrand",
+   "Bloodstained Mire",
+   "Lithoform Blight",
+   "Susur Secundi, Void Altar",
+   "Underworld Connections"
+  ],
+  "expect_absent": [
+   "Bitterblossom",
+   "A-Shessra, Death's Whisper",
+   "Ambulatory Edifice",
+   "Arrogant Poet",
+   "Bringer of the Black Dawn",
+   "Crossway Troublemakers",
+   "Kinzu of the Bleak Coven",
+   "Maralen of the Mornsong Avatar",
+   "Mask of Griselbrand",
+   "Meathook Massacre II",
+   "Nameless Race",
+   "Purgatory",
+   "Rankle, Pitiless Trickster",
+   "Savra, Queen of the Golgari",
+   "Shessra, Death's Whisper",
+   "The Kingpin of Crime",
+   "Vizkopa Confessor"
+  ],
+  "trap": "'Pay N life' as a cost reads nearly identically to 'you lose N life' in an effect; Bitterblossom loses life as part of a triggered effect, which is a different structure entirely.",
+  "suspect_unanswerable": false,
+  "notes": "Fetchlands are a large, boring chunk of the true answer set - vetter may want to scope this to nonland cards.",
+  "unclear": [
+   "Channel",
+   "Defiler of Faith",
+   "Defiler of Vigor",
+   "Demon of Death's Gate",
+   "Fire Covenant",
+   "Force of Rowan",
+   "Fumarole",
+   "Hatred",
+   "Necrologia",
+   "Toxic Deluge",
+   "Withering Boon"
+  ]
+ },
+ {
+  "id": "exile-from-graveyard-as-cost",
+  "question": "anything where the cost is exiling cards out of your own graveyard",
+  "mechanical_area": "2 - activated-ability cost structures",
+  "difficulty": "hard",
+  "expect_present": [
+   "Scrapheap Scrounger",
+   "Treasure Cruise",
+   "Uro, Titan of Nature's Wrath",
+   "Kroxa, Titan of Death's Hunger"
+  ],
+  "expect_absent": [
+   "Bojuka Bog"
+  ],
+  "trap": "This pattern hides behind at least three surfaces - an explicit activation cost, the Delve keyword, and Escape - so no single oracle string finds them; Bojuka Bog exiles a graveyard as an effect and matches on words alone.",
+  "suspect_unanswerable": false,
+  "notes": "[vetted by owner 2026-08-07] scoping resolved: keyworded alternative costs (delve, escape) are in scope. Whether keyworded alternative costs (delve, escape) count is a scoping call for the vetter. Worth keeping ambiguous to see how the system handles it.",
+  "scoping": "Delve and Escape DO count as exiling cards from your graveyard as a cost. Bojuka Bog stays absent: it exiles a graveyard as an effect, not a cost."
+ },
+ {
+  "id": "tap-other-creatures-as-cost",
+  "question": "cards where you tap OTHER untapped creatures you control to pay for something",
+  "mechanical_area": "2 - activated-ability cost structures",
+  "difficulty": "hard",
+  "expect_present": [
+   "Springleaf Drum",
+   "Smuggler's Copter",
+   "Heart of Kiran",
+   "Angelic Favor",
+   "Aziza, Mage Tower Captain",
+   "Burn at the Stake",
+   "Caparocti Sunborn",
+   "Explosive Singularity",
+   "Fear of Exposure",
+   "Gaze of Justice",
+   "Gravelgill Scoundrel",
+   "Guardian of the Great Door",
+   "Hollow Warrior",
+   "Kitt Kanto, Mayhem Diva",
+   "Lashknife",
+   "Mossbridge Troll",
+   "Orim's Cure",
+   "Raff, Weatherlight Stalwart",
+   "Ramosian Rally",
+   "Redcap Raiders",
+   "Sephara, Sky's Blade",
+   "Shared Discovery",
+   "Sivvi's Valor",
+   "Swallow Whole",
+   "Thousand Moons Smithy",
+   "Tidal Terror",
+   "Warlord's Elite"
+  ],
+  "expect_absent": [
+   "Cryptolith Rite"
+  ],
+  "trap": "Crew N, Convoke, and spelled-out 'Tap an untapped creature you control' are the same structural cost wearing three different names; Cryptolith Rite grants a tap ability rather than using tapping as a cost.",
+  "suspect_unanswerable": false,
+  "notes": "Heart of Kiran also has a counter-removal alternative; still a crew card."
+ },
+ {
+  "id": "tax-opponent-spells",
+  "question": "stax pieces that tax my opponents' spells without taxing mine",
+  "mechanical_area": "3 - static/continuous effects",
+  "difficulty": "hard",
+  "expect_present": [
+   "Grand Arbiter Augustin IV",
+   "Callaphe, Beloved of the Sea",
+   "Jubilant Skybonder",
+   "Monastery Siege"
+  ],
+  "expect_absent": [
+   "Thalia, Guardian of Thraben",
+   "Sphere of Resistance",
+   "Soul Partition"
+  ],
+  "trap": "The asymmetry is the whole question - Thalia and Sphere of Resistance use nearly identical wording but tax everyone including you, so word-level matching cannot separate symmetric from one-sided taxes.",
+  "suspect_unanswerable": false,
+  "notes": "Good probe of whether the system models the affected-player argument of a static effect.",
+  "unclear": [
+   "Elspeth Conquers Death",
+   "Tax Collector"
+  ]
+ },
+ {
+  "id": "one-spell-per-turn-rule",
+  "question": "permanents that change the rules about how many spells people can cast per turn",
+  "mechanical_area": "3 - static/continuous effects",
+  "difficulty": "medium",
+  "expect_present": [
+   "Rule of Law",
+   "Arcane Laboratory",
+   "Eidolon of Rhetoric"
+  ],
+  "expect_absent": [
+   "Counterspell"
+  ],
+  "trap": "These are rule-modifying continuous effects with no trigger and no activation; they read like nothing else in the game, and 'can't cast more than one spell' has several paraphrases.",
+  "suspect_unanswerable": false,
+  "notes": ""
+ },
+ {
+  "id": "cast-from-top-of-library",
+  "question": "stuff that lets me play cards off the top of my library",
+  "mechanical_area": "3 - static/continuous effects",
+  "difficulty": "medium",
+  "expect_present": [
+   "Future Sight",
+   "Oracle of Mul Daya",
+   "Bolas's Citadel",
+   "Vizier of the Menagerie",
+   "Windriddle Palaces"
+  ],
+  "expect_absent": [
+   "Sensei's Divining Top",
+   "A-Fires of Invention",
+   "Aluren",
+   "Apex Observatory",
+   "As Foretold",
+   "Conspiracy Unraveler",
+   "Demon of Fate's Design",
+   "Dracogenesis",
+   "Fires of Invention",
+   "Flames of Moradin",
+   "Grenzo, Crooked Jailer",
+   "Mine Security",
+   "Nissa, Worldsoul Speaker",
+   "Primal Prayers",
+   "Sanguine Soothsayer",
+   "Sarkhan, Wanderer to Shiv",
+   "Veko, Death's Doorkeeper",
+   "World War Hulk"
+  ],
+  "trap": "A permission-granting static effect, not a draw or a tutor; Sensei's Divining Top manipulates the top of your library but grants no casting permission, and impulse-draw effects exile first so they are a different structure.",
+  "suspect_unanswerable": false,
+  "notes": ""
+ },
+ {
+  "id": "flash-permission-static",
+  "question": "anything that lets me cast my spells at instant speed",
+  "mechanical_area": "3 - static/continuous effects",
+  "difficulty": "medium",
+  "expect_present": [
+   "Vedalken Orrery",
+   "Leyline of Anticipation",
+   "Teferi, Mage of Zhalfir",
+   "A-Teferi, Time Raveler",
+   "Alchemist's Refuge",
+   "Arlinn, the Pack's Hope",
+   "Teferi, Time Raveler",
+   "Winding Canyons"
+  ],
+  "expect_absent": [
+   "Quicken",
+   "Ride the Avalanche",
+   "Savage Summoning",
+   "Scout's Warning",
+   "Teferi's Talent",
+   "Teferi, Temporal Archmage"
+  ],
+  "trap": "'As though they had flash' is the key phrase but the question never says flash; Quicken grants the same effect to one spell as a one-shot rather than as a continuous permission.",
+  "suspect_unanswerable": false,
+  "notes": "",
+  "unclear": [
+   "Borne Upon a Wind",
+   "Cherished Hatchling",
+   "Complete the Circuit",
+   "Emergence Zone",
+   "Progenitor's Icon"
+  ]
+ },
+ {
+  "id": "global-untap-denial",
+  "question": "cards that stop permanents from untapping during untap steps",
+  "mechanical_area": "3 - static/continuous effects",
+  "difficulty": "medium",
+  "expect_present": [
+   "Winter Orb",
+   "Static Orb",
+   "Stasis",
+   "Edge of Malacol",
+   "Freyalise's Winds"
+  ],
+  "expect_absent": [
+   "Icy Manipulator"
+  ],
+  "trap": "These modify the untap step itself (a rule-replacement/continuous effect) rather than tapping anything; Icy Manipulator taps permanents and matches on the shared vocabulary.",
+  "suspect_unanswerable": false,
+  "notes": ""
+ },
+ {
+  "id": "dies-exile-instead",
+  "question": "permanents that replace things going to the graveyard with exile",
+  "mechanical_area": "4 - replacement and prevention",
+  "difficulty": "medium",
+  "expect_present": [
+   "Rest in Peace",
+   "Leyline of the Void",
+   "Anafenza, the Foremost"
+  ],
+  "expect_absent": [
+   "Grafdigger's Cage",
+   "Bojuka Bog",
+   "Eelectrocute",
+   "Glimpse the Cosmos"
+  ],
+  "trap": "Grafdigger's Cage is a prohibition, not a replacement, and Bojuka Bog is a one-shot exile - the structural distinction between 'instead' and 'can't' and 'do it once' is invisible to keyword matching.",
+  "suspect_unanswerable": false,
+  "notes": "",
+  "unclear": [
+   "Haakon, Stromgald Scourge Avatar",
+   "The Doctor's Tomb"
+  ]
+ },
+ {
+  "id": "redirect-damage-to-a-permanent",
+  "question": "Is there anything that soaks up damage aimed at me and takes it instead?",
+  "mechanical_area": "4 - replacement and prevention",
+  "difficulty": "hard",
+  "expect_present": [
+   "Palisade Giant",
+   "Harm's Way",
+   "Deflecting Palm",
+   "Ancient Adamantoise",
+   "Delaying Shield",
+   "Force Bubble",
+   "Harsh Judgment",
+   "Pariah"
+  ],
+  "expect_absent": [
+   "Fog",
+   "Blessed Sanctuary",
+   "Crystal Barricade",
+   "Dolmen Gate",
+   "Emmara Tandris",
+   "Gideon's Intervention",
+   "Glacial Chasm",
+   "Goldnight Castigator",
+   "Hyperion, Supreme Hero",
+   "Iroas, God of Victory",
+   "Light of Sanction",
+   "Mark of Asylum",
+   "Nothing Can Stop Me Now",
+   "Protection of the Hekma",
+   "Purity",
+   "Rescue Retriever",
+   "Solitary Confinement",
+   "Sphere of Grace",
+   "Sphere of Purity",
+   "Spirit of Resistance",
+   "Tajic, Legion's Edge",
+   "The Wanderer",
+   "Thunderstaff",
+   "Valkmira, Protector's Shield",
+   "Vigor"
+  ],
+  "trap": "Redirection ('is dealt to X instead') and prevention ('prevent that damage') are structurally different but use overlapping vocabulary, and the natural phrasing 'soaks up' matches neither.",
+  "suspect_unanswerable": false,
+  "notes": "",
+  "unclear": [
+   "Nefarious Lich"
+  ]
+ },
+ {
+  "id": "fog-effects",
+  "question": "fog effects - prevent all combat damage this turn",
+  "mechanical_area": "4 - replacement and prevention",
+  "difficulty": "easy",
+  "expect_present": [
+   "Fog",
+   "Holy Day",
+   "Moment's Peace",
+   "Darkness"
+  ],
+  "expect_absent": [],
+  "trap": "Mostly easy for text search; the variance is in cards that prevent only damage dealt to you, or only by attacking creatures, which should arguably be excluded.",
+  "suspect_unanswerable": false,
+  "notes": "Removed a low-confidence expect_absent. Included mainly as an easy calibration row; the real variance is cards that prevent only damage dealt to you or only from attackers."
+ },
+ {
+  "id": "draw-replacement-effects",
+  "question": "cards that change what happens when I draw a card",
+  "mechanical_area": "4 - replacement and prevention",
+  "difficulty": "hard",
+  "expect_present": [
+   "Underrealm Lich",
+   "Abundance",
+   "Alhammarret's Archive"
+  ],
+  "expect_absent": [
+   "Howling Mine"
+  ],
+  "trap": "'If you would draw a card, instead...' is a replacement on an event most cards only reference as an effect; Howling Mine adds draws without replacing any, and multi-draw effects flood a naive search.",
+  "suspect_unanswerable": false,
+  "notes": "IMPORTANT: I believe the correct card name is 'Underrealm Lich', not 'Underworld Lich'. Vetter must fix the spelling before this row is used. [vetting: corrected Underworld Lich -> Underrealm Lich, verified against card store]"
+ },
+ {
+  "id": "damage-multipliers",
+  "question": "anything that makes damage hit for double or triple",
+  "mechanical_area": "4 - replacement and prevention",
+  "difficulty": "medium",
+  "expect_present": [
+   "Furnace of Rath",
+   "Dictate of the Twin Gods",
+   "Fiery Emancipation",
+   "Absorbing Man and Titania",
+   "City on Fire",
+   "Collective Inferno",
+   "Mjölnir, Hammer of Thor",
+   "Raphael, the Muscle",
+   "Sawhorn Nemesis",
+   "Wolverine, Best There Is"
+  ],
+  "expect_absent": [
+   "Torbran, Thane of Red Fell",
+   "Angel of Suffering"
+  ],
+  "trap": "Multipliers ('deals double that damage instead') and flat adders (Torbran's +2) are the same idea to a player but structurally distinct replacement effects, and symmetric vs one-sided matters too.",
+  "suspect_unanswerable": false,
+  "notes": ""
+ },
+ {
+  "id": "enters-as-a-copy",
+  "question": "creatures that come into play as a copy of something already on the battlefield",
+  "mechanical_area": "4 - replacement and prevention",
+  "difficulty": "medium",
+  "expect_present": [
+   "Clone",
+   "Phyrexian Metamorph",
+   "Spark Double",
+   "Clever Impersonator",
+   "Dack's Duplicate",
+   "Evil Twin",
+   "Mockingbird",
+   "Phantasmal Image",
+   "Progenitor Mimic",
+   "Quicksilver Gargantuan",
+   "Sakashima's Protege",
+   "Visage Bandit"
+  ],
+  "expect_absent": [
+   "Absorbing Man",
+   "Aquamorph Entity",
+   "Body Double",
+   "Cemetery Puca",
+   "Corrupted Shapeshifter",
+   "Dimir Doppelganger",
+   "Gogo, Mysterious Mime",
+   "Identity Thief",
+   "Kimahri, Valiant Guardian",
+   "Lazav, Wearer of Faces",
+   "Loki, Lord of Misrule",
+   "Mimeoplasm, Revered One",
+   "Muddle, the Ever-Changing",
+   "Olag, Ludevic's Hubris",
+   "Scion of the Ur-Dragon",
+   "Silent Hallcreeper",
+   "Sunfrill Imitator",
+   "Taskmaster, Mercenary Mimic",
+   "The Fourteenth Doctor",
+   "Tilonalli's Skinshifter",
+   "Valki, God of Lies",
+   "Volrath, the Shapestealer"
+  ],
+  "trap": "'You may have ~ enter as a copy' is a copy-replacement applied as the permanent enters, distinct from an ETB trigger that creates a copy token; Clever Impersonator is actually a true positive, which is the trap in reverse.",
+  "suspect_unanswerable": false,
+  "notes": "[vetted by owner 2026-08-07] Clever Impersonator moved expect_absent -> expect_present. Clever Impersonator very likely belongs in expect_present (it enters as a copy of any nonland permanent). Vetter should move or delete it."
+ },
+ {
+  "id": "reanimate-on-a-trigger",
+  "question": "permanents that pull a creature out of my graveyard onto the battlefield when something happens",
+  "mechanical_area": "5 - zone-change logic",
+  "difficulty": "medium",
+  "expect_present": [
+   "Sun Titan",
+   "Karmic Guide",
+   "Meren of Clan Nel Toth",
+   "Abiding Grace",
+   "Ancient Brass Dragon",
+   "Artisan of Kozilek",
+   "Balduvian Atrocity",
+   "Body Launderer",
+   "Bruna, the Fading Light",
+   "Celestine, the Living Saint",
+   "Dawn of the Dead",
+   "Driver of the Dead",
+   "Emptiness",
+   "Gixian Puppeteer",
+   "Magister of Worth",
+   "Mirko, Obsessive Theorist",
+   "Necromancy",
+   "Nullpriest of Oblivion",
+   "Phyrexian Delver",
+   "Rakdos Joins Up",
+   "Reya Dawnbringer",
+   "Sheoldred, Whispering One",
+   "Smile at Death",
+   "Terra, Herald of Hope",
+   "The Falcon, Airship Restored",
+   "The Upside Down",
+   "Vesperlark",
+   "Winter Soldier, Reborn Avenger"
+  ],
+  "expect_absent": [
+   "Raise Dead",
+   "Fire Nation Salvagers",
+   "Ink-Eyes, Servant of Oni",
+   "Scion of Darkness"
+  ],
+  "trap": "Requires binding a trigger to a graveyard-to-battlefield move; graveyard-to-hand cards like Raise Dead share almost all their vocabulary but land the card in the wrong zone.",
+  "suspect_unanswerable": false,
+  "notes": "",
+  "unclear": [
+   "Gyruda, Doom of Depths",
+   "Krovikan Vampire"
+  ]
+ },
+ {
+  "id": "blink-effects",
+  "question": "blink effects - exile my own creature and bring it right back",
+  "mechanical_area": "5 - zone-change logic",
+  "difficulty": "medium",
+  "expect_present": [
+   "Cloudshift",
+   "Restoration Angel",
+   "Flickerwisp",
+   "Ephemerate",
+   "Frenetic Sliver",
+   "Ifrit, Warden of Inferno",
+   "Lae'zel's Acrobatics",
+   "Phoenix, Warden of Fire",
+   "Shiva, Warden of Ice",
+   "Tunnel of Love"
+  ],
+  "expect_absent": [
+   "Swords to Plowshares",
+   "A-Kumano Faces Kakkazan",
+   "Azusa's Many Journeys",
+   "Behold the Unspeakable",
+   "Fable of the Mirror-Breaker",
+   "Fate Reforged",
+   "Hidetsugu Consumes All",
+   "Jugan Defends the Temple",
+   "Liliana's Other Contract",
+   "Okiba Reckoner Raid",
+   "Sothera, the Supervoid",
+   "Teachings of the Kirin",
+   "The Fall of Lord Konda",
+   "The Great Synthesis",
+   "The Legend of Kuruk",
+   "The Legend of Roku",
+   "The Modern Age",
+   "The Restoration of Eiganjo",
+   "The True Scriptures",
+   "Welcome to . . ."
+  ],
+  "trap": "'Blink' and 'flicker' appear on zero cards; the actual text is 'exile target creature, then return it to the battlefield', which shares its opening clause with real exile removal.",
+  "suspect_unanswerable": false,
+  "notes": "Return timing varies (immediately, end of turn, next end step) - vetter should decide whether all count.",
+  "unclear": [
+   "Darigaaz Reincarnated",
+   "Esper Terra",
+   "Northampton Farm",
+   "Parallax Wave",
+   "Wormfang Drake"
+  ]
+ },
+ {
+  "id": "tutor-to-top-of-library",
+  "question": "tutors that put the card on top of my library instead of in my hand",
+  "mechanical_area": "5 - zone-change logic",
+  "difficulty": "medium",
+  "expect_present": [
+   "Vampiric Tutor",
+   "Mystical Tutor",
+   "Worldly Tutor",
+   "Personal Tutor"
+  ],
+  "expect_absent": [
+   "Demonic Tutor"
+  ],
+  "trap": "The destination zone is the only thing separating these from every other tutor, and it sits in a subordinate clause after nearly identical search text.",
+  "suspect_unanswerable": false,
+  "notes": ""
+ },
+ {
+  "id": "cast-from-graveyard-permanents",
+  "question": "permanents that let me cast spells straight out of my graveyard",
+  "mechanical_area": "5 - zone-change logic",
+  "difficulty": "hard",
+  "expect_present": [
+   "Muldrotha, the Gravetide",
+   "Lurrus of the Dream-Den",
+   "Underworld Breach",
+   "Advanced Floral Invocations",
+   "Case of the Uneaten Feast",
+   "Chainer, Nightmare Adept",
+   "Gisa and Geralf",
+   "Jaya Ballard",
+   "Magus of the Will",
+   "Osteomancer Adept",
+   "The Great Work",
+   "Zask, Skittering Swarmlord"
+  ],
+  "expect_absent": [
+   "Snapcaster Mage",
+   "Ancient Greenwarden",
+   "Crucible of Worlds",
+   "Haakon, Stromgald Scourge Avatar",
+   "Hildibrand Manderville",
+   "Ichor Aberration",
+   "Lightwheel Enhancements",
+   "Mosswood Dreadknight",
+   "Ramunap Excavator",
+   "Szarel, Genesis Shepherd",
+   "Titania, Nature's Force",
+   "Walk-In Closet",
+   "Whispersteel Dagger"
+  ],
+  "trap": "This is a static casting permission that must be distinguished from self-recursion keywords (flashback, escape, disturb) and from cards like Snapcaster that grant flashback to one specific card.",
+  "suspect_unanswerable": false,
+  "notes": "",
+  "unclear": [
+   "Emry, Lurker of the Loch",
+   "Exploration Broodship",
+   "Havengul Lich",
+   "Heiko Yamazaki, the General",
+   "Kaldring, the Rimestaff",
+   "Mavinda, Students' Advocate",
+   "Norika Yamazaki, the Poet",
+   "Reezug, the Bonecobbler",
+   "Silas Renn, Seeker Adept"
+  ]
+ },
+ {
+  "id": "play-lands-from-graveyard",
+  "question": "how do I replay lands from my graveyard",
+  "mechanical_area": "5 - zone-change logic",
+  "difficulty": "easy",
+  "expect_present": [
+   "Crucible of Worlds",
+   "Ramunap Excavator",
+   "Serra Paragon"
+  ],
+  "expect_absent": [
+   "Azusa, Lost but Seeking",
+   "Exploration",
+   "A-Fires of Invention",
+   "Abandoned Sarcophagus",
+   "Archangel Elspeth",
+   "Banon, the Returners' Leader",
+   "Chainer, Nightmare Adept",
+   "Eivor, Wolf-Kissed",
+   "Exploration Broodship",
+   "Fetch Quest",
+   "Forgotten Cellar",
+   "Hourglass of the Lost",
+   "Jace, Telepath Unbound",
+   "Leonardo, Sewer Samurai",
+   "Locke, Treasure Hunter",
+   "Lurrus of the Dream-Den",
+   "Mind Roots",
+   "Mission Briefing",
+   "Osteomancer Adept",
+   "Rampant Frogantua",
+   "Realmbreaker, the Invasion Tree",
+   "Silvan Reveler"
+  ],
+  "trap": "Extra-land-drop cards use nearly the same words ('you may play an additional land') but grant no graveyard permission at all.",
+  "suspect_unanswerable": false,
+  "notes": "",
+  "unclear": [
+   "Aftermath Analyst",
+   "Bonny Pall, Clearcutter",
+   "Deeproot Wayfinder",
+   "Dread Tiller",
+   "Splendid Reclamation",
+   "Teval, the Balanced Scale",
+   "The Mending of Dominaria",
+   "Titania, Gaea Incarnate",
+   "World Shaper"
+  ]
+ },
+ {
+  "id": "removal-that-never-says-destroy",
+  "question": "removal spells that get rid of a creature without ever saying destroy or exile",
+  "mechanical_area": "5 - zone-change logic",
+  "difficulty": "hard",
+  "expect_present": [
+   "Diabolic Edict",
+   "Chandra's Defeat",
+   "Consuming Tide",
+   "Fiery Impulse",
+   "Forked Bolt",
+   "Pigment Storm",
+   "Savage Twister",
+   "Shrapnel Blast",
+   "Soul Shatter"
+  ],
+  "expect_absent": [
+   "Doom Blade",
+   "Pongify",
+   "Swords to Plowshares",
+   "A Premonition of Your Demise",
+   "Apprentice Sorcerer",
+   "Batterskull",
+   "Dormant Volcano",
+   "Energy Flux",
+   "Goblin Fireleaper",
+   "Heavy Ballista",
+   "Inferno Fist",
+   "Lich's Mirror",
+   "Mana Vortex",
+   "Mordant Dragon",
+   "Ominous Cemetery",
+   "Retrieval Agent",
+   "Stormbind",
+   "Temporal Adept",
+   "Timothar, Baron of Bats"
+  ],
+  "trap": "This is a negative constraint over semantic function - the system has to know that bounce, tuck, sacrifice-edicts and -X/-X all achieve removal, then exclude the two most common words for it.",
+  "suspect_unanswerable": true,
+  "notes": "Flagged suspect: 'gets rid of' is a functional category, not a structural one. I expect the system either can't express the negation or can't express the functional grouping. Informative either way. [2026-08-07] Pongify moved expect_present -> expect_absent: its Forge node is SP$ Destroy and its oracle text opens 'Destroy target creature', so it cannot satisfy 'without ever saying destroy'. Flagged in compiled_questions.json judgment_calls since the harness was built; the golden was simply wrong.",
+  "unclear": [
+   "Brawl",
+   "Dead Before Sunrise",
+   "Kazuul's Fury",
+   "Quarry Colossus",
+   "Urborg Emissary",
+   "Warzone Duplicator"
+  ]
+ },
+ {
+  "id": "counter-doubling",
+  "question": "cards that double the +1/+1 counters I put on things",
+  "mechanical_area": "6 - counters/tokens/state-based",
+  "difficulty": "easy",
+  "expect_present": [
+   "Doubling Season",
+   "Branching Evolution",
+   "Corpsejack Menace",
+   "Vorinclex, Monstrous Raider"
+  ],
+  "expect_absent": [
+   "Hardened Scales"
+  ],
+  "trap": "Hardened Scales adds one rather than doubling - the same replacement shape with a different arithmetic operator, which text search cannot tell apart.",
+  "suspect_unanswerable": false,
+  "notes": "If the system treats Hardened Scales as a match, that's a precision failure worth recording rather than a bug in the question."
+ },
+ {
+  "id": "token-doubling",
+  "question": "token doublers",
+  "mechanical_area": "6 - counters/tokens/state-based",
+  "difficulty": "easy",
+  "expect_present": [
+   "Anointed Procession",
+   "Parallel Lives",
+   "Doubling Season"
+  ],
+  "expect_absent": [
+   "Second Harvest"
+  ],
+  "trap": "Terse search-box phrasing with zero oracle vocabulary in it; the actual text is 'If one or more tokens would be created under your control, twice that many are created instead'. Second Harvest copies existing tokens once rather than replacing token creation.",
+  "suspect_unanswerable": false,
+  "notes": ""
+ },
+ {
+  "id": "proliferate-payoffs",
+  "question": "cards that proliferate off a trigger rather than as a one-shot spell",
+  "mechanical_area": "6 - counters/tokens/state-based",
+  "difficulty": "medium",
+  "expect_present": [
+   "Flux Channeler",
+   "Thrummingbird",
+   "Atraxa, Praetors' Voice"
+  ],
+  "expect_absent": [
+   "Contagion Clasp"
+  ],
+  "trap": "Every one of these contains the literal word 'proliferate', so the discriminating work is entirely in the trigger-vs-activated-vs-spell distinction; Contagion Clasp proliferates from an activated ability.",
+  "suspect_unanswerable": false,
+  "notes": ""
+ },
+ {
+  "id": "move-counters-between-permanents",
+  "question": "anything that physically moves counters from one permanent to another",
+  "mechanical_area": "6 - counters/tokens/state-based",
+  "difficulty": "hard",
+  "expect_present": [
+   "Nesting Grounds",
+   "The Ozolith",
+   "Power Conduit",
+   "Aetherborn Marauder",
+   "Agent's Toolkit",
+   "Arcbound Fiend",
+   "Bioshift",
+   "Blaster, Morale Booster",
+   "Cytoplast Root-Kin",
+   "Galloping Lizrog",
+   "Gatewatch Beacon",
+   "Leech Bonder",
+   "Resourceful Defense",
+   "Rikku, Resourceful Guardian",
+   "Simic Fluxmage",
+   "Steel Dromedary",
+   "Tidus, Yuna's Guardian"
+  ],
+  "expect_absent": [
+   "Chaotic Goo",
+   "Cocoon",
+   "Crovax the Cursed",
+   "Descendant of Masumaro",
+   "Dread Wight",
+   "Family's Favor",
+   "Goblin Bomb",
+   "Heirloom Mirror",
+   "Mister Hyde, Monster Within",
+   "Primal Amulet",
+   "Sensational Spider-Man",
+   "Smoldering Egg",
+   "Tend to the Kiln",
+   "Treasure Map"
+  ],
+  "trap": "Moving a counter is neither adding nor removing, and cards express it as 'move a counter from', 'put those counters on', and 'remove a counter... put a counter on' - three shapes for one operation.",
+  "suspect_unanswerable": false,
+  "notes": "expect_absent lists a mechanic name, not a card - vetter should replace it with an actual proliferate card or empty the list. [vetting: dropped 'Proliferate' from expect_absent - a mechanic, not a card]",
+  "unclear": [
+   "Etched Slith",
+   "Vhal, Scholar of Tactics"
+  ]
+ },
+ {
+  "id": "triggers-off-state-based-actions",
+  "question": "abilities that trigger off a state-based action, like a creature hitting 0 toughness or a player hitting 0 life",
+  "mechanical_area": "6 - counters/tokens/state-based",
+  "difficulty": "hard",
+  "expect_present": [],
+  "expect_absent": [],
+  "trap": "State-based actions are a rules concept that almost never appears in oracle text; 'dies' is the only common surface for one, so the question is asking for a category the card text doesn't name.",
+  "suspect_unanswerable": true,
+  "notes": "Deliberately ill-posed. A good system should probably push back and ask what the player actually means rather than returning every death trigger."
+ },
+ {
+  "id": "dies-then-tutor-to-battlefield",
+  "question": "creatures that when they die go find other creatures in my deck and put them straight onto the battlefield",
+  "mechanical_area": "7 - multi-step chains",
+  "difficulty": "hard",
+  "expect_present": [
+   "Protean Hulk"
+  ],
+  "expect_absent": [
+   "Buried Alive"
+  ],
+  "trap": "Three links have to hold at once - a death trigger, a library search, and a battlefield destination rather than hand or graveyard - and each link has its own paraphrases.",
+  "suspect_unanswerable": false,
+  "notes": "Answer set is small; verify a couple more before finalizing."
+ },
+ {
+  "id": "impulse-exile-then-cast",
+  "question": "cards that exile the top of my library and let me play those cards, but only for a limited time",
+  "mechanical_area": "7 - multi-step chains",
+  "difficulty": "hard",
+  "expect_present": [
+   "Light Up the Stage",
+   "Outpost Siege",
+   "Chandra, Torch of Defiance",
+   "A-Ardent Dustspeaker",
+   "Annie Flash, the Veteran",
+   "Breeches, Eager Pillager",
+   "Caves of Chaos Adventurer",
+   "Charred Foyer",
+   "Count on Luck",
+   "Dark-Dweller Oracle",
+   "Embrace the Unknown",
+   "Expressive Iteration",
+   "Fireglass Mentor",
+   "Gila Courser",
+   "Grotag Night-Runner",
+   "Hidetsugu, Devouring Chaos",
+   "Irascible Wolverine",
+   "Kirk, Enterprising Captain",
+   "Magmatic Channeler",
+   "Mishra's Research Desk",
+   "Nahiri, Forged in Fury",
+   "Oracle's Vault",
+   "Riveteers Charm",
+   "Seize Opportunity",
+   "Spinneret and Spiderling",
+   "Syr Carah, the Bold",
+   "Thor, Guardian of Midgard",
+   "Urza, Lord High Artificer",
+   "Wiccan, Young Avenger"
+  ],
+  "expect_absent": [
+   "Bomat Courier",
+   "Black Cat, Cunning Thief",
+   "Durnan of the Yawning Portal",
+   "Possibility Technician",
+   "Ramirez DePietro, Pillager"
+  ],
+  "trap": "Exile-then-permission-then-time-limit is a three-part structure with no keyword; Bomat Courier exiles cards and later returns them to hand, matching most of the words and none of the structure.",
+  "suspect_unanswerable": false,
+  "notes": ""
+ },
+ {
+  "id": "untap-on-other-players-turns",
+  "question": "what lets me untap my stuff on other people's turns so I can use tap abilities more than once a round?",
+  "mechanical_area": "7 - multi-step chains",
+  "difficulty": "medium",
+  "expect_present": [
+   "Seedborn Muse",
+   "Wilderness Reclamation",
+   "White Plume Adventurer"
+  ],
+  "expect_absent": [
+   "Unwind",
+   "Assault Suit"
+  ],
+  "trap": "The stated goal (reuse tap abilities) is downstream of the actual text (untap permanents during another player's untap step or end step), so the search has to reason about why an effect is wanted, not just what it says.",
+  "suspect_unanswerable": false,
+  "notes": ""
+ },
+ {
+  "id": "sac-outlet-that-refills",
+  "question": "free sac outlets that also replace the creature I sacrificed",
+  "mechanical_area": "7 - multi-step chains",
+  "difficulty": "hard",
+  "expect_present": [
+   "Emrakul's Evangel"
+  ],
+  "expect_absent": [
+   "Ashnod's Altar",
+   "Viscera Seer",
+   "Ashnod, Flesh Mechanist",
+   "Boneyard Desecrator",
+   "Caesar, Legion's Emperor",
+   "Cirith Ungol Patrol",
+   "Extricator of Flesh",
+   "Feed the Pack",
+   "Geralf, Visionary Stitcher",
+   "Ghoulcaller Gisa",
+   "Great Hall of Starnheim",
+   "Gut, True Soul Zealot",
+   "Homarid Spawning Bed",
+   "In the Pale Moonlight",
+   "Jan Jansen, Chaos Crafter",
+   "June, Bounty Hunter",
+   "Knight of the Last Breath",
+   "Korozda Guildmage",
+   "Ooze Garden",
+   "Ruthless Knave",
+   "Ruthless Technomancer",
+   "The Sackville-Bagginses",
+   "Transmogrant Altar",
+   "Warren Soultrader",
+   "Witch's Oven",
+   "Ziatora, the Incinerator"
+  ],
+  "trap": "'Free' (no mana in the cost), 'sac outlet' (sacrifice-a-creature as a cost you choose), and 'replaces' (draws or makes a body) are three constraints, one of which is player jargon that appears on no card.",
+  "suspect_unanswerable": false,
+  "notes": "Left expect_present empty on purpose - I could not name one I was fully certain of that satisfies all three constraints. The absent cards are free sac outlets that do not replace the body.",
+  "unclear": [
+   "Akul the Unrepentant",
+   "Bloodsoaked Altar"
+  ]
+ },
+ {
+  "id": "triggers-on-opponent-voluntary-choice",
+  "question": "cards that only trigger when an opponent chooses to do something voluntarily",
+  "mechanical_area": "7 - multi-step chains",
+  "difficulty": "hard",
+  "expect_present": [],
+  "expect_absent": [],
+  "trap": "Voluntariness is not encoded in card text - 'whenever an opponent casts a spell' and 'whenever an opponent is dealt damage' look identical structurally, and the distinction lives in the rules, not the oracle.",
+  "suspect_unanswerable": true,
+  "notes": "Deliberately included as a probe. If the system confidently answers this, that is a hallucination signal."
+ },
+ {
+  "id": "infinite-combo-enablers",
+  "question": "what goes infinite with an untapper like Kiki-Jiki?",
+  "mechanical_area": "7 - multi-step chains",
+  "difficulty": "hard",
+  "expect_present": [],
+  "expect_absent": [],
+  "trap": "Comboing is an emergent property of two or more cards interacting, not a structural property of one card's text; the search would have to simulate loops across pairs.",
+  "suspect_unanswerable": true,
+  "notes": "Deliberately out of scope. Worth keeping to see whether the system declines gracefully or fabricates. A player really would type this."
+ },
+ {
+  "id": "activate-repeatedly-no-tap",
+  "question": "abilities I can activate as many times as I have mana for - nothing in the cost that limits it",
+  "mechanical_area": "2 - activated-ability cost structures",
+  "difficulty": "hard",
+  "expect_present": [
+   "Diamond Faerie",
+   "Grim Draugr",
+   "Immolating Souleater",
+   "Katara, Bending Prodigy",
+   "Ohran Yeti",
+   "Phyrexian Ironfoot",
+   "Rimescale Dragon",
+   "Spellskite"
+  ],
+  "expect_absent": [
+   "Icy Manipulator",
+   "Hangarback Walker",
+   "A-Bruenor Battlehammer",
+   "Aethertide Whale",
+   "Blazing Rootwalla",
+   "Camellia, the Seedmiser",
+   "Elvish Refueler",
+   "Festerleech",
+   "Frilled Sandwalla",
+   "Ghor-Clan Bloodscale",
+   "Kraven's Cats",
+   "Longtusk Stalker",
+   "Mobile Fort",
+   "Power Plant Worker",
+   "Salvaged Manaworker",
+   "Setessan Griffin",
+   "Stuffy Doll Avatar",
+   "Tenth District Hero",
+   "Vampire Bats",
+   "Whirler Virtuoso"
+  ],
+  "trap": "This is a constraint over what the cost does NOT contain (no tap symbol, no sacrifice, no counter removal, no once-each-turn rider) - a negative structural query rather than a positive pattern match.",
+  "suspect_unanswerable": true,
+  "notes": "Flagged suspect because negation over cost components is the kind of thing a structural search may simply not express. The answer set would also be enormous, so it may be ill-posed on recall grounds too.",
+  "unclear": [
+   "Aang, Swift Savior",
+   "Ayara, Widow of the Realm",
+   "Clay Golem",
+   "Heliod, the Radiant Dawn"
+  ]
+ }
+]

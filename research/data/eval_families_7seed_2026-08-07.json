@@ -1,0 +1,804 @@
+{
+ "metrics": {
+  "golden recall": {
+   "control": [
+    0.5927152317880795,
+    0.6655629139072847,
+    0.6788079470198676,
+    0.6920529801324503,
+    0.6688741721854304,
+    0.6490066225165563,
+    0.6821192052980133
+   ],
+   "families": [
+    0.7913907284768212,
+    0.7350993377483444,
+    0.6688741721854304,
+    0.6390728476821192,
+    0.8609271523178808,
+    0.8178807947019867,
+    0.804635761589404
+   ],
+   "p": 0.0168997668997669
+  },
+  "questions passed": {
+   "control": [
+    9,
+    9,
+    10,
+    9,
+    10,
+    10,
+    9
+   ],
+   "families": [
+    9,
+    9,
+    10,
+    9,
+    10,
+    11,
+    9
+   ],
+   "p": 1.0
+  }
+ },
+ "coverage": {
+  "off_s1": 0.0454417689496861,
+  "off_s2": 0.05513728963684672,
+  "off_s3": 0.04606340946323595,
+  "off_s4": 0.047366051328230574,
+  "off_s5": 0.04508234428190261,
+  "off_s6": 0.04802760421523822,
+  "off_s7": 0.04339998104804321,
+  "fam2_s1": 0.06012850042429385,
+  "fam2_s2": 0.06266862889379443,
+  "fam2_s3": 0.05526926049987113,
+  "fam2_s4": 0.03326097069313072,
+  "fam2_s5": 0.03829355794727807,
+  "fam2_s6": 0.03810572687224667,
+  "fam2_s7": 0.04290652239254589
+ },
+ "per_question": {
+  "attack-trigger-makes-token": {
+   "control": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "families": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    true,
+    false
+   ]
+  },
+  "death-trigger-drain": {
+   "control": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "families": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ]
+  },
+  "etb-creature-pings-opponents": {
+   "control": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "families": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ]
+  },
+  "landfall-payoffs": {
+   "control": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "families": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ]
+  },
+  "magecraft-style-payoff": {
+   "control": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "families": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ]
+  },
+  "opponent-draw-punisher": {
+   "control": [
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true
+   ],
+   "families": [
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true
+   ]
+  },
+  "sacrifice-artifact-as-cost": {
+   "control": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "families": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ]
+  },
+  "discard-as-activation-cost": {
+   "control": [
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true
+   ],
+   "families": [
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true
+   ]
+  },
+  "pay-life-activation-cost": {
+   "control": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "families": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ]
+  },
+  "exile-from-graveyard-as-cost": {
+   "control": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "families": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ]
+  },
+  "tap-other-creatures-as-cost": {
+   "control": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "families": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ]
+  },
+  "tax-opponent-spells": {
+   "control": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "families": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ]
+  },
+  "one-spell-per-turn-rule": {
+   "control": [
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true
+   ],
+   "families": [
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true
+   ]
+  },
+  "cast-from-top-of-library": {
+   "control": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "families": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ]
+  },
+  "flash-permission-static": {
+   "control": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "families": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ]
+  },
+  "global-untap-denial": {
+   "control": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "families": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ]
+  },
+  "dies-exile-instead": {
+   "control": [
+    false,
+    false,
+    true,
+    false,
+    true,
+    false,
+    false
+   ],
+   "families": [
+    false,
+    false,
+    true,
+    false,
+    true,
+    true,
+    false
+   ]
+  },
+  "redirect-damage-to-a-permanent": {
+   "control": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "families": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ]
+  },
+  "fog-effects": {
+   "control": [
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true
+   ],
+   "families": [
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true
+   ]
+  },
+  "draw-replacement-effects": {
+   "control": [
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true
+   ],
+   "families": [
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true
+   ]
+  },
+  "damage-multipliers": {
+   "control": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "families": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ]
+  },
+  "enters-as-a-copy": {
+   "control": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "families": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ]
+  },
+  "reanimate-on-a-trigger": {
+   "control": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "families": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ]
+  },
+  "blink-effects": {
+   "control": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "families": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ]
+  },
+  "tutor-to-top-of-library": {
+   "control": [
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true
+   ],
+   "families": [
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true
+   ]
+  },
+  "cast-from-graveyard-permanents": {
+   "control": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "families": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ]
+  },
+  "play-lands-from-graveyard": {
+   "control": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "families": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ]
+  },
+  "removal-that-never-says-destroy": {
+   "control": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "families": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ]
+  },
+  "counter-doubling": {
+   "control": [
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true
+   ],
+   "families": [
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true
+   ]
+  },
+  "token-doubling": {
+   "control": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    true,
+    false
+   ],
+   "families": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ]
+  },
+  "proliferate-payoffs": {
+   "control": [
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true
+   ],
+   "families": [
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true
+   ]
+  },
+  "move-counters-between-permanents": {
+   "control": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "families": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ]
+  },
+  "dies-then-tutor-to-battlefield": {
+   "control": [
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true
+   ],
+   "families": [
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true
+   ]
+  },
+  "impulse-exile-then-cast": {
+   "control": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "families": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ]
+  },
+  "untap-on-other-players-turns": {
+   "control": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "families": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ]
+  },
+  "sac-outlet-that-refills": {
+   "control": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "families": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ]
+  },
+  "activate-repeatedly-no-tap": {
+   "control": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "families": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ]
+  }
+ }
+}
