@@ -1,0 +1,21 @@
+{
+  "id": "spike-block-double",
+  "description": "The question: two blockers on one attacker with NO damage-order scripting. If strict-choose demands the attacker order blockers, this errors and tells us the vocabulary gap; if it auto-orders, multi-block is already expressible.",
+  "players": {
+    "A": {"life": 20, "battlefield": [{"card": "Hill Giant"}]},
+    "B": {"life": 20, "battlefield": [{"card": "Grizzly Bears", "count": 2}]}
+  },
+  "actions": [
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Hill Giant"},
+    {"do": "block", "turn": 1, "player": "B", "blocker": "Grizzly Bears:0", "attacker": "Hill Giant"},
+    {"do": "block", "turn": 1, "player": "B", "blocker": "Grizzly Bears:1", "attacker": "Hill Giant"},
+    {"do": "choice", "player": "A", "value": "X=2"},
+    {"do": "choice", "player": "A", "value": "X=1"}
+  ],
+  "stop": {"turn": 1, "phase": "END_TURN"},
+  "expect": [
+    {"check": "graveyard_count", "player": "A", "card": "Hill Giant", "count": 1},
+    {"check": "graveyard_count", "player": "B", "card": "Grizzly Bears", "count": 1},
+    {"check": "permanent_count", "player": "B", "card": "Grizzly Bears", "count": 1}
+  ]
+}

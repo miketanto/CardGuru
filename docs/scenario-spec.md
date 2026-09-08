@@ -66,6 +66,25 @@ scripted at all — the engine auto-resolves it, and unconsumed queued choices f
 `choice`/`target`/`mode` entries are queued per player and consumed in order as the engine
 asks — this is what makes runs deterministic under strict mode.
 
+**Multi-block** (verified against XMage, `scenarios/spike/spike-block-double.json`): when
+several same-named creatures must act, suffix the name with a zero-based battlefield-entry
+index — `"blocker": "Grizzly Bears:1"` is the second Bears — because a bare duplicate name
+resolves to the same permanent twice and the engine rejects the repeat block. Blocking one
+attacker with 2+ creatures then surfaces a hidden decision at COMBAT_DAMAGE: the ATTACKER
+assigns damage among blockers (a "Multi amount" choice, one per blocker in block order).
+Script it as consecutive `choice` entries for the attacking player with `X=<n>` values:
+
+```json
+{"do": "block",  "turn": 1, "player": "B", "blocker": "Grizzly Bears:0", "attacker": "Hill Giant"},
+{"do": "block",  "turn": 1, "player": "B", "blocker": "Grizzly Bears:1", "attacker": "Hill Giant"},
+{"do": "choice", "player": "A", "value": "X=2"},
+{"do": "choice", "player": "A", "value": "X=1"}
+```
+
+An unscripted assignment fails the run (`Missing CHOICE def ... Multi amount`), so any
+agent line that multi-blocks — or attacks into a multi-block — must carry its damage
+assignment. Single blocks need none of this.
+
 **stop** — `{"turn": N, "phase": PHASE}`. Phases: `UPKEEP`, `DRAW`, `PRECOMBAT_MAIN`,
 `BEGIN_COMBAT`, `DECLARE_ATTACKERS`, `DECLARE_BLOCKERS`, `COMBAT_DAMAGE`, `POSTCOMBAT_MAIN`,
 `END_TURN`.

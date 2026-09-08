@@ -75,12 +75,21 @@ puzzlegen.py` (generator with brute-force win proofs), `puzzle` CLI,
   correctly" puzzles put the *agent* on defense (its blocks are its line);
   puzzles that need a *defending opponent policy* wait for P4's response
   rounds.
-- **Grading runs before the engine does.** No XMage checkout is configured
-  yet, so admission ran through a local combat-arithmetic runner that
-  executes exactly the tier-1 slice and errors loudly outside it. Every
-  such grade is stamped `engine: local-combat` and the CLI calls it
-  provisional; re-admission with `--engine xmage` is a standing TODO before
-  any published number.
+- **Grading runs before the engine does.** Admission first ran through a
+  local combat-arithmetic runner that executes exactly the tier-1 slice and
+  errors loudly outside it; grades are stamped `engine: local-combat`.
+  **Engine verification since done** (2026-09-08): an XMage checkout now
+  lives at `~/Documents/mage` (shallow clone, prebuilt; pass
+  `--mage-repo`), and all 30 puzzles re-admitted 30/30 with
+  `--engine xmage` — the local runner and the engine agree on all 60 known
+  lines, which is the provisional instrument's own validation.
+- **Multi-block is solved, with a vocabulary cost.** Verified by spike
+  (`scenarios/spike/`): duplicate blockers need `Name:index` notation, and
+  2+ blockers on one attacker surface a hidden ATTACKER decision — a
+  multi-amount damage assignment scripted as consecutive `X=<n>` choice
+  entries. Documented in `docs/scenario-spec.md`. Consequence for T2/P3:
+  a line that attacks into possible multi-blocks must carry its damage
+  assignment, and the line proposer's action vocabulary must teach this.
 - `puzzles/` format: a scenario minus `actions`, plus `win:[...]` checks and
   `tier`, `trap`, `notes` fields (mirroring the benchmark questions' schema).
 - `cardguru/puzzle.py`: splice a proposed line into a puzzle → scenario;

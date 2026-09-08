@@ -1,0 +1,18 @@
+{
+  "id": "spike-block-single",
+  "description": "Baseline: one blocker on one attacker, fully scripted. Bears dies to the bigger blocker, Giant survives.",
+  "players": {
+    "A": {"life": 20, "battlefield": [{"card": "Grizzly Bears"}]},
+    "B": {"life": 20, "battlefield": [{"card": "Hill Giant"}]}
+  },
+  "actions": [
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Grizzly Bears"},
+    {"do": "block", "turn": 1, "player": "B", "blocker": "Hill Giant", "attacker": "Grizzly Bears"}
+  ],
+  "stop": {"turn": 1, "phase": "END_TURN"},
+  "expect": [
+    {"check": "graveyard_count", "player": "A", "card": "Grizzly Bears", "count": 1},
+    {"check": "permanent_count", "player": "B", "card": "Hill Giant", "count": 1},
+    {"check": "life", "player": "B", "value": 20}
+  ]
+}
