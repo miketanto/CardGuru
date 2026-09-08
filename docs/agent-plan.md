@@ -222,9 +222,14 @@ gives only cards_seen; the response set is BELIEVED, not enumerated, and
 drops into the existing minimax grading. Robust line keeps face-burn reach
 that beats "they Bolt your biggest attacker"; greedy loses to it. Belief
 logic is engine-free (6 tests) and generation has an engine-independent
-face-damage proof gate; **engine admission + the a/c arm runs are deferred
-until the shared XMage checkout is free** (the parallel live-matches
-worktree holds it — running the driver from both clobbers). 290 tests green.
+face-damage proof gate. **Result (`eval_t4_ac_haiku_2026-09-08.json`),
+graded on a dedicated 2nd XMage checkout (`~/Documents/mage-beliefs`) so it
+ran parallel to live-matches without clobber:** 20/20 engine admission;
+haiku arm (a) single-answer 19/20 (one real hidden-info misplay — burned
+the blocker, lost to the believed Bolt), arm (c) search recovers it →
+20/20 after one bounded format repair (18/20 pre-repair: two harness/format
+misses, not strategy). Search plays around removal it never sees. Ceiling
+effect: strategic discrimination is one puzzle at this difficulty.
 - `cardguru/believe.py`: archetype prior from a small `data/meta_decks/`
   corpus; believed-list updates from cards seen; K determinization samples.
 - Response round: subagent-as-opponent proposes responses per line (prompted
