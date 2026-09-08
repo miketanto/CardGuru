@@ -1,0 +1,246 @@
+"""Play real interactive 1v1 games against XMage's built-in AI.
+
+The scenario adjudicator (adjudicate.py) runs a PREDETERMINED script and stops.
+This module drives the opposite: a genuine game loop where our agent decides
+turn by turn while XMage's AI plays the other seat. The Java side
+(CardGuruScenarioRunner interactive mode) runs the whole game synchronously
+inside one JVM and, at every decision playerA must make, writes a request to
+the spool and blocks until we answer -- so from Python a match is: launch the
+driver, then repeatedly read request/<n>.json, call a POLICY(request) -> answer
+callback, and write response/<n>.json, until result.json names the winner.
+
+Why file-based (not a socket): it reuses the driver's existing, proven spool
+handshake (atomic tmp-then-rename, READY/SHUTDOWN markers) so the interactive
+path shares the server mode's plumbing rather than inventing a second one. The
+JVM warmup (~40s of card-DB load) is paid once per launched match process.
+
+A POLICY is any callable `request(dict) -> response(dict)`. The request carries
+`kind` (mulligan/priority/attackers/blockers), the observable board `state`,
+and a decision-specific option menu; the response is the picked option(s). See
+`dumb_policy` for the exact shapes and a deterministic baseline that plays a
+full aggro game with no model calls at all -- the plumbing proof.
+"""
+from __future__ import annotations
+
+import json
+import os
+import shutil
+import subprocess
+import tempfile
+import time
+from typing import Callable, Optional
+
+from .adjudicate import ensure_driver
+
+# A policy maps a decision request to a decision response, both plain dicts.
+Policy = Callable[[dict], dict]
+
+
+def dumb_policy(request: dict) -> dict:
+    """A deterministic, no-LLM policy that plays a full aggro game.
+
+    The point of this policy is to prove the interactive plumbing end to end
+    without any model in the loop: every answer is a fixed rule over the option
+    menu the driver offers. Its "strategy" is the classic goldfish line --
+    develop the board and swing -- which is enough to reach a real game over
+    against the AI, win or lose.
+
+    - mulligan: always keep (never mulligan).
+    - priority: take the FIRST non-pass play offered if any (the driver lists
+      playable lands/spells/abilities), else pass. Playing the first available
+      action each priority drains the hand onto the board turn over turn; when
+      nothing is castable it passes, moving the game forward.
+    - attackers: attack with EVERYTHING available.
+    - blockers: never block (aggro's plan is to race, and unscripted blocks are
+      the simplest safe default).
+    """
+    kind = request.get("kind")
+    if kind == "mulligan":
+        return {"mulligan": False}
+    if kind == "priority":
+        options = request.get("options", [])
+        for opt in options:
+            if opt.get("action") == "activate":
+                return {"choice": opt["index"]}
+        return {"choice": 0}  # pass
+    if kind == "attackers":
+        return {"attackers": [o["index"] for o in request.get("options", [])]}
+    if kind == "blockers":
+        return {"blocks": []}  # no blocks
+    # Unknown decision kind: the safest no-op is an empty response, which the
+    # driver reads as "no selection" (pass / no attackers / no blocks).
+    return {}
+
+
+def pass_policy(request: dict) -> dict:
+    """Do nothing ever: keep, never play, never attack, never block.
+
+    Useful as a lower-bound control -- playerA should reliably LOSE to the AI,
+    which is itself a plumbing signal (a full game still runs to completion).
+    """
+    kind = request.get("kind")
+    if kind == "mulligan":
+        return {"mulligan": False}
+    if kind == "priority":
+        return {"choice": 0}
+    if kind == "attackers":
+        return {"attackers": []}
+    if kind == "blockers":
+        return {"blocks": []}
+    return {}
+
+
+class MatchClient:
+    """Launch the interactive driver and serve one match's decisions.
+
+    Use as a context manager so the JVM is always cleaned up::
+
+        with MatchClient(mage_repo) as m:
+            result = m.play(dumb_policy)
+
+    `result` is the driver's result.json: {status, winner?, turns}. `winner`
+    is "A" (our policy) or "B" (the AI), absent if the game errored before a
+    winner was decided.
+    """
+
+    def __init__(self, mage_repo: Optional[str] = None,
+                 warmup_timeout: int = 300):
+        self.mage_repo = mage_repo or os.environ.get("CARDGURU_MAGE_REPO")
+        if not self.mage_repo or not os.path.isdir(self.mage_repo):
+            raise RuntimeError("XMage checkout not found: set "
+                               "CARDGURU_MAGE_REPO or pass mage_repo")
+        ensure_driver(self.mage_repo)
+        self.warmup_timeout = warmup_timeout
+        self.spool: Optional[str] = None
+        self.proc: Optional[subprocess.Popen] = None
+
+    # -- lifecycle ---------------------------------------------------------
+
+    def _launch(self):
+        self.spool = tempfile.mkdtemp(prefix="cardguru-play-")
+        os.makedirs(os.path.join(self.spool, "request"), exist_ok=True)
+        os.makedirs(os.path.join(self.spool, "response"), exist_ok=True)
+        self.proc = subprocess.Popen(
+            ["mvn", "-q", "-pl", "Mage.Tests", "test",
+             "-Dtest=CardGuruScenarioRunner", "-DfailIfNoTests=false",
+             f"-Dcardguru.interactive.spool={self.spool}"],
+            cwd=self.mage_repo, stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL)
+        ready = os.path.join(self.spool, "READY")
+        deadline = time.time() + self.warmup_timeout
+        while not os.path.exists(ready):
+            if self.proc.poll() is not None:
+                raise RuntimeError("interactive driver exited during warmup "
+                                   f"(rc={self.proc.returncode})")
+            if time.time() > deadline:
+                self.close()
+                raise RuntimeError("interactive driver warmup timed out")
+            time.sleep(0.5)
+
+    def close(self):
+        if self.proc is not None:
+            if self.proc.poll() is None:
+                # Ask the JVM to abandon any in-flight decision, then kill.
+                try:
+                    with open(os.path.join(self.spool, "SHUTDOWN"), "w"):
+                        pass
+                    self.proc.wait(timeout=10)
+                except Exception:
+                    self.proc.kill()
+            self.proc = None
+        if self.spool and os.path.isdir(self.spool):
+            shutil.rmtree(self.spool, ignore_errors=True)
+        self.spool = None
+
+    def __enter__(self):
+        self._launch()
+        return self
+
+    def __exit__(self, *exc):
+        self.close()
+
+    # -- the match loop ----------------------------------------------------
+
+    def play(self, policy: Policy, decision_timeout: float = 130.0) -> dict:
+        """Run one game to completion, serving each decision from `policy`.
+
+        Processes request files in strict sequence order (1, 2, 3, ...): the
+        driver never emits request n+1 before it has our response to n (the
+        game thread is blocked in the callback), so waiting for exactly the
+        next sequence number can never miss or reorder a decision. Returns when
+        result.json appears with no request still pending.
+        """
+        if self.proc is None:
+            raise RuntimeError("call play() inside the context manager")
+        reqdir = os.path.join(self.spool, "request")
+        respdir = os.path.join(self.spool, "response")
+        result_path = os.path.join(self.spool, "result.json")
+
+        seq = 1
+        while True:
+            req_path = os.path.join(reqdir, f"{seq}.json")
+            deadline = time.time() + decision_timeout
+            while not os.path.exists(req_path):
+                # The game may have ended between decisions.
+                if os.path.exists(result_path):
+                    return self._read_result(result_path)
+                if self.proc.poll() is not None:
+                    # JVM gone without a result.json -- report what we can.
+                    if os.path.exists(result_path):
+                        return self._read_result(result_path)
+                    raise RuntimeError("interactive driver died mid-match "
+                                       f"(rc={self.proc.returncode})")
+                if time.time() > deadline:
+                    raise RuntimeError(f"timed out awaiting request {seq}")
+                time.sleep(0.02)
+
+            with open(req_path, encoding="utf-8") as f:
+                request = json.load(f)
+            response = policy(request)
+            self._write_response(respdir, seq, response)
+            seq += 1
+
+    @staticmethod
+    def _write_response(respdir: str, seq: int, response: dict):
+        tmp = os.path.join(respdir, f"{seq}.json.tmp")
+        with open(tmp, "w", encoding="utf-8") as f:
+            json.dump(response, f)
+        os.replace(tmp, os.path.join(respdir, f"{seq}.json"))
+
+    @staticmethod
+    def _read_result(path: str) -> dict:
+        # The driver writes result.json via tmp-then-rename, so any file we see
+        # is complete; a short retry only guards a torn read on odd filesystems.
+        for _ in range(50):
+            try:
+                with open(path, encoding="utf-8") as f:
+                    return json.load(f)
+            except (json.JSONDecodeError, FileNotFoundError):
+                time.sleep(0.02)
+        with open(path, encoding="utf-8") as f:
+            return json.load(f)
+
+
+def play_matches(n: int, policy: Policy = dumb_policy,
+                 mage_repo: Optional[str] = None) -> dict:
+    """Play N games with `policy` vs the AI; return a win/loss tally.
+
+    One JVM per game (a fresh MatchClient each match). Games that error before a
+    winner is decided are tallied separately so a flaky rollout never inflates
+    either win count. Returns {games, wins, losses, errors, results:[...]}.
+    """
+    wins = losses = errors = 0
+    results = []
+    for i in range(n):
+        with MatchClient(mage_repo) as m:
+            result = m.play(policy)
+        results.append(result)
+        winner = result.get("winner")
+        if winner == "A":
+            wins += 1
+        elif winner == "B":
+            losses += 1
+        else:
+            errors += 1
+    return {"games": n, "wins": wins, "losses": losses,
+            "errors": errors, "results": results}

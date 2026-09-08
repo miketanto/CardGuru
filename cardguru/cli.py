@@ -266,6 +266,18 @@ def cmd_adjudicate(args):
           file=sys.stderr)
 
 
+def cmd_play(args):
+    from .play import dumb_policy, pass_policy, play_matches
+
+    policy = {"dumb": dumb_policy, "pass": pass_policy}[args.policy]
+    tally = play_matches(args.games, policy=policy, mage_repo=args.mage_repo)
+    json.dump(tally, sys.stdout, indent=1)
+    print()
+    print(f"-- {args.policy} policy vs COMPUTER_MAD: "
+          f"{tally['wins']}W / {tally['losses']}L / {tally['errors']}E "
+          f"over {tally['games']} game(s)", file=sys.stderr)
+
+
 def cmd_answers(args):
     from .answers import find_answers, load_token_scripts
 
@@ -1009,6 +1021,15 @@ def main(argv=None):
     pr.add_argument("--mage-repo")
     pr.add_argument("--db", default=DEFAULT_CARDDB)
     pr.set_defaults(fn=cmd_puzzle_grade)
+
+    pl = sub.add_parser("play",
+                        help="play real interactive games vs XMage's built-in AI")
+    pl.add_argument("--games", type=int, default=1, help="number of games")
+    pl.add_argument("--policy", choices=["dumb", "pass"], default="dumb",
+                    help="decision policy (no LLM): dumb=develop+swing, "
+                         "pass=do nothing")
+    pl.add_argument("--mage-repo", help="XMage checkout (or env CARDGURU_MAGE_REPO)")
+    pl.set_defaults(fn=cmd_play)
 
     args = p.parse_args(argv)
     args.fn(args)
