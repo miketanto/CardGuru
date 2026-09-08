@@ -1,0 +1,129 @@
+{
+ "id": "t3-bestblock-029",
+ "tier": 3,
+ "description": "Win through their best block: 5 life, a 5-power blocker untapped",
+ "trap": "attack-all deals 5 and looks lethal, but blocking Armored Warhorse leaves them at 2",
+ "notes": "family=bestblock; opponent_responses enumerate no-block plus each single block; a line must win against ALL",
+ "turn": 1,
+ "players": {
+  "A": {
+   "life": 20,
+   "battlefield": [
+    {
+     "card": "Armored Warhorse"
+    },
+    {
+     "card": "Capital Guard"
+    },
+    {
+     "card": "Kami of Old Stone"
+    },
+    {
+     "card": "Mountain",
+     "count": 1
+    }
+   ],
+   "hand": [
+    "Lightning Bolt"
+   ]
+  },
+  "B": {
+   "life": 5,
+   "battlefield": [
+    {
+     "card": "Island",
+     "count": 4,
+     "tapped": true
+    },
+    {
+     "card": "Renegade Demon"
+    }
+   ]
+  }
+ },
+ "win": [
+  {
+   "metric": "life",
+   "player": "B",
+   "max": 0
+  }
+ ],
+ "opponent_responses": [
+  [],
+  [
+   {
+    "do": "block",
+    "turn": 1,
+    "player": "B",
+    "blocker": "Renegade Demon",
+    "attacker": "Armored Warhorse"
+   }
+  ],
+  [
+   {
+    "do": "block",
+    "turn": 1,
+    "player": "B",
+    "blocker": "Renegade Demon",
+    "attacker": "Capital Guard"
+   }
+  ],
+  [
+   {
+    "do": "block",
+    "turn": 1,
+    "player": "B",
+    "blocker": "Renegade Demon",
+    "attacker": "Kami of Old Stone"
+   }
+  ]
+ ],
+ "known_good": [
+  {
+   "do": "cast",
+   "turn": 1,
+   "phase": "PRECOMBAT_MAIN",
+   "player": "A",
+   "card": "Lightning Bolt",
+   "target_player": "B"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Armored Warhorse"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Capital Guard"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Kami of Old Stone"
+  }
+ ],
+ "known_bad": [
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Armored Warhorse"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Capital Guard"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Kami of Old Stone"
+  }
+ ]
+}

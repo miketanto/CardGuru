@@ -364,6 +364,100 @@ def _t2_creature_only(rng, creatures, burn, cburn, baits, n):
                     known_good=good, known_bad=bad)
 
 
+
+# --- tier 3: minimax vs enumerated responses ------------------------------
+#
+# The defender finally ACTS. Each puzzle carries `opponent_responses`: the
+# no-block response plus one single-block response per attacker (multi-block
+# is excluded so the agent's line never needs a contingent damage
+# assignment). A line wins only against ALL of them. The designed tension:
+#
+#   greedy  attack-all looks lethal (total power >= life) and beats the
+#           no-block response — but the best block eats the biggest
+#           attacker and leaves the opponent alive
+#   robust  attack-all PLUS burn at the face covers the best block's
+#           prevention; alternative robust lines (burn the blocker, then
+#           attack) win too and count — any line that beats every response
+#           is a win, no golden line
+#
+# Proof gates, independent of construction: known_good's through-damage is
+# computed against every enumerated response and must reach lethal in all;
+# known_bad must beat no-block (plausibility) and lose to the best block.
+# Grading is engine-only: the local runner refuses boards with untapped
+# defenders by design.
+
+def generate_t3(store, count: int = 30, seed: int = 17) -> list[dict]:
+    rng = random.Random(seed)
+    runner = LocalRunner(store)
+    creatures = _vanilla_pool(store)
+    burn = _burn_pool(runner)
+    if len(creatures) < 10 or not burn:
+        raise RuntimeError("card store lacks the tier-3 generator's pools")
+    puzzles, attempt = [], 0
+    while len(puzzles) < count and attempt < count * 30:
+        attempt += 1
+        spec = _t3_one(rng, creatures, burn, len(puzzles) + 1)
+        if spec is not None:
+            puzzles.append(spec)
+    if len(puzzles) < count:
+        raise RuntimeError(f"only generated {len(puzzles)}/{count} t3 puzzles")
+    return puzzles
+
+
+def _t3_one(rng, creatures, burn, n) -> dict | None:
+    pool = rng.sample(creatures, rng.randint(4, 5))
+    attackers, blocker = pool[:-1], pool[-1]
+    powers = [p for _, p in attackers]
+    total, biggest = sum(powers), max(powers)
+    spell = rng.choice(burn)
+    name_s, dmg, cost = spell
+    if biggest <= 1:
+        return None                      # best block must actually matter
+    # life window: greedy fails the best block, robust covers it
+    life = min(total, total - biggest + dmg)
+    if life <= total - biggest:
+        return None
+    responses = [[]] + [
+        [{"do": "block", "turn": 1, "player": "B",
+          "blocker": blocker[0], "attacker": name}]
+        for name, _ in attackers]
+
+    # independent proof: through-damage per response
+    def through(attack_powers, blocked_power, extra):
+        return sum(attack_powers) - blocked_power + extra
+
+    good_ok = all(through(powers, b, dmg) >= life
+                  for b in [0] + powers)          # 0 = no block
+    bad_beats_noblock = through(powers, 0, 0) >= life
+    bad_loses_best = through(powers, biggest, 0) < life
+    if not (good_ok and bad_beats_noblock and bad_loses_best):
+        return None
+
+    battlefield = [{"card": name} for name, _ in attackers]
+    battlefield.append({"card": "Mountain", "count": cost})
+    b_field = [{"card": "Island", "count": rng.randint(2, 4), "tapped": True},
+               {"card": blocker[0]}]              # UNTAPPED: a real blocker
+    good = ([_cast_face(name_s)] + _attacks(attackers))
+    bad = _attacks(attackers)
+    return {
+        "id": f"t3-bestblock-{n:03d}", "tier": 3,
+        "description": f"Win through their best block: {life} life, "
+                       f"a {blocker[1]}-power blocker untapped",
+        "trap": f"attack-all deals {total} and looks lethal, but blocking "
+                f"{max(attackers, key=lambda a: a[1])[0]} leaves them at "
+                f"{life - (total - biggest)}",
+        "notes": "family=bestblock; opponent_responses enumerate no-block "
+                 "plus each single block; a line must win against ALL",
+        "turn": 1,
+        "players": {"A": {"life": 20, "battlefield": battlefield,
+                          "hand": [name_s]},
+                    "B": {"life": life, "battlefield": b_field}},
+        "win": [{"metric": "life", "player": "B", "max": 0}],
+        "opponent_responses": responses,
+        "known_good": good, "known_bad": bad,
+    }
+
+
 def write_puzzles(puzzles: list[dict], outdir: str) -> list[str]:
     os.makedirs(outdir, exist_ok=True)
     paths = []

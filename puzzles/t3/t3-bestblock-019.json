@@ -1,0 +1,153 @@
+{
+ "id": "t3-bestblock-019",
+ "tier": 3,
+ "description": "Win through their best block: 9 life, a 2-power blocker untapped",
+ "trap": "attack-all deals 11 and looks lethal, but blocking Frost Ogre leaves them at 3",
+ "notes": "family=bestblock; opponent_responses enumerate no-block plus each single block; a line must win against ALL",
+ "turn": 1,
+ "players": {
+  "A": {
+   "life": 20,
+   "battlefield": [
+    {
+     "card": "Moss Monster"
+    },
+    {
+     "card": "Cylian Elf"
+    },
+    {
+     "card": "Frost Ogre"
+    },
+    {
+     "card": "Bane Alley Blackguard"
+    },
+    {
+     "card": "Mountain",
+     "count": 2
+    }
+   ],
+   "hand": [
+    "Searing Spear"
+   ]
+  },
+  "B": {
+   "life": 9,
+   "battlefield": [
+    {
+     "card": "Island",
+     "count": 4,
+     "tapped": true
+    },
+    {
+     "card": "Rotted Hulk"
+    }
+   ]
+  }
+ },
+ "win": [
+  {
+   "metric": "life",
+   "player": "B",
+   "max": 0
+  }
+ ],
+ "opponent_responses": [
+  [],
+  [
+   {
+    "do": "block",
+    "turn": 1,
+    "player": "B",
+    "blocker": "Rotted Hulk",
+    "attacker": "Moss Monster"
+   }
+  ],
+  [
+   {
+    "do": "block",
+    "turn": 1,
+    "player": "B",
+    "blocker": "Rotted Hulk",
+    "attacker": "Cylian Elf"
+   }
+  ],
+  [
+   {
+    "do": "block",
+    "turn": 1,
+    "player": "B",
+    "blocker": "Rotted Hulk",
+    "attacker": "Frost Ogre"
+   }
+  ],
+  [
+   {
+    "do": "block",
+    "turn": 1,
+    "player": "B",
+    "blocker": "Rotted Hulk",
+    "attacker": "Bane Alley Blackguard"
+   }
+  ]
+ ],
+ "known_good": [
+  {
+   "do": "cast",
+   "turn": 1,
+   "phase": "PRECOMBAT_MAIN",
+   "player": "A",
+   "card": "Searing Spear",
+   "target_player": "B"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Moss Monster"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Cylian Elf"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Frost Ogre"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Bane Alley Blackguard"
+  }
+ ],
+ "known_bad": [
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Moss Monster"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Cylian Elf"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Frost Ogre"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Bane Alley Blackguard"
+  }
+ ]
+}

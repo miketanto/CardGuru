@@ -1,0 +1,153 @@
+{
+ "id": "t3-bestblock-023",
+ "tier": 3,
+ "description": "Win through their best block: 6 life, a 4-power blocker untapped",
+ "trap": "attack-all deals 6 and looks lethal, but blocking Defense Force Aggressor leaves them at 2",
+ "notes": "family=bestblock; opponent_responses enumerate no-block plus each single block; a line must win against ALL",
+ "turn": 1,
+ "players": {
+  "A": {
+   "life": 20,
+   "battlefield": [
+    {
+     "card": "Muck Rats"
+    },
+    {
+     "card": "Defense Force Aggressor"
+    },
+    {
+     "card": "Merfolk of the Pearl Trident"
+    },
+    {
+     "card": "Elvish Warrior"
+    },
+    {
+     "card": "Mountain",
+     "count": 1
+    }
+   ],
+   "hand": [
+    "Lightning Bolt"
+   ]
+  },
+  "B": {
+   "life": 6,
+   "battlefield": [
+    {
+     "card": "Island",
+     "count": 3,
+     "tapped": true
+    },
+    {
+     "card": "Obsidian Giant"
+    }
+   ]
+  }
+ },
+ "win": [
+  {
+   "metric": "life",
+   "player": "B",
+   "max": 0
+  }
+ ],
+ "opponent_responses": [
+  [],
+  [
+   {
+    "do": "block",
+    "turn": 1,
+    "player": "B",
+    "blocker": "Obsidian Giant",
+    "attacker": "Muck Rats"
+   }
+  ],
+  [
+   {
+    "do": "block",
+    "turn": 1,
+    "player": "B",
+    "blocker": "Obsidian Giant",
+    "attacker": "Defense Force Aggressor"
+   }
+  ],
+  [
+   {
+    "do": "block",
+    "turn": 1,
+    "player": "B",
+    "blocker": "Obsidian Giant",
+    "attacker": "Merfolk of the Pearl Trident"
+   }
+  ],
+  [
+   {
+    "do": "block",
+    "turn": 1,
+    "player": "B",
+    "blocker": "Obsidian Giant",
+    "attacker": "Elvish Warrior"
+   }
+  ]
+ ],
+ "known_good": [
+  {
+   "do": "cast",
+   "turn": 1,
+   "phase": "PRECOMBAT_MAIN",
+   "player": "A",
+   "card": "Lightning Bolt",
+   "target_player": "B"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Muck Rats"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Defense Force Aggressor"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Merfolk of the Pearl Trident"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Elvish Warrior"
+  }
+ ],
+ "known_bad": [
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Muck Rats"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Defense Force Aggressor"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Merfolk of the Pearl Trident"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Elvish Warrior"
+  }
+ ]
+}

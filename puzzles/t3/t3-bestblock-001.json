@@ -1,0 +1,153 @@
+{
+ "id": "t3-bestblock-001",
+ "tier": 3,
+ "description": "Win through their best block: 9 life, a 2-power blocker untapped",
+ "trap": "attack-all deals 10 and looks lethal, but blocking Giant Cockroach leaves them at 3",
+ "notes": "family=bestblock; opponent_responses enumerate no-block plus each single block; a line must win against ALL",
+ "turn": 1,
+ "players": {
+  "A": {
+   "life": 20,
+   "battlefield": [
+    {
+     "card": "Giant Cockroach"
+    },
+    {
+     "card": "Great Hart"
+    },
+    {
+     "card": "Fresh Volunteers"
+    },
+    {
+     "card": "Defiant Khenra"
+    },
+    {
+     "card": "Mountain",
+     "count": 2
+    }
+   ],
+   "hand": [
+    "Incinerate"
+   ]
+  },
+  "B": {
+   "life": 9,
+   "battlefield": [
+    {
+     "card": "Island",
+     "count": 4,
+     "tapped": true
+    },
+    {
+     "card": "Scarwood Goblins"
+    }
+   ]
+  }
+ },
+ "win": [
+  {
+   "metric": "life",
+   "player": "B",
+   "max": 0
+  }
+ ],
+ "opponent_responses": [
+  [],
+  [
+   {
+    "do": "block",
+    "turn": 1,
+    "player": "B",
+    "blocker": "Scarwood Goblins",
+    "attacker": "Giant Cockroach"
+   }
+  ],
+  [
+   {
+    "do": "block",
+    "turn": 1,
+    "player": "B",
+    "blocker": "Scarwood Goblins",
+    "attacker": "Great Hart"
+   }
+  ],
+  [
+   {
+    "do": "block",
+    "turn": 1,
+    "player": "B",
+    "blocker": "Scarwood Goblins",
+    "attacker": "Fresh Volunteers"
+   }
+  ],
+  [
+   {
+    "do": "block",
+    "turn": 1,
+    "player": "B",
+    "blocker": "Scarwood Goblins",
+    "attacker": "Defiant Khenra"
+   }
+  ]
+ ],
+ "known_good": [
+  {
+   "do": "cast",
+   "turn": 1,
+   "phase": "PRECOMBAT_MAIN",
+   "player": "A",
+   "card": "Incinerate",
+   "target_player": "B"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Giant Cockroach"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Great Hart"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Fresh Volunteers"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Defiant Khenra"
+  }
+ ],
+ "known_bad": [
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Giant Cockroach"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Great Hart"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Fresh Volunteers"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Defiant Khenra"
+  }
+ ]
+}

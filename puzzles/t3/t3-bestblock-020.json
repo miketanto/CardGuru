@@ -1,0 +1,153 @@
+{
+ "id": "t3-bestblock-020",
+ "tier": 3,
+ "description": "Win through their best block: 13 life, a 4-power blocker untapped",
+ "trap": "attack-all deals 14 and looks lethal, but blocking Earth Elemental leaves them at 3",
+ "notes": "family=bestblock; opponent_responses enumerate no-block plus each single block; a line must win against ALL",
+ "turn": 1,
+ "players": {
+  "A": {
+   "life": 20,
+   "battlefield": [
+    {
+     "card": "Knight of the Keep"
+    },
+    {
+     "card": "Earth Elemental"
+    },
+    {
+     "card": "Meng Huo's Horde"
+    },
+    {
+     "card": "Hill Giant"
+    },
+    {
+     "card": "Mountain",
+     "count": 2
+    }
+   ],
+   "hand": [
+    "Searing Spear"
+   ]
+  },
+  "B": {
+   "life": 13,
+   "battlefield": [
+    {
+     "card": "Island",
+     "count": 2,
+     "tapped": true
+    },
+    {
+     "card": "Lizard Warrior"
+    }
+   ]
+  }
+ },
+ "win": [
+  {
+   "metric": "life",
+   "player": "B",
+   "max": 0
+  }
+ ],
+ "opponent_responses": [
+  [],
+  [
+   {
+    "do": "block",
+    "turn": 1,
+    "player": "B",
+    "blocker": "Lizard Warrior",
+    "attacker": "Knight of the Keep"
+   }
+  ],
+  [
+   {
+    "do": "block",
+    "turn": 1,
+    "player": "B",
+    "blocker": "Lizard Warrior",
+    "attacker": "Earth Elemental"
+   }
+  ],
+  [
+   {
+    "do": "block",
+    "turn": 1,
+    "player": "B",
+    "blocker": "Lizard Warrior",
+    "attacker": "Meng Huo's Horde"
+   }
+  ],
+  [
+   {
+    "do": "block",
+    "turn": 1,
+    "player": "B",
+    "blocker": "Lizard Warrior",
+    "attacker": "Hill Giant"
+   }
+  ]
+ ],
+ "known_good": [
+  {
+   "do": "cast",
+   "turn": 1,
+   "phase": "PRECOMBAT_MAIN",
+   "player": "A",
+   "card": "Searing Spear",
+   "target_player": "B"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Knight of the Keep"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Earth Elemental"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Meng Huo's Horde"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Hill Giant"
+  }
+ ],
+ "known_bad": [
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Knight of the Keep"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Earth Elemental"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Meng Huo's Horde"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Hill Giant"
+  }
+ ]
+}

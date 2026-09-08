@@ -1,0 +1,153 @@
+{
+ "id": "t3-bestblock-003",
+ "tier": 3,
+ "description": "Win through their best block: 11 life, a 2-power blocker untapped",
+ "trap": "attack-all deals 12 and looks lethal, but blocking Order of the Sacred Bell leaves them at 3",
+ "notes": "family=bestblock; opponent_responses enumerate no-block plus each single block; a line must win against ALL",
+ "turn": 1,
+ "players": {
+  "A": {
+   "life": 20,
+   "battlefield": [
+    {
+     "card": "Order of the Sacred Bell"
+    },
+    {
+     "card": "Queen's Bay Soldier"
+    },
+    {
+     "card": "Rotted Hulk"
+    },
+    {
+     "card": "Highborn Vampire"
+    },
+    {
+     "card": "Mountain",
+     "count": 2
+    }
+   ],
+   "hand": [
+    "Incinerate"
+   ]
+  },
+  "B": {
+   "life": 11,
+   "battlefield": [
+    {
+     "card": "Island",
+     "count": 2,
+     "tapped": true
+    },
+    {
+     "card": "Colossodon Yearling"
+    }
+   ]
+  }
+ },
+ "win": [
+  {
+   "metric": "life",
+   "player": "B",
+   "max": 0
+  }
+ ],
+ "opponent_responses": [
+  [],
+  [
+   {
+    "do": "block",
+    "turn": 1,
+    "player": "B",
+    "blocker": "Colossodon Yearling",
+    "attacker": "Order of the Sacred Bell"
+   }
+  ],
+  [
+   {
+    "do": "block",
+    "turn": 1,
+    "player": "B",
+    "blocker": "Colossodon Yearling",
+    "attacker": "Queen's Bay Soldier"
+   }
+  ],
+  [
+   {
+    "do": "block",
+    "turn": 1,
+    "player": "B",
+    "blocker": "Colossodon Yearling",
+    "attacker": "Rotted Hulk"
+   }
+  ],
+  [
+   {
+    "do": "block",
+    "turn": 1,
+    "player": "B",
+    "blocker": "Colossodon Yearling",
+    "attacker": "Highborn Vampire"
+   }
+  ]
+ ],
+ "known_good": [
+  {
+   "do": "cast",
+   "turn": 1,
+   "phase": "PRECOMBAT_MAIN",
+   "player": "A",
+   "card": "Incinerate",
+   "target_player": "B"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Order of the Sacred Bell"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Queen's Bay Soldier"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Rotted Hulk"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Highborn Vampire"
+  }
+ ],
+ "known_bad": [
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Order of the Sacred Bell"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Queen's Bay Soldier"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Rotted Hulk"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Highborn Vampire"
+  }
+ ]
+}

@@ -1,0 +1,153 @@
+{
+ "id": "t3-bestblock-027",
+ "tier": 3,
+ "description": "Win through their best block: 11 life, a 4-power blocker untapped",
+ "trap": "attack-all deals 14 and looks lethal, but blocking Frost Ogre leaves them at 2",
+ "notes": "family=bestblock; opponent_responses enumerate no-block plus each single block; a line must win against ALL",
+ "turn": 1,
+ "players": {
+  "A": {
+   "life": 20,
+   "battlefield": [
+    {
+     "card": "Ironroot Treefolk"
+    },
+    {
+     "card": "Amphin Cutthroat"
+    },
+    {
+     "card": "Frost Ogre"
+    },
+    {
+     "card": "Ferocious Zheng"
+    },
+    {
+     "card": "Mountain",
+     "count": 1
+    }
+   ],
+   "hand": [
+    "Shock"
+   ]
+  },
+  "B": {
+   "life": 11,
+   "battlefield": [
+    {
+     "card": "Island",
+     "count": 3,
+     "tapped": true
+    },
+    {
+     "card": "Douser of Lights"
+    }
+   ]
+  }
+ },
+ "win": [
+  {
+   "metric": "life",
+   "player": "B",
+   "max": 0
+  }
+ ],
+ "opponent_responses": [
+  [],
+  [
+   {
+    "do": "block",
+    "turn": 1,
+    "player": "B",
+    "blocker": "Douser of Lights",
+    "attacker": "Ironroot Treefolk"
+   }
+  ],
+  [
+   {
+    "do": "block",
+    "turn": 1,
+    "player": "B",
+    "blocker": "Douser of Lights",
+    "attacker": "Amphin Cutthroat"
+   }
+  ],
+  [
+   {
+    "do": "block",
+    "turn": 1,
+    "player": "B",
+    "blocker": "Douser of Lights",
+    "attacker": "Frost Ogre"
+   }
+  ],
+  [
+   {
+    "do": "block",
+    "turn": 1,
+    "player": "B",
+    "blocker": "Douser of Lights",
+    "attacker": "Ferocious Zheng"
+   }
+  ]
+ ],
+ "known_good": [
+  {
+   "do": "cast",
+   "turn": 1,
+   "phase": "PRECOMBAT_MAIN",
+   "player": "A",
+   "card": "Shock",
+   "target_player": "B"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Ironroot Treefolk"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Amphin Cutthroat"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Frost Ogre"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Ferocious Zheng"
+  }
+ ],
+ "known_bad": [
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Ironroot Treefolk"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Amphin Cutthroat"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Frost Ogre"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Ferocious Zheng"
+  }
+ ]
+}

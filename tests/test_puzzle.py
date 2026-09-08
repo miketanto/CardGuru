@@ -248,3 +248,59 @@ def test_t2_admission_holds_under_the_local_runner_too():
     reports = admit(generate_t2(store, count=12, seed=11),
                     runner=LocalRunner(store).run_scenarios)
     assert all(r["admitted"] for r in reports)
+
+
+# --- tier 3: minimax vs enumerated responses -----------------------------
+
+def _fake_runner_factory(loses_to):
+    """Outcome factory: scenario ids ending r<k> for k in loses_to lose."""
+    def runner(specs):
+        outs = []
+        for s in specs:
+            r = int(s["id"].rsplit("r", 1)[1])
+            life = 2 if r in loses_to else -1
+            outs.append({"id": s["id"], "status": "executed",
+                         "engine": "fake",
+                         "state": {"A": {"life": 20, "battlefield": [],
+                                         "hand_count": 0},
+                                   "B": {"life": life}}})
+        return outs
+    return runner
+
+
+def test_minimax_grading_takes_the_worst_response():
+    spec = make_puzzle(opponent_responses=[[],
+        [{"do": "block", "turn": 1, "player": "B",
+          "blocker": "Test Ox", "attacker": "Test Bear"}]])
+    # wins every response -> win
+    [v] = grade([(spec, spec["known_good"])],
+                runner=_fake_runner_factory(loses_to=set()))
+    assert v["win"]
+    # loses only to response #1 -> loss, and the reason names the response
+    [v] = grade([(spec, spec["known_good"])],
+                runner=_fake_runner_factory(loses_to={1}))
+    assert not v["win"] and "response #1" in v["reasons"][0]
+
+
+@needs_real_store
+def test_t3_proofs_hold_for_every_generated_puzzle():
+    from cardguru.puzzlegen import generate_t3
+    store = cs.CardStore(REAL_DB)
+    runner = LocalRunner(store)
+    puzzles = generate_t3(store, count=30, seed=17)
+    assert json.dumps(puzzles, sort_keys=True) \
+        == json.dumps(generate_t3(store, count=30, seed=17), sort_keys=True)
+    for p in puzzles:
+        assert validate_puzzle(p) == []
+        assert len(p["opponent_responses"]) >= 3
+        assert p["opponent_responses"][0] == []      # no-block always present
+        powers = []
+        for e in p["players"]["A"]["battlefield"]:
+            row = store.resolve(e["card"])
+            if "Creature" in (row["type_line"] or ""):
+                powers.append(int(row["power"]))
+        total, biggest, life = sum(powers), max(powers), p["players"]["B"]["life"]
+        assert total >= life                  # greedy LOOKS lethal
+        assert total - biggest < life         # best block beats greedy
+        burn = runner.burn_damage(p["players"]["A"]["hand"][0])
+        assert total - biggest + burn >= life  # robust covers it

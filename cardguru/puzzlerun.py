@@ -93,6 +93,12 @@ SINGLE_NOTE = """\
 Your line is executed by a rules engine exactly as written; the game ends
 in a win only if your opponent is dead when it resolves."""
 
+OPPONENT_NOTE = """\
+The opponent is NOT passive in this position: they will pick their best
+legal response to your line (for example, their best block assignment).
+Your line only wins if it wins against EVERY response they could make —
+a plan that needs them to block badly, or not at all, will lose."""
+
 SEARCH_NOTE = """\
 Answer with SEVERAL candidate lines — a JSON array of 3 to 5 lines, i.e.
 an array of arrays: [[action, action, ...], [action, ...], ...]. Make the
@@ -115,10 +121,13 @@ def init_run(puzzles: list[dict], run_path: str, encoder, mode: str = "bare",
                        "puzzles": [p["id"] for p in puzzles]}, f, indent=1)
     note = SEARCH_NOTE if search else SINGLE_NOTE
     for spec in puzzles:
+        exec_note = note
+        if spec.get("opponent_responses"):
+            exec_note = OPPONENT_NOTE + "\n\n" + note
         task = TASK_TEMPLATE.format(qid=spec["id"],
                                     board=encoder.render(spec, mode=mode),
                                     vocabulary=VOCABULARY, turn=spec["turn"],
-                                    execution_note=note)
+                                    execution_note=exec_note)
         path = os.path.join(run_path, "pending", spec["id"] + ".md")
         answered = os.path.join(run_path, "answers", spec["id"] + ".txt")
         if not os.path.exists(path) and not os.path.exists(answered):
@@ -187,7 +196,7 @@ def collect_search_run(puzzles: list[dict], run_path: str, runner=None,
     are all recorded so a pick can be audited later.
     """
     from . import value
-    from .puzzle import evaluate_win, splice, validate_line
+    from .puzzle import evaluate_win, responses_of, splice, validate_line
 
     by_id = {p["id"]: p for p in puzzles}
     adir = os.path.join(run_path, "answers")
@@ -207,7 +216,8 @@ def collect_search_run(puzzles: list[dict], run_path: str, runner=None,
                             "reasons": [f"unparseable answer: {e}"],
                             "engine": None}
 
-    # splice every structurally valid candidate; invalid ones keep a note
+    # splice every structurally valid candidate against every opponent
+    # response; invalid candidates keep a note instead of a rollout
     to_run, slots, notes = [], [], {}
     for qid, candidates in parsed.items():
         spec = by_id[qid]
@@ -216,42 +226,74 @@ def collect_search_run(puzzles: list[dict], run_path: str, runner=None,
             errs = validate_line(spec, line)
             if errs:
                 notes[qid][i] = "invalid: " + "; ".join(errs)
-            else:
-                to_run.append(splice(spec, line, run_id=f"{qid}#c{i}"))
-                slots.append((qid, i))
+                continue
+            for r, response in enumerate(responses_of(spec)):
+                to_run.append(splice(spec, line + response,
+                                     run_id=f"{qid}#c{i}r{r}"))
+                slots.append((qid, i, r))
 
     if runner is None:
         from .adjudicate import run_scenarios
         from .puzzle import run_scenarios_from_specs
         runner = lambda specs: run_scenarios_from_specs(specs, run_scenarios,
                                                         mage_repo)
-    outcomes_by = {qid: [None] * len(c) for qid, c in parsed.items()}
+    outcomes_by: dict[str, dict[int, dict[int, dict]]] = {
+        qid: {} for qid in parsed}
     if to_run:
-        for (qid, i), outcome in zip(slots, runner(to_run)):
-            outcomes_by[qid][i] = outcome
+        for (qid, i, r), outcome in zip(slots, runner(to_run)):
+            outcomes_by[qid].setdefault(i, {})[r] = outcome
 
     for qid, candidates in parsed.items():
         spec = by_id[qid]
-        outcomes = [o if o is not None
-                    else {"status": "error", "error": notes[qid][i]}
-                    for i, o in enumerate(outcomes_by[qid])]
-        best, scores = value.pick(outcomes)
+        n_resp = len(responses_of(spec))
+        # minimax: a candidate's value is its WORST response's score, and a
+        # candidate any response can break (error included) is vetoed
+        cand_values, cand_worst = [], []
+        for i in range(len(candidates)):
+            if notes[qid][i] is not None:
+                cand_values.append(None)
+                cand_worst.append({"status": "error",
+                                   "error": notes[qid][i]})
+                continue
+            scored = [(value.score(outcomes_by[qid][i][r]),
+                       outcomes_by[qid][i][r]) for r in range(n_resp)]
+            if any(s is None for s, _ in scored):
+                cand_values.append(None)
+                cand_worst.append(next(o for s, o in scored if s is None))
+            else:
+                s_min, o_min = min(scored, key=lambda so: so[0])
+                cand_values.append(s_min)
+                cand_worst.append(o_min)
+        best, best_v = None, None
+        for i, v in enumerate(cand_values):
+            if v is not None and (best_v is None or v > best_v):
+                best, best_v = i, v
         if best is None:
             results[qid] = {"id": qid, "win": False,
                             "reasons": ["all candidates failed: "
                                         + "; ".join(str(o.get("error"))
-                                                    for o in outcomes)],
+                                                    for o in cand_worst)],
                             "engine": None, "candidates": len(candidates),
-                            "scores": scores}
+                            "scores": cand_values}
             continue
-        ok, reasons = evaluate_win(outcomes[best], spec["win"])
+        # the verdict is the picked candidate's worst case across responses
+        ok = True
+        reasons: list[str] = []
+        for r in range(n_resp):
+            r_ok, r_reasons = evaluate_win(outcomes_by[qid][best][r],
+                                           spec["win"])
+            if not r_ok and ok:
+                ok, reasons = False, ([f"beaten by opponent response #{r}"]
+                                      + r_reasons)
+        if ok:
+            _, reasons = evaluate_win(outcomes_by[qid][best][0], spec["win"])
         results[qid] = {"id": qid, "win": ok, "reasons": reasons,
-                        "engine": outcomes[best].get("engine"),
+                        "engine": cand_worst[best].get("engine"),
                         "candidates": len(candidates), "picked": best,
-                        "scores": scores,
+                        "responses": n_resp,
+                        "scores": cand_values,
                         "candidate_errors": sum(
-                            1 for o in outcomes
-                            if o.get("status") != "executed")}
+                            1 for v in cand_values if v is None)}
 
     missing = sorted(set(by_id) - set(results))
     summary = {

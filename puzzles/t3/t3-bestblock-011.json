@@ -1,0 +1,129 @@
+{
+ "id": "t3-bestblock-011",
+ "tier": 3,
+ "description": "Win through their best block: 7 life, a 5-power blocker untapped",
+ "trap": "attack-all deals 7 and looks lethal, but blocking Pheres-Band Centaurs leaves them at 3",
+ "notes": "family=bestblock; opponent_responses enumerate no-block plus each single block; a line must win against ALL",
+ "turn": 1,
+ "players": {
+  "A": {
+   "life": 20,
+   "battlefield": [
+    {
+     "card": "Femeref Scouts"
+    },
+    {
+     "card": "Pheres-Band Centaurs"
+    },
+    {
+     "card": "Giant Octopus"
+    },
+    {
+     "card": "Mountain",
+     "count": 1
+    }
+   ],
+   "hand": [
+    "Lightning Bolt"
+   ]
+  },
+  "B": {
+   "life": 7,
+   "battlefield": [
+    {
+     "card": "Island",
+     "count": 2,
+     "tapped": true
+    },
+    {
+     "card": "Golgari Longlegs"
+    }
+   ]
+  }
+ },
+ "win": [
+  {
+   "metric": "life",
+   "player": "B",
+   "max": 0
+  }
+ ],
+ "opponent_responses": [
+  [],
+  [
+   {
+    "do": "block",
+    "turn": 1,
+    "player": "B",
+    "blocker": "Golgari Longlegs",
+    "attacker": "Femeref Scouts"
+   }
+  ],
+  [
+   {
+    "do": "block",
+    "turn": 1,
+    "player": "B",
+    "blocker": "Golgari Longlegs",
+    "attacker": "Pheres-Band Centaurs"
+   }
+  ],
+  [
+   {
+    "do": "block",
+    "turn": 1,
+    "player": "B",
+    "blocker": "Golgari Longlegs",
+    "attacker": "Giant Octopus"
+   }
+  ]
+ ],
+ "known_good": [
+  {
+   "do": "cast",
+   "turn": 1,
+   "phase": "PRECOMBAT_MAIN",
+   "player": "A",
+   "card": "Lightning Bolt",
+   "target_player": "B"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Femeref Scouts"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Pheres-Band Centaurs"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Giant Octopus"
+  }
+ ],
+ "known_bad": [
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Femeref Scouts"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Pheres-Band Centaurs"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Giant Octopus"
+  }
+ ]
+}

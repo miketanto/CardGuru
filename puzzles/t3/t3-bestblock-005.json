@@ -1,0 +1,129 @@
+{
+ "id": "t3-bestblock-005",
+ "tier": 3,
+ "description": "Win through their best block: 6 life, a 2-power blocker untapped",
+ "trap": "attack-all deals 7 and looks lethal, but blocking Goblin Cavaliers leaves them at 2",
+ "notes": "family=bestblock; opponent_responses enumerate no-block plus each single block; a line must win against ALL",
+ "turn": 1,
+ "players": {
+  "A": {
+   "life": 20,
+   "battlefield": [
+    {
+     "card": "Goblin Cavaliers"
+    },
+    {
+     "card": "Lumengrid Warden"
+    },
+    {
+     "card": "Centaur Courser"
+    },
+    {
+     "card": "Mountain",
+     "count": 1
+    }
+   ],
+   "hand": [
+    "Shock"
+   ]
+  },
+  "B": {
+   "life": 6,
+   "battlefield": [
+    {
+     "card": "Island",
+     "count": 3,
+     "tapped": true
+    },
+    {
+     "card": "Riot Devils"
+    }
+   ]
+  }
+ },
+ "win": [
+  {
+   "metric": "life",
+   "player": "B",
+   "max": 0
+  }
+ ],
+ "opponent_responses": [
+  [],
+  [
+   {
+    "do": "block",
+    "turn": 1,
+    "player": "B",
+    "blocker": "Riot Devils",
+    "attacker": "Goblin Cavaliers"
+   }
+  ],
+  [
+   {
+    "do": "block",
+    "turn": 1,
+    "player": "B",
+    "blocker": "Riot Devils",
+    "attacker": "Lumengrid Warden"
+   }
+  ],
+  [
+   {
+    "do": "block",
+    "turn": 1,
+    "player": "B",
+    "blocker": "Riot Devils",
+    "attacker": "Centaur Courser"
+   }
+  ]
+ ],
+ "known_good": [
+  {
+   "do": "cast",
+   "turn": 1,
+   "phase": "PRECOMBAT_MAIN",
+   "player": "A",
+   "card": "Shock",
+   "target_player": "B"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Goblin Cavaliers"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Lumengrid Warden"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Centaur Courser"
+  }
+ ],
+ "known_bad": [
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Goblin Cavaliers"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Lumengrid Warden"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Centaur Courser"
+  }
+ ]
+}

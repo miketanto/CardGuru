@@ -1,0 +1,153 @@
+{
+ "id": "t3-bestblock-006",
+ "tier": 3,
+ "description": "Win through their best block: 11 life, a 4-power blocker untapped",
+ "trap": "attack-all deals 13 and looks lethal, but blocking Lazotep Behemoth leaves them at 3",
+ "notes": "family=bestblock; opponent_responses enumerate no-block plus each single block; a line must win against ALL",
+ "turn": 1,
+ "players": {
+  "A": {
+   "life": 20,
+   "battlefield": [
+    {
+     "card": "Blind Phantasm"
+    },
+    {
+     "card": "Lazotep Behemoth"
+    },
+    {
+     "card": "Keepers of the Faith"
+    },
+    {
+     "card": "Order of the Sacred Bell"
+    },
+    {
+     "card": "Mountain",
+     "count": 2
+    }
+   ],
+   "hand": [
+    "Lightning Strike"
+   ]
+  },
+  "B": {
+   "life": 11,
+   "battlefield": [
+    {
+     "card": "Island",
+     "count": 4,
+     "tapped": true
+    },
+    {
+     "card": "Nether Horror"
+    }
+   ]
+  }
+ },
+ "win": [
+  {
+   "metric": "life",
+   "player": "B",
+   "max": 0
+  }
+ ],
+ "opponent_responses": [
+  [],
+  [
+   {
+    "do": "block",
+    "turn": 1,
+    "player": "B",
+    "blocker": "Nether Horror",
+    "attacker": "Blind Phantasm"
+   }
+  ],
+  [
+   {
+    "do": "block",
+    "turn": 1,
+    "player": "B",
+    "blocker": "Nether Horror",
+    "attacker": "Lazotep Behemoth"
+   }
+  ],
+  [
+   {
+    "do": "block",
+    "turn": 1,
+    "player": "B",
+    "blocker": "Nether Horror",
+    "attacker": "Keepers of the Faith"
+   }
+  ],
+  [
+   {
+    "do": "block",
+    "turn": 1,
+    "player": "B",
+    "blocker": "Nether Horror",
+    "attacker": "Order of the Sacred Bell"
+   }
+  ]
+ ],
+ "known_good": [
+  {
+   "do": "cast",
+   "turn": 1,
+   "phase": "PRECOMBAT_MAIN",
+   "player": "A",
+   "card": "Lightning Strike",
+   "target_player": "B"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Blind Phantasm"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Lazotep Behemoth"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Keepers of the Faith"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Order of the Sacred Bell"
+  }
+ ],
+ "known_bad": [
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Blind Phantasm"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Lazotep Behemoth"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Keepers of the Faith"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Order of the Sacred Bell"
+  }
+ ]
+}

@@ -1,0 +1,153 @@
+{
+ "id": "t3-bestblock-002",
+ "tier": 3,
+ "description": "Win through their best block: 8 life, a 2-power blocker untapped",
+ "trap": "attack-all deals 8 and looks lethal, but blocking Capital Guard leaves them at 2",
+ "notes": "family=bestblock; opponent_responses enumerate no-block plus each single block; a line must win against ALL",
+ "turn": 1,
+ "players": {
+  "A": {
+   "life": 20,
+   "battlefield": [
+    {
+     "card": "Capital Guard"
+    },
+    {
+     "card": "Armored Cancrix"
+    },
+    {
+     "card": "Felhide Minotaur"
+    },
+    {
+     "card": "Gutter Skulk"
+    },
+    {
+     "card": "Mountain",
+     "count": 2
+    }
+   ],
+   "hand": [
+    "Searing Spear"
+   ]
+  },
+  "B": {
+   "life": 8,
+   "battlefield": [
+    {
+     "card": "Island",
+     "count": 3,
+     "tapped": true
+    },
+    {
+     "card": "Runeclaw Bear"
+    }
+   ]
+  }
+ },
+ "win": [
+  {
+   "metric": "life",
+   "player": "B",
+   "max": 0
+  }
+ ],
+ "opponent_responses": [
+  [],
+  [
+   {
+    "do": "block",
+    "turn": 1,
+    "player": "B",
+    "blocker": "Runeclaw Bear",
+    "attacker": "Capital Guard"
+   }
+  ],
+  [
+   {
+    "do": "block",
+    "turn": 1,
+    "player": "B",
+    "blocker": "Runeclaw Bear",
+    "attacker": "Armored Cancrix"
+   }
+  ],
+  [
+   {
+    "do": "block",
+    "turn": 1,
+    "player": "B",
+    "blocker": "Runeclaw Bear",
+    "attacker": "Felhide Minotaur"
+   }
+  ],
+  [
+   {
+    "do": "block",
+    "turn": 1,
+    "player": "B",
+    "blocker": "Runeclaw Bear",
+    "attacker": "Gutter Skulk"
+   }
+  ]
+ ],
+ "known_good": [
+  {
+   "do": "cast",
+   "turn": 1,
+   "phase": "PRECOMBAT_MAIN",
+   "player": "A",
+   "card": "Searing Spear",
+   "target_player": "B"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Capital Guard"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Armored Cancrix"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Felhide Minotaur"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Gutter Skulk"
+  }
+ ],
+ "known_bad": [
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Capital Guard"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Armored Cancrix"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Felhide Minotaur"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Gutter Skulk"
+  }
+ ]
+}

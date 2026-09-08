@@ -1,0 +1,129 @@
+{
+ "id": "t3-bestblock-010",
+ "tier": 3,
+ "description": "Win through their best block: 8 life, a 3-power blocker untapped",
+ "trap": "attack-all deals 10 and looks lethal, but blocking Fire Elemental leaves them at 3",
+ "notes": "family=bestblock; opponent_responses enumerate no-block plus each single block; a line must win against ALL",
+ "turn": 1,
+ "players": {
+  "A": {
+   "life": 20,
+   "battlefield": [
+    {
+     "card": "Fire Elemental"
+    },
+    {
+     "card": "Bastion Enforcer"
+    },
+    {
+     "card": "Foot Soldiers"
+    },
+    {
+     "card": "Mountain",
+     "count": 2
+    }
+   ],
+   "hand": [
+    "Incinerate"
+   ]
+  },
+  "B": {
+   "life": 8,
+   "battlefield": [
+    {
+     "card": "Island",
+     "count": 4,
+     "tapped": true
+    },
+    {
+     "card": "Dromoka Warrior"
+    }
+   ]
+  }
+ },
+ "win": [
+  {
+   "metric": "life",
+   "player": "B",
+   "max": 0
+  }
+ ],
+ "opponent_responses": [
+  [],
+  [
+   {
+    "do": "block",
+    "turn": 1,
+    "player": "B",
+    "blocker": "Dromoka Warrior",
+    "attacker": "Fire Elemental"
+   }
+  ],
+  [
+   {
+    "do": "block",
+    "turn": 1,
+    "player": "B",
+    "blocker": "Dromoka Warrior",
+    "attacker": "Bastion Enforcer"
+   }
+  ],
+  [
+   {
+    "do": "block",
+    "turn": 1,
+    "player": "B",
+    "blocker": "Dromoka Warrior",
+    "attacker": "Foot Soldiers"
+   }
+  ]
+ ],
+ "known_good": [
+  {
+   "do": "cast",
+   "turn": 1,
+   "phase": "PRECOMBAT_MAIN",
+   "player": "A",
+   "card": "Incinerate",
+   "target_player": "B"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Fire Elemental"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Bastion Enforcer"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Foot Soldiers"
+  }
+ ],
+ "known_bad": [
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Fire Elemental"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Bastion Enforcer"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Foot Soldiers"
+  }
+ ]
+}

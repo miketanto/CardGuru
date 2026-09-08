@@ -1,0 +1,153 @@
+{
+ "id": "t3-bestblock-008",
+ "tier": 3,
+ "description": "Win through their best block: 5 life, a 1-power blocker untapped",
+ "trap": "attack-all deals 5 and looks lethal, but blocking Knight Errant leaves them at 2",
+ "notes": "family=bestblock; opponent_responses enumerate no-block plus each single block; a line must win against ALL",
+ "turn": 1,
+ "players": {
+  "A": {
+   "life": 20,
+   "battlefield": [
+    {
+     "card": "Bane Alley Blackguard"
+    },
+    {
+     "card": "Knight Errant"
+    },
+    {
+     "card": "Grizzled Leotau"
+    },
+    {
+     "card": "Muck Rats"
+    },
+    {
+     "card": "Mountain",
+     "count": 1
+    }
+   ],
+   "hand": [
+    "Shock"
+   ]
+  },
+  "B": {
+   "life": 5,
+   "battlefield": [
+    {
+     "card": "Island",
+     "count": 3,
+     "tapped": true
+    },
+    {
+     "card": "Seagraf Skaab"
+    }
+   ]
+  }
+ },
+ "win": [
+  {
+   "metric": "life",
+   "player": "B",
+   "max": 0
+  }
+ ],
+ "opponent_responses": [
+  [],
+  [
+   {
+    "do": "block",
+    "turn": 1,
+    "player": "B",
+    "blocker": "Seagraf Skaab",
+    "attacker": "Bane Alley Blackguard"
+   }
+  ],
+  [
+   {
+    "do": "block",
+    "turn": 1,
+    "player": "B",
+    "blocker": "Seagraf Skaab",
+    "attacker": "Knight Errant"
+   }
+  ],
+  [
+   {
+    "do": "block",
+    "turn": 1,
+    "player": "B",
+    "blocker": "Seagraf Skaab",
+    "attacker": "Grizzled Leotau"
+   }
+  ],
+  [
+   {
+    "do": "block",
+    "turn": 1,
+    "player": "B",
+    "blocker": "Seagraf Skaab",
+    "attacker": "Muck Rats"
+   }
+  ]
+ ],
+ "known_good": [
+  {
+   "do": "cast",
+   "turn": 1,
+   "phase": "PRECOMBAT_MAIN",
+   "player": "A",
+   "card": "Shock",
+   "target_player": "B"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Bane Alley Blackguard"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Knight Errant"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Grizzled Leotau"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Muck Rats"
+  }
+ ],
+ "known_bad": [
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Bane Alley Blackguard"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Knight Errant"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Grizzled Leotau"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Muck Rats"
+  }
+ ]
+}

@@ -1,0 +1,129 @@
+{
+ "id": "t3-bestblock-009",
+ "tier": 3,
+ "description": "Win through their best block: 5 life, a 2-power blocker untapped",
+ "trap": "attack-all deals 5 and looks lethal, but blocking Catacomb Crocodile leaves them at 3",
+ "notes": "family=bestblock; opponent_responses enumerate no-block plus each single block; a line must win against ALL",
+ "turn": 1,
+ "players": {
+  "A": {
+   "life": 20,
+   "battlefield": [
+    {
+     "card": "Catacomb Crocodile"
+    },
+    {
+     "card": "Merfolk of the Pearl Trident"
+    },
+    {
+     "card": "Dwarven Trader"
+    },
+    {
+     "card": "Mountain",
+     "count": 2
+    }
+   ],
+   "hand": [
+    "Incinerate"
+   ]
+  },
+  "B": {
+   "life": 5,
+   "battlefield": [
+    {
+     "card": "Island",
+     "count": 3,
+     "tapped": true
+    },
+    {
+     "card": "Felhide Minotaur"
+    }
+   ]
+  }
+ },
+ "win": [
+  {
+   "metric": "life",
+   "player": "B",
+   "max": 0
+  }
+ ],
+ "opponent_responses": [
+  [],
+  [
+   {
+    "do": "block",
+    "turn": 1,
+    "player": "B",
+    "blocker": "Felhide Minotaur",
+    "attacker": "Catacomb Crocodile"
+   }
+  ],
+  [
+   {
+    "do": "block",
+    "turn": 1,
+    "player": "B",
+    "blocker": "Felhide Minotaur",
+    "attacker": "Merfolk of the Pearl Trident"
+   }
+  ],
+  [
+   {
+    "do": "block",
+    "turn": 1,
+    "player": "B",
+    "blocker": "Felhide Minotaur",
+    "attacker": "Dwarven Trader"
+   }
+  ]
+ ],
+ "known_good": [
+  {
+   "do": "cast",
+   "turn": 1,
+   "phase": "PRECOMBAT_MAIN",
+   "player": "A",
+   "card": "Incinerate",
+   "target_player": "B"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Catacomb Crocodile"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Merfolk of the Pearl Trident"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Dwarven Trader"
+  }
+ ],
+ "known_bad": [
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Catacomb Crocodile"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Merfolk of the Pearl Trident"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Dwarven Trader"
+  }
+ ]
+}

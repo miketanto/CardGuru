@@ -1,0 +1,129 @@
+{
+ "id": "t3-bestblock-022",
+ "tier": 3,
+ "description": "Win through their best block: 7 life, a 4-power blocker untapped",
+ "trap": "attack-all deals 8 and looks lethal, but blocking Rumbling Baloth leaves them at 3",
+ "notes": "family=bestblock; opponent_responses enumerate no-block plus each single block; a line must win against ALL",
+ "turn": 1,
+ "players": {
+  "A": {
+   "life": 20,
+   "battlefield": [
+    {
+     "card": "Rumbling Baloth"
+    },
+    {
+     "card": "Moss Monster"
+    },
+    {
+     "card": "Mons's Goblin Raiders"
+    },
+    {
+     "card": "Mountain",
+     "count": 2
+    }
+   ],
+   "hand": [
+    "Searing Spear"
+   ]
+  },
+  "B": {
+   "life": 7,
+   "battlefield": [
+    {
+     "card": "Island",
+     "count": 2,
+     "tapped": true
+    },
+    {
+     "card": "Lizard Warrior"
+    }
+   ]
+  }
+ },
+ "win": [
+  {
+   "metric": "life",
+   "player": "B",
+   "max": 0
+  }
+ ],
+ "opponent_responses": [
+  [],
+  [
+   {
+    "do": "block",
+    "turn": 1,
+    "player": "B",
+    "blocker": "Lizard Warrior",
+    "attacker": "Rumbling Baloth"
+   }
+  ],
+  [
+   {
+    "do": "block",
+    "turn": 1,
+    "player": "B",
+    "blocker": "Lizard Warrior",
+    "attacker": "Moss Monster"
+   }
+  ],
+  [
+   {
+    "do": "block",
+    "turn": 1,
+    "player": "B",
+    "blocker": "Lizard Warrior",
+    "attacker": "Mons's Goblin Raiders"
+   }
+  ]
+ ],
+ "known_good": [
+  {
+   "do": "cast",
+   "turn": 1,
+   "phase": "PRECOMBAT_MAIN",
+   "player": "A",
+   "card": "Searing Spear",
+   "target_player": "B"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Rumbling Baloth"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Moss Monster"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Mons's Goblin Raiders"
+  }
+ ],
+ "known_bad": [
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Rumbling Baloth"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Moss Monster"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Mons's Goblin Raiders"
+  }
+ ]
+}

@@ -1,0 +1,153 @@
+{
+ "id": "t3-bestblock-018",
+ "tier": 3,
+ "description": "Win through their best block: 10 life, a 1-power blocker untapped",
+ "trap": "attack-all deals 11 and looks lethal, but blocking Blanchwood Treefolk leaves them at 3",
+ "notes": "family=bestblock; opponent_responses enumerate no-block plus each single block; a line must win against ALL",
+ "turn": 1,
+ "players": {
+  "A": {
+   "life": 20,
+   "battlefield": [
+    {
+     "card": "Knight Errant"
+    },
+    {
+     "card": "Blanchwood Treefolk"
+    },
+    {
+     "card": "Lumengrid Warden"
+    },
+    {
+     "card": "Bonebreaker Giant"
+    },
+    {
+     "card": "Mountain",
+     "count": 2
+    }
+   ],
+   "hand": [
+    "Lightning Strike"
+   ]
+  },
+  "B": {
+   "life": 10,
+   "battlefield": [
+    {
+     "card": "Island",
+     "count": 2,
+     "tapped": true
+    },
+    {
+     "card": "Maritime Guard"
+    }
+   ]
+  }
+ },
+ "win": [
+  {
+   "metric": "life",
+   "player": "B",
+   "max": 0
+  }
+ ],
+ "opponent_responses": [
+  [],
+  [
+   {
+    "do": "block",
+    "turn": 1,
+    "player": "B",
+    "blocker": "Maritime Guard",
+    "attacker": "Knight Errant"
+   }
+  ],
+  [
+   {
+    "do": "block",
+    "turn": 1,
+    "player": "B",
+    "blocker": "Maritime Guard",
+    "attacker": "Blanchwood Treefolk"
+   }
+  ],
+  [
+   {
+    "do": "block",
+    "turn": 1,
+    "player": "B",
+    "blocker": "Maritime Guard",
+    "attacker": "Lumengrid Warden"
+   }
+  ],
+  [
+   {
+    "do": "block",
+    "turn": 1,
+    "player": "B",
+    "blocker": "Maritime Guard",
+    "attacker": "Bonebreaker Giant"
+   }
+  ]
+ ],
+ "known_good": [
+  {
+   "do": "cast",
+   "turn": 1,
+   "phase": "PRECOMBAT_MAIN",
+   "player": "A",
+   "card": "Lightning Strike",
+   "target_player": "B"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Knight Errant"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Blanchwood Treefolk"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Lumengrid Warden"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Bonebreaker Giant"
+  }
+ ],
+ "known_bad": [
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Knight Errant"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Blanchwood Treefolk"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Lumengrid Warden"
+  },
+  {
+   "do": "attack",
+   "turn": 1,
+   "player": "A",
+   "attacker": "Bonebreaker Giant"
+  }
+ ]
+}

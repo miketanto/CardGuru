@@ -61,6 +61,12 @@ def validate_puzzle(spec: dict) -> list[str]:
     for label in ("known_good", "known_bad"):
         errs = validate_scenario(splice(spec, spec[label]))
         errors += [f"{label}: {e}" for e in errs]
+    for r, response in enumerate(spec.get("opponent_responses") or []):
+        if not isinstance(response, list):
+            errors.append(f"opponent_responses[{r}]: not an action list")
+            continue
+        errs = validate_scenario(splice(spec, spec["known_good"] + response))
+        errors += [f"opponent_responses[{r}]: {e}" for e in errs]
     for i, w in enumerate(spec["win"]):
         if w.get("metric") not in WIN_METRICS:
             errors.append(f"win[{i}]: unknown metric '{w.get('metric')}'")
@@ -140,6 +146,20 @@ def evaluate_win(outcome: dict, win: list[dict]) -> tuple[bool, list[str]]:
 
 # -- grading ----------------------------------------------------------------
 
+def responses_of(spec: dict) -> list[list]:
+    """The opponent's enumerated response scripts.
+
+    Tier 3 introduces a defender who ACTS: `opponent_responses` lists every
+    response the opponent might make (block assignments, and always the
+    empty no-response), each as a scripted action list merged into the
+    agent's line at simulation time. A line only wins if it wins against
+    ALL of them — minimax grading with the response set enumerated by the
+    generator rather than guessed by a model. Absent (tiers 1-2), the sole
+    response is "do nothing", which reduces to the old single-run grading.
+    """
+    return spec.get("opponent_responses") or [[]]
+
+
 def grade(pairs: list[tuple[dict, list]], runner=None,
           mage_repo: str | None = None) -> list[dict]:
     """Grade (puzzle, line) pairs in ONE batch through the runner.
@@ -149,8 +169,10 @@ def grade(pairs: list[tuple[dict, list]], runner=None,
 
         {"id", "win": bool, "reasons": [...], "engine": ...}
 
-    Lines that fail the pre-screen never reach the runner; their verdict
-    carries the validator's message so the caller can feed it back.
+    A puzzle with `opponent_responses` grades each line against every
+    response; the line's verdict is its WORST case, and the reasons name
+    which response beat it. Lines that fail the pre-screen never reach the
+    runner; their verdict carries the validator's message.
     """
     if runner is None:
         from .adjudicate import run_scenarios
@@ -164,17 +186,31 @@ def grade(pairs: list[tuple[dict, list]], runner=None,
             verdicts.append({"id": spec["id"], "win": False,
                              "reasons": ["invalid line: " + "; ".join(errs)],
                              "engine": None})
-        else:
-            verdicts.append(None)
-            to_run.append(splice(spec, line, run_id=f"{spec['id']}#{i}"))
-            run_slots.append(i)
+            continue
+        verdicts.append(None)
+        for r, response in enumerate(responses_of(spec)):
+            to_run.append(splice(spec, line + response,
+                                 run_id=f"{spec['id']}#{i}r{r}"))
+            run_slots.append((i, r))
+    by_pair: dict[int, list] = {}
     if to_run:
-        outcomes = runner(to_run)
-        for slot, outcome in zip(run_slots, outcomes):
-            spec = pairs[slot][0]
+        for (slot, r), outcome in zip(run_slots, runner(to_run)):
+            by_pair.setdefault(slot, []).append((r, outcome))
+    for slot, response_outcomes in by_pair.items():
+        spec = pairs[slot][0]
+        worst_ok, worst_reasons, worst_r, engine = True, [], None, None
+        for r, outcome in response_outcomes:
             ok, reasons = evaluate_win(outcome, spec["win"])
-            verdicts[slot] = {"id": spec["id"], "win": ok, "reasons": reasons,
-                              "engine": outcome.get("engine")}
+            engine = engine or outcome.get("engine")
+            if not ok and worst_ok:
+                worst_ok, worst_reasons, worst_r = False, reasons, r
+        if worst_ok:
+            _, worst_reasons = evaluate_win(response_outcomes[0][1],
+                                            spec["win"])
+        reasons = worst_reasons if worst_r is None else (
+            [f"beaten by opponent response #{worst_r}"] + worst_reasons)
+        verdicts[slot] = {"id": spec["id"], "win": worst_ok,
+                          "reasons": reasons, "engine": engine}
     return verdicts  # type: ignore[return-value]
 
 
