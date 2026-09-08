@@ -23,6 +23,7 @@ import mage.player.ai.score.GameStateEvaluator2;
 import mage.players.Player;
 import org.junit.Test;
 import org.mage.test.player.TestComputerPlayer;
+import org.mage.test.player.TestComputerPlayer7;
 import org.mage.test.player.TestPlayer;
 import org.mage.test.serverside.base.CardTestPlayerBase;
 
@@ -160,19 +161,25 @@ public class CardGuruScenarioRunner extends CardTestPlayerBase {
     private void playInteractive(String spool) throws Exception {
         new File(spool, "request").mkdirs();
         new File(spool, "response").mkdirs();
-        // playerA is already an InteractiveTestPlayer (see createNewPlayer,
-        // which reads the same system property during @Before setup).
+        // playerA is already an InteractiveTestPlayer and playerB a MAD
+        // (ComputerPlayer7 alpha-beta) opponent unless -Dcardguru.opp=passive
+        // (see createNewPlayer, which reads the same system properties during
+        // @Before setup).
         playerB.setAIPlayer(true);   // real built-in AI opponent
+        System.out.println("[CardGuru] opponent: "
+                + ("passive".equals(System.getProperty("cardguru.opp"))
+                        ? "passive (base ComputerPlayer, never acts)"
+                        : "MAD ComputerPlayer7 skill "
+                          + Integer.getInteger("cardguru.opp.skill", 6)));
 
         // Optional plumbing scaffold (default off): seat N vanilla blockers on
-        // the opponent's battlefield at game start. The seated TestComputerPlayer
-        // opponent is fully passive (base ComputerPlayer.priority is `pass()`), so
-        // it never develops a board on its own and the minimax min-layer never
-        // sees a real blocker to weigh. Pre-placing blockers gives the SEARCH's
-        // simulated opponent something to block with, so the min-layer is
-        // actually exercised and demonstrable (block_responses > 1). The LIVE
-        // opponent still won't block -- this only shapes what the search models.
-        // See docs/live-minimax.md.
+        // the opponent's battlefield at game start. Built for the passive
+        // opponent, whose board never develops on its own, so the minimax
+        // min-layer never sees a real blocker to weigh. Pre-placing blockers
+        // gives the SEARCH's simulated opponent something to block with, so the
+        // min-layer is actually exercised and demonstrable (block_responses >
+        // 1). With the MAD opponent this is unnecessary (it develops and blocks
+        // by itself) but still honored. See docs/live-minimax.md.
         String oppBlockers = System.getProperty("cardguru.minimax.opp_blockers");
         if (oppBlockers != null) {
             int n = Integer.parseInt(oppBlockers);
@@ -291,6 +298,22 @@ public class CardGuruScenarioRunner extends CardTestPlayerBase {
                     "attacks".equals(System.getProperty("cardguru.minimax"));
             return new InteractiveTestPlayer(new TestComputerPlayer(playerName, range),
                     spool, minimaxAttacks);
+        }
+        if (spool != null && playerName.equals("PlayerB")
+                && !"passive".equals(System.getProperty("cardguru.opp"))) {
+            // Interactive opponent: the REAL alpha-beta AI (ComputerPlayer7
+            // from mage-player-ai-mad, on the test classpath transitively via
+            // mage-server), seated exactly the way XMage's own
+            // CardTestPlayerBaseAI does it. Without this the opponent is the
+            // base TestComputerPlayer, whose priority() just passes -- every
+            // live "win" was integration proof only. -Dcardguru.opp=passive
+            // restores that old opponent; -Dcardguru.opp.skill sets the
+            // simulation depth (XMage default 6).
+            int skill = Integer.getInteger("cardguru.opp.skill", 6);
+            TestPlayer opp = new TestPlayer(
+                    new TestComputerPlayer7(playerName, range, skill));
+            opp.setAIPlayer(true);   // full AI: simulations drive every priority
+            return opp;
         }
         return super.createNewPlayer(playerName, range);
     }

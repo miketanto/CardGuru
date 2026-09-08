@@ -274,13 +274,17 @@ def cmd_play(args):
     else:
         policy = {"dumb": dumb_policy, "pass": pass_policy}[args.policy]
     minimax = getattr(args, "minimax", False)
+    opp = getattr(args, "opp", "mad")
     tally = play_matches(args.games, policy=policy, mage_repo=args.mage_repo,
                          minimax=minimax,
-                         opp_blockers=getattr(args, "opp_blockers", 0))
+                         opp_blockers=getattr(args, "opp_blockers", 0),
+                         opp=opp, opp_skill=getattr(args, "opp_skill", 6))
     json.dump(tally, sys.stdout, indent=1)
     print()
     label = f"{args.policy}+minimax" if minimax else args.policy
-    print(f"-- {label} policy vs COMPUTER_MAD: "
+    opp_label = ("MAD ComputerPlayer7" if opp == "mad"
+                 else "passive opponent (integration only)")
+    print(f"-- {label} policy vs {opp_label}: "
           f"{tally['wins']}W / {tally['losses']}L / {tally['errors']}E "
           f"over {tally['games']} game(s)", file=sys.stderr)
 
@@ -1042,6 +1046,12 @@ def main(argv=None):
                     help="run the driver's simulation-backed minimax search at "
                          "the declare-attackers decision (attacks are chosen by "
                          "engine rollout, not by --policy); see docs/live-minimax.md")
+    pl.add_argument("--opp", choices=["mad", "passive"], default="mad",
+                    help="live opponent: mad=XMage's real alpha-beta AI "
+                         "(ComputerPlayer7; win/loss is a strength signal), "
+                         "passive=old never-acts opponent (integration/debug)")
+    pl.add_argument("--opp-skill", type=int, default=6, dest="opp_skill",
+                    help="MAD simulation depth (XMage default 6)")
     pl.add_argument("--opp-blockers", type=int, default=0, dest="opp_blockers",
                     help="minimax plumbing scaffold: seat N blockers on the "
                          "(passive) opponent's battlefield so the search's "
