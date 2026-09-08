@@ -1,0 +1,5 @@
+[
+  {"do": "attack", "turn": 1, "player": "A", "attacker": "Rhox Brute"},
+  {"do": "attack", "turn": 1, "player": "A", "attacker": "Russet Wolves"},
+  {"do": "attack", "turn": 1, "player": "A", "attacker": "Dune Beetle"}
+]

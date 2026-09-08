@@ -1,0 +1,6 @@
+[
+  {"do": "attack", "turn": 1, "player": "A", "attacker": "Headless Horseman"},
+  {"do": "attack", "turn": 1, "player": "A", "attacker": "Headwater Sentries"},
+  {"do": "attack", "turn": 1, "player": "A", "attacker": "Highborn Vampire"},
+  {"do": "attack", "turn": 1, "player": "A", "attacker": "Canal Monitor"}
+]

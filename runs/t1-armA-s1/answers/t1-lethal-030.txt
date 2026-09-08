@@ -1,0 +1,1 @@
+[{"do": "attack", "turn": 1, "player": "A", "attacker": "Jwari Scuttler"}, {"do": "attack", "turn": 1, "player": "A", "attacker": "Highborn Vampire"}, {"do": "attack", "turn": 1, "player": "A", "attacker": "Rumbling Baloth"}]

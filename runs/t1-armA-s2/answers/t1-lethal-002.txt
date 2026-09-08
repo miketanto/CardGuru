@@ -1,0 +1,4 @@
+[
+  {"do": "attack", "turn": 1, "player": "A", "attacker": "Lazotep Behemoth"},
+  {"do": "attack", "turn": 1, "player": "A", "attacker": "Dwarven Trader"}
+]

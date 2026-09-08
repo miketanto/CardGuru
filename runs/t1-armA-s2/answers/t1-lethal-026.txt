@@ -1,0 +1,1 @@
+[{"do": "attack", "turn": 1, "player": "A", "attacker": "Forest Bear"}, {"do": "attack", "turn": 1, "player": "A", "attacker": "Kami of Old Stone"}]

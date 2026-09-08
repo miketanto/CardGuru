@@ -1,0 +1,5 @@
+[
+  {"do": "attack", "turn": 1, "player": "A", "attacker": "Dakmor Scorpion"},
+  {"do": "attack", "turn": 1, "player": "A", "attacker": "Sanctuary Cat"},
+  {"do": "attack", "turn": 1, "player": "A", "attacker": "Goblin Roughrider"}
+]

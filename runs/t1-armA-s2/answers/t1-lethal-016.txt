@@ -1,0 +1,6 @@
+[
+  {"do": "attack", "turn": 1, "player": "A", "attacker": "Elvish Warrior"},
+  {"do": "attack", "turn": 1, "player": "A", "attacker": "Amphin Cutthroat"},
+  {"do": "attack", "turn": 1, "player": "A", "attacker": "Knight of the Keep"},
+  {"do": "attack", "turn": 1, "player": "A", "attacker": "Naga Eternal"}
+]

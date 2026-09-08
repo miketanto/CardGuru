@@ -1,0 +1,1 @@
+[{"do": "attack", "turn": 1, "player": "A", "attacker": "Eager Cadet"}, {"do": "attack", "turn": 1, "player": "A", "attacker": "Scarwood Goblins"}]

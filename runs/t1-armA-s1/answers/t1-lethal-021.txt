@@ -1,0 +1,1 @@
+[{"do": "attack", "turn": 1, "player": "A", "attacker": "Nettle Swine"}, {"do": "attack", "turn": 1, "player": "A", "attacker": "Great Hart"}, {"do": "attack", "turn": 1, "player": "A", "attacker": "Keepers of the Faith"}]

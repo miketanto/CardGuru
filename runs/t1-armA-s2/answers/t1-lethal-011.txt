@@ -1,0 +1,1 @@
+[{"do": "attack", "turn": 1, "player": "A", "attacker": "Redwood Treefolk"}, {"do": "attack", "turn": 1, "player": "A", "attacker": "Plated Seastrider"}, {"do": "attack", "turn": 1, "player": "A", "attacker": "Bastion Enforcer"}]

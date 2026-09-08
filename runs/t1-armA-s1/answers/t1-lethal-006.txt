@@ -1,0 +1,8 @@
+[
+  {"do": "cast", "turn": 1, "phase": "PRECOMBAT_MAIN", "player": "A", "card": "Searing Spear", "target_player": "B"},
+  {"do": "wait_stack", "turn": 1, "phase": "PRECOMBAT_MAIN"},
+  {"do": "attack", "turn": 1, "player": "A", "attacker": "Rhox Brute"},
+  {"do": "attack", "turn": 1, "player": "A", "attacker": "Bastion Enforcer"},
+  {"do": "attack", "turn": 1, "player": "A", "attacker": "Minotaur Warrior"},
+  {"do": "attack", "turn": 1, "player": "A", "attacker": "Barony Vampire"}
+]

@@ -1,0 +1,1 @@
+[{"do": "attack", "turn": 1, "player": "A", "attacker": "Goblin Roughrider"}, {"do": "attack", "turn": 1, "player": "A", "attacker": "Rotted Hystrix"}, {"do": "attack", "turn": 1, "player": "A", "attacker": "Ironclad Krovod"}]

@@ -101,7 +101,28 @@ puzzlegen.py` (generator with brute-force win proofs), `puzzle` CLI,
   distinguish a good agent from a bad one is measurement noise.)
 - **Exit:** `puzzle grade` on hand-written good/bad lines scores 30/30 vs 0/30.
 
-### P1 — Encoder + bridge + raw baseline (the first number)
+### P1 — Encoder + bridge + raw baseline (the first number) — **DONE 2026-09-08**
+
+Result (`research/data/eval_t1_armA_2026-09-08.json`): **arm (a) on T1 is
+60/60 — saturated.** Two seeds × 30 puzzles, fable-class subagents on bare
+boards, engine-graded, zero invalid or unparseable lines. Two consequences,
+both applications of the repo's own findings:
+
+- **Stopped at 2 of 7 planned seeds.** "Saturated, not noisy" — with 60/60
+  and no line-format failures, additional seeds buy no resolution; the
+  deviation is recorded here rather than silently normalized. T1 stays in
+  the suite as the regression floor (any future harness change that breaks
+  it has broken something basic) and as the sanity check for *smaller*
+  models, where it may well not saturate.
+- **The discrimination lives in T2+, as designed.** A frontier model does
+  not blunder open lethal with clean arithmetic. The a-vs-b comparison
+  (annotations) moves to T2 traps, where the P2 exit criterion always
+  lived. Build T2 before spending another model call on T1.
+
+Also worth keeping: line diversity was real (minimal-lethal single-attacker
+lines, leave-the-crab-home partial attacks, exact-mana double-burn lines) —
+every one legal and winning, which exercises the execution-grading claim
+that any winning line counts, no golden-line matching anywhere.
 - `cardguru/encoder.py`: puzzle/outcome state → prompt rendering; two modes,
   `bare` (board only) and `annotated` (clock, connect-verdicts, windows —
   computed, PokeChamp's turns-to-KO trick).

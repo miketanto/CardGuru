@@ -1,0 +1,8 @@
+[
+  {"do": "cast", "turn": 1, "phase": "PRECOMBAT_MAIN", "player": "A", "card": "Shock", "target_player": "B"},
+  {"do": "wait_stack", "turn": 1, "phase": "PRECOMBAT_MAIN"},
+  {"do": "attack", "turn": 1, "player": "A", "attacker": "Coral Merfolk"},
+  {"do": "attack", "turn": 1, "player": "A", "attacker": "Loxodon Wayfarer"},
+  {"do": "attack", "turn": 1, "player": "A", "attacker": "Cabal Evangel"},
+  {"do": "attack", "turn": 1, "player": "A", "attacker": "Great Hart"}
+]

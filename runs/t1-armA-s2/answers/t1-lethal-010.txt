@@ -1,0 +1,1 @@
+[{"do": "attack", "turn": 1, "player": "A", "attacker": "Moriok Reaver"}, {"do": "attack", "turn": 1, "player": "A", "attacker": "Glory Seeker"}, {"do": "attack", "turn": 1, "player": "A", "attacker": "Goblin Roughrider"}, {"do": "attack", "turn": 1, "player": "A", "attacker": "Raptor Companion"}]

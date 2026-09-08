@@ -1,0 +1,5 @@
+[
+  {"do": "attack", "turn": 1, "player": "A", "attacker": "Gray Ogre"},
+  {"do": "attack", "turn": 1, "player": "A", "attacker": "Fugitive Wizard"},
+  {"do": "attack", "turn": 1, "player": "A", "attacker": "Felhide Minotaur"}
+]

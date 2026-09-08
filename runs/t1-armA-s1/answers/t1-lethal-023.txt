@@ -1,0 +1,6 @@
+[
+  {"do": "attack", "turn": 1, "player": "A", "attacker": "Gray Ogre"},
+  {"do": "attack", "turn": 1, "player": "A", "attacker": "Coral Eel"},
+  {"do": "attack", "turn": 1, "player": "A", "attacker": "Raging Bull"},
+  {"do": "attack", "turn": 1, "player": "A", "attacker": "Maritime Guard"}
+]

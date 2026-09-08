@@ -1,0 +1,1 @@
+[{"do": "attack", "turn": 1, "player": "A", "attacker": "Old Ghastbark"}, {"do": "attack", "turn": 1, "player": "A", "attacker": "Obsidian Giant"}, {"do": "attack", "turn": 1, "player": "A", "attacker": "Ageless Guardian"}]

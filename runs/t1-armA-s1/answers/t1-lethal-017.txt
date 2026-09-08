@@ -1,0 +1,6 @@
+[
+  {"do": "attack", "turn": 1, "player": "A", "attacker": "Great-Horn Krushok"},
+  {"do": "attack", "turn": 1, "player": "A", "attacker": "Obsidian Giant"},
+  {"do": "attack", "turn": 1, "player": "A", "attacker": "Minotaur Warrior"},
+  {"do": "attack", "turn": 1, "player": "A", "attacker": "Gnarled Mass"}
+]

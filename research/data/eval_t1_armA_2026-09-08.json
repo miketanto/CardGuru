@@ -1,0 +1,511 @@
+{
+ "benchmark": "t1-lethal v1 (30 puzzles, engine-admitted 30/30 xmage)",
+ "arm": "a (bare board, single answer, no tools, no search)",
+ "model": "claude-fable-5 (in-session subagent via puzzlerun bridge)",
+ "grading_engine": "xmage (CardGuruScenarioRunner, strict-choose)",
+ "date": "2026-09-08",
+ "seeds_planned": 7,
+ "seeds_run": 2,
+ "stop_reason": "saturated, not noisy: 60/60 wins, 0 invalid lines across two independent seeds; further seeds buy no resolution (house finding: resolution must come from inside the questions). T1 retained as the regression floor.",
+ "aggregate": {
+  "wins": 60,
+  "attempts": 60,
+  "win_rate": 1.0
+ },
+ "seeds": {
+  "s1": {
+   "wins": 30,
+   "puzzles": 30,
+   "invalid_or_unparsed": 0,
+   "results": [
+    {
+     "id": "t1-lethal-001",
+     "win": true,
+     "reasons": [
+      "life(B)=-3 want max=0"
+     ],
+     "engine": "xmage"
+    },
+    {
+     "id": "t1-lethal-002",
+     "win": true,
+     "reasons": [
+      "life(B)=-4 want max=0"
+     ],
+     "engine": "xmage"
+    },
+    {
+     "id": "t1-lethal-003",
+     "win": true,
+     "reasons": [
+      "life(B)=-3 want max=0"
+     ],
+     "engine": "xmage"
+    },
+    {
+     "id": "t1-lethal-004",
+     "win": true,
+     "reasons": [
+      "life(B)=-1 want max=0"
+     ],
+     "engine": "xmage"
+    },
+    {
+     "id": "t1-lethal-005",
+     "win": true,
+     "reasons": [
+      "life(B)=-2 want max=0"
+     ],
+     "engine": "xmage"
+    },
+    {
+     "id": "t1-lethal-006",
+     "win": true,
+     "reasons": [
+      "life(B)=0 want max=0"
+     ],
+     "engine": "xmage"
+    },
+    {
+     "id": "t1-lethal-007",
+     "win": true,
+     "reasons": [
+      "life(B)=-2 want max=0"
+     ],
+     "engine": "xmage"
+    },
+    {
+     "id": "t1-lethal-008",
+     "win": true,
+     "reasons": [
+      "life(B)=-1 want max=0"
+     ],
+     "engine": "xmage"
+    },
+    {
+     "id": "t1-lethal-009",
+     "win": true,
+     "reasons": [
+      "life(B)=-1 want max=0"
+     ],
+     "engine": "xmage"
+    },
+    {
+     "id": "t1-lethal-010",
+     "win": true,
+     "reasons": [
+      "life(B)=-1 want max=0"
+     ],
+     "engine": "xmage"
+    },
+    {
+     "id": "t1-lethal-011",
+     "win": true,
+     "reasons": [
+      "life(B)=0 want max=0"
+     ],
+     "engine": "xmage"
+    },
+    {
+     "id": "t1-lethal-012",
+     "win": true,
+     "reasons": [
+      "life(B)=-2 want max=0"
+     ],
+     "engine": "xmage"
+    },
+    {
+     "id": "t1-lethal-013",
+     "win": true,
+     "reasons": [
+      "life(B)=-1 want max=0"
+     ],
+     "engine": "xmage"
+    },
+    {
+     "id": "t1-lethal-014",
+     "win": true,
+     "reasons": [
+      "life(B)=-1 want max=0"
+     ],
+     "engine": "xmage"
+    },
+    {
+     "id": "t1-lethal-015",
+     "win": true,
+     "reasons": [
+      "life(B)=-5 want max=0"
+     ],
+     "engine": "xmage"
+    },
+    {
+     "id": "t1-lethal-016",
+     "win": true,
+     "reasons": [
+      "life(B)=-3 want max=0"
+     ],
+     "engine": "xmage"
+    },
+    {
+     "id": "t1-lethal-017",
+     "win": true,
+     "reasons": [
+      "life(B)=-1 want max=0"
+     ],
+     "engine": "xmage"
+    },
+    {
+     "id": "t1-lethal-018",
+     "win": true,
+     "reasons": [
+      "life(B)=0 want max=0"
+     ],
+     "engine": "xmage"
+    },
+    {
+     "id": "t1-lethal-019",
+     "win": true,
+     "reasons": [
+      "life(B)=0 want max=0"
+     ],
+     "engine": "xmage"
+    },
+    {
+     "id": "t1-lethal-020",
+     "win": true,
+     "reasons": [
+      "life(B)=-1 want max=0"
+     ],
+     "engine": "xmage"
+    },
+    {
+     "id": "t1-lethal-021",
+     "win": true,
+     "reasons": [
+      "life(B)=-5 want max=0"
+     ],
+     "engine": "xmage"
+    },
+    {
+     "id": "t1-lethal-022",
+     "win": true,
+     "reasons": [
+      "life(B)=0 want max=0"
+     ],
+     "engine": "xmage"
+    },
+    {
+     "id": "t1-lethal-023",
+     "win": true,
+     "reasons": [
+      "life(B)=-1 want max=0"
+     ],
+     "engine": "xmage"
+    },
+    {
+     "id": "t1-lethal-024",
+     "win": true,
+     "reasons": [
+      "life(B)=-2 want max=0"
+     ],
+     "engine": "xmage"
+    },
+    {
+     "id": "t1-lethal-025",
+     "win": true,
+     "reasons": [
+      "life(B)=-2 want max=0"
+     ],
+     "engine": "xmage"
+    },
+    {
+     "id": "t1-lethal-026",
+     "win": true,
+     "reasons": [
+      "life(B)=0 want max=0"
+     ],
+     "engine": "xmage"
+    },
+    {
+     "id": "t1-lethal-027",
+     "win": true,
+     "reasons": [
+      "life(B)=-1 want max=0"
+     ],
+     "engine": "xmage"
+    },
+    {
+     "id": "t1-lethal-028",
+     "win": true,
+     "reasons": [
+      "life(B)=-1 want max=0"
+     ],
+     "engine": "xmage"
+    },
+    {
+     "id": "t1-lethal-029",
+     "win": true,
+     "reasons": [
+      "life(B)=-5 want max=0"
+     ],
+     "engine": "xmage"
+    },
+    {
+     "id": "t1-lethal-030",
+     "win": true,
+     "reasons": [
+      "life(B)=-5 want max=0"
+     ],
+     "engine": "xmage"
+    }
+   ]
+  },
+  "s2": {
+   "wins": 30,
+   "puzzles": 30,
+   "invalid_or_unparsed": 0,
+   "results": [
+    {
+     "id": "t1-lethal-001",
+     "win": true,
+     "reasons": [
+      "life(B)=-3 want max=0"
+     ],
+     "engine": "xmage"
+    },
+    {
+     "id": "t1-lethal-002",
+     "win": true,
+     "reasons": [
+      "life(B)=-4 want max=0"
+     ],
+     "engine": "xmage"
+    },
+    {
+     "id": "t1-lethal-003",
+     "win": true,
+     "reasons": [
+      "life(B)=-3 want max=0"
+     ],
+     "engine": "xmage"
+    },
+    {
+     "id": "t1-lethal-004",
+     "win": true,
+     "reasons": [
+      "life(B)=-1 want max=0"
+     ],
+     "engine": "xmage"
+    },
+    {
+     "id": "t1-lethal-005",
+     "win": true,
+     "reasons": [
+      "life(B)=-2 want max=0"
+     ],
+     "engine": "xmage"
+    },
+    {
+     "id": "t1-lethal-006",
+     "win": true,
+     "reasons": [
+      "life(B)=0 want max=0"
+     ],
+     "engine": "xmage"
+    },
+    {
+     "id": "t1-lethal-007",
+     "win": true,
+     "reasons": [
+      "life(B)=-2 want max=0"
+     ],
+     "engine": "xmage"
+    },
+    {
+     "id": "t1-lethal-008",
+     "win": true,
+     "reasons": [
+      "life(B)=-1 want max=0"
+     ],
+     "engine": "xmage"
+    },
+    {
+     "id": "t1-lethal-009",
+     "win": true,
+     "reasons": [
+      "life(B)=-1 want max=0"
+     ],
+     "engine": "xmage"
+    },
+    {
+     "id": "t1-lethal-010",
+     "win": true,
+     "reasons": [
+      "life(B)=-1 want max=0"
+     ],
+     "engine": "xmage"
+    },
+    {
+     "id": "t1-lethal-011",
+     "win": true,
+     "reasons": [
+      "life(B)=0 want max=0"
+     ],
+     "engine": "xmage"
+    },
+    {
+     "id": "t1-lethal-012",
+     "win": true,
+     "reasons": [
+      "life(B)=-1 want max=0"
+     ],
+     "engine": "xmage"
+    },
+    {
+     "id": "t1-lethal-013",
+     "win": true,
+     "reasons": [
+      "life(B)=-1 want max=0"
+     ],
+     "engine": "xmage"
+    },
+    {
+     "id": "t1-lethal-014",
+     "win": true,
+     "reasons": [
+      "life(B)=-1 want max=0"
+     ],
+     "engine": "xmage"
+    },
+    {
+     "id": "t1-lethal-015",
+     "win": true,
+     "reasons": [
+      "life(B)=-5 want max=0"
+     ],
+     "engine": "xmage"
+    },
+    {
+     "id": "t1-lethal-016",
+     "win": true,
+     "reasons": [
+      "life(B)=-3 want max=0"
+     ],
+     "engine": "xmage"
+    },
+    {
+     "id": "t1-lethal-017",
+     "win": true,
+     "reasons": [
+      "life(B)=-1 want max=0"
+     ],
+     "engine": "xmage"
+    },
+    {
+     "id": "t1-lethal-018",
+     "win": true,
+     "reasons": [
+      "life(B)=0 want max=0"
+     ],
+     "engine": "xmage"
+    },
+    {
+     "id": "t1-lethal-019",
+     "win": true,
+     "reasons": [
+      "life(B)=0 want max=0"
+     ],
+     "engine": "xmage"
+    },
+    {
+     "id": "t1-lethal-020",
+     "win": true,
+     "reasons": [
+      "life(B)=-1 want max=0"
+     ],
+     "engine": "xmage"
+    },
+    {
+     "id": "t1-lethal-021",
+     "win": true,
+     "reasons": [
+      "life(B)=-5 want max=0"
+     ],
+     "engine": "xmage"
+    },
+    {
+     "id": "t1-lethal-022",
+     "win": true,
+     "reasons": [
+      "life(B)=0 want max=0"
+     ],
+     "engine": "xmage"
+    },
+    {
+     "id": "t1-lethal-023",
+     "win": true,
+     "reasons": [
+      "life(B)=-1 want max=0"
+     ],
+     "engine": "xmage"
+    },
+    {
+     "id": "t1-lethal-024",
+     "win": true,
+     "reasons": [
+      "life(B)=-2 want max=0"
+     ],
+     "engine": "xmage"
+    },
+    {
+     "id": "t1-lethal-025",
+     "win": true,
+     "reasons": [
+      "life(B)=-2 want max=0"
+     ],
+     "engine": "xmage"
+    },
+    {
+     "id": "t1-lethal-026",
+     "win": true,
+     "reasons": [
+      "life(B)=-1 want max=0"
+     ],
+     "engine": "xmage"
+    },
+    {
+     "id": "t1-lethal-027",
+     "win": true,
+     "reasons": [
+      "life(B)=-1 want max=0"
+     ],
+     "engine": "xmage"
+    },
+    {
+     "id": "t1-lethal-028",
+     "win": true,
+     "reasons": [
+      "life(B)=-1 want max=0"
+     ],
+     "engine": "xmage"
+    },
+    {
+     "id": "t1-lethal-029",
+     "win": true,
+     "reasons": [
+      "life(B)=-5 want max=0"
+     ],
+     "engine": "xmage"
+    },
+    {
+     "id": "t1-lethal-030",
+     "win": true,
+     "reasons": [
+      "life(B)=-5 want max=0"
+     ],
+     "engine": "xmage"
+    }
+   ]
+  }
+ }
+}
