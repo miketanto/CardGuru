@@ -134,3 +134,54 @@ def test_nonempty_graveyard_and_exile_render_with_card_facts(store):
     assert "your exile:" in text
     # empty zones stay silent — the default adds nothing
     assert "your graveyard" not in text
+
+
+# --- search (arm c) ------------------------------------------------------
+
+def test_extract_candidates_wraps_single_lines_and_caps_sets():
+    from cardguru.puzzlerun import extract_candidates
+    single = '[{"do": "attack"}]'
+    assert extract_candidates(single) == [[{"do": "attack"}]]
+    six = json.dumps([[{"do": "attack"}]] * 6)
+    assert len(extract_candidates(six)) == 5  # MAX_CANDIDATES cap
+    with pytest.raises(ValueError, match="mixes"):
+        extract_candidates('[{"do": "attack"}, [{"do": "attack"}]]')
+
+
+def test_linear_value_prefers_wins_then_position():
+    from cardguru import value
+    win = {"status": "executed",
+           "state": {"A": {"life": 20, "battlefield": [1, 2], "hand_count": 1},
+                     "B": {"life": -1, "battlefield": []}}}
+    short = {"status": "executed",
+             "state": {"A": {"life": 20, "battlefield": [1, 2, 3],
+                             "hand_count": 2},
+                       "B": {"life": 2, "battlefield": []}}}
+    err = {"status": "error", "error": "illegal"}
+    best, scores = value.pick([err, short, win])
+    assert best == 2 and scores[0] is None
+    assert value.score(win) > value.score(short)
+
+
+def test_search_collect_survives_a_bad_candidate(store, tmp_path):
+    """The engine's veto: an over-cast candidate dies in simulation and the
+    winning sibling is picked — the exact failure mode the haiku A/B hit."""
+    from cardguru.puzzlerun import collect_search_run
+    run = str(tmp_path / "run")
+    spec = make_puzzle()
+    init_run([spec], run, Encoder(store), seed=1, search=True)
+    over_cast = [  # two casts, one Mountain: dies at the second cast
+        {"do": "cast", "turn": 1, "phase": "PRECOMBAT_MAIN", "player": "A",
+         "card": "Test Shock", "target_player": "B"},
+        {"do": "cast", "turn": 1, "phase": "PRECOMBAT_MAIN", "player": "A",
+         "card": "Test Shock", "target_player": "B"},
+    ]
+    candidates = [over_cast, spec["known_bad"], spec["known_good"]]
+    with open(os.path.join(run, "answers", "t1-test.txt"), "w") as f:
+        f.write(json.dumps(candidates))
+    runner = LocalRunner(store)
+    summary = collect_search_run([spec], run, runner=runner.run_scenarios)
+    [r] = summary["results"]
+    assert r["win"] and r["picked"] == 2
+    assert r["scores"][0] is None          # engine veto on the over-cast
+    assert summary["wins"] == 1

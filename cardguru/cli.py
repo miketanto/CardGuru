@@ -736,17 +736,18 @@ def cmd_puzzle_agent_init(args):
 
     init_run(load_puzzles(args.puzzles), args.run,
              Encoder(CardStore.open(args.db)), mode=args.mode,
-             seed=args.seed, arm=args.arm)
+             seed=args.seed, arm=args.arm, search=args.search)
     pending = os.listdir(os.path.join(args.run, "pending"))
     print(f"{len(pending)} task(s) pending in {args.run}/pending/")
 
 
 def cmd_puzzle_agent_collect(args):
     from .puzzle import load_puzzles
-    from .puzzlerun import collect_run
+    from .puzzlerun import collect_run, collect_search_run
 
-    summary = collect_run(load_puzzles(args.puzzles), args.run,
-                          runner=_puzzle_runner(args))
+    collect = collect_search_run if args.search else collect_run
+    summary = collect(load_puzzles(args.puzzles), args.run,
+                      runner=_puzzle_runner(args))
     print(json.dumps({k: v for k, v in summary.items() if k != "results"},
                      indent=1))
     print(f"-- {summary['wins']}/{summary['puzzles']} wins "
@@ -981,12 +982,16 @@ def main(argv=None):
     pi.add_argument("--mode", choices=["bare", "annotated"], default="bare")
     pi.add_argument("--arm", default="a")
     pi.add_argument("--seed", type=int)
+    pi.add_argument("--search", action="store_true",
+                    help="ask for 3-5 candidate lines instead of one")
     pi.add_argument("--db", default=DEFAULT_CARDDB)
     pi.set_defaults(fn=cmd_puzzle_agent_init)
     pc = pzsub.add_parser("agent-collect",
                           help="grade a run's answers and write results.json")
     pc.add_argument("puzzles", nargs="+")
     pc.add_argument("--run", required=True)
+    pc.add_argument("--search", action="store_true",
+                    help="simulate every candidate and let the linear value pick")
     pc.add_argument("--engine", choices=["local", "xmage"], default="local")
     pc.add_argument("--mage-repo")
     pc.add_argument("--db", default=DEFAULT_CARDDB)

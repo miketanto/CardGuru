@@ -86,25 +86,39 @@ turn — treat battlefield permanents as having been under their controller's
 control since the turn began (no summoning sickness on setup-placed
 creatures).
 
-Your line is executed by a rules engine exactly as written; the game ends
-in a win only if your opponent is dead when it resolves. Use turn {turn}
-for every action's "turn" field.
+{execution_note} Use turn {turn} for every action's "turn" field.
 """
+
+SINGLE_NOTE = """\
+Your line is executed by a rules engine exactly as written; the game ends
+in a win only if your opponent is dead when it resolves."""
+
+SEARCH_NOTE = """\
+Answer with SEVERAL candidate lines — a JSON array of 3 to 5 lines, i.e.
+an array of arrays: [[action, action, ...], [action, ...], ...]. Make the
+candidates genuinely DIFFERENT plans, not permutations of one plan. Every
+candidate is executed by a rules engine exactly as written, and the best
+resulting position is kept; a candidate that is illegal or falls short
+simply loses its slot, so cover your uncertainty with variety."""
 
 
 def init_run(puzzles: list[dict], run_path: str, encoder, mode: str = "bare",
-             seed: int | None = None, arm: str = "a") -> RunDir:
+             seed: int | None = None, arm: str = "a",
+             search: bool = False) -> RunDir:
     """Write one pending task per puzzle. Idempotent per run directory."""
     run = RunDir(run_path)
     cfg_path = os.path.join(run_path, "config.json")
     if not os.path.exists(cfg_path):
         with open(cfg_path, "w", encoding="utf-8") as f:
             json.dump({"arm": arm, "mode": mode, "seed": seed,
+                       "search": search,
                        "puzzles": [p["id"] for p in puzzles]}, f, indent=1)
+    note = SEARCH_NOTE if search else SINGLE_NOTE
     for spec in puzzles:
         task = TASK_TEMPLATE.format(qid=spec["id"],
                                     board=encoder.render(spec, mode=mode),
-                                    vocabulary=VOCABULARY, turn=spec["turn"])
+                                    vocabulary=VOCABULARY, turn=spec["turn"],
+                                    execution_note=note)
         path = os.path.join(run_path, "pending", spec["id"] + ".md")
         answered = os.path.join(run_path, "answers", spec["id"] + ".txt")
         if not os.path.exists(path) and not os.path.exists(answered):
@@ -138,6 +152,121 @@ def extract_line(text: str) -> list:
                 if depth == 0:
                     return json.loads(text[start:i + 1])
     raise ValueError("unbalanced JSON array in answer")
+
+
+MAX_CANDIDATES = 5
+
+
+def extract_candidates(text: str) -> list[list]:
+    """Candidate lines from raw model output.
+
+    An array of arrays is a candidate set; an array of action objects is a
+    single-line answer wrapped as one candidate (the single-shot format
+    stays valid under search — one candidate is just a search of width 1).
+    Mixed or empty shapes raise with a verdict-ready message.
+    """
+    parsed = extract_line(text)
+    if all(isinstance(e, list) for e in parsed):
+        if not parsed:
+            raise ValueError("empty candidate set")
+        return parsed[:MAX_CANDIDATES]
+    if all(isinstance(e, dict) for e in parsed):
+        return [parsed]
+    raise ValueError("answer mixes actions and lines; send an array of "
+                     "lines (array of arrays) or one line")
+
+
+def collect_search_run(puzzles: list[dict], run_path: str, runner=None,
+                       mage_repo: str | None = None) -> dict:
+    """Arm (c): simulate EVERY candidate, let the linear value pick.
+
+    One engine batch covers all candidates of all puzzles. The pick sees
+    only executed outcomes — the engine's veto on illegal or unexecutable
+    candidates is the search arm's predicted advantage. The verdict is the
+    picked outcome's win status; candidates, scores, and the picked index
+    are all recorded so a pick can be audited later.
+    """
+    from . import value
+    from .puzzle import evaluate_win, splice, validate_line
+
+    by_id = {p["id"]: p for p in puzzles}
+    adir = os.path.join(run_path, "answers")
+    parsed, results = {}, {}
+    n_answered = 0
+    for fn in sorted(os.listdir(adir)) if os.path.isdir(adir) else []:
+        qid, ext = os.path.splitext(fn)
+        if ext != ".txt" or qid not in by_id:
+            continue
+        n_answered += 1
+        with open(os.path.join(adir, fn), encoding="utf-8") as f:
+            raw = f.read()
+        try:
+            parsed[qid] = extract_candidates(raw)
+        except ValueError as e:
+            results[qid] = {"id": qid, "win": False,
+                            "reasons": [f"unparseable answer: {e}"],
+                            "engine": None}
+
+    # splice every structurally valid candidate; invalid ones keep a note
+    to_run, slots, notes = [], [], {}
+    for qid, candidates in parsed.items():
+        spec = by_id[qid]
+        notes[qid] = [None] * len(candidates)
+        for i, line in enumerate(candidates):
+            errs = validate_line(spec, line)
+            if errs:
+                notes[qid][i] = "invalid: " + "; ".join(errs)
+            else:
+                to_run.append(splice(spec, line, run_id=f"{qid}#c{i}"))
+                slots.append((qid, i))
+
+    if runner is None:
+        from .adjudicate import run_scenarios
+        from .puzzle import run_scenarios_from_specs
+        runner = lambda specs: run_scenarios_from_specs(specs, run_scenarios,
+                                                        mage_repo)
+    outcomes_by = {qid: [None] * len(c) for qid, c in parsed.items()}
+    if to_run:
+        for (qid, i), outcome in zip(slots, runner(to_run)):
+            outcomes_by[qid][i] = outcome
+
+    for qid, candidates in parsed.items():
+        spec = by_id[qid]
+        outcomes = [o if o is not None
+                    else {"status": "error", "error": notes[qid][i]}
+                    for i, o in enumerate(outcomes_by[qid])]
+        best, scores = value.pick(outcomes)
+        if best is None:
+            results[qid] = {"id": qid, "win": False,
+                            "reasons": ["all candidates failed: "
+                                        + "; ".join(str(o.get("error"))
+                                                    for o in outcomes)],
+                            "engine": None, "candidates": len(candidates),
+                            "scores": scores}
+            continue
+        ok, reasons = evaluate_win(outcomes[best], spec["win"])
+        results[qid] = {"id": qid, "win": ok, "reasons": reasons,
+                        "engine": outcomes[best].get("engine"),
+                        "candidates": len(candidates), "picked": best,
+                        "scores": scores,
+                        "candidate_errors": sum(
+                            1 for o in outcomes
+                            if o.get("status") != "executed")}
+
+    missing = sorted(set(by_id) - set(results))
+    summary = {
+        "puzzles": len(by_id),
+        "answered": n_answered,
+        "wins": sum(1 for v in results.values() if v["win"]),
+        "invalid_or_unparsed": sum(1 for v in results.values()
+                                   if not v["win"] and v["engine"] is None),
+        "missing": missing,
+        "results": [results[qid] for qid in sorted(results)],
+    }
+    with open(os.path.join(run_path, "results.json"), "w",
+              encoding="utf-8") as f:
+        json.dump(summary, f, indent=1)
+    return summary
 
 
 def collect_run(puzzles: list[dict], run_path: str, runner=None,
