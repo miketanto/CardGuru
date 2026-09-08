@@ -164,7 +164,8 @@ class MatchClient:
     """
 
     def __init__(self, mage_repo: Optional[str] = None,
-                 warmup_timeout: int = 300, minimax: bool = False):
+                 warmup_timeout: int = 300, minimax: bool = False,
+                 opp_blockers: int = 0):
         self.mage_repo = mage_repo or os.environ.get("CARDGURU_MAGE_REPO")
         if not self.mage_repo or not os.path.isdir(self.mage_repo):
             raise RuntimeError("XMage checkout not found: set "
@@ -176,6 +177,10 @@ class MatchClient:
         # attacks are chosen by the search, never by `policy`. Every other
         # decision still comes from `policy` over the spool.
         self.minimax = minimax
+        # Plumbing scaffold: seat this many blockers on the (otherwise passive)
+        # opponent's battlefield so the search's min-layer has real blocks to
+        # weigh. 0 = the honest empty-opponent game. See docs/live-minimax.md.
+        self.opp_blockers = opp_blockers
         self.spool: Optional[str] = None
         self.proc: Optional[subprocess.Popen] = None
 
@@ -190,6 +195,8 @@ class MatchClient:
                f"-Dcardguru.interactive.spool={self.spool}"]
         if self.minimax:
             cmd.append("-Dcardguru.minimax=attacks")
+            if self.opp_blockers:
+                cmd.append(f"-Dcardguru.minimax.opp_blockers={self.opp_blockers}")
         self.proc = subprocess.Popen(
             cmd, cwd=self.mage_repo, stdout=subprocess.DEVNULL,
             stderr=subprocess.DEVNULL)
@@ -312,7 +319,7 @@ class MatchClient:
 
 def play_matches(n: int, policy: Policy = dumb_policy,
                  mage_repo: Optional[str] = None,
-                 minimax: bool = False) -> dict:
+                 minimax: bool = False, opp_blockers: int = 0) -> dict:
     """Play N games with `policy` vs the AI; return a win/loss tally.
 
     One JVM per game (a fresh MatchClient each match). Games that error before a
@@ -326,7 +333,8 @@ def play_matches(n: int, policy: Policy = dumb_policy,
     wins = losses = errors = 0
     results = []
     for i in range(n):
-        with MatchClient(mage_repo, minimax=minimax) as m:
+        with MatchClient(mage_repo, minimax=minimax,
+                         opp_blockers=opp_blockers) as m:
             result = m.play(policy)
             if minimax:
                 trace = m.read_trace()

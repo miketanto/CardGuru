@@ -163,6 +163,26 @@ public class CardGuruScenarioRunner extends CardTestPlayerBase {
         // playerA is already an InteractiveTestPlayer (see createNewPlayer,
         // which reads the same system property during @Before setup).
         playerB.setAIPlayer(true);   // real built-in AI opponent
+
+        // Optional plumbing scaffold (default off): seat N vanilla blockers on
+        // the opponent's battlefield at game start. The seated TestComputerPlayer
+        // opponent is fully passive (base ComputerPlayer.priority is `pass()`), so
+        // it never develops a board on its own and the minimax min-layer never
+        // sees a real blocker to weigh. Pre-placing blockers gives the SEARCH's
+        // simulated opponent something to block with, so the min-layer is
+        // actually exercised and demonstrable (block_responses > 1). The LIVE
+        // opponent still won't block -- this only shapes what the search models.
+        // See docs/live-minimax.md.
+        String oppBlockers = System.getProperty("cardguru.minimax.opp_blockers");
+        if (oppBlockers != null) {
+            int n = Integer.parseInt(oppBlockers);
+            if (n > 0) {
+                addCard(Zone.BATTLEFIELD, playerB, "Canyon Minotaur", n);
+                System.out.println("[CardGuru][minimax] seated " + n
+                        + " opponent blocker(s) for the search to weigh");
+            }
+        }
+
         // Run to the natural end of the game rather than a scripted stop.
         setStopAt(200, PhaseStep.UNTAP);
         // TestPlayer's endless-loop guard (maxCallsWithoutAction, default 400)

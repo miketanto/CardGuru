@@ -275,7 +275,8 @@ def cmd_play(args):
         policy = {"dumb": dumb_policy, "pass": pass_policy}[args.policy]
     minimax = getattr(args, "minimax", False)
     tally = play_matches(args.games, policy=policy, mage_repo=args.mage_repo,
-                         minimax=minimax)
+                         minimax=minimax,
+                         opp_blockers=getattr(args, "opp_blockers", 0))
     json.dump(tally, sys.stdout, indent=1)
     print()
     label = f"{args.policy}+minimax" if minimax else args.policy
@@ -1041,6 +1042,10 @@ def main(argv=None):
                     help="run the driver's simulation-backed minimax search at "
                          "the declare-attackers decision (attacks are chosen by "
                          "engine rollout, not by --policy); see docs/live-minimax.md")
+    pl.add_argument("--opp-blockers", type=int, default=0, dest="opp_blockers",
+                    help="minimax plumbing scaffold: seat N blockers on the "
+                         "(passive) opponent's battlefield so the search's "
+                         "min-layer has real blocks to weigh (0 = off)")
     pl.set_defaults(fn=cmd_play)
 
     args = p.parse_args(argv)
