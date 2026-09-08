@@ -317,3 +317,41 @@ can run propose-simulate-pick (not just a heuristic); (2) a real constructed
 deck instead of the hardcoded plumbing deck; (3) externalize in-cast
 sub-choices (targets/mana/X) for full LLM control; then the mage-bench
 ladder for external Elo, and the seeds debt (>=7) before any published claim.
+
+### CORRECTION 2026-09-08 — the interactive opponent is PASSIVE, not COMPUTER_MAD
+
+An earlier claim (from the live-matches milestone, repeated above) that live
+games are "vs COMPUTER_MAD / the built-in alpha-beta AI" is WRONG and is
+corrected here. Verified in the XMage source: `TestComputerPlayer extends
+ComputerPlayer` (the BASE AI), whose `priority()` is literally
+`// minimum implementation for do nothing; pass(game)`, and `Mage.Tests/
+pom.xml` depends on `mage-player-ai` only — `mage-player-ai-mad`
+(ComputerPlayer6, the real alpha-beta minimax AI) is NOT on the test
+classpath. `setAIPlayer(true)` therefore seats a PASSIVE player: it passes
+every priority, never develops a board, never blocks (empirically b_board=0
+every decision of a full game). So every live "win" so far (dumb, belief,
+minimax policies) is integration evidence only — the opponent does nothing —
+NOT a strength result. To get a real opponent, put `mage-player-ai-mad` on
+the Mage.Tests classpath and seat `ComputerPlayer6` as playerB (a pom edit
+the single-file driver deployment has so far avoided). This is now the #1
+next step, ahead of a constructed deck.
+
+### P5 live minimax — sim-backed max-over-min over attacks, DONE 2026-09-08
+
+`agent/live-minimax` merged. Genuine simulation-backed minimax at the
+declare-attackers decision, built on the engine's own rollout primitive
+`GameImpl.createSimulationForAI()` (a full deep game copy; the same call
+SimulatedPlayer2/ComputerPlayer6 use). Tree: MAX over candidate attack sets
+(attack-none / attack-all / hold-one-back-each) → copy → declare on the copy
+→ MIN over block responses (resolved on sub-copies, choosing the block that
+minimises our leaf value, mirroring CombatUtil's combat-step resolution) →
+LEAF `GameStateEvaluator2.evaluate`. Argmax played to the real game. Depth
+~1.5, PokeChamp-shaped, with ENGINE-EXECUTED leaves (not LLM-estimated).
+CLI: `play --minimax` (and `--opp-blockers N` scaffold). Docs:
+`docs/live-minimax.md`. Demonstrated real max-over-min: with the scaffold
+seating three 3/3 blockers, a lone 1/1's attack-all scored 120 vs
+attack-none 1140, so the search DECLINED the attack — the min-layer changed
+the decision. Limitation: against the default passive opponent the min-layer
+collapses to no-block, so normal games just "attack for max"; the search is
+real (proven by the scaffold) but only bites against an opponent that blocks
+— i.e. once ComputerPlayer6 is on the classpath.
