@@ -39,6 +39,11 @@ public class CardGuruScenarioRunner extends CardTestPlayerBase {
 
     @Test
     public void runScenarios() throws Exception {
+        String spool = System.getProperty("cardguru.server.spool");
+        if (spool != null) {
+            serve(spool);
+            return;
+        }
         String dir = System.getProperty("cardguru.scenarios.dir");
         String outDir = System.getProperty("cardguru.out.dir", dir);
         if (dir == null) {
@@ -65,6 +70,54 @@ public class CardGuruScenarioRunner extends CardTestPlayerBase {
             }
             System.out.println("[CardGuru] " + f.getName() + " -> "
                     + outcome.get("status").getAsString());
+        }
+    }
+
+    /**
+     * Server mode: keep the JVM (and its ~40s card-database warmup) alive
+     * and process scenarios from a spool directory until told to stop.
+     *
+     * Protocol, all file-based so it works unchanged through maven/JUnit:
+     *   spool/in/*.json   scenarios (client writes tmp then renames, atomic)
+     *   spool/out/*.out.json  outcomes (written tmp-then-rename likewise)
+     *   spool/READY       created once the engine is warm
+     *   spool/SHUTDOWN    client creates it; server deletes it and exits
+     */
+    private void serve(String spool) throws Exception {
+        File inDir = new File(spool, "in");
+        File outDir = new File(spool, "out");
+        inDir.mkdirs();
+        outDir.mkdirs();
+        new File(spool, "READY").createNewFile();
+        System.out.println("[CardGuru] server ready, spool=" + spool);
+        boolean first = true;
+        while (true) {
+            File shutdown = new File(spool, "SHUTDOWN");
+            if (shutdown.exists()) {
+                shutdown.delete();
+                System.out.println("[CardGuru] server shutting down");
+                return;
+            }
+            File[] files = inDir.listFiles((d, n) -> n.endsWith(".json"));
+            if (files == null || files.length == 0) {
+                Thread.sleep(50);
+                continue;
+            }
+            Arrays.sort(files);
+            for (File f : files) {
+                if (!first) {
+                    reset();
+                }
+                first = false;
+                JsonObject outcome = runOne(f);
+                String name = f.getName().replaceAll("\\.json$", "") + ".out.json";
+                File tmp = new File(outDir, name + ".tmp");
+                try (FileWriter w = new FileWriter(tmp)) {
+                    GSON.toJson(outcome, w);
+                }
+                tmp.renameTo(new File(outDir, name));
+                f.delete();
+            }
         }
     }
 

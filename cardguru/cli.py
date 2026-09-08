@@ -684,6 +684,9 @@ def _puzzle_runner(args):
         from .cardstore import CardStore
         from .localrunner import LocalRunner
         return LocalRunner(CardStore.open(args.db)).run_scenarios
+    if args.engine == "xmage-server":
+        from .adjudicate import shared_server
+        return shared_server(args.mage_repo).run_scenarios
     from .adjudicate import run_scenarios
     from .puzzle import run_scenarios_from_specs
     return lambda specs: run_scenarios_from_specs(specs, run_scenarios,
@@ -971,8 +974,8 @@ def main(argv=None):
     pa = pzsub.add_parser("admit",
                           help="instrument check: known_good wins, known_bad loses")
     pa.add_argument("puzzles", nargs="+")
-    pa.add_argument("--engine", choices=["local", "xmage"], default="local")
-    pa.add_argument("--mage-repo", help="XMage checkout for --engine xmage")
+    pa.add_argument("--engine", choices=["local", "xmage", "xmage-server"], default="local")
+    pa.add_argument("--mage-repo", help="XMage checkout for --engine xmage*")
     pa.add_argument("--db", default=DEFAULT_CARDDB)
     pa.set_defaults(fn=cmd_puzzle_admit)
     pi = pzsub.add_parser("agent-init",
@@ -992,7 +995,8 @@ def main(argv=None):
     pc.add_argument("--run", required=True)
     pc.add_argument("--search", action="store_true",
                     help="simulate every candidate and let the linear value pick")
-    pc.add_argument("--engine", choices=["local", "xmage"], default="local")
+    pc.add_argument("--engine", choices=["local", "xmage", "xmage-server"],
+                    default="local")
     pc.add_argument("--mage-repo")
     pc.add_argument("--db", default=DEFAULT_CARDDB)
     pc.set_defaults(fn=cmd_puzzle_agent_collect)
@@ -1000,7 +1004,8 @@ def main(argv=None):
     pr.add_argument("puzzles", nargs="+")
     pr.add_argument("--lines", required=True,
                     help="JSON file: {puzzle_id: [actions...]}")
-    pr.add_argument("--engine", choices=["local", "xmage"], default="local")
+    pr.add_argument("--engine", choices=["local", "xmage", "xmage-server"],
+                    default="local")
     pr.add_argument("--mage-repo")
     pr.add_argument("--db", default=DEFAULT_CARDDB)
     pr.set_defaults(fn=cmd_puzzle_grade)
