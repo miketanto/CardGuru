@@ -164,13 +164,23 @@ class MatchClient:
     """
 
     def __init__(self, mage_repo: Optional[str] = None,
-                 warmup_timeout: int = 300):
+                 warmup_timeout: int = 300, minimax: bool = False,
+                 opp_blockers: int = 0):
         self.mage_repo = mage_repo or os.environ.get("CARDGURU_MAGE_REPO")
         if not self.mage_repo or not os.path.isdir(self.mage_repo):
             raise RuntimeError("XMage checkout not found: set "
                                "CARDGURU_MAGE_REPO or pass mage_repo")
         ensure_driver(self.mage_repo)
         self.warmup_timeout = warmup_timeout
+        # When True the driver runs its in-JVM simulation-backed minimax search
+        # at the declare-attackers decision (design A in docs/live-minimax.md):
+        # attacks are chosen by the search, never by `policy`. Every other
+        # decision still comes from `policy` over the spool.
+        self.minimax = minimax
+        # Plumbing scaffold: seat this many blockers on the (otherwise passive)
+        # opponent's battlefield so the search's min-layer has real blocks to
+        # weigh. 0 = the honest empty-opponent game. See docs/live-minimax.md.
+        self.opp_blockers = opp_blockers
         self.spool: Optional[str] = None
         self.proc: Optional[subprocess.Popen] = None
 
@@ -180,11 +190,15 @@ class MatchClient:
         self.spool = tempfile.mkdtemp(prefix="cardguru-play-")
         os.makedirs(os.path.join(self.spool, "request"), exist_ok=True)
         os.makedirs(os.path.join(self.spool, "response"), exist_ok=True)
+        cmd = ["mvn", "-q", "-pl", "Mage.Tests", "test",
+               "-Dtest=CardGuruScenarioRunner", "-DfailIfNoTests=false",
+               f"-Dcardguru.interactive.spool={self.spool}"]
+        if self.minimax:
+            cmd.append("-Dcardguru.minimax=attacks")
+            if self.opp_blockers:
+                cmd.append(f"-Dcardguru.minimax.opp_blockers={self.opp_blockers}")
         self.proc = subprocess.Popen(
-            ["mvn", "-q", "-pl", "Mage.Tests", "test",
-             "-Dtest=CardGuruScenarioRunner", "-DfailIfNoTests=false",
-             f"-Dcardguru.interactive.spool={self.spool}"],
-            cwd=self.mage_repo, stdout=subprocess.DEVNULL,
+            cmd, cwd=self.mage_repo, stdout=subprocess.DEVNULL,
             stderr=subprocess.DEVNULL)
         ready = os.path.join(self.spool, "READY")
         deadline = time.time() + self.warmup_timeout
@@ -267,6 +281,28 @@ class MatchClient:
             json.dump(response, f)
         os.replace(tmp, os.path.join(respdir, f"{seq}.json"))
 
+    def read_trace(self) -> list[dict]:
+        """The driver's per-decision minimax records for this match.
+
+        Present only in minimax mode: one JSON object per declare-attackers
+        decision (spool/minimax.jsonl), each recording how many candidate
+        attack sets were simulated, the opponent block responses weighed, and
+        which set was chosen -- the search's proof-of-work for the sanity check
+        deliverable. Empty when the game made no attack decisions.
+        """
+        if not self.spool:
+            return []
+        path = os.path.join(self.spool, "minimax.jsonl")
+        if not os.path.exists(path):
+            return []
+        records = []
+        with open(path, encoding="utf-8") as f:
+            for line in f:
+                line = line.strip()
+                if line:
+                    records.append(json.loads(line))
+        return records
+
     @staticmethod
     def _read_result(path: str) -> dict:
         # The driver writes result.json via tmp-then-rename, so any file we see
@@ -282,18 +318,28 @@ class MatchClient:
 
 
 def play_matches(n: int, policy: Policy = dumb_policy,
-                 mage_repo: Optional[str] = None) -> dict:
+                 mage_repo: Optional[str] = None,
+                 minimax: bool = False, opp_blockers: int = 0) -> dict:
     """Play N games with `policy` vs the AI; return a win/loss tally.
 
     One JVM per game (a fresh MatchClient each match). Games that error before a
     winner is decided are tallied separately so a flaky rollout never inflates
     either win count. Returns {games, wins, losses, errors, results:[...]}.
+
+    With `minimax=True` the driver runs its simulation-backed attack search
+    in-JVM; each game's result carries a `minimax` block summarising the search
+    (total attack decisions, candidate-set counts) as integration evidence.
     """
     wins = losses = errors = 0
     results = []
     for i in range(n):
-        with MatchClient(mage_repo) as m:
+        with MatchClient(mage_repo, minimax=minimax,
+                         opp_blockers=opp_blockers) as m:
             result = m.play(policy)
+            if minimax:
+                trace = m.read_trace()
+                result = dict(result)
+                result["minimax"] = _summarize_trace(trace)
         results.append(result)
         winner = result.get("winner")
         if winner == "A":
@@ -304,3 +350,22 @@ def play_matches(n: int, policy: Policy = dumb_policy,
             errors += 1
     return {"games": n, "wins": wins, "losses": losses,
             "errors": errors, "results": results}
+
+
+def _summarize_trace(trace: list[dict]) -> dict:
+    """Condense the driver's per-decision minimax records into a game summary.
+
+    Keeps the sanity-check numbers the deliverable asks for: how many attack
+    decisions the search made, how many candidate sets it simulated in total,
+    and a compact per-decision list (turn, candidates, chosen). The full
+    records stay under `decisions` for anyone who wants the leaf scores.
+    """
+    total_candidates = sum(d.get("candidate_sets", 0) for d in trace)
+    decisions = [{"turn": d.get("turn"),
+                  "candidate_sets": d.get("candidate_sets"),
+                  "chosen": d.get("chosen"),
+                  "chosen_value": d.get("chosen_value")}
+                 for d in trace]
+    return {"attack_decisions": len(trace),
+            "total_candidate_sets_simulated": total_candidates,
+            "decisions": decisions}
