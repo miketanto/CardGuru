@@ -1,0 +1,36 @@
+{
+ "benchmark": "t3-bestblock v1 (30 minimax puzzles vs enumerated responses, engine-admitted 30/30)",
+ "comparison": "haiku seed 1, instrument v2 (impossible-response rule + required-field validation)",
+ "model": "claude-haiku-4-5 (in-session subagents; linear value, no LLM scorer)",
+ "grading": "xmage strict-choose; a line wins only against ALL enumerated opponent responses",
+ "date": "2026-09-08",
+ "arms": {
+  "a_single_answer": {
+   "wins": "27/30",
+   "losses": [
+    "t3-bestblock-003: burned a 2/4 blocker with 3 damage, it survived and made the best block (strategic)",
+    "t3-bestblock-005: same toughness-misjudgment class (strategic)",
+    "t3-bestblock-013: attack actions missing 'player' (malformed line)"
+   ]
+  },
+  "c_search_no_retry": {
+   "wins": "28/30",
+   "losses": [
+    "t3-bestblock-015 and -017: every candidate wrote phase 'COMBAT' (not in vocabulary) - a systematic per-author format error that candidate diversity cannot hedge"
+   ]
+  },
+  "c_search_plus_one_repair": {
+   "wins": "30/30",
+   "note": "one bounded retry carrying the validator's exact error, fired ONLY on validation failures (never on executed losses); pre-declared in the plan as the lines.py repair signal"
+  }
+ },
+ "instrument_v2_findings": [
+  "impossible-response rule: a scripted block by a blocker the line already killed errors in the engine; that error is the RESPONSE's, not the line's - excluded from the worst case (3 arm-a wins were initially mispunished)",
+  "required-field validation added (attack needs player etc.) - a missing field previously became a driver NPE"
+ ],
+ "reading": [
+  "Search removed every strategic loss (2 -> 0): the minimax pick never chose a line the best block could beat.",
+  "Search does NOT protect against shared format errors - all candidates have one author. Repair does, mechanically.",
+  "Ladder at haiku on T3: 27 -> 28 -> 30. Each layer removes the failure class it was designed for, and the audit trail shows which."
+ ]
+}

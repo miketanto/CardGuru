@@ -1,0 +1,7 @@
+[
+  {"do": "cast", "turn": 1, "phase": "PRECOMBAT_MAIN", "player": "A", "card": "Incinerate", "target_player": "B"},
+  {"do": "attack", "turn": 1, "player": "A", "attacker": "Giant Cockroach"},
+  {"do": "attack", "turn": 1, "player": "A", "attacker": "Great Hart"},
+  {"do": "attack", "turn": 1, "player": "A", "attacker": "Fresh Volunteers"},
+  {"do": "attack", "turn": 1, "player": "A", "attacker": "Defiant Khenra"}
+]

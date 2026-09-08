@@ -1,0 +1,7 @@
+[
+  {"do": "attack", "turn": 1, "attacker": "Kalonian Tusker"},
+  {"do": "attack", "turn": 1, "attacker": "Rumbling Baloth"},
+  {"do": "attack", "turn": 1, "attacker": "Fomori Nomad"},
+  {"do": "attack", "turn": 1, "attacker": "Ancient Carp"},
+  {"do": "cast", "turn": 1, "phase": "POSTCOMBAT_MAIN", "player": "A", "card": "Shock", "target_player": "B"}
+]

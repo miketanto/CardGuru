@@ -1,0 +1,7 @@
+[
+  {"do": "cast", "turn": 1, "phase": "PRECOMBAT_MAIN", "player": "A", "card": "Lightning Strike", "target_player": "B"},
+  {"do": "attack", "turn": 1, "player": "A", "attacker": "Knight Errant"},
+  {"do": "attack", "turn": 1, "player": "A", "attacker": "Blanchwood Treefolk"},
+  {"do": "attack", "turn": 1, "player": "A", "attacker": "Lumengrid Warden"},
+  {"do": "attack", "turn": 1, "player": "A", "attacker": "Bonebreaker Giant"}
+]

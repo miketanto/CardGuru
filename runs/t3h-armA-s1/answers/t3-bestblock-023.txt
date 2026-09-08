@@ -1,0 +1,8 @@
+[
+  {"do": "cast", "turn": 1, "phase": "PRECOMBAT_MAIN", "player": "A", "card": "Lightning Bolt", "target_player": "B"},
+  {"do": "wait_stack", "turn": 1, "phase": "PRECOMBAT_MAIN"},
+  {"do": "attack", "turn": 1, "player": "A", "attacker": "Muck Rats"},
+  {"do": "attack", "turn": 1, "player": "A", "attacker": "Defense Force Aggressor"},
+  {"do": "attack", "turn": 1, "player": "A", "attacker": "Merfolk of the Pearl Trident"},
+  {"do": "attack", "turn": 1, "player": "A", "attacker": "Elvish Warrior"}
+]

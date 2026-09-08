@@ -1,0 +1,533 @@
+{
+ "puzzles": 30,
+ "answered": 30,
+ "wins": 30,
+ "invalid_or_unparsed": 0,
+ "missing": [],
+ "results": [
+  {
+   "id": "t3-bestblock-001",
+   "win": true,
+   "reasons": [
+    "life(B)=-1 want max=0"
+   ],
+   "engine": "xmage",
+   "candidates": 3,
+   "picked": 0,
+   "responses": 5,
+   "scores": [
+    1042.0,
+    1030.0,
+    1030.0
+   ],
+   "candidate_errors": 0
+  },
+  {
+   "id": "t3-bestblock-002",
+   "win": true,
+   "reasons": [
+    "life(B)=-3 want max=0"
+   ],
+   "engine": "xmage",
+   "candidates": 3,
+   "picked": 0,
+   "responses": 5,
+   "scores": [
+    1040.0,
+    1032.0,
+    null
+   ],
+   "candidate_errors": 1
+  },
+  {
+   "id": "t3-bestblock-003",
+   "win": true,
+   "reasons": [
+    "life(B)=-4 want max=0"
+   ],
+   "engine": "xmage",
+   "candidates": 3,
+   "picked": 0,
+   "responses": 5,
+   "scores": [
+    1032.0,
+    3.0,
+    -8.0
+   ],
+   "candidate_errors": 0
+  },
+  {
+   "id": "t3-bestblock-004",
+   "win": true,
+   "reasons": [
+    "life(B)=-2 want max=0"
+   ],
+   "engine": "xmage",
+   "candidates": 2,
+   "picked": 1,
+   "responses": 4,
+   "scores": [
+    1028.0,
+    1050.0
+   ],
+   "candidate_errors": 0
+  },
+  {
+   "id": "t3-bestblock-005",
+   "win": true,
+   "reasons": [
+    "life(B)=-3 want max=0"
+   ],
+   "engine": "xmage",
+   "candidates": 3,
+   "picked": 0,
+   "responses": 4,
+   "scores": [
+    1026.0,
+    1026.0,
+    1026.0
+   ],
+   "candidate_errors": 0
+  },
+  {
+   "id": "t3-bestblock-006",
+   "win": true,
+   "reasons": [
+    "life(B)=-2 want max=0"
+   ],
+   "engine": "xmage",
+   "candidates": 3,
+   "picked": 0,
+   "responses": 5,
+   "scores": [
+    1052.0,
+    1030.0,
+    1052.0
+   ],
+   "candidate_errors": 0
+  },
+  {
+   "id": "t3-bestblock-007",
+   "win": true,
+   "reasons": [
+    "life(B)=-5 want max=0"
+   ],
+   "engine": "xmage",
+   "candidates": 3,
+   "picked": 0,
+   "responses": 5,
+   "scores": [
+    1032.0,
+    null,
+    3.0
+   ],
+   "candidate_errors": 1
+  },
+  {
+   "id": "t3-bestblock-008",
+   "win": true,
+   "reasons": [
+    "life(B)=-2 want max=0"
+   ],
+   "engine": "xmage",
+   "candidates": 3,
+   "picked": 0,
+   "responses": 5,
+   "scores": [
+    1030.0,
+    11.0,
+    1030.0
+   ],
+   "candidate_errors": 0
+  },
+  {
+   "id": "t3-bestblock-009",
+   "win": true,
+   "reasons": [
+    "life(B)=-3 want max=0"
+   ],
+   "engine": "xmage",
+   "candidates": 3,
+   "picked": 0,
+   "responses": 4,
+   "scores": [
+    1030.0,
+    1030.0,
+    1030.0
+   ],
+   "candidate_errors": 0
+  },
+  {
+   "id": "t3-bestblock-010",
+   "win": true,
+   "reasons": [
+    "life(B)=-2 want max=0"
+   ],
+   "engine": "xmage",
+   "candidates": 3,
+   "picked": 1,
+   "responses": 4,
+   "scores": [
+    1030.0,
+    1050.0,
+    1030.0
+   ],
+   "candidate_errors": 0
+  },
+  {
+   "id": "t3-bestblock-011",
+   "win": true,
+   "reasons": [
+    "life(B)=0 want max=0"
+   ],
+   "engine": "xmage",
+   "candidates": 3,
+   "picked": 0,
+   "responses": 4,
+   "scores": [
+    1026.0,
+    1026.0,
+    16.0
+   ],
+   "candidate_errors": 0
+  },
+  {
+   "id": "t3-bestblock-012",
+   "win": true,
+   "reasons": [
+    "life(B)=-2 want max=0"
+   ],
+   "engine": "xmage",
+   "candidates": 4,
+   "picked": 0,
+   "responses": 5,
+   "scores": [
+    1050.0,
+    1030.0,
+    1040.0,
+    11.0
+   ],
+   "candidate_errors": 0
+  },
+  {
+   "id": "t3-bestblock-013",
+   "win": true,
+   "reasons": [
+    "life(B)=-4 want max=0"
+   ],
+   "engine": "xmage",
+   "candidates": 3,
+   "picked": 1,
+   "responses": 5,
+   "scores": [
+    10.0,
+    1030.0,
+    1030.0
+   ],
+   "candidate_errors": 0
+  },
+  {
+   "id": "t3-bestblock-014",
+   "win": true,
+   "reasons": [
+    "life(B)=-1 want max=0"
+   ],
+   "engine": "xmage",
+   "candidates": 4,
+   "picked": 1,
+   "responses": 4,
+   "scores": [
+    20.0,
+    1030.0,
+    1030.0,
+    0.0
+   ],
+   "candidate_errors": 0
+  },
+  {
+   "id": "t3-bestblock-015",
+   "win": true,
+   "reasons": [
+    "life(B)=-5 want max=0"
+   ],
+   "engine": "xmage",
+   "candidates": 5,
+   "picked": 0,
+   "responses": 4,
+   "scores": [
+    1028.0,
+    -2.0,
+    -2.0,
+    -2.0,
+    -1.0
+   ],
+   "candidate_errors": 0
+  },
+  {
+   "id": "t3-bestblock-016",
+   "win": true,
+   "reasons": [
+    "life(B)=0 want max=0"
+   ],
+   "engine": "xmage",
+   "candidates": 3,
+   "picked": 2,
+   "responses": 4,
+   "scores": [
+    1028.0,
+    1028.0,
+    1030.0
+   ],
+   "candidate_errors": 0
+  },
+  {
+   "id": "t3-bestblock-017",
+   "win": true,
+   "reasons": [
+    "life(B)=-2 want max=0"
+   ],
+   "engine": "xmage",
+   "candidates": 3,
+   "picked": 1,
+   "responses": 5,
+   "scores": [
+    1028.0,
+    1050.0,
+    1030.0
+   ],
+   "candidate_errors": 0
+  },
+  {
+   "id": "t3-bestblock-018",
+   "win": true,
+   "reasons": [
+    "life(B)=-1 want max=0"
+   ],
+   "engine": "xmage",
+   "candidates": 5,
+   "picked": 1,
+   "responses": 5,
+   "scores": [
+    1032.0,
+    1042.0,
+    1032.0,
+    22.0,
+    3.0
+   ],
+   "candidate_errors": 0
+  },
+  {
+   "id": "t3-bestblock-019",
+   "win": true,
+   "reasons": [
+    "life(B)=-5 want max=0"
+   ],
+   "engine": "xmage",
+   "candidates": 5,
+   "picked": 0,
+   "responses": 5,
+   "scores": [
+    1032.0,
+    2.0,
+    2.0,
+    22.0,
+    -8.0
+   ],
+   "candidate_errors": 0
+  },
+  {
+   "id": "t3-bestblock-020",
+   "win": true,
+   "reasons": [
+    "life(B)=-4 want max=0"
+   ],
+   "engine": "xmage",
+   "candidates": 2,
+   "picked": 0,
+   "responses": 5,
+   "scores": [
+    1032.0,
+    1032.0
+   ],
+   "candidate_errors": 0
+  },
+  {
+   "id": "t3-bestblock-021",
+   "win": true,
+   "reasons": [
+    "life(B)=-4 want max=0"
+   ],
+   "engine": "xmage",
+   "candidates": 4,
+   "picked": 0,
+   "responses": 5,
+   "scores": [
+    1030.0,
+    1030.0,
+    1030.0,
+    1030.0
+   ],
+   "candidate_errors": 0
+  },
+  {
+   "id": "t3-bestblock-022",
+   "win": true,
+   "reasons": [
+    "life(B)=-4 want max=0"
+   ],
+   "engine": "xmage",
+   "candidates": 4,
+   "picked": 0,
+   "responses": 4,
+   "scores": [
+    1028.0,
+    1028.0,
+    18.0,
+    18.0
+   ],
+   "candidate_errors": 0
+  },
+  {
+   "id": "t3-bestblock-023",
+   "win": true,
+   "reasons": [
+    "life(B)=-3 want max=0"
+   ],
+   "engine": "xmage",
+   "candidates": 4,
+   "picked": 0,
+   "responses": 5,
+   "scores": [
+    1038.0,
+    1031.0,
+    1028.0,
+    1028.0
+   ],
+   "candidate_errors": 0
+  },
+  {
+   "id": "t3-bestblock-024",
+   "win": true,
+   "reasons": [
+    "life(B)=-1 want max=0"
+   ],
+   "engine": "xmage",
+   "candidates": 4,
+   "picked": 0,
+   "responses": 4,
+   "scores": [
+    1038.0,
+    1026.0,
+    1026.0,
+    -3.0
+   ],
+   "candidate_errors": 0
+  },
+  {
+   "id": "t3-bestblock-025",
+   "win": true,
+   "reasons": [
+    "life(B)=-1 want max=0"
+   ],
+   "engine": "xmage",
+   "candidates": 4,
+   "picked": 1,
+   "responses": 4,
+   "scores": [
+    1028.0,
+    1040.0,
+    1030.0,
+    1028.0
+   ],
+   "candidate_errors": 0
+  },
+  {
+   "id": "t3-bestblock-026",
+   "win": true,
+   "reasons": [
+    "life(B)=-3 want max=0"
+   ],
+   "engine": "xmage",
+   "candidates": 4,
+   "picked": 0,
+   "responses": 4,
+   "scores": [
+    1028.0,
+    -1.0,
+    -2.0,
+    8.0
+   ],
+   "candidate_errors": 0
+  },
+  {
+   "id": "t3-bestblock-027",
+   "win": true,
+   "reasons": [
+    "life(B)=-5 want max=0"
+   ],
+   "engine": "xmage",
+   "candidates": 4,
+   "picked": 0,
+   "responses": 5,
+   "scores": [
+    1028.0,
+    9.0,
+    -22.0,
+    8.0
+   ],
+   "candidate_errors": 0
+  },
+  {
+   "id": "t3-bestblock-028",
+   "win": true,
+   "reasons": [
+    "life(B)=-3 want max=0"
+   ],
+   "engine": "xmage",
+   "candidates": 2,
+   "picked": 0,
+   "responses": 5,
+   "scores": [
+    1028.0,
+    1028.0
+   ],
+   "candidate_errors": 0
+  },
+  {
+   "id": "t3-bestblock-029",
+   "win": true,
+   "reasons": [
+    "life(B)=-3 want max=0"
+   ],
+   "engine": "xmage",
+   "candidates": 4,
+   "picked": 2,
+   "responses": 4,
+   "scores": [
+    1026.0,
+    1026.0,
+    1036.0,
+    1029.0
+   ],
+   "candidate_errors": 0
+  },
+  {
+   "id": "t3-bestblock-030",
+   "win": true,
+   "reasons": [
+    "life(B)=-1 want max=0"
+   ],
+   "engine": "xmage",
+   "candidates": 4,
+   "picked": 1,
+   "responses": 4,
+   "scores": [
+    1030.0,
+    1040.0,
+    10.0,
+    20.0
+   ],
+   "candidate_errors": 0
+  }
+ ]
+}

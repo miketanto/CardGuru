@@ -304,3 +304,27 @@ def test_t3_proofs_hold_for_every_generated_puzzle():
         assert total - biggest < life         # best block beats greedy
         burn = runner.burn_damage(p["players"]["A"]["hand"][0])
         assert total - biggest + burn >= life  # robust covers it
+
+
+def test_impossible_responses_do_not_beat_the_line():
+    from cardguru.puzzle import response_impossible
+    resp = [{"do": "block", "turn": 1, "player": "B",
+             "blocker": "Colossodon Yearling", "attacker": "Rotted Hulk"}]
+    dead_blocker = {"status": "error",
+                    "error": "AssertionError: No permanents found called "
+                             "Colossodon Yearling that match the filter"}
+    assert response_impossible(dead_blocker, resp)
+    # never excuse the empty response or an executed run
+    assert not response_impossible(dead_blocker, [])
+    assert not response_impossible({"status": "executed"}, resp)
+    # an error naming nothing the response references is the LINE's fault
+    unrelated = {"status": "error", "error": "Can't find ability to "
+                                             "activate command: Cast Shock"}
+    assert not response_impossible(unrelated, resp)
+
+
+def test_validate_line_catches_missing_required_fields():
+    errs = validate_line(make_puzzle(),
+                         [{"do": "attack", "turn": 1,
+                           "attacker": "Test Bear"}])   # no player
+    assert any("missing 'player'" in e for e in errs)

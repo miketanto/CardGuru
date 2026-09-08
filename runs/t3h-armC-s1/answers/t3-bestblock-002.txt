@@ -1,0 +1,25 @@
+[
+  [
+    {"do": "cast", "turn": 1, "phase": "PRECOMBAT_MAIN", "player": "A", "card": "Searing Spear", "target_player": "B"},
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Capital Guard"},
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Armored Cancrix"},
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Felhide Minotaur"},
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Gutter Skulk"}
+  ],
+  [
+    {"do": "cast", "turn": 1, "phase": "PRECOMBAT_MAIN", "player": "A", "card": "Searing Spear"},
+    {"do": "target", "player": "A", "value": "Runeclaw Bear"},
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Capital Guard"},
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Armored Cancrix"},
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Felhide Minotaur"},
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Gutter Skulk"}
+  ],
+  [
+    {"do": "cast", "turn": 1, "phase": "PRECOMBAT_MAIN", "player": "A", "card": "Searing Spear"},
+    {"do": "choice", "player": "A", "value": "Runeclaw Bear"},
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Capital Guard"},
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Armored Cancrix"},
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Felhide Minotaur"},
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Gutter Skulk"}
+  ]
+]

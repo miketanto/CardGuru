@@ -1,0 +1,24 @@
+[
+  [
+    {"do": "cast", "turn": 1, "phase": "PRECOMBAT_MAIN", "player": "A", "card": "Lightning Bolt", "target_player": "B"},
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Glory Seeker"},
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Bane Alley Blackguard"},
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Cylian Elf"},
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Hulking Devil"}
+  ],
+  [
+    {"do": "cast", "turn": 1, "phase": "PRECOMBAT_MAIN", "player": "A", "card": "Lightning Bolt"},
+    {"do": "target", "player": "A", "value": "Borderland Minotaur"},
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Glory Seeker"},
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Bane Alley Blackguard"},
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Cylian Elf"},
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Hulking Devil"}
+  ],
+  [
+    {"do": "cast", "turn": 1, "phase": "PRECOMBAT_MAIN", "player": "A", "card": "Lightning Bolt"},
+    {"do": "target", "player": "A", "value": "Borderland Minotaur"},
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Hulking Devil"},
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Cylian Elf"},
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Bane Alley Blackguard"}
+  ]
+]

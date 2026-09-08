@@ -30,12 +30,22 @@ def validate_scenario(spec: dict) -> list[str]:
     for key in spec.get("players", {}):
         if key not in ("A", "B"):
             errors.append(f"unknown player '{key}' (only A/B supported)")
+    required = {"cast": ("player", "card"), "play_land": ("player", "card"),
+                "activate": ("player", "ability"),
+                "attack": ("player", "attacker", "turn"),
+                "block": ("player", "blocker", "attacker", "turn"),
+                "choice": ("player", "value"), "target": ("player", "value"),
+                "mode": ("player", "value")}
     for i, a in enumerate(spec.get("actions", [])):
         if a.get("do") not in ACTIONS:
             errors.append(f"actions[{i}]: unknown do '{a.get('do')}'")
-        elif a["do"] in ("cast", "play_land", "activate", "wait_stack") \
+            continue
+        if a["do"] in ("cast", "play_land", "activate", "wait_stack") \
                 and a.get("phase") not in PHASES:
             errors.append(f"actions[{i}]: bad phase '{a.get('phase')}'")
+        for field in required.get(a["do"], ()):
+            if a.get(field) in (None, ""):
+                errors.append(f"actions[{i}]: {a['do']} missing '{field}'")
     stop = spec.get("stop")
     if not stop or stop.get("phase") not in PHASES or "turn" not in stop:
         errors.append("missing/invalid stop {turn, phase}")

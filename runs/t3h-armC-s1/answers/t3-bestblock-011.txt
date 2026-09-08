@@ -1,0 +1,19 @@
+[
+  [
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Femeref Scouts"},
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Pheres-Band Centaurs"},
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Giant Octopus"},
+    {"do": "cast", "turn": 1, "phase": "POSTCOMBAT_MAIN", "player": "A", "card": "Lightning Bolt", "target_player": "B"}
+  ],
+  [
+    {"do": "cast", "turn": 1, "phase": "PRECOMBAT_MAIN", "player": "A", "card": "Lightning Bolt", "target_player": "B"},
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Femeref Scouts"},
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Pheres-Band Centaurs"},
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Giant Octopus"}
+  ],
+  [
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Pheres-Band Centaurs"},
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Giant Octopus"},
+    {"do": "cast", "turn": 1, "phase": "POSTCOMBAT_MAIN", "player": "A", "card": "Lightning Bolt", "target_player": "B"}
+  ]
+]

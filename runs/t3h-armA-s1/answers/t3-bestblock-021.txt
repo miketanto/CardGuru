@@ -1,0 +1,7 @@
+[
+  {"do": "attack", "turn": 1, "player": "A", "attacker": "Russet Wolves"},
+  {"do": "attack", "turn": 1, "player": "A", "attacker": "Eager Cadet"},
+  {"do": "attack", "turn": 1, "player": "A", "attacker": "Elvish Ranger"},
+  {"do": "attack", "turn": 1, "player": "A", "attacker": "Knight of New Benalia"},
+  {"do": "cast", "turn": 1, "phase": "POSTCOMBAT_MAIN", "player": "A", "card": "Lightning Strike", "target_player": "B"}
+]

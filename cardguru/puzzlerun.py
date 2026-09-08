@@ -196,7 +196,8 @@ def collect_search_run(puzzles: list[dict], run_path: str, runner=None,
     are all recorded so a pick can be audited later.
     """
     from . import value
-    from .puzzle import evaluate_win, responses_of, splice, validate_line
+    from .puzzle import (evaluate_win, response_impossible, responses_of,
+                         splice, validate_line)
 
     by_id = {p["id"]: p for p in puzzles}
     adir = os.path.join(run_path, "answers")
@@ -245,9 +246,13 @@ def collect_search_run(puzzles: list[dict], run_path: str, runner=None,
 
     for qid, candidates in parsed.items():
         spec = by_id[qid]
-        n_resp = len(responses_of(spec))
-        # minimax: a candidate's value is its WORST response's score, and a
-        # candidate any response can break (error included) is vetoed
+        all_responses = responses_of(spec)
+        n_resp = len(all_responses)
+        # minimax: a candidate's value is its WORST response's score; a
+        # response the candidate has made illegal is excluded (the opponent
+        # no longer has that option), and any OTHER error vetoes the
+        # candidate — the empty response is never excluded, so a broken
+        # candidate always dies through it
         cand_values, cand_worst = [], []
         for i in range(len(candidates)):
             if notes[qid][i] is not None:
@@ -255,11 +260,20 @@ def collect_search_run(puzzles: list[dict], run_path: str, runner=None,
                 cand_worst.append({"status": "error",
                                    "error": notes[qid][i]})
                 continue
-            scored = [(value.score(outcomes_by[qid][i][r]),
-                       outcomes_by[qid][i][r]) for r in range(n_resp)]
-            if any(s is None for s, _ in scored):
+            scored, veto = [], None
+            for r in range(n_resp):
+                outcome = outcomes_by[qid][i][r]
+                if response_impossible(outcome, all_responses[r]):
+                    continue
+                s = value.score(outcome)
+                if s is None:
+                    veto = outcome
+                    break
+                scored.append((s, outcome))
+            if veto is not None or not scored:
                 cand_values.append(None)
-                cand_worst.append(next(o for s, o in scored if s is None))
+                cand_worst.append(veto or {"status": "error",
+                                           "error": "no scorable outcome"})
             else:
                 s_min, o_min = min(scored, key=lambda so: so[0])
                 cand_values.append(s_min)
@@ -276,12 +290,15 @@ def collect_search_run(puzzles: list[dict], run_path: str, runner=None,
                             "engine": None, "candidates": len(candidates),
                             "scores": cand_values}
             continue
-        # the verdict is the picked candidate's worst case across responses
+        # the verdict is the picked candidate's worst case across the
+        # responses that remain possible against it
         ok = True
         reasons: list[str] = []
         for r in range(n_resp):
-            r_ok, r_reasons = evaluate_win(outcomes_by[qid][best][r],
-                                           spec["win"])
+            outcome = outcomes_by[qid][best][r]
+            if response_impossible(outcome, all_responses[r]):
+                continue
+            r_ok, r_reasons = evaluate_win(outcome, spec["win"])
             if not r_ok and ok:
                 ok, reasons = False, ([f"beaten by opponent response #{r}"]
                                       + r_reasons)

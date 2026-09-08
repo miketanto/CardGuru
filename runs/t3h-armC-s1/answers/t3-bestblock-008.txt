@@ -1,0 +1,22 @@
+[
+  [
+    {"do": "cast", "turn": 1, "phase": "PRECOMBAT_MAIN", "player": "A", "card": "Shock", "target_player": "B"},
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Muck Rats"},
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Knight Errant"},
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Bane Alley Blackguard"},
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Grizzled Leotau"}
+  ],
+  [
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Muck Rats"},
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Knight Errant"},
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Bane Alley Blackguard"},
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Grizzled Leotau"}
+  ],
+  [
+    {"do": "cast", "turn": 1, "phase": "PRECOMBAT_MAIN", "player": "A", "card": "Shock", "target_player": "B"},
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Knight Errant"},
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Muck Rats"},
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Grizzled Leotau"},
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Bane Alley Blackguard"}
+  ]
+]

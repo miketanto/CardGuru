@@ -1,0 +1,22 @@
+[
+  [
+    {"do": "cast", "turn": 1, "phase": "PRECOMBAT_MAIN", "player": "A", "card": "Incinerate", "target_player": "B"},
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Lazotep Behemoth"},
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Goblin Piker"},
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Ancient Carp"},
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Imperial Outrider"}
+  ],
+  [
+    {"do": "cast", "turn": 1, "phase": "PRECOMBAT_MAIN", "player": "A", "card": "Incinerate", "target": "Grizzled Leotau"},
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Lazotep Behemoth"},
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Goblin Piker"},
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Ancient Carp"},
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Imperial Outrider"}
+  ],
+  [
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Lazotep Behemoth"},
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Goblin Piker"},
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Ancient Carp"},
+    {"do": "attack", "turn": 1, "player": "A", "attacker": "Imperial Outrider"}
+  ]
+]

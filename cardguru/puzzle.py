@@ -160,6 +160,26 @@ def responses_of(spec: dict) -> list[list]:
     return spec.get("opponent_responses") or [[]]
 
 
+def response_impossible(outcome: dict, response: list) -> bool:
+    """A response the line has made illegal cannot beat the line.
+
+    Example: the line kills the blocker, and the scripted block then fails
+    with "No permanents found called <blocker>". That error is the
+    RESPONSE's, not the line's — the opponent simply no longer has that
+    option — so the response is excluded rather than counted as a loss.
+    Detection is narrow: the run errored, the response is non-empty, and
+    the engine's error names something the response's actions reference.
+    The empty response is never excluded, so a genuinely broken line still
+    loses through it.
+    """
+    if outcome.get("status") == "executed" or not response:
+        return False
+    err = str(outcome.get("error") or "")
+    names = {a.get(k) for a in response
+             for k in ("blocker", "attacker", "card") if a.get(k)}
+    return any(name in err for name in names)
+
+
 def grade(pairs: list[tuple[dict, list]], runner=None,
           mage_repo: str | None = None) -> list[dict]:
     """Grade (puzzle, line) pairs in ONE batch through the runner.
@@ -198,8 +218,11 @@ def grade(pairs: list[tuple[dict, list]], runner=None,
             by_pair.setdefault(slot, []).append((r, outcome))
     for slot, response_outcomes in by_pair.items():
         spec = pairs[slot][0]
+        responses = responses_of(spec)
         worst_ok, worst_reasons, worst_r, engine = True, [], None, None
         for r, outcome in response_outcomes:
+            if response_impossible(outcome, responses[r]):
+                continue
             ok, reasons = evaluate_win(outcome, spec["win"])
             engine = engine or outcome.get("engine")
             if not ok and worst_ok:
