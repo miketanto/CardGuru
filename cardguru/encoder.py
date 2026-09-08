@@ -73,6 +73,21 @@ class Encoder:
                                              with_text=with_text))
         return lines
 
+    def _nonempty_zones(self, whose: str, block: dict) -> list[str]:
+        """Graveyard and exile, rendered only when they hold cards.
+
+        An empty zone is the default and adds nothing a player doesn't
+        already assume; a non-empty one is board state (recursion targets,
+        exiled threats) and renders with full card facts.
+        """
+        out = []
+        for zone in ("graveyard", "exile"):
+            cards = block.get(zone, [])
+            if cards:
+                out += self._zone(f"{whose} {zone}", cards,
+                                  tapped_aware=False, with_text=True)
+        return out
+
     # -- the computed layer --------------------------------------------------
 
     def _is(self, kind: str, name: str) -> bool:
@@ -158,12 +173,14 @@ class Encoder:
                           tapped_aware=True, with_text=True)
         out += self._zone("your hand", a.get("hand", []),
                           tapped_aware=False, with_text=True)
+        out += self._nonempty_zones("your", a)
         out += ["", f"OPPONENT (player B) — life {b.get('life', 20)}"]
         out += self._zone("their battlefield", b.get("battlefield", []),
                           tapped_aware=True, with_text=True)
         if b.get("hand"):
             out += self._zone("their hand (known)", b["hand"],
                               tapped_aware=False, with_text=False)
+        out += self._nonempty_zones("their", b)
         if mode == "annotated":
             out += self._annotations(spec)
         return "\n".join(out)

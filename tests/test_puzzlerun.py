@@ -116,3 +116,21 @@ def test_collect_grades_answers_and_reports_the_rest(store, tmp_path):
     assert summary["missing"] == ["t1-test-3"]
     saved = json.load(open(os.path.join(run, "results.json")))
     assert saved["wins"] == 1
+
+
+def test_task_states_the_no_summoning_sickness_convention(store, tmp_path):
+    run = str(tmp_path / "run")
+    init_run([make_puzzle()], run, Encoder(store), seed=1)
+    task = open(os.path.join(run, "pending", "t1-test.md")).read()
+    assert "no summoning sickness" in task
+
+
+def test_nonempty_graveyard_and_exile_render_with_card_facts(store):
+    spec = make_puzzle()
+    spec["players"]["B"]["graveyard"] = ["Test Ox"]
+    spec["players"]["A"]["exile"] = ["Test Shock"]
+    text = Encoder(store).render(spec)
+    assert "their graveyard:" in text and "Test Ox" in text
+    assert "your exile:" in text
+    # empty zones stay silent — the default adds nothing
+    assert "your graveyard" not in text

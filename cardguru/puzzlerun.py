@@ -81,6 +81,11 @@ run incomparable to an API run.
 ## How to answer
 
 {vocabulary}
+Rules context: every creature already on the battlefield may attack this
+turn — treat battlefield permanents as having been under their controller's
+control since the turn began (no summoning sickness on setup-placed
+creatures).
+
 Your line is executed by a rules engine exactly as written; the game ends
 in a win only if your opponent is dead when it resolves. Use turn {turn}
 for every action's "turn" field.
