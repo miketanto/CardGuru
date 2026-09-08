@@ -152,8 +152,17 @@ choice loses. Two engine findings folded in:
   never happens; status stays `executed`), not errored — the trap still
   loses by shortfall, and the notes record the observed mechanism.
 
-Remaining for P2: annotated encoder mode (verdicts/clock into the prompt),
-then the a-vs-b run on T2 with ≥7 seeds and the permutation test.
+**A/B run 2026-09-08** (`research/data/eval_t2_ab_haiku_2026-09-08.json`):
+fable arm (a) saturated T2 (30/30, after the winner-short-circuit driver
+fix), so the comparison moved to haiku per the pre-registered contingency.
+Haiku: arm (a) 28/30 vs arm (b) 28/30 — a tie at one seed, both near the
+instrument ceiling. Family movement: annotations closed creature-only
+(9→10); right-burn slipped (9→8, one agent over-cast against an explicit
+cannot-cast-everything annotation). All four losses across both arms are
+the same failure mode — casting past available mana, dying as a strict-mode
+unexecutable cast — which one engine rollout catches: P3's arm (c) should
+eliminate it by construction. Seeds debt on record: the tie is 1-seed
+exploratory; ≥7 seeds or a harder tier before any published claim.
 - `cardguru/lines.py`: parse/validate proposed lines client-side (reuse
   `validate_scenario` + mana arithmetic); illegal → one bounded retry with the
   validator's message, exactly like the compile loop's repair signal.
