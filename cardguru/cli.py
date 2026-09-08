@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import sys
 import time
 
@@ -726,6 +727,33 @@ def cmd_puzzle_admit(args):
         sys.exit(1)
 
 
+def cmd_puzzle_agent_init(args):
+    from .cardstore import CardStore
+    from .encoder import Encoder
+    from .puzzle import load_puzzles
+    from .puzzlerun import init_run
+
+    init_run(load_puzzles(args.puzzles), args.run,
+             Encoder(CardStore.open(args.db)), mode=args.mode,
+             seed=args.seed, arm=args.arm)
+    pending = os.listdir(os.path.join(args.run, "pending"))
+    print(f"{len(pending)} task(s) pending in {args.run}/pending/")
+
+
+def cmd_puzzle_agent_collect(args):
+    from .puzzle import load_puzzles
+    from .puzzlerun import collect_run
+
+    summary = collect_run(load_puzzles(args.puzzles), args.run,
+                          runner=_puzzle_runner(args))
+    print(json.dumps({k: v for k, v in summary.items() if k != "results"},
+                     indent=1))
+    print(f"-- {summary['wins']}/{summary['puzzles']} wins "
+          f"({summary['invalid_or_unparsed']} invalid/unparsed, "
+          f"{len(summary['missing'])} unanswered); results.json written",
+          file=sys.stderr)
+
+
 def cmd_puzzle_grade(args):
     from .puzzle import grade, load_puzzles
 
@@ -943,6 +971,23 @@ def main(argv=None):
     pa.add_argument("--mage-repo", help="XMage checkout for --engine xmage")
     pa.add_argument("--db", default=DEFAULT_CARDDB)
     pa.set_defaults(fn=cmd_puzzle_admit)
+    pi = pzsub.add_parser("agent-init",
+                          help="write pending task files for an agent-driven run")
+    pi.add_argument("puzzles", nargs="+")
+    pi.add_argument("--run", required=True, help="run directory (one arm+seed)")
+    pi.add_argument("--mode", choices=["bare", "annotated"], default="bare")
+    pi.add_argument("--arm", default="a")
+    pi.add_argument("--seed", type=int)
+    pi.add_argument("--db", default=DEFAULT_CARDDB)
+    pi.set_defaults(fn=cmd_puzzle_agent_init)
+    pc = pzsub.add_parser("agent-collect",
+                          help="grade a run's answers and write results.json")
+    pc.add_argument("puzzles", nargs="+")
+    pc.add_argument("--run", required=True)
+    pc.add_argument("--engine", choices=["local", "xmage"], default="local")
+    pc.add_argument("--mage-repo")
+    pc.add_argument("--db", default=DEFAULT_CARDDB)
+    pc.set_defaults(fn=cmd_puzzle_agent_collect)
     pr = pzsub.add_parser("grade", help="grade proposed lines against puzzles")
     pr.add_argument("puzzles", nargs="+")
     pr.add_argument("--lines", required=True,
