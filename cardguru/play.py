@@ -72,6 +72,65 @@ def dumb_policy(request: dict) -> dict:
     return {}
 
 
+def belief_policy(corpus=None, rng=None) -> "Policy":
+    """A policy that reads the opponent and plays around what it can't see.
+
+    This is the first wiring of `believe.py` into live play. At the attackers
+    decision it gathers the opponent's REVEALED cards (their battlefield +
+    graveyard names, which the request state exposes), classifies the meta
+    archetype, and asks believe.py how often that deck holds instant-speed
+    removal. When removal is believed-live AND the opponent has untapped mana
+    to cast it, the policy holds its single biggest attacker back rather than
+    over-committing into a blow-out — the same "keep reach for the removal you
+    can't see" skill the T4 benchmark rewarded, now applied to a real game.
+    Every other decision defers to `dumb_policy`.
+
+    Honest scope: this is a belief-INFORMED heuristic, not the propose-
+    simulate-pick search the puzzles use. Full search in a live game needs a
+    fork-the-state-and-roll-out primitive the interactive driver does not
+    expose yet (see docs/live-match-feasibility.md); until then the belief
+    shapes a heuristic rather than driving a simulation. It never holds back
+    so much that it stops applying pressure — at most one attacker.
+    """
+    from . import believe as _believe
+
+    decks = corpus if corpus is not None else _believe.load_corpus()
+    r = rng if rng is not None else random.Random(0)
+
+    def policy(request: dict) -> dict:
+        if request.get("kind") != "attackers" or not decks:
+            return dumb_policy(request)
+        options = request.get("options", [])
+        if len(options) <= 1:
+            return dumb_policy(request)
+        b = (request.get("state") or {}).get("B", {})
+        seen = [p.get("name") for p in b.get("battlefield", [])
+                if p.get("name")] + list(b.get("graveyard", []))
+        untapped_lands = sum(1 for p in b.get("battlefield", [])
+                             if not p.get("tapped")
+                             and _looks_like_land(p))
+        summary = _believe.response_probability(seen, decks, hand_size=7,
+                                                k=100, rng=r)
+        # play around removal only when it is both believed-likely and
+        # castable (open mana); otherwise commit fully like aggro wants
+        if summary["trick_rate"] >= 0.5 and untapped_lands >= 1:
+            biggest = max(options, key=lambda o: o.get("power", 0))
+            kept = [o["index"] for o in options if o is not biggest]
+            return {"attackers": kept, "belief": summary["archetype"],
+                    "played_around": biggest.get("name")}
+        return {"attackers": [o["index"] for o in options],
+                "belief": summary["archetype"]}
+
+    return policy
+
+
+def _looks_like_land(perm: dict) -> bool:
+    """A permanent with no power/toughness on the opponent's board is treated
+    as a mana source for the open-mana proxy (creatures carry P/T; lands do
+    not). Coarse but sufficient for 'could they cast removal right now?'."""
+    return "power" not in perm and "toughness" not in perm
+
+
 def pass_policy(request: dict) -> dict:
     """Do nothing ever: keep, never play, never attack, never block.
 

@@ -267,9 +267,12 @@ def cmd_adjudicate(args):
 
 
 def cmd_play(args):
-    from .play import dumb_policy, pass_policy, play_matches
+    from .play import belief_policy, dumb_policy, pass_policy, play_matches
 
-    policy = {"dumb": dumb_policy, "pass": pass_policy}[args.policy]
+    if args.policy == "belief":
+        policy = belief_policy()   # loads meta_decks/, plays around unseen removal
+    else:
+        policy = {"dumb": dumb_policy, "pass": pass_policy}[args.policy]
     tally = play_matches(args.games, policy=policy, mage_repo=args.mage_repo)
     json.dump(tally, sys.stdout, indent=1)
     print()
@@ -1027,7 +1030,7 @@ def main(argv=None):
     pl = sub.add_parser("play",
                         help="play real interactive games vs XMage's built-in AI")
     pl.add_argument("--games", type=int, default=1, help="number of games")
-    pl.add_argument("--policy", choices=["dumb", "pass"], default="dumb",
+    pl.add_argument("--policy", choices=["dumb", "pass", "belief"], default="dumb",
                     help="decision policy (no LLM): dumb=develop+swing, "
                          "pass=do nothing")
     pl.add_argument("--mage-repo", help="XMage checkout (or env CARDGURU_MAGE_REPO)")

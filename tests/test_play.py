@@ -162,3 +162,67 @@ def test_match_loop_raises_if_driver_dies_without_result():
             assert False, "expected RuntimeError"
         except RuntimeError as e:
             assert "died mid-match" in str(e)
+
+
+# --- belief-informed policy (wires believe.py into live play) ------------
+
+import random as _random
+from cardguru.play import belief_policy, _looks_like_land
+
+_BELIEF_CORPUS = [
+    {"archetype": "Red", "cards": {"Mountain": 20, "Goblin Raider": 4,
+                                   "Lightning Bolt": 4},
+     "tricks": [{"card": "Lightning Bolt", "kind": "removal", "damage": 3}]},
+    {"archetype": "Blue", "cards": {"Island": 20, "Merfolk": 4, "Drake": 4},
+     "tricks": []},
+]
+
+
+def _attackers_req(opp_battlefield, opp_graveyard=()):
+    return {"kind": "attackers",
+            "options": [{"index": 0, "name": "Ogre", "power": 4, "toughness": 2},
+                        {"index": 1, "name": "Bear", "power": 2, "toughness": 2}],
+            "state": {"B": {"battlefield": list(opp_battlefield),
+                            "graveyard": list(opp_graveyard)}}}
+
+
+def test_belief_policy_plays_around_believed_removal_with_open_mana():
+    pol = belief_policy(corpus=_BELIEF_CORPUS, rng=_random.Random(0))
+    # opponent has revealed a Goblin Raider (-> Red, holds Bolt) and an
+    # untapped Mountain (open mana) -> hold the biggest attacker back
+    req = _attackers_req([{"name": "Goblin Raider", "power": 2, "toughness": 2},
+                          {"name": "Mountain", "tapped": False}])
+    resp = pol(req)
+    assert resp["attackers"] == [1]                 # kept the Bear, held the Ogre
+    assert resp["played_around"] == "Ogre"
+    assert resp["belief"] == "Red"
+
+
+def test_belief_policy_commits_fully_when_no_open_mana():
+    pol = belief_policy(corpus=_BELIEF_CORPUS, rng=_random.Random(0))
+    # same Red read, but the Mountain is TAPPED -> removal can't be live now
+    req = _attackers_req([{"name": "Goblin Raider", "power": 2, "toughness": 2},
+                          {"name": "Mountain", "tapped": True}])
+    resp = pol(req)
+    assert set(resp["attackers"]) == {0, 1}         # attack with everything
+
+
+def test_belief_policy_commits_fully_against_trickless_archetype():
+    pol = belief_policy(corpus=_BELIEF_CORPUS, rng=_random.Random(0))
+    # a Blue read (no tricks) never fears removal -> full commit even with mana
+    req = _attackers_req([{"name": "Merfolk", "power": 1, "toughness": 1},
+                          {"name": "Island", "tapped": False}])
+    resp = pol(req)
+    assert set(resp["attackers"]) == {0, 1}
+    assert resp["belief"] == "Blue"
+
+
+def test_belief_policy_defers_other_decisions_to_dumb():
+    pol = belief_policy(corpus=_BELIEF_CORPUS, rng=_random.Random(0))
+    assert pol({"kind": "mulligan"}) == {"mulligan": False}
+    assert pol({"kind": "blockers", "state": {}}) == {"blocks": []}
+
+
+def test_looks_like_land_distinguishes_creatures():
+    assert _looks_like_land({"name": "Mountain", "tapped": False})
+    assert not _looks_like_land({"name": "Bear", "power": 2, "toughness": 2})
