@@ -23,10 +23,13 @@ now beats acting later.
 
 **Mana and casting.** Casting a spell taps your lands automatically to pay
 its cost — you never need to tap lands by hand. Costs like {2}{R} mean "two
-generic + one red". One land may be played per turn. THE OPTION MENU IS
-AUTHORITATIVE: a spell appears as an option only if you can legally pay for
-it right now. If it is not offered, you cannot cast it — do not plan around
-casting something the menu does not show.
+generic + one red". One land may be played per turn. If a spell is NOT
+offered you certainly cannot cast it, so do not plan around casting
+something the menu does not show. The reverse does not hold: the menu
+clears a spell on its base cost, so a card with an additional required
+cost can be offered and still be unpayable. Check `mana_available` against
+the full cost — base plus any `additional_cost` on the mode you intend —
+before you commit to a cast.
 
 **Attacking.** Declaring an attacker TAPS it (nothing here has vigilance).
 Tapped creatures cannot block. Your attackers stay tapped until YOUR next
@@ -54,118 +57,20 @@ target").
 
 **Winning.** Reduce the opponent to 0 life. Nothing else matters.
 
-## Your deck (Dimir Midrange, blue-black) — you are the CONTROL deck
+## Your deck and the matchup
 
-25 lands (Undercity Sewers enters tapped and SURVEILS — you'll get a choice
-to keep the looked-at card on top or bin it; bin what you don't need).
-Read every card_reference entry carefully; these cards are complex and the
-reference text is authoritative. Key cards:
+This is a MIRROR MATCH: both seats play the same 60-card Dimir midrange
+deck, so nothing about the matchup favours either side on deck strength.
 
-- Deep-Cavern Bat {1}{B} 1/1 FLYING, LIFELINK — on arrival, look at target
-  opponent's hand and exile a NONLAND card from it until the Bat leaves.
-  A turn-2 play, not a turn-1 play; also an evasive attacker their ground
-  creatures cannot block.
-- Spyglass Siren {U} 1/1 flying, makes a Map token (sacrifice later to
-  explore/scry — a mana sink).
-- Floodpits Drowner {1}{U} 2/1 merfolk; can tap down a threat with a stun
-  counter.
-- Preacher of the Schism {2}{B} — deathtouch: it kills ANY creature it
-  blocks or is blocked by, so big attackers fear it; attacks drain them.
-- Kaito, Bane of Nightmares {2}{U}{B} — a PLANESWALKER, not a creature.
-  Ninjutsu {1}{U}{B} (return an unblocked attacker to hand and put Kaito in
-  its place, already attacking). During YOUR turn only, while he has
-  loyalty, he is a 3/4 Ninja with HEXPROOF — so on your own turn he cannot
-  be targeted by removal, and on THEIR turn he is a planeswalker you can
-  attack instead of the player. Loyalty abilities: +1 emblem (Ninjas get
-  +1/+1); 0 surveil 2, then draw for each opponent who lost life this turn;
-  -2 tap a creature and put two stun counters on it.
-- Enduring Curiosity {2}{U}{U} — card draw engine off combat damage.
-- Sheoldred, the Apocalypse {2}{B}{B} 4/5 — YOUR draws gain you 2 life,
-  THEIR draws cost them 2. She wins long games on her own. Protect her.
-- Removal, with EXACT restrictions — these matter, check them before you
-  plan around a card:
-  * Cut Down {B} — destroy target creature with **total power + toughness 5
-    or less**. Kills a 2/2 or a 1/1; CANNOT kill Sheoldred (4/5 = 9) or a
-    3/5 Preacher (8).
-  * Go for the Throat {1}{B} — destroy target NONARTIFACT creature. No
-    size limit: this is your ONLY unconditional answer to Sheoldred, Kaito
-    or a big Preacher. Do not waste it on a 1/1 flier.
-  * Anoint with Affliction {1}{B} — exile target creature **only if its
-    mana value is 3 or less**. Sheoldred (MV 4) and Kaito (MV 4) are OUT OF
-    RANGE. Use it on Bat, Siren, Mastermind, Drowner or Preacher.
-- We Say Thee Nay {1}{U} — instant. Counter target spell UNLESS its
-  controller pays {2}. It is a TAX, not a hard counter: against an opponent
-  with two spare mana it does nothing but cost you a card, so use it when
-  they are tapped low or when the {2} would cost them their turn. Two mana
-  open on your side is enough to represent it.
+Every card you see carries its authoritative cost, types and rules text in
+the `card_reference` block the first time that name appears. READ IT. It is
+generated from the engine's own card objects, so it is correct by
+construction — do not substitute anything you think you remember about a
+card, and do not assume a card does what its name suggests.
 
-## The opponent: the SAME DECK (Dimir mirror)
-
-This is a MIRROR MATCH. Your opponent's 60 cards are identical to yours —
-every removal spell, counterspell, flier and threat listed above is also in
-their deck. Assume they hold what you would hold.
-
-What that means concretely:
-- Any threat you resolve can be answered by Cut Down / Go for the Throat /
-  Anoint with Affliction. Any spell you cast can be met by We Say Thee Nay
-  if they have {1}{U} open — but it only counters if you cannot pay {2}, so
-  casting into it with two spare mana is safe.
-- They have Deep-Cavern Bat and Spyglass Siren too, so THEY have evasive
-  fliers your ground creatures cannot block. Your own fliers are your
-  clock; theirs is the clock you must answer.
-- Preacher of the Schism has deathtouch on both sides: it kills anything it
-  blocks or is blocked by. Attacking with it while they are at 5 or less
-  life makes them a Vampire token each combat.
-- THEIR Kaito is a planeswalker on your turn: you may attack it instead of
-  the player, and killing it removes a recurring threat. On their turn he
-  is a hexproof 3/4 and cannot be targeted.
-- Sheoldred, the Apocalypse (4/5, MV 4) is the single biggest card in the
-  matchup, in either direction. Her drain is a TRIGGERED ABILITY and is
-  live the moment she resolves — summoning sickness does NOT delay it.
-  Every card you draw while their Sheoldred lives costs you 2 life,
-  including your mandatory draw each turn, so she is a guaranteed 2-per-turn
-  clock on you plus 2 per extra draw. Only Go for the Throat answers her.
-  If you cannot answer her, STOP drawing extra cards and win fast or lose.
-
-## Tips and tricks (the Dimir mirror — follow these)
-
-1. **Verify indices every time.** Option menus shift between requests.
-2. **Card advantage wins the mirror.** Both decks answer threats one for
-   one; the player who runs out of answers first loses. Do not trade a card
-   for nothing, and do not spend removal on a creature that is not actually
-   threatening you.
-3. **Someone has to be the beatdown.** Usually it is whoever lands the
-   first threat the other cannot answer. Once you are the beatdown, attack
-   and press; if you are the control side, stop attacking into blockers and
-   answer their clock instead. Re-evaluate this every few turns.
-4. **Fliers are the real clock.** Bat and Siren go over the ground on both
-   sides. Prioritize killing THEIR fliers and protecting yours; a ground
-   stall usually resolves in favor of whoever has evasion.
-5. **Play around their mana.** {1}{B} open = removal; {1}{U} open =
-   We Say Thee Nay. Against that tax, holding two spare mana when you cast
-   your best threat beats baiting — if you can pay the {2}, it resolves.
-6. **Do not over-commit into removal.** Deploying two threats when one wins
-   the turn just gives their removal better targets. Hold the extra.
-7. **Hold your own interaction up.** Passing with mana open and an instant
-   in hand is a real play in this matchup — usually better than tapping
-   out for a threat they can answer anyway.
-8. **Sheoldred is the trump.** Answer theirs at the first opportunity, even
-   at a bad tempo cost. Resolve yours only when you can protect it or when
-   the alternative is losing anyway.
-9. **Deathtouch and flying change combat math.** Preacher blocks anything
-   profitably; their fliers can only be blocked by your fliers.
-10. **Mulligans**: keep 2-4 lands with early interaction or a flier. In a
-    mirror, a hand with no interaction and no clock is a mulligan.
-11. **Card-draw engines are LIABILITIES under an opposing Sheoldred.**
-    Enduring Curiosity, Faerie Mastermind and any "draw a card" effect each
-    cost you 2 life per trigger while their Sheoldred lives. Do not deploy
-    a draw engine into one — answer her first or hold the card.
-12. **Flash means cast it on THEIR turn.** Faerie Mastermind, Floodpits
-    Drowner and Enduring Curiosity have flash. Casting them in your own
-    main phase throws away the ambush and the information; hold them until
-    their end step or until blockers are declared.
-13. **The engine is always right.** If the menu does not offer it, you
-    cannot do it; trust each creature's `can_block` field.
+`mana_available` on every request tells you what you can actually pay this
+window. Check it before committing to a cast: a spell can appear on the
+menu and still be unpayable once its costs are added up.
 
 ## Response schemas (reply with exactly one JSON object)
 
