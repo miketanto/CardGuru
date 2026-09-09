@@ -25,9 +25,16 @@ import mage.game.Game;
 import mage.game.combat.CombatGroup;
 import mage.game.events.GameEvent;
 import mage.game.permanent.Permanent;
+import mage.game.turn.BeginningPhase;
 import mage.game.turn.CombatDamageStep;
+import mage.game.turn.DrawStep;
 import mage.game.turn.EndOfCombatStep;
+import mage.game.turn.PreCombatMainPhase;
+import mage.game.turn.PreCombatMainStep;
 import mage.game.turn.Step;
+import mage.game.turn.UntapStep;
+import mage.game.turn.UpkeepStep;
+import mage.abilities.PlayLandAbility;
 import mage.player.ai.score.GameStateEvaluator2;
 import mage.players.Player;
 import mage.target.Target;
@@ -1810,6 +1817,265 @@ class InteractiveTestPlayer extends TestPlayer {
         return names;
     }
 
+    // ---- arm (e): project the opponent's turn ----------------------------
+    //
+    // The priority search used to roll out my action, pop the stack, and
+    // score. The opponent never acted, so holding mana never produced a
+    // different leaf from tapping out, and the search was structurally
+    // biased toward tapping out (docs/stack-search-plan.md §1-2).
+    //
+    // With cardguru.project_turn=K, each priority candidate is instead
+    // played out K times, each on a freshly reseated copy (a different
+    // sampled opponent hand + draw, so the K copies ARE the chance layer),
+    // through the start of their turn and their main-phase play, with an
+    // interaction window for me on their turn:
+    //
+    //   MAX0   my action (pass | cast X)
+    //   CHANCE their reseated hand and draw            (one per copy)
+    //   MIN    their land drop + most expensive castable spell
+    //   MAX1   my response: while their spell is on the stack (counters),
+    //          and again after it resolves (instant removal) — each a branch
+    //   LEAF   the pilot scores the board
+    //
+    // MAX1 is the node that gives holding mana a value. With nothing to
+    // respond with it has one option and the tree collapses to "cast".
+    //
+    // Their play is a cheap deterministic heuristic, not MAD's own search:
+    // ComputerPlayer7.priority() runs calculateActions() on every main
+    // phase, and nesting that inside every leaf would be prohibitive.
+    // Targets for their spell go to their own chooser under `searching`,
+    // which is adversarial and does not search.
+    //
+    // Backup is mean over samples of max over my responses, replacing
+    // worst-leaf for projected candidates: minimax over a sampled opponent
+    // hand would assume they always drew the counter and push the pilot
+    // passive — the opposite failure.
+    private final int projectTurnK = Integer.getInteger("cardguru.project_turn", 0);
+    private static final int MAX_RESPONSES_PER_WINDOW = 2;
+
+    /** Leaves for one priority candidate: projected when arm (e) is on,
+     *  otherwise the single unopposed rollout. */
+    private List<ScoredLeaf> priorityLeaves(Game game, UUID myId, UUID oppId,
+                                            ActivatedAbility ability, String label) {
+        return projectTurnK > 0
+                ? rolloutProjected(game, myId, oppId, ability, label)
+                : rolloutPriorityLeaf(game, myId, oppId, ability, label);
+    }
+
+    private List<ScoredLeaf> rolloutProjected(Game game, UUID myId, UUID oppId,
+                                              ActivatedAbility ability, String label) {
+        List<ScoredLeaf> out = new ArrayList<>();
+        for (int k = 0; k < projectTurnK; k++) {
+            Game sim;
+            try {
+                sim = simCopy(game);
+            } catch (Exception e) {
+                continue;
+            }
+            boolean prev = searching;
+            searching = true;
+            try {
+                if (ability != null) {
+                    Player me = sim.getPlayer(myId);
+                    if (me != null) {
+                        me.activateAbility(ability.copy(), sim);
+                    }
+                }
+                sim.checkStateAndTriggered();
+                resolveStack(sim);
+
+                beginOpponentTurn(sim, oppId);
+                String theirs = opponentMainPhase(sim, oppId);
+                String base = label + " | s" + k + ": they "
+                        + (theirs == null ? "do nothing" : "cast " + theirs);
+                if (theirs == null) {
+                    out.add(projectedLeaf(sim, myId, oppId, base, k, "nothing"));
+                    continue;
+                }
+                // Window 1: their spell is on the stack. Only a counter can
+                // touch it — a removal spell has no legal target here and
+                // its activation fails, which is how the windows sort
+                // themselves without naming card types.
+                int n = 0;
+                for (ActivatedAbility r : myInstantResponses(sim, myId)) {
+                    if (n >= MAX_RESPONSES_PER_WINDOW) {
+                        break;
+                    }
+                    Game b = branch(sim);
+                    if (castMine(b, myId, r)) {
+                        resolveStack(b);
+                        out.add(projectedLeaf(b, myId, oppId,
+                                base + " | on the stack I cast " + r, k, "stack:" + r));
+                        n++;
+                    }
+                }
+                // Let it resolve: the permanent enters and its ETB fires
+                // BEFORE any removal can be pointed at it (§3 of the plan).
+                resolveStack(sim);
+                sim.checkStateAndTriggered();
+                resolveStack(sim);
+                // Window 2: instant-speed answers to what is now on board.
+                n = 0;
+                for (ActivatedAbility r : myInstantResponses(sim, myId)) {
+                    if (n >= MAX_RESPONSES_PER_WINDOW) {
+                        break;
+                    }
+                    Game b = branch(sim);
+                    if (castMine(b, myId, r)) {
+                        resolveStack(b);
+                        out.add(projectedLeaf(b, myId, oppId,
+                                base + " | after it resolves I cast " + r, k, "post:" + r));
+                        n++;
+                    }
+                }
+                out.add(projectedLeaf(sim, myId, oppId, base + " | I do nothing", k, "nothing"));
+            } catch (Exception e) {
+                // A sample that throws is dropped; the others still count.
+                System.out.println("[CardGuru][project] sample " + k + " failed: " + e);
+            } finally {
+                searching = prev;
+            }
+        }
+        return out;
+    }
+
+    /** Intra-line branch: a raw copy WITHOUT reseating. The sampled hand
+     *  must stay fixed along one line; simCopy would redraw it. */
+    private static Game branch(Game sim) {
+        return sim.createSimulationForAI();
+    }
+
+    /** Hand the copy to the opponent: next turn number, their untap, upkeep
+     *  and draw (a real draw, so draw triggers such as Sheoldred's DO fire
+     *  here — this is their turn, not a reseat), then their first main
+     *  phase with priority. Skips my combat and end step: a known
+     *  approximation for a priority-window projection. */
+    private static void beginOpponentTurn(Game sim, UUID oppId) {
+        sim.getState().setActivePlayerId(oppId);
+        sim.getState().setTurnNum(sim.getTurnNum() + 1);
+        Player opp = sim.getPlayer(oppId);
+        if (opp != null) {
+            opp.resetLandsPlayed();
+        }
+        sim.getTurn().setPhase(new BeginningPhase());
+        simulateStep(sim, new UntapStep());
+        simulateStep(sim, new UpkeepStep());
+        simulateStep(sim, new DrawStep());
+        sim.getTurn().setPhase(new PreCombatMainPhase());
+        sim.getPhase().setStep(new PreCombatMainStep());
+        sim.getState().setPriorityPlayerId(oppId);
+    }
+
+    /** Their main phase, cheaply: a land drop if they have one, then their
+     *  most expensive castable non-land spell, left ON THE STACK so my
+     *  window-1 response can target it. Returns the spell's label, or null
+     *  if they cast nothing. */
+    private static String opponentMainPhase(Game sim, UUID oppId) {
+        Player opp = sim.getPlayer(oppId);
+        if (opp == null) {
+            return null;
+        }
+        for (ActivatedAbility a : opp.getPlayable(sim, true)) {
+            if (a instanceof PlayLandAbility) {
+                opp.activateAbility(a.copy(), sim);
+                sim.checkStateAndTriggered();
+                resolveStack(sim);
+                break;
+            }
+        }
+        ActivatedAbility best = null;
+        int bestMv = -1;
+        for (ActivatedAbility a : opp.getPlayable(sim, true)) {
+            if (a instanceof mage.abilities.mana.ManaAbility
+                    || a instanceof PlayLandAbility) {
+                continue;
+            }
+            int mv = a.getManaCosts() == null ? 0 : a.getManaCosts().manaValue();
+            if (mv > bestMv) {
+                bestMv = mv;
+                best = a;
+            }
+        }
+        if (best == null) {
+            return null;
+        }
+        return opp.activateAbility(best.copy(), sim) ? String.valueOf(best) : null;
+    }
+
+    /** What I could do right now on their turn: playable, non-mana,
+     *  non-land — instant speed by construction since it is not my turn. */
+    private static List<ActivatedAbility> myInstantResponses(Game sim, UUID myId) {
+        List<ActivatedAbility> out = new ArrayList<>();
+        Player me = sim.getPlayer(myId);
+        if (me == null) {
+            return out;
+        }
+        for (ActivatedAbility a : me.getPlayable(sim, true)) {
+            if (!(a instanceof mage.abilities.mana.ManaAbility)
+                    && !(a instanceof PlayLandAbility)) {
+                out.add(a);
+            }
+        }
+        return out;
+    }
+
+    private static boolean castMine(Game b, UUID myId, ActivatedAbility r) {
+        Player me = b.getPlayer(myId);
+        return me != null && me.activateAbility(r.copy(), b);
+    }
+
+    private ScoredLeaf projectedLeaf(Game g, UUID myId, UUID oppId, String line,
+                                     int sample, String response) {
+        JsonObject s = compactLeaf(g, myId, oppId, line);
+        s.addProperty("sample", sample);
+        s.addProperty("response", response);
+        double h = GameStateEvaluator2.evaluate(myId, g).getTotalScore();
+        return new ScoredLeaf(s, h);
+    }
+
+    /** Backup that understands projected leaves. A candidate whose leaves
+     *  carry a "sample" index is valued as the MEAN over samples of the MAX
+     *  over my responses within each sample (expectimax over the reseated
+     *  hand, max over my own reply). Leaves without one — the unopposed
+     *  arm-(d) rollout — keep the worst-leaf rule. */
+    private int argmaxProjected(int nCandidates, List<List<ScoredLeaf>> leaves,
+                                double[] scores) {
+        int best = 0;
+        double bestV = Double.NEGATIVE_INFINITY;
+        int flat = 0;
+        for (int c = 0; c < nCandidates; c++) {
+            List<ScoredLeaf> ls = leaves.get(c);
+            double v;
+            if (ls.isEmpty()) {
+                v = Double.NEGATIVE_INFINITY;
+            } else if (!ls.get(0).summary.has("sample")) {
+                v = Double.POSITIVE_INFINITY;
+                for (ScoredLeaf l : ls) {
+                    v = Math.min(v, scores != null ? scores[flat] : l.heuristic);
+                    flat++;
+                }
+            } else {
+                Map<Integer, Double> perSample = new HashMap<>();
+                for (ScoredLeaf l : ls) {
+                    double lv = scores != null ? scores[flat] : l.heuristic;
+                    flat++;
+                    int k = l.summary.get("sample").getAsInt();
+                    perSample.merge(k, lv, Math::max);
+                }
+                double sum = 0;
+                for (double x : perSample.values()) {
+                    sum += x;
+                }
+                v = sum / perSample.size();
+            }
+            if (v > bestV) {
+                bestV = v;
+                best = c;
+            }
+        }
+        return best;
+    }
+
     /** One-line-per-side board summary of a resolved leaf copy. */
     private JsonObject compactLeaf(Game leaf, UUID myId, UUID oppId, String label) {
         JsonObject o = new JsonObject();
@@ -2242,12 +2508,12 @@ class InteractiveTestPlayer extends TestPlayer {
         List<List<ScoredLeaf>> leaves = new ArrayList<>();
 
         labels.add("pass (hold everything)");
-        leaves.add(rolloutPriorityLeaf(game, myId, oppId, null,
+        leaves.add(priorityLeaves(game, myId, oppId, null,
                 "pass (hold everything)"));
         for (ActivatedAbility a : real) {
             String label = String.valueOf(a);
             labels.add(label);
-            leaves.add(rolloutPriorityLeaf(game, myId, oppId, a, label));
+            leaves.add(priorityLeaves(game, myId, oppId, a, label));
         }
 
         double[] scores = askLeafScores(game, "priority", labels, leaves);
@@ -2256,7 +2522,7 @@ class InteractiveTestPlayer extends TestPlayer {
             // rather than acting on the heuristic alone.
             return -1;
         }
-        int best = argmaxOfMins(labels.size(), leaves, scores);
+        int best = argmaxProjected(labels.size(), leaves, scores);
         traceLlmSearch("priority", labels, leaves, scores, best, game);
         if (best == 0) {
             priorityHoldMemo.put(sig, 1);
