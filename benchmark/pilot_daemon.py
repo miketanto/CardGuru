@@ -70,6 +70,10 @@ def main():
     ap.add_argument("--model", default="haiku")
     ap.add_argument("--claude-bin", default="claude")
     ap.add_argument("--call-timeout", type=float, default=180.0)
+    ap.add_argument("--start", choices=["A", "B", "pilot"], default="pilot",
+                    help="answer the 'Select a starting player' choice "
+                         "deterministically (for alternating play/draw in "
+                         "batches) instead of asking the pilot")
     args = ap.parse_args()
 
     session_id = None
@@ -99,7 +103,19 @@ def main():
     def answer(n, req_path):
         with open(req_path, encoding="utf-8") as f:
             payload = json.load(f)
-        kind = (payload.get("request") or {}).get("kind", "priority")
+        request = payload.get("request") or {}
+        kind = request.get("kind", "priority")
+        if (args.start != "pilot" and kind == "choose"
+                and "starting player" in (request.get("prompt") or "")):
+            idx = next((o.get("index") for o in request.get("options", [])
+                        if o.get("owner") == args.start), 0)
+            resp = {"targets": [idx], "why": f"batch: player {args.start} starts"}
+            tmp = os.path.join(args.esc_dir, f"resp-{n}.json.tmp")
+            with open(tmp, "w", encoding="utf-8") as f:
+                json.dump(resp, f)
+            os.rename(tmp, os.path.join(args.esc_dir, f"resp-{n}.json"))
+            log({"seq": n, "kind": kind, "response": resp, "source": "batch"})
+            return
         schema = SCHEMAS.get(kind, SCHEMAS["priority"])
         prompt = (f"Decision {n}. Reply with ONLY the JSON response object, "
                   f"schema {schema}. You may add \"yield_until\": \"my_turn\" "

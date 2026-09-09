@@ -1,0 +1,29 @@
+{
+ "archetype": "Dimir Midrange",
+ "colors": "UB",
+ "cards": {
+  "Deep-Cavern Bat": 4,
+  "Spyglass Siren": 2,
+  "Faerie Mastermind": 2,
+  "Floodpits Drowner": 4,
+  "Preacher of the Schism": 4,
+  "Kaito, Bane of Nightmares": 3,
+  "Enduring Curiosity": 3,
+  "Sheoldred, the Apocalypse": 2,
+  "Cut Down": 4,
+  "Go for the Throat": 3,
+  "Anoint with Affliction": 2,
+  "Three Steps Ahead": 2,
+  "Undercity Sewers": 4,
+  "Darkslick Shores": 4,
+  "Restless Reef": 2,
+  "Swamp": 8,
+  "Island": 7
+ },
+ "tricks": [
+  {"card": "Cut Down", "kind": "removal", "cost": 1},
+  {"card": "Go for the Throat", "kind": "removal", "cost": 2},
+  {"card": "Anoint with Affliction", "kind": "removal", "cost": 3},
+  {"card": "Three Steps Ahead", "kind": "counter", "cost": 3}
+ ]
+}
