@@ -132,11 +132,18 @@ their Preacher rather than spending it on a Siren", "do not tap out while
 they hold {1}{U}", "their board is empty, start racing" — and nothing
 carries that intention forward for you unless you write it down.
 
-Any response may carry a `"plan"` field: one or two sentences stating what
-you are holding, what you are waiting for, and what would change your mind.
-It is stored and echoed back to you as `standing_plan` on every later
-request until you replace it. Replace it whenever the position moves past
-it; set it to `""` to clear it.
+`"plan"` is a REQUIRED field on every mulligan, priority, attackers,
+blockers, target and leaf_eval response. A reply without it is rejected and
+re-asked, so answer it properly the first time. It is one or two sentences
+stating what you are holding, what you are waiting for, and what would
+change your mind.
+
+Your plan is stored and echoed back to you as `standing_plan` on every
+later request. If it still applies, restate it — repeating it is correct
+and expected, not wasted words. If the position has moved past it, write
+the new one instead and say in `why` what changed. The sub-choices inside a
+cast you already committed to (mode, use, announce_x, choose) do not ask
+for a plan; you set it at the priority window that began the cast.
 
 Use it for exactly the things you cannot re-derive from the board alone:
 - what a held card is being SAVED for, and the trigger to spend it
@@ -150,9 +157,10 @@ stopped applying is worse than no plan.
 
 ## Response schemas (reply with exactly one JSON object)
 
-ANY response may additionally carry `"plan": "..."` (see "Holding a plan
-across decisions") and `"yield_until"` (see "Yielding"). Both are optional
-and neither replaces the required field for the decision's kind.
+`"plan": "..."` is REQUIRED on mulligan, priority, attackers, blockers,
+target and leaf_eval (see "Holding a plan across decisions") — a reply
+without it is rejected and re-asked. `"yield_until"` (see "Yielding") is
+optional. Neither replaces the required field for the decision's kind.
 
 - mulligan:  {"mulligan": true|false, "why": "..."}
 - priority:  {"choice": <option index>, "why": "..."}   (0 is always pass)

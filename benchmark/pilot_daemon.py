@@ -26,23 +26,40 @@ import sys
 import time
 
 SCHEMAS = {
-    "mulligan": '{"mulligan": true|false, "why": "..."}',
-    "priority": '{"choice": <option index>, "why": "..."}',
-    "attackers": '{"attackers": [<indices>], "why": "..."}',
-    "blockers": '{"blocks": [[blockerIdx, attackerIdx], ...], "why": "..."}',
-    "target": '{"targets": [<indices>], "why": "..."}',
+    "mulligan": '{"mulligan": true|false, "why": "...", "plan": "..."}',
+    "priority": '{"choice": <option index>, "why": "...", "plan": "..."}',
+    "attackers": '{"attackers": [<indices>], "why": "...", "plan": "..."}',
+    "blockers": '{"blocks": [[blockerIdx, attackerIdx], ...], "why": "...", '
+                '"plan": "..."}',
+    "target": '{"targets": [<indices>], "why": "...", "plan": "..."}',
     "choose": '{"targets": [<index>], "why": "..."}',
     "announce_x": '{"x": <int>}',
     "mode": '{"choice": <index>}',
     "use": '{"use": true|false}',
     "leaf_eval": '{"scores": [<0-100 for each leaf, in leaf_index order>], '
-                 '"why": "..."}',
+                 '"why": "...", "plan": "..."}',
 }
 KEY_FOR = {"mulligan": "mulligan", "priority": "choice",
            "attackers": "attackers", "blockers": "blocks",
            "target": "targets", "choose": "targets",
            "announce_x": "x", "mode": "choice", "use": "use",
            "leaf_eval": "scores"}
+
+# Decision kinds that MUST carry a standing plan.
+#
+# Offered as optional, "plan" was never once used: zero plans across 199
+# requests in mirror game 4, through a game the pilot lost from an even
+# position by tapping out every turn and never holding a board. An optional
+# field a model never fills is indistinguishable from no feature, so on the
+# decisions that actually shape a game it is now part of the schema and a
+# reply without it is retried like any other schema violation.
+#
+# Excluded are the sub-choices that fire INSIDE a cast the pilot already
+# committed to (mode, use, announce_x, choose): the plan was set at the
+# priority window that began the cast, and re-asking mid-resolution buys
+# nothing but latency.
+PLAN_REQUIRED = {"mulligan", "priority", "attackers", "blockers", "target",
+                 "leaf_eval"}
 
 
 def extract_json(text):
@@ -151,7 +168,14 @@ def main():
                 prompt = base_prompt
             text = call_pilot(prompt)
             resp = extract_json(text)
-            if resp is not None and KEY_FOR.get(kind, "choice") in resp:
+            missing = None
+            if resp is None or KEY_FOR.get(kind, "choice") not in resp:
+                missing = f"the required key for kind '{kind}'"
+            elif kind in PLAN_REQUIRED:
+                p = resp.get("plan")
+                if not isinstance(p, str) or not p.strip():
+                    missing = ('a non-empty "plan"')
+            if missing is None:
                 tmp = os.path.join(args.esc_dir, f"resp-{n}.json.tmp")
                 with open(tmp, "w", encoding="utf-8") as f:
                     json.dump(resp, f)
@@ -161,8 +185,13 @@ def main():
                      "response": resp, "session": session_id,
                      **({"session_reset": True} if attempt == 3 else {})})
                 return
-            prompt = (f"That reply did not match the schema for kind "
-                      f"'{kind}'. Reply with ONLY one JSON object: {schema}")
+            prompt = (f"That reply was missing {missing}. Reply with ONLY one "
+                      f"JSON object: {schema}"
+                      + (' The "plan" field is REQUIRED on this decision: one '
+                         'or two sentences on what you are holding, what you '
+                         'are waiting for, and what would change your mind. '
+                         'If your standing plan still applies, restate it.'
+                         if kind in PLAN_REQUIRED else ""))
         log({"seq": n, "kind": kind,
              "error": "unparseable after retry and session reset",
              "raw": text[:400]})
