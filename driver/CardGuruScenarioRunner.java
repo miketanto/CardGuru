@@ -39,6 +39,8 @@ import java.io.FileWriter;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -852,8 +854,20 @@ class InteractiveTestPlayer extends TestPlayer {
             // Search the decision that actually shapes the turn: which spell
             // to cast (or whether to hold), with at least one real choice
             // beyond passing. Mana abilities are noise — casting auto-taps.
-            if (!real.isEmpty() && llmSearchPriority(game, real)) {
-                return true;
+            if (!real.isEmpty()) {
+                int verdict = llmSearchPriority(game, real);
+                if (verdict > 0) {
+                    return true;            // the search activated something
+                }
+                if (verdict == 0) {
+                    // The search — the pilot's own leaf scores — chose to
+                    // hold. Escalating the same window again just asks it the
+                    // identical question a second time; that double-ask was
+                    // 15% of every pilot call in mirror game 2.
+                    getComputerPlayer().pass(game);
+                    return false;
+                }
+                // verdict < 0: no LLM scores, fall through to escalation.
             }
         }
         JsonObject req = baseRequest("priority", game);
@@ -1881,12 +1895,47 @@ class InteractiveTestPlayer extends TestPlayer {
      * fall to the built-in AI via the `searching` guard), the resolved board
      * becomes a leaf, and the pilot scores every leaf in one leaf_eval.
      *
-     * Returns true when it activated an ability (priority() is done), false
-     * when the search picked "pass" or could not run — the caller then falls
-     * through to the normal escalation so the pilot keeps the final say on
-     * passing.
+     * Returns 1 when it activated an ability, 0 when the pilot's own scores
+     * chose to hold (the caller passes without asking again), and -1 when the
+     * search could not run or got no scores (the caller escalates normally).
+     *
+     * A "hold" verdict is memoised on the shape of the decision, because the
+     * engine re-offers the same window many times per turn — mirror game 2
+     * searched "pass vs Cast Three Steps Ahead" sixteen separate times, since
+     * that card's draw mode is legal at every priority. Re-asking an
+     * unchanged question wastes a pilot call and cannot change the answer.
      */
-    private boolean llmSearchPriority(Game game, List<ActivatedAbility> real) {
+    private final Map<String, Integer> priorityHoldMemo = new HashMap<>();
+
+    private String prioritySignature(Game game, List<ActivatedAbility> real) {
+        UUID myId = this.getId();
+        UUID oppId = null;
+        for (UUID pid : game.getOpponents(myId)) {
+            oppId = pid;
+        }
+        List<String> labels = new ArrayList<>();
+        for (ActivatedAbility a : real) {
+            labels.add(String.valueOf(a));
+        }
+        Collections.sort(labels);
+        Player me = game.getPlayer(myId);
+        Player opp = game.getPlayer(oppId);
+        return game.getTurnNum() + "|" + game.getTurnStepType() + "|"
+                + (me == null ? 0 : me.getLife()) + "/"
+                + (opp == null ? 0 : opp.getLife()) + "|"
+                + game.getBattlefield().getAllActivePermanents(myId).size() + "/"
+                + (oppId == null ? 0
+                   : game.getBattlefield().getAllActivePermanents(oppId).size())
+                + "|" + (me == null ? 0 : me.getHand().size())
+                + "|" + game.getStack().size()
+                + "|" + labels;
+    }
+
+    private int llmSearchPriority(Game game, List<ActivatedAbility> real) {
+        String sig = prioritySignature(game, real);
+        if (priorityHoldMemo.containsKey(sig)) {
+            return 0;   // already decided to hold this exact position
+        }
         UUID myId = this.getId();
         UUID oppId = null;
         for (UUID pid : game.getOpponents(myId)) {
@@ -1908,15 +1957,16 @@ class InteractiveTestPlayer extends TestPlayer {
         if (scores == null) {
             // No LLM scores: leave the decision to the normal escalation
             // rather than acting on the heuristic alone.
-            return false;
+            return -1;
         }
         int best = argmaxOfMins(labels.size(), leaves, scores);
         traceLlmSearch("priority", labels, leaves, scores, best, game);
         if (best == 0) {
-            return false;
+            priorityHoldMemo.put(sig, 1);
+            return 0;
         }
         ActivatedAbility chosen = real.get(best - 1).copy();
-        return getComputerPlayer().activateAbility(chosen, game);
+        return getComputerPlayer().activateAbility(chosen, game) ? 1 : -1;
     }
 
     /** One priority candidate rolled out: activate it on a copy (or do
