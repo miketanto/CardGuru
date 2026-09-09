@@ -750,6 +750,11 @@ class InteractiveTestPlayer extends TestPlayer {
                     o.addProperty("toughness", perm.getToughness().getValue());
                     // "can it attack right now" fact the LLM needs
                     o.addProperty("summoning_sick", perm.hasSummoningSickness());
+                    // Engine-computed, so the pilot never has to infer it:
+                    // summoning-sick creatures CAN block (batch-1 game 2 was
+                    // misplayed off the opposite belief); only tapped ones
+                    // cannot.
+                    o.addProperty("can_block", !perm.isTapped());
                 }
                 o.addProperty("types", String.valueOf(perm.getCardType(game)));
                 String rules = String.join(" ; ", perm.getRules(game));

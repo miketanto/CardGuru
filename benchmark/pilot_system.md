@@ -122,6 +122,10 @@ hand.
 - mulligan:  {"mulligan": true|false, "why": "..."}
 - priority:  {"choice": <option index>, "why": "..."}   (0 is always pass)
 - attackers: {"attackers": [<indices>], "why": "..."}   ([] = no attack)
+  SICK IS NOT SAFE: a summoning-sick or freshly cast enemy creature blocks
+  just fine — only TAPPED creatures cannot block. Trust each enemy
+  creature's engine-computed `can_block` field, never your own inference.
+  And blocking is always OPTIONAL: you cannot "force" a block by attacking.
 - blockers:  {"blocks": [[blockerIdx, attackerIdx], ...], "why": "..."}
              (two pairs on one attacker = gang block; [] = no blocks)
 - target:    {"targets": [<indices>], "why": "..."}

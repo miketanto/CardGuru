@@ -154,7 +154,8 @@ def main():
                 if ref:
                     reference[name] = ref
             return {k: card[k] for k in ("name", "tapped", "power",
-                                         "toughness", "summoning_sick")
+                                         "toughness", "summoning_sick",
+                                         "can_block")
                     if k in card}
 
         state = request.get("state") or {}
