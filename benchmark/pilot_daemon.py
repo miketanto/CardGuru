@@ -95,13 +95,26 @@ def main():
             cmd += ["--resume", session_id]
         else:
             cmd += ["--append-system-prompt-file", args.system]
-        out = subprocess.run(cmd, input=prompt, capture_output=True,
-                             text=True, timeout=args.call_timeout)
-        if out.returncode != 0:
-            raise RuntimeError(f"claude -p failed: {out.stderr[-500:]}")
-        body = json.loads(out.stdout)
-        session_id = body.get("session_id") or session_id
-        return body.get("result", "")
+        # The CLI fails transiently (empty stderr, non-zero exit) often
+        # enough that a single failure used to cost a decision — the bridge
+        # then fell back to dumb_policy. Retry with backoff; only give up
+        # after the last attempt.
+        last = ""
+        for attempt in range(3):
+            out = subprocess.run(cmd, input=prompt, capture_output=True,
+                                 text=True, timeout=args.call_timeout)
+            if out.returncode == 0:
+                try:
+                    body = json.loads(out.stdout)
+                except json.JSONDecodeError:
+                    last = f"unparseable CLI json: {out.stdout[:200]}"
+                else:
+                    session_id = body.get("session_id") or session_id
+                    return body.get("result", "")
+            else:
+                last = out.stderr[-300:] or f"exit {out.returncode}, no stderr"
+            time.sleep(1.5 * (attempt + 1))
+        raise RuntimeError(f"claude -p failed after 3 tries: {last}")
 
     def answer(n, req_path):
         with open(req_path, encoding="utf-8") as f:
