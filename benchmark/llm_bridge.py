@@ -153,6 +153,12 @@ def main():
                          "requests); default none (LLM picks directly)")
     ap.add_argument("--minimax", action="store_true",
                     help="legacy alias for --search attacks")
+    ap.add_argument("--seed", type=int, default=None,
+                    help="fix the shuffle (both opening hands) for paired "
+                         "or repeatable games")
+    ap.add_argument("--opp-think-secs", type=int, default=None,
+                    help="MAD wall-clock search limit; the driver defaults it "
+                         "high so the node cap binds (18 = stock XMage)")
     ap.add_argument("--compact", action="store_true",
                     help="persistent-pilot mode: no per-request rules context, "
                          "card oracle text sent once per name (card_reference), "
@@ -274,7 +280,9 @@ def main():
     mode = "attacks" if args.minimax else args.search
     mode = None if mode == "none" else mode
     with MatchClient(args.mage_repo, minimax=mode, subchoices=True,
-                     deck_a=args.deck_a, deck_b=args.deck_b) as m:
+                     deck_a=args.deck_a, deck_b=args.deck_b,
+                     seed=args.seed,
+                     opp_think_secs=args.opp_think_secs) as m:
         result = m.play(policy)
         trace = m.read_trace()
     log({"source": "result", "result": result, "minimax_trace": trace})

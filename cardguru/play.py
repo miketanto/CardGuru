@@ -234,7 +234,9 @@ class MatchClient:
                  warmup_timeout: int = 300, minimax: "bool | str" = False,
                  opp_blockers: int = 0, opp: str = "mad",
                  opp_skill: int = 6, deck_a: Optional[str] = None,
-                 deck_b: Optional[str] = None, subchoices: bool = False):
+                 deck_b: Optional[str] = None, subchoices: bool = False,
+                 seed: Optional[int] = None,
+                 opp_think_secs: Optional[int] = None):
         self.mage_repo = mage_repo or os.environ.get("CARDGURU_MAGE_REPO")
         if not self.mage_repo or not os.path.isdir(self.mage_repo):
             raise RuntimeError("XMage checkout not found: set "
@@ -273,6 +275,13 @@ class MatchClient:
         # over the same spool -- full-line control for the policy. See
         # subchoice_policy for the shapes.
         self.subchoices = subchoices
+        # Fix the shuffle (both opening libraries and hands) for paired or
+        # repeatable games; see the seed block in the driver for the limits.
+        self.seed = seed
+        # MAD's search is wall-clock bounded by default, which makes the
+        # opponent weaker under load. The driver raises the limit so the
+        # 5000-node cap binds instead; pass 18 to restore stock behaviour.
+        self.opp_think_secs = opp_think_secs
         self.spool: Optional[str] = None
         self.proc: Optional[subprocess.Popen] = None
 
@@ -289,6 +298,10 @@ class MatchClient:
             cmd.append(f"-Dcardguru.minimax={self.minimax}")
             if self.opp_blockers:
                 cmd.append(f"-Dcardguru.minimax.opp_blockers={self.opp_blockers}")
+        if self.seed is not None:
+            cmd.append(f"-Dcardguru.seed={self.seed}")
+        if self.opp_think_secs is not None:
+            cmd.append(f"-Dcardguru.opp.think_secs={self.opp_think_secs}")
         if self.opp == "passive":
             cmd.append("-Dcardguru.opp=passive")
         elif self.opp_skill != 6:

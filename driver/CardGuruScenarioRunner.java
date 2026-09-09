@@ -231,6 +231,18 @@ public class CardGuruScenarioRunner extends CardTestPlayerBase {
             gameOptions.stopOnTurn = 200;   // natural end, not a scripted stop
             gameOptions.stopAtStep = PhaseStep.UNTAP;
             currentGame.setGameOptions(gameOptions);
+            // Fix the deal when asked: every shuffle in the engine runs off
+            // the static RandomUtil (Library.shuffle -> RandomUtil.nextInt)
+            // and GameImpl.init shuffles before any player interaction, so
+            // seeding here pins both opening libraries and both hands. It
+            // does NOT make whole games reproducible — MAD's simulation
+            // threads share this same static RNG — it is for variance
+            // reduction and for re-running an interesting opening.
+            String seed = System.getProperty("cardguru.seed");
+            if (seed != null && !seed.isEmpty()) {
+                mage.util.RandomUtil.setSeed(Long.parseLong(seed.trim()));
+                System.out.println("[CardGuru] seeded shuffle with " + seed);
+            }
             currentGame.start(playerA.getId());
             result.addProperty("status", "completed");
         } catch (Throwable e) {
@@ -343,8 +355,18 @@ public class CardGuruScenarioRunner extends CardTestPlayerBase {
             // restores that old opponent; -Dcardguru.opp.skill sets the
             // simulation depth (XMage default 6).
             int skill = Integer.getInteger("cardguru.opp.skill", 6);
-            TestPlayer opp = new TestPlayer(
-                    new TestComputerPlayer7(playerName, range, skill));
+            TestComputerPlayer7 ai = new TestComputerPlayer7(playerName, range, skill);
+            // MAD cuts its alpha-beta off on WALL CLOCK (skill * 3 = 18s at
+            // the default), so the opponent silently gets weaker whenever the
+            // machine is busy and results stop being comparable across runs.
+            // Raising the time limit lets the existing 5000-node cap
+            // (MAX_SIMULATED_NODES_PER_CALC, checked independently) bind
+            // instead, making opponent strength a property of the config
+            // rather than of the load. -Dcardguru.opp.think_secs=18 restores
+            // the stock time-bounded behaviour.
+            ai.setMaxThinkTimeSecs(
+                    Integer.getInteger("cardguru.opp.think_secs", 3600));
+            TestPlayer opp = new TestPlayer(ai);
             opp.setAIPlayer(true);   // full AI: simulations drive every priority
             return opp;
         }
