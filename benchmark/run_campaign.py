@@ -14,6 +14,7 @@ import json
 import os
 import subprocess
 import sys
+import threading
 import time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -101,23 +102,43 @@ def main():
                 stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
             t0 = time.time()
             result, err = None, ""
+            # subprocess timeouts run off a monotonic clock that does NOT
+            # advance while macOS sleeps, so a laptop nap defeats them: one
+            # game showed 19714s wall against a 2400s limit. This watchdog
+            # measures real time and kills the bridge itself.
+            stop_watch = threading.Event()
+            bridge_proc = subprocess.Popen(
+                [sys.executable, os.path.join(HERE, "llm_bridge.py"),
+                 "--mage-repo", args.mage_repo, "--esc-dir", esc,
+                 "--log", game_log, "--compact",
+                 "--timeout", str(args.timeout), "--search", search,
+                 "--deck-a", deck_a, "--deck-b", deck_b],
+                stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+
+            def watchdog():
+                deadline = time.time() + args.game_timeout
+                while not stop_watch.wait(20):
+                    if time.time() > deadline:
+                        try:
+                            bridge_proc.kill()
+                        except Exception:
+                            pass
+                        return
+
+            threading.Thread(target=watchdog, daemon=True).start()
             try:
-                bridge = subprocess.run(
-                    [sys.executable, os.path.join(HERE, "llm_bridge.py"),
-                     "--mage-repo", args.mage_repo, "--esc-dir", esc,
-                     "--log", game_log, "--compact",
-                     "--timeout", str(args.timeout), "--search", search,
-                     "--deck-a", deck_a, "--deck-b", deck_b],
-                    capture_output=True, text=True, timeout=args.game_timeout)
-                if bridge.stdout.strip():
+                out, errout = bridge_proc.communicate()
+                if out and out.strip():
                     try:
-                        result = json.loads(bridge.stdout.strip().splitlines()[-1])
+                        result = json.loads(out.strip().splitlines()[-1])
                     except json.JSONDecodeError:
-                        err = bridge.stdout[-300:]
-                err = err or bridge.stderr[-300:]
-            except subprocess.TimeoutExpired:
-                err = f"game exceeded {args.game_timeout}s"
+                        err = out[-300:]
+                err = err or (errout or "")[-300:]
+                if bridge_proc.returncode and bridge_proc.returncode < 0:
+                    err = (f"killed by watchdog after {args.game_timeout}s "
+                           f"of real time") or err
             finally:
+                stop_watch.set()
                 daemon.terminate()
             wall = round(time.time() - t0, 1)
 
