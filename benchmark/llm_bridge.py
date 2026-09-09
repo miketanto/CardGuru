@@ -59,6 +59,59 @@ Add a short "why" field to every response; it is logged, not sent to the engine.
 """
 
 
+class YieldGate:
+    """Client-side yield (mage-bench semantics): the pilot may attach
+    "yield_until": "my_turn" | "end_of_turn" to any response; the bridge
+    then auto-passes priority windows in-process until the target point,
+    breaking early — so the decision escalates — if the situation changes:
+    the opponent gains a creature, our life drops, or a non-priority
+    decision arrives."""
+
+    def __init__(self):
+        self.active = None
+
+    @staticmethod
+    def _enemy(request):
+        b = (request.get("state") or {}).get("B") or {}
+        return sum(1 for c in b.get("battlefield", []) if "power" in c)
+
+    @staticmethod
+    def _life(request):
+        a = (request.get("state") or {}).get("A") or {}
+        return a.get("life", 20)
+
+    def set(self, until, request):
+        if until in ("my_turn", "end_of_turn"):
+            self.active = {"until": until, "turn": request.get("turn"),
+                           "enemy": self._enemy(request),
+                           "life": self._life(request)}
+            return until
+        return None
+
+    def covers(self, request):
+        y = self.active
+        if not y:
+            return False
+        if request.get("kind") != "priority":
+            self.active = None
+            return False
+        if self._enemy(request) > y["enemy"] or self._life(request) < y["life"]:
+            self.active = None
+            return False
+        turn, phase, active = (request.get("turn"),
+                               request.get("phase"), request.get("active"))
+        if y["until"] == "end_of_turn":
+            if turn != y["turn"]:
+                self.active = None
+                return False
+        else:  # my_turn
+            if turn != y["turn"] and active == "A" and phase not in (
+                    "Untap", "Upkeep", "Draw"):
+                self.active = None
+                return False
+        return True
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--mage-repo", required=True)
@@ -66,7 +119,7 @@ def main():
     ap.add_argument("--deck-b", default="mono_green_stompy")
     ap.add_argument("--esc-dir", required=True)
     ap.add_argument("--log", required=True)
-    ap.add_argument("--timeout", type=float, default=100.0)
+    ap.add_argument("--timeout", type=float, default=240.0)
     ap.add_argument("--minimax", action="store_true",
                     help="let the in-JVM search take the attack decision "
                          "(default: the LLM decides attacks)")
@@ -155,6 +208,8 @@ def main():
             time.sleep(0.2)
         return None
 
+    gate = YieldGate()
+
     def policy(request):
         kind = request.get("kind")
         if kind == "priority" and not any(
@@ -162,6 +217,10 @@ def main():
                 for o in request.get("options", [])):
             resp = {"choice": 0}
             log({"source": "auto", "request": request, "response": resp})
+            return resp
+        if gate.covers(request):
+            resp = {"choice": 0}
+            log({"source": "yield", "request": request, "response": resp})
             return resp
         # Blockers requests carry their menu in 'blockers'/'attackers', not
         # 'options' — checking 'options' here silently auto-declined every
@@ -175,7 +234,10 @@ def main():
         if resp is None:
             resp = dumb_policy(request)
             source = "fallback-timeout"
-        log({"source": source, "request": request, "response": resp})
+        until = resp.pop("yield_until", None) if isinstance(resp, dict) else None
+        until = gate.set(until, request)
+        log({"source": source, "request": request, "response": resp,
+             **({"yield_set": until} if until else {})})
         return resp
 
     with MatchClient(args.mage_repo, minimax=args.minimax, subchoices=True,

@@ -109,6 +109,9 @@ hand.
    spent). Burning a blocker only helps if you attack this turn.
 8. **Mulligans**: keep 2+ lands with 1-2 castable early plays. A hand with
    0-1 lands or nothing castable before turn 3 is a mulligan.
+8b. **Always play your land.** If "Play Mountain" is on the menu in your
+   main phase and you have not played a land this turn, do it before
+   anything else — a skipped land drop is a wasted resource forever.
 9. **Sequence casts to maximize prowess** triggers on an attacking
    Swiftspear, and cast the cheapest spells first when mana is tight.
 10. **The engine is always right.** If a plan requires an option the menu
@@ -126,3 +129,14 @@ hand.
 
 A `card_reference` section appears in a request only the FIRST time a card
 shows up; remember what cards do, because later requests show names only.
+
+## Yielding (skip dead windows)
+
+Any response may also carry `"yield_until": "my_turn"` or `"end_of_turn"`.
+The engine then auto-passes priority windows for you until that point — but
+WAKES you early if anything changes (the opponent plays a creature, your
+life drops, or a non-priority decision like blockers arrives). Use
+`"yield_until": "my_turn"` whenever you pass on the opponent's turn with no
+intention of acting, and `"end_of_turn"` after your last action of a turn.
+Do NOT yield when you are holding an instant you actually intend to cast at
+a specific upcoming moment.
