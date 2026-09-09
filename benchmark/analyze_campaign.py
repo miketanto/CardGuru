@@ -99,6 +99,12 @@ def main():
                 totals["daemon_error"] += 1
             if row.get("attempt", 1) > 1:
                 totals["schema_retry"] += 1
+            if row.get("session_reset"):
+                totals["session_reset_recovery"] += 1
+            raw = str(row.get("raw", "")).lower()
+            if "exiting this game" in raw or "not providing json" in raw \
+                    or "stopping this conversation" in raw:
+                totals["pilot_refusal"] += 1
 
     for k, v in sorted(totals.items()):
         print(f"{k}: {v}")
