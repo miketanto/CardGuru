@@ -137,8 +137,18 @@ def main():
                   f"schema {schema}. You may add \"yield_until\": \"my_turn\" "
                   f"or \"end_of_turn\" to skip dead windows.\n"
                   + json.dumps(payload))
+        nonlocal session_id
         t0 = time.time()
-        for attempt in (1, 2):
+        base_prompt = prompt
+        # Attempt 3 starts a FRESH session: a persistent pilot that is losing
+        # can decide to quit outright ("I'm exiting this game", red_vs_dimir
+        # g1 seq 55) and no amount of schema nagging inside that conversation
+        # recovers it. A new session has the briefing and this decision, but
+        # none of the accumulated context it soured on.
+        for attempt in (1, 2, 3):
+            if attempt == 3:
+                session_id = None
+                prompt = base_prompt
             text = call_pilot(prompt)
             resp = extract_json(text)
             if resp is not None and KEY_FOR.get(kind, "choice") in resp:
@@ -148,11 +158,13 @@ def main():
                 os.rename(tmp, os.path.join(args.esc_dir, f"resp-{n}.json"))
                 log({"seq": n, "kind": kind, "attempt": attempt,
                      "latency_s": round(time.time() - t0, 1),
-                     "response": resp, "session": session_id})
+                     "response": resp, "session": session_id,
+                     **({"session_reset": True} if attempt == 3 else {})})
                 return
             prompt = (f"That reply did not match the schema for kind "
                       f"'{kind}'. Reply with ONLY one JSON object: {schema}")
-        log({"seq": n, "kind": kind, "error": "unparseable after retry",
+        log({"seq": n, "kind": kind,
+             "error": "unparseable after retry and session reset",
              "raw": text[:400]})
 
     print(f"pilot daemon up: esc-dir={args.esc_dir} model={args.model}",
