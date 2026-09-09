@@ -35,11 +35,14 @@ SCHEMAS = {
     "announce_x": '{"x": <int>}',
     "mode": '{"choice": <index>}',
     "use": '{"use": true|false}',
+    "leaf_eval": '{"scores": [<0-100 for each leaf, in leaf_index order>], '
+                 '"why": "..."}',
 }
 KEY_FOR = {"mulligan": "mulligan", "priority": "choice",
            "attackers": "attackers", "blockers": "blocks",
            "target": "targets", "choose": "targets",
-           "announce_x": "x", "mode": "choice", "use": "use"}
+           "announce_x": "x", "mode": "choice", "use": "use",
+           "leaf_eval": "scores"}
 
 
 def extract_json(text):

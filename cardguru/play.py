@@ -231,7 +231,7 @@ class MatchClient:
     """
 
     def __init__(self, mage_repo: Optional[str] = None,
-                 warmup_timeout: int = 300, minimax: bool = False,
+                 warmup_timeout: int = 300, minimax: "bool | str" = False,
                  opp_blockers: int = 0, opp: str = "mad",
                  opp_skill: int = 6, deck_a: Optional[str] = None,
                  deck_b: Optional[str] = None, subchoices: bool = False):
@@ -241,11 +241,15 @@ class MatchClient:
                                "CARDGURU_MAGE_REPO or pass mage_repo")
         ensure_driver(self.mage_repo)
         self.warmup_timeout = warmup_timeout
-        # When True the driver runs its in-JVM simulation-backed minimax search
-        # at the declare-attackers decision (design A in docs/live-minimax.md):
-        # attacks are chosen by the search, never by `policy`. Every other
-        # decision still comes from `policy` over the spool.
-        self.minimax = minimax
+        # Search mode for combat decisions. False/None = no search (policy
+        # owns combat). True or "attacks" = in-JVM minimax at declare-attackers
+        # with GameStateEvaluator2 leaves (design A in docs/live-minimax.md).
+        # "llm" = the same rollouts at BOTH combat decisions, but leaf states
+        # are scored by the policy via a "leaf_eval" request (PokeChamp arm
+        # (d): the LLM is the value function; heuristic fallback on timeout).
+        self.minimax = "attacks" if minimax is True else (minimax or None)
+        if self.minimax not in (None, "attacks", "llm"):
+            raise ValueError(f"unknown minimax mode: {minimax!r}")
         # Plumbing scaffold: seat this many blockers on the opponent's
         # battlefield so the search's min-layer has real blocks to weigh even
         # against a passive opponent. 0 = the honest empty-opponent game. See
@@ -282,7 +286,7 @@ class MatchClient:
                "-Dtest=CardGuruScenarioRunner", "-DfailIfNoTests=false",
                f"-Dcardguru.interactive.spool={self.spool}"]
         if self.minimax:
-            cmd.append("-Dcardguru.minimax=attacks")
+            cmd.append(f"-Dcardguru.minimax={self.minimax}")
             if self.opp_blockers:
                 cmd.append(f"-Dcardguru.minimax.opp_blockers={self.opp_blockers}")
         if self.opp == "passive":

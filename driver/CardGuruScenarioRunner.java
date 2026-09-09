@@ -324,12 +324,13 @@ public class CardGuruScenarioRunner extends CardTestPlayerBase {
         if (spool != null && playerName.equals("PlayerA")) {
             // cardguru.minimax=attacks turns on the in-driver simulation-backed
             // search at the declare-attackers decision (see InteractiveTestPlayer
-            // and docs/live-minimax.md). Any other value leaves attackers on the
-            // external spool policy like the other decisions.
-            boolean minimaxAttacks =
-                    "attacks".equals(System.getProperty("cardguru.minimax"));
+            // and docs/live-minimax.md). cardguru.minimax=llm runs the same
+            // rollouts at BOTH combat decisions but scores the leaves through a
+            // "leaf_eval" spool request (PokeChamp arm (d): the LLM is the value
+            // function). Any other value leaves combat on the external spool
+            // policy like the other decisions.
             return new InteractiveTestPlayer(new TestComputerPlayer(playerName, range),
-                    spool, minimaxAttacks);
+                    spool, System.getProperty("cardguru.minimax"));
         }
         if (spool != null && playerName.equals("PlayerB")
                 && !"passive".equals(System.getProperty("cardguru.opp"))) {
@@ -654,17 +655,20 @@ public class CardGuruScenarioRunner extends CardTestPlayerBase {
 class InteractiveTestPlayer extends TestPlayer {
 
     private static final Gson GSON = new Gson();
-    private static final long DECISION_TIMEOUT_MS = 120_000;
+    // Must exceed the Python bridge's own escalation timeout (240s default) —
+    // the bridge ALWAYS answers by then (dumb_policy fallback), so the only
+    // way this fires is a dead bridge.
+    private static final long DECISION_TIMEOUT_MS = 300_000;
 
     private final String spool;
-    private final boolean minimaxAttacks;
+    private final String minimaxMode;   // null | "attacks" | "llm"
     private int seq = 0;
 
     InteractiveTestPlayer(TestComputerPlayer computerPlayer, String spool,
-                          boolean minimaxAttacks) {
+                          String minimaxMode) {
         super(computerPlayer);
         this.spool = spool;
-        this.minimaxAttacks = minimaxAttacks;
+        this.minimaxMode = minimaxMode;
     }
 
     /** Write the request atomically, block for the response, return it. */
@@ -1065,8 +1069,12 @@ class InteractiveTestPlayer extends TestPlayer {
         // docs/live-minimax.md): the search itself is the agent for attacks, so
         // the external spool policy is NOT consulted here. Every other decision
         // still round-trips to Python.
-        if (minimaxAttacks) {
+        if ("attacks".equals(minimaxMode)) {
             minimaxSelectAttackers(game, defenderId, attackers);
+            return;
+        }
+        if ("llm".equals(minimaxMode) && !attackers.isEmpty()) {
+            llmSearchAttackers(game, defenderId, attackers);
             return;
         }
 
@@ -1108,6 +1116,11 @@ class InteractiveTestPlayer extends TestPlayer {
                     attackers.add(a);
                 }
             }
+        }
+
+        if ("llm".equals(minimaxMode) && !blockers.isEmpty() && !attackers.isEmpty()) {
+            llmSearchBlockers(game, defendingPlayerId, blockers, attackers);
+            return;
         }
 
         JsonObject req = baseRequest("blockers", game);
@@ -1459,6 +1472,324 @@ class InteractiveTestPlayer extends TestPlayer {
                     leaf.getBattlefield().getAllActivePermanents(defenderId).size());
         }
         return o;
+    }
+
+    // ==================================================================
+    // PokeChamp arm (d): the same simulation rollouts as the minimax search,
+    // but the LEAF VALUE FUNCTION is the LLM. All leaves of one decision go
+    // out as a single "leaf_eval" spool request (compact one-line board
+    // summaries); the response is a flat 0-100 score per leaf in listed
+    // order. Candidate value = MIN over its leaves (the opponent picks the
+    // reply worst for us); we apply the argmax candidate. Any missing or
+    // malformed response falls back to the GameStateEvaluator2 values that
+    // were computed alongside — the game never wedges on the evaluator.
+    // ==================================================================
+
+    /** Worst (by heuristic) block-response leaves shown to the LLM per attack
+     *  candidate: the LLM re-scores the heuristic's top threats rather than
+     *  the full response lattice, keeping one request per combat. */
+    private static final int LLM_LEAVES_PER_CANDIDATE = 3;
+
+    private static final class ScoredLeaf {
+        final JsonObject summary;
+        final double heuristic;
+        ScoredLeaf(JsonObject summary, double heuristic) {
+            this.summary = summary;
+            this.heuristic = heuristic;
+        }
+    }
+
+    /** One-line-per-side board summary of a resolved leaf copy. */
+    private JsonObject compactLeaf(Game leaf, UUID myId, UUID oppId, String label) {
+        JsonObject o = new JsonObject();
+        o.addProperty("line", label);
+        Player me = leaf.getPlayer(myId);
+        Player opp = leaf.getPlayer(oppId);
+        o.addProperty("our_life", me == null ? 0 : me.getLife());
+        o.addProperty("opp_life", opp == null ? 0 : opp.getLife());
+        o.addProperty("our_board", boardLine(leaf, myId));
+        o.addProperty("opp_board", boardLine(leaf, oppId));
+        return o;
+    }
+
+    private String boardLine(Game leaf, UUID pid) {
+        List<String> creatures = new ArrayList<>();
+        int lands = 0;
+        int landsUntapped = 0;
+        for (Permanent p : leaf.getBattlefield().getAllActivePermanents(pid)) {
+            if (p.isCreature(leaf)) {
+                creatures.add(p.getName() + " " + p.getPower().getValue() + "/"
+                        + p.getToughness().getValue() + (p.isTapped() ? " T" : ""));
+            } else if (p.isLand(leaf)) {
+                lands++;
+                if (!p.isTapped()) {
+                    landsUntapped++;
+                }
+            }
+        }
+        String s = creatures.isEmpty() ? "no creatures" : String.join(", ", creatures);
+        return s + " | " + lands + " lands (" + landsUntapped + " untapped)";
+    }
+
+    /** Send every leaf in one "leaf_eval" request; return the flat score list
+     *  or null when the response is missing/short (caller falls back). */
+    private double[] askLeafScores(Game game, String decision,
+                                   List<String> candidateLabels,
+                                   List<List<ScoredLeaf>> leavesPerCandidate) {
+        JsonObject req = baseRequest("leaf_eval", game);
+        req.addProperty("decision", decision);
+        int total = 0;
+        JsonArray cands = new JsonArray();
+        for (int c = 0; c < candidateLabels.size(); c++) {
+            JsonObject co = new JsonObject();
+            co.addProperty("label", candidateLabels.get(c));
+            JsonArray ls = new JsonArray();
+            for (ScoredLeaf l : leavesPerCandidate.get(c)) {
+                JsonObject lo = l.summary.deepCopy();
+                lo.addProperty("leaf_index", total++);
+                ls.add(lo);
+            }
+            co.add("leaves", ls);
+            cands.add(co);
+        }
+        req.add("candidates", cands);
+        req.addProperty("leaf_count", total);
+
+        JsonObject resp = ask(req);
+        if (!resp.has("scores") || !resp.get("scores").isJsonArray()) {
+            return null;
+        }
+        JsonArray arr = resp.getAsJsonArray("scores");
+        if (arr.size() < total) {
+            return null;
+        }
+        double[] scores = new double[total];
+        try {
+            for (int i = 0; i < total; i++) {
+                scores[i] = arr.get(i).getAsDouble();
+            }
+        } catch (Exception e) {
+            return null;
+        }
+        return scores;
+    }
+
+    /** Rolled-out attack candidate: declare the set on a copy, resolve, keep
+     *  the K heuristically-worst block-response leaves. */
+    private List<ScoredLeaf> rolloutAttackLeaves(Game game, UUID myId, UUID defenderId,
+                                                 List<Permanent> attackers,
+                                                 List<Integer> set) {
+        Game afterAttack = game.createSimulationForAI();
+        for (int idx : set) {
+            Permanent atk = attackers.get(idx);
+            Permanent simAtk = afterAttack.getPermanent(atk.getId());
+            if (simAtk != null && defenderId != null
+                    && simAtk.canAttack(defenderId, afterAttack)) {
+                afterAttack.getPlayer(myId)
+                        .declareAttacker(atk.getId(), defenderId, afterAttack, false);
+            }
+        }
+        afterAttack.checkStateAndTriggered();
+        resolveStack(afterAttack);
+
+        List<ScoredLeaf> leaves = new ArrayList<>();
+        int r = 0;
+        for (List<UUID[]> resp : enumerateBlockResponses(afterAttack, defenderId)) {
+            Game leaf = afterAttack.copy();
+            applyBlocksAndResolveCombat(leaf, defenderId, resp);
+            double h = GameStateEvaluator2.evaluate(myId, leaf).getTotalScore();
+            String label = resp.isEmpty() ? "unblocked"
+                    : resp.size() + " block(s), response " + r;
+            leaves.add(new ScoredLeaf(compactLeaf(leaf, myId, defenderId, label), h));
+            r++;
+        }
+        leaves.sort((x, y) -> Double.compare(x.heuristic, y.heuristic));
+        if (leaves.size() > LLM_LEAVES_PER_CANDIDATE) {
+            leaves = new ArrayList<>(leaves.subList(0, LLM_LEAVES_PER_CANDIDATE));
+        }
+        return leaves;
+    }
+
+    private void llmSearchAttackers(Game game, UUID defenderId,
+                                    List<Permanent> attackers) {
+        UUID myId = this.getId();
+        List<List<Integer>> candidates = candidateAttackSets(attackers.size());
+        List<String> labels = new ArrayList<>();
+        List<List<ScoredLeaf>> leaves = new ArrayList<>();
+        for (List<Integer> set : candidates) {
+            labels.add(labelFor(set, attackers));
+            leaves.add(rolloutAttackLeaves(game, myId, defenderId, attackers, set));
+        }
+
+        double[] scores = askLeafScores(game, "attackers", labels, leaves);
+        int best = argmaxOfMins(candidates.size(), leaves, scores);
+        for (int idx : candidates.get(best)) {
+            Permanent atk = attackers.get(idx);
+            if (defenderId != null && atk.canAttack(defenderId, game)) {
+                getComputerPlayer().declareAttacker(atk.getId(), defenderId, game, false);
+            }
+        }
+        traceLlmSearch("attackers", labels, leaves, scores, best, game);
+    }
+
+    /** Our candidate block assignments when defending: no-block, each legal
+     *  single block, a greedy full block (each blocker onto the biggest
+     *  still-unblocked attacker), and an all-gang onto the biggest attacker. */
+    private List<List<UUID[]>> candidateBlockSets(Game game,
+                                                  List<Permanent> blockers,
+                                                  List<Permanent> attackers) {
+        List<List<UUID[]>> sets = new ArrayList<>();
+        sets.add(new ArrayList<>());   // no blocks
+        for (Permanent b : blockers) {
+            for (Permanent a : attackers) {
+                if (b.canBlock(a.getId(), game)) {
+                    List<UUID[]> s = new ArrayList<>();
+                    s.add(new UUID[]{b.getId(), a.getId()});
+                    sets.add(s);
+                    if (sets.size() >= MAX_BLOCK_RESPONSES) {
+                        return sets;
+                    }
+                }
+            }
+        }
+        List<Permanent> byPower = new ArrayList<>(attackers);
+        byPower.sort((x, y) -> y.getPower().getValue() - x.getPower().getValue());
+        List<UUID[]> greedy = new ArrayList<>();
+        Set<UUID> taken = new HashSet<>();
+        for (Permanent b : blockers) {
+            for (Permanent a : byPower) {
+                if (!taken.contains(a.getId()) && b.canBlock(a.getId(), game)) {
+                    greedy.add(new UUID[]{b.getId(), a.getId()});
+                    taken.add(a.getId());
+                    break;
+                }
+            }
+        }
+        if (greedy.size() > 1) {
+            sets.add(greedy);
+        }
+        if (!byPower.isEmpty() && blockers.size() > 1) {
+            Permanent big = byPower.get(0);
+            List<UUID[]> gang = new ArrayList<>();
+            for (Permanent b : blockers) {
+                if (b.canBlock(big.getId(), game)) {
+                    gang.add(new UUID[]{b.getId(), big.getId()});
+                }
+            }
+            if (gang.size() > 1) {
+                sets.add(gang);
+            }
+        }
+        return sets;
+    }
+
+    private String blockLabel(Game game, List<UUID[]> set) {
+        if (set.isEmpty()) {
+            return "no-blocks";
+        }
+        List<String> parts = new ArrayList<>();
+        for (UUID[] pair : set) {
+            Permanent b = game.getPermanent(pair[0]);
+            Permanent a = game.getPermanent(pair[1]);
+            parts.add((b == null ? "?" : b.getName()) + ">"
+                    + (a == null ? "?" : a.getName()));
+        }
+        return String.join(", ", parts);
+    }
+
+    private void llmSearchBlockers(Game game, UUID defendingPlayerId,
+                                   List<Permanent> blockers,
+                                   List<Permanent> attackers) {
+        UUID myId = this.getId();
+        UUID oppId = null;
+        for (UUID pid : game.getOpponents(myId)) {
+            oppId = pid;
+        }
+        List<List<UUID[]>> candidates = candidateBlockSets(game, blockers, attackers);
+        List<String> labels = new ArrayList<>();
+        List<List<ScoredLeaf>> leaves = new ArrayList<>();
+        for (List<UUID[]> set : candidates) {
+            labels.add(blockLabel(game, set));
+            Game leaf = game.createSimulationForAI();
+            applyBlocksAndResolveCombat(leaf, defendingPlayerId, set);
+            double h = GameStateEvaluator2.evaluate(myId, leaf).getTotalScore();
+            List<ScoredLeaf> one = new ArrayList<>();
+            one.add(new ScoredLeaf(
+                    compactLeaf(leaf, myId, oppId, "after combat"), h));
+            leaves.add(one);
+        }
+
+        double[] scores = askLeafScores(game, "blockers", labels, leaves);
+        int best = argmaxOfMins(candidates.size(), leaves, scores);
+        for (UUID[] pair : candidates.get(best)) {
+            Permanent b = game.getPermanent(pair[0]);
+            Permanent a = game.getPermanent(pair[1]);
+            if (b != null && a != null && b.canBlock(a.getId(), game)) {
+                getComputerPlayer().declareBlocker(defendingPlayerId,
+                        pair[0], pair[1], game);
+            }
+        }
+        traceLlmSearch("blockers", labels, leaves, scores, best, game);
+    }
+
+    /** Candidate value = min over its leaves; argmax over candidates. Uses
+     *  LLM scores when present, the stored heuristics otherwise. */
+    private int argmaxOfMins(int nCandidates, List<List<ScoredLeaf>> leaves,
+                             double[] scores) {
+        int best = 0;
+        double bestV = Double.NEGATIVE_INFINITY;
+        int flat = 0;
+        for (int c = 0; c < nCandidates; c++) {
+            double v = Double.POSITIVE_INFINITY;
+            for (ScoredLeaf l : leaves.get(c)) {
+                double lv = scores != null ? scores[flat] : l.heuristic;
+                flat++;
+                v = Math.min(v, lv);
+            }
+            if (leaves.get(c).isEmpty()) {
+                v = Double.NEGATIVE_INFINITY;
+            }
+            if (v > bestV) {
+                bestV = v;
+                best = c;
+            }
+        }
+        return best;
+    }
+
+    private void traceLlmSearch(String decision, List<String> labels,
+                                List<List<ScoredLeaf>> leaves, double[] scores,
+                                int chosen, Game game) {
+        JsonObject rec = new JsonObject();
+        rec.addProperty("mode", "llm_leaf");
+        rec.addProperty("decision", decision);
+        rec.addProperty("turn", game.getTurnNum());
+        rec.addProperty("llm_scored", scores != null);
+        rec.addProperty("chosen", labels.get(chosen));
+        JsonArray cands = new JsonArray();
+        int flat = 0;
+        for (int c = 0; c < labels.size(); c++) {
+            JsonObject co = new JsonObject();
+            co.addProperty("label", labels.get(c));
+            JsonArray ls = new JsonArray();
+            for (ScoredLeaf l : leaves.get(c)) {
+                JsonObject lo = l.summary.deepCopy();
+                lo.addProperty("heuristic", l.heuristic);
+                if (scores != null) {
+                    lo.addProperty("llm_score", scores[flat]);
+                }
+                flat++;
+                ls.add(lo);
+            }
+            co.add("leaves", ls);
+            cands.add(co);
+        }
+        rec.add("candidates", cands);
+        appendTrace(rec);
+        System.out.println("[CardGuru][llm-search] turn " + game.getTurnNum()
+                + " " + decision + ": " + labels.size() + " candidates, chose '"
+                + labels.get(chosen) + "' (" + (scores != null ? "LLM" : "heuristic fallback")
+                + " leaves)");
     }
 
     /** Append one decision record as a JSON line to spool/minimax.jsonl. */

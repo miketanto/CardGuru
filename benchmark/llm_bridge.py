@@ -120,9 +120,14 @@ def main():
     ap.add_argument("--esc-dir", required=True)
     ap.add_argument("--log", required=True)
     ap.add_argument("--timeout", type=float, default=240.0)
+    ap.add_argument("--search", choices=["none", "attacks", "llm"],
+                    default="none",
+                    help="combat search: 'attacks' = in-JVM minimax with "
+                         "heuristic leaves; 'llm' = rollouts at both combat "
+                         "decisions with LLM-scored leaves (leaf_eval "
+                         "requests); default none (LLM picks directly)")
     ap.add_argument("--minimax", action="store_true",
-                    help="let the in-JVM search take the attack decision "
-                         "(default: the LLM decides attacks)")
+                    help="legacy alias for --search attacks")
     ap.add_argument("--compact", action="store_true",
                     help="persistent-pilot mode: no per-request rules context, "
                          "card oracle text sent once per name (card_reference), "
@@ -240,7 +245,9 @@ def main():
              **({"yield_set": until} if until else {})})
         return resp
 
-    with MatchClient(args.mage_repo, minimax=args.minimax, subchoices=True,
+    mode = "attacks" if args.minimax else args.search
+    mode = None if mode == "none" else mode
+    with MatchClient(args.mage_repo, minimax=mode, subchoices=True,
                      deck_a=args.deck_a, deck_b=args.deck_b) as m:
         result = m.play(policy)
         trace = m.read_trace()

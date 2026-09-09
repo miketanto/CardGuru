@@ -126,6 +126,15 @@ hand.
              (two pairs on one attacker = gang block; [] = no blocks)
 - target:    {"targets": [<indices>], "why": "..."}
 - announce_x: {"x": <int>}   mode/choice: {"choice": <index>}   use: {"use": bool}
+- leaf_eval: {"scores": [<0-100 per leaf, in leaf_index order>], "why": "..."}
+  The engine simulated combat lines for you: each candidate is one action
+  (an attack set or block assignment) and its leaves are the resulting
+  boards after the opponent's best replies. Score each leaf 0-100 for HOW
+  GOOD THAT RESULTING POSITION IS FOR YOU (100 = winning on the spot, 50 =
+  even, 0 = lost). Judge with your usual race math: life totals, board
+  after the exchange, what is tapped going into their turn, and what their
+  open mana threatens. The engine takes each candidate's WORST leaf and
+  picks the best candidate — so score honestly, do not optimize the menu.
 
 A `card_reference` section appears in a request only the FIRST time a card
 shows up; remember what cards do, because later requests show names only.
