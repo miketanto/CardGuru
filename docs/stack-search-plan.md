@@ -290,6 +290,22 @@ failure; "I tapped out and they resolved a bomb" was.
   `calculateActions` per leaf is prohibitive. Also skipped: my combat and
   end step between my action and their untap.
 
+  **Bug found and fixed in g8, the first full arm-(e) run.** The
+  projection advanced to the *next* turn unconditionally. Invoked on a
+  priority window during *their* turn (their combat, their end step) it
+  skipped the rest of that turn and simulated their next main phase —
+  the first leaf under "turn 12 Begin Combat" read *"they cast Enduring
+  Curiosity"*, a sorcery-speed cast that cannot follow a combat step. 36
+  of 76 searches in g8 ran that way. Fix: project only when it is my
+  turn; on their turn fall back to the arm-(d) rollout until a
+  respond-to-what-is-happening-now tree exists (that is arm (f)'s
+  territory). g8 is discarded (`research/data/mirror/aborted/`) — it was
+  also a total land screw (2 lands from turn 4, zero lands drawn in ten
+  turns), so it would not have been a fair comparison regardless. Two
+  things it did show: the pilot was not paralysed (it flashed in Drowners
+  on turns 10 and 12 and cast Cut Down on 8), and cost ran ~13 leaves per
+  priority request against arm (d)'s ~3, with leaf_eval latency ~1.5×.
+
 ## 9. Measurement
 
 Win rate is the headline and the weakest signal: same 60 cards both sides,

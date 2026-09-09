@@ -1855,11 +1855,22 @@ class InteractiveTestPlayer extends TestPlayer {
     private int projSamplesFailed = 0;
     private String projLastFailure = "";
 
-    /** Leaves for one priority candidate: projected when arm (e) is on,
-     *  otherwise the single unopposed rollout. */
+    /** Leaves for one priority candidate: projected when arm (e) is on AND
+     *  it is my turn, otherwise the single unopposed rollout.
+     *
+     *  The projection answers "if I act now, what happens on THEIR turn" —
+     *  it advances to the next turn and hands them the untap. Run on a
+     *  window during their own turn (their combat, their end step) it
+     *  skipped the rest of that turn and simulated their NEXT main phase:
+     *  mirror game 8 showed "they cast Enduring Curiosity" as the
+     *  continuation of their Begin Combat step, in 36 of 76 searches. On
+     *  their turn the question is a different one (respond to what is
+     *  happening now), and until that tree exists the old rollout is at
+     *  least not the wrong turn. */
     private List<ScoredLeaf> priorityLeaves(Game game, UUID myId, UUID oppId,
                                             ActivatedAbility ability, String label) {
-        return projectTurnK > 0
+        boolean myTurn = myId.equals(game.getActivePlayerId());
+        return projectTurnK > 0 && myTurn
                 ? rolloutProjected(game, myId, oppId, ability, label)
                 : rolloutPriorityLeaf(game, myId, oppId, ability, label);
     }
