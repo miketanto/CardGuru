@@ -14,6 +14,7 @@ import mage.abilities.Modes;
 import mage.abilities.costs.Cost;
 import mage.cards.Card;
 import mage.cards.Cards;
+import mage.cards.CardsImpl;
 import mage.target.TargetCard;
 import mage.choices.Choice;
 import mage.constants.Outcome;
@@ -1553,7 +1554,7 @@ class InteractiveTestPlayer extends TestPlayer {
      */
     private AttackEval evaluateAttackSet(Game game, UUID myId, UUID defenderId,
                                          List<Permanent> attackers, List<Integer> set) {
-        Game afterAttack = game.createSimulationForAI();
+        Game afterAttack = simCopy(game);
         for (int idx : set) {
             Permanent atk = attackers.get(idx);
             Permanent simAtk = afterAttack.getPermanent(atk.getId());
@@ -1735,6 +1736,80 @@ class InteractiveTestPlayer extends TestPlayer {
         }
     }
 
+    // ---- determinization ----------------------------------------------
+    //
+    // Game.createSimulationForAI() is a full deep copy: it carries the
+    // opponent's REAL hand and library order. Any rollout in which the
+    // opponent acts on that copy — or in which one of OUR effects looks at
+    // it (Deep-Cavern Bat's ETB reads their hand and the built-in AI picks
+    // the exile from cards it should not know) — is using hidden
+    // information, and a search that peeks produces numbers that will not
+    // generalise. So every copy the search makes goes through simCopy(),
+    // which reseats the opponent's hidden zones with a fair sample.
+    //
+    // The sample needs no belief model of its own: on the copy, their
+    // library and hand together are exactly the cards we have not watched
+    // leave their library, i.e. believed_remaining. Shuffling the hand back
+    // in and redrawing the same count is a draw from that set. (It forgets
+    // cards we have actually seen in their hand — a Bat peek — which is a
+    // refinement for later, not a leak.)
+    //
+    // Redraw goes through moveToZone, never drawCards, so no draw trigger
+    // fires on the copy: Sheoldred must not drain them for a shuffle.
+    private int detRollouts = 0;
+    private int detSeatedEqualsReal = 0;
+
+    /** A simulation copy whose opponent hidden zones have been reseated. */
+    private Game simCopy(Game game) {
+        Game sim = game.createSimulationForAI();
+        UUID oppId = null;
+        for (UUID pid : game.getOpponents(getId())) {
+            oppId = pid;
+        }
+        if (oppId != null) {
+            detRollouts++;
+            if (!determinizeOpponent(sim, oppId)) {
+                detSeatedEqualsReal++;
+            }
+        }
+        return sim;
+    }
+
+    /** Reseat one player's hand from their own library on a copy. Returns
+     *  true iff the seated hand differs from the real one — equality is
+     *  possible by chance (small hand, small library) but should be rare,
+     *  and its rate is logged per decision as the leak check. */
+    private static boolean determinizeOpponent(Game sim, UUID oppId) {
+        Player opp = sim.getPlayer(oppId);
+        if (opp == null) {
+            return true;
+        }
+        List<String> real = handNames(opp, sim);
+        int h = opp.getHand().size();
+        if (h > 0) {
+            opp.putCardsOnBottomOfLibrary(
+                    new CardsImpl(opp.getHand().getCards(sim)), sim, null, false);
+        }
+        opp.getLibrary().shuffle();
+        for (int i = 0; i < h; i++) {
+            Card top = opp.getLibrary().getFromTop(sim);
+            if (top == null) {
+                break;
+            }
+            top.moveToZone(Zone.HAND, null, sim, false);
+        }
+        return !handNames(opp, sim).equals(real);
+    }
+
+    private static List<String> handNames(Player p, Game g) {
+        List<String> names = new ArrayList<>();
+        for (Card c : p.getHand().getCards(g)) {
+            names.add(c.getName());
+        }
+        Collections.sort(names);
+        return names;
+    }
+
     /** One-line-per-side board summary of a resolved leaf copy. */
     private JsonObject compactLeaf(Game leaf, UUID myId, UUID oppId, String label) {
         JsonObject o = new JsonObject();
@@ -1745,7 +1820,41 @@ class InteractiveTestPlayer extends TestPlayer {
         o.addProperty("opp_life", opp == null ? 0 : opp.getLife());
         o.addProperty("our_board", boardLine(leaf, myId));
         o.addProperty("opp_board", boardLine(leaf, oppId));
+        // What each side can still DO from this position. The five fields
+        // above describe a board; they never said whether it was reached by
+        // tapping out into the opponent's turn, so the pilot could not price
+        // that — the pattern every lost mirror game shares. Open mana on both
+        // sides, hand sizes, my remaining hand (I know my own cards, so the
+        // pilot can see "I still hold an answer"), and the stack.
+        o.addProperty("our_mana", manaOf(leaf, myId));
+        o.addProperty("opp_mana", manaOf(leaf, oppId));
+        o.addProperty("our_hand_count", me == null ? 0 : me.getHand().size());
+        o.addProperty("opp_hand_count", opp == null ? 0 : opp.getHand().size());
+        JsonArray hand = new JsonArray();
+        if (me != null) {
+            for (Card c : me.getHand().getCards(leaf)) {
+                hand.add(c.getName());
+            }
+        }
+        o.add("our_hand", hand);
+        JsonArray stack = new JsonArray();
+        for (mage.game.stack.StackObject so : leaf.getStack()) {
+            stack.add(so.getName() + " (" + (so.getControllerId().equals(myId)
+                    ? "ours" : "theirs") + ")");
+        }
+        o.add("stack", stack);
         return o;
+    }
+
+    /** Mana a player could produce right now on this game (a leaf or the
+     *  live one). Never throws: an empty string just means "unknown". */
+    private static String manaOf(Game g, UUID pid) {
+        try {
+            Player p = g.getPlayer(pid);
+            return p == null ? "" : String.valueOf(p.getManaAvailable(g));
+        } catch (Exception e) {
+            return "?";
+        }
     }
 
     private String boardLine(Game leaf, UUID pid) {
@@ -1815,7 +1924,7 @@ class InteractiveTestPlayer extends TestPlayer {
     private List<ScoredLeaf> rolloutAttackLeaves(Game game, UUID myId, UUID defenderId,
                                                  List<Permanent> attackers,
                                                  List<Integer> set) {
-        Game afterAttack = game.createSimulationForAI();
+        Game afterAttack = simCopy(game);
         for (int idx : set) {
             Permanent atk = attackers.get(idx);
             Permanent simAtk = afterAttack.getPermanent(atk.getId());
@@ -1946,7 +2055,7 @@ class InteractiveTestPlayer extends TestPlayer {
         List<List<ScoredLeaf>> leaves = new ArrayList<>();
         for (List<UUID[]> set : candidates) {
             labels.add(blockLabel(game, set));
-            Game leaf = game.createSimulationForAI();
+            Game leaf = simCopy(game);
             applyBlocksAndResolveCombat(leaf, defendingPlayerId, set);
             double h = GameStateEvaluator2.evaluate(myId, leaf).getTotalScore();
             List<ScoredLeaf> one = new ArrayList<>();
@@ -2002,6 +2111,12 @@ class InteractiveTestPlayer extends TestPlayer {
         rec.addProperty("turn", game.getTurnNum());
         rec.addProperty("llm_scored", scores != null);
         rec.addProperty("chosen", labels.get(chosen));
+        // Leak check, cumulative: every copy the search made so far, and how
+        // many reseated an opponent hand identical to the real one. The
+        // second should stay near zero; if it tracks the first, the
+        // determinization is not doing anything.
+        rec.addProperty("det_rollouts", detRollouts);
+        rec.addProperty("det_seated_equals_real", detSeatedEqualsReal);
         JsonArray cands = new JsonArray();
         int flat = 0;
         for (int c = 0; c < labels.size(); c++) {
@@ -2168,7 +2283,7 @@ class InteractiveTestPlayer extends TestPlayer {
         List<ScoredLeaf> out = new ArrayList<>();
         Game sim;
         try {
-            sim = game.createSimulationForAI();
+            sim = simCopy(game);
         } catch (Exception e) {
             return out;
         }
