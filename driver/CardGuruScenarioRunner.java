@@ -13,6 +13,8 @@ import mage.abilities.Mode;
 import mage.abilities.Modes;
 import mage.abilities.costs.Cost;
 import mage.cards.Card;
+import mage.cards.Cards;
+import mage.target.TargetCard;
 import mage.choices.Choice;
 import mage.constants.Outcome;
 import mage.constants.PhaseStep;
@@ -809,6 +811,19 @@ class InteractiveTestPlayer extends TestPlayer {
         return req;
     }
 
+    /** Supertypes + card types, e.g. "[Legendary] [Planeswalker]".
+     *
+     * getCardType() alone drops supertypes, so LEGENDARY never reached the
+     * pilot: in mirror game 3 it cast a second Kaito while already
+     * controlling one (turn 9), hit the legend rule, and had to bin a
+     * four-mana card it had just paid for. Nothing it was sent said Kaito
+     * was legendary — not the type line, not the rules text. */
+    private static String typeLine(MageObject o, Game game) {
+        String sup = String.valueOf(o.getSuperType(game));
+        String types = String.valueOf(o.getCardType(game));
+        return "[]".equals(sup) ? types : sup + " " + types;
+    }
+
     /** Both players' public state, plus this (driven) player's own hand.
      *  Cards render with cost, types, and rules text (like the puzzle
      *  encoder) — an LLM policy cannot be assumed to know cards by name,
@@ -847,7 +862,8 @@ class InteractiveTestPlayer extends TestPlayer {
                                     ? "; summoning sick (cannot attack, but "
                                       + "blocking is unaffected)" : ""));
                 }
-                o.addProperty("types", String.valueOf(perm.getCardType(game)));
+                o.addProperty("cost", perm.getManaCost().getText());
+                o.addProperty("types", typeLine(perm, game));
                 String rules = String.join(" ; ", perm.getRules(game));
                 if (!rules.isEmpty()) {
                     o.addProperty("text", rules);
@@ -867,7 +883,7 @@ class InteractiveTestPlayer extends TestPlayer {
                     JsonObject o = new JsonObject();
                     o.addProperty("name", c.getName());
                     o.addProperty("cost", c.getManaCost().getText());
-                    o.addProperty("types", String.valueOf(c.getCardType(game)));
+                    o.addProperty("types", typeLine(c, game));
                     if (c.isCreature(game)) {
                         o.addProperty("power", c.getPower().getValue());
                         o.addProperty("toughness", c.getToughness().getValue());
@@ -1071,6 +1087,61 @@ class InteractiveTestPlayer extends TestPlayer {
             return true;
         }
         return super.choose(outcome, target, source, game, options);
+    }
+
+    /** Picking cards out of a specific Cards pile — the overload used when an
+     *  effect reaches into a hand or a graveyard rather than the battlefield.
+     *
+     * Deep-Cavern Bat calls exactly this ({@code choose(outcome, opponent
+     * .getHand(), target, source, game)}) to pick which nonland card to
+     * exile. It is not the overload the other hooks cover, so the choice
+     * fell straight through to the built-in AI: through mirror game 3 the
+     * pilot cast the Bat and never once decided what it took. */
+    @Override
+    public boolean choose(Outcome outcome, Cards cards, TargetCard target,
+                          Ability source, Game game) {
+        if (externalSubchoices && !searching) {
+            List<UUID> possible = new ArrayList<>(
+                    target.possibleTargets(getId(), source, game, cards));
+            int min = target.getMinNumberOfTargets();
+            int max = target.getMaxNumberOfTargets();
+            if (!possible.isEmpty() && !(possible.size() == 1 && min >= 1)) {
+                JsonObject req = baseRequest("choose", game);
+                req.addProperty("prompt", target.getMessage(game));
+                req.addProperty("ability", String.valueOf(source));
+                req.addProperty("min", min);
+                req.addProperty("max", max);
+                JsonArray opts = new JsonArray();
+                for (int i = 0; i < possible.size(); i++) {
+                    JsonObject o = new JsonObject();
+                    o.addProperty("index", i);
+                    Card c = game.getCard(possible.get(i));
+                    o.addProperty("text", c == null ? "?" : c.getName());
+                    if (c != null) {
+                        o.addProperty("cost", c.getManaCost().getText());
+                        o.addProperty("types", typeLine(c, game));
+                    }
+                    opts.add(o);
+                }
+                req.add("options", opts);
+                JsonObject resp = ask(req);
+                if (resp.has("targets")) {
+                    for (JsonElement e : resp.getAsJsonArray("targets")) {
+                        int idx = e.getAsInt();
+                        if (idx >= 0 && idx < possible.size()
+                                && target.getTargets().size() < max) {
+                            target.addTarget(possible.get(idx), source, game);
+                        }
+                    }
+                }
+                if (target.getTargets().size() >= min) {
+                    return true;
+                }
+                System.out.println("[CardGuru][subchoice] choose-from-cards "
+                        + "answer under-filled, AI completes");
+            }
+        }
+        return super.choose(outcome, cards, target, source, game);
     }
 
     @Override

@@ -106,11 +106,23 @@ def is_real_choice(row):
 
 
 def render_leaf_eval(req, resp):
+    # The schema asks for one score per leaf, in leaf order. A pilot
+    # sometimes answers with a label->score map instead
+    # ({"attack-all": 63, "attack-none": 41}), which the daemon accepts
+    # because it only checks that "scores" is present. Slicing that dict
+    # used to raise and kill the whole digest for the game.
     scores = resp.get("scores") or []
+    by_label = scores if isinstance(scores, dict) else None
+    if not isinstance(scores, (list, tuple)):
+        scores = []
     lines, i = [], 0
     for c in req.get("candidates", []):
         leaves = c.get("leaves", [])
-        vals = scores[i:i + len(leaves)]
+        if by_label is not None:
+            v = by_label.get(c.get("label"))
+            vals = [v] if v is not None else []
+        else:
+            vals = scores[i:i + len(leaves)]
         i += len(leaves)
         worst = min(vals) if vals else None
         detail = "; ".join(
