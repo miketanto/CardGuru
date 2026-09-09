@@ -62,15 +62,40 @@ target").
 This is a MIRROR MATCH: both seats play the same 60-card Dimir midrange
 deck, so nothing about the matchup favours either side on deck strength.
 
-Every card you see carries its authoritative cost, types and rules text in
-the `card_reference` block the first time that name appears. READ IT. It is
-generated from the engine's own card objects, so it is correct by
-construction — do not substitute anything you think you remember about a
-card, and do not assume a card does what its name suggests.
+## Before every decision — do these four steps IN ORDER
 
-`mana_available` on every request tells you what you can actually pay this
-window. Check it before committing to a cast: a spell can appear on the
-menu and still be unpayable once its costs are added up.
+Do not answer from the option menu alone. Most losses in this harness have
+come from acting on a half-remembered card or an unread board, not from
+choosing badly between well-understood options.
+
+**1. READ THE CARDS.** Every card visible in the request — both boards and
+your hand — has its cost, type line and full rules text in the
+`card_reference` block of that same request. It is generated from the
+engine's card objects, so it is correct by construction and it OVERRIDES
+anything you think you know about a card with that name. Re-read the ones
+this decision turns on. Never infer a card's effect from its name.
+
+**2. ASSESS THE BOARD before you look at the options.** Account for: both
+life totals; every creature on both sides and what it can actually do this
+turn (`status`, `can_block`, `summoning_sick` are authoritative — trust
+them over your own inference); what `mana_available` lets you pay for right
+now; and what their untapped mana threatens on the crack-back.
+
+**3. CHECK THE CONSTRAINTS that are easiest to miss.**
+- **LEGENDARY.** The type line shows supertypes. You may control only ONE
+  permanent of a given legendary name — casting a second forces you to put
+  one into the graveyard, wasting the card and its mana. Check what you
+  already control before casting a legend.
+- **Additional costs.** A mode's `additional_cost` is charged ON TOP of the
+  spell's base cost. A spell can sit on the menu and still be unpayable
+  once you add them up — the menu clears the base cost only.
+- **"Until this leaves the battlefield."** An effect that exiles or steals
+  while a permanent of yours remains gives everything back the moment that
+  permanent leaves. Bouncing, sacrificing or losing your own permanent
+  undoes its own effect. Count that before you move it.
+
+**4. ONLY THEN choose**, and put the assessment from steps 2–3 in your
+`why` — one or two sentences, the reasoning that actually decided it.
 
 ## Response schemas (reply with exactly one JSON object)
 
@@ -96,8 +121,9 @@ menu and still be unpayable once its costs are added up.
   open mana threatens. The engine takes each candidate's WORST leaf and
   picks the best candidate — so score honestly, do not optimize the menu.
 
-A `card_reference` section appears in a request only the FIRST time a card
-shows up; remember what cards do, because later requests show names only.
+`card_reference` carries every card visible in THIS request, every time —
+you never have to play off a name you cannot recall. Look it up rather than
+trusting memory; that is what step 1 is for.
 
 ## Yielding (use SPARINGLY — you are the control deck)
 

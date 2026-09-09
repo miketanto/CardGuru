@@ -172,13 +172,22 @@ def main():
     seen_cards: set = set()
 
     def compact_state(request):
-        """First appearance of a card name -> full facts into card_reference;
-        afterwards the state carries name/tapped/pt/summoning_sick only."""
+        """Full facts for every card VISIBLE in this request go into
+        card_reference; the state itself carries name/tapped/pt/sick only.
+
+        This used to send a card's text once per game and never again, which
+        made "re-read what this card does" impossible — the pilot could only
+        memorise, and anything it forgot was gone. Worse, pilot_daemon starts
+        a FRESH session on its third retry, wiping every reference the game
+        had sent so far; from that point the pilot was playing off card names
+        alone. Re-sending what is currently on screen costs a few hundred
+        tokens against the ~24k of fixed per-call overhead, and buys a pilot
+        that can always look."""
         reference = {}
 
         def strip(card):
             name = card.get("name")
-            if name and name not in seen_cards:
+            if name:
                 seen_cards.add(name)
                 ref = {k: card[k] for k in ("cost", "types", "text",
                                             "power", "toughness") if k in card}
