@@ -1,0 +1,1 @@
+{"game": 1, "start": "A", "seed": 4242, "search": "llm", "result": {"status": "completed", "winner": "B", "turns": 11}, "wall_s": 1255.2, "sources": {"llm": 61, "auto": 82, "yield": 6, "result": 1}, "searches": {"attackers": 4, "blockers": 2, "priority": 16}, "ts": 1788961754.3}

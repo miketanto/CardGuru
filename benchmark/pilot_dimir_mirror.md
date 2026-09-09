@@ -75,12 +75,21 @@ reference text is authoritative. Key cards:
 - Enduring Curiosity {2}{U}{U} — card draw engine off combat damage.
 - Sheoldred, the Apocalypse {2}{B}{B} 4/5 — YOUR draws gain you 2 life,
   THEIR draws cost them 2. She wins long games on her own. Protect her.
-- Removal: Cut Down {B} (small creatures only — early attackers), Go for
-  the Throat {1}{B} (any non-artifact creature), Anoint with Affliction
-  (EXILES — beats death triggers). Spend removal on real threats, not
-  1/1 tokens.
-- Three Steps Ahead {1}{U}{U}+ — modal COUNTERSPELL (and other modes).
-  Holding it up on their turn is often your best play.
+- Removal, with EXACT restrictions — these matter, check them before you
+  plan around a card:
+  * Cut Down {B} — destroy target creature with **total power + toughness 5
+    or less**. Kills a 2/2 or a 1/1; CANNOT kill Sheoldred (4/5 = 9) or a
+    3/5 Preacher (8).
+  * Go for the Throat {1}{B} — destroy target NONARTIFACT creature. No
+    size limit: this is your ONLY unconditional answer to Sheoldred, Kaito
+    or a big Preacher. Do not waste it on a 1/1 flier.
+  * Anoint with Affliction {1}{B} — exile target creature **only if its
+    mana value is 3 or less**. Sheoldred (MV 4) and Kaito (MV 4) are OUT OF
+    RANGE. Use it on Bat, Siren, Mastermind, Drowner or Preacher.
+- Three Steps Ahead {1}{U}{U}+ — Spree (pay for one or more modes):
+  +{1}{U} counter target spell; +{3} copy your own creature/artifact;
+  +{2} draw two then discard one. The counter mode needs {1}{U} ON TOP of
+  the {1}{U} base cost.
 
 ## The opponent: the SAME DECK (Dimir mirror)
 
@@ -97,9 +106,13 @@ What that means concretely:
   clock; theirs is the clock you must answer.
 - Preacher of the Schism has deathtouch on both sides: it kills anything it
   blocks or is blocked by.
-- Sheoldred is the single biggest card in the matchup, in either direction.
-  Yours wins the game if it lives; theirs costs you 2 life per draw and must
-  be answered immediately.
+- Sheoldred, the Apocalypse (4/5, MV 4) is the single biggest card in the
+  matchup, in either direction. Her drain is a TRIGGERED ABILITY and is
+  live the moment she resolves — summoning sickness does NOT delay it.
+  Every card you draw while their Sheoldred lives costs you 2 life,
+  including your mandatory draw each turn, so she is a guaranteed 2-per-turn
+  clock on you plus 2 per extra draw. Only Go for the Throat answers her.
+  If you cannot answer her, STOP drawing extra cards and win fast or lose.
 
 ## Tips and tricks (the Dimir mirror — follow these)
 
@@ -130,7 +143,15 @@ What that means concretely:
    profitably; their fliers can only be blocked by your fliers.
 10. **Mulligans**: keep 2-4 lands with early interaction or a flier. In a
     mirror, a hand with no interaction and no clock is a mulligan.
-11. **The engine is always right.** If the menu does not offer it, you
+11. **Card-draw engines are LIABILITIES under an opposing Sheoldred.**
+    Enduring Curiosity, Faerie Mastermind and any "draw a card" effect each
+    cost you 2 life per trigger while their Sheoldred lives. Do not deploy
+    a draw engine into one — answer her first or hold the card.
+12. **Flash means cast it on THEIR turn.** Faerie Mastermind, Floodpits
+    Drowner and Enduring Curiosity have flash. Casting them in your own
+    main phase throws away the ambush and the information; hold them until
+    their end step or until blockers are declared.
+13. **The engine is always right.** If the menu does not offer it, you
     cannot do it; trust each creature's `can_block` field.
 
 ## Response schemas (reply with exactly one JSON object)

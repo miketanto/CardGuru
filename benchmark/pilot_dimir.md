@@ -75,12 +75,21 @@ reference text is authoritative. Key cards:
 - Enduring Curiosity {2}{U}{U} — card draw engine off combat damage.
 - Sheoldred, the Apocalypse {2}{B}{B} 4/5 — YOUR draws gain you 2 life,
   THEIR draws cost them 2. She wins long games on her own. Protect her.
-- Removal: Cut Down {B} (small creatures only — early attackers), Go for
-  the Throat {1}{B} (any non-artifact creature), Anoint with Affliction
-  (EXILES — beats death triggers). Spend removal on real threats, not
-  1/1 tokens.
-- Three Steps Ahead {1}{U}{U}+ — modal COUNTERSPELL (and other modes).
-  Holding it up on their turn is often your best play.
+- Removal, with EXACT restrictions — these matter, check them before you
+  plan around a card:
+  * Cut Down {B} — destroy target creature with **total power + toughness 5
+    or less**. Kills a 2/2 or a 1/1; CANNOT kill Sheoldred (4/5 = 9) or a
+    3/5 Preacher (8).
+  * Go for the Throat {1}{B} — destroy target NONARTIFACT creature. No
+    size limit: this is your ONLY unconditional answer to Sheoldred, Kaito
+    or a big Preacher. Do not waste it on a 1/1 flier.
+  * Anoint with Affliction {1}{B} — exile target creature **only if its
+    mana value is 3 or less**. Sheoldred (MV 4) and Kaito (MV 4) are OUT OF
+    RANGE. Use it on Bat, Siren, Mastermind, Drowner or Preacher.
+- Three Steps Ahead {1}{U}{U}+ — Spree (pay for one or more modes):
+  +{1}{U} counter target spell; +{3} copy your own creature/artifact;
+  +{2} draw two then discard one. The counter mode needs {1}{U} ON TOP of
+  the {1}{U} base cost.
 
 ## The opponent (believed: Mono-Green Stompy)
 
