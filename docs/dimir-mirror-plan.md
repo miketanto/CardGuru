@@ -46,18 +46,14 @@ Two small driver changes in `driver/CardGuruScenarioRunner.java`, both
 plumbed through `cardguru/play.py` (`MatchClient._launch`) and
 `benchmark/llm_bridge.py` as flags:
 
-1. **Seed** — `-Dcardguru.seed=<n>` → `RandomUtil.setSeed(n)` before the
-   game starts. **Measured result: this does NOT pin the opening hand.**
-   Two sequential runs with seed 777 dealt different hands. Root cause:
-   `Deck.getMaindeckCards()` collects the deck's ordered `LinkedHashSet`
-   through `Collectors.toSet()`, so `PlayerImpl.init` builds the library
-   from a `HashSet` whose iteration order follows each `Card`'s randomly
-   generated UUID. The seeded shuffle applies the same permutation to a
-   different starting order every run. Pinning the deal would require
-   rebuilding the library in a canonical order (e.g. sorted by card name)
-   after `init` populates it and before the shuffle — not yet done. Until
-   then, treat every game as an independent sample and do not rely on
-   `--same-seed` for A/B comparisons.
+1. **Seed** — `-Dcardguru.seed=<n>` pins the deal. Seeding the shuffle alone
+   was NOT enough: `Deck.getMaindeckCards()` collects the deck's ordered
+   `LinkedHashSet` through `Collectors.toSet()`, so the library was built
+   from a `HashSet` ordered by each `Card`'s random UUID and the seeded
+   permutation landed on a different starting order every run (measured:
+   two runs at seed 777 dealt different hands). The driver now sorts both
+   libraries by card name before seeding, which makes the pre-shuffle order
+   canonical. Verified: two runs at seed 999 deal identical hands.
 
 2. **Pin MAD's effort** — call `setMaxThinkTimeSecs(large)` on the seated
    `TestComputerPlayer7` in `createNewPlayer`, so the existing 5000-node

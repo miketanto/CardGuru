@@ -245,6 +245,27 @@ public class CardGuruScenarioRunner extends CardTestPlayerBase {
             // deterministic RNG stream for everything after that point.
             String seed = System.getProperty("cardguru.seed");
             if (seed != null && !seed.isEmpty()) {
+                // Canonicalise both libraries FIRST. Deck.getMaindeckCards()
+                // collects the deck's ordered LinkedHashSet through
+                // Collectors.toSet(), so the library is built from a HashSet
+                // whose iteration order follows each Card's random UUID —
+                // seeding alone therefore applied the same permutation to a
+                // different starting order every run (measured: two runs at
+                // seed 777 dealt different hands). Sorting by name makes the
+                // pre-shuffle order identical across runs; copies of one card
+                // are interchangeable, so name order is enough to pin the
+                // dealt hand.
+                for (mage.players.Player p : currentGame.getPlayers().values()) {
+                    mage.players.Library lib = p.getLibrary();
+                    List<Card> ordered = new ArrayList<>(lib.getCards(currentGame));
+                    ordered.sort(java.util.Comparator.comparing(Card::getName));
+                    lib.clear();
+                    for (Card c : ordered) {
+                        lib.putOnBottom(c, currentGame);
+                    }
+                    System.out.println("[CardGuru] canonicalised library for "
+                            + p.getName() + " (" + ordered.size() + " cards)");
+                }
                 mage.util.RandomUtil.setSeed(Long.parseLong(seed.trim()));
                 System.out.println("[CardGuru] seeded shuffle with " + seed);
             }
@@ -335,6 +356,33 @@ public class CardGuruScenarioRunner extends CardTestPlayerBase {
         }
     }
 
+    /**
+     * The AI opponent, with mulligans restored.
+     *
+     * ComputerPlayer.chooseMulligan short-circuits to "keep" whenever
+     * isTestMode() is set, and the test framework sets it on every player it
+     * creates (CardTestPlayerAPIImpl.createPlayer). The AI therefore kept
+     * EVERY opening hand in every game this harness has ever run, including
+     * one-landers, while our own pilot mulliganed normally over the spool —
+     * a systematic handicap on the opponent that inflates our win rate.
+     * This re-applies the engine's own rule without the test bypass.
+     */
+    private static final class MulliganingTestPlayer extends TestPlayer {
+        MulliganingTestPlayer(TestComputerPlayer7 ai) {
+            super(ai);
+        }
+
+        @Override
+        public boolean chooseMulligan(Game game) {
+            if (getHand().size() < 6) {
+                return false;
+            }
+            Set<Card> lands = getHand().getCards(
+                    new mage.filter.common.FilterLandCard(), game);
+            return lands.size() < 2 || lands.size() > getHand().size() - 2;
+        }
+    }
+
     @Override
     protected TestPlayer createNewPlayer(String playerName, RangeOfInfluence range) {
         String spool = System.getProperty("cardguru.interactive.spool");
@@ -371,7 +419,7 @@ public class CardGuruScenarioRunner extends CardTestPlayerBase {
             // the stock time-bounded behaviour.
             ai.setMaxThinkTimeSecs(
                     Integer.getInteger("cardguru.opp.think_secs", 3600));
-            TestPlayer opp = new TestPlayer(ai);
+            TestPlayer opp = new MulliganingTestPlayer(ai);
             opp.setAIPlayer(true);   // full AI: simulations drive every priority
             return opp;
         }
