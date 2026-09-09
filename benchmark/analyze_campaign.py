@@ -60,11 +60,12 @@ def main():
         c[side][0 if won else 1] += 1
     for name, c in cells.items():
         n = c["W"] + c["L"]
+        played = n + c["E"]
         rate = f"{100 * c['W'] / n:.0f}%" if n else "-"
         print(f"{name:26s} {c['W']}W-{c['L']}L ({rate})"
               f"  errors={c['E']}  play={c['play'][0]}-{c['play'][1]}"
               f" draw={c['draw'][0]}-{c['draw'][1]}"
-              f"  avg={c['wall'] / max(1, len(camp)):.0f}s")
+              f"  avg={c['wall'] / max(1, played) / 60:.0f}min")
 
     print("\n=== FAILURES ===")
     for r in camp:
