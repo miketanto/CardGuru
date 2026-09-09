@@ -1,0 +1,2 @@
+{"game": 1, "start": "A", "result": {"status": "completed", "winner": "A", "turns": 11}, "wall_s": 683.1, "sources": {"llm": 54, "auto": 28, "yield": 37, "result": 1}, "ts": 1788919475.2}
+{"game": 2, "start": "B", "result": {"status": "completed", "winner": "B", "turns": 9}, "wall_s": 815.2, "sources": {"llm": 54, "auto": 28, "yield": 24, "result": 1}, "ts": 1788920290.5}

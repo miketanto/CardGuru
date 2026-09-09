@@ -1,0 +1,1006 @@
+{
+ "seq": 11,
+ "request": {
+  "kind": "priority",
+  "turn": 4,
+  "phase": "End Combat",
+  "active": "A",
+  "state": {
+   "A": {
+    "life": 20,
+    "battlefield": [
+     {
+      "name": "Mountain",
+      "tapped": false
+     },
+     {
+      "name": "Monastery Swiftspear",
+      "tapped": true,
+      "power": 1,
+      "toughness": 2,
+      "summoning_sick": false
+     }
+    ],
+    "graveyard": [],
+    "hand_count": 7,
+    "hand": [
+     {
+      "name": "Mountain"
+     },
+     {
+      "name": "Dragon Fodder"
+     },
+     {
+      "name": "Incinerate"
+     },
+     {
+      "name": "Shock"
+     },
+     {
+      "name": "Goblin Piker",
+      "power": 2,
+      "toughness": 1
+     },
+     {
+      "name": "Brute Force"
+     },
+     {
+      "name": "Dragon Fodder"
+     }
+    ]
+   },
+   "B": {
+    "life": 18,
+    "battlefield": [
+     {
+      "name": "Forest",
+      "tapped": false
+     }
+    ],
+    "graveyard": [],
+    "hand_count": 7
+   }
+  },
+  "options": [
+   {
+    "index": 0,
+    "action": "pass",
+    "text": "pass priority"
+   },
+   {
+    "index": 1,
+    "action": "activate",
+    "text": "Cast Shock"
+   },
+   {
+    "index": 2,
+    "action": "activate",
+    "text": "Cast Brute Force"
+   },
+   {
+    "index": 3,
+    "action": "activate",
+    "text": "{T}: Add {R}."
+   }
+  ],
+  "seq": 40
+ },
+ "belief": {
+  "archetype": "Mono-Blue Tempo",
+  "p": 0.3333333333333333,
+  "remaining": {
+   "Island": 20,
+   "Merfolk of the Pearl Trident": 4,
+   "Cloud Sprite": 4,
+   "Sea Scryer": 4,
+   "Coral Merfolk": 4,
+   "Headwater Sentries": 4,
+   "Vizzerdrix": 2,
+   "Ancient Crab": 4,
+   "Plated Seastrider": 4
+  },
+  "hands": [
+   [
+    "Ancient Crab",
+    "Headwater Sentries",
+    "Island",
+    "Island",
+    "Island",
+    "Merfolk of the Pearl Trident",
+    "Sea Scryer"
+   ],
+   [
+    "Ancient Crab",
+    "Cloud Sprite",
+    "Island",
+    "Island",
+    "Island",
+    "Island",
+    "Sea Scryer"
+   ],
+   [
+    "Coral Merfolk",
+    "Island",
+    "Island",
+    "Island",
+    "Island",
+    "Island",
+    "Plated Seastrider"
+   ],
+   [
+    "Ancient Crab",
+    "Cloud Sprite",
+    "Coral Merfolk",
+    "Headwater Sentries",
+    "Island",
+    "Island",
+    "Island"
+   ],
+   [
+    "Headwater Sentries",
+    "Island",
+    "Island",
+    "Merfolk of the Pearl Trident",
+    "Plated Seastrider",
+    "Plated Seastrider",
+    "Sea Scryer"
+   ],
+   [
+    "Coral Merfolk",
+    "Island",
+    "Island",
+    "Island",
+    "Plated Seastrider",
+    "Plated Seastrider",
+    "Sea Scryer"
+   ],
+   [
+    "Ancient Crab",
+    "Cloud Sprite",
+    "Coral Merfolk",
+    "Island",
+    "Island",
+    "Island",
+    "Merfolk of the Pearl Trident"
+   ],
+   [
+    "Coral Merfolk",
+    "Coral Merfolk",
+    "Island",
+    "Island",
+    "Island",
+    "Merfolk of the Pearl Trident",
+    "Plated Seastrider"
+   ],
+   [
+    "Ancient Crab",
+    "Cloud Sprite",
+    "Coral Merfolk",
+    "Headwater Sentries",
+    "Island",
+    "Plated Seastrider",
+    "Sea Scryer"
+   ],
+   [
+    "Ancient Crab",
+    "Island",
+    "Island",
+    "Island",
+    "Merfolk of the Pearl Trident",
+    "Plated Seastrider",
+    "Sea Scryer"
+   ],
+   [
+    "Cloud Sprite",
+    "Island",
+    "Island",
+    "Island",
+    "Merfolk of the Pearl Trident",
+    "Plated Seastrider",
+    "Vizzerdrix"
+   ],
+   [
+    "Ancient Crab",
+    "Headwater Sentries",
+    "Island",
+    "Island",
+    "Island",
+    "Island",
+    "Merfolk of the Pearl Trident"
+   ],
+   [
+    "Coral Merfolk",
+    "Headwater Sentries",
+    "Headwater Sentries",
+    "Island",
+    "Island",
+    "Island",
+    "Plated Seastrider"
+   ],
+   [
+    "Cloud Sprite",
+    "Coral Merfolk",
+    "Island",
+    "Island",
+    "Island",
+    "Island",
+    "Plated Seastrider"
+   ],
+   [
+    "Cloud Sprite",
+    "Headwater Sentries",
+    "Island",
+    "Island",
+    "Merfolk of the Pearl Trident",
+    "Merfolk of the Pearl Trident",
+    "Plated Seastrider"
+   ],
+   [
+    "Headwater Sentries",
+    "Island",
+    "Island",
+    "Island",
+    "Merfolk of the Pearl Trident",
+    "Merfolk of the Pearl Trident",
+    "Plated Seastrider"
+   ],
+   [
+    "Ancient Crab",
+    "Cloud Sprite",
+    "Headwater Sentries",
+    "Island",
+    "Merfolk of the Pearl Trident",
+    "Plated Seastrider",
+    "Plated Seastrider"
+   ],
+   [
+    "Coral Merfolk",
+    "Headwater Sentries",
+    "Island",
+    "Island",
+    "Island",
+    "Island",
+    "Merfolk of the Pearl Trident"
+   ],
+   [
+    "Coral Merfolk",
+    "Headwater Sentries",
+    "Headwater Sentries",
+    "Island",
+    "Island",
+    "Island",
+    "Merfolk of the Pearl Trident"
+   ],
+   [
+    "Coral Merfolk",
+    "Headwater Sentries",
+    "Headwater Sentries",
+    "Island",
+    "Island",
+    "Plated Seastrider",
+    "Vizzerdrix"
+   ],
+   [
+    "Cloud Sprite",
+    "Island",
+    "Island",
+    "Merfolk of the Pearl Trident",
+    "Plated Seastrider",
+    "Sea Scryer",
+    "Sea Scryer"
+   ],
+   [
+    "Cloud Sprite",
+    "Island",
+    "Island",
+    "Island",
+    "Island",
+    "Merfolk of the Pearl Trident",
+    "Merfolk of the Pearl Trident"
+   ],
+   [
+    "Ancient Crab",
+    "Island",
+    "Island",
+    "Merfolk of the Pearl Trident",
+    "Merfolk of the Pearl Trident",
+    "Plated Seastrider",
+    "Sea Scryer"
+   ],
+   [
+    "Cloud Sprite",
+    "Headwater Sentries",
+    "Island",
+    "Island",
+    "Island",
+    "Island",
+    "Merfolk of the Pearl Trident"
+   ],
+   [
+    "Ancient Crab",
+    "Cloud Sprite",
+    "Headwater Sentries",
+    "Headwater Sentries",
+    "Island",
+    "Island",
+    "Sea Scryer"
+   ],
+   [
+    "Cloud Sprite",
+    "Headwater Sentries",
+    "Island",
+    "Island",
+    "Island",
+    "Merfolk of the Pearl Trident",
+    "Sea Scryer"
+   ],
+   [
+    "Ancient Crab",
+    "Cloud Sprite",
+    "Cloud Sprite",
+    "Headwater Sentries",
+    "Island",
+    "Island",
+    "Island"
+   ],
+   [
+    "Ancient Crab",
+    "Cloud Sprite",
+    "Headwater Sentries",
+    "Island",
+    "Island",
+    "Plated Seastrider",
+    "Sea Scryer"
+   ],
+   [
+    "Cloud Sprite",
+    "Cloud Sprite",
+    "Headwater Sentries",
+    "Island",
+    "Island",
+    "Plated Seastrider",
+    "Sea Scryer"
+   ],
+   [
+    "Coral Merfolk",
+    "Headwater Sentries",
+    "Island",
+    "Island",
+    "Island",
+    "Merfolk of the Pearl Trident",
+    "Sea Scryer"
+   ],
+   [
+    "Ancient Crab",
+    "Cloud Sprite",
+    "Headwater Sentries",
+    "Island",
+    "Island",
+    "Island",
+    "Island"
+   ],
+   [
+    "Coral Merfolk",
+    "Island",
+    "Island",
+    "Merfolk of the Pearl Trident",
+    "Merfolk of the Pearl Trident",
+    "Sea Scryer",
+    "Sea Scryer"
+   ],
+   [
+    "Ancient Crab",
+    "Headwater Sentries",
+    "Island",
+    "Island",
+    "Island",
+    "Island",
+    "Sea Scryer"
+   ],
+   [
+    "Cloud Sprite",
+    "Headwater Sentries",
+    "Island",
+    "Island",
+    "Island",
+    "Island",
+    "Merfolk of the Pearl Trident"
+   ],
+   [
+    "Cloud Sprite",
+    "Headwater Sentries",
+    "Island",
+    "Island",
+    "Island",
+    "Island",
+    "Vizzerdrix"
+   ],
+   [
+    "Ancient Crab",
+    "Cloud Sprite",
+    "Coral Merfolk",
+    "Headwater Sentries",
+    "Island",
+    "Island",
+    "Plated Seastrider"
+   ],
+   [
+    "Ancient Crab",
+    "Headwater Sentries",
+    "Island",
+    "Merfolk of the Pearl Trident",
+    "Plated Seastrider",
+    "Plated Seastrider",
+    "Sea Scryer"
+   ],
+   [
+    "Ancient Crab",
+    "Cloud Sprite",
+    "Cloud Sprite",
+    "Headwater Sentries",
+    "Island",
+    "Merfolk of the Pearl Trident",
+    "Plated Seastrider"
+   ],
+   [
+    "Cloud Sprite",
+    "Headwater Sentries",
+    "Island",
+    "Island",
+    "Island",
+    "Island",
+    "Sea Scryer"
+   ],
+   [
+    "Ancient Crab",
+    "Island",
+    "Island",
+    "Island",
+    "Plated Seastrider",
+    "Sea Scryer",
+    "Sea Scryer"
+   ],
+   [
+    "Cloud Sprite",
+    "Coral Merfolk",
+    "Island",
+    "Island",
+    "Island",
+    "Plated Seastrider",
+    "Plated Seastrider"
+   ],
+   [
+    "Ancient Crab",
+    "Cloud Sprite",
+    "Island",
+    "Island",
+    "Island",
+    "Island",
+    "Island"
+   ],
+   [
+    "Island",
+    "Island",
+    "Island",
+    "Island",
+    "Merfolk of the Pearl Trident",
+    "Plated Seastrider",
+    "Plated Seastrider"
+   ],
+   [
+    "Headwater Sentries",
+    "Headwater Sentries",
+    "Island",
+    "Island",
+    "Island",
+    "Island",
+    "Island"
+   ],
+   [
+    "Headwater Sentries",
+    "Island",
+    "Island",
+    "Island",
+    "Island",
+    "Plated Seastrider",
+    "Plated Seastrider"
+   ],
+   [
+    "Cloud Sprite",
+    "Coral Merfolk",
+    "Headwater Sentries",
+    "Island",
+    "Island",
+    "Merfolk of the Pearl Trident",
+    "Merfolk of the Pearl Trident"
+   ],
+   [
+    "Ancient Crab",
+    "Coral Merfolk",
+    "Coral Merfolk",
+    "Island",
+    "Island",
+    "Island",
+    "Vizzerdrix"
+   ],
+   [
+    "Cloud Sprite",
+    "Headwater Sentries",
+    "Island",
+    "Merfolk of the Pearl Trident",
+    "Merfolk of the Pearl Trident",
+    "Plated Seastrider",
+    "Sea Scryer"
+   ],
+   [
+    "Ancient Crab",
+    "Cloud Sprite",
+    "Cloud Sprite",
+    "Headwater Sentries",
+    "Island",
+    "Island",
+    "Plated Seastrider"
+   ],
+   [
+    "Coral Merfolk",
+    "Headwater Sentries",
+    "Island",
+    "Island",
+    "Island",
+    "Island",
+    "Merfolk of the Pearl Trident"
+   ],
+   [
+    "Cloud Sprite",
+    "Island",
+    "Island",
+    "Island",
+    "Merfolk of the Pearl Trident",
+    "Merfolk of the Pearl Trident",
+    "Plated Seastrider"
+   ],
+   [
+    "Cloud Sprite",
+    "Coral Merfolk",
+    "Coral Merfolk",
+    "Headwater Sentries",
+    "Island",
+    "Island",
+    "Plated Seastrider"
+   ],
+   [
+    "Coral Merfolk",
+    "Headwater Sentries",
+    "Island",
+    "Island",
+    "Merfolk of the Pearl Trident",
+    "Plated Seastrider",
+    "Vizzerdrix"
+   ],
+   [
+    "Cloud Sprite",
+    "Island",
+    "Island",
+    "Island",
+    "Merfolk of the Pearl Trident",
+    "Plated Seastrider",
+    "Vizzerdrix"
+   ],
+   [
+    "Ancient Crab",
+    "Cloud Sprite",
+    "Headwater Sentries",
+    "Island",
+    "Island",
+    "Plated Seastrider",
+    "Vizzerdrix"
+   ],
+   [
+    "Island",
+    "Island",
+    "Island",
+    "Island",
+    "Island",
+    "Island",
+    "Merfolk of the Pearl Trident"
+   ],
+   [
+    "Ancient Crab",
+    "Cloud Sprite",
+    "Cloud Sprite",
+    "Island",
+    "Island",
+    "Island",
+    "Plated Seastrider"
+   ],
+   [
+    "Cloud Sprite",
+    "Coral Merfolk",
+    "Coral Merfolk",
+    "Island",
+    "Island",
+    "Island",
+    "Plated Seastrider"
+   ],
+   [
+    "Headwater Sentries",
+    "Island",
+    "Island",
+    "Merfolk of the Pearl Trident",
+    "Merfolk of the Pearl Trident",
+    "Plated Seastrider",
+    "Vizzerdrix"
+   ],
+   [
+    "Coral Merfolk",
+    "Headwater Sentries",
+    "Headwater Sentries",
+    "Island",
+    "Island",
+    "Island",
+    "Sea Scryer"
+   ],
+   [
+    "Ancient Crab",
+    "Cloud Sprite",
+    "Headwater Sentries",
+    "Island",
+    "Island",
+    "Plated Seastrider",
+    "Vizzerdrix"
+   ],
+   [
+    "Headwater Sentries",
+    "Island",
+    "Island",
+    "Island",
+    "Island",
+    "Merfolk of the Pearl Trident",
+    "Merfolk of the Pearl Trident"
+   ],
+   [
+    "Cloud Sprite",
+    "Headwater Sentries",
+    "Island",
+    "Island",
+    "Island",
+    "Island",
+    "Plated Seastrider"
+   ],
+   [
+    "Ancient Crab",
+    "Island",
+    "Island",
+    "Island",
+    "Island",
+    "Merfolk of the Pearl Trident",
+    "Sea Scryer"
+   ],
+   [
+    "Ancient Crab",
+    "Coral Merfolk",
+    "Headwater Sentries",
+    "Island",
+    "Island",
+    "Sea Scryer",
+    "Sea Scryer"
+   ],
+   [
+    "Cloud Sprite",
+    "Coral Merfolk",
+    "Headwater Sentries",
+    "Island",
+    "Island",
+    "Island",
+    "Plated Seastrider"
+   ],
+   [
+    "Ancient Crab",
+    "Ancient Crab",
+    "Island",
+    "Island",
+    "Island",
+    "Merfolk of the Pearl Trident",
+    "Sea Scryer"
+   ],
+   [
+    "Island",
+    "Island",
+    "Plated Seastrider",
+    "Plated Seastrider",
+    "Sea Scryer",
+    "Sea Scryer",
+    "Vizzerdrix"
+   ],
+   [
+    "Ancient Crab",
+    "Cloud Sprite",
+    "Headwater Sentries",
+    "Headwater Sentries",
+    "Island",
+    "Island",
+    "Merfolk of the Pearl Trident"
+   ],
+   [
+    "Cloud Sprite",
+    "Cloud Sprite",
+    "Coral Merfolk",
+    "Headwater Sentries",
+    "Island",
+    "Island",
+    "Island"
+   ],
+   [
+    "Ancient Crab",
+    "Headwater Sentries",
+    "Headwater Sentries",
+    "Island",
+    "Island",
+    "Merfolk of the Pearl Trident",
+    "Sea Scryer"
+   ],
+   [
+    "Cloud Sprite",
+    "Island",
+    "Island",
+    "Island",
+    "Island",
+    "Island",
+    "Sea Scryer"
+   ],
+   [
+    "Cloud Sprite",
+    "Headwater Sentries",
+    "Island",
+    "Island",
+    "Island",
+    "Merfolk of the Pearl Trident",
+    "Merfolk of the Pearl Trident"
+   ],
+   [
+    "Coral Merfolk",
+    "Headwater Sentries",
+    "Island",
+    "Plated Seastrider",
+    "Plated Seastrider",
+    "Plated Seastrider",
+    "Vizzerdrix"
+   ],
+   [
+    "Cloud Sprite",
+    "Headwater Sentries",
+    "Island",
+    "Island",
+    "Plated Seastrider",
+    "Plated Seastrider",
+    "Sea Scryer"
+   ],
+   [
+    "Cloud Sprite",
+    "Cloud Sprite",
+    "Coral Merfolk",
+    "Island",
+    "Island",
+    "Merfolk of the Pearl Trident",
+    "Vizzerdrix"
+   ],
+   [
+    "Island",
+    "Island",
+    "Island",
+    "Merfolk of the Pearl Trident",
+    "Merfolk of the Pearl Trident",
+    "Plated Seastrider",
+    "Plated Seastrider"
+   ],
+   [
+    "Ancient Crab",
+    "Ancient Crab",
+    "Ancient Crab",
+    "Headwater Sentries",
+    "Island",
+    "Island",
+    "Vizzerdrix"
+   ],
+   [
+    "Coral Merfolk",
+    "Coral Merfolk",
+    "Headwater Sentries",
+    "Island",
+    "Island",
+    "Plated Seastrider",
+    "Vizzerdrix"
+   ],
+   [
+    "Ancient Crab",
+    "Cloud Sprite",
+    "Headwater Sentries",
+    "Island",
+    "Island",
+    "Island",
+    "Plated Seastrider"
+   ],
+   [
+    "Coral Merfolk",
+    "Island",
+    "Island",
+    "Island",
+    "Island",
+    "Island",
+    "Sea Scryer"
+   ],
+   [
+    "Ancient Crab",
+    "Cloud Sprite",
+    "Coral Merfolk",
+    "Headwater Sentries",
+    "Island",
+    "Island",
+    "Island"
+   ],
+   [
+    "Ancient Crab",
+    "Ancient Crab",
+    "Cloud Sprite",
+    "Island",
+    "Island",
+    "Island",
+    "Sea Scryer"
+   ],
+   [
+    "Cloud Sprite",
+    "Island",
+    "Island",
+    "Island",
+    "Island",
+    "Island",
+    "Sea Scryer"
+   ],
+   [
+    "Ancient Crab",
+    "Cloud Sprite",
+    "Coral Merfolk",
+    "Headwater Sentries",
+    "Island",
+    "Island",
+    "Sea Scryer"
+   ],
+   [
+    "Ancient Crab",
+    "Ancient Crab",
+    "Cloud Sprite",
+    "Coral Merfolk",
+    "Island",
+    "Island",
+    "Sea Scryer"
+   ],
+   [
+    "Cloud Sprite",
+    "Headwater Sentries",
+    "Headwater Sentries",
+    "Island",
+    "Island",
+    "Island",
+    "Plated Seastrider"
+   ],
+   [
+    "Ancient Crab",
+    "Cloud Sprite",
+    "Headwater Sentries",
+    "Merfolk of the Pearl Trident",
+    "Sea Scryer",
+    "Sea Scryer",
+    "Vizzerdrix"
+   ],
+   [
+    "Coral Merfolk",
+    "Coral Merfolk",
+    "Island",
+    "Island",
+    "Island",
+    "Island",
+    "Plated Seastrider"
+   ],
+   [
+    "Cloud Sprite",
+    "Coral Merfolk",
+    "Island",
+    "Island",
+    "Island",
+    "Merfolk of the Pearl Trident",
+    "Plated Seastrider"
+   ],
+   [
+    "Cloud Sprite",
+    "Island",
+    "Island",
+    "Island",
+    "Island",
+    "Merfolk of the Pearl Trident",
+    "Plated Seastrider"
+   ],
+   [
+    "Cloud Sprite",
+    "Coral Merfolk",
+    "Island",
+    "Island",
+    "Island",
+    "Island",
+    "Island"
+   ],
+   [
+    "Cloud Sprite",
+    "Coral Merfolk",
+    "Island",
+    "Island",
+    "Island",
+    "Merfolk of the Pearl Trident",
+    "Sea Scryer"
+   ],
+   [
+    "Ancient Crab",
+    "Cloud Sprite",
+    "Headwater Sentries",
+    "Island",
+    "Merfolk of the Pearl Trident",
+    "Sea Scryer",
+    "Sea Scryer"
+   ],
+   [
+    "Coral Merfolk",
+    "Island",
+    "Island",
+    "Island",
+    "Island",
+    "Island",
+    "Vizzerdrix"
+   ],
+   [
+    "Cloud Sprite",
+    "Cloud Sprite",
+    "Headwater Sentries",
+    "Island",
+    "Island",
+    "Island",
+    "Island"
+   ],
+   [
+    "Cloud Sprite",
+    "Cloud Sprite",
+    "Cloud Sprite",
+    "Island",
+    "Island",
+    "Merfolk of the Pearl Trident",
+    "Plated Seastrider"
+   ],
+   [
+    "Ancient Crab",
+    "Headwater Sentries",
+    "Headwater Sentries",
+    "Island",
+    "Island",
+    "Island",
+    "Sea Scryer"
+   ],
+   [
+    "Coral Merfolk",
+    "Headwater Sentries",
+    "Island",
+    "Island",
+    "Island",
+    "Island",
+    "Merfolk of the Pearl Trident"
+   ],
+   [
+    "Cloud Sprite",
+    "Coral Merfolk",
+    "Island",
+    "Island",
+    "Island",
+    "Sea Scryer",
+    "Vizzerdrix"
+   ]
+  ],
+  "trick_rate": 0.0
+ }
+}

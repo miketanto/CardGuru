@@ -1,0 +1,1013 @@
+{
+ "seq": 12,
+ "request": {
+  "kind": "attackers",
+  "turn": 4,
+  "phase": "Declare Attackers",
+  "active": "A",
+  "state": {
+   "B": {
+    "life": 20,
+    "battlefield": [
+     {
+      "name": "Forest",
+      "tapped": false
+     },
+     {
+      "name": "Forest",
+      "tapped": false
+     }
+    ],
+    "graveyard": [],
+    "hand_count": 6
+   },
+   "A": {
+    "life": 20,
+    "battlefield": [
+     {
+      "name": "Mountain",
+      "tapped": false
+     },
+     {
+      "name": "Kird Ape",
+      "tapped": false,
+      "power": 1,
+      "toughness": 1,
+      "summoning_sick": false
+     },
+     {
+      "name": "Mountain",
+      "tapped": true
+     },
+     {
+      "name": "Monastery Swiftspear",
+      "tapped": false,
+      "power": 1,
+      "toughness": 2,
+      "summoning_sick": false
+     }
+    ],
+    "graveyard": [],
+    "hand_count": 5,
+    "hand": [
+     {
+      "name": "Mountain"
+     },
+     {
+      "name": "Incinerate"
+     },
+     {
+      "name": "Searing Spear"
+     },
+     {
+      "name": "Monstrous Rage"
+     },
+     {
+      "name": "Searing Spear"
+     }
+    ]
+   }
+  },
+  "options": [
+   {
+    "index": 0,
+    "name": "Kird Ape",
+    "power": 1,
+    "toughness": 1
+   },
+   {
+    "index": 1,
+    "name": "Monastery Swiftspear",
+    "power": 1,
+    "toughness": 2
+   }
+  ],
+  "seq": 36
+ },
+ "belief": {
+  "archetype": "Dimir Midrange",
+  "p": 0.25,
+  "remaining": {
+   "Deep-Cavern Bat": 4,
+   "Spyglass Siren": 2,
+   "Faerie Mastermind": 2,
+   "Floodpits Drowner": 4,
+   "Preacher of the Schism": 4,
+   "Kaito, Bane of Nightmares": 3,
+   "Enduring Curiosity": 3,
+   "Sheoldred, the Apocalypse": 2,
+   "Cut Down": 4,
+   "Go for the Throat": 3,
+   "Anoint with Affliction": 2,
+   "Three Steps Ahead": 2,
+   "Undercity Sewers": 4,
+   "Darkslick Shores": 4,
+   "Restless Reef": 2,
+   "Swamp": 8,
+   "Island": 7
+  },
+  "hands": [
+   [
+    "Cut Down",
+    "Darkslick Shores",
+    "Darkslick Shores",
+    "Go for the Throat",
+    "Island",
+    "Kaito, Bane of Nightmares",
+    "Swamp"
+   ],
+   [
+    "Deep-Cavern Bat",
+    "Enduring Curiosity",
+    "Kaito, Bane of Nightmares",
+    "Preacher of the Schism",
+    "Preacher of the Schism",
+    "Swamp",
+    "Undercity Sewers"
+   ],
+   [
+    "Anoint with Affliction",
+    "Darkslick Shores",
+    "Faerie Mastermind",
+    "Island",
+    "Kaito, Bane of Nightmares",
+    "Restless Reef",
+    "Sheoldred, the Apocalypse"
+   ],
+   [
+    "Deep-Cavern Bat",
+    "Faerie Mastermind",
+    "Island",
+    "Kaito, Bane of Nightmares",
+    "Kaito, Bane of Nightmares",
+    "Restless Reef",
+    "Sheoldred, the Apocalypse"
+   ],
+   [
+    "Enduring Curiosity",
+    "Island",
+    "Island",
+    "Kaito, Bane of Nightmares",
+    "Preacher of the Schism",
+    "Preacher of the Schism",
+    "Preacher of the Schism"
+   ],
+   [
+    "Cut Down",
+    "Darkslick Shores",
+    "Faerie Mastermind",
+    "Kaito, Bane of Nightmares",
+    "Preacher of the Schism",
+    "Restless Reef",
+    "Three Steps Ahead"
+   ],
+   [
+    "Cut Down",
+    "Darkslick Shores",
+    "Deep-Cavern Bat",
+    "Floodpits Drowner",
+    "Island",
+    "Sheoldred, the Apocalypse",
+    "Three Steps Ahead"
+   ],
+   [
+    "Cut Down",
+    "Deep-Cavern Bat",
+    "Faerie Mastermind",
+    "Kaito, Bane of Nightmares",
+    "Restless Reef",
+    "Swamp",
+    "Three Steps Ahead"
+   ],
+   [
+    "Anoint with Affliction",
+    "Enduring Curiosity",
+    "Faerie Mastermind",
+    "Preacher of the Schism",
+    "Spyglass Siren",
+    "Swamp",
+    "Swamp"
+   ],
+   [
+    "Anoint with Affliction",
+    "Cut Down",
+    "Floodpits Drowner",
+    "Floodpits Drowner",
+    "Restless Reef",
+    "Sheoldred, the Apocalypse",
+    "Undercity Sewers"
+   ],
+   [
+    "Faerie Mastermind",
+    "Island",
+    "Island",
+    "Kaito, Bane of Nightmares",
+    "Swamp",
+    "Swamp",
+    "Swamp"
+   ],
+   [
+    "Anoint with Affliction",
+    "Floodpits Drowner",
+    "Island",
+    "Kaito, Bane of Nightmares",
+    "Preacher of the Schism",
+    "Swamp",
+    "Three Steps Ahead"
+   ],
+   [
+    "Go for the Throat",
+    "Preacher of the Schism",
+    "Preacher of the Schism",
+    "Restless Reef",
+    "Spyglass Siren",
+    "Swamp",
+    "Undercity Sewers"
+   ],
+   [
+    "Cut Down",
+    "Enduring Curiosity",
+    "Faerie Mastermind",
+    "Floodpits Drowner",
+    "Kaito, Bane of Nightmares",
+    "Sheoldred, the Apocalypse",
+    "Swamp"
+   ],
+   [
+    "Anoint with Affliction",
+    "Darkslick Shores",
+    "Floodpits Drowner",
+    "Go for the Throat",
+    "Sheoldred, the Apocalypse",
+    "Spyglass Siren",
+    "Swamp"
+   ],
+   [
+    "Cut Down",
+    "Enduring Curiosity",
+    "Go for the Throat",
+    "Go for the Throat",
+    "Island",
+    "Island",
+    "Swamp"
+   ],
+   [
+    "Darkslick Shores",
+    "Deep-Cavern Bat",
+    "Enduring Curiosity",
+    "Floodpits Drowner",
+    "Go for the Throat",
+    "Kaito, Bane of Nightmares",
+    "Swamp"
+   ],
+   [
+    "Cut Down",
+    "Floodpits Drowner",
+    "Go for the Throat",
+    "Restless Reef",
+    "Spyglass Siren",
+    "Swamp",
+    "Undercity Sewers"
+   ],
+   [
+    "Cut Down",
+    "Faerie Mastermind",
+    "Island",
+    "Kaito, Bane of Nightmares",
+    "Preacher of the Schism",
+    "Spyglass Siren",
+    "Swamp"
+   ],
+   [
+    "Cut Down",
+    "Darkslick Shores",
+    "Faerie Mastermind",
+    "Island",
+    "Kaito, Bane of Nightmares",
+    "Three Steps Ahead",
+    "Undercity Sewers"
+   ],
+   [
+    "Cut Down",
+    "Cut Down",
+    "Deep-Cavern Bat",
+    "Deep-Cavern Bat",
+    "Island",
+    "Swamp",
+    "Undercity Sewers"
+   ],
+   [
+    "Floodpits Drowner",
+    "Island",
+    "Preacher of the Schism",
+    "Preacher of the Schism",
+    "Sheoldred, the Apocalypse",
+    "Swamp",
+    "Three Steps Ahead"
+   ],
+   [
+    "Darkslick Shores",
+    "Faerie Mastermind",
+    "Faerie Mastermind",
+    "Floodpits Drowner",
+    "Island",
+    "Three Steps Ahead",
+    "Undercity Sewers"
+   ],
+   [
+    "Anoint with Affliction",
+    "Anoint with Affliction",
+    "Cut Down",
+    "Kaito, Bane of Nightmares",
+    "Preacher of the Schism",
+    "Sheoldred, the Apocalypse",
+    "Swamp"
+   ],
+   [
+    "Enduring Curiosity",
+    "Floodpits Drowner",
+    "Floodpits Drowner",
+    "Island",
+    "Island",
+    "Island",
+    "Undercity Sewers"
+   ],
+   [
+    "Darkslick Shores",
+    "Deep-Cavern Bat",
+    "Enduring Curiosity",
+    "Faerie Mastermind",
+    "Floodpits Drowner",
+    "Island",
+    "Swamp"
+   ],
+   [
+    "Anoint with Affliction",
+    "Enduring Curiosity",
+    "Faerie Mastermind",
+    "Island",
+    "Preacher of the Schism",
+    "Swamp",
+    "Undercity Sewers"
+   ],
+   [
+    "Faerie Mastermind",
+    "Go for the Throat",
+    "Island",
+    "Restless Reef",
+    "Swamp",
+    "Three Steps Ahead",
+    "Undercity Sewers"
+   ],
+   [
+    "Anoint with Affliction",
+    "Darkslick Shores",
+    "Enduring Curiosity",
+    "Island",
+    "Kaito, Bane of Nightmares",
+    "Restless Reef",
+    "Spyglass Siren"
+   ],
+   [
+    "Anoint with Affliction",
+    "Cut Down",
+    "Darkslick Shores",
+    "Deep-Cavern Bat",
+    "Kaito, Bane of Nightmares",
+    "Preacher of the Schism",
+    "Swamp"
+   ],
+   [
+    "Enduring Curiosity",
+    "Island",
+    "Kaito, Bane of Nightmares",
+    "Preacher of the Schism",
+    "Swamp",
+    "Swamp",
+    "Undercity Sewers"
+   ],
+   [
+    "Go for the Throat",
+    "Island",
+    "Island",
+    "Restless Reef",
+    "Spyglass Siren",
+    "Swamp",
+    "Swamp"
+   ],
+   [
+    "Darkslick Shores",
+    "Deep-Cavern Bat",
+    "Faerie Mastermind",
+    "Floodpits Drowner",
+    "Go for the Throat",
+    "Swamp",
+    "Swamp"
+   ],
+   [
+    "Deep-Cavern Bat",
+    "Enduring Curiosity",
+    "Go for the Throat",
+    "Island",
+    "Kaito, Bane of Nightmares",
+    "Kaito, Bane of Nightmares",
+    "Swamp"
+   ],
+   [
+    "Darkslick Shores",
+    "Enduring Curiosity",
+    "Island",
+    "Preacher of the Schism",
+    "Sheoldred, the Apocalypse",
+    "Swamp",
+    "Swamp"
+   ],
+   [
+    "Cut Down",
+    "Cut Down",
+    "Deep-Cavern Bat",
+    "Preacher of the Schism",
+    "Sheoldred, the Apocalypse",
+    "Sheoldred, the Apocalypse",
+    "Swamp"
+   ],
+   [
+    "Cut Down",
+    "Darkslick Shores",
+    "Enduring Curiosity",
+    "Swamp",
+    "Three Steps Ahead",
+    "Undercity Sewers",
+    "Undercity Sewers"
+   ],
+   [
+    "Deep-Cavern Bat",
+    "Enduring Curiosity",
+    "Faerie Mastermind",
+    "Island",
+    "Island",
+    "Island",
+    "Three Steps Ahead"
+   ],
+   [
+    "Cut Down",
+    "Darkslick Shores",
+    "Deep-Cavern Bat",
+    "Floodpits Drowner",
+    "Floodpits Drowner",
+    "Island",
+    "Spyglass Siren"
+   ],
+   [
+    "Darkslick Shores",
+    "Island",
+    "Kaito, Bane of Nightmares",
+    "Preacher of the Schism",
+    "Sheoldred, the Apocalypse",
+    "Swamp",
+    "Undercity Sewers"
+   ],
+   [
+    "Cut Down",
+    "Darkslick Shores",
+    "Preacher of the Schism",
+    "Preacher of the Schism",
+    "Spyglass Siren",
+    "Swamp",
+    "Undercity Sewers"
+   ],
+   [
+    "Darkslick Shores",
+    "Darkslick Shores",
+    "Deep-Cavern Bat",
+    "Enduring Curiosity",
+    "Island",
+    "Kaito, Bane of Nightmares",
+    "Restless Reef"
+   ],
+   [
+    "Cut Down",
+    "Darkslick Shores",
+    "Floodpits Drowner",
+    "Go for the Throat",
+    "Kaito, Bane of Nightmares",
+    "Preacher of the Schism",
+    "Spyglass Siren"
+   ],
+   [
+    "Deep-Cavern Bat",
+    "Floodpits Drowner",
+    "Go for the Throat",
+    "Island",
+    "Island",
+    "Island",
+    "Swamp"
+   ],
+   [
+    "Deep-Cavern Bat",
+    "Island",
+    "Restless Reef",
+    "Sheoldred, the Apocalypse",
+    "Spyglass Siren",
+    "Swamp",
+    "Undercity Sewers"
+   ],
+   [
+    "Anoint with Affliction",
+    "Darkslick Shores",
+    "Enduring Curiosity",
+    "Island",
+    "Island",
+    "Kaito, Bane of Nightmares",
+    "Preacher of the Schism"
+   ],
+   [
+    "Darkslick Shores",
+    "Enduring Curiosity",
+    "Sheoldred, the Apocalypse",
+    "Swamp",
+    "Swamp",
+    "Three Steps Ahead",
+    "Undercity Sewers"
+   ],
+   [
+    "Anoint with Affliction",
+    "Anoint with Affliction",
+    "Darkslick Shores",
+    "Darkslick Shores",
+    "Restless Reef",
+    "Swamp",
+    "Swamp"
+   ],
+   [
+    "Deep-Cavern Bat",
+    "Floodpits Drowner",
+    "Island",
+    "Preacher of the Schism",
+    "Preacher of the Schism",
+    "Swamp",
+    "Swamp"
+   ],
+   [
+    "Deep-Cavern Bat",
+    "Faerie Mastermind",
+    "Floodpits Drowner",
+    "Island",
+    "Preacher of the Schism",
+    "Undercity Sewers",
+    "Undercity Sewers"
+   ],
+   [
+    "Cut Down",
+    "Darkslick Shores",
+    "Island",
+    "Spyglass Siren",
+    "Swamp",
+    "Swamp",
+    "Undercity Sewers"
+   ],
+   [
+    "Cut Down",
+    "Darkslick Shores",
+    "Darkslick Shores",
+    "Deep-Cavern Bat",
+    "Go for the Throat",
+    "Go for the Throat",
+    "Swamp"
+   ],
+   [
+    "Darkslick Shores",
+    "Enduring Curiosity",
+    "Island",
+    "Island",
+    "Swamp",
+    "Swamp",
+    "Three Steps Ahead"
+   ],
+   [
+    "Darkslick Shores",
+    "Enduring Curiosity",
+    "Floodpits Drowner",
+    "Kaito, Bane of Nightmares",
+    "Preacher of the Schism",
+    "Restless Reef",
+    "Undercity Sewers"
+   ],
+   [
+    "Cut Down",
+    "Deep-Cavern Bat",
+    "Go for the Throat",
+    "Swamp",
+    "Three Steps Ahead",
+    "Undercity Sewers",
+    "Undercity Sewers"
+   ],
+   [
+    "Cut Down",
+    "Darkslick Shores",
+    "Enduring Curiosity",
+    "Kaito, Bane of Nightmares",
+    "Preacher of the Schism",
+    "Undercity Sewers",
+    "Undercity Sewers"
+   ],
+   [
+    "Enduring Curiosity",
+    "Faerie Mastermind",
+    "Kaito, Bane of Nightmares",
+    "Swamp",
+    "Swamp",
+    "Swamp",
+    "Undercity Sewers"
+   ],
+   [
+    "Anoint with Affliction",
+    "Faerie Mastermind",
+    "Go for the Throat",
+    "Island",
+    "Kaito, Bane of Nightmares",
+    "Restless Reef",
+    "Undercity Sewers"
+   ],
+   [
+    "Cut Down",
+    "Enduring Curiosity",
+    "Enduring Curiosity",
+    "Restless Reef",
+    "Spyglass Siren",
+    "Swamp",
+    "Swamp"
+   ],
+   [
+    "Deep-Cavern Bat",
+    "Enduring Curiosity",
+    "Faerie Mastermind",
+    "Island",
+    "Island",
+    "Swamp",
+    "Swamp"
+   ],
+   [
+    "Enduring Curiosity",
+    "Faerie Mastermind",
+    "Island",
+    "Preacher of the Schism",
+    "Swamp",
+    "Undercity Sewers",
+    "Undercity Sewers"
+   ],
+   [
+    "Darkslick Shores",
+    "Deep-Cavern Bat",
+    "Deep-Cavern Bat",
+    "Enduring Curiosity",
+    "Island",
+    "Restless Reef",
+    "Undercity Sewers"
+   ],
+   [
+    "Anoint with Affliction",
+    "Darkslick Shores",
+    "Deep-Cavern Bat",
+    "Faerie Mastermind",
+    "Go for the Throat",
+    "Swamp",
+    "Three Steps Ahead"
+   ],
+   [
+    "Anoint with Affliction",
+    "Enduring Curiosity",
+    "Island",
+    "Kaito, Bane of Nightmares",
+    "Preacher of the Schism",
+    "Swamp",
+    "Swamp"
+   ],
+   [
+    "Cut Down",
+    "Go for the Throat",
+    "Island",
+    "Kaito, Bane of Nightmares",
+    "Preacher of the Schism",
+    "Swamp",
+    "Undercity Sewers"
+   ],
+   [
+    "Deep-Cavern Bat",
+    "Enduring Curiosity",
+    "Enduring Curiosity",
+    "Go for the Throat",
+    "Island",
+    "Swamp",
+    "Undercity Sewers"
+   ],
+   [
+    "Enduring Curiosity",
+    "Faerie Mastermind",
+    "Island",
+    "Island",
+    "Kaito, Bane of Nightmares",
+    "Swamp",
+    "Undercity Sewers"
+   ],
+   [
+    "Cut Down",
+    "Floodpits Drowner",
+    "Go for the Throat",
+    "Kaito, Bane of Nightmares",
+    "Restless Reef",
+    "Spyglass Siren",
+    "Swamp"
+   ],
+   [
+    "Darkslick Shores",
+    "Kaito, Bane of Nightmares",
+    "Preacher of the Schism",
+    "Restless Reef",
+    "Sheoldred, the Apocalypse",
+    "Swamp",
+    "Swamp"
+   ],
+   [
+    "Floodpits Drowner",
+    "Go for the Throat",
+    "Go for the Throat",
+    "Island",
+    "Kaito, Bane of Nightmares",
+    "Swamp",
+    "Undercity Sewers"
+   ],
+   [
+    "Deep-Cavern Bat",
+    "Faerie Mastermind",
+    "Floodpits Drowner",
+    "Restless Reef",
+    "Spyglass Siren",
+    "Swamp",
+    "Undercity Sewers"
+   ],
+   [
+    "Cut Down",
+    "Deep-Cavern Bat",
+    "Enduring Curiosity",
+    "Island",
+    "Island",
+    "Kaito, Bane of Nightmares",
+    "Sheoldred, the Apocalypse"
+   ],
+   [
+    "Darkslick Shores",
+    "Deep-Cavern Bat",
+    "Enduring Curiosity",
+    "Floodpits Drowner",
+    "Go for the Throat",
+    "Kaito, Bane of Nightmares",
+    "Three Steps Ahead"
+   ],
+   [
+    "Anoint with Affliction",
+    "Darkslick Shores",
+    "Darkslick Shores",
+    "Enduring Curiosity",
+    "Enduring Curiosity",
+    "Kaito, Bane of Nightmares",
+    "Swamp"
+   ],
+   [
+    "Deep-Cavern Bat",
+    "Enduring Curiosity",
+    "Island",
+    "Sheoldred, the Apocalypse",
+    "Spyglass Siren",
+    "Swamp",
+    "Swamp"
+   ],
+   [
+    "Darkslick Shores",
+    "Floodpits Drowner",
+    "Go for the Throat",
+    "Island",
+    "Island",
+    "Kaito, Bane of Nightmares",
+    "Sheoldred, the Apocalypse"
+   ],
+   [
+    "Anoint with Affliction",
+    "Deep-Cavern Bat",
+    "Floodpits Drowner",
+    "Go for the Throat",
+    "Kaito, Bane of Nightmares",
+    "Preacher of the Schism",
+    "Restless Reef"
+   ],
+   [
+    "Cut Down",
+    "Darkslick Shores",
+    "Deep-Cavern Bat",
+    "Faerie Mastermind",
+    "Island",
+    "Preacher of the Schism",
+    "Sheoldred, the Apocalypse"
+   ],
+   [
+    "Cut Down",
+    "Darkslick Shores",
+    "Go for the Throat",
+    "Island",
+    "Island",
+    "Swamp",
+    "Undercity Sewers"
+   ],
+   [
+    "Deep-Cavern Bat",
+    "Deep-Cavern Bat",
+    "Deep-Cavern Bat",
+    "Enduring Curiosity",
+    "Go for the Throat",
+    "Kaito, Bane of Nightmares",
+    "Restless Reef"
+   ],
+   [
+    "Faerie Mastermind",
+    "Floodpits Drowner",
+    "Go for the Throat",
+    "Island",
+    "Preacher of the Schism",
+    "Restless Reef",
+    "Swamp"
+   ],
+   [
+    "Cut Down",
+    "Deep-Cavern Bat",
+    "Faerie Mastermind",
+    "Floodpits Drowner",
+    "Kaito, Bane of Nightmares",
+    "Swamp",
+    "Undercity Sewers"
+   ],
+   [
+    "Cut Down",
+    "Darkslick Shores",
+    "Deep-Cavern Bat",
+    "Deep-Cavern Bat",
+    "Kaito, Bane of Nightmares",
+    "Swamp",
+    "Three Steps Ahead"
+   ],
+   [
+    "Enduring Curiosity",
+    "Go for the Throat",
+    "Kaito, Bane of Nightmares",
+    "Spyglass Siren",
+    "Swamp",
+    "Swamp",
+    "Undercity Sewers"
+   ],
+   [
+    "Deep-Cavern Bat",
+    "Enduring Curiosity",
+    "Island",
+    "Kaito, Bane of Nightmares",
+    "Preacher of the Schism",
+    "Swamp",
+    "Undercity Sewers"
+   ],
+   [
+    "Deep-Cavern Bat",
+    "Go for the Throat",
+    "Island",
+    "Preacher of the Schism",
+    "Restless Reef",
+    "Swamp",
+    "Three Steps Ahead"
+   ],
+   [
+    "Cut Down",
+    "Deep-Cavern Bat",
+    "Enduring Curiosity",
+    "Preacher of the Schism",
+    "Swamp",
+    "Swamp",
+    "Three Steps Ahead"
+   ],
+   [
+    "Deep-Cavern Bat",
+    "Faerie Mastermind",
+    "Preacher of the Schism",
+    "Swamp",
+    "Swamp",
+    "Swamp",
+    "Undercity Sewers"
+   ],
+   [
+    "Enduring Curiosity",
+    "Floodpits Drowner",
+    "Preacher of the Schism",
+    "Swamp",
+    "Swamp",
+    "Three Steps Ahead",
+    "Undercity Sewers"
+   ],
+   [
+    "Anoint with Affliction",
+    "Cut Down",
+    "Floodpits Drowner",
+    "Go for the Throat",
+    "Island",
+    "Kaito, Bane of Nightmares",
+    "Three Steps Ahead"
+   ],
+   [
+    "Deep-Cavern Bat",
+    "Floodpits Drowner",
+    "Island",
+    "Kaito, Bane of Nightmares",
+    "Restless Reef",
+    "Sheoldred, the Apocalypse",
+    "Swamp"
+   ],
+   [
+    "Cut Down",
+    "Darkslick Shores",
+    "Deep-Cavern Bat",
+    "Deep-Cavern Bat",
+    "Enduring Curiosity",
+    "Kaito, Bane of Nightmares",
+    "Preacher of the Schism"
+   ],
+   [
+    "Faerie Mastermind",
+    "Floodpits Drowner",
+    "Island",
+    "Island",
+    "Restless Reef",
+    "Swamp",
+    "Undercity Sewers"
+   ],
+   [
+    "Deep-Cavern Bat",
+    "Deep-Cavern Bat",
+    "Enduring Curiosity",
+    "Floodpits Drowner",
+    "Island",
+    "Swamp",
+    "Undercity Sewers"
+   ],
+   [
+    "Floodpits Drowner",
+    "Floodpits Drowner",
+    "Floodpits Drowner",
+    "Island",
+    "Spyglass Siren",
+    "Three Steps Ahead",
+    "Undercity Sewers"
+   ],
+   [
+    "Cut Down",
+    "Cut Down",
+    "Deep-Cavern Bat",
+    "Floodpits Drowner",
+    "Kaito, Bane of Nightmares",
+    "Sheoldred, the Apocalypse",
+    "Undercity Sewers"
+   ],
+   [
+    "Deep-Cavern Bat",
+    "Preacher of the Schism",
+    "Sheoldred, the Apocalypse",
+    "Swamp",
+    "Swamp",
+    "Undercity Sewers",
+    "Undercity Sewers"
+   ],
+   [
+    "Deep-Cavern Bat",
+    "Enduring Curiosity",
+    "Island",
+    "Island",
+    "Island",
+    "Sheoldred, the Apocalypse",
+    "Swamp"
+   ],
+   [
+    "Island",
+    "Island",
+    "Restless Reef",
+    "Sheoldred, the Apocalypse",
+    "Spyglass Siren",
+    "Spyglass Siren",
+    "Undercity Sewers"
+   ],
+   [
+    "Cut Down",
+    "Floodpits Drowner",
+    "Kaito, Bane of Nightmares",
+    "Preacher of the Schism",
+    "Sheoldred, the Apocalypse",
+    "Swamp",
+    "Undercity Sewers"
+   ]
+  ],
+  "trick_rate": 0.7
+ }
+}

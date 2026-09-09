@@ -1,0 +1,103 @@
+{
+ "seq": 3,
+ "request": {
+  "kind": "target",
+  "turn": 1,
+  "phase": "null",
+  "active": "-",
+  "state": {
+   "B": {
+    "life": 20,
+    "battlefield": [],
+    "graveyard": [],
+    "hand_count": 7
+   },
+   "A": {
+    "life": 20,
+    "battlefield": [],
+    "graveyard": [],
+    "hand_count": 7,
+    "hand": [
+     {
+      "name": "Mountain"
+     },
+     {
+      "name": "Mountain"
+     },
+     {
+      "name": "Mountain"
+     },
+     {
+      "name": "Brute Force"
+     },
+     {
+      "name": "Kird Ape",
+      "power": 1,
+      "toughness": 1
+     },
+     {
+      "name": "Kird Ape",
+      "power": 1,
+      "toughness": 1
+     },
+     {
+      "name": "Monastery Swiftspear",
+      "power": 1,
+      "toughness": 2
+     }
+    ]
+   }
+  },
+  "prompt": "Select a card (1 more) to put on the bottom of your library",
+  "ability": "null",
+  "outcome": "Discard",
+  "min": 1,
+  "max": 1,
+  "options": [
+   {
+    "index": 0,
+    "kind": "object",
+    "text": "Kird Ape"
+   },
+   {
+    "index": 1,
+    "kind": "object",
+    "text": "Mountain"
+   },
+   {
+    "index": 2,
+    "kind": "object",
+    "text": "Kird Ape"
+   },
+   {
+    "index": 3,
+    "kind": "object",
+    "text": "Mountain"
+   },
+   {
+    "index": 4,
+    "kind": "object",
+    "text": "Mountain"
+   },
+   {
+    "index": 5,
+    "kind": "object",
+    "text": "Brute Force"
+   },
+   {
+    "index": 6,
+    "kind": "object",
+    "text": "Monastery Swiftspear"
+   }
+  ],
+  "seq": 3
+ },
+ "belief": null,
+ "card_reference": {
+  "Brute Force": {
+   "cost": "{R}",
+   "types": "[Instant]",
+   "text": "Target creature gets +3/+3 until end of turn."
+  }
+ }
+}

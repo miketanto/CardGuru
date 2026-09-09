@@ -1,0 +1,81 @@
+{
+ "seq": 4,
+ "request": {
+  "kind": "priority",
+  "turn": 1,
+  "phase": "Precombat Main",
+  "active": "A",
+  "state": {
+   "A": {
+    "life": 20,
+    "battlefield": [
+     {
+      "name": "Mountain",
+      "tapped": false
+     }
+    ],
+    "graveyard": [],
+    "hand_count": 6,
+    "hand": [
+     {
+      "name": "Searing Spear"
+     },
+     {
+      "name": "Lightning Bolt"
+     },
+     {
+      "name": "Monstrous Rage"
+     },
+     {
+      "name": "Shock"
+     },
+     {
+      "name": "Goblin Piker",
+      "power": 2,
+      "toughness": 1
+     },
+     {
+      "name": "Monastery Swiftspear",
+      "power": 1,
+      "toughness": 2
+     }
+    ]
+   },
+   "B": {
+    "life": 20,
+    "battlefield": [],
+    "graveyard": [],
+    "hand_count": 7
+   }
+  },
+  "options": [
+   {
+    "index": 0,
+    "action": "pass",
+    "text": "pass priority"
+   },
+   {
+    "index": 1,
+    "action": "activate",
+    "text": "Cast Lightning Bolt"
+   },
+   {
+    "index": 2,
+    "action": "activate",
+    "text": "Cast Shock"
+   },
+   {
+    "index": 3,
+    "action": "activate",
+    "text": "Cast Monastery Swiftspear"
+   },
+   {
+    "index": 4,
+    "action": "activate",
+    "text": "{T}: Add {R}."
+   }
+  ],
+  "seq": 5
+ },
+ "belief": null
+}

@@ -1,0 +1,50 @@
+{
+ "seq": 4,
+ "request": {
+  "kind": "mulligan",
+  "turn": 1,
+  "phase": "null",
+  "active": "-",
+  "state": {
+   "B": {
+    "life": 20,
+    "battlefield": [],
+    "graveyard": [],
+    "hand_count": 7
+   },
+   "A": {
+    "life": 20,
+    "battlefield": [],
+    "graveyard": [],
+    "hand_count": 6,
+    "hand": [
+     {
+      "name": "Mountain"
+     },
+     {
+      "name": "Mountain"
+     },
+     {
+      "name": "Mountain"
+     },
+     {
+      "name": "Brute Force"
+     },
+     {
+      "name": "Kird Ape",
+      "power": 1,
+      "toughness": 1
+     },
+     {
+      "name": "Monastery Swiftspear",
+      "power": 1,
+      "toughness": 2
+     }
+    ]
+   }
+  },
+  "hand_count": 6,
+  "seq": 4
+ },
+ "belief": null
+}

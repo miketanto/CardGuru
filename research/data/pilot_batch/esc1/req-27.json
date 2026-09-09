@@ -1,0 +1,1025 @@
+{
+ "seq": 27,
+ "request": {
+  "kind": "priority",
+  "turn": 5,
+  "phase": "End Combat",
+  "active": "A",
+  "state": {
+   "A": {
+    "life": 20,
+    "battlefield": [
+     {
+      "name": "Mountain",
+      "tapped": false
+     }
+    ],
+    "graveyard": [
+     "Monastery Swiftspear"
+    ],
+    "hand_count": 7,
+    "hand": [
+     {
+      "name": "Searing Spear"
+     },
+     {
+      "name": "Lightning Bolt"
+     },
+     {
+      "name": "Monstrous Rage"
+     },
+     {
+      "name": "Shock"
+     },
+     {
+      "name": "Goblin Piker",
+      "power": 2,
+      "toughness": 1
+     },
+     {
+      "name": "Dragon Fodder"
+     },
+     {
+      "name": "Lightning Bolt"
+     }
+    ]
+   },
+   "B": {
+    "life": 18,
+    "battlefield": [
+     {
+      "name": "Forest",
+      "tapped": true
+     },
+     {
+      "name": "Forest",
+      "tapped": true
+     },
+     {
+      "name": "Grizzly Bears",
+      "tapped": false,
+      "power": 2,
+      "toughness": 2,
+      "summoning_sick": true
+     }
+    ],
+    "graveyard": [],
+    "hand_count": 6
+   }
+  },
+  "options": [
+   {
+    "index": 0,
+    "action": "pass",
+    "text": "pass priority"
+   },
+   {
+    "index": 1,
+    "action": "activate",
+    "text": "Cast Lightning Bolt"
+   },
+   {
+    "index": 2,
+    "action": "activate",
+    "text": "Cast Monstrous Rage"
+   },
+   {
+    "index": 3,
+    "action": "activate",
+    "text": "Cast Shock"
+   },
+   {
+    "index": 4,
+    "action": "activate",
+    "text": "Cast Lightning Bolt"
+   },
+   {
+    "index": 5,
+    "action": "activate",
+    "text": "{T}: Add {R}."
+   }
+  ],
+  "seq": 52
+ },
+ "belief": {
+  "archetype": "Mono-Green Stompy",
+  "p": 1.0,
+  "remaining": {
+   "Forest": 18,
+   "Kird Ape": 4,
+   "Nessian Courser": 4,
+   "Rumbling Baloth": 4,
+   "Craw Wurm": 3,
+   "Enormous Baloth": 2,
+   "Giant Growth": 4,
+   "Titanic Growth": 3,
+   "Might of Oaks": 2,
+   "Alpine Grizzly": 4,
+   "Grizzly Bears": 3,
+   "Redwood Treefolk": 2
+  },
+  "hands": [
+   [
+    "Alpine Grizzly",
+    "Forest",
+    "Forest",
+    "Forest",
+    "Forest",
+    "Might of Oaks",
+    "Titanic Growth"
+   ],
+   [
+    "Alpine Grizzly",
+    "Forest",
+    "Forest",
+    "Forest",
+    "Kird Ape",
+    "Nessian Courser",
+    "Redwood Treefolk"
+   ],
+   [
+    "Forest",
+    "Forest",
+    "Forest",
+    "Forest",
+    "Forest",
+    "Kird Ape",
+    "Might of Oaks"
+   ],
+   [
+    "Forest",
+    "Forest",
+    "Forest",
+    "Forest",
+    "Giant Growth",
+    "Nessian Courser",
+    "Titanic Growth"
+   ],
+   [
+    "Craw Wurm",
+    "Craw Wurm",
+    "Forest",
+    "Forest",
+    "Forest",
+    "Grizzly Bears",
+    "Rumbling Baloth"
+   ],
+   [
+    "Forest",
+    "Forest",
+    "Grizzly Bears",
+    "Grizzly Bears",
+    "Kird Ape",
+    "Might of Oaks",
+    "Rumbling Baloth"
+   ],
+   [
+    "Alpine Grizzly",
+    "Alpine Grizzly",
+    "Grizzly Bears",
+    "Kird Ape",
+    "Might of Oaks",
+    "Rumbling Baloth",
+    "Titanic Growth"
+   ],
+   [
+    "Alpine Grizzly",
+    "Alpine Grizzly",
+    "Craw Wurm",
+    "Forest",
+    "Giant Growth",
+    "Giant Growth",
+    "Kird Ape"
+   ],
+   [
+    "Enormous Baloth",
+    "Forest",
+    "Forest",
+    "Forest",
+    "Forest",
+    "Nessian Courser",
+    "Nessian Courser"
+   ],
+   [
+    "Forest",
+    "Forest",
+    "Forest",
+    "Giant Growth",
+    "Grizzly Bears",
+    "Nessian Courser",
+    "Rumbling Baloth"
+   ],
+   [
+    "Forest",
+    "Forest",
+    "Grizzly Bears",
+    "Grizzly Bears",
+    "Might of Oaks",
+    "Rumbling Baloth",
+    "Rumbling Baloth"
+   ],
+   [
+    "Alpine Grizzly",
+    "Craw Wurm",
+    "Forest",
+    "Forest",
+    "Grizzly Bears",
+    "Nessian Courser",
+    "Rumbling Baloth"
+   ],
+   [
+    "Alpine Grizzly",
+    "Forest",
+    "Forest",
+    "Forest",
+    "Forest",
+    "Grizzly Bears",
+    "Titanic Growth"
+   ],
+   [
+    "Alpine Grizzly",
+    "Forest",
+    "Forest",
+    "Forest",
+    "Forest",
+    "Giant Growth",
+    "Nessian Courser"
+   ],
+   [
+    "Craw Wurm",
+    "Forest",
+    "Forest",
+    "Forest",
+    "Forest",
+    "Kird Ape",
+    "Might of Oaks"
+   ],
+   [
+    "Alpine Grizzly",
+    "Forest",
+    "Forest",
+    "Giant Growth",
+    "Kird Ape",
+    "Might of Oaks",
+    "Nessian Courser"
+   ],
+   [
+    "Alpine Grizzly",
+    "Craw Wurm",
+    "Craw Wurm",
+    "Forest",
+    "Giant Growth",
+    "Grizzly Bears",
+    "Titanic Growth"
+   ],
+   [
+    "Enormous Baloth",
+    "Forest",
+    "Forest",
+    "Forest",
+    "Forest",
+    "Kird Ape",
+    "Nessian Courser"
+   ],
+   [
+    "Alpine Grizzly",
+    "Craw Wurm",
+    "Craw Wurm",
+    "Forest",
+    "Giant Growth",
+    "Might of Oaks",
+    "Rumbling Baloth"
+   ],
+   [
+    "Forest",
+    "Forest",
+    "Giant Growth",
+    "Nessian Courser",
+    "Nessian Courser",
+    "Redwood Treefolk",
+    "Rumbling Baloth"
+   ],
+   [
+    "Forest",
+    "Forest",
+    "Forest",
+    "Forest",
+    "Forest",
+    "Grizzly Bears",
+    "Titanic Growth"
+   ],
+   [
+    "Forest",
+    "Forest",
+    "Giant Growth",
+    "Kird Ape",
+    "Nessian Courser",
+    "Redwood Treefolk",
+    "Titanic Growth"
+   ],
+   [
+    "Alpine Grizzly",
+    "Alpine Grizzly",
+    "Craw Wurm",
+    "Forest",
+    "Forest",
+    "Kird Ape",
+    "Rumbling Baloth"
+   ],
+   [
+    "Alpine Grizzly",
+    "Enormous Baloth",
+    "Forest",
+    "Forest",
+    "Forest",
+    "Grizzly Bears",
+    "Grizzly Bears"
+   ],
+   [
+    "Forest",
+    "Forest",
+    "Forest",
+    "Forest",
+    "Giant Growth",
+    "Might of Oaks",
+    "Nessian Courser"
+   ],
+   [
+    "Forest",
+    "Forest",
+    "Forest",
+    "Giant Growth",
+    "Giant Growth",
+    "Nessian Courser",
+    "Redwood Treefolk"
+   ],
+   [
+    "Alpine Grizzly",
+    "Enormous Baloth",
+    "Forest",
+    "Giant Growth",
+    "Kird Ape",
+    "Might of Oaks",
+    "Titanic Growth"
+   ],
+   [
+    "Alpine Grizzly",
+    "Craw Wurm",
+    "Forest",
+    "Forest",
+    "Grizzly Bears",
+    "Kird Ape",
+    "Titanic Growth"
+   ],
+   [
+    "Craw Wurm",
+    "Enormous Baloth",
+    "Forest",
+    "Forest",
+    "Grizzly Bears",
+    "Nessian Courser",
+    "Rumbling Baloth"
+   ],
+   [
+    "Alpine Grizzly",
+    "Forest",
+    "Forest",
+    "Forest",
+    "Grizzly Bears",
+    "Rumbling Baloth",
+    "Titanic Growth"
+   ],
+   [
+    "Craw Wurm",
+    "Enormous Baloth",
+    "Enormous Baloth",
+    "Forest",
+    "Forest",
+    "Forest",
+    "Forest"
+   ],
+   [
+    "Forest",
+    "Forest",
+    "Forest",
+    "Forest",
+    "Giant Growth",
+    "Redwood Treefolk",
+    "Rumbling Baloth"
+   ],
+   [
+    "Alpine Grizzly",
+    "Alpine Grizzly",
+    "Craw Wurm",
+    "Forest",
+    "Giant Growth",
+    "Kird Ape",
+    "Kird Ape"
+   ],
+   [
+    "Enormous Baloth",
+    "Forest",
+    "Forest",
+    "Forest",
+    "Grizzly Bears",
+    "Kird Ape",
+    "Nessian Courser"
+   ],
+   [
+    "Craw Wurm",
+    "Forest",
+    "Forest",
+    "Forest",
+    "Grizzly Bears",
+    "Grizzly Bears",
+    "Might of Oaks"
+   ],
+   [
+    "Craw Wurm",
+    "Craw Wurm",
+    "Forest",
+    "Giant Growth",
+    "Kird Ape",
+    "Nessian Courser",
+    "Titanic Growth"
+   ],
+   [
+    "Forest",
+    "Forest",
+    "Giant Growth",
+    "Kird Ape",
+    "Might of Oaks",
+    "Nessian Courser",
+    "Rumbling Baloth"
+   ],
+   [
+    "Forest",
+    "Forest",
+    "Grizzly Bears",
+    "Kird Ape",
+    "Kird Ape",
+    "Might of Oaks",
+    "Titanic Growth"
+   ],
+   [
+    "Forest",
+    "Forest",
+    "Forest",
+    "Giant Growth",
+    "Grizzly Bears",
+    "Kird Ape",
+    "Rumbling Baloth"
+   ],
+   [
+    "Forest",
+    "Forest",
+    "Giant Growth",
+    "Grizzly Bears",
+    "Kird Ape",
+    "Nessian Courser",
+    "Titanic Growth"
+   ],
+   [
+    "Alpine Grizzly",
+    "Grizzly Bears",
+    "Grizzly Bears",
+    "Nessian Courser",
+    "Nessian Courser",
+    "Rumbling Baloth",
+    "Titanic Growth"
+   ],
+   [
+    "Forest",
+    "Forest",
+    "Grizzly Bears",
+    "Kird Ape",
+    "Nessian Courser",
+    "Nessian Courser",
+    "Redwood Treefolk"
+   ],
+   [
+    "Alpine Grizzly",
+    "Craw Wurm",
+    "Giant Growth",
+    "Nessian Courser",
+    "Redwood Treefolk",
+    "Titanic Growth",
+    "Titanic Growth"
+   ],
+   [
+    "Alpine Grizzly",
+    "Alpine Grizzly",
+    "Forest",
+    "Forest",
+    "Giant Growth",
+    "Grizzly Bears",
+    "Redwood Treefolk"
+   ],
+   [
+    "Alpine Grizzly",
+    "Craw Wurm",
+    "Forest",
+    "Forest",
+    "Forest",
+    "Kird Ape",
+    "Titanic Growth"
+   ],
+   [
+    "Forest",
+    "Grizzly Bears",
+    "Nessian Courser",
+    "Redwood Treefolk",
+    "Rumbling Baloth",
+    "Rumbling Baloth",
+    "Rumbling Baloth"
+   ],
+   [
+    "Alpine Grizzly",
+    "Enormous Baloth",
+    "Forest",
+    "Forest",
+    "Forest",
+    "Nessian Courser",
+    "Rumbling Baloth"
+   ],
+   [
+    "Forest",
+    "Grizzly Bears",
+    "Nessian Courser",
+    "Redwood Treefolk",
+    "Rumbling Baloth",
+    "Rumbling Baloth",
+    "Titanic Growth"
+   ],
+   [
+    "Alpine Grizzly",
+    "Enormous Baloth",
+    "Giant Growth",
+    "Grizzly Bears",
+    "Kird Ape",
+    "Redwood Treefolk",
+    "Rumbling Baloth"
+   ],
+   [
+    "Alpine Grizzly",
+    "Craw Wurm",
+    "Forest",
+    "Forest",
+    "Forest",
+    "Giant Growth",
+    "Kird Ape"
+   ],
+   [
+    "Craw Wurm",
+    "Forest",
+    "Kird Ape",
+    "Kird Ape",
+    "Kird Ape",
+    "Might of Oaks",
+    "Redwood Treefolk"
+   ],
+   [
+    "Forest",
+    "Forest",
+    "Giant Growth",
+    "Giant Growth",
+    "Grizzly Bears",
+    "Kird Ape",
+    "Titanic Growth"
+   ],
+   [
+    "Alpine Grizzly",
+    "Forest",
+    "Forest",
+    "Forest",
+    "Forest",
+    "Forest",
+    "Nessian Courser"
+   ],
+   [
+    "Alpine Grizzly",
+    "Craw Wurm",
+    "Forest",
+    "Forest",
+    "Grizzly Bears",
+    "Might of Oaks",
+    "Titanic Growth"
+   ],
+   [
+    "Alpine Grizzly",
+    "Forest",
+    "Forest",
+    "Forest",
+    "Giant Growth",
+    "Grizzly Bears",
+    "Rumbling Baloth"
+   ],
+   [
+    "Alpine Grizzly",
+    "Alpine Grizzly",
+    "Forest",
+    "Forest",
+    "Forest",
+    "Kird Ape",
+    "Titanic Growth"
+   ],
+   [
+    "Alpine Grizzly",
+    "Craw Wurm",
+    "Giant Growth",
+    "Might of Oaks",
+    "Titanic Growth",
+    "Titanic Growth",
+    "Titanic Growth"
+   ],
+   [
+    "Alpine Grizzly",
+    "Forest",
+    "Forest",
+    "Forest",
+    "Forest",
+    "Giant Growth",
+    "Nessian Courser"
+   ],
+   [
+    "Enormous Baloth",
+    "Forest",
+    "Forest",
+    "Forest",
+    "Forest",
+    "Forest",
+    "Rumbling Baloth"
+   ],
+   [
+    "Forest",
+    "Forest",
+    "Giant Growth",
+    "Giant Growth",
+    "Grizzly Bears",
+    "Rumbling Baloth",
+    "Titanic Growth"
+   ],
+   [
+    "Forest",
+    "Forest",
+    "Giant Growth",
+    "Redwood Treefolk",
+    "Titanic Growth",
+    "Titanic Growth",
+    "Titanic Growth"
+   ],
+   [
+    "Enormous Baloth",
+    "Forest",
+    "Giant Growth",
+    "Giant Growth",
+    "Nessian Courser",
+    "Nessian Courser",
+    "Rumbling Baloth"
+   ],
+   [
+    "Alpine Grizzly",
+    "Forest",
+    "Forest",
+    "Forest",
+    "Forest",
+    "Nessian Courser",
+    "Titanic Growth"
+   ],
+   [
+    "Alpine Grizzly",
+    "Alpine Grizzly",
+    "Craw Wurm",
+    "Forest",
+    "Forest",
+    "Might of Oaks",
+    "Nessian Courser"
+   ],
+   [
+    "Alpine Grizzly",
+    "Forest",
+    "Giant Growth",
+    "Giant Growth",
+    "Grizzly Bears",
+    "Kird Ape",
+    "Rumbling Baloth"
+   ],
+   [
+    "Forest",
+    "Forest",
+    "Giant Growth",
+    "Grizzly Bears",
+    "Might of Oaks",
+    "Nessian Courser",
+    "Titanic Growth"
+   ],
+   [
+    "Alpine Grizzly",
+    "Craw Wurm",
+    "Forest",
+    "Giant Growth",
+    "Grizzly Bears",
+    "Kird Ape",
+    "Nessian Courser"
+   ],
+   [
+    "Forest",
+    "Forest",
+    "Forest",
+    "Giant Growth",
+    "Kird Ape",
+    "Nessian Courser",
+    "Titanic Growth"
+   ],
+   [
+    "Forest",
+    "Forest",
+    "Forest",
+    "Giant Growth",
+    "Giant Growth",
+    "Grizzly Bears",
+    "Kird Ape"
+   ],
+   [
+    "Alpine Grizzly",
+    "Enormous Baloth",
+    "Forest",
+    "Forest",
+    "Giant Growth",
+    "Grizzly Bears",
+    "Rumbling Baloth"
+   ],
+   [
+    "Craw Wurm",
+    "Craw Wurm",
+    "Enormous Baloth",
+    "Forest",
+    "Forest",
+    "Forest",
+    "Titanic Growth"
+   ],
+   [
+    "Forest",
+    "Forest",
+    "Forest",
+    "Kird Ape",
+    "Kird Ape",
+    "Nessian Courser",
+    "Redwood Treefolk"
+   ],
+   [
+    "Enormous Baloth",
+    "Forest",
+    "Forest",
+    "Giant Growth",
+    "Giant Growth",
+    "Rumbling Baloth",
+    "Titanic Growth"
+   ],
+   [
+    "Enormous Baloth",
+    "Forest",
+    "Forest",
+    "Forest",
+    "Forest",
+    "Rumbling Baloth",
+    "Rumbling Baloth"
+   ],
+   [
+    "Craw Wurm",
+    "Forest",
+    "Giant Growth",
+    "Kird Ape",
+    "Might of Oaks",
+    "Rumbling Baloth",
+    "Titanic Growth"
+   ],
+   [
+    "Forest",
+    "Forest",
+    "Forest",
+    "Giant Growth",
+    "Grizzly Bears",
+    "Grizzly Bears",
+    "Rumbling Baloth"
+   ],
+   [
+    "Forest",
+    "Giant Growth",
+    "Giant Growth",
+    "Grizzly Bears",
+    "Kird Ape",
+    "Kird Ape",
+    "Rumbling Baloth"
+   ],
+   [
+    "Enormous Baloth",
+    "Forest",
+    "Grizzly Bears",
+    "Might of Oaks",
+    "Redwood Treefolk",
+    "Rumbling Baloth",
+    "Rumbling Baloth"
+   ],
+   [
+    "Alpine Grizzly",
+    "Alpine Grizzly",
+    "Forest",
+    "Grizzly Bears",
+    "Nessian Courser",
+    "Titanic Growth",
+    "Titanic Growth"
+   ],
+   [
+    "Alpine Grizzly",
+    "Alpine Grizzly",
+    "Forest",
+    "Forest",
+    "Forest",
+    "Kird Ape",
+    "Rumbling Baloth"
+   ],
+   [
+    "Forest",
+    "Forest",
+    "Forest",
+    "Forest",
+    "Giant Growth",
+    "Grizzly Bears",
+    "Rumbling Baloth"
+   ],
+   [
+    "Craw Wurm",
+    "Forest",
+    "Forest",
+    "Forest",
+    "Nessian Courser",
+    "Redwood Treefolk",
+    "Rumbling Baloth"
+   ],
+   [
+    "Forest",
+    "Forest",
+    "Giant Growth",
+    "Giant Growth",
+    "Rumbling Baloth",
+    "Titanic Growth",
+    "Titanic Growth"
+   ],
+   [
+    "Alpine Grizzly",
+    "Craw Wurm",
+    "Forest",
+    "Forest",
+    "Forest",
+    "Forest",
+    "Redwood Treefolk"
+   ],
+   [
+    "Forest",
+    "Forest",
+    "Forest",
+    "Forest",
+    "Giant Growth",
+    "Giant Growth",
+    "Kird Ape"
+   ],
+   [
+    "Alpine Grizzly",
+    "Alpine Grizzly",
+    "Alpine Grizzly",
+    "Forest",
+    "Grizzly Bears",
+    "Might of Oaks",
+    "Titanic Growth"
+   ],
+   [
+    "Alpine Grizzly",
+    "Alpine Grizzly",
+    "Forest",
+    "Forest",
+    "Kird Ape",
+    "Kird Ape",
+    "Might of Oaks"
+   ],
+   [
+    "Alpine Grizzly",
+    "Forest",
+    "Forest",
+    "Giant Growth",
+    "Grizzly Bears",
+    "Rumbling Baloth",
+    "Titanic Growth"
+   ],
+   [
+    "Forest",
+    "Forest",
+    "Grizzly Bears",
+    "Grizzly Bears",
+    "Kird Ape",
+    "Rumbling Baloth",
+    "Titanic Growth"
+   ],
+   [
+    "Craw Wurm",
+    "Forest",
+    "Forest",
+    "Forest",
+    "Giant Growth",
+    "Might of Oaks",
+    "Nessian Courser"
+   ],
+   [
+    "Craw Wurm",
+    "Forest",
+    "Giant Growth",
+    "Giant Growth",
+    "Kird Ape",
+    "Kird Ape",
+    "Titanic Growth"
+   ],
+   [
+    "Alpine Grizzly",
+    "Forest",
+    "Forest",
+    "Forest",
+    "Forest",
+    "Forest",
+    "Rumbling Baloth"
+   ],
+   [
+    "Alpine Grizzly",
+    "Craw Wurm",
+    "Forest",
+    "Forest",
+    "Kird Ape",
+    "Rumbling Baloth",
+    "Titanic Growth"
+   ],
+   [
+    "Craw Wurm",
+    "Enormous Baloth",
+    "Forest",
+    "Forest",
+    "Forest",
+    "Grizzly Bears",
+    "Rumbling Baloth"
+   ],
+   [
+    "Forest",
+    "Forest",
+    "Forest",
+    "Giant Growth",
+    "Grizzly Bears",
+    "Kird Ape",
+    "Nessian Courser"
+   ],
+   [
+    "Alpine Grizzly",
+    "Craw Wurm",
+    "Enormous Baloth",
+    "Forest",
+    "Giant Growth",
+    "Might of Oaks",
+    "Redwood Treefolk"
+   ],
+   [
+    "Alpine Grizzly",
+    "Forest",
+    "Giant Growth",
+    "Grizzly Bears",
+    "Kird Ape",
+    "Nessian Courser",
+    "Rumbling Baloth"
+   ],
+   [
+    "Alpine Grizzly",
+    "Enormous Baloth",
+    "Giant Growth",
+    "Nessian Courser",
+    "Redwood Treefolk",
+    "Titanic Growth",
+    "Titanic Growth"
+   ],
+   [
+    "Forest",
+    "Giant Growth",
+    "Kird Ape",
+    "Nessian Courser",
+    "Redwood Treefolk",
+    "Titanic Growth",
+    "Titanic Growth"
+   ],
+   [
+    "Alpine Grizzly",
+    "Alpine Grizzly",
+    "Forest",
+    "Forest",
+    "Giant Growth",
+    "Giant Growth",
+    "Grizzly Bears"
+   ]
+  ],
+  "trick_rate": 0.78
+ }
+}

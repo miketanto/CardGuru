@@ -1,0 +1,74 @@
+{
+ "seq": 3,
+ "request": {
+  "kind": "priority",
+  "turn": 1,
+  "phase": "Precombat Main",
+  "active": "A",
+  "state": {
+   "A": {
+    "life": 20,
+    "battlefield": [],
+    "graveyard": [],
+    "hand_count": 7,
+    "hand": [
+     {
+      "name": "Mountain"
+     },
+     {
+      "name": "Mountain"
+     },
+     {
+      "name": "Mountain"
+     },
+     {
+      "name": "Searing Spear"
+     },
+     {
+      "name": "Shock"
+     },
+     {
+      "name": "Bonebreaker Giant",
+      "power": 4,
+      "toughness": 4
+     },
+     {
+      "name": "Kird Ape",
+      "power": 1,
+      "toughness": 1
+     }
+    ]
+   },
+   "B": {
+    "life": 20,
+    "battlefield": [],
+    "graveyard": [],
+    "hand_count": 7
+   }
+  },
+  "options": [
+   {
+    "index": 0,
+    "action": "pass",
+    "text": "pass priority"
+   },
+   {
+    "index": 1,
+    "action": "activate",
+    "text": "Play Mountain"
+   },
+   {
+    "index": 2,
+    "action": "activate",
+    "text": "Play Mountain"
+   },
+   {
+    "index": 3,
+    "action": "activate",
+    "text": "Play Mountain"
+   }
+  ],
+  "seq": 4
+ },
+ "belief": null
+}

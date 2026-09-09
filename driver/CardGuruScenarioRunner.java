@@ -963,6 +963,18 @@ class InteractiveTestPlayer extends TestPlayer {
     public Mode chooseMode(Modes modes, Ability source, Game game) {
         if (externalSubchoices) {
             List<Mode> avail = new ArrayList<>(modes.getAvailableModes(source, game));
+            // getAvailableModes only filters already-selected modes when the
+            // card limits usage by once, so for multi-mode spells (Three
+            // Steps Ahead) a mode we already picked can still be offered —
+            // returning it again throws "mode already selected" and kills
+            // the game. Drop selected modes unless the card allows repeats.
+            if (!modes.isMayChooseSameModeMoreThanOnce()) {
+                Set<UUID> already = new HashSet<>(modes.getSelectedModes());
+                avail.removeIf(m -> already.contains(m.getId()));
+            }
+            if (avail.isEmpty()) {
+                return super.chooseMode(modes, source, game);
+            }
             if (avail.size() > 1) {
                 JsonObject req = baseRequest("mode", game);
                 req.addProperty("ability", String.valueOf(source));

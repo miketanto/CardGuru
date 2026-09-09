@@ -1,0 +1,79 @@
+{
+ "seq": 2,
+ "request": {
+  "kind": "mulligan",
+  "turn": 1,
+  "phase": "null",
+  "active": "-",
+  "state": {
+   "B": {
+    "life": 20,
+    "battlefield": [],
+    "graveyard": [],
+    "hand_count": 7
+   },
+   "A": {
+    "life": 20,
+    "battlefield": [],
+    "graveyard": [],
+    "hand_count": 7,
+    "hand": [
+     {
+      "name": "Mountain"
+     },
+     {
+      "name": "Mountain"
+     },
+     {
+      "name": "Mountain"
+     },
+     {
+      "name": "Dragon Fodder"
+     },
+     {
+      "name": "Lightning Bolt"
+     },
+     {
+      "name": "Monstrous Rage"
+     },
+     {
+      "name": "Bonebreaker Giant",
+      "power": 4,
+      "toughness": 4
+     }
+    ]
+   }
+  },
+  "hand_count": 7,
+  "seq": 2
+ },
+ "belief": null,
+ "card_reference": {
+  "Mountain": {
+   "cost": "",
+   "types": "[Land]",
+   "text": "{T}: Add {R}."
+  },
+  "Dragon Fodder": {
+   "cost": "{1}{R}",
+   "types": "[Sorcery]",
+   "text": "Create two 1/1 red Goblin creature tokens."
+  },
+  "Lightning Bolt": {
+   "cost": "{R}",
+   "types": "[Instant]",
+   "text": "{this} deals 3 damage to any target."
+  },
+  "Monstrous Rage": {
+   "cost": "{R}",
+   "types": "[Instant]",
+   "text": "Target creature gets +2/+0 until end of turn. Create a Monster Role token attached to it."
+  },
+  "Bonebreaker Giant": {
+   "cost": "{4}{R}",
+   "types": "[Creature]",
+   "power": 4,
+   "toughness": 4
+  }
+ }
+}

@@ -1,0 +1,64 @@
+{
+ "seq": 5,
+ "request": {
+  "kind": "attackers",
+  "turn": 1,
+  "phase": "Declare Attackers",
+  "active": "A",
+  "state": {
+   "B": {
+    "life": 20,
+    "battlefield": [],
+    "graveyard": [],
+    "hand_count": 7
+   },
+   "A": {
+    "life": 20,
+    "battlefield": [
+     {
+      "name": "Mountain",
+      "tapped": true
+     },
+     {
+      "name": "Monastery Swiftspear",
+      "tapped": false,
+      "power": 1,
+      "toughness": 2,
+      "summoning_sick": false
+     }
+    ],
+    "graveyard": [],
+    "hand_count": 5,
+    "hand": [
+     {
+      "name": "Searing Spear"
+     },
+     {
+      "name": "Lightning Bolt"
+     },
+     {
+      "name": "Monstrous Rage"
+     },
+     {
+      "name": "Shock"
+     },
+     {
+      "name": "Goblin Piker",
+      "power": 2,
+      "toughness": 1
+     }
+    ]
+   }
+  },
+  "options": [
+   {
+    "index": 0,
+    "name": "Monastery Swiftspear",
+    "power": 1,
+    "toughness": 2
+   }
+  ],
+  "seq": 9
+ },
+ "belief": null
+}

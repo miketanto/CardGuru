@@ -1,0 +1,5 @@
+{"game": 1, "start": "A", "result": {"status": "completed", "winner": "B", "turns": 14}, "wall_s": 633.9, "sources": {"llm": 49, "auto": 64, "yield": 44, "result": 1}, "ts": 1788914055.3}
+{"game": 2, "start": "B", "result": {"status": "completed", "winner": "A", "turns": 10}, "wall_s": 558.5, "sources": {"llm": 45, "auto": 76, "yield": 9, "result": 1}, "ts": 1788914613.9}
+{"game": 3, "start": "A", "result": {"status": "completed", "winner": "B", "turns": 16}, "wall_s": 902.8, "sources": {"llm": 60, "auto": 37, "yield": 84, "result": 1}, "ts": 1788915516.7}
+{"game": 4, "start": "B", "result": {"status": "completed", "winner": "A", "turns": 10}, "wall_s": 602.1, "sources": {"llm": 47, "auto": 32, "yield": 34, "result": 1}, "ts": 1788916118.9}
+{"game": 5, "start": "A", "result": {"status": "completed", "winner": "B", "turns": 16}, "wall_s": 1127.3, "sources": {"llm": 81, "auto": 70, "yield": 29, "result": 1}, "ts": 1788917246.3}

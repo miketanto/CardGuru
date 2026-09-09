@@ -1,0 +1,68 @@
+{
+ "seq": 5,
+ "request": {
+  "kind": "target",
+  "turn": 1,
+  "phase": "Precombat Main",
+  "active": "A",
+  "state": {
+   "A": {
+    "life": 20,
+    "battlefield": [
+     {
+      "name": "Mountain",
+      "tapped": false
+     }
+    ],
+    "graveyard": [],
+    "hand_count": 5,
+    "hand": [
+     {
+      "name": "Mountain"
+     },
+     {
+      "name": "Mountain"
+     },
+     {
+      "name": "Dragon Fodder"
+     },
+     {
+      "name": "Monstrous Rage"
+     },
+     {
+      "name": "Bonebreaker Giant",
+      "power": 4,
+      "toughness": 4
+     }
+    ]
+   },
+   "B": {
+    "life": 20,
+    "battlefield": [],
+    "graveyard": [],
+    "hand_count": 7
+   }
+  },
+  "prompt": "Select any target",
+  "ability": "Cast Lightning Bolt",
+  "outcome": "Damage",
+  "min": 1,
+  "max": 1,
+  "options": [
+   {
+    "index": 0,
+    "kind": "player",
+    "owner": "A",
+    "text": "player A (life 20)"
+   },
+   {
+    "index": 1,
+    "kind": "player",
+    "owner": "B",
+    "text": "player B (life 20)"
+   }
+  ],
+  "seq": 6
+ },
+ "belief": null
+}

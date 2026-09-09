@@ -1,0 +1,1 @@
+{"choice": 0, "why": "Pass End Turn to finish turn 4. Move to opponent's turn. I'll use yield_until to skip their turn and return at my turn 5 start, where my creatures untap and I attack again with a better clock (18 \u2192 16 life with 2 damage from attacks).", "yield_until": "my_turn"}

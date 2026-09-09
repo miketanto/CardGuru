@@ -1,0 +1,2 @@
+game 1: winner=A start=A wall=683.1s sources={'llm': 54, 'auto': 28, 'yield': 37, 'result': 1}
+game 2: winner=B start=B wall=815.2s sources={'llm': 54, 'auto': 28, 'yield': 24, 'result': 1}

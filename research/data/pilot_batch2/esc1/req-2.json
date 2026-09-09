@@ -1,0 +1,77 @@
+{
+ "seq": 2,
+ "request": {
+  "kind": "mulligan",
+  "turn": 1,
+  "phase": "null",
+  "active": "-",
+  "state": {
+   "B": {
+    "life": 20,
+    "battlefield": [],
+    "graveyard": [],
+    "hand_count": 7
+   },
+   "A": {
+    "life": 20,
+    "battlefield": [],
+    "graveyard": [],
+    "hand_count": 7,
+    "hand": [
+     {
+      "name": "Mountain"
+     },
+     {
+      "name": "Mountain"
+     },
+     {
+      "name": "Mountain"
+     },
+     {
+      "name": "Monstrous Rage"
+     },
+     {
+      "name": "Shock"
+     },
+     {
+      "name": "Kird Ape",
+      "power": 1,
+      "toughness": 1
+     },
+     {
+      "name": "Kird Ape",
+      "power": 1,
+      "toughness": 1
+     }
+    ]
+   }
+  },
+  "hand_count": 7,
+  "seq": 2
+ },
+ "belief": null,
+ "card_reference": {
+  "Mountain": {
+   "cost": "",
+   "types": "[Land]",
+   "text": "{T}: Add {R}."
+  },
+  "Monstrous Rage": {
+   "cost": "{R}",
+   "types": "[Instant]",
+   "text": "Target creature gets +2/+0 until end of turn. Create a Monster Role token attached to it."
+  },
+  "Shock": {
+   "cost": "{R}",
+   "types": "[Instant]",
+   "text": "{this} deals 2 damage to any target."
+  },
+  "Kird Ape": {
+   "cost": "{R}",
+   "types": "[Creature]",
+   "text": "{this} gets +1/+2 as long as you control a Forest.",
+   "power": 1,
+   "toughness": 1
+  }
+ }
+}

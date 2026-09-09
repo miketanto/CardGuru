@@ -34,6 +34,9 @@ def main():
     ap.add_argument("--games", type=int, default=10)
     ap.add_argument("--model", default="haiku")
     ap.add_argument("--timeout", type=float, default=240.0)
+    ap.add_argument("--search", choices=["none", "attacks", "llm"],
+                    default="none", help="combat search mode (see llm_bridge)")
+    ap.add_argument("--deck-b", default="mono_green_stompy")
     args = ap.parse_args()
 
     os.makedirs(args.out_dir, exist_ok=True)
@@ -67,7 +70,8 @@ def main():
                 [sys.executable, os.path.join(HERE, "llm_bridge.py"),
                  "--mage-repo", args.mage_repo, "--esc-dir", esc,
                  "--log", game_log, "--compact",
-                 "--timeout", str(args.timeout)],
+                 "--timeout", str(args.timeout),
+                 "--search", args.search, "--deck-b", args.deck_b],
                 capture_output=True, text=True, timeout=3600)
         finally:
             daemon.terminate()

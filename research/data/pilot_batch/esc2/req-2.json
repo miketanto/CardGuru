@@ -1,0 +1,88 @@
+{
+ "seq": 2,
+ "request": {
+  "kind": "mulligan",
+  "turn": 1,
+  "phase": "null",
+  "active": "-",
+  "state": {
+   "B": {
+    "life": 20,
+    "battlefield": [],
+    "graveyard": [],
+    "hand_count": 7
+   },
+   "A": {
+    "life": 20,
+    "battlefield": [],
+    "graveyard": [],
+    "hand_count": 7,
+    "hand": [
+     {
+      "name": "Mountain"
+     },
+     {
+      "name": "Mountain"
+     },
+     {
+      "name": "Dragon Fodder"
+     },
+     {
+      "name": "Incinerate"
+     },
+     {
+      "name": "Shock"
+     },
+     {
+      "name": "Goblin Piker",
+      "power": 2,
+      "toughness": 1
+     },
+     {
+      "name": "Monastery Swiftspear",
+      "power": 1,
+      "toughness": 2
+     }
+    ]
+   }
+  },
+  "hand_count": 7,
+  "seq": 2
+ },
+ "belief": null,
+ "card_reference": {
+  "Mountain": {
+   "cost": "",
+   "types": "[Land]",
+   "text": "{T}: Add {R}."
+  },
+  "Dragon Fodder": {
+   "cost": "{1}{R}",
+   "types": "[Sorcery]",
+   "text": "Create two 1/1 red Goblin creature tokens."
+  },
+  "Incinerate": {
+   "cost": "{1}{R}",
+   "types": "[Instant]",
+   "text": "{this} deals 3 damage to any target. A creature dealt damage this way can't be regenerated this turn."
+  },
+  "Shock": {
+   "cost": "{R}",
+   "types": "[Instant]",
+   "text": "{this} deals 2 damage to any target."
+  },
+  "Goblin Piker": {
+   "cost": "{1}{R}",
+   "types": "[Creature]",
+   "power": 2,
+   "toughness": 1
+  },
+  "Monastery Swiftspear": {
+   "cost": "{R}",
+   "types": "[Creature]",
+   "text": "Haste ; Prowess <i>(Whenever you cast a noncreature spell, this creature gets +1/+1 until end of turn.)</i>",
+   "power": 1,
+   "toughness": 2
+  }
+ }
+}
