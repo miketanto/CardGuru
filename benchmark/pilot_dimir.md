@@ -91,10 +91,9 @@ reference text is authoritative. Key cards:
   * Anoint with Affliction {1}{B} — exile target creature **only if its
     mana value is 3 or less**. Sheoldred (MV 4) and Kaito (MV 4) are OUT OF
     RANGE. Use it on Bat, Siren, Mastermind, Drowner or Preacher.
-- Three Steps Ahead {1}{U}{U}+ — Spree (pay for one or more modes):
-  +{1}{U} counter target spell; +{3} copy your own creature/artifact;
-  +{2} draw two then discard one. The counter mode needs {1}{U} ON TOP of
-  the {1}{U} base cost.
+- We Say Thee Nay {1}{U} — instant. Counter target spell UNLESS its
+  controller pays {2}. A TAX, not a hard counter: it does nothing against
+  an opponent holding two spare mana, so use it when they are tapped low.
 
 ## The opponent (believed: Mono-Green Stompy)
 
@@ -113,7 +112,7 @@ hand.
    your better cards take over. Life total is a resource but do not let it
    fall into burn range (~6) against red decks.
 3. **Hold instant-speed interaction.** Pass with {1}{B} open (Go for the
-   Throat) or {1}{U}{U} (Three Steps Ahead) instead of tapping out, once
+   Throat) or {1}{U} (We Say Thee Nay) instead of tapping out, once
    you are past turn 3. DO NOT yield on their turn while holding an
    instant you might cast — yield only when your hand is spells you
    cannot or will not cast this cycle.

@@ -13,7 +13,7 @@
   "Cut Down": 4,
   "Go for the Throat": 3,
   "Anoint with Affliction": 2,
-  "Three Steps Ahead": 2,
+  "We Say Thee Nay": 2,
   "Undercity Sewers": 4,
   "Darkslick Shores": 4,
   "Restless Reef": 2,
@@ -24,6 +24,6 @@
   {"card": "Cut Down", "kind": "removal", "cost": 1},
   {"card": "Go for the Throat", "kind": "removal", "cost": 2},
   {"card": "Anoint with Affliction", "kind": "removal", "cost": 3},
-  {"card": "Three Steps Ahead", "kind": "counter", "cost": 3}
+  {"card": "We Say Thee Nay", "kind": "counter", "cost": 2}
  ]
 }

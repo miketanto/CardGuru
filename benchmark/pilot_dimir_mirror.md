@@ -61,12 +61,14 @@ to keep the looked-at card on top or bin it; bin what you don't need).
 Read every card_reference entry carefully; these cards are complex and the
 reference text is authoritative. Key cards:
 
-- Deep-Cavern Bat {B} 1/1 FLYING, ward {1} — on arrival it exiles the best
-  card from their hand until it leaves. Great turn-1 play; also an evasive
-  attacker their ground creatures cannot block.
+- Deep-Cavern Bat {1}{B} 1/1 FLYING, LIFELINK — on arrival, look at target
+  opponent's hand and exile a NONLAND card from it until the Bat leaves.
+  A turn-2 play, not a turn-1 play; also an evasive attacker their ground
+  creatures cannot block.
 - Spyglass Siren {U} 1/1 flying, makes a Map token (sacrifice later to
   explore/scry — a mana sink).
-- Floodpits Drowner — efficient merfolk; can tap down a threat.
+- Floodpits Drowner {1}{U} 2/1 merfolk; can tap down a threat with a stun
+  counter.
 - Preacher of the Schism {2}{B} — deathtouch: it kills ANY creature it
   blocks or is blocked by, so big attackers fear it; attacks drain them.
 - Kaito, Bane of Nightmares {2}{U}{B} — a PLANESWALKER, not a creature.
@@ -91,10 +93,11 @@ reference text is authoritative. Key cards:
   * Anoint with Affliction {1}{B} — exile target creature **only if its
     mana value is 3 or less**. Sheoldred (MV 4) and Kaito (MV 4) are OUT OF
     RANGE. Use it on Bat, Siren, Mastermind, Drowner or Preacher.
-- Three Steps Ahead {1}{U}{U}+ — Spree (pay for one or more modes):
-  +{1}{U} counter target spell; +{3} copy your own creature/artifact;
-  +{2} draw two then discard one. The counter mode needs {1}{U} ON TOP of
-  the {1}{U} base cost.
+- We Say Thee Nay {1}{U} — instant. Counter target spell UNLESS its
+  controller pays {2}. It is a TAX, not a hard counter: against an opponent
+  with two spare mana it does nothing but cost you a card, so use it when
+  they are tapped low or when the {2} would cost them their turn. Two mana
+  open on your side is enough to represent it.
 
 ## The opponent: the SAME DECK (Dimir mirror)
 
@@ -104,8 +107,9 @@ their deck. Assume they hold what you would hold.
 
 What that means concretely:
 - Any threat you resolve can be answered by Cut Down / Go for the Throat /
-  Anoint with Affliction. Any spell you cast can be met by Three Steps
-  Ahead if they have {1}{U}{U} open.
+  Anoint with Affliction. Any spell you cast can be met by We Say Thee Nay
+  if they have {1}{U} open — but it only counters if you cannot pay {2}, so
+  casting into it with two spare mana is safe.
 - They have Deep-Cavern Bat and Spyglass Siren too, so THEY have evasive
   fliers your ground creatures cannot block. Your own fliers are your
   clock; theirs is the clock you must answer.
@@ -137,9 +141,9 @@ What that means concretely:
 4. **Fliers are the real clock.** Bat and Siren go over the ground on both
    sides. Prioritize killing THEIR fliers and protecting yours; a ground
    stall usually resolves in favor of whoever has evasion.
-5. **Play around their mana.** {1}{B} open = removal; {1}{U}{U} open =
-   Three Steps Ahead. When they can counter, bait with your second-best
-   threat before committing your best one.
+5. **Play around their mana.** {1}{B} open = removal; {1}{U} open =
+   We Say Thee Nay. Against that tax, holding two spare mana when you cast
+   your best threat beats baiting — if you can pay the {2}, it resolves.
 6. **Do not over-commit into removal.** Deploying two threats when one wins
    the turn just gives their removal better targets. Hold the extra.
 7. **Hold your own interaction up.** Passing with mana open and an instant

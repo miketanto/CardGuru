@@ -11,6 +11,7 @@ import mage.abilities.Ability;
 import mage.abilities.ActivatedAbility;
 import mage.abilities.Mode;
 import mage.abilities.Modes;
+import mage.abilities.costs.Cost;
 import mage.cards.Card;
 import mage.choices.Choice;
 import mage.constants.Outcome;
@@ -798,6 +799,12 @@ class InteractiveTestPlayer extends TestPlayer {
         UUID activeId = game.getActivePlayerId();
         req.addProperty("active", activeId == null ? "-"
                 : activeId.equals(this.getId()) ? "A" : "B");
+        // What we could actually pay this window. The state lists which lands
+        // are untapped, but never what that adds up to, so the pilot was
+        // reasoning about affordability from a board read — and got it wrong
+        // in the direction that matters (committing to casts it could not
+        // pay for). State it outright.
+        req.addProperty("mana_available", manaSignature(game));
         req.add("state", observableState(game));
         return req;
     }
@@ -891,7 +898,10 @@ class InteractiveTestPlayer extends TestPlayer {
         if (searching) {
             return super.priority(game);
         }
-        List<ActivatedAbility> playable = getComputerPlayer().getPlayable(game, true, Zone.ALL, false);
+        String manaSig = manaSignature(game);
+        List<ActivatedAbility> playable = dropUnaffordable(
+                getComputerPlayer().getPlayable(game, true, Zone.ALL, false),
+                manaSig);
         if ("llm".equals(minimaxMode)) {
             List<ActivatedAbility> real = new ArrayList<>();
             for (ActivatedAbility a : playable) {
@@ -903,7 +913,7 @@ class InteractiveTestPlayer extends TestPlayer {
             // to cast (or whether to hold), with at least one real choice
             // beyond passing. Mana abilities are noise — casting auto-taps.
             if (!real.isEmpty()) {
-                int verdict = llmSearchPriority(game, real);
+                int verdict = llmSearchPriority(game, real, manaSig);
                 if (verdict > 0) {
                     return true;            // the search activated something
                 }
@@ -938,10 +948,11 @@ class InteractiveTestPlayer extends TestPlayer {
         JsonObject resp = ask(req);
         int choice = resp.has("choice") ? resp.get("choice").getAsInt() : 0;
         if (choice >= 1 && choice <= playable.size()) {
-            ActivatedAbility chosen = playable.get(choice - 1).copy();
-            if (getComputerPlayer().activateAbility(chosen, game)) {
+            ActivatedAbility picked = playable.get(choice - 1);
+            if (getComputerPlayer().activateAbility(picked.copy(), game)) {
                 return true;
             }
+            unaffordableMemo.add(manaSig + "|" + picked);
         }
         getComputerPlayer().pass(game);
         return false;
@@ -1099,10 +1110,19 @@ class InteractiveTestPlayer extends TestPlayer {
                 JsonObject req = baseRequest("mode", game);
                 req.addProperty("ability", String.valueOf(source));
                 JsonArray opts = new JsonArray();
+                // A Spree mode's cost is charged ON TOP of the spell's base
+                // cost, and the effect text alone does not say so. Mirror
+                // game 3 kept picking Three Steps Ahead's +{3} copy mode
+                // while holding one land, so every cast unwound; the pilot
+                // was never shown that the mode cost anything at all.
                 for (int i = 0; i < avail.size(); i++) {
                     JsonObject o = new JsonObject();
                     o.addProperty("index", i);
                     o.addProperty("text", avail.get(i).getEffects().getText(avail.get(i)));
+                    Cost mc = avail.get(i).getCost();
+                    if (mc != null) {
+                        o.addProperty("additional_cost", String.valueOf(mc));
+                    }
                     opts.add(o);
                 }
                 req.add("options", opts);
@@ -1955,6 +1975,48 @@ class InteractiveTestPlayer extends TestPlayer {
      */
     private final Map<String, Integer> priorityHoldMemo = new HashMap<>();
 
+    /** Casts the engine offered but could not actually pay for.
+     *
+     * getPlayable() clears a Spree card on its BASE cost alone, so with one
+     * land untapped "Cast Three Steps Ahead" ({U}, cheapest mode +{2}) is on
+     * the menu for a spell that cannot be cast in any configuration.
+     * activateAbility then asks the pilot for modes and targets, fails to
+     * pay, and unwinds. Both the search and the escalation re-offered that
+     * identical cast at every priority window: mirror game 3 burned 72 pilot
+     * calls in one turn and never reached turn 5.
+     *
+     * Keyed on the mana actually available, not on the turn/step, because
+     * the reason the cast failed is the mana — so the memo has to outlive
+     * the step (the loop ran across all nine phases of the turn) and has to
+     * lapse the moment a land or a rock changes what is payable. */
+    private final Set<String> unaffordableMemo = new HashSet<>();
+
+    /** Stable string for "what mana could I produce right now". */
+    private String manaSignature(Game game) {
+        try {
+            return String.valueOf(getComputerPlayer().getManaAvailable(game));
+        } catch (Exception e) {
+            // Never let a signature failure break priority; an empty
+            // signature just means nothing is memoised this window.
+            return "?";
+        }
+    }
+
+    /** Drop casts already known to be unpayable at this exact mana. */
+    private List<ActivatedAbility> dropUnaffordable(List<ActivatedAbility> in,
+                                                    String manaSig) {
+        if (unaffordableMemo.isEmpty()) {
+            return in;
+        }
+        List<ActivatedAbility> out = new ArrayList<>();
+        for (ActivatedAbility a : in) {
+            if (!unaffordableMemo.contains(manaSig + "|" + a)) {
+                out.add(a);
+            }
+        }
+        return out;
+    }
+
     private String prioritySignature(Game game, List<ActivatedAbility> real) {
         UUID myId = this.getId();
         UUID oppId = null;
@@ -1979,7 +2041,8 @@ class InteractiveTestPlayer extends TestPlayer {
                 + "|" + labels;
     }
 
-    private int llmSearchPriority(Game game, List<ActivatedAbility> real) {
+    private int llmSearchPriority(Game game, List<ActivatedAbility> real,
+                                  String manaSig) {
         String sig = prioritySignature(game, real);
         if (priorityHoldMemo.containsKey(sig)) {
             return 0;   // already decided to hold this exact position
@@ -2013,8 +2076,16 @@ class InteractiveTestPlayer extends TestPlayer {
             priorityHoldMemo.put(sig, 1);
             return 0;
         }
-        ActivatedAbility chosen = real.get(best - 1).copy();
-        return getComputerPlayer().activateAbility(chosen, game) ? 1 : -1;
+        ActivatedAbility picked = real.get(best - 1);
+        if (getComputerPlayer().activateAbility(picked.copy(), game)) {
+            return 1;
+        }
+        // The cast unwound — the engine offered it but we cannot pay. Record
+        // it so neither this window's escalation nor any later step in the
+        // turn offers it again while the mana is unchanged, then fall through
+        // to escalation so the pilot can still pick something else.
+        unaffordableMemo.add(manaSig + "|" + picked);
+        return -1;
     }
 
     /** One priority candidate rolled out: activate it on a copy (or do

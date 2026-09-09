@@ -83,7 +83,7 @@ Kaito, Bane of Nightmares (ninjutsu — can appear mid-combat swapping with an
 unblocked attacker), Enduring Curiosity, Sheoldred, the Apocalypse (4/5 —
 your draws COST you 2 life each while it lives; kill or race it fast).
 Removal: Cut Down (kills any small creature), Go for the Throat, Anoint with
-Affliction. Counterspell: Three Steps Ahead. READ EACH card_reference ENTRY
+Affliction. Counterspell: We Say Thee Nay (a tax — counters unless you pay {2}). READ EACH card_reference ENTRY
 CAREFULLY — these cards are complex and the reference text is authoritative.
 
 Matchup rules of thumb:
