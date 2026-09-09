@@ -146,9 +146,10 @@ Matchup rules of thumb:
 - target:    {"targets": [<indices>], "why": "..."}
 - announce_x: {"x": <int>}   mode/choice: {"choice": <index>}   use: {"use": bool}
 - leaf_eval: {"scores": [<0-100 per leaf, in leaf_index order>], "why": "..."}
-  The engine simulated combat lines for you: each candidate is one action
-  (an attack set or block assignment) and its leaves are the resulting
-  boards after the opponent's best replies. Score each leaf 0-100 for HOW
+  The engine simulated lines for you: each candidate is one action you
+  could take now — an attack set, a block assignment, or a spell to cast
+  this main phase ("pass (hold everything)" is always candidate 0) — and
+  its leaves are the resulting boards. Score each leaf 0-100 for HOW
   GOOD THAT RESULTING POSITION IS FOR YOU (100 = winning on the spot, 50 =
   even, 0 = lost). Judge with your usual race math: life totals, board
   after the exchange, what is tapped going into their turn, and what their

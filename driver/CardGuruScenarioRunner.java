@@ -813,7 +813,24 @@ class InteractiveTestPlayer extends TestPlayer {
 
     @Override
     public boolean priority(Game game) {
+        if (searching) {
+            return super.priority(game);
+        }
         List<ActivatedAbility> playable = getComputerPlayer().getPlayable(game, true, Zone.ALL, false);
+        if ("llm".equals(minimaxMode)) {
+            List<ActivatedAbility> real = new ArrayList<>();
+            for (ActivatedAbility a : playable) {
+                if (!(a instanceof mage.abilities.mana.ManaAbility)) {
+                    real.add(a);
+                }
+            }
+            // Search the decision that actually shapes the turn: which spell
+            // to cast (or whether to hold), with at least one real choice
+            // beyond passing. Mana abilities are noise — casting auto-taps.
+            if (!real.isEmpty() && llmSearchPriority(game, real)) {
+                return true;
+            }
+        }
         JsonObject req = baseRequest("priority", game);
         JsonArray opts = new JsonArray();
         JsonObject pass = new JsonObject();
@@ -859,6 +876,13 @@ class InteractiveTestPlayer extends TestPlayer {
 
     private final boolean externalSubchoices =
             "external".equals(System.getProperty("cardguru.subchoices"));
+
+    /** True while a search rollout is running on a simulation copy. Every
+     *  externalized decision must fall back to the built-in AI then: a copy
+     *  of this player lives in the sim, and letting it reach ask() would
+     *  spawn nested spool requests for imaginary game states (and recurse,
+     *  since scoring a leaf can itself require a decision). */
+    private boolean searching = false;
 
     private JsonObject describeTargetOption(int index, UUID id, Game game) {
         JsonObject o = new JsonObject();
@@ -934,7 +958,7 @@ class InteractiveTestPlayer extends TestPlayer {
 
     @Override
     public boolean chooseTarget(Outcome outcome, Target target, Ability source, Game game) {
-        if (externalSubchoices
+        if (externalSubchoices && !searching
                 && externalChooseTarget("target", outcome, target, source, game)) {
             return true;
         }
@@ -970,7 +994,7 @@ class InteractiveTestPlayer extends TestPlayer {
 
     @Override
     public Mode chooseMode(Modes modes, Ability source, Game game) {
-        if (externalSubchoices) {
+        if (externalSubchoices && !searching) {
             List<Mode> avail = new ArrayList<>(modes.getAvailableModes(source, game));
             // getAvailableModes only filters already-selected modes when the
             // card limits usage by once, so for multi-mode spells (Three
@@ -1008,7 +1032,7 @@ class InteractiveTestPlayer extends TestPlayer {
 
     @Override
     public boolean chooseUse(Outcome outcome, String message, Ability source, Game game) {
-        if (externalSubchoices) {
+        if (externalSubchoices && !searching) {
             return externalChooseUse(outcome, message, null, game, source);
         }
         return super.chooseUse(outcome, message, source, game);
@@ -1017,7 +1041,7 @@ class InteractiveTestPlayer extends TestPlayer {
     @Override
     public boolean chooseUse(Outcome outcome, String message, String secondMessage,
                              String trueText, String falseText, Ability source, Game game) {
-        if (externalSubchoices) {
+        if (externalSubchoices && !searching) {
             return externalChooseUse(outcome, message, secondMessage, game, source);
         }
         return super.chooseUse(outcome, message, secondMessage, trueText, falseText,
@@ -1095,6 +1119,10 @@ class InteractiveTestPlayer extends TestPlayer {
         // docs/live-minimax.md): the search itself is the agent for attacks, so
         // the external spool policy is NOT consulted here. Every other decision
         // still round-trips to Python.
+        if (searching) {
+            super.selectAttackers(game, attackingPlayerId);
+            return;
+        }
         if ("attacks".equals(minimaxMode)) {
             minimaxSelectAttackers(game, defenderId, attackers);
             return;
@@ -1144,6 +1172,10 @@ class InteractiveTestPlayer extends TestPlayer {
             }
         }
 
+        if (searching) {
+            super.selectBlockers(source, game, defendingPlayerId);
+            return;
+        }
         if ("llm".equals(minimaxMode) && !blockers.isEmpty() && !attackers.isEmpty()) {
             llmSearchBlockers(game, defendingPlayerId, blockers, attackers);
             return;
@@ -1816,6 +1848,86 @@ class InteractiveTestPlayer extends TestPlayer {
                 + " " + decision + ": " + labels.size() + " candidates, chose '"
                 + labels.get(chosen) + "' (" + (scores != null ? "LLM" : "heuristic fallback")
                 + " leaves)");
+    }
+
+    /**
+     * Search over the priority decision: pass, or activate each real ability.
+     * Each candidate is rolled out on a simulation copy (sub-choices there
+     * fall to the built-in AI via the `searching` guard), the resolved board
+     * becomes a leaf, and the pilot scores every leaf in one leaf_eval.
+     *
+     * Returns true when it activated an ability (priority() is done), false
+     * when the search picked "pass" or could not run — the caller then falls
+     * through to the normal escalation so the pilot keeps the final say on
+     * passing.
+     */
+    private boolean llmSearchPriority(Game game, List<ActivatedAbility> real) {
+        UUID myId = this.getId();
+        UUID oppId = null;
+        for (UUID pid : game.getOpponents(myId)) {
+            oppId = pid;
+        }
+        List<String> labels = new ArrayList<>();
+        List<List<ScoredLeaf>> leaves = new ArrayList<>();
+
+        labels.add("pass (hold everything)");
+        leaves.add(rolloutPriorityLeaf(game, myId, oppId, null,
+                "pass (hold everything)"));
+        for (ActivatedAbility a : real) {
+            String label = String.valueOf(a);
+            labels.add(label);
+            leaves.add(rolloutPriorityLeaf(game, myId, oppId, a, label));
+        }
+
+        double[] scores = askLeafScores(game, "priority", labels, leaves);
+        if (scores == null) {
+            // No LLM scores: leave the decision to the normal escalation
+            // rather than acting on the heuristic alone.
+            return false;
+        }
+        int best = argmaxOfMins(labels.size(), leaves, scores);
+        traceLlmSearch("priority", labels, leaves, scores, best, game);
+        if (best == 0) {
+            return false;
+        }
+        ActivatedAbility chosen = real.get(best - 1).copy();
+        return getComputerPlayer().activateAbility(chosen, game);
+    }
+
+    /** One priority candidate rolled out: activate it on a copy (or do
+     *  nothing for "pass"), let the stack resolve, score the board. */
+    private List<ScoredLeaf> rolloutPriorityLeaf(Game game, UUID myId,
+                                                 UUID oppId,
+                                                 ActivatedAbility ability,
+                                                 String label) {
+        List<ScoredLeaf> out = new ArrayList<>();
+        Game sim;
+        try {
+            sim = game.createSimulationForAI();
+        } catch (Exception e) {
+            return out;
+        }
+        boolean prev = searching;
+        searching = true;
+        try {
+            if (ability != null) {
+                mage.players.Player me = sim.getPlayer(myId);
+                if (me != null) {
+                    me.activateAbility(ability.copy(), sim);
+                }
+            }
+            sim.checkStateAndTriggered();
+            resolveStack(sim);
+        } catch (Exception e) {
+            // A rollout that throws is just a candidate we cannot price;
+            // an empty leaf list makes argmaxOfMins rank it last.
+            return out;
+        } finally {
+            searching = prev;
+        }
+        double h = GameStateEvaluator2.evaluate(myId, sim).getTotalScore();
+        out.add(new ScoredLeaf(compactLeaf(sim, myId, oppId, label), h));
+        return out;
     }
 
     /** Append one decision record as a JSON line to spool/minimax.jsonl. */
