@@ -80,6 +80,22 @@ class YieldGate:
         a = (request.get("state") or {}).get("A") or {}
         return a.get("life", 20)
 
+    @staticmethod
+    def _holds_instant(request):
+        """Do we hold an instant with untapped lands to cast it? Checked on
+        the un-compacted request, which still carries card types."""
+        a = (request.get("state") or {}).get("A") or {}
+        hand = a.get("hand") or []
+        has = any(isinstance(c, dict) and "Instant" in str(c.get("types", ""))
+                  for c in hand)
+        if not has:
+            return False
+        return any(not p.get("tapped") and "Land" in str(p.get("types", ""))
+                   for p in a.get("battlefield", []))
+
+    # Opponent-turn windows where instant-speed interaction actually matters.
+    INTERACTION_WINDOWS = ("Declare Attackers", "Declare Blockers", "End Turn")
+
     def set(self, until, request):
         if until in ("my_turn", "end_of_turn"):
             self.active = {"until": until, "turn": request.get("turn"),
@@ -96,6 +112,15 @@ class YieldGate:
             self.active = None
             return False
         if self._enemy(request) > y["enemy"] or self._life(request) < y["life"]:
+            self.active = None
+            return False
+        # A yield must not swallow the windows where holding up an instant
+        # is the whole point. Dimir g1: the pilot yielded past six windows
+        # holding Cut Down with four untapped lands. Wake it at the
+        # opponent's combat and end step whenever it can actually act.
+        if request.get("active") == "B" \
+                and request.get("phase") in self.INTERACTION_WINDOWS \
+                and self._holds_instant(request):
             self.active = None
             return False
         turn, phase, active = (request.get("turn"),

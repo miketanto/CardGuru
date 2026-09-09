@@ -71,3 +71,40 @@ def test_survives_enemy_creature_death():
     g = YieldGate()
     g.set("my_turn", req(enemy_creatures=2))
     assert g.covers(req(enemy_creatures=1))
+
+
+def _req_with_hand(instant=True, untapped_land=True, phase="End Turn",
+                   active="B"):
+    r = req(phase=phase, active=active)
+    r["state"]["A"]["hand"] = [
+        {"name": "Cut Down", "types": "[Instant]"} if instant
+        else {"name": "Swamp", "types": "[Land]"}
+    ]
+    r["state"]["A"]["battlefield"] = [
+        {"name": "Swamp", "types": "[Land]", "tapped": not untapped_land}
+    ]
+    return r
+
+
+def test_yield_breaks_at_interaction_window_holding_instant():
+    g = YieldGate()
+    g.set("my_turn", req())
+    assert not g.covers(_req_with_hand())
+
+
+def test_yield_survives_interaction_window_without_instant():
+    g = YieldGate()
+    g.set("my_turn", req())
+    assert g.covers(_req_with_hand(instant=False))
+
+
+def test_yield_survives_when_instant_is_uncastable():
+    g = YieldGate()
+    g.set("my_turn", req())
+    assert g.covers(_req_with_hand(untapped_land=False))
+
+
+def test_yield_survives_quiet_phases_holding_instant():
+    g = YieldGate()
+    g.set("my_turn", req())
+    assert g.covers(_req_with_hand(phase="Upkeep"))
