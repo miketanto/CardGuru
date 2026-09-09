@@ -52,12 +52,20 @@ def run_one(args, g, out_dir, results_path):
         if os.path.exists(p):
             os.remove(p)
 
-    start = "A" if g % 2 == 1 else "B"
+    # `idx` is the position within THIS invocation, so seeds are predictable
+    # from the command you just typed rather than from how many games the
+    # directory already holds.
+    idx = g - args.first_game
+    start = ("A" if (idx if args.paired else g - 1) % 2 == 0 else "B") \
+        if args.start == "alt" else args.start
     seed = None
     if args.seed is not None:
-        # --paired: games 1&2 share a seed, 3&4 share the next, ... so each
-        # pair sees the same deal from both sides of the play/draw split.
-        seed = args.seed + ((g - 1) // 2 if args.paired else (g - 1))
+        if args.same_seed:
+            seed = args.seed          # exact re-run of one deal
+        elif args.paired:
+            seed = args.seed + idx // 2   # a pair shares a deal, sides swap
+        else:
+            seed = args.seed + idx
 
     daemon = subprocess.Popen(
         [sys.executable, os.path.join(HERE, "pilot_daemon.py"),
@@ -174,6 +182,12 @@ def main():
     ap.add_argument("--seed", type=int, default=None,
                     help="fix the deal; game N uses seed+N (or seed+pair "
                          "index with --paired)")
+    ap.add_argument("--same-seed", action="store_true",
+                    help="use --seed literally for every game in this run "
+                         "(exact re-run of one deal)")
+    ap.add_argument("--start", choices=["A", "B", "alt"], default="alt",
+                    help="who starts: A = pilot on the play, B = pilot on "
+                         "the draw, alt = alternate (default)")
     ap.add_argument("--paired", action="store_true",
                     help="consecutive games share a seed with the start "
                          "swapped, so a pair sees the same deal both ways")
@@ -183,6 +197,7 @@ def main():
     os.makedirs(args.out_dir, exist_ok=True)
     results_path = os.path.join(args.out_dir, "mirror.jsonl")
     first = next_game_number(results_path)
+    args.first_game = first
 
     rows = [run_one(args, g, args.out_dir, results_path)
             for g in range(first, first + args.games)]

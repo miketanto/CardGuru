@@ -231,13 +231,16 @@ public class CardGuruScenarioRunner extends CardTestPlayerBase {
             gameOptions.stopOnTurn = 200;   // natural end, not a scripted stop
             gameOptions.stopAtStep = PhaseStep.UNTAP;
             currentGame.setGameOptions(gameOptions);
-            // Fix the deal when asked: every shuffle in the engine runs off
-            // the static RandomUtil (Library.shuffle -> RandomUtil.nextInt)
-            // and GameImpl.init shuffles before any player interaction, so
-            // seeding here pins both opening libraries and both hands. It
-            // does NOT make whole games reproducible — MAD's simulation
-            // threads share this same static RNG — it is for variance
-            // reduction and for re-running an interesting opening.
+            // Seed the engine RNG when asked. NOTE: this does NOT reproduce
+            // the opening hand, and measurement showed it does not:
+            // Deck.getMaindeckCards() collects the deck's ordered
+            // LinkedHashSet through Collectors.toSet(), so the library is
+            // built from a HashSet whose iteration order follows each Card's
+            // randomly generated UUID. The seeded shuffle therefore applies
+            // the SAME permutation to a DIFFERENT starting order every run.
+            // Pinning the deal would require rebuilding the library in a
+            // canonical order before the shuffle. What the seed does buy is a
+            // deterministic RNG stream for everything after that point.
             String seed = System.getProperty("cardguru.seed");
             if (seed != null && !seed.isEmpty()) {
                 mage.util.RandomUtil.setSeed(Long.parseLong(seed.trim()));

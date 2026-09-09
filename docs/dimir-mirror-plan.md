@@ -46,16 +46,18 @@ Two small driver changes in `driver/CardGuruScenarioRunner.java`, both
 plumbed through `cardguru/play.py` (`MatchClient._launch`) and
 `benchmark/llm_bridge.py` as flags:
 
-1. **Seed** — `-Dcardguru.seed=<n>` → `RandomUtil.setSeed(n)` immediately
-   before `currentGame.start(...)` in `playInteractive`. XMage funnels all
-   shuffles through the static `RandomUtil` (`Library.shuffle` →
-   `RandomUtil.nextInt`), and the shuffle happens before any player
-   interaction, so a seed fixes both opening libraries and hands.
-   Precedent in-tree: `Mage.Tests/.../utils/RandomTest.java`.
-   *Honest limit:* this fixes the deal, not the whole game — the static RNG
-   is shared with MAD's simulation threads, so transcripts aren't
-   bit-identical. It's for variance reduction and re-running an interesting
-   opening, not replay determinism.
+1. **Seed** — `-Dcardguru.seed=<n>` → `RandomUtil.setSeed(n)` before the
+   game starts. **Measured result: this does NOT pin the opening hand.**
+   Two sequential runs with seed 777 dealt different hands. Root cause:
+   `Deck.getMaindeckCards()` collects the deck's ordered `LinkedHashSet`
+   through `Collectors.toSet()`, so `PlayerImpl.init` builds the library
+   from a `HashSet` whose iteration order follows each `Card`'s randomly
+   generated UUID. The seeded shuffle applies the same permutation to a
+   different starting order every run. Pinning the deal would require
+   rebuilding the library in a canonical order (e.g. sorted by card name)
+   after `init` populates it and before the shuffle — not yet done. Until
+   then, treat every game as an independent sample and do not rely on
+   `--same-seed` for A/B comparisons.
 
 2. **Pin MAD's effort** — call `setMaxThinkTimeSecs(large)` on the seated
    `TestComputerPlayer7` in `createNewPlayer`, so the existing 5000-node
