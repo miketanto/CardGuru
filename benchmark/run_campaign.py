@@ -55,13 +55,24 @@ def main():
     ap.add_argument("--model", default="haiku")
     ap.add_argument("--timeout", type=float, default=240.0)
     ap.add_argument("--game-timeout", type=int, default=2400)
+    ap.add_argument("--claude-bin", default="claude",
+                    help="pilot binary; point at a stub for baseline runs")
+    ap.add_argument("--only", default="",
+                    help="comma-separated cell ids to run (default: all)")
+    ap.add_argument("--tag", default="",
+                    help="suffix appended to cell ids in results/logs, so a "
+                         "baseline run does not collide with the LLM run")
     args = ap.parse_args()
 
     os.makedirs(args.out_dir, exist_ok=True)
     results = os.path.join(args.out_dir, "campaign.jsonl")
     done = done_cells(results)
 
+    only = {x for x in args.only.split(",") if x}
     for cell, deck_a, deck_b, briefing, search in CELLS:
+        if only and cell not in only:
+            continue
+        cell = cell + args.tag
         brief_path = os.path.join(HERE, briefing)
         if not os.path.exists(brief_path):
             print(f"{cell}: briefing {briefing} missing, skipping cell",
@@ -85,7 +96,8 @@ def main():
             daemon = subprocess.Popen(
                 [sys.executable, os.path.join(HERE, "pilot_daemon.py"),
                  "--esc-dir", esc, "--log", daemon_log, "--model", args.model,
-                 "--system", brief_path, "--start", start],
+                 "--system", brief_path, "--start", start,
+                 "--claude-bin", args.claude_bin],
                 stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
             t0 = time.time()
             result, err = None, ""
