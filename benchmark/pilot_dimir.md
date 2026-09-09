@@ -69,9 +69,14 @@ reference text is authoritative. Key cards:
 - Floodpits Drowner — efficient merfolk; can tap down a threat.
 - Preacher of the Schism {2}{B} — deathtouch: it kills ANY creature it
   blocks or is blocked by, so big attackers fear it; attacks drain them.
-- Kaito, Bane of Nightmares {1}{U}{B} — NINJUTSU: mid-combat, you may
-  return an UNBLOCKED attacker to hand and put Kaito in its place, already
-  attacking. Expect an extra choice window during your combats.
+- Kaito, Bane of Nightmares {2}{U}{B} — a PLANESWALKER, not a creature.
+  Ninjutsu {1}{U}{B} (return an unblocked attacker to hand and put Kaito in
+  its place, already attacking). During YOUR turn only, while he has
+  loyalty, he is a 3/4 Ninja with HEXPROOF — so on your own turn he cannot
+  be targeted by removal, and on THEIR turn he is a planeswalker you can
+  attack instead of the player. Loyalty abilities: +1 emblem (Ninjas get
+  +1/+1); 0 surveil 2, then draw for each opponent who lost life this turn;
+  -2 tap a creature and put two stun counters on it.
 - Enduring Curiosity {2}{U}{U} — card draw engine off combat damage.
 - Sheoldred, the Apocalypse {2}{B}{B} 4/5 — YOUR draws gain you 2 life,
   THEIR draws cost them 2. She wins long games on her own. Protect her.
