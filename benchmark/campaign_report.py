@@ -122,6 +122,46 @@ def main():
                 f"{100 * tot_w / max(1, tot_w + tot_l):.0f}%</b></td>"
                 f"<td colspan='4'></td><td></td></tr>")
     html.append("</table></div>")
+
+    # Harness health, computed from the same logs.
+    totals = defaultdict(int)
+    for r in camp:
+        for row in load(os.path.join(args.dir,
+                                     f"{r['cell']}_g{r['game']}.jsonl")):
+            if row.get("source") == "fallback-timeout":
+                totals["decisions lost to the dumb fallback"] += 1
+            if (row.get("request") or {}).get("kind") == "leaf_eval":
+                totals["combat searches scored by the LLM"] += 1
+            if row.get("source") in ("auto", "yield"):
+                totals["dead windows handled in-process"] += 1
+            if row.get("source") == "llm":
+                totals["decisions taken by the pilot"] += 1
+        for row in load(os.path.join(args.dir,
+                                     f"{r['cell']}_g{r['game']}_daemon.jsonl")):
+            if row.get("session_reset"):
+                totals["recovered by session reset"] += 1
+            raw = str(row.get("raw", "")).lower()
+            if "exiting this game" in raw or "not providing json" in raw:
+                totals["pilot refused to continue"] += 1
+
+    html.append("<h2>Harness health</h2><div class='wrap'><table>")
+    for k, v in sorted(totals.items(), key=lambda kv: -kv[1]):
+        html.append(f"<tr><td>{esc(k)}</td><td class='num'>{v}</td></tr>")
+    html.append("</table></div>")
+    html.append("<div class='card'><h3>How to read this</h3>"
+                "<ul>"
+                "<li>Every game is Haiku deciding through a persistent "
+                "<code>claude -p</code> session — no API key, no human in the "
+                "loop.</li>"
+                "<li>The opponent is XMage's own alpha-beta AI at skill 6; a "
+                "goldfish policy wins about 4% of these games, which is the "
+                "floor any result should be read against.</li>"
+                "<li>Combat decisions are chosen by simulation rollouts whose "
+                "leaves the pilot scores 0&ndash;100 &mdash; search for "
+                "breadth, LLM for judgment.</li>"
+                "<li>Three games per matchup: wide error bars. Treat the "
+                "matrix as direction, not measurement.</li>"
+                "</ul></div>")
     html.append("</div>")
     with open(args.out, "w", encoding="utf-8") as f:
         f.write("\n".join(html))
