@@ -224,11 +224,30 @@ def main():
         except Exception:
             return None
 
+    # The pilot's standing intention, carried between decisions.
+    #
+    # A game is ~150 independent questions, and nothing used to travel
+    # between them except whatever the pilot happened to still have in
+    # conversation context. So it could not hold a plan: "keep Cut Down for
+    # their Preacher", "do not tap out while they have {1}{U} open", "race
+    # now, their board is empty" are all decisions ABOUT LATER WINDOWS, and
+    # every later window arrived with no memory that the decision was made.
+    # The pilot may set "plan" on any response; it is echoed back on every
+    # subsequent request until it replaces it (or clears it with "").
+    #
+    # This lives in the harness rather than in the conversation on purpose:
+    # pilot_daemon starts a fresh session on its third retry, and a plan
+    # held only in context would vanish exactly when the pilot is already
+    # confused.
+    plan = {"text": None}
+
     def escalate(request):
         seq["n"] += 1
         n = seq["n"]
         payload = {"seq": n, "request": request,
                    "belief": belief_summary(request)}
+        if plan["text"]:
+            payload["standing_plan"] = plan["text"]
         if args.compact:
             ref = compact_state(request)
             if ref:
@@ -248,9 +267,15 @@ def main():
                 # that as not-ready and poll again (game one died to this).
                 try:
                     with open(resp_path, encoding="utf-8") as f:
-                        return json.load(f)
+                        resp = json.load(f)
                 except (json.JSONDecodeError, OSError):
                     pass
+                else:
+                    if isinstance(resp, dict) and "plan" in resp:
+                        p = resp.get("plan")
+                        plan["text"] = p.strip() if isinstance(p, str) \
+                            and p.strip() else None
+                    return resp
             time.sleep(0.2)
         return None
 

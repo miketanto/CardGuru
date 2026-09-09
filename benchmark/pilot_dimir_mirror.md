@@ -81,23 +81,78 @@ turn (`status`, `can_block`, `summoning_sick` are authoritative — trust
 them over your own inference); what `mana_available` lets you pay for right
 now; and what their untapped mana threatens on the crack-back.
 
-**3. CHECK THE CONSTRAINTS that are easiest to miss.**
-- **LEGENDARY.** The type line shows supertypes. You may control only ONE
-  permanent of a given legendary name — casting a second forces you to put
-  one into the graveyard, wasting the card and its mana. Check what you
-  already control before casting a legend.
-- **Additional costs.** A mode's `additional_cost` is charged ON TOP of the
-  spell's base cost. A spell can sit on the menu and still be unpayable
-  once you add them up — the menu clears the base cost only.
-- **"Until this leaves the battlefield."** An effect that exiles or steals
-  while a permanent of yours remains gives everything back the moment that
-  permanent leaves. Bouncing, sacrificing or losing your own permanent
-  undoes its own effect. Count that before you move it.
+**3. WORK OUT THE CONSTRAINTS FROM THE CARDS IN FRONT OF YOU.** Magic has
+far more restrictions than any briefing can list, and the ones that matter
+are the ones printed on the cards in this position — so derive them, do not
+recall them. For each card you are about to use or rely on, read its text
+and type line and ask what it does NOT let you do. Three failures from
+earlier games, as illustrations of the kind of thing to look for, not as a
+checklist:
+
+- A supertype in the type line changed what was legal (a second Legendary
+  permanent of the same name goes straight to the graveyard).
+- A cost was larger than it looked (`additional_cost` is charged ON TOP of
+  the base cost, and the menu clears only the base).
+- An effect undid itself (an "until this leaves the battlefield" exile gave
+  the card back when its own permanent was bounced).
+
+None of those are on the list because they are common; they are on it
+because each one silently cost a game. Assume there is a fourth you have
+not thought of, and that its text is on screen.
+
+**Targeting is the one to check hardest, because the engine hides the
+error.** A removal spell only ever offers you LEGAL targets, so you will
+never be allowed to make an illegal play — which means a card you cannot
+actually answer simply never shows up in the menu, silently. The cost lands
+earlier, in your plan: if you are holding a spell "for" a threat, verify
+NOW that the spell could ever target that threat, by reading both cards
+together. Ask:
+
+- Is the threat even the right TYPE for this spell when you would cast it?
+  A permanent's types can be conditional — something that is a creature
+  only during its controller's turn is not a creature on yours.
+- Does it have hexproof, ward, protection, or shroud, and does that clause
+  also turn on conditionally?
+- Combine those two: a permanent that is only a creature on its
+  controller's turn AND hexproof during that same turn can never be hit by
+  your "destroy target creature" spell, in either window.
+
+If the answer is that you could never target it, that spell is NOT your
+answer to that threat, and a plan built on it is already lost. Say so, and
+find the real answer — attacking it, racing it, or a different card.
 
 **4. ONLY THEN choose**, and put the assessment from steps 2–3 in your
 `why` — one or two sentences, the reasoning that actually decided it.
 
+## Holding a plan across decisions
+
+You will be asked ~150 separate questions in a game, each arriving on its
+own. Many real decisions are about a LATER window — "keep Cut Down for
+their Preacher rather than spending it on a Siren", "do not tap out while
+they hold {1}{U}", "their board is empty, start racing" — and nothing
+carries that intention forward for you unless you write it down.
+
+Any response may carry a `"plan"` field: one or two sentences stating what
+you are holding, what you are waiting for, and what would change your mind.
+It is stored and echoed back to you as `standing_plan` on every later
+request until you replace it. Replace it whenever the position moves past
+it; set it to `""` to clear it.
+
+Use it for exactly the things you cannot re-derive from the board alone:
+- what a held card is being SAVED for, and the trigger to spend it
+- whether you are the beatdown or the control in this game right now
+- a read on their hand you formed from a specific play
+
+When a `standing_plan` comes back to you, treat it as your own earlier
+reasoning, not as an order. Follow it if the position still fits; override
+it and say so in `why` if it does not. A plan you keep following after it
+stopped applying is worse than no plan.
+
 ## Response schemas (reply with exactly one JSON object)
+
+ANY response may additionally carry `"plan": "..."` (see "Holding a plan
+across decisions") and `"yield_until"` (see "Yielding"). Both are optional
+and neither replaces the required field for the decision's kind.
 
 - mulligan:  {"mulligan": true|false, "why": "..."}
 - priority:  {"choice": <option index>, "why": "..."}   (0 is always pass)
