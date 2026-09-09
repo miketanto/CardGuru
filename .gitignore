@@ -6,3 +6,7 @@ __pycache__/
 .DS_Store
 benchmark/agent_runs/
 benchmark/eval_report_*.md
+
+# Campaign scratch spools (request/response files, regenerated per game)
+research/data/**/esc_*/
+research/data/campaign_runner.out
