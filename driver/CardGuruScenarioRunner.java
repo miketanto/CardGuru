@@ -755,6 +755,15 @@ class InteractiveTestPlayer extends TestPlayer {
                     // misplayed off the opposite belief); only tapped ones
                     // cannot.
                     o.addProperty("can_block", !perm.isTapped());
+                    // The booleans alone did not stop the pilot from writing
+                    // "summoning sick, can't block" (campaign g3 T5), so the
+                    // same facts also go out as an unambiguous sentence.
+                    o.addProperty("status",
+                            (perm.isTapped() ? "TAPPED - CANNOT BLOCK"
+                                    : "untapped - CAN BLOCK")
+                            + (perm.hasSummoningSickness()
+                                    ? "; summoning sick (cannot attack, but "
+                                      + "blocking is unaffected)" : ""));
                 }
                 o.addProperty("types", String.valueOf(perm.getCardType(game)));
                 String rules = String.join(" ; ", perm.getRules(game));
