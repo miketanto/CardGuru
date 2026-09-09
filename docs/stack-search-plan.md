@@ -262,6 +262,34 @@ Arm (e) is first because it is the line that actually lost games 3–5, and
 because (f) is the smaller effect: "my threat got countered" was never the
 failure; "I tapped out and they resolved a bomb" was.
 
+### Status
+
+- **Steps 1–2** (leaf enrichment, determinization) — built, verified live
+  on seed 7 (`d63c325`): all six new leaf fields present on every leaf;
+  11 rollouts reseated, 0 identical to the real hand. Re-baseline g7 under
+  arm (d) + these two: WIN on turn 27, on the seed that lost g4 and g5.
+- **Step 3 / arm (e)** — built behind `cardguru.project_turn=K`
+  (`8945c19`, `9756252`), verified live on seed 7 as g8 with K=3, first
+  three priority decisions: `project_turn_k=3`, 24 copies reseated, 0
+  identical, **0 failed samples**; every leaf carries `sample` and
+  `response`; both `MAX₁` windows fire (4 on-stack, 4 post-resolution).
+  The window sorting works without naming card types — Cut Down appears
+  only post-resolution, flash creatures appear on the stack.
+
+  The asymmetry in the first real decision is the mechanism doing its job:
+  `pass` produced 11 leaves (they cast Faerie Mastermind; I could flash in
+  a Drowner or Mastermind on the stack, or Cut Down it after), while each
+  cast candidate produced 3 — one per sample, all "nothing", because
+  casting on turn 3 left no mana to respond with. That IS the tap-out cost,
+  represented for the first time. The pilot still chose Cast Deep-Cavern
+  Bat (mean-of-max 59 vs 57 for holding) into an empty board — correct, and
+  the first evidence the expectimax backup does not push it passive.
+
+  Deviation from §2 as written: their play is a deterministic heuristic
+  (land, then most expensive castable spell), not MAD's search — nesting
+  `calculateActions` per leaf is prohibitive. Also skipped: my combat and
+  end step between my action and their untap.
+
 ## 9. Measurement
 
 Win rate is the headline and the weakest signal: same 60 cards both sides,
