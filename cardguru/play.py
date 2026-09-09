@@ -312,6 +312,13 @@ class MatchClient:
             cmd.append(f"-Dcardguru.deck.b={self.deck_b}")
         if self.subchoices:
             cmd.append("-Dcardguru.subchoices=external")
+        # Research arms are switched by driver system properties
+        # (cardguru.project_turn=K for arm (e), ...). Rather than thread a
+        # new flag through run_mirror -> llm_bridge -> here for each one,
+        # forward CARDGURU_DRIVER_PROPS verbatim: space-separated key=value.
+        for kv in os.environ.get("CARDGURU_DRIVER_PROPS", "").split():
+            if "=" in kv and kv.startswith("cardguru."):
+                cmd.append(f"-D{kv}")
         self.proc = subprocess.Popen(
             cmd, cwd=self.mage_repo, stdout=subprocess.DEVNULL,
             stderr=subprocess.DEVNULL)

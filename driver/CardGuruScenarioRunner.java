@@ -1852,6 +1852,8 @@ class InteractiveTestPlayer extends TestPlayer {
     // passive — the opposite failure.
     private final int projectTurnK = Integer.getInteger("cardguru.project_turn", 0);
     private static final int MAX_RESPONSES_PER_WINDOW = 2;
+    private int projSamplesFailed = 0;
+    private String projLastFailure = "";
 
     /** Leaves for one priority candidate: projected when arm (e) is on,
      *  otherwise the single unopposed rollout. */
@@ -1931,7 +1933,10 @@ class InteractiveTestPlayer extends TestPlayer {
                 out.add(projectedLeaf(sim, myId, oppId, base + " | I do nothing", k, "nothing"));
             } catch (Exception e) {
                 // A sample that throws is dropped; the others still count.
-                System.out.println("[CardGuru][project] sample " + k + " failed: " + e);
+                // Counted into the trace: the driver's stdout goes to
+                // DEVNULL under play.py, so a println alone is invisible.
+                projSamplesFailed++;
+                projLastFailure = String.valueOf(e);
             } finally {
                 searching = prev;
             }
@@ -2383,6 +2388,13 @@ class InteractiveTestPlayer extends TestPlayer {
         // determinization is not doing anything.
         rec.addProperty("det_rollouts", detRollouts);
         rec.addProperty("det_seated_equals_real", detSeatedEqualsReal);
+        // Arm (e) health: projection samples that threw and were dropped.
+        // If this tracks det_rollouts, the projection is not running.
+        rec.addProperty("project_turn_k", projectTurnK);
+        rec.addProperty("proj_samples_failed", projSamplesFailed);
+        if (!projLastFailure.isEmpty()) {
+            rec.addProperty("proj_last_failure", projLastFailure);
+        }
         JsonArray cands = new JsonArray();
         int flat = 0;
         for (int c = 0; c < labels.size(); c++) {
