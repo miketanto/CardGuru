@@ -219,6 +219,40 @@ pair of games per arm on the corrected rollouts, ideally on two seeds.
 Cost picture is stable across all plan arms: 37–61 calls and 13–17 min a
 game against 165 calls and 36 min for the search arm.
 
+### Corrected rollouts: search vs plan-scoped search, seeds 23 and 31
+
+One game each, Sonnet 5, pilot on the play, attack triggers firing in
+every rollout, 15:59–17:34 UTC. Data in `research/data/dp/fixed_*`.
+
+| arm | seed 23 | seed 31 | calls | wall | final life |
+|---|---|---|---|---|---|
+| A search (per-window, arm e+f) | **WIN** T13 | **WIN** T23 | 61 / 192 | 17 / 78 min | +12 / +7 |
+| C plan-scoped search | **WIN** T15 | loss T12 | 42 / 31 | 11 / 12 min | +9 / −5 |
+
+Search 2–0, plan 1–1, on four games. What the traces say:
+
+- **Seed 23** both arms win; the plan arm does it in 11 minutes and 42
+  calls against 17 minutes and 61. Its plan searches (12) plus combat
+  searches (4) replaced 30 per-window searches.
+- **Seed 31 search win** took 78 minutes and 192 calls: a 23-turn grind in
+  which the pilot was behind on board from turn 13 (one Preacher against
+  six creatures) and won through Sheoldred drain and blocks. The
+  per-window search re-asked at every step through all of it.
+- **Seed 31 plan loss** in 12 turns: the plan search chose "hold up flash
+  Mastermind" on turns 3 and 5 and never cast it; the Bat that had exiled
+  Kaito died on turn 8 and Kaito came back on turn 10; each Preacher it
+  cast met a Drowner stun or removal. The hold lines win the plan search
+  because a held response gives the projection a MAX over my replies where
+  a develop line has only "I do nothing" leaves; that is the intended
+  semantics of arm (e), but on this deal it produced two empty turns.
+
+Call it: the plan arm plays at roughly a third of the cost and its
+decisions come from the same simulated leaves the search arm uses, one
+turn at a time instead of one window at a time. On two seeds it split
+with the search arm; four games do not rank them. The next comparison
+worth running is on different decks, where the hold-versus-develop
+balance and the reactive rules face something other than MAD's Dimir.
+
 ## Observations that cut across pilots
 
 - **Deep-Cavern Bat's leave clause** is the most common rules error

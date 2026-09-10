@@ -1,0 +1,1 @@
+{"game": 1, "start": "A", "seed": 23, "search": "llm", "model": "claude-sonnet-5", "driver_props": "cardguru.project_turn=3 cardguru.respond=true", "result": {"status": "completed", "winner": "A", "turns": 13}, "wall_s": 1011.6, "sources": {"llm": 62, "auto": 79, "yield": 34, "result": 1}, "searches": {"attackers": 4, "blockers": 4, "priority": 22}, "ts": 1789056972.5}
