@@ -71,6 +71,9 @@ Plans built on those findings:
   bugs (the ability-word stripper was eating Saga chapter markers; the alt-cost
   short-circuit ran before `classify()`), static modes 71.5/81.9 → 76.2/80.8, plus a
   six-class taxonomy of what has actually gone wrong — two classes no aggregate score can see
+- [plan/no-llm-multigame.md](plan/no-llm-multigame.md) — what the system looks like with
+  no LLM on the serving path, and what a per-game (MTG / Riftbound / One Piece) search API
+  would cost
 
 Reproduce: `research/scripts/` (pure-Python parser + search prototype;
 `CardGuruFeasibilityTest.java` drops into XMage's `Mage.Tests`). Pins: Forge `670429bf`,
@@ -86,6 +89,11 @@ pruning, CLI. See [docs/query-dsl.md](docs/query-dsl.md).
 python -m cardguru build --cardsfolder <forge>/forge-gui/res/cardsfolder \
     --canonical <index.json> --pin <forge-commit>
 python -m cardguru search queries/q1_combat_damage_token.json --explain
+# NL-ish attribute search — no LLM, any game (docs: plan/no-llm-multigame.md)
+python -m cardguru find "legendary green creature with trample costing 4 or less"
+python -m cardguru find "card in calm that has ambush" \
+    --profile profiles/riftbound.json --corpus <riftbound card dump>
+
 python -m pytest tests/          # unit + integration goldens
 python benchmark/run.py          # 20-query golden benchmark -> benchmark/report.md
 
@@ -93,6 +101,16 @@ python benchmark/run.py          # 20-query golden benchmark -> benchmark/report
 python -m cardguru ask "sagas whose chapters tutor a card onto the battlefield" --explain
 python -m cardguru ask "cards that let you play lands from your graveyard" --compile-only
 ```
+
+The `find` command needs no credentials and no ability graph: it mines a lexicon from whatever
+card dump it is given (every domain, keyword, type and cost value becomes a searchable term)
+and parses questions against it with a closed grammar — prepositions, negation, disjunction,
+numeric comparators, stemming and typo tolerance. A new game is a field-mapping profile
+(`profiles/*.json`) plus a dump, no new code. Every answer ships its reading
+(`color = Blue AND keyword = Flash`), the words it could not bind, and a confidence for any
+fuzzy match, so a misreading is visible rather than silent. Coverage and its deliberate
+boundary — structure questions fall through to the query DSL — are measured by
+`eval/nlsearch_probe.py`.
 
 The `ask` command compiles a natural-language question into the query DSL with Claude,
 validates every exact api/mode/keyword/param token against the mined ontology

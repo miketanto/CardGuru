@@ -1,0 +1,25 @@
+{
+  "_comment": [
+    "Field mapping only — no card values are asserted here. Every searchable",
+    "term (domain names, keywords, types) is mined from the card dump at",
+    "build_lexicon() time, so this profile stays correct across set releases.",
+    "Point `cardguru find --corpus` at a Riftbound card dump (Riftcodex,",
+    "RiftScribe, apitcg) normalized to these field names."
+  ],
+  "game": "riftbound",
+  "id_field": "name",
+  "text_fields": ["text"],
+  "facets": {
+    "domain":  {"field": "domains",  "prepositions": ["in", "from", "domain"], "priority": 0},
+    "type":    {"field": "types",    "prepositions": ["type"], "priority": 1},
+    "keyword": {"field": "keywords", "prepositions": ["with", "has", "have", "having", "keyword"],
+                "priority": 2},
+    "tag":     {"field": "tags",     "prepositions": ["tagged"], "priority": 3},
+    "champion":{"field": "champion", "multi": false, "prepositions": ["champion"], "priority": 4}
+  },
+  "numerics": {
+    "cost":   {"field": "cost",   "aliases": ["costs", "energy"]},
+    "might":  {"field": "might",  "aliases": ["power"]},
+    "power":  {"field": "power",  "aliases": ["power cost"]}
+  }
+}
