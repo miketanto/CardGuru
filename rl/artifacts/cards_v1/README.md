@@ -4,11 +4,11 @@ Built by `rl/cards/build_index.py` from `data/dataset.jsonl.gz` (Forge pin `6704
 
 | count | value |
 |---|---|
-| card faces (ids) | 34521 |
+| card faces (ids) | 34642 |
 | token scripts (ids) | 836 |
-| of which post-pin overlay faces (rl/cards/extra_scripts) | 2 |
+| of which post-pin overlay faces (rl/cards/extra_scripts) | 123 |
 | card names shared by >1 card script (Variant/basic reprints) | 0 |
-| resolvable names | 36973 |
+| resolvable names | 37094 |
 | name collisions (later face kept) | 801 |
 
 ## Decklist gate (plan §2, 0b: 0 unknown)

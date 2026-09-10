@@ -11,15 +11,16 @@ Source: Forge pin `670429bf` (2026-08-06) → `data/dataset.jsonl.gz`
 
 | gate | required | measured | result |
 |---|---|---|---|
-| card faces indexed | ≥ 33,000 | 34,521 (34,519 pin + 2 post-pin overlay) | pass |
+| card faces indexed | ≥ 33,000 | 34,642 (34,519 pin + 123 post-pin overlay; first build the same day read 34,521 with a 2-script overlay) | pass |
 | token scripts indexed | resolved via tokenscripts | 836 | pass |
 | unknown names across every `.dck` in `rl/` and list in `decks/` | 0 | 0 of 38 decks (1,540 lines) | pass |
 | card names shared by >1 card script | (report) | 0 | — |
 | faces with a non-zero graph readout | (report) | 34,218 / 35,357 | — |
 
-Caveats recorded in `rl/artifacts/cards_v1/README.md`: two cards
-(`Defense Force Aggressor`, `Head of Security`, set TRC) postdate the pin
-and come from Forge `639f8d98` via `rl/cards/extra_scripts/`; token names
+Caveats recorded in `rl/artifacts/cards_v1/README.md`: 123 cards postdate
+the pin (two of them, `Defense Force Aggressor` and `Head of Security`,
+are in XMage ladder decks; the rest let 2026 MTGO lists resolve) and come
+from Forge `639f8d98` via `rl/cards/extra_scripts/` (its README lists them); token names
 are not unique across tokenscripts (bare name → first script,
 `token:<script>` is exact); transform back faces carry `mv = null`.
 

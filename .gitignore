@@ -5,3 +5,6 @@ __pycache__/
 .pytest_cache/
 eval/consistency/smoke_cache.json
 eval/consistency/cache.json
+
+# v7 decklist corpus: raw per-event fetches are re-fetchable, only the built corpus is committed
+rl/artifacts/decklists_v1/raw/
