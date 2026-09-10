@@ -47,3 +47,44 @@ Test: `python -m pytest tests/test_cardemb_data.py` (5 passed, 5 s).
 
 Untrained module; no number here is a result about decks. 2b/2c follow the 0c go/no-go.
 
+## 1d — card embedder `card_emb_v1` — **FAIL** (Lane A, 2026-09-10 17:35)
+
+Seed 0, 30 epochs, `rl/cardemb/train_contrastive.py` defaults (supervised
+InfoNCE keyed on the structure vector). Final retrieval r@1 train 0.774 /
+held-out 0.735, r@10 0.987 / 0.966 (4,096-card pools). Gates from
+`rl/cardemb/gates.py` (pre-registered in commit 929e5b2):
+
+| gate | threshold | measured (held-out) | train | result |
+|---|---|---|---|---|
+| G1 mv probe acc | ≥ 0.9 | 0.980 | 0.992 | pass |
+| G1 power probe acc | ≥ 0.9 | 0.985 | 0.993 | pass |
+| G1 toughness probe acc | ≥ 0.9 | 0.986 | 0.994 | pass |
+| G1 colours (5 probes, acc) | each ≥ 0.97 | min 0.998 (color_W) | min 0.999 | pass |
+| G1 types (6 probes, acc) | each ≥ 0.97 | min 1.000 (type_Sorcery) | min 1.000 | pass (3 skipped: too few positives) |
+| G1 keywords (11 probes, f1) | each ≥ 0.8 | min 0.978 (kw_reach) | min 0.987 | pass (7 skipped: too few positives) |
+| G1 answer classes (5 probes, f1) | each ≥ 0.8 | min 0.913 (ans_destroy_target) | min 0.949 | pass (4 skipped: too few positives) |
+| G2 Cancel / Counterspell cos | ≥ 0.85 | 0.998 | | pass |
+| G2 Spell Snare / Force Spike cos | ≤ 0.848, Spike ∉ Snare top-10 | 0.957, in top-10: True | | **FAIL** |
+| G2 functional reprints in top-3 | all 10 | 10 / 10 | | pass |
+| G2 P8 swap pairs cos | min ≥ μ+2σ = 0.502, mean ≥ μ+4σ = 0.874 | min 0.479, mean 0.790 (random μ 0.130 σ 0.186) | | **FAIL** |
+| G3 determinism | | seed 1 still training at readout time | | — |
+| **card_emb_v1 overall** | all of the above | | | **FAIL** |
+
+Diagnosis (a property of the objective, not of training length): Spell
+Snare and Force Spike have the same 68-column readout and the same
+printed fields, so the supervised-contrastive loss keyed on the
+structure vector made them *positives of each other*; the text encoder
+is trained only to predict structure, so whatever text says beyond
+structure is discarded. That is exactly the "condition breadth" PHASE-E3
+found only a text channel can carry. The version is dead per the
+pre-registration; nothing tunes the thresholds. Files kept for the
+record: `rl/artifacts/card_emb_v1/{gates.json, index.json, train_seed0.log}`;
+`emb.pt`/`model.pt` are not committed (failed version, 18 + 92 MB).
+
+Next version (`card_emb_v2`, same gates, same thresholds): positives are
+the same card only, cards with an identical structure vector are masked
+out of the InfoNCE denominator (neither positive nor negative), and a
+relational-distillation term anchors the fine-tuned text view's
+similarity structure to the frozen pretrained encoder's, so text-only
+distinctions survive the fine-tune.
+
