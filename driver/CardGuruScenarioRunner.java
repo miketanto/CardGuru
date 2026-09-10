@@ -817,8 +817,20 @@ class InteractiveTestPlayer extends TestPlayer {
         // pay for). State it outright.
         req.addProperty("mana_available", manaSignature(game));
         req.add("state", observableState(game));
+        // The stack, top last, so the bridge's turn planner can see "they
+        // cast X" without a search leaf. Leaves already carry the same.
+        JsonArray stack = new JsonArray();
+        for (mage.game.stack.StackObject so : game.getStack()) {
+            stack.add(so.getName() + " (" + (so.getControllerId().equals(this.getId())
+                    ? "ours" : "theirs") + ")");
+        }
+        req.add("stack", stack);
         return req;
     }
+
+    /** Turn-plan mode: no per-window search; the bridge executes a plan
+     *  the pilot wrote once per turn and asks only for uncovered windows. */
+    private static final boolean turnPlanMode = Boolean.getBoolean("cardguru.turn_plan");
 
     /** Supertypes + card types, e.g. "[Legendary] [Planeswalker]".
      *
@@ -897,6 +909,30 @@ class InteractiveTestPlayer extends TestPlayer {
                             + (perm.hasSummoningSickness()
                                     ? "; summoning sick (cannot attack, but "
                                       + "blocking is unaffected)" : ""));
+                    // Combat facts for the bridge's turn planner ("they
+                    // block X" / "X unblocked" events) and for the pilot.
+                    try {
+                        mage.game.combat.Combat combat = game.getCombat();
+                        if (combat != null && combat.getAttackers().contains(perm.getId())) {
+                            o.addProperty("attacking", true);
+                        }
+                        if (combat != null) {
+                            JsonArray blocking = new JsonArray();
+                            for (mage.game.combat.CombatGroup g : combat.getGroups()) {
+                                if (g.getBlockers().contains(perm.getId())) {
+                                    for (UUID aid : g.getAttackers()) {
+                                        Permanent atk = game.getPermanent(aid);
+                                        blocking.add(atk == null ? "?" : atk.getName());
+                                    }
+                                }
+                            }
+                            if (blocking.size() > 0) {
+                                o.add("blocking", blocking);
+                            }
+                        }
+                    } catch (RuntimeException ignored) {
+                        // combat facts are advisory; never break a request
+                    }
                 }
                 o.addProperty("cost", perm.getManaCost().getText());
                 o.addProperty("types", typeLine(perm, game));
@@ -954,7 +990,7 @@ class InteractiveTestPlayer extends TestPlayer {
         List<ActivatedAbility> playable = dropUnaffordable(
                 getComputerPlayer().getPlayable(game, true, Zone.ALL, false),
                 manaSig);
-        if ("llm".equals(minimaxMode)) {
+        if (("llm".equals(minimaxMode) && !turnPlanMode)) {
             List<ActivatedAbility> real = new ArrayList<>();
             for (ActivatedAbility a : playable) {
                 if (!(a instanceof mage.abilities.mana.ManaAbility)) {
@@ -1341,7 +1377,7 @@ class InteractiveTestPlayer extends TestPlayer {
             minimaxSelectAttackers(game, defenderId, attackers);
             return;
         }
-        if ("llm".equals(minimaxMode) && !attackers.isEmpty()) {
+        if (("llm".equals(minimaxMode) && !turnPlanMode) && !attackers.isEmpty()) {
             llmSearchAttackers(game, defenderId, attackers);
             return;
         }
@@ -1390,7 +1426,7 @@ class InteractiveTestPlayer extends TestPlayer {
             super.selectBlockers(source, game, defendingPlayerId);
             return;
         }
-        if ("llm".equals(minimaxMode) && !blockers.isEmpty() && !attackers.isEmpty()) {
+        if (("llm".equals(minimaxMode) && !turnPlanMode) && !blockers.isEmpty() && !attackers.isEmpty()) {
             llmSearchBlockers(game, defendingPlayerId, blockers, attackers);
             return;
         }

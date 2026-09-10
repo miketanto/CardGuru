@@ -148,6 +148,346 @@ class YieldGate:
         return True
 
 
+PHASE_CLASS = {
+    "Upkeep": "upkeep", "Draw": "draw", "Precombat Main": "main1",
+    "Begin Combat": "combat", "Declare Attackers": "combat",
+    "Declare Blockers": "combat", "Combat Damage": "combat",
+    "End Combat": "combat", "Postcombat Main": "main2", "End Turn": "end",
+}
+PHASE_ORDER = ["upkeep", "draw", "main1", "combat", "main2", "end"]
+
+# Event vocabulary the bridge can detect from consecutive requests. The
+# pilot writes rules against these; anything it cannot express falls to
+# "otherwise", whose default is ask.
+EVENT_VOCAB = [
+    "they_cast:<card name | removal | counter | creature | any>",
+    "they_block:<my attacker name | any>",
+    "no_block:<my attacker name | any>",
+    "my_creature_lost:<name | any>",
+    "enemy_creature_gained:<name | any>",
+    "life_below:<N>",
+    "they_tapped_out",
+    "otherwise",
+]
+ACTION_VOCAB = [
+    "pass", "ask", "cast <card name>", "play <land name>",
+    "activate <ability text fragment>", "attack_all", "attack_none",
+    "attack <name, name>", "no_block", "block <blocker>-><attacker>; ...",
+    "any cast/activate may add ' @ <target name>'",
+]
+
+
+class TurnPlanner:
+    """Contingent turn plans: one pilot call per turn produces steps and
+    if->then rules; the bridge executes them against the menus and state
+    diffs and escalates only what the plan did not cover.
+
+    Every window used to be an independent question, so a turn with 25
+    priority windows cost 25 answers to what was really one decision
+    ("hold Drowner unless they tap out"). The plan is that decision written
+    once. Safety rule: an event with no matching rule escalates; it never
+    silently passes."""
+
+    REMOVAL_WORDS = ("destroy target", "exile target", "gets -", "deals",
+                     "put two stun counters")
+    COUNTER_WORDS = ("counter target",)
+
+    def __init__(self, log, escalate, card_ref):
+        self.log = log
+        self.escalate = escalate
+        self.card_ref = card_ref          # name -> {types, text}
+        self.plan = None
+        self.plan_key = None              # (turn, active)
+        self.done = set()
+        self.snap = None
+        self.pending_target = None
+        self.stats = {"plans": 0, "by_plan": 0, "escalated": 0,
+                      "events_unhandled": 0}
+
+    # ---- helpers -------------------------------------------------------
+    @staticmethod
+    def _creatures(side):
+        return [c for c in (side or {}).get("battlefield", [])
+                if isinstance(c, dict) and "power" in c]
+
+    @staticmethod
+    def _norm(s):
+        return (s or "").lower().strip()
+
+    def _snapshot(self, request):
+        st = request.get("state") or {}
+        a, b = st.get("A") or {}, st.get("B") or {}
+        return {"my_creatures": [c["name"] for c in self._creatures(a)],
+                "enemy_creatures": [c["name"] for c in self._creatures(b)],
+                "life": a.get("life", 20),
+                "stack_seen": tuple(request.get("stack") or [])}
+
+    def _spell_class(self, name):
+        ref = self.card_ref.get(name) or {}
+        text = self._norm(ref.get("text", ""))
+        types = self._norm(ref.get("types", ""))
+        if "creature" in types:
+            return "creature"
+        if any(w in text for w in self.COUNTER_WORDS):
+            return "counter"
+        if any(w in text for w in self.REMOVAL_WORDS):
+            return "removal"
+        return "unknown"
+
+    def _events(self, request):
+        """Events since the last snapshot, each as (type, arg)."""
+        ev = []
+        if not self.snap:
+            return ev
+        st = request.get("state") or {}
+        a, b = st.get("A") or {}, st.get("B") or {}
+        stack = [s for s in (request.get("stack") or []) if "(theirs)" in s]
+        for s in stack:
+            if s not in self.snap["stack_seen"]:
+                name = s.split(" (")[0]
+                ev.append(("they_cast", name))
+        mine = [c["name"] for c in self._creatures(a)]
+        for n in self.snap["my_creatures"]:
+            if mine.count(n) < self.snap["my_creatures"].count(n):
+                ev.append(("my_creature_lost", n))
+        theirs = [c["name"] for c in self._creatures(b)]
+        for n in theirs:
+            if theirs.count(n) > self.snap["enemy_creatures"].count(n):
+                ev.append(("enemy_creature_gained", n))
+        if a.get("life", 20) < self.snap["life"]:
+            ev.append(("life_below", a.get("life", 20)))
+        lands_up = [p for p in b.get("battlefield", [])
+                    if isinstance(p, dict) and "power" not in p
+                    and not p.get("tapped")]
+        if request.get("active") == "A" and not lands_up \
+                and self.snap.get("they_had_mana", True):
+            ev.append(("they_tapped_out", None))
+        # Blocks: visible on my turn once blockers are declared.
+        if request.get("active") == "A" and request.get("phase") in (
+                "Declare Blockers", "Combat Damage") and not self.snap.get("blocks_seen"):
+            attackers = [c for c in self._creatures(a) if c.get("attacking")]
+            if attackers:
+                blocked = set()
+                for c in self._creatures(b):
+                    for n in c.get("blocking") or []:
+                        blocked.add(n)
+                for c in attackers:
+                    ev.append(("they_block" if c["name"] in blocked else "no_block",
+                               c["name"]))
+                self.snap["blocks_seen"] = True
+        return ev
+
+    def _match_rule(self, event):
+        etype, arg = event
+        for rule in (self.plan or {}).get("rules") or []:
+            cond = self._norm(rule.get("if"))
+            if ":" in cond:
+                ctype, carg = cond.split(":", 1)
+            else:
+                ctype, carg = cond, "any"
+            if ctype != etype:
+                continue
+            if etype == "life_below":
+                try:
+                    if arg < int(carg):
+                        return rule
+                except ValueError:
+                    pass
+                continue
+            if etype == "they_cast" and carg in ("removal", "counter", "creature"):
+                if self._spell_class(arg) == carg:
+                    return rule
+                continue
+            if carg in ("any", "") or (arg and carg in self._norm(arg)):
+                return rule
+        return None
+
+    def _find_option(self, request, action):
+        """Map an action string to an option index, or None."""
+        act = self._norm(action)
+        target = None
+        if " @ " in act:
+            act, target = act.split(" @ ", 1)
+        opts = request.get("options") or []
+        if act in ("pass", ""):
+            return 0, None
+        verb, _, rest = act.partition(" ")
+        rest = rest.strip()
+        for o in opts:
+            t = self._norm(o.get("text"))
+            if o.get("action") != "activate":
+                continue
+            if verb == "cast" and t.startswith("cast ") and rest and rest in t:
+                return o["index"], target
+            if verb == "play" and t.startswith("play ") and rest and rest in t:
+                return o["index"], target
+            if verb == "activate" and rest and rest in t and not t.startswith("cast "):
+                return o["index"], target
+        return None, None
+
+    # ---- plan acquisition ---------------------------------------------
+    def ensure_plan(self, request):
+        key = (request.get("turn"), request.get("active"))
+        if key == self.plan_key:
+            return
+        self.plan_key = key
+        self.plan = None
+        self.done = set()
+        self.pending_target = None
+        mine = request.get("active") == "A"
+        preq = {"kind": "turn_plan", "turn": request.get("turn"),
+                "phase": request.get("phase"), "active": request.get("active"),
+                "whose_turn": "mine" if mine else "theirs",
+                "mana_available": request.get("mana_available"),
+                "state": request.get("state"), "stack": request.get("stack"),
+                "menu_now": request.get("options"),
+                "event_vocabulary": EVENT_VOCAB, "action_vocabulary": ACTION_VOCAB}
+        resp = self.escalate(preq)
+        plan = (resp or {}).get("turn_plan") if isinstance(resp, dict) else None
+        if isinstance(plan, dict):
+            self.plan = plan
+            self.stats["plans"] += 1
+        self.snap = self._snapshot(request)
+        b = (request.get("state") or {}).get("B") or {}
+        self.snap["they_had_mana"] = any(
+            isinstance(p, dict) and "power" not in p and not p.get("tapped")
+            for p in b.get("battlefield", []))
+        self.log({"source": "llm", "request": preq, "response": resp,
+                  "plan_stats": dict(self.stats)})
+
+    def adopt(self, resp, request):
+        """A pilot reply to an escalation may carry a revised turn_plan."""
+        plan = resp.get("turn_plan") if isinstance(resp, dict) else None
+        if isinstance(plan, dict):
+            self.plan = plan
+            self.done = set()
+        self.snap = self._snapshot(request)
+
+    # ---- execution -----------------------------------------------------
+    def answer(self, request):
+        """Return (response, note) if the plan decides this window, else None."""
+        if not self.plan:
+            return None
+        kind = request.get("kind")
+        events = self._events(request)
+        for ev in events:
+            rule = self._match_rule(ev)
+            if rule is None:
+                self.stats["events_unhandled"] += 1
+                self.snap = self._snapshot(request)   # fire once
+                return None
+            then = self._norm(rule.get("then"))
+            self.snap = self._snapshot(request)
+            if then == "ask":
+                return None
+            if kind == "priority":
+                idx, target = self._find_option(request, then)
+                if idx is None:
+                    return None
+                self.pending_target = target
+                return {"choice": idx}, f"rule {rule.get('if')} -> {then}"
+            if kind == "attackers":
+                r = self._attack_answer(request, then)
+                if r is not None:
+                    return r, f"rule {rule.get('if')} -> {then}"
+                return None
+            if kind == "blockers":
+                r = self._block_answer(request, then)
+                if r is not None:
+                    return r, f"rule {rule.get('if')} -> {then}"
+                return None
+            return None
+        if kind == "priority":
+            if request.get("active") != "A":
+                return {"choice": 0}, "their turn, no rule fired"
+            phase = PHASE_CLASS.get(request.get("phase"), "any")
+            steps = self.plan.get("steps") or []
+            for i, step in enumerate(steps):
+                if i in self.done:
+                    continue
+                sp = self._norm(step.get("phase") or "any")
+                if sp not in ("any", phase):
+                    # A step for an earlier phase that never fired: its
+                    # assumption broke, ask rather than skip it silently.
+                    if sp in PHASE_ORDER and phase in PHASE_ORDER \
+                            and PHASE_ORDER.index(sp) < PHASE_ORDER.index(phase):
+                        self.done.add(i)
+                        return None
+                    continue
+                act = step.get("action") or step.get("do") or ""
+                if self._norm(act) in ("pass", "hold", ""):
+                    self.done.add(i)
+                    continue
+                idx, target = self._find_option(request, act)
+                if idx is None:
+                    self.done.add(i)
+                    return None            # not on the menu: escalate
+                self.done.add(i)
+                self.pending_target = target
+                return {"choice": idx}, f"step {i}: {act}"
+            return {"choice": 0}, "no pending step this phase"
+        if kind == "attackers":
+            r = self._attack_answer(request, self.plan.get("attack"))
+            return (r, f"attack: {self.plan.get('attack')}") if r is not None else None
+        if kind == "blockers":
+            r = self._block_answer(request, self.plan.get("blocks"))
+            return (r, f"blocks: {self.plan.get('blocks')}") if r is not None else None
+        if kind == "target" and self.pending_target:
+            want = self._norm(self.pending_target)
+            self.pending_target = None
+            for o in request.get("options") or []:
+                if want in self._norm(o.get("text")):
+                    return {"targets": [o["index"]]}, f"target hint {want}"
+            return None
+        return None
+
+    def _attack_answer(self, request, spec):
+        opts = request.get("options") or []
+        if spec is None:
+            return None
+        s = spec if isinstance(spec, list) else self._norm(str(spec))
+        if s in ("ask", ""):
+            return None
+        if s in ("attack_all", "all"):
+            return {"attackers": [o["index"] for o in opts]}
+        if s in ("attack_none", "none"):
+            return {"attackers": []}
+        names = s if isinstance(s, list) else [n.strip() for n in
+                                              s.replace("attack ", "", 1).split(",")]
+        picked = [o["index"] for o in opts
+                  if any(self._norm(n) and self._norm(n) in self._norm(o.get("name"))
+                         for n in names)]
+        return {"attackers": picked}
+
+    def _block_answer(self, request, spec):
+        if spec is None:
+            return None
+        s = spec if isinstance(spec, list) else self._norm(str(spec))
+        if s in ("ask", ""):
+            return None
+        if s in ("no_block", "none"):
+            return {"blocks": []}
+        pairs = s if isinstance(s, list) else [p.strip() for p in
+                                              s.replace("block ", "", 1).split(";")]
+        blockers = request.get("blockers") or []
+        attackers = request.get("attackers") or []
+        out = []
+        for p in pairs:
+            if isinstance(p, (list, tuple)) and len(p) == 2:
+                bname, aname = p
+            elif isinstance(p, str) and "->" in p:
+                bname, aname = p.split("->", 1)
+            else:
+                continue
+            bi = next((b["index"] for b in blockers
+                       if self._norm(bname) in self._norm(b.get("name"))), None)
+            ai = next((a["index"] for a in attackers
+                       if self._norm(aname) in self._norm(a.get("name"))), None)
+            if bi is not None and ai is not None:
+                out.append([bi, ai])
+        return {"blocks": out}
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--mage-repo", required=True)
@@ -174,6 +514,11 @@ def main():
                     help="persistent-pilot mode: no per-request rules context, "
                          "card oracle text sent once per name (card_reference), "
                          "state stripped to name/tapped/pt/sick afterwards")
+    ap.add_argument("--turn-plan", action="store_true",
+                    help="contingent turn plans: one pilot call per turn, the "
+                         "bridge executes steps and if->then rules and "
+                         "escalates only uncovered events (also switched on "
+                         "by cardguru.turn_plan=true in CARDGURU_DRIVER_PROPS)")
     args = ap.parse_args()
 
     os.makedirs(args.esc_dir, exist_ok=True)
@@ -181,6 +526,7 @@ def main():
     rng = random.Random(0)
     seq = {"n": 0}
     seen_cards: set = set()
+    card_ref_all: dict = {}     # every card fact seen this game, for the planner
 
     def compact_state(request):
         """Full facts for every card VISIBLE in this request go into
@@ -204,9 +550,11 @@ def main():
                                             "power", "toughness") if k in card}
                 if ref:
                     reference[name] = ref
+                    card_ref_all[name] = ref
             return {k: card[k] for k in ("name", "tapped", "power",
                                          "toughness", "summoning_sick",
-                                         "can_block", "status")
+                                         "can_block", "status",
+                                         "attacking", "blocking")
                     if k in card}
 
         state = request.get("state") or {}
@@ -292,6 +640,13 @@ def main():
 
     gate = YieldGate()
 
+    # Turn-plan mode (A/B against per-window search): one env var switches
+    # both sides — the driver stops searching at every window and just sends
+    # menus; the bridge asks for a plan per turn and executes it.
+    turn_plan_on = args.turn_plan or (
+        "cardguru.turn_plan=true" in os.environ.get("CARDGURU_DRIVER_PROPS", ""))
+    planner = TurnPlanner(log, escalate, card_ref_all) if turn_plan_on else None
+
     def policy(request):
         kind = request.get("kind")
         if kind == "priority" and not any(
@@ -300,7 +655,18 @@ def main():
             resp = {"choice": 0}
             log({"source": "auto", "request": request, "response": resp})
             return resp
-        if gate.covers(request):
+        if planner is not None:
+            if kind in ("priority", "attackers", "blockers", "target"):
+                planner.ensure_plan(request)
+                hit = planner.answer(request)
+                if hit is not None:
+                    resp, note = hit
+                    planner.stats["by_plan"] += 1
+                    log({"source": "turn_plan", "request": request,
+                         "response": resp, "plan_note": note})
+                    return resp
+                planner.stats["escalated"] += 1
+        elif gate.covers(request):
             resp = {"choice": 0}
             log({"source": "yield", "request": request, "response": resp})
             return resp
@@ -311,15 +677,24 @@ def main():
             resp = {"blocks": []}
             log({"source": "auto", "request": request, "response": resp})
             return resp
+        if planner is not None and planner.plan is not None:
+            request = dict(request)
+            request["turn_plan"] = planner.plan
+            request["turn_plan_note"] = ("this window was not covered by your "
+                                         "turn_plan; answer it, and optionally "
+                                         "return a revised \"turn_plan\"")
         resp = escalate(request)
         source = "llm"
         if resp is None:
             resp = dumb_policy(request)
             source = "fallback-timeout"
         until = resp.pop("yield_until", None) if isinstance(resp, dict) else None
-        until = gate.set(until, request)
+        until = gate.set(until, request) if planner is None else None
+        if planner is not None and isinstance(resp, dict):
+            planner.adopt(resp, request)
         log({"source": source, "request": request, "response": resp,
-             **({"yield_set": until} if until else {})})
+             **({"yield_set": until} if until else {}),
+             **({"plan_stats": dict(planner.stats)} if planner else {})})
         return resp
 
     mode = "attacks" if args.minimax else args.search

@@ -40,12 +40,18 @@ SCHEMAS = {
     "leaf_eval": '{"scores": [<exactly leaf_count numbers 0-100, one per '
                  'LEAF in leaf_index order - not one per candidate>], '
                  '"why": "...", "plan": "..."}',
+    "turn_plan": '{"turn_plan": {"steps": [{"phase": "main1|combat|main2|end|any", '
+                 '"action": "cast X | play X | activate X | pass"}], '
+                 '"attack": "attack_all|attack_none|attack <names>|ask", '
+                 '"blocks": "no_block|block <blocker>-><attacker>; ...|ask", '
+                 '"rules": [{"if": "<event>", "then": "<action>|ask"}]}, '
+                 '"why": "...", "plan": "..."}',
 }
 KEY_FOR = {"mulligan": "mulligan", "priority": "choice",
            "attackers": "attackers", "blockers": "blocks",
            "target": "targets", "choose": "targets",
            "announce_x": "x", "mode": "choice", "use": "use",
-           "leaf_eval": "scores"}
+           "leaf_eval": "scores", "turn_plan": "turn_plan"}
 
 # Decision kinds that MUST carry a standing plan.
 #

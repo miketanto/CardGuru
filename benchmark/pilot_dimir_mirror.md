@@ -199,6 +199,40 @@ optional. Neither replaces the required field for the decision's kind.
 you never have to play off a name you cannot recall. Look it up rather than
 trusting memory; that is what step 1 is for.
 
+## Turn plans (only when asked with kind "turn_plan")
+
+In turn-plan mode you are asked ONCE at the start of each turn (yours and
+theirs) for a plan the harness executes, and you are asked again only for
+windows the plan does not cover. Reply:
+
+    {"turn_plan": {
+       "steps":  [{"phase": "main1", "action": "play Swamp"},
+                  {"phase": "main1", "action": "cast Preacher of the Schism"},
+                  {"phase": "main2", "action": "cast Cut Down @ Floodpits Drowner"}],
+       "attack": "attack Deep-Cavern Bat, Preacher of the Schism",
+       "blocks": "no_block",
+       "rules":  [{"if": "they_cast:removal", "then": "ask"},
+                  {"if": "no_block:Deep-Cavern Bat", "then": "activate Ninjutsu"},
+                  {"if": "they_cast:creature", "then": "pass"},
+                  {"if": "otherwise", "then": "ask"}]},
+     "why": "...", "plan": "..."}
+
+- `steps` run in order in the named phase (`main1`, `combat`, `main2`,
+  `end`, `any`) whenever the action is on the menu; a step whose action is
+  not on the menu when its phase arrives escalates to you.
+- `attack` / `blocks`: `attack_all`, `attack_none`, `attack <names>`,
+  `no_block`, `block <blocker>-><attacker>; ...`, or `ask`.
+- `rules` fire on events the harness detects (the request lists the
+  vocabulary): their spell on the stack (`they_cast:<name|removal|counter|
+  creature|any>`), blocks on your attackers, a creature of yours leaving, a
+  new enemy creature, your life dropping below N, them tapping out. An
+  event with no matching rule is escalated to you — write `ask` where you
+  want to decide live, and keep the list short and honest.
+- Any cast may carry `@ <target name>`; the harness answers the target
+  prompt with it.
+- When a window is escalated, the request carries your `turn_plan`; you
+  may return a revised `"turn_plan"` alongside the answer.
+
 ## Yielding (use SPARINGLY — you are the control deck)
 
 Any response may carry `"yield_until": "my_turn"` or `"end_of_turn"`, which
