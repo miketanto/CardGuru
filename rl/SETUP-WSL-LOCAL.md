@@ -13,6 +13,8 @@ recreates that with symlinks rather than editing the scripts.
 | `/home/user/CardGuru` → `/mnt/c/Users/sutanto4/Documents/CardGuru` | symlink | so `RL=/home/user/CardGuru/rl` in the lanes resolves |
 | `/home/miketanto/mage` | XMage pin `7554968c` + `phase9-engine.patch` + overlays | WSL-native ext4; never put this on `/mnt/c` (9P is far too slow for Maven) |
 | `/home/user/mage` → `/home/miketanto/mage` | symlink | `.rl_ready` marker present after build |
+| `/home/miketanto/forge-src` | Forge at pin `670429bf` (2026-09-10; shallow clone + `git fetch --depth 1 origin <full sha>`; the short sha is not fetchable) | ontology source for `data/dataset.jsonl.gz` and `rl/artifacts/cards_v1` |
+| `/home/user/forge-src` → `/home/miketanto/forge-src` | symlink | so the `CARDGURU_TOKENSCRIPTS` default resolves |
 | `~/tools/jdk-21.0.12.1+1` | Temurin 21 | matches the JDK the cloud runs used |
 | `~/tools/apache-maven-3.9.9` | Maven | `MAVEN_OPTS=-Xmx4g` |
 | `~/engine_setup.log` | build log | last build 2026-09-10, `ENGINE|READY|7554968c` |
