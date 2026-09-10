@@ -1,0 +1,25 @@
+# rl/update_profile.py threads  (THROUGHPUT-LOCAL.md §10a), machine idle
+# 1) synthetic buffer (--synth, 1798 steps, 32 episodes), seed-0 weights
+UPDPROF|buf steps=1798 episodes=32 device=cpu torch=2.7.1+cu126
+UPDTHREADS|threads=1|update_s=46.22|ms_per_step=25.71|max_abs_dw_vs_first=0.000e+00|threads_restored=yes
+UPDTHREADS|threads=8|update_s=27.10|ms_per_step=15.07|max_abs_dw_vs_first=1.823e-04|threads_restored=yes
+UPDTHREADS|threads=16|update_s=48.93|ms_per_step=27.21|max_abs_dw_vs_first=1.014e-04|threads_restored=yes
+# 2) real buffer: first update of the conc4_cpu_ut8 lane (RL_DUMP_BUF, 1366 steps,
+#    32 episodes), weights = that lane's init.pt. Same thread count twice = determinism.
+UPDPROF|buf steps=1366 episodes=32 device=cpu torch=2.7.1+cu126
+UPDTHREADS|threads=1|update_s=38.85|ms_per_step=28.44|max_abs_dw_vs_first=0.000e+00|threads_restored=yes
+UPDTHREADS|threads=1|update_s=37.69|ms_per_step=27.59|max_abs_dw_vs_first=0.000e+00|threads_restored=yes
+UPDTHREADS|threads=8|update_s=24.50|ms_per_step=17.93|max_abs_dw_vs_first=1.352e-03|threads_restored=yes
+UPDTHREADS|threads=8|update_s=25.18|ms_per_step=18.43|max_abs_dw_vs_first=1.352e-03|threads_restored=yes
+UPDTHREADS|threads=16|update_s=41.24|ms_per_step=30.19|max_abs_dw_vs_first=1.033e-03|threads_restored=yes
+# 3) conc4_cpu_ut8 lane, per TRAIN row: steps, update_s, ms/step, peak host used MB,
+#    server RSS range during the update (mem.log 5 s samples). Odd rows = first update
+#    of each 64-episode driver job, even rows = second.
+row=1 steps=1366 update_s=62.6 ms_per_step=45.8 peak_used_MB=4184 server_rss_MB=678..2025
+row=2 steps=1796 update_s=35.6 ms_per_step=19.8 peak_used_MB=4452 server_rss_MB=1876..2391
+row=3 steps=1444 update_s=60.3 ms_per_step=41.8 peak_used_MB=5862 server_rss_MB=2177..3541
+row=4 steps=2201 update_s=40.0 ms_per_step=18.2 peak_used_MB=6798 server_rss_MB=4293..4773
+row=5 steps=2819 update_s=139.3 ms_per_step=49.4 peak_used_MB=7612 server_rss_MB=3861..5631
+row=6 steps=2747 update_s=46.0 ms_per_step=16.7 peak_used_MB=9363 server_rss_MB=5335..7386
+row=7 steps=3600 update_s=180.3 ms_per_step=50.1 peak_used_MB=10095 server_rss_MB=6687..8254
+row=8 steps=4316 update_s=79.3 ms_per_step=18.4 peak_used_MB=11155 server_rss_MB=7019..9267

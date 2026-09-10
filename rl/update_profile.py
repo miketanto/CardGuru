@@ -139,19 +139,28 @@ def mode_profile(args, buf, completed):
         acts.append(ProfilerActivity.CUDA)
     with profile(activities=acts) as prof:
         secs = run_update(tr, args.seed + 1)
-    ev = prof.events()
-    kern = [e for e in ev
-            if e.device_type == torch.autograd.DeviceType.CUDA]
-    ktime = sum(e.time_range.elapsed_us() for e in kern) / 1e6
+    # key_averages, not events(): a full update is ~10^6 events and the
+    # per-event Python walk swapped the machine out (12 GB) the first time
+    ka = prof.key_averages()
+    kern = [r for r in ka if r.device_type == torch.autograd.DeviceType.CUDA]
+    launches = sum(r.count for r in kern)
+    ktime = sum(r.self_device_time_total for r in kern) / 1e6
     print(f"UPDPROF|buf steps={n} episodes={len(completed)} device={args.device}"
           f"|warmup_s={warm:.2f}|profiled_s={secs:.2f}"
           f"|ms_per_step={1000 * secs / n:.2f}", flush=True)
     if kern:
-        durs = sorted(e.time_range.elapsed_us() for e in kern)
-        print(f"UPDKERN|launches={len(kern)}|per_step={len(kern) / n:.1f}"
+        us = sorted((r.self_device_time_total / r.count, r.count)
+                    for r in kern)
+        cum, med = 0, 0.0
+        for d, c in us:
+            cum += c
+            if cum * 2 >= launches:
+                med = d
+                break
+        print(f"UPDKERN|launches={launches}|per_step={launches / n:.1f}"
+              f"|distinct_kernels={len(kern)}"
               f"|kernel_time_s={ktime:.2f}|gpu_busy={ktime / secs:.1%}"
-              f"|median_us={durs[len(durs) // 2]:.1f}"
-              f"|p90_us={durs[int(0.9 * len(durs))]:.1f}", flush=True)
+              f"|median_launch_us={med:.1f}", flush=True)
     key = "cuda_time_total" if args.device == "cuda" else "cpu_time_total"
     print("TOP10 by", key)
     print(prof.key_averages().table(sort_by=key, row_limit=10,
@@ -172,6 +181,10 @@ def main():
     ap.add_argument("--device", default="cpu", choices=["cpu", "cuda"])
     ap.add_argument("--seed", type=int, default=0)
     ap.add_argument("--threads", type=int, nargs="+", default=[1, 8, 16])
+    ap.add_argument("--episodes", type=int, default=0,
+                    help="use only the first K episodes of the buffer "
+                         "(profiler traces of a full update do not fit "
+                         "in 12 GB)")
     args = ap.parse_args()
     if args.buf:
         buf, completed = load_buf(args.buf)
@@ -179,6 +192,9 @@ def main():
         buf, completed = synth_buf(args.seed)
     else:
         ap.error("--buf or --synth")
+    if args.episodes and args.episodes < len(completed):
+        completed = completed[:args.episodes]
+        buf = buf[:completed[-1][1]]
     torch.set_num_threads(1)          # the server's inference count
     if args.mode == "threads":
         mode_threads(args, buf, completed)

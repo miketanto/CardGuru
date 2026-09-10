@@ -373,9 +373,121 @@ first update of a lane, dumped by `RL_DUMP_BUF=<path>`) under
 plus kernel launches per stored consult. Finding and candidate fix go
 below; **the update is not restructured in this step.**
 
-### 10c. Results
+### 10c. Results — 0a, `--update-threads`
 
-(filled in after the runs)
+Offline first (`update_profile.py threads`, machine otherwise idle, files
+in `artifacts/throughput/step0/threads_offline.txt`). Real buffer = the
+first update of the N=8 lane (1366 steps, 32 episodes), that lane's
+`init.pt`; every arm runs the identical update from the identical
+buffer and seed.
+
+| torch threads in update() | update s | ms / stored consult | max abs weight Δ vs 1 thread |
+|---|---|---|---|
+| 1 | 38.9 | 28.4 | 0 |
+| 1 (again) | 37.7 | 27.6 | **0** (deterministic) |
+| 8 | 24.5 | 17.9 | 1.35e-3 |
+| 8 (again) | 25.2 | 18.4 | 1.35e-3 (**identical to the other 8-run**) |
+| 16 | 41.2 | 30.2 | 1.03e-3 |
+
+- **The pre-registered 1e-6 weight check fails**, by three orders of
+  magnitude. The difference is *deterministic* — two runs at the same
+  thread count agree bit for bit — so it is float reduction order in
+  the multi-threaded GEMM/attention kernels, amplified by four epochs
+  of Adam (which normalises gradients, so a ~1e-7 gradient perturbation
+  on a near-zero-gradient weight flips the sign of a 3e-4 step). It is
+  not a race. But it means **an `--update-threads` run is not the same
+  training run as a 1-thread run**, in the same way a cuda run is not
+  (§6); the §6 caveat about comparing checkpoints trained on different
+  arms applies to this flag too.
+- 8 threads (= physical cores) is 1.55× on this buffer. 16 threads
+  (hyperthreads) is *slower than 1*: OpenMP barrier spin across
+  descheduled SMT siblings on a hypervisor. The 16-thread lane row was
+  therefore pre-announced as a regression before it ran.
+
+Lane (§5 protocol, conc4 cpu, one run, seed 0):
+
+| arm | eps/s | window s | update s mean (max) | update ms / consult | update share | play consults/s | held / consult | peak used / JVM / server MB |
+|---|---|---|---|---|---|---|---|---|
+| conc4 cpu (§5 baseline) | 0.535 | 419 | 48.6 (64.6) | 24.3 | 84 % | 220 | 4.47 ms | 8004 / 2099 / 5970 |
+| conc4 cpu `--update-threads 8` | **0.328** | 683 | 80.4 (180.3) | 31.7 | 85 % | 185 | 4.47 ms | **11155** / 2090 / **9267** |
+| conc4 cpu `--update-threads 16` | UT16_EPS | UT16_WIN | UT16_UPD | UT16_MS | UT16_SHARE | UT16_PLAY | UT16_HELD | UT16_MEM |
+
+**N=8 is a regression of 39 % in eps/s, not flat**, and the offline
+1.55× did not survive contact with the lane. The per-row update cost
+alternates: 45.8 / 19.8 / 41.8 / 18.2 / 49.4 / 16.7 / 50.1 / 18.4 ms
+per consult. The even rows are the offline number (17–18 ms); the odd
+rows are 2.5× *worse than one thread*. Odd rows are the **first update
+of each 64-episode driver job**, even rows the second. It is not
+memory: row 1 was slow at 4.2 GB host used. The candidate cause,
+not tested here, is CPU contention with the JVM early in each job
+(C2 JIT and GC threads are busiest in a job's first minute); an
+8-thread OpenMP region degrades far more than a 1-thread one when a
+sibling is descheduled, because every barrier waits for the slowest
+thread. The second growth is memory: server RSS climbed to 9.3 GB
+against 6.0 GB in the baseline (per-thread allocator arenas retaining
+the PPO batch), and host used hit 11.2 GB of the 12 GB cap by row 8 —
+one more update and this arm would have swapped.
+
+**Verdict for 0a:** do not enable `--update-threads` on this machine.
+The flag stays (default 0, unchanged behaviour) because the offline
+1.55× at 8 threads is real and would matter on a host where the update
+does not share cores with a JVM; the lane number is the one that
+counts here. Play consults/s fell 220 → 185 because thread restoration
+is per-update and inference itself is unchanged (held/consult 4.47 ms
+on both) — the play phase lost time elsewhere, most likely the same
+JVM contention, and n = 1 cannot separate that from run-to-run noise.
+
+### 10d. Results — 0b, profile of the cuda update
+
+`update_profile.py profile --device cuda --episodes 4` on the same real
+buffer (a 4-episode slice, 151 steps: a trace of the full update is
+~10⁶ events and swapped the machine out on the first attempt — the
+per-step op mix is identical and every number below is per step).
+File: `artifacts/throughput/step0/profile_cuda_update.txt`.
+
+| quantity | value |
+|---|---|
+| CUDA kernel launches per stored consult per update | **650** |
+| distinct kernels | 132 |
+| GPU busy (kernel time / wall) | **10.7 %** (0.42 s of 3.93 s) |
+| median kernel duration | **2.1 µs** |
+| `cudaLaunchKernel` share of CPU time | 20 % |
+| `cudaStreamSynchronize` share of CPU time | 11 % (3 762 syncs) |
+| `aten::to` / `_to_copy` (H2D copies) share of CPU time | 12 % |
+| top op by CUDA time | `aten::mm` 76.5 ms, then efficient-attention backward 54.6 ms |
+
+**Verdict: launch-bound, by the criterion written in §10.0.** The GPU
+is idle 89 % of the update; the wall clock is the Python BPTT loop in
+`_update_recurrent` issuing ~650 tiny kernels per step (one LSTMCell
+step, two transformer encoders, the scorer/value heads, `index`,
+`clone`, `masked_fill`, Categorical, and their backward) plus a
+host→device copy and a stream sync per step (`torch.tensor(live)` /
+`idx` are built on the CPU and used to index device tensors; `h[lt] =
+h2` forces a sync). At 10.5 ms per consult on cuda (§7), roughly 8 ms
+is launch and sync overhead.
+
+**Candidate fix (proposal, not implemented here):** replace the
+per-timestep Python loop with a sequence path — pad each `ep_batch`
+group to `maxlen`, run the entity/state encoder over all `(B·T)` steps
+in one batched call (it has no recurrence), then run the recurrence as
+a single cuDNN `nn.LSTM` call over the `(B, T, d)` sequence with the
+`tbptt` detach applied per window, then the candidate transformer and
+heads over `(B·T)` again. Kernel launches per consult fall from ~650
+to ~650/T (T ≈ 40–130 here), and the `.item()`/index syncs disappear.
+It is an algorithm-preserving rewrite (same loss, same detach points)
+but it changes the LSTMCell to an LSTM (weights map one-to-one) and
+must pass the §6 equivalence gate and a gradient-equality check
+against the loop before any lane uses it. Expected effect from the
+numbers above: the cuda update from 10.5 ms per consult toward the
+~1–2 ms its kernel time implies, which would take the update from 66 %
+of the window to under 20 % and make batched inference (§11) the
+ceiling.
+
+Caveats: n = 1 per arm; the profiled slice ran groups of 4 episodes,
+not 8, so its 26 ms per step is not comparable to the §7 10.5 ms — only
+the per-step launch count and the busy share are carried; the N=16 lane
+ran the batcher-capable server with `--batch-max 1` (the code path is
+unchanged by construction, gate G2 below).
 
 ## 12. Recommendation (written after §7; §10–§11 test items 2 and 3)
 
