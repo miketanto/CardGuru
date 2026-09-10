@@ -206,6 +206,14 @@ optional. Neither replaces the required field for the decision's kind.
   Crab, Hearth Elemental) and recursion make them part of the position.
   Keep `why` to two sentences: the scores carry the judgment, and a
   leaf_eval is not the place to re-derive the whole game.
+  Sub-choice variants: a candidate may appear several times with a
+  "→" suffix ("Cast Opt → scry: bottom Island", "Cast Burst Lightning →
+  target: player B", "Cast Stock Up → keep: Opt, Eddymurk Crab"); the
+  plain label is the line where the engine's default answered those
+  prompts. Score each as its own line — whichever wins, its sub-choices
+  are applied for you at the real prompts, so you will not be asked again.
+  Scry / surveil / "look at the top N" prompts you DO get (from triggers
+  or the opponent's effects) arrive as `choose` with the card names.
 - leaf_compare (rare): two candidates tied on aggregate; `pairs` lists the
   best leaf of each per opponent sample, a vs b. Reply
   {"prefer": [<+1 a better, -1 b better, 0 equal, one per pair>], "why": "..."}.

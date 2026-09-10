@@ -24,6 +24,8 @@ import mage.constants.Zone;
 import mage.game.Game;
 import mage.game.combat.CombatGroup;
 import mage.game.events.GameEvent;
+import mage.filter.FilterCard;
+import mage.util.CardUtil;
 import mage.game.permanent.Permanent;
 import mage.game.turn.BeginCombatStep;
 import mage.game.turn.BeginningPhase;
@@ -820,11 +822,33 @@ class InteractiveTestPlayer extends TestPlayer {
     private final String minimaxMode;   // null | "attacks" | "llm"
     private int seq = 0;
 
+    /** True on a simulation copy of this player (see copy()). */
+    private final boolean simCopy;
+
     InteractiveTestPlayer(TestComputerPlayer computerPlayer, String spool,
                           String minimaxMode) {
         super(computerPlayer);
         this.spool = spool;
         this.minimaxMode = minimaxMode;
+        this.simCopy = false;
+    }
+
+    /** Simulation copy. The engine copies players through copy(), and
+     *  TestPlayer's version returned a plain TestPlayer, so no driver hook
+     *  ever ran inside a rollout: every sub-choice in a leaf was the built-in
+     *  AI's. Copies keep the hooks but never reach ask(): `searching` is
+     *  pinned true and `simCopy` routes sub-choices to the active script. */
+    private InteractiveTestPlayer(InteractiveTestPlayer other) {
+        super(other);
+        this.spool = other.spool;
+        this.minimaxMode = other.minimaxMode;
+        this.simCopy = true;
+        this.searching = true;
+    }
+
+    @Override
+    public TestPlayer copy() {
+        return new InteractiveTestPlayer(this);
     }
 
     /** Write the request atomically, block for the response, return it. */
@@ -1193,17 +1217,213 @@ class InteractiveTestPlayer extends TestPlayer {
         return o;
     }
 
+    // ---- sub-choice menus ---------------------------------------------------
+    //
+    // Every sub-choice prompt (targets, card picks, scry/surveil, yes/no,
+    // modes, X) is described as a SubMenu with stable option keys. The REAL
+    // player first replays the search's chosen script (pendingScript), then
+    // asks the pilot. A SIMULATION COPY (simCopy) consults the active
+    // SubScript: a planned answer is applied, otherwise the AI's default is
+    // taken and the menu is recorded so the search can branch on it.
+
+    private static final boolean SUBCHOICE_ON =
+            !"false".equals(System.getProperty("cardguru.subchoice_search", "true"));
+    private static final int SUB_ALTS = Integer.getInteger("cardguru.subchoice_alts", 2);
+    private static final int SUB_DEPTH = Integer.getInteger("cardguru.subchoice_depth", 2);
+    private static final int SUB_MAX_VARIANTS = Integer.getInteger("cardguru.subchoice_max_variants", 3);
+    private static final int SUB_EXTRA_ROWS = Integer.getInteger("cardguru.subchoice_extra_rows", 6);
+
+    private SubScript pendingScript = null;
+    private int pendingTurn = -1;
+    private int scriptHits = 0;
+    private int scriptMisses = 0;
+    private List<SubMenu> lastRecorded = new ArrayList<>();
+
+    private SubScript activeScript(Game game) {
+        SubScript s = SubScript.ACTIVE;
+        return (simCopy && s != null && s.boundTo == game && getId().equals(s.playerId)) ? s : null;
+    }
+
+    /** Real game: the pending script's answer for this menu, or null. A
+     *  mismatch means the line diverged from the simulated one; the rest of
+     *  the script is dropped and the pilot is asked as usual. */
+    private SubAnswer takePending(SubMenu m, Game game) {
+        if (pendingScript == null || m == null) {
+            return null;
+        }
+        if (pendingTurn != game.getTurnNum()) {
+            pendingScript = null;
+            return null;
+        }
+        SubAnswer a = pendingScript.next(m);
+        if (a == null) {
+            if (pendingScript.misses > 0) {
+                scriptMisses++;
+                System.out.println("[CardGuru][subchoice] script miss at: " + m.prompt);
+                pendingScript = null;
+            }
+            return null;
+        }
+        scriptHits++;
+        String note = "search chose '" + a.label + "' for: " + m.prompt;
+        System.out.println("[CardGuru][subchoice] " + note);
+        GameRecorder rec = CardGuruScenarioRunner.recorder;
+        if (rec != null && !game.isSimulation()) {
+            rec.event(game, "SCRIPT", note);
+        }
+        if (pendingScript.cursor >= pendingScript.planned.size()) {
+            pendingScript = null;
+        }
+        return a;
+    }
+
+    private String optionKeyOf(UUID id, Game game, Map<String, Integer> seen) {
+        String base;
+        Player p = game.getPlayer(id);
+        if (p != null) {
+            base = "player:" + (p.getId().equals(getId()) ? "A" : "B");
+        } else {
+            Permanent perm = game.getPermanent(id);
+            if (perm != null) {
+                base = "perm:" + perm.getName() + ":" + (perm.getControllerId().equals(getId()) ? "A" : "B");
+            } else {
+                MageObject o = game.getObject(id);
+                if (o == null) {
+                    o = game.getCard(id);
+                }
+                base = "card:" + (o == null ? String.valueOf(id) : o.getName());
+            }
+        }
+        int n = seen.merge(base, 1, Integer::sum);
+        return n == 1 ? base : base + "#" + n;
+    }
+
+    private String optionTextOf(UUID id, Game game) {
+        Player p = game.getPlayer(id);
+        if (p != null) {
+            return "player " + (p.getId().equals(getId()) ? "A" : "B");
+        }
+        Permanent perm = game.getPermanent(id);
+        if (perm != null) {
+            String t = perm.getName();
+            if (perm.isCreature(game)) {
+                t += " " + perm.getPower().getValue() + "/" + perm.getToughness().getValue();
+            }
+            return t + " (" + (perm.getControllerId().equals(getId()) ? "A" : "B") + ")";
+        }
+        MageObject o = game.getObject(id);
+        if (o == null) {
+            o = game.getCard(id);
+        }
+        return o == null ? String.valueOf(id) : o.getName();
+    }
+
+    /** A target/card menu, or null when there is nothing to decide. */
+    private SubMenu targetMenu(String kind, String prompt, List<UUID> possible,
+                               int min, int max, Game game) {
+        if (possible.isEmpty() || (possible.size() == 1 && min >= 1)) {
+            return null;
+        }
+        SubMenu m = new SubMenu(kind, prompt, min, max);
+        Map<String, Integer> seen = new HashMap<>();
+        for (UUID id : possible) {
+            m.keys.add(optionKeyOf(id, game, seen));
+            m.texts.add(optionTextOf(id, game));
+        }
+        return m;
+    }
+
+    private static boolean applyTargetAnswer(Target target, List<UUID> possible, SubMenu m,
+                                             SubAnswer a, Ability source, Game game) {
+        target.clearChosen();
+        for (String k : a.keys) {
+            int i = m.keys.indexOf(k);
+            if (i >= 0 && target.getTargets().size() < m.max) {
+                target.addTarget(possible.get(i), source, game);
+            }
+        }
+        return target.getTargets().size() >= m.min;
+    }
+
+    private static List<String> keysOfTargets(Target target, List<UUID> possible, SubMenu m) {
+        List<String> out = new ArrayList<>();
+        for (UUID id : target.getTargets()) {
+            int i = possible.indexOf(id);
+            if (i >= 0) {
+                out.add(m.keys.get(i));
+            }
+        }
+        return out;
+    }
+
+    /** Simulation copy: answer a target/card menu from the script or record
+     *  the AI's pick. */
+    private boolean simTargetHook(SubScript sc, String kind, Target target, List<UUID> possible,
+                                  Ability source, Game game, java.util.function.BooleanSupplier ai) {
+        SubMenu m = targetMenu(kind, target.getMessage(game), possible,
+                target.getMinNumberOfTargets(), target.getMaxNumberOfTargets(), game);
+        if (m == null) {
+            return ai.getAsBoolean();
+        }
+        SubAnswer a = sc.next(m);
+        if (a != null) {
+            if (applyTargetAnswer(target, possible, m, a, source, game)) {
+                m.chosen = new ArrayList<>(a.keys);
+                sc.record(m);
+                return true;
+            }
+            target.clearChosen();
+        }
+        boolean r = ai.getAsBoolean();
+        m.chosen = keysOfTargets(target, possible, m);
+        sc.record(m);
+        return r;
+    }
+
+    /** Cards of a pile this TargetCard may pick. Target.possibleTargets(…,
+     *  cards) filters the ZONE search by the pile, and the zone search never
+     *  offers library cards (they are not targetable), so scry / surveil /
+     *  "look at the top N" piles came back empty and fell to the AI. Ask the
+     *  target directly, card by card, instead. */
+    private List<UUID> pilePossible(TargetCard target, Cards cards, Ability source, Game game) {
+        List<UUID> out = new ArrayList<>();
+        for (Card c : cards.getCards(game)) {
+            try {
+                if (target.canTarget(getId(), c.getId(), source, cards, game)) {
+                    out.add(c.getId());
+                }
+            } catch (RuntimeException ignored) {
+            }
+        }
+        if (out.isEmpty()) {
+            out.addAll(target.possibleTargets(getId(), source, game, cards));
+        }
+        return out;
+    }
+
+    private List<UUID> possibleOf(Target target, Ability source, Game game) {
+        return new ArrayList<>(target.possibleTargets(
+                target.getAffectedAbilityControllerId(getId()), source, game));
+    }
+
     /** Ask the policy to pick targets. Returns false when there was nothing
      *  to decide or the answer under-filled the minimum — the caller then
      *  delegates to the AI, which completes whatever was already added. */
     private boolean externalChooseTarget(String kind, Outcome outcome,
                                          Target target, Ability source, Game game) {
-        List<UUID> possible = new ArrayList<>(target.possibleTargets(
-                target.getAffectedAbilityControllerId(getId()), source, game));
+        List<UUID> possible = possibleOf(target, source, game);
         int min = target.getMinNumberOfTargets();
         int max = target.getMaxNumberOfTargets();
         if (possible.isEmpty() || (possible.size() == 1 && min >= 1)) {
             return false;   // forced or impossible: no real decision
+        }
+        SubMenu m = targetMenu(kind, target.getMessage(game), possible, min, max, game);
+        SubAnswer a = takePending(m, game);
+        if (a != null) {
+            if (applyTargetAnswer(target, possible, m, a, source, game)) {
+                return true;
+            }
+            target.clearChosen();
         }
         JsonObject req = baseRequest(kind, game);
         req.addProperty("prompt", target.getMessage(game));
@@ -1235,8 +1455,67 @@ class InteractiveTestPlayer extends TestPlayer {
         return true;
     }
 
+    /** Picking cards out of a specific pile (a hand, a graveyard, the top of
+     *  the library for scry / surveil / "look at the top N"). */
+    private boolean externalChooseCards(String kind, Cards cards, TargetCard target,
+                                        Ability source, Game game) {
+        List<UUID> possible = pilePossible(target, cards, source, game);
+        int min = target.getMinNumberOfTargets();
+        int max = target.getMaxNumberOfTargets();
+        if (possible.isEmpty() || (possible.size() == 1 && min >= 1)) {
+            return false;
+        }
+        SubMenu m = targetMenu(kind, target.getMessage(game), possible, min, max, game);
+        SubAnswer a = takePending(m, game);
+        if (a != null) {
+            if (applyTargetAnswer(target, possible, m, a, source, game)) {
+                return true;
+            }
+            target.clearChosen();
+        }
+        JsonObject req = baseRequest(kind, game);
+        req.addProperty("prompt", target.getMessage(game));
+        req.addProperty("ability", String.valueOf(source));
+        req.addProperty("min", min);
+        req.addProperty("max", max);
+        JsonArray opts = new JsonArray();
+        for (int i = 0; i < possible.size(); i++) {
+            JsonObject o = new JsonObject();
+            o.addProperty("index", i);
+            Card c = game.getCard(possible.get(i));
+            o.addProperty("text", c == null ? "?" : c.getName());
+            if (c != null) {
+                o.addProperty("cost", c.getManaCost().getText());
+                o.addProperty("types", typeLine(c, game));
+            }
+            opts.add(o);
+        }
+        req.add("options", opts);
+        JsonObject resp = ask(req);
+        if (resp.has("targets")) {
+            for (JsonElement e : arrOr(resp, "targets")) {
+                int idx = intOf(e, -1);
+                if (idx >= 0 && idx < possible.size()
+                        && target.getTargets().size() < max) {
+                    target.addTarget(possible.get(idx), source, game);
+                }
+            }
+        }
+        if (target.getTargets().size() >= min) {
+            return true;
+        }
+        System.out.println("[CardGuru][subchoice] " + kind
+                + " (cards) answer under-filled, AI completes");
+        return false;
+    }
+
     @Override
     public boolean chooseTarget(Outcome outcome, Target target, Ability source, Game game) {
+        SubScript sc = activeScript(game);
+        if (sc != null) {
+            return simTargetHook(sc, "target", target, possibleOf(target, source, game), source, game,
+                    () -> super.chooseTarget(outcome, target, source, game));
+        }
         if (externalSubchoices && !searching
                 && externalChooseTarget("target", outcome, target, source, game)) {
             return true;
@@ -1247,6 +1526,11 @@ class InteractiveTestPlayer extends TestPlayer {
     @Override
     public boolean choose(Outcome outcome, Target target, Ability source,
                           Game game, Map<String, Serializable> options) {
+        SubScript sc = activeScript(game);
+        if (sc != null) {
+            return simTargetHook(sc, "choose", target, possibleOf(target, source, game), source, game,
+                    () -> super.choose(outcome, target, source, game, options));
+        }
         if (externalSubchoices
                 && externalChooseTarget("choose", outcome, target, source, game)) {
             return true;
@@ -1255,64 +1539,120 @@ class InteractiveTestPlayer extends TestPlayer {
     }
 
     /** Picking cards out of a specific Cards pile — the overload used when an
-     *  effect reaches into a hand or a graveyard rather than the battlefield.
-     *
-     * Deep-Cavern Bat calls exactly this ({@code choose(outcome, opponent
-     * .getHand(), target, source, game)}) to pick which nonland card to
-     * exile. It is not the overload the other hooks cover, so the choice
-     * fell straight through to the built-in AI: through mirror game 3 the
-     * pilot cast the Bat and never once decided what it took. */
+     *  effect reaches into a hand or a graveyard rather than the battlefield
+     *  (Deep-Cavern Bat picks the exiled card through exactly this). */
     @Override
     public boolean choose(Outcome outcome, Cards cards, TargetCard target,
                           Ability source, Game game) {
-        if (externalSubchoices && !searching) {
-            List<UUID> possible = new ArrayList<>(
-                    target.possibleTargets(getId(), source, game, cards));
-            int min = target.getMinNumberOfTargets();
-            int max = target.getMaxNumberOfTargets();
-            if (!possible.isEmpty() && !(possible.size() == 1 && min >= 1)) {
-                JsonObject req = baseRequest("choose", game);
-                req.addProperty("prompt", target.getMessage(game));
-                req.addProperty("ability", String.valueOf(source));
-                req.addProperty("min", min);
-                req.addProperty("max", max);
-                JsonArray opts = new JsonArray();
-                for (int i = 0; i < possible.size(); i++) {
-                    JsonObject o = new JsonObject();
-                    o.addProperty("index", i);
-                    Card c = game.getCard(possible.get(i));
-                    o.addProperty("text", c == null ? "?" : c.getName());
-                    if (c != null) {
-                        o.addProperty("cost", c.getManaCost().getText());
-                        o.addProperty("types", typeLine(c, game));
-                    }
-                    opts.add(o);
-                }
-                req.add("options", opts);
-                JsonObject resp = ask(req);
-                if (resp.has("targets")) {
-                    for (JsonElement e : arrOr(resp, "targets")) {
-                        int idx = intOf(e, -1);
-                        if (idx >= 0 && idx < possible.size()
-                                && target.getTargets().size() < max) {
-                            target.addTarget(possible.get(idx), source, game);
-                        }
-                    }
-                }
-                if (target.getTargets().size() >= min) {
-                    return true;
-                }
-                System.out.println("[CardGuru][subchoice] choose-from-cards "
-                        + "answer under-filled, AI completes");
-            }
+        SubScript sc = activeScript(game);
+        if (sc != null) {
+            return simTargetHook(sc, "choose", target, pilePossible(target, cards, source, game),
+                    source, game, () -> super.choose(outcome, cards, target, source, game));
+        }
+        if (externalSubchoices && !searching
+                && externalChooseCards("choose", cards, target, source, game)) {
+            return true;
         }
         return super.choose(outcome, cards, target, source, game);
+    }
+
+    /** The overload PlayerImpl.scry / surveil / lookAtTopCards use. It was
+     *  never hooked, so scry decisions were the built-in AI's in the real
+     *  game and the pilot never saw them. */
+    @Override
+    public boolean chooseTarget(Outcome outcome, Cards cards, TargetCard target,
+                                Ability source, Game game) {
+        SubScript sc = activeScript(game);
+        if (sc != null) {
+            return simTargetHook(sc, "choose", target, pilePossible(target, cards, source, game),
+                    source, game, () -> super.chooseTarget(outcome, cards, target, source, game));
+        }
+        if (externalSubchoices && !searching
+                && externalChooseCards("choose", cards, target, source, game)) {
+            return true;
+        }
+        return super.chooseTarget(outcome, cards, target, source, game);
+    }
+
+    /** Scry and surveil re-implemented on this player. TestPlayer delegates
+     *  them to its inner ComputerPlayer, whose PlayerImpl.scry then asks
+     *  ITSELF for the card pick, so neither the pilot (real game) nor the
+     *  script hooks (copies) ever saw a scry. Same engine steps as
+     *  PlayerImpl.scry / doSurveil, but the pick goes through our
+     *  chooseTarget(cards) hook. */
+    @Override
+    public boolean scry(int value, Ability source, Game game) {
+        GameEvent event = new GameEvent(GameEvent.EventType.SCRY, getId(), source, getId(), value, true);
+        if (game.replaceEvent(event)) {
+            return false;
+        }
+        game.informPlayers(getLogName() + " scries " + event.getAmount()
+                + CardUtil.getSourceLogName(game, source));
+        Cards cards = new CardsImpl();
+        cards.addAllCards(getLibrary().getTopCards(game, event.getAmount()));
+        if (!cards.isEmpty()) {
+            TargetCard target = new TargetCard(0, cards.size(), Zone.LIBRARY,
+                    new FilterCard("card" + (cards.size() == 1 ? "" : "s")
+                            + " to PUT on the BOTTOM of your library (Scry)"));
+            chooseTarget(Outcome.Benefit, cards, target, source, game);
+            putCardsOnBottomOfLibrary(new CardsImpl(target.getTargets()), game, source, true);
+            if (!target.getTargets().isEmpty()) {
+                game.fireEvent(GameEvent.getEvent(GameEvent.EventType.SCRY_TO_BOTTOM, getId(),
+                        source, getId(), target.getTargets().size()));
+            }
+            cards.removeIf(target.getTargets()::contains);
+            putCardsOnTopOfLibrary(cards, game, source, true);
+        }
+        game.fireEvent(new GameEvent(GameEvent.EventType.SCRIED, getId(), source, getId(),
+                event.getAmount(), true));
+        return true;
+    }
+
+    @Override
+    public Player.SurveilResult doSurveil(int value, Ability source, Game game) {
+        GameEvent event = new GameEvent(GameEvent.EventType.SURVEIL, getId(), source, getId(), value, true);
+        if (game.replaceEvent(event) || event.getAmount() < 1) {
+            return Player.SurveilResult.noSurveil();
+        }
+        game.informPlayers(getLogName() + " surveils " + event.getAmount()
+                + CardUtil.getSourceLogName(game, source));
+        Cards cards = new CardsImpl();
+        cards.addAllCards(getLibrary().getTopCards(game, event.getAmount()));
+        int totalCount = cards.size();
+        if (!cards.isEmpty()) {
+            TargetCard target = new TargetCard(0, cards.size(), Zone.LIBRARY,
+                    new FilterCard("card" + (cards.size() == 1 ? "" : "s")
+                            + " to PUT into your GRAVEYARD (Surveil)"));
+            chooseTarget(Outcome.Benefit, cards, target, source, game);
+            moveCards(new CardsImpl(target.getTargets()), Zone.GRAVEYARD, source, game);
+            cards.removeIf(target.getTargets()::contains);
+            putCardsOnTopOfLibrary(cards, game, source, true);
+        }
+        game.fireEvent(new GameEvent(GameEvent.EventType.SURVEILED, getId(), source, getId(),
+                event.getAmount(), true));
+        return Player.SurveilResult.surveil(totalCount - cards.size(), cards.size());
     }
 
     @Override
     public int announceX(int min, int max, String message, Game game,
                          Ability source, boolean isManaPay) {
+        SubScript sc = activeScript(game);
+        if (sc != null && max > min) {
+            SubMenu m = SubMenu.x(message, min, max);
+            SubAnswer a = sc.next(m);
+            int x = a != null ? Math.max(min, Math.min(max, a.x))
+                    : super.announceX(min, max, message, game, source, isManaPay);
+            m.chosen = Collections.singletonList("x=" + x);
+            m.chosenX = x;
+            sc.record(m);
+            return x;
+        }
         if (externalSubchoices && max > min) {
+            SubMenu m = SubMenu.x(message, min, max);
+            SubAnswer a = takePending(m, game);
+            if (a != null) {
+                return Math.max(min, Math.min(max, a.x));
+            }
             JsonObject req = baseRequest("announce_x", game);
             req.addProperty("prompt", message);
             req.addProperty("ability", String.valueOf(source));
@@ -1326,23 +1666,69 @@ class InteractiveTestPlayer extends TestPlayer {
         return super.announceX(min, max, message, game, source, isManaPay);
     }
 
+    private List<Mode> availableModes(Modes modes, Ability source, Game game) {
+        List<Mode> avail = new ArrayList<>(modes.getAvailableModes(source, game));
+        // getAvailableModes only filters already-selected modes when the
+        // card limits usage by once, so for multi-mode spells (Three
+        // Steps Ahead) a mode we already picked can still be offered —
+        // returning it again throws "mode already selected" and kills
+        // the game. Drop selected modes unless the card allows repeats.
+        if (!modes.isMayChooseSameModeMoreThanOnce()) {
+            Set<UUID> already = new HashSet<>(modes.getSelectedModes());
+            avail.removeIf(mm -> already.contains(mm.getId()));
+        }
+        return avail;
+    }
+
+    private static SubMenu modeMenu(List<Mode> avail, Ability source) {
+        SubMenu m = new SubMenu("mode", String.valueOf(source), 1, 1);
+        for (Mode md : avail) {
+            String t = md.getEffects().getText(md);
+            m.keys.add("mode:" + t);
+            m.texts.add(t);
+        }
+        return m;
+    }
+
     @Override
     public Mode chooseMode(Modes modes, Ability source, Game game) {
-        if (externalSubchoices && !searching) {
-            List<Mode> avail = new ArrayList<>(modes.getAvailableModes(source, game));
-            // getAvailableModes only filters already-selected modes when the
-            // card limits usage by once, so for multi-mode spells (Three
-            // Steps Ahead) a mode we already picked can still be offered —
-            // returning it again throws "mode already selected" and kills
-            // the game. Drop selected modes unless the card allows repeats.
-            if (!modes.isMayChooseSameModeMoreThanOnce()) {
-                Set<UUID> already = new HashSet<>(modes.getSelectedModes());
-                avail.removeIf(m -> already.contains(m.getId()));
+        SubScript sc = activeScript(game);
+        if (sc != null) {
+            List<Mode> avail = availableModes(modes, source, game);
+            if (avail.size() > 1) {
+                SubMenu m = modeMenu(avail, source);
+                SubAnswer a = sc.next(m);
+                Mode r = null;
+                if (a != null && !a.keys.isEmpty()) {
+                    int i = m.keys.indexOf(a.keys.get(0));
+                    if (i >= 0) {
+                        r = avail.get(i);
+                    }
+                }
+                if (r == null) {
+                    r = super.chooseMode(modes, source, game);
+                }
+                int ri = r == null ? -1 : avail.indexOf(r);
+                m.chosen = ri >= 0 ? Collections.singletonList(m.keys.get(ri)) : new ArrayList<>();
+                sc.record(m);
+                return r;
             }
+            return super.chooseMode(modes, source, game);
+        }
+        if (externalSubchoices && !searching) {
+            List<Mode> avail = availableModes(modes, source, game);
             if (avail.isEmpty()) {
                 return super.chooseMode(modes, source, game);
             }
             if (avail.size() > 1) {
+                SubMenu m = modeMenu(avail, source);
+                SubAnswer a = takePending(m, game);
+                if (a != null && !a.keys.isEmpty()) {
+                    int i = m.keys.indexOf(a.keys.get(0));
+                    if (i >= 0) {
+                        return avail.get(i);
+                    }
+                }
                 JsonObject req = baseRequest("mode", game);
                 req.addProperty("ability", String.valueOf(source));
                 JsonArray opts = new JsonArray();
@@ -1375,7 +1761,20 @@ class InteractiveTestPlayer extends TestPlayer {
 
     @Override
     public boolean chooseUse(Outcome outcome, String message, Ability source, Game game) {
+        SubScript sc = activeScript(game);
+        if (sc != null) {
+            SubMenu m = SubMenu.use(message);
+            SubAnswer a = sc.next(m);
+            boolean r = a != null ? a.bool : super.chooseUse(outcome, message, source, game);
+            m.chosen = Collections.singletonList(r ? "yes" : "no");
+            sc.record(m);
+            return r;
+        }
         if (externalSubchoices && !searching) {
+            SubAnswer a = takePending(SubMenu.use(message), game);
+            if (a != null) {
+                return a.bool;
+            }
             return externalChooseUse(outcome, message, null, game, source);
         }
         return super.chooseUse(outcome, message, source, game);
@@ -1384,7 +1783,22 @@ class InteractiveTestPlayer extends TestPlayer {
     @Override
     public boolean chooseUse(Outcome outcome, String message, String secondMessage,
                              String trueText, String falseText, Ability source, Game game) {
+        String prompt = message + (secondMessage != null ? " " + secondMessage : "");
+        SubScript sc = activeScript(game);
+        if (sc != null) {
+            SubMenu m = SubMenu.use(prompt);
+            SubAnswer a = sc.next(m);
+            boolean r = a != null ? a.bool : super.chooseUse(outcome, message, secondMessage,
+                    trueText, falseText, source, game);
+            m.chosen = Collections.singletonList(r ? "yes" : "no");
+            sc.record(m);
+            return r;
+        }
         if (externalSubchoices && !searching) {
+            SubAnswer a = takePending(SubMenu.use(prompt), game);
+            if (a != null) {
+                return a.bool;
+            }
             return externalChooseUse(outcome, message, secondMessage, game, source);
         }
         return super.chooseUse(outcome, message, secondMessage, trueText, falseText,
@@ -1404,43 +1818,94 @@ class InteractiveTestPlayer extends TestPlayer {
         return resp.has("use") && resp.get("use").getAsBoolean();
     }
 
+    private static SubMenu choiceMenu(Choice choice, List<String> keys, List<String> texts) {
+        SubMenu m = new SubMenu("choice", String.valueOf(choice.getMessage()), 1, 1);
+        for (String t : texts) {
+            m.keys.add("choice:" + t);
+            m.texts.add(t);
+        }
+        return m;
+    }
+
     @Override
     public boolean choose(Outcome outcome, Choice choice, Game game) {
-        if (externalSubchoices && choice != null) {
-            List<String> keys = null;
-            List<String> texts;
-            if (choice.isKeyChoice()) {
-                keys = new ArrayList<>(choice.getKeyChoices().keySet());
-                texts = new ArrayList<>();
-                for (String k : keys) {
-                    texts.add(choice.getKeyChoices().get(k));
-                }
-            } else {
-                texts = new ArrayList<>(choice.getChoices());
+        if (choice == null) {
+            return super.choose(outcome, choice, game);
+        }
+        List<String> keys = null;
+        List<String> texts;
+        if (choice.isKeyChoice()) {
+            keys = new ArrayList<>(choice.getKeyChoices().keySet());
+            texts = new ArrayList<>();
+            for (String k : keys) {
+                texts.add(choice.getKeyChoices().get(k));
             }
-            if (texts.size() > 1) {
-                JsonObject req = baseRequest("choice", game);
-                req.addProperty("prompt", String.valueOf(choice.getMessage()));
-                JsonArray opts = new JsonArray();
-                for (int i = 0; i < texts.size(); i++) {
-                    JsonObject o = new JsonObject();
-                    o.addProperty("index", i);
-                    o.addProperty("text", texts.get(i));
-                    opts.add(o);
+        } else {
+            texts = new ArrayList<>(choice.getChoices());
+        }
+        SubScript sc = activeScript(game);
+        if (sc != null) {
+            if (texts.size() <= 1) {
+                return super.choose(outcome, choice, game);
+            }
+            SubMenu m = choiceMenu(choice, keys, texts);
+            SubAnswer a = sc.next(m);
+            int idx = -1;
+            if (a != null && !a.keys.isEmpty()) {
+                idx = m.keys.indexOf(a.keys.get(0));
+            }
+            boolean r;
+            if (idx >= 0) {
+                if (keys != null) {
+                    choice.setChoiceByKey(keys.get(idx));
+                } else {
+                    choice.setChoice(texts.get(idx));
                 }
-                req.add("options", opts);
-                JsonObject resp = ask(req);
-                int c = intOr(resp, "choice", -1);
-                if (c >= 0 && c < texts.size()) {
+                r = true;
+            } else {
+                r = super.choose(outcome, choice, game);
+                String picked = keys != null ? choice.getChoiceKey() : choice.getChoice();
+                idx = keys != null ? keys.indexOf(picked) : texts.indexOf(picked);
+            }
+            m.chosen = idx >= 0 ? Collections.singletonList(m.keys.get(idx)) : new ArrayList<>();
+            sc.record(m);
+            return r;
+        }
+        if (externalSubchoices && texts.size() > 1) {
+            SubMenu m = choiceMenu(choice, keys, texts);
+            SubAnswer a = takePending(m, game);
+            if (a != null && !a.keys.isEmpty()) {
+                int idx = m.keys.indexOf(a.keys.get(0));
+                if (idx >= 0) {
                     if (keys != null) {
-                        choice.setChoiceByKey(keys.get(c));
+                        choice.setChoiceByKey(keys.get(idx));
                     } else {
-                        choice.setChoice(texts.get(c));
+                        choice.setChoice(texts.get(idx));
                     }
                     return true;
                 }
-                System.out.println("[CardGuru][subchoice] bad choice answer, AI picks");
             }
+            JsonObject req = baseRequest("choice", game);
+            req.addProperty("prompt", String.valueOf(choice.getMessage()));
+            JsonArray opts = new JsonArray();
+            for (int i = 0; i < texts.size(); i++) {
+                JsonObject o = new JsonObject();
+                o.addProperty("index", i);
+                o.addProperty("text", texts.get(i));
+                opts.add(o);
+            }
+            req.add("options", opts);
+            JsonObject resp = ask(req);
+            int c = intOr(resp, "choice", -1);
+            if (c >= 0 && c < texts.size()) {
+                if (keys != null) {
+                    choice.setChoiceByKey(keys.get(c));
+                } else {
+                    choice.setChoice(texts.get(c));
+                }
+                return true;
+            }
+            System.out.println("[CardGuru][subchoice] bad choice answer, AI picks");
         }
         return super.choose(outcome, choice, game);
     }
@@ -2053,109 +2518,189 @@ class InteractiveTestPlayer extends TestPlayer {
     private int projSamplesFailed = 0;
     private String projLastFailure = "";
 
-    /** Leaves for one priority candidate: projected when arm (e) is on AND
-     *  it is my turn, otherwise the single unopposed rollout.
-     *
-     *  The projection answers "if I act now, what happens on THEIR turn" —
-     *  it advances to the next turn and hands them the untap. Run on a
-     *  window during their own turn (their combat, their end step) it
-     *  skipped the rest of that turn and simulated their NEXT main phase:
-     *  mirror game 8 showed "they cast Enduring Curiosity" as the
-     *  continuation of their Begin Combat step, in 36 of 76 searches. On
-     *  their turn the question is a different one (respond to what is
-     *  happening now), and until that tree exists the old rollout is at
-     *  least not the wrong turn. */
-    private List<ScoredLeaf> priorityLeaves(Game game, UUID myId, UUID oppId,
-                                            ActivatedAbility ability, String label) {
-        boolean myTurn = myId.equals(game.getActivePlayerId());
-        return projectTurnK > 0 && myTurn
-                ? rolloutProjected(game, myId, oppId, ability, label)
-                : rolloutPriorityLeaf(game, myId, oppId, ability, label);
+    /** One row of the priority search: an ability (null = pass) with a
+     *  planned sub-choice script (empty = the AI's defaults), the variant's
+     *  post-resolution heuristic, and the sample-0 copy the ability's rows
+     *  branch from (so variants are compared on the same seated hand). */
+    private static final class Row {
+        final String label;
+        final ActivatedAbility ability;
+        final List<SubAnswer> planned;
+        final double h;
+        final Game base0;
+
+        Row(String label, ActivatedAbility ability, List<SubAnswer> planned, double h, Game base0) {
+            this.label = label;
+            this.ability = ability;
+            this.planned = planned;
+            this.h = h;
+            this.base0 = base0;
+        }
     }
 
-    private List<ScoredLeaf> rolloutProjected(Game game, UUID myId, UUID oppId,
-                                              ActivatedAbility ability, String label) {
+    private int variantsDiscoveredLast = 0;
+    private int variantRowsLast = 0;
+    private String chosenScriptLast = "";
+
+    /** Activate the ability on the copy under a sub-choice script and let it
+     *  resolve; with respond=true the two arm (f) opponent windows fire.
+     *  Returns the response tag for the leaf line; the menus met are left in
+     *  lastRecorded and the script misses in missOut[0]. */
+    private String castSegment(Game sim, UUID myId, UUID oppId, ActivatedAbility ability,
+                               List<SubAnswer> planned, boolean respond, int[] missOut) {
+        SubScript sc = new SubScript(sim, myId, planned);
+        SubScript.ACTIVE = sc;
+        try {
+            if (ability != null) {
+                Player me = sim.getPlayer(myId);
+                if (me != null) {
+                    me.activateAbility(ability.copy(), sim);
+                }
+            }
+            // Arm (f), window 1: my spell is on the stack. Only a counter or
+            // a flash play can meet it here. Window 2: it has resolved and
+            // its ETB has fired; now removal has a target.
+            String r1 = (respond && ability != null) ? opponentRespond(sim, oppId) : null;
+            sim.checkStateAndTriggered();
+            resolveStack(sim);
+            String r2 = (respond && ability != null) ? opponentRespond(sim, oppId) : null;
+            sim.checkStateAndTriggered();
+            resolveStack(sim);
+            return (r1 != null ? " | they respond on the stack: " + r1 : "")
+                    + (r2 != null ? " | after it resolves they cast: " + r2 : "");
+        } finally {
+            SubScript.ACTIVE = null;
+            lastRecorded = sc.recorded;
+            if (missOut != null) {
+                missOut[0] = sc.misses;
+            }
+        }
+    }
+
+    /** The rows for one candidate: its AI-default line plus up to
+     *  SUB_MAX_VARIANTS-1 sub-choice variants. A recording run finds the
+     *  menus the cast hits (targets, kicker, scry, card picks); each
+     *  alternative answer at the first SUB_DEPTH menus is re-run on the same
+     *  sample-0 copy, scored by the engine evaluator, and the best kept. */
+    private List<Row> discoverRows(Game game, UUID myId, UUID oppId,
+                                   ActivatedAbility ability, String label) {
+        List<Row> rows = new ArrayList<>();
+        if (ability == null || !SUBCHOICE_ON) {
+            rows.add(new Row(label, ability, new ArrayList<SubAnswer>(), Double.NaN, null));
+            return rows;
+        }
+        Game base0;
+        try {
+            base0 = simCopy(game);
+        } catch (Exception e) {
+            rows.add(new Row(label, ability, new ArrayList<SubAnswer>(), Double.NaN, null));
+            return rows;
+        }
+        rows.add(new Row(label, ability, new ArrayList<SubAnswer>(), Double.NaN, base0));
+        boolean prev = searching;
+        searching = true;
+        try {
+            boolean respond = projectTurnK > 0 && myId.equals(game.getActivePlayerId());
+            int[] miss = new int[1];
+            castSegment(branch(base0), myId, oppId, ability, new ArrayList<SubAnswer>(), respond, miss);
+            List<SubMenu> menus = new ArrayList<>(lastRecorded);
+            List<SubAnswer> defaults = new ArrayList<>();
+            for (SubMenu m : menus) {
+                defaults.add(m.asAnswer());
+            }
+            // The default row says what the engine answered, so "Cast Burst
+            // Lightning \u2192 Pay Kicker: yes" and its "\u2192 Pay Kicker: no" variant
+            // read as the two lines they are.
+            if (!menus.isEmpty()) {
+                int shown = Math.min(menus.size(), SUB_DEPTH);
+                rows.set(0, new Row(label + " \u2192 " + SubScript.describe(defaults.subList(0, shown)),
+                        ability, new ArrayList<SubAnswer>(), Double.NaN, base0));
+            }
+            List<Row> alts = new ArrayList<>();
+            Set<String> seenLabels = new HashSet<>();
+            seenLabels.add(rows.get(0).label);
+            for (int d = 0; d < Math.min(menus.size(), SUB_DEPTH); d++) {
+                for (SubAnswer alt : menus.get(d).alternatives(SUB_ALTS)) {
+                    List<SubAnswer> planned = new ArrayList<>(defaults.subList(0, d));
+                    planned.add(alt);
+                    String vl = label + " \u2192 " + SubScript.describe(planned);
+                    if (!seenLabels.add(vl)) {
+                        continue;
+                    }
+                    Game sv = branch(base0);
+                    int[] m2 = new int[1];
+                    try {
+                        castSegment(sv, myId, oppId, ability, planned, respond, m2);
+                    } catch (Exception e) {
+                        continue;
+                    }
+                    if (m2[0] > 0) {
+                        continue;
+                    }
+                    double h = GameStateEvaluator2.evaluate(myId, sv).getTotalScore();
+                    alts.add(new Row(vl, ability, planned, h, base0));
+                }
+            }
+            variantsDiscoveredLast += alts.size();
+            alts.sort((a, b) -> Double.compare(b.h, a.h));
+            for (int i = 0; i < alts.size() && i < SUB_MAX_VARIANTS - 1; i++) {
+                rows.add(alts.get(i));
+            }
+        } catch (Exception e) {
+            projSamplesFailed++;
+            projLastFailure = String.valueOf(e);
+        } finally {
+            searching = prev;
+        }
+        return rows;
+    }
+
+    /** Keep at most `cap` variant rows per search (best heuristic first). */
+    private static void pruneExtraRows(List<Row> rows, int cap) {
+        List<Row> extras = new ArrayList<>();
+        for (Row r : rows) {
+            if (!r.planned.isEmpty()) {
+                extras.add(r);
+            }
+        }
+        if (extras.size() <= cap) {
+            return;
+        }
+        extras.sort((a, b) -> Double.compare(b.h, a.h));
+        Set<Row> keep = new HashSet<>(extras.subList(0, cap));
+        rows.removeIf(r -> !r.planned.isEmpty() && !keep.contains(r));
+    }
+
+    /** Leaves for one row: projected (arm (e), K reseated samples, their
+     *  next turn, my responses) on my turn, a single resolved leaf otherwise.
+     *  The projection answers "if I act now, what happens on THEIR turn";
+     *  run on a window during their own turn it would skip the rest of that
+     *  turn, so there the old single rollout is at least not the wrong turn. */
+    private List<ScoredLeaf> rolloutRow(Game game, UUID myId, UUID oppId, Row row) {
         List<ScoredLeaf> out = new ArrayList<>();
-        for (int k = 0; k < projectTurnK; k++) {
+        boolean projected = projectTurnK > 0 && myId.equals(game.getActivePlayerId());
+        int samples = projected ? projectTurnK : 1;
+        for (int k = 0; k < samples; k++) {
             Game sim;
             try {
-                sim = simCopy(game);
+                sim = (k == 0 && row.base0 != null) ? branch(row.base0) : simCopy(game);
             } catch (Exception e) {
                 continue;
             }
             boolean prev = searching;
             searching = true;
             try {
-                if (ability != null) {
-                    Player me = sim.getPlayer(myId);
-                    if (me != null) {
-                        me.activateAbility(ability.copy(), sim);
-                    }
+                int[] miss = new int[1];
+                String respTag = castSegment(sim, myId, oppId, row.ability, row.planned, projected, miss);
+                String tag = row.label + respTag + (miss[0] > 0 ? " | script miss" : "");
+                if (projected) {
+                    projectOpponentTurn(sim, myId, oppId, tag, k, out);
+                } else {
+                    double h = GameStateEvaluator2.evaluate(myId, sim).getTotalScore();
+                    out.add(new ScoredLeaf(compactLeaf(sim, myId, oppId, tag), h));
                 }
-                // Arm (f), window 1: my spell is on the stack. Only a
-                // counter or a flash play can meet it here (a removal spell
-                // has no legal target yet and simply will not be offered).
-                String r1 = ability != null ? opponentRespond(sim, oppId) : null;
-                sim.checkStateAndTriggered();
-                resolveStack(sim);
-                // Window 2: it has resolved and its ETB has fired. Now removal
-                // has a target — and whether that is a net positive depends on
-                // whether the ETB was durable (a stun stays) or tethered (the
-                // Bat's exile returns); the engine has already decided which.
-                String r2 = ability != null ? opponentRespond(sim, oppId) : null;
-                sim.checkStateAndTriggered();
-                resolveStack(sim);
-                String respTag = (r1 != null ? " | they respond on the stack: " + r1 : "")
-                        + (r2 != null ? " | after it resolves they cast: " + r2 : "");
-
-                beginOpponentTurn(sim, oppId);
-                OppTurn theirs = opponentMainPhase(sim, oppId);
-                String base = label + respTag + " | " + theirTurnLabel(sim, k, theirs);
-                if (theirs.spell == null) {
-                    out.add(projectedLeaf(sim, myId, oppId, base, k, "nothing"));
-                    continue;
-                }
-                // Window 1: their spell is on the stack. Only a counter can
-                // touch it — a removal spell has no legal target here and
-                // its activation fails, which is how the windows sort
-                // themselves without naming card types.
-                int n = 0;
-                for (ActivatedAbility r : myInstantResponses(sim, myId)) {
-                    if (n >= MAX_RESPONSES_PER_WINDOW) {
-                        break;
-                    }
-                    Game b = branch(sim);
-                    if (castMine(b, myId, r)) {
-                        resolveStack(b);
-                        out.add(projectedLeaf(b, myId, oppId,
-                                base + " | on the stack I cast " + r, k, "stack:" + r));
-                        n++;
-                    }
-                }
-                // Let it resolve: the permanent enters and its ETB fires
-                // BEFORE any removal can be pointed at it (§3 of the plan).
-                resolveStack(sim);
-                sim.checkStateAndTriggered();
-                resolveStack(sim);
-                // Window 2: instant-speed answers to what is now on board.
-                n = 0;
-                for (ActivatedAbility r : myInstantResponses(sim, myId)) {
-                    if (n >= MAX_RESPONSES_PER_WINDOW) {
-                        break;
-                    }
-                    Game b = branch(sim);
-                    if (castMine(b, myId, r)) {
-                        resolveStack(b);
-                        out.add(projectedLeaf(b, myId, oppId,
-                                base + " | after it resolves I cast " + r, k, "post:" + r));
-                        n++;
-                    }
-                }
-                out.add(projectedLeaf(sim, myId, oppId, base + " | I do nothing", k, "nothing"));
             } catch (Exception e) {
                 // A sample that throws is dropped; the others still count.
-                // Counted into the trace: the driver's stdout goes to
-                // DEVNULL under play.py, so a println alone is invisible.
                 projSamplesFailed++;
                 projLastFailure = String.valueOf(e);
             } finally {
@@ -3404,6 +3949,13 @@ class InteractiveTestPlayer extends TestPlayer {
         rec.addProperty("tie_margin", TIE_MARGIN);
         rec.addProperty("tie_breaks_heuristic", tieBreaksHeuristic);
         rec.addProperty("tie_breaks_compare", tieBreaksCompare);
+        // Sub-choice search: variants found / kept this search, the chosen
+        // script, and how the real game replayed scripts so far.
+        rec.addProperty("variants_discovered", variantsDiscoveredLast);
+        rec.addProperty("variant_rows", variantRowsLast);
+        rec.addProperty("chosen_script", chosenScriptLast);
+        rec.addProperty("script_hits", scriptHits);
+        rec.addProperty("script_misses", scriptMisses);
         JsonArray cands = new JsonArray();
         int flat = 0;
         for (int c = 0; c < labels.size(); c++) {
@@ -3540,16 +4092,23 @@ class InteractiveTestPlayer extends TestPlayer {
         for (UUID pid : game.getOpponents(myId)) {
             oppId = pid;
         }
+        // Rows: "pass", each ability with the AI's sub-choices, and each
+        // ability's best sub-choice variants ("Cast Opt \u2192 scry: bottom Island").
+        variantsDiscoveredLast = 0;
+        List<Row> rows = new ArrayList<>(discoverRows(game, myId, oppId, null, "pass (hold everything)"));
+        for (ActivatedAbility a : real) {
+            rows.addAll(discoverRows(game, myId, oppId, a, String.valueOf(a)));
+        }
+        pruneExtraRows(rows, SUB_EXTRA_ROWS);
+        variantRowsLast = 0;
         List<String> labels = new ArrayList<>();
         List<List<ScoredLeaf>> leaves = new ArrayList<>();
-
-        labels.add("pass (hold everything)");
-        leaves.add(priorityLeaves(game, myId, oppId, null,
-                "pass (hold everything)"));
-        for (ActivatedAbility a : real) {
-            String label = String.valueOf(a);
-            labels.add(label);
-            leaves.add(priorityLeaves(game, myId, oppId, a, label));
+        for (Row r : rows) {
+            if (!r.planned.isEmpty()) {
+                variantRowsLast++;
+            }
+            labels.add(r.label);
+            leaves.add(rolloutRow(game, myId, oppId, r));
         }
 
         double[] scores = askLeafScores(game, "priority", labels, leaves);
@@ -3561,57 +4120,28 @@ class InteractiveTestPlayer extends TestPlayer {
         pendingCompare = (x, y) -> askCompare(game, "priority", labels, leaves, scores, x, y);
         int best = argmaxProjected(labels.size(), leaves, scores);
         pendingCompare = null;
+        Row picked = rows.get(best);
+        chosenScriptLast = SubScript.describe(picked.planned);
         traceLlmSearch("priority", labels, leaves, scores, best, game);
-        if (best == 0) {
+        if (picked.ability == null) {
             priorityHoldMemo.put(sig, 1);
             return 0;
         }
-        ActivatedAbility picked = real.get(best - 1);
-        if (getComputerPlayer().activateAbility(picked.copy(), game)) {
+        // The chosen variant's sub-choices are replayed at the real prompts
+        // (targets during activation, scry / card picks at resolution).
+        pendingScript = picked.planned.isEmpty() ? null
+                : new SubScript(null, myId, new ArrayList<>(picked.planned));
+        pendingTurn = game.getTurnNum();
+        if (getComputerPlayer().activateAbility(picked.ability.copy(), game)) {
             return 1;
         }
+        pendingScript = null;
         // The cast unwound — the engine offered it but we cannot pay. Record
         // it so neither this window's escalation nor any later step in the
         // turn offers it again while the mana is unchanged, then fall through
         // to escalation so the pilot can still pick something else.
-        unaffordableMemo.add(manaSig + "|" + picked);
+        unaffordableMemo.add(manaSig + "|" + picked.ability);
         return -1;
-    }
-
-    /** One priority candidate rolled out: activate it on a copy (or do
-     *  nothing for "pass"), let the stack resolve, score the board. */
-    private List<ScoredLeaf> rolloutPriorityLeaf(Game game, UUID myId,
-                                                 UUID oppId,
-                                                 ActivatedAbility ability,
-                                                 String label) {
-        List<ScoredLeaf> out = new ArrayList<>();
-        Game sim;
-        try {
-            sim = simCopy(game);
-        } catch (Exception e) {
-            return out;
-        }
-        boolean prev = searching;
-        searching = true;
-        try {
-            if (ability != null) {
-                mage.players.Player me = sim.getPlayer(myId);
-                if (me != null) {
-                    me.activateAbility(ability.copy(), sim);
-                }
-            }
-            sim.checkStateAndTriggered();
-            resolveStack(sim);
-        } catch (Exception e) {
-            // A rollout that throws is just a candidate we cannot price;
-            // an empty leaf list makes argmaxOfMins rank it last.
-            return out;
-        } finally {
-            searching = prev;
-        }
-        double h = GameStateEvaluator2.evaluate(myId, sim).getTotalScore();
-        out.add(new ScoredLeaf(compactLeaf(sim, myId, oppId, label), h));
-        return out;
     }
 
     /** Append one decision record as a JSON line to spool/minimax.jsonl. */
@@ -4259,5 +4789,244 @@ class GameRecorder {
             out.flush();
         } catch (IOException ignored) {
         }
+    }
+}
+
+
+/** One sub-choice prompt as a menu with stable option keys. */
+final class SubMenu {
+    final String kind;          // target | choose | use | mode | x | choice
+    final String prompt;
+    final int min;
+    final int max;
+    final List<String> keys = new ArrayList<>();
+    final List<String> texts = new ArrayList<>();
+    List<String> chosen = new ArrayList<>();   // keys the answer selected ("yes"/"no", "x=N")
+    int chosenX = 0;
+
+    SubMenu(String kind, String prompt, int min, int max) {
+        this.kind = kind;
+        this.prompt = prompt == null ? "" : prompt;
+        this.min = min;
+        this.max = max;
+    }
+
+    static SubMenu use(String prompt) {
+        SubMenu m = new SubMenu("use", prompt, 1, 1);
+        m.keys.add("yes");
+        m.keys.add("no");
+        m.texts.add("yes");
+        m.texts.add("no");
+        return m;
+    }
+
+    static SubMenu x(String prompt, int min, int max) {
+        return new SubMenu("x", prompt, min, max);
+    }
+
+    /** Identity across a simulation copy and the real game: kind, the
+     *  prompt without volatile bits, and the option keys (order-free). */
+    String key() {
+        String p = prompt.replaceAll("\\(selected[^)]*\\)", "").replaceAll("\\(life \\d+\\)", "")
+                .replaceAll("\\s+", " ").trim();
+        List<String> ks = new ArrayList<>(keys);
+        Collections.sort(ks);
+        return kind + "|" + p + "|" + ks + (kind.equals("x") ? "|" + min + "-" + max : "");
+    }
+
+    boolean chosenBool() {
+        return chosen.contains("yes");
+    }
+
+    private String textOf(String key) {
+        int i = keys.indexOf(key);
+        return i >= 0 ? texts.get(i) : key;
+    }
+
+    private String verb() {
+        String p = prompt.toLowerCase();
+        if (p.contains("scry") || p.contains("bottom")) {
+            return "scry";
+        }
+        if (p.contains("surveil")) {
+            return "surveil";
+        }
+        if (p.contains("discard")) {
+            return "discard";
+        }
+        if (p.contains("exile")) {
+            return "exile";
+        }
+        if (p.contains("sacrifice")) {
+            return "sacrifice";
+        }
+        if (p.contains("hand")) {
+            return "keep";
+        }
+        return kind.equals("target") ? "target" : "pick";
+    }
+
+    /** Human label for an answer (the tree's "→ …" text). */
+    String label(List<String> ks) {
+        switch (kind) {
+            case "use": {
+                String p = prompt.replaceAll("\\([^)]*\\)", "").replace("?", "")
+                        .replaceAll("\\s+", " ").trim();
+                if (p.length() > 30) {
+                    p = p.substring(0, 29) + "\u2026";
+                }
+                return p + ": " + (ks.contains("yes") ? "yes" : "no");
+            }
+            case "x":
+                return ks.isEmpty() ? "X" : ks.get(0).replace("x=", "X=");
+            case "mode":
+            case "choice": {
+                String t = ks.isEmpty() ? "?" : textOf(ks.get(0));
+                return kind + ": " + (t.length() > 30 ? t.substring(0, 29) + "…" : t);
+            }
+            default: {
+                String v = verb();
+                if (ks.isEmpty()) {
+                    return v.equals("scry") ? "scry: keep on top"
+                            : v.equals("surveil") ? "surveil: keep on top" : v + ": none";
+                }
+                List<String> names = new ArrayList<>();
+                for (String k : ks) {
+                    names.add(textOf(k));
+                }
+                return v + (v.equals("scry") || v.equals("surveil") ? ": bottom " : ": ")
+                        + String.join(", ", names);
+            }
+        }
+    }
+
+    /** Alternatives to the recorded answer, at most `limit`. */
+    List<SubAnswer> alternatives(int limit) {
+        List<SubAnswer> out = new ArrayList<>();
+        String mk = key();
+        switch (kind) {
+            case "use": {
+                boolean alt = !chosenBool();
+                out.add(new SubAnswer(mk, Collections.singletonList(alt ? "yes" : "no"), alt, 0,
+                        label(Collections.singletonList(alt ? "yes" : "no"))));
+                break;
+            }
+            case "x": {
+                for (int v : new int[]{min, max}) {
+                    if (v != chosenX && out.size() < limit) {
+                        List<String> ks = Collections.singletonList("x=" + v);
+                        out.add(new SubAnswer(mk, ks, false, v, label(ks)));
+                    }
+                }
+                break;
+            }
+            case "mode":
+            case "choice": {
+                for (String k : keys) {
+                    if (!chosen.contains(k) && out.size() < limit) {
+                        List<String> ks = Collections.singletonList(k);
+                        out.add(new SubAnswer(mk, ks, false, 0, label(ks)));
+                    }
+                }
+                break;
+            }
+            default: {
+                if (max <= 1 || chosen.isEmpty()) {
+                    for (String k : keys) {
+                        if (!chosen.contains(k) && out.size() < limit) {
+                            List<String> ks = Collections.singletonList(k);
+                            out.add(new SubAnswer(mk, ks, false, 0, label(ks)));
+                        }
+                    }
+                } else {
+                    // multi-select: swap the last chosen card for each unchosen one
+                    for (String k : keys) {
+                        if (!chosen.contains(k) && out.size() < limit) {
+                            List<String> ks = new ArrayList<>(chosen.subList(0, chosen.size() - 1));
+                            ks.add(k);
+                            out.add(new SubAnswer(mk, ks, false, 0, label(ks)));
+                        }
+                    }
+                }
+                if (min == 0 && !chosen.isEmpty() && out.size() < limit + 1) {
+                    List<String> none = new ArrayList<>();
+                    out.add(new SubAnswer(mk, none, false, 0, label(none)));
+                }
+            }
+        }
+        return out;
+    }
+
+    SubAnswer asAnswer() {
+        return new SubAnswer(key(), new ArrayList<>(chosen), chosenBool(), chosenX, label(chosen));
+    }
+}
+
+/** A planned answer to one menu. */
+final class SubAnswer {
+    final String menuKey;
+    final List<String> keys;
+    final boolean bool;
+    final int x;
+    final String label;
+
+    SubAnswer(String menuKey, List<String> keys, boolean bool, int x, String label) {
+        this.menuKey = menuKey;
+        this.keys = keys;
+        this.bool = bool;
+        this.x = x;
+        this.label = label;
+    }
+}
+
+/** The sub-choice script of one rollout (or the pending real-game script):
+ *  planned answers in order, the menus met, and how many planned answers
+ *  did not match the menu they were meant for. */
+final class SubScript {
+    /** The script consulted by simulation copies of the driven player. */
+    static SubScript ACTIVE = null;
+
+    final Game boundTo;         // the copy this script belongs to (null for the real game)
+    final UUID playerId;
+    final List<SubAnswer> planned;
+    final List<SubMenu> recorded = new ArrayList<>();
+    int cursor = 0;
+    int misses = 0;
+
+    SubScript(Game boundTo, UUID playerId, List<SubAnswer> planned) {
+        this.boundTo = boundTo;
+        this.playerId = playerId;
+        this.planned = planned == null ? new ArrayList<SubAnswer>() : planned;
+    }
+
+    /** The planned answer for the menu at the current position, or null
+     *  (no plan for this position, or the plan does not match the menu). */
+    SubAnswer next(SubMenu m) {
+        int pos = cursor++;
+        if (pos >= planned.size()) {
+            return null;
+        }
+        SubAnswer a = planned.get(pos);
+        if (a.menuKey.equals(m.key())) {
+            return a;
+        }
+        misses++;
+        return null;
+    }
+
+    void record(SubMenu m) {
+        recorded.add(m);
+    }
+
+    /** Labels of the planned answers; a prompt the engine repeats (kicker
+     *  is asked at activation and at payment) is shown once. */
+    static String describe(List<SubAnswer> planned) {
+        List<String> ls = new ArrayList<>();
+        for (SubAnswer a : planned) {
+            if (ls.isEmpty() || !ls.get(ls.size() - 1).equals(a.label)) {
+                ls.add(a.label);
+            }
+        }
+        return String.join("; ", ls);
     }
 }

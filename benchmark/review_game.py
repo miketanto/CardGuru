@@ -156,6 +156,9 @@ def main():
     distinct = [t["score_distinct"] for t in res if isinstance(t.get("score_distinct"), int)]
     ties = sum(1 for t in res if str(t.get("tie_break", "none")) != "none")
     flips = sum(1 for t in res if str(t.get("tie_break", "")).endswith("flipped"))
+    variant_rows = sum(t.get("variant_rows") or 0 for t in res)
+    scripted = sum(1 for t in res if t.get("chosen_script"))
+    last = res[-1] if res else {}
     total = sum(1 for r in rows if r.get("request"))
     kept = [r for r in rows if is_real_choice(r)]
 
@@ -173,7 +176,10 @@ def main():
         out.append(f"Search resolution: {len(res)} LLM-scored searches; median distinct "
                    f"scores {sorted(distinct)[len(distinct) // 2] if distinct else '?'}; "
                    f"median top-two gap {med_gap}; {close} searches within 2 points; "
-                   f"{ties} tie-breaks fired ({flips} changed the pick).\n")
+                   f"{ties} tie-breaks fired ({flips} changed the pick). "
+                   f"Sub-choice search: {variant_rows} variant rows, {scripted} searches "
+                   f"picked a variant; scripts replayed {last.get('script_hits', 0)} "
+                   f"prompts, {last.get('script_misses', 0)} misses.\n")
     out.append("Rate each decision **questionable / minor / moderate / major**, "
                "or leave it alone if it was right. Say what should have been "
                "done instead and why.\n")

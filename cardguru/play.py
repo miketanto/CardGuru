@@ -326,9 +326,13 @@ class MatchClient:
         for kv in os.environ.get("CARDGURU_DRIVER_PROPS", "").split():
             if "=" in kv and kv.startswith("cardguru."):
                 cmd.append(f"-D{kv}")
+        # CARDGURU_DRIVER_STDOUT=<file> keeps the JVM's stdout (the driver's
+        # [CardGuru] diagnostics) instead of discarding it.
+        out_path = os.environ.get("CARDGURU_DRIVER_STDOUT")
+        out = open(out_path, "ab") if out_path else subprocess.DEVNULL
         self.proc = subprocess.Popen(
-            cmd, cwd=self.mage_repo, stdout=subprocess.DEVNULL,
-            stderr=subprocess.DEVNULL)
+            cmd, cwd=self.mage_repo, stdout=out,
+            stderr=subprocess.STDOUT if out_path else subprocess.DEVNULL)
         ready = os.path.join(self.spool, "READY")
         deadline = time.time() + self.warmup_timeout
         while not os.path.exists(ready):

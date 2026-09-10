@@ -205,6 +205,51 @@ def plan_tree(turn_plan, whose):
     return {"nodes": nodes, "chosen": None}
 
 
+MENU_KINDS = ("target", "choose", "use", "mode", "announce_x", "choice")
+
+
+def menu_tree(req, resp):
+    """A standalone sub-choice prompt as a one-level tree: the prompt, one
+    node per option, the pick in gold."""
+    kind = req.get("kind")
+    prompt = req.get("prompt") or req.get("ability") or kind
+    nodes = [{"id": 0, "parent": None, "depth": 0, "label": short(str(prompt), 46),
+              "full": str(prompt), "kind": "root"}]
+    picked = set()
+    if kind == "use":
+        picked = {0 if resp.get("use") else 1}
+        opts = [{"index": 0, "text": "yes"}, {"index": 1, "text": "no"}]
+    else:
+        opts = req.get("options") or []
+        for k in ("targets", "choice", "x"):
+            v = resp.get(k)
+            if isinstance(v, list):
+                picked = {int(i) for i in v if isinstance(i, (int, float))}
+            elif isinstance(v, (int, float)):
+                picked = {int(v)}
+        if kind == "announce_x":
+            opts = [{"index": v, "text": f"X = {v}"} for v in range(req.get("min", 0), req.get("max", 0) + 1)][:12]
+    if not opts:
+        return None
+    chosen = None
+    for o in opts:
+        nid = len(nodes)
+        t = o.get("text") or o.get("name") or "?"
+        if o.get("additional_cost"):
+            t += f" (+{o['additional_cost']})"
+        is_pick = o.get("index") in picked
+        nodes.append({"id": nid, "parent": 0, "depth": 1, "label": short(str(t), 44), "full": str(t),
+                      "kind": "candidate", "chosen": is_pick})
+        if is_pick and chosen is None:
+            chosen = nid
+    if kind not in ("use", "announce_x") and not picked:
+        nid = len(nodes)
+        nodes.append({"id": nid, "parent": 0, "depth": 1, "label": "none", "full": "no selection",
+                      "kind": "candidate", "chosen": True})
+        chosen = nid
+    return {"nodes": nodes, "chosen": chosen}
+
+
 def classify(row):
     src = row.get("source")
     if src == "fallback-timeout":
@@ -268,6 +313,9 @@ def decision_of(row, trace_called, ti):
         d["decision"] = "plan"
     elif "chosen_line" in req:
         d["chosen_line"] = req["chosen_line"]
+    elif kind in MENU_KINDS and row.get("source") in ("llm", "fallback-timeout"):
+        d["tree"] = menu_tree(req, resp)
+        d["decision"] = "menu"
     return d, ti
 
 
