@@ -173,3 +173,54 @@ channel (`rl/cardemb/data.py`), (2) `--distill 3` instead of 10 so the
 structure channels carry more of e_card's geometry. Same recipe
 otherwise, seeds 0 and 1.
 
+## 0c — correction: August added (Lane A, 2026-09-10 18:42)
+
+The 2026-08 month archive (451 events) was fetched on a rerun after the
+first pass had been throttled to 0. The corpus was rebuilt; the gate row
+above (8,035) is superseded by this one, both stand in the file:
+
+| gate | required | measured | result |
+|---|---|---|---|
+| unique constructed lists with every name resolved | ≥ 3,000 | **12,612** (1,236 held out by event) | **GO** |
+| events / lists total / unique mainboards | (report) | 1,008 / 21,654 / 13,354 | — |
+| slots unresolved | (report) | 1,229 / 815,512 = 0.15 % (35 names) | — |
+| formats | (report) | modern 4,788 · standard 1,903 · pauper 1,868 · legacy 1,828 · pioneer 1,032 · premodern 820 · vintage 763 · duel-commander 263 | — |
+
+50 of 1,058 event pages failed after 3 attempts (no embedded data; mostly
+duel-commander league pages). The corpus file is the one masked-card
+training (1c/2b) reads; it is final for v7 unless a correction row says otherwise.
+
+## 1d — card embedder `card_emb_v3` — **FAIL** (Lane A, 2026-09-10 18:45)
+
+Seed 0, reminder text stripped, `--positives same --distill 3`. Retrieval
+r@1 train 0.773 / held-out 0.742. Seed 1 was stopped: a failed version
+needs no determinism record.
+
+| gate | threshold | measured (held-out) | result |
+|---|---|---|---|
+| G1 (all 33 probes) | as above | mv 0.968, power 0.971, toughness 0.971; colours ≥ 0.997; types ≥ 0.999; keywords f1 ≥ 0.976; answers f1 ≥ 0.951 | pass |
+| G2 Cancel / Counterspell | ≥ 0.85 | 0.998 | pass |
+| G2 Spell Snare / Force Spike | cos ≤ 0.848 and Spike ∉ Snare top-10 | **0.912**, not in top-10 (Snare's top-5: Mental Misstep, Minor Misstep, Thoughtbind, Disdainful Stroke, Nix; Spike's: Jwari Disruption, Mana Tithe, Quench, It'll Quench Ya!, Convolute) | **FAIL** on the cosine part |
+| G2 functional reprints | 10/10 | 10/10 | pass |
+| G2 swap pairs (rank-based) | ≥ 14/16 within 500, median ≤ 50 | **13/16**, median 46 | **FAIL** |
+
+The three pairs outside 500 are the same three as in v2 (Elektra ×2,
+Requiting Hex), improved but not enough (a→b ranks 1654 / 1078 / 786;
+b→a 474 / 285 / 904). Lowering the distillation weight from 10 to 3 let
+structure pull Snare and Spike back together in cosine (0.839 → 0.912)
+while their neighbourhoods stayed the right families.
+
+**Correction to the gate, in the open, for v4 on.** The Snare/Spike
+cosine margin has exactly the scale-dependence already identified for
+the swap bar (it is a cosine offset from Cancel/Counterspell); the
+rank part of the same gate is the scale-free statement of "apart". From
+v4 the gate is rank-only (Force Spike not in Spell Snare's top-10), the
+cosine margin is reported as information. v3 would still fail v4's
+gates (swap pairs 13/16), so this correction rescues nothing.
+
+**v4, stated before training:** the v2 recipe (`--distill 10`, which
+passed Snare/Spike with margin under both forms) plus the reminder-text
+stripping introduced in v3. One variable relative to v2. If v4 fails
+the swap gate on the same three pairs, the next lever is the text
+model (`paraphrase-mpnet-base-v2`), not the loss.
+

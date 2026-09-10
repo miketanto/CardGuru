@@ -4,31 +4,31 @@ Built by `rl/decklists/build_corpus.py` from `raw/mtgo/*.json` (`rl/decklists/fe
 
 | count | value |
 |---|---|
-| events fetched | 583 |
-| lists, total | 13085 |
-| lists, unique mainboards | 8430 |
-| **unique constructed lists with every name resolved (the gate)** | **8035** |
-| of which held out (10%, by event) | 845 |
-| mainboard card slots unresolved | 757 / 512439 (0.15%) |
-| distinct unresolved names | 31 (top in `unresolved.tsv`) |
+| events fetched | 1008 |
+| lists, total | 21654 |
+| lists, unique mainboards | 13354 |
+| **unique constructed lists with every name resolved (the gate)** | **12612** |
+| of which held out (10%, by event) | 1236 |
+| mainboard card slots unresolved | 1229 / 815512 (0.15%) |
+| distinct unresolved names | 35 (top in `unresolved.tsv`) |
 
 ## Per format (unique lists)
 
 | format | lists |
 |---|---|
-| modern | 3027 |
-| pauper | 1336 |
-| legacy | 1152 |
-| standard | 1045 |
-| pioneer | 635 |
-| premodern | 587 |
-| vintage | 465 |
-| duel-commander | 108 |
-| xmage-ladder | 37 |
-| pioneer-rc | 21 |
-| modern-rc | 14 |
+| modern | 4788 |
+| standard | 1903 |
+| pauper | 1868 |
+| legacy | 1828 |
+| pioneer | 1032 |
+| premodern | 820 |
+| vintage | 763 |
+| duel-commander | 263 |
+| xmage-ladder | 36 |
+| modern-rc | 30 |
+| pioneer-rc | 20 |
 | limited-rc | 3 |
 
-**Gate 0c: GO** — 8035 ≥ 3000: True. Masked-card-in-deck (1c, 2b) is in.
+**Gate 0c: GO** — 12612 ≥ 3000: True. Masked-card-in-deck (1c, 2b) is in.
 
 Fields: see the module docstring of `rl/decklists/build_corpus.py`. `constructed` = 60–80-card, non-singleton format; `clean` = constructed and fully resolved. Player handles are not stored.

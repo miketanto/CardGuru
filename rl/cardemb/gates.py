@@ -19,8 +19,11 @@ G1  field recovery, linear probes on e_card (fit on the train split,
       answer classes (9 binary, >= 30 held-out positives)     F1 >= 0.80
 G2  neighbour structure (cosine on e_card, all 35k faces):
       Cancel / Counterspell                                   cos >= 0.85
-      Spell Snare / Force Spike                               cos <= cos(Cancel, Counterspell) - 0.15
-                                                              and Force Spike not in Spell Snare's top-10
+      Spell Snare / Force Spike                               v1-v3: cos <= cos(Cancel, Counterspell) - 0.15
+                                                              and Force Spike not in Spell Snare's top-10;
+                                                              v4+ (pre-registered 18:45, same scale-dependence
+                                                              argument as the swap bar): rank-only, Force Spike
+                                                              not in Spell Snare's top-10
       functional reprint groups                               every member has another member in its top-3
       16 P8 swap pairs (PHASE-E3.md G2)                       v1/v2: each cos >= mu + 2 sigma of random pairs,
                                                               group mean >= mu + 4 sigma  (FAILED both; found to
@@ -128,7 +131,9 @@ def neighbour_gates(E, names, recs):
     out["snare_top5"] = [recs[j].name for j in topk(ss, 5)]
     out["spike_top5"] = [recs[j].name for j in topk(fs, 5)]
     out["pass_cancel"] = cc >= TH["cancel_cos"]
-    out["pass_snare"] = (sf <= cc - TH["snare_margin"]) and not out["spike_in_snare_top10"]
+    out["snare_cos_margin_v1v3"] = sf <= cc - TH["snare_margin"]     # informational from v4 on (scale-dependent)
+    out["snare_spike_rank"] = int(((En @ En[ss]) > sf).sum().item())    # cards closer to Snare than Spike is
+    out["pass_snare"] = not out["spike_in_snare_top10"]                  # v4+: rank-only (pre-registered 18:45)
     rep = []
     for grp in REPRINT_GROUPS:
         ids = [lookup(names, n) for n in grp]
@@ -267,8 +272,10 @@ def main():
                         + (f" ({len(skipped)} skipped: too few positives)" if skipped else "") + " |")
     g2 = res["G2"]
     rows.append(f"| G2 Cancel / Counterspell cos | ≥ {TH['cancel_cos']} | {g2['cancel_counterspell_cos']:.3f} | | {pf(g2['pass_cancel'])} |")
-    rows.append(f"| G2 Spell Snare / Force Spike cos | ≤ {g2['cancel_counterspell_cos'] - TH['snare_margin']:.3f}, Spike ∉ Snare top-10 | "
-                f"{g2['snare_spike_cos']:.3f}, in top-10: {g2['spike_in_snare_top10']} | | {pf(g2['pass_snare'])} |")
+    rows.append(f"| G2 Spell Snare / Force Spike (rank-based, v4+) | Spike ∉ Snare top-10 | "
+                f"rank {g2['snare_spike_rank']}, cos {g2['snare_spike_cos']:.3f} | | {pf(g2['pass_snare'])} |")
+    rows.append(f"| (info) Snare/Spike cos margin, old bar | ≤ {g2['cancel_counterspell_cos'] - TH['snare_margin']:.3f} | "
+                f"{g2['snare_spike_cos']:.3f} | | {'would pass' if g2['snare_cos_margin_v1v3'] else 'would fail'} |")
     rows.append(f"| G2 functional reprints in top-3 | all {len(g2['reprints'])} | {sum(r['ok'] for r in g2['reprints'])} / {len(g2['reprints'])} | | {pf(g2['pass_reprints'])} |")
     rows.append(f"| G2 P8 swap pairs (rank-based, v3+) | ≥ {TH['swap_pairs_ok']}/16 pairs with both directed ranks ≤ {TH['swap_rank']}; median rank ≤ {TH['swap_median_rank']} | "
                 f"{g2['swap_pairs_within']}/16, median {g2['swap_median_rank']:.0f} | | {pf(g2['pass_swaps'])} |")
