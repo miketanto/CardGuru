@@ -139,14 +139,16 @@ Updated in place by the Lane A session; the block in §B is the generic
 starting prompt and stays as written.
 
 ```
-STATE:   - card_emb_v1 FAILED gate 1d (V7-VALIDATION.md §1d): G1 field recovery
-           all pass, G2 Snare/Spike 0.957 and swap pairs 0.479/0.790 fail. Seed 1
-           of v1 still finishing (for the G3 record only).
-         - card_emb_v2 training in WSL (hidden wsl.exe, <scratchpad>/train_v2.sh):
-           --positives same --distill 10, seeds 0 then 1, 30 epochs, ~17 min/seed.
-           Logs rl/artifacts/card_emb_v2/train_seed{0,1}.log; runner writes
+STATE:   - card_emb_v1 FAILED 1d (G2 Snare/Spike + swap bar); card_emb_v2 fixed
+           Snare/Spike (0.839, rank 31) but FAILED the cosine swap bar, which was then
+           found scale-dependent; a rank-based swap gate is pre-registered for v3+
+           (V7-VALIDATION.md §1d, gates.py TH swap_rank/swap_pairs_ok/swap_median_rank).
+           v2 seed 1 still finishing (G3 record only).
+         - card_emb_v3 training in WSL (hidden wsl.exe, <scratchpad>/train_v3.sh):
+           reminder text stripped (data.py), --positives same --distill 3, seeds 0,1,
+           30 epochs. Logs rl/artifacts/card_emb_v3/train_seed{0,1}.log, runner
            train_runner.log ("SEED n EXIT k", "ALLDONE"). Then:
-           python3 rl/cardemb/gates.py --art rl/artifacts/card_emb_v2
+           python3 rl/cardemb/gates.py --art rl/artifacts/card_emb_v3
          - MTGO decklist fetch running on Windows (rl/decklists/fetch_mtgo.py,
            months 2026-07..09, 6 workers): rl/artifacts/decklists_v1/raw/mtgo/*.json,
            progress in raw/mtgo/fetch.log ("fetched=N lists=M", "DONE ..."). August
@@ -168,11 +170,12 @@ DONE:    0b PASS  rl/artifacts/cards_v1 (34,642 faces + 836 tokens, 0 unknown ov
          0c code  rl/decklists/fetch_mtgo.py, build_corpus.py (mtgo.com month
                   archives: 250-450 events/month, ~20 lists/event, cold page = 25 s)
 
-OPEN:    1. when card_emb_v2 ALLDONE: gates.py --art rl/artifacts/card_emb_v2 -> paste
-            table into V7-VALIDATION.md §1d (v2); if PASS, move README to v2 with
+OPEN:    1. when card_emb_v3 ALLDONE: gates.py --art rl/artifacts/card_emb_v3 -> paste
+            table into V7-VALIDATION.md §1d (v3); if PASS, move README to v3 with
             numbers, commit emb.pt (18 MB fp32) + gates.json + index.json, not model.pt.
-            If Snare/Spike still fails: raise --distill, or switch --text-model to
-            sentence-transformers/paraphrase-mpnet-base-v2 (cached in WSL; ~5x slower).
+            If the rank gate still fails: next lever is --text-model
+            sentence-transformers/paraphrase-mpnet-base-v2 (cached in WSL; ~5x slower),
+            as a v4 with the same gates.
          2. when fetch DONE: rerun --months 2026-08; python rl/decklists/build_corpus.py
             -> V7-VALIDATION.md §0c GO/NO-GO (strict count = unique clean constructed).
          3. if GO: python3 rl/cardemb/train_masked.py (WSL) -> deck_ctx_v1, §1c/2b;
@@ -193,6 +196,6 @@ GOTCHAS: - Driving WSL from the Bash tool: `$VAR`/`$(...)` inside wsl.exe -- bas
          - Heredocs with `\n` inside python -c strings get mangled by the Bash
            tool; use the Edit tool for lines containing escapes.
 
-COMMITS: v7/lane-a pushed through 8aa280e. Uncommitted: rl/artifacts/card_emb_v1/README.md
+COMMITS: v7/lane-a pushed through e0aa87e. Uncommitted: rl/artifacts/card_emb_v1/README.md
          (draft), rl/artifacts/decklists_v1/raw (gitignored).
 ```
