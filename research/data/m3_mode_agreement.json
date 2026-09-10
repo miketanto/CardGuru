@@ -1,0 +1,127 @@
+{
+ "split": "holdout",
+ "faces_scored": 17140,
+ "trigger_modes": {
+  "tp": 6566,
+  "fp": 433,
+  "fn": 1496,
+  "precision_pct": 93.81,
+  "recall_pct": 81.44,
+  "faces_with_any": 7170,
+  "exact_set_agreement_pct": 79.57
+ },
+ "static_modes": {
+  "tp": 2681,
+  "fp": 837,
+  "fn": 636,
+  "precision_pct": 76.21,
+  "recall_pct": 80.83,
+  "faces_with_any": 3602,
+  "exact_set_agreement_pct": 68.21
+ },
+ "replacement_events": {
+  "tp": 697,
+  "fp": 79,
+  "fn": 170,
+  "precision_pct": 89.82,
+  "recall_pct": 80.39,
+  "faces_with_any": 877,
+  "exact_set_agreement_pct": 78.11
+ },
+ "node_counts": {
+  "R": {
+   "forge": 888,
+   "oracle": 788
+  },
+  "S": {
+   "forge": 3531,
+   "oracle": 3904
+  }
+ },
+ "static_mode_detail": [
+  {
+   "mode": "Continuous",
+   "support": 2218,
+   "fp": 697,
+   "recall_pct": 95.1,
+   "precision_pct": 75.2
+  },
+  {
+   "mode": "ReduceCost",
+   "support": 233,
+   "fp": 4,
+   "recall_pct": 63.1,
+   "precision_pct": 97.4
+  },
+  {
+   "mode": "CantBlockBy",
+   "support": 164,
+   "fp": 17,
+   "recall_pct": 46.3,
+   "precision_pct": 81.7
+  },
+  {
+   "mode": "AlternativeCost",
+   "support": 74,
+   "fp": 6,
+   "recall_pct": 27.0,
+   "precision_pct": 76.9
+  },
+  {
+   "mode": "CantBlock",
+   "support": 68,
+   "fp": 28,
+   "recall_pct": 98.5,
+   "precision_pct": 70.5
+  },
+  {
+   "mode": "CantAttack",
+   "support": 66,
+   "fp": 20,
+   "recall_pct": 95.5,
+   "precision_pct": 75.9
+  },
+  {
+   "mode": "CantBeCast",
+   "support": 52,
+   "fp": 0,
+   "recall_pct": 84.6,
+   "precision_pct": 100.0
+  },
+  {
+   "mode": "MustAttack",
+   "support": 52,
+   "fp": 0,
+   "recall_pct": 94.2,
+   "precision_pct": 100.0
+  },
+  {
+   "mode": "RaiseCost",
+   "support": 40,
+   "fp": 2,
+   "recall_pct": 55.0,
+   "precision_pct": 91.7
+  },
+  {
+   "mode": "CastWithFlash",
+   "support": 32,
+   "fp": 13,
+   "recall_pct": 81.2,
+   "precision_pct": 66.7
+  },
+  {
+   "mode": "CantAttack,CantBlock",
+   "support": 26,
+   "fp": 7,
+   "recall_pct": 100.0,
+   "precision_pct": 78.8
+  },
+  {
+   "mode": "OptionalCost",
+   "support": 21,
+   "fp": 26,
+   "recall_pct": 19.0,
+   "precision_pct": 13.3
+  }
+ ]
+}

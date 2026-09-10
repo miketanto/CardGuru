@@ -1,0 +1,281 @@
+{
+ "slice": "nl_questions_adversarial_v2.json",
+ "questions": 15,
+ "oracle_passed": 9,
+ "oracle_pass_pct": 60.0,
+ "oracle_vacuous_empty_results": 2,
+ "forge_passed": 15,
+ "mean_recall_of_forge_hits_pct": 71.6,
+ "rows": [
+  {
+   "id": "b01",
+   "family": "cost",
+   "q": "cards with an activated ability whose cost includes sacrificing a permanent",
+   "forge": {
+    "hits": 1763,
+    "witness_found": true,
+    "foil_rejected": true
+   },
+   "oracle": {
+    "hits": 1758,
+    "witness_found": true,
+    "foil_rejected": true,
+    "vacuous": false
+   },
+   "recall_of_forge_hits_pct": 99.3,
+   "jaccard_pct": 98.8
+  },
+  {
+   "id": "b02",
+   "family": "cost",
+   "q": "cards with an activated ability whose cost includes B",
+   "forge": {
+    "hits": 844,
+    "witness_found": true,
+    "foil_rejected": true
+   },
+   "oracle": {
+    "hits": 854,
+    "witness_found": true,
+    "foil_rejected": true,
+    "vacuous": false
+   },
+   "recall_of_forge_hits_pct": 99.8,
+   "jaccard_pct": 98.4
+  },
+  {
+   "id": "b03",
+   "family": "cost",
+   "q": "cards with an activated ability whose cost includes R",
+   "forge": {
+    "hits": 817,
+    "witness_found": true,
+    "foil_rejected": true
+   },
+   "oracle": {
+    "hits": 830,
+    "witness_found": true,
+    "foil_rejected": true,
+    "vacuous": false
+   },
+   "recall_of_forge_hits_pct": 99.8,
+   "jaccard_pct": 98.0
+  },
+  {
+   "id": "b04",
+   "family": "cost",
+   "q": "cards with an activated ability whose cost includes G",
+   "forge": {
+    "hits": 796,
+    "witness_found": true,
+    "foil_rejected": true
+   },
+   "oracle": {
+    "hits": 806,
+    "witness_found": true,
+    "foil_rejected": true,
+    "vacuous": false
+   },
+   "recall_of_forge_hits_pct": 99.9,
+   "jaccard_pct": 98.5
+  },
+  {
+   "id": "b05",
+   "family": "cost",
+   "q": "cards with an activated ability whose cost includes SubCounter",
+   "forge": {
+    "hits": 654,
+    "witness_found": true,
+    "foil_rejected": true
+   },
+   "oracle": {
+    "hits": 0,
+    "witness_found": false,
+    "foil_rejected": true,
+    "vacuous": true
+   },
+   "recall_of_forge_hits_pct": 0.0,
+   "jaccard_pct": 0.0
+  },
+  {
+   "id": "b06",
+   "family": "trigger_mode",
+   "q": "cards with a triggered ability that triggers on Attacks",
+   "forge": {
+    "hits": 1589,
+    "witness_found": true,
+    "foil_rejected": true
+   },
+   "oracle": {
+    "hits": 1937,
+    "witness_found": false,
+    "foil_rejected": true,
+    "vacuous": false
+   },
+   "recall_of_forge_hits_pct": 99.6,
+   "jaccard_pct": 81.5
+  },
+  {
+   "id": "b07",
+   "family": "trigger_mode",
+   "q": "cards with a triggered ability that triggers on SpellCast",
+   "forge": {
+    "hits": 1356,
+    "witness_found": true,
+    "foil_rejected": true
+   },
+   "oracle": {
+    "hits": 1522,
+    "witness_found": true,
+    "foil_rejected": true,
+    "vacuous": false
+   },
+   "recall_of_forge_hits_pct": 96.5,
+   "jaccard_pct": 83.3
+  },
+  {
+   "id": "b08",
+   "family": "trigger_mode",
+   "q": "cards with a triggered ability that triggers on DamageDone",
+   "forge": {
+    "hits": 866,
+    "witness_found": true,
+    "foil_rejected": true
+   },
+   "oracle": {
+    "hits": 1546,
+    "witness_found": true,
+    "foil_rejected": true,
+    "vacuous": false
+   },
+   "recall_of_forge_hits_pct": 94.7,
+   "jaccard_pct": 51.5
+  },
+  {
+   "id": "b09",
+   "family": "static_mode",
+   "q": "cards with a static ability of type CantBlockBy",
+   "forge": {
+    "hits": 362,
+    "witness_found": true,
+    "foil_rejected": true
+   },
+   "oracle": {
+    "hits": 145,
+    "witness_found": false,
+    "foil_rejected": true,
+    "vacuous": false
+   },
+   "recall_of_forge_hits_pct": 31.5,
+   "jaccard_pct": 29.0
+  },
+  {
+   "id": "b10",
+   "family": "static_mode",
+   "q": "cards with a static ability of type AlternativeCost",
+   "forge": {
+    "hits": 148,
+    "witness_found": true,
+    "foil_rejected": true
+   },
+   "oracle": {
+    "hits": 44,
+    "witness_found": false,
+    "foil_rejected": true,
+    "vacuous": false
+   },
+   "recall_of_forge_hits_pct": 23.0,
+   "jaccard_pct": 21.5
+  },
+  {
+   "id": "b11",
+   "family": "replacement_event",
+   "q": "cards with a replacement effect on the Moved event",
+   "forge": {
+    "hits": 955,
+    "witness_found": true,
+    "foil_rejected": true
+   },
+   "oracle": {
+    "hits": 903,
+    "witness_found": false,
+    "foil_rejected": true,
+    "vacuous": false
+   },
+   "recall_of_forge_hits_pct": 93.3,
+   "jaccard_pct": 92.1
+  },
+  {
+   "id": "b12",
+   "family": "replacement_event",
+   "q": "cards with a replacement effect on the Untap event",
+   "forge": {
+    "hits": 155,
+    "witness_found": true,
+    "foil_rejected": true
+   },
+   "oracle": {
+    "hits": 157,
+    "witness_found": true,
+    "foil_rejected": true,
+    "vacuous": false
+   },
+   "recall_of_forge_hits_pct": 97.4,
+   "jaccard_pct": 93.8
+  },
+  {
+   "id": "b13",
+   "family": "replacement_event",
+   "q": "cards with a replacement effect on the Counter event",
+   "forge": {
+    "hits": 109,
+    "witness_found": true,
+    "foil_rejected": true
+   },
+   "oracle": {
+    "hits": 0,
+    "witness_found": false,
+    "foil_rejected": true,
+    "vacuous": true
+   },
+   "recall_of_forge_hits_pct": 0.0,
+   "jaccard_pct": 0.0
+  },
+  {
+   "id": "b14",
+   "family": "replacement_event",
+   "q": "cards with a replacement effect on the Draw event",
+   "forge": {
+    "hits": 37,
+    "witness_found": true,
+    "foil_rejected": true
+   },
+   "oracle": {
+    "hits": 36,
+    "witness_found": true,
+    "foil_rejected": true,
+    "vacuous": false
+   },
+   "recall_of_forge_hits_pct": 89.2,
+   "jaccard_pct": 82.5
+  },
+  {
+   "id": "b15",
+   "family": "replacement_event",
+   "q": "cards with a replacement effect on the CreateToken event",
+   "forge": {
+    "hits": 32,
+    "witness_found": true,
+    "foil_rejected": true
+   },
+   "oracle": {
+    "hits": 17,
+    "witness_found": true,
+    "foil_rejected": true,
+    "vacuous": false
+   },
+   "recall_of_forge_hits_pct": 50.0,
+   "jaccard_pct": 48.5
+  }
+ ]
+}

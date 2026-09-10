@@ -95,3 +95,26 @@ def test_class_level_edges():
     assert ("kw1", "SMayPlay", "AddStaticAbility") in edges_of(face)
     # SVar-defined trigger chains onward
     assert ("TriggerAttackersDeclared", "TrigPutCounter", "Execute") in edges_of(face)
+
+
+def test_build_stamps_script_derivation(tmp_path):
+    """Every Forge-derived record is tagged so a merged dataset stays auditable.
+
+    The oracle-text grammar stamps derivation "oracle-grammar"; without the
+    matching tag on this side the two derivations are indistinguishable once
+    merged, and the field-level merge policy in
+    research/oracle-grammar-m3.md has nothing to branch on.
+    """
+    from cardguru import dataset as ds
+
+    cardsfolder = tmp_path / "cards" / "r"
+    cardsfolder.mkdir(parents=True)
+    (cardsfolder / "ragavan.txt").write_text("\n".join(RAGAVAN) + "\n",
+                                             encoding="utf-8")
+    out = tmp_path / "out.jsonl"
+    stats = ds.build(str(tmp_path / "cards"), str(out))
+
+    assert stats["faces"] == 1
+    _meta, records = ds.load(str(out))
+    recs = list(records)
+    assert recs and all(r["derivation"] == "script" for r in recs)

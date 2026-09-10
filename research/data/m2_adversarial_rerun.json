@@ -1,0 +1,87 @@
+{
+ "questions": 5,
+ "oracle_witness_and_foil_passed": 3,
+ "forge_witness_and_foil_passed": 5,
+ "rows": [
+  {
+   "id": "a01",
+   "question": "cards with an activated ability that sacrifices a creature as part of its activation cost",
+   "forge": {
+    "hits": 1380,
+    "witness_found": true,
+    "foil_rejected": true
+   },
+   "oracle": {
+    "hits": 1074,
+    "witness_found": true,
+    "foil_rejected": true
+   },
+   "recall_of_forge_hits_pct": 76.1,
+   "jaccard_pct": 74.8
+  },
+  {
+   "id": "a02",
+   "question": "cards that make abilities triggering on a creature dying trigger an additional time",
+   "forge": {
+    "hits": 2,
+    "witness_found": true,
+    "foil_rejected": true
+   },
+   "oracle": {
+    "hits": 0,
+    "witness_found": false,
+    "foil_rejected": true
+   },
+   "recall_of_forge_hits_pct": 0.0,
+   "jaccard_pct": 0.0
+  },
+  {
+   "id": "a03",
+   "question": "enchantments that double the number of tokens you create",
+   "forge": {
+    "hits": 8,
+    "witness_found": true,
+    "foil_rejected": true
+   },
+   "oracle": {
+    "hits": 0,
+    "witness_found": false,
+    "foil_rejected": true
+   },
+   "recall_of_forge_hits_pct": 0.0,
+   "jaccard_pct": 0.0
+  },
+  {
+   "id": "a04",
+   "question": "creatures with an ability that requires tapping themselves as a cost",
+   "forge": {
+    "hits": 1956,
+    "witness_found": true,
+    "foil_rejected": true
+   },
+   "oracle": {
+    "hits": 1708,
+    "witness_found": true,
+    "foil_rejected": true
+   },
+   "recall_of_forge_hits_pct": 86.9,
+   "jaccard_pct": 86.6
+  },
+  {
+   "id": "a05",
+   "question": "counterspells that can counter any kind of spell",
+   "forge": {
+    "hits": 189,
+    "witness_found": true,
+    "foil_rejected": true
+   },
+   "oracle": {
+    "hits": 176,
+    "witness_found": true,
+    "foil_rejected": true
+   },
+   "recall_of_forge_hits_pct": 75.7,
+   "jaccard_pct": 64.4
+  }
+ ]
+}

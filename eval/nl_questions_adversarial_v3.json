@@ -1,0 +1,210 @@
+{
+ "_comment": "Adversarial slice v2, generated mechanically by eval/gen_adversarial_slice.py. Replaces a01-a05, which were burned by research/oracle-grammar-triage.md. Witness = highest BM25-ranked Forge match; foil = highest BM25-ranked non-match. No question, witness or foil was chosen by hand.",
+ "generator": {
+  "top_n_per_family": 6,
+  "rank_offset": 6,
+  "min_hits": 15,
+  "max_hits": 2500,
+  "min_foil_ratio": 0.45
+ },
+ "questions": [
+  {
+   "id": "b01",
+   "family": "cost",
+   "q": "cards with an activated ability whose cost includes U",
+   "witness": [
+    "Adric, Mathematical Genius"
+   ],
+   "absent": [
+    "Vantress Visions"
+   ],
+   "forge_hits": 725,
+   "agent_query": {
+    "node": {
+     "kind": "A",
+     "apiKind": "AB",
+     "params": {
+      "Cost": {
+       "regex": "(^|\\s)U(<|$|\\s)"
+      }
+     }
+    }
+   },
+   "why_adversarial": "foil is the top BM25-ranked card that does NOT match the structural query, so it is lexically confusable with the witness but mechanically different"
+  },
+  {
+   "id": "b02",
+   "family": "cost",
+   "q": "cards with an activated ability whose cost includes W",
+   "witness": [
+    "Azorius Guildmage"
+   ],
+   "absent": [
+    "Vedalken Anatomist"
+   ],
+   "forge_hits": 723,
+   "agent_query": {
+    "node": {
+     "kind": "A",
+     "apiKind": "AB",
+     "params": {
+      "Cost": {
+       "regex": "(^|\\s)W(<|$|\\s)"
+      }
+     }
+    }
+   },
+   "why_adversarial": "foil is the top BM25-ranked card that does NOT match the structural query, so it is lexically confusable with the witness but mechanically different"
+  },
+  {
+   "id": "b03",
+   "family": "cost",
+   "q": "cards with an activated ability whose cost includes AddCounter",
+   "witness": [
+    "Tezzeret, Betrayer of Flesh"
+   ],
+   "absent": [
+    "Arm-Mounted Anchor"
+   ],
+   "forge_hits": 341,
+   "agent_query": {
+    "node": {
+     "kind": "A",
+     "apiKind": "AB",
+     "params": {
+      "Cost": {
+       "regex": "(^|\\s)AddCounter(<|$|\\s)"
+      }
+     }
+    }
+   },
+   "why_adversarial": "foil is the top BM25-ranked card that does NOT match the structural query, so it is lexically confusable with the witness but mechanically different"
+  },
+  {
+   "id": "b04",
+   "family": "cost",
+   "q": "cards with an activated ability whose cost includes tapXType",
+   "witness": [
+    "Embalmer's Tools"
+   ],
+   "absent": [
+    "Heartstone"
+   ],
+   "forge_hits": 182,
+   "agent_query": {
+    "node": {
+     "kind": "A",
+     "apiKind": "AB",
+     "params": {
+      "Cost": {
+       "regex": "(^|\\s)tapXType(<|$|\\s)"
+      }
+     }
+    }
+   },
+   "why_adversarial": "foil is the top BM25-ranked card that does NOT match the structural query, so it is lexically confusable with the witness but mechanically different"
+  },
+  {
+   "id": "b05",
+   "family": "cost",
+   "q": "cards with an activated ability whose cost includes X",
+   "witness": [
+    "Gogo, Master of Mimicry"
+   ],
+   "absent": [
+    "Vantress Visions"
+   ],
+   "forge_hits": 159,
+   "agent_query": {
+    "node": {
+     "kind": "A",
+     "apiKind": "AB",
+     "params": {
+      "Cost": {
+       "regex": "(^|\\s)X(<|$|\\s)"
+      }
+     }
+    }
+   },
+   "why_adversarial": "foil is the top BM25-ranked card that does NOT match the structural query, so it is lexically confusable with the witness but mechanically different"
+  },
+  {
+   "id": "b06",
+   "family": "trigger_mode",
+   "q": "cards with a triggered ability that triggers on Drawn",
+   "witness": [
+    "Krang, the All-Powerful"
+   ],
+   "absent": [
+    "Panharmonicon"
+   ],
+   "forge_hits": 145,
+   "agent_query": {
+    "node": {
+     "kind": "T",
+     "mode": "Drawn"
+    }
+   },
+   "why_adversarial": "foil is the top BM25-ranked card that does NOT match the structural query, so it is lexically confusable with the witness but mechanically different"
+  },
+  {
+   "id": "b07",
+   "family": "trigger_mode",
+   "q": "cards with a triggered ability that triggers on ChangesZoneAll",
+   "witness": [
+    "Elvish Archivist"
+   ],
+   "absent": [
+    "Cloaked Cadet"
+   ],
+   "forge_hits": 121,
+   "agent_query": {
+    "node": {
+     "kind": "T",
+     "mode": "ChangesZoneAll"
+    }
+   },
+   "why_adversarial": "foil is the top BM25-ranked card that does NOT match the structural query, so it is lexically confusable with the witness but mechanically different"
+  },
+  {
+   "id": "b08",
+   "family": "static_mode",
+   "q": "cards with a static ability of type CastWithFlash",
+   "witness": [
+    "Gandalf the White"
+   ],
+   "absent": [
+    "Panharmonicon"
+   ],
+   "forge_hits": 56,
+   "agent_query": {
+    "node": {
+     "kind": "S",
+     "mode": "CastWithFlash"
+    }
+   },
+   "why_adversarial": "foil is the top BM25-ranked card that does NOT match the structural query, so it is lexically confusable with the witness but mechanically different"
+  },
+  {
+   "id": "b09",
+   "family": "replacement_event",
+   "q": "cards with a replacement effect on the AddCounter event",
+   "witness": [
+    "Doubling Season"
+   ],
+   "absent": [
+    "Anointed Procession"
+   ],
+   "forge_hits": 30,
+   "agent_query": {
+    "node": {
+     "kind": "R",
+     "params": {
+      "Event": "AddCounter"
+     }
+    }
+   },
+   "why_adversarial": "foil is the top BM25-ranked card that does NOT match the structural query, so it is lexically confusable with the witness but mechanically different"
+  }
+ ]
+}

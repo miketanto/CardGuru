@@ -1,0 +1,173 @@
+{
+ "slice": "nl_questions_adversarial_v3.json",
+ "questions": 9,
+ "oracle_passed": 6,
+ "oracle_pass_pct": 66.7,
+ "oracle_vacuous_empty_results": 2,
+ "forge_passed": 9,
+ "mean_recall_of_forge_hits_pct": 63.0,
+ "rows": [
+  {
+   "id": "b01",
+   "family": "cost",
+   "q": "cards with an activated ability whose cost includes U",
+   "forge": {
+    "hits": 725,
+    "witness_found": true,
+    "foil_rejected": true
+   },
+   "oracle": {
+    "hits": 738,
+    "witness_found": true,
+    "foil_rejected": true,
+    "vacuous": false
+   },
+   "recall_of_forge_hits_pct": 99.7,
+   "jaccard_pct": 97.7
+  },
+  {
+   "id": "b02",
+   "family": "cost",
+   "q": "cards with an activated ability whose cost includes W",
+   "forge": {
+    "hits": 723,
+    "witness_found": true,
+    "foil_rejected": true
+   },
+   "oracle": {
+    "hits": 729,
+    "witness_found": true,
+    "foil_rejected": true,
+    "vacuous": false
+   },
+   "recall_of_forge_hits_pct": 99.4,
+   "jaccard_pct": 98.1
+  },
+  {
+   "id": "b03",
+   "family": "cost",
+   "q": "cards with an activated ability whose cost includes AddCounter",
+   "forge": {
+    "hits": 341,
+    "witness_found": true,
+    "foil_rejected": true
+   },
+   "oracle": {
+    "hits": 332,
+    "witness_found": true,
+    "foil_rejected": true,
+    "vacuous": false
+   },
+   "recall_of_forge_hits_pct": 96.8,
+   "jaccard_pct": 96.2
+  },
+  {
+   "id": "b04",
+   "family": "cost",
+   "q": "cards with an activated ability whose cost includes tapXType",
+   "forge": {
+    "hits": 182,
+    "witness_found": true,
+    "foil_rejected": true
+   },
+   "oracle": {
+    "hits": 0,
+    "witness_found": false,
+    "foil_rejected": true,
+    "vacuous": true
+   },
+   "recall_of_forge_hits_pct": 0.0,
+   "jaccard_pct": 0.0
+  },
+  {
+   "id": "b05",
+   "family": "cost",
+   "q": "cards with an activated ability whose cost includes X",
+   "forge": {
+    "hits": 159,
+    "witness_found": true,
+    "foil_rejected": true
+   },
+   "oracle": {
+    "hits": 158,
+    "witness_found": true,
+    "foil_rejected": true,
+    "vacuous": false
+   },
+   "recall_of_forge_hits_pct": 98.7,
+   "jaccard_pct": 98.1
+  },
+  {
+   "id": "b06",
+   "family": "trigger_mode",
+   "q": "cards with a triggered ability that triggers on Drawn",
+   "forge": {
+    "hits": 145,
+    "witness_found": true,
+    "foil_rejected": true
+   },
+   "oracle": {
+    "hits": 721,
+    "witness_found": false,
+    "foil_rejected": true,
+    "vacuous": false
+   },
+   "recall_of_forge_hits_pct": 40.7,
+   "jaccard_pct": 7.3
+  },
+  {
+   "id": "b07",
+   "family": "trigger_mode",
+   "q": "cards with a triggered ability that triggers on ChangesZoneAll",
+   "forge": {
+    "hits": 121,
+    "witness_found": true,
+    "foil_rejected": true
+   },
+   "oracle": {
+    "hits": 0,
+    "witness_found": false,
+    "foil_rejected": true,
+    "vacuous": true
+   },
+   "recall_of_forge_hits_pct": 0.0,
+   "jaccard_pct": 0.0
+  },
+  {
+   "id": "b08",
+   "family": "static_mode",
+   "q": "cards with a static ability of type CastWithFlash",
+   "forge": {
+    "hits": 56,
+    "witness_found": true,
+    "foil_rejected": true
+   },
+   "oracle": {
+    "hits": 64,
+    "witness_found": true,
+    "foil_rejected": true,
+    "vacuous": false
+   },
+   "recall_of_forge_hits_pct": 82.1,
+   "jaccard_pct": 62.2
+  },
+  {
+   "id": "b09",
+   "family": "replacement_event",
+   "q": "cards with a replacement effect on the AddCounter event",
+   "forge": {
+    "hits": 30,
+    "witness_found": true,
+    "foil_rejected": true
+   },
+   "oracle": {
+    "hits": 16,
+    "witness_found": true,
+    "foil_rejected": true,
+    "vacuous": false
+   },
+   "recall_of_forge_hits_pct": 50.0,
+   "jaccard_pct": 48.4
+  }
+ ]
+}

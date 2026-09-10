@@ -1,0 +1,217 @@
+{
+ "_comment": "Adversarial slice v2, generated mechanically by eval/gen_adversarial_slice.py. Replaces a01-a05, which were burned by research/oracle-grammar-triage.md. Witness = highest BM25-ranked Forge match; foil = highest BM25-ranked non-match. No question, witness or foil was chosen by hand.",
+ "generator": {
+  "top_n_per_family": 6,
+  "rank_offset": 0,
+  "witness_rank_offset": 2,
+  "min_hits": 15,
+  "max_hits": 2500,
+  "min_foil_ratio": 0.45
+ },
+ "questions": [
+  {
+   "id": "b01",
+   "family": "cost",
+   "q": "cards with an activated ability whose cost includes sacrificing a permanent",
+   "witness": [
+    "Linvala, Shield of Sea Gate"
+   ],
+   "absent": [
+    "Suppression Bonds"
+   ],
+   "forge_hits": 1763,
+   "agent_query": {
+    "node": {
+     "kind": "A",
+     "apiKind": "AB",
+     "params": {
+      "Cost": {
+       "regex": "(^|\\s)Sac(<|$|\\s)"
+      }
+     }
+    }
+   },
+   "why_adversarial": "foil is the top BM25-ranked card that does NOT match the structural query, so it is lexically confusable with the witness but mechanically different"
+  },
+  {
+   "id": "b02",
+   "family": "cost",
+   "q": "cards with an activated ability whose cost includes R",
+   "witness": [
+    "Keeper of the Flame"
+   ],
+   "absent": [
+    "Keeper of the Dead"
+   ],
+   "forge_hits": 817,
+   "agent_query": {
+    "node": {
+     "kind": "A",
+     "apiKind": "AB",
+     "params": {
+      "Cost": {
+       "regex": "(^|\\s)R(<|$|\\s)"
+      }
+     }
+    }
+   },
+   "why_adversarial": "foil is the top BM25-ranked card that does NOT match the structural query, so it is lexically confusable with the witness but mechanically different"
+  },
+  {
+   "id": "b03",
+   "family": "trigger_mode",
+   "q": "cards with a triggered ability that triggers on Attacks",
+   "witness": [
+    "Ant-Man, Colony Commander"
+   ],
+   "absent": [
+    "Ant-Man, Elusive Avenger"
+   ],
+   "forge_hits": 1589,
+   "agent_query": {
+    "node": {
+     "kind": "T",
+     "mode": "Attacks"
+    }
+   },
+   "why_adversarial": "foil is the top BM25-ranked card that does NOT match the structural query, so it is lexically confusable with the witness but mechanically different"
+  },
+  {
+   "id": "b04",
+   "family": "trigger_mode",
+   "q": "cards with a triggered ability that triggers on SpellCast",
+   "witness": [
+    "Academy Wall"
+   ],
+   "absent": [
+    "Kishla Skimmer"
+   ],
+   "forge_hits": 1356,
+   "agent_query": {
+    "node": {
+     "kind": "T",
+     "mode": "SpellCast"
+    }
+   },
+   "why_adversarial": "foil is the top BM25-ranked card that does NOT match the structural query, so it is lexically confusable with the witness but mechanically different"
+  },
+  {
+   "id": "b05",
+   "family": "trigger_mode",
+   "q": "cards with a triggered ability that triggers on DamageDone",
+   "witness": [
+    "Ms. Marvel, Elastic Ally"
+   ],
+   "absent": [
+    "Kutzil, Malamet Exemplar"
+   ],
+   "forge_hits": 866,
+   "agent_query": {
+    "node": {
+     "kind": "T",
+     "mode": "DamageDone"
+    }
+   },
+   "why_adversarial": "foil is the top BM25-ranked card that does NOT match the structural query, so it is lexically confusable with the witness but mechanically different"
+  },
+  {
+   "id": "b06",
+   "family": "trigger_mode",
+   "q": "cards with a triggered ability that triggers on AttackersDeclared",
+   "witness": [
+    "Ruby Collector"
+   ],
+   "absent": [
+    "Emerald Collector"
+   ],
+   "forge_hits": 233,
+   "agent_query": {
+    "node": {
+     "kind": "T",
+     "mode": "AttackersDeclared"
+    }
+   },
+   "why_adversarial": "foil is the top BM25-ranked card that does NOT match the structural query, so it is lexically confusable with the witness but mechanically different"
+  },
+  {
+   "id": "b07",
+   "family": "static_mode",
+   "q": "cards with a static ability of type ReduceCost",
+   "witness": [
+    "Professor Hojo"
+   ],
+   "absent": [
+    "Loki, God of Mischief"
+   ],
+   "forge_hits": 515,
+   "agent_query": {
+    "node": {
+     "kind": "S",
+     "mode": "ReduceCost"
+    }
+   },
+   "why_adversarial": "foil is the top BM25-ranked card that does NOT match the structural query, so it is lexically confusable with the witness but mechanically different"
+  },
+  {
+   "id": "b08",
+   "family": "static_mode",
+   "q": "cards with a static ability of type AlternativeCost",
+   "witness": [
+    "K\u00edli the Resourceful"
+   ],
+   "absent": [
+    "D\u00e1in, Lord of the Iron Hills"
+   ],
+   "forge_hits": 148,
+   "agent_query": {
+    "node": {
+     "kind": "S",
+     "mode": "AlternativeCost"
+    }
+   },
+   "why_adversarial": "foil is the top BM25-ranked card that does NOT match the structural query, so it is lexically confusable with the witness but mechanically different"
+  },
+  {
+   "id": "b09",
+   "family": "replacement_event",
+   "q": "cards with a replacement effect on the Untap event",
+   "witness": [
+    "Soldevi Golem"
+   ],
+   "absent": [
+    "Rust Tick"
+   ],
+   "forge_hits": 155,
+   "agent_query": {
+    "node": {
+     "kind": "R",
+     "params": {
+      "Event": "Untap"
+     }
+    }
+   },
+   "why_adversarial": "foil is the top BM25-ranked card that does NOT match the structural query, so it is lexically confusable with the witness but mechanically different"
+  },
+  {
+   "id": "b10",
+   "family": "replacement_event",
+   "q": "cards with a replacement effect on the Draw event",
+   "witness": [
+    "Thought Reflection"
+   ],
+   "absent": [
+    "Field Research"
+   ],
+   "forge_hits": 37,
+   "agent_query": {
+    "node": {
+     "kind": "R",
+     "params": {
+      "Event": "Draw"
+     }
+    }
+   },
+   "why_adversarial": "foil is the top BM25-ranked card that does NOT match the structural query, so it is lexically confusable with the witness but mechanically different"
+  }
+ ]
+}
