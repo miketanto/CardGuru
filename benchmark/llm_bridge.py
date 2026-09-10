@@ -279,12 +279,18 @@ class TurnPlanner:
 
     def _match_rule(self, event):
         etype, arg = event
+        otherwise = None
         for rule in (self.plan or {}).get("rules") or []:
             cond = self._norm(rule.get("if"))
             if ":" in cond:
                 ctype, carg = cond.split(":", 1)
             else:
                 ctype, carg = cond, "any"
+            if ctype in ("otherwise", "else", "default", "any"):
+                # Explicit catch-all: the pilot chose what happens to events
+                # it did not enumerate. Only consulted after specific rules.
+                otherwise = otherwise or rule
+                continue
             if ctype != etype:
                 continue
             if etype == "life_below":
@@ -300,7 +306,7 @@ class TurnPlanner:
                 continue
             if carg in ("any", "") or (arg and carg in self._norm(arg)):
                 return rule
-        return None
+        return otherwise
 
     def _find_option(self, request, action):
         """Map an action string to an option index, or None."""
