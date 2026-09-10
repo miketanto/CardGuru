@@ -183,3 +183,5 @@ is a number in `V7-VALIDATION.md`.
 | class-init flags and a persistent driver JVM serving the wrong arm | handshake refuses; `wire:7` is checked, not assumed |
 | agents drift on the contract | contracts are files; a contract change names both consumers; `wire_validate.py` runs in every lane's tests |
 | a phase "passes" on a 10-game read | gates are numbers with intervals or exact checks; §0 rule 5 |
+
+Published roadmap figure: https://claude.ai/code/artifact/5ddc5f28-2fb3-4bd0-b081-cec44f95719d
