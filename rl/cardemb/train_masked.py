@@ -50,7 +50,10 @@ class MaskedHead(nn.Module):
 def prepare(corpus, names, emb, by_name, cache):
     """Per-deck tensors with fingerprint bias, cached to disk (fingerprints are slow)."""
     if os.path.exists(cache):
-        return torch.load(cache)
+        cached = torch.load(cache)
+        if len(cached) == len(corpus) and cached[0]["ids"].tolist() == corpus.ids(0) and cached[-1]["ids"].tolist() == corpus.ids(len(corpus) - 1):
+            return cached
+        print("  decks_cache.pt does not match the corpus; rebuilding", flush=True)
     out = []
     t0 = time.time()
     for i in range(len(corpus)):
