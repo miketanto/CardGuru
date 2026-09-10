@@ -53,6 +53,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -2286,47 +2287,230 @@ class InteractiveTestPlayer extends TestPlayer {
         return s + " | " + lands + " lands (" + landsUntapped + " untapped)";
     }
 
+    // ---- leaf value memo (dynamic programming over leaf states) ----------
+    //
+    // A leaf's value is a function of the leaf STATE, not of the candidate
+    // or the window that produced it. Measured on the overnight suite, 30-53%
+    // of all leaves the pilot scored were states it had already scored
+    // earlier in the same turn, and 20-33% were duplicates inside the same
+    // request; when it re-scored a state within a turn the median change was
+    // 0-3 points. So:
+    //   1. duplicate leaves inside one request are sent once and the score is
+    //      expanded back (shorter prompt, less thinking);
+    //   2. leaves scored earlier this turn are sent WITH their earlier score
+    //      as `prior_score`, so the pilot scores the new leaves on the same
+    //      scale instead of inventing one (tier 2 in the plan);
+    //   3. a request whose leaves are ALL cached is answered from the cache
+    //      without a call, but only when the decision is clear-cut: the best
+    //      candidate must lead the runner-up by LEAF_CACHE_MARGIN under both
+    //      mean and min aggregation. Otherwise ask (tier 3, gated).
+    // The cache is cleared at every new turn: scores are absolute-ish (see
+    // the briefing's rubric) but drift with the game, and "seen earlier in
+    // the game" never exceeded "seen earlier this turn" in the suite data.
+    private final Map<String, double[]> leafValueCache = new HashMap<>();
+    private int leafCacheTurn = -1;
+    private static final double LEAF_CACHE_MARGIN =
+            Double.parseDouble(System.getProperty("cardguru.leaf_cache_margin", "10"));
+    private static final boolean LEAF_CACHE_ON =
+            !"false".equals(System.getProperty("cardguru.leaf_cache", "true"));
+    private int leafCacheFullHits = 0;      // requests answered without a call
+    private int leafCacheLeavesSaved = 0;   // leaves not sent because cached
+    private int leafDedupSaved = 0;         // leaves not sent because duplicate
+    private int leavesTotalLast = 0;
+    private int leavesSentLast = 0;
+
+    /** Canonical key for a leaf state. Projected leaves (arm (e), tagged
+     *  with a `sample`) are end-of-opponent-turn states and compare across
+     *  windows; an unprojected leaf is a mid-turn state and is keyed on the
+     *  step it was reached in, because "the same board with combat still
+     *  to come" is a different state from "the same board after combat". */
+    private static String leafKey(JsonObject summary, Game game) {
+        JsonObject k = new JsonObject();
+        List<String> names = new ArrayList<>(summary.keySet());
+        Collections.sort(names);
+        for (String n : names) {
+            if (n.equals("line") || n.equals("leaf_index") || n.equals("sample")
+                    || n.equals("response") || n.equals("prior_score")) {
+                continue;
+            }
+            k.add(n, summary.get(n));
+        }
+        String prefix = summary.has("sample") ? "P|" : "S|" + game.getTurnStepType() + "|";
+        return prefix + k;
+    }
+
+    private static double meanOf(List<Double> xs) {
+        double s = 0;
+        for (double x : xs) {
+            s += x;
+        }
+        return xs.isEmpty() ? 0 : s / xs.size();
+    }
+
     /** Send every leaf in one "leaf_eval" request; return the flat score list
      *  or null when the response is missing/short (caller falls back). */
     private double[] askLeafScores(Game game, String decision,
                                    List<String> candidateLabels,
                                    List<List<ScoredLeaf>> leavesPerCandidate) {
+        if (game.getTurnNum() != leafCacheTurn) {
+            leafValueCache.clear();
+            leafCacheTurn = game.getTurnNum();
+        }
+        // Flatten, key, and dedup.
+        int total = 0;
+        List<String> flatKeys = new ArrayList<>();
+        List<Integer> flatCand = new ArrayList<>();
+        Map<String, Integer> uniqueIndex = new LinkedHashMap<>();
+        List<JsonObject> uniqueSummary = new ArrayList<>();
+        List<Integer> uniqueCand = new ArrayList<>();
+        for (int c = 0; c < candidateLabels.size(); c++) {
+            for (ScoredLeaf l : leavesPerCandidate.get(c)) {
+                String key = LEAF_CACHE_ON ? leafKey(l.summary, game) : "n" + total;
+                flatKeys.add(key);
+                flatCand.add(c);
+                if (!uniqueIndex.containsKey(key)) {
+                    uniqueIndex.put(key, uniqueSummary.size());
+                    uniqueSummary.add(l.summary);
+                    uniqueCand.add(c);
+                }
+                total++;
+            }
+        }
+        leavesTotalLast = total;
+        int unique = uniqueSummary.size();
+        int cached = 0;
+        for (String key : uniqueIndex.keySet()) {
+            if (leafValueCache.containsKey(key)) {
+                cached++;
+            }
+        }
+
+        // Tier 3: everything cached and the decision is clear-cut.
+        if (LEAF_CACHE_ON && unique > 0 && cached == unique) {
+            double[] scores = new double[total];
+            for (int i = 0; i < total; i++) {
+                scores[i] = leafValueCache.get(flatKeys.get(i))[0];
+            }
+            if (clearCutUnderBothAggregations(candidateLabels.size(), flatCand, scores)) {
+                leafCacheFullHits++;
+                leafCacheLeavesSaved += unique;
+                leafDedupSaved += total - unique;
+                leavesSentLast = 0;
+                return scores;
+            }
+        }
+
         JsonObject req = baseRequest("leaf_eval", game);
         req.addProperty("decision", decision);
-        int total = 0;
         JsonArray cands = new JsonArray();
+        List<JsonArray> perCand = new ArrayList<>();
         for (int c = 0; c < candidateLabels.size(); c++) {
             JsonObject co = new JsonObject();
             co.addProperty("label", candidateLabels.get(c));
             JsonArray ls = new JsonArray();
-            for (ScoredLeaf l : leavesPerCandidate.get(c)) {
-                JsonObject lo = l.summary.deepCopy();
-                lo.addProperty("leaf_index", total++);
-                ls.add(lo);
-            }
+            perCand.add(ls);
             co.add("leaves", ls);
             cands.add(co);
         }
+        int sent = 0;
+        List<String> uniqueKeys = new ArrayList<>(uniqueIndex.keySet());
+        for (int u = 0; u < unique; u++) {
+            JsonObject lo = uniqueSummary.get(u).deepCopy();
+            lo.addProperty("leaf_index", sent++);
+            double[] prior = leafValueCache.get(uniqueKeys.get(u));
+            if (prior != null) {
+                lo.addProperty("prior_score", Math.round(prior[0]));
+            }
+            perCand.get(uniqueCand.get(u)).add(lo);
+        }
         req.add("candidates", cands);
-        req.addProperty("leaf_count", total);
+        req.addProperty("leaf_count", sent);
+        if (total != sent) {
+            req.addProperty("duplicate_leaves_collapsed", total - sent);
+        }
+        if (cached > 0) {
+            req.addProperty("leaves_with_prior_score", cached);
+        }
+        leavesSentLast = sent;
+        leafDedupSaved += total - sent;
 
         JsonObject resp = ask(req);
         if (!resp.has("scores") || !resp.get("scores").isJsonArray()) {
             return null;
         }
         JsonArray arr = resp.getAsJsonArray("scores");
-        if (arr.size() < total) {
+        if (arr.size() < sent) {
             return null;
         }
-        double[] scores = new double[total];
+        double[] uniqueScores = new double[sent];
         try {
-            for (int i = 0; i < total; i++) {
-                scores[i] = arr.get(i).getAsDouble();
+            for (int i = 0; i < sent; i++) {
+                uniqueScores[i] = arr.get(i).getAsDouble();
             }
         } catch (Exception e) {
             return null;
         }
+        // Anchor: candidate 0 is always the status quo ("pass", "attack-none",
+        // "no-blocks"); its mean is the request's reference level. Stored so
+        // a later window can re-base if it ever needs to.
+        List<Double> anchorScores = new ArrayList<>();
+        for (int u = 0; u < unique; u++) {
+            if (uniqueCand.get(u) == 0) {
+                anchorScores.add(uniqueScores[u]);
+            }
+        }
+        double anchor = anchorScores.isEmpty() ? 50 : meanOf(anchorScores);
+        for (int u = 0; u < unique; u++) {
+            leafValueCache.put(uniqueKeys.get(u),
+                    new double[]{uniqueScores[u], uniqueScores[u] - anchor});
+        }
+        double[] scores = new double[total];
+        for (int i = 0; i < total; i++) {
+            scores[i] = uniqueScores[uniqueIndex.get(flatKeys.get(i))];
+        }
         return scores;
+    }
+
+    /** True when one candidate leads the runner-up by LEAF_CACHE_MARGIN under
+     *  BOTH mean-of-leaves and min-of-leaves, and it is the same candidate.
+     *  Every decision rule in this file (worst leaf, mean of max) sits
+     *  between those two, so a lead under both is a lead under any. */
+    private static boolean clearCutUnderBothAggregations(int nCand, List<Integer> flatCand,
+                                                         double[] scores) {
+        double[] mean = new double[nCand];
+        double[] min = new double[nCand];
+        int[] n = new int[nCand];
+        Arrays.fill(min, Double.POSITIVE_INFINITY);
+        for (int i = 0; i < scores.length; i++) {
+            int c = flatCand.get(i);
+            mean[c] += scores[i];
+            min[c] = Math.min(min[c], scores[i]);
+            n[c]++;
+        }
+        int bestMean = -1, bestMin = -1;
+        double m1 = Double.NEGATIVE_INFINITY, m2 = Double.NEGATIVE_INFINITY;
+        double k1 = Double.NEGATIVE_INFINITY, k2 = Double.NEGATIVE_INFINITY;
+        for (int c = 0; c < nCand; c++) {
+            if (n[c] == 0) {
+                continue;
+            }
+            mean[c] /= n[c];
+            if (mean[c] > m1) {
+                m2 = m1; m1 = mean[c]; bestMean = c;
+            } else if (mean[c] > m2) {
+                m2 = mean[c];
+            }
+            if (min[c] > k1) {
+                k2 = k1; k1 = min[c]; bestMin = c;
+            } else if (min[c] > k2) {
+                k2 = min[c];
+            }
+        }
+        if (bestMean < 0 || bestMean != bestMin) {
+            return false;
+        }
+        boolean single = Double.isInfinite(m2);   // only one candidate
+        return single || (m1 - m2 >= LEAF_CACHE_MARGIN && k1 - k2 >= LEAF_CACHE_MARGIN);
     }
 
     /** Rolled-out attack candidate: declare the set on a copy, resolve, keep
@@ -2538,6 +2722,13 @@ class InteractiveTestPlayer extends TestPlayer {
         if (!projLastFailure.isEmpty()) {
             rec.addProperty("proj_last_failure", projLastFailure);
         }
+        // Leaf value memo (DP): cumulative counts, plus this request's size.
+        rec.addProperty("leaf_cache_on", LEAF_CACHE_ON);
+        rec.addProperty("leaf_cache_full_hits", leafCacheFullHits);
+        rec.addProperty("leaf_cache_leaves_saved", leafCacheLeavesSaved);
+        rec.addProperty("leaf_dedup_saved", leafDedupSaved);
+        rec.addProperty("leaves_total", leavesTotalLast);
+        rec.addProperty("leaves_sent", leavesSentLast);
         JsonArray cands = new JsonArray();
         int flat = 0;
         for (int c = 0; c < labels.size(); c++) {
@@ -2637,14 +2828,29 @@ class InteractiveTestPlayer extends TestPlayer {
         Collections.sort(labels);
         Player me = game.getPlayer(myId);
         Player opp = game.getPlayer(oppId);
-        return game.getTurnNum() + "|" + game.getTurnStepType() + "|"
+        // Keyed on the POSITION, not the step: a "hold" decided at precombat
+        // main is the same decision at begin combat, declare attackers, end
+        // combat, postcombat main and end step as long as nothing changed.
+        // 46 of 113 searches in the suite's two-hour game re-scored an
+        // identical candidate set inside one turn for exactly this reason.
+        // Any change to a permanent (new, tapped, counters), hand size,
+        // life or stack invalidates it.
+        List<String> perms = new ArrayList<>();
+        for (Permanent p : game.getBattlefield().getAllActivePermanents()) {
+            perms.add((p.getControllerId().equals(myId) ? "A:" : "B:") + p.getName()
+                    + (p.isTapped() ? "*" : "") + "#" + p.getCounters(game).getTotalCount()
+                    + (p.isCreature(game) ? "/" + p.getPower().getValue()
+                       + "/" + p.getToughness().getValue() : ""));
+        }
+        Collections.sort(perms);
+        return game.getTurnNum() + "|" + game.getActivePlayerId().equals(myId) + "|"
                 + (me == null ? 0 : me.getLife()) + "/"
                 + (opp == null ? 0 : opp.getLife()) + "|"
-                + game.getBattlefield().getAllActivePermanents(myId).size() + "/"
-                + (oppId == null ? 0
-                   : game.getBattlefield().getAllActivePermanents(oppId).size())
-                + "|" + (me == null ? 0 : me.getHand().size())
+                + (me == null ? 0 : me.getHand().size()) + "/"
+                + (opp == null ? 0 : opp.getHand().size())
                 + "|" + game.getStack().size()
+                + "|" + manaSignature(game)
+                + "|" + perms
                 + "|" + labels;
     }
 

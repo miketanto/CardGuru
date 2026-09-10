@@ -178,11 +178,22 @@ optional. Neither replaces the required field for the decision's kind.
   could take now — an attack set, a block assignment, or a spell to cast
   this main phase ("pass (hold everything)" is always candidate 0) — and
   its leaves are the resulting boards. Score each leaf 0-100 for HOW
-  GOOD THAT RESULTING POSITION IS FOR YOU (100 = winning on the spot, 50 =
-  even, 0 = lost). Judge with your usual race math: life totals, board
-  after the exchange, what is tapped going into their turn, and what their
-  open mana threatens. The engine takes each candidate's WORST leaf and
-  picks the best candidate — so score honestly, do not optimize the menu.
+  GOOD THAT RESULTING POSITION IS FOR YOU on an ABSOLUTE scale — your
+  estimate of winning chances from that position, not a ranking against
+  the other leaves in this request. Anchors: 50 = parity; 65 = ahead, they
+  need a specific card; 80 = you have a clock they cannot block or race;
+  90 = lethal next turn barring one answer; 100 = won on the spot; the
+  mirror image below 50; 0 = lost. Keep the same scale from one decision
+  to the next within a turn. Judge with your usual race math: life totals,
+  board after the exchange, what is tapped going into their turn, and what
+  their open mana threatens. The engine takes each candidate's WORST leaf
+  and picks the best candidate — so score honestly, do not optimize the
+  menu.
+  Identical resulting positions are listed once (`duplicate_leaves_collapsed`
+  tells you how many were folded). A leaf may carry `prior_score`: the
+  number you gave that exact position earlier this turn. Treat it as your
+  anchor — score the new leaves on the same scale — and only move a prior
+  score if you now see something you missed.
 
 `card_reference` carries every card visible in THIS request, every time —
 you never have to play off a name you cannot recall. Look it up rather than
