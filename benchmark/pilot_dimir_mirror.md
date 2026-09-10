@@ -231,6 +231,22 @@ windows the plan does not cover. Reply:
 - In the default hybrid mode the engine still runs its attack and block
   searches (one leaf_eval per combat) and your `attack`/`blocks` spec is
   used only when the search is off.
+- **Plan-scoped search (your turn).** Instead of one fixed line, give two
+  or three `candidates`, each a whole line for the turn:
+
+      "candidates": [
+        {"label": "develop", "main1": ["play Swamp", "cast Preacher of the Schism"],
+         "attack": "attack Deep-Cavern Bat", "main2": []},
+        {"label": "hold up Drowner", "main1": ["play Swamp"],
+         "attack": "attack_none", "main2": []}]
+
+  The engine plays each line out on reseated copies — your casts, your
+  attack against their worst block, then THEIR projected turn with your
+  instant-speed responses — and asks you to score the leaves
+  (`leaf_eval` with decision `plan`). The best line becomes your `steps`
+  and `attack`; `rules`, `hold` and `blocks` apply to whichever wins.
+  Lines that differ only in order are wasted samples: make them differ
+  in what is committed and what is held.
 - `attack` / `blocks`: `attack_all`, `attack_none`, `attack <names>`,
   `no_block`, `block <blocker>-><attacker>; ...`, or `ask`.
 - `rules` fire on events the harness detects (the request lists the

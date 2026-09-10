@@ -25,8 +25,13 @@ import mage.game.Game;
 import mage.game.combat.CombatGroup;
 import mage.game.events.GameEvent;
 import mage.game.permanent.Permanent;
+import mage.game.turn.BeginCombatStep;
 import mage.game.turn.BeginningPhase;
 import mage.game.turn.CombatDamageStep;
+import mage.game.turn.CombatPhase;
+import mage.game.turn.DeclareAttackersStep;
+import mage.game.turn.PostCombatMainPhase;
+import mage.game.turn.PostCombatMainStep;
 import mage.game.turn.DrawStep;
 import mage.game.turn.EndOfCombatStep;
 import mage.game.turn.PreCombatMainPhase;
@@ -1039,6 +1044,11 @@ class InteractiveTestPlayer extends TestPlayer {
         req.add("options", opts);
 
         JsonObject resp = ask(req);
+        if (turnPlanMode && planSearchOn && resp.has("simulate")
+                && resp.get("simulate").isJsonArray()
+                && resp.getAsJsonArray("simulate").size() > 0) {
+            resp = planSearch(game, req, resp);
+        }
         int choice = intOr(resp, "choice", 0);
         if (choice >= 1 && choice <= playable.size()) {
             ActivatedAbility picked = playable.get(choice - 1);
@@ -2574,6 +2584,259 @@ class InteractiveTestPlayer extends TestPlayer {
         }
         boolean single = Double.isInfinite(m2);   // only one candidate
         return single || (m1 - m2 >= LEAF_CACHE_MARGIN && k1 - k2 >= LEAF_CACHE_MARGIN);
+    }
+
+    // ---- plan-scoped search ----------------------------------------------
+    //
+    // Turn-plan mode's missing piece. The pilot proposes two or three whole
+    // lines for its turn (main-phase casts, an attack spec, postcombat
+    // casts); the driver plays each out on reseated copies — my casts, my
+    // attack against the engine's worst block for me, my postcombat casts,
+    // then the opponent's projected turn with my instant-speed responses
+    // (the arm (e) tail) — and the pilot scores the leaves once. The best
+    // line becomes the plan the bridge executes for free. PokéChamp's
+    // shape: LLM proposes, engine simulates, LLM values, one call per turn.
+    private static final boolean planSearchOn =
+            !"false".equals(System.getProperty("cardguru.plan_search", "true"));
+
+    /** Find the playable ability a plan step names ("cast X", "play X",
+     *  "activate <fragment>"), or null. Target hints after " @ " are ignored
+     *  on the copy: the AI's own targeting stands in for them. */
+    private static ActivatedAbility findByLabel(Game sim, UUID myId, String step) {
+        Player me = sim.getPlayer(myId);
+        if (me == null || step == null) {
+            return null;
+        }
+        String s = step.trim().toLowerCase();
+        int at = s.indexOf(" @ ");
+        if (at >= 0) {
+            s = s.substring(0, at).trim();
+        }
+        int sp = s.indexOf(' ');
+        String verb = sp < 0 ? s : s.substring(0, sp);
+        String rest = sp < 0 ? "" : s.substring(sp + 1).trim();
+        if (rest.isEmpty()) {
+            return null;
+        }
+        for (ActivatedAbility a : me.getPlayable(sim, true)) {
+            if (a instanceof mage.abilities.mana.ManaAbility) {
+                continue;
+            }
+            String t = String.valueOf(a).toLowerCase();
+            if (verb.equals("cast") && t.startsWith("cast ") && t.contains(rest)) {
+                return a;
+            }
+            if (verb.equals("play") && t.startsWith("play ") && t.contains(rest)) {
+                return a;
+            }
+            if (verb.equals("activate") && !t.startsWith("cast ") && t.contains(rest)) {
+                return a;
+            }
+        }
+        return null;
+    }
+
+    private static List<String> strList(JsonObject o, String key) {
+        List<String> out = new ArrayList<>();
+        if (o != null && o.has(key) && o.get(key).isJsonArray()) {
+            for (JsonElement e : o.getAsJsonArray(key)) {
+                if (e.isJsonPrimitive()) {
+                    out.add(e.getAsString());
+                } else if (e.isJsonObject() && e.getAsJsonObject().has("action")) {
+                    out.add(e.getAsJsonObject().get("action").getAsString());
+                }
+            }
+        }
+        return out;
+    }
+
+    /** Apply plan steps on a copy in order; returns the steps that were not
+     *  available (so the leaf label can say the line was not fully legal). */
+    private String applySteps(Game sim, UUID myId, List<String> steps) {
+        StringBuilder missing = new StringBuilder();
+        Player me = sim.getPlayer(myId);
+        for (String step : steps) {
+            ActivatedAbility a = findByLabel(sim, myId, step);
+            if (a == null || me == null || !me.activateAbility(a.copy(), sim)) {
+                missing.append(missing.length() == 0 ? "" : ", ").append(step);
+                continue;
+            }
+            sim.checkStateAndTriggered();
+            resolveStack(sim);
+        }
+        return missing.toString();
+    }
+
+    /** Enter combat on the copy, declare the spec'd attackers, and resolve
+     *  against the block response the engine heuristic rates worst for me
+     *  (the same pessimism the attack search keeps). */
+    private void attackOnCopy(Game sim, UUID myId, UUID oppId, String spec) {
+        String s = spec == null ? "attack_none" : spec.trim().toLowerCase();
+        if (s.isEmpty() || s.equals("attack_none") || s.equals("none") || s.equals("ask")) {
+            return;
+        }
+        sim.getTurn().setPhase(new CombatPhase());
+        simulateStep(sim, new BeginCombatStep());
+        sim.getPhase().setStep(new DeclareAttackersStep());
+        boolean all = s.equals("attack_all") || s.equals("all");
+        List<String> names = new ArrayList<>();
+        if (!all) {
+            for (String n : s.replaceFirst("^attack ", "").split(",")) {
+                if (!n.trim().isEmpty()) {
+                    names.add(n.trim());
+                }
+            }
+        }
+        Player me = sim.getPlayer(myId);
+        boolean any = false;
+        for (Permanent p : new ArrayList<>(sim.getBattlefield().getAllActivePermanents(myId))) {
+            if (!p.isCreature(sim) || !p.canAttack(oppId, sim)) {
+                continue;
+            }
+            boolean pick = all;
+            for (String n : names) {
+                if (p.getName().toLowerCase().contains(n)) {
+                    pick = true;
+                }
+            }
+            if (pick && me != null) {
+                me.declareAttacker(p.getId(), oppId, sim, false);
+                any = true;
+            }
+        }
+        if (!any) {
+            return;
+        }
+        sim.checkStateAndTriggered();
+        resolveStack(sim);
+        List<UUID[]> worst = new ArrayList<>();
+        double worstH = Double.POSITIVE_INFINITY;
+        for (List<UUID[]> resp : enumerateBlockResponses(sim, oppId)) {
+            Game leaf = sim.copy();
+            applyBlocksAndResolveCombat(leaf, oppId, resp);
+            double h = GameStateEvaluator2.evaluate(myId, leaf).getTotalScore();
+            if (h < worstH) {
+                worstH = h;
+                worst = resp;
+            }
+        }
+        applyBlocksAndResolveCombat(sim, oppId, worst);
+    }
+
+    /** The arm (e) tail, shared with the priority projection: hand the copy
+     *  to the opponent, let them play, give me two response windows. */
+    private void projectOpponentTurn(Game sim, UUID myId, UUID oppId, String label,
+                                     int k, List<ScoredLeaf> out) {
+        beginOpponentTurn(sim, oppId);
+        String theirs = opponentMainPhase(sim, oppId);
+        String base = label + " | s" + k + ": they "
+                + (theirs == null ? "do nothing" : "cast " + theirs);
+        if (theirs == null) {
+            out.add(projectedLeaf(sim, myId, oppId, base, k, "nothing"));
+            return;
+        }
+        int n = 0;
+        for (ActivatedAbility r : myInstantResponses(sim, myId)) {
+            if (n >= MAX_RESPONSES_PER_WINDOW) {
+                break;
+            }
+            Game b = branch(sim);
+            if (castMine(b, myId, r)) {
+                resolveStack(b);
+                out.add(projectedLeaf(b, myId, oppId,
+                        base + " | on the stack I cast " + r, k, "stack:" + r));
+                n++;
+            }
+        }
+        resolveStack(sim);
+        sim.checkStateAndTriggered();
+        resolveStack(sim);
+        n = 0;
+        for (ActivatedAbility r : myInstantResponses(sim, myId)) {
+            if (n >= MAX_RESPONSES_PER_WINDOW) {
+                break;
+            }
+            Game b = branch(sim);
+            if (castMine(b, myId, r)) {
+                resolveStack(b);
+                out.add(projectedLeaf(b, myId, oppId,
+                        base + " | after it resolves I cast " + r, k, "post:" + r));
+                n++;
+            }
+        }
+        out.add(projectedLeaf(sim, myId, oppId, base + " | I do nothing", k, "nothing"));
+    }
+
+    /** One candidate line played out on K reseated copies. */
+    private List<ScoredLeaf> rolloutLine(Game game, UUID myId, UUID oppId,
+                                         JsonObject line, String label) {
+        List<ScoredLeaf> out = new ArrayList<>();
+        List<String> main1 = strList(line, "main1");
+        List<String> main2 = strList(line, "main2");
+        String attack = line.has("attack") && line.get("attack").isJsonPrimitive()
+                ? line.get("attack").getAsString() : "attack_none";
+        for (int k = 0; k < Math.max(1, projectTurnK); k++) {
+            Game sim;
+            try {
+                sim = simCopy(game);
+            } catch (Exception e) {
+                continue;
+            }
+            boolean prev = searching;
+            searching = true;
+            try {
+                String miss1 = applySteps(sim, myId, main1);
+                attackOnCopy(sim, myId, oppId, attack);
+                sim.getTurn().setPhase(new PostCombatMainPhase());
+                sim.getPhase().setStep(new PostCombatMainStep());
+                sim.getState().setPriorityPlayerId(myId);
+                String miss2 = applySteps(sim, myId, main2);
+                String tag = label;
+                if (!miss1.isEmpty() || !miss2.isEmpty()) {
+                    tag += " | NOT available: " + miss1
+                            + (miss1.isEmpty() || miss2.isEmpty() ? "" : ", ") + miss2;
+                }
+                projectOpponentTurn(sim, myId, oppId, tag, k, out);
+            } catch (Exception e) {
+                projSamplesFailed++;
+                projLastFailure = String.valueOf(e);
+            } finally {
+                searching = prev;
+            }
+        }
+        return out;
+    }
+
+    /** The bridge answered a priority window with {"simulate": [lines]}:
+     *  roll each line out, have the pilot score the leaves, then re-ask the
+     *  same window with the chosen line so the bridge installs it. */
+    private JsonObject planSearch(Game game, JsonObject req, JsonObject resp) {
+        UUID myId = this.getId();
+        UUID oppId = null;
+        for (UUID pid : game.getOpponents(myId)) {
+            oppId = pid;
+        }
+        JsonArray lines = resp.getAsJsonArray("simulate");
+        List<String> labels = new ArrayList<>();
+        List<List<ScoredLeaf>> leaves = new ArrayList<>();
+        for (int i = 0; i < lines.size(); i++) {
+            JsonObject line = lines.get(i).isJsonObject()
+                    ? lines.get(i).getAsJsonObject() : new JsonObject();
+            String label = line.has("label") && line.get("label").isJsonPrimitive()
+                    ? line.get("label").getAsString() : "line " + i;
+            labels.add(label);
+            leaves.add(rolloutLine(game, myId, oppId, line, label));
+        }
+        double[] scores = askLeafScores(game, "plan", labels, leaves);
+        int best = scores == null ? 0 : argmaxProjected(labels.size(), leaves, scores);
+        traceLlmSearch("plan", labels, leaves, scores, best, game);
+        JsonObject again = req.deepCopy();
+        JsonObject chosen = new JsonObject();
+        chosen.addProperty("index", best);
+        chosen.addProperty("label", labels.get(best));
+        chosen.addProperty("scored", scores != null);
+        again.add("chosen_line", chosen);
+        return ask(again);
     }
 
     /** Rolled-out attack candidate: declare the set on a copy, resolve, keep

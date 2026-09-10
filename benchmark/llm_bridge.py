@@ -192,10 +192,13 @@ class TurnPlanner:
                      "put two stun counters")
     COUNTER_WORDS = ("counter target",)
 
-    def __init__(self, log, escalate, card_ref):
+    def __init__(self, log, escalate, card_ref, plan_search=False):
         self.log = log
         self.escalate = escalate
         self.card_ref = card_ref          # name -> {types, text}
+        self.plan_search = plan_search    # driver simulates candidate lines
+        self.candidates = None            # lines awaiting the driver's rollout
+        self.awaiting_sim = False
         self.plan = None
         self.plan_key = None              # (turn, active)
         self.done = set()
@@ -359,9 +362,22 @@ class TurnPlanner:
                 "event_vocabulary": EVENT_VOCAB, "action_vocabulary": ACTION_VOCAB}
         resp = self.escalate(preq)
         plan = (resp or {}).get("turn_plan") if isinstance(resp, dict) else None
+        self.candidates = None
+        self.awaiting_sim = False
         if isinstance(plan, dict):
             self.plan = plan
             self.stats["plans"] += 1
+            cands = plan.get("candidates")
+            if mine and isinstance(cands, list) and cands:
+                cands = [c for c in cands if isinstance(c, dict)]
+                if self.plan_search and len(cands) >= 2:
+                    # The driver rolls the lines out and re-asks this
+                    # window with the chosen one; until then no step runs.
+                    self.candidates = cands
+                    self.awaiting_sim = True
+                    self.plan["steps"] = []
+                elif cands:
+                    self._install_line(cands[0])
         self.snap = self._snapshot(request)
         b = (request.get("state") or {}).get("B") or {}
         self.snap["they_had_mana"] = any(
@@ -369,6 +385,28 @@ class TurnPlanner:
             for p in b.get("battlefield", []))
         self.log({"source": "llm", "request": preq, "response": resp,
                   "plan_stats": dict(self.stats)})
+
+    def _install_line(self, line):
+        """Make one candidate line the plan's steps and attack spec."""
+        steps = [{"phase": "main1", "action": a} for a in line.get("main1") or []]
+        steps += [{"phase": "main2", "action": a} for a in line.get("main2") or []]
+        self.plan["steps"] = steps
+        self.plan["attack"] = line.get("attack", self.plan.get("attack", "attack_none"))
+        self.plan["chosen_label"] = line.get("label")
+        self.done = set()
+        self.awaiting_sim = False
+
+    def _sim_request(self):
+        """What the driver needs to roll the candidate lines out."""
+        out = []
+        for i, c in enumerate(self.candidates or []):
+            out.append({"label": c.get("label") or f"line {i}",
+                        "main1": [str(a.get("action") if isinstance(a, dict) else a)
+                                  for a in c.get("main1") or []],
+                        "attack": str(c.get("attack", "attack_none")),
+                        "main2": [str(a.get("action") if isinstance(a, dict) else a)
+                                  for a in c.get("main2") or []]})
+        return out
 
     def adopt(self, resp, request):
         """A pilot reply to an escalation may carry a revised turn_plan."""
@@ -384,6 +422,19 @@ class TurnPlanner:
         if not self.plan:
             return None
         kind = request.get("kind")
+        if self.awaiting_sim:
+            if kind != "priority":
+                return None
+            chosen = request.get("chosen_line")
+            if isinstance(chosen, dict) and self.candidates:
+                idx = chosen.get("index")
+                idx = idx if isinstance(idx, int) and 0 <= idx < len(self.candidates) else 0
+                self._install_line(self.candidates[idx])
+                self.stats["plan_searches"] = self.stats.get("plan_searches", 0) + 1
+                # fall through: execute the first step of the chosen line now
+            else:
+                return ({"simulate": self._sim_request()},
+                        f"plan search: {len(self.candidates or [])} lines")
         events = self._events(request)
         for ev in events:
             rule = self._match_rule(ev)
@@ -684,7 +735,10 @@ def main():
     # menus; the bridge asks for a plan per turn and executes it.
     turn_plan_on = args.turn_plan or (
         "cardguru.turn_plan=true" in os.environ.get("CARDGURU_DRIVER_PROPS", ""))
-    planner = TurnPlanner(log, escalate, card_ref_all) if turn_plan_on else None
+    props = os.environ.get("CARDGURU_DRIVER_PROPS", "")
+    planner = TurnPlanner(log, escalate, card_ref_all,
+                          plan_search="cardguru.plan_search=false" not in props) \
+        if turn_plan_on else None
 
     def policy(request):
         kind = request.get("kind")
