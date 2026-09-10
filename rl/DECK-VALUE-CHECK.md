@@ -171,3 +171,68 @@ Same protocol, 500 games per pair, both seat orders. Pairs: `B2Mid` vs
 - Cannot move: nothing about the RL agent; the `B1Narrow` vs `B1Fast`
   level result; the heuristic's cast rule.
 - Decision rule as §3.4.
+
+### 7a. Result — run 2026-09-10, 500 games per pair, both seat orders
+
+| pair | A-seat wins/n | B-seat wins/n | pooled p(A wins) | Wilson 95 % |
+|---|---|---|---|---|
+| `B2Mid` (Reave Soul, power ≤ 3) vs `B0Base` | 120/250 | 119/250 | .478 (239/500) | [.435, .522] |
+| `B3Open` (Fell, any creature) vs `B0Base` | 109/250 | 129/250 | .476 (238/500) | [.433, .520] |
+| `B3Open` vs `B1Narrow` | 133/250 | 134/250 | .534 (267/500) | [.490, .577] |
+
+Artifacts: `rl/artifacts/deckvalue/` (run2 files). 2 min 50 s.
+
+**Verdict: the prediction failed in the direction that matters. Neither
+wider-condition deck clears .58; both sit below .50 against the vanilla
+twin, exactly where B1 sat.** Unconditional removal — Fell, destroy any
+creature for {1}{B} — is worth no more than a 2/2 body in scripted
+hands on this ladder. Wider removal does edge narrower removal
+(`B3Open` vs `B1Narrow` .534), but the interval includes .50.
+
+So, per the §7 pre-registration: **no black rung in the current ladder
+has spells with scripted win-rate value.** Across five pairs and 2,500
+games, every removal deck is ≤ .50 against the deck that replaces the
+removal with a vanilla 2/2.
+
+Why this is plausible rather than a bug, stated so it can be checked:
+
+- **Targeting is not the problem.** `HeuristicPlayer` delegates target
+  choice to XMage's `ComputerPlayer` (`HeuristicPlayer.java:491-510`
+  call `super`), which picks the opponent's best creature for a
+  detrimental effect. Fell does trade up when cast.
+- **Cast order is.** The heuristic casts the highest-MV affordable
+  creature first and a sorcery only if no creature is affordable
+  (header rule 3). With a 24-Swamp mono deck, removal is cast with
+  leftover mana, late, into whatever is there — and a removal card in
+  hand is a creature not drawn. In a vanilla mirror where both sides
+  field the same bodies, a 1-for-1 that costs a turn of board presence
+  is a wash at best.
+- **Consistency across five pairs** (.460, .470, .478, .476 vs the twin)
+  is the strongest evidence that this is the rung's property and not a
+  sampling accident: four independent 500-game samples of the same
+  sign.
+
+Lower-bound caveat as §3.2: a pilot that held Fell for the right moment
+might extract more. But the *training signal* is the win rate, and on
+every black rung it carries no information about the spell.
+
+### 7b. What has to change before any spell experiment is scored on win rate
+
+A rung whose spells matter has to be **designed**, not found in the
+current ladder. Constraints the five pairs impose:
+
+1. The spell must produce an advantage the *scripted* pilot realises,
+   or the check cannot certify it. Candidates: a two-for-one (a sweeper
+   that hits only small creatures while the deck's own creatures are
+   large; a creature with an on-cast removal trigger so it is never a
+   body-for-spell trade), or card advantage the heuristic banks
+   automatically (draw-two attached to a body).
+2. The vanilla twin must differ in exactly the four slots, as here.
+3. The check is .58 pooled over both seat orders at 500 games, decided
+   before the run, same as §3.4.
+4. `CombatMath` still scopes to vanilla bodies; a sweeper or a trigger is
+   fine, keywords are not.
+
+Until such a deck passes this check, timing and targeting experiments
+on the black branch are read through behaviour counters only, and any
+win-rate number quoted from them is void.
