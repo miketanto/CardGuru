@@ -219,9 +219,18 @@ windows the plan does not cover. Reply:
                   {"if": "otherwise", "then": "ask"}]},
      "why": "...", "plan": "..."}
 
+- Your own turn's plan is asked for AFTER your draw, at the first main
+  phase window; upkeep and draw windows run on your previous plan's rules.
 - `steps` run in order in the named phase (`main1`, `combat`, `main2`,
   `end`, `any`) whenever the action is on the menu; a step whose action is
   not on the menu when its phase arrives escalates to you.
+- `"hold": ["Enduring Curiosity", "Cut Down"]` names cards you are
+  deliberately NOT casting this turn. A castable spell on the menu in a
+  main phase that is neither a step nor held is escalated to you once, so
+  a card you drew after planning is never silently skipped.
+- In the default hybrid mode the engine still runs its attack and block
+  searches (one leaf_eval per combat) and your `attack`/`blocks` spec is
+  used only when the search is off.
 - `attack` / `blocks`: `attack_all`, `attack_none`, `attack <names>`,
   `no_block`, `block <blocker>-><attacker>; ...`, or `ask`.
 - `rules` fire on events the harness detects (the request lists the

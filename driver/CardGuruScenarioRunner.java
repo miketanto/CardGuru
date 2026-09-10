@@ -831,6 +831,11 @@ class InteractiveTestPlayer extends TestPlayer {
     /** Turn-plan mode: no per-window search; the bridge executes a plan
      *  the pilot wrote once per turn and asks only for uncovered windows. */
     private static final boolean turnPlanMode = Boolean.getBoolean("cardguru.turn_plan");
+    /** In turn-plan mode, keep the per-decision attack/block searches (one
+     *  leaf_eval per combat) — the first pure-plan game chose attack_none in
+     *  11 of 15 turns with nothing simulated behind it. Off = pure plan. */
+    private static final boolean planCombatSearch =
+            !"false".equals(System.getProperty("cardguru.plan_combat_search", "true"));
 
     /** Supertypes + card types, e.g. "[Legendary] [Planeswalker]".
      *
@@ -1377,7 +1382,8 @@ class InteractiveTestPlayer extends TestPlayer {
             minimaxSelectAttackers(game, defenderId, attackers);
             return;
         }
-        if (("llm".equals(minimaxMode) && !turnPlanMode) && !attackers.isEmpty()) {
+        if ("llm".equals(minimaxMode) && (!turnPlanMode || planCombatSearch)
+                && !attackers.isEmpty()) {
             llmSearchAttackers(game, defenderId, attackers);
             return;
         }
@@ -1426,7 +1432,8 @@ class InteractiveTestPlayer extends TestPlayer {
             super.selectBlockers(source, game, defendingPlayerId);
             return;
         }
-        if (("llm".equals(minimaxMode) && !turnPlanMode) && !blockers.isEmpty() && !attackers.isEmpty()) {
+        if ("llm".equals(minimaxMode) && (!turnPlanMode || planCombatSearch)
+                && !blockers.isEmpty() && !attackers.isEmpty()) {
             llmSearchBlockers(game, defendingPlayerId, blockers, attackers);
             return;
         }

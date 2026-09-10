@@ -201,6 +201,7 @@ class TurnPlanner:
         self.done = set()
         self.snap = None
         self.pending_target = None
+        self.asked_loose = set()          # (turn, phase, castables) asked once
         self.stats = {"plans": 0, "by_plan": 0, "escalated": 0,
                       "events_unhandled": 0}
 
@@ -336,6 +337,14 @@ class TurnPlanner:
         key = (request.get("turn"), request.get("active"))
         if key == self.plan_key:
             return
+        # My own turn's plan is written AFTER the draw: at the first window
+        # in precombat main or later. Upkeep and draw windows run on the
+        # previous (reactive) plan's rules — turn 9 of the first plan game
+        # planned "Swamp, Preacher" at upkeep, drew Deep-Cavern Bat, and
+        # passed postcombat with the Bat castable because no step named it.
+        if request.get("active") == "A" and PHASE_CLASS.get(
+                request.get("phase"), "main1") in ("upkeep", "draw"):
+            return
         self.plan_key = key
         self.plan = None
         self.done = set()
@@ -431,6 +440,30 @@ class TurnPlanner:
                 self.done.add(i)
                 self.pending_target = target
                 return {"choice": idx}, f"step {i}: {act}"
+            # No step left for this phase. If a spell or land is castable
+            # that the plan neither named nor listed under "hold", ask once:
+            # this is how a card drawn after planning gets a decision.
+            if phase in ("main1", "main2"):
+                held = [self._norm(h) for h in (self.plan.get("hold") or [])]
+                planned = [self._norm(s.get("action") or s.get("do") or "")
+                           for s in steps]
+                loose = []
+                for o in request.get("options") or []:
+                    t = self._norm(o.get("text"))
+                    if o.get("action") != "activate" or not (
+                            t.startswith("cast ") or t.startswith("play ")):
+                        continue
+                    name = t.split(" ", 1)[1]
+                    if any(h and h in name for h in held):
+                        continue
+                    if any(p and p.split(" ", 1)[-1] in name for p in planned):
+                        continue
+                    loose.append(name)
+                if loose:
+                    sig = (request.get("turn"), phase, tuple(sorted(loose)))
+                    if sig not in self.asked_loose:
+                        self.asked_loose.add(sig)
+                        return None
             return {"choice": 0}, "no pending step this phase"
         if kind == "attackers":
             r = self._attack_answer(request, self.plan.get("attack"))
