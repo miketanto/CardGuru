@@ -1,0 +1,41 @@
+{
+ "version": "card_emb_v4",
+ "cards_version": "cards_v1",
+ "cards_pin": "670429bf",
+ "n": 35478,
+ "d_c": 128,
+ "seed": 0,
+ "args": {
+  "out": "rl/artifacts/card_emb_v4",
+  "positives": "same",
+  "distill": 10.0,
+  "cards": "/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/cards_v1",
+  "text_model": "sentence-transformers/all-MiniLM-L6-v2",
+  "epochs": 30,
+  "batch": 256,
+  "lr_text": 3e-05,
+  "lr_head": 0.001,
+  "tau": 0.05,
+  "max_len": 128,
+  "seed": 0,
+  "limit": 0,
+  "device": "cuda",
+  "no_export": false
+ },
+ "final": {
+  "train": {
+   "r@1": 0.77392578125,
+   "r@10": 0.98876953125,
+   "loss": 0.8900519609451294,
+   "n": 4096
+  },
+  "heldout": {
+   "r@1": 0.7383918166160583,
+   "r@10": 0.9648923873901367,
+   "loss": 1.000188946723938,
+   "n": 3532
+  }
+ },
+ "split": "split.json",
+ "row_i_is": "cards_v1 face id i (index.json names -> id)"
+}

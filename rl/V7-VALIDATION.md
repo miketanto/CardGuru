@@ -224,3 +224,32 @@ stripping introduced in v3. One variable relative to v2. If v4 fails
 the swap gate on the same three pairs, the next lever is the text
 model (`paraphrase-mpnet-base-v2`), not the loss.
 
+## 1d — card embedder `card_emb_v4` — **FAIL** (Lane A, 2026-09-10 19:00)
+
+Seed 0, v2 recipe (`--positives same --distill 10`) + reminder text
+stripped. G1 pass (mv 0.949, power 0.967, toughness 0.962; all binary
+probes above threshold). Cancel/Counterspell 0.999. Snare/Spike rank 43,
+cos 0.841 (pass under both the rank-only gate and the old cosine bar).
+Functional reprints 10/10. **Swap pairs 12/16 within 500, median 73 —
+FAIL**, and worse than v2 (13/16, median 66). Stripping reminder text
+did not move the Elektra / Requiting Hex pairs; the text encoder is not
+the lever. Seed 1 stopped.
+
+What v1–v4 establish together: with a 68-column readout bag as the
+only structural channel, conditions (mana value ≤ 2, unless pays {1},
+ETB destroy) are carried by text alone, and a MiniLM text view cannot
+be both fine enough to separate Snare from Spike and robust enough to
+put Elektra next to Chupacabra. Next version changes the structural
+channel, not the loss and not the text model.
+
+**v5, stated before training:** the ability tree itself as the graph
+channel (`rl/cardemb/tree.py`, `TreeEncoder` in `model.py`): node
+tokens from kind / api / mode / keyword plus (param key, value-piece)
+pairs with numbers bucketed, edge-type attention bias, 2 layers, pooled
+to 128 and concatenated into the structure view next to the readout bag
+and the printed fields. Structure keys for the objective come from the
+canonical tree (31,881 distinct of 35,478 vs 26,324 with the bag; Snare
+and Spike now differ, Cancel and Counterspell still coincide). Loss and
+distillation as v2 (`--positives same --distill 10`), reminder text
+stripped as v3/v4. Same gates.
+
