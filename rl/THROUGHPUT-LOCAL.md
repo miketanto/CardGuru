@@ -545,3 +545,55 @@ Files: `artifacts/throughput/gates/probe_g2_*.txt`, `probe_g3_*.txt`,
 ### 11.2 Arms A–E (cuda)
 
 (filled in from the runs)
+
+### 11.3 Where a consult's server time goes (`rl/consult_cost.py`)
+
+Written after arms A–E had run and before arm F (below). One process,
+no sockets, no other threads: a realistic v6 consult (gdim 16, N entity
+rows × 48 floats, 8 edges, 10 candidates × 94 floats, 4-decimal JSON)
+timed stage by stage, medians of 200 reps. Milliseconds per consult.
+
+| device | entities | wire bytes | `json.loads` | `_entity_obs` + cands | forward B=1 | forward B=8 (per row) | sample + 3 syncs | single-thread total | Python share |
+|---|---|---|---|---|---|---|---|---|---|
+| cpu | 15 | 11.7 k | 0.10 | 0.27 | 2.88 | 13.48 (1.69) | 0.15 | 3.41 | 15 % |
+| cpu | 30 | 16.7 k | 0.14 | 0.41 | 2.86 | 15.31 (1.91) | 0.15 | 3.56 | 20 % |
+| cpu | 60 | 26.7 k | 0.23 | 0.69 | 2.90 | 15.10 (1.89) | 0.15 | 3.97 | 27 % |
+| cuda | 15 | 11.7 k | 0.10 | 0.56 | 2.47 | 2.38 (0.30) | 0.79 | 3.92 | 37 % |
+| cuda | 30 | 16.7 k | 0.14 | 0.70 | 2.48 | **2.39 (0.30)** | 0.81 | 4.14 | 40 % |
+| cuda | 60 | 26.7 k | 0.23 | 0.95 | 2.51 | 2.41 (0.30) | 0.82 | 4.51 | 44 % |
+| cuda | 30 | 16.7 k | | | 2.47 | B=4: 2.38 (0.59); B=12: 2.45 (0.20) | | | |
+
+Three facts, and what they say about arms A–E:
+
+1. **On cuda the batched forward is flat in B** — 2.4 ms whether B is
+   1, 4, 8 or 12 (0.2–0.3 ms per row). The batcher does exactly what
+   §2a of the plan said it would to the GPU work. On cpu it is linear
+   in B (1.7–1.9 ms per row), as §7 predicted.
+2. **The lane saw 7.3 / 13.9 / 11.4 ms per batch** (`forward_ms_mean`,
+   arms B / C / D) for the *same* forward that costs 2.4 ms alone. The
+   batcher thread is timing CPU-side launch work, and it gets a fraction
+   of one core: eight handler threads are parsing JSON, running the
+   per-row Python loop in `_entity_obs` (0.6–1.0 ms on cuda, dominated
+   by 96 small `torch.tensor(row)` assignments and the host→device
+   copy), and paying three device syncs each in `act()`
+   (`int(dist.sample())`, `float(log_prob)`, `float(value[0])`,
+   0.8 ms). All of that holds the GIL; the forward's ~150 kernel
+   launches need it too.
+3. **Every arm's play phase sits at 147–213 consults/s** — the same
+   ceiling as the three CPU arms (213–220, §5) and the §7 cuda arm
+   (190). A single Python thread doing json + obs + forward + sample
+   serially would cap at 1/4.1 ms ≈ 240/s; the server, with the GIL
+   handed among nine threads at Python's default 5 ms switch interval,
+   lands under that. **The play phase is GIL-bound, not forward-bound**,
+   which is why batching the forward moved nothing (§11.2).
+
+Pre-registration for arm F, written before it ran: conc8, cuda,
+`--batch-max 8`, `RL_SWITCH_INTERVAL=0.0005` (opt-in env in
+`policy_server.py`; unset = unchanged). It cannot change any behaviour
+counter at eval (it changes when threads are preempted, not what they
+compute) and cannot change the update. If the GIL switch latency is
+part of the ceiling, `forward_ms_mean` falls toward 2.4 ms and play
+consults/s rises above 213; if the per-consult Python *work* is the
+ceiling, both stay flat and the fix is the work itself (a single
+`torch.tensor(ents)` instead of the row loop; one `.cpu()` of a
+3-element tensor instead of three syncs; a binary wire instead of JSON).

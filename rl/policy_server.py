@@ -1570,6 +1570,13 @@ if __name__ == "__main__":
     # oversubscribed; measured held-time per consult rose 3.40 -> 5.75 ms
     # from conc1 to conc4. Configurable so the trade can be measured.
     torch.set_num_threads(int(os.environ.get("RL_TORCH_THREADS", "2")))
+    if os.environ.get("RL_SWITCH_INTERVAL"):
+        # THROUGHPUT-LOCAL.md §11.3: the play phase is bounded by the GIL,
+        # and Python's default 5 ms switch interval is the latency a
+        # parked thread pays to get it back. Opt-in; unset = unchanged.
+        import sys
+        sys.setswitchinterval(float(os.environ["RL_SWITCH_INTERVAL"]))
+        print(f"switch_interval={sys.getswitchinterval()}", flush=True)
     _t = Trainer(args.ckpt, args.seed, args.log,
                  args.sdim, args.cdim,
                  args.shape, args.phi_scale, args.arch,
