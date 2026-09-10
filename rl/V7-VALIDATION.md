@@ -36,3 +36,14 @@ Channel dims: text = string (type line + bucketed oracle), printed = 83
 floats (`PRINTED_DIM`), graph = 68 floats (`rl/e2_extract.py`).
 Test: `python -m pytest tests/test_cardemb_data.py` (5 passed, 5 s).
 
+## 2a — deck context `rl/deckctx/model.py` (Lane A, 2026-09-10)
+
+| gate | required | measured | result |
+|---|---|---|---|
+| permutation equivariance of c'ᵢ and invariance of D | ≤ 1e-6 | max abs diff 0 to 1e-12 (float64, `tests/test_deckctx.py`) | pass |
+| copy-count sensitivity | > 0 | changing one card's copies moves its c'ᵢ and D; the other deck in the batch unchanged | pass |
+| relation bias used | outputs change when the enabler→payoff bias is zeroed | > 0 | pass |
+| identity init (2b fallback) | c'ᵢ == e_card exactly | max abs diff 0 | pass |
+
+Untrained module; no number here is a result about decks. 2b/2c follow the 0c go/no-go.
+
