@@ -1,0 +1,1 @@
+policy server on :7999 device=cuda

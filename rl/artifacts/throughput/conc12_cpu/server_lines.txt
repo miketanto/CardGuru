@@ -1,0 +1,78 @@
+policy server on :7992 (threads=12) device=cpu
+conn: mode=eval episodes=4
+conn: mode=eval episodes=4
+conn: mode=eval episodes=4
+policy server on :7992 (threads=12) device=cpu
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+TRAIN|update=1 episodes=32 batch_eps=32 steps=1260 batch_win_rate=0.031 mean_abs_phi=0.000 value_ev=0.0839 oracle_cover=0.000 critic_ev=nan update_s=31.41
+RLLOCK|calls=2000|wait_s=440.2|held_s=9.5|wait_per_call_ms=220.09|held_per_call_ms=4.75|wait_share=97.9%
+TRAIN|update=2 episodes=64 batch_eps=32 steps=1860 batch_win_rate=0.094 mean_abs_phi=0.000 value_ev=0.0538 oracle_cover=0.000 critic_ev=nan update_s=46.33
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+RLLOCK|calls=4000|wait_s=524.8|held_s=18.7|wait_per_call_ms=131.20|held_per_call_ms=4.67|wait_share=96.6%
+TRAIN|update=3 episodes=96 batch_eps=32 steps=1589 batch_win_rate=0.031 mean_abs_phi=0.000 value_ev=0.1652 oracle_cover=0.000 critic_ev=nan update_s=38.07
+RLLOCK|calls=6000|wait_s=1036.2|held_s=27.8|wait_per_call_ms=172.70|held_per_call_ms=4.63|wait_share=97.4%
+TRAIN|update=4 episodes=128 batch_eps=32 steps=2411 batch_win_rate=0.094 mean_abs_phi=0.000 value_ev=0.2101 oracle_cover=0.000 critic_ev=nan update_s=59.91
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+RLLOCK|calls=8000|wait_s=1121.5|held_s=36.7|wait_per_call_ms=140.19|held_per_call_ms=4.59|wait_share=96.8%
+RLLOCK|calls=10000|wait_s=1213.3|held_s=45.6|wait_per_call_ms=121.33|held_per_call_ms=4.56|wait_share=96.4%
+TRAIN|update=5 episodes=160 batch_eps=32 steps=2237 batch_win_rate=0.000 mean_abs_phi=0.000 value_ev=-2.2063 oracle_cover=0.000 critic_ev=nan update_s=53.22
+RLLOCK|calls=12000|wait_s=1891.2|held_s=54.7|wait_per_call_ms=157.60|held_per_call_ms=4.56|wait_share=97.2%
+TRAIN|update=6 episodes=192 batch_eps=32 steps=2836 batch_win_rate=0.062 mean_abs_phi=0.000 value_ev=0.1486 oracle_cover=0.000 critic_ev=nan update_s=69.18
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+RLLOCK|calls=14000|wait_s=1979.2|held_s=63.7|wait_per_call_ms=141.37|held_per_call_ms=4.55|wait_share=96.9%
+TRAIN|update=7 episodes=224 batch_eps=32 steps=3026 batch_win_rate=0.031 mean_abs_phi=0.000 value_ev=0.0617 oracle_cover=0.000 critic_ev=nan update_s=73.83
+RLLOCK|calls=16000|wait_s=2885.2|held_s=72.8|wait_per_call_ms=180.32|held_per_call_ms=4.55|wait_share=97.5%
+RLLOCK|calls=18000|wait_s=2979.7|held_s=81.9|wait_per_call_ms=165.54|held_per_call_ms=4.55|wait_share=97.3%
+TRAIN|update=8 episodes=256 batch_eps=32 steps=3855 batch_win_rate=0.156 mean_abs_phi=0.000 value_ev=0.0542 oracle_cover=0.000 critic_ev=nan update_s=94.28
+policy server on :7992 (threads=12) device=cpu
+conn: mode=eval episodes=4
+conn: mode=eval episodes=4
+conn: mode=eval episodes=4
+policy server on :7992 (threads=12) device=cpu
+conn: mode=eval episodes=4
+conn: mode=eval episodes=4
+conn: mode=eval episodes=4

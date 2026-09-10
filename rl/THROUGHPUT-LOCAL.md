@@ -84,16 +84,37 @@ batteries included). Single run each, seed 0.
 
 | arm | eps/s | window s | update s mean (max) | update share of window | lock wait share | wait / held per consult | peak used / JVM / server MB |
 |---|---|---|---|---|---|---|---|
-| conc4 cpu | 0.535 | 419 | 48.6 (64.6) | 92.9 % | 90.6 % (16 000 consults) | 43.1 / 4.47 ms | 8004 / 2099 / 5970 |
-| conc8 cpu | 0.419 | 534 | 60.2 (98.0) | 90.1 % | 95.9 % (18 000 consults) | 107.9 / 4.57 ms | 9822 / 2169 / 7850 |
+| conc4 cpu | 0.535 | 419 | 48.6 (64.6) | 84.2 % | 90.6 % (16 000 consults) | 43.1 / 4.47 ms | 8004 / 2099 / 5970 |
+| conc8 cpu | 0.419 | 534 | 60.2 (98.0) | 83.7 % | 95.9 % (18 000 consults) | 107.9 / 4.57 ms | 9822 / 2169 / 7850 |
+| conc12 cpu | 0.433 | 517 | 58.3 (94.3) | 84.1 % | 97.3 % (18 000 consults) | 165.5 / 4.55 ms | 9973 / 2139 / 8048 |
+
+(Update share is Σupdate over rows 2–8 divided by the window, the same
+rows the rate uses; an earlier draft of this table quoted 92.9 % for
+conc4 by summing all 8 rows over the 7-row window.)
 
 Decomposed (rows 2–8: update seconds from col 9, consults from col 4,
 play time = window − Σupdate):
 
 | arm | Σ consults stored | update ms per consult | play s | consults/s during play | play-only eps/s |
 |---|---|---|---|---|---|
-| conc4 cpu | 14 569 | 24.7 | 66 | 221 | 3.4 |
-| conc8 cpu | 18 493 | 24.3 | 87 | 213 | 2.6 |
+| conc4 cpu | 14 569 | 24.3 | 66 | 220 | 3.4 |
+| conc8 cpu | 18 493 | 24.2 | 86 | 213 | 2.6 |
+| conc12 cpu | 17 814 | 24.4 | 82 | 217 | 2.7 |
+
+**conc12 outcome against the registered prediction:** play-phase
+consults/s 217 (predicted ≈ 220 — confirmed); eps/s 0.433 (predicted
+≤ 0.42 — 3 % over, inside what episode length alone moves between
+runs); peak memory 9.97 GB (predicted ≥ 10.5 GB — **wrong**: server
+RSS grew 200 MB from conc8 to conc12, so the per-session pending
+buffers are not the RSS driver; the stacked PPO batch and allocator
+retention are). No OOM, no swap. `conn: mode=train` = 48 = 12 × 4.
+
+**Step-2 verdict.** conc4 is the best CPU arm (0.535 eps/s). conc8 and
+conc12 are regressions of 22 % and 19 %, not flat. Three arms agree on
+two invariants — 24.3 ± 0.1 ms of update per stored consult, and
+213–220 consults/s of play — so the wall clock is (a) a single-threaded
+PPO update taking 84 % of the window and (b) a play phase pinned at the
+serialized inference rate. More game threads cannot move either.
 
 **conc8 is a regression in eps/s (−22 %), and the decomposition says
 why it is not noise in the update:** the update costs the same 24 ms
@@ -171,7 +192,33 @@ made so that the numbers in this doc are from an unmodified check.
 
 ### Gate (b): eval equivalence cpu vs cuda
 
-(filled in below)
+Fixed checkpoint `/tmp/rl_eq/init.pt` (the conc4 arm's init net,
+md5 `2211cf4adde3…`, unchanged after every run — eval must not write
+it), `--threads 1`, sequential driver, `-Drl.mode=eval`, seed 123456,
+20 games vs D0 on B0Base, same persistent v6 JVM. Three runs: cpu, cpu
+again, cuda. Files: `artifacts/throughput/gates/eq_probe_*.txt`.
+
+| comparison | keys differing in `RL\|summary` |
+|---|---|
+| cpu vs cpu (determinism) | `entityConsults` only (19 960 vs 20 338) |
+| cpu vs cuda | `entityConsults` only (19 960 vs 20 716) |
+
+Every behaviour counter and rate — `wins/losses/draws`, `win_rate`,
+`turns_per_ep`, `agent_consults_per_ep`, `agent_actions_per_ep`, all
+`block*` and `attack*` counters — is **identical** on cpu and cuda.
+The one differing key is explained, not waved away: `entityConsults`
+is `StateEncoder.entityConsults`, a **static** field of the persistent
+driver JVM, so it is cumulative over the JVM's lifetime; it rose by 378
+per 20-game probe in launch order (cpu → cpu2 → cuda) and differs
+between the two cpu runs by the same step. It is not a per-probe
+behaviour count. Gate (b) passes: no argmax flipped in 20 games ×
+~19 consults.
+
+Timing seen in passing (not a gate): the probe ran at 5.96 / 5.99
+games/s with the server on cpu and 4.99 games/s on cuda. Batch-1
+inference is slower on the GPU (kernel-launch bound), which
+pre-registers a prediction for step 4: the cuda arm's play phase will
+be no faster than cpu, and any gain must come from the update.
 
 ## 7. Step 4 — best CPU arm on cuda
 
