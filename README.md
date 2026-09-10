@@ -12,8 +12,9 @@ process-failure ledger. The PokeChamp-style LLM-pilot research lives on
 `docs/learnings.md` and `pokechamp-mtg-agent-research-brief.md`). One known gap on
 `main`: the E3 text-embedding channel's Java gate (`-Drl.e3`) was not ported into the
 v6 encoder because the two disagree on the state layout; its scripts, features and
-verdict (`rl/PHASE-E3.md`) are here, and the Java side remains on
-`claude/cardguru-e3-features-topn0q`.
+verdict (`rl/PHASE-E3.md`) are here; the Java side is recoverable from the tip commit
+recorded in [docs/branch-archive.md](docs/branch-archive.md). All pre-consolidation
+branches were deleted after merging; that file lists every tip.
 
 Feasibility investigation, 2026-08-06. **Both core premises verified with running code; no
 kill criteria fired.**
