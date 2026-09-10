@@ -1,0 +1,10 @@
+
+=== mirror game 1 — pilot on the play, seed 23 ===
+game 1: WIN in 59.0 min (29 turns)
+  decisions: {'llm': 206, 'auto': 66, 'yield': 108, 'result': 1} | searches: {'attackers': 9, 'blockers': 7, 'priority': 124}
+
+=== session ===
+  g1 (play): WIN  59 min
+
+standing mirror record: 1W-0L (100%)   [50% is the null — same deck both sides]
+replays + reviews in /home/user/sw/research/data/suite/opus5_s23/

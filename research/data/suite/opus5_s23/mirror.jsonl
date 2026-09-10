@@ -1,0 +1,1 @@
+{"game": 1, "start": "A", "seed": 23, "search": "llm", "model": "claude-opus-5", "driver_props": "cardguru.project_turn=3 cardguru.respond=true", "result": {"status": "completed", "winner": "A", "turns": 29}, "wall_s": 3538.0, "sources": {"llm": 206, "auto": 66, "yield": 108, "result": 1}, "searches": {"attackers": 9, "blockers": 7, "priority": 124}, "ts": 1789034685.1}
