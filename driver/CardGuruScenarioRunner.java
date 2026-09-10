@@ -826,8 +826,18 @@ class InteractiveTestPlayer extends TestPlayer {
         // cast X" without a search leaf. Leaves already carry the same.
         JsonArray stack = new JsonArray();
         for (mage.game.stack.StackObject so : game.getStack()) {
+            // Card types ride along: a spell cast from their hand has never
+            // been in card_reference, and the planner's "they_cast:creature"
+            // rule needs to classify it without a lookup.
+            String types = "";
+            try {
+                types = " [" + String.join(" ", so.getCardType(game).stream()
+                        .map(Object::toString).toArray(String[]::new)) + "]";
+            } catch (RuntimeException ignored) {
+                // triggered abilities and the like: no card type, no tag
+            }
             stack.add(so.getName() + " (" + (so.getControllerId().equals(this.getId())
-                    ? "ours" : "theirs") + ")");
+                    ? "ours" : "theirs") + ")" + types);
         }
         req.add("stack", stack);
         return req;

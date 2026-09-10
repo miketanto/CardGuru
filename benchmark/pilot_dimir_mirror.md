@@ -259,6 +259,13 @@ windows the plan does not cover. Reply:
   prompt with it.
 - When a window is escalated, the request carries your `turn_plan`; you
   may return a revised `"turn_plan"` alongside the answer.
+- **A hold is a promise to react.** If your own-turn plan held an instant
+  or a flash creature, the request for their turn lists it under
+  `held_cards`, and your reactive plan must contain a rule that uses it
+  (`they_cast:creature -> cast Floodpits Drowner @ it`, `they_cast:any ->
+  ask`, ...). "otherwise -> pass" alone with a held Drowner is rejected
+  and re-asked: it is how the first plan-search game let Faerie
+  Mastermind resolve into three open mana.
 
 ## Yielding (use SPARINGLY — you are the control deck)
 

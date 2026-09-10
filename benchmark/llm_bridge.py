@@ -205,6 +205,7 @@ class TurnPlanner:
         self.snap = None
         self.pending_target = None
         self.asked_loose = set()          # (turn, phase, castables) asked once
+        self.stack_types = {}             # spell name -> card type tag from the stack
         self.stats = {"plans": 0, "by_plan": 0, "escalated": 0,
                       "events_unhandled": 0}
 
@@ -238,6 +239,10 @@ class TurnPlanner:
         ref = self.card_ref.get(name) or {}
         text = self._norm(ref.get("text", ""))
         types = self._norm(ref.get("types", ""))
+        if not types:
+            # Cast from their hand: never in card_reference. The driver tags
+            # stack entries "Name (theirs) [CREATURE]"; use that.
+            types = self._norm(self.stack_types.get(name, ""))
         if "creature" in types:
             return "creature"
         if any(w in text for w in self.COUNTER_WORDS):
@@ -257,6 +262,8 @@ class TurnPlanner:
         for s in stack:
             if s not in self.snap["stack_seen"]:
                 name = s.split(" (")[0]
+                if "[" in s and s.endswith("]"):
+                    self.stack_types[name] = s[s.rfind("[") + 1:-1]
                 ev.append(("they_cast", name))
         mine = [c["name"] for c in self._creatures(a)]
         for n in self.snap["my_creatures"]:
@@ -357,10 +364,25 @@ class TurnPlanner:
                 request.get("phase"), "main1") in ("upkeep", "draw"):
             return
         self.plan_key = key
+        prev = self.plan or {}
         self.plan = None
         self.done = set()
         self.pending_target = None
         mine = request.get("active") == "A"
+        # What I chose to keep on my own turn, carried into the reactive
+        # plan for theirs: in the first plan-search game the pilot held
+        # Drowner twice, then wrote "otherwise -> pass" for their turn and
+        # let Mastermind resolve into three open mana. A held instant-speed
+        # card without a rule that uses it is a wasted hold.
+        held = []
+        if not mine:
+            for h in prev.get("hold") or []:
+                if isinstance(h, str):
+                    ref = self.card_ref.get(h) or {}
+                    txt = self._norm(ref.get("text", "")) + " " + self._norm(ref.get("types", ""))
+                    if "flash" in txt or "instant" in txt:
+                        held.append(h)
+            held = sorted(set(held))
         preq = {"kind": "turn_plan", "turn": request.get("turn"),
                 "phase": request.get("phase"), "active": request.get("active"),
                 "whose_turn": "mine" if mine else "theirs",
@@ -368,6 +390,7 @@ class TurnPlanner:
                 "state": request.get("state"), "stack": request.get("stack"),
                 "menu_now": request.get("options"),
                 "plan_search": bool(self.plan_search and mine),
+                "held_cards": held,
                 "event_vocabulary": EVENT_VOCAB, "action_vocabulary": ACTION_VOCAB}
         resp = self.escalate(preq)
         plan = (resp or {}).get("turn_plan") if isinstance(resp, dict) else None
@@ -459,6 +482,11 @@ class TurnPlanner:
                 idx, target = self._find_option(request, then)
                 if idx is None:
                     return None
+                # "@ it" / "@ that" in a they_cast rule means the spell (or
+                # the creature it becomes) that fired the rule.
+                if target in ("it", "that", "them") and ev[0] in (
+                        "they_cast", "enemy_creature_gained"):
+                    target = ev[1]
                 self.pending_target = target
                 return {"choice": idx}, f"rule {rule.get('if')} -> {then}"
             if kind == "attackers":

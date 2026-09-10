@@ -217,6 +217,23 @@ def main():
                            'each {"label", "main1": [..], "attack", "main2": [..]}, '
                            'that differ in what is committed vs held — the '
                            'engine simulates them and you score once')
+            elif (kind == "turn_plan" and request.get("held_cards")
+                  and isinstance(resp.get("turn_plan"), dict)
+                  and not any(
+                      isinstance(r, dict)
+                      and str(r.get("if", "")).lower().startswith(
+                          ("they_cast", "enemy_creature_gained", "they_block",
+                           "no_block", "life_below"))
+                      and str(r.get("then", "")).lower() not in ("pass", "")
+                      for r in resp["turn_plan"].get("rules") or [])):
+                # A hold without a rule that uses the held card is a wasted
+                # hold: the first plan-search game held Drowner twice and
+                # then wrote "otherwise -> pass" for their turn.
+                missing = ('a reactive rule for the cards you are holding '
+                           f'({", ".join(request["held_cards"])}): e.g. '
+                           '{"if": "they_cast:creature", "then": "cast <card> @ it"} '
+                           'or {"if": "they_cast:any", "then": "ask"}; '
+                           '"otherwise -> pass" alone throws the hold away')
             elif (kind == "leaf_eval" and isinstance(request.get("leaf_count"), int)
                   and (not isinstance(resp.get("scores"), list)
                        or len(resp["scores"]) < request["leaf_count"])):
