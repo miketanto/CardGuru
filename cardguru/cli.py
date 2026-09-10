@@ -536,6 +536,63 @@ def cmd_stats(args):
     }, indent=1))
 
 
+def cmd_metagame(args):
+    from .answers import load_token_scripts
+    from .metagame import analyze_meta, greedy_sideboard, load_snapshot, rank_answers
+
+    snap = load_snapshot(args.meta)
+    idx = SearchIndex.load(args.dataset)
+    by_name = {}
+    for r in idx.records:
+        by_name.setdefault(r.get("name"), r)
+
+    colors = set(args.colors.upper()) if args.colors else None
+    win = snap.get("window") or {}
+    print(f"# metagame: {snap.get('format')} {win.get('start')}..{win.get('end')} "
+          f"| {len(snap['archetypes'])} archetypes | your colors: "
+          f"{args.colors or 'any'}")
+
+    def progress(name, share):
+        print(f"  analyzing {name} ({share * 100:.2f}%)...", file=sys.stderr)
+
+    analysis = analyze_meta(idx, by_name, snap, colors,
+                            token_scripts=load_token_scripts(),
+                            top_threats=args.top_threats, progress=progress,
+                            played_only=not args.any_card)
+
+    print(f"\n== the field ({analysis['covered_share'] * 100:.1f}% of decks "
+          f"in the window)")
+    for a in analysis["archetypes"]:
+        print(f"  {a['meta_share'] * 100:5.2f}%  {a['archetype']:<14} "
+              f"gameplan={a['gameplan'] or '-':<12} "
+              f"threats: {', '.join(a['key_threats'][:3])}")
+
+    print(f"\n== best single answers (by share of the field they answer)")
+    for r in rank_answers(analysis, limit=args.limit,
+                          on_board_only=args.on_board):
+        tag = " [stack-only]" if r.get("stack_only") else ""
+        print(f"  {r['weighted_coverage'] * 100:5.1f}%  {r['card']:<32} "
+              f"played {r.get('play_share', 0) * 100:4.1f}%  "
+              f"{'/'.join(r.get('classes', []))[:34]}{tag}")
+
+    print(f"\n== greedy {args.slots}-slot sideboard (marginal gain in field share)")
+    for i, pick in enumerate(greedy_sideboard(analysis, slots=args.slots,
+                                              on_board_only=args.on_board), 1):
+        print(f"  {i:2}. {pick['card']:<34} +{pick['marginal_gain'] * 100:4.1f}%  "
+              f"(cumulative {pick['cumulative_coverage'] * 100:.1f}% of threat mass)")
+        for arch, threat in pick["covers"][:3]:
+            print(f"        vs {arch}: {threat}")
+
+    if args.json:
+        with open(args.json, "w", encoding="utf-8") as fh:
+            json.dump({"analysis": analysis,
+                       "ranked": rank_answers(analysis, limit=args.limit),
+                       "sideboard": greedy_sideboard(analysis, slots=args.slots,
+                                                     on_board_only=args.on_board)},
+                      fh, indent=1, sort_keys=True)
+        print(f"\nwrote {args.json}")
+
+
 def main(argv=None):
     p = argparse.ArgumentParser(prog="cardguru")
     sub = p.add_subparsers(dest="cmd", required=True)
@@ -652,6 +709,23 @@ def main(argv=None):
     st = sub.add_parser("stats", help="dataset statistics")
     st.add_argument("--dataset", default=DEFAULT_DATASET)
     st.set_defaults(fn=cmd_stats)
+
+    mg = sub.add_parser("metagame",
+                        help="sideboard plan against a MetaSurf metagame snapshot")
+    mg.add_argument("--meta", required=True, help="metagame snapshot JSON")
+    mg.add_argument("--dataset", default=DEFAULT_DATASET)
+    mg.add_argument("--colors", help="your colors, e.g. WU")
+    mg.add_argument("--top-threats", type=int, default=5)
+    mg.add_argument("--slots", type=int, default=15)
+    mg.add_argument("--limit", type=int, default=25)
+    mg.add_argument("--json", help="also write the full analysis here")
+    mg.add_argument("--on-board", action="store_true",
+                    help="exclude answers that only work on the stack "
+                         "(counterspells), which saturate the coverage metric")
+    mg.add_argument("--any-card", action="store_true",
+                    help="do not restrict to cards actually played in the format "
+                         "(mechanical-only ranking; noisy by design)")
+    mg.set_defaults(fn=cmd_metagame)
 
     args = p.parse_args(argv)
     args.fn(args)

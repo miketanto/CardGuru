@@ -113,9 +113,17 @@ badge: ⚡ *Engine-verified* on any verdict backed by a corpus scenario; one cli
 game state. No other tool can do this — a sideboard guide where the advice has been *played
 out by a rules engine*.
 
-Meta-deck mode (needs external data: meta decklists from MTGGoldfish/Melee — network-gated):
-aggregate the answer matrix across a deck's key threats, weight by meta share, output "best
-15-slot coverage" suggestions.
+**Meta-deck mode — BUILT (2026-08-23), no longer network-gated.** MetaSurf exports a
+metagame snapshot (archetype shares + a centroid-representative decklist per archetype +
+a card play-rate prior) and `cardguru metagame` aggregates the answer matrix across the
+field, weighted by meta share, with a greedy N-slot sideboard. See docs/metagame-mode.md.
+
+Measured on Modern 2025-05-01..2025-06-09 (12 archetypes, 81.2% of the field): the top WU
+on-board answers come out as Static Prison, Into the Flood Maw, Portable Hole, Leyline
+Binding — real sideboard cards, not mechanical noise. **Two stated limitations:** the
+coverage metric *saturates* (a counterspell answers every threat, so catch-alls tie at the
+maximum and play rate carries the ordering), and the play-rate prior is doing the
+card-quality work the mechanical layer cannot — mechanics filter, popularity ranks.
 
 *Status: answer engine + verdict logic + engine verification built and demonstrated. Known
 gaps (be honest in-product): ward is flagged but not cost-evaluated; edicts are conditional
