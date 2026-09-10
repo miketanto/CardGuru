@@ -143,6 +143,13 @@ applies to any claim about win rate.
   and each game commits and pushes on completion.
 - Keepalive: in-session heartbeat every 10 min plus a server-side hourly
   Routine that restarts the queue from `suite.jsonl` if the runner dies.
+- First clean calls (05:25): both haiku games on their own session ids,
+  contexts 22k–45k tokens. Residual per-decision time is **thinking
+  output**, not context: 1.5k–5k output tokens per decision at haiku's
+  ~100 tok/s = 15–56 s. The pilot inherits `CLAUDE_EFFORT=high` and
+  `MAX_THINKING_TOKENS=31999` from the launching environment. Left as-is
+  for the suite so effort is not a confound across models; it is the one
+  knob if games need to be faster.
 
 ## Exit
 
