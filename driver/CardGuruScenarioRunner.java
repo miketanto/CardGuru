@@ -2371,8 +2371,28 @@ class InteractiveTestPlayer extends TestPlayer {
             }
             k.add(n, summary.get(n));
         }
-        String prefix = summary.has("sample") ? "P|" : "S|" + game.getTurnStepType() + "|";
+        // Unprojected leaves are keyed on the combat BUCKET, not the exact
+        // step: a board seen at upkeep, draw and precombat main is the same
+        // state (combat still to come); keying on the step gave 3 hits in a
+        // whole game where the measurement had promised a third of leaves.
+        String prefix = summary.has("sample") ? "P|" : "S|" + combatBucket(game) + "|";
         return prefix + k;
+    }
+
+    private static String combatBucket(Game game) {
+        PhaseStep s = game.getTurnStepType();
+        if (s == null) {
+            return "?";
+        }
+        switch (s) {
+            case UNTAP: case UPKEEP: case DRAW: case PRECOMBAT_MAIN: case BEGIN_COMBAT:
+                return "pre";
+            case DECLARE_ATTACKERS: case DECLARE_BLOCKERS: case FIRST_COMBAT_DAMAGE:
+            case COMBAT_DAMAGE: case END_COMBAT:
+                return "combat";
+            default:
+                return "post";
+        }
     }
 
     private static double meanOf(List<Double> xs) {

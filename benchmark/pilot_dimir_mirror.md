@@ -189,6 +189,8 @@ optional. Neither replaces the required field for the decision's kind.
   their open mana threatens. The engine takes each candidate's WORST leaf
   and picks the best candidate — so score honestly, do not optimize the
   menu.
+  Keep `why` to two sentences: the scores carry the judgment, and a
+  leaf_eval is not the place to re-derive the whole game.
   Identical resulting positions are listed once (`duplicate_leaves_collapsed`
   tells you how many were folded). A leaf may carry `prior_score`: the
   number you gave that exact position earlier this turn. Treat it as your
