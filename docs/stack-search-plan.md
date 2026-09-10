@@ -338,6 +338,23 @@ failure; "I tapped out and they resolved a bomb" was.
   fixed arm (f) runs on seed 31 immediately after it for a same-deal
   (e)-vs-(f) comparison (mulligan choice may still diverge the library).
 
+  **g10 (seed 31, priority fix in): still `resp_fired=0`, 45 copies, and
+  this time it is not a bug.** At the 11 my-turn priority windows the
+  opponent held **0 untapped lands at nine of them and 1 at the other
+  two**; 0 at the one block window. MAD taps out on its own turn every
+  time, so no sampled hand can respond regardless of what it holds. The
+  gates in `PlayerImpl.getPlayable` (`shouldSkipGettingPlayable`) only
+  skip the silent steps; the code path is clean. **Arm (f) is inert
+  against MAD by construction.** It can only fire — and only matters —
+  against an opponent that holds up interaction, i.e. the pilot-vs-pilot
+  games in `docs/overnight-suite-plan.md` items 5–8. Against MAD, (f) ≡
+  (e), so the suite keeps `respond=true` for all twelve games (one
+  config; harmless where inert) and (f)'s validation is deferred to the
+  first LLM-vs-LLM game. Corollary worth keeping: MAD never punishes a
+  tap-out with a counter, so "hold mana" is worth less against MAD than
+  against a human, and the (d)→(e) tap-out reduction is a smaller edge in
+  this matchup than it would be in a real mirror.
+
 - **Gap found while reviewing blocks (all games):** neither the pilot nor
   the block search ever considers that an unblocked attacker can become
   Kaito via ninjutsu. 20 block decisions across g5–g8, zero mentions;
