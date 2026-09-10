@@ -4875,7 +4875,8 @@ final class SubMenu {
                 if (p.length() > 30) {
                     p = p.substring(0, 29) + "\u2026";
                 }
-                return p + ": " + (ks.contains("yes") ? "yes" : "no");
+                // answer first: a truncated tree label still says yes or no
+                return (ks.contains("yes") ? "yes" : "no") + " \u2014 " + p;
             }
             case "x":
                 return ks.isEmpty() ? "X" : ks.get(0).replace("x=", "X=");

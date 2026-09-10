@@ -343,7 +343,7 @@ function layoutTree(nodesIn, tree) {
   const fixed = [], label = [];
   for (let d = 0; d <= maxDepth; d++) {
     const col = nodes.filter((n) => n.depth === d);
-    label[d] = Math.min(44, Math.max(...col.map((n) => n.label.length))) * CH + 3;
+    label[d] = Math.min(d === 1 ? 58 : 44, Math.max(...col.map((n) => n.label.length))) * CH + 3;
     fixed[d] = 14 + Math.max(...col.map(extra)) + GAP;
   }
   const colW = fixed.map((f, d) => f + label[d]);

@@ -149,3 +149,37 @@ for a win-rate claim.
    lever we have not pulled.
 5. LLM vs LLM (the suite's items 5–8): the first setting where arm (f)
    and held-mana matter, since MAD never punishes a tap-out.
+
+## What the replay surfaced (September, after replay studio v2)
+
+Seeing every search as a tree with the board next to it exposed three
+things the logs alone had hidden.
+
+1. **Projected leaves looked illegal but were not.** "s0: they cast Stock
+   Up" under a 2-land board is their NEXT turn with a land drop; the
+   engine's playability check gates every projected cast (a scan of 5,000+
+   projected leaves found no lands < mana value except cost reducers).
+   Fix was legibility: lines now read "s0: their T6 — land drop, cast Stock
+   Up" and leaves carry turn, graveyard sizes and non-creature permanents.
+2. **Scores were flat.** 20–67-leaf searches got 2–5 distinct values and
+   the top two candidates were within a point in half the searches, so the
+   pick was noise. Regrouping the same leaves by opponent sample in the
+   request (compare candidates under the same draw), stating the real
+   aggregation (mean over samples of the best response, not "worst
+   leaf"), and asking for 1-point resolution moved the median top-two gap
+   from 0.67 to 3.0 (then 8.0 with sub-choice rows); gaps under 2 now go
+   to the engine evaluator (`cardguru.tie_margin`), optionally a pairwise
+   pilot question (`cardguru.tie_compare`).
+3. **Sub-choices were outside the tree, twice over.** In the real game
+   targets, card picks, kicker and modes went to the pilot as flat menus;
+   inside rollouts they were the built-in AI's defaults, because XMage's
+   `TestPlayer.copy()` drops the driver subclass — so leaves were scored on
+   lines the pilot then did not play (Burst Lightning was always rolled
+   out kicked). Scry and surveil were worse: `TestPlayer` delegates them to
+   its inner AI, which asks itself, so the pilot never saw a scry at all.
+   Now copies keep the hooks, the priority search records the menus a
+   cast hits and adds bounded variant rows ("Cast Opt → scry: bottom
+   Island"), and the winning script is replayed at the real prompts
+   (first game: 7 scripted picks, 0 misses; ~40% more leaves per search,
+   fewer pilot calls). Known approximation: copies still see our own real
+   library order, so Stock Up / scry variants peek at the true top cards.

@@ -67,7 +67,7 @@ def build_tree(candidates, scores, chosen_label):
         leaves = c.get("leaves") or []
         cpath = (label,)
         cid = len(nodes)
-        nodes.append({"id": cid, "parent": 0, "depth": 1, "label": short(label),
+        nodes.append({"id": cid, "parent": 0, "depth": 1, "label": short(label, 58),
                       "full": label, "kind": "candidate", "n_leaves": len(leaves)})
         index[cpath] = cid
         cand_ids.append(cid)
