@@ -134,7 +134,13 @@ def run_one(args, g, out_dir, results_path):
                 if d in searches:
                     searches[d] += 1
 
+    # The model and the driver properties (search arm) are part of the
+    # configuration that produced this result; without them a directory of
+    # game files cannot say which pilot played, and the overnight suite
+    # runs four models under one directory layout.
     row = {"game": g, "start": start, "seed": seed, "search": args.search,
+           "model": args.model,
+           "driver_props": os.environ.get("CARDGURU_DRIVER_PROPS", ""),
            "result": result, "wall_s": wall, "sources": sources,
            "searches": searches, "ts": round(time.time(), 1)}
     if result is None or result.get("status") != "completed":
