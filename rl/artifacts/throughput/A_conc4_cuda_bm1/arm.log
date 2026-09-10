@@ -1,0 +1,2 @@
+TP_ARM_START|A_conc4_cuda_bm1|1789064827|port=8044|conc=4|srvx=--device cuda|dump=|pid=24402
+TP_ARM_END|A_conc4_cuda_bm1|rc=0|wall_s=355

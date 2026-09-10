@@ -1,0 +1,7 @@
+DECKVALUE|start|games_per_pair=500|2026-09-10T14:24:05-05:00
+| pair | A-seat wins/n | B-seat wins/n | pooled p(A wins) | Wilson 95% |
+|---|---|---|---|---|
+| B2Mid vs B0Base | 120/250 | 119/250 | 0.478 (239/500) | [0.435, 0.522] |
+| B3Open vs B0Base | 109/250 | 129/250 | 0.476 (238/500) | [0.433, 0.520] |
+| B3Open vs B1Narrow | 133/250 | 134/250 | 0.534 (267/500) | [0.490, 0.577] |
+DECKVALUE|end|2026-09-10T14:26:55-05:00

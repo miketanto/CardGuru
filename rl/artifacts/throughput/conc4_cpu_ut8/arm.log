@@ -1,0 +1,2 @@
+TP_ARM_START|conc4_cpu_ut8|1789061604|port=8044|conc=4|srvx=--update-threads 8|dump=/tmp/rl_buf_conc4.pt|pid=16109
+TP_ARM_END|conc4_cpu_ut8|rc=0|wall_s=798

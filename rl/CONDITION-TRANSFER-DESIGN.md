@@ -112,24 +112,51 @@ measurements:
   the cheapest expression of that, and it is a **timing** feature, not a
   transfer one — see §6.
 
-## 4. The matrix
+## 4. The matrix — three treatment arms, not one
 
-Two arms, identical but for the candidate emission:
+*Revised 2026-09-10.* The original version of this section ran slots
+12–17 as one `cond` arm. §6 recorded that this confounds a *transfer*
+lever (12–15, target availability) with a *timing* lever (16–17), so a
+gap on any test deck could not be attributed. The arms are now split;
+the confound bullet in §6 is kept as the record of why.
 
-- **`cond`** — treatment, slots 12–17 live.
-- **`v6`** — control, `forCard` as it is today.
+| arm | candidate slots live | what it can move | what it cannot move (pre-registered) |
+|---|---|---|---|
+| `v6` | none beyond today's `forCard` | control | — |
+| `cond-target` | 12–15 | target choice by power (`tgtChose_p*`), removal cast into empty boards (`tgtNoOppAvail`), zero-shot on `B2Mid`/`B3Open` | anything on `B1Fast` vs `B1Narrow` beyond what 12–15 explain; anything on `B4Card`; BLOCKOPT |
+| `cond-timing` | 16–17 | instant casts on the opponent's turn, flash held (`instOppTurn`, `flashHeld`), the `B1Fast` row | zero-shot on `B2Mid`/`B3Open` (slots 16–17 are constant across those sorcery decks); anything on `B4Card`; BLOCKOPT |
+| `cond-both` | 12–17 | run **only if** `cond-target` or `cond-timing` moved its own readout; tests additivity | — |
 
-Train each on **`B1Narrow`** (sorcery, narrowest condition, and the
+Order: `cond-target` first (its acceptance test is `timing_gate.py`
+LEVEL A still colliding — slots 12–15 are step-independent), then
+`cond-timing` (acceptance: LEVEL A **separates**), then `cond-both` if
+warranted. Each arm shares the `v6` control; the control is trained once
+per seed, not once per arm.
+
+Train each arm on **`B1Narrow`** (sorcery, narrowest condition, and the
 control the pre-registration in `B1-TIMING-AB.md` §0 uses), then
 evaluate **zero-shot**, no fine-tuning:
 
-| test deck | what it perturbs | prediction |
-|---|---|---|
-| `B1Narrow` | nothing (in-distribution anchor) | both arms equal |
-| `B2Mid` | condition widens (≤2 → ≤3) | `cond` ≥ `v6` |
-| `B3Open` | condition opens fully | `cond` > `v6`, the largest gap |
-| `B1Fast` | condition identical, **timing** differs | isolates slot 16 |
-| `B4Card` | **no target, no board effect** | the null control — see §5 |
+| test deck | what it perturbs | `cond-target` prediction | `cond-timing` prediction |
+|---|---|---|---|
+| `B1Narrow` | nothing (in-distribution anchor) | equal to `v6` | equal to `v6` |
+| `B2Mid` | condition widens (≤2 → ≤3) | ≥ `v6` | equal to `v6` (cannot move) |
+| `B3Open` | condition opens fully | > `v6`, the largest gap | equal to `v6` (cannot move) |
+| `B1Fast` | condition identical, **timing** differs | equal to `v6` (cannot move) | `instOppTurn` rises; win rate unpowered here — see below |
+| `B4Card` | **no target, no board effect** | equal to `v6` — the null control, §5 | equal to `v6` — the null control, §5 |
+
+**Readout is the behaviour counters, not the win rate**, for two
+reasons the project has already paid for: `B1-TIMING-AB.md` §5 showed
+the removal on this rung has no measurable win-rate value even when
+cast 86 times, so a win-rate null on `B1Fast` is expected and
+uninformative; and the within-net target-by-power histograms
+(`tgtChose_p*` vs `tgtLegal_p*`) replicate where between-net win rates
+at one seed do not (§6). Win rate is recorded as the secondary.
+
+**Precondition (new):** the deck-value check in `DECK-VALUE-CHECK.md`
+must have run first. If removal carries no win-rate value against the
+vanilla twin even in scripted hands, every win-rate column above is
+void by construction and only the counter columns count.
 
 `P8SwapInteraction` / `p8_matrix.sh` / `p8_eval.sh` are reusable as-is
 for the runner; only the deck list and the arm flag change.
@@ -199,11 +226,16 @@ of these is a bug to find rather than a result to write up.
 
 ## 7. Order of work
 
-1. Close the target-by-power instrumentation gap (§6) — it is small, it
-   is the primary readout, and `CURRICULUM-LADDER.md` has called it the
-   cheapest unfinished diagnostic in the repo for two phases.
+*Revised 2026-09-10: step 1 of the original list asked to build the
+target-by-power instrumentation; §6's correction records that it already
+exists (`tgtChose_p*` / `tgtLegal_p*`). Replaced by the deck-value
+precondition.*
+
+1. Run `DECK-VALUE-CHECK.md` (scripted hands, 500 games per pair, no
+   training). It decides whether any win-rate column in §4 can be read
+   at all.
 2. Emit slots 12–15, re-run `timing_gate.py` as the emission acceptance
-   test, then the `cond-target` transfer matrix.
+   test (LEVEL A must still collide), then the `cond-target` matrix.
 3. Emit slots 16–17 separately, re-run the gate expecting **LEVEL A to
-   separate**, then the timing arm against `B1Fast`.
-4. Only then, if either arm moved, `cond-both`.
+   separate**, then the `cond-timing` arm against `B1Fast`.
+4. Only then, if either arm moved its own readout, `cond-both`.

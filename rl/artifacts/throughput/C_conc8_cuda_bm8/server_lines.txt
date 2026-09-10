@@ -1,0 +1,66 @@
+policy server on :8048 (threads=8) device=cuda batch_max=8 batch_wait_ms=1.0
+conn: mode=eval episodes=4
+conn: mode=eval episodes=4
+conn: mode=eval episodes=4
+RLBATCH|batches=255|consults=255|mean_b=1.00|p50_b=1|max_b=1|queue_wait_ms_mean=1.14|forward_ms_mean=4.24|hist=1:255
+policy server on :8048 (threads=8) device=cuda batch_max=8 batch_wait_ms=1.0
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+TRAIN|update=1 episodes=32 batch_eps=32 steps=1447 batch_win_rate=0.031 mean_abs_phi=0.000 value_ev=0.0666 oracle_cover=0.000 critic_ev=nan update_s=13.38
+RLBATCH|batches=488|consults=2006|mean_b=4.11|p50_b=4|max_b=8|queue_wait_ms_mean=51.52|forward_ms_mean=14.96|hist=1:116,2:62,3:44,4:33,5:49,6:60,7:95,8:29
+TRAIN|update=2 episodes=64 batch_eps=32 steps=1797 batch_win_rate=0.062 mean_abs_phi=0.000 value_ev=0.0418 oracle_cover=0.000 critic_ev=nan update_s=19.15
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+RLBATCH|batches=1035|consults=4006|mean_b=3.87|p50_b=4|max_b=8|queue_wait_ms_mean=28.12|forward_ms_mean=13.56|hist=1:276,2:137,3:97,4:99,5:80,6:115,7:169,8:62
+TRAIN|update=3 episodes=96 batch_eps=32 steps=1702 batch_win_rate=0.000 mean_abs_phi=0.000 value_ev=-2.7353 oracle_cover=0.000 critic_ev=nan update_s=15.84
+RLBATCH|batches=1484|consults=6000|mean_b=4.04|p50_b=4|max_b=8|queue_wait_ms_mean=38.79|forward_ms_mean=13.76|hist=1:399,2:187,3:111,4:117,5:104,6:174,7:274,8:118
+TRAIN|update=4 episodes=128 batch_eps=32 steps=2169 batch_win_rate=0.125 mean_abs_phi=0.000 value_ev=0.1236 oracle_cover=0.000 critic_ev=nan update_s=19.09
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+RLBATCH|batches=1989|consults=8000|mean_b=4.02|p50_b=4|max_b=8|queue_wait_ms_mean=30.25|forward_ms_mean=13.57|hist=1:547,2:242,3:151,4:157,5:152,6:215,7:362,8:163
+TRAIN|update=5 episodes=160 batch_eps=32 steps=2307 batch_win_rate=0.094 mean_abs_phi=0.000 value_ev=0.2152 oracle_cover=0.000 critic_ev=nan update_s=21.56
+RLBATCH|batches=2410|consults=10000|mean_b=4.15|p50_b=4|max_b=8|queue_wait_ms_mean=38.06|forward_ms_mean=13.65|hist=1:658,2:270,3:165,4:188,5:167,6:254,7:468,8:240
+RLBATCH|batches=2859|consults=12004|mean_b=4.20|p50_b=4|max_b=8|queue_wait_ms_mean=32.51|forward_ms_mean=14.07|hist=1:790,2:314,3:177,4:201,5:184,6:309,7:595,8:289
+TRAIN|update=6 episodes=192 batch_eps=32 steps=3231 batch_win_rate=0.062 mean_abs_phi=0.000 value_ev=0.1345 oracle_cover=0.000 critic_ev=nan update_s=47.04
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+RLBATCH|batches=3384|consults=14002|mean_b=4.14|p50_b=4|max_b=8|queue_wait_ms_mean=28.54|forward_ms_mean=13.82|hist=1:956,2:373,3:232,4:236,5:225,6:344,7:673,8:345
+TRAIN|update=7 episodes=224 batch_eps=32 steps=2636 batch_win_rate=0.062 mean_abs_phi=0.000 value_ev=0.0722 oracle_cover=0.000 critic_ev=nan update_s=31.10
+RLBATCH|batches=3842|consults=16004|mean_b=4.17|p50_b=4|max_b=8|queue_wait_ms_mean=39.22|forward_ms_mean=14.05|hist=1:1080,2:416,3:259,4:262,5:252,6:395,7:787,8:391
+RLBATCH|batches=4310|consults=18000|mean_b=4.18|p50_b=4|max_b=8|queue_wait_ms_mean=35.42|forward_ms_mean=14.15|hist=1:1205,2:470,3:297,4:281,5:280,6:442,7:892,8:443
+TRAIN|update=8 episodes=256 batch_eps=32 steps=2806 batch_win_rate=0.125 mean_abs_phi=0.000 value_ev=0.1453 oracle_cover=0.000 critic_ev=nan update_s=27.73
+RLBATCH|batches=4402|consults=18095|mean_b=4.11|p50_b=4|max_b=8|queue_wait_ms_mean=35.25|forward_ms_mean=13.93|hist=1:1294,2:473,3:297,4:281,5:280,6:442,7:892,8:443
+policy server on :8048 (threads=8) device=cuda batch_max=8 batch_wait_ms=1.0
+conn: mode=eval episodes=4
+conn: mode=eval episodes=4
+conn: mode=eval episodes=4
+RLBATCH|batches=1777|consults=1777|mean_b=1.00|p50_b=1|max_b=1|queue_wait_ms_mean=1.11|forward_ms_mean=2.84|hist=1:1777
+policy server on :8048 (threads=8) device=cuda batch_max=8 batch_wait_ms=1.0
+conn: mode=eval episodes=4
+conn: mode=eval episodes=4
+conn: mode=eval episodes=4
+RLBATCH|batches=1777|consults=1777|mean_b=1.00|p50_b=1|max_b=1|queue_wait_ms_mean=1.11|forward_ms_mean=2.84|hist=1:1777

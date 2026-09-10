@@ -129,7 +129,7 @@ class AttnPolicy(nn.Module):
         self.value_head = nn.Sequential(nn.Linear(d, 64), nn.ReLU(), nn.Linear(64, 1))
 
     def initial_hidden(self, batch=1):
-        z = torch.zeros(batch, self.d)
+        z = torch.zeros(batch, self.d, device=next(self.parameters()).device)
         return (z, z.clone())
 
     def forward(self, state, cands, mask, hidden=None):
@@ -189,6 +189,10 @@ class EntityObs:
 
     def size(self, dim=0):
         return self.g.size(dim)
+
+    def to(self, device):
+        return EntityObs(self.g.to(device), self.e.to(device),
+                         self.mask.to(device), self.rel.to(device))
 
     @staticmethod
     def stack(items):
@@ -354,6 +358,20 @@ def build_net(arch, sdim, cdim, gdim=GDIM, edim=EDIM,
     raise ValueError(f"unknown arch {arch}")
 
 
+DEVICE = torch.device("cpu")   # rebound by --device in __main__
+
+
+def _to_cpu(obj):
+    """Recursively move tensors in a state_dict-like structure to CPU."""
+    if torch.is_tensor(obj):
+        return obj.detach().cpu()
+    if isinstance(obj, dict):
+        return {k: _to_cpu(v) for k, v in obj.items()}
+    if isinstance(obj, (list, tuple)):
+        return type(obj)(_to_cpu(v) for v in obj)
+    return obj
+
+
 class Trainer:
     def __init__(self, ckpt, seed, log_path, sdim=SDIM, cdim=CDIM,
                  shape=0.0, phi_scale=2000.0, arch="e0",
@@ -384,11 +402,18 @@ class Trainer:
         # logp is stored under the ACTUAL (tempered) sampling
         # distribution; PPO's ratio does the off-policy correction.
         self.desperation = desperation
-        self.net = build_net(arch, sdim, cdim, gdim, edim, n_rtypes)
+        # --device (THROUGHPUT-LOCAL.md). The net, optimizer state and the
+        # PPO batch live here; per-consult tensors are built on CPU from
+        # the wire lists and moved once, and the trajectory buffer stays
+        # on CPU. Checkpoints are always written as CPU tensors so every
+        # reader (lane, init script, probes) stays device-agnostic.
+        self.device = DEVICE
+        self.net = build_net(arch, sdim, cdim, gdim, edim, n_rtypes).to(DEVICE)
         self.opt = torch.optim.Adam(self.net.parameters(), lr=LR)
         self.ckpt = ckpt
         self.log_path = log_path
         self.frozen = False
+        self.batcher = None     # InferenceBatcher when --batch-max > 1
         # Asymmetric critic. None => the policy's own value head
         # supplies GAE, exactly as before.
         self.oracle_critic = None
@@ -402,13 +427,15 @@ class Trainer:
                     "--oracle needs the v6 entity path (arch=entattn); "
                     "the privileged rows ARE entity rows")
             self.oracle_critic = OracleCritic(gdim, edim,
-                                              n_rtypes=n_rtypes)
+                                              n_rtypes=n_rtypes).to(DEVICE)
             self.copt = torch.optim.Adam(
                 self.oracle_critic.used_parameters(), lr=LR)
         self.episodes_seen = 0
         self.updates = 0
         if ckpt and os.path.exists(ckpt):
-            data = torch.load(ckpt, weights_only=False)
+            # load_state_dict copies into the (device) params; Adam's
+            # load_state_dict moves its state to the params' device.
+            data = torch.load(ckpt, map_location="cpu", weights_only=False)
             ck_arch = data.get("arch", "e0")
             if ck_arch != arch:
                 raise RuntimeError(
@@ -591,6 +618,7 @@ class Trainer:
             else:
                 s = torch.tensor(state).unsqueeze(0)
                 store = s[0]
+            s = s.to(self.device)      # `store` stays the CPU copy
             k = len(cands)
             if k > MAX_K:
                 # Without this the assignment below fails with a tensor
@@ -607,12 +635,24 @@ class Trainer:
             c[0, :k] = torch.tensor(cands)
             m = torch.zeros(1, MAX_K, dtype=torch.bool)
             m[0, :k] = True
+            c_cpu, m_cpu = c[0], m[0]   # what the buffer stores
+            c, m = c.to(self.device), m.to(self.device)
             if self.recurrent:
                 hin = sink.hidden if sink.hidden is not None \
                     else self.net.initial_hidden(1)
-                logits, value, sink.hidden = self.net(s, c, m, hin)
             else:
                 hin = None
+            batcher = getattr(self, "batcher", None)
+            if batcher is not None:
+                # --batch-max > 1: the forward runs in the batcher thread
+                # under the consult lock; everything else in act() is
+                # per-request and per-session (plan §2a)
+                logits, value, hout = batcher.infer(s, c, m, hin)
+                if self.recurrent:
+                    sink.hidden = hout
+            elif self.recurrent:
+                logits, value, sink.hidden = self.net(s, c, m, hin)
+            else:
                 logits, value = self.net(s, c, m)
             if sample:
                 lg = logits[0]
@@ -624,11 +664,12 @@ class Trainer:
                 a = int(dist.sample())
                 import math
                 (self.buf if session is None else session.pending).append(
-                    (store, c[0], m[0], a,
-                                 float(dist.log_prob(torch.tensor(a))),
+                    (store, c_cpu, m_cpu, a,
+                                 float(dist.log_prob(
+                                     torch.tensor(a, device=lg.device))),
                                  float(value[0]),
                                  math.tanh(phi / self.phi_scale),
-                     (hin[0][0].clone(), hin[1][0].clone())
+                     (hin[0][0].clone().cpu(), hin[1][0].clone().cpu())
                      if self.recurrent else None,
                      store_or))
             else:
@@ -662,13 +703,46 @@ class Trainer:
         if not self.buf:
             self.completed = []
             return
+        # THROUGHPUT-LOCAL.md §10a: no inference runs while update()
+        # holds the consult lock, so the intra-op thread count may be
+        # raised for its duration and restored on exit. Default 0 leaves
+        # the count alone (unchanged behaviour). The GPU path ignores it
+        # in effect - the Python loop is single-threaded either way.
+        n_upd = getattr(self, "update_threads", 0)
+        prev = torch.get_num_threads()
+        if n_upd and n_upd != prev:
+            torch.set_num_threads(n_upd)
+        try:
+            self._update_body()
+        finally:
+            if n_upd and n_upd != prev:
+                torch.set_num_threads(prev)
+
+    def _update_body(self):
+        self._update_t0 = time.time()   # wall clock, reported by _finish_update
+        dump = os.environ.get("RL_DUMP_BUF")
+        if dump and not os.path.exists(dump):
+            # §10b: one real buffer for the offline profiler / thread
+            # check (rl/update_profile.py). Plain tensors, not EntityObs
+            # objects, so the pickle does not depend on __main__.
+            torch.save({"buf": [((b[0].g, b[0].e, b[0].mask, b[0].rel)
+                                 if self.entity else b[0],) + tuple(b[1:])
+                                for b in self.buf],
+                        "completed": list(self.completed),
+                        "dims": self.dims()}, dump)
+            print(f"RLDUMP|{dump}|steps={len(self.buf)}"
+                  f"|episodes={len(self.completed)}", flush=True)
         states = (EntityObs.stack([b[0] for b in self.buf]) if self.entity
                   else torch.stack([b[0] for b in self.buf]))
         cands = torch.stack([b[1] for b in self.buf])
         masks = torch.stack([b[2] for b in self.buf])
         actions = torch.tensor([b[3] for b in self.buf])
         old_logp = torch.tensor([b[4] for b in self.buf])
-        values = torch.tensor([b[5] for b in self.buf])
+        values = torch.tensor([b[5] for b in self.buf])   # CPU: GAE loop below
+        # one bulk move; the buffer itself stays on CPU
+        dev = self.device
+        states, cands, masks = states.to(dev), cands.to(dev), masks.to(dev)
+        actions, old_logp = actions.to(dev), old_logp.to(dev)
         # ORACLE GUIDING. Recompute the baseline from the privileged
         # critic BEFORE GAE, so every residual gamma*V(s')-V(s) - which
         # with terminal-only reward is the entire dense credit path - is
@@ -683,9 +757,9 @@ class Trainer:
             self.oracle_cover = len(have) / float(len(self.buf))
             with torch.no_grad():
                 ov = self.oracle_critic(
-                    EntityObs.stack([or_obs[i] for i in have]))
+                    EntityObs.stack([or_obs[i] for i in have]).to(dev))
             values = values.clone()
-            values[torch.tensor(have)] = ov.float()
+            values[torch.tensor(have)] = ov.float().cpu()
 
         phis = [b[6] if len(b) > 6 else 0.0 for b in self.buf]
         if self.recurrent:
@@ -764,8 +838,9 @@ class Trainer:
             with torch.no_grad():
                 for lo in range(0, n_all, CH):
                     preds.append(self.oracle_critic(_batch(lo, min(lo + CH, n_all))))
-            cv = torch.cat(preds)
+            cv = torch.cat(preds).cpu()
             tv = mc.var()
+            mc_dev = mc.to(dev)
             self.critic_ev = (float(1.0 - (mc - cv).var() / tv)
                               if float(tv) > 1e-8 else float("nan"))
 
@@ -774,7 +849,7 @@ class Trainer:
                     hi = min(lo + CH, n_all)
                     self.copt.zero_grad()
                     loss = ((self.oracle_critic(_batch(lo, hi))
-                             - mc[lo:hi]) ** 2).mean()
+                             - mc_dev[lo:hi]) ** 2).mean()
                     loss.backward()
                     nn.utils.clip_grad_norm_(
                         self.oracle_critic.used_parameters(), 0.5)
@@ -782,6 +857,7 @@ class Trainer:
 
         if adv.std() > 1e-6:
             adv = (adv - adv.mean()) / (adv.std() + 1e-8)
+        adv, ret = adv.to(dev), ret.to(dev)
 
         if self.recurrent:
             # Phase 7: TRUE BPTT - replay each episode as a sequence
@@ -887,12 +963,14 @@ class Trainer:
         self.updates += 1
         wr = sum(1 for _, _, r in self.completed if r > 0) / len(self.completed)
         mean_abs_phi = sum(abs(p) for p in phis) / max(1, len(phis))
+        update_s = time.time() - getattr(self, "_update_t0", time.time())
         line = (f"update={self.updates} episodes={self.episodes_seen} "
                 f"batch_eps={len(self.completed)} steps={n} "
                 f"batch_win_rate={wr:.3f} mean_abs_phi={mean_abs_phi:.3f} "
                 f"value_ev={getattr(self, 'last_ev', float('nan')):.4f} "
                 f"oracle_cover={getattr(self, 'oracle_cover', 0.0):.3f} "
-                f"critic_ev={getattr(self, 'critic_ev', float('nan')):.4f}")
+                f"critic_ev={getattr(self, 'critic_ev', float('nan')):.4f} "
+                f"update_s={update_s:.2f}")
         print("TRAIN|" + line, flush=True)
         if self.log_path:
             with open(self.log_path, "a") as f:
@@ -900,7 +978,10 @@ class Trainer:
                         f"{n},{wr:.4f},"
                         f"{getattr(self, 'last_ev', float('nan')):.4f},"
                         f"{getattr(self, 'critic_ev', float('nan')):.4f},"
-                        f"{getattr(self, 'oracle_cover', 0.0):.3f}\n")
+                        f"{getattr(self, 'oracle_cover', 0.0):.3f},"
+                        # col 9 (added 2026-09-10): update() wall seconds.
+                        # ev_probe.sh reads cols 2-8 by position; unaffected.
+                        f"{update_s:.2f}\n")
         self.buf = []
         self.completed = []
         self.ep_start = 0
@@ -913,8 +994,8 @@ class Trainer:
             # atomic: a SIGKILL mid-save must never corrupt the ckpt
             # (a truncated net.pt took down a league run once)
             tmp = self.ckpt + ".tmp"
-            blob = {"net": self.net.state_dict(),
-                    "opt": self.opt.state_dict(),
+            blob = {"net": _to_cpu(self.net.state_dict()),
+                    "opt": _to_cpu(self.opt.state_dict()),
                     "episodes": self.episodes_seen,
                     "updates": self.updates,
                     "arch": self.arch,
@@ -923,10 +1004,207 @@ class Trainer:
             # oracle checkpoint still LOADS on a non-oracle server (the
             # extra keys are ignored) and the arms stay swappable.
             if self.oracle_critic is not None:
-                blob["oracle_critic"] = self.oracle_critic.state_dict()
-                blob["oracle_opt"] = self.copt.state_dict()
+                blob["oracle_critic"] = _to_cpu(self.oracle_critic.state_dict())
+                blob["oracle_opt"] = _to_cpu(self.copt.state_dict())
             torch.save(blob, tmp)
             os.replace(tmp, self.ckpt)
+
+
+class InferenceRequest:
+    """One consult's forward-pass inputs, as act() builds them: `s` a
+    batch-1 EntityObs (or (1,sdim) state) on the device, `c` (1,MAX_K,
+    cdim), `m` (1,MAX_K) bool, `hin` an ((1,d),(1,d)) LSTM pair or None.
+    The batcher fills `out` = (logits (1,K), value (1,), hidden_out) or
+    `error`, then sets `done`."""
+
+    __slots__ = ("s", "c", "m", "hin", "out", "error", "done", "t_submit",
+                 "t_start")
+
+    def __init__(self, s, c, m, hin):
+        self.s, self.c, self.m, self.hin = s, c, m, hin
+        self.out = None
+        self.error = None
+        self.done = threading.Event()
+        self.t_submit = self.t_start = 0.0
+
+
+class InferenceBatcher:
+    """Collects the consults that arrive within `wait_ms` of each other
+    (at most `batch_max`) and runs ONE forward pass over them under the
+    same lock update() takes. BATCHED-INFERENCE-PLAN.md §2.
+
+    Interface (rl/batch_check.py T1-T6 are written against it):
+      infer(s, c, m, hin)      handler thread: enqueue, block, return
+                               (logits, value, hidden_out) or raise
+      run_batch(requests)      synchronous collate -> forward -> scatter
+                               over a list of InferenceRequest; sets
+                               .out or .error on each
+      start()                  launch the batcher thread
+      stats()                  dict for the RLBATCH| line
+    """
+
+    def __init__(self, net, recurrent, lock, batch_max, wait_ms,
+                 stats_every=2000):
+        import queue
+        self.net, self.recurrent, self.lock = net, recurrent, lock
+        self.batch_max = max(1, int(batch_max))
+        self.wait_s = max(0.0, float(wait_ms)) / 1000.0
+        self.q = queue.Queue()
+        self.thread = None
+        # RLBATCH| accounting (plan §2c): a batch-size histogram is what
+        # says whether concurrency produced simultaneous consults at all
+        self.stats_every = stats_every
+        self._slock = threading.Lock()
+        self.n_batches = self.n_consults = 0
+        self.hist = {}
+        self.queue_wait_s = self.forward_s = 0.0
+        self._printed = 0
+
+    def start(self):
+        self.thread = threading.Thread(target=self._loop, daemon=True,
+                                       name="inference-batcher")
+        self.thread.start()
+        return self
+
+    # ------------------------------------------------ handler-thread side
+    def infer(self, s, c, m, hin):
+        r = InferenceRequest(s, c, m, hin)
+        r.t_submit = time.time()
+        self.q.put(r)
+        r.done.wait()
+        if r.error is not None:
+            raise r.error
+        return r.out
+
+    # ------------------------------------------------- batcher-thread side
+    def _loop(self):
+        import queue
+        while True:
+            first = self.q.get()                 # block, no lock held
+            batch = [first]
+            # Take the lock BEFORE draining: while update() holds it for
+            # seconds the requests pile up in the queue, and the first
+            # batch after the update takes them all (up to batch_max)
+            # instead of a batch committed before the stall.
+            with self.lock:
+                deadline = time.time() + self.wait_s
+                while len(batch) < self.batch_max:
+                    rem = deadline - time.time()
+                    if rem <= 0:
+                        break
+                    try:
+                        batch.append(self.q.get(timeout=rem))
+                    except queue.Empty:
+                        break
+                try:
+                    self.run_batch(batch)
+                except Exception as exc:          # noqa: BLE001
+                    # run_batch attributes faults per request; anything
+                    # that escapes must not kill this thread and leave
+                    # every handler parked on its Event for ever
+                    for r in batch:
+                        if r.out is None and r.error is None:
+                            r.error = exc
+            for r in batch:
+                r.done.set()
+
+    def run_batch(self, reqs):
+        """Collate -> one forward -> scatter. Synchronous; the caller
+        holds whatever lock the net needs. On ANY failure of the batched
+        pass, degrade to one forward per request so the fault is
+        attributed to the request that caused it (T6) and the rest of
+        the batch still completes."""
+        t0 = time.time()
+        for r in reqs:
+            r.t_start = t0
+        outs = None
+        try:
+            with torch.no_grad():
+                outs = self._forward(reqs)
+        except Exception:                      # noqa: BLE001
+            for r in reqs:
+                try:
+                    with torch.no_grad():
+                        r.out = self._forward([r])[0]
+                except Exception as exc:      # noqa: BLE001
+                    r.error = exc
+        if outs is not None:
+            for r, o in zip(reqs, outs):
+                r.out = o
+        self._account(reqs, time.time() - t0)
+
+    def _forward(self, reqs):
+        B = len(reqs)
+        if B == 1:
+            # a batch of one IS the existing call, so sequential eval is
+            # bit-identical to the unbatched server (plan §1.1, gate G2)
+            r = reqs[0]
+            if self.recurrent:
+                lg, v, h = self.net(r.s, r.c, r.m, r.hin)
+                return [(lg, v, h)]
+            lg, v = self.net(r.s, r.c, r.m)
+            return [(lg, v, None)]
+        s0 = reqs[0].s
+        if isinstance(s0, EntityObs):
+            S = EntityObs(torch.cat([r.s.g for r in reqs]),
+                          torch.cat([r.s.e for r in reqs]),
+                          torch.cat([r.s.mask for r in reqs]),
+                          torch.cat([r.s.rel for r in reqs]))
+        else:
+            S = torch.cat([r.s for r in reqs])
+        C = torch.cat([r.c for r in reqs])
+        M = torch.cat([r.m for r in reqs])
+        if self.recurrent:
+            H = (torch.cat([r.hin[0] for r in reqs]),
+                 torch.cat([r.hin[1] for r in reqs]))
+            lg, v, (h2, c2) = self.net(S, C, M, H)
+            return [(lg[i:i + 1], v[i:i + 1], (h2[i:i + 1], c2[i:i + 1]))
+                    for i in range(B)]
+        lg, v = self.net(S, C, M)
+        return [(lg[i:i + 1], v[i:i + 1], None) for i in range(B)]
+
+    # ------------------------------------------------------------- stats
+    def _account(self, reqs, fwd_s):
+        n = len(reqs)
+        with self._slock:
+            self.n_batches += 1
+            self.n_consults += n
+            self.hist[n] = self.hist.get(n, 0) + 1
+            self.queue_wait_s += sum(r.t_start - r.t_submit for r in reqs
+                                     if r.t_submit > 0)
+            self.forward_s += fwd_s
+            due = (self.stats_every
+                   and self.n_consults // self.stats_every > self._printed)
+            if due:
+                self._printed = self.n_consults // self.stats_every
+        if due:
+            print(self.line(), flush=True)
+
+    def stats(self):
+        with self._slock:
+            n, b = self.n_consults, self.n_batches
+            hist = sorted(self.hist.items())
+            qw, fw = self.queue_wait_s, self.forward_s
+        cum, p50 = 0, 0
+        for size, cnt in hist:
+            cum += cnt
+            if cum * 2 >= b:
+                p50 = size
+                break
+        return {"batches": b, "consults": n,
+                "mean_b": (n / b if b else 0.0), "p50_b": p50,
+                "max_b": (hist[-1][0] if hist else 0),
+                "queue_wait_ms_mean": (1000 * qw / n if n else 0.0),
+                "forward_ms_mean": (1000 * fw / b if b else 0.0),
+                "hist": hist}
+
+    def line(self):
+        d = self.stats()
+        return ("RLBATCH|batches=%d|consults=%d|mean_b=%.2f|p50_b=%d|max_b=%d"
+                "|queue_wait_ms_mean=%.2f|forward_ms_mean=%.2f|hist=%s"
+                % (d["batches"], d["consults"], d["mean_b"], d["p50_b"],
+                   d["max_b"], d["queue_wait_ms_mean"], d["forward_ms_mean"],
+                   ",".join("%d:%d" % kv for kv in d["hist"])))
 
 
 class Session:
@@ -960,10 +1238,15 @@ def _record(wait, held):
         n = LOCK_CALLS
         w, h = LOCK_WAIT, LOCK_HELD
     if n % 2000 == 0:
-        print(f"RLLOCK|calls={n}|wait_s={w:.1f}|held_s={h:.1f}"
-              f"|wait_per_call_ms={1000 * w / n:.2f}"
-              f"|held_per_call_ms={1000 * h / n:.2f}"
-              f"|wait_share={w / (w + h):.1%}", flush=True)
+        print(_lock_line(), flush=True)
+
+
+def _lock_line():
+    n, w, h = LOCK_CALLS, LOCK_WAIT, LOCK_HELD
+    return (f"RLLOCK|calls={n}|wait_s={w:.1f}|held_s={h:.1f}"
+            f"|wait_per_call_ms={1000 * w / max(1, n):.2f}"
+            f"|held_per_call_ms={1000 * h / max(1, n):.2f}"
+            f"|wait_share={w / max(1e-9, w + h):.1%}")
 
 
 def check_hello(msg, trainer):
@@ -1090,7 +1373,17 @@ def handle(conn, trainer, lock, session):
                     a = pyrandom.randrange(len(msg["c"]))
                 else:
                     st, cd, ent = consult_args(msg, trainer)
-                    if lock is None:
+                    if lock is not None and trainer.batcher is not None:
+                        # batched path: NOT under the lock here - the
+                        # batcher takes it for the forward; sampling and
+                        # session.pending are per-connection. update()
+                        # and save() still run under the lock below.
+                        a = trainer.act(st, cd,
+                                        sample=(mode == "train"),
+                                        phi=msg.get("phi", 0.0),
+                                        session=session, ent=ent,
+                                        oracle_rows=msg.get("oe"))
+                    elif lock is None:
                         a = trainer.act(st, cd,
                                         sample=(mode == "train"),
                                         phi=msg.get("phi", 0.0), ent=ent,
@@ -1129,6 +1422,13 @@ def handle(conn, trainer, lock, session):
                                                       and not trainer.frozen),
                                             session=session)
                 f.write(b'{"ok":1}\n')
+            elif t == "stats":
+                st = {"lock": {"calls": LOCK_CALLS, "wait_s": LOCK_WAIT,
+                               "held_s": LOCK_HELD},
+                      "batch": (trainer.batcher.stats()
+                                if trainer.batcher is not None else None)}
+                f.write(json.dumps(st, separators=(",", ":")).encode()
+                        + b"\n")
             f.flush()
     except (ConnectionResetError, BrokenPipeError, json.JSONDecodeError):
         pass
@@ -1147,7 +1447,7 @@ def handle(conn, trainer, lock, session):
         print("conn closed", flush=True)
 
 
-def serve(port, trainer, threads=1):
+def serve(port, trainer, threads=1, batch_max=1, batch_wait_ms=1.0):
     """threads=1 (default) keeps the original one-connection-at-a-time
     server, byte for byte. threads>1 accepts that many concurrent driver
     connections - one per game when the driver runs -Drl.concurrency=N -
@@ -1164,14 +1464,26 @@ def serve(port, trainer, threads=1):
     srv.bind(("127.0.0.1", port))
     srv.listen(max(4, threads))
     print(f"policy server on :{port}"
-          + (f" (threads={threads})" if threads > 1 else ""), flush=True)
+          + (f" (threads={threads})" if threads > 1 else "")
+          + f" device={trainer.device}"
+          + (f" batch_max={batch_max} batch_wait_ms={batch_wait_ms}"
+             if batch_max > 1 else ""), flush=True)
     if threads <= 1:
+        if batch_max > 1:
+            # sequential server, batched path: every batch is size 1
+            # (gate G2); the batcher's own lock is uncontended
+            trainer.batcher = InferenceBatcher(
+                trainer.net, trainer.recurrent, threading.Lock(),
+                batch_max, batch_wait_ms).start()
         while True:
             conn, _ = srv.accept()
             handle(conn, trainer, None, None)
         return
-    import threading
     lock = threading.Lock()
+    if batch_max > 1:
+        trainer.batcher = InferenceBatcher(
+            trainer.net, trainer.recurrent, lock,
+            batch_max, batch_wait_ms).start()
     while True:
         conn, _ = srv.accept()
         threading.Thread(target=handle,
@@ -1227,7 +1539,26 @@ if __name__ == "__main__":
                     help="candidate buffer; raise for joint assignment")
     ap.add_argument("--desperation", type=float, default=0.0,
                     help="C7: losing-state exploration temperature gain")
+    ap.add_argument("--device", default="cpu", choices=["cpu", "cuda"],
+                    help="where the net, optimizer and PPO batch live "
+                         "(default cpu = unchanged behaviour)")
+    ap.add_argument("--batch-max", type=int, default=1,
+                    help="batched inference: consults arriving within "
+                         "--batch-wait-ms share one forward pass, up to "
+                         "N per batch (BATCHED-INFERENCE-PLAN.md; "
+                         "1 = existing path, untouched)")
+    ap.add_argument("--batch-wait-ms", type=float, default=1.0,
+                    help="how long the batcher waits for more consults "
+                         "after the first (default 1.0)")
+    ap.add_argument("--update-threads", type=int, default=0,
+                    help="torch intra-op threads DURING update() only; "
+                         "restored to the inference count on exit "
+                         "(THROUGHPUT-LOCAL.md §10a; 0 = unchanged)")
     args = ap.parse_args()
+    if args.device == "cuda" and not torch.cuda.is_available():
+        raise RuntimeError("--device cuda requested but "
+                           "torch.cuda.is_available() is False")
+    DEVICE = torch.device(args.device)
     # module scope (this is the __main__ block, not a function), so these
     # rebind the module globals directly - a `global` statement here is
     # both unnecessary and a SyntaxError after the earlier assignment
@@ -1239,6 +1570,13 @@ if __name__ == "__main__":
     # oversubscribed; measured held-time per consult rose 3.40 -> 5.75 ms
     # from conc1 to conc4. Configurable so the trade can be measured.
     torch.set_num_threads(int(os.environ.get("RL_TORCH_THREADS", "2")))
+    if os.environ.get("RL_SWITCH_INTERVAL"):
+        # THROUGHPUT-LOCAL.md §11.3: the play phase is bounded by the GIL,
+        # and Python's default 5 ms switch interval is the latency a
+        # parked thread pays to get it back. Opt-in; unset = unchanged.
+        import sys
+        sys.setswitchinterval(float(os.environ["RL_SWITCH_INTERVAL"]))
+        print(f"switch_interval={sys.getswitchinterval()}", flush=True)
     _t = Trainer(args.ckpt, args.seed, args.log,
                  args.sdim, args.cdim,
                  args.shape, args.phi_scale, args.arch,
@@ -1246,6 +1584,19 @@ if __name__ == "__main__":
                  args.gdim, args.edim, args.emax,
                  len(RTYPES), args.r0, args.oracle)
     _t.frozen = args.frozen
+    _t.update_threads = args.update_threads
     _t.oracle_probe = args.oracle_probe
     _t._ds = open(args.dataset, 'w') if args.dataset else None
-    serve(args.port, _t, args.threads)
+
+    def _on_term(signum, frame):
+        # the lane stops the server with SIGTERM; print the cumulative
+        # counters it would otherwise take to the grave, then die the
+        # same way (no cleanup, as before)
+        if LOCK_STATS and LOCK_CALLS:
+            print(_lock_line(), flush=True)
+        if _t.batcher is not None:
+            print(_t.batcher.line(), flush=True)
+        os._exit(0)
+    import signal
+    signal.signal(signal.SIGTERM, _on_term)
+    serve(args.port, _t, args.threads, args.batch_max, args.batch_wait_ms)

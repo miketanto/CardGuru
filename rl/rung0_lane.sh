@@ -92,6 +92,9 @@ SRVEXTRA=""
 # to 64, so the buffer has to clear that too or the server drops
 # candidates the policy was meant to be choosing between.
 [ "$ENC" -ge 5 ] 2>/dev/null && SRVEXTRA="--max-k 96"
+# Pass-through for server flags the lane has no knob for (e.g.
+# R0_SRVEXTRA="--device cuda", THROUGHPUT-LOCAL.md). Empty by default.
+SRVEXTRA="$SRVEXTRA ${R0_SRVEXTRA:-}"
 OUT=${R0_OUT:-/tmp/rl_rung0_${BASE}_v${ENC}_s${SEED}}
 mkdir -p $OUT
 
@@ -121,6 +124,10 @@ start_server() {   # $1 extra-flags
     # every 512 episodes that server.log does not: server.log is
     # truncated by this very redirect, which is why no run in this
     # project has a dense training curve (HANDOFF-STACK-TIMING.md §5).
+    # Keep the truncated log's contents: server_all.log accumulates every
+    # server lifetime, so RLLOCK|/TRAIN| lines from training survive the
+    # battery restart. server.log itself keeps its fresh-per-start meaning.
+    [ -s $OUT/server.log ] && cat $OUT/server.log >> $OUT/server_all.log
     RL_TORCH_THREADS=1 setsid nohup python3 $RL/policy_server.py \
         --port $PORT --ckpt $CKPT --seed $SEED --sdim $SDIM --cdim $CDIM --arch $ARCH \
         --threads $CONC --log $OUT/train.csv \

@@ -59,6 +59,18 @@ no information about play, only about plumbing.
 The lane leaves the driver JVM running by design; `pkill -f
 "[R]LDriverServer"` before switching encoder arms.
 
+## Throughput — what this machine is and is not
+
+Measured in `THROUGHPUT-LOCAL.md` (rung-0 lane, single runs). The
+engine runs at the same per-game speed as the old 4-core container
+(2.6 vs 2.7 games/s on the scripted BenchBurn mirror). Training
+throughput at conc4 is 0.535 episodes/s on CPU and 1.12 on `--device
+cuda`; more game threads are a regression because the PPO update is
+single-threaded and holds the consult lock. What changed versus the
+cloud is availability, not speed: no session recycling, checkpoints
+that survive, and a GPU. Five-seed rung-0 runs are an overnight job,
+not a fast one.
+
 ## Gotchas specific to this machine
 
 - **Driving WSL from Git Bash:** MSYS rewrites `/mnt/c/...` arguments

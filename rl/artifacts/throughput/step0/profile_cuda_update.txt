@@ -1,0 +1,38 @@
+UPDPROF|buf steps=151 episodes=4 device=cuda|warmup_s=4.13|profiled_s=3.93|ms_per_step=26.01
+UPDKERN|launches=98176|per_step=650.2|distinct_kernels=132|kernel_time_s=0.42|gpu_busy=10.7%|median_launch_us=2.1
+TOP10 by cuda_time_total
+------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                            Name    Self CPU %      Self CPU   CPU total %     CPU total  CPU time avg     Self CUDA   Self CUDA %    CUDA total  CUDA time avg    # of Calls  
+------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                        aten::mm         5.11%     167.442ms         8.04%     263.475ms      27.537us      76.504ms        19.85%      76.504ms       7.996us          9568  
+autograd::engine::evaluate_function: AddmmBac...         1.75%      57.381ms        12.09%     396.146ms     119.034us       0.000us         0.00%      70.126ms      21.071us          3328  
+autograd::engine::evaluate_function: ScaledDo...         0.37%      12.174ms         4.49%     147.167ms     221.638us       0.000us         0.00%      61.940ms      93.283us           664  
+     ScaledDotProductEfficientAttentionBackward0         0.14%       4.514ms         4.12%     134.993ms     203.303us       0.000us         0.00%      61.940ms      93.283us           664  
+aten::_scaled_dot_product_efficient_attention...         0.31%      10.280ms         3.98%     130.479ms     196.504us       0.000us         0.00%      61.940ms      93.283us           664  
+             aten::_efficient_attention_backward         0.60%      19.552ms         3.45%     113.128ms     170.374us      54.584ms        14.16%      61.940ms      93.283us           664  
+fmha_cutlassB_f32_aligned_64x64_k32_sm80(PyTo...         0.00%       0.000us         0.00%       0.000us       0.000us      54.584ms        14.16%      54.584ms      82.205us           664  
+                                  AddmmBackward0         0.92%      30.196ms         6.99%     229.258ms      68.888us       0.000us         0.00%      44.994ms      13.520us          3328  
+autograd::engine::evaluate_function: Embeddin...         0.08%       2.573ms         2.13%      69.792ms     405.768us       0.000us         0.00%      41.203ms     239.555us           172  
+                              EmbeddingBackward0         0.02%     634.949us         1.98%      65.048ms     378.183us       0.000us         0.00%      40.995ms     238.345us           172  
+------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+Self CPU time total: 3.278s
+Self CUDA time total: 385.471ms
+
+TOP10 by cpu_time_total
+------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                            Name    Self CPU %      Self CPU   CPU total %     CPU total  CPU time avg     Self CUDA   Self CUDA %    CUDA total  CUDA time avg    # of Calls  
+------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                cudaLaunchKernel        20.07%     657.816ms        20.07%     657.816ms       7.614us       0.000us         0.00%       0.000us       0.000us         86398  
+                                     aten::copy_         2.97%      97.385ms        17.65%     578.533ms      31.326us      32.869ms         8.53%      32.869ms       1.780us         18468  
+autograd::engine::evaluate_function: AddmmBac...         1.75%      57.381ms        12.09%     396.146ms     119.034us       0.000us         0.00%      70.126ms      21.071us          3328  
+                                        aten::to         0.21%       6.795ms        12.02%     393.928ms      57.600us       0.000us         0.00%       5.427ms       0.794us          6839  
+                                  aten::_to_copy         0.39%      12.813ms        11.81%     387.133ms      99.905us       0.000us         0.00%       5.427ms       1.401us          3875  
+                           cudaStreamSynchronize        11.08%     363.316ms        11.08%     363.316ms      96.575us       0.000us         0.00%       0.000us       0.000us          3762  
+                                     aten::index         1.28%      41.950ms         9.07%     297.159ms     123.816us       7.475ms         1.94%       9.522ms       3.967us          2400  
+                                    aten::linear         0.48%      15.697ms         8.32%     272.591ms      66.035us       0.000us         0.00%      37.793ms       9.155us          4128  
+                                     aten::clone         0.94%      30.868ms         8.16%     267.394ms      24.649us       0.000us         0.00%      22.466ms       2.071us         10848  
+                                        aten::mm         5.11%     167.442ms         8.04%     263.475ms      27.537us      76.504ms        19.85%      76.504ms       7.996us          9568  
+------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+Self CPU time total: 3.278s
+Self CUDA time total: 385.471ms
+

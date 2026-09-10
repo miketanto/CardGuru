@@ -1,0 +1,8 @@
+DECKVALUE|start|games_per_pair=500|2026-09-10T14:19:06-05:00
+| pair | A-seat wins/n | B-seat wins/n | pooled p(A wins) | Wilson 95% |
+|---|---|---|---|---|
+| B0Base vs B0Base | 122/250 | 127/250 | 0.498 (249/500) | [0.454, 0.542] |
+| B1Narrow vs B0Base | 109/250 | 121/250 | 0.460 (230/500) | [0.417, 0.504] |
+| B1Fast vs B0Base | 111/250 | 124/250 | 0.470 (235/500) | [0.427, 0.514] |
+| B1Narrow vs B1Fast | 126/250 | 124/250 | 0.500 (250/500) | [0.456, 0.544] |
+DECKVALUE|end|2026-09-10T14:22:47-05:00

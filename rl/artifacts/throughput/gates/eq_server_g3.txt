@@ -1,0 +1,4 @@
+policy server on :7998 (threads=8) device=cpu
+RLLOCK|calls=1225|wait_s=33.0|held_s=6.4|wait_per_call_ms=26.90|held_per_call_ms=5.25|wait_share=83.7%
+policy server on :7998 (threads=8) device=cpu batch_max=8 batch_wait_ms=1.0
+RLBATCH|batches=339|consults=1226|mean_b=3.62|p50_b=3|max_b=8|queue_wait_ms_mean=7.47|forward_ms_mean=16.71|hist=1:30,2:66,3:84,4:46,5:63,6:40,7:7,8:3
