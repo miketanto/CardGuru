@@ -287,7 +287,7 @@ the card table leaves the JVM entirely.
 | 3 | opponent deck | **open decklist in v1**; archetype posterior for closed lists later |
 | 4 | pass afterstate | **deferred** until a simulation harness exists |
 | 5 | memory | **LSTM on the game token**; history tokens later, gated on the LSTM arm |
-| 6 | value trunk | **fully separate**: own token-builder copies, 4 layers (recommendation, recorded pending objection) |
+| 6 | value trunk | **fully separate**: own token-builder copies, 4 layers (confirmed) |
 | 7 | target episode scale | **after the embedder succeeds**; throughput target and league design follow |
 | 8 | belief | **learned hidden-card belief module** on self-play labels, reading the deck-context posterior and (later) the archetype posterior; a separate module whose outputs are policy features, §8a |
 
