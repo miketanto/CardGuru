@@ -129,7 +129,7 @@ class AttnPolicy(nn.Module):
         self.value_head = nn.Sequential(nn.Linear(d, 64), nn.ReLU(), nn.Linear(64, 1))
 
     def initial_hidden(self, batch=1):
-        z = torch.zeros(batch, self.d)
+        z = torch.zeros(batch, self.d, device=next(self.parameters()).device)
         return (z, z.clone())
 
     def forward(self, state, cands, mask, hidden=None):
@@ -189,6 +189,10 @@ class EntityObs:
 
     def size(self, dim=0):
         return self.g.size(dim)
+
+    def to(self, device):
+        return EntityObs(self.g.to(device), self.e.to(device),
+                         self.mask.to(device), self.rel.to(device))
 
     @staticmethod
     def stack(items):
@@ -354,6 +358,20 @@ def build_net(arch, sdim, cdim, gdim=GDIM, edim=EDIM,
     raise ValueError(f"unknown arch {arch}")
 
 
+DEVICE = torch.device("cpu")   # rebound by --device in __main__
+
+
+def _to_cpu(obj):
+    """Recursively move tensors in a state_dict-like structure to CPU."""
+    if torch.is_tensor(obj):
+        return obj.detach().cpu()
+    if isinstance(obj, dict):
+        return {k: _to_cpu(v) for k, v in obj.items()}
+    if isinstance(obj, (list, tuple)):
+        return type(obj)(_to_cpu(v) for v in obj)
+    return obj
+
+
 class Trainer:
     def __init__(self, ckpt, seed, log_path, sdim=SDIM, cdim=CDIM,
                  shape=0.0, phi_scale=2000.0, arch="e0",
@@ -384,7 +402,13 @@ class Trainer:
         # logp is stored under the ACTUAL (tempered) sampling
         # distribution; PPO's ratio does the off-policy correction.
         self.desperation = desperation
-        self.net = build_net(arch, sdim, cdim, gdim, edim, n_rtypes)
+        # --device (THROUGHPUT-LOCAL.md). The net, optimizer state and the
+        # PPO batch live here; per-consult tensors are built on CPU from
+        # the wire lists and moved once, and the trajectory buffer stays
+        # on CPU. Checkpoints are always written as CPU tensors so every
+        # reader (lane, init script, probes) stays device-agnostic.
+        self.device = DEVICE
+        self.net = build_net(arch, sdim, cdim, gdim, edim, n_rtypes).to(DEVICE)
         self.opt = torch.optim.Adam(self.net.parameters(), lr=LR)
         self.ckpt = ckpt
         self.log_path = log_path
@@ -402,13 +426,15 @@ class Trainer:
                     "--oracle needs the v6 entity path (arch=entattn); "
                     "the privileged rows ARE entity rows")
             self.oracle_critic = OracleCritic(gdim, edim,
-                                              n_rtypes=n_rtypes)
+                                              n_rtypes=n_rtypes).to(DEVICE)
             self.copt = torch.optim.Adam(
                 self.oracle_critic.used_parameters(), lr=LR)
         self.episodes_seen = 0
         self.updates = 0
         if ckpt and os.path.exists(ckpt):
-            data = torch.load(ckpt, weights_only=False)
+            # load_state_dict copies into the (device) params; Adam's
+            # load_state_dict moves its state to the params' device.
+            data = torch.load(ckpt, map_location="cpu", weights_only=False)
             ck_arch = data.get("arch", "e0")
             if ck_arch != arch:
                 raise RuntimeError(
@@ -591,6 +617,7 @@ class Trainer:
             else:
                 s = torch.tensor(state).unsqueeze(0)
                 store = s[0]
+            s = s.to(self.device)      # `store` stays the CPU copy
             k = len(cands)
             if k > MAX_K:
                 # Without this the assignment below fails with a tensor
@@ -607,6 +634,8 @@ class Trainer:
             c[0, :k] = torch.tensor(cands)
             m = torch.zeros(1, MAX_K, dtype=torch.bool)
             m[0, :k] = True
+            c_cpu, m_cpu = c[0], m[0]   # what the buffer stores
+            c, m = c.to(self.device), m.to(self.device)
             if self.recurrent:
                 hin = sink.hidden if sink.hidden is not None \
                     else self.net.initial_hidden(1)
@@ -624,11 +653,12 @@ class Trainer:
                 a = int(dist.sample())
                 import math
                 (self.buf if session is None else session.pending).append(
-                    (store, c[0], m[0], a,
-                                 float(dist.log_prob(torch.tensor(a))),
+                    (store, c_cpu, m_cpu, a,
+                                 float(dist.log_prob(
+                                     torch.tensor(a, device=lg.device))),
                                  float(value[0]),
                                  math.tanh(phi / self.phi_scale),
-                     (hin[0][0].clone(), hin[1][0].clone())
+                     (hin[0][0].clone().cpu(), hin[1][0].clone().cpu())
                      if self.recurrent else None,
                      store_or))
             else:
@@ -669,7 +699,11 @@ class Trainer:
         masks = torch.stack([b[2] for b in self.buf])
         actions = torch.tensor([b[3] for b in self.buf])
         old_logp = torch.tensor([b[4] for b in self.buf])
-        values = torch.tensor([b[5] for b in self.buf])
+        values = torch.tensor([b[5] for b in self.buf])   # CPU: GAE loop below
+        # one bulk move; the buffer itself stays on CPU
+        dev = self.device
+        states, cands, masks = states.to(dev), cands.to(dev), masks.to(dev)
+        actions, old_logp = actions.to(dev), old_logp.to(dev)
         # ORACLE GUIDING. Recompute the baseline from the privileged
         # critic BEFORE GAE, so every residual gamma*V(s')-V(s) - which
         # with terminal-only reward is the entire dense credit path - is
@@ -684,9 +718,9 @@ class Trainer:
             self.oracle_cover = len(have) / float(len(self.buf))
             with torch.no_grad():
                 ov = self.oracle_critic(
-                    EntityObs.stack([or_obs[i] for i in have]))
+                    EntityObs.stack([or_obs[i] for i in have]).to(dev))
             values = values.clone()
-            values[torch.tensor(have)] = ov.float()
+            values[torch.tensor(have)] = ov.float().cpu()
 
         phis = [b[6] if len(b) > 6 else 0.0 for b in self.buf]
         if self.recurrent:
@@ -765,8 +799,9 @@ class Trainer:
             with torch.no_grad():
                 for lo in range(0, n_all, CH):
                     preds.append(self.oracle_critic(_batch(lo, min(lo + CH, n_all))))
-            cv = torch.cat(preds)
+            cv = torch.cat(preds).cpu()
             tv = mc.var()
+            mc_dev = mc.to(dev)
             self.critic_ev = (float(1.0 - (mc - cv).var() / tv)
                               if float(tv) > 1e-8 else float("nan"))
 
@@ -775,7 +810,7 @@ class Trainer:
                     hi = min(lo + CH, n_all)
                     self.copt.zero_grad()
                     loss = ((self.oracle_critic(_batch(lo, hi))
-                             - mc[lo:hi]) ** 2).mean()
+                             - mc_dev[lo:hi]) ** 2).mean()
                     loss.backward()
                     nn.utils.clip_grad_norm_(
                         self.oracle_critic.used_parameters(), 0.5)
@@ -783,6 +818,7 @@ class Trainer:
 
         if adv.std() > 1e-6:
             adv = (adv - adv.mean()) / (adv.std() + 1e-8)
+        adv, ret = adv.to(dev), ret.to(dev)
 
         if self.recurrent:
             # Phase 7: TRUE BPTT - replay each episode as a sequence
@@ -919,8 +955,8 @@ class Trainer:
             # atomic: a SIGKILL mid-save must never corrupt the ckpt
             # (a truncated net.pt took down a league run once)
             tmp = self.ckpt + ".tmp"
-            blob = {"net": self.net.state_dict(),
-                    "opt": self.opt.state_dict(),
+            blob = {"net": _to_cpu(self.net.state_dict()),
+                    "opt": _to_cpu(self.opt.state_dict()),
                     "episodes": self.episodes_seen,
                     "updates": self.updates,
                     "arch": self.arch,
@@ -929,8 +965,8 @@ class Trainer:
             # oracle checkpoint still LOADS on a non-oracle server (the
             # extra keys are ignored) and the arms stay swappable.
             if self.oracle_critic is not None:
-                blob["oracle_critic"] = self.oracle_critic.state_dict()
-                blob["oracle_opt"] = self.copt.state_dict()
+                blob["oracle_critic"] = _to_cpu(self.oracle_critic.state_dict())
+                blob["oracle_opt"] = _to_cpu(self.copt.state_dict())
             torch.save(blob, tmp)
             os.replace(tmp, self.ckpt)
 
@@ -1170,7 +1206,8 @@ def serve(port, trainer, threads=1):
     srv.bind(("127.0.0.1", port))
     srv.listen(max(4, threads))
     print(f"policy server on :{port}"
-          + (f" (threads={threads})" if threads > 1 else ""), flush=True)
+          + (f" (threads={threads})" if threads > 1 else "")
+          + f" device={trainer.device}", flush=True)
     if threads <= 1:
         while True:
             conn, _ = srv.accept()
@@ -1233,7 +1270,14 @@ if __name__ == "__main__":
                     help="candidate buffer; raise for joint assignment")
     ap.add_argument("--desperation", type=float, default=0.0,
                     help="C7: losing-state exploration temperature gain")
+    ap.add_argument("--device", default="cpu", choices=["cpu", "cuda"],
+                    help="where the net, optimizer and PPO batch live "
+                         "(default cpu = unchanged behaviour)")
     args = ap.parse_args()
+    if args.device == "cuda" and not torch.cuda.is_available():
+        raise RuntimeError("--device cuda requested but "
+                           "torch.cuda.is_available() is False")
+    DEVICE = torch.device(args.device)
     # module scope (this is the __main__ block, not a function), so these
     # rebind the module globals directly - a `global` statement here is
     # both unnecessary and a SyntaxError after the earlier assignment
