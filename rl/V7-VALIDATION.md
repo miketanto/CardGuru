@@ -109,3 +109,66 @@ about the XMage ladder decks' archetypes (37 of 8,035 lists), or about
 formats the RL decks are not drawn from; it is a pretraining corpus for
 L1, not an evaluation set.
 
+## 1d — card embedder `card_emb_v2` — **FAIL** on the swap-pair bar (Lane A, 2026-09-10 18:10)
+
+Seed 0, 30 epochs, `--positives same --distill 10` (commit 8aa280e). Final
+retrieval r@1 train 0.776 / held-out 0.740. Same gates file, same thresholds:
+
+| gate | threshold | measured (held-out) | train | result |
+|---|---|---|---|---|
+| G1 mv / power / toughness probe acc | ≥ 0.9 | 0.949 / 0.969 / 0.963 | 0.965 / 0.983 / 0.978 | pass |
+| G1 colours (5), types (6), keywords (11), answer classes (5) | ≥ 0.97 acc / ≥ 0.8 f1 | min 0.995 / 0.999 / 0.966 / 0.925 | | pass |
+| G2 Cancel / Counterspell cos | ≥ 0.85 | 0.999 (rank 1) | | pass |
+| G2 Spell Snare / Force Spike | ≤ 0.849, Spike ∉ Snare top-10 | **0.839, rank 31** (v1: 0.957, rank ≤ 10) | | **pass** |
+| G2 functional reprints in top-3 | all 10 | 10 / 10 | | pass |
+| G2 P8 swap pairs cos | min ≥ μ+2σ = 0.618, mean ≥ μ+4σ = 0.867 | min 0.547, mean 0.757 (random μ 0.370 σ 0.124) | | **FAIL** |
+| G3 determinism | | seed 1 training | | pending |
+
+The v2 objective did what it was built for: the text-only distinction
+survives (Snare/Spike). The remaining failure is on the swap-pair bar,
+and the per-pair readout says the bar, not the embedding, is the
+problem in 13 of 16 pairs:
+
+| pair | cos | partner's rank among 35,478 (a→b, b→a) |
+|---|---|---|
+| Spell Pierce / Concerted Defense | 0.901 | 10, 2 |
+| Spell Pierce / Stubborn Denial | 0.874 | 22, 5 |
+| Spell Snare / Dispel | 0.868 | 12, 40 |
+| Bitter Triumph / Easy Prey | 0.828 | 14, 10 |
+| We Say Thee Nay! / Don't Make a Sound | 0.821 | 63, 57 |
+| We Say Thee Nay! / Clash of Wills | 0.812 | 77, 68 |
+| Shoot the Sheriff / Cradle to Grave | 0.810 | 26, 39 |
+| Bitter Triumph / Go for the Throat | 0.795 | 33, 80 |
+| Spyglass Siren / Faerie Miscreant | 0.782 | 48, 78 |
+| Shoot the Sheriff / Eliminate | 0.771 | 48, 28 |
+| Spyglass Siren / Faerie Seer | 0.726 | 292, 96 |
+| The Wondrous Wasp / Plumecreed Escort | 0.703 | 377, 240 |
+| Floodpits Drowner / Zephyr Sentinel | 0.676 | 169, 297 |
+| Elektra, Daughter of the Hand / Fathom Fleet Cutthroat | 0.608 | 2736, 1110 |
+| Requiting Hex / Cut Down | 0.547 | 1659, 2099 |
+| Elektra, Daughter of the Hand / Ravenous Chupacabra | 0.590 | 3449, 2352 |
+
+**Correction to the gate, in the open.** The pre-registered swap bar was
+written in cosine units relative to random pairs (μ + kσ). That form is
+not scale-free: v1's space had μ = 0.13, v2's (anchored to MiniLM's
+geometry) has μ = 0.37, so the same k demands cos 0.867 — above the
+≥ 0.70 near-duplicate band PHASE-E3 used for Cancel/Counterspell-class
+pairs. A bar that a functional near-reprint would fail is mis-specified.
+From v3 on the swap gate is rank-based (scale-free), pre-registered here
+before v3 exists and NOT applied retroactively to v2's verdict:
+
+- every pair: partner within the top-500 (1.4 %) in both directions, for
+  at least 14 of 16 pairs;
+- median of the 32 directed ranks ≤ 50.
+
+v2 would fail that too (13 of 16), so it is not a bar tuned to pass v2.
+The three failing pairs share a cause visible in the text channel:
+`Elektra, Daughter of the Hand` is mostly Sneak reminder text, and
+Requiting Hex is mostly blight reminder text, so the anchored text view
+puts them near other reminder-heavy cards rather than near their
+mechanical twins. v3 therefore changes two things, both stated before
+training: (1) parenthetical reminder text is stripped from the text
+channel (`rl/cardemb/data.py`), (2) `--distill 3` instead of 10 so the
+structure channels carry more of e_card's geometry. Same recipe
+otherwise, seeds 0 and 1.
+
