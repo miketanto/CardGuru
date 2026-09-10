@@ -662,6 +662,7 @@ class Trainer:
         if not self.buf:
             self.completed = []
             return
+        self._update_t0 = time.time()   # wall clock, reported by _finish_update
         states = (EntityObs.stack([b[0] for b in self.buf]) if self.entity
                   else torch.stack([b[0] for b in self.buf]))
         cands = torch.stack([b[1] for b in self.buf])
@@ -887,12 +888,14 @@ class Trainer:
         self.updates += 1
         wr = sum(1 for _, _, r in self.completed if r > 0) / len(self.completed)
         mean_abs_phi = sum(abs(p) for p in phis) / max(1, len(phis))
+        update_s = time.time() - getattr(self, "_update_t0", time.time())
         line = (f"update={self.updates} episodes={self.episodes_seen} "
                 f"batch_eps={len(self.completed)} steps={n} "
                 f"batch_win_rate={wr:.3f} mean_abs_phi={mean_abs_phi:.3f} "
                 f"value_ev={getattr(self, 'last_ev', float('nan')):.4f} "
                 f"oracle_cover={getattr(self, 'oracle_cover', 0.0):.3f} "
-                f"critic_ev={getattr(self, 'critic_ev', float('nan')):.4f}")
+                f"critic_ev={getattr(self, 'critic_ev', float('nan')):.4f} "
+                f"update_s={update_s:.2f}")
         print("TRAIN|" + line, flush=True)
         if self.log_path:
             with open(self.log_path, "a") as f:
@@ -900,7 +903,10 @@ class Trainer:
                         f"{n},{wr:.4f},"
                         f"{getattr(self, 'last_ev', float('nan')):.4f},"
                         f"{getattr(self, 'critic_ev', float('nan')):.4f},"
-                        f"{getattr(self, 'oracle_cover', 0.0):.3f}\n")
+                        f"{getattr(self, 'oracle_cover', 0.0):.3f},"
+                        # col 9 (added 2026-09-10): update() wall seconds.
+                        # ev_probe.sh reads cols 2-8 by position; unaffected.
+                        f"{update_s:.2f}\n")
         self.buf = []
         self.completed = []
         self.ep_start = 0
