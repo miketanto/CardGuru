@@ -24,6 +24,7 @@ import re
 import subprocess
 import sys
 import time
+import uuid
 
 SCHEMAS = {
     "mulligan": '{"mulligan": true|false, "why": "...", "plan": "..."}',
@@ -111,7 +112,15 @@ def main():
         if session_id:
             cmd += ["--resume", session_id]
         else:
-            cmd += ["--append-system-prompt-file", args.system]
+            # Pin a fresh session id. Without this, a `claude -p` child
+            # launched from inside a Claude Code session inherits that
+            # session's id from the environment, and every game (and every
+            # concurrent game) resumes one shared transcript: the pilot's
+            # context fills with other games' decisions, compacts every few
+            # calls, and a decision can cost 60-150 s instead of 5-20 s.
+            fresh = str(uuid.uuid4())
+            cmd += ["--session-id", fresh,
+                    "--append-system-prompt-file", args.system]
         # The CLI fails transiently (empty stderr, non-zero exit) often
         # enough that a single failure used to cost a decision — the bridge
         # then fell back to dumb_policy. Retry with backoff; only give up
