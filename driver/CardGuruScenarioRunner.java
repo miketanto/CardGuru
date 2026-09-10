@@ -2080,27 +2080,40 @@ class InteractiveTestPlayer extends TestPlayer {
         if (opp == null) {
             return null;
         }
-        ActivatedAbility best = null;
-        int bestMv = -1;
-        for (ActivatedAbility a : opp.getPlayable(sim, true)) {
-            if (a instanceof mage.abilities.mana.ManaAbility
-                    || a instanceof PlayLandAbility) {
-                continue;
+        // They can only respond while holding priority, and at every window
+        // this is called from the copy's priority is with ME (I just cast,
+        // or I just declared blocks). Without this, getPlayable returned
+        // nothing for them in 128 straight copies of g9. Hand it over for
+        // the lookup and the activation, then hand it back.
+        UUID prevPriority = sim.getState().getPriorityPlayerId();
+        sim.getState().setPriorityPlayerId(oppId);
+        try {
+            ActivatedAbility best = null;
+            int bestMv = -1;
+            for (ActivatedAbility a : opp.getPlayable(sim, true)) {
+                if (a instanceof mage.abilities.mana.ManaAbility
+                        || a instanceof PlayLandAbility) {
+                    continue;
+                }
+                int mv = a.getManaCosts() == null ? 0 : a.getManaCosts().manaValue();
+                if (mv > bestMv) {
+                    bestMv = mv;
+                    best = a;
+                }
             }
-            int mv = a.getManaCosts() == null ? 0 : a.getManaCosts().manaValue();
-            if (mv > bestMv) {
-                bestMv = mv;
-                best = a;
+            if (best == null) {
+                return null;
             }
-        }
-        if (best == null) {
+            if (opp.activateAbility(best.copy(), sim)) {
+                projRespondFired++;
+                return String.valueOf(best);
+            }
             return null;
+        } finally {
+            if (prevPriority != null) {
+                sim.getState().setPriorityPlayerId(prevPriority);
+            }
         }
-        if (opp.activateAbility(best.copy(), sim)) {
-            projRespondFired++;
-            return String.valueOf(best);
-        }
-        return null;
     }
 
     /** What I could do right now on their turn: playable, non-mana,

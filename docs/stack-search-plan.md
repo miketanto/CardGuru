@@ -321,6 +321,23 @@ failure; "I tapped out and they resolved a bomb" was.
   Not paralysis — with no cards the tree has no candidates and does not
   search.
 
+- **Arm (f)** — built behind `cardguru.respond=true` on top of (e)
+  (`b206004`): the opponent's best instant-speed play from the seated hand
+  at the three windows after my own action (my spell on the stack; my
+  permanent resolved with ETB done; my blockers declared). No extra
+  branching — the reseated hand is the chance layer.
+
+  **Bug in the first run (g9, seed 31):** `respond_on=True` but
+  `resp_fired=0` across 128 copies. `getPlayable` for the opponent
+  returned nothing because at every one of those windows the copy's
+  priority is with *me* (I just cast, or just declared blocks); (e)'s
+  main-phase play worked only because `beginOpponentTurn` hands them
+  priority first. Fixed: `opponentRespond` takes priority for the lookup
+  and activation and hands it back. g9 is therefore **behaviourally arm
+  (e) on seed 31** — kept as a second arm-(e) deal, not as arm (f). The
+  fixed arm (f) runs on seed 31 immediately after it for a same-deal
+  (e)-vs-(f) comparison (mulligan choice may still diverge the library).
+
 - **Gap found while reviewing blocks (all games):** neither the pilot nor
   the block search ever considers that an unblocked attacker can become
   Kaito via ninjutsu. 20 block decisions across g5–g8, zero mentions;
