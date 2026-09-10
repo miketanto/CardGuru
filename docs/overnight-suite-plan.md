@@ -150,6 +150,17 @@ applies to any claim about win rate.
   `MAX_THINKING_TOKENS=31999` from the launching environment. Left as-is
   for the suite so effort is not a confound across models; it is the one
   knob if games need to be faster.
+- **06:31 haiku s23 FAIL at turn 12 (69 min): `IllegalStateException:
+  JsonNull`.** The pilot answered `{"choice": null, "why": "Awaiting next
+  game state…"}` at its own upkeep and the driver's `getAsInt()` threw.
+  Fixed on both sides: the driver reads every integer field through
+  null-tolerant helpers (`intOr`/`intOf`/`arrOr`, a non-number is "no
+  pick" and falls through to the existing fallback), and the daemon
+  treats a null required key as a schema violation and retries with the
+  reminder. The two games already running (haiku s31, sonnet s23) carry
+  the old code; the runner only skips *completed* jobs, so haiku s23 is
+  re-queued by the next `launch_suite.sh` (the hourly Routine issues it
+  when the runner has exited with jobs unfinished).
 
 ## Exit
 

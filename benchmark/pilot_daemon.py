@@ -178,8 +178,11 @@ def main():
             text = call_pilot(prompt)
             resp = extract_json(text)
             missing = None
-            if resp is None or KEY_FOR.get(kind, "choice") not in resp:
-                missing = f"the required key for kind '{kind}'"
+            # A key set to null counts as missing: haiku answered
+            # {"choice": null} at an upkeep window and the driver's
+            # getAsInt() on a JSON null killed a 69-minute game.
+            if resp is None or resp.get(KEY_FOR.get(kind, "choice")) is None:
+                missing = f"the required key for kind '{kind}' (non-null)"
             elif kind in PLAN_REQUIRED:
                 p = resp.get("plan")
                 if not isinstance(p, str) or not p.strip():

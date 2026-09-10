@@ -826,6 +826,33 @@ class InteractiveTestPlayer extends TestPlayer {
      * controlling one (turn 9), hit the legend rule, and had to bin a
      * four-mana card it had just paid for. Nothing it was sent said Kaito
      * was legendary — not the type line, not the rules text. */
+    // Null-tolerant readers for pilot replies. A model can answer
+    // {"choice": null} or {"targets": [null]}; Gson's getAsInt() on a
+    // JsonNull throws, and one such reply killed a 69-minute game. Anything
+    // that is not a number reads as the default, which every caller treats
+    // as "no valid pick" and falls through to its existing fallback.
+    private static int intOf(JsonElement e, int def) {
+        if (e == null || e.isJsonNull() || !e.isJsonPrimitive()) {
+            return def;
+        }
+        try {
+            return e.getAsInt();
+        } catch (RuntimeException ex) {
+            return def;
+        }
+    }
+
+    private static int intOr(JsonObject o, String key, int def) {
+        return o != null && o.has(key) ? intOf(o.get(key), def) : def;
+    }
+
+    private static JsonArray arrOr(JsonObject o, String key) {
+        if (o != null && o.has(key) && o.get(key).isJsonArray()) {
+            return o.getAsJsonArray(key);
+        }
+        return new JsonArray();
+    }
+
     private static String typeLine(MageObject o, Game game) {
         String sup = String.valueOf(o.getSuperType(game));
         String types = String.valueOf(o.getCardType(game));
@@ -970,7 +997,7 @@ class InteractiveTestPlayer extends TestPlayer {
         req.add("options", opts);
 
         JsonObject resp = ask(req);
-        int choice = resp.has("choice") ? resp.get("choice").getAsInt() : 0;
+        int choice = intOr(resp, "choice", 0);
         if (choice >= 1 && choice <= playable.size()) {
             ActivatedAbility picked = playable.get(choice - 1);
             if (getComputerPlayer().activateAbility(picked.copy(), game)) {
@@ -1061,8 +1088,8 @@ class InteractiveTestPlayer extends TestPlayer {
         req.add("options", opts);
         JsonObject resp = ask(req);
         if (resp.has("targets")) {
-            for (JsonElement e : resp.getAsJsonArray("targets")) {
-                int idx = e.getAsInt();
+            for (JsonElement e : arrOr(resp, "targets")) {
+                int idx = intOf(e, -1);
                 if (idx >= 0 && idx < possible.size()
                         && target.getTargets().size() < max) {
                     target.addTarget(possible.get(idx), source, game);
@@ -1134,8 +1161,8 @@ class InteractiveTestPlayer extends TestPlayer {
                 req.add("options", opts);
                 JsonObject resp = ask(req);
                 if (resp.has("targets")) {
-                    for (JsonElement e : resp.getAsJsonArray("targets")) {
-                        int idx = e.getAsInt();
+                    for (JsonElement e : arrOr(resp, "targets")) {
+                        int idx = intOf(e, -1);
                         if (idx >= 0 && idx < possible.size()
                                 && target.getTargets().size() < max) {
                             target.addTarget(possible.get(idx), source, game);
@@ -1163,7 +1190,7 @@ class InteractiveTestPlayer extends TestPlayer {
             req.addProperty("max", max);
             req.addProperty("mana_pay", isManaPay);
             JsonObject resp = ask(req);
-            int x = resp.has("x") ? resp.get("x").getAsInt() : min;
+            int x = intOr(resp, "x", min);
             return Math.max(min, Math.min(max, x));
         }
         return super.announceX(min, max, message, game, source, isManaPay);
@@ -1206,7 +1233,7 @@ class InteractiveTestPlayer extends TestPlayer {
                 }
                 req.add("options", opts);
                 JsonObject resp = ask(req);
-                int c = resp.has("choice") ? resp.get("choice").getAsInt() : -1;
+                int c = intOr(resp, "choice", -1);
                 if (c >= 0 && c < avail.size()) {
                     return avail.get(c);
                 }
@@ -1273,7 +1300,7 @@ class InteractiveTestPlayer extends TestPlayer {
                 }
                 req.add("options", opts);
                 JsonObject resp = ask(req);
-                int c = resp.has("choice") ? resp.get("choice").getAsInt() : -1;
+                int c = intOr(resp, "choice", -1);
                 if (c >= 0 && c < texts.size()) {
                     if (keys != null) {
                         choice.setChoiceByKey(keys.get(c));
@@ -1333,8 +1360,8 @@ class InteractiveTestPlayer extends TestPlayer {
 
         JsonObject resp = ask(req);
         if (resp.has("attackers")) {
-            for (JsonElement e : resp.getAsJsonArray("attackers")) {
-                int idx = e.getAsInt();
+            for (JsonElement e : arrOr(resp, "attackers")) {
+                int idx = intOf(e, -1);
                 if (idx >= 0 && idx < attackers.size()) {
                     Permanent atk = attackers.get(idx);
                     if (defenderId != null && atk.canAttack(defenderId, game)) {
@@ -1393,10 +1420,13 @@ class InteractiveTestPlayer extends TestPlayer {
 
         JsonObject resp = ask(req);
         if (resp.has("blocks")) {
-            for (JsonElement e : resp.getAsJsonArray("blocks")) {
+            for (JsonElement e : arrOr(resp, "blocks")) {
+                if (!e.isJsonArray() || e.getAsJsonArray().size() < 2) {
+                    continue;
+                }
                 JsonArray pair = e.getAsJsonArray();
-                int b = pair.get(0).getAsInt();
-                int a = pair.get(1).getAsInt();
+                int b = intOf(pair.get(0), -1);
+                int a = intOf(pair.get(1), -1);
                 if (b >= 0 && b < blockers.size() && a >= 0 && a < attackers.size()) {
                     getComputerPlayer().declareBlocker(defendingPlayerId,
                             blockers.get(b).getId(), attackers.get(a).getId(), game);
