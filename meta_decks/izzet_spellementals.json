@@ -1,0 +1,29 @@
+{
+ "archetype": "Izzet Spellementals",
+ "colors": "UR",
+ "source": "MTGO Standard Challenge 32, 2026-09-08, 1st place 8-2 (core confirmed from search snippets: 4 Sunderflock, 4 Eddymurk Crab, 4 Hearth Elemental, 4 Opt, 4 Sleight of Hand, 4 Winternight Stories, Burst Lightning, Spell Snare, Glacial Dragonhunt, 4 Steam Vents, 4 Spirebluff Canal, 4 Riverpyre Verge). Counts for the three interaction spells, the last four spell slots and the basics are reconstructed from the archetype's typical build.",
+ "cards": {
+  "Steam Vents": 4,
+  "Spirebluff Canal": 4,
+  "Riverpyre Verge": 4,
+  "Island": 7,
+  "Mountain": 3,
+  "Hearth Elemental": 4,
+  "Eddymurk Crab": 4,
+  "Sunderflock": 4,
+  "Opt": 4,
+  "Sleight of Hand": 4,
+  "Winternight Stories": 4,
+  "Burst Lightning": 4,
+  "Spell Snare": 3,
+  "Glacial Dragonhunt": 3,
+  "Stock Up": 2,
+  "Torch the Tower": 2
+ },
+ "tricks": [
+  {"card": "Burst Lightning", "kind": "removal", "cost": 1},
+  {"card": "Spell Snare", "kind": "counter", "cost": 1},
+  {"card": "Glacial Dragonhunt", "kind": "removal", "cost": 2},
+  {"card": "Torch the Tower", "kind": "removal", "cost": 1}
+ ]
+}

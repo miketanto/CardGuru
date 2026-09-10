@@ -27,6 +27,45 @@ import time
 HERE = os.path.dirname(os.path.abspath(__file__))
 DECK = "dimir_midrange"
 BRIEFING = "pilot_dimir_mirror.md"
+META = os.path.join(os.path.dirname(HERE), "meta_decks")
+
+
+def deck_json(name):
+    with open(os.path.join(META, name + ".json"), encoding="utf-8") as f:
+        return json.load(f)
+
+
+def compose_briefing(deck_a, deck_b, out_path):
+    """The mirror briefing with its matchup section replaced by both decks'
+    full lists, so a pilot on a new deck knows what it is playing and what
+    it is playing against. Everything else in the briefing is deck-neutral
+    (the Dimir names in its examples are examples)."""
+    if deck_a == DECK and deck_b == DECK:
+        return os.path.join(HERE, BRIEFING)
+    base = open(os.path.join(HERE, BRIEFING), encoding="utf-8").read()
+    a, b = deck_json(deck_a), deck_json(deck_b)
+
+    def listing(d):
+        return "\n".join(f"- {n} x{c}" for c, n in
+                         sorted(((c, n) for n, c in d["cards"].items()),
+                                key=lambda x: (-x[0], x[1])))
+    section = (
+        "## Your deck and the matchup\n\n"
+        f"You are playing **{a['archetype']}** ({a['colors']}). Your 60:\n\n"
+        f"{listing(a)}\n\n"
+        f"The opponent is playing **{b['archetype']}** ({b['colors']}):\n\n"
+        f"{listing(b)}\n\n"
+        "Card text for every visible card arrives in `card_reference` on each "
+        "request; for cards not yet seen, reason from the lists above and "
+        "read them when they appear. Work out the matchup yourself from the "
+        "cards: what each deck is trying to do, which of your cards answer "
+        "their key cards, and what you must hold up.\n\n")
+    start = base.index("## Your deck and the matchup")
+    end = base.index("## Before every decision")
+    text = base[:start] + section + base[end:]
+    with open(out_path, "w", encoding="utf-8") as f:
+        f.write(text)
+    return out_path
 
 
 def next_game_number(results_path):
@@ -67,17 +106,19 @@ def run_one(args, g, out_dir, results_path):
         else:
             seed = args.seed + idx
 
+    briefing = compose_briefing(args.deck_a, args.deck_b,
+                                os.path.join(out_dir, f"briefing_g{g}.md"))
     daemon = subprocess.Popen(
         [sys.executable, os.path.join(HERE, "pilot_daemon.py"),
          "--esc-dir", esc, "--log", daemon_log, "--model", args.model,
-         "--system", os.path.join(HERE, BRIEFING), "--start", start],
+         "--system", briefing, "--start", start],
         stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
 
     cmd = [sys.executable, os.path.join(HERE, "llm_bridge.py"),
            "--mage-repo", args.mage_repo, "--esc-dir", esc,
            "--log", game_log, "--compact", "--search", args.search,
            "--timeout", str(args.timeout),
-           "--deck-a", DECK, "--deck-b", DECK]
+           "--deck-a", args.deck_a, "--deck-b", args.deck_b]
     if seed is not None:
         cmd += ["--seed", str(seed)]
     if args.opp_think_secs is not None:
@@ -139,7 +180,7 @@ def run_one(args, g, out_dir, results_path):
     # game files cannot say which pilot played, and the overnight suite
     # runs four models under one directory layout.
     row = {"game": g, "start": start, "seed": seed, "search": args.search,
-           "model": args.model,
+           "model": args.model, "deck_a": args.deck_a, "deck_b": args.deck_b,
            "driver_props": os.environ.get("CARDGURU_DRIVER_PROPS", ""),
            "result": result, "wall_s": wall, "sources": sources,
            "searches": searches, "ts": round(time.time(), 1)}
@@ -160,13 +201,14 @@ def run_one(args, g, out_dir, results_path):
             [sys.executable, os.path.join(HERE, "replay_export.py"),
              "--log", game_log,
              "--out", os.path.join(out_dir, f"g{g}.html"),
-             "--title", f"Dimir Mirror g{g}",
-             "--subtitle", f"Dimir midrange mirror, pilot on the "
+             "--title", f"{deck_json(args.deck_a)['archetype']} vs "
+                        f"{deck_json(args.deck_b)['archetype']} g{g}",
+             "--subtitle", f"Pilot on the "
                            f"{'play' if start == 'A' else 'draw'}"
                            f"{f', seed {seed}' if seed is not None else ''}. "
                            f"Winner: {'pilot' if winner == 'A' else 'MAD'}.",
-             "--player-a", f"{args.model} — Dimir (A)",
-             "--player-b", "MAD — Dimir (B)"],
+             "--player-a", f"{args.model} — {deck_json(args.deck_a)['archetype']} (A)",
+             "--player-b", f"MAD — {deck_json(args.deck_b)['archetype']} (B)"],
             capture_output=True)
         subprocess.run(
             [sys.executable, os.path.join(HERE, "review_game.py"), game_log,
@@ -198,6 +240,10 @@ def main():
                     help="consecutive games share a seed with the start "
                          "swapped, so a pair sees the same deal both ways")
     ap.add_argument("--opp-think-secs", type=int, default=None)
+    ap.add_argument("--deck-a", default=DECK,
+                    help="pilot's deck: a meta_decks/<name>.json archetype")
+    ap.add_argument("--deck-b", default=DECK,
+                    help="MAD's deck: a meta_decks/<name>.json archetype")
     args = ap.parse_args()
 
     os.makedirs(args.out_dir, exist_ok=True)

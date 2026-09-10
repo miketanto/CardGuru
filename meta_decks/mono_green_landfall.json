@@ -1,0 +1,23 @@
+{
+ "archetype": "Mono-Green Landfall",
+ "colors": "G",
+ "source": "magic.gg Metagame Mentor, September 2026 RCQ list (57 of 60 slots confirmed from search snippets: 14 Forest, 4 Escape Tunnel, 4 Fabled Passage, 4 Llanowar Elves, 4 Sazh's Chocobo, 4 Earthbender Ascension, 4 Icetill Explorer, 4 Mightform Harmonizer, 4 Esper Origins, 3 Sapling Nursery, plus 4 Badgermole Cub and Mossborn Hydra / Surrak from the Aug-Sep Melee and MTGO lists). Last three slots reconstructed: 4th Mossborn Hydra, 2 Surrak, 15th Forest.",
+ "cards": {
+  "Forest": 15,
+  "Escape Tunnel": 4,
+  "Fabled Passage": 4,
+  "Llanowar Elves": 4,
+  "Sazh's Chocobo": 4,
+  "Badgermole Cub": 4,
+  "Icetill Explorer": 4,
+  "Mightform Harmonizer": 4,
+  "Earthbender Ascension": 4,
+  "Esper Origins": 4,
+  "Sapling Nursery": 3,
+  "Mossborn Hydra": 4,
+  "Surrak, Elusive Hunter": 2
+ },
+ "tricks": [
+  {"card": "Esper Origins", "kind": "pump", "power": 2, "toughness": 2, "cost": 3}
+ ]
+}
