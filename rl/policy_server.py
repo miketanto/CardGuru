@@ -413,6 +413,7 @@ class Trainer:
         self.ckpt = ckpt
         self.log_path = log_path
         self.frozen = False
+        self.batcher = None     # InferenceBatcher when --batch-max > 1
         # Asymmetric critic. None => the policy's own value head
         # supplies GAE, exactly as before.
         self.oracle_critic = None
@@ -639,9 +640,19 @@ class Trainer:
             if self.recurrent:
                 hin = sink.hidden if sink.hidden is not None \
                     else self.net.initial_hidden(1)
-                logits, value, sink.hidden = self.net(s, c, m, hin)
             else:
                 hin = None
+            batcher = getattr(self, "batcher", None)
+            if batcher is not None:
+                # --batch-max > 1: the forward runs in the batcher thread
+                # under the consult lock; everything else in act() is
+                # per-request and per-session (plan §2a)
+                logits, value, hout = batcher.infer(s, c, m, hin)
+                if self.recurrent:
+                    sink.hidden = hout
+            elif self.recurrent:
+                logits, value, sink.hidden = self.net(s, c, m, hin)
+            else:
                 logits, value = self.net(s, c, m)
             if sample:
                 lg = logits[0]
@@ -1032,20 +1043,168 @@ class InferenceBatcher:
       stats()                  dict for the RLBATCH| line
     """
 
-    def __init__(self, net, recurrent, lock, batch_max, wait_ms):
-        raise NotImplementedError("InferenceBatcher: stub (plan §5 step 2)")
+    def __init__(self, net, recurrent, lock, batch_max, wait_ms,
+                 stats_every=2000):
+        import queue
+        self.net, self.recurrent, self.lock = net, recurrent, lock
+        self.batch_max = max(1, int(batch_max))
+        self.wait_s = max(0.0, float(wait_ms)) / 1000.0
+        self.q = queue.Queue()
+        self.thread = None
+        # RLBATCH| accounting (plan §2c): a batch-size histogram is what
+        # says whether concurrency produced simultaneous consults at all
+        self.stats_every = stats_every
+        self._slock = threading.Lock()
+        self.n_batches = self.n_consults = 0
+        self.hist = {}
+        self.queue_wait_s = self.forward_s = 0.0
+        self._printed = 0
 
     def start(self):
-        raise NotImplementedError
+        self.thread = threading.Thread(target=self._loop, daemon=True,
+                                       name="inference-batcher")
+        self.thread.start()
+        return self
 
+    # ------------------------------------------------ handler-thread side
     def infer(self, s, c, m, hin):
-        raise NotImplementedError
+        r = InferenceRequest(s, c, m, hin)
+        r.t_submit = time.time()
+        self.q.put(r)
+        r.done.wait()
+        if r.error is not None:
+            raise r.error
+        return r.out
+
+    # ------------------------------------------------- batcher-thread side
+    def _loop(self):
+        import queue
+        while True:
+            first = self.q.get()                 # block, no lock held
+            batch = [first]
+            # Take the lock BEFORE draining: while update() holds it for
+            # seconds the requests pile up in the queue, and the first
+            # batch after the update takes them all (up to batch_max)
+            # instead of a batch committed before the stall.
+            with self.lock:
+                deadline = time.time() + self.wait_s
+                while len(batch) < self.batch_max:
+                    rem = deadline - time.time()
+                    if rem <= 0:
+                        break
+                    try:
+                        batch.append(self.q.get(timeout=rem))
+                    except queue.Empty:
+                        break
+                try:
+                    self.run_batch(batch)
+                except Exception as exc:          # noqa: BLE001
+                    # run_batch attributes faults per request; anything
+                    # that escapes must not kill this thread and leave
+                    # every handler parked on its Event for ever
+                    for r in batch:
+                        if r.out is None and r.error is None:
+                            r.error = exc
+            for r in batch:
+                r.done.set()
 
     def run_batch(self, reqs):
-        raise NotImplementedError
+        """Collate -> one forward -> scatter. Synchronous; the caller
+        holds whatever lock the net needs. On ANY failure of the batched
+        pass, degrade to one forward per request so the fault is
+        attributed to the request that caused it (T6) and the rest of
+        the batch still completes."""
+        t0 = time.time()
+        for r in reqs:
+            r.t_start = t0
+        outs = None
+        try:
+            with torch.no_grad():
+                outs = self._forward(reqs)
+        except Exception:                      # noqa: BLE001
+            for r in reqs:
+                try:
+                    with torch.no_grad():
+                        r.out = self._forward([r])[0]
+                except Exception as exc:      # noqa: BLE001
+                    r.error = exc
+        if outs is not None:
+            for r, o in zip(reqs, outs):
+                r.out = o
+        self._account(reqs, time.time() - t0)
+
+    def _forward(self, reqs):
+        B = len(reqs)
+        if B == 1:
+            # a batch of one IS the existing call, so sequential eval is
+            # bit-identical to the unbatched server (plan §1.1, gate G2)
+            r = reqs[0]
+            if self.recurrent:
+                lg, v, h = self.net(r.s, r.c, r.m, r.hin)
+                return [(lg, v, h)]
+            lg, v = self.net(r.s, r.c, r.m)
+            return [(lg, v, None)]
+        s0 = reqs[0].s
+        if isinstance(s0, EntityObs):
+            S = EntityObs(torch.cat([r.s.g for r in reqs]),
+                          torch.cat([r.s.e for r in reqs]),
+                          torch.cat([r.s.mask for r in reqs]),
+                          torch.cat([r.s.rel for r in reqs]))
+        else:
+            S = torch.cat([r.s for r in reqs])
+        C = torch.cat([r.c for r in reqs])
+        M = torch.cat([r.m for r in reqs])
+        if self.recurrent:
+            H = (torch.cat([r.hin[0] for r in reqs]),
+                 torch.cat([r.hin[1] for r in reqs]))
+            lg, v, (h2, c2) = self.net(S, C, M, H)
+            return [(lg[i:i + 1], v[i:i + 1], (h2[i:i + 1], c2[i:i + 1]))
+                    for i in range(B)]
+        lg, v = self.net(S, C, M)
+        return [(lg[i:i + 1], v[i:i + 1], None) for i in range(B)]
+
+    # ------------------------------------------------------------- stats
+    def _account(self, reqs, fwd_s):
+        n = len(reqs)
+        with self._slock:
+            self.n_batches += 1
+            self.n_consults += n
+            self.hist[n] = self.hist.get(n, 0) + 1
+            self.queue_wait_s += sum(r.t_start - r.t_submit for r in reqs
+                                     if r.t_submit > 0)
+            self.forward_s += fwd_s
+            due = (self.stats_every
+                   and self.n_consults // self.stats_every > self._printed)
+            if due:
+                self._printed = self.n_consults // self.stats_every
+        if due:
+            print(self.line(), flush=True)
 
     def stats(self):
-        raise NotImplementedError
+        with self._slock:
+            n, b = self.n_consults, self.n_batches
+            hist = sorted(self.hist.items())
+            qw, fw = self.queue_wait_s, self.forward_s
+        cum, p50 = 0, 0
+        for size, cnt in hist:
+            cum += cnt
+            if cum * 2 >= b:
+                p50 = size
+                break
+        return {"batches": b, "consults": n,
+                "mean_b": (n / b if b else 0.0), "p50_b": p50,
+                "max_b": (hist[-1][0] if hist else 0),
+                "queue_wait_ms_mean": (1000 * qw / n if n else 0.0),
+                "forward_ms_mean": (1000 * fw / b if b else 0.0),
+                "hist": hist}
+
+    def line(self):
+        d = self.stats()
+        return ("RLBATCH|batches=%d|consults=%d|mean_b=%.2f|p50_b=%d|max_b=%d"
+                "|queue_wait_ms_mean=%.2f|forward_ms_mean=%.2f|hist=%s"
+                % (d["batches"], d["consults"], d["mean_b"], d["p50_b"],
+                   d["max_b"], d["queue_wait_ms_mean"], d["forward_ms_mean"],
+                   ",".join("%d:%d" % kv for kv in d["hist"])))
 
 
 class Session:
@@ -1079,10 +1238,15 @@ def _record(wait, held):
         n = LOCK_CALLS
         w, h = LOCK_WAIT, LOCK_HELD
     if n % 2000 == 0:
-        print(f"RLLOCK|calls={n}|wait_s={w:.1f}|held_s={h:.1f}"
-              f"|wait_per_call_ms={1000 * w / n:.2f}"
-              f"|held_per_call_ms={1000 * h / n:.2f}"
-              f"|wait_share={w / (w + h):.1%}", flush=True)
+        print(_lock_line(), flush=True)
+
+
+def _lock_line():
+    n, w, h = LOCK_CALLS, LOCK_WAIT, LOCK_HELD
+    return (f"RLLOCK|calls={n}|wait_s={w:.1f}|held_s={h:.1f}"
+            f"|wait_per_call_ms={1000 * w / max(1, n):.2f}"
+            f"|held_per_call_ms={1000 * h / max(1, n):.2f}"
+            f"|wait_share={w / max(1e-9, w + h):.1%}")
 
 
 def check_hello(msg, trainer):
@@ -1209,7 +1373,17 @@ def handle(conn, trainer, lock, session):
                     a = pyrandom.randrange(len(msg["c"]))
                 else:
                     st, cd, ent = consult_args(msg, trainer)
-                    if lock is None:
+                    if lock is not None and trainer.batcher is not None:
+                        # batched path: NOT under the lock here - the
+                        # batcher takes it for the forward; sampling and
+                        # session.pending are per-connection. update()
+                        # and save() still run under the lock below.
+                        a = trainer.act(st, cd,
+                                        sample=(mode == "train"),
+                                        phi=msg.get("phi", 0.0),
+                                        session=session, ent=ent,
+                                        oracle_rows=msg.get("oe"))
+                    elif lock is None:
                         a = trainer.act(st, cd,
                                         sample=(mode == "train"),
                                         phi=msg.get("phi", 0.0), ent=ent,
@@ -1248,6 +1422,13 @@ def handle(conn, trainer, lock, session):
                                                       and not trainer.frozen),
                                             session=session)
                 f.write(b'{"ok":1}\n')
+            elif t == "stats":
+                st = {"lock": {"calls": LOCK_CALLS, "wait_s": LOCK_WAIT,
+                               "held_s": LOCK_HELD},
+                      "batch": (trainer.batcher.stats()
+                                if trainer.batcher is not None else None)}
+                f.write(json.dumps(st, separators=(",", ":")).encode()
+                        + b"\n")
             f.flush()
     except (ConnectionResetError, BrokenPipeError, json.JSONDecodeError):
         pass
@@ -1266,7 +1447,7 @@ def handle(conn, trainer, lock, session):
         print("conn closed", flush=True)
 
 
-def serve(port, trainer, threads=1):
+def serve(port, trainer, threads=1, batch_max=1, batch_wait_ms=1.0):
     """threads=1 (default) keeps the original one-connection-at-a-time
     server, byte for byte. threads>1 accepts that many concurrent driver
     connections - one per game when the driver runs -Drl.concurrency=N -
@@ -1284,14 +1465,25 @@ def serve(port, trainer, threads=1):
     srv.listen(max(4, threads))
     print(f"policy server on :{port}"
           + (f" (threads={threads})" if threads > 1 else "")
-          + f" device={trainer.device}", flush=True)
+          + f" device={trainer.device}"
+          + (f" batch_max={batch_max} batch_wait_ms={batch_wait_ms}"
+             if batch_max > 1 else ""), flush=True)
     if threads <= 1:
+        if batch_max > 1:
+            # sequential server, batched path: every batch is size 1
+            # (gate G2); the batcher's own lock is uncontended
+            trainer.batcher = InferenceBatcher(
+                trainer.net, trainer.recurrent, threading.Lock(),
+                batch_max, batch_wait_ms).start()
         while True:
             conn, _ = srv.accept()
             handle(conn, trainer, None, None)
         return
-    import threading
     lock = threading.Lock()
+    if batch_max > 1:
+        trainer.batcher = InferenceBatcher(
+            trainer.net, trainer.recurrent, lock,
+            batch_max, batch_wait_ms).start()
     while True:
         conn, _ = srv.accept()
         threading.Thread(target=handle,
@@ -1350,6 +1542,14 @@ if __name__ == "__main__":
     ap.add_argument("--device", default="cpu", choices=["cpu", "cuda"],
                     help="where the net, optimizer and PPO batch live "
                          "(default cpu = unchanged behaviour)")
+    ap.add_argument("--batch-max", type=int, default=1,
+                    help="batched inference: consults arriving within "
+                         "--batch-wait-ms share one forward pass, up to "
+                         "N per batch (BATCHED-INFERENCE-PLAN.md; "
+                         "1 = existing path, untouched)")
+    ap.add_argument("--batch-wait-ms", type=float, default=1.0,
+                    help="how long the batcher waits for more consults "
+                         "after the first (default 1.0)")
     ap.add_argument("--update-threads", type=int, default=0,
                     help="torch intra-op threads DURING update() only; "
                          "restored to the inference count on exit "
@@ -1380,4 +1580,16 @@ if __name__ == "__main__":
     _t.update_threads = args.update_threads
     _t.oracle_probe = args.oracle_probe
     _t._ds = open(args.dataset, 'w') if args.dataset else None
-    serve(args.port, _t, args.threads)
+
+    def _on_term(signum, frame):
+        # the lane stops the server with SIGTERM; print the cumulative
+        # counters it would otherwise take to the grave, then die the
+        # same way (no cleanup, as before)
+        if LOCK_STATS and LOCK_CALLS:
+            print(_lock_line(), flush=True)
+        if _t.batcher is not None:
+            print(_t.batcher.line(), flush=True)
+        os._exit(0)
+    import signal
+    signal.signal(signal.SIGTERM, _on_term)
+    serve(args.port, _t, args.threads, args.batch_max, args.batch_wait_ms)

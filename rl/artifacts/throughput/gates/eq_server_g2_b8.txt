@@ -1,0 +1,2 @@
+policy server on :7998 (threads=8) device=cpu batch_max=8 batch_wait_ms=1.0
+RLBATCH|batches=378|consults=378|mean_b=1.00|p50_b=1|max_b=1|queue_wait_ms_mean=1.15|forward_ms_mean=4.08|hist=1:378

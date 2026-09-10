@@ -410,7 +410,12 @@ Lane (§5 protocol, conc4 cpu, one run, seed 0):
 |---|---|---|---|---|---|---|---|---|
 | conc4 cpu (§5 baseline) | 0.535 | 419 | 48.6 (64.6) | 24.3 | 84 % | 220 | 4.47 ms | 8004 / 2099 / 5970 |
 | conc4 cpu `--update-threads 8` | **0.328** | 683 | 80.4 (180.3) | 31.7 | 85 % | 185 | 4.47 ms | **11155** / 2090 / **9267** |
-| conc4 cpu `--update-threads 16` | UT16_EPS | UT16_WIN | UT16_UPD | UT16_MS | UT16_SHARE | UT16_PLAY | UT16_HELD | UT16_MEM |
+| conc4 cpu `--update-threads 16` | **0.241** | 930 | 118.0 (237.9) | 52.1 | 90 % | 188 | 4.32 ms | 9470 / 1606 / 7830 |
+
+(N=16 per-row ms per consult: 69 / 35 / 62 / 39 / 70 / 39 / 77 / 31 —
+the same odd/even pattern as N=8, every row worse than the 1-thread
+baseline; a 55 % regression in eps/s, as pre-announced from the offline
+table.)
 
 **N=8 is a regression of 39 % in eps/s, not flat**, and the offline
 1.55× did not survive contact with the lane. The per-row update cost
