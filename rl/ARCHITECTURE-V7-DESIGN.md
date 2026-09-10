@@ -129,16 +129,28 @@ candidate token attends to the entities it would touch.
 
 ### L3. Token builder (server side)
 
+Each token type has its own **per-token MLP**, not a single linear
+projection: a linear map can only re-weight channels, and "a 2/2 with a
++1/+1 counter, tapped, lethal damage marked" is a nonlinear fact that
+should exist before attention sees it (ByteRL's per-zone fully connected
+stage is the precedent). Zones share weights and are told apart by a zone
+embedding, so a card is the same object in hand, on the board and in the
+graveyard.
+
 ```
-entity token    = W_e [ c'_card | fields | operators ]           (d = 256)
-player token    = W_p [ player fields ]
-stack token     = W_s [ c'_source | modes | depth embedding ]
-game token      = W_g [ globals | D_me | D_opp ]
-candidate token = W_c [ type embedding | afterstate row ]          + refers_to edges
+MLP_t(x) = Linear(512 → 256)( GELU( Linear(in → 512)( LN(x) ) ) )      one per token type t
+
+entity token    = MLP_e [ c'_card | zone emb | fields | operators ]     (d = 256)
+player token    = MLP_p [ player fields ]
+stack token     = MLP_s [ c'_source | modes | depth embedding ]
+game token      = MLP_g [ globals | D_me | D_opp ]
+candidate token = MLP_c [ type embedding | afterstate row ]              + refers_to edges
 history token   = game token output from consult t−k, + relative-time embedding, k = 1..H
 ```
 
-No sum, no mean, no pooling. Padding is masked.
+No sum, no mean, no pooling. Padding is masked. The faithfulness probe
+(§L4) is applied after this stage too, so the MLP is shown not to discard
+input fields.
 
 ### L4. State-graph encoder
 
@@ -179,10 +191,10 @@ v7.0 may keep the LSTMCell on the game token while H is tuned.
 |---|---|
 | L4 policy trunk, 6 × (4d² + 8d²) at d 256 | ≈ 4.7 M |
 | L6 value trunk, 4 layers | ≈ 3.1 M |
-| token builders, heads, edge bias | ≈ 0.3 M |
+| L3 per-token MLPs (5 types), heads, edge bias | ≈ 1.2 M |
 | L1 deck context, 2 layers at d_c 128 | ≈ 0.4 M |
 | L0 card embedder | outside the run |
-| **total inside a run** | **≈ 8.5 M** (v6: 0.72 M) |
+| **total inside a run** | **≈ 9.4 M** (v6: 0.72 M) |
 
 Sequence ≈ 210 tokens at d 256 is trivial on the GPU; the play phase is
 engine-bound (THROUGHPUT-LOCAL.md), so the net is not the cost.
