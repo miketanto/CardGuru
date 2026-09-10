@@ -1655,8 +1655,9 @@ class InteractiveTestPlayer extends TestPlayer {
 
     /** Apply one block response on a leaf copy and run combat to end-of-combat,
      *  mirroring CombatUtil.willItSurviveSimulation's proven resolution recipe. */
-    private void applyBlocksAndResolveCombat(Game leaf, UUID defenderId,
-                                             List<UUID[]> resp) {
+    /** Returns the opponent's post-block response (arm (f)), or null. */
+    private String applyBlocksAndResolveCombat(Game leaf, UUID defenderId,
+                                               List<UUID[]> resp) {
         Player defender = leaf.getPlayer(defenderId);
         for (UUID[] pair : resp) {
             Permanent b = leaf.getPermanent(pair[0]);
@@ -1670,11 +1671,30 @@ class InteractiveTestPlayer extends TestPlayer {
                 defenderId, defenderId));
         leaf.checkStateAndTriggered();
         resolveStack(leaf);
+        // Arm (f): blockers are declared and damage has not happened. This
+        // is the window where an unblocked attacker becomes Kaito by
+        // ninjutsu, or a pump/removal lands on a blocker. Across g5-g8
+        // neither the pilot nor this search ever considered it — the
+        // opponent had no window here at all. Their single best play from
+        // the seated hand; the leaf then shows what the block really cost.
+        String reply = null;
+        UUID attackerId = null;
+        for (UUID pid : leaf.getOpponents(defenderId)) {
+            attackerId = pid;
+        }
+        if (attackerId != null) {
+            reply = opponentRespond(leaf, attackerId);
+            if (reply != null) {
+                leaf.checkStateAndTriggered();
+                resolveStack(leaf);
+            }
+        }
         simulateStep(leaf, new CombatDamageStep(true));
         simulateStep(leaf, new CombatDamageStep(false));
         simulateStep(leaf, new EndOfCombatStep());
         leaf.checkStateAndTriggered();
         resolveStack(leaf);
+        return reply;
     }
 
     /** Resolve the whole stack, applying effects between resolves. */
@@ -1894,12 +1914,25 @@ class InteractiveTestPlayer extends TestPlayer {
                         me.activateAbility(ability.copy(), sim);
                     }
                 }
+                // Arm (f), window 1: my spell is on the stack. Only a
+                // counter or a flash play can meet it here (a removal spell
+                // has no legal target yet and simply will not be offered).
+                String r1 = ability != null ? opponentRespond(sim, oppId) : null;
                 sim.checkStateAndTriggered();
                 resolveStack(sim);
+                // Window 2: it has resolved and its ETB has fired. Now removal
+                // has a target — and whether that is a net positive depends on
+                // whether the ETB was durable (a stun stays) or tethered (the
+                // Bat's exile returns); the engine has already decided which.
+                String r2 = ability != null ? opponentRespond(sim, oppId) : null;
+                sim.checkStateAndTriggered();
+                resolveStack(sim);
+                String respTag = (r1 != null ? " | they respond on the stack: " + r1 : "")
+                        + (r2 != null ? " | after it resolves they cast: " + r2 : "");
 
                 beginOpponentTurn(sim, oppId);
                 String theirs = opponentMainPhase(sim, oppId);
-                String base = label + " | s" + k + ": they "
+                String base = label + respTag + " | s" + k + ": they "
                         + (theirs == null ? "do nothing" : "cast " + theirs);
                 if (theirs == null) {
                     out.add(projectedLeaf(sim, myId, oppId, base, k, "nothing"));
@@ -2016,6 +2049,58 @@ class InteractiveTestPlayer extends TestPlayer {
             return null;
         }
         return opp.activateAbility(best.copy(), sim) ? String.valueOf(best) : null;
+    }
+
+    // ---- arm (f): their response to MY action -----------------------------
+    //
+    // Layered on arm (e) behind -Dcardguru.respond=true. At the windows
+    // that follow my own action — my spell on the stack, my permanent just
+    // resolved with its ETB done, my blockers just declared — the opponent
+    // takes their single best instant-speed play from the SEATED hand,
+    // adversarially (highest mana value), and the leaf shows the result.
+    //
+    // No extra branching: the reseated hand already is the chance layer.
+    // Per sample, if their hand plus open mana allows a response they take
+    // it; if not they do not. "P(they hold the counter)" is the fraction of
+    // samples in which they drew it. The engine decides what is legal at
+    // each window — a removal spell cannot target my creature while it is
+    // still a spell, so it never fires in window 1; ninjutsu needs an
+    // unblocked attacker, so it only fires after blocks. No card names.
+    private final boolean respondOn = Boolean.getBoolean("cardguru.respond");
+    private int projRespondFired = 0;
+
+    /** Their best instant-speed play right now, from the seated hand,
+     *  activated (and left for the caller to resolve). Null if none, or
+     *  if arm (f) is off. */
+    private String opponentRespond(Game sim, UUID oppId) {
+        if (!respondOn) {
+            return null;
+        }
+        Player opp = sim.getPlayer(oppId);
+        if (opp == null) {
+            return null;
+        }
+        ActivatedAbility best = null;
+        int bestMv = -1;
+        for (ActivatedAbility a : opp.getPlayable(sim, true)) {
+            if (a instanceof mage.abilities.mana.ManaAbility
+                    || a instanceof PlayLandAbility) {
+                continue;
+            }
+            int mv = a.getManaCosts() == null ? 0 : a.getManaCosts().manaValue();
+            if (mv > bestMv) {
+                bestMv = mv;
+                best = a;
+            }
+        }
+        if (best == null) {
+            return null;
+        }
+        if (opp.activateAbility(best.copy(), sim)) {
+            projRespondFired++;
+            return String.valueOf(best);
+        }
+        return null;
     }
 
     /** What I could do right now on their turn: playable, non-mana,
@@ -2338,11 +2423,12 @@ class InteractiveTestPlayer extends TestPlayer {
         for (List<UUID[]> set : candidates) {
             labels.add(blockLabel(game, set));
             Game leaf = simCopy(game);
-            applyBlocksAndResolveCombat(leaf, defendingPlayerId, set);
+            String reply = applyBlocksAndResolveCombat(leaf, defendingPlayerId, set);
             double h = GameStateEvaluator2.evaluate(myId, leaf).getTotalScore();
             List<ScoredLeaf> one = new ArrayList<>();
             one.add(new ScoredLeaf(
-                    compactLeaf(leaf, myId, oppId, "after combat"), h));
+                    compactLeaf(leaf, myId, oppId, "after combat"
+                            + (reply != null ? " | after blocks they cast " + reply : "")), h));
             leaves.add(one);
         }
 
@@ -2403,6 +2489,9 @@ class InteractiveTestPlayer extends TestPlayer {
         // If this tracks det_rollouts, the projection is not running.
         rec.addProperty("project_turn_k", projectTurnK);
         rec.addProperty("proj_samples_failed", projSamplesFailed);
+        // Arm (f): how many opponent response windows actually fired so far.
+        rec.addProperty("respond_on", respondOn);
+        rec.addProperty("resp_fired", projRespondFired);
         if (!projLastFailure.isEmpty()) {
             rec.addProperty("proj_last_failure", projLastFailure);
         }
