@@ -90,7 +90,7 @@ def main():
         log.flush()
 
     names = X.load_names()
-    emb = X.load_emb(fname=args.emb)
+    emb = torch.load(args.emb).float() if os.path.isabs(args.emb) else X.load_emb(fname=args.emb)
     corpus = X.Corpus()
     by_name = X.load_by_name()
     decks = prepare(corpus, names, emb, by_name, os.path.join(args.out, "decks_cache.pt"))
