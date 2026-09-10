@@ -87,7 +87,8 @@ def run_one(args, g, out_dir, results_path):
         os.remove(os.path.join(esc, fn))
     game_log = os.path.join(out_dir, f"g{g}.jsonl")
     daemon_log = os.path.join(out_dir, f"g{g}_daemon.jsonl")
-    for p in (game_log, daemon_log):
+    record = os.path.join(out_dir, f"g{g}_record.jsonl")
+    for p in (game_log, daemon_log, record, record + ".gz"):
         if os.path.exists(p):
             os.remove(p)
 
@@ -123,6 +124,8 @@ def run_one(args, g, out_dir, results_path):
         cmd += ["--seed", str(seed)]
     if args.opp_think_secs is not None:
         cmd += ["--opp-think-secs", str(args.opp_think_secs)]
+    if not args.no_record:
+        cmd += ["--record", record]
 
     print(f"\n=== mirror game {g} — pilot on the "
           f"{'play' if start == 'A' else 'draw'}"
@@ -179,11 +182,21 @@ def run_one(args, g, out_dir, results_path):
     # configuration that produced this result; without them a directory of
     # game files cannot say which pilot played, and the overnight suite
     # runs four models under one directory layout.
+    # The replay record is gzipped in place (a game is 3-15 MB plain).
+    record_final = None
+    if os.path.exists(record):
+        import gzip
+        import shutil
+        with open(record, "rb") as fi, gzip.open(record + ".gz", "wb") as fo:
+            shutil.copyfileobj(fi, fo)
+        os.remove(record)
+        record_final = record + ".gz"
     row = {"game": g, "start": start, "seed": seed, "search": args.search,
            "model": args.model, "deck_a": args.deck_a, "deck_b": args.deck_b,
            "driver_props": os.environ.get("CARDGURU_DRIVER_PROPS", ""),
            "result": result, "wall_s": wall, "sources": sources,
-           "searches": searches, "ts": round(time.time(), 1)}
+           "searches": searches, "ts": round(time.time(), 1),
+           "record": os.path.basename(record_final) if record_final else None}
     if result is None or result.get("status") != "completed":
         row["error"] = err[-300:]
     with open(results_path, "a", encoding="utf-8") as f:
@@ -214,6 +227,20 @@ def run_one(args, g, out_dir, results_path):
             [sys.executable, os.path.join(HERE, "review_game.py"), game_log,
              "--out", os.path.join(out_dir, f"g{g}_review.md")],
             capture_output=True)
+        # Replay studio: board with card art + interactive decision trees.
+        studio = [sys.executable, os.path.join(HERE, "replay_studio.py"),
+                  "--log", game_log,
+                  "--out", os.path.join(out_dir, f"g{g}_studio.html"),
+                  "--title", f"{args.model} vs MAD — "
+                             f"{deck_json(args.deck_a)['archetype']} vs "
+                             f"{deck_json(args.deck_b)['archetype']}",
+                  "--subtitle", f"{args.search} search, seed {seed}, g{g}; "
+                                f"winner: {'pilot' if winner == 'A' else 'MAD'}",
+                  "--player-a", f"{args.model} — {deck_json(args.deck_a)['archetype']}",
+                  "--player-b", f"MAD — {deck_json(args.deck_b)['archetype']}"]
+        if record_final:
+            studio += ["--record", record_final]
+        subprocess.run(studio, capture_output=True)
     return row
 
 
@@ -227,6 +254,8 @@ def main():
                     default="llm")
     ap.add_argument("--timeout", type=float, default=240.0)
     ap.add_argument("--game-timeout", type=int, default=3000)
+    ap.add_argument("--no-record", action="store_true",
+                    help="do not write the replay record (g{n}_record.jsonl.gz)")
     ap.add_argument("--seed", type=int, default=None,
                     help="fix the deal; game N uses seed+N (or seed+pair "
                          "index with --paired)")

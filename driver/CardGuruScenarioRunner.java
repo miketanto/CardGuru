@@ -63,6 +63,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.security.MessageDigest;
+import mage.counters.Counter;
+import mage.counters.CounterType;
+import mage.game.events.TableEvent;
+import mage.game.permanent.PermanentToken;
+import mage.game.stack.Spell;
+import mage.game.stack.StackAbility;
+import mage.game.stack.StackObject;
+import mage.players.ManaPool;
 
 /**
  * CardGuru scenario driver: executes engine-neutral scenario JSON files
@@ -79,6 +90,10 @@ import java.util.UUID;
  * produces an outcome with status "error" — it never aborts the batch.
  */
 public class CardGuruScenarioRunner extends CardTestPlayerBase {
+
+    /** Replay recorder for the running interactive game (null unless
+     *  -Dcardguru.record is set). Read by InteractiveTestPlayer.baseRequest. */
+    static volatile GameRecorder recorder;
 
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
@@ -286,6 +301,47 @@ public class CardGuruScenarioRunner extends CardTestPlayerBase {
                 mage.util.RandomUtil.setSeed(Long.parseLong(seed.trim()));
                 System.out.println("[CardGuru] seeded shuffle with " + seed);
             }
+            String recPath = System.getProperty("cardguru.record");
+            if (recPath != null && !recPath.isEmpty()) {
+                JsonObject meta = new JsonObject();
+                JsonObject players = new JsonObject();
+                JsonObject pa = new JsonObject();
+                pa.addProperty("id", playerA.getId().toString());
+                pa.addProperty("name", playerA.getName());
+                JsonObject pb = new JsonObject();
+                pb.addProperty("id", playerB.getId().toString());
+                pb.addProperty("name", playerB.getName());
+                players.add("A", pa);
+                players.add("B", pb);
+                meta.add("players", players);
+                meta.addProperty("deck_a", deckNameA);
+                meta.addProperty("deck_b", deckNameB);
+                meta.addProperty("seed", seed);
+                JsonObject props = new JsonObject();
+                for (String k : System.getProperties().stringPropertyNames()) {
+                    if (k.startsWith("cardguru.")) {
+                        props.addProperty(k, System.getProperty(k));
+                    }
+                }
+                meta.add("props", props);
+                recorder = new GameRecorder(recPath, playerA.getId(), playerB.getId(), meta);
+                final GameRecorder rec = recorder;
+                final Game liveGame = currentGame;
+                currentGame.addTableEventListener(ev -> {
+                    try {
+                        TableEvent.EventType t = ev.getEventType();
+                        if (t == TableEvent.EventType.INFO || t == TableEvent.EventType.STATUS) {
+                            Game g = ev.getGame() != null ? ev.getGame() : liveGame;
+                            if (!g.isSimulation()) {
+                                rec.event(g, t.name(), ev.getMessage());
+                            }
+                        }
+                    } catch (RuntimeException e) {
+                        rec.noteError(e);   // recording must never break the game
+                    }
+                });
+                System.out.println("[CardGuru] recording replay to " + recPath);
+            }
             currentGame.start(playerA.getId());
             result.addProperty("status", "completed");
         } catch (Throwable e) {
@@ -301,6 +357,14 @@ public class CardGuruScenarioRunner extends CardTestPlayerBase {
             }
         }
         result.addProperty("turns", currentGame != null ? currentGame.getTurnNum() : 0);
+        if (recorder != null) {
+            try {
+                recorder.end(currentGame, result);
+            } catch (RuntimeException e) {
+                System.out.println("[CardGuru] recorder end failed: " + e);
+            }
+            recorder = null;
+        }
 
         File tmp = new File(spool, "result.json.tmp");
         try (FileWriter w = new FileWriter(tmp)) {
@@ -808,6 +872,10 @@ class InteractiveTestPlayer extends TestPlayer {
     private JsonObject baseRequest(String kind, Game game) {
         JsonObject req = new JsonObject();
         req.addProperty("kind", kind);
+        GameRecorder rec = CardGuruScenarioRunner.recorder;
+        if (rec != null && !game.isSimulation()) {
+            req.addProperty("snapshot_id", rec.snapshot(game, "request:" + kind, true));
+        }
         req.addProperty("turn", game.getTurnNum());
         req.addProperty("phase", String.valueOf(game.getTurnStepType()));
         // Sub-choices can fire pre-game (mulligan-time scry, opening choices)
@@ -3296,6 +3364,641 @@ class InteractiveTestPlayer extends TestPlayer {
         } catch (Exception e) {
             // A trace failure must never abort a real game; just note it.
             System.out.println("[CardGuru][minimax] trace write failed: " + e);
+        }
+    }
+}
+
+
+/**
+ * Replay recorder: writes printing-exact game snapshots and the game log to
+ * a JSONL file (-Dcardguru.record=path) for the replay studio. Independent
+ * of the pilot protocol: one snapshot per driver request (stamped into the
+ * request as snapshot_id) plus one per game-log line, deduplicated by state
+ * hash. Reads engine objects directly; never mutates anything, and every
+ * per-object block is guarded so recording can never break a game.
+ * Simulation copies never reach it (they have no event listeners and
+ * baseRequest checks isSimulation()).
+ *
+ * Record types (field "t"): meta, card (once per printing), snap, event, end.
+ */
+class GameRecorder {
+    private static final Gson G = new Gson();
+    private final BufferedWriter out;
+    private final UUID aId;
+    private final UUID bId;
+    private final Set<String> cardsSeen = new HashSet<>();
+    private final MessageDigest sha;
+    private int nextId = 0;
+    private int lastId = -1;
+    private String lastHash = null;
+    private int lastTurn = -1;
+    private int eventSeq = 0;
+    private int snapCount = 0;
+    private int errors = 0;
+    private boolean closed = false;
+
+    GameRecorder(String path, UUID aId, UUID bId, JsonObject meta) throws IOException {
+        this.out = new BufferedWriter(new FileWriter(path), 1 << 20);
+        this.aId = aId;
+        this.bId = bId;
+        MessageDigest md;
+        try {
+            md = MessageDigest.getInstance("SHA-1");
+        } catch (Exception e) {
+            md = null;
+        }
+        this.sha = md;
+        JsonObject m = new JsonObject();
+        m.addProperty("t", "meta");
+        m.addProperty("version", 1);
+        m.addProperty("ts", System.currentTimeMillis() / 1000.0);
+        for (Map.Entry<String, JsonElement> e : meta.entrySet()) {
+            m.add(e.getKey(), e.getValue());
+        }
+        write(m);
+    }
+
+    // ---- public API -------------------------------------------------------
+
+    /** Snapshot the live game; returns the snapshot id (reused when the
+     *  state hash is unchanged and forceNew is false). */
+    synchronized int snapshot(Game game, String trigger, boolean forceNew) {
+        if (closed) {
+            return lastId;
+        }
+        JsonObject body;
+        try {
+            body = body(game);
+        } catch (RuntimeException e) {
+            errors++;
+            return lastId;
+        }
+        String json = G.toJson(body);
+        String h = hash(json);
+        if (!forceNew && lastId >= 0 && h.equals(lastHash)) {
+            return lastId;
+        }
+        int id = nextId++;
+        JsonObject line = new JsonObject();
+        line.addProperty("t", "snap");
+        line.addProperty("id", id);
+        line.addProperty("trigger", trigger);
+        for (Map.Entry<String, JsonElement> e : body.entrySet()) {
+            line.add(e.getKey(), e.getValue());
+        }
+        write(line);
+        lastHash = h;
+        lastId = id;
+        snapCount++;
+        int turn = game.getTurnNum();
+        if (forceNew || turn != lastTurn) {
+            flush();
+        }
+        lastTurn = turn;
+        return id;
+    }
+
+    /** A game-log line (TableEvent INFO/STATUS): snapshot-if-changed, then
+     *  the event bound to that snapshot. */
+    synchronized void event(Game game, String type, String message) {
+        if (closed || message == null) {
+            return;
+        }
+        int id = snapshot(game, "event", false);
+        JsonObject e = new JsonObject();
+        e.addProperty("t", "event");
+        e.addProperty("snap", id);
+        e.addProperty("n", eventSeq++);
+        e.addProperty("turn", game.getTurnNum());
+        PhaseStep ps = game.getTurnStepType();
+        e.addProperty("step", ps == null ? "-" : ps.getStepShortText());
+        e.addProperty("type", type);
+        e.addProperty("text", strip(message));
+        if (message.indexOf('<') >= 0) {
+            e.addProperty("html", message);
+        }
+        write(e);
+    }
+
+    synchronized void noteError(Throwable t) {
+        errors++;
+    }
+
+    synchronized void end(Game game, JsonObject result) {
+        if (closed) {
+            return;
+        }
+        try {
+            if (game != null) {
+                snapshot(game, "end", true);
+            }
+        } catch (RuntimeException ignored) {
+            errors++;
+        }
+        JsonObject e = new JsonObject();
+        e.addProperty("t", "end");
+        e.add("result", result == null ? new JsonObject() : result.deepCopy());
+        e.addProperty("snapshots", snapCount);
+        e.addProperty("events", eventSeq);
+        e.addProperty("errors", errors);
+        write(e);
+        try {
+            out.flush();
+            out.close();
+        } catch (IOException ignored) {
+        }
+        closed = true;
+    }
+
+    // ---- serialization ----------------------------------------------------
+
+    private JsonObject body(Game game) {
+        JsonObject b = new JsonObject();
+        b.addProperty("turn", game.getTurnNum());
+        PhaseStep ps = game.getTurnStepType();
+        b.addProperty("phase", ps == null ? "-" : ps.name());
+        b.addProperty("step", ps == null ? "-" : ps.getStepShortText());
+        b.addProperty("active", side(game.getActivePlayerId()));
+        b.addProperty("priority", side(game.getPriorityPlayerId()));
+        JsonObject players = new JsonObject();
+        for (UUID pid : game.getPlayerList()) {
+            Player p = game.getPlayer(pid);
+            if (p == null) {
+                continue;
+            }
+            try {
+                players.add(side(pid), player(p, pid, game));
+            } catch (RuntimeException e) {
+                errors++;
+            }
+        }
+        b.add("players", players);
+        try {
+            b.add("stack", stack(game));
+        } catch (RuntimeException e) {
+            errors++;
+            b.add("stack", new JsonArray());
+        }
+        try {
+            b.add("combat", combat(game));
+        } catch (RuntimeException e) {
+            errors++;
+        }
+        if (game.hasEnded()) {
+            b.addProperty("ended", true);
+        }
+        return b;
+    }
+
+    private JsonObject player(Player p, UUID pid, Game game) {
+        JsonObject s = new JsonObject();
+        s.addProperty("life", p.getLife());
+        s.addProperty("library", p.getLibrary().size());
+        s.add("hand", refs(p.getHand().getCards(game), game));
+        String pool = manaPool(p.getManaPool());
+        if (!pool.isEmpty()) {
+            s.addProperty("mana_pool", pool);
+        }
+        JsonObject ctr = counters(p.getCountersAsCopy());
+        if (ctr.size() > 0) {
+            s.add("counters", ctr);
+        }
+        JsonArray bf = new JsonArray();
+        for (Permanent perm : game.getBattlefield().getAllActivePermanents(pid)) {
+            try {
+                bf.add(permanent(perm, game));
+            } catch (RuntimeException e) {
+                errors++;
+            }
+        }
+        s.add("battlefield", bf);
+        s.add("graveyard", refs(p.getGraveyard().getCards(game), game));
+        try {
+            s.add("exile", refs(game.getExile().getCardsOwned(game, pid), game));
+        } catch (RuntimeException e) {
+            errors++;
+        }
+        return s;
+    }
+
+    private JsonObject permanent(Permanent perm, Game game) {
+        JsonObject o = ref(perm, game);
+        if (perm.isTapped()) {
+            o.addProperty("tapped", true);
+        }
+        if (perm.hasSummoningSickness()) {
+            o.addProperty("sick", true);
+        }
+        if (perm.isCreature(game)) {
+            o.addProperty("power", perm.getPower().getValue());
+            o.addProperty("toughness", perm.getToughness().getValue());
+        }
+        if (perm.getDamage() > 0) {
+            o.addProperty("damage", perm.getDamage());
+        }
+        mage.counters.Counters cs = perm.getCounters(game);
+        if (perm.isPlaneswalker(game)) {
+            o.addProperty("loyalty", cs.getCount(CounterType.LOYALTY));
+        }
+        JsonObject ctr = counters(cs);
+        if (ctr.size() > 0) {
+            o.add("counters", ctr);
+        }
+        if (perm.getAttachedTo() != null) {
+            o.addProperty("attached_to", shortId(perm.getAttachedTo()));
+        }
+        if (perm.getAttachments() != null && !perm.getAttachments().isEmpty()) {
+            JsonArray a = new JsonArray();
+            for (UUID u : perm.getAttachments()) {
+                a.add(shortId(u));
+            }
+            o.add("attachments", a);
+        }
+        mage.game.combat.Combat combat = game.getCombat();
+        if (combat != null) {
+            if (combat.getAttackers().contains(perm.getId())) {
+                o.addProperty("attacking", true);
+            }
+            JsonArray blocking = new JsonArray();
+            for (CombatGroup g : combat.getGroups()) {
+                if (g.getBlockers().contains(perm.getId())) {
+                    for (UUID aid : g.getAttackers()) {
+                        blocking.add(shortId(aid));
+                    }
+                }
+            }
+            if (blocking.size() > 0) {
+                o.add("blocking", blocking);
+            }
+        }
+        if (perm.isFaceDown(game)) {
+            o.addProperty("face_down", true);
+        }
+        if (perm instanceof PermanentToken) {
+            o.addProperty("token", true);
+        }
+        if (perm.isTransformed()) {
+            o.addProperty("transformed", true);
+        }
+        if (perm.isFlipped()) {
+            o.addProperty("flipped", true);
+        }
+        if (perm.isCopy() && perm.getCopyFrom() != null) {
+            o.addProperty("copy_of", perm.getCopyFrom().getName());
+        }
+        o.add("types", strArray(perm.getCardType(game)));
+        List<String> now = perm.getRules(game);
+        List<String> base = perm.getRules();
+        if (now != null && !now.equals(base)) {
+            o.addProperty("rules_now", String.join(" ; ", now));
+        }
+        return o;
+    }
+
+    private JsonArray stack(Game game) {
+        List<StackObject> items = new ArrayList<>();
+        for (StackObject so : game.getStack()) {
+            items.add(so);          // ArrayDeque iteration: top first
+        }
+        Collections.reverse(items); // write bottom -> top
+        JsonArray arr = new JsonArray();
+        for (StackObject so : items) {
+            JsonObject o = new JsonObject();
+            try {
+                o.addProperty("id", shortId(so.getId()));
+                o.addProperty("name", so.getName());
+                o.addProperty("controller", side(so.getControllerId()));
+                if (so.getSourceId() != null) {
+                    o.addProperty("source_id", shortId(so.getSourceId()));
+                }
+                try {
+                    o.addProperty("mana_cost", so.getManaCost().getText());
+                } catch (RuntimeException ignored) {
+                }
+                try {
+                    o.add("types", strArray(so.getCardType(game)));
+                } catch (RuntimeException ignored) {
+                }
+                List<Target> targets = new ArrayList<>();
+                if (so instanceof Spell) {
+                    Spell s = (Spell) so;
+                    o.addProperty("ability", false);
+                    Card c = s.getCard();
+                    if (c != null) {
+                        o.addProperty("key", keyOf(c, game));
+                    }
+                    o.addProperty("rules", String.join(" ; ", s.getRules(game)));
+                    if (s.isCopy()) {
+                        o.addProperty("copy", true);
+                    }
+                    if (s.isFaceDown(game)) {
+                        o.addProperty("face_down", true);
+                    }
+                    for (mage.abilities.SpellAbility sa : s.getSpellAbilities()) {
+                        targets.addAll(sa.getAllSelectedTargets());
+                    }
+                } else if (so instanceof StackAbility) {
+                    StackAbility a = (StackAbility) so;
+                    o.addProperty("ability", true);
+                    MageObject src = game.getObject(a.getSourceId());
+                    String srcName = src == null ? so.getName() : src.getName();
+                    o.addProperty("source_name", srcName);
+                    if (src != null) {
+                        o.addProperty("key", keyOf(src, game));
+                    }
+                    String rule;
+                    try {
+                        rule = a.getRule(srcName);
+                    } catch (RuntimeException e) {
+                        rule = a.getRule();
+                    }
+                    o.addProperty("rules", rule);
+                    if (a.isCopy()) {
+                        o.addProperty("copy", true);
+                    }
+                    targets.addAll(a.getAllSelectedTargets());
+                } else {
+                    o.addProperty("ability", true);
+                }
+                JsonArray ta = new JsonArray();
+                for (Target t : targets) {
+                    for (UUID u : t.getTargets()) {
+                        ta.add(targetRef(u, game));
+                    }
+                }
+                o.add("targets", ta);
+            } catch (RuntimeException e) {
+                errors++;
+            }
+            arr.add(o);
+        }
+        return arr;
+    }
+
+    private JsonObject targetRef(UUID u, Game game) {
+        JsonObject t = new JsonObject();
+        t.addProperty("id", shortId(u));
+        Player pl = game.getPlayer(u);
+        if (pl != null) {
+            t.addProperty("kind", "player");
+            t.addProperty("name", side(u));
+            return t;
+        }
+        Permanent perm = game.getPermanent(u);
+        if (perm != null) {
+            t.addProperty("kind", "permanent");
+            t.addProperty("name", perm.getName());
+            return t;
+        }
+        StackObject so = game.getStack().getStackObject(u);
+        if (so != null) {
+            t.addProperty("kind", "stack");
+            t.addProperty("name", so.getName());
+            return t;
+        }
+        MageObject o = game.getObject(u);
+        if (o == null) {
+            o = game.getCard(u);
+        }
+        t.addProperty("kind", "card");
+        t.addProperty("name", o == null ? "?" : o.getName());
+        return t;
+    }
+
+    private JsonArray combat(Game game) {
+        JsonArray arr = new JsonArray();
+        mage.game.combat.Combat combat = game.getCombat();
+        if (combat == null) {
+            return arr;
+        }
+        for (CombatGroup g : combat.getGroups()) {
+            JsonObject o = new JsonObject();
+            JsonArray at = new JsonArray();
+            for (UUID u : g.getAttackers()) {
+                at.add(shortId(u));
+            }
+            JsonArray bl = new JsonArray();
+            for (UUID u : g.getBlockers()) {
+                bl.add(shortId(u));
+            }
+            o.add("attackers", at);
+            o.add("blockers", bl);
+            o.addProperty("defender", side(g.getDefendingPlayerId()));
+            if (g.isDefenderIsPermanent() && g.getDefenderId() != null) {
+                o.addProperty("defender_id", shortId(g.getDefenderId()));
+            }
+            arr.add(o);
+        }
+        return arr;
+    }
+
+    // ---- cards --------------------------------------------------------------
+
+    private JsonArray refs(Iterable<? extends Card> cards, Game game) {
+        JsonArray a = new JsonArray();
+        for (Card c : cards) {
+            try {
+                a.add(ref(c, game));
+            } catch (RuntimeException e) {
+                errors++;
+            }
+        }
+        return a;
+    }
+
+    private JsonObject ref(MageObject o, Game game) {
+        JsonObject r = new JsonObject();
+        r.addProperty("id", shortId(o.getId()));
+        r.addProperty("key", keyOf(o, game));
+        r.addProperty("name", o.getName());
+        return r;
+    }
+
+    /** Printing key ("SET/NUM", or "T/SET/Name" for tokens); emits the card
+     *  record the first time a key is seen. */
+    private String keyOf(MageObject o, Game game) {
+        boolean token = (o instanceof PermanentToken)
+                || (o instanceof mage.game.permanent.token.Token);
+        String set = o.getExpansionSetCode();
+        String num = o.getCardNumber();
+        String key;
+        if (token || num == null || num.isEmpty() || "0".equals(num)) {
+            key = "T/" + (set == null || set.isEmpty() ? "-" : set) + "/" + o.getName();
+            token = true;
+        } else {
+            key = set + "/" + num;
+        }
+        if (cardsSeen.add(key)) {
+            try {
+                write(cardRecord(o, game, key, token));
+            } catch (RuntimeException e) {
+                errors++;
+            }
+        }
+        return key;
+    }
+
+    private JsonObject cardRecord(MageObject o, Game game, String key, boolean token) {
+        JsonObject c = new JsonObject();
+        c.addProperty("t", "card");
+        c.addProperty("key", key);
+        c.addProperty("name", o.getName());
+        c.addProperty("set", o.getExpansionSetCode());
+        c.addProperty("number", o.getCardNumber());
+        String imgFile = o.getImageFileName();
+        if (imgFile != null && !imgFile.isEmpty()) {
+            c.addProperty("image_file", imgFile);
+        }
+        Integer imgNum = o.getImageNumber();
+        if (imgNum != null && imgNum != 0) {
+            c.addProperty("image_number", imgNum);
+        }
+        if (o.getUsesVariousArt()) {
+            c.addProperty("various_art", true);
+        }
+        if (token) {
+            c.addProperty("token", true);
+        }
+        try {
+            c.addProperty("mana_cost", o.getManaCost().getText());
+        } catch (RuntimeException ignored) {
+        }
+        JsonArray sup = strArray(o.getSuperType(game));
+        JsonArray typ = strArray(o.getCardType(game));
+        JsonArray sub = strArray(o.getSubtype(game));
+        c.add("supertypes", sup);
+        c.add("types", typ);
+        c.add("subtypes", sub);
+        StringBuilder tl = new StringBuilder();
+        for (JsonElement e : sup) {
+            tl.append(e.getAsString()).append(' ');
+        }
+        for (JsonElement e : typ) {
+            tl.append(e.getAsString()).append(' ');
+        }
+        String types = tl.toString().trim();
+        if (sub.size() > 0) {
+            StringBuilder sb = new StringBuilder();
+            for (JsonElement e : sub) {
+                sb.append(sb.length() > 0 ? " " : "").append(e.getAsString());
+            }
+            types = types + " — " + sb;
+        }
+        c.addProperty("type_line", types);
+        try {
+            c.addProperty("color", o.getColor(game).toString());
+        } catch (RuntimeException ignored) {
+        }
+        List<String> rules = null;
+        if (o instanceof Card) {
+            rules = ((Card) o).getRules();
+        }
+        if (rules == null && o instanceof Spell) {
+            rules = ((Spell) o).getRules(game);
+        }
+        c.add("rules", rules == null ? new JsonArray() : strArray(rules));
+        if (o.isCreature(game)) {
+            c.addProperty("power", o.getPower().getValue());
+            c.addProperty("toughness", o.getToughness().getValue());
+        }
+        if (o.isPlaneswalker(game)) {
+            c.addProperty("loyalty", o.getStartingLoyalty());
+        }
+        if (o instanceof Card) {
+            Card back = ((Card) o).getSecondCardFace();
+            if (back != null && back != o) {
+                JsonObject b = new JsonObject();
+                b.addProperty("name", back.getName());
+                b.addProperty("set", back.getExpansionSetCode());
+                b.addProperty("number", back.getCardNumber());
+                c.add("back", b);
+            }
+        }
+        return c;
+    }
+
+    // ---- helpers ------------------------------------------------------------
+
+    private String side(UUID id) {
+        return id == null ? "-" : id.equals(aId) ? "A" : id.equals(bId) ? "B" : "?";
+    }
+
+    private static String shortId(UUID u) {
+        return u == null ? null : u.toString().substring(0, 8);
+    }
+
+    private static JsonArray strArray(java.util.Collection<?> items) {
+        JsonArray a = new JsonArray();
+        if (items != null) {
+            for (Object x : items) {
+                a.add(String.valueOf(x));
+            }
+        }
+        return a;
+    }
+
+    private static JsonObject counters(mage.counters.Counters cs) {
+        JsonObject o = new JsonObject();
+        if (cs != null) {
+            for (Counter c : cs.values()) {
+                if (c.getCount() != 0) {
+                    o.addProperty(c.getName(), c.getCount());
+                }
+            }
+        }
+        return o;
+    }
+
+    private static String manaPool(ManaPool mp) {
+        if (mp == null) {
+            return "";
+        }
+        StringBuilder sb = new StringBuilder();
+        rep(sb, 'W', mp.getWhite());
+        rep(sb, 'U', mp.getBlue());
+        rep(sb, 'B', mp.getBlack());
+        rep(sb, 'R', mp.getRed());
+        rep(sb, 'G', mp.getGreen());
+        rep(sb, 'C', mp.getColorless());
+        return sb.toString();
+    }
+
+    private static void rep(StringBuilder sb, char c, int n) {
+        for (int i = 0; i < n; i++) {
+            sb.append(c);
+        }
+    }
+
+    private static String strip(String html) {
+        return html.replaceAll("<[^>]+>", "").replaceAll("\\s+", " ").trim();
+    }
+
+    private String hash(String s) {
+        if (sha == null) {
+            return Integer.toHexString(s.hashCode()) + ":" + s.length();
+        }
+        sha.reset();
+        byte[] d = sha.digest(s.getBytes(java.nio.charset.StandardCharsets.UTF_8));
+        StringBuilder sb = new StringBuilder();
+        for (byte b : d) {
+            sb.append(String.format("%02x", b));
+        }
+        return sb.toString();
+    }
+
+    private void write(JsonObject o) {
+        try {
+            out.write(G.toJson(o));
+            out.write('\n');
+        } catch (IOException e) {
+            errors++;
+        }
+    }
+
+    private void flush() {
+        try {
+            out.flush();
+        } catch (IOException ignored) {
         }
     }
 }

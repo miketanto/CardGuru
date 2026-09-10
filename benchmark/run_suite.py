@@ -206,7 +206,8 @@ def run_job(args, model, seed, opponent):
     with state_lock:
         state["jobs"][key]["status"] = row["status"]
     paths = [os.path.relpath(SUITE, ROOT)]
-    for fn in ("g1.jsonl", "g1_daemon.jsonl", "g1_review.md", "g1.html", "mirror.jsonl", "runner.log"):
+    for fn in ("g1.jsonl", "g1_daemon.jsonl", "g1_review.md", "g1.html",
+               "g1_record.jsonl.gz", "g1_studio.html", "mirror.jsonl", "runner.log"):
         p = os.path.join(out_dir, fn)
         if os.path.exists(p):
             paths.append(os.path.relpath(p, ROOT))

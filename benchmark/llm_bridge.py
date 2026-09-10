@@ -384,6 +384,7 @@ class TurnPlanner:
                         held.append(h)
             held = sorted(set(held))
         preq = {"kind": "turn_plan", "turn": request.get("turn"),
+                "snapshot_id": request.get("snapshot_id"),
                 "phase": request.get("phase"), "active": request.get("active"),
                 "whose_turn": "mine" if mine else "theirs",
                 "mana_available": request.get("mana_available"),
@@ -641,6 +642,9 @@ def main():
                     help="persistent-pilot mode: no per-request rules context, "
                          "card oracle text sent once per name (card_reference), "
                          "state stripped to name/tapped/pt/sick afterwards")
+    ap.add_argument("--record", default=None,
+                    help="write the driver's replay record (snapshots + game log) "
+                         "to this JSONL for replay_studio.py")
     ap.add_argument("--turn-plan", action="store_true",
                     help="contingent turn plans: one pilot call per turn, the "
                          "bridge executes steps and if->then rules and "
@@ -832,7 +836,8 @@ def main():
     with MatchClient(args.mage_repo, minimax=mode, subchoices=True,
                      deck_a=args.deck_a, deck_b=args.deck_b,
                      seed=args.seed,
-                     opp_think_secs=args.opp_think_secs) as m:
+                     opp_think_secs=args.opp_think_secs,
+                     record=args.record) as m:
         result = m.play(policy)
         trace = m.read_trace()
     log({"source": "result", "result": result, "minimax_trace": trace})

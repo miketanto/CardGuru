@@ -9,10 +9,13 @@
 // accepts directly; convert with ffmpeg if you want MP4.
 //
 // Usage:
-//   node benchmark/replay_video.js --html replay.html --out replay.webm \
+//   NODE_PATH=./node_modules node benchmark/replay_video.js --html replay.html --out replay.webm \
 //        [--speed 1] [--max-frames N] [--chromium /path/to/chrome]
 // Needs `npm install playwright` (browser download can be skipped when a
 // Chromium is passed with --chromium or PLAYWRIGHT_BROWSERS_PATH is set).
+// Export the page with --images-dir/--embed-images (fetch_card_images.py)
+// so the capture does not depend on Scryfall; the recorder waits for the
+// board's images before each frame's clock starts (window.__replay.ready).
 const path = require('path');
 const fs = require('fs');
 
@@ -38,16 +41,19 @@ function arg(name, def) {
   });
   const page = await context.newPage();
   await page.goto('file://' + html + '?present=1');
-  await page.waitForTimeout(1200);           // fonts, first paint
+  await page.waitForTimeout(1500);           // first paint
+  const ready = () => page.evaluate(() => window.__replay.ready ? window.__replay.ready() : null);
   await page.evaluate((s) => { document.getElementById('speed').value = String(s); }, speed);
   const total = await page.evaluate(() => window.__replay.total);
   let shown = 0;
   await page.evaluate(() => window.__replay.goto(0, false));
+  await ready();                              // card images (Scryfall / cache) before the clock starts
   await page.waitForTimeout(await page.evaluate(() => window.__replay.duration()));
   while (true) {
     const i = await page.evaluate(() => window.__replay.next());
     if (i === null) break;
     shown++;
+    await ready();
     const ms = await page.evaluate(() => window.__replay.duration());
     await page.waitForTimeout(ms);
     if (shown % 25 === 0) process.stderr.write(`  frame ${i + 1}/${total}\n`);

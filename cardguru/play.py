@@ -236,7 +236,8 @@ class MatchClient:
                  opp_skill: int = 6, deck_a: Optional[str] = None,
                  deck_b: Optional[str] = None, subchoices: bool = False,
                  seed: Optional[int] = None,
-                 opp_think_secs: Optional[int] = None):
+                 opp_think_secs: Optional[int] = None,
+                 record: Optional[str] = None):
         self.mage_repo = mage_repo or os.environ.get("CARDGURU_MAGE_REPO")
         if not self.mage_repo or not os.path.isdir(self.mage_repo):
             raise RuntimeError("XMage checkout not found: set "
@@ -282,6 +283,10 @@ class MatchClient:
         # opponent weaker under load. The driver raises the limit so the
         # 5000-node cap binds instead; pass 18 to restore stock behaviour.
         self.opp_think_secs = opp_think_secs
+        # Replay recording: the driver writes printing-exact snapshots and
+        # the game log to this JSONL (see GameRecorder in the driver and
+        # benchmark/replay_studio.py). None = no recording.
+        self.record = record
         self.spool: Optional[str] = None
         self.proc: Optional[subprocess.Popen] = None
 
@@ -302,6 +307,8 @@ class MatchClient:
             cmd.append(f"-Dcardguru.seed={self.seed}")
         if self.opp_think_secs is not None:
             cmd.append(f"-Dcardguru.opp.think_secs={self.opp_think_secs}")
+        if self.record:
+            cmd.append(f"-Dcardguru.record={os.path.abspath(self.record)}")
         if self.opp == "passive":
             cmd.append("-Dcardguru.opp=passive")
         elif self.opp_skill != 6:
