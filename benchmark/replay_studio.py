@@ -104,6 +104,9 @@ def build_tree(candidates, scores, chosen_label):
             leaf["our_board"] = l.get("our_board")
             leaf["opp_board"] = l.get("opp_board")
             leaf["hand"] = l.get("our_hand_count")
+            leaf["turn"] = l.get("turn")
+            leaf["gy"] = [l.get("our_graveyard_count"), l.get("opp_graveyard_count")]
+            leaf["mana"] = [l.get("our_mana"), l.get("opp_mana")]
             if sc is not None:
                 vals.append(sc)
                 if l.get("sample") is not None:
@@ -250,9 +253,14 @@ def decision_of(row, trace_called, ti):
     if kind == "leaf_eval" and row.get("source") == "llm":
         chosen = None
         if ti < len(trace_called):
-            chosen = trace_called[ti].get("chosen")
+            t = trace_called[ti]
+            chosen = t.get("chosen")
+            d["agg_gap"] = t.get("agg_gap")
+            d["tie_break"] = t.get("tie_break")
+            d["agg_values"] = t.get("agg_values")
             ti += 1
         d["tree"] = build_tree(req.get("candidates") or [], resp.get("scores"), chosen)
+        d["aggregation"] = req.get("aggregation")
         d["decision"] = req.get("decision")
         d["leaf_count"] = req.get("leaf_count")
     elif kind == "turn_plan":

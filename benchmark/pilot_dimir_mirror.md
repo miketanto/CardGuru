@@ -186,11 +186,29 @@ optional. Neither replaces the required field for the decision's kind.
   mirror image below 50; 0 = lost. Keep the same scale from one decision
   to the next within a turn. Judge with your usual race math: life totals,
   board after the exchange, what is tapped going into their turn, and what
-  their open mana threatens. The engine takes each candidate's WORST leaf
-  and picks the best candidate — so score honestly, do not optimize the
-  menu.
+  their open mana threatens.
+  How the engine aggregates (the request's `aggregation` field says which):
+  projected leaves (each line is "sN: their T<turn> — land drop / no land,
+  cast X | my response") are their NEXT turn played out on one sampled hand
+  per `sN`; a candidate's value is the MEAN over samples of its BEST leaf
+  within each sample (you get to choose your response, you do not get to
+  choose their draw). Unprojected leaves (attacks, blocks) use the WORST
+  leaf. So score honestly, do not optimize the menu.
+  RESOLUTION MATTERS: the winner is the candidate with the highest
+  aggregate, and a gap under 2 points is treated as a tie and handed to
+  the engine's own evaluator. Use the `samples` list: within one sample
+  the opponent's draw is identical, so compare the candidates' leaves
+  there first and give the better position a visibly higher number (3-5
+  points for a real edge, 10+ for a swing). Two leaves whose boards, life,
+  hands, mana or graveyards differ should not share a score unless the
+  positions are genuinely equivalent; identical positions were already
+  collapsed. Graveyard counts are listed because cost reducers (Eddymurk
+  Crab, Hearth Elemental) and recursion make them part of the position.
   Keep `why` to two sentences: the scores carry the judgment, and a
   leaf_eval is not the place to re-derive the whole game.
+- leaf_compare (rare): two candidates tied on aggregate; `pairs` lists the
+  best leaf of each per opponent sample, a vs b. Reply
+  {"prefer": [<+1 a better, -1 b better, 0 equal, one per pair>], "why": "..."}.
   Identical resulting positions are listed once (`duplicate_leaves_collapsed`
   tells you how many were folded). A leaf may carry `prior_score`: the
   number you gave that exact position earlier this turn. Treat it as your

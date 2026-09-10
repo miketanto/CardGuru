@@ -424,8 +424,9 @@ function onNodeClick(n, tree) {
 function showTip(ev, n) {
   const tip = $('tip');
   let html = `<b>${esc(n.full || n.label)}</b>`;
-  if (n.kind === 'leaf') html += `<div>score <b style="color:${scoreColor(n.score)}">${n.score ?? '–'}</b>${n.heuristic != null ? ` · heuristic ${n.heuristic}` : ''}${n.life ? ` · life ${n.life[0]}–${n.life[1]}` : ''}</div>` +
-    (n.our_board ? `<div class="tb">us: ${esc(n.our_board)}</div><div class="tb">them: ${esc(n.opp_board)}</div>` : '');
+  if (n.kind === 'leaf') html += `<div>score <b style="color:${scoreColor(n.score)}">${n.score ?? '–'}</b>${n.heuristic != null ? ` · heuristic ${n.heuristic}` : ''}${n.life ? ` · life ${n.life[0]}–${n.life[1]}` : ''}${n.turn ? ` · T${n.turn}` : ''}</div>` +
+    (n.our_board ? `<div class="tb">us: ${esc(n.our_board)}</div><div class="tb">them: ${esc(n.opp_board)}</div>` : '') +
+    (n.gy && n.gy[0] != null ? `<div class="tb">graveyards ${n.gy[0]} / ${n.gy[1]}${n.mana && n.mana[0] != null ? ` · open mana us ${esc(n.mana[0])} them ${esc(n.mana[1])}` : ''}</div>` : '');
   if (n.kind === 'candidate' && n.agg != null) html += `<div>aggregate <b>${n.agg}</b> (${esc(n.rule || '')}) · ${n.n_leaves} leaves · click to ${(collapsed[cur] || new Set()).has(n.id) ? 'expand' : 'collapse'}</div>`;
   tip.innerHTML = html; tip.classList.add('on');
   const r = document.body.getBoundingClientRect();
@@ -466,7 +467,8 @@ function renderDetail(f, node, tree) {
   if (node && node.kind === 'leaf') {
     html += `<div class="dh">simulated leaf</div><div class="dline">${esc(node.full || node.label)}</div>
       <div class="scorebar"><div style="width:${Math.max(0, Math.min(100, node.score || 0))}%;background:${scoreColor(node.score)}"></div><span>score ${node.score ?? '–'}${node.heuristic != null ? ` · heuristic ${node.heuristic}` : ''}</span></div>
-      ${node.life ? `<div class="kv">life <b>${node.life[0]}</b> us · <b>${node.life[1]}</b> them${node.hand != null ? ` · hand ${node.hand}` : ''}</div>` : ''}
+      ${node.life ? `<div class="kv">life <b>${node.life[0]}</b> us · <b>${node.life[1]}</b> them${node.hand != null ? ` · hand ${node.hand}` : ''}${node.turn ? ` · turn ${node.turn}` : ''}</div>` : ''}
+      ${node.gy && node.gy[0] != null ? `<div class="kv">graveyards <b>${node.gy[0]}</b> us · <b>${node.gy[1]}</b> them${node.mana && node.mana[0] != null ? ` · open mana us ${esc(node.mana[0])}, them ${esc(node.mana[1])}` : ''}</div>` : ''}
       ${node.our_board ? `<div class="kv">our board</div><div class="chips">${chips(node.our_board)}</div><div class="kv">their board</div><div class="chips">${chips(node.opp_board)}</div>` : ''}`;
   } else if (node && node.kind === 'candidate' && tree) {
     const leaves = tree.nodes.filter((n) => n.kind === 'leaf' && underNode(tree, n, node.id)).sort((a, b) => (b.score ?? -1) - (a.score ?? -1));
@@ -477,6 +479,7 @@ function renderDetail(f, node, tree) {
   if (dec) {
     const kl = KINDLBL[f.kind] || f.kind || '';
     html += `<div class="dh">${esc(CHIPLBL[f.src] || f.src)}${kl && kl !== (CHIPLBL[f.src] || '').toLowerCase() ? ' · ' + esc(kl) : ''}${dec.decision ? ' · ' + esc(dec.decision) : ''}${dec.leaf_count ? ` · ${dec.leaf_count} leaves` : ''}</div>`;
+    if (dec.agg_gap != null || dec.tie_break) html += `<div class="kv">${dec.aggregation ? esc(dec.aggregation) + ' · ' : ''}top-two gap <b>${dec.agg_gap ?? '–'}</b>${dec.tie_break && dec.tie_break !== 'none' ? ` · tie-break <b>${esc(dec.tie_break)}</b>` : ''}</div>`;
     if (dec.why) html += `<div class="why">${esc(dec.why)}</div>`;
     if (dec.plan) html += `<div class="plan"><b>plan</b> ${esc(dec.plan)}</div>`;
     if (dec.note) html += `<div class="plan"><b>plan step</b> ${esc(dec.note)}</div>`;

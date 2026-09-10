@@ -40,6 +40,10 @@ SCHEMAS = {
     "leaf_eval": '{"scores": [<exactly leaf_count numbers 0-100, one per '
                  'LEAF in leaf_index order - not one per candidate>], '
                  '"why": "...", "plan": "..."}',
+    # Tie-break: two candidates whose aggregates were within the margin,
+    # their best leaf per opponent sample side by side.
+    "leaf_compare": '{"prefer": [<exactly pair_count integers: +1 if a is '
+                    'better in that pair, -1 if b, 0 if equal>], "why": "..."}',
     "turn_plan": '{"turn_plan": {"steps": [{"phase": "main1|combat|main2|end|any", '
                  '"action": "cast X | play X | activate X | pass"}], '
                  '"attack": "attack_all|attack_none|attack <names>|ask", '
@@ -63,7 +67,8 @@ KEY_FOR = {"mulligan": "mulligan", "priority": "choice",
            "attackers": "attackers", "blockers": "blocks",
            "target": "targets", "choose": "targets",
            "announce_x": "x", "mode": "choice", "use": "use",
-           "leaf_eval": "scores", "turn_plan": "turn_plan"}
+           "leaf_eval": "scores", "leaf_compare": "prefer",
+           "turn_plan": "turn_plan"}
 
 # Decision kinds that MUST carry a standing plan.
 #
@@ -248,6 +253,12 @@ def main():
                            f'you gave {got} scores. Score every LEAF, not '
                            f'each candidate: exactly {request["leaf_count"]} '
                            f'numbers in leaf_index order')
+            elif (kind == "leaf_compare" and isinstance(request.get("pair_count"), int)
+                  and (not isinstance(resp.get("prefer"), list)
+                       or len(resp["prefer"]) != request["pair_count"])):
+                got = len(resp["prefer"]) if isinstance(resp.get("prefer"), list) else 0
+                missing = (f'a "prefer" list of exactly {request["pair_count"]} '
+                           f'integers (+1 / 0 / -1), one per pair; you gave {got}')
             elif kind in PLAN_REQUIRED:
                 p = resp.get("plan")
                 if not isinstance(p, str) or not p.strip():

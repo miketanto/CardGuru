@@ -2109,10 +2109,9 @@ class InteractiveTestPlayer extends TestPlayer {
                         + (r2 != null ? " | after it resolves they cast: " + r2 : "");
 
                 beginOpponentTurn(sim, oppId);
-                String theirs = opponentMainPhase(sim, oppId);
-                String base = label + respTag + " | s" + k + ": they "
-                        + (theirs == null ? "do nothing" : "cast " + theirs);
-                if (theirs == null) {
+                OppTurn theirs = opponentMainPhase(sim, oppId);
+                String base = label + respTag + " | " + theirTurnLabel(sim, k, theirs);
+                if (theirs.spell == null) {
                     out.add(projectedLeaf(sim, myId, oppId, base, k, "nothing"));
                     continue;
                 }
@@ -2197,14 +2196,39 @@ class InteractiveTestPlayer extends TestPlayer {
      *  most expensive castable non-land spell, left ON THE STACK so my
      *  window-1 response can target it. Returns the spell's label, or null
      *  if they cast nothing. */
-    private static String opponentMainPhase(Game sim, UUID oppId) {
+    /** What the projected opponent did in their main phase. */
+    private static final class OppTurn {
+        final String spell;      // label of the spell left on the stack, or null
+        final boolean land;      // whether a land drop was made
+        OppTurn(String spell, boolean land) {
+            this.spell = spell;
+            this.land = land;
+        }
+    }
+
+    private static String stripCast(String s) {
+        return s != null && s.startsWith("Cast ") ? s.substring(5) : s;
+    }
+
+    /** Leaf line fragment for the projected opponent turn: which turn it
+     *  is (theirs, next), whether they made a land drop, what they cast.
+     *  The replay showed "s0: they cast Stock Up" under a 2-land board and
+     *  it read as illegal; it was their next turn with a third land. */
+    private static String theirTurnLabel(Game sim, int k, OppTurn t) {
+        return "s" + k + ": their T" + sim.getTurnNum() + " \u2014 "
+                + (t.land ? "land drop, " : "no land, ")
+                + (t.spell == null ? "nothing" : "cast " + stripCast(t.spell));
+    }
+
+    private static OppTurn opponentMainPhase(Game sim, UUID oppId) {
         Player opp = sim.getPlayer(oppId);
         if (opp == null) {
-            return null;
+            return new OppTurn(null, false);
         }
+        boolean land = false;
         for (ActivatedAbility a : opp.getPlayable(sim, true)) {
             if (a instanceof PlayLandAbility) {
-                opp.activateAbility(a.copy(), sim);
+                land = opp.activateAbility(a.copy(), sim);
                 sim.checkStateAndTriggered();
                 resolveStack(sim);
                 break;
@@ -2224,9 +2248,9 @@ class InteractiveTestPlayer extends TestPlayer {
             }
         }
         if (best == null) {
-            return null;
+            return new OppTurn(null, land);
         }
-        return opp.activateAbility(best.copy(), sim) ? String.valueOf(best) : null;
+        return new OppTurn(opp.activateAbility(best.copy(), sim) ? String.valueOf(best) : null, land);
     }
 
     // ---- arm (f): their response to MY action -----------------------------
@@ -2332,15 +2356,24 @@ class InteractiveTestPlayer extends TestPlayer {
      *  arm-(d) rollout — keep the worst-leaf rule. */
     private int argmaxProjected(int nCandidates, List<List<ScoredLeaf>> leaves,
                                 double[] scores) {
-        int best = 0;
-        double bestV = Double.NEGATIVE_INFINITY;
+        double[] v = candidateValues(nCandidates, leaves, scores, false);
+        return pickBest(v, nCandidates, leaves, scores, false);
+    }
+
+    /** Per-candidate value. Projected candidates (leaves tagged with a
+     *  sample) are the mean over samples of the best leaf within each
+     *  sample; unprojected ones (or minRule) the worst leaf. Uses the LLM
+     *  scores when given, the stored heuristics otherwise. */
+    private static double[] candidateValues(int nCandidates, List<List<ScoredLeaf>> leaves,
+                                            double[] scores, boolean minRule) {
+        double[] out = new double[nCandidates];
         int flat = 0;
         for (int c = 0; c < nCandidates; c++) {
             List<ScoredLeaf> ls = leaves.get(c);
             double v;
             if (ls.isEmpty()) {
                 v = Double.NEGATIVE_INFINITY;
-            } else if (!ls.get(0).summary.has("sample")) {
+            } else if (minRule || !ls.get(0).summary.has("sample")) {
                 v = Double.POSITIVE_INFINITY;
                 for (ScoredLeaf l : ls) {
                     v = Math.min(v, scores != null ? scores[flat] : l.heuristic);
@@ -2360,12 +2393,152 @@ class InteractiveTestPlayer extends TestPlayer {
                 }
                 v = sum / perSample.size();
             }
-            if (v > bestV) {
-                bestV = v;
+            out[c] = v;
+        }
+        return out;
+    }
+
+    // ---- tie-break ---------------------------------------------------------
+    //
+    // Measured on the recorded Izzet game: in about half the searches the
+    // best and runner-up candidate were within one point on a 0-100 scale,
+    // i.e. the pick was noise. Within cardguru.tie_margin the engine's own
+    // evaluator (GameStateEvaluator2, already computed per leaf) decides
+    // among the tied candidates; with cardguru.tie_compare=true the pilot
+    // is first asked one pairwise question (top two, same-sample leaves side
+    // by side), which is a more reliable question for an LLM than an
+    // absolute score.
+    private static final double TIE_MARGIN =
+            Double.parseDouble(System.getProperty("cardguru.tie_margin", "2"));
+    private static final boolean TIE_COMPARE = Boolean.getBoolean("cardguru.tie_compare");
+    private double[] lastAggValues = new double[0];
+    private double lastAggGap = Double.NaN;
+    private String lastTieBreak = "none";
+    private int tieBreaksHeuristic = 0;
+    private int tieBreaksCompare = 0;
+
+    private int pickBest(double[] v, int n, List<List<ScoredLeaf>> leaves,
+                         double[] scores, boolean minRule) {
+        lastAggValues = v.clone();
+        lastTieBreak = "none";
+        lastAggGap = Double.NaN;
+        int best = 0;
+        for (int c = 1; c < n; c++) {
+            if (v[c] > v[best]) {
                 best = c;
             }
         }
-        return best;
+        if (n < 2 || scores == null || Double.isInfinite(v[best])) {
+            return best;
+        }
+        int second = -1;
+        for (int c = 0; c < n; c++) {
+            if (c != best && (second < 0 || v[c] > v[second])) {
+                second = c;
+            }
+        }
+        lastAggGap = v[best] - v[second];
+        if (lastAggGap >= TIE_MARGIN) {
+            return best;
+        }
+        // Tied set: everything within the margin of the best.
+        List<Integer> tied = new ArrayList<>();
+        for (int c = 0; c < n; c++) {
+            if (v[best] - v[c] < TIE_MARGIN) {
+                tied.add(c);
+            }
+        }
+        if (TIE_COMPARE && pendingCompare != null) {
+            int r = pendingCompare.apply(best, second);
+            if (r >= 0) {
+                tieBreaksCompare++;
+                lastTieBreak = "compare:" + (r == best ? "kept" : "flipped");
+                return r;
+            }
+        }
+        double[] h = candidateValues(n, leaves, null, minRule);
+        int pick = best;
+        for (int c : tied) {
+            if (h[c] > h[pick]) {
+                pick = c;
+            }
+        }
+        tieBreaksHeuristic++;
+        lastTieBreak = "heuristic:" + (pick == best ? "kept" : "flipped");
+        return pick;
+    }
+
+    /** Set by the search that owns the current decision when tie_compare is
+     *  on: given the two tied candidates, asks the pilot and returns the
+     *  winner, or -1 when undecided. */
+    private java.util.function.BinaryOperator<Integer> pendingCompare = null;
+
+    /** One pairwise question to the pilot: candidate a vs candidate b, each
+     *  sample's best leaf side by side. Returns the preferred candidate or
+     *  -1 when the answer is missing or balanced. */
+    private int askCompare(Game game, String decision, List<String> labels,
+                           List<List<ScoredLeaf>> leaves, double[] scores, int a, int b) {
+        int[] start = new int[labels.size() + 1];
+        for (int c = 0; c < labels.size(); c++) {
+            start[c + 1] = start[c] + leaves.get(c).size();
+        }
+        Map<Integer, JsonObject> bestA = bestLeafPerSample(leaves.get(a), scores, start[a]);
+        Map<Integer, JsonObject> bestB = bestLeafPerSample(leaves.get(b), scores, start[b]);
+        JsonArray pairs = new JsonArray();
+        for (Map.Entry<Integer, JsonObject> e : bestA.entrySet()) {
+            JsonObject lb = bestB.get(e.getKey());
+            if (lb == null) {
+                continue;
+            }
+            JsonObject pair = new JsonObject();
+            pair.addProperty("sample", e.getKey());
+            pair.add("a", e.getValue());
+            pair.add("b", lb);
+            pairs.add(pair);
+        }
+        if (pairs.size() == 0) {
+            return -1;
+        }
+        JsonObject req = baseRequest("leaf_compare", game);
+        req.addProperty("decision", decision);
+        req.addProperty("a_label", labels.get(a));
+        req.addProperty("b_label", labels.get(b));
+        req.addProperty("a_value", lastAggValues[a]);
+        req.addProperty("b_value", lastAggValues[b]);
+        req.add("pairs", pairs);
+        req.addProperty("pair_count", pairs.size());
+        JsonObject resp = ask(req);
+        if (resp == null || !resp.has("prefer") || !resp.get("prefer").isJsonArray()) {
+            return -1;
+        }
+        int sum = 0;
+        try {
+            for (JsonElement el : resp.getAsJsonArray("prefer")) {
+                sum += Integer.signum(el.getAsInt());
+            }
+        } catch (RuntimeException e) {
+            return -1;
+        }
+        return sum > 0 ? a : sum < 0 ? b : -1;
+    }
+
+    private static Map<Integer, JsonObject> bestLeafPerSample(List<ScoredLeaf> ls, double[] scores,
+                                                              int offset) {
+        Map<Integer, JsonObject> out = new LinkedHashMap<>();
+        Map<Integer, Double> bestScore = new HashMap<>();
+        for (int i = 0; i < ls.size(); i++) {
+            ScoredLeaf l = ls.get(i);
+            int k = l.summary.has("sample") ? l.summary.get("sample").getAsInt() : i;
+            double sc = scores[offset + i];
+            Double prev = bestScore.get(k);
+            if (prev == null || sc > prev) {
+                bestScore.put(k, sc);
+                JsonObject o = l.summary.deepCopy();
+                o.addProperty("score", sc);
+                out.put(k, o);
+            }
+        }
+        return out;
     }
 
     /** One-line-per-side board summary of a resolved leaf copy. */
@@ -2388,6 +2561,12 @@ class InteractiveTestPlayer extends TestPlayer {
         o.addProperty("opp_mana", manaOf(leaf, oppId));
         o.addProperty("our_hand_count", me == null ? 0 : me.getHand().size());
         o.addProperty("opp_hand_count", opp == null ? 0 : opp.getHand().size());
+        // Graveyard sizes: cost reducers (Eddymurk Crab, Hearth Elemental)
+        // and recursion make them part of what a board is worth, and they
+        // are why a 4-land opponent could cast a 7-drop in the replay.
+        o.addProperty("our_graveyard_count", me == null ? 0 : me.getGraveyard().size());
+        o.addProperty("opp_graveyard_count", opp == null ? 0 : opp.getGraveyard().size());
+        o.addProperty("turn", leaf.getTurnNum());
         JsonArray hand = new JsonArray();
         if (me != null) {
             for (Card c : me.getHand().getCards(leaf)) {
@@ -2417,6 +2596,7 @@ class InteractiveTestPlayer extends TestPlayer {
 
     private String boardLine(Game leaf, UUID pid) {
         List<String> creatures = new ArrayList<>();
+        List<String> others = new ArrayList<>();
         int lands = 0;
         int landsUntapped = 0;
         for (Permanent p : leaf.getBattlefield().getAllActivePermanents(pid)) {
@@ -2428,9 +2608,24 @@ class InteractiveTestPlayer extends TestPlayer {
                 if (!p.isTapped()) {
                     landsUntapped++;
                 }
+            } else {
+                // Enchantments, artifacts, planeswalkers: invisible before,
+                // so two boards that differed only by an Ascension or a
+                // planeswalker read as identical to the pilot.
+                String extra = "";
+                try {
+                    if (p.isPlaneswalker(leaf)) {
+                        extra = " L" + p.getCounters(leaf).getCount(CounterType.LOYALTY);
+                    }
+                } catch (RuntimeException ignored) {
+                }
+                others.add(p.getName() + extra + (p.isTapped() ? " T" : ""));
             }
         }
         String s = creatures.isEmpty() ? "no creatures" : String.join(", ", creatures);
+        if (!others.isEmpty()) {
+            s += " | " + String.join(", ", others);
+        }
         return s + " | " + lands + " lands (" + landsUntapped + " untapped)";
     }
 
@@ -2504,6 +2699,17 @@ class InteractiveTestPlayer extends TestPlayer {
             default:
                 return "post";
         }
+    }
+
+    /** The "sN: their T.. — ..." fragment of a projected leaf line. */
+    private static String sampleFragment(JsonObject summary) {
+        String line = summary.has("line") ? summary.get("line").getAsString() : "";
+        for (String part : line.split(" \\| ")) {
+            if (part.matches("s\\d+: .*")) {
+                return part;
+            }
+        }
+        return "";
     }
 
     private static double meanOf(List<Double> xs) {
@@ -2592,6 +2798,47 @@ class InteractiveTestPlayer extends TestPlayer {
         }
         req.add("candidates", cands);
         req.addProperty("leaf_count", sent);
+        // The same leaves regrouped by opponent sample, so the pilot can
+        // compare candidates under the SAME opponent draw. Grouped only by
+        // candidate, 20-60 near-identical leaves got 2-5 distinct scores and
+        // the pick came down to fractions of a point.
+        boolean projected = false;
+        Map<Integer, JsonObject> bySample = new LinkedHashMap<>();
+        sent = 0;
+        for (int u = 0; u < unique; u++) {
+            JsonObject sm = uniqueSummary.get(u);
+            int idx = sent++;
+            if (!sm.has("sample")) {
+                continue;
+            }
+            projected = true;
+            int k = sm.get("sample").getAsInt();
+            JsonObject grp = bySample.get(k);
+            if (grp == null) {
+                grp = new JsonObject();
+                grp.addProperty("sample", k);
+                grp.addProperty("their_line", sampleFragment(sm));
+                grp.add("leaves", new JsonArray());
+                bySample.put(k, grp);
+            }
+            JsonObject e = new JsonObject();
+            e.addProperty("leaf_index", idx);
+            e.addProperty("candidate", candidateLabels.get(uniqueCand.get(u)));
+            if (sm.has("response")) {
+                e.addProperty("response", sm.get("response").getAsString());
+            }
+            grp.getAsJsonArray("leaves").add(e);
+        }
+        if (projected) {
+            JsonArray samples = new JsonArray();
+            for (JsonObject g : bySample.values()) {
+                samples.add(g);
+            }
+            req.add("samples", samples);
+        }
+        req.addProperty("aggregation", projected
+                ? "candidate value = mean over samples of its best leaf within each sample"
+                : "candidate value = its worst leaf");
         if (total != sent) {
             req.addProperty("duplicate_leaves_collapsed", total - sent);
         }
@@ -2821,10 +3068,9 @@ class InteractiveTestPlayer extends TestPlayer {
     private void projectOpponentTurn(Game sim, UUID myId, UUID oppId, String label,
                                      int k, List<ScoredLeaf> out) {
         beginOpponentTurn(sim, oppId);
-        String theirs = opponentMainPhase(sim, oppId);
-        String base = label + " | s" + k + ": they "
-                + (theirs == null ? "do nothing" : "cast " + theirs);
-        if (theirs == null) {
+        OppTurn theirs = opponentMainPhase(sim, oppId);
+        String base = label + " | " + theirTurnLabel(sim, k, theirs);
+        if (theirs.spell == null) {
             out.add(projectedLeaf(sim, myId, oppId, base, k, "nothing"));
             return;
         }
@@ -2921,7 +3167,9 @@ class InteractiveTestPlayer extends TestPlayer {
             leaves.add(rolloutLine(game, myId, oppId, line, label));
         }
         double[] scores = askLeafScores(game, "plan", labels, leaves);
+        pendingCompare = (x, y) -> askCompare(game, "plan", labels, leaves, scores, x, y);
         int best = scores == null ? 0 : argmaxProjected(labels.size(), leaves, scores);
+        pendingCompare = null;
         traceLlmSearch("plan", labels, leaves, scores, best, game);
         JsonObject again = req.deepCopy();
         JsonObject chosen = new JsonObject();
@@ -2979,7 +3227,9 @@ class InteractiveTestPlayer extends TestPlayer {
         }
 
         double[] scores = askLeafScores(game, "attackers", labels, leaves);
+        pendingCompare = (x, y) -> askCompare(game, "attackers", labels, leaves, scores, x, y);
         int best = argmaxOfMins(candidates.size(), leaves, scores);
+        pendingCompare = null;
         for (int idx : candidates.get(best)) {
             Permanent atk = attackers.get(idx);
             if (defenderId != null && atk.canAttack(defenderId, game)) {
@@ -3078,7 +3328,9 @@ class InteractiveTestPlayer extends TestPlayer {
         }
 
         double[] scores = askLeafScores(game, "blockers", labels, leaves);
+        pendingCompare = (x, y) -> askCompare(game, "blockers", labels, leaves, scores, x, y);
         int best = argmaxOfMins(candidates.size(), leaves, scores);
+        pendingCompare = null;
         for (UUID[] pair : candidates.get(best)) {
             Permanent b = game.getPermanent(pair[0]);
             Permanent a = game.getPermanent(pair[1]);
@@ -3094,25 +3346,8 @@ class InteractiveTestPlayer extends TestPlayer {
      *  LLM scores when present, the stored heuristics otherwise. */
     private int argmaxOfMins(int nCandidates, List<List<ScoredLeaf>> leaves,
                              double[] scores) {
-        int best = 0;
-        double bestV = Double.NEGATIVE_INFINITY;
-        int flat = 0;
-        for (int c = 0; c < nCandidates; c++) {
-            double v = Double.POSITIVE_INFINITY;
-            for (ScoredLeaf l : leaves.get(c)) {
-                double lv = scores != null ? scores[flat] : l.heuristic;
-                flat++;
-                v = Math.min(v, lv);
-            }
-            if (leaves.get(c).isEmpty()) {
-                v = Double.NEGATIVE_INFINITY;
-            }
-            if (v > bestV) {
-                bestV = v;
-                best = c;
-            }
-        }
-        return best;
+        double[] v = candidateValues(nCandidates, leaves, scores, true);
+        return pickBest(v, nCandidates, leaves, scores, true);
     }
 
     private void traceLlmSearch(String decision, List<String> labels,
@@ -3147,6 +3382,28 @@ class InteractiveTestPlayer extends TestPlayer {
         rec.addProperty("leaf_dedup_saved", leafDedupSaved);
         rec.addProperty("leaves_total", leavesTotalLast);
         rec.addProperty("leaves_sent", leavesSentLast);
+        // Resolution of this search: how many distinct scores the pilot
+        // used, the aggregate per candidate, the top-two gap, and whether
+        // the tie-break decided it.
+        if (scores != null) {
+            Set<Long> distinct = new HashSet<>();
+            for (double x : scores) {
+                distinct.add(Math.round(x * 10));
+            }
+            rec.addProperty("score_distinct", distinct.size());
+        }
+        JsonArray aggs = new JsonArray();
+        for (double x : lastAggValues) {
+            aggs.add(Double.isInfinite(x) ? null : Math.round(x * 100.0) / 100.0);
+        }
+        rec.add("agg_values", aggs);
+        if (!Double.isNaN(lastAggGap)) {
+            rec.addProperty("agg_gap", Math.round(lastAggGap * 100.0) / 100.0);
+        }
+        rec.addProperty("tie_break", lastTieBreak);
+        rec.addProperty("tie_margin", TIE_MARGIN);
+        rec.addProperty("tie_breaks_heuristic", tieBreaksHeuristic);
+        rec.addProperty("tie_breaks_compare", tieBreaksCompare);
         JsonArray cands = new JsonArray();
         int flat = 0;
         for (int c = 0; c < labels.size(); c++) {
@@ -3301,7 +3558,9 @@ class InteractiveTestPlayer extends TestPlayer {
             // rather than acting on the heuristic alone.
             return -1;
         }
+        pendingCompare = (x, y) -> askCompare(game, "priority", labels, leaves, scores, x, y);
         int best = argmaxProjected(labels.size(), leaves, scores);
+        pendingCompare = null;
         traceLlmSearch("priority", labels, leaves, scores, best, game);
         if (best == 0) {
             priorityHoldMemo.put(sig, 1);

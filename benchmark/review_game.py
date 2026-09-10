@@ -147,6 +147,15 @@ def main():
 
     result = next((r.get("result") for r in rows
                    if r.get("source") == "result"), None)
+    trace = next((r.get("minimax_trace") or [] for r in rows
+                  if r.get("source") == "result"), [])
+    # Score resolution per search (driver >= tie-break build): distinct
+    # scores, top-two aggregate gap, tie-breaks fired.
+    res = [t for t in trace if t.get("mode") == "llm_leaf" and t.get("llm_scored")]
+    gaps = [t["agg_gap"] for t in res if isinstance(t.get("agg_gap"), (int, float))]
+    distinct = [t["score_distinct"] for t in res if isinstance(t.get("score_distinct"), int)]
+    ties = sum(1 for t in res if str(t.get("tie_break", "none")) != "none")
+    flips = sum(1 for t in res if str(t.get("tie_break", "")).endswith("flipped"))
     total = sum(1 for r in rows if r.get("request"))
     kept = [r for r in rows if is_real_choice(r)]
 
@@ -157,6 +166,14 @@ def main():
                f" in {(result or {}).get('turns', '?')} turns. "
                f"{len(kept)} real decisions out of {total} requests "
                f"(the rest were forced, auto-passed, or yielded).\n")
+    if res:
+        gaps_s = sorted(gaps)
+        med_gap = gaps_s[len(gaps_s) // 2] if gaps_s else None
+        close = sum(1 for g in gaps if g < 2.0)
+        out.append(f"Search resolution: {len(res)} LLM-scored searches; median distinct "
+                   f"scores {sorted(distinct)[len(distinct) // 2] if distinct else '?'}; "
+                   f"median top-two gap {med_gap}; {close} searches within 2 points; "
+                   f"{ties} tie-breaks fired ({flips} changed the pick).\n")
     out.append("Rate each decision **questionable / minor / moderate / major**, "
                "or leave it alone if it was right. Say what should have been "
                "done instead and why.\n")
@@ -174,8 +191,8 @@ def main():
         out.append(f"- MAD board: {board(b)}")
         if kind == "leaf_eval":
             out.append("- Engine simulated these lines; pilot scored the "
-                       "resulting boards (candidate value = worst leaf, "
-                       "highest wins):")
+                       "resulting boards (candidate value = "
+                       f"{req.get('aggregation') or 'worst leaf'}, highest wins):")
             out.append(render_leaf_eval(req, resp))
         else:
             opts = req.get("options") or []
