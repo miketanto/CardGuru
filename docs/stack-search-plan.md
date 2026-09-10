@@ -364,6 +364,28 @@ failure; "I tapped out and they resolved a bomb" was.
   hand holds Kaito and `{1}{U}{B}` is open, `getPlayable` offers ninjutsu
   and the leaf shows a 3/4 hexproof where a 1/1 was. No card names needed.
 
+- **Harness bug that taints every game before the suite (g1–g10): one
+  shared pilot session.** A `claude -p` child launched from inside a
+  Claude Code session inherits that session's id from the environment,
+  so `pilot_daemon.py`'s "one session per game" was in fact one session
+  for *all* games, across models, since the daemon was written. The
+  transcript reached 89 MB with 40 auto-compactions; the resumed context
+  ran to 460k tokens before each compaction; and when g10 (sonnet) and
+  the suite dry run (haiku) ran concurrently, their decisions interleaved
+  in the same conversation — "Decision 74" meant a different game
+  depending on which daemon asked. Symptom that exposed it: haiku
+  decisions at 60–150 s against a measured 4 s call floor, with `claude
+  -p` timeouts and a session reset. Fix (173be2d): pin a fresh
+  `--session-id` uuid on each game's first call; verified that a pinned
+  session resumes its own memory at ~26k context and ~1.3 s API time.
+  Consequences: (1) g1–g10 latency figures are not the pilot's own cost;
+  (2) g1–g9 pilots carried compacted memory of earlier games, g10 and the
+  aborted dry run carried each other's; (3) the arm (d)→(e) metric
+  comparisons still stand qualitatively (same taint on both sides) but
+  the overnight suite is the first clean data. g10 itself: **loss in 16
+  turns** on seed 31 under arm (f) — recorded, labelled tainted, not used
+  for the (e)-vs-(f) comparison.
+
 ## 9. Measurement
 
 Win rate is the headline and the weakest signal: same 60 cards both sides,

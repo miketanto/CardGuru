@@ -131,6 +131,19 @@ applies to any claim about win rate.
 3. Queue items 1–4 (8 games, concurrency 2, ~4–5 h). Sleep.
 4. Next day: read the eight digests, rank, build and validate 3, queue 5–8.
 
+## Status (05:22 UTC)
+
+- Dry run aborted at turn 13 after 61 min: every pilot call was resuming
+  one shared session (see the harness-bug entry in
+  `docs/stack-search-plan.md` §8 Status), so the game was both slow and
+  cross-contaminated with g10. Fixed in 173be2d; partial data kept under
+  `research/data/suite/aborted/`.
+- Full suite launched at 05:22: 8 jobs, 2 workers, arm (f) props, haiku
+  seeds 23 and 31 first. Per-game rows land in `research/data/suite.jsonl`
+  and each game commits and pushes on completion.
+- Keepalive: in-session heartbeat every 10 min plus a server-side hourly
+  Routine that restarts the queue from `suite.jsonl` if the runner dies.
+
 ## Exit
 
 `research/data/suite.jsonl` has 12 rows; `docs/overnight-suite-results.md`
