@@ -112,5 +112,11 @@ These are the project's standing rules; `rl/HANDOFF-ATTACK-JOINT.md`
 
 ## Where to start
 
-`rl/HANDOFF-STACK-TIMING.md` is the current handoff. Read it, then
-`rl/DIMIR-V6-2K-RESULT.md`.
+`LEVELSET.md` (repo root) is the synthesis of everything through
+Phase 12; read it first. `rl/HANDOFF-CREDIT.md` is the current handoff
+(it supersedes `HANDOFF-STACK-TIMING.md`, whose three questions it
+answers). Then `rl/THROUGHPUT-LOCAL.md` for how fast the local machine
+runs and why `--device cuda` is the default now, and
+`rl/SETUP-WSL-LOCAL.md` for the environment. The lane scripts still
+resolve `/home/user/CardGuru` and `/home/user/mage`; on this machine
+those are symlinks inside WSL.

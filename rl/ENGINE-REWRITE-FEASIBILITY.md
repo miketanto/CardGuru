@@ -240,3 +240,13 @@ Combined 1–4 on rung 0 is plausibly 2–3x sequential **[estimate]**, which la
 - **The 12–17 games/s per deck figure** in `rl/CURRICULUM-LADDER.md:298` — no artifact row supports it; the source of that number is unknown.
 - **Absolute per-window engine cost on rung 0** is inferred from summary rows (§5b), not profiled; a JFR run on W0Base (as Phase 12 did on BenchDimir) would replace the estimate with a measurement.
 - **Effort estimates** in §4 are unvalidated engineering judgement; the largest uncertainty is the opponent/`ComputerPlayer` parity work, not the rules.
+
+## 7. Correction (2026-09-10, same day)
+
+§5 said the brief's "3.3x fewer consults" figure "does not appear in any
+`rl/*.md`" and read the README chain as ~2.6x. The 3.3x is real and
+recorded: `EXPERIMENTS.md` #3 (repo root, outside `rl/`), the yield
+act-rate study, consults 880 → 244 over 800 scripted games. The 2.6x in
+`rl/README.md` is the agent seat only, after the consult gate and the
+phantom-land filter. Different baselines, both correct; neither changes
+this study's verdict, which rests on the update-step share of wall clock.
