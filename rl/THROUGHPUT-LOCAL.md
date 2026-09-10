@@ -85,6 +85,30 @@ batteries included). Single run each, seed 0.
 | arm | eps/s | window s | update s mean (max) | update share of window | lock wait share | wait / held per consult | peak used / JVM / server MB |
 |---|---|---|---|---|---|---|---|
 | conc4 cpu | 0.535 | 419 | 48.6 (64.6) | 92.9 % | 90.6 % (16 000 consults) | 43.1 / 4.47 ms | 8004 / 2099 / 5970 |
+| conc8 cpu | 0.419 | 534 | 60.2 (98.0) | 90.1 % | 95.9 % (18 000 consults) | 107.9 / 4.57 ms | 9822 / 2169 / 7850 |
+
+Decomposed (rows 2–8: update seconds from col 9, consults from col 4,
+play time = window − Σupdate):
+
+| arm | Σ consults stored | update ms per consult | play s | consults/s during play | play-only eps/s |
+|---|---|---|---|---|---|
+| conc4 cpu | 14 569 | 24.7 | 66 | 221 | 3.4 |
+| conc8 cpu | 18 493 | 24.3 | 87 | 213 | 2.6 |
+
+**conc8 is a regression in eps/s (−22 %), and the decomposition says
+why it is not noise in the update:** the update costs the same 24 ms
+per stored consult on both arms; this run's episodes were longer (the
+sampled trajectories diverge with thread interleaving, so the two arms
+did not play the same games — batch win rate reached .31 at row 8 vs
+.03), so it stored 27 % more consults and spent 27 % longer updating.
+The play phase tells the real story: **~215 consults/s on both arms,
+which is 1 / (4.5 ms held per consult)**. The serialized inference lock
+is the ceiling of the play phase from conc4 onward; eight game threads
+queue behind it (wait per consult 43 → 108 ms) and add nothing.
+
+Prediction for conc12, registered before it ran: play ≈ 220 consults/s
+again, eps/s ≤ 0.42, peak memory ≥ 10.5 GB (server RSS grows with
+per-session pending buffers; 7.85 GB at conc8).
 
 **The PPO update is the wall clock at this stage of training.** With an
 untrained net the games are short (13–14 turns, ~20 agent consults, the

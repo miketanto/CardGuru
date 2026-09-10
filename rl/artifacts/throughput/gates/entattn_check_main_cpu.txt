@@ -1,0 +1,25 @@
+CHECK|POOLING    |PASS|sum: max|1x2/2 - 3x2/2| over 5 inits, worst = 3.119257 (must be > 1e-2)
+CHECK|MEANCOLLIDE|PASS|mean-pooled, same nets: worst 0.000000358 - the collision v6 removes (reported, not required)
+CHECK|COLLISION  |PASS|6 boards, all 3/7/7, 5 inits: closest pair differs by 0.004859 against token scale 6.666 (v5 gives exactly 0 by construction)
+CHECK|PERMUTE    |PASS|7 rows shuffled + edges remapped: max diff 1.431e-06
+CHECK|PERMUTE-NEG|PASS|same rows, edges left pointing at the old order: 0.218115 (must differ, else relations are inert)
+CHECK|R0-ZERO    |PASS|rel_emb[no-edge] = [0.0, 0.0, 0.0, 0.0]
+CHECK|R0-NOBIAS  |FAIL|96 entities, no padding: max|biased - plain| = 3.052e-05
+CHECK|R0-PADIDIOM|PASS|4 of 96 slots used: max|merged mask - key_padding_mask| = 9.537e-07
+CHECK|R0-CONTRAST|PASS|same board, same weights, 3 edges live: 0.003143 (must differ)
+CHECK|MASKING    |PASS|garbage in 92 padded slots: max diff over token/logits/value = 0.000e+00
+CHECK|EMPTY      |PASS|zero entities: finite=True
+CHECK|VALIDATE   |PASS|7 bad consults all refused
+CHECK|TRAINSTEP  |PASS|1 PPO update over 32 episodes; pool weights moved 3.262e-03
+CHECK|R0-STAYS0  |PASS|rel_emb[no-edge] after training = [0.0, 0.0, 0.0, 0.0]
+CHECK|CKPTDIMS   |PASS|mismatched edim/gdim/cdim/r0 all refused at load
+CHECK|LOOPBACK   |PASS|hello -> {'ok': 1}, consult(5 entities, 4 edges, 5 cands) -> {'a': 0}, end -> {'ok': 1}
+CHECK|HANDSHAKE  |PASS|wrong edim -> HANDSHAKE MISMATCH: edim: driver 64 vs server 48
+CHECK|HANDSHAKE  |PASS|v5 driver -> HANDSHAKE MISMATCH: server is --arch entattn (entity tokens + relations) but the driver advertised no gdim/edim/emax/rtypes, i.e. it is emitting a flat v1-v5 state. Run the driver with -Drl.encoderV=6 or the server with --arch lstmattn.
+CHECK|HANDSHAKE  |PASS|emax > buffer -> HANDSHAKE MISMATCH: emax: driver emits up to 112 entities, server buffer is 96 - restart with --emax 112 (buffer only, no weights change)
+CHECK|HANDSHAKE  |PASS|rtypes drift -> HANDSHAKE MISMATCH: rtypes: driver 9 vs server 6 (blocks, blocked_by, attacking_player, targets, controls, attached_to)
+CHECK|HS-RAISED  |PASS|4 of 4 bad handshakes also killed the connection thread
+CHECK|FLATCONSULT|PASS|flat consult to an entattn server: reply=b'' raised=['RuntimeError']
+CHECK|EDGERANGE  |PASS|edge into a padding slot: reply=b'' raised=[ValueError('relation edge [0,17,0] indexes outside the 5 emitted entities - the edge list and the token order have drifted apart')]
+ENTATTN|checks=23|failures=1|4.0s
+FAILED: R0-NOBIAS
