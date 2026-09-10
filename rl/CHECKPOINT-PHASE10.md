@@ -140,6 +140,13 @@ initialization buys what mirror specialisation cannot, at a cost of
    dims; c[6] carries generic MV only — {U}{U} vs {2}{U} is invisible,
    which matters for hold-open-mana planning). Re-extract, re-verify,
    then BC-free A/B inside the Phase 10 design.
+   DELIVERED (this branch, `rl/PHASE-E3.md`): all three groups shipped
+   behind `-Drl.e3=on` (default off, so the frozen instruments are
+   untouched) + `rl/e3_features.tsv` (68 mechanical + 32 text, sdim 29 /
+   cdim 123); all three gates pass; a 512-episode from-scratch pilot
+   reaches .455 vs D0 and reproduces the 8b scramble collapse. The new
+   dims are READ but not yet load-bearing on the mirror — the A/B
+   belongs inside 4.2, where deck diversity starts at episode 0.
 4. **Upper-bound opponents**: per-archetype random-init pilots
    trained to convergence (7c rec #4) — lifts the D0-piloted matrix
    caveat and supplies gated-league pressure at the top.
