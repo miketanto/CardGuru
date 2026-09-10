@@ -24,6 +24,7 @@ import argparse
 import fcntl
 import json
 import os
+import shutil
 import subprocess
 import sys
 import threading
@@ -135,6 +136,16 @@ def commit_push(paths, message):
 def run_job(args, model, seed, opponent):
     key = f"{short(model)}_s{seed}"
     out_dir = os.path.join(ROOT, "research", "data", "suite", key)
+    # Everything below assumes this job's game is g1. A directory left by
+    # a failed or killed earlier attempt would make run_mirror number the
+    # new game g2 and leave the runner reading the stale g1, so move the
+    # old attempt aside first.
+    if os.path.isdir(out_dir) and os.listdir(out_dir):
+        arch = os.path.join(ROOT, "research", "data", "suite", "aborted",
+                            f"{key}_attempt{int(time.time())}")
+        os.makedirs(os.path.dirname(arch), exist_ok=True)
+        shutil.move(out_dir, arch)
+        log(f"archived earlier attempt of {key} -> {os.path.relpath(arch, ROOT)}")
     os.makedirs(out_dir, exist_ok=True)
     with state_lock:
         state["jobs"][key] = {"model": model, "seed": seed, "started": time.time(),
