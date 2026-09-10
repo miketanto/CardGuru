@@ -122,7 +122,8 @@ retrieval r@1 train 0.776 / held-out 0.740. Same gates file, same thresholds:
 | G2 Spell Snare / Force Spike | ≤ 0.849, Spike ∉ Snare top-10 | **0.839, rank 31** (v1: 0.957, rank ≤ 10) | | **pass** |
 | G2 functional reprints in top-3 | all 10 | 10 / 10 | | pass |
 | G2 P8 swap pairs cos | min ≥ μ+2σ = 0.618, mean ≥ μ+4σ = 0.867 | min 0.547, mean 0.757 (random μ 0.370 σ 0.124) | | **FAIL** |
-| G3 determinism | | seed 1 training | | pending |
+| G3 seed 0 vs 1 top-10 Jaccard | ≥ 0.4, same G2 verdicts | 0.424, identical: True (added 18:33 when seed 1 finished) | | pass |
+| (info) rank-based swap gate as pre-registered for v3+, applied to v2 for information only | ≥ 14/16 within 500, median ≤ 50 | 13/16, median 66 | | would fail |
 
 The v2 objective did what it was built for: the text-only distinction
 survives (Snare/Spike). The remaining failure is on the swap-pair bar,

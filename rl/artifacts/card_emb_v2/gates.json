@@ -11,7 +11,10 @@
   "swap_group_sigma": 4.0,
   "jaccard": 0.4,
   "min_pos_type": 50,
-  "min_pos_kw": 30
+  "min_pos_kw": 30,
+  "swap_rank": 500,
+  "swap_pairs_ok": 14,
+  "swap_median_rank": 50
  },
  "G1": {
   "mv": {
@@ -423,92 +426,138 @@
    {
     "pair": "Bitter Triumph / Go for the Throat",
     "cos": 0.794636070728302,
-    "found": true
+    "found": true,
+    "rank_ab": 33,
+    "rank_ba": 80
    },
    {
     "pair": "Requiting Hex / Cut Down",
     "cos": 0.5471723079681396,
-    "found": true
+    "found": true,
+    "rank_ab": 1659,
+    "rank_ba": 2099
    },
    {
     "pair": "Shoot the Sheriff / Eliminate",
     "cos": 0.771170973777771,
-    "found": true
+    "found": true,
+    "rank_ab": 48,
+    "rank_ba": 28
    },
    {
     "pair": "Spell Snare / Dispel",
     "cos": 0.867828905582428,
-    "found": true
+    "found": true,
+    "rank_ab": 12,
+    "rank_ba": 40
    },
    {
     "pair": "We Say Thee Nay! / Don't Make a Sound",
     "cos": 0.820868194103241,
-    "found": true
+    "found": true,
+    "rank_ab": 63,
+    "rank_ba": 57
    },
    {
     "pair": "Spell Pierce / Stubborn Denial",
     "cos": 0.873692512512207,
-    "found": true
+    "found": true,
+    "rank_ab": 22,
+    "rank_ba": 5
    },
    {
     "pair": "Floodpits Drowner / Zephyr Sentinel",
     "cos": 0.6760507225990295,
-    "found": true
+    "found": true,
+    "rank_ab": 169,
+    "rank_ba": 297
    },
    {
     "pair": "The Wondrous Wasp / Plumecreed Escort",
     "cos": 0.7028293013572693,
-    "found": true
+    "found": true,
+    "rank_ab": 377,
+    "rank_ba": 240
    },
    {
     "pair": "Spyglass Siren / Faerie Seer",
     "cos": 0.7258767485618591,
-    "found": true
+    "found": true,
+    "rank_ab": 292,
+    "rank_ba": 96
    },
    {
-    "pair": "Elektra / Fathom Fleet Cutthroat",
+    "pair": "Elektra, Daughter of the Hand / Fathom Fleet Cutthroat",
     "cos": 0.6084691286087036,
-    "found": true
+    "found": true,
+    "rank_ab": 2736,
+    "rank_ba": 1110
    },
    {
     "pair": "Bitter Triumph / Easy Prey",
     "cos": 0.8277631998062134,
-    "found": true
+    "found": true,
+    "rank_ab": 14,
+    "rank_ba": 10
    },
    {
     "pair": "Shoot the Sheriff / Cradle to Grave",
     "cos": 0.8104218244552612,
-    "found": true
+    "found": true,
+    "rank_ab": 26,
+    "rank_ba": 39
    },
    {
     "pair": "We Say Thee Nay! / Clash of Wills",
     "cos": 0.8121042251586914,
-    "found": true
+    "found": true,
+    "rank_ab": 77,
+    "rank_ba": 68
    },
    {
     "pair": "Spell Pierce / Concerted Defense",
     "cos": 0.9011756181716919,
-    "found": true
+    "found": true,
+    "rank_ab": 10,
+    "rank_ba": 2
    },
    {
     "pair": "Spyglass Siren / Faerie Miscreant",
     "cos": 0.7816082239151001,
-    "found": true
+    "found": true,
+    "rank_ab": 48,
+    "rank_ba": 78
    },
    {
-    "pair": "Elektra / Ravenous Chupacabra",
+    "pair": "Elektra, Daughter of the Hand / Ravenous Chupacabra",
     "cos": 0.5899291038513184,
-    "found": true
+    "found": true,
+    "rank_ab": 3449,
+    "rank_ba": 2352
    }
   ],
   "swap_min": 0.5471723079681396,
   "swap_mean": 0.7569748163223267,
+  "swap_cos_bar_v1v2": false,
+  "swap_pairs_within": 13,
+  "swap_median_rank": 65.5,
   "pass_swaps": false,
   "pass": false
  },
  "G3": {
-  "pass": null,
-  "note": "emb_seed1.pt absent"
+  "jaccard10": 0.4235142596911173,
+  "seed1_G2": {
+   "pass_cancel": true,
+   "pass_snare": true,
+   "pass_reprints": true,
+   "pass_swaps": false,
+   "cancel_counterspell_cos": 0.9984079599380493,
+   "snare_spike_cos": 0.7349651455879211,
+   "swap_min": 0.5092844367027283,
+   "swap_mean": 0.7152916789054871
+  },
+  "verdicts_identical": true,
+  "pass": true
  },
  "pass": false
 }
