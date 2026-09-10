@@ -999,6 +999,55 @@ class Trainer:
             os.replace(tmp, self.ckpt)
 
 
+class InferenceRequest:
+    """One consult's forward-pass inputs, as act() builds them: `s` a
+    batch-1 EntityObs (or (1,sdim) state) on the device, `c` (1,MAX_K,
+    cdim), `m` (1,MAX_K) bool, `hin` an ((1,d),(1,d)) LSTM pair or None.
+    The batcher fills `out` = (logits (1,K), value (1,), hidden_out) or
+    `error`, then sets `done`."""
+
+    __slots__ = ("s", "c", "m", "hin", "out", "error", "done", "t_submit",
+                 "t_start")
+
+    def __init__(self, s, c, m, hin):
+        self.s, self.c, self.m, self.hin = s, c, m, hin
+        self.out = None
+        self.error = None
+        self.done = threading.Event()
+        self.t_submit = self.t_start = 0.0
+
+
+class InferenceBatcher:
+    """Collects the consults that arrive within `wait_ms` of each other
+    (at most `batch_max`) and runs ONE forward pass over them under the
+    same lock update() takes. BATCHED-INFERENCE-PLAN.md §2.
+
+    Interface (rl/batch_check.py T1-T6 are written against it):
+      infer(s, c, m, hin)      handler thread: enqueue, block, return
+                               (logits, value, hidden_out) or raise
+      run_batch(requests)      synchronous collate -> forward -> scatter
+                               over a list of InferenceRequest; sets
+                               .out or .error on each
+      start()                  launch the batcher thread
+      stats()                  dict for the RLBATCH| line
+    """
+
+    def __init__(self, net, recurrent, lock, batch_max, wait_ms):
+        raise NotImplementedError("InferenceBatcher: stub (plan §5 step 2)")
+
+    def start(self):
+        raise NotImplementedError
+
+    def infer(self, s, c, m, hin):
+        raise NotImplementedError
+
+    def run_batch(self, reqs):
+        raise NotImplementedError
+
+    def stats(self):
+        raise NotImplementedError
+
+
 class Session:
     """Per-connection trajectory + LSTM memory (--threads > 1)."""
 
