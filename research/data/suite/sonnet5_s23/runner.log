@@ -1,0 +1,10 @@
+
+=== mirror game 1 — pilot on the play, seed 23 ===
+game 1: loss in 6.5 min (12 turns)
+  decisions: {'llm': 21, 'auto': 94, 'yield': 26, 'result': 1} | searches: {'attackers': 0, 'blockers': 0, 'priority': 11}
+
+=== session ===
+  g1 (play): loss  6 min
+
+standing mirror record: 0W-1L (0%)   [50% is the null — same deck both sides]
+replays + reviews in /home/user/sw/research/data/suite/sonnet5_s23/
