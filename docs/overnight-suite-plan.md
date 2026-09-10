@@ -161,6 +161,21 @@ applies to any claim about win rate.
   the old code; the runner only skips *completed* jobs, so haiku s23 is
   re-queued by the next `launch_suite.sh` (the hourly Routine issues it
   when the runner has exited with jobs unfinished).
+- **06:38 sonnet s23 "loss in 12 turns, 6 min" is a harness artifact,
+  row dropped, directory archived.** With a fresh session per game the
+  pilot has no earlier examples of the leaf_eval format, and sonnet
+  scored one number per *candidate* (4 scores for 12 leaves) on eight
+  straight searches. The driver drops a short list and escalates the
+  window as a plain priority decision — but the pilot had attached
+  `yield_until` to the search reply, so the bridge auto-passed the
+  escalation. Net effect: zero lands played through turn 9. Three fixes:
+  the daemon's leaf_eval schema now says "exactly leaf_count numbers, one
+  per LEAF, not per candidate" and a short list is retried with the count
+  spelled out; the bridge's YieldGate does not cover the escalation of
+  the window the yield was set in; and sonnet s23 re-runs on the relaunch.
+  haiku s31 (loss, kept) had 3 short replies out of 63, all late; haiku
+  s23 and sonnet s31 none so far. g9's 14 mismatches were all *over*-long
+  lists on 88–119-leaf searches, which the driver truncates.
 
 ## Exit
 

@@ -101,6 +101,14 @@ class YieldGate:
             self.active = {"until": until, "turn": request.get("turn"),
                            "enemy": self._enemy(request),
                            "life": self._life(request)}
+            if request.get("kind") == "leaf_eval":
+                # A yield attached to a search reply must not swallow the
+                # escalation of the SAME window: when the driver cannot use
+                # the scores (short list, cast unwound) it re-asks this
+                # window as a plain priority decision, and auto-passing that
+                # is how sonnet went eight turns without playing a land.
+                self.active["skip"] = (request.get("turn"),
+                                       request.get("phase"))
             return until
         return None
 
@@ -110,6 +118,9 @@ class YieldGate:
             return False
         if request.get("kind") != "priority":
             self.active = None
+            return False
+        if y.get("skip") == (request.get("turn"), request.get("phase")):
+            y["skip"] = None
             return False
         if self._enemy(request) > y["enemy"] or self._life(request) < y["life"]:
             self.active = None

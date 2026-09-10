@@ -37,7 +37,8 @@ SCHEMAS = {
     "announce_x": '{"x": <int>}',
     "mode": '{"choice": <index>}',
     "use": '{"use": true|false}',
-    "leaf_eval": '{"scores": [<0-100 for each leaf, in leaf_index order>], '
+    "leaf_eval": '{"scores": [<exactly leaf_count numbers 0-100, one per '
+                 'LEAF in leaf_index order - not one per candidate>], '
                  '"why": "...", "plan": "..."}',
 }
 KEY_FOR = {"mulligan": "mulligan", "priority": "choice",
@@ -183,6 +184,20 @@ def main():
             # getAsInt() on a JSON null killed a 69-minute game.
             if resp is None or resp.get(KEY_FOR.get(kind, "choice")) is None:
                 missing = f"the required key for kind '{kind}' (non-null)"
+            elif (kind == "leaf_eval" and isinstance(request.get("leaf_count"), int)
+                  and (not isinstance(resp.get("scores"), list)
+                       or len(resp["scores"]) < request["leaf_count"])):
+                # A fresh session has no earlier examples of the format, and
+                # sonnet scored one number per CANDIDATE for eight straight
+                # searches (4 scores for 12 leaves); the driver drops a short
+                # list and the decision silently degrades. Retry with the
+                # count spelled out.
+                got = len(resp["scores"]) if isinstance(resp.get("scores"), list) else 0
+                missing = (f'a full "scores" list: there are '
+                           f'{request["leaf_count"]} leaves (leaf_count) but '
+                           f'you gave {got} scores. Score every LEAF, not '
+                           f'each candidate: exactly {request["leaf_count"]} '
+                           f'numbers in leaf_index order')
             elif kind in PLAN_REQUIRED:
                 p = resp.get("plan")
                 if not isinstance(p, str) or not p.strip():
