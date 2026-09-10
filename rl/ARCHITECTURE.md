@@ -279,3 +279,6 @@ are hygiene; 6–9 are rung-dependent and documented as such elsewhere.
 | 68-column table definition | `rl/e2_extract.py:27-50` |
 | lane flags | `rl/rung0_lane.sh:55-134` |
 | parameter counts | `build_net(arch, 32, 94)` and `OracleCritic().used_parameters()`, torch CPU, 2026-09-10 |
+
+Published figure (private artifact, same content as §5 plus the token-layout
+bars and callouts): https://claude.ai/code/artifact/8fbad35c-5e06-4b1d-9385-cd5577df01ff
