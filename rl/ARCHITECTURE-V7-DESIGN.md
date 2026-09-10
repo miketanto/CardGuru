@@ -99,7 +99,8 @@ emission, not computation.
 colour · untapped sources by colour · lands · cards drawn this turn.
 
 **Game token:** turn · step one-hot · active player · priority holder ·
-stack depth · `D_me` · `D_opp`.
+stack depth · **decision-type embedding for this consult** (ByteRL §7) ·
+`D_me` · `D_opp`.
 
 **Candidate rows** (afterstates, as today, extended):
 
@@ -162,7 +163,9 @@ scalar as v6, plus a small edge-feature MLP if a graded relation is ever
 needed. Stack order via `stack_above` edges and the depth embedding.
 
 Faithfulness probe (not a loss): from the output tokens, recover every
-input field and every edge with a linear readout. This is the acceptance
+input field and every edge with a linear readout, and from the game
+token alone recover the count of candidates of each decision type (the
+state must know what it can do this step, §7). This is the acceptance
 gate for "describes the state well".
 
 ### L5. Memory
@@ -173,12 +176,17 @@ replaces the LSTM cell. Inspectable (attention weights over history say
 what the policy looked back at), bounded (H is a buffer), and trained by
 the same PPO gradient through the current consult only.
 
-v7.0 may keep the LSTMCell on the game token while H is tuned.
+**v7.0 keeps the LSTMCell on the game token** (ByteRL's placement, which
+worked at scale; value reads the same recurrent state there). History
+tokens are the v7.1 experiment, gated on the LSTM arm.
 
 ### L6. Heads
 
-- **Policy**: pointer scorer, `MLP(d → 64 → 1)` on each candidate token,
-  masked softmax over K. One head for every decision type, as today.
+- **Policy**: pointer scorer on each candidate token plus a bilinear
+  state–action term (ByteRL §7):
+  `score_k = MLP(d → 64 → 1)(c_k) + ⟨W_a c_k, W_s g⟩`, with `g` the game
+  token's output; masked softmax over K. One head for every decision
+  type, as today.
 - **Value**: **separate trunk**. A second, smaller copy of L3–L4 over
   `[game | players | entities | stack]` (no candidates), value head on the
   game token. Privileged rows (opponent hand, `-Drl.oracle`) enter here
@@ -253,8 +261,28 @@ the card table leaves the JVM entirely.
 2. First pretraining objective: text↔graph contrastive vs masked-card.
 3. Opponent deck: known list (v1) vs revealed-only context.
 4. Pass afterstate in v1, or deferred (needs a simulation harness).
-5. LSTM kept for v7.0, or history tokens from the start.
+5. ~~LSTM kept for v7.0, or history tokens from the start.~~ Resolved:
+   LSTM in v7.0, history tokens in v7.1 (§7).
 6. Value trunk depth, and whether it shares L3 token builders.
 7. Target episode scale, which sets the engine throughput target.
+
+
+## 7. Mapping from the ByteRL Hearthstone BT policy (arXiv 2303.05197)
+
+Read from the architecture figure the user supplied 2026-09-10.
+
+| ByteRL | what it does | v7 |
+|---|---|---|
+| one `cards embed` for hand, board, deck, graveyard | shared card identity across zones | L0 embedder + L1 context; same object in every zone |
+| `fc×2` per zone after the embed | per-card nonlinearity before the state | L3 per-token MLP, zone-shared weights + zone embedding (zones are unbounded here) |
+| deck / graveyards → `mean` | unbounded zones pooled | deck → L1 transformer + `D`; graveyards stay tokens |
+| hand / board → concatenated slots | bounded at 10 / 7 | tokens with masking; Magic's board is unbounded |
+| `decision type → fc → decision embed` into the state | state knows which decision this is | **added** to the game token |
+| `action embed → masked mean → fc×2` into `BT embed` | state knows the legal action set | candidates are tokens in the same attention; **probe**: game token reports candidate counts per type |
+| `BT embed → fc×3 → LSTM`; value off `LSTM embed` | memory on the state; shared value | LSTM on the game token in v7.0; value from a **separate** trunk (privileged rows) |
+| `inner product(fc(action), fc(LSTM embed))` | bilinear state–action scorer | **added** as a term beside the pointer MLP |
+| `BT embed` is one vector; actions see the state only through it | the single-token bottleneck | not adopted; `refers_to` edges give each candidate its entities' context |
+| (type, target) autoregressive decomposition | conditions the target on the type | not needed: joint afterstate candidates + refers_to edges |
+| 24 V100 · ~5,856 CPU cores | scale | the throughput programme (§2) |
 
 Published figure: https://claude.ai/code/artifact/65a42516-315d-4ae9-93b8-ef57f6003af0
