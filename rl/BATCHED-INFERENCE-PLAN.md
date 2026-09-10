@@ -1,6 +1,6 @@
 # Batched inference for the policy server — a test-driven plan
 
-Status: **queued behind the `--device cuda` arm** in `THROUGHPUT-LOCAL.md`.
+Status: **done 2026-09-10** — implemented (`InferenceBatcher`, `--batch-max`, `--batch-wait-ms`, `rl/batch_check.py`), gates G1–G3 pass, arms A–F run; results and verdict in `THROUGHPUT-LOCAL.md` §11 (flat: the play phase is GIL-bound, §11.3). The §9 results section named below lives there as §11.
 Do not start step 3 until that arm's equivalence gate has passed and
 its update-duration row is in the table; the value of batching depends
 on the update no longer being 90 % of the window.

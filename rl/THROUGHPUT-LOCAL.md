@@ -494,7 +494,7 @@ the per-step launch count and the busy share are carried; the N=16 lane
 ran the batcher-capable server with `--batch-max 1` (the code path is
 unchanged by construction, gate G2 below).
 
-## 12. Recommendation (written after §7; §10–§11 test items 2 and 3)
+## 12. Recommendation (written after §7; superseded where §11.4 differs)
 
 1. Run training with `--device cuda` (`R0_SRVEXTRA="--device cuda"` on
    the lane): 2.3× cheaper update, 3× less host memory, eval-identical.
@@ -544,7 +544,71 @@ Files: `artifacts/throughput/gates/probe_g2_*.txt`, `probe_g3_*.txt`,
 
 ### 11.2 Arms A–E (cuda)
 
-(filled in from the runs)
+
+Plan §4 arms, cuda, §5 protocol (B0Base/B0Twin v6, budget 256,
+`R0_EVERY=256`, `R0_EVAL_G=4`, `R0_CP7_G=0`, seed 0), rates from
+`train.csv` rows 1→8, one run each unless marked. A and C were repeated
+once (A2, C2) after A came in 27 % under §7's run of the same
+configuration. Update ms/consult here is Σupdate/Σsteps over all 8 rows
+(§5–§7 used rows 2–8; the two agree to ±0.5 ms). `RLBATCH|`/`RLLOCK|`
+are the training server's cumulative line (the last line with ≥ 2000
+consults — battery servers now print one at SIGTERM too and must not be
+read by mistake). Files: `artifacts/throughput/<arm>/`.
+
+| arm | conc | batch-max / wait ms | eps/s | window s | Σ consults (rows 2–8) | update ms / consult | update share | play consults/s | mean batch (p50, max) | queue wait ms | forward ms / batch | peak host used / server / GPU MB |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| §7 conc4 cuda | 4 | 1 | 1.120 | 200 | 12 741 | 10.5 | 66 % | 190 | — | — | held 5.16 | 3925 / 1978 / 2751 |
+| A | 4 | 1 | 0.818 | 274 | 15 155 | 11.5 | 62 % | 147 | — | lock wait 30.8 | held 6.74 | 3662 / 2053 / 3479 |
+| A2 | 4 | 1 | 0.619 | 362 | 21 086 | 11.8 | 68 % | 183 | — | lock wait 28.2 | held 5.44 | 3926 / 2312 / 3601 |
+| B | 4 | 8 / 1.0 | 0.806 | 278 | 17 010 | 11.3 | 68 % | 189 | 1.87 (2, 4) | 18.3 | 7.32 | 3838 / 2109 / 3346 |
+| C | 8 | 8 / 1.0 | 0.845 | 265 | 16 648 | 10.8 | 68 % | 199 | 4.11 (4, 8) | 35.3 | 13.9 | 3995 / 2274 / 3193 |
+| C2 | 8 | 8 / 1.0 | 0.933 | 240 | 15 814 | 10.2 | 67 % | 200 | 4.04 (4, 8) | 34.4 | 14.1 | 4197 / 2416 / 3568 |
+| D | 12 | 12 / 1.0 | 1.009 | 222 | 15 176 | 9.9 | 68 % | 213 | 6.65 (7, 12) | 41.6 | 11.4 | 4367 / 2234 / 3148 |
+| E | 8 | 8 / 0.25 | 0.783 | 286 | 18 054 | 10.6 | 68 % | 195 | 3.76 (3, 8) | 33.9 | 15.5 | 4057 / 2230 / 3214 |
+| F (§11.3) | 8 | 8 / 1.0, switch 0.5 ms | 1.009 | 222 | 15 608 | 9.3 | 66 % | 205 | 3.95 (4, 8) | 31.9 | 14.15 | 3931 / 2184 / 3134 |
+
+Batch-size histograms (training lifetime): B `1:4254 2:2990 3:2550
+4:194`; C `1:1294 2:473 3:297 4:281 5:280 6:442 7:892 8:443`; D
+`1:700 … 11:202 12:770`; E `1:1719 … 7:1213 8:31`. `conn: mode=train`
+= CONC × 4 on every arm; all `R0_DONE`, `ck_eps=256`, no tracebacks.
+
+**Against the pre-registration (plan §1):**
+
+- §1.4 predicted *flat at conc4, gain at conc8+*. Flat at conc4 holds
+  (B 0.806 vs A 0.818 / A2 0.619). **The gain at conc8+ did not
+  appear.** C/C2/D/E span 0.78–1.01 eps/s; the three runs of the
+  unbatched conc4 configuration span 0.62–1.12. Nothing in the batched
+  set is outside the unbatched set's range.
+- eps/s at n = 1 is not the number to rank on here: the three conc4-bm1
+  runs differ by 1.8× in eps/s and by 1.65× in stored consults per
+  window (12 741 → 21 086). Sampled trajectories diverge between runs
+  (§3.2), episode length moves with them, and both the update time and
+  the play time scale with it. **Per-consult quantities are stable and
+  are what the table supports:** update 9.9–11.8 ms per stored consult
+  on every cuda arm (unchanged by batching, as §1.2 required), and play
+  at 147–213 consults/s on every arm, batched or not.
+- Play consults/s is the batching question, and it says **flat**:
+  unbatched 147 / 183 / 190; batched 189 / 195 / 199 / 200 / 213. The
+  batched arms sit at the top of the unbatched range, so a ≤ 10 % gain
+  is not excluded, but neither is zero. The mean batch size was 1.9 at
+  conc4, 4.0–4.1 at conc8 and 6.7 at conc12 — the batcher engaged
+  exactly as concurrency allows — and yet consults/s barely moved.
+  §11.3 has the reason: the batched forward on cuda costs 2.4 ms
+  regardless of B when measured alone, but 7–15 ms per batch inside
+  the server, where the batcher thread competes for the GIL with eight
+  handler threads doing ~1.6 ms of Python per consult each.
+- `--batch-wait-ms 0.25` (E vs C/C2): mean batch 3.76 vs 4.0–4.1,
+  queue wait 33.9 vs 34.4–35.3 ms, consults/s 195 vs 199–200. The wait
+  knob is not where the time is: queue wait is 34 ms while the knob is
+  0.25–1 ms, because requests wait for the *lock* (the update) and for
+  the *GIL*, not for the batch to fill.
+- Memory: host used 3.7–4.4 GB on every cuda arm, server RSS 2.0–2.4
+  GB, GPU 3.1–3.6 GB. conc12 costs 0.4 GB more than conc4. The OOM
+  ceiling that ended runs on CPU (§7) is gone on cuda at every
+  concurrency tried; conc12 is affordable.
+- §1.1/§1.3/§1.5 held (G2: identical counters at batch size 1; buffer
+  content per request unchanged by construction; `--batch-max 1` is the
+  old path, T4).
 
 ### 11.3 Where a consult's server time goes (`rl/consult_cost.py`)
 
@@ -597,3 +661,62 @@ consults/s rises above 213; if the per-consult Python *work* is the
 ceiling, both stay flat and the fix is the work itself (a single
 `torch.tensor(ents)` instead of the row loop; one `.cpu()` of a
 3-element tensor instead of three syncs; a binary wire instead of JSON).
+
+**Arm F outcome against its pre-registration:** `forward_ms_mean` 14.15
+(C/C2: 13.9 / 14.1), play 205 consults/s (199 / 200), mean batch 3.95
+(4.04 / 4.11), queue wait 31.9 ms (34.4 / 35.3). Flat on every
+registered quantity. The 5 ms switch interval is not the ceiling; the
+per-consult Python *work* is. F's higher eps/s (1.009) came with 15 608
+stored consults against C2's 15 814 and C's 16 648 and is inside the
+episode-length noise, not a switch-interval effect.
+
+### 11.4 Verdict and what to do instead
+
+1. **Batched inference is correct and engages, and it does not move
+   throughput on this machine.** G1–G3 pass; the batcher fills to 4 at
+   conc8 and 6.7 at conc12; play stays at ~200 consults/s and eps/s
+   stays inside the unbatched run-to-run range. The pre-registered
+   "gain at conc8+" is falsified for this server as it stands. Keep
+   the code (default off, the old path untouched, T4): it becomes
+   useful the moment the ceiling below is removed, because the cuda
+   forward really is flat in B (§11.3).
+2. **The play phase is bounded by one core of Python**, not by the
+   forward and not by the GPU: ~1.6 ms of GIL-holding work per consult
+   (JSON parse 0.14 ms; `_entity_obs`'s 96-iteration row loop plus
+   host→device copies 0.7 ms; three device syncs in `act()` 0.8 ms) in
+   each of eight handler threads, against which the batcher's launch
+   work (2.4 ms alone, 14 ms in contention) has to fight. Cheapest
+   fixes, in order, none of which changes what the net computes:
+   (a) build the entity tensor in one `torch.tensor(ents)` call and the
+   relation matrix from an index tensor, instead of per-row assignment;
+   (b) return `(a, logp, v)` to the host in one `.cpu()` of a stacked
+   3-element tensor instead of three syncs — or sample on the CPU from
+   the returned logits, which also makes cuda sampling reproducible;
+   (c) a binary wire (`struct`/`numpy.frombuffer`) for `e` and `c`
+   instead of JSON lists. Together these take the Python per consult
+   from ~1.6 ms toward ~0.3 ms; with the batched forward at 0.3 ms per
+   row, the play ceiling moves from ~200 toward 1000+ consults/s, at
+   which point conc12 on cuda is worth its 0.4 GB.
+3. **The update is 62–68 % of the window on every cuda arm** and is
+   launch-bound (§10d, 650 launches per consult, GPU 11 % busy). The
+   sequence-path rewrite proposed in §10d is the larger lever: it
+   attacks two thirds of the wall clock, where item 2 attacks one
+   third. Both are algorithm-preserving; both need the §6 equivalence
+   gate and a gradient-equality check before a lane uses them.
+4. **Do not use `--update-threads` here** (§10c): the offline 1.55× at 8
+   threads became a 39 % eps/s regression in the lane, with the first
+   update of every driver job 2.5× slower than single-threaded and
+   server RSS 3.3 GB higher.
+5. **Run-to-run noise at n = 1 is 1.8× in eps/s** for an identical
+   configuration (§11.2, three conc4-cuda-bm1 runs), because episode
+   length is a random variable of the sampled trajectories. Any future
+   throughput claim on this lane must be made on per-consult
+   quantities (update ms per stored consult, play consults/s) or on
+   ≥ 3 seeds — a single eps/s number cannot rank two arms that differ
+   by less than 2×.
+
+Amended after §10–§11 (2026-09-10, same day): item 2's first experiment
+(threads during `update()`) is done and is a regression on this machine
+(§10c); item 3 (batched inference) is built, gated and flat (§11.2).
+The order is now: §11.4 item 2 (per-consult Python cost), then §10d's
+sequence-path update, then re-run arms C/D with the batcher on.

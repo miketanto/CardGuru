@@ -1,0 +1,2 @@
+TP_ARM_START|E_conc8_cuda_bm8_w025|1789066167|port=8048|conc=8|srvx=--device cuda --batch-max 8 --batch-wait-ms 0.25|dump=|pid=30763
+TP_ARM_END|E_conc8_cuda_bm8_w025|rc=0|wall_s=344

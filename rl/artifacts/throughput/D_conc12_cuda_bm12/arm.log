@@ -1,0 +1,2 @@
+TP_ARM_START|D_conc12_cuda_bm12|1789065882|port=8052|conc=12|srvx=--device cuda --batch-max 12|dump=|pid=29286
+TP_ARM_END|D_conc12_cuda_bm12|rc=0|wall_s=281

@@ -1,0 +1,4 @@
+R0_START|B0Base|seed=0|budget=256|resume_at=0|out=/tmp/rl_tp_A2_conc4_cuda_bm1
+R0|B0Base|s0|trained=0|ck_eps=0|D0=0.0000 [0.000,0.490]|D1=0.0000 [0.000,0.490]|TWIN=0.0000 [0.000,0.490]|blocks=0/0|BLOCKOPT=0/0|gap=0|attacks=0/0|ATKOPT=0/0|ATKOPTCA=0/0|under_over=0/0|turns=13.5
+R0|B0Base|s0|trained=256|ck_eps=256|D0=1.0000 [0.510,1.000]|D1=1.0000 [0.510,1.000]|TWIN=0.7500 [0.301,0.954]|blocks=31/33|BLOCKOPT=18/24|gap=16|attacks=39/45|ATKOPT=14/31|ATKOPTCA=17/31|under_over=3/14|turns=19.0
+R0_DONE|B0Base|s0|trained=256|out=/tmp/rl_tp_A2_conc4_cuda_bm1

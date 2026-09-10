@@ -1,0 +1,2 @@
+TP_ARM_START|C2_conc8_cuda_bm8|1789067167|port=8048|conc=8|srvx=--device cuda --batch-max 8|dump=|pid=34446
+TP_ARM_END|C2_conc8_cuda_bm8|rc=0|wall_s=306
