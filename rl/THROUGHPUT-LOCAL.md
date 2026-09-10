@@ -222,11 +222,98 @@ be no faster than cpu, and any gain must come from the update.
 
 ## 7. Step 4 — best CPU arm on cuda
 
-(filled in below)
+conc4, `R0_SRVEXTRA="--device cuda"`, everything else identical to the
+conc4 cpu arm (same seed; trajectories still diverge, see §3.2).
+`conn: mode=train` = 16 = 4 × 4, `R0_DONE`, `ck_eps=256`, no errors.
+
+| arm | eps/s | window s | update s mean (max) | update ms / consult | update share | play consults/s | held / consult | peak host used / JVM / server MB | GPU MB |
+|---|---|---|---|---|---|---|---|---|---|
+| conc4 cpu | 0.535 | 419 | 48.6 (64.6) | 24.3 | 84 % | 220 | 4.47 ms | 8004 / 2099 / 5970 | — |
+| conc4 cuda | **1.120** | 200 | 18.9 (26.9) | **10.5** | 66 % | 190 | 5.16 ms | 3925 / 2122 / **1978** | 2751 |
+
+- **2.1× episodes/s**, from a **2.3× cheaper update** (10.5 vs 24.3 ms
+  per stored consult). Part of the eps/s ratio is episode length — the
+  cuda run stored 12 741 consults in rows 2–8 against 14 569 — so the
+  per-consult update cost is the number to carry, not the 2.1×.
+- **Play got slower, as pre-registered in §6:** 190 consults/s vs 220,
+  held time 5.16 vs 4.47 ms. Batch-1 inference on the GPU is
+  kernel-launch bound; the ~50 small kernels per consult cost more than
+  the CPU's arithmetic.
+- **Host memory fell from 6.0 GB to 2.0 GB** because the stacked PPO
+  batch and its activations live on the GPU. This alone lifts the OOM
+  ceiling the project has hit repeatedly (HANDOFF-STACK-TIMING.md §5,
+  the 383/512 episode-mismatch story in the lane comments), and it is
+  what would make conc8+ affordable — if inference were not serialized.
+- The update is still 66 % of the window on cuda. The lock wait share
+  (84 %) is still mostly threads parked behind `update()`.
+
+### Is batched inference the next ceiling?
+
+The condition set for describing it was: lock wait clearly the ceiling
+at conc8+ on both devices. What the data says is more specific. The
+**play phase** is pinned at the serialized inference rate on both
+devices from conc4 onward (cpu 213–220 consults/s = 1/4.5 ms; cuda 190
+= 1/5.2 ms); adding game threads only lengthens the queue. But the
+**wall clock** is the update on both devices (84 % cpu, 66 % cuda), so
+batching inference would today move at most the remaining third. It
+becomes the ceiling only after the update is made cheaper or moved off
+the consult lock. `rl/BATCHED-INFERENCE-PLAN.md` (written by another
+session while this sweep ran; not part of this branch) already frames
+it that way — queued behind this arm. What a batched path needs, in
+one paragraph so this doc stands alone: a request queue in the server
+that collects the consults arriving within a short window (or up to
+`CONC` of them) and runs one padded forward pass over them — the v6
+`EntityObs` already stacks, and `MAX_K`/`EMAX` already pad; per-session
+LSTM hidden states would be gathered/scattered by session id; the
+sample and `log_prob` are per-row and stay as they are; the
+trajectory buffer append stays per-session. On cuda the batch amortizes
+the launch overhead that made batch-1 slower than the CPU, so the
+190 → N×190 gain is real there and mostly absent on cpu. The
+equivalence gate for it is the one used here: sequential eval must be
+identical, because a batch of one must equal today's path.
 
 ## 8. What these numbers do not support
 
-(filled in below)
+- **n = 1 run per arm, 224 episodes each, seed 0.** Run-to-run
+  variation was not measured. The one repeated arm (conc8, the
+  contaminated run, §9) differed by 19 % in eps/s from the clean one,
+  but that pair is not a variance estimate because the runs differed
+  in kind. Rankings that rest on 3 % (conc8 vs conc12) are not rankings.
+- **Untrained-net regime.** Episodes are 13–15 turns and ~20 agent
+  consults; the update share, the consults/s ceiling and the memory
+  figures will all move as the net learns to play longer games (more
+  consults per episode raises the update cost per episode linearly,
+  and lengthens the play phase). The 24.3 → 10.5 ms per consult update
+  cost is the number most likely to transfer.
+- **Trajectories are not shared across arms** (§3.2, thread
+  interleaving and, for cuda, a different sampler stream). Episode
+  length differs between arms and enters eps/s directly. Per-consult
+  numbers are comparable; eps/s only roughly.
+- **JIT warm-up is excluded, not measured.** Row 1 is skipped; the
+  first 32 episodes of each arm are not in any rate.
+- **Batteries are 4 games** and carry no information about play. No
+  win rate in this doc is a result; none is reported as one.
+- **Gate (b) is 20 games** of a fixed untrained net (~380 consults).
+  It shows no argmax flip in those consults; it does not bound the
+  rate of float32 near-tie flips for a trained net over thousands of
+  games. Before a cuda-trained checkpoint is compared against a
+  cpu-trained one on any behaviour counter, repeat the gate on that
+  checkpoint.
+- The lock-stats `wait_share` conflates update stalls with inference
+  contention (§2) and should not be quoted alone.
+
+## 10. Recommendation
+
+1. Run training with `--device cuda` (`R0_SRVEXTRA="--device cuda"` on
+   the lane): 2.3× cheaper update, 3× less host memory, eval-identical.
+2. Next lever is the update, not the game threads: it is 66 % of the
+   window on cuda and runs on one torch thread under the consult lock.
+   Two cheap experiments before any architecture work: raise torch
+   threads for the duration of `update()` on cpu (no inference runs
+   then, so the oversubscription argument for `RL_TORCH_THREADS=1` does
+   not apply), and measure `EPOCHS`/`ep_batch` sensitivity on cuda.
+3. Only then batched inference (§7), which lifts the play phase from
+   190 consults/s and makes conc8+ worth the memory it no longer costs.
 
 ## 9. Gotchas found while running this
 
