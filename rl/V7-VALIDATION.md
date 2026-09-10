@@ -24,3 +24,15 @@ from Forge `639f8d98` via `rl/cards/extra_scripts/` (its README lists them); tok
 are not unique across tokenscripts (bare name → first script,
 `token:<script>` is exact); transform back faces carry `mv = null`.
 
+## 1a — embedder data layer `rl/cardemb/data.py` (Lane A, 2026-09-10)
+
+| gate | required | measured | result |
+|---|---|---|---|
+| ladder cards round-trip the printed channel (`printed_decode(printed_encode(f)) == printed_expected(f)`) | every card in the 38 decks | 491 / 491 distinct deck lines; also 35,478 / 35,478 faces | pass |
+| held-out split written to disk | 10 % by name (script-grouped for multi-face) | `rl/artifacts/card_emb_v1/split.json`: 3,532 / 35,478 = 10.0 %, faces of one script never straddle | pass |
+| text channel carries no raw number and no self-name | all faces checked (first 5,000 in the unit test) | 0 violations | pass |
+
+Channel dims: text = string (type line + bucketed oracle), printed = 83
+floats (`PRINTED_DIM`), graph = 68 floats (`rl/e2_extract.py`).
+Test: `python -m pytest tests/test_cardemb_data.py` (5 passed, 5 s).
+
