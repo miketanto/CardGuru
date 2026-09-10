@@ -1,0 +1,10 @@
+
+=== mirror game 1 — pilot on the play, seed 23 ===
+game 1: ERROR:  in 69.3 min (12 turns)
+  decisions: {'llm': 85, 'auto': 41, 'fallback-timeout': 2, 'result': 1} | searches: {'attackers': 3, 'blockers': 2, 'priority': 51}
+
+=== session ===
+  g1 (play): error  69 min
+
+standing mirror record: 0W-0L   [50% is the null — same deck both sides]
+replays + reviews in /home/user/sw/research/data/suite/haiku45_s23/
