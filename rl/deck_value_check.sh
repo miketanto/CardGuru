@@ -13,7 +13,16 @@ GAMES=${R_DV_GAMES:-500}          # per pair, split across two seat orders
 HALF=$((GAMES / 2))
 mkdir -p "$OUT"
 
-PAIRS="B0Base:B0Base B1Narrow:B0Base B1Fast:B0Base B1Narrow:B1Fast"
+# Override for follow-ups (DECK-VALUE-CHECK.md §7), e.g.
+#   R_DV_PAIRS="B2Mid:B0Base B3Open:B0Base B3Open:B1Narrow" R_DV_OUT=/tmp/rl_deckvalue2 ...
+PAIRS=${R_DV_PAIRS:-"B0Base:B0Base B1Narrow:B0Base B1Fast:B0Base B1Narrow:B1Fast"}
+
+# rl.cardFeatures / rl.encoderV are class-init constants of the persistent
+# driver JVM: one left running by a lane refuses a job with different
+# flags ("rl.cardFeatures is fixed for the life of this JVM"). Start
+# fresh; RL_AUTOSTART brings up a JVM for this job's flags.
+pkill -f "[R]LDriverServer" 2>/dev/null
+sleep 2
 
 run() {   # $1 agent deck  $2 opp deck  $3 seed  $4 out file
     [ -s "$4" ] && return 0

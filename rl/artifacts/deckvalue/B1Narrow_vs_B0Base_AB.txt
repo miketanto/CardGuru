@@ -1,0 +1,1 @@
+RL|summary|episodes=250|wins=109|losses=141|draws=0|stalls=0|win_rate=0.4360|games_per_sec=9.271|agent_consults_per_ep=0.0|agent_windows_per_ep=0.0|agent_actions_per_ep=0.0|turns_per_ep=13.0|opponent=heuristic|policy=random|deck=B1Narrow.dck|oppDeck=B0Base.dck|seed=770003|fallbacks=
