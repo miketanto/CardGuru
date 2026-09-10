@@ -14,7 +14,8 @@ import json
 
 from .querydsl import NODE_SPEC_KEYS
 
-QUERY_OPS = {"all", "any", "not", "node", "chain", "keyword", "card"}
+QUERY_OPS = {"all", "any", "not", "node", "chain", "keyword", "card", "hook", "role"}
+ROLE_KINDS = {"engine", "one_shot"}
 CARD_FIELDS = {"name", "types", "manaCost", "oracle", "pt"}
 KINDS = {"A", "T", "S", "R", "K", "SVar", "SVarCount", "SVarValue"}
 API_KINDS = {"SP", "AB", "DB"}
@@ -126,4 +127,24 @@ def validate(query, onto: Ontology, path: str = "$") -> list[str]:
         else:
             for f in set(arg) - CARD_FIELDS:
                 errors.append(f"{path}.card: unknown field '{f}'")
+    elif op == "hook":
+        # Closed label set, imported lazily to avoid a recommend -> querydsl
+        # -> validate import cycle (querydsl.evaluate does the same).
+        from .recommend import HOOKS
+        if not isinstance(arg, str):
+            errors.append(f"{path}.hook: must be a hook name string")
+        elif arg not in HOOKS:
+            errors.append(f"{path}.hook: '{arg}' is not a known hook")
+    elif op == "role":
+        from .deck import ROLES
+        if not isinstance(arg, str):
+            errors.append(f"{path}.role: must be a role name string")
+        else:
+            name, _, kind = arg.partition(":")
+            if name not in ROLES:
+                errors.append(f"{path}.role: '{name}' is not a known role")
+            if kind and kind not in ROLE_KINDS:
+                errors.append(
+                    f"{path}.role: unknown repeatability '{kind}' "
+                    f"(one of {sorted(ROLE_KINDS)})")
     return errors

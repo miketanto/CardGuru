@@ -1,0 +1,162 @@
+[
+ {
+  "qid": "I01.P1",
+  "question": "cards that create Treasure tokens"
+ },
+ {
+  "qid": "I02.P1",
+  "question": "cards that shuffle your graveyard into your library"
+ },
+ {
+  "qid": "I03.P1",
+  "question": "cards with an ability that requires paying life as a cost"
+ },
+ {
+  "qid": "I04.P1",
+  "question": "activated abilities that require sacrificing an artifact as part of their cost"
+ },
+ {
+  "qid": "I05.P1",
+  "question": "creatures that draw you a card when they die"
+ },
+ {
+  "qid": "I06.P1",
+  "question": "abilities that create creature tokens whenever a land enters the battlefield under your control"
+ },
+ {
+  "qid": "I07.P1",
+  "question": "a single ability that draws cards and then makes you discard cards"
+ },
+ {
+  "qid": "I08.P1",
+  "question": "a single ability that makes each opponent lose life and gains you that much life"
+ },
+ {
+  "qid": "I09.P1",
+  "question": "creatures with flying that also have an ability that triggers when they die"
+ },
+ {
+  "qid": "I10.P1",
+  "question": "creatures that both create creature tokens and have a sacrifice outlet"
+ },
+ {
+  "qid": "I11.P1",
+  "question": "cards that deal damage to each opponent"
+ },
+ {
+  "qid": "I12.P1",
+  "question": "cards that return all creatures to their owners' hands"
+ },
+ {
+  "qid": "I13.P1",
+  "question": "creatures that create creature tokens without sacrificing anything"
+ },
+ {
+  "qid": "I14.P1",
+  "question": "creature removal that does not target"
+ },
+ {
+  "qid": "I15.P1",
+  "question": "green sorceries that search your library for a land card"
+ },
+ {
+  "qid": "I16.P1",
+  "question": "instants that create creature tokens"
+ },
+ {
+  "qid": "I17.P1",
+  "question": "creatures with both deathtouch and lifelink"
+ },
+ {
+  "qid": "I18.P1",
+  "question": "cards that provide repeatable card draw every turn rather than a one-time draw"
+ },
+ {
+  "qid": "I19.P1",
+  "question": "cards with an ability that lets you sacrifice a creature as a cost"
+ },
+ {
+  "qid": "I20.P1",
+  "question": "cards that return creature cards from a graveyard to the battlefield"
+ },
+ {
+  "qid": "I21.P1",
+  "question": "cards that search your library for a creature card and put it into your hand"
+ },
+ {
+  "qid": "I22.P1",
+  "question": "creature removal that can be cast at instant speed"
+ },
+ {
+  "qid": "I23.P1",
+  "question": "creatures you can cast at instant speed"
+ },
+ {
+  "qid": "I24.P1",
+  "question": "cards that draw three or more cards at once"
+ },
+ {
+  "qid": "I25.P1",
+  "question": "creatures whose power is defined by the number of creature cards in your graveyard"
+ },
+ {
+  "qid": "I26.P1",
+  "question": "cards that exile things"
+ },
+ {
+  "qid": "I27.P1",
+  "question": "efficient removal"
+ },
+ {
+  "qid": "I28.P1",
+  "question": "cards that care about creatures dying"
+ },
+ {
+  "qid": "I29.P1",
+  "question": "cards that copy things"
+ },
+ {
+  "qid": "I30.P1",
+  "question": "creatures that create a token whenever you cast an instant or sorcery spell"
+ },
+ {
+  "qid": "I31.P1",
+  "question": "permanents that untap during each other player's untap step"
+ },
+ {
+  "qid": "I32.P1",
+  "question": "cards that let you cast spells from the top of your library"
+ },
+ {
+  "qid": "I33.P1",
+  "question": "what is the best commander for a budget deck"
+ },
+ {
+  "qid": "I34.P1",
+  "question": "cards that are banned in Modern"
+ },
+ {
+  "qid": "I35.P1",
+  "question": "cards that let you untap during your opponent's upkeep"
+ },
+ {
+  "qid": "I36.P1",
+  "question": "sorceries with flash"
+ },
+ {
+  "qid": "I37.P1",
+  "question": "cards that make each player draw an additional card"
+ },
+ {
+  "qid": "I38.P1",
+  "question": "creatures with an ability that triggers when they enter the battlefield"
+ },
+ {
+  "qid": "I39.P1",
+  "question": "cards that destroy target creature"
+ },
+ {
+  "qid": "I40.P1",
+  "question": "cards that prevent damage that would be dealt to you"
+ }
+]

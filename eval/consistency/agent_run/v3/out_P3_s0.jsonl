@@ -1,0 +1,40 @@
+{"qid": "I01.P3", "question": "treasure makers", "query": {"node": {"api": "Token", "params": {"TokenScript": {"icontains": "treasure"}}}}}
+{"qid": "I02.P3", "question": "graveyard-to-library shuffle", "query": {"any": [{"node": {"api": "ChangeZone", "params": {"Origin": "Graveyard", "Destination": "Library"}}}, {"node": {"api": "ChangeZoneAll", "params": {"Origin": "Graveyard", "Destination": "Library"}}}]}}
+{"qid": "I03.P3", "question": "pay-life costs", "query": {"any": [{"node": {"params": {"Cost": {"contains": "PayLife"}}}}, {"node": {"params": {"UnlessCost": {"contains": "PayLife"}}}}]}}
+{"qid": "I04.P3", "question": "sacrifice an artifact: cost", "query": {"node": {"apiKind": "AB", "params": {"Cost": {"regex": "Sac<[^>]*Artifact"}}}}}
+{"qid": "I05.P3", "question": "death-trigger card draw", "query": {"chain": {"from": {"kind": "T", "mode": "ChangesZone", "params": {"ValidCard": {"contains": "Card.Self"}, "Origin": "Battlefield", "Destination": "Graveyard"}}, "to": {"api": "Draw"}}}}
+{"qid": "I06.P3", "question": "landfall token makers", "query": {"chain": {"from": {"kind": "T", "mode": "ChangesZone", "params": {"ValidCard": {"contains": "Land"}, "Destination": "Battlefield"}}, "to": {"api": "Token"}}}}
+{"qid": "I07.P3", "question": "draw then discard", "query": {"chain": {"from": {"api": "Draw"}, "to": {"api": "Discard"}}}}
+{"qid": "I08.P3", "question": "lose life, you gain it", "query": {"chain": {"from": {"api": "LoseLife"}, "to": {"api": "GainLife", "params": {"Defined": "You"}}}}}
+{"qid": "I09.P3", "question": "flying death triggers", "query": {"all": [{"keyword": "Flying"}, {"node": {"kind": "T", "mode": "ChangesZone", "params": {"ValidCard": {"contains": "Card.Self"}, "Origin": "Battlefield", "Destination": "Graveyard"}}}]}}
+{"qid": "I10.P3", "question": "token maker plus sac outlet", "query": {"all": [{"node": {"api": "Token"}}, {"hook": "sac_outlet"}]}}
+{"qid": "I11.P3", "question": "damage to each opponent", "query": {"any": [{"node": {"api": "DamageAll", "params": {"ValidPlayers": {"icontains": "Opponent"}}}}, {"node": {"api": "DealDamage", "params": {"Defined": {"any": ["Player.Opponent", "Opponent"]}}}}]}}
+{"qid": "I12.P3", "question": "bounce all creatures", "query": {"node": {"api": "ChangeZoneAll", "params": {"Origin": "Battlefield", "Destination": "Hand", "ChangeType": {"icontains": "Creature"}}}}}
+{"qid": "I13.P3", "question": "token makers, no sacrifice", "query": {"all": [{"node": {"api": "Token"}}, {"not": {"any": [{"node": {"api": {"any": ["Sacrifice", "SacrificeAll"]}}}, {"node": {"params": {"Cost": {"contains": "Sac<"}}}}]}}]}}
+{"qid": "I14.P3", "question": "non-targeted creature removal", "query": {"any": [{"node": {"api": "DestroyAll", "params": {"ValidCards": {"icontains": "Creature"}}}}, {"node": {"api": "SacrificeAll", "params": {"SacValid": {"icontains": "Creature"}}}}, {"node": {"api": "Sacrifice", "params": {"SacValid": {"icontains": "Creature"}}}}, {"node": {"api": "ChangeZoneAll", "params": {"Origin": "Battlefield", "ChangeType": {"icontains": "Creature"}}}}]}}
+{"qid": "I15.P3", "question": "green land tutors", "query": {"all": [{"card": {"manaCost": {"contains": "G"}}}, {"node": {"api": "ChangeZone", "params": {"Origin": "Library", "ChangeType": {"regex": "Land|Plains|Island|Swamp|Mountain|Forest"}}}}]}}
+{"qid": "I16.P3", "question": "instant-speed token makers", "query": {"any": [{"all": [{"card": {"types": {"icontains": "Instant"}}}, {"node": {"api": "Token"}}]}, {"all": [{"keyword": "Flash"}, {"node": {"api": "Token"}}]}, {"node": {"apiKind": "AB", "api": "Token"}}]}}
+{"qid": "I17.P3", "question": "deathtouch lifelink creatures", "query": {"all": [{"card": {"types": {"icontains": "Creature"}}}, {"keyword": "Deathtouch"}, {"keyword": "Lifelink"}]}}
+{"qid": "I18.P3", "question": "repeatable draw", "query": {"role": "card_draw:engine"}}
+{"qid": "I19.P3", "question": "sacrifice outlets", "query": {"hook": "sac_outlet"}}
+{"qid": "I20.P3", "question": "reanimate creatures", "query": {"any": [{"node": {"api": "ChangeZone", "params": {"Origin": "Graveyard", "Destination": "Battlefield", "ValidTgts": {"icontains": "Creature"}}}}, {"node": {"api": "ChangeZone", "params": {"Origin": "Graveyard", "Destination": "Battlefield", "ChangeType": {"icontains": "Creature"}}}}, {"node": {"api": "ChangeZoneAll", "params": {"Origin": "Graveyard", "Destination": "Battlefield", "ChangeType": {"icontains": "Creature"}}}}]}}
+{"qid": "I21.P3", "question": "creature tutor to hand", "query": {"node": {"api": "ChangeZone", "params": {"Origin": "Library", "Destination": "Hand", "ChangeType": {"icontains": "Creature"}}}}}
+{"qid": "I22.P3", "question": "instant-speed removal", "query": {"all": [{"any": [{"card": {"types": {"icontains": "Instant"}}}, {"keyword": "Flash"}]}, {"role": "targeted_removal"}]}}
+{"qid": "I23.P3", "question": "instant-speed creatures", "query": {"all": [{"card": {"types": {"icontains": "Creature"}}}, {"keyword": "Flash"}]}}
+{"qid": "I24.P3", "question": "draw three or more", "query": {"node": {"api": "Draw", "params": {"NumCards": {"any": ["3", "4", "5", "6", "7", "8", "10"]}}}}}
+{"qid": "I25.P3", "question": "graveyard-count creatures", "query": {"all": [{"card": {"types": {"icontains": "Creature"}}}, {"hook": "cda_statline"}, {"card": {"oracle": {"icontains": "graveyard"}}}]}}
+{"qid": "I26.P3", "question": "exile effects", "query": {"any": [{"node": {"api": {"any": ["ChangeZone", "ChangeZoneAll"]}, "params": {"Destination": "Exile"}}}, {"node": {"params": {"DestinationZone": "Exile"}}}]}}
+{"qid": "I27.P3", "question": "good removal", "query": {"role": "targeted_removal"}}
+{"qid": "I28.P3", "question": "creatures-dying payoffs", "query": {"hook": "cares_about_death"}}
+{"qid": "I29.P3", "question": "copy effects", "query": {"node": {"api": {"any": ["CopyPermanent", "CopySpellAbility", "Clone"]}}}}
+{"qid": "I30.P3", "question": "token on spellcast", "query": {"chain": {"from": {"kind": "T", "mode": "SpellCast"}, "to": {"api": "Token"}}}}
+{"qid": "I31.P3", "question": "untap on everyone's turn", "query": {"node": {"kind": "S", "mode": "UntapOtherPlayer"}}}
+{"qid": "I32.P3", "question": "play off the top", "query": {"node": {"mode": "Continuous", "params": {"MayPlay": "True", "Affected": {"icontains": "TopLibrary"}}}}}
+{"qid": "I33.P3", "question": "best budget commander", "query": null, "errors": ["subjective/format ranking, not a mechanical card-search predicate"]}
+{"qid": "I34.P3", "question": "Modern bans", "query": null, "errors": ["asks about format legality/banlist, not card mechanics"]}
+{"qid": "I35.P3", "question": "untap in opponent upkeep", "query": {"chain": {"from": {"kind": "T", "mode": "Phase", "params": {"Phase": "Upkeep", "PlayerTurn": "Opponent"}}, "to": {"api": "Untap"}}}}
+{"qid": "I36.P3", "question": "flash sorceries", "query": {"all": [{"card": {"types": {"icontains": "Sorcery"}}}, {"any": [{"keyword": "Flash"}, {"node": {"kind": "S", "mode": "CastWithFlash"}}]}]}}
+{"qid": "I37.P3", "question": "everyone draws extra", "query": {"any": [{"node": {"api": "Draw", "params": {"Defined": "Player"}}}, {"node": {"api": "Draw", "params": {"ValidPlayer": "Player"}}}, {"node": {"kind": "R", "params": {"Event": "Draw", "ValidPlayer": "Player"}}}]}}
+{"qid": "I38.P3", "question": "ETB creatures", "query": {"all": [{"card": {"types": {"icontains": "Creature"}}}, {"node": {"kind": "T", "mode": "ChangesZone", "params": {"ValidCard": {"contains": "Card.Self"}, "Destination": "Battlefield"}}}]}}
+{"qid": "I39.P3", "question": "destroy a creature", "query": {"node": {"api": "Destroy", "params": {"ValidTgts": {"icontains": "Creature"}}}}}
+{"qid": "I40.P3", "question": "damage prevention for yourself", "query": {"any": [{"node": {"api": "PreventDamage", "params": {"ValidTarget": "You"}}}, {"node": {"api": "PreventDamage", "params": {"Defined": "You"}}}]}}

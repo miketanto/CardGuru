@@ -1,0 +1,809 @@
+{
+ "version": "consistency-v1-draft",
+ "backend": "recorded",
+ "samples": 1,
+ "summary": {
+  "n_intents": 10,
+  "n_headline": 9,
+  "PC": 0.474,
+  "PC_correct": 0.488,
+  "agreement_at_witness": 0.9,
+  "foil_rate": 0.0,
+  "SC": null,
+  "modal_share": 0.467,
+  "compile_fail_rate": 0.0,
+  "inverted_disagreement": 0.2,
+  "by_stratum": {
+   "S": {
+    "None": {
+     "n": 1,
+     "PC": 0.6,
+     "PC_correct": null,
+     "agreement_at_witness": null
+    },
+    "S2": {
+     "n": 2,
+     "PC": 0.671,
+     "PC_correct": 0.671,
+     "agreement_at_witness": 1.0
+    },
+    "S4": {
+     "n": 1,
+     "PC": 0.56,
+     "PC_correct": 0.56,
+     "agreement_at_witness": 1.0
+    },
+    "S5": {
+     "n": 1,
+     "PC": 0.189,
+     "PC_correct": 0.314,
+     "agreement_at_witness": 0.8
+    },
+    "S6": {
+     "n": 2,
+     "PC": 0.458,
+     "PC_correct": 0.458,
+     "agreement_at_witness": 1.0
+    },
+    "S8": {
+     "n": 1,
+     "PC": 0.355,
+     "PC_correct": 0.445,
+     "agreement_at_witness": 0.6
+    },
+    "S9": {
+     "n": 1,
+     "PC": 0.307,
+     "PC_correct": 0.322,
+     "agreement_at_witness": 0.8
+    }
+   },
+   "H": {
+    "H00": {
+     "n": 1,
+     "PC": 0.189,
+     "PC_correct": 0.314,
+     "agreement_at_witness": 0.8
+    },
+    "H01": {
+     "n": 1,
+     "PC": 0.92,
+     "PC_correct": 0.92,
+     "agreement_at_witness": 1.0
+    },
+    "H02": {
+     "n": 3,
+     "PC": 0.446,
+     "PC_correct": 0.446,
+     "agreement_at_witness": 1.0
+    },
+    "H03": {
+     "n": 1,
+     "PC": 0.56,
+     "PC_correct": 0.56,
+     "agreement_at_witness": 1.0
+    },
+    "H05": {
+     "n": 1,
+     "PC": 0.307,
+     "PC_correct": 0.322,
+     "agreement_at_witness": 0.8
+    },
+    "H06": {
+     "n": 1,
+     "PC": 0.355,
+     "PC_correct": 0.445,
+     "agreement_at_witness": 0.6
+    },
+    "H12": {
+     "n": 1,
+     "PC": 0.6,
+     "PC_correct": null,
+     "agreement_at_witness": null
+    }
+   },
+   "prov": {
+    "absent": {
+     "n": 6,
+     "PC": 0.488,
+     "PC_correct": 0.512,
+     "agreement_at_witness": 0.84
+    },
+    "adjacent": {
+     "n": 1,
+     "PC": 0.423,
+     "PC_correct": 0.423,
+     "agreement_at_witness": 1.0
+    },
+    "covered": {
+     "n": 2,
+     "PC": 0.458,
+     "PC_correct": 0.458,
+     "agreement_at_witness": 1.0
+    }
+   },
+   "D_observed": {
+    "D1": {
+     "n": 1,
+     "PC": 0.6,
+     "PC_correct": null,
+     "agreement_at_witness": null
+    },
+    "D2": {
+     "n": 6,
+     "PC": 0.501,
+     "PC_correct": 0.522,
+     "agreement_at_witness": 0.967
+    },
+    "D3": {
+     "n": 2,
+     "PC": 0.331,
+     "PC_correct": 0.384,
+     "agreement_at_witness": 0.7
+    }
+   }
+  }
+ },
+ "intents": [
+  {
+   "id": "I04",
+   "S": "S2",
+   "H": "H01",
+   "D_declared": "D2",
+   "prov": "absent",
+   "inverted": false,
+   "n_compilations": 5,
+   "compile_fail": 0,
+   "PC": 0.9195652173913044,
+   "PC_correct": 0.9195652173913044,
+   "agreement_at_witness": 1.0,
+   "foil_rate": 0.0,
+   "modal_share": 0.8,
+   "disagreement": 0.19999999999999996,
+   "median_hits": 147,
+   "D_observed": "D2",
+   "witness_resolved": true,
+   "rungs": {
+    "P1": {
+     "question": "activated abilities that require sacrificing an artifact as part of their cost",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 147,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P2": {
+     "question": "artifact sac outlets",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 184,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P3": {
+     "question": "sacrifice an artifact: cost",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 147,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P4": {
+     "question": "I'm building an artifact deck that wants to eat its own permanents for value. I need the sacrifice to be part of paying for the ability, not something the ability does to my opponents. Colour doesn't matter much.",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 147,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P5": {
+     "question": "abilities you pay for by sacrificing an artifact",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 147,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    }
+   }
+  },
+  {
+   "id": "I08",
+   "S": "S4",
+   "H": "H03",
+   "D_declared": "D2",
+   "prov": "absent",
+   "inverted": false,
+   "n_compilations": 5,
+   "compile_fail": 0,
+   "PC": 0.5604367646691479,
+   "PC_correct": 0.5604367646691479,
+   "agreement_at_witness": 1.0,
+   "foil_rate": 0.0,
+   "modal_share": 0.4,
+   "disagreement": 0.6,
+   "median_hits": 200,
+   "D_observed": "D2",
+   "witness_resolved": true,
+   "rungs": {
+    "P1": {
+     "question": "a single ability that makes each opponent lose life and gains you that much life",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 162,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P2": {
+     "question": "drain effects",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 430,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P3": {
+     "question": "lose life, you gain it",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 304,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P4": {
+     "question": "I want the classic drain: opponents lose life and I gain the same amount off one trigger. Two separate abilities that happen to do both things isn't the same thing. This is for a black devotion build.",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 200,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P5": {
+     "question": "one ability where every other player loses life and you gain that much",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 162,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    }
+   }
+  },
+  {
+   "id": "I10",
+   "S": "S5",
+   "H": "H00",
+   "D_declared": "D2",
+   "prov": "absent",
+   "inverted": false,
+   "n_compilations": 5,
+   "compile_fail": 0,
+   "PC": 0.18854084100562973,
+   "PC_correct": 0.31423473500938287,
+   "agreement_at_witness": 0.8,
+   "foil_rate": 0.0,
+   "modal_share": 0.2,
+   "disagreement": 0.8,
+   "median_hits": 40,
+   "D_observed": "D2",
+   "witness_resolved": true,
+   "rungs": {
+    "P1": {
+     "question": "creatures that both create creature tokens and have a sacrifice outlet",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 40,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P2": {
+     "question": "commanders that make their own fodder and can eat it",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 19,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P3": {
+     "question": "token maker plus sac outlet",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 0,
+     "rep_has_witness": false,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P4": {
+     "question": "I want a single card that's a self-contained aristocrats engine - it makes the bodies and it can sacrifice them without needing another card. One card doing both halves, not two cards. This is for Commander.",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 154,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P5": {
+     "question": "creatures that make tokens and can also sac creatures themselves",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 63,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    }
+   }
+  },
+  {
+   "id": "I11",
+   "S": "S6",
+   "H": "H02",
+   "D_declared": "D2",
+   "prov": "covered",
+   "inverted": false,
+   "n_compilations": 5,
+   "compile_fail": 0,
+   "PC": 0.3155297611314241,
+   "PC_correct": 0.3155297611314241,
+   "agreement_at_witness": 1.0,
+   "foil_rate": 0.0,
+   "modal_share": 0.4,
+   "disagreement": 0.6,
+   "median_hits": 200,
+   "D_observed": "D2",
+   "witness_resolved": true,
+   "rungs": {
+    "P1": {
+     "question": "cards that deal damage to each opponent",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 200,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P2": {
+     "question": "stuff that pings the whole table",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 716,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P3": {
+     "question": "damage to each opponent",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 200,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P4": {
+     "question": "I'm building a group-slug deck and I'd like anything that hits every opponent at once with damage. It needs to hit all of them, not just one - targeted burn doesn't help me here. Budget isn't a concern.",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 602,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P5": {
+     "question": "spells that burn every other player at the table",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 7,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    }
+   }
+  },
+  {
+   "id": "I12",
+   "S": "S6",
+   "H": "H02",
+   "D_declared": "D2",
+   "prov": "covered",
+   "inverted": false,
+   "n_compilations": 5,
+   "compile_fail": 0,
+   "PC": 0.6007142857142858,
+   "PC_correct": 0.6007142857142858,
+   "agreement_at_witness": 1.0,
+   "foil_rate": 0.0,
+   "modal_share": 0.6,
+   "disagreement": 0.4,
+   "median_hits": 36,
+   "D_observed": "D2",
+   "witness_resolved": true,
+   "rungs": {
+    "P1": {
+     "question": "cards that return all creatures to their owners' hands",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 36,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P2": {
+     "question": "mass bounce",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 70,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P3": {
+     "question": "bounce all creatures",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 36,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P4": {
+     "question": "My deck folds to a wide board. I want a reset that puts every creature back in hand instead of killing them, since I'd rather not give my opponents graveyard value. This is for Commander.",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 36,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P5": {
+     "question": "spells that send every creature back to its owner's hand",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 15,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    }
+   }
+  },
+  {
+   "id": "I18",
+   "S": "S9",
+   "H": "H05",
+   "D_declared": "D2",
+   "prov": "absent",
+   "inverted": false,
+   "n_compilations": 5,
+   "compile_fail": 0,
+   "PC": 0.306782241365481,
+   "PC_correct": 0.32205330081128897,
+   "agreement_at_witness": 0.8,
+   "foil_rate": 0.0,
+   "modal_share": 0.2,
+   "disagreement": 0.8,
+   "median_hits": 809,
+   "D_observed": "D3",
+   "witness_resolved": true,
+   "rungs": {
+    "P1": {
+     "question": "cards that provide repeatable card draw every turn rather than a one-time draw",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 1017,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P2": {
+     "question": "draw engines, not cantrips",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 2389,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P3": {
+     "question": "repeatable draw",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 809,
+     "rep_has_witness": false,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P4": {
+     "question": "My deck runs out of gas around turn six. I'm looking for something that keeps drawing me extra cards every turn on its own, not a one-shot that refills once and then does nothing. Budget matters.",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 209,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P5": {
+     "question": "permanents that keep drawing you extra cards each turn",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 226,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    }
+   }
+  },
+  {
+   "id": "I22",
+   "S": "S8",
+   "H": "H06",
+   "D_declared": "D3",
+   "prov": "absent",
+   "inverted": false,
+   "n_compilations": 5,
+   "compile_fail": 0,
+   "PC": 0.3548656344378694,
+   "PC_correct": 0.44495465797051875,
+   "agreement_at_witness": 0.6,
+   "foil_rate": 0.0,
+   "modal_share": 0.2,
+   "disagreement": 0.8,
+   "median_hits": 491,
+   "D_observed": "D3",
+   "witness_resolved": true,
+   "rungs": {
+    "P1": {
+     "question": "creature removal that can be cast at instant speed",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 408,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P2": {
+     "question": "removal I can hold up",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 1005,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P3": {
+     "question": "instant-speed removal",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 853,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P4": {
+     "question": "I'd rather not tap out on my own turn - I want to kill a creature during someone else's turn, ideally at the end of their turn. Sorceries don't work for this. Any colour is fine.",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 491,
+     "rep_has_witness": false,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P5": {
+     "question": "spells that kill a creature and can be cast on someone else's turn",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 206,
+     "rep_has_witness": false,
+     "rep_has_foil": false,
+     "notes": []
+    }
+   }
+  },
+  {
+   "id": "I26",
+   "S": null,
+   "H": "H09",
+   "D_declared": null,
+   "prov": "absent",
+   "inverted": true,
+   "n_compilations": 5,
+   "compile_fail": 0,
+   "PC": 0.9333621808740805,
+   "PC_correct": null,
+   "agreement_at_witness": null,
+   "foil_rate": null,
+   "modal_share": 0.8,
+   "disagreement": 0.19999999999999996,
+   "median_hits": 2311,
+   "D_observed": "D3",
+   "witness_resolved": null,
+   "rungs": {
+    "P1": {
+     "question": "cards that exile things",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 2311,
+     "rep_has_witness": null,
+     "rep_has_foil": null,
+     "notes": []
+    },
+    "P2": {
+     "question": "exile stuff",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 2311,
+     "rep_has_witness": null,
+     "rep_has_foil": null,
+     "notes": []
+    },
+    "P3": {
+     "question": "exile effects",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 2311,
+     "rep_has_witness": null,
+     "rep_has_foil": null,
+     "notes": []
+    },
+    "P4": {
+     "question": "I want cards that exile. There's a lot of graveyard recursion in my playgroup so exiling comes up a lot. What's out there?",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 1926,
+     "rep_has_witness": null,
+     "rep_has_foil": null,
+     "notes": []
+    },
+    "P5": {
+     "question": "cards that remove things from the game",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 2311,
+     "rep_has_witness": null,
+     "rep_has_foil": null,
+     "notes": []
+    }
+   }
+  },
+  {
+   "id": "I36",
+   "S": null,
+   "H": "H12",
+   "D_declared": "D1",
+   "prov": "absent",
+   "inverted": false,
+   "n_compilations": 5,
+   "compile_fail": 0,
+   "PC": 0.6,
+   "PC_correct": null,
+   "agreement_at_witness": null,
+   "foil_rate": null,
+   "modal_share": 0.8,
+   "disagreement": 0.19999999999999996,
+   "median_hits": 6,
+   "D_observed": "D1",
+   "witness_resolved": null,
+   "rungs": {
+    "P1": {
+     "question": "sorceries with flash",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 6,
+     "rep_has_witness": null,
+     "rep_has_foil": null,
+     "notes": []
+    },
+    "P2": {
+     "question": "sorceries you can cast at instant speed",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 6,
+     "rep_has_witness": null,
+     "rep_has_foil": null,
+     "notes": []
+    },
+    "P3": {
+     "question": "flash sorceries",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 6,
+     "rep_has_witness": null,
+     "rep_has_foil": null,
+     "notes": []
+    },
+    "P4": {
+     "question": "I'm looking for sorceries that have flash so I can cast them on my opponent's turn. Does that exist, and if so which ones are worth playing?",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 0,
+     "rep_has_witness": null,
+     "rep_has_foil": null,
+     "notes": []
+    },
+    "P5": {
+     "question": "sorcery-speed spells that have flash",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 6,
+     "rep_has_witness": null,
+     "rep_has_foil": null,
+     "notes": []
+    }
+   }
+  },
+  {
+   "id": "I40",
+   "S": "S2",
+   "H": "H02",
+   "D_declared": "D2",
+   "prov": "adjacent",
+   "inverted": false,
+   "n_compilations": 5,
+   "compile_fail": 0,
+   "PC": 0.42258256555634305,
+   "PC_correct": 0.42258256555634305,
+   "agreement_at_witness": 1.0,
+   "foil_rate": 0.0,
+   "modal_share": 0.6,
+   "disagreement": 0.4,
+   "median_hits": 77,
+   "D_observed": "D2",
+   "witness_resolved": true,
+   "rungs": {
+    "P1": {
+     "question": "cards that prevent damage that would be dealt to you",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 77,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P2": {
+     "question": "cards that let you fog damage aimed at your face",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 77,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P3": {
+     "question": "damage prevention for yourself",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 19,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P4": {
+     "question": "I keep dying to burn and I'd like something that stops damage pointed at me specifically, not at my creatures. Repeatable would be ideal but I'll take one-shots. Ideally in white.",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 17,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P5": {
+     "question": "cards that stop damage that would hit you",
+     "n_ok": 1,
+     "SC": null,
+     "rep_size": 77,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    }
+   }
+  }
+ ]
+}

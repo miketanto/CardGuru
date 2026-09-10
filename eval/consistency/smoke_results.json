@@ -1,0 +1,119 @@
+{
+ "version": "consistency-v1-draft",
+ "backend": "recorded",
+ "samples": 3,
+ "summary": {
+  "n_intents": 1,
+  "n_headline": 1,
+  "PC": 0.402,
+  "PC_correct": 1.0,
+  "agreement_at_witness": 0.467,
+  "foil_rate": 0.0,
+  "SC": 0.867,
+  "modal_share": 0.533,
+  "compile_fail_rate": 0.0,
+  "inverted_disagreement": null,
+  "by_stratum": {
+   "S": {
+    "S6": {
+     "n": 1,
+     "PC": 0.402,
+     "PC_correct": 1.0,
+     "agreement_at_witness": 0.467
+    }
+   },
+   "H": {
+    "H02": {
+     "n": 1,
+     "PC": 0.402,
+     "PC_correct": 1.0,
+     "agreement_at_witness": 0.467
+    }
+   },
+   "prov": {
+    "covered": {
+     "n": 1,
+     "PC": 0.402,
+     "PC_correct": 1.0,
+     "agreement_at_witness": 0.467
+    }
+   },
+   "D_observed": {
+    "D2": {
+     "n": 1,
+     "PC": 0.402,
+     "PC_correct": 1.0,
+     "agreement_at_witness": 0.467
+    }
+   }
+  }
+ },
+ "intents": [
+  {
+   "id": "I11",
+   "S": "S6",
+   "H": "H02",
+   "D_declared": "D2",
+   "prov": "covered",
+   "inverted": false,
+   "n_compilations": 15,
+   "compile_fail": 0,
+   "PC": 0.4023166023166023,
+   "PC_correct": 1.0,
+   "agreement_at_witness": 0.4666666666666667,
+   "foil_rate": 0.0,
+   "modal_share": 0.5333333333333333,
+   "disagreement": 0.4666666666666667,
+   "median_hits": 60,
+   "D_observed": "D2",
+   "witness_resolved": true,
+   "rungs": {
+    "P1": {
+     "question": "cards that deal damage to each opponent",
+     "n_ok": 3,
+     "SC": 1.0,
+     "rep_size": 60,
+     "rep_has_witness": false,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P2": {
+     "question": "stuff that pings the whole table",
+     "n_ok": 3,
+     "SC": 0.3359073359073359,
+     "rep_size": 60,
+     "rep_has_witness": false,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P3": {
+     "question": "damage to each opponent",
+     "n_ok": 3,
+     "SC": 1.0,
+     "rep_size": 200,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P4": {
+     "question": "I'm building a group-slug deck and I'd like anything that hits every opponent at once with damage. It needs to hit all of them, not just one - targeted burn doesn't help me here. Budget isn't a concern.",
+     "n_ok": 3,
+     "SC": 1.0,
+     "rep_size": 200,
+     "rep_has_witness": true,
+     "rep_has_foil": false,
+     "notes": []
+    },
+    "P5": {
+     "question": "spells that burn every other player at the table",
+     "n_ok": 3,
+     "SC": 1.0,
+     "rep_size": 60,
+     "rep_has_witness": false,
+     "rep_has_foil": false,
+     "notes": []
+    }
+   }
+  }
+ ]
+}

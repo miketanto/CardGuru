@@ -1,0 +1,42 @@
+[
+ {
+  "qid": "I04.P1",
+  "question": "activated abilities that require sacrificing an artifact as part of their cost"
+ },
+ {
+  "qid": "I08.P1",
+  "question": "a single ability that makes each opponent lose life and gains you that much life"
+ },
+ {
+  "qid": "I10.P1",
+  "question": "creatures that both create creature tokens and have a sacrifice outlet"
+ },
+ {
+  "qid": "I11.P1",
+  "question": "cards that deal damage to each opponent"
+ },
+ {
+  "qid": "I12.P1",
+  "question": "cards that return all creatures to their owners' hands"
+ },
+ {
+  "qid": "I18.P1",
+  "question": "cards that provide repeatable card draw every turn rather than a one-time draw"
+ },
+ {
+  "qid": "I22.P1",
+  "question": "creature removal that can be cast at instant speed"
+ },
+ {
+  "qid": "I26.P1",
+  "question": "cards that exile things"
+ },
+ {
+  "qid": "I36.P1",
+  "question": "sorceries with flash"
+ },
+ {
+  "qid": "I40.P1",
+  "question": "cards that prevent damage that would be dealt to you"
+ }
+]

@@ -1,0 +1,227 @@
+You compile natural-language Magic: The Gathering card-search questions into a mechanical-search query DSL that runs over per-card ability graphs parsed from Forge card scripts.
+
+Queries are JSON objects, one operator per object:
+  {"all": [Q, ...]}   every subquery matches
+  {"any": [Q, ...]}   at least one matches
+  {"not": Q}          negation
+  {"node": NodeSpec}  some node in the card's ability graph matches
+  {"chain": {"from": NodeSpec, "to": NodeSpec | [NodeSpec, ...], "via": [edgeType, ...]?}}
+       a node matching `from` reaches node(s) matching `to` along ability-chain
+       edges. A LIST of `to` specs means ALL must be reachable from the SAME
+       `from` node — use this to say "one ability does both X and Y".
+  {"keyword": "Name"} card has that keyword
+  {"card": {"types"|"name"|"manaCost"|"oracle"|"pt": VP}} card-level attributes
+  {"hook": "sac_outlet"} a validated semantic facet (closed list below). Prefer a
+       hook over hand-rolling its structure when one covers the question.
+  {"role": "card_draw"} a deckbuilding role (closed list below). Suffix
+       ":engine" or ":one_shot" to demand repeatability, e.g. "card_draw:engine"
+       for a recurring draw engine as opposed to a one-shot draw spell.
+
+NodeSpec fields (AND-ed): kind ("A" spell/activated line, "T" trigger,
+"S" static, "R" replacement, "K" keyword, "SVar" sub-ability), api (effect
+name), apiKind ("SP" spell / "AB" activated / "DB" sub-ability), mode
+(trigger/static mode), keyword, params ({ParamName: VP}).
+
+VP (value predicate): "exact" | {"contains": s} | {"icontains": s} |
+{"regex": r} | {"any": [VP, ...]} | true (param exists).
+
+Conventions from the Forge card-script data this runs over:
+- Triggers: T nodes with mode. ETB self-trigger: mode "ChangesZone" with
+  params ValidCard containing "Card.Self" and Destination "Battlefield".
+  Dies: same with Origin "Battlefield", Destination "Graveyard".
+  Combat damage to a player: mode "DamageDone", params CombatDamage "True",
+  ValidTarget containing "Player". Landfall: mode "ChangesZone" with
+  ValidCard containing "Land", Destination "Battlefield".
+  "An opponent draws": mode "Drawn" with ValidCard matching Opp(Ctrl|Own).
+- Activated-ability costs are the "Cost" param on kind "A" apiKind "AB" nodes:
+  sacrifice costs look like Sac<1/Creature>, discard like Discard<1/Card>,
+  self-sacrifice Sac<1/CARDNAME>. Use {"contains"/"regex"} on Cost.
+- Replacement effects: kind "R" with params Event (e.g. "Moved",
+  "CreateToken", "AddCounter", "DamageDone") chaining via ReplaceWith.
+- Fetching cards: api "ChangeZone" with params Origin/Destination zone names
+  ("Library", "Battlefield", "Graveyard", "Exile", "Hand") and ChangeType
+  selectors (type words like "Land", "Forest", "Creature").
+- Effects: api names like Token, DealDamage, Draw, GainLife, LoseLife,
+  PutCounter, Destroy, Mana, AddTurn, CopySpellAbility, Pump, Dig, Mill.
+- Idioms: fog effects have their own api "Fog". Mass zone-changes
+  (ChangeZoneAll) select what moves with ChangeType (not ValidCards — that
+  is the DestroyAll family's param). Counterspells use TargetType$ Spell
+  with ValidTgts naming what KIND of spell: unrestricted counters are
+  ValidTgts "Card"; restricted ones are ValidTgts "Creature" etc.
+- "Each opponent"/"each player" effects usually use the *All api variants
+  (DamageAll with ValidPlayers, DestroyAll, TapAll) rather than the targeted
+  api with a Defined param — query both with {"any": ...} when unsure.
+- Doubling/replacement of counters mirrors tokens: R Event "AddCounter"
+  chains to api "ReplaceCounter" (MultiplyCounter is a different, rarer API).
+- Prefer chain over all-of-two-nodes when the question implies one ability
+  does both things. Prefer exact api/mode strings from the vocabulary below;
+  use params only when needed for precision.
+- CONSTRAIN PARAM VALUES, DO NOT JUST ASSERT THE KEY EXISTS. `{"P": true}`
+  means "this parameter is present with any value at all" — use it only when
+  you genuinely mean any value. If the question names a scope, a zone, or a
+  kind, pin the value: {"ValidPlayers": {"icontains": "Opponent"}}, not
+  {"ValidPlayers": true}. The loose form is why "damage to each opponent"
+  returns board wipes that damage each *creature*.
+- Where the PARAM VALUES section below lists a parameter's actual values,
+  prefer an exact match from that list over a substring guess. "Each opponent"
+  is Defined "Player.Opponent" or "Opponent"; a substring match on "Opponent"
+  also catches single-opponent and triggered-defender forms.
+
+VOCABULARY (closed — exact-match api/mode/keyword/param values MUST come from these lists):
+Effect APIs (by frequency): ChangeZone, Pump, Draw, Token, PutCounter, Cleanup, DealDamage, Mana, Effect, GainLife, Destroy, Tap, LoseLife, Discard, PumpAll, Animate, Dig, Sacrifice, Charm, ChangeZoneAll, Mill, Counter, Untap, DelayedTrigger, Scry, ChooseCard, DamageAll, DestroyAll, CopyPermanent, RepeatEach, SetState, GainControl, ImmediateTrigger, Play, PutCounterAll, Regenerate, CopySpellAbility, Attach, Surveil, RemoveCounter, MakeCard, ChooseType, Clone, DigUntil, GenericChoice, PeekAndReveal, ReplaceEffect, Fight, SacrificeAll, Investigate, StoreSVar, AnimateAll, RollDice, ChooseColor, ChoosePlayer, UntapAll, PreventDamage, Seek, Branch, AlterAttribute, Proliferate, NameCard, Reveal, FlipCoin, RevealHand, TapAll, Amass, Phases, Goad, ChooseSource, AddTurn, Shuffle, DamageResolve, BecomeMonarch, Repeat, AddPhase, ChooseNumber, MultiplyCounter, Debuff, Protection
+Trigger modes: ChangesZone, Phase, Attacks, SpellCast, DamageDone, AttackersDeclared, DamageDoneOnce, Drawn, ChaosEnsues, AttackerBlocked, Blocks, ChangesZoneAll, TurnFaceUp, BecomesTarget, Sacrificed, Taps, AttackerBlockedByCreature, LifeGained, SetInMotion, Discarded, Cycled, TapsForMana, Always, DamageDealtOnce, Specializes, CounterAddedOnce, CrankContraption, LandPlayed, AbilityCast, PlaneswalkedTo, AttackerUnblocked, Transformed, Mutates, AttackersDeclaredOneTarget, SpellCastOrCopy, Untaps, UnlockDoor, Exploited, LifeLost, DiscardedAll, RolledDie, Scry, CommitCrime, BecomeMonstrous, CounterAdded, FullyUnlock, ManaExpend, Surveil, CounterRemoved, Attached, DayTimeChanges, RingTemptsYou, CounterPlayerAddedAll, TurnBegin, FlippedCoin, LosesGame, DamageAll, Crewed, Proliferate, RolledDieOnce
+Static modes: Continuous, CantBlockBy, ReduceCost, ChangesZone, Phase, MustAttack, CantAttack, AlternativeCost, SpellCast, CantBlock, CantBeCast, RaiseCost, DamageDone, Attacks, CastWithFlash, Always, CantAttack,CantBlock, CanAttackDefender, CantBeActivated, MinMaxBlocker, Panharmonicon, OptionalCost, ManaConvert, CantTarget, CantAttackUnless, OptionalAttackCost, MustBlock, CantGainLife, CantAttack,CantBlock,CantBeActivated, AssignNoCombatDamage, CantPreventDamage, CombatDamageToughness, CantRegenerate, AssignCombatDamageAsUnblocked, CantPlayLand, DamageDoneOnce, UntapOtherPlayer, DamageDealtOnce, CantSacrifice, ClassLevelGained
+Replacement events: Moved, DamageDone, Untap, Counter, Draw, CreateToken, AddCounter, GainLife, BeginPhase, GameLoss, ProduceMana, LifeReduced, TurnFaceUp, GameWin, Destroy, BeginTurn, RollDice, Transform, LoseMana, Attached, DrawCards, Mill, RemoveCounter, Scry, Explore, PayLife, Cascade, RollPlanarDice, Connive, Learn, AssembleContraption, Planeswalk, Proliferate, CopySpell
+Keywords: Flying, Enchant, Trample, Vigilance, Haste, Equip, Flash, etbCounter, Reach, Menace, ETBReplacement, First Strike, Lifelink, Deathtouch, Defender, Cycling, Kicker, Chapter, Ward, Flashback, Crew, Morph, Landwalk, Devoid, Double Strike, Indestructible, Hexproof, Convoke, TypeCycling, Prowess, Cumulative upkeep, Partner, Affinity, Class, Suspend, Protection, Changeling, Madness, Unearth, Foretell, Echo, Partner with, Protection from black, Disguise, Start your engines, You may choose not to untap CARDNAME during your untap step., Ninjutsu, Infect, Protection from red, Toxic, Bestow, AlternateAdditionalCost, Cascade, Buyback, Fear, Shadow, Storm, Shroud, Warp, Bushido, Evoke, Daybound, Nightbound, Station, Exalted, Rebound, Mutate, Escape, Plot, Choose a Background, Entwine, Protection from white, Saddle, Disturb, Megamorph, Ascend, Flanking, Splice, MayEffectFromOpeningHand, Delve
+Common params: DB, Mode, SpellDescription, Execute, TriggerDescription, Defined, Destination, ValidCard, SubAbility, Origin, ValidTgts, Cost, AB, Description, TriggerZones, SP, TgtPrompt, Affected, CounterType, TokenScript, NumCards, CounterNum, NumAtt, NumDmg, ValidPlayer, LifeAmount, Phase, ValidCards, ClearRemembered, ChangeType, StackDescription, KW, Produced, Amount, TokenOwner, ChangeNum, NumDef, AILogic, AddPower, AddKeyword, Duration, Choices, TargetMin, TargetMax, Event, ValidTarget, ConditionPresent, RememberObjects, OptionalDecider, AddToughness, ValidSource, ValidActivatingPlayer, IsPresent, ReplaceWith, RememberChanged, StaticAbilities, Type, ConditionDefined, Optional, IsCurse, AffectedZone, TokenAmount, DigNum, Planeswalker, CombatDamage, ETB, Secondary, CheckSVar, EffectZone, ReplacementResult, ValidSA, ConditionCheckSVar, ConditionCompare, Mandatory, UnlessCost, DestinationZone, Hidden, ActiveZones, MayPlay, ValidAttacker, ConditionSVarCompare, UnlessPayer, TargetType, SacValid, Types, SVarCompare, Tapped, SorcerySpeed, Triggers, Condition, ExileOnMoved, SetPower, Power, LibraryPosition, Toughness, ReplacementEffects, ScryNum, Activator, ForgetOnMoved, SetToughness, ValidBlocker, RepeatSubAbility, PresentCompare, ChangeValid, ValidDescription, ChangeTypeDesc, ActivationZone, Keywords, Shuffle, Static, AddAbility, Valid, GainControl, DefinedPlayer, ChoiceTitle, AddType, ValidTgtsDesc, Layer, Name, Reveal, PrecostDesc, ActivationLimit, Ultimate, Num, Chooser, WithoutManaCost, Zone, CharacteristicDefining, TokenTapped, AddTrigger, RepeatPlayers, TgtZone, ClearChosenCard, ChoiceZone, Controller, RememberRevealed, DestinationZone2, ShuffleNonMandatory, CharmNum, RestRandomOrder, RemoveCreatureTypes, DamageSource, PlayerTurn, ClearImprinted, MayChooseTarget, ValidCreature, RestrictValid, AtEOT, Conjure, AddSVar, Caster, Colors, LoseControl, AttackingPlayer, UnlessSwitched, PresentZone, RememberSacrificed, VarName, ValidPlayers, ValidZone, RevealedDestination, VarValue, OverwriteColors, PumpZone, SelectPrompt, AtRandom, MinCharmNum, ValidStepTurnToController, ActivationPhases, NoRegen, RememberDiscarded, SVar, Expression, NoReveal, FoundDestination, CostDesc, WithCountersType, RememberTokens, DividedAsYouChoose, ForceRevealToController, TargetUnique, ValidAttackers, BranchConditionSVar, TrueSubAbility, Attributes, ActivatorThisTurnCast, Untap, MayLookAt, RememberMilled, RemoveCardTypes, Imprint, PeekAmount, AddKWs, TargetsValid, DefinedCards, staticAbilities, RememberChosen, RemoveAllAbilities, AttachedTo, RememberTargets, FalseSubAbility, AddTypes, DiscardValid, AITgts, RememberFound, LibraryPosition2, DamageMap, NewController, TokenAttacking, ExileFaceDown, Object, BranchConditionSVarCompare, ThisTurn, NoResolvingCheck, Number, Prevent, SetColor, RememberLKI, NumTurns, Image, WinSubAbility, Abilities, Sides, TokenPower, TargetsWithDefinedController, TokenToughness, Transformed, ForgetOtherRemembered, RevealedLibraryPosition, ModeCost, ValidCause, MayPlayLimit, ImprintCards, Target, Max, ConditionDescription, PumpKeywords, MayPlayWithoutManaCost, ResultSubAbilities, DefinedName, TargetsForEachPlayer, NoLooking, AddStaticAbility, Spellbook, AttackedTarget, Gains, RevealValid, AddKeywords, OriginAlternative, PreventionEffect, AnyNumber, SacMessage, Alone, ForgetChanged, SetMaxHandSize, Random, NoPeek, AdditionalDescription, Attacked, ExtraPhase, NextTurn, RemoveLandTypes, WithCountersAmount, ResultSVar, ReplaceDyingDefined, ConditionZone, RememberMade, StaticEffect, RepeatCards, AllValid, AddHiddenKeyword, RevealRandomOrder, RememberDestroyed, Attacking, ValidSpell, CopyCard, LoseSubAbility, IsCombat, Stackable, EffectOwner, OneOff, ColorOrType, ReflectProperty, CloneTarget, ChangeZoneTable, AdjustLandPlays, ReduceCost, DestinationAlternative, RandomOrder, Exhaust, TriggerController, ManaConversion, ValidCounterType, RememberDamaged, ShowChoice, UnlessDefender, NonLegendary, PresentDefined, VarType, Activation, UseImprinted, MinAmount, AINoRecursiveCheck, MayPlayIgnoreType, UnlessResolveSubs, ClearChosenPlayer, RevealOptional, ActivationFirstCombat, ControlledByPlayer, PowerUp, LibraryPositionAlternative, LockInText, ReplaceGraveyard, ValidMode, AfterPhase, ValidAttackersAmount, Monstrosity, ClearNamedCard, TargetsWithSameController, AlternativeDecider, ListTitle, RememberPeeked, OpponentTurn, ConditionManaSpent, ChosenPile, GameActivationLimit, WerewolfUntransformCondition, FirstTime, PumpDuration, Min, WerewolfTransformCondition, ResolvedLimit, DamageTarget, Announce, UseAllOriginZones, ValidLKI, RepeatSVarCompare, CanBlockAmount, NumCopies, ForgetOnCast, TargetingPlayer, ConditionPlayerTurn, WithMayLook, KWChoice, RememberDrawn, Separator, ValidToken, RemoveType, RememberRemoved, MayPlayIgnoreColor, NoShuffle, ThisDoor, ForgetOtherTargets, NoteCards, NoteCardsFor, TargetValidTargeting, RepeatCheckSVar, ConditionPhases, AddSVars, Player, MustAttack, AlwaysReplace, Look, Populate, GiftDescription, MayPlayAltManaCost, ChoiceRestriction, PhaseCount, Revolt, RemoveKeywords, ValidResult, ChoiceAmount, UnchosenPile, Bolster, Adapt, GainsAbilitiesOf, MayPlayDontGrantZonePermissions, Value, TempRemember, PersistentMana, Boon, GainThisAbility, RememberAmount, ForgetObjects, Relative, Skip, Trigger, Delirium, RevealDefined, ExcessSVar, CanRepeatModes, Secretly, ChooseCounter, SetChosenNumber, EachFromSource, AddAllCreatureTypes, FaceDown, CheckDefinedPlayer, StartingWith, ImprintChosen, PresentPlayer, DiscardValidDesc, RaiseCost, MaxRepeat, ImprintFound, ReplaceType, ForgetImprinted, Pawprint, CounterTypes, ForgetPlayed, LowPriority, RememberDrafted, Support, DifferentNames, ValidObject, DefinedDamagers, RememberTapped, Boast, DefinedDesc, Color, IsPresent2, UpTo, Source, Placer, TriggerAmount, ForgetCounter, MaxRollsPerTurn, UntapType, IsSingleTarget, Replacements, CardChoices, NewName, Goad, Host, GainsAbilitiesOfZones, MayPlayPlayer, RememberSVarAmount, RemoveKeyword, ImprintRevealed, RememberPlayed, SkipReorder, AddTriggers, SharedKeywordsZone, SharedRestrictions, NumLimitEachTurn, ChooseFromDefined, UntapUpTo, ThisDefinedAndTgts, OnlyFirstSpell, UnlessType, MayPlayText, ConditionPresent2, SetChosenMode, CheckSecondSVar, RememberManifested, RememberCounteredCMC, MaxTotalTargetCMC, EffectOnly, RememberControlled, DefinedAttacker, VoteTiedAbility, ClearNotedCardsFor, RemoveThisAbility, RemoveEnchantmentTypes, ImprintTokens, ShowCurrentCard, FollowedBy, RememberPut, CounterType2, TriggersWhenSpent, AddColor, ClassLevel, DefinedKW, AlwaysRemember, RevertCost, StoreVoteNum, LockTokenScript, RememberPumped, FallbackAbility, NonBasicSpell, ChooseAnyNumber, Choser, LifeTotal, NoPrevention, RememberCards, AIManaPref, Reorder, RememberCountered, ForgetChosen, ValidAfterStack, Forecast, RevealNumber, CopyForEachCanTarget, RollInMain1, ForCost, WithTotalCMC, AlreadyRevealed, SetCreatureTypes, AllDefined, ChoiceDesc, AllCounters, CanBlockAny, Radiance, DamageAmount, AtEOTTrig, TargetsAtRandom, CounterAmount, RepeatPresent, FaceDownSetType, ClearRememberedBeforeLoop, NoCall, ValidTypes, ChooseEach, ChangeController, Hellbent, TargetControls, Step, UnlessAI, AddReplacementEffect, Exclude, sVars, DayTime, ChoiceOptional, IfDesc, ValidCrew, PlayerChoices, RepeatDefined, FaceDownPower, FaceDownToughness, ConditionOptionalPaid, HasCreatureInPlay, Valiant, ClearChosenColor, ChooseOrder, Result, ChangeColorWord, ValidBlocked, PromptToSkipOptionalAbility, ValidSAonCard, PrimaryPrompt, RevealAllValid, AnnounceTitle, ValidKeyword, ExecuteMode, ChoicePrompt, ValidCardsDesc, ConditionPlayerDefined, ConditionPlayerContains, DelayedTriggerDefinedPlayer, RaiseMaxHandSize, RandomCopied, MinMana, RememberOriginalTokens, ConditionNotPresent, PlayCost, InvalidTypes, Upto, ExcessSVarCondition, ChangeTypeWord, MaxAttackers, MinTurn, XColor, XMax, FirstCombat, Phases, MinChoiceAmount, AddAbilities, TargetsWithDifferentControllers, InstantSpeed, ValidDefender, NoMoveRevealed, OrColors, LeaveBattlefield, PhaseInOrOut, ValidOriginalController, ValidLoseReason, HeadsSubAbility, Activate, OptionQuestion, PreventionSubAbility, ShieldEffectTarget, RepeatOptional, ValidCards2, ExtraTurnDelayedTrigger, ExtraTurnDelayedTriggerExecute, NotFirstCardInDrawStep, IsDamage, RemoveTypes, RememberAttached, TopCardOfLibraryIs, Modifier, Names, Discard, ChooseFromList, CopyFromChosenName, AILifeThreshold, ImprintOnHost, Primary, SourceZone, OrOtherConditionSVarCompare, RepeatOptionalForEachPlayer, RepeatOptionalMessage, AnnounceType, CantHaveKeyword, AddsKeywords, AddsKeywordsValid, ManaType, Move, SetName, RemoveSubTypes, DeclaresBlockers, Metalcraft, AITgtOwnCards, SpellbookName, AlternateCost, CheckOnTriggeredCard, DestAltSVar, RememberNewCard, Incorporate, HiddenKeywords, AdditionalDesc, Unimprint, CounterNum2, Won, ExcessDamage, Flipper, RememberNumber, GainsAbilitiesOfDefined, ManaRestriction, RandomNum, ForgetOnPhasedIn, RememberDiscardingPlayers, AttachedToPlayer, Multiplier, ActivationAfterBlockers, MayPlayWithFlash, ForgetDefined, ChosenSVar, OtherSVar, TargetingPlayerControls, AddColors, MaxBlockers, RepeatTypesFrom, ValidEntity, Attacker, ConditionManaNotSpent, Paid, DefinedBlocker, IgnoreGeneric, ImprintPlayed, TargetsWithSameCardType, AIPhyrexianPayment, DefinedMagnet, AddStaticAbilities, AmountFromVotes, TargetsWithSharedCardType, XMin, VoteCard, ManaNotSpent, FlipUntilYouLose, Threshold, ReduceColor, RepeatCompare, EachExistingCounter, GainsValidAbilities, ChangeValidDesc, ExileWithCounters, OptionalAbilityPrompt, IncludeSpellsOnStack, WontPhaseInNormal, RememberAmass, ForReveal, AnySupportedCard, FirstCardInDrawStep, TailsSubAbility, TargetRestriction, MayShuffle, ConditionChosenColor, RememberForCounter, DefinedPiles, AddsCounters, SearchOwnLibrary, AddsKeywordsUntil, OrString, RememberExchanged, FirstAttack, OptionalFoundMove, UnblockCreaturesBlockedOnlyBy, RemoveArtifactTypes, UseDifferenceBetweenRolls, AIExpectAmount, HasXManaCost, TokenBlocking, ExtraPhaseDelayedTrigger, ExtraPhaseDelayedTriggerExcute, Destroy, RevealTitle, ValidAttachment, SacEachValid, MaxFromEffect, VoteSubAbility, VoteMessage, IgnoreEffectCost, Blessing, RegenerationAbility, ForgetRemembered, DivideShield, ConditionActivationLimit, Times, RememberAffected, ConditionLifeTotal, ConditionLifeAmount, ExtraTurn, ClearChosenType, ChoiceTitleAppend, ExcludedDestinations, ResolvingCheck, ValidSpellAbility, DigZone, RepeatTargeted, Twice, ImprintMade, ValidActivator, ValidSupportedCopy, NoPutDesc, NewCounterAmount, AttachAfter, TargetsWithSameCreatureType, TargetsWithDifferentCMC, OppHasCreatureInPlay, RandomKeyword, TriggeredCounterMap, ConditionGameTypes, EvenOddResults, OptionalPrompt, AdditionalOptionalVote, PresentCompare2, ChooseOnlyOne, MinLimit, ChangeNumDesc, TokenCard, AIMinTgts, AddsNoCounter, ExcludeChosen, IntoPlayTapped, CounterNumPerDefined, OtherwiseSubAbility, ChosenMap, RememberCopies, IgnoreFreeze, AIXMax, QuasiLibrarySearch, Searched, Regeneration, ReplaceMana, Tapper, TwoColors, WithTotalPower, MinTotalCMC, TargetsWithControllerProperty, ChoiceNum, ConditionTargetValidTargeting, RememberPlayers, List, ValidChoices, RemoveConditionSVar, ReplaceColor, DefinedTarget, ExiledWithEffectSource, RememberEach, StrictAmount, EachBasicType, ManaSpent, DefinedAssembler, ChangeSingleTarget, AIBidMax, BidSubAbility, DrawLimit, Guess, RememberRevealedPlayer, ReplaceAmount, BoonAmount, ConniveNum, DefenderNotNearestToYouInChosenDirection, TokenController, CheckThirdSVar, TapperController, RememberSearched, ConditionFirstCombat, Redistribute, WithDifferentPowers, EachToItself, RememberCloneOrigin, OnlySorcerySpeed, FoundLibraryPosition, ValidDestination, TriggeredOwnAbility, SetChosenPlayer, cmcGT, WithCounters, OrderDuplicates, RelativeTarget, CombatMana, NextTurnForEachPlayer, HasColorCreatureInPlay, PresentZone2, PresentPlayer2, CanTargetOtherCondition, TargetsWithDifferentNames, ReplaceGraveyardValid, NumCardsDesc, BlockAllDefined, RemoveNonManaAbilities, RemovePhase, Filter, RememberUntapped, Each, Exactly, XAnnounceTitle, RememberClasher, FromBottom, RememberMoved, AllowRepeats, ShowCardToActivator, RandomTarget, ValidSides, RandomChange, VotePlayer, ValidCauser, DefinedContraption, Reassemble, Additional, Natural, WithCounter, WithCounterNum, NumRandomChoices, OptionPrompt, RememberMovedToZone, ManaAbility, ForEachShard, EachVote, Start, StartingLife, TargetRelativeToSource, Foretold, ValidMessage, Log, RememberRandomChoice, DividedRandomly, Note, RolledToVisitAttractions, ReduceAmount, WhileKeyword, NumPhases, TargetsWithSharedTypes, APlayerHasMoreLifeThanEachOther, RememberResult, ClearCoinFlips, PlayReduceCost, DefinedExiler, DestroyPermanent, ToEachOther, RememberSource, RememberGoaded, AnnounceMax, TokenRemembered, UntapExactly, AdditionalActivationZone, RememberCostMana, GainsTriggerAbsOf, ChooseType2, SharedKeywords, CounterTypePerDefined, DestZone2Optional, ClearTriggered, UpcomingTurn, ZoneRegardless, StartBidding, GainsAbilitiesLimitPerTurn, ShuffleChangedPile, ConditionTargetsSingleTarget, Highest, FirstTimeCrewed, RememberAbandoned, ExcludedOrigins, CardsInGraveyardGE, MaxTotalTargetPower, ValidExplored, FromDesc, AICheckSVar, AISVarCompare, StaticCommandCheckSVar, StaticCommandSVarCompare, AllCards, CloneZone, CheckFourthSVar, ShuffleFromEffect, TargetsWithRelatedProperty, LeftRightPile, DraftNum, TokenTypes, TokenColors, AITgtsStrict, DamageDesc, AtEOTCondition, AtEOTDesc, SkipUntap, FirstUpkeepThisGame, SpellbookAmount, SecondaryType, ValidExplorer, Chance, Cycling, CardsInHandLE, AllCounterTypes, Blocking, Teamwork, OnlyFirst, RandomKWNum, ActivatorThisTurnCastEach, ChooseFromDefinedCards, NoSchemes, NewTime, RememberAllObjects, FromDraftNotes, CounterMapValues, Monarch, ForbiddenNewTypes, TypeLimit, PutOnDefined, OnlyNewKind, VarKey, WithDifferentNames, IgnoreLower, RemoveFromInventory, LogMessage, SecondSVarCompare, ValidObjectToSource, Booster, SnowSpentForCardsColor, AdditionalVote, AltChoiceForEach, CauseIsSource, ForColor, ControlAndNot, Defender, AttackDifferentPlayers, NoRegenValid, SubsForEach, NoteDoubles, EachDifferentPower, StoreResults, RerollResults, RememberHighestPlayer, RandomTargetRestriction, Notify, ST, DiscardMessage, DifferentResults, Adamant, ConditionYouCastThisTurn, OnlySourceAbs, ChoicesDesc, PutOnEachOther, ValidAttackingPlayer, ValidDefenders, This creature gets +X/+0, where X is the number of creature cards in your graveyard., RememberCloaked, UniqueType, RandomType, UnlessColor, ManaAmount, OverwriteSpells, StaticEffectCheckSVar, StaticEffectSVarCompare, Zone1, Zone2, ValidExchange, ConditionNoDifferentColors, ConditionPresentCompare, InvertValidCause, ShowMilledCards, ShowSacrificedCards, ImprintRememberedNoCleanup, ColorsFrom, CopyTriggeringObjects, DrainMana, MayPlaySnowIgnoreColor, ImprintLast, ControllerUntaps, NoRepetition, AIMaxTgtsCount, TypeList, SubABility, ConditionWouldDestroy, WithCountersPlacer, RememberSpell, UseOriginalHost, ForetoldCost, DefinedLandwalk, SpecifyCounter, MatchedAbility, UnmatchedAbility, SpeTgtPrompt, TypesFromDefined, NotFirstLand, MostPrevalentInDefinedZone, ConditionOpponentTurn, DivideEvenly, Spell, PreCostDesc, ValidDefined, SplitAmount, RememberAltered, RepeatOptionalDecider, CantFizzle, RememberCounteredSA, ChooseNumberSubAbility, Lowest, ValidEnlisted, CantCopy, NonZero, Unique, ForceReveal, ChangeLater, ImprintRest, DestAltSVarCompare, ChooseDifferent, ExcludeZone, ValidCardToTarget, RememberRemovedCards, ReplaceDyingExiledWith, AllSuffixKeywords, RevealFirst, ValidNewFace, AffectedDefined, TapCreaturesForMana, BasePower, DestinationChoice, RememberDiscovered, KeepRemembered, ChosenMapIndex, AmountByChosenMap, ControlVote, CastFaceDown, ReplaceIlluMask, RememberRemovedFromCombat, TargetRelativeToCause, BecomeStartingPlayer, DoesntHaveThisAbility, SharedKeywordsDefined, AlternativeMessage, UseHighestRoll, ValidAttackerRelative, ActivePhases, SetLoyalty, AmountDesc, RestrictFromZone, RestrictFromValid, XAlternative, LoseLifeMap, BeginTurn, ImprintSacrificed, CalcKeywordN, NotThisAbility, ValidDevoured, ReturnAbility, ReturnValid, DividedUpTo, NoRedirection, ValidConniver, NotPlayerTurn, ToVisitYourAttractions, ChooseNoted, IncludeSideboard, MaxRollsResults, NoteNumber, RevealToAll, OtherBidder, TransferActivator, DividerOnResolution, DeclaresAttackers, UnlessValidTarget, RememberRedirectedExcess, AfterReplacement, RememberHighest, ValidCrewAmount, SVars, HasColorInGraveyard, RememberSplicedOntoCounteredSpell, PeekNum, RememberOwnLoss, Secret, ForEachPlayer, Again, ShareLandType, AISearchGoal, TrigDescReminderDefined, RememberingAttacker, ForEachColorPair, DontPlaneswalkAway, ValidTrigger, ValidAmountEach, TriggerZone, PlayRaiseCost, KeepSecret, ControlOpponentsSearchingLibrary, FoundSearchingLibrary, RandomNumTargets, FogetOnMoved, ValidTurned, FirstUpkeep, Remember, ExcludeDestination, RepeatNum, CardsInHandGE, RememberDifference, AbilityCount, RememberDrainedMana, ReplaceOnly, SourceController, ExcessDamageCondition, FirstForetell, MaxNum, KeywordDefined, FirstExtraCardDrawnThisTurn, RememberAnimated, TargetsWithoutSameCreatureType, KeepName, ReplaceDyingCondition, DifferentCMC, Combat, ValidBlockerAmount, ChooseAmount, ChosenZone, CounterNumShared, AIRespondsToOwnAbility, DefendingPlayerPoisoned, NoLonger, DontNotify, NewState, RevealType, APlayerHasMostCardsInHand, OptionalNoDestination, RemoveFromCombat, ValidBlockerRelative, AddNames, RememberKept, ValidSaddled, FirstTimeSaddled, ShowCards, ExileOnLost, ChangeColorWordsTo, RearrangePlayer, NoteCounterDefined, WithNotedCounters, RememberValids, ChooseSubAbility, CantChooseSubAbility, AddTriggersFrom, ToBottom, RemoveChoices, Guesser, GuessWrong, GuessCorrect, AdditionalVillainousChoice, MaxRevealed, ManaCost, DifferentPower, ShowMessage, RememberVotedObjects, RaiseTo, NoMoveFound, NoneFoundDestination, NoneFoundLibraryPosition, ShuffleCondition, RandomCompareSVar, RandomCompare, RememberLoser, ValidTgtDesc, EnduringStory, ValidTgtsDes, ValidTgt, GameStage, TargetsWithEqualToughness, AIActivateLast, Embalm, RemoveCost, NoColoredMana, TriggeredCardLKICopy, GainTextOf, GainTextAbilities, SourceCanOnlyTarget, AiChoiceLogic, ActivationGameTypes, ValidAttacked, RelativeToSource, NotLowest, RandomChosen, Piles, RepeatSpellAbilities, ShuffleBySelfControlled, RememberInvestigatingPlayers, WithTotalCardTypes, BeforeFirstPostCombatMainEnd, IncludeAllComponentCards
+
+PARAM VALUES (the actual values these parameters take, most frequent first;
+prefer an exact match from here over a substring guess):
+  DB: ChangeZone, Cleanup, Token, Draw, PutCounter, Pump, DealDamage, GainLife, Effect, Tap, LoseLife, Discard
+  Mode: ChangesZone, Continuous, Phase, Attacks, SpellCast, DamageDone, TgtChoose, CantBlockBy, ReduceCost, Transform, AttackersDeclared, DamageDoneOnce
+  Defined: Self, You, Remembered, Targeted, Player, Player.Opponent, Opponent, ReplacedCard, Enchanted, ParentTarget, ChosenCard, TriggeredCardLKICopy
+  Destination: Battlefield, Hand, Exile, Graveyard, Library, Any, Graveyard,Exile, Ante,Command,Exile,Hand,Library, Command, PlanarDeck, TopOfLibrary, Ante
+  ValidCard: Card.Self, Creature, Card, Instant,Sorcery, Land.YouCtrl, Creature.YouCtrl, Card.YouCtrl, Card.nonCreature, Card.AttachedBy, Creature.EnchantedBy, Creature.Other+YouCtrl, Card.IsRemembered
+  Origin: Any, Battlefield, Graveyard, Library, Hand, Exile, Stack, Command, All, Graveyard,Exile, Hand,Graveyard, Sideboard
+  ValidTgts: Creature, Creature.YouCtrl, Player, Any, Opponent, Card, Creature.OppCtrl, Artifact, Permanent, Land, Creature.YouOwn, Creature,Planeswalker
+  AB: Mana, Pump, ChangeZone, Draw, Token, DealDamage, PutCounter, Effect, Animate, Destroy, Regenerate, GainLife
+  TriggerZones: Battlefield, Command, Graveyard, Exile, Battlefield,Exile, Battlefield,Graveyard, Stack, Command,Battlefield
+  SP: ChangeZone, Pump, DealDamage, Destroy, Charm, Draw, Token, Counter, PumpAll, Dig, Effect, PutCounter
+  Affected: Card.Self, Creature.EnchantedBy, Creature.EquippedBy, Card.IsRemembered, Creature.YouCtrl, Card.EnchantedBy, You, Card.EquippedBy, Card.TopLibrary+YouCtrl, Creature.Other+YouCtrl, Card.IsRemembered+nonLand, Creature
+  CounterType: P1P1, ENERGY, M1M1, CHARGE, Stun, TIME, LOYALTY, QUEST, OIL, Any, EachFromSource, STUN
+  NumCards: 1, 2, X, 3, 4, 7, Y, 5, 10, Z, 8, 6
+  CounterNum: 1, 2, X, 3, All, Y, 4, 5, Result, Any, 6, Z
+  NumAtt: +1, +2, +X, +3, -1, -2, -X, -3, +4, -4, Double, +5
+  NumDmg: X, 1, 2, 3, 4, 5, Y, 6, 7, Count$CardPower, 10, 8
+  ValidPlayer: You, Player, Opponent, Player.EnchantedController, Player.Opponent, Player.EnchantedBy, Player.IsRemembered, You.descended, Player.Chosen, You.lifeGE1, Player.IsTriggerRemembered, Player.controlsCreature.IsRemembered_GE1
+  LifeAmount: 1, 2, X, 3, 4, 5, Y, 10, 6, 7, AFLifeLost, 20
+  Phase: Upkeep, End of Turn, BeginCombat, EndCombat, Main1, Draw, Main, End Of Turn, Main1,Main2, Untap, Cleanup, Main2
+  ClearRemembered: True, true
+  Produced: C, Any, G, R, B, U, W, Combo R G, Combo B R, Combo W U, Combo U B, Combo Any
+  Amount: 1, 2, X, 3, All, 4, Y, 5, SacX, 6, Z, 7
+  TokenOwner: You, TargetedController, TriggeredCardController, Targeted, Player, Promised, Player.IsRemembered, TargetedPlayer, ImprintedController, ThisTargetedPlayer, Opponent, TriggeredActivator
+  KW: Flying, Trample, Indestructible, Haste, First Strike, HIDDEN CARDNAME can't block., Deathtouch, Vigilance, Lifelink, Double Strike, Menace, Hexproof
+  ChangeNum: 1, All, 2, X, 3, Any, NumInHand, NumInLib, 4, NumInYard, Y, XFetch
+  NumDef: +1, +2, +X, -1, +3, -2, -X, +4, -3, -4, +5, -5
+  StackDescription: SpellDescription, None, {c:Targeted} can't be blocked this turn., enters tapped., REP target creature_{c:Targeted}, REP Target creature_{c:Targeted}, {c:ThisTargetedCard}, {c:Targeted} blocks this turn if able., Exile {c:Targeted},, {p:You} seeks a nonland card., {c:Targeted} can't block this turn., REP Target opponent_{p:Targeted}
+  AddPower: 1, 2, X, 3, -1, 4, -2, -X, AffectedX, 5, Y, -3
+  AddKeyword: Flying, Trample, Haste, First Strike, Vigilance, Menace, Hexproof, Indestructible, Lifelink, Double Strike, Deathtouch, Reach
+  Duration: Permanent, Perpetual, UntilYourNextTurn, UntilHostLeavesPlay, UntilTheEndOfYourNextTurn, UntilHostLeavesPlayOrEOT, UntilEndOfCombat, UntilEndOfTurn, UntilUntaps, AsLongAsControl, UntilTheEndOfYourNextUntap, AsLongAsInPlay
+  TargetMin: 0, 2, 1, X, Y, OneEach, 3, 6, TargetsNum, TgtNum, 5, 4
+  TargetMax: 1, 2, X, 3, OneEach, 4, MaxTgts, MaxTgt, MaxTargets, Y, 5, 6
+  Event: Moved, DamageDone, Untap, Counter, Draw, CreateToken, AddCounter, GainLife, BeginPhase, GameLoss, ProduceMana, LifeReduced
+  ValidTarget: Player, Card.Self, Opponent, You, Creature, Permanent,Player, Creature.EnchantedBy, Player,Planeswalker, Creature.Self, Player,Battle, Creature.YouCtrl, Card.AttachedBy
+  RememberObjects: Targeted, Remembered, RememberedCard, Self, RememberedLKI, TriggeredCard, TriggeredAttackerLKICopy, ParentTarget, ThisTargetedCard, ChosenCard, TriggeredNewCardLKICopy, Imprinted
+  OptionalDecider: You, TriggeredCardController, True, TriggeredSourceController, Opponent, EnchantedController, TriggeredPlayer, TriggeredAttackingPlayer, TriggeredActivator, TargetedController, ParentTargetedController
+  AddToughness: 1, 2, X, 3, -1, 4, -2, -X, AffectedX, 5, Y, 6
+  ValidSource: Card.Self, Creature.YouCtrl, Creature.EquippedBy, Card.YouCtrl,Emblem.YouCtrl, SpellAbility.OppCtrl, You, Card.AttachedBy, Creature, Spell, SpellAbility.YouCtrl, Creature.IsRemembered, Card.OppCtrl,Emblem.OppCtrl
+  ValidActivatingPlayer: You, Opponent, Player, Player.Opponent, Player.EnchantedBy, Player.NonActive, Player.Other, Player.Active+!IsRemembered, Opponent.NonActive, Player.Chosen, Player.Active, Player.Opponent+Active
+  ReplaceWith: ETBTapped, LandTapped, Exile, DBTap, DBReplace, DmgTwice, Counters, AddOneMoreCounters, DBExile, DoubleToken, DoDay, DBRemoveCounters
+  RememberChanged: True, Card.!token
+  StaticAbilities: Unblockable, STPlay, Play, KWPump, MustAttack, MayPlay, SNoCombatDamage, CanAttack, NoRegen, ReduceCost, STCantBeCast, Exploration
+  Type: Spell, Creature, Number, CountSVar, Orc, Basic Land, Zombie, Ability, Card.nonLand, Card, Goblin, Calculate
+  ConditionDefined: Remembered, Targeted, ChosenCard, Self, RememberedLKI, Imprinted, TriggeredCard, ParentTarget, Sacrificed, TriggeredCardLKICopy, Collected, TriggeredAttackerLKICopy
+  Optional: True, You, Targeted
+  IsCurse: True
+  AffectedZone: Exile, Graveyard, Battlefield, Library, Stack, Hand, All, Hand,Graveyard,Library,Exile,Command, Hand,Graveyard,Exile,Library,Command, Graveyard,Exile, Battlefield,Stack, Exile,Stack
+  TokenAmount: 2, X, 3, Y, 4, 1, 5, Z, Result, Excess, 7, TokenX
+  DigNum: 1, X, 4, 3, 2, 5, 6, 7, 10, 8, Y, Z
+  Planeswalker: True, true
+  CombatDamage: True, False
+  ETB: True
+  Secondary: True, Bruna, the Fading Light, Midnight Scavengers, Hanweir Garrison, Phyrexian Dragon Engine, Argoth, Sanctum of Nature, The Mightstone and Weakstone, Fang, Fearless l'Cie
+  CheckSVar: X, Y, RaidTest, Morbid, Z, YouLifeGained, Celebration, PackTactics, FormidableTest, LifeGained, YouCastThisTurn, Count$CommittedCrimeThisTurn.1.0
+  EffectZone: All, Battlefield, Command, Graveyard, Stack, Exile, Graveyard,Hand,Library,Command,Stack, Exile,Graveyard, Battlefield,Command
+  ReplacementResult: Updated, Replaced
+  ValidSA: Spell, Spell.Self, Activated, SpellAbility.!ManaAbility, Spell.MayPlaySource, Activated.!ManaAbility, Activated.Loyalty, Spell.cmcLEX, Instant,Sorcery, Activated.Exhaust, Activated.Equip, Activated.Crew+Vehicle
+  ConditionCheckSVar: X, Y, Resolved, Excess, ETBCheckSVar2, Z, RaidTest, NumTimes, FatefulHour, LandfallAmount, YouChose, Win
+  ConditionCompare: GE1, EQ0, EQ1, GE2, LE1, GE3, GT2, LT2, GE4, LT3, LT8, GE10
+  Mandatory: True
+  DestinationZone: Exile, Battlefield, Hand, Library, Graveyard, Ante, PlanarDeck
+  UnlessCost: 1, 2, Discard<1/Card>, 3, Y, X, PayLife<3>, PayLife<2>, Sac<1/Creature>, 4, Sac<1/Land>, PayEnergy<X>
+  Hidden: True
+  ActiveZones: Battlefield, Command, Hand, Graveyard
+  MayPlay: True, You
+  ValidAttacker: Creature.Self, Card.IsRemembered, Card.Self, Creature.withoutFlying, Creature.EnchantedBy, Creature.EffectSource, Creature.IsRemembered, Creature.EquippedBy, Creature.YouCtrl, Card.Self+attacking, Creature, Creature.powerGE2
+  ConditionSVarCompare: EQ0, EQ1, GE1, EQ2, GE3, GE5, LT1, GE10, GE4, EQ3, LT2, GE2
+  UnlessPayer: You, Remembered, TargetedController, Player, Targeted, TriggeredPlayer, TriggeredActivator, Player.IsRemembered, RememberedController, TriggeredCardController, TriggeredSourceSAController, EnchantedController
+  TargetType: Spell, Spell,Activated,Triggered, Activated.YouCtrl,Triggered.YouCtrl, Activated,Triggered, Activated, Spell.singleTarget, SpellAbility.singleTarget, Spell.numTargets EQ1, Triggered.YouCtrl, Spell.Colorless,Triggered, Activated,Triggered,Spell.nonCreature, SpellAbility.numTargets EQ1
+  SacValid: Creature, Self, Land, Permanent, Creature.!token, Creature,Planeswalker, Artifact, Enchantment, Permanent.nonLand, Creature.attacking, Creature.Other, Planeswalker
+  SVarCompare: GE3, EQ0, GE2, GE8, GE4, GTY, EQ1, LT7, GE6, LT1, GE5, GE1
+  Tapped: True
+  SorcerySpeed: True
+  Condition: PlayerTurn, Threshold, Kicked, MaxSpeed, Delirium, Metalcraft, NotPlayerTurn, Blessing, Hellbent, OptionalCost, EnduringStory, Bargain
+  ExileOnMoved: Battlefield, Exile, Stack, Graveyard, Graveyard,Stack, Graveyard,Exile, Exile,Stack
+  SetPower: X, 1, 4, 2, 3, 0, 5, Y, 6, AffectedX, 7, 9
+  Power: 4, 3, 2, X, 0, 1, 5, 6, 8, 7, Y, 10
+  LibraryPosition: -1, 0, 2, 1, X, 6, 4, Count$Random.0.4, Count$Random.0.6, 3, Count$Random.0.8, Count$Random.0.10
+  Toughness: 4, 3, 1, 2, 5, X, 0, Y, 6, 8, 7, 10
+  ReplacementEffects: RPrevent, DontUntap, RPreventNextFromSource, SelflessDamage, ETBCreat, DamageEvent, RPrevent1,RPrevent2, ETBAddCounter, ReMoved, DrawReplace, ReplaceGraveyard, AntiMagic
+  ScryNum: 1, 2, 3, X, 4, Result, 5
+  Activator: You, Player, Opponent, Player.Opponent, Player.IsRemembered, Player.NonActive, Player.EnchantedBy, You.NonActive, Player.EnchantedController, Player.Owner, You.Active
+  ForgetOnMoved: Exile, Battlefield, Stack, Graveyard, Graveyard,Stack, Hand, Graveyard,Exile, True
+  SetToughness: X, 1, 4, 3, Y, 2, 5, 6, AffectedX, 10, 8, 9
+  ValidBlocker: Card.Self, Creature, Creature.Self, Creature.powerLE2, Creature.nonWall, Creature.powerGE3, Creature.withFlying, Creature.IsRemembered, Creature.Wall, Creature.powerLTX, Creature.EnchantedBy, Creature.nonBlack
+  PresentCompare: EQ0, GE2, GE3, GE4, EQ1, GE8, GE5, GE7, GE6, GE10, LE2, EQ2
+  ChangeValid: Creature, Card, Land, Creature,Land, Artifact, Permanent, Card.Land, Card.Creature, Instant,Sorcery, Enchantment, Creature.cmcLE3, Card.NamedCard
+  ActivationZone: Graveyard, Hand, Command, Battlefield, Exile, Stack
+  Static: True
+  Shuffle: True, False
+  ChangeTypeDesc: basic land, creature, creature cards milled this way, basic Forest, Plains, or Island, basic Mountain, Forest, or Plains, basic Plains, Island, or Swamp, basic Island, Swamp, or Mountain, basic Swamp, Mountain, or Forest, basic Plains, Swamp, or Forest, basic Forest, Island, or Mountain, card they own, basic Swamp, Forest, or Island
+  Keywords: Haste, Flying, Trample, Enchant:Creature, Defender, First Strike, Indestructible, Hexproof, Deathtouch, Flying & Haste, Vigilance, Reach
+  GainControl: True, You, ChosenPlayer, Targeted, DelayTriggerRemembered, Player.isMonarch, ParentTarget, Player.IsRemembered, TriggeredCardController
+  DefinedPlayer: Targeted, TargetedController, You, Player, Remembered, TriggeredPlayer, RememberedController, TriggeredTarget, TargetedPlayer, Player.IsRemembered, Player.Opponent, Player.Other
+  Valid: Card.nonLand, Card.IsRemembered, Creature, Land, Card.YouOwn, Card.nonLand+YouOwn, Card.ExiledWithSource, Land.YouCtrl, Instant,Sorcery, Card, Artifact, Card.IsImprinted
+  ValidDescription: each creature and each player., nonland, each creature., creature, land, each creature without flying., each creature with flying., artifact, creature card, instant or sorcery, each attacking creature., nonland card
+  Layer: CantHappen, Copy, Control, Other
+  Reveal: True, False, All
+  ValidTgtsDesc: creature you control, creature an opponent controls, creature card in your graveyard, another creature you control, another creature, nonland permanent, Equipment you control, attacking creature, artifact or creature, artifact or enchantment, nonland permanent an opponent controls, any other target
+  PrecostDesc: Channel —, Max speed —, Threshold —, Renew —, Bloodrush —, Cleave, Cohort —, Formidable —, Delirium —, Domain —, Metalcraft —, Corrupted —
+  ActivationLimit: 1, 2, 3, X
+  Ultimate: True
+  Num: 2, 1, X, 3, 4, 5, Y, Excess, TriggeredSpellAbility$CardManaCostLKI, 10, 8, Z
+  WithoutManaCost: True
+  Chooser: You, Targeted, Opponent, ChosenPlayer, Remembered, TriggeredPlayer, Player.IsRemembered, TriggeredCardController, TriggeredTarget, TriggeredDefendingPlayer, ImprintedController, TargetedController
+  Zone: Hand, Battlefield, Library, Graveyard, Exile, Battlefield,Graveyard,Exile,Library,Hand, None, All, Battlefield,Hand, Graveyard,Hand,Library, Hand,Library
+  CharacteristicDefining: True, False
+  TokenTapped: True
+  RepeatPlayers: Player, Player.Opponent, Opponent, Remembered, Targeted, ImprintedOwner, RememberedController, TargetedAndYou, OppNonTriggeredDefender, Player.YourTeam, ImprintedController, TargetedController
+  TgtZone: Graveyard, Stack, Stack,Battlefield, Exile, Battlefield,Exile, Battlefield, Battlefield,Graveyard, Battlefield,Stack, Ante, Battlefield,Stack,Graveyard
+  ClearChosenCard: True
+  ChoiceZone: Hand, Graveyard, Exile, Library, Battlefield, Sideboard, Graveyard,Exile, Hand,Battlefield, Hand,Graveyard, Hand,Library, None, Command,Battlefield
+  Controller: You, TargetedController, TriggeredCardController, Remembered, Targeted, TargetedPlayer, TriggeredActivator, TriggeredPlayer, RememberedController, ChosenPlayer, RememberedOwner, TargetedOrController
+  RememberRevealed: True
+  DestinationZone2: Graveyard, Library, Hand, Exile, PlanarDeck
+  ShuffleNonMandatory: True
+  CharmNum: 2, 3, Count$Compare Y GE1.2.1, X, 5, 1, Y, 4, MaxUniqueOpponents, Count$TriggerRememberAmount, Count$Compare X GE1.2.1, Count$Hellbent.3.1
+  RestRandomOrder: True
+  RemoveCreatureTypes: True
+  PlayerTurn: True, You, Opponent
+  ClearImprinted: True
+  DamageSource: ParentTarget, Targeted, EffectSource, TriggeredCard, TriggeredCardLKICopy, Remembered, TriggeredAttackerLKICopy, TriggeredSource, Enchanted, OriginalHost, Imprinted, TriggeredTargetLKICopy
+  MayChooseTarget: True
+
+Semantic facets. These are BROAD deck-archetype labels, not precise
+mechanical predicates; the number after each is how many card faces it
+matches out of ~34,600. Use a facet only when the question is itself
+archetype-level ("sac outlets", "draw engines"). For a question that
+pins a specific zone, cost, or effect, write the node/chain predicate
+instead — a facet will be far too broad.
+Hooks (for {"hook": ...}): alternative_cost (148), amplifies_attack_triggers (3), amplifies_damage (50), amplifies_death_triggers (3), amplifies_etb_triggers (9), amplifies_mana (52), artifacts_matter (475), attacks_matter (1856), blink (252), buffs_attached (408), buffs_tokens (30), cares_about_death (1582), cda_statline (158), combat_damage_matters (687), conditional_self_keyword (387), conditional_self_pump (168), copies_things (585), cost_reducer (516), creatures_entering_matter (233), debuffs_opponent_creatures (7), discard_matters (76), disruptive_etb (195), draw_matters (145), enchantments_matter (114), equipment_matters (905), evasion_static (363), gains_life (2118), landfall (281), lifedrain (287), makes_tokens (3362), mass_ability_granter (322), mass_keyword_granter (581), mitigates_damage (74), phase_bouncer (252), phase_engine (415), phase_flip_transformer (141), plays_from_graveyard (105), puts_counters (3217), reanimator (1227), recurring_forced_sacrifice (215), sac_outlet (533), self_mill (509), shared_keyword_field (619), spellslinger (226), tap_pinger (334), tap_pumper (231), tribal_lord (349), untapper (595)
+Roles (for {"role": ...}, optional :engine / :one_shot suffix): card_draw (3005), ramp (2059), sweepers (534), targeted_removal (1221)
+
+Examples:
+Q: creatures with a combat-damage-to-a-player trigger that creates a token
+A: {"chain": {"from": {"kind": "T", "mode": {"any": ["DamageDone", "DamageDoneOnce"]}, "params": {"CombatDamage": "True", "ValidTarget": {"contains": "Player"}}}, "to": {"api": "Token"}}}
+Q: cards that exile cards from the library and let you play them (impulse draw)
+A: {"chain": {"from": {"kind": {"any": ["A", "T", "S", "R"]}}, "to": [{"api": {"any": ["Dig", "DigUntil", "Mill"]}, "params": {"DestinationZone": {"contains": "Exile"}}}, {"mode": "Continuous", "params": {"MayPlay": "True"}}]}}
+Q: activated abilities that sacrifice a creature to add mana
+A: {"node": {"apiKind": "AB", "api": {"any": ["Mana", "ManaReflected"]}, "params": {"Cost": {"regex": "Sac<[^>]*Creature"}}}}
+Q: replacement effects that double token creation
+A: {"chain": {"from": {"kind": "R", "params": {"Event": "CreateToken"}}, "to": {"api": "ReplaceToken"}}}
+Q: spells or ETB triggers that search a land onto the battlefield
+A: {"chain": {"from": {"kind": {"any": ["A", "T"]}}, "to": {"api": "ChangeZone", "params": {"Origin": "Library", "Destination": "Battlefield", "ChangeType": {"regex": "Land|Plains|Island|Swamp|Mountain|Forest"}}}}}
+Q: cards that give you an extra turn
+A: {"node": {"api": "AddTurn"}}
+
+Respond with ONLY the query JSON object, no prose, no code fences.

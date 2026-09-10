@@ -1,0 +1,42 @@
+[
+ {
+  "qid": "I04.P3",
+  "question": "sacrifice an artifact: cost"
+ },
+ {
+  "qid": "I08.P3",
+  "question": "lose life, you gain it"
+ },
+ {
+  "qid": "I10.P3",
+  "question": "token maker plus sac outlet"
+ },
+ {
+  "qid": "I11.P3",
+  "question": "damage to each opponent"
+ },
+ {
+  "qid": "I12.P3",
+  "question": "bounce all creatures"
+ },
+ {
+  "qid": "I18.P3",
+  "question": "repeatable draw"
+ },
+ {
+  "qid": "I22.P3",
+  "question": "instant-speed removal"
+ },
+ {
+  "qid": "I26.P3",
+  "question": "exile effects"
+ },
+ {
+  "qid": "I36.P3",
+  "question": "flash sorceries"
+ },
+ {
+  "qid": "I40.P3",
+  "question": "damage prevention for yourself"
+ }
+]

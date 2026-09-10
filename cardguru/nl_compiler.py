@@ -33,6 +33,11 @@ Queries are JSON objects, one operator per object:
        `from` node — use this to say "one ability does both X and Y".
   {"keyword": "Name"} card has that keyword
   {"card": {"types"|"name"|"manaCost"|"oracle"|"pt": VP}} card-level attributes
+  {"hook": "sac_outlet"} a validated semantic facet (closed list below). Prefer a
+       hook over hand-rolling its structure when one covers the question.
+  {"role": "card_draw"} a deckbuilding role (closed list below). Suffix
+       ":engine" or ":one_shot" to demand repeatability, e.g. "card_draw:engine"
+       for a recurring draw engine as opposed to a one-shot draw spell.
 
 NodeSpec fields (AND-ed): kind ("A" spell/activated line, "T" trigger,
 "S" static, "R" replacement, "K" keyword, "SVar" sub-ability), api (effect
@@ -73,6 +78,19 @@ Conventions from the Forge card-script data this runs over:
 - Prefer chain over all-of-two-nodes when the question implies one ability
   does both things. Prefer exact api/mode strings from the vocabulary below;
   use params only when needed for precision.
+- CONSTRAIN PARAM VALUES, DO NOT JUST ASSERT THE KEY EXISTS. `{"P": true}`
+  means "this parameter is present with any value at all" — use it only when
+  you genuinely mean any value. If the question names a scope, a zone, or a
+  kind, pin the value: {"ValidPlayers": {"icontains": "Opponent"}}, not
+  {"ValidPlayers": true}. The loose form is why "damage to each opponent"
+  returns board wipes that damage each *creature*.
+- Scope often lives in the TRIGGER, not in the effect node's params. Values
+  like Self, You, Remembered, Targeted and TriggeredPlayer are contextual —
+  they resolve at runtime and say nothing about how many players are affected.
+  "Each player draws" is frequently a per-player trigger whose Draw node reads
+  Defined$ TriggeredPlayer, so pinning a player value on the effect misses it.
+  Match the trigger's structure for scope; pin values only for genuinely
+  absolute ones such as Player.Opponent.
 """
 
 EXAMPLES = [
@@ -101,17 +119,118 @@ EXAMPLES = [
 ]
 
 
-def build_system_prompt(onto_data: dict, top_n: int = 80) -> str:
+def _facet_selectivity(path: str = "research/data/facet_selectivity.json") -> dict:
+    """Mined face-counts per hook/role, or {} if the file isn't built yet.
+
+    Regenerate with `python eval/consistency/build_facet_selectivity.py` after an
+    ontology or dataset bump; stale counts mislead the compiler in the same
+    direction as no counts at all, just less obviously.
+    """
+    try:
+        with open(path, encoding="utf-8") as f:
+            data = json.load(f)
+        return {**data.get("hooks", {}), **data.get("roles", {})}
+    except (OSError, ValueError):
+        return {}
+
+
+def _param_values(path: str = "research/data/param_values.json") -> dict:
+    """Mined value space per parameter, or {} if not built.
+
+    Regenerate with `python eval/consistency/build_param_values.py` on a dataset
+    bump. Only parameters whose top values cover most of their uses are present.
+    """
+    try:
+        with open(path, encoding="utf-8") as f:
+            return json.load(f).get("params", {})
+    except (OSError, ValueError):
+        return {}
+
+
+def build_system_prompt(onto_data: dict, top_n: int = 80,
+                        param_keys_n: int | None = None,
+                        param_values: bool = False) -> str:
+    """Build the compiler's system prompt from the mined ontology.
+
+    `param_keys_n` truncates the parameter vocabulary; None emits all of it.
+    It defaults to None because truncation was measured to be actively harmful:
+    frequency-ranking put `ValidPlayer` (rank 25) in the prompt and left
+    `ValidPlayers` (rank 159) out, so every compilation of "damage to each
+    opponent" used the wrong key on `DamageAll` — a query that validates clean,
+    returns hits from its sibling branch, finds the witness, and silently
+    matches nothing on the branch that mattered.
+
+    Emitting the full list measured 0/5 -> 5/5 on that token choice, cut the
+    dead-branch rate from 5.4% to 1.0%, and raised paraphrase consistency on the
+    idiom-alternation stratum from 0.456 to 0.599.
+    See eval/consistency/C3-ablation.md.
+    """
     def top(d, n):
-        return ", ".join(list(d)[:n])
+        return ", ".join(list(d) if n is None else list(d)[:n])
     vocab = (
         f"Effect APIs (by frequency): {top(onto_data['api'], top_n)}\n"
         f"Trigger modes: {top(onto_data['trigger_modes'], 60)}\n"
         f"Static modes: {top(onto_data['static_modes'], 40)}\n"
         f"Replacement events: {top(onto_data['replacement_events'], 34)}\n"
         f"Keywords: {top(onto_data['keywords'], 80)}\n"
-        f"Common params: {top(onto_data['param_keys'], 100)}\n"
+        f"Common params: {top(onto_data['param_keys'], param_keys_n)}\n"
     )
+    # Parameter VALUE spaces — OFF BY DEFAULT, reverted under its own rule.
+    #
+    # Arm D measured this and it did exactly what it was designed to do on
+    # precision: foil rate 0.110 -> 0.014, and the pre-registered R5 target
+    # (H03 scope) improved 0.620 -> 0.659. But agreement@witness fell
+    # 0.963 -> 0.912, tripping the revert condition committed in
+    # eval/consistency/C3b-prediction.md before the run.
+    #
+    # Root cause, from I37: Howling Mine encodes "each player draws" as
+    # Draw/Defined$ TriggeredPlayer — the SCOPE lives in the trigger, not the
+    # node. `Defined`'s most frequent values (Self, You, Remembered, Targeted,
+    # TriggeredPlayer) are CONTEXTUAL: they resolve at runtime and carry no
+    # scope on their own. Listing them taught the compiler to pin exact values
+    # where a structural match was needed, so it stopped finding those cards.
+    #
+    # The data and the miner are kept; what is missing is a contextual-vs-
+    # absolute annotation on the values. Re-enable with param_values=True once
+    # arm E has tested that. See eval/consistency/C3b-results.md.
+    pv = _param_values() if param_values else {}
+    if pv:
+        lines = [f"  {k}: {', '.join(d['values'])}"
+                 for k, d in sorted(pv.items(), key=lambda t: -t[1]["uses"])]
+        vocab += ("\nPARAM VALUES (the actual values these parameters take, most "
+                  "frequent first;\nprefer an exact match from here over a substring "
+                  "guess):\n" + "\n".join(lines) + "\n")
+
+    # Closed-label operators. These are the ONLY legal hook/role arguments, so
+    # they are always listed in full — truncating them would make the operators
+    # unusable rather than merely harder to use.
+    #
+    # Each is annotated with how many faces it actually matches, because the
+    # names badly understate their breadth: `reanimator` sounds like a precise
+    # "graveyard -> battlefield" predicate but matches 1,227 faces (15x the
+    # precise query, and it includes graveyard -> HAND cards). Advertising these
+    # without their selectivity measurably regressed precision — see
+    # eval/consistency/C0-v2-results.md.
+    try:
+        from .recommend import HOOKS
+        from .deck import ROLES
+        sel = _facet_selectivity()
+
+        def _lbl(name):
+            n = sel.get(name)
+            return f"{name} ({n})" if n else name
+        vocab += (
+            "\nSemantic facets. These are BROAD deck-archetype labels, not precise\n"
+            "mechanical predicates; the number after each is how many card faces it\n"
+            "matches out of ~34,600. Use a facet only when the question is itself\n"
+            "archetype-level (\"sac outlets\", \"draw engines\"). For a question that\n"
+            "pins a specific zone, cost, or effect, write the node/chain predicate\n"
+            "instead — a facet will be far too broad.\n"
+            f"Hooks (for {{\"hook\": ...}}): {', '.join(_lbl(h) for h in sorted(HOOKS))}\n"
+            f"Roles (for {{\"role\": ...}}, optional :engine / :one_shot suffix): "
+            f"{', '.join(_lbl(r) for r in sorted(ROLES))}\n")
+    except ImportError:  # pragma: no cover - concept libraries always present
+        pass
     shots = "\n".join(
         f"Q: {q}\nA: {json.dumps(dsl)}" for q, dsl in EXAMPLES)
     return (

@@ -1,0 +1,15 @@
+{"question": "cards that deal damage to each opponent", "sample": 0, "query": {"node": {"api": "DamageAll", "params": {"ValidPlayers": {"icontains": "Opponent"}}}}, "errors": []}
+{"question": "cards that deal damage to each opponent", "sample": 1, "query": {"node": {"api": "DamageAll", "params": {"ValidPlayers": {"icontains": "Opponent"}}}}, "errors": []}
+{"question": "cards that deal damage to each opponent", "sample": 2, "query": {"node": {"api": "DamageAll", "params": {"ValidPlayers": {"icontains": "Opponent"}}}}, "errors": []}
+{"question": "stuff that pings the whole table", "sample": 0, "query": {"node": {"api": "DamageAll", "params": {"ValidPlayers": {"icontains": "Opponent"}}}}, "errors": []}
+{"question": "stuff that pings the whole table", "sample": 1, "query": {"node": {"api": "DealDamage", "params": {"Defined": {"icontains": "Opponent"}}}}, "errors": []}
+{"question": "stuff that pings the whole table", "sample": 2, "query": {"node": {"api": "DamageAll", "params": {"ValidPlayers": {"icontains": "Opponent"}}}}, "errors": []}
+{"question": "damage to each opponent", "sample": 0, "query": {"node": {"api": "DealDamage", "params": {"Defined": {"icontains": "Opponent"}}}}, "errors": []}
+{"question": "damage to each opponent", "sample": 1, "query": {"node": {"api": "DealDamage", "params": {"Defined": {"icontains": "Opponent"}}}}, "errors": []}
+{"question": "damage to each opponent", "sample": 2, "query": {"node": {"api": "DealDamage", "params": {"Defined": {"icontains": "Opponent"}}}}, "errors": []}
+{"question": "I'm building a group-slug deck and I'd like anything that hits every opponent at once with damage. It needs to hit all of them, not just one - targeted burn doesn't help me here. Budget isn't a concern.", "sample": 0, "query": {"node": {"api": "DealDamage", "params": {"Defined": {"icontains": "Opponent"}}}}, "errors": []}
+{"question": "I'm building a group-slug deck and I'd like anything that hits every opponent at once with damage. It needs to hit all of them, not just one - targeted burn doesn't help me here. Budget isn't a concern.", "sample": 1, "query": {"node": {"api": "DealDamage", "params": {"Defined": {"icontains": "Opponent"}}}}, "errors": []}
+{"question": "I'm building a group-slug deck and I'd like anything that hits every opponent at once with damage. It needs to hit all of them, not just one - targeted burn doesn't help me here. Budget isn't a concern.", "sample": 2, "query": {"node": {"api": "DealDamage", "params": {"Defined": {"icontains": "Opponent"}}}}, "errors": []}
+{"question": "spells that burn every other player at the table", "sample": 0, "query": {"node": {"api": "DamageAll", "params": {"ValidPlayers": {"icontains": "Opponent"}}}}, "errors": []}
+{"question": "spells that burn every other player at the table", "sample": 1, "query": {"node": {"api": "DamageAll", "params": {"ValidPlayers": {"icontains": "Opponent"}}}}, "errors": []}
+{"question": "spells that burn every other player at the table", "sample": 2, "query": {"node": {"api": "DamageAll", "params": {"ValidPlayers": {"icontains": "Opponent"}}}}, "errors": []}
