@@ -134,14 +134,24 @@ Each token type has its own **per-token MLP**, not a single linear
 projection: a linear map can only re-weight channels, and "a 2/2 with a
 +1/+1 counter, tapped, lethal damage marked" is a nonlinear fact that
 should exist before attention sees it (ByteRL's per-zone fully connected
-stage is the precedent). Zones share weights and are told apart by a zone
-embedding, so a card is the same object in hand, on the board and in the
-graveyard.
+stage is the precedent).
+
+**Shared identity in, zone-specific MLP out.** The identity input `c'`
+is the same vector wherever the card is, so the net knows it is one card.
+The MLP is **separate per zone** (hand, battlefield, stack, graveyard,
+exile, known library), because the card *means* something different in
+each: Lightning Bolt in hand is a potential 3 damage for R, on the stack
+it is 3 damage committed to a target, in the graveyard it is an instant
+that feeds delirium or a recursion target. One shared MLP with a zone
+flag would have to carry all three meanings in one set of weights, and at
+rungs where a zone never matters it would never learn that zone's
+meaning at all. A card that changes zone is re-embedded by the new
+zone's MLP from the same identity. Six zone branches ≈ 2.4 M params.
 
 ```
-MLP_t(x) = Linear(512 → 256)( GELU( Linear(in → 512)( LN(x) ) ) )      one per token type t
+MLP_z(x) = Linear(512 → 256)( GELU( Linear(in → 512)( LN(x) ) ) )      one per zone z / token type
 
-entity token    = MLP_e [ c'_card | zone emb | fields | operators ]     (d = 256)
+entity token    = MLP_zone [ c'_card | fields | operators ]              (d = 256)
 player token    = MLP_p [ player fields ]
 stack token     = MLP_s [ c'_source | modes | depth embedding ]
 game token      = MLP_g [ globals | D_me | D_opp ]
@@ -199,10 +209,10 @@ tokens are the v7.1 experiment, gated on the LSTM arm.
 |---|---|
 | L4 policy trunk, 6 × (4d² + 8d²) at d 256 | ≈ 4.7 M |
 | L6 value trunk, 4 layers | ≈ 3.1 M |
-| L3 per-token MLPs (5 types), heads, edge bias | ≈ 1.2 M |
+| L3 per-zone / per-type MLPs (≈ 9), heads, edge bias | ≈ 3.0 M |
 | L1 deck context, 2 layers at d_c 128 | ≈ 0.4 M |
 | L0 card embedder | outside the run |
-| **total inside a run** | **≈ 9.4 M** (v6: 0.72 M) |
+| **total inside a run** | **≈ 11 M** (v6: 0.72 M) |
 
 Sequence ≈ 210 tokens at d 256 is trivial on the GPU; the play phase is
 engine-bound (THROUGHPUT-LOCAL.md), so the net is not the cost.
@@ -274,7 +284,7 @@ Read from the architecture figure the user supplied 2026-09-10.
 | ByteRL | what it does | v7 |
 |---|---|---|
 | one `cards embed` for hand, board, deck, graveyard | shared card identity across zones | L0 embedder + L1 context; same object in every zone |
-| `fc×2` per zone after the embed | per-card nonlinearity before the state | L3 per-token MLP, zone-shared weights + zone embedding (zones are unbounded here) |
+| `fc×2` per zone after the embed | per-card nonlinearity before the state, zone-specific | L3 per-zone MLP over a shared identity input (adopted as is; zones are token sets, not fixed slots) |
 | deck / graveyards → `mean` | unbounded zones pooled | deck → L1 transformer + `D`; graveyards stay tokens |
 | hand / board → concatenated slots | bounded at 10 / 7 | tokens with masking; Magic's board is unbounded |
 | `decision type → fc → decision embed` into the state | state knows which decision this is | **added** to the game token |
