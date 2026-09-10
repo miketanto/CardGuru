@@ -1,0 +1,10 @@
+
+=== mirror game 1 — pilot on the play, seed 31 ===
+game 1: loss in 71.5 min (16 turns)
+  decisions: {'llm': 76, 'auto': 145, 'yield': 4, 'result': 1} | searches: {'attackers': 5, 'blockers': 3, 'priority': 55}
+
+=== session ===
+  g1 (play): loss  72 min
+
+standing mirror record: 0W-1L (0%)   [50% is the null — same deck both sides]
+replays + reviews in /home/user/sw/research/data/suite/haiku45_s31/
