@@ -3,6 +3,18 @@
 **New machine? Start here: [docs/getting-started.md](docs/getting-started.md)** —
 clone-to-working-search in four steps (the dataset is rebuilt locally, not shipped).
 
+**Branch layout (consolidated 2026-09-10).** `main` carries everything except the
+LLM-pilot track: the CardGuru search/graph/compiler work and the full RL program
+(Phases 0–12, `rl/`). Read [LEVELSET.md](LEVELSET.md) for what the RL research has
+established and [EXPERIMENTS.md](EXPERIMENTS.md) for the per-experiment registry and
+process-failure ledger. The PokeChamp-style LLM-pilot research lives on
+`build/stackwise-campaign` and is deliberately kept separate (see its
+`docs/learnings.md` and `pokechamp-mtg-agent-research-brief.md`). One known gap on
+`main`: the E3 text-embedding channel's Java gate (`-Drl.e3`) was not ported into the
+v6 encoder because the two disagree on the state layout; its scripts, features and
+verdict (`rl/PHASE-E3.md`) are here, and the Java side remains on
+`claude/cardguru-e3-features-topn0q`.
+
 Feasibility investigation, 2026-08-06. **Both core premises verified with running code; no
 kill criteria fired.**
 

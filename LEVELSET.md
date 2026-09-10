@@ -1,6 +1,6 @@
 # Where the Magic RL Project Actually Stands
 
-*A level-set across all phases (through Phase 12 and the credit-assignment work), 2026-09-08. Synthesized from 144 extracted findings; sources are the `rl/` phase docs on the `claude/v6-network` branch.*
+*A level-set across all phases (through Phase 12 and the credit-assignment work), 2026-09-08. Synthesized from 144 extracted findings; sources are the `rl/` phase docs, now consolidated on `main`.*
 
 ## 1. Thesis
 
