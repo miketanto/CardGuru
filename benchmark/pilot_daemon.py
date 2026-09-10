@@ -44,6 +44,18 @@ SCHEMAS = {
                  '"action": "cast X | play X | activate X | pass"}], '
                  '"attack": "attack_all|attack_none|attack <names>|ask", '
                  '"blocks": "no_block|block <blocker>-><attacker>; ...|ask", '
+                 '"hold": ["<cards deliberately not cast this turn>"], '
+                 '"rules": [{"if": "<event>", "then": "<action>|ask"}]}, '
+                 '"why": "...", "plan": "..."}',
+    # My turn with plan search on: the pilot proposes lines, the engine
+    # simulates them, the pilot scores once. Candidates REPLACE steps/attack.
+    "turn_plan_search": '{"turn_plan": {"candidates": [{"label": "...", '
+                 '"main1": ["cast X", "play Y"], '
+                 '"attack": "attack_all|attack_none|attack <names>", '
+                 '"main2": ["cast Z"]}, <2 or 3 lines that differ in what is '
+                 'committed vs held>], '
+                 '"blocks": "no_block|block <blocker>-><attacker>; ...|ask", '
+                 '"hold": ["<cards deliberately not cast this turn>"], '
                  '"rules": [{"if": "<event>", "then": "<action>|ask"}]}, '
                  '"why": "...", "plan": "..."}',
 }
@@ -166,6 +178,9 @@ def main():
             log({"seq": n, "kind": kind, "response": resp, "source": "batch"})
             return
         schema = SCHEMAS.get(kind, SCHEMAS["priority"])
+        plan_search = kind == "turn_plan" and bool(request.get("plan_search"))
+        if plan_search:
+            schema = SCHEMAS["turn_plan_search"]
         prompt = (f"Decision {n}. Reply with ONLY the JSON response object, "
                   f"schema {schema}. You may add \"yield_until\": \"my_turn\" "
                   f"or \"end_of_turn\" to skip dead windows.\n"
@@ -190,6 +205,18 @@ def main():
             # getAsInt() on a JSON null killed a 69-minute game.
             if resp is None or resp.get(KEY_FOR.get(kind, "choice")) is None:
                 missing = f"the required key for kind '{kind}' (non-null)"
+            elif plan_search and not (
+                    isinstance(resp.get("turn_plan"), dict)
+                    and isinstance(resp["turn_plan"].get("candidates"), list)
+                    and len([c for c in resp["turn_plan"]["candidates"]
+                             if isinstance(c, dict)]) >= 2):
+                # The pilot follows the schema string literally: the first
+                # plan-search game produced eleven plans with steps and no
+                # candidates because the schema never mentioned them.
+                missing = ('"turn_plan.candidates": 2 or 3 candidate lines, '
+                           'each {"label", "main1": [..], "attack", "main2": [..]}, '
+                           'that differ in what is committed vs held — the '
+                           'engine simulates them and you score once')
             elif (kind == "leaf_eval" and isinstance(request.get("leaf_count"), int)
                   and (not isinstance(resp.get("scores"), list)
                        or len(resp["scores"]) < request["leaf_count"])):

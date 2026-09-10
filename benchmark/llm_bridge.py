@@ -359,6 +359,7 @@ class TurnPlanner:
                 "mana_available": request.get("mana_available"),
                 "state": request.get("state"), "stack": request.get("stack"),
                 "menu_now": request.get("options"),
+                "plan_search": bool(self.plan_search and mine),
                 "event_vocabulary": EVENT_VOCAB, "action_vocabulary": ACTION_VOCAB}
         resp = self.escalate(preq)
         plan = (resp or {}).get("turn_plan") if isinstance(resp, dict) else None
