@@ -692,7 +692,35 @@ class Trainer:
         if not self.buf:
             self.completed = []
             return
+        # THROUGHPUT-LOCAL.md §10a: no inference runs while update()
+        # holds the consult lock, so the intra-op thread count may be
+        # raised for its duration and restored on exit. Default 0 leaves
+        # the count alone (unchanged behaviour). The GPU path ignores it
+        # in effect - the Python loop is single-threaded either way.
+        n_upd = getattr(self, "update_threads", 0)
+        prev = torch.get_num_threads()
+        if n_upd and n_upd != prev:
+            torch.set_num_threads(n_upd)
+        try:
+            self._update_body()
+        finally:
+            if n_upd and n_upd != prev:
+                torch.set_num_threads(prev)
+
+    def _update_body(self):
         self._update_t0 = time.time()   # wall clock, reported by _finish_update
+        dump = os.environ.get("RL_DUMP_BUF")
+        if dump and not os.path.exists(dump):
+            # §10b: one real buffer for the offline profiler / thread
+            # check (rl/update_profile.py). Plain tensors, not EntityObs
+            # objects, so the pickle does not depend on __main__.
+            torch.save({"buf": [((b[0].g, b[0].e, b[0].mask, b[0].rel)
+                                 if self.entity else b[0],) + tuple(b[1:])
+                                for b in self.buf],
+                        "completed": list(self.completed),
+                        "dims": self.dims()}, dump)
+            print(f"RLDUMP|{dump}|steps={len(self.buf)}"
+                  f"|episodes={len(self.completed)}", flush=True)
         states = (EntityObs.stack([b[0] for b in self.buf]) if self.entity
                   else torch.stack([b[0] for b in self.buf]))
         cands = torch.stack([b[1] for b in self.buf])
@@ -1273,6 +1301,10 @@ if __name__ == "__main__":
     ap.add_argument("--device", default="cpu", choices=["cpu", "cuda"],
                     help="where the net, optimizer and PPO batch live "
                          "(default cpu = unchanged behaviour)")
+    ap.add_argument("--update-threads", type=int, default=0,
+                    help="torch intra-op threads DURING update() only; "
+                         "restored to the inference count on exit "
+                         "(THROUGHPUT-LOCAL.md §10a; 0 = unchanged)")
     args = ap.parse_args()
     if args.device == "cuda" and not torch.cuda.is_available():
         raise RuntimeError("--device cuda requested but "
@@ -1296,6 +1328,7 @@ if __name__ == "__main__":
                  args.gdim, args.edim, args.emax,
                  len(RTYPES), args.r0, args.oracle)
     _t.frozen = args.frozen
+    _t.update_threads = args.update_threads
     _t.oracle_probe = args.oracle_probe
     _t._ds = open(args.dataset, 'w') if args.dataset else None
     serve(args.port, _t, args.threads)

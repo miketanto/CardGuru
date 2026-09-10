@@ -302,19 +302,6 @@ identical, because a batch of one must equal today's path.
 - The lock-stats `wait_share` conflates update stalls with inference
   contention (§2) and should not be quoted alone.
 
-## 10. Recommendation
-
-1. Run training with `--device cuda` (`R0_SRVEXTRA="--device cuda"` on
-   the lane): 2.3× cheaper update, 3× less host memory, eval-identical.
-2. Next lever is the update, not the game threads: it is 66 % of the
-   window on cuda and runs on one torch thread under the consult lock.
-   Two cheap experiments before any architecture work: raise torch
-   threads for the duration of `update()` on cpu (no inference runs
-   then, so the oversubscription argument for `RL_TORCH_THREADS=1` does
-   not apply), and measure `EPOCHS`/`ep_batch` sensitivity on cuda.
-3. Only then batched inference (§7), which lifts the play phase from
-   190 consults/s and makes conc8+ worth the memory it no longer costs.
-
 ## 9. Gotchas found while running this
 
 - **A discarded conc8 run.** The first conc8 arm was launched twice, 13 s
@@ -335,3 +322,70 @@ identical, because a batch of one must equal today's path.
   for the unmodified server too (§6).
 - Driving WSL from Git Bash: `$VAR` inside `bash -c '...'` was expanded
   by MSYS once here and ran `mkdir` with no operand; scripts only.
+
+## 10. Step 0 — cheap update levers (pre-registered before running)
+
+The cuda arm left the update at 66 % of the window (§7). Before batched
+inference (§11) two levers that change **no algorithm**: same `EPOCHS`,
+`ep_batch`, `tbptt`, `LR`, same loss, same data. Both are bounded to
+half a day of machine time.
+
+### 10.0 Pre-registration
+
+- **Neither lever can move a behaviour counter or a win rate at eval on
+  a fixed checkpoint.** Eval never calls `update()`. If an eval counter
+  differs between a server with and without `--update-threads`, that is
+  a bug.
+- **Neither lever changes what the update computes.** The weights after
+  one update from a fixed buffer and fixed seed must agree across
+  thread counts to within `1e-6` (max |Δ| over all parameters). A
+  larger difference is a float reduction-order effect and is reported
+  as a number, not rounded to "identical".
+- **0a cannot help the cuda arm** (the update runs on the GPU there; the
+  Python loop is the CPU work and is single-threaded by nature). It can
+  only shorten the CPU update. Prediction: conc4 cpu update ms per
+  stored consult falls from 24.3; the play phase (~220 consults/s) does
+  not move because inference threads are restored on exit.
+- **0b changes nothing**; it measures. Verdict criterion written in
+  advance: the update is *launch-bound* if the number of CUDA kernel
+  launches per stored consult is in the hundreds and the top ops by
+  CUDA time are small elementwise/`copy_`/`index` kernels with
+  mean duration well under 20 µs; *compute-bound* if the top ops are
+  GEMM/attention kernels with GPU busy time near the wall time.
+- Throughput rows use the §5 protocol (B0Base/B0Twin v6, budget 256,
+  `R0_EVERY=256`, `R0_EVAL_G=4`, `R0_CP7_G=0`, rows 2–8, seed 0, one
+  run each). n = 1 per arm; the §8 caveats apply unchanged.
+
+### 10a. `--update-threads N`
+
+`policy_server.py`: `--update-threads N` (default 0 = unchanged). On
+entry to `update()` the server calls `torch.set_num_threads(N)` and on
+exit restores the count it found (the inference count,
+`RL_TORCH_THREADS`). No inference runs during `update()` — every
+handler thread is parked on the consult lock — so the oversubscription
+argument for `RL_TORCH_THREADS=1` does not apply inside it.
+
+### 10b. Profile of the cuda update
+
+`rl/update_profile.py` runs one `update()` on a recorded buffer (the
+first update of a lane, dumped by `RL_DUMP_BUF=<path>`) under
+`torch.profiler`, and reports top-10 ops by CUDA time and by CPU time
+plus kernel launches per stored consult. Finding and candidate fix go
+below; **the update is not restructured in this step.**
+
+### 10c. Results
+
+(filled in after the runs)
+
+## 12. Recommendation (written after §7; §10–§11 test items 2 and 3)
+
+1. Run training with `--device cuda` (`R0_SRVEXTRA="--device cuda"` on
+   the lane): 2.3× cheaper update, 3× less host memory, eval-identical.
+2. Next lever is the update, not the game threads: it is 66 % of the
+   window on cuda and runs on one torch thread under the consult lock.
+   Two cheap experiments before any architecture work: raise torch
+   threads for the duration of `update()` on cpu (no inference runs
+   then, so the oversubscription argument for `RL_TORCH_THREADS=1` does
+   not apply), and measure `EPOCHS`/`ep_batch` sensitivity on cuda.
+3. Only then batched inference (§7), which lifts the play phase from
+   190 consults/s and makes conc8+ worth the memory it no longer costs.
