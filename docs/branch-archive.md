@@ -32,3 +32,19 @@ Kept as live branches: `main` (everything above, consolidated) and `build/stackw
 Note on E3: the `-Drl.e3` Java gate was not ported into the v6 encoder (state-layout
 conflict, see README). It lives at `archive/claude/cardguru-e3-features-topn0q` tip
 `a1c491f` — files `rl/xmage-src/{StateEncoder,RLPlayer,EpisodeRunner,RLDriverServer}.java`.
+
+## Deletion (run locally — the remote session's credentials cannot delete refs)
+
+1. GitHub → Settings → Branches: set the default branch to `main`.
+2. Then, from a local clone:
+
+```bash
+git fetch --prune
+# every claude/* branch is merged into main; verify, then delete
+for b in $(git for-each-ref --format='%(refname:short)' refs/remotes/origin | sed 's|origin/||' | grep '^claude/'); do
+  git merge-base --is-ancestor origin/$b origin/main && git push origin --delete "$b"
+done
+```
+
+The guard skips anything not already contained in `main`, so it cannot delete
+unmerged work. `build/stackwise-campaign` is untouched by the pattern.
