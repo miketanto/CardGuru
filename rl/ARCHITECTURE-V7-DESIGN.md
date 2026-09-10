@@ -244,3 +244,5 @@ the card table leaves the JVM entirely.
 5. LSTM kept for v7.0, or history tokens from the start.
 6. Value trunk depth, and whether it shares L3 token builders.
 7. Target episode scale, which sets the engine throughput target.
+
+Published figure: https://claude.ai/code/artifact/65a42516-315d-4ae9-93b8-ef57f6003af0
