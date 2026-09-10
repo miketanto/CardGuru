@@ -1,0 +1,33 @@
+17:32:17 cards=35478 train=31946 heldout=3532 distinct_struct=26324 device=cuda seed=1 text_model=sentence-transformers/all-MiniLM-L6-v2
+17:32:20 params=22923136 steps/epoch=125 total_steps=3750
+17:32:58 epoch=1/30 train_loss=3.6465 train_r@1=0.260 train_r@10=0.670 held_loss=3.3681 held_r@1=0.277 held_r@10=0.676 38s
+17:33:44 epoch=2/30 train_loss=0.7320 train_r@1=0.529 train_r@10=0.881 held_loss=1.8543 held_r@1=0.561 held_r@10=0.894 43s
+17:34:20 epoch=3/30 train_loss=0.4304 train_r@1=0.588 train_r@10=0.912 held_loss=1.5583 held_r@1=0.623 held_r@10=0.920 36s
+17:34:52 epoch=4/30 train_loss=0.3440 train_r@1=0.630 train_r@10=0.936 held_loss=1.3777 held_r@1=0.659 held_r@10=0.934 32s
+17:35:25 epoch=5/30 train_loss=0.2938 train_r@1=0.650 train_r@10=0.943 held_loss=1.3155 held_r@1=0.666 held_r@10=0.937 32s
+17:35:57 epoch=6/30 train_loss=0.2672 train_r@1=0.656 train_r@10=0.945 held_loss=1.2779 held_r@1=0.674 held_r@10=0.940 32s
+17:36:41 epoch=7/30 train_loss=0.2439 train_r@1=0.668 train_r@10=0.955 held_loss=1.2139 held_r@1=0.679 held_r@10=0.950 44s
+17:37:13 epoch=8/30 train_loss=0.2289 train_r@1=0.688 train_r@10=0.959 held_loss=1.1720 held_r@1=0.693 held_r@10=0.950 32s
+17:37:45 epoch=9/30 train_loss=0.2137 train_r@1=0.699 train_r@10=0.963 held_loss=1.1573 held_r@1=0.697 held_r@10=0.953 32s
+17:38:18 epoch=10/30 train_loss=0.2007 train_r@1=0.700 train_r@10=0.968 held_loss=1.1223 held_r@1=0.707 held_r@10=0.956 32s
+17:39:03 epoch=11/30 train_loss=0.1938 train_r@1=0.710 train_r@10=0.970 held_loss=1.1147 held_r@1=0.709 held_r@10=0.952 45s
+17:39:38 epoch=12/30 train_loss=0.1856 train_r@1=0.722 train_r@10=0.976 held_loss=1.0915 held_r@1=0.716 held_r@10=0.958 34s
+17:40:36 epoch=13/30 train_loss=0.1793 train_r@1=0.723 train_r@10=0.977 held_loss=1.0778 held_r@1=0.716 held_r@10=0.959 58s
+17:41:36 epoch=14/30 train_loss=0.1677 train_r@1=0.731 train_r@10=0.977 held_loss=1.0789 held_r@1=0.720 held_r@10=0.955 59s
+17:42:35 epoch=15/30 train_loss=0.1642 train_r@1=0.737 train_r@10=0.982 held_loss=1.0577 held_r@1=0.721 held_r@10=0.960 59s
+17:43:36 epoch=16/30 train_loss=0.1607 train_r@1=0.737 train_r@10=0.979 held_loss=1.0465 held_r@1=0.726 held_r@10=0.961 60s
+17:44:36 epoch=17/30 train_loss=0.1526 train_r@1=0.749 train_r@10=0.984 held_loss=1.0444 held_r@1=0.723 held_r@10=0.957 60s
+17:45:35 epoch=18/30 train_loss=0.1501 train_r@1=0.751 train_r@10=0.986 held_loss=1.0396 held_r@1=0.727 held_r@10=0.961 59s
+17:46:35 epoch=19/30 train_loss=0.1475 train_r@1=0.751 train_r@10=0.985 held_loss=1.0449 held_r@1=0.729 held_r@10=0.957 59s
+17:47:35 epoch=20/30 train_loss=0.1444 train_r@1=0.760 train_r@10=0.986 held_loss=1.0259 held_r@1=0.733 held_r@10=0.959 60s
+17:48:34 epoch=21/30 train_loss=0.1428 train_r@1=0.763 train_r@10=0.985 held_loss=1.0203 held_r@1=0.732 held_r@10=0.963 60s
+17:49:34 epoch=22/30 train_loss=0.1372 train_r@1=0.764 train_r@10=0.987 held_loss=1.0152 held_r@1=0.737 held_r@10=0.963 59s
+17:50:35 epoch=23/30 train_loss=0.1345 train_r@1=0.769 train_r@10=0.987 held_loss=1.0105 held_r@1=0.738 held_r@10=0.961 61s
+17:51:35 epoch=24/30 train_loss=0.1323 train_r@1=0.769 train_r@10=0.987 held_loss=1.0096 held_r@1=0.740 held_r@10=0.963 59s
+17:52:34 epoch=25/30 train_loss=0.1314 train_r@1=0.773 train_r@10=0.989 held_loss=1.0047 held_r@1=0.736 held_r@10=0.961 59s
+17:53:32 epoch=26/30 train_loss=0.1312 train_r@1=0.774 train_r@10=0.989 held_loss=1.0021 held_r@1=0.740 held_r@10=0.962 58s
+17:54:30 epoch=27/30 train_loss=0.1312 train_r@1=0.773 train_r@10=0.990 held_loss=1.0025 held_r@1=0.738 held_r@10=0.962 58s
+17:55:30 epoch=28/30 train_loss=0.1293 train_r@1=0.776 train_r@10=0.990 held_loss=1.0012 held_r@1=0.739 held_r@10=0.962 60s
+17:56:30 epoch=29/30 train_loss=0.1254 train_r@1=0.775 train_r@10=0.990 held_loss=1.0004 held_r@1=0.738 held_r@10=0.963 60s
+17:57:29 epoch=30/30 train_loss=0.1266 train_r@1=0.775 train_r@10=0.990 held_loss=1.0004 held_r@1=0.738 held_r@10=0.963 58s
+17:58:04 exported emb_seed1.pt (35478, 128) final={'train': {'r@1': 0.775146484375, 'r@10': 0.98974609375, 'loss': 0.8709723949432373, 'n': 4096}, 'heldout': {'r@1': 0.7383918166160583, 'r@10': 0.9626274108886719, 'loss': 1.0003786087036133, 'n': 3532}}

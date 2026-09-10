@@ -67,7 +67,7 @@ held-out 0.735, r@10 0.987 / 0.966 (4,096-card pools). Gates from
 | G2 Spell Snare / Force Spike cos | ≤ 0.848, Spike ∉ Snare top-10 | 0.957, in top-10: True | | **FAIL** |
 | G2 functional reprints in top-3 | all 10 | 10 / 10 | | pass |
 | G2 P8 swap pairs cos | min ≥ μ+2σ = 0.502, mean ≥ μ+4σ = 0.874 | min 0.479, mean 0.790 (random μ 0.130 σ 0.186) | | **FAIL** |
-| G3 determinism | | seed 1 still training at readout time | | — |
+| G3 seed 0 vs 1 top-10 Jaccard | ≥ 0.4, same G2 verdicts | 0.479, identical: True (added 18:03 when seed 1 finished) | | pass |
 | **card_emb_v1 overall** | all of the above | | | **FAIL** |
 
 Diagnosis (a property of the objective, not of training length): Spell
