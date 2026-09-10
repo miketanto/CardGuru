@@ -1,0 +1,2 @@
+P10MATCH|pilot=sweep|deck=P7cSweepControl.dck|games=200|pilot_vs_champ=0.3250|draws=0|stalls=0|turns=21.8|blocks=678|blockOpps=678|d0_pilot_baseline=0.1400|champ_vs_d0_sweep=0.8600
+P10MATCH|pilot=tokens|deck=M3SelesnyaTokens.dck|games=200|pilot_vs_champ=0.4650|draws=0|stalls=0|turns=15.8|blocks=503|blockOpps=565|d0_pilot_baseline=0.4500|champ_vs_d0_tokens=0.5500

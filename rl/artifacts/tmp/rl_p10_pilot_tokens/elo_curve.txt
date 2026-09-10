@@ -1,0 +1,3 @@
+P10ELO|pilot=tokens|trained=0|wr=0.0000|elo=80|wins=0|draws=0|blocks=0|blockOpps=0|stalls=0|turns=16.6|flashThreats=0|oppTurn=0
+P10ELO|pilot=tokens|trained=2048|wr=0.5100|elo=1007|wins=51|draws=0|blocks=204|blockOpps=204|stalls=0|turns=17.9|flashThreats=0|oppTurn=0
+P10ELO|pilot=tokens|trained=4096|wr=0.5000|elo=1000|wins=50|draws=0|blocks=191|blockOpps=217|stalls=0|turns=16.7|flashThreats=0|oppTurn=0

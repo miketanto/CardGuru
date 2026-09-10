@@ -1,0 +1,34 @@
+#	Phase 10 action 4.4 — scripted opponent rows for the upper-bound
+#	pilot lanes (rl/pilot_lane_p10.sh). Schema: name<TAB>kind<TAB>deck<TAB>elo.
+#
+#	The agent pilots ONE archetype; these rows are the external pressure.
+#	Rows whose deck == the agent's own deck are dropped by the lane (the
+#	agent's own deck is covered by its snapshot mirror rungs).
+#
+#	Elo seeding, so PFSP has a usable ladder from episode 0:
+#	  D0 rows      = the Phase 7c calibration ratings (p7c_curriculum.tsv),
+#	                 D0/BenchDimir = 1000 by definition of the scale.
+#	  D1h rows     = the D0 row + 400*log10(p/(1-p)) where p is the Phase 7c
+#	                 "skill headroom" measurement D1(X) vs D0(X)
+#	                 (/tmp/rl_p7c_pilot/skill_*.txt, 100g each):
+#	                 dimir .62 sweep .53 tokens .48 wweenie .69
+#	                 skies .43 redrush .44 ramp .58.
+#	                 This is why D1h is BELOW D0 on tokens/skies/redrush —
+#	                 the 7c finding that the scripted ladder is
+#	                 BenchDimir-specific, encoded in the pool.
+#	These are seeds for opponent SELECTION only; nothing downstream is
+#	rated against them.
+dimir_D0	heuristic	BenchDimir.dck	1000
+dimir_D1h	searchhold	BenchDimir.dck	1088
+sweep_D0	heuristic	P7cSweepControl.dck	827
+sweep_D1h	searchhold	P7cSweepControl.dck	848
+tokens_D0	heuristic	M3SelesnyaTokens.dck	986
+tokens_D1h	searchhold	M3SelesnyaTokens.dck	972
+wweenie_D0	heuristic	M3WhiteWeenie.dck	1004
+wweenie_D1h	searchhold	M3WhiteWeenie.dck	1142
+skies_D0	heuristic	M3BlueSkies.dck	1084
+skies_D1h	searchhold	M3BlueSkies.dck	1035
+redrush_D0	heuristic	M3RedRush.dck	1130
+redrush_D1h	searchhold	M3RedRush.dck	1088
+ramp_D0	heuristic	M3GreenRamp.dck	1185
+ramp_D1h	searchhold	M3GreenRamp.dck	1241
