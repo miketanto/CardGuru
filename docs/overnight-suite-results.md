@@ -137,6 +137,50 @@ Archived, not counted: `suite/aborted/haiku45_s23_shared_session`,
 `haiku45_s23_jsonnull`, `sonnet5_s23_short_scores`; g10 in `mirror/`
 (sonnet s31, arm f, loss) is tainted by the shared session.
 
+## A/B: search vs leaf memo vs turn plans (Sonnet 5, seed 23, on the play)
+
+Four arms on the same deal, one game each, run 13:07–14:35 UTC. Data in
+`research/data/dp/`. One game per arm: read the speed columns as real
+(they are structural) and the result column as anecdote.
+
+| arm | switch | result | wall | pilot calls | of which searches | pilot time |
+|---|---|---|---|---|---|---|
+| A search (suite baseline) | default | **WIN** T21 | 36 min | 165 | 139 | 35 min |
+| A′ search + leaf memo | `cardguru.leaf_cache=true` (default now) | **WIN** T21 | 52 min | 126 | 89 | 43 min |
+| B pure turn plan | `cardguru.turn_plan=true cardguru.plan_combat_search=false` | loss T30 | 20 min | 89 | 0 (30 plans) | 18 min |
+| B′ plan + combat search | `cardguru.turn_plan=true` | loss T20 | 16 min | 51 | 12 (17 plans) | 16 min |
+
+**Leaf memo (A′).** Did what it was built for on volume — 50 fewer
+searches from the position-keyed hold memo, 643 duplicate leaves folded
+inside requests — but not on time: the pilot wrote twice as much per call
+under the absolute rubric (why 246→448 chars, median output tokens
+337→704), and cross-window hits were 3 because mid-turn leaves were keyed
+on the exact step. Both fixed after the run (combat-bucket key, "two
+sentences" instruction); needs a re-run before it counts.
+
+**Turn plans (B, B′).** Three times fewer calls and half the wall time,
+and the bridge executed every plan faithfully (the per-turn trace shows
+each planned land and cast landing when the menu offered it; B′ ran 180
+windows from 17 plans with 34 escalations). Both games were lost. B's
+plans were written at upkeep before the draw, passed over cards drawn
+afterwards, and chose `attack_none` 11 turns of 15 with nothing
+simulated — fixed in f86ecc3 (plan after the draw, `hold` list plus
+escalate-once for unplanned castables, combat search kept on). B′ curved
+out on plan (Preacher T5, Sheoldred T7, Bat+Preacher T9, Curiosity T11)
+and lost every one of them to MAD's removal while its own removal came
+late; the search arm on the same seed flashed Drowner into their T4
+Mastermind and blocked Sheoldred with Curiosity+token. What the plan
+arms lack is exactly what arm (e) gives the search: a projection of the
+opponent's turn before committing. Their `they_cast:removal → ask` rule
+fires after the spell is already on the stack.
+
+**Next step that follows from this**: plan-scoped search. When the pilot
+writes its plan it names two or three candidate lines; the driver rolls
+each out through the opponent's projected turn (the arm (e) machinery,
+which already exists) and the pilot scores the leaves and picks the plan.
+One extra leaf_eval per turn, the plan gets the foresight the search had,
+and the per-window cost stays at zero. Not built.
+
 ## Observations that cut across pilots
 
 - **Deep-Cavern Bat's leave clause** is the most common rules error
