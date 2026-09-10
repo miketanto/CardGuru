@@ -165,7 +165,7 @@ def run_one(args, g, out_dir, results_path):
                            f"{'play' if start == 'A' else 'draw'}"
                            f"{f', seed {seed}' if seed is not None else ''}. "
                            f"Winner: {'pilot' if winner == 'A' else 'MAD'}.",
-             "--player-a", "Haiku — Dimir (A)",
+             "--player-a", f"{args.model} — Dimir (A)",
              "--player-b", "MAD — Dimir (B)"],
             capture_output=True)
         subprocess.run(
