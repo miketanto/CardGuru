@@ -13,11 +13,18 @@ Three channels (rl/cardemb/data.py) -> e_card in R^{d_c}:
 
 Contrastive pretraining (train_contrastive.py): InfoNCE between the text
 view z_t = norm(P_t(text)) and the structure view z_s = norm(P_s(graph,
-printed)), symmetric, temperature tau.  Cards whose structure view is
-identical (same graph readout and printed fields: Cancel vs Counterspell,
-every vanilla 2/2 for {1}{G}) are positives of each other, not false
-negatives, so the loss is the supervised-contrastive form keyed on the
-structure vector.
+printed)), symmetric, temperature tau.  Two objectives exist:
+
+  v1 `supcon_loss`     cards with an identical structure vector are
+                       positives of each other.  FAILED gate 1d
+                       (V7-VALIDATION.md): it trains Spell Snare and
+                       Force Spike to coincide.
+  v2 `masked_infonce`  the only positive is the same card; identical-
+                       structure cards are masked out of the denominator;
+                       plus `relational_distill`, which keeps the
+                       fine-tuned text view's in-batch cosine matrix close
+                       to the frozen pretrained encoder's, so text-only
+                       distinctions survive.
 
 Inside an RL run e_card is frozen and consumed through one trainable
 Linear(d_c, d_c) adapter (design decision 1); that adapter lives in the
@@ -68,13 +75,22 @@ class CardEmbedder(nn.Module):
         return self.graph_mlp(graph), self.printed_proj(printed)
 
     def forward(self, texts, graph, printed):
-        """Returns (e_card, z_text, z_struct)."""
+        """Returns (e_card, z_text, z_struct, h_text)."""
         ht = self.encode_text(texts)
         hg, hp = self.encode_struct(graph, printed)
         e = self.norm(self.fuse(torch.cat([ht, hg, hp], -1)))
         zt = F.normalize(self.z_text(ht), dim=-1)
         zs = F.normalize(self.z_struct(torch.cat([hg, hp], -1)), dim=-1)
-        return e, zt, zs
+        return e, zt, zs, ht
+
+    @torch.no_grad()
+    def pooled_pretrained(self, texts, max_len=128):
+        """Mean-pooled hidden states of the text encoder as it is NOW; called
+        before any training step it is the frozen pretrained anchor."""
+        dev = next(self.parameters()).device
+        tok = self.tokenizer(texts, padding=True, truncation=True, max_length=max_len,
+                             return_tensors="pt").to(dev)
+        return mean_pool(self.text(**tok).last_hidden_state, tok["attention_mask"])
 
     @torch.no_grad()
     def embed(self, texts, graph, printed):
@@ -90,6 +106,30 @@ def supcon_loss(zt, zs, keys, tau):
         log_prob = lg - torch.logsumexp(lg, dim=1, keepdim=True)
         return -((log_prob * pos).sum(1) / pos.sum(1)).mean()
     return 0.5 * (one_side(logits) + one_side(logits.t()))
+
+
+def masked_infonce(zt, zs, keys, tau):
+    """v2 objective: the only positive of text i is structure i; other cards
+    with an identical structure vector are removed from the denominator
+    (neither positive nor negative), so text-only distinctions between
+    structurally identical cards (Spell Snare / Force Spike) are never
+    trained away.  Symmetric."""
+    logits = zt @ zs.t() / tau
+    same = keys.unsqueeze(0) == keys.unsqueeze(1)
+    eye = torch.eye(len(keys), dtype=torch.bool, device=keys.device)
+    logits = logits.masked_fill(same & ~eye, float("-inf"))
+    tgt = torch.arange(len(keys), device=keys.device)
+    return 0.5 * (F.cross_entropy(logits, tgt) + F.cross_entropy(logits.t(), tgt))
+
+
+def relational_distill(ht, anchor):
+    """Keep the fine-tuned text view's similarity structure close to the frozen
+    pretrained encoder's: MSE between the two in-batch cosine matrices.
+    ht: [B, d_t] fine-tuned text features; anchor: [B, d_a] frozen pooled
+    embeddings of the same cards (normalised or not)."""
+    a = F.normalize(ht, dim=-1)
+    b = F.normalize(anchor, dim=-1)
+    return F.mse_loss(a @ a.t(), b @ b.t())
 
 
 @torch.no_grad()

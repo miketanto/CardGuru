@@ -11,7 +11,7 @@ Held-out cards (split.json, 10 %) never enter the contrastive batches;
 their retrieval numbers are the generalisation readout that 1d's probes
 extend.  Two seeds are expected to be run (1d: determinism gate).
 
-Run (WSL, GPU):
+Run (WSL, GPU) — v2 defaults (--positives same --distill 1.0); v1 was --positives struct --distill 0:
     python3 rl/cardemb/train_contrastive.py --epochs 8 --batch 256 --seed 0
       [--out rl/artifacts/card_emb_v1] [--limit N for smoke tests]
 """
@@ -30,7 +30,7 @@ sys.path.insert(0, HERE)
 REPO = os.path.abspath(os.path.join(HERE, "..", ".."))
 
 import data as D                                   # noqa: E402
-from model import CardEmbedder, supcon_loss, retrieval_at_k   # noqa: E402
+from model import CardEmbedder, supcon_loss, masked_infonce, relational_distill, retrieval_at_k   # noqa: E402
 
 
 def struct_keys(records):
@@ -54,7 +54,7 @@ def evaluate(model, records, keys, batch, device, n_max=4096, seed=0):
     for i in range(0, len(idx), batch):
         b = [records[j] for j in idx[i:i + batch]]
         texts, printed, graph = D.to_tensors(b)
-        _, zt, zs = model(texts, graph.to(device), printed.to(device))
+        _, zt, zs, _ = model(texts, graph.to(device), printed.to(device))
         zts.append(zt)
         zss.append(zs)
     zt, zs = torch.cat(zts), torch.cat(zss)
@@ -65,7 +65,11 @@ def evaluate(model, records, keys, batch, device, n_max=4096, seed=0):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--out", default=os.path.join(REPO, "rl", "artifacts", "card_emb_v1"))
+    ap.add_argument("--out", default=os.path.join(REPO, "rl", "artifacts", "card_emb_v2"))
+    ap.add_argument("--positives", choices=["same", "struct"], default="same",
+                    help="v2: same card only, identical-structure cards masked from the denominator; struct = v1 supcon")
+    ap.add_argument("--distill", type=float, default=1.0,
+                    help="weight of the relational distillation to the frozen pretrained text geometry (0 = off, v1)")
     ap.add_argument("--cards", default=D.CARDS_V1)
     ap.add_argument("--text-model", default="sentence-transformers/all-MiniLM-L6-v2")
     ap.add_argument("--epochs", type=int, default=8)
@@ -122,6 +126,22 @@ def main():
     n_params = sum(p.numel() for p in model.parameters())
     say(f"params={n_params} steps/epoch={steps_per_epoch} total_steps={total}")
 
+    anchor = None
+    if args.distill > 0:
+        apath = os.path.join(args.out, "text_anchor.pt")
+        if os.path.exists(apath):
+            anchor = torch.load(apath)
+        else:
+            model.eval()
+            chunks = []
+            with torch.no_grad(), torch.autocast("cuda", dtype=torch.float16, enabled=(args.device == "cuda")):
+                for i in range(0, len(records), 512):
+                    chunks.append(model.pooled_pretrained([r.text for r in records[i:i + 512]], args.max_len).float().cpu())
+            anchor = torch.cat(chunks)
+            torch.save(anchor, apath)
+            say(f"text anchor computed from the pretrained encoder: {tuple(anchor.shape)}")
+        anchor = anchor.to(args.device)
+
     train_keys = keys_all[[r.id for r in train]]
     held_keys = keys_all[[r.id for r in heldout]]
     step = 0
@@ -129,15 +149,24 @@ def main():
         model.train()
         order = list(range(len(train)))
         random.shuffle(order)
-        t0, run = time.time(), 0.0
+        t0, run, run_c, run_d = time.time(), 0.0, 0.0, 0.0
         for i in range(0, len(order), args.batch):
             bi = order[i:i + args.batch]
             b = [train[j] for j in bi]
             texts, printed, graph = D.to_tensors(b)
             k = torch.tensor([train_keys[j].item() for j in bi], device=args.device)
             with torch.autocast("cuda", dtype=torch.float16, enabled=(args.device == "cuda")):
-                _, zt, zs = model(texts, graph.to(args.device), printed.to(args.device))
-            loss = supcon_loss(zt.float(), zs.float(), k, model.tau)
+                _, zt, zs, ht = model(texts, graph.to(args.device), printed.to(args.device))
+            if args.positives == "same":
+                loss_c = masked_infonce(zt.float(), zs.float(), k, model.tau)
+            else:
+                loss_c = supcon_loss(zt.float(), zs.float(), k, model.tau)
+            loss_d = torch.zeros((), device=args.device)
+            if anchor is not None:
+                ids = torch.tensor([b_.id for b_ in b], device=args.device)
+                loss_d = relational_distill(ht.float(), anchor[ids])
+            loss = loss_c + args.distill * loss_d
+            run_c += loss_c.item(); run_d += loss_d.item()
             opt.zero_grad(set_to_none=True)
             scaler.scale(loss).backward()
             scaler.unscale_(opt)
@@ -150,6 +179,7 @@ def main():
         tr = evaluate(model, train, train_keys, args.batch, args.device, seed=args.seed)
         ho = evaluate(model, heldout, held_keys, args.batch, args.device, seed=args.seed)
         say(f"epoch={epoch + 1}/{args.epochs} train_loss={run / steps_per_epoch:.4f} "
+            f"(infonce={run_c / steps_per_epoch:.4f} distill={run_d / steps_per_epoch:.4f}) "
             f"train_r@1={tr['r@1']:.3f} train_r@10={tr['r@10']:.3f} "
             f"held_loss={ho['loss']:.4f} held_r@1={ho['r@1']:.3f} held_r@10={ho['r@10']:.3f} "
             f"{time.time() - t0:.0f}s")
@@ -173,7 +203,7 @@ def main():
                os.path.join(args.out, f"model{suffix}.pt"))
     final = {"train": tr, "heldout": ho}
     cards_meta = json.load(open(os.path.join(args.cards, "index.json")))
-    json.dump({"version": "card_emb_v1", "cards_version": cards_meta["version"],
+    json.dump({"version": os.path.basename(os.path.normpath(args.out)), "cards_version": cards_meta["version"],
                "cards_pin": cards_meta.get("source_pin"), "n": emb.shape[0], "d_c": emb.shape[1],
                "seed": args.seed, "args": vars(args), "final": final, "split": "split.json",
                "row_i_is": "cards_v1 face id i (index.json names -> id)"},
