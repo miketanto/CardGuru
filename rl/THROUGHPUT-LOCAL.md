@@ -156,3 +156,24 @@ made so that the numbers in this doc are from an unmodified check.
 ## 8. What these numbers do not support
 
 (filled in below)
+
+## 9. Gotchas found while running this
+
+- **A discarded conc8 run.** The first conc8 arm was launched twice, 13 s
+  apart (two `TP_ARM_START` stamps in the two outputs; the second
+  `rm -rf`'d the first's directory). Two lanes then drove one port and
+  one JVM: the driver log shows 3 + 8 + 3 jobs where the lane can only
+  issue 3 + 4 + 3, three of the eight training jobs died in ~1 s when
+  the other lane's `stop_server` killed the policy server under them,
+  and the server counted 320 episodes for a lane budget of 256. Its
+  numbers (0.497 eps/s, 11.2 GB peak, 95.8 % wait share) are
+  contaminated and are not reported. The arm script now holds an
+  `flock` so a second instance refuses to start, and the arm is re-run.
+  The tell for this failure in any lane: `conn: mode=train` lines in
+  `server_all.log` not equal to `CONC × chunks`.
+- `RLLOCK|` wait share is not an inference-contention number while
+  `update()` runs under the consult lock (§5).
+- `entattn_check.py` `R0-NOBIAS` fails at 3.05e-05 on torch 2.7.1 CPU
+  for the unmodified server too (§6).
+- Driving WSL from Git Bash: `$VAR` inside `bash -c '...'` was expanded
+  by MSYS once here and ran `mkdir` with no operand; scripts only.
