@@ -306,6 +306,30 @@ failure; "I tapped out and they resolved a bomb" was.
   on turns 10 and 12 and cast Cut Down on 8), and cost ran ~13 leaves per
   priority request against arm (d)'s ~3, with leaf_eval latency ~1.5×.
 
+- **g8 (fixed), the first valid arm-(e) game** — seed 7, against g7
+  (arm d, same seed, WIN turn 27). Loss on turn 26. Fix verified: 40
+  their-turn searches, 0 projected. The §9 process metrics moved as
+  designed: tap-out main phases **17 → 6**, hellbent turn 9 → 11, own-turn
+  hold:act verdicts 5:27 → 11:14 (16% → 44%), all on the pilot's own leaf
+  scores. Cost: 11.3 leaves/request (max 47) vs 2.9; pilot latency
+  12.0 → 14.8s; wall 38.4 → 44.2 min — about 20%, not the 2.5× the
+  aborted run suggested. Outcome: ahead 20–13 at turn 18 (g7 was 17–16),
+  then 20 → 5 over three turns to Curiosity + Sheoldred while hellbent
+  since turn 11; g7 drew its own Curiosity and won the grind, g8 did not.
+  One game each: the arm did what it was built to do on process, and the
+  result is the draw-dependence this seed has shown in every pairing.
+  Not paralysis — with no cards the tree has no candidates and does not
+  search.
+
+- **Gap found while reviewing blocks (all games):** neither the pilot nor
+  the block search ever considers that an unblocked attacker can become
+  Kaito via ninjutsu. 20 block decisions across g5–g8, zero mentions;
+  `applyBlocksAndResolveCombat` gives the opponent no window between my
+  blocks and damage. This is arm (f) in the block search: after blocks,
+  let the opponent act on the (already reseated) copy — if the sampled
+  hand holds Kaito and `{1}{U}{B}` is open, `getPlayable` offers ninjutsu
+  and the leaf shows a 3/4 hexproof where a 1/1 was. No card names needed.
+
 ## 9. Measurement
 
 Win rate is the headline and the weakest signal: same 60 cards both sides,
