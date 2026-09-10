@@ -174,12 +174,50 @@ arms lack is exactly what arm (e) gives the search: a projection of the
 opponent's turn before committing. Their `they_cast:removal → ask` rule
 fires after the spell is already on the stack.
 
-**Next step that follows from this**: plan-scoped search. When the pilot
-writes its plan it names two or three candidate lines; the driver rolls
-each out through the opponent's projected turn (the arm (e) machinery,
-which already exists) and the pilot scores the leaves and picks the plan.
-One extra leaf_eval per turn, the plan gets the foresight the search had,
-and the per-window cost stays at zero. Not built.
+**Plan-scoped search (C), built and run three times on the same seed.**
+The pilot proposes two or three whole lines for its turn; the driver plays
+each out on reseated copies (my casts, my attack against the engine's
+worst block for me, my postcombat casts, then the opponent's projected
+turn with my instant-speed responses); one leaf_eval scores everything;
+the best line becomes the plan. `cardguru.turn_plan=true` with
+`cardguru.plan_search` on (default).
+
+| run | fix in | result | wall | pilot calls | of which plan searches |
+|---|---|---|---|---|---|
+| C1 | schema carries `candidates` | loss T14 | 13 min | 37 | 6 |
+| C2 | + a hold must come with a reactive rule (`held_cards`) | loss T19 | 16 min | 50 | 8 |
+| C3 | + attack triggers fire in rollouts | loss T22 | 17 min | 61 | 9 |
+
+Each run found the next defect rather than a verdict on the arm:
+
+- C1: the pilot held Drowner on turns 3 and 5 (the search preferred it)
+  and then wrote `otherwise → pass` for their turn, so Mastermind resolved
+  into three open mana. Fixed: the reactive plan request lists the
+  instant-speed cards the own-turn plan held and the daemon rejects a
+  reactive plan with no rule that uses them; `@ it` binds to the spell that
+  fired the rule; stack entries carry card types so an unseen spell still
+  matches `they_cast:creature`.
+- C2: the rule fired (Drowner onto Mastermind on turn 4, the search arm's
+  play) and the pilot led 11–6 on turn 18. Turn 19's attack was scored
+  "us 10 vs 1–4" by both the plan search and the attack search and took
+  the pilot from 9 to 0: Preacher's draw-and-lose-1 and Sheoldred's
+  lose-2-per-draw. **Hand-declared attackers on a simulation copy never
+  fired the attack-declared events, so no "whenever this attacks" trigger
+  resolved in any attack rollout in any arm all night** (f48c8d6 fixes
+  it; the suite's attack searches were all optimistic in the same way).
+- C3: triggers verified in the leaves (life −1, hand +1 on a Preacher
+  attack). Pilot at 13–3 on turn 14 with Sheoldred and Curiosity, both
+  removed on MAD's turn 14; hellbent from turn 15, it never found the last
+  3 damage while MAD's fliers rebuilt. The closing-speed problem again,
+  and the deck's, not the harness's.
+
+Net on this seed: the search arm's win stands on rollouts that were
+optimistic about attack triggers, and the three plan-search runs each
+lost for a different, now-fixed reason. The honest comparison is a fresh
+pair of games per arm on the corrected rollouts, ideally on two seeds.
+
+Cost picture is stable across all plan arms: 37–61 calls and 13–17 min a
+game against 165 calls and 36 min for the search arm.
 
 ## Observations that cut across pilots
 
