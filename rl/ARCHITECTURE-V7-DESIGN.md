@@ -69,9 +69,9 @@ relation bias from the fingerprint's enabler→payoff edges. Outputs:
   card's identity wherever it appears during the game.
 - `D`: pooled deck vector, joins the game token.
 
-Opponent's deck: v1 = known decklist (true at every rung today).
-Principled version = context over revealed cards, growing during the
-game (§6).
+Runs twice: my deck, and the opponent's deck as far as it is known (§8):
+the open decklist, or the archetype posterior's candidate lists when the
+list is closed. The opponent's remaining-deck tokens are its output.
 
 Pretraining: masked-card-in-deck over the decklist corpus. Gate: a linear
 head reads wincon / enabler / answer off `c'_i` against the fingerprint's
@@ -156,6 +156,9 @@ player token    = MLP_p [ player fields ]
 stack token     = MLP_s [ c'_source | modes | depth embedding ]
 game token      = MLP_g [ globals | D_me | D_opp ]
 candidate token = MLP_c [ type embedding | afterstate row ]              + refers_to edges
+opp hand slot   = MLP_oh [ c' if known else unknown vector | origin | age | seen ]        (§8)
+opp remaining   = MLP_od [ c'_opp | count remaining | castable with their open mana ]      (§8)
+opp action      = MLP_oa [ action type | consult age ]                   + refers_to edges  (§8)
 history token   = game token output from consult t−k, + relative-time embedding, k = 1..H
 ```
 
@@ -166,8 +169,8 @@ input fields.
 ### L4. State-graph encoder
 
 One transformer over
-`[game | players | entities | stack | candidates | history]`,
-sequence ≈ 1 + 2 + 96 + 8 + 96 + 8 ≈ 210 tokens. `d` 256, 8 heads, 6
+`[game | players | entities | stack | candidates | opp hand slots | opp remaining deck | opp actions | history]`,
+sequence ≈ 1 + 2 + 96 + 8 + 96 + 7 + 60 + 8 + 8 ≈ 290 tokens. `d` 256, 8 heads, 6
 layers, FFN 1024, pre-LN. Attention bias = learned per-(edge type, head)
 scalar as v6, plus a small edge-feature MLP if a graded relation is ever
 needed. Stack order via `stack_above` edges and the depth embedding.
@@ -269,12 +272,18 @@ the card table leaves the JVM entirely.
 
 1. `d_c` and frozen-plus-adapter vs fine-tuned embedder inside a run.
 2. First pretraining objective: text↔graph contrastive vs masked-card.
-3. Opponent deck: known list (v1) vs revealed-only context.
+3. Opponent deck: open decklist (v1) vs closed list with the archetype
+   posterior from the start (§8).
 4. Pass afterstate in v1, or deferred (needs a simulation harness).
 5. ~~LSTM kept for v7.0, or history tokens from the start.~~ Resolved:
    LSTM in v7.0, history tokens in v7.1 (§7).
 6. Value trunk depth, and whether it shares L3 token builders.
 7. Target episode scale, which sets the engine throughput target.
+8. Belief: descriptive sufficient statistics only (§8, the default), or a
+   learned hidden-card head trained on self-play labels. The latter
+   contradicts principle 1; revisit only if the faithfulness probe shows
+   the policy cannot recover the obvious posteriors from the remaining-deck
+   tokens.
 
 
 ## 7. Mapping from the ByteRL Hearthstone BT policy (arXiv 2303.05197)
@@ -294,5 +303,41 @@ Read from the architecture figure the user supplied 2026-09-10.
 | `BT embed` is one vector; actions see the state only through it | the single-token bottleneck | not adopted; `refers_to` edges give each candidate its entities' context |
 | (type, target) autoregressive decomposition | conditions the target on the type | not needed: joint afterstate candidates + refers_to edges |
 | 24 V100 · ~5,856 CPU cores | scale | the throughput programme (§2) |
+
+## 8. Opponent modelling
+
+The principle is unchanged: **the engine describes what the agent legally
+knows; belief is what the policy computes by attending over that
+evidence.** Most of "belief" has a descriptive sufficient statistic if the
+right things are emitted.
+
+| tier | what the agent knows | tokens |
+|---|---|---|
+| public zones | opponent battlefield, graveyard, exile, stack | entity tokens, as now |
+| **opponent hand, per slot** | each card in their hand is an object with a history: kept from the opening hand, drawn this turn, returned from a public zone (known), revealed (known), tutored | one token per slot: `c'` if known else an unknown-identity vector · origin · age in turns · seen flag |
+| **opponent deck, remaining** | open list: decklist minus every card seen so far, which is exactly the sufficient statistic for the belief over their hand and library. Closed list: seen cards → CardGuru metagame / fingerprint → archetype posterior → candidate lists | one token per distinct remaining card: `c'_opp` · count · **castable with their open mana now** (instant-speed threat as description, not a guess) |
+| **opponent behaviour this game** | their recent decisions: cast X, attacked with Y, declined to block, passed with mana up | opponent-action history tokens with `refers_to` edges into the entities involved |
+
+Behavioural modelling is within-game only. A cross-game opponent
+embedding (league id) would be absent at evaluation against an unknown
+opponent, so the policy is not allowed to depend on one.
+
+**Engine side: a knowledge tracker** in the RL player that consumes game
+events (reveals, zone changes into the hand from public zones, tutors,
+look-at effects, known top of library, face-down objects) and keeps, per
+card id, what the agent legally knows. XMage holds the ground truth, so the
+emitter applies visibility rules and is **gated for leaks** exactly as the
+oracle channel is (`oracle_gate.py` levels 1–2: policy logits invariant to
+hidden information).
+
+**Value trunk** keeps the privileged ground truth (`"oe"`). The policy gets
+the tracked information state only.
+
+**Faithfulness probe additions:** from the tokens, recover the set of known
+opponent cards, the remaining-deck multiset, and the count of opponent
+cards castable at instant speed with their current mana.
+
+**Deliberately not in v1:** a learned hidden-card prediction head (open
+decision 8).
 
 Published figure: https://claude.ai/code/artifact/65a42516-315d-4ae9-93b8-ef57f6003af0
