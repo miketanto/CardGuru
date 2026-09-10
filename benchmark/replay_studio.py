@@ -295,8 +295,20 @@ def event_ids(e):
     return sorted(set(OBJ_ID.findall(e.get("html") or "")))
 
 
+TAGS = re.compile(r"<[^>]+>")
+
+
+def untag(s):
+    return TAGS.sub("", s) if isinstance(s, str) else s
+
+
 def board_of(snap):
-    return {"players": snap.get("players") or {}, "stack": snap.get("stack") or [],
+    stack = []
+    for it in snap.get("stack") or []:
+        it = dict(it)
+        it["rules"] = untag(it.get("rules"))
+        stack.append(it)
+    return {"players": snap.get("players") or {}, "stack": stack,
             "combat": snap.get("combat") or []}
 
 
@@ -491,6 +503,8 @@ def finish_cards(cards, args, out_dir):
     for key, c in cards.items():
         cc = dict(c)
         cc.pop("t", None)
+        if cc.get("rules"):
+            cc["rules"] = [untag(r) for r in cc["rules"]]
         cc["img_small"] = image_candidates(c, "small", args.images_dir, manifest,
                                            args.embed_images, args.image_stub, out_dir)
         cc["img_normal"] = image_candidates(c, "normal", args.images_dir, manifest,

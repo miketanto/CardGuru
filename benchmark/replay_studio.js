@@ -295,6 +295,24 @@ let view = {k: 1, x: 0, y: 0}; // pan/zoom
 let selected = null;
 const CH = 6.9, GAP = 26, ROWH = 30;
 
+// Large trees start folded off the chosen path: fold depth by depth until
+// the visible leaves fit (12 in presentation mode, 24 interactive). The
+// pills say what is hidden; a click unfolds.
+function autoFold(tree, fi) {
+  if (collapsed[fi]) return;
+  const LIMIT = PRESENT ? 12 : 24;
+  const col = new Set();
+  collapsed[fi] = col;
+  const byId = {}; tree.nodes.forEach((n) => byId[n.id] = n);
+  const onPath = new Set();
+  tree.nodes.forEach((n) => { if (n.chosen) { let p = n; while (p) { onPath.add(p.id); p = p.parent != null ? byId[p.parent] : null; } } });
+  const hasKids = (id) => tree.nodes.some((m) => m.parent === id);
+  const leaves = () => visibleNodes(tree, fi).filter((n) => !hasKids(n.id) || n.collapsed).length;
+  const maxDepth = Math.max(...tree.nodes.map((n) => n.depth));
+  for (let d = 1; d <= maxDepth && leaves() > LIMIT; d++) {
+    tree.nodes.forEach((n) => { if (n.depth === d && !onPath.has(n.id) && hasKids(n.id) && n.kind !== 'group') col.add(n.id); });
+  }
+}
 function visibleNodes(tree, fi) {
   const col = collapsed[fi] || new Set();
   const byId = {}; tree.nodes.forEach((n) => byId[n.id] = n);
@@ -352,6 +370,7 @@ function renderTree(f, animate) {
   const tree = f.decision && f.decision.tree;
   $('treehint').hidden = !!tree;
   if (!tree) { g.innerHTML = ''; lastLayout = null; return; }
+  autoFold(tree, cur);
   const {nodes, byId, W, H} = layoutTree(visibleNodes(tree, cur), tree);
   lastLayout = {W, H};
   const chosenPath = new Set();
@@ -387,7 +406,7 @@ function renderTree(f, animate) {
   svg.classList.toggle('anim', !!animate);
   g.querySelectorAll('.node').forEach((el) => {
     const id = +el.dataset.node, n = tree.nodes[id];
-    el.addEventListener('click', (ev) => { ev.stopPropagation(); onNodeClick(n, tree); });
+    el.addEventListener('click', (ev) => { ev.stopPropagation(); if (!dragMoved) onNodeClick(n, tree); });
     el.addEventListener('mousemove', (ev) => showTip(ev, n));
     el.addEventListener('mouseleave', hideTip);
   });
@@ -416,6 +435,7 @@ function showTip(ev, n) {
 function hideTip() { $('tip').classList.remove('on'); }
 
 // pan / zoom
+let dragMoved = false;   // a drag that started on a node is not a click
 function applyView() { $('pz').setAttribute('transform', `translate(${view.x},${view.y}) scale(${view.k})`); }
 function fitTree() {
   const svg = $('tree'); const box = svg.getBoundingClientRect();
@@ -432,8 +452,8 @@ function fitTree() {
     const f = ev.deltaY < 0 ? 1.12 : 1 / 1.12, k2 = Math.max(0.2, Math.min(4, view.k * f));
     view.x = px - (px - view.x) * (k2 / view.k); view.y = py - (py - view.y) * (k2 / view.k); view.k = k2; applyView();
   }, {passive: false});
-  svg.addEventListener('mousedown', (ev) => { drag = {x: ev.clientX, y: ev.clientY, vx: view.x, vy: view.y}; svg.classList.add('drag'); });
-  window.addEventListener('mousemove', (ev) => { if (drag) { view.x = drag.vx + ev.clientX - drag.x; view.y = drag.vy + ev.clientY - drag.y; applyView(); } });
+  svg.addEventListener('mousedown', (ev) => { drag = {x: ev.clientX, y: ev.clientY, vx: view.x, vy: view.y}; dragMoved = false; svg.classList.add('drag'); });
+  window.addEventListener('mousemove', (ev) => { if (drag) { if (Math.abs(ev.clientX - drag.x) + Math.abs(ev.clientY - drag.y) > 4) dragMoved = true; view.x = drag.vx + ev.clientX - drag.x; view.y = drag.vy + ev.clientY - drag.y; applyView(); } });
   window.addEventListener('mouseup', () => { drag = null; svg.classList.remove('drag'); });
   svg.addEventListener('dblclick', fitTree);
 })();
