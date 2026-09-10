@@ -80,9 +80,26 @@ def _selfname_patterns(name):
     return pats
 
 
-def text_of(name, type_line, oracle):
-    """The text channel for one face.  Deterministic; no learned pieces."""
+_REMINDER = re.compile(r"\s*\([^()]*\)")
+
+
+def strip_reminder(t):
+    """Drop parenthetical reminder text ("(You may cast this spell for ...)").
+    v3 data change (V7-VALIDATION.md §1d v2): reminder text dominated the
+    text view of keyword-heavy cards (Sneak, blight) and pulled them away
+    from their mechanical twins."""
+    prev = None
+    while prev != t:
+        prev, t = t, _REMINDER.sub("", t)
+    return t
+
+
+def text_of(name, type_line, oracle, reminder=False):
+    """The text channel for one face.  Deterministic; no learned pieces.
+    reminder=False (v3 default) strips parenthetical reminder text."""
     t = (oracle or "").replace("\\n", " . ").replace("\n", " . ")
+    if not reminder:
+        t = strip_reminder(t)
     for p in _selfname_patterns(name):
         t = re.sub(r"(?<!\w)" + p + r"(?!\w)", "CARDNAME", t)   # \b fails on names ending in '!'
     t = t.replace("CARDNAME's", "CARDNAME's")

@@ -1,4 +1,4 @@
-"""Phase 1d (v7 plan §2): the acceptance file for `card_emb_v1`.
+"""Phase 1d (v7 plan §2): the acceptance file for `card_emb_vN`.
 
 PRE-REGISTERED 2026-09-10 17:15 while seed 0 of train_contrastive.py was
 running and before any of its epoch lines had been read.  Thresholds
@@ -22,8 +22,12 @@ G2  neighbour structure (cosine on e_card, all 35k faces):
       Spell Snare / Force Spike                               cos <= cos(Cancel, Counterspell) - 0.15
                                                               and Force Spike not in Spell Snare's top-10
       functional reprint groups                               every member has another member in its top-3
-      16 P8 swap pairs (PHASE-E3.md G2)                       each cos >= mu + 2 sigma of random pairs,
-                                                              group mean >= mu + 4 sigma
+      16 P8 swap pairs (PHASE-E3.md G2)                       v1/v2: each cos >= mu + 2 sigma of random pairs,
+                                                              group mean >= mu + 4 sigma  (FAILED both; found to
+                                                              be scale-dependent, see V7-VALIDATION.md §1d v2)
+                                                              v3+ (pre-registered 18:10 before v3 existed):
+                                                              >= 14/16 pairs with both directed neighbour ranks
+                                                              <= 500 of 35k, and median directed rank <= 50
 G3  determinism across seeds (emb.pt vs emb_seed1.pt):
       top-10 neighbour Jaccard, mean over 2,000 random cards  >= 0.40
       G2 verdicts identical for both seeds
@@ -56,14 +60,16 @@ SWAP_PAIRS = [
     ("Shoot the Sheriff", "Eliminate"), ("Spell Snare", "Dispel"),
     ("We Say Thee Nay!", "Don't Make a Sound"), ("Spell Pierce", "Stubborn Denial"),
     ("Floodpits Drowner", "Zephyr Sentinel"), ("The Wondrous Wasp", "Plumecreed Escort"),
-    ("Spyglass Siren", "Faerie Seer"), ("Elektra", "Fathom Fleet Cutthroat"),
+    ("Spyglass Siren", "Faerie Seer"), ("Elektra, Daughter of the Hand", "Fathom Fleet Cutthroat"),
     ("Bitter Triumph", "Easy Prey"), ("Shoot the Sheriff", "Cradle to Grave"),
     ("We Say Thee Nay!", "Clash of Wills"), ("Spell Pierce", "Concerted Defense"),
-    ("Spyglass Siren", "Faerie Miscreant"), ("Elektra", "Ravenous Chupacabra"),
+    ("Spyglass Siren", "Faerie Miscreant"), ("Elektra, Daughter of the Hand", "Ravenous Chupacabra"),
 ]
 TH = {"bucket_acc": 0.90, "binary_acc": 0.97, "f1": 0.80, "cancel_cos": 0.85,
       "snare_margin": 0.15, "swap_sigma": 2.0, "swap_group_sigma": 4.0, "jaccard": 0.40,
-      "min_pos_type": 50, "min_pos_kw": 30}
+      "min_pos_type": 50, "min_pos_kw": 30,
+      # v3+ swap gate (pre-registered 2026-09-10 18:10, V7-VALIDATION.md §1d v2): rank-based
+      "swap_rank": 500, "swap_pairs_ok": 14, "swap_median_rank": 50}
 
 
 def lookup(names, name):
@@ -136,17 +142,28 @@ def neighbour_gates(E, names, recs):
     n = En.shape[0]
     rnd = torch.tensor([cos(g.randrange(n), g.randrange(n)) for _ in range(10000)])
     mu, sd = float(rnd.mean()), float(rnd.std())
+    def rank(a, b):
+        s = En @ En[a]
+        s[a] = -2
+        return int((s > s[b]).sum().item()) + 1
+
     pairs = []
     for a, b in SWAP_PAIRS:
         ia, ib = lookup(names, a), lookup(names, b)
-        pairs.append({"pair": f"{a} / {b}", "cos": None if ia is None or ib is None else cos(ia, ib),
-                      "found": ia is not None and ib is not None})
+        found = ia is not None and ib is not None
+        pairs.append({"pair": f"{a} / {b}", "cos": cos(ia, ib) if found else None, "found": found,
+                      "rank_ab": rank(ia, ib) if found else None, "rank_ba": rank(ib, ia) if found else None})
     vals = [p["cos"] for p in pairs if p["cos"] is not None]
+    ranks = [r for p in pairs if p["found"] for r in (p["rank_ab"], p["rank_ba"])]
     out["random_mu"], out["random_sd"] = mu, sd
     out["swap_pairs"] = pairs
     out["swap_min"], out["swap_mean"] = min(vals), float(np.mean(vals))
-    out["pass_swaps"] = (all(p["found"] for p in pairs) and min(vals) >= mu + TH["swap_sigma"] * sd
-                         and float(np.mean(vals)) >= mu + TH["swap_group_sigma"] * sd)
+    out["swap_cos_bar_v1v2"] = (min(vals) >= mu + TH["swap_sigma"] * sd
+                                and float(np.mean(vals)) >= mu + TH["swap_group_sigma"] * sd)   # informational from v3 on
+    out["swap_pairs_within"] = sum(1 for p in pairs if p["found"] and max(p["rank_ab"], p["rank_ba"]) <= TH["swap_rank"])
+    out["swap_median_rank"] = float(np.median(ranks))
+    out["pass_swaps"] = (all(p["found"] for p in pairs) and out["swap_pairs_within"] >= TH["swap_pairs_ok"]
+                         and out["swap_median_rank"] <= TH["swap_median_rank"])
     out["pass"] = out["pass_cancel"] and out["pass_snare"] and out["pass_reprints"] and out["pass_swaps"]
     return out
 
@@ -253,14 +270,16 @@ def main():
     rows.append(f"| G2 Spell Snare / Force Spike cos | ≤ {g2['cancel_counterspell_cos'] - TH['snare_margin']:.3f}, Spike ∉ Snare top-10 | "
                 f"{g2['snare_spike_cos']:.3f}, in top-10: {g2['spike_in_snare_top10']} | | {pf(g2['pass_snare'])} |")
     rows.append(f"| G2 functional reprints in top-3 | all {len(g2['reprints'])} | {sum(r['ok'] for r in g2['reprints'])} / {len(g2['reprints'])} | | {pf(g2['pass_reprints'])} |")
-    rows.append(f"| G2 P8 swap pairs cos | min ≥ μ+2σ = {g2['random_mu'] + 2 * g2['random_sd']:.3f}, mean ≥ μ+4σ = {g2['random_mu'] + 4 * g2['random_sd']:.3f} | "
-                f"min {g2['swap_min']:.3f}, mean {g2['swap_mean']:.3f} (random μ {g2['random_mu']:.3f} σ {g2['random_sd']:.3f}) | | {pf(g2['pass_swaps'])} |")
+    rows.append(f"| G2 P8 swap pairs (rank-based, v3+) | ≥ {TH['swap_pairs_ok']}/16 pairs with both directed ranks ≤ {TH['swap_rank']}; median rank ≤ {TH['swap_median_rank']} | "
+                f"{g2['swap_pairs_within']}/16, median {g2['swap_median_rank']:.0f} | | {pf(g2['pass_swaps'])} |")
+    rows.append(f"| (info) swap pairs cos, old μ+kσ bar | min ≥ {g2['random_mu'] + 2 * g2['random_sd']:.3f}, mean ≥ {g2['random_mu'] + 4 * g2['random_sd']:.3f} | "
+                f"min {g2['swap_min']:.3f}, mean {g2['swap_mean']:.3f} (random μ {g2['random_mu']:.3f} σ {g2['random_sd']:.3f}) | | {'would pass' if g2['swap_cos_bar_v1v2'] else 'would fail'} |")
     g3 = res["G3"]
     if g3.get("pass") is not None:
         rows.append(f"| G3 seed 0 vs 1 top-10 Jaccard | ≥ {TH['jaccard']}, same G2 verdicts | {g3['jaccard10']:.3f}, identical: {g3['verdicts_identical']} | | {pf(g3['pass'])} |")
     else:
         rows.append(f"| G3 determinism | | {g3.get('note')} | | — |")
-    rows.append(f"| **card_emb_v1 overall** | all of the above | | | {pf(res['pass'])} |")
+    rows.append(f"| **{os.path.basename(os.path.normpath(args.art))} overall** | all of the above | | | {pf(res['pass'])} |")
     print("\n".join(rows))
     return 0 if res["pass"] else 1
 
