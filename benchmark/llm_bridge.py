@@ -221,10 +221,18 @@ class TurnPlanner:
     def _snapshot(self, request):
         st = request.get("state") or {}
         a, b = st.get("A") or {}, st.get("B") or {}
+        # they_had_mana lives here, not only in ensure_plan: every
+        # re-snapshot (after an escalation) must carry it, or a board where
+        # they have no untapped land reads as "they just tapped out" at
+        # every window — turn 1 of the first plan-search game escalated
+        # seven windows on exactly that phantom event.
         return {"my_creatures": [c["name"] for c in self._creatures(a)],
                 "enemy_creatures": [c["name"] for c in self._creatures(b)],
                 "life": a.get("life", 20),
-                "stack_seen": tuple(request.get("stack") or [])}
+                "stack_seen": tuple(request.get("stack") or []),
+                "they_had_mana": any(
+                    isinstance(p, dict) and "power" not in p and not p.get("tapped")
+                    for p in b.get("battlefield", []))}
 
     def _spell_class(self, name):
         ref = self.card_ref.get(name) or {}
