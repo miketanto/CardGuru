@@ -1665,8 +1665,7 @@ class InteractiveTestPlayer extends TestPlayer {
                         .declareAttacker(atk.getId(), defenderId, afterAttack, false);
             }
         }
-        afterAttack.checkStateAndTriggered();
-        resolveStack(afterAttack);
+        fireAttackDeclared(afterAttack);
 
         List<List<UUID[]>> responses = enumerateBlockResponses(afterAttack, defenderId);
 
@@ -1789,6 +1788,23 @@ class InteractiveTestPlayer extends TestPlayer {
         leaf.checkStateAndTriggered();
         resolveStack(leaf);
         return reply;
+    }
+
+    /** After declaring attackers on a copy by hand, fire what the real
+     *  DeclareAttackersStep fires — an AttackerDeclaredEvent per attacker and
+     *  DECLARED_ATTACKERS — so "whenever this attacks" triggers resolve on
+     *  the copy. Without it every attack rollout in every arm skipped
+     *  Preacher's draw-and-lose-1 and Sheoldred's lose-2-per-draw, and the
+     *  plan-search game's turn 19 attack was scored "us 10 vs 1-4" for a
+     *  swing that took the pilot from 9 to 0. */
+    private static void fireAttackDeclared(Game sim) {
+        try {
+            sim.getCombat().resumeSelectAttackers(sim);
+        } catch (RuntimeException ignored) {
+            // no attackers declared, or combat not initialised on this copy
+        }
+        sim.checkStateAndTriggered();
+        resolveStack(sim);
     }
 
     /** Resolve the whole stack, applying effects between resolves. */
@@ -2717,8 +2733,7 @@ class InteractiveTestPlayer extends TestPlayer {
         if (!any) {
             return;
         }
-        sim.checkStateAndTriggered();
-        resolveStack(sim);
+        fireAttackDeclared(sim);
         List<UUID[]> worst = new ArrayList<>();
         double worstH = Double.POSITIVE_INFINITY;
         for (List<UUID[]> resp : enumerateBlockResponses(sim, oppId)) {
@@ -2864,8 +2879,7 @@ class InteractiveTestPlayer extends TestPlayer {
                         .declareAttacker(atk.getId(), defenderId, afterAttack, false);
             }
         }
-        afterAttack.checkStateAndTriggered();
-        resolveStack(afterAttack);
+        fireAttackDeclared(afterAttack);
 
         List<ScoredLeaf> leaves = new ArrayList<>();
         int r = 0;
