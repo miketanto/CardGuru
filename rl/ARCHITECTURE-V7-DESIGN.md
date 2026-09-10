@@ -8,9 +8,13 @@ here has been measured.*
 
 1. **Description, not prediction.** The encoder's job is to describe the
    game state faithfully; the policy does the heavy lifting. No auxiliary
-   prediction heads. Faithfulness is checked by *probes that are never
-   trained into the net*: can a small readout recover every input field
-   and every edge from the tokens after the encoder.
+   prediction heads on the policy trunk. Faithfulness is checked by
+   *probes that are never trained into the net*: can a small readout
+   recover every input field and every edge from the tokens after the
+   encoder. **One exception, decided 2026-09-10:** a separate belief
+   module (§8) predicts hidden cards from self-play labels; its outputs
+   are features the policy consumes, and its loss never reaches the
+   policy's parameters.
 2. **Engine describes, policy decides.** Where a fact is computable, the
    engine computes it and emits it as a feature (the joint-block
    afterstates are the precedent that worked). The net is not asked to
@@ -49,13 +53,17 @@ Inputs, three channels concatenated then projected to `d_c` (128):
 | graph fingerprint | CardGuru ability graph: answer classes, effect APIs, triggers, targets, synergy hooks | graph encoder over the ability tree, or the readout vector as v1 |
 | printed fields | MV, colours, types, supertypes, P/T, loyalty | explicit channels, so a linear probe recovers them exactly |
 
-Objective (outside RL): text↔graph contrastive first; masked-card-in-deck
-second (shared with L1). Tokens and unseen cards go through the text
-channel. Gates before use: field recovery by linear probe; Spell Snare /
+Objective (outside RL), **both, and deliberately GPU-intensive**: the
+text encoder is fine-tuned jointly with a graph encoder over the ability
+tree (not a frozen sentence encoder with a linear layer on top) on
+text↔graph contrastive first, then masked-card-in-deck (shared with L1),
+for hours on the local GPU over the 33k-card corpus. Tokens and unseen
+cards go through the text channel. Gates before use: field recovery by linear probe; Spell Snare /
 Force Spike apart, Cancel / Counterspell together, functional reprints
 nearest; same probes on a 10% held-out card set.
 
-Inside a run: frozen, plus one trainable `Linear(d_c -> d_c)` adapter.
+Inside a run: **frozen**, plus one trainable `Linear(d_c -> d_c)` adapter
+(decided; improved across runs, never within one).
 Refit across runs on the aggregate of decklists and dumped game text; a
 new version is a new artifact and every checkpoint records which one it
 was trained against.
@@ -110,7 +118,7 @@ stack depth · **decision-type embedding for this consult** (ByteRL §7) ·
 | target | the entity index (an edge, see below), nothing hand-rolled |
 | attack subset | `CombatMath.AttackOption` as today |
 | block assignment | `CombatMath.Outcome` as today |
-| pass | pass afterstate: what resolves and what the engine would do next (§6, optional in v1) |
+| pass | pass afterstate: what resolves and what the engine would do next — **deferred** (§6), needs a simulation harness |
 
 **Edges** (typed, directed; the index is the wire contract, append only):
 
@@ -189,9 +197,9 @@ replaces the LSTM cell. Inspectable (attention weights over history say
 what the policy looked back at), bounded (H is a buffer), and trained by
 the same PPO gradient through the current consult only.
 
-**v7.0 keeps the LSTMCell on the game token** (ByteRL's placement, which
-worked at scale; value reads the same recurrent state there). History
-tokens are the v7.1 experiment, gated on the LSTM arm.
+**v7 keeps the LSTMCell on the game token** (decided; ByteRL's placement,
+which worked at scale). History tokens are a later experiment, gated on
+the LSTM arm.
 
 ### L6. Heads
 
@@ -200,11 +208,13 @@ tokens are the v7.1 experiment, gated on the LSTM arm.
   `score_k = MLP(d → 64 → 1)(c_k) + ⟨W_a c_k, W_s g⟩`, with `g` the game
   token's output; masked softmax over K. One head for every decision
   type, as today.
-- **Value**: **separate trunk**. A second, smaller copy of L3–L4 over
-  `[game | players | entities | stack]` (no candidates), value head on the
-  game token. Privileged rows (opponent hand, `-Drl.oracle`) enter here
-  and only here, as today's `OracleCritic`. Separate so no value gradient
-  reshapes the policy's features and no privileged bit reaches a logit.
+- **Value**: **separate trunk**, fully isolated: its **own copies of the
+  L3 token builders** and a **4-layer** L4 over
+  `[game | players | entities | stack | opponent tokens]` (no candidates),
+  value head on the game token. Privileged rows (the true opponent hand,
+  `-Drl.oracle`) enter here and only here, as today's `OracleCritic`.
+  Separate so no value gradient reshapes any policy feature and no
+  privileged bit reaches a logit.
 
 ### Parameter budget (estimate)
 
@@ -268,23 +278,18 @@ the card table leaves the JVM entirely.
   counters on a deck whose spells carry value, then win rate against the
   held-out XMage AI.
 
-## 6. Open decisions
+## 6. Decisions (resolved 2026-09-10)
 
-1. `d_c` and frozen-plus-adapter vs fine-tuned embedder inside a run.
-2. First pretraining objective: text↔graph contrastive vs masked-card.
-3. Opponent deck: open decklist (v1) vs closed list with the archetype
-   posterior from the start (§8).
-4. Pass afterstate in v1, or deferred (needs a simulation harness).
-5. ~~LSTM kept for v7.0, or history tokens from the start.~~ Resolved:
-   LSTM in v7.0, history tokens in v7.1 (§7).
-6. Value trunk depth, and whether it shares L3 token builders.
-7. Target episode scale, which sets the engine throughput target.
-8. Belief: descriptive sufficient statistics only (§8, the default), or a
-   learned hidden-card head trained on self-play labels. The latter
-   contradicts principle 1; revisit only if the faithfulness probe shows
-   the policy cannot recover the obvious posteriors from the remaining-deck
-   tokens.
-
+| # | question | decision |
+|---|---|---|
+| 1 | embedder inside a run | **frozen + linear adapter**; improved across runs, never within one |
+| 2 | first pretraining objective | **both, GPU-intensive**: fine-tune the text encoder jointly with a graph encoder; contrastive first, then masked card in deck |
+| 3 | opponent deck | **open decklist in v1**; archetype posterior for closed lists later |
+| 4 | pass afterstate | **deferred** until a simulation harness exists |
+| 5 | memory | **LSTM on the game token**; history tokens later, gated on the LSTM arm |
+| 6 | value trunk | **fully separate**: own token-builder copies, 4 layers (recommendation, recorded pending objection) |
+| 7 | target episode scale | **after the embedder succeeds**; throughput target and league design follow |
+| 8 | belief | **learned hidden-card belief module** on self-play labels, reading the deck-context posterior and (later) the archetype posterior; a separate module whose outputs are policy features, §8a |
 
 ## 7. Mapping from the ByteRL Hearthstone BT policy (arXiv 2303.05197)
 
@@ -337,7 +342,21 @@ the tracked information state only.
 opponent cards, the remaining-deck multiset, and the count of opponent
 cards castable at instant speed with their current mana.
 
-**Deliberately not in v1:** a learned hidden-card prediction head (open
-decision 8).
+### 8a. The belief module (decided 2026-09-10: build it)
+
+A **separate module**, not a head on the policy trunk, so principle 1
+survives with one named exception.
+
+| | |
+|---|---|
+| reads (legal information only) | the opponent's deck-context tokens (L1, open list in v1; the archetype posterior's candidates when the list is closed), the opponent hand-slot tokens, the opponent-action history, the game token |
+| architecture | 2-layer transformer over those tokens, d 256 |
+| outputs | per hand slot: a distribution over the remaining-deck tokens (pointer softmax, slot × card); per remaining card: P(in their hand) and P(next draw) |
+| where the outputs go | attached as **features** to the opponent hand-slot and remaining-deck tokens before the L4 encoder (and to the value trunk's copies) |
+| labels | the engine's ground truth from self-play (`-Drl.oracle` already emits the true hand); cross-entropy per slot, binary per card |
+| training | its own optimiser; **stop-gradient** into the shared token builders, so its loss never reaches a policy parameter |
+| leak gate | unchanged and still required: inputs are legal, labels touch only the belief loss; the policy's logits must be invariant to swapping the true hidden cards |
+| lifecycle | versioned like the embedder; can be refit across runs on the aggregate of self-play games |
+| probe | held-out log-likelihood of the true hand vs the uniform-over-remaining baseline; if it does not beat the baseline the features are noise and are masked out |
 
 Published figure: https://claude.ai/code/artifact/65a42516-315d-4ae9-93b8-ef57f6003af0
