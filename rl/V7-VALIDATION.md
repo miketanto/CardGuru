@@ -88,3 +88,24 @@ relational-distillation term anchors the fine-tuned text view's
 similarity structure to the frozen pretrained encoder's, so text-only
 distinctions survive the fine-tune.
 
+## 0c — decklist corpus `rl/artifacts/decklists_v1` — **GO** (Lane A, 2026-09-10 17:56)
+
+Source: mtgo.com published event decklists, month archives 2026-07 and
+2026-09 (2026-08 was throttled to 0 events on the first pass; its rerun
+is in progress and will be appended as a correction row, not folded in
+silently). Fetch: 607 event pages, 571 fetched, 24 failed after 3
+attempts, 12 pre-existing. Build: `rl/decklists/build_corpus.py`.
+
+| gate | required | measured | result |
+|---|---|---|---|
+| unique constructed lists with every name resolved (strict gate) | ≥ 3,000 | **8,035** (845 held out by event) | **GO** |
+| lists total / unique mainboards | (report) | 13,085 / 8,430 | — |
+| mainboard slots unresolved against `cards_v1` | (report) | 757 / 512,439 = 0.15 % (31 names, all from a set newer than Forge `639f8d98`) | — |
+| formats (unique lists) | (report) | modern 3,027 · pauper 1,336 · legacy 1,152 · standard 1,045 · pioneer 635 · premodern 587 · vintage 465 · duel-commander 108 (excluded from the gate: singleton) · ladder 37 | — |
+
+Consequence (plan §2): masked-card-in-deck (1c) and deck-context
+pretraining (2b) are **in**. What this corpus cannot support: any claim
+about the XMage ladder decks' archetypes (37 of 8,035 lists), or about
+formats the RL decks are not drawn from; it is a pretraining corpus for
+L1, not an evaluation set.
+
