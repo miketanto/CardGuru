@@ -53,10 +53,13 @@ RL|ipc|round_trips=1947|avg_rtt_us=6257.8|ipc_sec_total=12.2
 
 What it shows: the v6 pipeline runs end to end on this machine (driver
 JVM, entattn policy server, 100 games, 3.4 games/s, 6.3 ms IPC round
-trip). What it does not show: a policy. The only entattn checkpoint on
-this machine is a 64-episode smoke-lane net that answers PASS to every
-consult (`agent_actions_per_ep=0.0`), hence 0/100 — a property of that
-checkpoint, not of the pipeline. A trained v6 checkpoint would have to
+trip). What it does not show: a policy. The checkpoint is a 64-episode
+smoke-lane net that never acted (`agent_actions_per_ep=0.0`), hence
+0/100 — a property of that checkpoint, not of the pipeline. A scan of
+every `.pt` on this machine (`rl/artifacts/rung0`, `/tmp/rl_*`) found no
+entattn checkpoint beyond 256 episodes (the throughput runs); the
+2,111-episode rung-0 checkpoints are `lstmattn` (encoder v4/v5) and do
+not fit the v6 wire. A trained v6 checkpoint would have to
 be restored from the cloud artifacts (`rl/restore_artifacts.sh` lists
 none for entattn) or produced by a rung-0 lane run; recorded as a gap.
 
