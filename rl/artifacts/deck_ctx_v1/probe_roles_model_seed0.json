@@ -1,0 +1,32 @@
+{
+ "model": "model_seed0.pt",
+ "n_train": 3022,
+ "n_heldout": 769,
+ "thresholds": {
+  "wincon": 0.85,
+  "answer": 0.8,
+  "enabler": 0.7
+ },
+ "wincon": {
+  "ctx": 0.9819551845342707,
+  "ecard": 0.9964850615114236,
+  "pos": 200,
+  "neg": 569,
+  "pass": true
+ },
+ "answer": {
+  "ctx": 0.9602208525937339,
+  "ecard": 0.9873587570621469,
+  "pos": 120,
+  "neg": 649,
+  "pass": true
+ },
+ "enabler": {
+  "ctx": 0.8143623887492357,
+  "ecard": 0.7201474284937835,
+  "pos": 359,
+  "neg": 410,
+  "pass": true
+ },
+ "pass": true
+}

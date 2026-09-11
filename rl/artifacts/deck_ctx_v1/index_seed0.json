@@ -1,0 +1,39 @@
+{
+ "version": "deck_ctx_v1",
+ "card_emb": "/home/user/CardGuru/rl/artifacts/card_emb_v6/emb.pt",
+ "seed": 0,
+ "args": {
+  "out": "rl/artifacts/deck_ctx_v1",
+  "emb": "/home/user/CardGuru/rl/artifacts/card_emb_v6/emb.pt",
+  "epochs": 20,
+  "batch": 64,
+  "lr": 0.0003,
+  "mask_frac": 0.15,
+  "seed": 0,
+  "device": "cuda",
+  "limit": 0
+ },
+ "n_train": 11376,
+ "n_heldout": 1236,
+ "vocab": 3519,
+ "final": {
+  "train": {
+   "n": 7114,
+   "top1": 0.40694405397807143,
+   "top10": 0.7301096429575485,
+   "freq_top1": 0.024599381501265113,
+   "freq_top10": 0.14070846218723643,
+   "freq_fmt_top1": 0.024599381501265113,
+   "freq_fmt_top10": 0.19820073095305032
+  },
+  "heldout": {
+   "n": 4141,
+   "top1": 0.40714803187635834,
+   "top10": 0.7266360782419705,
+   "freq_top1": 0.020043467761410288,
+   "freq_top10": 0.1289543588505192,
+   "freq_fmt_top1": 0.024873219029219996,
+   "freq_fmt_top10": 0.16421154310553007
+  }
+ }
+}

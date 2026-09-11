@@ -14,3 +14,4 @@ rl/artifacts/*/ckpt_seed*.pt
 rl/artifacts/*/model.pt
 rl/artifacts/*/model_seed*.pt
 rl/artifacts/*/text_anchor.pt
+!rl/artifacts/deck_ctx_v1/model_seed0.pt

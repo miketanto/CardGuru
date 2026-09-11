@@ -363,3 +363,42 @@ construction, swap ≥ 14/16, Snare/Spike apart) held on seed 0.
 Not yet a frozen artifact: the version is accepted only when seed 1's
 G3 row is appended below.
 
+## 1c / 2b — masked-card-in-deck, `rl/artifacts/deck_ctx_v1` (Lane A, 2026-09-10 20:01)
+
+`rl/cardemb/train_masked.py` on `card_emb_v6/emb.pt` (frozen; v6 accepted
+on G1/G2, G3 pending at the time — if G3 fails this row is rerun), corpus
+`decklists_v1` (11,376 train / 1,236 held-out clean lists, held out by
+event), 15 % of distinct cards masked per deck, vocabulary = 3,519 cards
+seen in training lists, 20 epochs, 24 s/epoch.
+
+| gate | baseline | measured (held-out, 4,141 masked slots) | result |
+|---|---|---|---|
+| masked top-1 | most-frequent card 0.020; per-format 0.025 | **0.407** | pass (20× the stronger baseline) |
+| masked top-10 | 0.129; per-format 0.164 | **0.727** | pass |
+| train top-1 / top-10 (7,114 slots) | | 0.407 / 0.730 | no train/held-out gap |
+
+Caveats: the frequency baselines are weak by construction (they are the
+plan's stated comparison, not a strong model); a per-archetype
+nearest-list baseline would be the honest next comparison and is not
+run. Copy counts of masked cards stay visible (design: count is an L1
+feature). Vocabulary restriction means a masked card outside the 3,519
+is never predictable (12.5 % of slots, excluded from n).
+
+## 2c — role probe on c'ᵢ (Lane A, 2026-09-10 20:03)
+
+`rl/deckctx/probe_roles.py` (thresholds pre-registered 17:25, commit
+fcff38a), model `deck_ctx_v1/model_seed0.pt`, probes fit on 3,000 train
+(deck, card) rows, scored on 769 held-out rows:
+
+| label | held-out pos/neg | c'ᵢ probe bal-acc | e_card probe (reference) | identity-init c'ᵢ (2b fallback) | threshold | result |
+|---|---|---|---|---|---|---|
+| wincon | 200/569 | 0.982 | 0.996 | 0.996 | ≥ 0.85 | pass |
+| answer | 120/649 | 0.960 | 0.987 | 0.987 | ≥ 0.80 | pass |
+| enabler | 359/410 | **0.814** | 0.720 | 0.720 | ≥ 0.70 | pass |
+
+What the context adds is the relational label: *enabler* (is this card
+the enabler side of a synergy edge in this deck) rises from 0.72 to
+0.81; the card-intrinsic labels are already in e_card and lose a little
+to the mixing. The held-out row count (769) is small; the enabler
+number's Wilson 95 % interval is roughly ±0.03.
+

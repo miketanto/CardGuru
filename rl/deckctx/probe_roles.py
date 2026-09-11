@@ -69,7 +69,7 @@ def main():
     args = ap.parse_args()
 
     names = X.load_names()
-    emb = X.load_emb(fname=args.emb)
+    emb = torch.load(args.emb).float() if os.path.isabs(args.emb) else X.load_emb(fname=args.emb)
     by_name = X.load_by_name()
     corpus = X.Corpus()
     model = DeckContext(d_c=emb.shape[1]).to(args.device).eval()
