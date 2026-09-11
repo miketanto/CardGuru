@@ -663,3 +663,20 @@ zero-initialised so the untrained encoder is the identity; the probe at
 init establishes the architecture, and must be rerun on the trained net
 at the module defaults (0.99 / 0.95) in Phase 5.
 
+## 4d — heads and memory `rl/v7_heads.py` (Lane C, 2026-09-11 11:20)
+
+Pointer MLP per candidate token + bilinear term with the game token, masked
+softmax; LSTMCell on the game token with the memory path residual on it
+(`game_vec = g + Linear(h)`, zero-initialised, so at init the game vector is
+exactly the encoded game token).
+
+| gate | required | measured (`tests/test_v7_heads.py`) | result |
+|---|---|---|---|
+| logits invariant to padding | exact on real candidates, −∞ on padding | 4 padding candidates + 4 padding entities appended: real logits ≤ 1e-6 from reference, padding −∞, softmax sums to 1 over real | pass |
+| candidate-count probe from the game token | linear readout | 700 generated consults, untrained encoder (architecture at init): R² ≥ 0.9 | pass |
+| memory carries information across consults | planted bit recoverable at t+1 | bit planted on 16 dims of the game token at t, memory path woken (random 0.1); logistic probe on the t+1 game vector ≥ 0.9 (chance 0.52); t+1 vector differs with vs without state | pass |
+
+The two probe gates needed hundreds of consults (a 256-d linear probe on
+42 samples is meaningless); the test generates 700 in memory with
+`wire_fixtures.valid_stream`. Untrained-architecture caveat as 4b/4c.
+
