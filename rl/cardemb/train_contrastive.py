@@ -186,9 +186,12 @@ def main():
                 loss_d = relational_distill(ht.float(), anchor[ids])
             loss_a = torch.zeros((), device=args.device)
             if args.aux > 0 and model.last_rec is not None:
-                r_hat, p_hat = model.last_rec
-                loss_a = (torch.nn.functional.mse_loss(r_hat.float(), graph.to(args.device))
-                          + torch.nn.functional.mse_loss(p_hat.float(), printed.to(args.device)))
+                r_hat, p_hat, t_hat, b_hat = model.last_rec
+                mse = torch.nn.functional.mse_loss
+                loss_a = (mse(r_hat.float(), graph.to(args.device)) + mse(p_hat.float(), printed.to(args.device))
+                          + mse(b_hat.float(), graph.to(args.device)))
+                if anchor is not None:                       # v7: text slice decodes the frozen pretrained embedding
+                    loss_a = loss_a + mse(t_hat.float(), anchor[ids] / anchor[ids].norm(dim=-1, keepdim=True).clamp(min=1e-6))
             loss = loss_c + args.distill * loss_d + args.aux * loss_a
             run_c += loss_c.item(); run_d += loss_d.item(); run_a += loss_a.item()
             opt.zero_grad(set_to_none=True)

@@ -142,6 +142,10 @@ class CardEmbedder(nn.Module):
             # 68-column readout, the printed slice must reproduce the printed fields
             self.rec_readout = nn.Linear(B["tree"], graph_dim)
             self.rec_printed = nn.Linear(B["printed"], printed_dim)
+            # v7: every slice decodes a deterministic target — text slice -> the frozen
+            # pretrained text embedding (seed-independent), bag slice -> the readout
+            self.rec_text = nn.Linear(B["text"], h)
+            self.rec_bag = nn.Linear(B["bag"], graph_dim)
         else:
             self.fuse = nn.Linear(d_t + d_struct, d_c)
             self.norm = nn.LayerNorm(d_c)
@@ -174,7 +178,7 @@ class CardEmbedder(nn.Module):
         hg, hp, htree = hs[:, :d_g], hs[:, d_g:d_g + d_p], hs[:, d_g + d_p:]
         bt, btree, bbag, bp = self.b_text(ht), self.b_tree(htree), self.b_bag(hg), self.b_printed(hp)
         e = torch.cat([bt, btree, bbag, bp], -1)
-        return e, self.rec_readout(btree), self.rec_printed(bp)
+        return e, (self.rec_readout(btree), self.rec_printed(bp), self.rec_text(bt), self.rec_bag(bbag))
 
     def forward(self, texts, graph, printed, trees=None):
         """Returns (e_card, z_text, z_struct, h_text).  With fuse='blocks' the
@@ -182,8 +186,7 @@ class CardEmbedder(nn.Module):
         ht = self.encode_text(texts)
         hs = self.encode_struct(graph, printed, trees)
         if self.fuse_mode == "blocks":
-            e, r_hat, p_hat = self.fuse_blocks(ht, hs)
-            self.last_rec = (r_hat, p_hat)
+            e, self.last_rec = self.fuse_blocks(ht, hs)     # (readout_hat, printed_hat, text_hat, bag_hat)
         else:
             e = self.norm(self.fuse(torch.cat([ht, hs], -1)))
             self.last_rec = None
