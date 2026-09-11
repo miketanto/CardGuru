@@ -139,22 +139,22 @@ Updated in place by the Lane A session; the block in §B is the generic
 starting prompt and stays as written.
 
 ```
-STATE:   - Embedder v1-v7 all FAIL (V7-VALIDATION.md §1d). v6 passed every content gate on
-           both seeds and missed G3 (seed top-10 Jaccard 0.369 < 0.40); v7's fix (decode the
-           frozen embedding) collapsed Snare/Spike. User decision: keep iterating, but
-           literature-grounded. rl/CARDEMB-RESEARCH.md records the sources and the v8 plan.
-         - OVERNIGHT SWEEP running in WSL (hidden wsl.exe, rl/cardemb/sweep.sh): config a =
-           v6 structure + stability recipe (LLRD 0.85, lr-text 2e-5, warmup 0.10, 40 epochs)
-           + 2-seed Procrustes-averaged artifacts (rl/cardemb/average.py); config b = the
-           serialised ability script read by the shared MiniLM (--struct script) + same
-           recipe + averaging. 4 seeds each; G3 measured artifact(0+1) vs artifact(2+3).
-           Results append to rl/artifacts/cardemb_sweep/RESULTS.md ("DONE a", "DONE b",
-           "SWEEP COMPLETE"). Per-config dirs rl/artifacts/cardemb_sweep/{a,b}/ (emb.pt,
-           emb_seed1.pt, gates.json; raw per-seed emb_raw_seedN.pt).
-         - Acceptance is still a row a person writes in V7-VALIDATION.md; the sweep only
-           reports. If a config passes all gates: copy its dir to rl/artifacts/card_emb_v8
-           (README from card_emb_v6/README.md, update version + numbers + the "artifact =
-           mean of two seeds" statement), commit emb.pt + emb_seed1.pt + gates.json.
+STATE:   - EMBEDDER ACCEPTED: rl/artifacts/card_emb_v8 (= overnight sweep config a: v6
+           structure + literature stability recipe + 2-seed Procrustes-averaged artifact).
+           G2 all pass (swap 16/16), G3 0.680, G1 32/33 probes; the one miss
+           (ans_minus_toughness F1 0.725, 33 positives) is a stated deviation accepted by
+           the user 2026-09-11 (V7-VALIDATION.md §1d v8). Consumers record card_emb_v8.
+         - Sweep still running in WSL for the record: config b (serialised script view)
+           seeds done 0-2, seed 3 running; then sweep2.sh runs c (= a + pos-weighted BCE
+           readout) and d (= b + same). Results: rl/artifacts/cardemb_sweep/RESULTS.md.
+           If c or d passes every gate: stage it as card_emb_v9 exactly as v8 was staged
+           (copy emb.pt, emb_seed1.pt, gates.json, split.json, logs; index.json; README
+           from v8 with numbers), retrain deck context (8 min), commit. Drop-in for consumers.
+         - deck_ctx_v1 being RETRAINED on card_emb_v8 (hidden wsl.exe,
+           <scratchpad>/train_masked_v8.sh): rl/artifacts/deck_ctx_v1/masked_runner.log
+           gets "MASKED v8 SEED 0 EXIT k" then "PROBE v8 EXIT k"; probe table in
+           probe_roles_v8.txt. Then: correction rows in V7-VALIDATION.md §1c/2b and §2c,
+           README dependency line -> card_emb_v8, commit model_seed0.pt.
          - Deck tensors for masked training cached: rl/artifacts/deck_ctx_v1/decks_cache.pt
            (12,612 decks, 85 s, gitignored; train_masked.py rebuilds it when the corpus
            changes). train_masked.py smoke-tested end to end.
@@ -176,9 +176,11 @@ DONE:    0b PASS  rl/artifacts/cards_v1 (34,642 faces + 836 tokens, 0 unknown ov
          0c code  rl/decklists/fetch_mtgo.py, build_corpus.py (mtgo.com month
                   archives: 250-450 events/month, ~20 lists/event, cold page = 25 s)
 
-OPEN:    1. in the morning: read rl/artifacts/cardemb_sweep/RESULTS.md (gates tables + per-slice
-            overlap for a and b); write the §1d v8 row(s) in V7-VALIDATION.md; if a config
-            passes, accept as card_emb_v8 (see STATE) -> table
+OPEN:    1. when the deck-context rerun exits: record §1c/2b and §2c correction rows, commit.
+         2. Open the PR v7/lane-a -> main (gh pr create), tag v7-p1 (embedder) and v7-p2
+            (deck context) after the rerun rows are in.
+         3. Sweep b/c/d results as they land (see STATE): record each in V7-VALIDATION.md;
+            v9 only if a config passes every gate. -> table
             into V7-VALIDATION.md §1d (v4); if PASS: move rl/artifacts/card_emb_v1/README.md
             to the passing version with numbers, commit emb.pt (18 MB fp32) + gates.json +
             index.json + emb_seed1.pt (not model.pt/ckpt), and point train_masked.py
