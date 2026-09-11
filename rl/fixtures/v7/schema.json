@@ -1,0 +1,259 @@
+{
+ "$schema": "http://json-schema.org/draft-07/schema#",
+ "title": "WIRE-V7 consult (structural)",
+ "type": "object",
+ "required": [
+  "t",
+  "wire",
+  "g",
+  "e",
+  "r",
+  "c",
+  "v7_game",
+  "v7_players",
+  "v7_ent",
+  "v7_ent_name",
+  "v7_ent_token",
+  "v7_edges",
+  "v7_cand_type",
+  "v7_cand",
+  "v7_cand_refers",
+  "v7_ctr"
+ ],
+ "properties": {
+  "t": {
+   "const": "consult"
+  },
+  "wire": {
+   "const": 7
+  },
+  "g": {
+   "type": "array",
+   "items": {
+    "type": "number"
+   },
+   "minItems": 16,
+   "maxItems": 16
+  },
+  "e": {
+   "type": "array",
+   "items": {
+    "type": "array",
+    "items": {
+     "type": "number"
+    },
+    "minItems": 48,
+    "maxItems": 48
+   },
+   "minItems": 0
+  },
+  "r": {
+   "type": "array",
+   "items": {
+    "type": "array",
+    "items": {
+     "type": "integer"
+    },
+    "minItems": 0
+   },
+   "minItems": 0
+  },
+  "c": {
+   "type": "array",
+   "items": {
+    "type": "array",
+    "items": {
+     "type": "number"
+    },
+    "minItems": 94,
+    "maxItems": 94
+   },
+   "minItems": 1
+  },
+  "oe": {
+   "type": "array",
+   "items": {
+    "type": "array",
+    "items": {
+     "type": "number"
+    },
+    "minItems": 0
+   },
+   "minItems": 0
+  },
+  "phi": {
+   "type": "number"
+  },
+  "v7_game": {
+   "type": "array",
+   "items": {
+    "type": "number"
+   },
+   "minItems": 24,
+   "maxItems": 24
+  },
+  "v7_players": {
+   "type": "array",
+   "items": {
+    "type": "array",
+    "items": {
+     "type": "number"
+    },
+    "minItems": 16,
+    "maxItems": 16
+   },
+   "minItems": 2,
+   "maxItems": 2
+  },
+  "v7_ent": {
+   "type": "array",
+   "items": {
+    "type": "array",
+    "items": {
+     "type": "number"
+    },
+    "minItems": 64,
+    "maxItems": 64
+   },
+   "minItems": 0
+  },
+  "v7_ent_name": {
+   "type": "array",
+   "items": {
+    "type": "string"
+   },
+   "minItems": 0
+  },
+  "v7_ent_token": {
+   "type": "array",
+   "items": {
+    "enum": [
+     0,
+     1
+    ]
+   },
+   "minItems": 0
+  },
+  "v7_ent_id": {
+   "type": "array",
+   "items": {
+    "type": "integer"
+   },
+   "minItems": 0
+  },
+  "v7_edges": {
+   "type": "array",
+   "items": {
+    "type": "array",
+    "items": {
+     "type": "integer"
+    },
+    "minItems": 3,
+    "maxItems": 3
+   },
+   "minItems": 0
+  },
+  "v7_cand_type": {
+   "type": "array",
+   "items": {
+    "type": "integer",
+    "minimum": 0,
+    "maximum": 7
+   },
+   "minItems": 1
+  },
+  "v7_cand": {
+   "type": "array",
+   "items": {
+    "type": "array",
+    "items": {
+     "type": "number"
+    },
+    "minItems": 40,
+    "maxItems": 40
+   },
+   "minItems": 1
+  },
+  "v7_cand_refers": {
+   "type": "array",
+   "items": {
+    "type": "array",
+    "items": {
+     "type": "integer"
+    },
+    "minItems": 0
+   },
+   "minItems": 1
+  },
+  "v7_opp_hand": {
+   "type": "array",
+   "items": {
+    "type": "array",
+    "items": {
+     "type": "number"
+    },
+    "minItems": 8,
+    "maxItems": 8
+   },
+   "minItems": 0
+  },
+  "v7_opp_hand_name": {
+   "type": "array",
+   "items": {
+    "type": [
+     "string",
+     "null"
+    ]
+   },
+   "minItems": 0
+  },
+  "v7_opp_deck": {
+   "type": "array",
+   "items": {
+    "type": "array",
+    "items": {
+     "type": "number"
+    },
+    "minItems": 6,
+    "maxItems": 6
+   },
+   "minItems": 0
+  },
+  "v7_opp_deck_name": {
+   "type": "array",
+   "items": {
+    "type": "string"
+   },
+   "minItems": 0
+  },
+  "v7_opp_actions": {
+   "type": "array",
+   "items": {
+    "type": "array",
+    "items": {
+     "type": "number"
+    },
+    "minItems": 8,
+    "maxItems": 8
+   },
+   "minItems": 0
+  },
+  "v7_opp_action_refers": {
+   "type": "array",
+   "items": {
+    "type": "array",
+    "items": {
+     "type": "integer"
+    },
+    "minItems": 0
+   },
+   "minItems": 0
+  },
+  "v7_ctr": {
+   "type": "object",
+   "required": [
+    "entityTrunc"
+   ]
+  }
+ }
+}

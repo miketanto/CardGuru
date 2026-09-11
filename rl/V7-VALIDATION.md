@@ -580,3 +580,19 @@ number moved down by 0.044 from the v6-based run; with 769 held-out
 rows that is within the ±0.03 interval stated above plus the change of
 embedder, and it clears the pre-registered 0.70. Phase 2 gates stand.
 
+## 0a — wire contract `rl/WIRE-V7.md`, fixtures, validator (Lane D, 2026-09-11 09:05)
+
+| gate | required | measured | result |
+|---|---|---|---|
+| validator passes on every fixture | all | 7 valid streams (one per decision type; 20 consults + replies each; the last 3 with opponent tokens): 140/140 consults accepted | pass |
+| a deliberately broken fixture is rejected with the field named | each | 14/14 broken streams rejected; each message names the key and position (e.g. `v7_cand_refers[1]: empty for non-PASS candidate (type 2)`, `v7_edges[4]: type 8 >= v7_rtypes 8`) | pass |
+| unit test | | `tests/test_wire_v7.py`: 22 passed | pass |
+
+Files: `rl/WIRE-V7.md` (the contract; v6 keys unchanged, `v7_*` groups
+appended, append-only tables), `rl/wire_validate.py` (structural +
+semantic checks, `--emit-schema`), `rl/wire_fixtures.py` →
+`rl/fixtures/v7/{valid_*,broken_*}.jsonl`, `schema.json`. Consumers:
+Lane B (`encoderV=7` emitter, gate 3a runs the validator on 100 recorded
+consults), Lane C (`V7Obs` parser, gate 4a parses every fixture and
+refuses every broken one).
+
