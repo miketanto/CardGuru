@@ -155,20 +155,31 @@ STATE:   - 0a DONE: rl/WIRE-V7.md (contract), rl/wire_validate.py, rl/wire_fixtu
          - 4e DONE: rl/v7_value.py (separate value trunk; leak gate levels 1-3 pass).
          - 4f DONE: rl/v7_belief.py (belief module; off = bit-identical; stop-gradient; leak).
          - 4g PART 1 DONE: rl/v7_policy.py (V7Policy: one module, save/load with dims record,
-           --frozen), rl/v7_check.py (14 checks, all pass, 65 s). PART 2 OPEN: PPO plumbing in
-           policy_server.py behind --arch v7, p10_init_net.py --arch v7, memory gate.
+           --frozen), rl/v7_check.py (14 checks, all pass, 65 s).
+         - 4g PART 2 DONE (2026-09-11 16:30, V7-VALIDATION.md §4g part 2): policy_server.py
+           --arch v7 (hello/consult/act_v7/_update_v7 BPTT/batcher/--frozen/ckpt with dims +
+           config), rl/v7_deckctx.py (WIRE §5, --deck-ctx), p10_init_net.py --arch v7,
+           update_profile.py --arch v7 (+UPDMEM), consult_cost.py --arch v7,
+           tests/test_v7_server.py (10). v7_check.py: 15 checks, 0 failures, V6-SAME holds.
+           STILL OPEN in 4g: the memory gate and consult_cost on cuda (GPU held by the sweep):
+             python3 rl/update_profile.py threads --arch v7 --synth --steps 5000 --device cuda --threads 1
+             python3 rl/consult_cost.py --arch v7 --device cuda
+           -> append correction rows to §4g part 2; if RSS > 16 GB or cuda OOM, lower --tbptt
+           (32) / --ep-batch (4) and record the knob that fits.
          - 0e DONE with a gap: baseline.md has entattn_check, consult_cost (contaminated) and a
            100-game pipeline smoke; no trained entattn checkpoint exists on this machine.
          - Embedder sweep b/c/d still running for the record (see §C STATE).
          - pytest lives in WSL (~/.local); Windows sklearn is broken (numpy 2) -> run tests in WSL.
 
-NEXT:    4g part 2: policy_server.py --arch v7 (consult path: check_hello_v7 -> parse_consult ->
-         V7Policy.forward with per-connection LSTM state; PPO: buffers of V7Obs + state, BPTT
-         windows, batcher via v7_obs.collate; entattn path untouched — run rl/v7_check.py and
-         rl/entattn_check.py after every edit), p10_init_net.py --arch v7, then the memory gate.
-         Lane B (Java 3a) still not started: map StateEncoder.encodeEntityView / RLPlayer
-         candidate builders / SocketPolicyClient with the graph tools, then emit WIRE-V7 keys
-         behind -Drl.encoderV=7.
+NEXT:    (a) When nvidia-smi shows the GPU idle: the two cuda gates listed under 4g PART 2 above.
+         (b) Phase 3 Lane B (Java 3a, the critical path) on a new branch v7/lane-b: map
+         StateEncoder.encodeEntityView / RLPlayer candidate builders / SocketPolicyClient hello
+         with the graph tools, then the encoderV=7 skeleton emitting the WIRE-V7 keys behind
+         -Drl.encoderV=7; gate 3a = 100 recorded consults pass rl/wire_validate.py, v6 arm
+         byte-identical. The server side is ready to receive it:
+           python3 rl/policy_server.py --arch v7 --ckpt <init from p10_init_net.py --arch v7> --device cuda
+         (c) PR for v7/lane-d when Phase 4 is complete (gh absent: write rl/PR-V7-LANE-D.md
+         like PR-V7-LANE-A.md and give the compare link).
          Lane B (Java 3a) has not started: map StateEncoder.encodeEntityView / RLPlayer
          candidate builders / SocketPolicyClient hello with the graph tools, then the
          encoderV=7 skeleton behind -Drl.encoderV=7 emitting WIRE-V7 keys.

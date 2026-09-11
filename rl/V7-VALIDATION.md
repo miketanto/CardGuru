@@ -729,3 +729,60 @@ Still to do in 4g: the PPO plumbing inside `policy_server.py` behind
 v7`), and the memory gate (`update_profile.py` at 5,000 steps within the
 16 GB cgroup; `consult_cost.py` on an idle GPU).
 
+## 4g (part 2) — `policy_server.py --arch v7`, PPO plumbing (Lane C, 2026-09-11 16:30)
+
+What landed: `--arch v7` in `rl/policy_server.py` (handshake through
+`v7_obs.check_hello_v7`, consults through `parse_consult` → `compact` →
+`V7Policy.forward` with a per-session LSTM state, PPO over buffers of
+`V7Obs` replayed as true-BPTT windows with `--tbptt`/`--ep-batch`, the
+inference batcher, `--frozen` = no optimiser, checkpoints carrying the
+WIRE-V7 dims record + the net's config); `rl/v7_deckctx.py` (WIRE §5
+deck context from `deck_ctx_v1` at hello, `--deck-ctx auto|none|<dir>`);
+`p10_init_net.py --arch v7`; `update_profile.py --arch v7` (+ `UPDMEM`
+peak-RSS line) and `consult_cost.py --arch v7`; `tests/test_v7_server.py`
+(10 tests, in `v7_check.py`).
+
+| gate | required | measured | result |
+|---|---|---|---|
+| handshake | v7 server refuses a v6 hello and a wrong card table; v6 server refuses `wire:7`; reason reaches the driver as `{"ok":0,"err":…}` | `test_handshake_refusals`, `test_server_process_end_to_end` (the real process, two connections) | pass |
+| serving | fixture consults answered in range; LSTM state advances per consult, resets at `end`; broken consult refused with the wire's reason | `test_serve_memory_and_buffer`; eval mode stores nothing | pass |
+| training | `UPDATE_EPISODES` episodes → one PPO update that moves policy/critic/adapter parameters and **not** the belief module or the card rows; checkpoint reloads by `Trainer` (dims + config) and by `V7Policy.load`; disagreeing dims record refused | `test_update_moves_policy_not_belief_and_checkpoints` (3 episodes, tbptt 3, ep-batch 2 → several windows and groups) | pass |
+| `--frozen` | no optimiser, nothing stored, nothing written | `test_frozen_has_no_optimiser_and_never_saves` | pass |
+| batcher | a batch of several consults equals one-at-a-time forwards (logits, value, state) to 1e-5 | `test_batcher_matches_sequential` | pass |
+| deck context | D vectors and per-id overrides reach the forward; an override for an id nobody has changes nothing | `test_deck_context_reaches_forward`; `deck_ctx_v1` loads, results cached per list | pass |
+| `RL_DUMP_BUF` | the v7 buffer round-trips for the profiler | `test_dump_buf_round_trips` | pass |
+| v6 untouched | `entattn_check.py` summary identical to `baseline.md` | `v7_check.py`: 15 checks, 0 failures, 78 s (`V6-SAME` 23 checks / 1 known failure, as before) | pass |
+| init checkpoint | `p10_init_net.py --arch v7` mints a Trainer-loadable file | 17,379,335 params (policy-trainable 15,599,621), 87.8 MB, loads by `Trainer` and `V7Policy.load` | pass |
+| memory gate | `update_profile.py` peak RSS within the 16 GB cgroup at 5,000 steps, real size, cuda | **NOT RUN** — GPU held by the embedder sweep. CPU smoke only: 2 encoder / 1 value layer, 176 synthetic steps, tbptt 8, ep-batch 2: 472 ms/step, RSS 1.67 GB | open |
+| consult cost | `consult_cost.py --arch v7 --device cuda` | **NOT RUN** (same reason). CPU smoke, full-size net, 51 tokens: fwd1 32.6 ms, fwd4 16.4 ms/row, parse 0.18 ms, full validation 0.52 ms, json 0.16 ms | open |
+
+Notes and what these numbers cannot support:
+
+- The CPU rows are smoke tests of the code path, not the gate: the gate is
+  the real size on cuda at 5,000 steps, to be run when `nvidia-smi` shows
+  the GPU idle and appended here as a correction row. The 472 ms/step CPU
+  figure is per-step collate + forward + backward at 2 layers and says
+  nothing about the cuda rate.
+- **At init the encoder is an exact identity** (attention output
+  projections and FFN output layers are zero-initialised in `v7_encoder`,
+  by design from 4c): entity, opponent and edge content cannot reach the
+  logits or the value until those weights move. A probe of "does X reach
+  the policy" on an untrained net must first perturb `blk.att.out.weight`
+  (the deck-context test does); a flat early learning curve is not
+  evidence that a channel is dead. Pre-registered accordingly.
+- The privileged v6 `oe` rows go to the critic whenever the driver emits
+  them (no `--oracle` flag on v7: the value trunk is separate by design,
+  4e). The leak gate in `rl/probes/leak.py` is what proves the policy path
+  never reads them; it is re-run under 3d.
+- The belief module is forward-only here (its features attach to the
+  opponent tokens; the PPO optimiser owns none of its parameters). Its
+  training is Phase 6.
+- WIRE validation runs in full on the first 100 consults of every
+  connection (`--v7-validate`), then the cheap parse. That matches gate
+  3a's "100 recorded consults"; a driver bug after consult 100 is caught
+  only by the parse's own shape checks.
+- Buffer entries are compact `V7Obs` (`v7_obs.compact`: int8 edges, uint8
+  refers, v6 lists dropped) — ~15 KB per typical consult, so a 5,000-step
+  buffer is ~75 MB; the memory gate is about the per-window activations,
+  not the buffer.
+

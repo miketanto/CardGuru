@@ -23,7 +23,8 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.abspath(os.path.join(HERE, ".."))
 PY = sys.executable
 TESTS = ["test_wire_v7.py", "test_v7_obs.py", "test_v7_net.py", "test_v7_encoder.py",
-         "test_v7_heads.py", "test_v7_value.py", "test_v7_belief.py", "test_v7_policy.py"]
+         "test_v7_heads.py", "test_v7_value.py", "test_v7_belief.py", "test_v7_policy.py",
+         "test_v7_server.py"]
 
 
 def run(cmd, timeout=1800):

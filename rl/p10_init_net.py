@@ -43,6 +43,10 @@ def main():
     ap.add_argument("--edim", type=int, default=48)
     ap.add_argument("--r0", action="store_true",
                     help="mint the ablation arm's init (relations dropped)")
+    # v7 (--arch v7): the card table named here is what the hello must
+    # name; the belief flag is part of the config the server reloads.
+    ap.add_argument("--card-emb", default="card_emb_v8")
+    ap.add_argument("--no-belief", action="store_true")
     args = ap.parse_args()
 
     if os.path.exists(args.out):
@@ -50,20 +54,29 @@ def main():
         return
     ps = load_policy_server()
     torch.manual_seed(args.seed)
-    net = ps.build_net(args.arch, args.sdim, args.cdim, args.gdim, args.edim,
-                       len(ps.RTYPES))
-    opt = torch.optim.Adam(net.parameters(), lr=ps.LR)
-    # the dims record Trainer._check_ckpt_dims validates on load: without
-    # it the server prints "loading unchecked" and a mismatched arm would
-    # get a whole run before anyone noticed
-    dims = ({"gdim": args.gdim, "edim": args.edim, "cdim": args.cdim,
-             "rtypes": len(ps.RTYPES), "r0": args.r0}
-            if args.arch == "entattn"
-            else {"sdim": args.sdim, "cdim": args.cdim})
+    extra = {}
+    if args.arch == "v7":
+        net = ps.build_net("v7", args.sdim, args.cdim, v7=dict(
+            card_emb=args.card_emb, belief=not args.no_belief))
+        # PPO's parameter set (belief excluded, card rows are a buffer)
+        opt = torch.optim.Adam(net.policy_parameters(), lr=ps.LR)
+        dims = net.dims()               # the WIRE-V7 record
+        extra["config"] = dict(net.config)
+    else:
+        net = ps.build_net(args.arch, args.sdim, args.cdim, args.gdim, args.edim,
+                           len(ps.RTYPES))
+        opt = torch.optim.Adam(net.parameters(), lr=ps.LR)
+        # the dims record Trainer._check_ckpt_dims validates on load: without
+        # it the server prints "loading unchecked" and a mismatched arm would
+        # get a whole run before anyone noticed
+        dims = ({"gdim": args.gdim, "edim": args.edim, "cdim": args.cdim,
+                 "rtypes": len(ps.RTYPES), "r0": args.r0}
+                if args.arch == "entattn"
+                else {"sdim": args.sdim, "cdim": args.cdim})
     tmp = args.out + ".tmp"
     torch.save({"net": net.state_dict(), "opt": opt.state_dict(),
                 "episodes": 0, "updates": 0, "arch": args.arch,
-                "dims": dims}, tmp)
+                "dims": dims, **extra}, tmp)
     os.replace(tmp, args.out)
     n = sum(p.numel() for p in net.parameters())
     print(f"P10INIT|out={args.out}|arch={args.arch}|seed={args.seed}"

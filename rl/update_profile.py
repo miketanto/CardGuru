@@ -33,8 +33,20 @@ CDIM, GDIM, EDIM, EMAX, MAXK = 94, 16, 48, 96, 96
 def make_trainer(args):
     ps.MAX_K = MAXK
     ps.DEVICE = torch.device(args.device)
-    tr = ps.Trainer(None, args.seed, None, cdim=CDIM, arch="entattn",
-                    gdim=GDIM, edim=EDIM, emax=EMAX)
+    if args.arch == "v7":
+        # v7 plan §2 4g memory gate: the assembled policy at its real size
+        # unless --layers/--value-layers shrink it for a CPU smoke run
+        tr = ps.Trainer(None, args.seed, None, arch="v7", card_emb="random")
+        if args.layers or args.value_layers:
+            import v7_policy
+            torch.manual_seed(args.seed)
+            tr.net = v7_policy.V7Policy(random_table=True, layers=args.layers or 6,
+                                        value_layers=args.value_layers or 4).to(tr.device)
+            tr.opt = torch.optim.Adam(tr.net.policy_parameters(), lr=ps.LR)
+        tr.tbptt, tr.ep_batch = args.tbptt, args.ep_batch
+    else:
+        tr = ps.Trainer(None, args.seed, None, cdim=CDIM, arch="entattn",
+                        gdim=GDIM, edim=EDIM, emax=EMAX)
     if args.ckpt:
         data = torch.load(args.ckpt, map_location="cpu", weights_only=False)
         tr.net.load_state_dict(data["net"])
@@ -45,8 +57,73 @@ def make_trainer(args):
 
 def load_buf(path):
     d = torch.load(path, map_location="cpu", weights_only=False)
+    if d.get("arch") == "v7":
+        # the v7 dump holds V7Obs entries as the server stored them
+        return list(d["buf"]), [tuple(c) for c in d["completed"]]
     buf = [(ps.EntityObs(*b[0]),) + tuple(b[1:]) for b in d["buf"]]
     return buf, [tuple(c) for c in d["completed"]]
+
+
+def mem_line():
+    """Peak memory of this process: RSS high-water mark (Linux: KB from
+    getrusage) and the CUDA allocator's peak, in MB. The 4g gate is the
+    RSS against the 16 GB cgroup."""
+    import resource
+    rss = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss / 1024.0
+    cuda = (torch.cuda.max_memory_allocated() / 2 ** 20
+            if torch.cuda.is_available() else 0.0)
+    return f"UPDMEM|rss_max_mb={rss:.0f}|cuda_peak_mb={cuda:.0f}"
+
+
+def synth_buf_v7(seed=0, episodes=32, mean_len=50, ent_max=160, k_max=40,
+                 hand=7, deck=40, acts=8, n_ids=1000):
+    """Random V7Obs of realistic sizes (WIRE-V7.md §2 widths; entities
+    uniform in [20, ent_max], candidates in [2, k_max], opponent tokens as
+    given): the same tuple layout act_v7 stores. Tokens per state run
+    to 3 + ent_max + k_max + hand + deck + acts (~260 at the defaults)."""
+    import v7_obs as V
+    import wire_validate as W
+    g = torch.Generator().manual_seed(seed)
+    D = W.DIMS
+    buf, completed = [], []
+
+    def onehot_rows(n, width, start, end):
+        x = torch.rand(n, width, generator=g)
+        x[:, start:end] = 0
+        x[torch.arange(n), start + torch.randint(0, end - start, (n,), generator=g)] = 1.0
+        return x
+
+    for _ in range(episodes):
+        n = int(torch.poisson(torch.tensor([float(mean_len)]), generator=g).item()) + 5
+        start = len(buf)
+        for _t in range(n):
+            N = int(torch.randint(20, ent_max + 1, (1,), generator=g))
+            K = int(torch.randint(2, k_max + 1, (1,), generator=g))
+            T = 3 + N
+            edges = torch.zeros(T, T, dtype=torch.int8)
+            for _e in range(int(torch.randint(0, 3 * N, (1,), generator=g))):
+                s, d_ = torch.randint(0, T, (2,), generator=g)
+                edges[s, d_] = int(torch.randint(1, W.RTYPES + 1, (1,), generator=g))
+            refers = torch.zeros(K, T, dtype=torch.uint8)
+            refers[torch.arange(K), torch.randint(0, T, (K,), generator=g)] = 1
+            oar = torch.zeros(acts, T, dtype=torch.uint8)
+            oar[torch.arange(acts), torch.randint(0, T, (acts,), generator=g)] = 1
+            obs = V.V7Obs(
+                game=torch.rand(D["game"], generator=g), players=torch.rand(2, D["player"], generator=g),
+                ent=onehot_rows(N, D["ent"], 0, W.ZONES), ent_id=torch.randint(-1, n_ids, (N,), generator=g),
+                ent_name=[""] * N, edges=edges,
+                cand_type=torch.randint(0, W.CTYPES, (K,), generator=g), cand=torch.rand(K, D["cand"], generator=g),
+                refers=refers, opp_hand=torch.rand(hand, D["opp_hand"], generator=g),
+                opp_hand_id=torch.full((hand,), -1, dtype=torch.long),
+                opp_deck=torch.rand(deck, D["opp_deck"], generator=g),
+                opp_deck_id=torch.randint(0, n_ids, (deck,), generator=g),
+                opp_act=torch.rand(acts, D["opp_action"], generator=g), opp_act_refers=oar)
+            a = int(torch.randint(0, K, (1,), generator=g))
+            buf.append((obs, a, -float(torch.log(torch.tensor(float(K)))),
+                        float(torch.randn(1, generator=g)) * 0.1, 0.0, [], None))
+        reward = 1.0 if int(torch.randint(0, 2, (1,), generator=g)) else -1.0
+        completed.append((start, len(buf), reward))
+    return buf, completed
 
 
 def synth_buf(seed=0, episodes=32, mean_len=50):
@@ -125,6 +202,7 @@ def mode_threads(args, buf, completed):
               f"|max_abs_dw_vs_first={dmax:.3e}"
               f"|threads_restored={'yes' if before == after else 'NO'}",
               flush=True)
+        print(mem_line(), flush=True)
 
 
 def mode_profile(args, buf, completed):
@@ -148,6 +226,7 @@ def mode_profile(args, buf, completed):
     print(f"UPDPROF|buf steps={n} episodes={len(completed)} device={args.device}"
           f"|warmup_s={warm:.2f}|profiled_s={secs:.2f}"
           f"|ms_per_step={1000 * secs / n:.2f}", flush=True)
+    print(mem_line(), flush=True)
     if kern:
         us = sorted((r.self_device_time_total / r.count, r.count)
                     for r in kern)
@@ -185,9 +264,27 @@ def main():
                     help="use only the first K episodes of the buffer "
                          "(profiler traces of a full update do not fit "
                          "in 12 GB)")
+    # v7 (plan §2 4g memory gate): --arch v7 --synth builds V7Obs buffers
+    ap.add_argument("--arch", default="entattn", choices=["entattn", "v7"])
+    ap.add_argument("--steps", type=int, default=0,
+                    help="v7 --synth: total steps to generate (episodes "
+                         "of --mean-len); 0 = 32 episodes")
+    ap.add_argument("--mean-len", type=int, default=50)
+    ap.add_argument("--ent-max", type=int, default=160)
+    ap.add_argument("--tbptt", type=int, default=32)
+    ap.add_argument("--ep-batch", type=int, default=4)
+    ap.add_argument("--layers", type=int, default=0, help="v7: encoder layers (0 = 6)")
+    ap.add_argument("--value-layers", type=int, default=0, help="v7: value trunk layers (0 = 4)")
     args = ap.parse_args()
     if args.buf:
         buf, completed = load_buf(args.buf)
+    elif args.synth and args.arch == "v7":
+        eps = max(1, args.steps // args.mean_len) if args.steps else 32
+        buf, completed = synth_buf_v7(args.seed, episodes=eps, mean_len=args.mean_len,
+                                      ent_max=args.ent_max)
+        if args.steps:
+            completed = [c for c in completed if c[1] <= args.steps]
+            buf = buf[:completed[-1][1]]
     elif args.synth:
         buf, completed = synth_buf(args.seed)
     else:

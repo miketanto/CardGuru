@@ -85,7 +85,9 @@ class V7Policy(nn.Module):
         net = cls(card_emb=cfg["card_emb"], d=cfg["d"], layers=cfg["layers"], heads=cfg["heads"],
                   value_layers=cfg["value_layers"], belief=cfg["belief"], frozen=frozen,
                   random_table=(cfg["card_emb"] == "random"))
-        net.load_state_dict(ck["state_dict"])
+        # "state_dict" is this class's own save(); "net" is policy_server.Trainer.save()
+        # (the lane checkpoint, which also carries "opt"/"episodes"/"updates")
+        net.load_state_dict(ck["state_dict"] if "state_dict" in ck else ck["net"])
         return net.to(device)
 
 

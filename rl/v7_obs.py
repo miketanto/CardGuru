@@ -191,6 +191,18 @@ def collate(obs_list, emax=None, kmax=None):
     return out
 
 
+def compact(o):
+    """The buffer form of a V7Obs (policy_server --arch v7): the dense (T, T) edge matrix
+    and the refers multi-hots as 1-byte tensors, the raw v6 lists dropped.  collate()
+    accepts it unchanged (the copies into the padded long/float tensors cast), so the
+    forward is bit-identical; a 160-entity consult shrinks from ~330 KB to ~40 KB."""
+    return V7Obs(game=o.game, players=o.players, ent=o.ent, ent_id=o.ent_id, ent_name=o.ent_name,
+                 edges=o.edges.to(torch.int8), cand_type=o.cand_type, cand=o.cand,
+                 refers=o.refers.to(torch.uint8), opp_hand=o.opp_hand, opp_hand_id=o.opp_hand_id,
+                 opp_deck=o.opp_deck, opp_deck_id=o.opp_deck_id, opp_act=o.opp_act,
+                 opp_act_refers=o.opp_act_refers.to(torch.uint8), ctr=o.ctr, v6={})
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("files", nargs="+")

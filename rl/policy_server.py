@@ -30,6 +30,19 @@ Run: python3 rl/policy_server.py --port 7777 --ckpt /tmp/rl_e0.pt \
         --ckpt /tmp/rl_v6.pt [--r0]        # v6, and its ablation arm
 
 Checked by: python3 rl/entattn_check.py
+
+Encoder v7 (--arch v7, rl/WIRE-V7.md, V7-IMPLEMENTATION-PLAN.md §2 4g):
+the hello carries "wire":7 and the consult the v7_* keys; the server
+parses them with rl/v7_obs.py, runs rl/v7_policy.V7Policy (its own
+critic, LSTM on the game token, belief module) and trains it with the
+same PPO as above, replayed as BPTT windows over V7Obs buffers.
+Deck context (WIRE §5) comes from rl/v7_deckctx.py at hello time.
+Every v7 line is behind `trainer.v7`; e0/attn/lstmattn/entattn are
+untouched (rl/v7_check.py V6-SAME).
+
+     python3 rl/policy_server.py --port 7777 --arch v7 --ckpt /tmp/rl_v7.pt \
+        [--card-emb card_emb_v8] [--no-belief] [--deck-ctx auto|none|<dir>] \
+        [--tbptt 32 --ep-batch 4] [--v7-validate 100]
 """
 import argparse
 import json
@@ -345,8 +358,28 @@ class OracleCritic(nn.Module):
         return self.value_head(self.trunk.state_token(obs)).squeeze(-1)
 
 
+def _v7():
+    """Lazy import of the v7 modules (rl/v7_*.py). Only the v7 path calls
+    this, so the e0..entattn server never loads them."""
+    import sys
+    here = os.path.dirname(os.path.abspath(__file__))
+    if here not in sys.path:
+        sys.path.insert(0, here)
+    import v7_obs
+    import v7_deckctx
+    import v7_policy
+    return v7_obs, v7_deckctx, v7_policy
+
+
+# v7: consults per connection that go through the full WIRE-V7 validator
+# (JSON schema + semantic checks) before the cheap parse takes over.
+# Gate 3a is "100 recorded consults pass rl/wire_validate.py"; the same
+# 100 are checked live on every connection. --v7-validate overrides.
+V7_VALIDATE_N = 100
+
+
 def build_net(arch, sdim, cdim, gdim=GDIM, edim=EDIM,
-              n_rtypes=len(RTYPES)):
+              n_rtypes=len(RTYPES), v7=None):
     if arch == "e0":
         return E0Policy(sdim, cdim)
     if arch == "attn":
@@ -355,6 +388,15 @@ def build_net(arch, sdim, cdim, gdim=GDIM, edim=EDIM,
         return AttnPolicy(sdim, cdim, lstm=True)
     if arch == "entattn":
         return EntityAttnPolicy(gdim, edim, cdim, n_rtypes=n_rtypes)
+    if arch == "v7":
+        # v7 plan §2 4g: the assembled policy is rl/v7_policy.V7Policy;
+        # sdim/cdim/gdim/edim mean nothing to it (the wire carries its own
+        # dims record, checked at the handshake and on checkpoint load).
+        _, _, v7_policy = _v7()
+        kw = dict(v7 or {})
+        card_emb = kw.pop("card_emb", "card_emb_v8")
+        return v7_policy.V7Policy(card_emb=card_emb,
+                                  random_table=(card_emb == "random"), **kw)
     raise ValueError(f"unknown arch {arch}")
 
 
@@ -376,7 +418,9 @@ class Trainer:
     def __init__(self, ckpt, seed, log_path, sdim=SDIM, cdim=CDIM,
                  shape=0.0, phi_scale=2000.0, arch="e0",
                  desperation=0.0, gdim=GDIM, edim=EDIM, emax=EMAX,
-                 n_rtypes=len(RTYPES), r0=False, oracle=False):
+                 n_rtypes=len(RTYPES), r0=False, oracle=False,
+                 card_emb="card_emb_v8", belief=True, frozen=False,
+                 deck_ctx=None):
         torch.manual_seed(seed)
         self.sdim, self.cdim = sdim, cdim
         # v6 state path; unused (and unvalidated) by the v1-v5 arches
@@ -394,7 +438,11 @@ class Trainer:
         # invariant, Ng et al. 1999). shape=0 reproduces Phase 3/4 exactly.
         self.shape, self.phi_scale = shape, phi_scale
         self.arch = arch
-        self.recurrent = arch in ("lstmattn", "entattn")
+        # v7 (plan §2 4g): the assembled V7Policy behind --arch v7. Every
+        # v7-specific branch in this file tests self.v7; the e0..entattn
+        # code is untouched (rl/v7_check.py V6-SAME proves it).
+        self.v7 = (arch == "v7")
+        self.recurrent = arch in ("lstmattn", "entattn", "v7")
         self.hidden = None          # rollout hidden state (recurrent only)
         # C7 emergence: "I can't win now - try something." Training-time
         # sampling temperature scales with how LOSING the value head says
@@ -408,8 +456,42 @@ class Trainer:
         # on CPU. Checkpoints are always written as CPU tensors so every
         # reader (lane, init script, probes) stays device-agnostic.
         self.device = DEVICE
-        self.net = build_net(arch, sdim, cdim, gdim, edim, n_rtypes).to(DEVICE)
-        self.opt = torch.optim.Adam(self.net.parameters(), lr=LR)
+        if self.v7:
+            # The checkpoint's "config" IS the architecture (d, layers,
+            # heads, value_layers, belief): a resumed run rebuilds from it,
+            # and the flags only shape a fresh net. card_emb must agree
+            # (the table rows are the meaning of every identity vector).
+            cfg = {}
+            self._ckpt_data = None
+            if ckpt and os.path.exists(ckpt):
+                self._ckpt_data = torch.load(ckpt, map_location="cpu",
+                                             weights_only=False)
+                cfg = dict(self._ckpt_data.get("config") or {})
+                if cfg.get("card_emb", card_emb) != card_emb:
+                    raise RuntimeError(
+                        f"ckpt card table {cfg['card_emb']} != requested "
+                        f"--card-emb {card_emb}")
+            self.net = build_net(arch, sdim, cdim, v7=dict(
+                card_emb=card_emb, belief=cfg.get("belief", belief),
+                frozen=frozen, d=cfg.get("d", 256),
+                layers=cfg.get("layers", 6), heads=cfg.get("heads", 8),
+                value_layers=cfg.get("value_layers", 4))).to(DEVICE)
+            # PPO owns the builders, encoder, heads, critic and the card
+            # adapter. The belief module trains under its own loss
+            # (Phase 6) and the card table rows are a buffer; --frozen
+            # leaves nothing to own, so there is no optimiser at all.
+            params = self.net.policy_parameters()
+            self.opt = torch.optim.Adam(params, lr=LR) if params else None
+            v7_obs, _, _ = _v7()
+            self.ids = v7_obs.CardIds()
+            self.deck_ctx = deck_ctx        # v7_deckctx.DeckCtx or None
+            self.hello = None               # single-connection sink; Session otherwise
+            self.deck = None
+            self.n_validated = 0
+            self.tbptt, self.ep_batch = 32, 4   # --tbptt / --ep-batch
+        else:
+            self.net = build_net(arch, sdim, cdim, gdim, edim, n_rtypes).to(DEVICE)
+            self.opt = torch.optim.Adam(self.net.parameters(), lr=LR)
         self.ckpt = ckpt
         self.log_path = log_path
         self.frozen = False
@@ -435,14 +517,17 @@ class Trainer:
         if ckpt and os.path.exists(ckpt):
             # load_state_dict copies into the (device) params; Adam's
             # load_state_dict moves its state to the params' device.
-            data = torch.load(ckpt, map_location="cpu", weights_only=False)
+            data = (getattr(self, "_ckpt_data", None)
+                    or torch.load(ckpt, map_location="cpu", weights_only=False))
+            self._ckpt_data = None
             ck_arch = data.get("arch", "e0")
             if ck_arch != arch:
                 raise RuntimeError(
                     f"ckpt arch {ck_arch} != requested {arch}")
             self._check_ckpt_dims(data, ckpt)
             self.net.load_state_dict(data["net"])
-            self.opt.load_state_dict(data["opt"])
+            if self.opt is not None and data.get("opt") is not None:
+                self.opt.load_state_dict(data["opt"])
             self.episodes_seen = data.get("episodes", 0)
             self.updates = data.get("updates", 0)
             if self.oracle_critic is not None and "oracle_critic" in data:
@@ -471,6 +556,8 @@ class Trainer:
         reinterpret them dies here instead of mispredicting for a run.
         emax/max_k are buffers and deliberately absent.
         """
+        if getattr(self, "v7", False):
+            return self.net.dims()      # the WIRE-V7 record (v7_obs.dims_record)
         d = {"sdim": self.sdim, "cdim": self.cdim}
         if self.entity:
             d.update({"gdim": self.gdim, "edim": self.edim,
@@ -676,6 +763,186 @@ class Trainer:
                 a = int(torch.argmax(logits[0]))
             return a
 
+    # ------------------------------------------------------------ v7 path
+    # (plan §2 4g). One consult = one V7Obs. The trajectory buffer holds
+    #     (obs, action, logp, value, phi, oe_rows, deck)
+    # per step: no stored hidden state (BPTT replays each episode through
+    # the live cell, as _update_recurrent does for v6) and no per-step copy
+    # of the deck context (one GameDeck per game, referenced by every step).
+    @staticmethod
+    def _v7_batch(entries, device, n_ids):
+        """Buffer entries -> (collated batch on device, oe_rows or None,
+        ctx, D_me, D_opp) - the keyword set V7Policy.forward takes."""
+        v7_obs, v7_deckctx, _ = _v7()
+        b = v7_obs.collate([e[0] for e in entries])
+        b = {k: v.to(device) for k, v in b.items()}
+        oe = None
+        rows = [e[5] for e in entries]
+        if any(rows):
+            from v7_value import OE_DIM
+            M = max(len(r) for r in rows)
+            t = torch.zeros(len(entries), M, OE_DIM)
+            m = torch.zeros(len(entries), M, dtype=torch.bool)
+            for i, r in enumerate(rows):
+                if r:
+                    t[i, :len(r)] = torch.tensor(r, dtype=torch.float32)[:, :OE_DIM]
+                    m[i, :len(r)] = True
+            oe = (t.to(device), m.to(device))
+        ctx, D_me, D_opp = v7_deckctx.batch_decks([e[6] for e in entries],
+                                                  device, n_ids=n_ids)
+        return b, oe, ctx, D_me, D_opp
+
+    @staticmethod
+    def _v7_forward(net, obs_list, oe_list, deck_list, hin, device, n_ids):
+        """One forward over a list of consults (act, and the batcher)."""
+        entries = [(o, None, None, None, None, oe, dk)
+                   for o, oe, dk in zip(obs_list, oe_list, deck_list)]
+        b, oe, ctx, D_me, D_opp = Trainer._v7_batch(entries, device, n_ids)
+        logits, value, _, state = net(b, hin, oe_rows=oe, ctx=ctx,
+                                      D_me=D_me, D_opp=D_opp)
+        return logits, value, state
+
+    def act_v7(self, msg, sample, phi=0.0, session=None):
+        v7_obs, _, _ = _v7()
+        sink = self if session is None else session
+        if sink.hello is None:
+            raise RuntimeError("v7 consult before hello")
+        validate = sink.n_validated < V7_VALIDATE_N
+        try:
+            obs = v7_obs.parse_consult(msg, self.ids, sink.hello, validate=validate)
+        except ValueError as exc:
+            raise RuntimeError(str(exc)) from None
+        if validate:
+            sink.n_validated += 1
+        obs = v7_obs.compact(obs)
+        # privileged v6 rows ride to the critic only (V7Policy.forward
+        # hands oe_rows to the value trunk and nothing else; 4e leak gate)
+        oe = [list(r) for r in (msg.get("oe") or [])]
+        deck = sink.deck
+        with torch.no_grad():
+            hin = sink.hidden           # None -> the heads' zero state
+            if self.batcher is not None:
+                logits, value, hout = self.batcher.infer(obs, (oe, deck), None, hin)
+            else:
+                logits, value, hout = self._v7_forward(
+                    self.net, [obs], [oe], [deck], hin, self.device, self.ids.n)
+            sink.hidden = hout
+            if sample:
+                lg = logits[0]
+                if self.desperation > 0:
+                    tau = min(2.5, 1.0 + self.desperation
+                              * max(0.0, -float(value[0])))
+                    lg = lg / tau
+                dist = torch.distributions.Categorical(logits=lg)
+                a = int(dist.sample())
+                import math
+                if not self.frozen:     # a frozen probe samples but stores nothing
+                    (self.buf if session is None else session.pending).append(
+                        (obs, a,
+                         float(dist.log_prob(torch.tensor(a, device=lg.device))),
+                         float(value[0]), math.tanh(phi / self.phi_scale),
+                         oe, deck))
+            else:
+                a = int(torch.argmax(logits[0]))
+        return a
+
+    def _update_v7(self):
+        """PPO over V7Obs buffers: GAE exactly as _update_body, then
+        true-BPTT windows exactly as _update_recurrent (episodes batched
+        ep_batch at a time, hidden detached and the window backwarded
+        every tbptt steps), with the batch collated per step from the
+        stored V7Obs. Memory is the per-window activations of ep_batch
+        rows x ~300 tokens x d 256 x tbptt: the 4g memory gate."""
+        self._update_t0 = time.time()
+        dump = os.environ.get("RL_DUMP_BUF")
+        if dump and not os.path.exists(dump):
+            torch.save({"buf": list(self.buf), "completed": list(self.completed),
+                        "dims": self.dims(), "arch": "v7"}, dump)
+            print(f"RLDUMP|{dump}|steps={len(self.buf)}"
+                  f"|episodes={len(self.completed)}", flush=True)
+        n = len(self.buf)
+        actions = torch.tensor([b[1] for b in self.buf])
+        old_logp = torch.tensor([b[2] for b in self.buf])
+        values = torch.tensor([b[3] for b in self.buf])
+        phis = [b[4] for b in self.buf]
+        adv = torch.zeros(n)
+        ret = torch.zeros(n)
+        for start, end, reward in self.completed:
+            gae = 0.0
+            for t in range(end - 1, start - 1, -1):
+                v_next = values[t + 1] if t + 1 < end else 0.0
+                r = reward if t == end - 1 else 0.0
+                if self.shape:
+                    phi_next = phis[t + 1] if t + 1 < end else 0.0
+                    r += self.shape * (GAMMA * phi_next - phis[t])
+                delta = r + GAMMA * v_next - values[t]
+                gae = delta + GAMMA * LAM * gae
+                adv[t] = gae
+                ret[t] = gae + values[t]
+        mc = torch.zeros(n)
+        for start, end, reward in self.completed:
+            for t in range(start, end):
+                mc[t] = reward * (GAMMA ** (end - 1 - t))
+        mv = mc.var()
+        self.last_ev = (float(1.0 - (mc - values).var() / mv)
+                        if float(mv) > 1e-8 else float("nan"))
+        if adv.std() > 1e-6:
+            adv = (adv - adv.mean()) / (adv.std() + 1e-8)
+        dev = self.device
+        adv, ret = adv.to(dev), ret.to(dev)
+        actions, old_logp = actions.to(dev), old_logp.to(dev)
+        if self.opt is None:
+            print("NOTE: v7 --frozen: buffer discarded, no update", flush=True)
+            self._finish_update(n=n, phis=phis)
+            return
+        episodes = [(s, e) for s, e, _ in self.completed if e > s]
+        tbptt, ep_batch = self.tbptt, self.ep_batch
+        params = self.net.policy_parameters()
+        for _ in range(EPOCHS):
+            order = torch.randperm(len(episodes))
+            for g0 in range(0, len(episodes), ep_batch):
+                group = [episodes[i] for i in order[g0:g0 + ep_batch]]
+                maxlen = max(e - s for s, e in group)
+                B = len(group)
+                denom = max(1, sum(e - s for s, e in group))
+                h, c = self.net.heads.init_state(B, dev)
+                self.opt.zero_grad()
+                losses = []
+                for t in range(maxlen):
+                    live = [bi for bi, (s, e) in enumerate(group)
+                            if s + t < e]
+                    idx = [group[bi][0] + t for bi in live]
+                    lt = torch.tensor(live, device=dev)
+                    it = torch.tensor(idx, device=dev)
+                    b, oe, ctx, D_me, D_opp = self._v7_batch(
+                        [self.buf[i] for i in idx], dev, self.ids.n)
+                    logits, value, _, (h2, c2) = self.net(
+                        b, (h[lt], c[lt]), oe_rows=oe, ctx=ctx,
+                        D_me=D_me, D_opp=D_opp)
+                    h = h.clone(); c = c.clone()
+                    h[lt] = h2; c[lt] = c2
+                    if (t + 1) % tbptt == 0:
+                        h = h.detach(); c = c.detach()
+                    dist = torch.distributions.Categorical(logits=logits)
+                    logp = dist.log_prob(actions[it])
+                    ratio = torch.exp(logp - old_logp[it])
+                    a = adv[it]
+                    pg = -torch.min(ratio * a,
+                                    torch.clamp(ratio, 1 - CLIP, 1 + CLIP) * a)
+                    vloss = (value - ret[it]) ** 2
+                    ent = dist.entropy()
+                    losses.append((pg + VAL_COEF * vloss
+                                   - ENT_COEF * ent).sum())
+                    if (t + 1) % tbptt == 0:
+                        torch.stack(losses).sum().div(denom).backward()
+                        losses = []
+                if losses:
+                    torch.stack(losses).sum().div(denom).backward()
+                nn.utils.clip_grad_norm_(params, 0.5)
+                self.opt.step()
+                h = c = None
+        self._finish_update(n=n, phis=phis)
+
     def end_episode(self, reward, training, session=None):
         if getattr(self, "_ds", None) is not None:
             self._ds.write(json.dumps({"end": 1, "r": reward}) + "\n")
@@ -719,6 +986,8 @@ class Trainer:
                 torch.set_num_threads(prev)
 
     def _update_body(self):
+        if getattr(self, "v7", False):
+            return self._update_v7()
         self._update_t0 = time.time()   # wall clock, reported by _finish_update
         dump = os.environ.get("RL_DUMP_BUF")
         if dump and not os.path.exists(dump):
@@ -995,11 +1264,15 @@ class Trainer:
             # (a truncated net.pt took down a league run once)
             tmp = self.ckpt + ".tmp"
             blob = {"net": _to_cpu(self.net.state_dict()),
-                    "opt": _to_cpu(self.opt.state_dict()),
+                    "opt": (_to_cpu(self.opt.state_dict())
+                            if self.opt is not None else None),
                     "episodes": self.episodes_seen,
                     "updates": self.updates,
                     "arch": self.arch,
                     "dims": self.dims()}
+            if getattr(self, "v7", False):
+                # V7Policy.load reads "config" + "net" from this blob
+                blob["config"] = dict(self.net.config)
             # The critic rides in the same file under its own keys, so an
             # oracle checkpoint still LOADS on a non-oracle server (the
             # extra keys are ignored) and the arms stay swappable.
@@ -1044,9 +1317,11 @@ class InferenceBatcher:
     """
 
     def __init__(self, net, recurrent, lock, batch_max, wait_ms,
-                 stats_every=2000):
+                 stats_every=2000, v7=None):
         import queue
         self.net, self.recurrent, self.lock = net, recurrent, lock
+        # v7: (device, n_ids); requests carry s=V7Obs, c=(oe_rows, deck)
+        self.v7 = v7
         self.batch_max = max(1, int(batch_max))
         self.wait_s = max(0.0, float(wait_ms)) / 1000.0
         self.q = queue.Queue()
@@ -1133,7 +1408,20 @@ class InferenceBatcher:
                 r.out = o
         self._account(reqs, time.time() - t0)
 
+    def _forward_v7(self, reqs):
+        device, n_ids = self.v7
+        hins = [r.hin if r.hin is not None
+                else self.net.heads.init_state(1, device) for r in reqs]
+        H = (torch.cat([h[0] for h in hins]), torch.cat([h[1] for h in hins]))
+        lg, v, (h2, c2) = Trainer._v7_forward(
+            self.net, [r.s for r in reqs], [r.c[0] for r in reqs],
+            [r.c[1] for r in reqs], H, device, n_ids)
+        return [(lg[i:i + 1], v[i:i + 1], (h2[i:i + 1], c2[i:i + 1]))
+                for i in range(len(reqs))]
+
     def _forward(self, reqs):
+        if self.v7 is not None:
+            return self._forward_v7(reqs)
         B = len(reqs)
         if B == 1:
             # a batch of one IS the existing call, so sequential eval is
@@ -1213,6 +1501,11 @@ class Session:
     def __init__(self):
         self.pending = []
         self.hidden = None
+        # v7: the hello (parse_consult validates against its maxes), the
+        # game's deck context, and how many consults were fully validated
+        self.hello = None
+        self.deck = None
+        self.n_validated = 0
 
 
 # Phase 12 instrumentation: the comment below claims one lock is plenty
@@ -1263,6 +1556,8 @@ def check_hello(msg, trainer):
     that carries no meaning. cdim IS checked - the candidate path is
     untouched by v6 and still reads it.
     """
+    if getattr(trainer, "v7", False) or msg.get("wire") is not None:
+        return check_hello_v7_server(msg, trainer)
     hs, hc = msg.get("sdim"), msg.get("cdim")
     hg, he = msg.get("gdim"), msg.get("edim")
     hm, hr = msg.get("emax"), msg.get("rtypes")
@@ -1319,6 +1614,29 @@ def check_hello(msg, trainer):
               flush=True)
 
 
+def check_hello_v7_server(msg, trainer):
+    """WIRE-V7.md §1: a v7 server refuses any hello without wire:7 and any
+    v7 hello whose dims record disagrees; a v6 server refuses a wire:7
+    hello. The reason goes back to the driver, as check_hello does."""
+    if not getattr(trainer, "v7", False):
+        raise RuntimeError(
+            "HANDSHAKE MISMATCH: driver advertised wire=%r (encoder v7) "
+            "but the server is --arch %s. Start the server with --arch v7 "
+            "or the driver with -Drl.encoderV=6." % (msg.get("wire"), trainer.arch))
+    if msg.get("wire") != 7:
+        raise RuntimeError(
+            "HANDSHAKE MISMATCH: server is --arch v7 but the driver hello "
+            "carries wire=%r, i.e. it is emitting a v6 (or older) state. "
+            "Run the driver with -Drl.encoderV=7." % msg.get("wire"))
+    v7_obs, _, _ = _v7()
+    table = trainer.net.table.version
+    try:
+        v7_obs.check_hello_v7(msg, None if table == "random" else table)
+    except ValueError as exc:
+        raise RuntimeError(str(exc)) from None
+    return msg
+
+
 def consult_args(msg, trainer):
     """(state, cands, ent) for trainer.act, per arch."""
     if not trainer.entity:
@@ -1367,36 +1685,49 @@ def handle(conn, trainer, lock, session):
                     raise
                 print(f"conn: mode={mode} episodes={msg.get('episodes')}",
                       flush=True)
+                if getattr(trainer, "v7", False):
+                    # per-connection v7 state: the hello (consult maxes),
+                    # the deck context for this game (WIRE §5), fresh
+                    # memory, and the validation counter
+                    sink = trainer if session is None else session
+                    sink.hello = msg
+                    sink.n_validated = 0
+                    sink.hidden = None
+                    sink.deck = (trainer.deck_ctx.game(msg.get("v7_decks"))
+                                 if trainer.deck_ctx is not None else None)
                 f.write(b'{"ok":1}\n')
             elif t == "consult":
                 if mode == "random":
-                    a = pyrandom.randrange(len(msg["c"]))
+                    a = pyrandom.randrange(len(msg.get("c") or msg["v7_cand_type"]))
                 else:
-                    st, cd, ent = consult_args(msg, trainer)
+                    if getattr(trainer, "v7", False):
+                        def _act(with_session):
+                            return trainer.act_v7(
+                                msg, sample=(mode == "train"),
+                                phi=msg.get("phi", 0.0),
+                                session=session if with_session else None)
+                    else:
+                        st, cd, ent = consult_args(msg, trainer)
+
+                        def _act(with_session):
+                            return trainer.act(
+                                st, cd, sample=(mode == "train"),
+                                phi=msg.get("phi", 0.0),
+                                session=session if with_session else None,
+                                ent=ent, oracle_rows=msg.get("oe"))
                     if lock is not None and trainer.batcher is not None:
                         # batched path: NOT under the lock here - the
                         # batcher takes it for the forward; sampling and
                         # session.pending are per-connection. update()
                         # and save() still run under the lock below.
-                        a = trainer.act(st, cd,
-                                        sample=(mode == "train"),
-                                        phi=msg.get("phi", 0.0),
-                                        session=session, ent=ent,
-                                        oracle_rows=msg.get("oe"))
+                        a = _act(True)
                     elif lock is None:
-                        a = trainer.act(st, cd,
-                                        sample=(mode == "train"),
-                                        phi=msg.get("phi", 0.0), ent=ent,
-                                        oracle_rows=msg.get("oe"))
+                        a = _act(False)
                     elif LOCK_STATS:
                         _t0 = time.time()
                         with lock:
                             _t1 = time.time()
-                            a = trainer.act(st, cd,
-                                            sample=(mode == "train"),
-                                            phi=msg.get("phi", 0.0),
-                                            session=session, ent=ent,
-                                            oracle_rows=msg.get("oe"))
+                            a = _act(True)
                         _record(_t1 - _t0, time.time() - _t1)
                     else:
                         # torch inference and the trajectory buffers are
@@ -1404,11 +1735,7 @@ def handle(conn, trainer, lock, session):
                         # serializes against is 87% of wall-clock, so one
                         # lock is plenty
                         with lock:
-                            a = trainer.act(st, cd,
-                                            sample=(mode == "train"),
-                                            phi=msg.get("phi", 0.0),
-                                            session=session, ent=ent,
-                                            oracle_rows=msg.get("oe"))
+                            a = _act(True)
                 f.write(f'{{"a":{a}}}\n'.encode())
             elif t == "end":
                 if lock is None:
@@ -1447,6 +1774,11 @@ def handle(conn, trainer, lock, session):
         print("conn closed", flush=True)
 
 
+def _batcher_v7(trainer):
+    return ((trainer.device, trainer.ids.n)
+            if getattr(trainer, "v7", False) else None)
+
+
 def serve(port, trainer, threads=1, batch_max=1, batch_wait_ms=1.0):
     """threads=1 (default) keeps the original one-connection-at-a-time
     server, byte for byte. threads>1 accepts that many concurrent driver
@@ -1474,7 +1806,7 @@ def serve(port, trainer, threads=1, batch_max=1, batch_wait_ms=1.0):
             # (gate G2); the batcher's own lock is uncontended
             trainer.batcher = InferenceBatcher(
                 trainer.net, trainer.recurrent, threading.Lock(),
-                batch_max, batch_wait_ms).start()
+                batch_max, batch_wait_ms, v7=_batcher_v7(trainer)).start()
         while True:
             conn, _ = srv.accept()
             handle(conn, trainer, None, None)
@@ -1483,7 +1815,7 @@ def serve(port, trainer, threads=1, batch_max=1, batch_wait_ms=1.0):
     if batch_max > 1:
         trainer.batcher = InferenceBatcher(
             trainer.net, trainer.recurrent, lock,
-            batch_max, batch_wait_ms).start()
+            batch_max, batch_wait_ms, v7=_batcher_v7(trainer)).start()
     while True:
         conn, _ = srv.accept()
         threading.Thread(target=handle,
@@ -1520,8 +1852,28 @@ if __name__ == "__main__":
                     help="C2a shaping coefficient (0 = terminal-only)")
     ap.add_argument("--phi-scale", type=float, default=2000.0)
     ap.add_argument("--arch", default="e0",
-                    choices=["e0", "attn", "lstmattn", "entattn"],
-                    help="C6: net architecture (entattn = encoder v6)")
+                    choices=["e0", "attn", "lstmattn", "entattn", "v7"],
+                    help="C6: net architecture (entattn = encoder v6, "
+                         "v7 = rl/v7_policy.py over WIRE-V7)")
+    ap.add_argument("--card-emb", default="card_emb_v8",
+                    help="v7: rl/artifacts/<name>/emb.pt for the card "
+                         "table; the hello must name the same one. "
+                         "'random' = an untrained table (smoke tests)")
+    ap.add_argument("--no-belief", action="store_true",
+                    help="v7: belief module off (tokens bit-identical "
+                         "to no module; design L4 ablation arm)")
+    ap.add_argument("--deck-ctx", default="auto",
+                    help="v7: deck context (WIRE-V7 §5) from this "
+                         "artifact dir; auto = rl/artifacts/deck_ctx_v1 "
+                         "if present; none = D_me/D_opp zeros")
+    ap.add_argument("--tbptt", type=int, default=32,
+                    help="v7: BPTT window (steps between hidden detach "
+                         "+ backward); the 4g memory knob")
+    ap.add_argument("--ep-batch", type=int, default=4,
+                    help="v7: episodes replayed in lockstep per window")
+    ap.add_argument("--v7-validate", type=int, default=V7_VALIDATE_N,
+                    help="v7: consults per connection through the full "
+                         "WIRE-V7 validator before the cheap parse")
     ap.add_argument("--gdim", type=int, default=GDIM,
                     help="v6 globals width (meaning, not a buffer)")
     ap.add_argument("--edim", type=int, default=EDIM,
@@ -1577,12 +1929,34 @@ if __name__ == "__main__":
         import sys
         sys.setswitchinterval(float(os.environ["RL_SWITCH_INTERVAL"]))
         print(f"switch_interval={sys.getswitchinterval()}", flush=True)
+    dc = None
+    if args.arch == "v7":
+        V7_VALIDATE_N = args.v7_validate
+        if args.deck_ctx != "none":
+            _, v7_deckctx, _ = _v7()
+            art = (v7_deckctx.DECK_CTX_ART if args.deck_ctx == "auto"
+                   else args.deck_ctx)
+            if os.path.exists(os.path.join(art, "model_seed0.pt")):
+                dc = v7_deckctx.DeckCtx(
+                    art=art, device=args.device,
+                    card_emb=(args.card_emb if args.card_emb != "random"
+                              else "card_emb_v8"))
+                print(f"deck context: {art}", flush=True)
+            elif args.deck_ctx != "auto":
+                raise RuntimeError(f"--deck-ctx {art}: no model_seed0.pt")
+            else:
+                print("deck context: none (rl/artifacts/deck_ctx_v1 absent)"
+                      " - D_me/D_opp are zeros", flush=True)
     _t = Trainer(args.ckpt, args.seed, args.log,
                  args.sdim, args.cdim,
                  args.shape, args.phi_scale, args.arch,
                  args.desperation,
                  args.gdim, args.edim, args.emax,
-                 len(RTYPES), args.r0, args.oracle)
+                 len(RTYPES), args.r0, args.oracle,
+                 card_emb=args.card_emb, belief=not args.no_belief,
+                 frozen=args.frozen, deck_ctx=dc)
+    if args.arch == "v7":
+        _t.tbptt, _t.ep_batch = args.tbptt, args.ep_batch
     _t.frozen = args.frozen
     _t.update_threads = args.update_threads
     _t.oracle_probe = args.oracle_probe

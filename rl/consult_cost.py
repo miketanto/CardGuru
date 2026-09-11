@@ -60,6 +60,67 @@ def med(fn, reps, sync):
     return statistics.median(ts)
 
 
+def main_v7(args):
+    import random
+    import v7_obs as V
+    import wire_fixtures as F
+    tr = ps.Trainer(None, 0, None, arch="v7", card_emb="card_emb_v8")
+    tr.net.eval()
+    g = random.Random(0)
+    hello = F.hello()
+    msg = F.consult(g, "block", True)
+    raw = (json.dumps(msg, separators=(",", ":")) + "\n").encode()
+    n_ent, k = len(msg["v7_ent"]), len(msg["v7_cand_type"])
+    sync = args.device == "cuda"
+    ids = tr.ids
+
+    def do_json():
+        return json.loads(raw)
+
+    def do_obs():                       # after the first 100: validate=False in act_v7
+        return V.compact(V.parse_consult(msg, ids, hello, validate=False))
+
+    def do_validate():
+        return V.parse_consult(msg, ids, hello, validate=True)
+    obs = do_obs()
+    B = args.batch
+    hin = None
+
+    def do_fwd1():
+        with torch.no_grad():
+            return tr._v7_forward(tr.net, [obs], [[]], [None], hin, tr.device, ids.n)
+
+    def do_fwdB():
+        with torch.no_grad():
+            return tr._v7_forward(tr.net, [obs] * B, [[]] * B, [None] * B, None, tr.device, ids.n)
+    lg, v, _ = do_fwd1()
+
+    def do_sample():
+        dist = torch.distributions.Categorical(logits=lg[0])
+        a = int(dist.sample())
+        return float(dist.log_prob(torch.tensor(a, device=lg.device))), float(v[0])
+    for f in (do_json, do_obs, do_validate, do_fwd1, do_fwdB, do_sample):
+        for _ in range(10):
+            f()
+    if sync:
+        torch.cuda.synchronize()
+    t_json = med(do_json, args.reps, False)
+    t_obs = med(do_obs, args.reps, sync)
+    t_val = med(do_validate, args.reps, False)
+    t_f1 = med(do_fwd1, args.reps, sync)
+    t_fB = med(do_fwdB, args.reps, sync)
+    t_smp = med(do_sample, args.reps, sync)
+    total1 = t_json + t_obs + t_f1 + t_smp
+    print(f"CONSULT|arch=v7|device={args.device}|entities={n_ent}|k={k}"
+          f"|tokens={obs.n_tokens + k + obs.opp_hand.shape[0] + obs.opp_deck.shape[0] + obs.opp_act.shape[0]}"
+          f"|wire_bytes={len(raw)}|json_ms={t_json:.2f}|obs_ms={t_obs:.2f}"
+          f"|validate_ms={t_val:.2f}"
+          f"|fwd1_ms={t_f1:.2f}|fwd{B}_ms={t_fB:.2f}"
+          f"|fwd{B}_per_row_ms={t_fB / B:.2f}|sample_ms={t_smp:.2f}"
+          f"|total_single_ms={total1:.2f}"
+          f"|python_share={(t_json + t_obs + t_smp) / total1:.0%}", flush=True)
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--device", default="cpu", choices=["cpu", "cuda"])
@@ -67,10 +128,16 @@ def main():
     ap.add_argument("--k", type=int, default=10)
     ap.add_argument("--batch", type=int, default=8)
     ap.add_argument("--reps", type=int, default=200)
+    ap.add_argument("--arch", default="entattn", choices=["entattn", "v7"],
+                    help="v7 (plan §2 4g): the same stages over a WIRE-V7 "
+                         "consult from rl/wire_fixtures.py (--entities/--k "
+                         "are the fixture's own draw; 'obs' = parse + collate)")
     args = ap.parse_args()
     torch.set_num_threads(1)
     ps.MAX_K = MAXK
     ps.DEVICE = torch.device(args.device)
+    if args.arch == "v7":
+        return main_v7(args)
     tr = ps.Trainer(None, 0, None, cdim=CDIM, arch="entattn",
                     gdim=GDIM, edim=EDIM, emax=EMAX)
     gen = torch.Generator().manual_seed(0)
