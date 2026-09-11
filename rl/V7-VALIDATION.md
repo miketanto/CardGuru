@@ -680,3 +680,17 @@ The two probe gates needed hundreds of consults (a 256-d linear probe on
 42 samples is meaningless); the test generates 700 in memory with
 `wire_fixtures.valid_stream`. Untrained-architecture caveat as 4b/4c.
 
+## 4e — value trunk `rl/v7_value.py` and the leak gate (Lane C, 2026-09-11 11:40)
+
+Own token builders (sharing only the frozen card table), own 4-layer
+encoder, privileged rows (`oe`, and the true opponent hand `v7_oe_hand`
+from 3d) enter as extra tokens here and nowhere else; value from the
+encoded game token.
+
+| gate | required | measured (`tests/test_v7_value.py`, `rl/probes/leak.py`) | result |
+|---|---|---|---|
+| level 1 — wire | policy-path parse identical with / without the privileged keys | identical on 12 consults (`V7Obs` tensors never include `oe` / `v7_oe_hand`) | pass |
+| level 2 — net | policy logits bit-identical under a swap of privileged content | max \|Δlogit\| = **0.0** | pass |
+| level 3 — consumer | the critic moves under the same swap | max \|Δvalue\| = 0.035 (≥ 1e-4) | pass |
+| planted leak refused | | a policy reading one `oe` value: level 2 max \|Δlogit\| > 1e-3 → refused | pass |
+
