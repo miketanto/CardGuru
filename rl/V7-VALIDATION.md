@@ -502,3 +502,39 @@ counterweights. If v8 fails G3 with G2 intact, the next lever is the
 text encoder's learning rate (3e-5 → 1e-5, fewer trainable layers), the
 remaining seed-dependent component.
 
+## 1d — sweep config (a): v6 structure + stability recipe + 2-seed averaged artifact — **FAIL on one probe** (Lane A, 2026-09-11 00:05)
+
+`rl/cardemb/sweep.sh` config a (CARDEMB-RESEARCH.md §3 steps 2–3 only):
+hashed-tree GNN as in v6, `--lr-text 2e-5 --llrd 0.85 --warmup 0.10
+--epochs 40`, artifact = per-slice Procrustes mean of seeds 0+1, G3
+against the mean of seeds 2+3. Four seeds trained (24 min each).
+
+| gate | threshold | measured (held-out) | result |
+|---|---|---|---|
+| G1 mv / power / toughness | ≥ 0.9 | 0.993 / 0.997 / 0.994 | pass |
+| G1 colours, types | ≥ 0.97 | 1.000, 1.000 | pass |
+| G1 keywords (11, f1) | ≥ 0.8 | min 0.817 (first strike, 42 positives) | pass |
+| G1 answer classes (5, f1) | ≥ 0.8 | **min 0.725 (ans_minus_toughness, 33 positives)**; v6 had 0.943 | **FAIL** |
+| G2 Cancel / Counterspell | ≥ 0.85 | 0.983 | pass |
+| G2 Spell Snare / Force Spike | Spike ∉ Snare top-10 | rank 28 | pass |
+| G2 functional reprints | 10/10 | 10/10 | pass |
+| G2 swap pairs | ≥ 14/16 within 500, median ≤ 50 | **16/16, median 29** | pass |
+| G3 artifact(0+1) vs artifact(2+3) top-10 Jaccard | ≥ 0.40 | **0.680** (raw single seeds 0.623; v6 was 0.369) | pass |
+
+Per-slice overlap (artifact vs artifact): text 0.734, tree 0.475, bag
+0.796, printed 0.872. The stability recipe alone (before averaging)
+raised seed overlap from 0.369 to 0.623 — the literature's prediction
+(CARDEMB-RESEARCH.md §2b) held; averaging added a further 0.06.
+
+The single failing probe is a rare mechanical bit (33 held-out
+positives; Wilson 95 % on F1 roughly ±0.15). The raw single seed fails
+it too (0.733), so it is the recipe, not the averaging: a smaller,
+layer-decayed text learning rate leaves less rare mechanical detail in
+the text slice, and the readout reconstruction on the tree slice is a
+plain MSE, which under-weights a column with 1 % positives. Stated
+before running: **configs c = a + BCE-with-logits readout
+reconstruction with per-column pos_weight = neg/pos (clamped at 50),
+the standard imbalanced multi-label loss, and d = b + the same**
+(`rl/cardemb/sweep2.sh`, queued behind b). Prediction: the rare answer
+classes and keywords return above 0.8 with G2/G3 unchanged in verdict.
+

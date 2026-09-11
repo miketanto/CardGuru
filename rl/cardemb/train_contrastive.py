@@ -105,6 +105,9 @@ def main():
                     help="v8: layer-wise learning-rate decay for the text encoder (0.85 per layer from the top; 1.0 = off)")
     ap.add_argument("--warmup", type=float, default=0.05, help="fraction of steps for linear warmup (v8 recipe: 0.10)")
     ap.add_argument("--script-max-len", type=int, default=256)
+    ap.add_argument("--readout-loss", choices=["mse", "bce"], default="mse",
+                    help="sweep c/d: 'bce' = BCE-with-logits with per-column pos_weight (neg/pos on the train split, "
+                         "clamped to 50) for the readout reconstruction, so rare mechanical bits are not under-fit")
     args = ap.parse_args()
     if args.struct == "auto":
         args.struct = "tree" if args.tree else "bag"
@@ -204,6 +207,17 @@ def main():
 
     train_keys = keys_all[[r.id for r in train]]
     held_keys = keys_all[[r.id for r in heldout]]
+    pos_weight = None
+    if args.readout_loss == "bce":
+        G_tr = torch.tensor([r.graph for r in train])
+        pos = (G_tr > 0.5).float().sum(0)
+        pos_weight = ((len(train) - pos) / pos.clamp(min=1.0)).clamp(max=50.0).to(args.device)
+        say(f"readout BCE pos_weight: min {pos_weight.min():.1f} max {pos_weight.max():.1f}")
+
+    def readout_loss(pred, target):
+        if pos_weight is None:
+            return torch.nn.functional.mse_loss(pred, target)
+        return torch.nn.functional.binary_cross_entropy_with_logits(pred, target, pos_weight=pos_weight)
     step = 0
     for epoch in range(args.epochs):
         model.train()
@@ -234,8 +248,8 @@ def main():
                 rec = model.last_rec
                 mse = torch.nn.functional.mse_loss
                 g_dev = graph.to(args.device)
-                loss_a = (mse(rec["readout"].float(), g_dev) + mse(rec["printed"].float(), printed.to(args.device))
-                          + mse(rec["bag"].float(), g_dev))
+                loss_a = (readout_loss(rec["readout"].float(), g_dev) + mse(rec["printed"].float(), printed.to(args.device))
+                          + readout_loss(rec["bag"].float(), g_dev))
                 if anchor is not None:                       # v8: slices anchored RELATIONALLY (not decoded)
                     loss_a = loss_a + args.distill * relational_distill(rec["text_slice"].float(), anchor[ids])
                     loss_a = loss_a + args.distill * relational_distill(
