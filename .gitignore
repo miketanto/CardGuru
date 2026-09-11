@@ -18,3 +18,4 @@ rl/artifacts/*/text_anchor.pt
 rl/artifacts/cards_v1/scripts.json.gz
 rl/artifacts/cardemb_sweep/**/*.pt
 rl/artifacts/*/script_anchor.pt
+rl/artifacts/cardemb_sweep/RESULTS.md
