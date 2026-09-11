@@ -326,8 +326,11 @@ class MatchClient:
         for kv in os.environ.get("CARDGURU_DRIVER_PROPS", "").split():
             if "=" in kv and kv.startswith("cardguru."):
                 cmd.append(f"-D{kv}")
-        # CARDGURU_DRIVER_STDOUT=<file> keeps the JVM's stdout (the driver's
-        # [CardGuru] diagnostics) instead of discarding it.
+        # CARDGURU_DRIVER_STDOUT=<file> keeps the maven JVM's stdout. Note
+        # that surefire captures the test's own System.out into
+        # Mage.Tests/target/surefire-reports/TEST-...CardGuruScenarioRunner.xml
+        # (system-out element), which is where the driver's [CardGuru] lines
+        # end up; this file only carries maven's output.
         out_path = os.environ.get("CARDGURU_DRIVER_STDOUT")
         out = open(out_path, "ab") if out_path else subprocess.DEVNULL
         self.proc = subprocess.Popen(
