@@ -139,24 +139,25 @@ Updated in place by the Lane A session; the block in §B is the generic
 starting prompt and stays as written.
 
 ```
-STATE:   - Embedder versions (all FAIL, each recorded in V7-VALIDATION.md §1d): v1
-           structure-keyed positives merged Snare/Spike; v2 swap 13/16; v3 (distill 3)
-           13/16 + Snare/Spike cos regressed; v4 (reminder stripped) 12/16; v5 (ability
-           tree channel) Snare/Spike best (0.730) but G1 collapsed (mv 0.708), swap 13/16.
-         - KEY FINDING (V7-VALIDATION.md §1d per-view diagnostics): in v1-v5 e_card's
-           fuse projection received no gradient from any loss; e_card was a random mix
-           dominated by the largest-norm channel. Bag view alone ranks all swap pairs
-           at 1 but merges Snare/Spike; tree view alone separates Snare/Spike but
-           scatters mechanical twins.
-         - card_emb_v6 = v5 + block-structured e_card [text 48 | tree 32 | bag 16 |
-           printed 32] with per-slice LayerNorm + reconstruction losses (tree slice ->
-           68 readout, printed slice -> 83 printed, --aux 1.0) + tree piece dropout 0.2.
-           Training in WSL (hidden wsl.exe, <scratchpad>/train_v6.sh): seeds 0,1,
-           30 epochs, ~20 min/seed. Runner rl/artifacts/card_emb_v6/train_runner.log.
-           Then: python3 rl/cardemb/gates.py --art rl/artifacts/card_emb_v6 and
-           python3 rl/cardemb/diag_views.py --art rl/artifacts/card_emb_v6 (per-view).
-           Tree cache rl/artifacts/cards_v1/trees.pt (120 MB, gitignored; rebuild:
-           python3 rl/cardemb/tree.py, 34 s, needs CARDGURU_TOKENSCRIPTS).
+STATE:   - Embedder versions v1-v6 all FAIL, each recorded in V7-VALIDATION.md §1d.
+           v6 (block-structured e_card + reconstruction losses) passed G1 and G2 on
+           both seeds (mv 0.993, Snare/Spike rank 19, swap 14/16 median 26) but
+           FAILED G3: seed-to-seed top-10 Jaccard 0.369 < 0.40. Per-slice overlap:
+           text 0.238, tree 0.263, bag 0.647, printed 0.855 — the slices without a
+           reconstruction loss are per-seed random projections.
+         - card_emb_v7 = v6 + a deterministic reconstruction target for EVERY slice
+           (text slice -> frozen pretrained MiniLM embedding; bag slice -> readout).
+           Training in WSL (hidden wsl.exe, <scratchpad>/train_v7.sh): seeds 0,1,
+           30 epochs, ~20 min/seed. Runner rl/artifacts/card_emb_v7/train_runner.log.
+           Then: python3 rl/cardemb/gates.py --art rl/artifacts/card_emb_v7 (needs both
+           seeds for G3); per-slice overlap: <scratchpad>/slice_jaccard.py <art>
+           (copy of it is worth committing to rl/cardemb/ if v7 is accepted).
+         - deck_ctx_v1 trained on v6 seed 0 (PROVISIONAL: v6 not accepted): masked
+           top-1 0.407 / top-10 0.727 vs freq 0.02 / 0.13; role probe wincon 0.982,
+           answer 0.960, enabler 0.814 (e_card ref 0.720). Recorded in
+           V7-VALIDATION.md §1c/2b, §2c with the caveat; RERUN on the accepted
+           embedder (train_masked.py --emb <abs emb.pt>, ~8 min; probe_roles.py) and
+           append correction rows.
          - Deck tensors for masked training cached: rl/artifacts/deck_ctx_v1/decks_cache.pt
            (12,612 decks, 85 s, gitignored; train_masked.py rebuilds it when the corpus
            changes). train_masked.py smoke-tested end to end.
@@ -178,17 +179,20 @@ DONE:    0b PASS  rl/artifacts/cards_v1 (34,642 faces + 836 tokens, 0 unknown ov
          0c code  rl/decklists/fetch_mtgo.py, build_corpus.py (mtgo.com month
                   archives: 250-450 events/month, ~20 lists/event, cold page = 25 s)
 
-OPEN:    1. when card_emb_v6 ALLDONE: gates.py --art rl/artifacts/card_emb_v6 -> table
+OPEN:    1. when card_emb_v7 ALLDONE: gates.py --art rl/artifacts/card_emb_v7 -> table
             into V7-VALIDATION.md §1d (v4); if PASS: move rl/artifacts/card_emb_v1/README.md
             to the passing version with numbers, commit emb.pt (18 MB fp32) + gates.json +
             index.json + emb_seed1.pt (not model.pt/ckpt), and point train_masked.py
-            --emb at it (absolute path accepted). If v6 fails: run diag_views.py first;
-            the levers, in order: block widths (the stated blend), aux weight, tree
-            encoder depth; a bigger text model is the last lever, not the next.
-         2. when PREP DONE and a version passes: python3 rl/cardemb/train_masked.py
-            --emb ../card_emb_vN/emb.pt (or copy emb.pt) -> deck_ctx_v1, §1c/2b gate =
-            held-out masked top-1/top-10 vs frequency baselines; then
-            rl/deckctx/probe_roles.py -> §2c (thresholds pre-registered in the file).
+            --emb at it (absolute path accepted). Rename README: rl/artifacts/card_emb_v6/
+            README.md is the contract text (written for v6) — move it to the accepted
+            version's directory and fix the version string and the gate numbers.
+            If v7 fails G3: next lever is the tree slice (0.263): a fitted vocabulary
+            instead of hashed pieces (tree.py), pre-registered in V7-VALIDATION.md.
+         2. when a version is accepted: rerun train_masked.py and probe_roles.py on it
+            (see STATE), append correction rows to §1c/2b and §2c, update
+            rl/artifacts/deck_ctx_v1/README.md dependency line, commit model_seed0.pt.
+         3. Open a PR v7/lane-a -> main after the embedder is accepted (tag v7-p1 for
+            Phase 1, v7-p2 for Phase 2 once 2b/2c are rerun).
          4. Phase 6 (belief) waits on Lanes B/C (3d, 4f).
 
 NEXT:    Read rl/artifacts/card_emb_v1/train_runner.log; if ALLDONE, run gates.py.
@@ -205,6 +209,6 @@ GOTCHAS: - Driving WSL from the Bash tool: `$VAR`/`$(...)` inside wsl.exe -- bas
          - Heredocs with `\n` inside python -c strings get mangled by the Bash
            tool; use the Edit tool for lines containing escapes.
 
-COMMITS: v7/lane-a pushed through a0a9095. Uncommitted: rl/artifacts/card_emb_v1/README.md
+COMMITS: v7/lane-a pushed through 5afc37e. Uncommitted: rl/artifacts/card_emb_v1/README.md
          (draft), rl/artifacts/decklists_v1/raw (gitignored).
 ```
