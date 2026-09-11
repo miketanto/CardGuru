@@ -44,4 +44,23 @@ seed 900000; 100 games. Script: the battery `probe` of `rung0_lane.sh`,
 run standalone. Result recorded below when the run ends
 (`rl/artifacts/v7/smoke.log`, `smoke_probe_D0.txt`).
 
-RESULT: pending
+RESULT (08:26, `rl/artifacts/v7/smoke_probe_D0.txt`):
+
+```
+RL|summary|episodes=100|wins=0|losses=100|draws=0|stalls=0|win_rate=0.0000|games_per_sec=3.367|agent_consults_per_ep=19.5|agent_windows_per_ep=96.0|agent_actions_per_ep=0.0|turns_per_ep=10.9
+RL|ipc|round_trips=1947|avg_rtt_us=6257.8|ipc_sec_total=12.2
+```
+
+What it shows: the v6 pipeline runs end to end on this machine (driver
+JVM, entattn policy server, 100 games, 3.4 games/s, 6.3 ms IPC round
+trip). What it does not show: a policy. The only entattn checkpoint on
+this machine is a 64-episode smoke-lane net that answers PASS to every
+consult (`agent_actions_per_ep=0.0`), hence 0/100 — a property of that
+checkpoint, not of the pipeline. A trained v6 checkpoint would have to
+be restored from the cloud artifacts (`rl/restore_artifacts.sh` lists
+none for entattn) or produced by a rung-0 lane run; recorded as a gap.
+
+Gotchas found: the persistent driver JVM needs `java` on PATH, which
+lives in `~/.profile` (start it from a login shell: `bash -lc
+"bash rl/driver_server.sh start 7910 ..."`); `RL_AUTOSTART=1` from a
+non-login shell fails silently as `RL_DRIVER|server_start_failed`.

@@ -67,13 +67,13 @@ def probe(tokens, targets, groups, kinds, thresholds=None, frac=0.2, seed=0):
             if len(np.unique(ytr)) < 2:
                 score = float((yte == ytr[0]).mean()); chance = score
             else:
-                clf = LogisticRegression(max_iter=2000, C=10.0).fit(Xtr, ytr)
+                clf = LogisticRegression(max_iter=2000, C=1.0).fit(Xtr, ytr)
                 score = float((clf.predict(Xte) == yte).mean())
                 vals, cnt = np.unique(yte, return_counts=True)
                 chance = float(cnt.max() / cnt.sum())
             thr = (thresholds or {}).get(f, 0.99)
         else:
-            reg = Ridge(alpha=1e-3).fit(Xtr, y[trf])
+            reg = Ridge(alpha=1.0).fit(Xtr, y[trf])
             pred = reg.predict(Xte)
             ss_res = float(((y[tef] - pred) ** 2).sum())
             ss_tot = float(((y[tef] - y[tef].mean()) ** 2).sum()) + 1e-12

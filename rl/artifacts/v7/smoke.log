@@ -1,0 +1,10 @@
+08:13:34 SMOKE START
+08:13:40 server up
+08:18:40 driver exit 0
+
+08:18:40 SMOKE DONE
+08:25:56 SMOKE START
+08:26:00 server up
+08:26:30 driver exit 0
+win_rate=0.0000 
+08:26:30 SMOKE DONE

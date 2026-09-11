@@ -625,3 +625,21 @@ present/absent and fail swap. Consumers: Lane B gate 3d, Lane C gates
 checkpoint `dims` record is `dims_record(hello)` (wire, v7_dims, rtypes,
 ctypes, zones, card_emb, d_c). Consumers: 4b token builders (next).
 
+## 4b — token builders `rl/v7_net.py` (Lane C, 2026-09-11 10:20)
+
+| gate | required | measured | result |
+|---|---|---|---|
+| shape tests | per group `[B, n, 256]`, masked padding zero, finite | `tests/test_v7_net.py` on 140 fixture consults: game [B,1], players [B,2], ent [B,N], cand [B,K], opponent groups; padded tokens exactly 0 | pass |
+| faithfulness probe after L3 (untrained builder, random card table) | every planted field recovered | zone 1.000 (chance 0.42) · mine 0.996 · tapped 0.992 · power R² 0.955 · mana value R² 0.940 · candidate type 1.0; thresholds for this **untrained** check: 0.99 binary/cat, 0.90 real | pass |
+| adapter starts as identity; unknown id → zero row + flag | exact | exact | pass |
+
+Two findings on the way, both recorded in the code: an MLP-only builder
+at random init already attenuated planted fields (tapped, power R² 0.89);
+the builder is now `MLP(x) + Linear(x)` with the body's output layer
+zero-initialised, so an untrained token is exactly the linear image of
+its inputs and nonlinear facts are learned on top. The probe's fits are
+regularised (ridge α = 1, logistic C = 1) after the α = 1e-3 fit
+overfit 256-d tokens on 2,400 samples. **The same probe must be rerun on
+the trained checkpoint (Phase 5) at the module defaults (0.99 / 0.95):
+this row establishes the architecture, not a training run.**
+
