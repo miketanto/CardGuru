@@ -179,7 +179,9 @@ def main():
                    f"{ties} tie-breaks fired ({flips} changed the pick). "
                    f"Sub-choice search: {variant_rows} variant rows, {scripted} searches "
                    f"picked a variant; scripts replayed {last.get('script_hits', 0)} "
-                   f"prompts, {last.get('script_misses', 0)} misses.\n")
+                   f"prompts, {last.get('script_misses', 0)} misses, "
+                   f"{last.get('script_skipped_library', 0)} library picks left to the pilot; "
+                   f"own library reseated on {last.get('self_reseated', 0)} copies.\n")
     out.append("Rate each decision **questionable / minor / moderate / major**, "
                "or leave it alone if it was right. Say what should have been "
                "done instead and why.\n")

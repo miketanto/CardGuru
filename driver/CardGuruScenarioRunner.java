@@ -1247,8 +1247,10 @@ class InteractiveTestPlayer extends TestPlayer {
     /** Real game: the pending script's answer for this menu, or null. A
      *  mismatch means the line diverged from the simulated one; the rest of
      *  the script is dropped and the pilot is asked as usual. */
+    private int scriptSkippedLibrary = 0;
+
     private SubAnswer takePending(SubMenu m, Game game) {
-        if (pendingScript == null || m == null) {
+        if (pendingScript == null || m == null || m.library) {
             return null;
         }
         if (pendingTurn != game.getTurnNum()) {
@@ -1329,6 +1331,13 @@ class InteractiveTestPlayer extends TestPlayer {
         for (UUID id : possible) {
             m.keys.add(optionKeyOf(id, game, seen));
             m.texts.add(optionTextOf(id, game));
+        }
+        // A pile from the library (scry, surveil, look at the top N): the
+        // copy's cards are a reseated sample, so the answer is searched but
+        // never replayed at the real prompt.
+        try {
+            m.library = game.getState().getZone(possible.get(0)) == Zone.LIBRARY;
+        } catch (RuntimeException ignored) {
         }
         return m;
     }
@@ -2430,7 +2439,22 @@ class InteractiveTestPlayer extends TestPlayer {
     private int detSeatedEqualsReal = 0;
 
     /** A simulation copy whose opponent hidden zones have been reseated. */
+    /** Reseat our own library on copies too. Without this every rollout
+     *  drew, scried and looked at the REAL top cards, the leaf summaries
+     *  listed them, and the pilot planned around cards it had not drawn
+     *  ("nets +2 cards including Stock Up and Glacial Dragonhunt"). */
+    private static final boolean RESEAT_SELF =
+            !"false".equals(System.getProperty("cardguru.reseat_self", "true"));
+    private int selfReseated = 0;
+    /** Ids of the cards in our real hand when the current search started;
+     *  a leaf's hand card outside this set was drawn inside the rollout. */
+    private Set<UUID> searchHandIds = null;
+
     private Game simCopy(Game game) {
+        Player real = game.getPlayer(getId());
+        if (real != null) {
+            searchHandIds = new HashSet<>(real.getHand());
+        }
         Game sim = game.createSimulationForAI();
         UUID oppId = null;
         for (UUID pid : game.getOpponents(getId())) {
@@ -2440,6 +2464,13 @@ class InteractiveTestPlayer extends TestPlayer {
             detRollouts++;
             if (!determinizeOpponent(sim, oppId)) {
                 detSeatedEqualsReal++;
+            }
+        }
+        if (RESEAT_SELF) {
+            Player me = sim.getPlayer(getId());
+            if (me != null) {
+                me.getLibrary().shuffle();
+                selfReseated++;
             }
         }
         return sim;
@@ -3115,7 +3146,8 @@ class InteractiveTestPlayer extends TestPlayer {
         JsonArray hand = new JsonArray();
         if (me != null) {
             for (Card c : me.getHand().getCards(leaf)) {
-                hand.add(c.getName());
+                boolean drawn = searchHandIds != null && !searchHandIds.contains(c.getId());
+                hand.add(c.getName() + (drawn ? " (drawn)" : ""));
             }
         }
         o.add("our_hand", hand);
@@ -3956,6 +3988,9 @@ class InteractiveTestPlayer extends TestPlayer {
         rec.addProperty("chosen_script", chosenScriptLast);
         rec.addProperty("script_hits", scriptHits);
         rec.addProperty("script_misses", scriptMisses);
+        rec.addProperty("script_skipped_library", scriptSkippedLibrary);
+        rec.addProperty("reseat_self", RESEAT_SELF);
+        rec.addProperty("self_reseated", selfReseated);
         JsonArray cands = new JsonArray();
         int flat = 0;
         for (int c = 0; c < labels.size(); c++) {
@@ -4129,8 +4164,15 @@ class InteractiveTestPlayer extends TestPlayer {
         }
         // The chosen variant's sub-choices are replayed at the real prompts
         // (targets during activation, scry / card picks at resolution).
-        pendingScript = picked.planned.isEmpty() ? null
-                : new SubScript(null, myId, new ArrayList<>(picked.planned));
+        List<SubAnswer> replay = new ArrayList<>();
+        for (SubAnswer a : picked.planned) {
+            if (a.library) {
+                scriptSkippedLibrary++;   // real prompt shows the real cards: pilot decides
+            } else {
+                replay.add(a);
+            }
+        }
+        pendingScript = replay.isEmpty() ? null : new SubScript(null, myId, replay);
         pendingTurn = game.getTurnNum();
         if (getComputerPlayer().activateAbility(picked.ability.copy(), game)) {
             return 1;
@@ -4803,6 +4845,7 @@ final class SubMenu {
     final List<String> texts = new ArrayList<>();
     List<String> chosen = new ArrayList<>();   // keys the answer selected ("yes"/"no", "x=N")
     int chosenX = 0;
+    boolean library = false;                   // pile of (reseated) library cards
 
     SubMenu(String kind, String prompt, int min, int max) {
         this.kind = kind;
@@ -4840,7 +4883,7 @@ final class SubMenu {
 
     private String textOf(String key) {
         int i = keys.indexOf(key);
-        return i >= 0 ? texts.get(i) : key;
+        return (library ? "~" : "") + (i >= 0 ? texts.get(i) : key);   // ~ = sampled card
     }
 
     private String verb() {
@@ -4904,6 +4947,16 @@ final class SubMenu {
     /** Alternatives to the recorded answer, at most `limit`. */
     List<SubAnswer> alternatives(int limit) {
         List<SubAnswer> out = new ArrayList<>();
+        try {
+            return alternativesInner(limit, out);
+        } finally {
+            for (SubAnswer a : out) {
+                a.library = library;
+            }
+        }
+    }
+
+    private List<SubAnswer> alternativesInner(int limit, List<SubAnswer> out) {
         String mk = key();
         switch (kind) {
             case "use": {
@@ -4959,7 +5012,9 @@ final class SubMenu {
     }
 
     SubAnswer asAnswer() {
-        return new SubAnswer(key(), new ArrayList<>(chosen), chosenBool(), chosenX, label(chosen));
+        SubAnswer a = new SubAnswer(key(), new ArrayList<>(chosen), chosenBool(), chosenX, label(chosen));
+        a.library = library;
+        return a;
     }
 }
 
@@ -4970,6 +5025,7 @@ final class SubAnswer {
     final boolean bool;
     final int x;
     final String label;
+    boolean library = false;
 
     SubAnswer(String menuKey, List<String> keys, boolean bool, int x, String label) {
         this.menuKey = menuKey;

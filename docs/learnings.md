@@ -181,5 +181,13 @@ things the logs alone had hidden.
    cast hits and adds bounded variant rows ("Cast Opt → scry: bottom
    Island"), and the winning script is replayed at the real prompts
    (first game: 7 scripted picks, 0 misses; ~40% more leaves per search,
-   fewer pilot calls). Known approximation: copies still see our own real
-   library order, so Stock Up / scry variants peek at the true top cards.
+   fewer pilot calls).
+4. **The search knew our own library.** Copies reseated the opponent's
+   hand but kept our real library order, so a rollout that drew or scried
+   saw the true cards and the leaf's `our_hand` listed them; the pilot's
+   `why` at turn 5 of the sub-choice game planned around "Stock Up and
+   Glacial Dragonhunt" before drawing them. Now `simCopy` shuffles our
+   library too (`cardguru.reseat_self`), leaf hands mark cards drawn in
+   the rollout as "(drawn)", library-pile picks are shown with "~" and
+   are searched but never replayed: the real scry / Stock Up prompt goes
+   to the pilot with the real cards.

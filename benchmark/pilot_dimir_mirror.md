@@ -214,6 +214,12 @@ optional. Neither replaces the required field for the decision's kind.
   are applied for you at the real prompts, so you will not be asked again.
   Scry / surveil / "look at the top N" prompts you DO get (from triggers
   or the opponent's effects) arrive as `choose` with the card names.
+  Your own library is reshuffled in every simulated line: a hand card
+  marked "(drawn)" and any card shown with a "~" (scry, surveil, look at
+  the top N) is a RANDOM SAMPLE of your deck, not the real card. Weigh
+  such lines as an expectation over your deck; never plan around a
+  specific sampled card. The real scry / look-at prompt comes to you with
+  the real cards when the spell resolves.
 - leaf_compare (rare): two candidates tied on aggregate; `pairs` lists the
   best leaf of each per opponent sample, a vs b. Reply
   {"prefer": [<+1 a better, -1 b better, 0 equal, one per pair>], "why": "..."}.
