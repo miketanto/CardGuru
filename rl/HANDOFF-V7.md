@@ -151,16 +151,20 @@ STATE:   - 0a DONE: rl/WIRE-V7.md (contract), rl/wire_validate.py, rl/wire_fixtu
            builders), tests/test_v7_net.py (faithfulness after L3 on fixtures).
          - 4c DONE: rl/v7_encoder.py (StateGraphEncoder), tests/test_v7_encoder.py (zero-edge
            exactness, permutation, masking, faithfulness after L4).
+         - 4d DONE: rl/v7_heads.py (pointer + bilinear, LSTM on the game token, residual memory).
+         - 4e DONE: rl/v7_value.py (separate value trunk; leak gate levels 1-3 pass).
+         - 4f DONE: rl/v7_belief.py (belief module; off = bit-identical; stop-gradient; leak).
          - 0e DONE with a gap: baseline.md has entattn_check, consult_cost (contaminated) and a
            100-game pipeline smoke; no trained entattn checkpoint exists on this machine.
          - Embedder sweep b/c/d still running for the record (see §C STATE).
          - pytest lives in WSL (~/.local); Windows sklearn is broken (numpy 2) -> run tests in WSL.
 
-NEXT:    4d heads (rl/v7_heads.py: pointer MLP + bilinear term over candidate tokens, LSTM
-         on the game token, masked softmax; gates: logits invariant to padding, candidate-count
-         probe from the game token), then 4e value trunk (own builders, 4 layers, privileged
-         rows only there; leak gate levels 1-3 with probes/leak.py), 4f belief module, 4g PPO
-         plumbing + rl/v7_check.py collecting every gate.
+NEXT:    4g: rl/v7_policy.py (one module: builders + encoder + heads + value + belief, save/load
+         with dims record, --frozen, device), rl/v7_check.py (runs every v7 gate, exit 1 on any
+         failure), then PPO plumbing in policy_server.py behind --arch v7 (V7Obs buffers, BPTT
+         windows, batcher) and the 4g memory gate (update_profile.py, 5,000 steps within 16 GB;
+         consult_cost.py per-consult cost on an IDLE GPU — the sweep holds it until ~evening).
+         Lane B (Java 3a) still not started.
          Lane B (Java 3a) has not started: map StateEncoder.encodeEntityView / RLPlayer
          candidate builders / SocketPolicyClient hello with the graph tools, then the
          encoderV=7 skeleton behind -Drl.encoderV=7 emitting WIRE-V7 keys.

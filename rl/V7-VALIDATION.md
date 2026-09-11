@@ -694,3 +694,22 @@ encoded game token.
 | level 3 — consumer | the critic moves under the same swap | max \|Δvalue\| = 0.035 (≥ 1e-4) | pass |
 | planted leak refused | | a policy reading one `oe` value: level 2 max \|Δlogit\| > 1e-3 → refused | pass |
 
+## 4f — belief module `rl/v7_belief.py` (Lane C, 2026-09-11 12:00)
+
+Separate 2-layer transformer over the legal opponent tokens (hand slots,
+remaining deck, actions) and the game token; per-slot pointer over the
+remaining-deck tokens, per-card P(in hand) and P(next draw); outputs
+attached as features to the opponent tokens; own loss and optimiser;
+every input detached (stop-gradient into the shared builders).
+
+| gate | required | measured (`tests/test_v7_belief.py`) | result |
+|---|---|---|---|
+| `--belief off` → net bit-identical to 4e | `torch.equal` | logits `torch.equal` with the module off; differ (> 1e-9) with it on | pass |
+| loss never reaches a policy parameter | zero grads on shared builders | after `belief.loss(...).backward()`: every builder parameter grad None/0; belief params non-zero | pass |
+| leak gate with belief on | policy logits invariant to privileged swap | identical logits on 8 consults under `oe` / `v7_oe_hand` swaps | pass |
+| beats uniform-over-remaining on a planted rule | held-out log-lik > baseline | −1.31 vs −2.54 after 150 steps on 36 consults (12 held out) | pass |
+
+The real gate (Phase 6) is the held-out log-likelihood of the TRUE hand
+from self-play labels; this row shows the mechanism works, not that the
+game's hidden hands are predictable.
+
