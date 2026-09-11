@@ -475,3 +475,30 @@ verdicts agree, and v6's remaining defects (text and bag slices
 untrained) are harmless to a consumer that learns an adapter, which is
 every consumer in the design. Consumers would record `card_emb_v6`.
 
+**Decision (user, 20:42): keep iterating.**
+
+**v8, specified before training (same gates):** each slice's target must
+be both seed-independent and condition-bearing — v7 showed a target
+that is only the former (the frozen embedding) erases conditions.
+
+- text slice: relational distillation to the frozen encoder's in-batch
+  cosine matrix (the same objective the text *view* has had since v2,
+  weight 10), instead of v7's direct decode. Relational anchoring left
+  Snare/Spike at rank 79 in the view; decoding collapsed them to 6.
+- tree slice: reconstructs, in addition to the 68-column readout, the
+  tree's own token bag — a 2,048-bucket multi-hot of its hashed param
+  pieces and node ids (BCE, weight 1). Seed-independent by
+  construction and it contains the conditions (`cmcEQ2`, `UnlessCost`).
+- bag slice: reconstructs the 68-column readout (weight 1), as in v7.
+- everything else as v6 (`--fuse blocks --aux 1.0 --piece-dropout 0.2
+  --distill 10 --tree`).
+
+Prediction: text-slice overlap rises from 0.24 toward the view's own
+seed agreement, tree-slice overlap rises from 0.26, whole ≥ 0.40;
+Snare/Spike stays outside the top-10; swap pairs ≥ 14/16. Risk stated:
+the token-bag target could make the tree slice lookup-like and cost
+swap-pair smoothness; the readout target and piece dropout are the
+counterweights. If v8 fails G3 with G2 intact, the next lever is the
+text encoder's learning rate (3e-5 → 1e-5, fewer trainable layers), the
+remaining seed-dependent component.
+
