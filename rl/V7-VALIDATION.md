@@ -281,3 +281,57 @@ a per-card lookup, and neighbourhoods reflect token overlap rather
 than mechanical similarity. Seed 1 stopped. Per-view diagnostics
 (tree view alone, text view alone) follow before v6 is specified.
 
+### Per-view diagnostics, v5 and v2 (`rl/cardemb/diag_views.py`, 19:30)
+
+| version / view | dim | mv probe | colour R probe | Snare→Spike rank | swap within 500 | swap median |
+|---|---|---|---|---|---|---|
+| v5 text | 128 | 0.318 | 0.831 | 64 | 10/16 | 166 |
+| v5 struct (bag+printed+tree) | 288 | 0.997 | 1.000 | 30 | 12/16 | 94 |
+| v5 tree alone | 128 | 0.297 | 0.736 | 32 | 9/16 | 190 |
+| **v5 e_card** | 128 | 0.707 | 0.962 | 33 | 13/16 | 102 |
+| v2 text | 128 | 0.349 | 0.866 | 60 | 11/16 | 64 |
+| v2 struct (bag+printed) | 160 | 0.998 | 1.000 | **1** | **16/16** | **1** |
+| **v2 e_card** | 128 | 0.944 | 0.997 | 40 | 13/16 | 72 |
+
+Three things this table settles:
+
+1. **`e_card` was never trained, in any version (v1–v5).** The losses act
+   on the contrastive heads and the text view; the fusing projection
+   (`fuse`, `norm`) gets no gradient, so `e_card` has been a random
+   linear mix of the channel features, dominated by whichever channel
+   has the largest norm. v5's structure view reads mv at 0.997 and its
+   fused vector at 0.707. This is a defect in the embedder, recorded as
+   such; every gate result above stands (they measured what consumers
+   would have received), but the diagnosis in the v2–v4 rows that
+   attributed swap-pair failures to the text encoder is only half the
+   story — the blend was uncontrolled.
+2. The bag view alone puts all 16 swap pairs at rank 1 (they *are*
+   identical bags) and cannot separate Snare from Spike (rank 1). The
+   tree view alone separates them (rank 32) but scatters mechanically
+   similar cards (Requiting Hex / Cut Down at 27,422), because the
+   text↔tree contrastive objective rewards discrimination, not
+   smoothness over mechanics, and hashed param pieces make near-lookup
+   possible.
+3. The text view alone is the weakest on both counts in every version.
+
+**v6, specified before training (same gates):**
+
+- `e_card` is block-structured, each slice its own linear projection
+  followed by its own LayerNorm: text 48 | tree 32 | bag 16 | printed 32
+  (= 128). Cosine on `e_card` is then the width-weighted mean of the
+  per-slice cosines (37.5 % text, 25 % tree, 12.5 % bag, 25 % printed),
+  a stated blend instead of an accident of norms.
+- Reconstruction losses give the fused slices gradient and make them
+  mean what they are named: the tree slice must predict the 68-column
+  readout (MSE, weight 1); the printed slice must predict the 83 printed
+  floats (MSE, weight 1). The readout is a deterministic function of the
+  tree, so this asks the tree encoder to organise by mechanics first
+  and conditions second.
+- Param-piece dropout 0.2 in the tree encoder during training, against
+  lookup behaviour.
+- Everything else as v5 (`--positives same --distill 10 --tree`,
+  reminder text stripped). Prediction: G1 restored by construction; swap
+  pairs ≥ 14/16 because the bag and printed slices carry half the blend
+  and rank those pairs at 1; Snare/Spike stays apart because the text
+  and tree slices order cards *within* a shared bag.
+
