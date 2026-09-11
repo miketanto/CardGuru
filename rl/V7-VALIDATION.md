@@ -402,3 +402,16 @@ the enabler side of a synergy edge in this deck) rises from 0.72 to
 to the mixing. The held-out row count (769) is small; the enabler
 number's Wilson 95 % interval is roughly ±0.03.
 
+### 1d — `card_emb_v6` G3 — **FAIL** (20:12)
+
+| gate | threshold | measured | result |
+|---|---|---|---|
+| G3 seed 0 vs seed 1 top-10 Jaccard (2,000 random cards) | ≥ 0.40 | **0.369** | **FAIL** |
+| G3 same G2 verdicts on both seeds | identical | identical (all pass on seed 1 too) | pass |
+
+v6 is therefore not accepted (v1: 0.479, v2: 0.424 on the same gate).
+The two seeds agree on every gate verdict but not on fine neighbourhood
+structure. Per-slice seed overlap follows to locate the instability
+before v7 is specified; the deck-context rows above (1c/2b/2c) were run
+on v6 seed 0 and will be rerun on the accepted version.
+

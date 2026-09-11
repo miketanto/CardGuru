@@ -547,8 +547,19 @@
   "pass": true
  },
  "G3": {
-  "pass": null,
-  "note": "emb_seed1.pt absent"
+  "jaccard10": 0.3692100859666649,
+  "seed1_G2": {
+   "pass_cancel": true,
+   "pass_snare": true,
+   "pass_reprints": true,
+   "pass_swaps": true,
+   "cancel_counterspell_cos": 0.980394721031189,
+   "snare_spike_cos": 0.8737943768501282,
+   "swap_min": 0.7420672178268433,
+   "swap_mean": 0.8583139143884182
+  },
+  "verdicts_identical": true,
+  "pass": false
  },
  "pass": false
 }
