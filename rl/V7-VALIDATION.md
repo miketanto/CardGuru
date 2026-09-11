@@ -713,3 +713,19 @@ The real gate (Phase 6) is the held-out log-likelihood of the TRUE hand
 from self-play labels; this row shows the mechanism works, not that the
 game's hidden hands are predictable.
 
+## 4g (part 1) — `rl/v7_policy.py`, `rl/v7_check.py` (Lane C, 2026-09-11 12:30)
+
+| gate | required | measured | result |
+|---|---|---|---|
+| assembled policy runs on fixtures | logits [B,K] (−∞ on padding), value [B], game vector, LSTM state | `tests/test_v7_policy.py`: shapes and finiteness on 4 generated consults | pass |
+| checkpoint `dims` record | a disagreeing record is refused with the reason, before anything is built | `ent=63` in a saved record → `ValueError("dims record ...")` | pass |
+| `--frozen` | no trainable parameter | `policy_parameters() == []`, every `requires_grad` False | pass |
+| `rl/v7_check.py` collects every gate | exit 1 on any failure | 14 checks: wire ok/bad, parse, both probe self-tests, 8 pytest suites, `V6-SAME` (entattn_check summary identical to `baseline.md`: 23 checks / 1 known failure) — all pass, 65 s | pass |
+
+Parameter count at d 256 / 6 encoder layers / 4 value layers (card table
+excluded): total 17.4 M, policy-trainable 15.6 M, belief 1.8 M, critic 6.9 M.
+Still to do in 4g: the PPO plumbing inside `policy_server.py` behind
+`--arch v7` (V7Obs buffers, BPTT windows, batcher, `p10_init_net.py --arch
+v7`), and the memory gate (`update_profile.py` at 5,000 steps within the
+16 GB cgroup; `consult_cost.py` on an idle GPU).
+

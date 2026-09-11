@@ -154,17 +154,21 @@ STATE:   - 0a DONE: rl/WIRE-V7.md (contract), rl/wire_validate.py, rl/wire_fixtu
          - 4d DONE: rl/v7_heads.py (pointer + bilinear, LSTM on the game token, residual memory).
          - 4e DONE: rl/v7_value.py (separate value trunk; leak gate levels 1-3 pass).
          - 4f DONE: rl/v7_belief.py (belief module; off = bit-identical; stop-gradient; leak).
+         - 4g PART 1 DONE: rl/v7_policy.py (V7Policy: one module, save/load with dims record,
+           --frozen), rl/v7_check.py (14 checks, all pass, 65 s). PART 2 OPEN: PPO plumbing in
+           policy_server.py behind --arch v7, p10_init_net.py --arch v7, memory gate.
          - 0e DONE with a gap: baseline.md has entattn_check, consult_cost (contaminated) and a
            100-game pipeline smoke; no trained entattn checkpoint exists on this machine.
          - Embedder sweep b/c/d still running for the record (see §C STATE).
          - pytest lives in WSL (~/.local); Windows sklearn is broken (numpy 2) -> run tests in WSL.
 
-NEXT:    4g: rl/v7_policy.py (one module: builders + encoder + heads + value + belief, save/load
-         with dims record, --frozen, device), rl/v7_check.py (runs every v7 gate, exit 1 on any
-         failure), then PPO plumbing in policy_server.py behind --arch v7 (V7Obs buffers, BPTT
-         windows, batcher) and the 4g memory gate (update_profile.py, 5,000 steps within 16 GB;
-         consult_cost.py per-consult cost on an IDLE GPU — the sweep holds it until ~evening).
-         Lane B (Java 3a) still not started.
+NEXT:    4g part 2: policy_server.py --arch v7 (consult path: check_hello_v7 -> parse_consult ->
+         V7Policy.forward with per-connection LSTM state; PPO: buffers of V7Obs + state, BPTT
+         windows, batcher via v7_obs.collate; entattn path untouched — run rl/v7_check.py and
+         rl/entattn_check.py after every edit), p10_init_net.py --arch v7, then the memory gate.
+         Lane B (Java 3a) still not started: map StateEncoder.encodeEntityView / RLPlayer
+         candidate builders / SocketPolicyClient with the graph tools, then emit WIRE-V7 keys
+         behind -Drl.encoderV=7.
          Lane B (Java 3a) has not started: map StateEncoder.encodeEntityView / RLPlayer
          candidate builders / SocketPolicyClient hello with the graph tools, then the
          encoderV=7 skeleton behind -Drl.encoderV=7 emitting WIRE-V7 keys.
