@@ -612,3 +612,16 @@ one bit of the true hand into a "legal" field would pass
 present/absent and fail swap. Consumers: Lane B gate 3d, Lane C gates
 4b/4c/4e/4f.
 
+## 4a — server-side wire parse `rl/v7_obs.py` (Lane C, 2026-09-11 09:50)
+
+| gate | required | measured | result |
+|---|---|---|---|
+| fixtures parse | every valid fixture | 7 × 20 consults → `V7Obs` (typed edge matrix over the token space, `refers_to` multi-hot, masks); names resolved to `cards_v1` ids 2,576 / 2,576 | pass |
+| every malformed fixture refused with the reason | 13 (the reply-range fixture is the server's own output, checked by `wire_validate.py`) | 13/13 refused, message names key and position; handshake refuses a missing `wire`, a dims mismatch, and a `card_emb` mismatch | pass |
+| `entattn_check.py` unchanged | bit-identical | `rl/v7_obs.py` is not imported by the v6 path; `policy_server.py` untouched on this branch (same 23 checks / same pre-existing R0-NOBIAS as `rl/artifacts/v7/baseline.md`) | pass |
+| unit tests | | `tests/test_v7_obs.py`: 22 passed | pass |
+
+`collate()` pads to common sizes with boolean masks per group; the
+checkpoint `dims` record is `dims_record(hello)` (wire, v7_dims, rtypes,
+ctypes, zones, card_emb, d_c). Consumers: 4b token builders (next).
+
