@@ -31,20 +31,29 @@ REPO = os.path.abspath(os.path.join(HERE, "..", ".."))
 
 import data as D                                   # noqa: E402
 from model import CardEmbedder, supcon_loss, masked_infonce, relational_distill, retrieval_at_k   # noqa: E402
+import tree as T                                   # noqa: E402
 
 
-def struct_keys(records):
-    """One integer per distinct (graph, printed) vector."""
+def struct_keys(records, trees=None):
+    """One integer per distinct structure: (graph, printed) vector, plus the
+    canonical ability-tree key when the tree channel is on (v5)."""
     seen = {}
     keys = []
-    for r in records:
-        k = (tuple(r.graph), tuple(r.printed))
+    for i, r in enumerate(records):
+        k = (tuple(r.graph), tuple(r.printed), trees[i]["key"] if trees is not None else None)
         keys.append(seen.setdefault(k, len(seen)))
     return torch.tensor(keys), len(seen)
 
 
+def tree_batch(trees, recs, device):
+    if trees is None:
+        return None
+    t = T.collate_trees([trees[r.id] for r in recs])
+    return {k: v.to(device) for k, v in t.items()}
+
+
 @torch.no_grad()
-def evaluate(model, records, keys, batch, device, n_max=4096, seed=0):
+def evaluate(model, records, keys, batch, device, n_max=4096, seed=0, trees=None):
     model.eval()
     g = random.Random(seed)
     idx = list(range(len(records)))
@@ -54,7 +63,7 @@ def evaluate(model, records, keys, batch, device, n_max=4096, seed=0):
     for i in range(0, len(idx), batch):
         b = [records[j] for j in idx[i:i + batch]]
         texts, printed, graph = D.to_tensors(b)
-        _, zt, zs, _ = model(texts, graph.to(device), printed.to(device))
+        _, zt, zs, _ = model(texts, graph.to(device), printed.to(device), tree_batch(trees, b, device))
         zts.append(zt)
         zss.append(zs)
     zt, zs = torch.cat(zts), torch.cat(zss)
@@ -82,6 +91,8 @@ def main():
     ap.add_argument("--limit", type=int, default=0, help="smoke: train on the first N cards")
     ap.add_argument("--device", default="cuda" if torch.cuda.is_available() else "cpu")
     ap.add_argument("--no-export", action="store_true")
+    ap.add_argument("--tree", action="store_true",
+                    help="v5: add the ability-tree encoder (rl/cardemb/tree.py) to the structure view")
     args = ap.parse_args()
 
     torch.manual_seed(args.seed)
@@ -106,12 +117,13 @@ def main():
     if args.limit:
         train = train[:args.limit]
         heldout = heldout[:max(64, args.limit // 10)]
-    keys_all, n_keys = struct_keys(records)
+    trees = T.build_trees(args.cards, tokenscripts_dir=os.environ.get("CARDGURU_TOKENSCRIPTS")) if args.tree else None
+    keys_all, n_keys = struct_keys(records, trees)
     say(f"cards={len(records)} train={len(train)} heldout={len(heldout)} distinct_struct={n_keys} "
-        f"device={args.device} seed={args.seed} text_model={args.text_model}")
+        f"tree={args.tree} device={args.device} seed={args.seed} text_model={args.text_model}")
 
     model = CardEmbedder(text_model=args.text_model, graph_dim=len(records[0].graph),
-                        printed_dim=D.PRINTED_DIM, tau=args.tau).to(args.device)
+                        printed_dim=D.PRINTED_DIM, tau=args.tau, tree=args.tree).to(args.device)
     text_params = list(model.text.parameters())
     text_ids = {id(p) for p in text_params}
     head_params = [p for p in model.parameters() if id(p) not in text_ids]
@@ -156,7 +168,8 @@ def main():
             texts, printed, graph = D.to_tensors(b)
             k = torch.tensor([train_keys[j].item() for j in bi], device=args.device)
             with torch.autocast("cuda", dtype=torch.float16, enabled=(args.device == "cuda")):
-                _, zt, zs, ht = model(texts, graph.to(args.device), printed.to(args.device))
+                _, zt, zs, ht = model(texts, graph.to(args.device), printed.to(args.device),
+                                      tree_batch(trees, b, args.device))
             if args.positives == "same":
                 loss_c = masked_infonce(zt.float(), zs.float(), k, model.tau)
             else:
@@ -176,8 +189,8 @@ def main():
             sched.step()
             run += loss.item()
             step += 1
-        tr = evaluate(model, train, train_keys, args.batch, args.device, seed=args.seed)
-        ho = evaluate(model, heldout, held_keys, args.batch, args.device, seed=args.seed)
+        tr = evaluate(model, train, train_keys, args.batch, args.device, seed=args.seed, trees=trees)
+        ho = evaluate(model, heldout, held_keys, args.batch, args.device, seed=args.seed, trees=trees)
         say(f"epoch={epoch + 1}/{args.epochs} train_loss={run / steps_per_epoch:.4f} "
             f"(infonce={run_c / steps_per_epoch:.4f} distill={run_d / steps_per_epoch:.4f}) "
             f"train_r@1={tr['r@1']:.3f} train_r@10={tr['r@10']:.3f} "
@@ -195,7 +208,8 @@ def main():
         for i in range(0, len(records), args.batch):
             b = records[i:i + args.batch]
             texts, printed, graph = D.to_tensors(b)
-            embs.append(model.embed(texts, graph.to(args.device), printed.to(args.device)).float().cpu())
+            embs.append(model.embed(texts, graph.to(args.device), printed.to(args.device),
+                                    tree_batch(trees, b, args.device)).float().cpu())
     emb = torch.cat(embs)
     suffix = f"_seed{args.seed}" if args.seed != 0 else ""
     torch.save(emb, os.path.join(args.out, f"emb{suffix}.pt"))

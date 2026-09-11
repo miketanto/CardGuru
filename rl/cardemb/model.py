@@ -42,9 +42,73 @@ def mean_pool(last_hidden, attention_mask):
     return (last_hidden * m).sum(1) / m.sum(1).clamp(min=1e-6)
 
 
+class TreeAttention(nn.Module):
+    """Self-attention over ability nodes with a learned per-head bias per edge type
+    (both directions), so Execute / SubAbility / ref:* links shape the mixing."""
+
+    def __init__(self, d, heads, n_edge_types):
+        super().__init__()
+        self.h, self.dk = heads, d // heads
+        self.qkv = nn.Linear(d, 3 * d)
+        self.out = nn.Linear(d, d)
+        self.edge_bias = nn.Embedding(n_edge_types, heads)
+        nn.init.zeros_(self.edge_bias.weight)
+
+    def forward(self, x, edges, mask):
+        B, N, d = x.shape
+        q, k, v = self.qkv(x).view(B, N, 3, self.h, self.dk).unbind(2)
+        logits = torch.einsum("bihd,bjhd->bhij", q, k) / (self.dk ** 0.5)
+        eb = self.edge_bias(edges) + self.edge_bias(edges.transpose(1, 2))      # [B, N, N, h]
+        logits = logits + eb.permute(0, 3, 1, 2)
+        logits = logits.masked_fill(~mask.view(B, 1, 1, N), float("-inf"))
+        att = torch.nan_to_num(torch.softmax(logits, dim=-1))
+        return self.out(torch.einsum("bhij,bjhd->bihd", att, v).reshape(B, N, d))
+
+
+class TreeEncoder(nn.Module):
+    """v5 graph channel: the ability tree (rl/cardemb/tree.py tensors) -> d_out.
+    Node = kind + api + apiKind + mode + keyword embeddings + mean over
+    (param key, value piece) pairs of E_key * E_val; 2 transformer layers
+    with edge-type attention bias; masked mean pool."""
+
+    def __init__(self, d=128, heads=4, layers=2, d_out=128):
+        super().__init__()
+        from tree import KINDS, N_API_BUCKETS, N_MODE_BUCKETS, N_KW_BUCKETS, N_KEY_BUCKETS, N_VAL_BUCKETS, N_EDGE_BUCKETS
+        self.e_kind = nn.Embedding(len(KINDS), d)
+        self.e_api = nn.Embedding(N_API_BUCKETS, d)
+        self.e_apik = nn.Embedding(5, d)
+        self.e_mode = nn.Embedding(N_MODE_BUCKETS, d)
+        self.e_kw = nn.Embedding(N_KW_BUCKETS, d)
+        self.e_key = nn.Embedding(N_KEY_BUCKETS, d, padding_idx=0)
+        self.e_val = nn.Embedding(N_VAL_BUCKETS, d, padding_idx=0)
+        self.blocks = nn.ModuleList()
+        for _ in range(layers):
+            self.blocks.append(nn.ModuleDict({
+                "n1": nn.LayerNorm(d), "att": TreeAttention(d, heads, N_EDGE_BUCKETS),
+                "n2": nn.LayerNorm(d), "ffn": nn.Sequential(nn.Linear(d, 2 * d), nn.GELU(), nn.Linear(2 * d, d))}))
+        self.norm = nn.LayerNorm(d)
+        self.out = nn.Linear(d, d_out)
+
+    def forward(self, t):
+        pairs = t["pairs"]                                                       # [B, N, P, 2]
+        pk, pv = self.e_key(pairs[..., 0]), self.e_val(pairs[..., 1])            # [B, N, P, d]
+        valid = (pairs[..., 0] > 0).to(pk.dtype).unsqueeze(-1)
+        pfeat = (pk * pv * valid).sum(2) / valid.sum(2).clamp(min=1.0)
+        x = (self.e_kind(t["kind"]) + self.e_api(t["api"]) + self.e_apik(t["api_kind"])
+             + self.e_mode(t["mode"]) + self.e_kw(t["kw"]) + pfeat)
+        mask = t["mask"]
+        x = x * mask.unsqueeze(-1).to(x.dtype)
+        for blk in self.blocks:
+            x = x + blk["att"](blk["n1"](x), t["edges"], mask)
+            x = x + blk["ffn"](blk["n2"](x))
+        h = self.norm(x)
+        m = mask.unsqueeze(-1).to(h.dtype)
+        return self.out((h * m).sum(1) / m.sum(1).clamp(min=1.0))
+
+
 class CardEmbedder(nn.Module):
     def __init__(self, text_model=DEFAULT_TEXT_MODEL, graph_dim=68, printed_dim=83,
-                 d_t=128, d_g=128, d_p=32, d_c=128, d_z=128, tau=0.05):
+                 d_t=128, d_g=128, d_p=32, d_c=128, d_z=128, tau=0.05, tree=False, d_tree=128):
         super().__init__()
         from transformers import AutoModel, AutoTokenizer
         self.tokenizer = AutoTokenizer.from_pretrained(text_model)
@@ -54,14 +118,16 @@ class CardEmbedder(nn.Module):
         self.graph_mlp = nn.Sequential(nn.Linear(graph_dim, 256), nn.GELU(),
                                        nn.Linear(256, d_g), nn.GELU())
         self.printed_proj = nn.Linear(printed_dim, d_p)
-        self.fuse = nn.Linear(d_t + d_g + d_p, d_c)
+        self.tree_enc = TreeEncoder(d_out=d_tree) if tree else None
+        d_struct = d_g + d_p + (d_tree if tree else 0)
+        self.fuse = nn.Linear(d_t + d_struct, d_c)
         self.norm = nn.LayerNorm(d_c)
         # contrastive views
         self.z_text = nn.Sequential(nn.Linear(d_t, d_z), nn.GELU(), nn.Linear(d_z, d_z))
-        self.z_struct = nn.Sequential(nn.Linear(d_g + d_p, d_z), nn.GELU(), nn.Linear(d_z, d_z))
+        self.z_struct = nn.Sequential(nn.Linear(d_struct, d_z), nn.GELU(), nn.Linear(d_z, d_z))
         self.tau = tau
         self.config = dict(text_model=text_model, graph_dim=graph_dim, printed_dim=printed_dim,
-                           d_t=d_t, d_g=d_g, d_p=d_p, d_c=d_c, d_z=d_z, tau=tau)
+                           d_t=d_t, d_g=d_g, d_p=d_p, d_c=d_c, d_z=d_z, tau=tau, tree=tree, d_tree=d_tree)
 
     # --- channels
     def encode_text(self, texts, max_len=128):
@@ -71,16 +137,20 @@ class CardEmbedder(nn.Module):
         out = self.text(**tok).last_hidden_state
         return self.text_proj(mean_pool(out, tok["attention_mask"]))
 
-    def encode_struct(self, graph, printed):
-        return self.graph_mlp(graph), self.printed_proj(printed)
+    def encode_struct(self, graph, printed, trees=None):
+        parts = [self.graph_mlp(graph), self.printed_proj(printed)]
+        if self.tree_enc is not None:
+            assert trees is not None, "tree=True needs collated tree tensors"
+            parts.append(self.tree_enc(trees))
+        return torch.cat(parts, -1)
 
-    def forward(self, texts, graph, printed):
+    def forward(self, texts, graph, printed, trees=None):
         """Returns (e_card, z_text, z_struct, h_text)."""
         ht = self.encode_text(texts)
-        hg, hp = self.encode_struct(graph, printed)
-        e = self.norm(self.fuse(torch.cat([ht, hg, hp], -1)))
+        hs = self.encode_struct(graph, printed, trees)
+        e = self.norm(self.fuse(torch.cat([ht, hs], -1)))
         zt = F.normalize(self.z_text(ht), dim=-1)
-        zs = F.normalize(self.z_struct(torch.cat([hg, hp], -1)), dim=-1)
+        zs = F.normalize(self.z_struct(hs), dim=-1)
         return e, zt, zs, ht
 
     @torch.no_grad()
@@ -93,8 +163,8 @@ class CardEmbedder(nn.Module):
         return mean_pool(self.text(**tok).last_hidden_state, tok["attention_mask"])
 
     @torch.no_grad()
-    def embed(self, texts, graph, printed):
-        return self.forward(texts, graph, printed)[0]
+    def embed(self, texts, graph, printed, trees=None):
+        return self.forward(texts, graph, printed, trees)[0]
 
 
 def supcon_loss(zt, zs, keys, tau):

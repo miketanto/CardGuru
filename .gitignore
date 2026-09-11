@@ -8,3 +8,4 @@ eval/consistency/cache.json
 
 # v7 decklist corpus: raw per-event fetches are re-fetchable, only the built corpus is committed
 rl/artifacts/decklists_v1/raw/
+rl/artifacts/cards_v1/trees.pt
