@@ -253,3 +253,31 @@ and Spike now differ, Cancel and Counterspell still coincide). Loss and
 distillation as v2 (`--positives same --distill 10`), reminder text
 stripped as v3/v4. Same gates.
 
+## 1d — card embedder `card_emb_v5` (ability-tree channel) — **FAIL** (Lane A, 2026-09-10 19:22)
+
+Seed 0, v4 recipe + `--tree`. Retrieval r@1 held-out **0.932** (v2–v4:
+0.74): with the tree in the structure view, text has a distinct target
+per card. Gates:
+
+| gate | threshold | measured (held-out) | result |
+|---|---|---|---|
+| G1 mv / power / toughness probe acc | ≥ 0.9 | **0.708 / 0.889 / 0.888** | **FAIL** |
+| G1 colours | each ≥ 0.97 | min **0.962** (R) | **FAIL** |
+| G1 types / keywords / answer classes | ≥ 0.97 / f1 ≥ 0.8 | 0.999 / 0.933 / 0.817 | pass |
+| G2 Cancel / Counterspell | ≥ 0.85 | 0.999 | pass |
+| G2 Spell Snare / Force Spike | Spike ∉ Snare top-10 | rank 34, cos **0.730** (best of any version) | pass |
+| G2 functional reprints | 10/10 | 10/10 | pass |
+| G2 swap pairs | ≥ 14/16 within 500, median ≤ 50 | 13/16, median **102** | **FAIL** |
+
+Two new failures, both pointing the same way. The printed fields are
+no longer linearly recoverable from `e_card`: the fused projection
+(text 128 + bag 128 + printed 32 + tree 128 → 128) is free to spend its
+capacity on the tree, and nothing in the loss asks the fused vector to
+keep the printed one-hots readable — in v1–v4 they survived only
+because the structure view was mostly printed + bag. And the swap pairs
+got worse while retrieval got much better: hashed param pieces make
+31,881 of 35,478 trees distinct, so the structure view can behave like
+a per-card lookup, and neighbourhoods reflect token overlap rather
+than mechanical similarity. Seed 1 stopped. Per-view diagnostics
+(tree view alone, text view alone) follow before v6 is specified.
+
