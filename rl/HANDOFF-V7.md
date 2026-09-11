@@ -139,16 +139,21 @@ Updated in place by the Lane A session; the block in §B is the generic
 starting prompt and stays as written.
 
 ```
-STATE:   - Embedder versions: v1 FAIL (structure-keyed positives merged Snare/Spike),
-           v2 FAIL (swap cosine bar; bar found scale-dependent), v3 FAIL (distill 3:
-           Snare/Spike cos 0.912; swap 13/16). Gates now rank-based for Snare/Spike
-           and swap pairs (pre-registered before v4; V7-VALIDATION.md §1d v2, v3).
-         - card_emb_v4 training in WSL (hidden wsl.exe, <scratchpad>/train_v4.sh):
-           v2 recipe (--positives same --distill 10) + reminder text stripped, seeds
-           0,1, 30 epochs, ~17 min/seed. Runner rl/artifacts/card_emb_v4/train_runner.log.
-           Then: python3 rl/cardemb/gates.py --art rl/artifacts/card_emb_v4
-         - Deck-tensor precompute (fingerprint bias for 12,612 decks) running in WSL:
-           rl/artifacts/deck_ctx_v1/prep.log -> "PREP DONE"; writes decks_cache.pt.
+STATE:   - Embedder versions (all FAIL, each recorded in V7-VALIDATION.md §1d): v1
+           structure-keyed positives merged Snare/Spike; v2 fixed that, swap pairs
+           13/16; v3 (distill 3) 13/16 and Snare/Spike cos regressed; v4 (reminder
+           text stripped) 12/16. Conclusion recorded: the 68-column readout bag cannot
+           carry conditions, so text alone had to, and MiniLM cannot do both jobs.
+         - card_emb_v5 = v4 recipe + the ability-tree graph channel (rl/cardemb/tree.py,
+           TreeEncoder in model.py, --tree). Training in WSL (hidden wsl.exe,
+           <scratchpad>/train_v5.sh): seeds 0,1, 30 epochs, ~20 min/seed. Runner
+           rl/artifacts/card_emb_v5/train_runner.log. Then:
+           python3 rl/cardemb/gates.py --art rl/artifacts/card_emb_v5
+           Tree cache rl/artifacts/cards_v1/trees.pt (120 MB, gitignored; rebuild:
+           python3 rl/cardemb/tree.py, 34 s, needs CARDGURU_TOKENSCRIPTS).
+         - Deck tensors for masked training cached: rl/artifacts/deck_ctx_v1/decks_cache.pt
+           (12,612 decks, 85 s; gitignored? no — 2a data, keep local; rebuild via
+           train_masked.py prepare()). train_masked.py smoke-tested end to end.
          - 0c corpus FINAL: rl/artifacts/decklists_v1 (12,612 clean unique lists,
            Jul+Aug+Sep 2026, committed f403ddb). MTGO fetch finished; raw/ is gitignored.
 
@@ -167,13 +172,13 @@ DONE:    0b PASS  rl/artifacts/cards_v1 (34,642 faces + 836 tokens, 0 unknown ov
          0c code  rl/decklists/fetch_mtgo.py, build_corpus.py (mtgo.com month
                   archives: 250-450 events/month, ~20 lists/event, cold page = 25 s)
 
-OPEN:    1. when card_emb_v4 ALLDONE: gates.py --art rl/artifacts/card_emb_v4 -> table
+OPEN:    1. when card_emb_v5 ALLDONE: gates.py --art rl/artifacts/card_emb_v5 -> table
             into V7-VALIDATION.md §1d (v4); if PASS: move rl/artifacts/card_emb_v1/README.md
             to the passing version with numbers, commit emb.pt (18 MB fp32) + gates.json +
             index.json + emb_seed1.pt (not model.pt/ckpt), and point train_masked.py
-            --emb at it. If v4 fails on the same three reminder-heavy pairs: v5 =
-            --text-model sentence-transformers/paraphrase-mpnet-base-v2 (cached in WSL,
-            ~5x slower), same gates.
+            --emb at it (absolute path accepted). If v5 fails: look at which pairs and
+            whether the tree view alone (z_struct) separates them before touching
+            anything else; a bigger text model is the last lever, not the next.
          2. when PREP DONE and a version passes: python3 rl/cardemb/train_masked.py
             --emb ../card_emb_vN/emb.pt (or copy emb.pt) -> deck_ctx_v1, §1c/2b gate =
             held-out masked top-1/top-10 vs frequency baselines; then
@@ -194,6 +199,6 @@ GOTCHAS: - Driving WSL from the Bash tool: `$VAR`/`$(...)` inside wsl.exe -- bas
          - Heredocs with `\n` inside python -c strings get mangled by the Bash
            tool; use the Edit tool for lines containing escapes.
 
-COMMITS: v7/lane-a pushed through f403ddb. Uncommitted: rl/artifacts/card_emb_v1/README.md
+COMMITS: v7/lane-a pushed through c0c9206. Uncommitted: rl/artifacts/card_emb_v1/README.md
          (draft), rl/artifacts/decklists_v1/raw (gitignored).
 ```
