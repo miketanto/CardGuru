@@ -150,6 +150,67 @@ def collate_trees(trees):
     return out
 
 
+# --- v8: the ability tree serialised as text (UniXcoder-style, CARDEMB-RESEARCH.md §2c) ---
+
+_DIGITS = re.compile(r"\d+")
+
+
+def script_text(rec, max_chars=1200):
+    """Flatten a Forge record's ability nodes into one string the pretrained
+    text encoder reads next to the oracle text.  Node ids that other nodes
+    reference (SVar names) are kept as literal tokens so Execute=TrigDestroy
+    and the TrigDestroy node share a token; description params are dropped;
+    numbers are bucketed exactly as in the oracle text channel."""
+    parts = []
+    for n in rec.get("nodes") or []:
+        kind = n.get("kind")
+        p = n.get("params") or {}
+        head = [str(kind)]
+        nid = str(n.get("id") or "")
+        if nid and not nid.startswith(("ab", "kw")):
+            head.append(nid)
+        api = n.get("api") or p.get("SP") or p.get("AB") or p.get("DB")
+        if api:
+            head.append(str(api))
+        mode = p.get("Mode") or n.get("mode")
+        if mode:
+            head.append("Mode=" + str(mode))
+        if n.get("keyword"):
+            head.append("Keyword=" + str(n["keyword"]) + ("(" + " ".join(map(str, n.get("args") or [])) + ")" if n.get("args") else ""))
+        if kind == "SVarCount":
+            head.append("Count=" + str(n.get("count")))
+        if kind == "SVarValue":
+            head.append("Value=" + str(n.get("value")))
+        kv = [f"{k}={v}" for k, v in p.items() if k not in DROP_PARAMS and k not in ("SP", "AB", "DB", "Mode")]
+        parts.append(" ".join(head + kv))
+    t = " ; ".join(parts)
+    t = _DIGITS.sub(lambda m: bucket_number(m.group(0)), t)
+    return t[:max_chars]
+
+
+def build_scripts(cards_dir=CARDS_V1, dataset_path=os.path.join(REPO, "data", "dataset.jsonl.gz"),
+                  tokenscripts_dir=None, extra_dir=os.path.join(REPO, "rl", "cards", "extra_scripts"),
+                  out_path=None):
+    """One script string per cards_v1 face id; cached to <cards_dir>/scripts.json.gz."""
+    out_path = out_path or os.path.join(cards_dir, "scripts.json.gz")
+    if os.path.exists(out_path):
+        with gzip.open(out_path, "rt", encoding="utf-8") as fh:
+            return json.load(fh)
+    by_key = {}
+    for fk, fi, r in _forge_records(dataset_path, tokenscripts_dir, extra_dir):
+        by_key[(fk, fi)] = r
+    scripts = []
+    with gzip.open(os.path.join(cards_dir, "fields.jsonl.gz"), "rt", encoding="utf-8") as fh:
+        for line in fh:
+            f = json.loads(line)
+            r = by_key.get((f.get("file"), f.get("face_index") or 0)) or {}
+            scripts.append(script_text(r))
+    with gzip.open(out_path, "wt", encoding="utf-8") as fh:
+        json.dump(scripts, fh)
+    print(f"scripts: {len(scripts)} serialised -> {out_path}")
+    return scripts
+
+
 # --- building the per-id cache ----------------------------------------------------
 
 def _forge_records(dataset_path, tokenscripts_dir, extra_dir):
@@ -198,6 +259,9 @@ def build_trees(cards_dir=CARDS_V1, dataset_path=os.path.join(REPO, "data", "dat
 if __name__ == "__main__":
     import data as D
     recs, names = D.load_cards()
+    scripts = build_scripts(tokenscripts_dir=os.environ.get("CARDGURU_TOKENSCRIPTS"))
+    for q in ("spell snare", "force spike", "elektra, daughter of the hand", "requiting hex"):
+        print(f"{recs[names[q]].name:32s} :: {scripts[names[q]][:200]}")
     trees = build_trees(tokenscripts_dir=os.environ.get("CARDGURU_TOKENSCRIPTS"))
     for q in ("spell snare", "force spike", "elektra, daughter of the hand", "ravenous chupacabra",
               "requiting hex", "cut down", "counterspell", "cancel"):

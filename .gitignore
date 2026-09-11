@@ -15,3 +15,6 @@ rl/artifacts/*/model.pt
 rl/artifacts/*/model_seed*.pt
 rl/artifacts/*/text_anchor.pt
 !rl/artifacts/deck_ctx_v1/model_seed0.pt
+rl/artifacts/cards_v1/scripts.json.gz
+rl/artifacts/cardemb_sweep/**/*.pt
+rl/artifacts/*/script_anchor.pt

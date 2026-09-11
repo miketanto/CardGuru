@@ -139,25 +139,22 @@ Updated in place by the Lane A session; the block in §B is the generic
 starting prompt and stays as written.
 
 ```
-STATE:   - Embedder versions v1-v6 all FAIL, each recorded in V7-VALIDATION.md §1d.
-           v6 (block-structured e_card + reconstruction losses) passed G1 and G2 on
-           both seeds (mv 0.993, Snare/Spike rank 19, swap 14/16 median 26) but
-           FAILED G3: seed-to-seed top-10 Jaccard 0.369 < 0.40. Per-slice overlap:
-           text 0.238, tree 0.263, bag 0.647, printed 0.855 — the slices without a
-           reconstruction loss are per-seed random projections.
-         - card_emb_v7 = v6 + a deterministic reconstruction target for EVERY slice
-           (text slice -> frozen pretrained MiniLM embedding; bag slice -> readout).
-           Training in WSL (hidden wsl.exe, <scratchpad>/train_v7.sh): seeds 0,1,
-           30 epochs, ~20 min/seed. Runner rl/artifacts/card_emb_v7/train_runner.log.
-           Then: python3 rl/cardemb/gates.py --art rl/artifacts/card_emb_v7 (needs both
-           seeds for G3); per-slice overlap: <scratchpad>/slice_jaccard.py <art>
-           (copy of it is worth committing to rl/cardemb/ if v7 is accepted).
-         - deck_ctx_v1 trained on v6 seed 0 (PROVISIONAL: v6 not accepted): masked
-           top-1 0.407 / top-10 0.727 vs freq 0.02 / 0.13; role probe wincon 0.982,
-           answer 0.960, enabler 0.814 (e_card ref 0.720). Recorded in
-           V7-VALIDATION.md §1c/2b, §2c with the caveat; RERUN on the accepted
-           embedder (train_masked.py --emb <abs emb.pt>, ~8 min; probe_roles.py) and
-           append correction rows.
+STATE:   - Embedder v1-v7 all FAIL (V7-VALIDATION.md §1d). v6 passed every content gate on
+           both seeds and missed G3 (seed top-10 Jaccard 0.369 < 0.40); v7's fix (decode the
+           frozen embedding) collapsed Snare/Spike. User decision: keep iterating, but
+           literature-grounded. rl/CARDEMB-RESEARCH.md records the sources and the v8 plan.
+         - OVERNIGHT SWEEP running in WSL (hidden wsl.exe, rl/cardemb/sweep.sh): config a =
+           v6 structure + stability recipe (LLRD 0.85, lr-text 2e-5, warmup 0.10, 40 epochs)
+           + 2-seed Procrustes-averaged artifacts (rl/cardemb/average.py); config b = the
+           serialised ability script read by the shared MiniLM (--struct script) + same
+           recipe + averaging. 4 seeds each; G3 measured artifact(0+1) vs artifact(2+3).
+           Results append to rl/artifacts/cardemb_sweep/RESULTS.md ("DONE a", "DONE b",
+           "SWEEP COMPLETE"). Per-config dirs rl/artifacts/cardemb_sweep/{a,b}/ (emb.pt,
+           emb_seed1.pt, gates.json; raw per-seed emb_raw_seedN.pt).
+         - Acceptance is still a row a person writes in V7-VALIDATION.md; the sweep only
+           reports. If a config passes all gates: copy its dir to rl/artifacts/card_emb_v8
+           (README from card_emb_v6/README.md, update version + numbers + the "artifact =
+           mean of two seeds" statement), commit emb.pt + emb_seed1.pt + gates.json.
          - Deck tensors for masked training cached: rl/artifacts/deck_ctx_v1/decks_cache.pt
            (12,612 decks, 85 s, gitignored; train_masked.py rebuilds it when the corpus
            changes). train_masked.py smoke-tested end to end.
@@ -179,7 +176,9 @@ DONE:    0b PASS  rl/artifacts/cards_v1 (34,642 faces + 836 tokens, 0 unknown ov
          0c code  rl/decklists/fetch_mtgo.py, build_corpus.py (mtgo.com month
                   archives: 250-450 events/month, ~20 lists/event, cold page = 25 s)
 
-OPEN:    1. when card_emb_v7 ALLDONE: gates.py --art rl/artifacts/card_emb_v7 -> table
+OPEN:    1. in the morning: read rl/artifacts/cardemb_sweep/RESULTS.md (gates tables + per-slice
+            overlap for a and b); write the §1d v8 row(s) in V7-VALIDATION.md; if a config
+            passes, accept as card_emb_v8 (see STATE) -> table
             into V7-VALIDATION.md §1d (v4); if PASS: move rl/artifacts/card_emb_v1/README.md
             to the passing version with numbers, commit emb.pt (18 MB fp32) + gates.json +
             index.json + emb_seed1.pt (not model.pt/ckpt), and point train_masked.py
@@ -209,6 +208,6 @@ GOTCHAS: - Driving WSL from the Bash tool: `$VAR`/`$(...)` inside wsl.exe -- bas
          - Heredocs with `\n` inside python -c strings get mangled by the Bash
            tool; use the Edit tool for lines containing escapes.
 
-COMMITS: v7/lane-a pushed through 5afc37e. Uncommitted: rl/artifacts/card_emb_v1/README.md
+COMMITS: v7/lane-a pushed through the sweep-launch commit (git log). Uncommitted: rl/artifacts/card_emb_v1/README.md
          (draft), rl/artifacts/decklists_v1/raw (gitignored).
 ```

@@ -53,7 +53,7 @@ def tree_batch(trees, recs, device):
 
 
 @torch.no_grad()
-def evaluate(model, records, keys, batch, device, n_max=4096, seed=0, trees=None):
+def evaluate(model, records, keys, batch, device, n_max=4096, seed=0, trees=None, scripts=None):
     model.eval()
     g = random.Random(seed)
     idx = list(range(len(records)))
@@ -63,7 +63,8 @@ def evaluate(model, records, keys, batch, device, n_max=4096, seed=0, trees=None
     for i in range(0, len(idx), batch):
         b = [records[j] for j in idx[i:i + batch]]
         texts, printed, graph = D.to_tensors(b)
-        _, zt, zs, _ = model(texts, graph.to(device), printed.to(device), tree_batch(trees, b, device))
+        _, zt, zs, _ = model(texts, graph.to(device), printed.to(device), tree_batch(trees, b, device),
+                             [scripts[r.id] for r in b] if scripts is not None else None)
         zts.append(zt)
         zss.append(zs)
     zt, zs = torch.cat(zts), torch.cat(zss)
@@ -98,7 +99,15 @@ def main():
     ap.add_argument("--aux", type=float, default=0.0,
                     help="v6: weight of the reconstruction losses (tree slice -> 68 readout, printed slice -> 83 printed)")
     ap.add_argument("--piece-dropout", type=float, default=0.0, help="v6: dropout on tree param pieces")
+    ap.add_argument("--struct", choices=["auto", "bag", "tree", "script"], default="auto",
+                    help="v8: 'script' = serialised ability tree read by the shared text encoder (CARDEMB-RESEARCH.md §2c)")
+    ap.add_argument("--llrd", type=float, default=1.0,
+                    help="v8: layer-wise learning-rate decay for the text encoder (0.85 per layer from the top; 1.0 = off)")
+    ap.add_argument("--warmup", type=float, default=0.05, help="fraction of steps for linear warmup (v8 recipe: 0.10)")
+    ap.add_argument("--script-max-len", type=int, default=256)
     args = ap.parse_args()
+    if args.struct == "auto":
+        args.struct = "tree" if args.tree else "bag"
 
     torch.manual_seed(args.seed)
     random.seed(args.seed)
@@ -122,23 +131,38 @@ def main():
     if args.limit:
         train = train[:args.limit]
         heldout = heldout[:max(64, args.limit // 10)]
-    trees = T.build_trees(args.cards, tokenscripts_dir=os.environ.get("CARDGURU_TOKENSCRIPTS")) if args.tree else None
-    keys_all, n_keys = struct_keys(records, trees)
+    trees = T.build_trees(args.cards, tokenscripts_dir=os.environ.get("CARDGURU_TOKENSCRIPTS")) if args.struct in ("tree", "script") else None
+    scripts = T.build_scripts(args.cards, tokenscripts_dir=os.environ.get("CARDGURU_TOKENSCRIPTS")) if args.struct == "script" else None
+    keys_all, n_keys = struct_keys(records, trees)      # the canonical tree key decides structural identity in both modes
     say(f"cards={len(records)} train={len(train)} heldout={len(heldout)} distinct_struct={n_keys} "
-        f"tree={args.tree} device={args.device} seed={args.seed} text_model={args.text_model}")
+        f"struct={args.struct} device={args.device} seed={args.seed} text_model={args.text_model}")
 
     model = CardEmbedder(text_model=args.text_model, graph_dim=len(records[0].graph),
-                        printed_dim=D.PRINTED_DIM, tau=args.tau, tree=args.tree,
-                        fuse=args.fuse, piece_dropout=args.piece_dropout).to(args.device)
+                        printed_dim=D.PRINTED_DIM, tau=args.tau, tree=(args.struct == "tree"),
+                        fuse=args.fuse, piece_dropout=args.piece_dropout, struct=args.struct).to(args.device)
     text_params = list(model.text.parameters())
     text_ids = {id(p) for p in text_params}
     head_params = [p for p in model.parameters() if id(p) not in text_ids]
-    opt = torch.optim.AdamW([{"params": text_params, "lr": args.lr_text},
-                             {"params": head_params, "lr": args.lr_head}], weight_decay=0.01)
+    groups = [{"params": head_params, "lr": args.lr_head}]
+    if args.llrd < 1.0:                    # v8: layer-wise LR decay (arXiv 2302.07778): top layer full LR, lower layers decayed
+        n_layers = model.text.config.num_hidden_layers
+        buckets = {}
+        for name, prm in model.text.named_parameters():
+            depth = n_layers                                  # embeddings: deepest decay
+            if ".layer." in name:
+                depth = n_layers - 1 - int(name.split(".layer.")[1].split(".")[0])
+            elif "pooler" in name:
+                depth = 0
+            buckets.setdefault(depth, []).append(prm)
+        for depth, prms in buckets.items():
+            groups.append({"params": prms, "lr": args.lr_text * (args.llrd ** depth)})
+    else:
+        groups.append({"params": text_params, "lr": args.lr_text})
+    opt = torch.optim.AdamW(groups, weight_decay=0.01)
     steps_per_epoch = math.ceil(len(train) / args.batch)
     total = steps_per_epoch * args.epochs
     sched = torch.optim.lr_scheduler.LambdaLR(
-        opt, lambda s: min(1.0, (s + 1) / max(1, int(0.05 * total)))
+        opt, lambda s: min(1.0, (s + 1) / max(1, int(args.warmup * total)))
         * 0.5 * (1 + math.cos(math.pi * min(1.0, s / max(1, total)))))
     scaler = torch.amp.GradScaler("cuda", enabled=(args.device == "cuda"))
     n_params = sum(p.numel() for p in model.parameters())
@@ -159,6 +183,24 @@ def main():
             torch.save(anchor, apath)
             say(f"text anchor computed from the pretrained encoder: {tuple(anchor.shape)}")
         anchor = anchor.to(args.device)
+    anchor_s = None
+    if args.distill > 0 and args.struct == "script":
+        spath = os.path.join(args.out, "script_anchor.pt")
+        if os.path.exists(spath):
+            anchor_s = torch.load(spath)
+        else:
+            model.eval()
+            chunks = []
+            with torch.no_grad(), torch.autocast("cuda", dtype=torch.float16, enabled=(args.device == "cuda")):
+                for i in range(0, len(records), 512):
+                    chunks.append(model.pooled_pretrained([scripts[r.id] for r in records[i:i + 512]], args.script_max_len).float().cpu())
+            anchor_s = torch.cat(chunks)
+            torch.save(anchor_s, spath)
+            say(f"script anchor computed from the pretrained encoder: {tuple(anchor_s.shape)}")
+        anchor_s = anchor_s.to(args.device)
+
+    def scripts_of(b):
+        return [scripts[r.id] for r in b] if scripts is not None else None
 
     train_keys = keys_all[[r.id for r in train]]
     held_keys = keys_all[[r.id for r in heldout]]
@@ -173,25 +215,31 @@ def main():
             b = [train[j] for j in bi]
             texts, printed, graph = D.to_tensors(b)
             k = torch.tensor([train_keys[j].item() for j in bi], device=args.device)
+            tb_ = tree_batch(trees, b, args.device) if args.struct == "tree" else None
+            ids = torch.tensor([b_.id for b_ in b], device=args.device)
             with torch.autocast("cuda", dtype=torch.float16, enabled=(args.device == "cuda")):
-                _, zt, zs, ht = model(texts, graph.to(args.device), printed.to(args.device),
-                                      tree_batch(trees, b, args.device))
+                _, zt, zs, ht = model(texts, graph.to(args.device), printed.to(args.device), tb_, scripts_of(b))
             if args.positives == "same":
                 loss_c = masked_infonce(zt.float(), zs.float(), k, model.tau)
             else:
                 loss_c = supcon_loss(zt.float(), zs.float(), k, model.tau)
             loss_d = torch.zeros((), device=args.device)
             if anchor is not None:
-                ids = torch.tensor([b_.id for b_ in b], device=args.device)
                 loss_d = relational_distill(ht.float(), anchor[ids])
+            if anchor_s is not None:                          # v8: the script view is anchored the same way
+                d_g, d_p = model.config["d_g"], model.config["d_p"]
+                loss_d = loss_d + relational_distill(model.last_hs[:, d_g + d_p:].float(), anchor_s[ids])
             loss_a = torch.zeros((), device=args.device)
             if args.aux > 0 and model.last_rec is not None:
-                r_hat, p_hat, t_hat, b_hat = model.last_rec
+                rec = model.last_rec
                 mse = torch.nn.functional.mse_loss
-                loss_a = (mse(r_hat.float(), graph.to(args.device)) + mse(p_hat.float(), printed.to(args.device))
-                          + mse(b_hat.float(), graph.to(args.device)))
-                if anchor is not None:                       # v7: text slice decodes the frozen pretrained embedding
-                    loss_a = loss_a + mse(t_hat.float(), anchor[ids] / anchor[ids].norm(dim=-1, keepdim=True).clamp(min=1e-6))
+                g_dev = graph.to(args.device)
+                loss_a = (mse(rec["readout"].float(), g_dev) + mse(rec["printed"].float(), printed.to(args.device))
+                          + mse(rec["bag"].float(), g_dev))
+                if anchor is not None:                       # v8: slices anchored RELATIONALLY (not decoded)
+                    loss_a = loss_a + args.distill * relational_distill(rec["text_slice"].float(), anchor[ids])
+                    loss_a = loss_a + args.distill * relational_distill(
+                        rec["slot2_slice"].float(), anchor_s[ids] if anchor_s is not None else anchor[ids])
             loss = loss_c + args.distill * loss_d + args.aux * loss_a
             run_c += loss_c.item(); run_d += loss_d.item(); run_a += loss_a.item()
             opt.zero_grad(set_to_none=True)
@@ -203,8 +251,8 @@ def main():
             sched.step()
             run += loss.item()
             step += 1
-        tr = evaluate(model, train, train_keys, args.batch, args.device, seed=args.seed, trees=trees)
-        ho = evaluate(model, heldout, held_keys, args.batch, args.device, seed=args.seed, trees=trees)
+        tr = evaluate(model, train, train_keys, args.batch, args.device, seed=args.seed, trees=trees, scripts=scripts)
+        ho = evaluate(model, heldout, held_keys, args.batch, args.device, seed=args.seed, trees=trees, scripts=scripts)
         say(f"epoch={epoch + 1}/{args.epochs} train_loss={run / steps_per_epoch:.4f} "
             f"(infonce={run_c / steps_per_epoch:.4f} distill={run_d / steps_per_epoch:.4f} aux={run_a / steps_per_epoch:.4f}) "
             f"train_r@1={tr['r@1']:.3f} train_r@10={tr['r@10']:.3f} "
@@ -223,7 +271,7 @@ def main():
             b = records[i:i + args.batch]
             texts, printed, graph = D.to_tensors(b)
             embs.append(model.embed(texts, graph.to(args.device), printed.to(args.device),
-                                    tree_batch(trees, b, args.device)).float().cpu())
+                                    tree_batch(trees, b, args.device), scripts_of(b)).float().cpu())
     emb = torch.cat(embs)
     suffix = f"_seed{args.seed}" if args.seed != 0 else ""
     torch.save(emb, os.path.join(args.out, f"emb{suffix}.pt"))
