@@ -1,0 +1,1 @@
+CONSULT|device=cuda|entities=30|k=10|wire_bytes=16701|json_ms=0.15|obs_ms=24.85|fwd1_ms=15.54|fwd8_ms=15.73|fwd8_per_row_ms=1.97|sample_ms=41.57|total_single_ms=82.10|python_share=81%
