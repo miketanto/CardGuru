@@ -147,12 +147,20 @@ STATE:   - 0a DONE: rl/WIRE-V7.md (contract), rl/wire_validate.py, rl/wire_fixtu
            rl/artifacts/v7/smoke_probe_D0.txt). Then fill RESULT in baseline.md, commit.
          - 4a DONE: rl/v7_obs.py (V7Obs, collate, check_hello_v7, dims_record),
            tests/test_v7_obs.py (22). policy_server.py untouched.
+         - 4b DONE: rl/v7_net.py (CardTable + adapter, per-zone MLP+skip builders, opponent
+           builders), tests/test_v7_net.py (faithfulness after L3 on fixtures).
+         - 4c DONE: rl/v7_encoder.py (StateGraphEncoder), tests/test_v7_encoder.py (zero-edge
+           exactness, permutation, masking, faithfulness after L4).
+         - 0e DONE with a gap: baseline.md has entattn_check, consult_cost (contaminated) and a
+           100-game pipeline smoke; no trained entattn checkpoint exists on this machine.
          - Embedder sweep b/c/d still running for the record (see §C STATE).
          - pytest lives in WSL (~/.local); Windows sklearn is broken (numpy 2) -> run tests in WSL.
 
-NEXT:    4b (rl/v7_net.py token builders: per-zone MLPs, embedding lookup by id from
-         card_emb_v8 + Linear(128,128) adapter, random-embedding mode; gate: shape tests +
-         faithfulness probe after L3 recovers planted fields), then 4c encoder, 4d heads.
+NEXT:    4d heads (rl/v7_heads.py: pointer MLP + bilinear term over candidate tokens, LSTM
+         on the game token, masked softmax; gates: logits invariant to padding, candidate-count
+         probe from the game token), then 4e value trunk (own builders, 4 layers, privileged
+         rows only there; leak gate levels 1-3 with probes/leak.py), 4f belief module, 4g PPO
+         plumbing + rl/v7_check.py collecting every gate.
          Lane B (Java 3a) has not started: map StateEncoder.encodeEntityView / RLPlayer
          candidate builders / SocketPolicyClient hello with the graph tools, then the
          encoderV=7 skeleton behind -Drl.encoderV=7 emitting WIRE-V7 keys.

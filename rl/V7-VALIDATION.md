@@ -643,3 +643,23 @@ overfit 256-d tokens on 2,400 samples. **The same probe must be rerun on
 the trained checkpoint (Phase 5) at the module defaults (0.99 / 0.95):
 this row establishes the architecture, not a training run.**
 
+## 4c — state-graph encoder `rl/v7_encoder.py` (Lane C, 2026-09-11 10:50)
+
+One pre-LN transformer over every token group in one sequence (game, players,
+entities, candidates, opponent hand / deck / actions), edge-typed attention
+bias (wire types 0–7 plus `refers_to` / `referred_by` for candidate and
+opponent-action tokens), stack-depth embedding, d 256 × 8 heads × 6 layers,
+FFN 1024, no pooling.
+
+| gate | required | measured (`tests/test_v7_encoder.py`, fixtures, float64) | result |
+|---|---|---|---|
+| zero-edge arm equals plain attention | exactly (R0 precedent) | `torch.equal` on the full sequence with all edges zero vs `use_edges=False` (the no-edge bias row is a fixed zero buffer); with edges present the output differs (> 1e-6) | pass |
+| permutation equivariance | ≤ 1e-6 | entities and candidates permuted per row, edge matrix / `refers` permuted consistently: max abs diff ≤ 1e-6 on entity, candidate and game tokens | pass |
+| masking | padding never changes a real token | 5 padding entities appended: real-token outputs ≤ 1e-6 from reference, padding outputs exactly 0 | pass |
+| faithfulness probe after L4 (untrained) | every planted field | identity at init (`allclose` to the builder tokens), so the 4b numbers reproduce: zone 1.000 · mine 0.996 · tapped 0.992 · power R² 0.955 · mv R² 0.940 | pass |
+
+As with 4b, the attention output projection and FFN output layer are
+zero-initialised so the untrained encoder is the identity; the probe at
+init establishes the architecture, and must be rerun on the trained net
+at the module defaults (0.99 / 0.95) in Phase 5.
+
