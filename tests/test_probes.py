@@ -6,7 +6,10 @@ import sys
 import pytest
 
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "rl", "probes"))
-pytest.importorskip("sklearn")
+try:                                   # a broken sklearn build raises more than ImportError
+    import sklearn                     # noqa: F401
+except Exception as e:                 # noqa: BLE001
+    pytest.skip(f"scikit-learn unavailable: {e}", allow_module_level=True)
 import faithfulness as Fp   # noqa: E402
 import leak as Lk           # noqa: E402
 
