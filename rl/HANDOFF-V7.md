@@ -152,8 +152,8 @@ STATE:   - Embedder versions (all FAIL, each recorded in V7-VALIDATION.md §1d):
            Tree cache rl/artifacts/cards_v1/trees.pt (120 MB, gitignored; rebuild:
            python3 rl/cardemb/tree.py, 34 s, needs CARDGURU_TOKENSCRIPTS).
          - Deck tensors for masked training cached: rl/artifacts/deck_ctx_v1/decks_cache.pt
-           (12,612 decks, 85 s; gitignored? no — 2a data, keep local; rebuild via
-           train_masked.py prepare()). train_masked.py smoke-tested end to end.
+           (12,612 decks, 85 s, gitignored; train_masked.py rebuilds it when the corpus
+           changes). train_masked.py smoke-tested end to end.
          - 0c corpus FINAL: rl/artifacts/decklists_v1 (12,612 clean unique lists,
            Jul+Aug+Sep 2026, committed f403ddb). MTGO fetch finished; raw/ is gitignored.
 
