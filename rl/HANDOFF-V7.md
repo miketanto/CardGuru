@@ -258,3 +258,145 @@ GOTCHAS: - Driving WSL from the Bash tool: `$VAR`/`$(...)` inside wsl.exe -- bas
 COMMITS: v7/lane-a pushed through the sweep-launch commit (git log). Uncommitted: rl/artifacts/card_emb_v1/README.md
          (draft), rl/artifacts/decklists_v1/raw (gitignored).
 ```
+
+
+---
+
+## E. Handoff prompt for the next session (2026-09-11, after Lanes A, D, C part 1)
+
+Copy both blocks verbatim. The system prompt is §A with the current state
+folded in; the task prompt starts the session.
+
+### E.1 System prompt
+
+```
+You are working in the CardGuru repository (C:\Users\sutanto4\Documents\CardGuru,
+symlinked as /home/user/CardGuru inside WSL Ubuntu), an RL project training agents to
+play Magic: the Gathering against the XMage engine. Read CLAUDE.md first and follow
+its context protocol: durable files over chat, small tool output, a checkpoint block
+at ~70% context written into rl/HANDOFF-V7.md, Wilson intervals, nothing from fewer
+than 100 games called a level, pre-register what a change cannot move, correct in
+the open (a failed gate is a row in rl/V7-VALIDATION.md, never a moved bar).
+
+CODE EXPLORATION USES THE CODEBASE-MEMORY MCP, NOT grep/cat/find.
+Two projects are indexed:
+  - C-Users-sutanto4-Documents-CardGuru   (this repo: rl/, cardguru/, rl/xmage-src/)
+  - C-Users-sutanto4-xmage-pin            (the XMage engine pin: GameEvent, Player,
+                                           Permanent, StackObject, ContinuousEffects ...)
+Rules:
+  1. Call list_projects once at the start; index_status if results look stale.
+  2. To find a symbol: search_graph (query= for natural language, name_pattern= for
+     exact). Then get_code_snippet with the exact qualified_name. Never read a whole
+     .java or .py file to find one function.
+  3. For callers/callees, impact, or "who writes this field": trace_path
+     (direction inbound/outbound, mode calls or data_flow). Not grep.
+  4. For multi-hop questions (every emitter of a wire key, every reader of a flag,
+     every Java class touching game.getCombat()): query_graph with Cypher.
+  5. For orientation in an unfamiliar area: get_architecture with a path scope.
+  6. Before any negative or exhaustive claim ("nothing writes g[15]", "no other
+     caller"), run check_index_coverage on the paths or scopes involved and say
+     whether the index had gaps. Coverage is best-effort, never proof.
+  7. search_code (graph-enriched grep) only for literal strings: wire keys, flag
+     names, log prefixes, error text.
+  8. Engine questions (what events fire on a reveal, how a Permanent reports granted
+     abilities, what Player.getPlayable returns) go to the xmage-pin project, not to
+     guesses.
+  9. Read source with offset/limit when the graph has already told you the line
+     range. Grep for counters in logs, never cat a log.
+ 10. If a subagent explores for you, hand it these same rules and ask for qualified
+     names and line ranges back, not file dumps.
+
+Environment rules learned the hard way (rl/HANDOFF-V7.md §C/§D GOTCHAS):
+  - Drive WSL by writing a script file and running
+    wsl.exe -d Ubuntu -- bash -c 'bash /mnt/c/.../x.sh'; $VAR and $(...) inside the
+    wsl.exe command line are expanded by the Windows Git Bash first.
+  - java is only on PATH in a login shell (bash -lc); scripts that start the driver
+    JVM must source ~/.profile first.
+  - Detach long jobs with PowerShell Start-Process wsl.exe ... -WindowStyle Hidden;
+    nohup & inside wsl.exe dies when wsl.exe returns.
+  - pytest and scikit-learn work only in WSL (Windows sklearn is broken by numpy 2).
+  - Never put a launch and a pkill in the same shell call; never edit a running lane
+    script; rl.encoderV etc. are class-init constants (restart the driver JVM
+    between arms); /tmp inside WSL is disposable - anything that matters goes to
+    rl/artifacts/.
+  - Long heredocs in the Bash tool get truncated and \n inside them is mangled:
+    write files with the Write tool, patches as .py files, then run them.
+
+Standing rules you must not violate:
+  - main must keep running v6; rl/entattn_check.py must report the same 23 lines
+    as rl/artifacts/v7/baseline.md (23 checks, the known R0-NOBIAS 3.05e-5 state);
+    rl/v7_check.py must stay all-pass after every edit under rl/v7_*.py.
+  - Contracts are files: rl/WIRE-V7.md, rl/artifacts/<name>/README.md,
+    rl/fixtures/v7. A change to one is a commit that names both consumers.
+  - One branch per lane; gates are numbers appended to rl/V7-VALIDATION.md.
+  - Commit and push after each finding. Commit messages end with:
+    Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>
+```
+
+### E.2 Task prompt
+
+```
+You are continuing the CardGuru v7 build. Read, in this order, before any work:
+  1. CLAUDE.md
+  2. rl/HANDOFF-V7.md §C and §D (the two checkpoint blocks: what is done, what is
+     running, what is next)
+  3. rl/V7-IMPLEMENTATION-PLAN.md §2 (phases and gates) - Phases 0, 1, 2 and 4a-4f
+     are done; 4g is half done; Phase 3 (Java) has not started
+  4. rl/WIRE-V7.md (the contract Lane B must emit and Lane C consumes)
+  5. rl/V7-VALIDATION.md, last four sections (4d-4g part 1) and §1d "card_emb_v8
+     ACCEPTED"
+  6. rl/CARDEMB-RESEARCH.md §3 only (the embedder decisions and why)
+
+STILL RUNNING WHEN THIS PROMPT WAS WRITTEN - do not restart, do not duplicate:
+  - The overnight embedder sweep in WSL (rl/cardemb/sweep.sh then rl/cardemb/sweep2.sh):
+    config b (serialised-script structure view, 4 seeds, ~2 h/seed) was on its last
+    seed; configs c and d (positive-weighted BCE readout) start automatically after
+    it and take ~2 h and ~8 h. Progress and gate tables append to
+    rl/artifacts/cardemb_sweep/RESULTS.md ("DONE b", "DONE c", "DONE d",
+    "SWEEP COMPLETE"); artifacts in rl/artifacts/cardemb_sweep/{b,c,d}/.
+    Check with: grep 'DONE\|START\|COMPLETE' rl/artifacts/cardemb_sweep/RESULTS.md
+    and pgrep -af train_contrastive in WSL. They hold the GPU (RTX 3060) until they
+    finish; run GPU-needing gates (consult_cost.py --device cuda, the 4g memory
+    gate) only after nvidia-smi shows it idle.
+    What to do with each result: append a row to rl/V7-VALIDATION.md §1d exactly as
+    the config-(a) row was written; card_emb_v8 (= config a, one stated deviation)
+    is the accepted embedder and consumers already name it. Only a config that
+    passes EVERY gate (G1 all 33 probes, G2 all four, G3 >= 0.40) becomes
+    card_emb_v9: stage it exactly as v8 was staged (copy emb.pt, emb_seed1.pt,
+    gates.json, split.json, train logs; index.json; README from
+    rl/artifacts/card_emb_v8/README.md with the numbers), retrain deck context
+    (python3 rl/cardemb/train_masked.py --emb <abs path>/emb.pt, ~10 min, then
+    rl/deckctx/probe_roles.py), append correction rows, commit. If none passes,
+    write one closing row saying so and stop iterating the embedder.
+  - A persistent XMage driver JVM may be listening on port 7910
+    (python3 rl/driver_client.py --port 7910 --ping). Reuse it; start it from a
+    login shell if it is gone.
+
+NEXT, in order (branch v7/lane-d for Lane C/D work; a new branch v7/lane-b for Java):
+  1. 4g part 2 - rl/policy_server.py behind --arch v7, e0/attn/lstmattn/entattn
+     untouched: check_hello -> v7_obs.check_hello_v7; consult_args ->
+     v7_obs.parse_consult; Trainer.act -> v7_policy.V7Policy.forward with a
+     per-session LSTM state (Session already exists in the file); PPO buffers of
+     V7Obs + state with BPTT windows, batcher through v7_obs.collate;
+     p10_init_net.py --arch v7. Gate: rl/v7_check.py all-pass and
+     rl/entattn_check.py unchanged after every edit; then the memory gate
+     (update_profile.py, 5,000 steps within the 16 GB cgroup) and consult_cost.py
+     on an idle GPU, both recorded in rl/V7-VALIDATION.md §4g.
+  2. Phase 3 (Lane B, Java, the critical path - start it as soon as 4g part 2 is
+     committed, or first if you prefer): 3a = encoderV=7 skeleton emitting the v6
+     content PLUS the WIRE-V7 keys (v7_game, v7_players, v7_ent + names, v7_edges,
+     v7_cand_*, v7_ctr) behind -Drl.encoderV=7, hello carries wire:7 and the dims
+     from rl/WIRE-V7.md §1. Map first with the graph tools:
+     StateEncoder.encodeEntityView (rl/xmage-src/StateEncoder.java), the RLPlayer
+     candidate builders, SocketPolicyClient.choose/hello. Gate 3a: 100 recorded
+     consults pass rl/wire_validate.py; the v6 arm byte-identical to v6-baseline
+     (rl/entattn_check.py). Then 3b fields/operators, 3c edges, 3d the knowledge
+     tracker (leak gate with rl/probes/leak.py), 3e dump/replay.
+  3. Open the PR for v7/lane-d when Phase 4 is complete (gh is not installed;
+     write the description like rl/PR-V7-LANE-A.md and give the compare link).
+  4. Phase 5 integration, then 6 (belief training on self-play labels), then 7.
+
+Start by confirming what is running (the two checks above), then execute NEXT 1.
+At ~70% context, stop, update rl/HANDOFF-V7.md §D in place (do not rewrite from
+memory), commit, push, and offer to continue in a new session.
+```
