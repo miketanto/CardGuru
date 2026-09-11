@@ -133,6 +133,35 @@ rl/HANDOFF-V7.md (update it, do not rewrite from memory), commit, push.
 
 ---
 
+## D. Lanes D and C checkpoint (2026-09-11, branch `v7/lane-d`; main = 03ac7ed with Lane A merged)
+
+```
+STATE:   - 0a DONE: rl/WIRE-V7.md (contract), rl/wire_validate.py, rl/wire_fixtures.py ->
+           rl/fixtures/v7 (7 valid + 14 broken + schema.json), tests/test_wire_v7.py (22).
+         - 0d DONE: rl/probes/faithfulness.py, rl/probes/leak.py (+ tests/test_probes.py).
+         - 0e PARTIAL: tag v6-baseline = 9ad2a1a (pushed); rl/artifacts/v7/baseline.md with
+           entattn_check (23 checks, PRE-EXISTING R0-NOBIAS fail 3.05e-5 vs 1e-6, same code
+           as the tag) and consult_cost cuda (contaminated by the sweep; rerun idle). The
+           100-game rung-0 smoke is RUNNING detached (<scratchpad>/v6_smoke.sh; log
+           rl/artifacts/v7/smoke.log -> "SMOKE DONE" + win_rate; probe file
+           rl/artifacts/v7/smoke_probe_D0.txt). Then fill RESULT in baseline.md, commit.
+         - 4a DONE: rl/v7_obs.py (V7Obs, collate, check_hello_v7, dims_record),
+           tests/test_v7_obs.py (22). policy_server.py untouched.
+         - Embedder sweep b/c/d still running for the record (see §C STATE).
+         - pytest lives in WSL (~/.local); Windows sklearn is broken (numpy 2) -> run tests in WSL.
+
+NEXT:    4b (rl/v7_net.py token builders: per-zone MLPs, embedding lookup by id from
+         card_emb_v8 + Linear(128,128) adapter, random-embedding mode; gate: shape tests +
+         faithfulness probe after L3 recovers planted fields), then 4c encoder, 4d heads.
+         Lane B (Java 3a) has not started: map StateEncoder.encodeEntityView / RLPlayer
+         candidate builders / SocketPolicyClient hello with the graph tools, then the
+         encoderV=7 skeleton behind -Drl.encoderV=7 emitting WIRE-V7 keys.
+
+COMMITS: v7/lane-d pushed through f98e8cd.
+```
+
+---
+
 ## C. Lane A checkpoint (2026-09-10, branch `v7/lane-a`)
 
 Updated in place by the Lane A session; the block in §B is the generic
