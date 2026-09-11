@@ -71,9 +71,10 @@ class TreeEncoder(nn.Module):
     (param key, value piece) pairs of E_key * E_val; 2 transformer layers
     with edge-type attention bias; masked mean pool."""
 
-    def __init__(self, d=128, heads=4, layers=2, d_out=128):
+    def __init__(self, d=128, heads=4, layers=2, d_out=128, piece_dropout=0.0):
         super().__init__()
         from tree import KINDS, N_API_BUCKETS, N_MODE_BUCKETS, N_KW_BUCKETS, N_KEY_BUCKETS, N_VAL_BUCKETS, N_EDGE_BUCKETS
+        self.piece_dropout = piece_dropout
         self.e_kind = nn.Embedding(len(KINDS), d)
         self.e_api = nn.Embedding(N_API_BUCKETS, d)
         self.e_apik = nn.Embedding(5, d)
@@ -92,7 +93,10 @@ class TreeEncoder(nn.Module):
     def forward(self, t):
         pairs = t["pairs"]                                                       # [B, N, P, 2]
         pk, pv = self.e_key(pairs[..., 0]), self.e_val(pairs[..., 1])            # [B, N, P, d]
-        valid = (pairs[..., 0] > 0).to(pk.dtype).unsqueeze(-1)
+        valid = (pairs[..., 0] > 0)
+        if self.training and self.piece_dropout > 0:                             # v6: against lookup behaviour
+            valid = valid & (torch.rand_like(valid, dtype=torch.float32) >= self.piece_dropout)
+        valid = valid.to(pk.dtype).unsqueeze(-1)
         pfeat = (pk * pv * valid).sum(2) / valid.sum(2).clamp(min=1.0)
         x = (self.e_kind(t["kind"]) + self.e_api(t["api"]) + self.e_apik(t["api_kind"])
              + self.e_mode(t["mode"]) + self.e_kw(t["kw"]) + pfeat)
@@ -107,8 +111,12 @@ class TreeEncoder(nn.Module):
 
 
 class CardEmbedder(nn.Module):
+    # v6 block widths of e_card (sum = d_c = 128): a stated blend, not an accident of norms
+    BLOCKS = {"text": 48, "tree": 32, "bag": 16, "printed": 32}
+
     def __init__(self, text_model=DEFAULT_TEXT_MODEL, graph_dim=68, printed_dim=83,
-                 d_t=128, d_g=128, d_p=32, d_c=128, d_z=128, tau=0.05, tree=False, d_tree=128):
+                 d_t=128, d_g=128, d_p=32, d_c=128, d_z=128, tau=0.05, tree=False, d_tree=128,
+                 fuse="linear", piece_dropout=0.0):
         super().__init__()
         from transformers import AutoModel, AutoTokenizer
         self.tokenizer = AutoTokenizer.from_pretrained(text_model)
@@ -118,16 +126,32 @@ class CardEmbedder(nn.Module):
         self.graph_mlp = nn.Sequential(nn.Linear(graph_dim, 256), nn.GELU(),
                                        nn.Linear(256, d_g), nn.GELU())
         self.printed_proj = nn.Linear(printed_dim, d_p)
-        self.tree_enc = TreeEncoder(d_out=d_tree) if tree else None
+        self.tree_enc = TreeEncoder(d_out=d_tree, piece_dropout=piece_dropout) if tree else None
         d_struct = d_g + d_p + (d_tree if tree else 0)
-        self.fuse = nn.Linear(d_t + d_struct, d_c)
-        self.norm = nn.LayerNorm(d_c)
+        self.fuse_mode = fuse
+        if fuse == "blocks":
+            # v6: e_card = [LN(W_t ht) | LN(W_tree tree) | LN(W_bag bag) | LN(W_p printed)]
+            assert tree, "fuse='blocks' needs the tree channel"
+            B = self.BLOCKS
+            assert sum(B.values()) == d_c
+            self.b_text = nn.Sequential(nn.Linear(d_t, B["text"]), nn.LayerNorm(B["text"]))
+            self.b_tree = nn.Sequential(nn.Linear(d_tree, B["tree"]), nn.LayerNorm(B["tree"]))
+            self.b_bag = nn.Sequential(nn.Linear(d_g, B["bag"]), nn.LayerNorm(B["bag"]))
+            self.b_printed = nn.Sequential(nn.Linear(d_p, B["printed"]), nn.LayerNorm(B["printed"]))
+            # reconstruction heads (train-time only): the tree slice must compute the
+            # 68-column readout, the printed slice must reproduce the printed fields
+            self.rec_readout = nn.Linear(B["tree"], graph_dim)
+            self.rec_printed = nn.Linear(B["printed"], printed_dim)
+        else:
+            self.fuse = nn.Linear(d_t + d_struct, d_c)
+            self.norm = nn.LayerNorm(d_c)
         # contrastive views
         self.z_text = nn.Sequential(nn.Linear(d_t, d_z), nn.GELU(), nn.Linear(d_z, d_z))
         self.z_struct = nn.Sequential(nn.Linear(d_struct, d_z), nn.GELU(), nn.Linear(d_z, d_z))
         self.tau = tau
         self.config = dict(text_model=text_model, graph_dim=graph_dim, printed_dim=printed_dim,
-                           d_t=d_t, d_g=d_g, d_p=d_p, d_c=d_c, d_z=d_z, tau=tau, tree=tree, d_tree=d_tree)
+                           d_t=d_t, d_g=d_g, d_p=d_p, d_c=d_c, d_z=d_z, tau=tau, tree=tree, d_tree=d_tree,
+                           fuse=fuse, piece_dropout=piece_dropout)
 
     # --- channels
     def encode_text(self, texts, max_len=128):
@@ -144,11 +168,25 @@ class CardEmbedder(nn.Module):
             parts.append(self.tree_enc(trees))
         return torch.cat(parts, -1)
 
+    def fuse_blocks(self, ht, hs):
+        """v6 fused vector and its reconstruction targets' predictions."""
+        d_g, d_p = self.config["d_g"], self.config["d_p"]
+        hg, hp, htree = hs[:, :d_g], hs[:, d_g:d_g + d_p], hs[:, d_g + d_p:]
+        bt, btree, bbag, bp = self.b_text(ht), self.b_tree(htree), self.b_bag(hg), self.b_printed(hp)
+        e = torch.cat([bt, btree, bbag, bp], -1)
+        return e, self.rec_readout(btree), self.rec_printed(bp)
+
     def forward(self, texts, graph, printed, trees=None):
-        """Returns (e_card, z_text, z_struct, h_text)."""
+        """Returns (e_card, z_text, z_struct, h_text).  With fuse='blocks' the
+        reconstruction predictions are stored on self.last_rec = (readout_hat, printed_hat)."""
         ht = self.encode_text(texts)
         hs = self.encode_struct(graph, printed, trees)
-        e = self.norm(self.fuse(torch.cat([ht, hs], -1)))
+        if self.fuse_mode == "blocks":
+            e, r_hat, p_hat = self.fuse_blocks(ht, hs)
+            self.last_rec = (r_hat, p_hat)
+        else:
+            e = self.norm(self.fuse(torch.cat([ht, hs], -1)))
+            self.last_rec = None
         zt = F.normalize(self.z_text(ht), dim=-1)
         zs = F.normalize(self.z_struct(hs), dim=-1)
         return e, zt, zs, ht

@@ -93,6 +93,11 @@ def main():
     ap.add_argument("--no-export", action="store_true")
     ap.add_argument("--tree", action="store_true",
                     help="v5: add the ability-tree encoder (rl/cardemb/tree.py) to the structure view")
+    ap.add_argument("--fuse", choices=["linear", "blocks"], default="linear",
+                    help="v6: 'blocks' = e_card as [text 48 | tree 32 | bag 16 | printed 32], each slice LayerNormed")
+    ap.add_argument("--aux", type=float, default=0.0,
+                    help="v6: weight of the reconstruction losses (tree slice -> 68 readout, printed slice -> 83 printed)")
+    ap.add_argument("--piece-dropout", type=float, default=0.0, help="v6: dropout on tree param pieces")
     args = ap.parse_args()
 
     torch.manual_seed(args.seed)
@@ -123,7 +128,8 @@ def main():
         f"tree={args.tree} device={args.device} seed={args.seed} text_model={args.text_model}")
 
     model = CardEmbedder(text_model=args.text_model, graph_dim=len(records[0].graph),
-                        printed_dim=D.PRINTED_DIM, tau=args.tau, tree=args.tree).to(args.device)
+                        printed_dim=D.PRINTED_DIM, tau=args.tau, tree=args.tree,
+                        fuse=args.fuse, piece_dropout=args.piece_dropout).to(args.device)
     text_params = list(model.text.parameters())
     text_ids = {id(p) for p in text_params}
     head_params = [p for p in model.parameters() if id(p) not in text_ids]
@@ -161,7 +167,7 @@ def main():
         model.train()
         order = list(range(len(train)))
         random.shuffle(order)
-        t0, run, run_c, run_d = time.time(), 0.0, 0.0, 0.0
+        t0, run, run_c, run_d, run_a = time.time(), 0.0, 0.0, 0.0, 0.0
         for i in range(0, len(order), args.batch):
             bi = order[i:i + args.batch]
             b = [train[j] for j in bi]
@@ -178,8 +184,13 @@ def main():
             if anchor is not None:
                 ids = torch.tensor([b_.id for b_ in b], device=args.device)
                 loss_d = relational_distill(ht.float(), anchor[ids])
-            loss = loss_c + args.distill * loss_d
-            run_c += loss_c.item(); run_d += loss_d.item()
+            loss_a = torch.zeros((), device=args.device)
+            if args.aux > 0 and model.last_rec is not None:
+                r_hat, p_hat = model.last_rec
+                loss_a = (torch.nn.functional.mse_loss(r_hat.float(), graph.to(args.device))
+                          + torch.nn.functional.mse_loss(p_hat.float(), printed.to(args.device)))
+            loss = loss_c + args.distill * loss_d + args.aux * loss_a
+            run_c += loss_c.item(); run_d += loss_d.item(); run_a += loss_a.item()
             opt.zero_grad(set_to_none=True)
             scaler.scale(loss).backward()
             scaler.unscale_(opt)
@@ -192,7 +203,7 @@ def main():
         tr = evaluate(model, train, train_keys, args.batch, args.device, seed=args.seed, trees=trees)
         ho = evaluate(model, heldout, held_keys, args.batch, args.device, seed=args.seed, trees=trees)
         say(f"epoch={epoch + 1}/{args.epochs} train_loss={run / steps_per_epoch:.4f} "
-            f"(infonce={run_c / steps_per_epoch:.4f} distill={run_d / steps_per_epoch:.4f}) "
+            f"(infonce={run_c / steps_per_epoch:.4f} distill={run_d / steps_per_epoch:.4f} aux={run_a / steps_per_epoch:.4f}) "
             f"train_r@1={tr['r@1']:.3f} train_r@10={tr['r@10']:.3f} "
             f"held_loss={ho['loss']:.4f} held_r@1={ho['r@1']:.3f} held_r@10={ho['r@10']:.3f} "
             f"{time.time() - t0:.0f}s")

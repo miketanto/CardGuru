@@ -44,7 +44,7 @@ def main():
     recs, names = D.load_cards()
     ck = torch.load(os.path.join(args.art, args.model), map_location="cpu")
     cfg = ck["config"]
-    model = CardEmbedder(**{k: v for k, v in cfg.items() if k in ("text_model", "graph_dim", "printed_dim", "d_t", "d_g", "d_p", "d_c", "d_z", "tau", "tree", "d_tree")})
+    model = CardEmbedder(**{k: v for k, v in cfg.items() if k in ("text_model", "graph_dim", "printed_dim", "d_t", "d_g", "d_p", "d_c", "d_z", "tau", "tree", "d_tree", "fuse", "piece_dropout")})
     model.load_state_dict(ck["state_dict"])
     model.to(args.device).eval()
     trees = T.build_trees(tokenscripts_dir=os.environ.get("CARDGURU_TOKENSCRIPTS")) if cfg.get("tree") else None
@@ -61,7 +61,7 @@ def main():
                 tb = {k: v.to(args.device) for k, v in T.collate_trees([trees[r.id] for r in b]).items()}
             ht = model.encode_text(texts)
             hs = model.encode_struct(graph.to(args.device), printed.to(args.device), tb)
-            e = model.norm(model.fuse(torch.cat([ht, hs], -1)))
+            e = model.fuse_blocks(ht, hs)[0] if getattr(model, "fuse_mode", "linear") == "blocks" else model.norm(model.fuse(torch.cat([ht, hs], -1)))
             views["text"].append(ht.float().cpu()); views["struct"].append(hs.float().cpu()); views["e"].append(e.float().cpu())
             if trees is not None:
                 views["tree"].append(model.tree_enc(tb).float().cpu())
