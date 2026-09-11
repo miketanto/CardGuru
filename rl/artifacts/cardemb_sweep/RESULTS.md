@@ -52,3 +52,6 @@ whole            0.623
     rl/artifacts/cardemb_sweep/a/train_seed3.log:23:57:45 epoch=40/40 train_loss=0.2062 (infonce=0.0333 distill=0.0012 aux=0.1608) train_r@1=0.958 train_r@10=0.998 held_loss=0.3815 held_r@1=0.924 held_r@1
 23:59:39 DONE a
 23:59:39 START b :: --struct script --fuse blocks --aux 1.0 --distill 10 --lr-text 2e-5 --llrd 0.85 --warmup 0.10 --epochs 40 --batch 256
+02:03:56 b seed 0 exit 0
+04:05:33 b seed 1 exit 0
+06:10:13 b seed 2 exit 0
