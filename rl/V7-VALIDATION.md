@@ -415,3 +415,34 @@ structure. Per-slice seed overlap follows to locate the instability
 before v7 is specified; the deck-context rows above (1c/2b/2c) were run
 on v6 seed 0 and will be rerun on the accepted version.
 
+### Per-slice seed overlap, v6 (top-10 Jaccard, 2,000 cards; 20:15)
+
+| vector | Jaccard seed 0 vs 1 |
+|---|---|
+| whole e_card (the G3 number) | 0.369 |
+| text slice [0:48] | **0.238** |
+| tree slice [48:80] | 0.263 |
+| bag slice [80:96] | 0.647 |
+| printed slice [96:128] | 0.855 |
+| whole without the text slice | **0.426** (would pass) |
+| whole without tree / bag / printed | 0.318 / 0.327 / 0.341 |
+
+The two slices with a reconstruction loss (printed, tree) are the
+stable ones relative to their content; the two without (text, bag) are
+random per-seed projections of trained features — the same defect as
+the untrained fuse of v1–v5, in smaller form — and the text slice at
+37.5 % of the blend drags the whole under 0.40.
+
+**v7, specified before training (same gates):** every slice gets a
+deterministic reconstruction target, weight 1 each, alongside v6's two:
+the text slice must decode the frozen pretrained MiniLM embedding of
+the card (384-d, the same for every seed), the bag slice must decode the
+68-column readout. Nothing else changes (`--fuse blocks --aux 1.0
+--piece-dropout 0.2 --distill 10 --tree`). Prediction: text-slice
+overlap rises well above 0.24 because its target is seed-independent,
+the whole clears 0.40, and the G1/G2 verdicts are unchanged (the slices'
+contents are the same information, better anchored). If G3 still fails,
+the next lever is the tree slice (0.263): a fitted vocabulary instead of
+hashed pieces, so its input embedding table is not a per-seed random
+draw over 16k buckets.
+
