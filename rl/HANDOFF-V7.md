@@ -411,3 +411,92 @@ Start by confirming what is running (the two checks above), then execute NEXT 1.
 At ~70% context, stop, update rl/HANDOFF-V7.md §D in place (do not rewrite from
 memory), commit, push, and offer to continue in a new session.
 ```
+
+---
+
+## F. Handoff prompt for the next session (2026-09-11 evening, after 4g part 2; v7/lane-d = b0d1a16)
+
+### F.1 System prompt
+
+Use §E.1 verbatim (it is unchanged), plus these lines learned this session:
+
+```
+  - Python exists ONLY in WSL. `python3` on the Windows side is a Store stub. Every
+    python run is  wsl -e bash -lc "cd /home/user/CardGuru && python3 ..."  (login shell).
+  - pytest for v7:  wsl -e bash -lc "cd /home/user/CardGuru && python3 -m pytest tests/test_v7_server.py -q"
+    The whole v7 gate set:  python3 rl/v7_check.py  (15 checks, ~80 s, must end failures=0).
+  - Scratch scripts for WSL go under the session scratchpad and are run via /mnt/c/... paths.
+  - The v7 encoder is an exact identity at init (zero output projections, by design from 4c):
+    no probe of "does X reach the logits" is valid on an untrained net without perturbing
+    blk.att.out.weight first. Do not write up a dead channel from an untrained net.
+  - pyflakes is not installed; the tests are the lint.
+```
+
+### F.2 Task prompt
+
+```
+You are continuing the CardGuru v7 build. Read, in this order, before any work:
+  1. CLAUDE.md
+  2. rl/HANDOFF-V7.md §D (the checkpoint block: what is done, what is running, what is next)
+  3. rl/V7-IMPLEMENTATION-PLAN.md §2 (phases and gates). Phases 0, 1, 2 and 4a-4g are
+     done except two cuda gates in 4g; Phase 3 (Java) has not started.
+  4. rl/WIRE-V7.md - the contract Lane B must emit; the server consumes it exactly.
+  5. rl/V7-VALIDATION.md §4g part 2 (what the server does, its gates, and the notes on what
+     the numbers cannot support)
+  6. rl/policy_server.py module docstring, check_hello_v7_server, act_v7, _update_v7 - only
+     if you need to change the server; otherwise the docstring is enough.
+
+STILL RUNNING WHEN THIS PROMPT WAS WRITTEN - do not restart, do not duplicate:
+  - The embedder sweep in WSL (rl/cardemb/sweep.sh -> sweep2.sh): config b on its last seed,
+    then c (~2 h) and d (~8 h) automatically. It holds the RTX 3060 until "SWEEP COMPLETE"
+    appears in rl/artifacts/cardemb_sweep/RESULTS.md. Check:
+      grep 'DONE\|START\|COMPLETE' rl/artifacts/cardemb_sweep/RESULTS.md
+      wsl -e bash -lc "pgrep -af train_contrastive; nvidia-smi --query-gpu=utilization.gpu,memory.used --format=csv,noheader"
+    What to do with each result is in §E.2 (append a §1d row per config exactly as the
+    config-(a) row; only a full-gate pass becomes card_emb_v9, staged as v8 was; if none
+    passes, one closing row and stop iterating the embedder).
+  - A persistent XMage driver JVM may be listening on port 7910
+    (python3 rl/driver_client.py --port 7910 --ping). Reuse it; start it from a login shell
+    if it is gone.
+
+NEXT, in order:
+  1. Phase 3, Lane B (Java, the critical path) on a NEW branch v7/lane-b from main
+     (main = v6 with Lane A merged; v7/lane-d holds the Python side and is not merged yet).
+     3a = the encoderV=7 skeleton behind -Drl.encoderV=7 emitting the v6 content PLUS the
+     WIRE-V7 keys (hello: "wire":7, card_emb, d_c, v7_dims, v7_rtypes, v7_ctypes, v7_zones,
+     v7_emax/kmax/ohmax/odmax/oamax, v7_decks; consult: v7_game, v7_players, v7_ent,
+     v7_ent_name, v7_ent_token, v7_edges, v7_cand_type, v7_cand, v7_cand_refers, v7_ctr).
+     Map first with the graph tools (list_projects, then search_graph/trace_path on the
+     xmage-pin project): StateEncoder.encodeEntityView, the RLPlayer candidate builders,
+     SocketPolicyClient.choose/hello. rl.encoderV is a class-init constant: the driver JVM
+     on 7910 served v6 and cannot serve v7 - start a second driver for the v7 arm.
+     Gate 3a: 100 recorded consults pass rl/wire_validate.py (record them with the dump
+     path the driver already has, or add one), AND the v6 arm byte-identical to v6-baseline
+     (rl/entattn_check.py summary unchanged vs rl/artifacts/v7/baseline.md).
+     Then the live check the Python side is waiting for: start
+       python3 rl/policy_server.py --arch v7 --ckpt /tmp/v7_init.pt --device cpu --port 7777
+     (mint /tmp/v7_init.pt with python3 rl/p10_init_net.py --arch v7 --out /tmp/v7_init.pt)
+     and run 10 games against it in eval mode; a handshake refusal prints the reason on
+     both sides. Record in rl/V7-VALIDATION.md §3a.
+     Then 3b fields/operators, 3c edges, 3d the knowledge tracker (leak gate with
+     rl/probes/leak.py), 3e dump/replay - each a gate row.
+  2. The two open 4g cuda gates, the moment nvidia-smi shows the GPU idle (do not queue them
+     behind the sweep; they take minutes):
+       python3 rl/update_profile.py threads --arch v7 --synth --steps 5000 --device cuda --threads 1
+       python3 rl/consult_cost.py --arch v7 --device cuda
+     Append correction rows to rl/V7-VALIDATION.md §4g part 2 with the UPDMEM and CONSULT
+     lines. If RSS exceeds 16 GB or cuda OOMs, lower --tbptt (32) / --ep-batch (4) and record
+     the knob that fits; the defaults in policy_server.py must match what fits.
+  3. PR for v7/lane-d once Phase 4 is closed (both cuda rows in): gh is not installed;
+     write rl/PR-V7-LANE-D.md like rl/PR-V7-LANE-A.md and give the compare link.
+  4. Phase 5 integration (v7 server against the v7 driver, first 512-episode run behind
+     every flag), then 6 (belief training on self-play labels), then 7.
+
+Standing rules: main stays v6; rl/entattn_check.py must match baseline.md after every
+server edit; rl/v7_check.py stays all-pass; contracts are files; commit and push after
+each finding; Wilson intervals; no level from fewer than 100 games.
+
+Start by confirming what is running (the two checks above), then execute NEXT 1.
+At ~70% context, stop, update rl/HANDOFF-V7.md §D in place (do not rewrite from memory),
+commit, push, and offer to continue in a new session.
+```
