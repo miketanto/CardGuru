@@ -538,3 +538,19 @@ the standard imbalanced multi-label loss, and d = b + the same**
 (`rl/cardemb/sweep2.sh`, queued behind b). Prediction: the rare answer
 classes and keywords return above 0.8 with G2/G3 unchanged in verdict.
 
+## 1d — **`card_emb_v8` ACCEPTED with a stated deviation** (Lane A, 2026-09-11 08:20)
+
+Decision by the user (2026-09-11): sweep config (a) is frozen as
+`rl/artifacts/card_emb_v8`. It passes G2 (all four) and G3 (0.680) and
+32 of 33 G1 probes; the one below threshold is `ans_minus_toughness`
+F1 0.725 vs 0.80 on 33 held-out positives (interval ≈ ±0.15), a bit the
+policy also receives exactly through the 68-column readout. Grounds:
+every consumer learns an adapter on a frozen embedding, so presence and
+stability of information are what matter; this is the first version
+that is reproducible across seeds. This is a deviation from the
+pre-registration, recorded here rather than by moving the bar. Sweep
+configs c/d continue; a full pass becomes v9 as a drop-in.
+
+Consumers record `card_emb_v8`. `rl/artifacts/card_emb_v6/` is a failed
+version kept for the record.
+

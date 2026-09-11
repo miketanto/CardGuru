@@ -1,0 +1,69 @@
+{
+ "version": "card_emb_v8",
+ "cards_version": "cards_v1",
+ "cards_pin": "670429bf",
+ "n": 35478,
+ "d_c": 128,
+ "artifact": "per-slice orthogonal-Procrustes mean of seeds 0 and 1 (rl/cardemb/average.py); emb_seed1.pt = mean of seeds 2 and 3, determinism gate only",
+ "blocks": {
+  "text": [
+   0,
+   48
+  ],
+  "tree": [
+   48,
+   80
+  ],
+  "bag": [
+   80,
+   96
+  ],
+  "printed": [
+   96,
+   128
+  ]
+ },
+ "args": {
+  "out": "rl/artifacts/cardemb_sweep/a",
+  "positives": "same",
+  "distill": 10.0,
+  "cards": "/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/cards_v1",
+  "text_model": "sentence-transformers/all-MiniLM-L6-v2",
+  "epochs": 40,
+  "batch": 256,
+  "lr_text": 2e-05,
+  "lr_head": 0.001,
+  "tau": 0.05,
+  "max_len": 128,
+  "seed": 0,
+  "limit": 0,
+  "device": "cuda",
+  "no_export": false,
+  "tree": true,
+  "fuse": "blocks",
+  "aux": 1.0,
+  "piece_dropout": 0.2,
+  "struct": "tree",
+  "llrd": 0.85,
+  "warmup": 0.1,
+  "script_max_len": 256
+ },
+ "final_seed0": {
+  "train": {
+   "r@1": 0.94677734375,
+   "r@10": 0.99755859375,
+   "loss": 0.28512269258499146,
+   "n": 4096
+  },
+  "heldout": {
+   "r@1": 0.9283691644668579,
+   "r@10": 0.9903737306594849,
+   "loss": 0.3724849820137024,
+   "n": 3532
+  }
+ },
+ "split": "split.json",
+ "row_i_is": "cards_v1 face id i (index.json names -> id)",
+ "sweep": "rl/artifacts/cardemb_sweep config a",
+ "accepted": "2026-09-11 with one G1 probe below threshold, see V7-VALIDATION.md \u00a71d v8"
+}

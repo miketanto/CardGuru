@@ -1,4 +1,8 @@
-# card_emb_v6 — the shared card embedder (v7 L0)
+# card_emb_v6 — FAILED version (G3 0.369; see rl/V7-VALIDATION.md); the accepted embedder is `rl/artifacts/card_emb_v8/`
+
+*Kept for the record only. Nothing may consume this directory.*
+
+# (original contract text follows, superseded)
 
 *Contract for consumers (Lane C token builder, Lane A deck context, the
 belief module). A change to this file is a commit that names them.

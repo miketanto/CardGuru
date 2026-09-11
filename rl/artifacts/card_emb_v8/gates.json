@@ -1,0 +1,565 @@
+{
+ "n": 35478,
+ "d": 128,
+ "thresholds": {
+  "bucket_acc": 0.9,
+  "binary_acc": 0.97,
+  "f1": 0.8,
+  "cancel_cos": 0.85,
+  "snare_margin": 0.15,
+  "swap_sigma": 2.0,
+  "swap_group_sigma": 4.0,
+  "jaccard": 0.4,
+  "min_pos_type": 50,
+  "min_pos_kw": 30,
+  "swap_rank": 500,
+  "swap_pairs_ok": 14,
+  "swap_median_rank": 50
+ },
+ "G1": {
+  "mv": {
+   "acc_tr": 0.9989670068240155,
+   "acc": 0.9929218573046432,
+   "pass": true
+  },
+  "power": {
+   "acc_tr": 1.0,
+   "acc": 0.9966024915062288,
+   "pass": true
+  },
+  "toughness": {
+   "acc_tr": 0.9997495774118825,
+   "acc": 0.9940543601359003,
+   "pass": true
+  },
+  "color_W": {
+   "acc_tr": 1.0,
+   "acc": 1.0,
+   "f1_tr": 1.0,
+   "f1": 1.0,
+   "pos": 728,
+   "pass": true
+  },
+  "color_U": {
+   "acc_tr": 1.0,
+   "acc": 1.0,
+   "f1_tr": 1.0,
+   "f1": 1.0,
+   "pos": 710,
+   "pass": true
+  },
+  "color_B": {
+   "acc_tr": 1.0,
+   "acc": 1.0,
+   "f1_tr": 1.0,
+   "f1": 1.0,
+   "pos": 701,
+   "pass": true
+  },
+  "color_R": {
+   "acc_tr": 1.0,
+   "acc": 1.0,
+   "f1_tr": 1.0,
+   "f1": 1.0,
+   "pos": 730,
+   "pass": true
+  },
+  "color_G": {
+   "acc_tr": 1.0,
+   "acc": 1.0,
+   "f1_tr": 1.0,
+   "f1": 1.0,
+   "pos": 716,
+   "pass": true
+  },
+  "type_Creature": {
+   "acc_tr": 1.0,
+   "acc": 1.0,
+   "f1_tr": 1.0,
+   "f1": 1.0,
+   "pos": 1973,
+   "pass": true
+  },
+  "type_Instant": {
+   "acc_tr": 1.0,
+   "acc": 1.0,
+   "f1_tr": 1.0,
+   "f1": 1.0,
+   "pos": 396,
+   "pass": true
+  },
+  "type_Sorcery": {
+   "acc_tr": 1.0,
+   "acc": 1.0,
+   "f1_tr": 1.0,
+   "f1": 1.0,
+   "pos": 366,
+   "pass": true
+  },
+  "type_Artifact": {
+   "acc_tr": 1.0,
+   "acc": 1.0,
+   "f1_tr": 1.0,
+   "f1": 1.0,
+   "pos": 411,
+   "pass": true
+  },
+  "type_Enchantment": {
+   "acc_tr": 1.0,
+   "acc": 1.0,
+   "f1_tr": 1.0,
+   "f1": 1.0,
+   "pos": 373,
+   "pass": true
+  },
+  "type_Land": {
+   "acc_tr": 0.9999686971764853,
+   "acc": 1.0,
+   "f1_tr": 0.9995615957913196,
+   "f1": 1.0,
+   "pos": 113,
+   "pass": true
+  },
+  "type_Planeswalker": {
+   "pos": 41,
+   "pass": null
+  },
+  "type_Battle": {
+   "pos": 1,
+   "pass": null
+  },
+  "type_Kindred": {
+   "pos": 6,
+   "pass": null
+  },
+  "ans_bounce_target": {
+   "pos": 16,
+   "pass": null
+  },
+  "ans_counter_spell": {
+   "acc_tr": 0.9995617604707945,
+   "acc": 0.9997168742921857,
+   "f1_tr": 0.9736842105263158,
+   "f1": 0.9855072463768116,
+   "pos": 34,
+   "pass": true
+  },
+  "ans_damage_target": {
+   "acc_tr": 0.9997495774118825,
+   "acc": 0.9991506228765572,
+   "f1_tr": 0.997444089456869,
+   "f1": 0.991044776119403,
+   "pos": 166,
+   "pass": true
+  },
+  "ans_destroy_all": {
+   "pos": 21,
+   "pass": null
+  },
+  "ans_destroy_target": {
+   "acc_tr": 0.9990609152945595,
+   "acc": 0.9988674971687429,
+   "f1_tr": 0.9744897959183674,
+   "f1": 0.9714285714285714,
+   "pos": 68,
+   "pass": true
+  },
+  "ans_edict_sacrifice": {
+   "pos": 4,
+   "pass": null
+  },
+  "ans_edict_sacrifice_mass": {
+   "pos": 9,
+   "pass": null
+  },
+  "ans_exile_target": {
+   "acc_tr": 0.997746196706943,
+   "acc": 0.9966024915062288,
+   "f1_tr": 0.9008264462809917,
+   "f1": 0.8421052631578947,
+   "pos": 32,
+   "pass": true
+  },
+  "ans_minus_toughness": {
+   "acc_tr": 0.9941776748262693,
+   "acc": 0.9929218573046432,
+   "f1_tr": 0.7506702412868632,
+   "f1": 0.7252747252747253,
+   "pos": 33,
+   "pass": false
+  },
+  "kw_flying": {
+   "acc_tr": 1.0,
+   "acc": 1.0,
+   "f1_tr": 1.0,
+   "f1": 1.0,
+   "pos": 358,
+   "pass": true
+  },
+  "kw_haste": {
+   "acc_tr": 0.9986539785888687,
+   "acc": 0.9980181200453001,
+   "f1_tr": 0.9683124539425203,
+   "f1": 0.9554140127388535,
+   "pos": 77,
+   "pass": true
+  },
+  "kw_deathtouch": {
+   "acc_tr": 0.999311337882677,
+   "acc": 0.9988674971687429,
+   "f1_tr": 0.9670658682634731,
+   "f1": 0.9523809523809523,
+   "pos": 40,
+   "pass": true
+  },
+  "kw_lifelink": {
+   "acc_tr": 0.9992487322356477,
+   "acc": 0.9983012457531144,
+   "f1_tr": 0.9686684073107049,
+   "f1": 0.9210526315789473,
+   "pos": 35,
+   "pass": true
+  },
+  "kw_first_strike": {
+   "acc_tr": 0.996368872472297,
+   "acc": 0.9951868629671574,
+   "f1_tr": 0.8588807785888077,
+   "f1": 0.8172043010752689,
+   "pos": 42,
+   "pass": true
+  },
+  "kw_double_strike": {
+   "pos": 5,
+   "pass": null
+  },
+  "kw_trample": {
+   "acc_tr": 0.9996556689413385,
+   "acc": 0.9983012457531144,
+   "f1_tr": 0.994413407821229,
+   "f1": 0.96875,
+   "pos": 94,
+   "pass": true
+  },
+  "kw_vigilance": {
+   "acc_tr": 0.9995304576472798,
+   "acc": 0.9988674971687429,
+   "f1_tr": 0.9894142554693014,
+   "f1": 0.9722222222222222,
+   "pos": 71,
+   "pass": true
+  },
+  "kw_flash": {
+   "acc_tr": 0.9980905277656045,
+   "acc": 0.9977349943374858,
+   "f1_tr": 0.9488683989941324,
+   "f1": 0.9365079365079365,
+   "pos": 62,
+   "pass": true
+  },
+  "kw_menace": {
+   "acc_tr": 0.9962436611782383,
+   "acc": 0.9966024915062288,
+   "f1_tr": 0.8623853211009175,
+   "f1": 0.8983050847457628,
+   "pos": 55,
+   "pass": true
+  },
+  "kw_reach": {
+   "acc_tr": 0.9979653164715457,
+   "acc": 0.996885617214043,
+   "f1_tr": 0.9265536723163842,
+   "f1": 0.8842105263157894,
+   "pos": 45,
+   "pass": true
+  },
+  "kw_defender": {
+   "acc_tr": 0.9996243661178238,
+   "acc": 0.9985843714609286,
+   "f1_tr": 0.9801324503311258,
+   "f1": 0.9206349206349206,
+   "pos": 31,
+   "pass": true
+  },
+  "kw_ward": {
+   "pos": 18,
+   "pass": null
+  },
+  "kw_hexproof": {
+   "pos": 16,
+   "pass": null
+  },
+  "kw_shroud": {
+   "pos": 4,
+   "pass": null
+  },
+  "kw_protection": {
+   "pos": 7,
+   "pass": null
+  },
+  "kw_prowess": {
+   "pos": 9,
+   "pass": null
+  },
+  "kw_ninjutsu": {
+   "pos": 1,
+   "pass": null
+  },
+  "pass": false,
+  "n_gated": 30
+ },
+ "G2": {
+  "cancel_counterspell_cos": 0.9833276867866516,
+  "snare_spike_cos": 0.9112560749053955,
+  "spike_in_snare_top10": false,
+  "snare_top5": [
+   "Minor Misstep",
+   "Mental Misstep",
+   "Thoughtbind",
+   "Disdainful Stroke",
+   "Nix"
+  ],
+  "spike_top5": [
+   "Quench",
+   "Mindstatic",
+   "Clash of Wills",
+   "It'll Quench Ya!",
+   "Convolute"
+  ],
+  "pass_cancel": true,
+  "snare_cos_margin_v1v3": false,
+  "snare_spike_rank": 28,
+  "pass_snare": true,
+  "reprints": [
+   {
+    "card": "Llanowar Elves",
+    "ok": true,
+    "top3": [
+     "Elvish Mystic",
+     "Fyndhorn Elves",
+     "Woodland Mystic"
+    ]
+   },
+   {
+    "card": "Elvish Mystic",
+    "ok": true,
+    "top3": [
+     "Llanowar Elves",
+     "Fyndhorn Elves",
+     "Woodland Mystic"
+    ]
+   },
+   {
+    "card": "Fyndhorn Elves",
+    "ok": true,
+    "top3": [
+     "Elvish Mystic",
+     "Llanowar Elves",
+     "Woodland Mystic"
+    ]
+   },
+   {
+    "card": "Grizzly Bears",
+    "ok": true,
+    "top3": [
+     "Forest Bear",
+     "Balduvian Bears",
+     "Bear Cub"
+    ]
+   },
+   {
+    "card": "Balduvian Bears",
+    "ok": true,
+    "top3": [
+     "Grizzly Bears",
+     "Bear Cub",
+     "Forest Bear"
+    ]
+   },
+   {
+    "card": "Runeclaw Bear",
+    "ok": true,
+    "top3": [
+     "Forest Bear",
+     "Balduvian Bears",
+     "Bear Cub"
+    ]
+   },
+   {
+    "card": "Divination",
+    "ok": true,
+    "top3": [
+     "Counsel of the Soratami",
+     "Touch of Brilliance",
+     "Tidings"
+    ]
+   },
+   {
+    "card": "Counsel of the Soratami",
+    "ok": true,
+    "top3": [
+     "Divination",
+     "Touch of Brilliance",
+     "Tidings"
+    ]
+   },
+   {
+    "card": "Terror",
+    "ok": true,
+    "top3": [
+     "Terminate",
+     "Dark Banishing",
+     "Flesh to Dust"
+    ]
+   },
+   {
+    "card": "Dark Banishing",
+    "ok": true,
+    "top3": [
+     "Terror",
+     "Flesh to Dust",
+     "Terminate"
+    ]
+   }
+  ],
+  "pass_reprints": true,
+  "random_mu": 0.524945855140686,
+  "random_sd": 0.08879043161869049,
+  "swap_pairs": [
+   {
+    "pair": "Bitter Triumph / Go for the Throat",
+    "cos": 0.8350350856781006,
+    "found": true,
+    "rank_ab": 57,
+    "rank_ba": 162
+   },
+   {
+    "pair": "Requiting Hex / Cut Down",
+    "cos": 0.7979113459587097,
+    "found": true,
+    "rank_ab": 214,
+    "rank_ba": 271
+   },
+   {
+    "pair": "Shoot the Sheriff / Eliminate",
+    "cos": 0.9009077548980713,
+    "found": true,
+    "rank_ab": 52,
+    "rank_ba": 18
+   },
+   {
+    "pair": "Spell Snare / Dispel",
+    "cos": 0.9317923188209534,
+    "found": true,
+    "rank_ab": 11,
+    "rank_ba": 29
+   },
+   {
+    "pair": "We Say Thee Nay! / Don't Make a Sound",
+    "cos": 0.8874937891960144,
+    "found": true,
+    "rank_ab": 44,
+    "rank_ba": 44
+   },
+   {
+    "pair": "Spell Pierce / Stubborn Denial",
+    "cos": 0.9199355244636536,
+    "found": true,
+    "rank_ab": 32,
+    "rank_ba": 3
+   },
+   {
+    "pair": "Floodpits Drowner / Zephyr Sentinel",
+    "cos": 0.7944017052650452,
+    "found": true,
+    "rank_ab": 7,
+    "rank_ba": 80
+   },
+   {
+    "pair": "The Wondrous Wasp / Plumecreed Escort",
+    "cos": 0.8411681056022644,
+    "found": true,
+    "rank_ab": 8,
+    "rank_ba": 12
+   },
+   {
+    "pair": "Spyglass Siren / Faerie Seer",
+    "cos": 0.7897061109542847,
+    "found": true,
+    "rank_ab": 100,
+    "rank_ba": 179
+   },
+   {
+    "pair": "Elektra, Daughter of the Hand / Fathom Fleet Cutthroat",
+    "cos": 0.8169326782226562,
+    "found": true,
+    "rank_ab": 8,
+    "rank_ba": 29
+   },
+   {
+    "pair": "Bitter Triumph / Easy Prey",
+    "cos": 0.8827173113822937,
+    "found": true,
+    "rank_ab": 9,
+    "rank_ba": 26
+   },
+   {
+    "pair": "Shoot the Sheriff / Cradle to Grave",
+    "cos": 0.9498693943023682,
+    "found": true,
+    "rank_ab": 7,
+    "rank_ba": 4
+   },
+   {
+    "pair": "We Say Thee Nay! / Clash of Wills",
+    "cos": 0.9077781438827515,
+    "found": true,
+    "rank_ab": 16,
+    "rank_ba": 52
+   },
+   {
+    "pair": "Spell Pierce / Concerted Defense",
+    "cos": 0.962515115737915,
+    "found": true,
+    "rank_ab": 5,
+    "rank_ba": 1
+   },
+   {
+    "pair": "Spyglass Siren / Faerie Miscreant",
+    "cos": 0.7792561650276184,
+    "found": true,
+    "rank_ab": 137,
+    "rank_ba": 338
+   },
+   {
+    "pair": "Elektra, Daughter of the Hand / Ravenous Chupacabra",
+    "cos": 0.8118762969970703,
+    "found": true,
+    "rank_ab": 11,
+    "rank_ba": 48
+   }
+  ],
+  "swap_min": 0.7792561650276184,
+  "swap_mean": 0.8630810528993607,
+  "swap_cos_bar_v1v2": false,
+  "swap_pairs_within": 16,
+  "swap_median_rank": 29.0,
+  "pass_swaps": true,
+  "pass": true
+ },
+ "G3": {
+  "jaccard10": 0.6802905648273296,
+  "seed1_G2": {
+   "pass_cancel": true,
+   "pass_snare": true,
+   "pass_reprints": true,
+   "pass_swaps": true,
+   "cancel_counterspell_cos": 0.9855985045433044,
+   "snare_spike_cos": 0.9148541688919067,
+   "swap_min": 0.7858619689941406,
+   "swap_mean": 0.8555002063512802
+  },
+  "verdicts_identical": true,
+  "pass": true
+ },
+ "pass": false
+}
