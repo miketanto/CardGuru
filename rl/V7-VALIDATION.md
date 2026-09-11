@@ -596,3 +596,19 @@ Lane B (`encoderV=7` emitter, gate 3a runs the validator on 100 recorded
 consults), Lane C (`V7Obs` parser, gate 4a parses every fixture and
 refuses every broken one).
 
+## 0d — probe harness `rl/probes/faithfulness.py`, `rl/probes/leak.py` (Lane D, 2026-09-11 09:30)
+
+| gate | required | measured | result |
+|---|---|---|---|
+| faithfulness self-test recovers planted fields | 1.0 | synthetic tokens (60 games × 40 tokens, 64-d, fixed nonlinear stage), 6 planted fields, game-grouped 20 % hold-out: binaries 1.000 / 1.000 / 1.000, 5-class 1.000, reals R² 0.995 / 0.998 | pass |
+| faithfulness self-test refuses a dropped field | chance | the 5-class field zeroed at the input: held-out 0.183 vs chance 0.215 → FAIL reported; the other five still 1.0 | pass |
+| leak self-test refuses a planted leak | refuse | policy reading one hidden bit: level 2 max \|Δlogit\| = 0.500 → refused; clean policy: 0.0 → passes; a consumer that ignores the channel → refused at level 3 (max \|Δ\| = 0.0) | pass |
+
+`leak.py` generalises `oracle_gate.py` levels 1–3 to any hidden channel
+(`hidden_keys`, a policy-path `parse`, `logits`, a privileged
+`consumer`, and a `swap` that changes only the hidden content).
+Level 2 is a *swap* test, not presence/absence: a tracker that copied
+one bit of the true hand into a "legal" field would pass
+present/absent and fail swap. Consumers: Lane B gate 3d, Lane C gates
+4b/4c/4e/4f.
+
