@@ -335,3 +335,31 @@ Three things this table settles:
   and rank those pairs at 1; Snare/Spike stays apart because the text
   and tree slices order cards *within* a shared bag.
 
+## 1d — card embedder `card_emb_v6` — seed 0 passes G1 and G2; G3 pending (Lane A, 2026-09-10 19:52)
+
+Seed 0, v5 recipe + `--fuse blocks --aux 1.0 --piece-dropout 0.2`.
+Retrieval r@1 train 0.944. Gates as pre-registered (rank-based G2):
+
+| gate | threshold | measured (held-out) | train | result |
+|---|---|---|---|---|
+| G1 mv / power / toughness probe acc | ≥ 0.9 | **0.993 / 0.995 / 0.995** | 0.999 / 1.000 / 1.000 | pass |
+| G1 colours (5), types (6), keywords (11), answer classes (5) | ≥ 0.97 acc / ≥ 0.8 f1 | min 1.000 / 1.000 / 0.955 / 0.902 | | pass |
+| G2 Cancel / Counterspell cos | ≥ 0.85 | 0.984 | | pass |
+| G2 Spell Snare / Force Spike | Spike ∉ Snare top-10 | rank 19 (cos 0.920; old cosine bar would fail — informational) | | pass |
+| G2 functional reprints in top-3 | 10/10 | 10/10 | | pass |
+| G2 swap pairs | ≥ 14/16 within 500, median ≤ 50 | **14/16, median 26** | | pass |
+| G3 determinism | Jaccard ≥ 0.4, same verdicts | seed 1 training | | pending |
+
+Per-view (`diag_views.py`): e_card mv 0.993 / colour 1.000 / Snare→Spike 19 /
+swap 14/16 median 26; struct view 0.991 / 1.000 / 41 / 14/16 median 84;
+tree view alone 0.299 / 0.723 / 43 / 12/16 median 158; text view 0.326 /
+0.835 / 79 / 11/16 median 162. The fused vector is now better than any
+single view on every column, which is what the block blend plus
+reconstruction losses were built to do. The two pairs still outside 500:
+Spyglass Siren / Faerie Seer (1081, 831) and Requiting Hex / Cut Down
+(270, 822). The pre-registered prediction for v6 (G1 restored by
+construction, swap ≥ 14/16, Snare/Spike apart) held on seed 0.
+
+Not yet a frozen artifact: the version is accepted only when seed 1's
+G3 row is appended below.
+
