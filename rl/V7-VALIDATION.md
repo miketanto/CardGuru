@@ -446,3 +446,32 @@ the next lever is the tree slice (0.263): a fitted vocabulary instead of
 hashed pieces, so its input embedding table is not a per-seed random
 draw over 16k buckets.
 
+## 1d — card embedder `card_emb_v7` — **FAIL** on G2 (Lane A, 2026-09-10 20:38)
+
+Seed 0, v6 + a reconstruction target for every slice (text slice →
+frozen MiniLM embedding, bag slice → readout). Seed 1 stopped.
+
+| gate | threshold | measured | result |
+|---|---|---|---|
+| G1 mv / colours | ≥ 0.9 / ≥ 0.97 | 0.994 / 1.000 | pass |
+| G2 Cancel / Counterspell | ≥ 0.85 | 0.983 | pass |
+| G2 Spell Snare / Force Spike | Spike ∉ Snare top-10 | **rank 6, cos 0.997** (v6: rank 19) | **FAIL** |
+| G2 functional reprints in top-3 | 10/10 | **8/10** | **FAIL** |
+| G2 swap pairs | ≥ 14/16 within 500, median ≤ 50 | 16/16, median 14 (best of any version) | pass |
+
+Anchoring the text slice to the frozen pretrained embedding made that
+slice *be* the frozen embedding, and the frozen encoder puts Snare and
+Spike together — the coarse text geometry PHASE-E3 already measured.
+Seed stability and condition sensitivity in the text slice were traded
+against each other; the swap pairs (which reward coarse similarity)
+improved for the same reason. This is the point at which iterating on
+G3 stops producing an embedder that is better for the policy.
+
+**Decision required, recorded here for the user:** (a) accept v6 with
+its G3 deviation stated (0.369 vs the pre-registered 0.40; both seeds
+reach identical verdicts on every G1/G2 gate), or (b) continue. The
+lane's recommendation is (a): G3's threshold is a proxy set blind, the
+verdicts agree, and v6's remaining defects (text and bag slices
+untrained) are harmless to a consumer that learns an adapter, which is
+every consumer in the design. Consumers would record `card_emb_v6`.
+
