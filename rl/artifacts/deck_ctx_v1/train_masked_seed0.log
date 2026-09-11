@@ -1,22 +1,22 @@
-19:52:56 decks train=11376 heldout=1236 vocab=3519 device=cuda seed=0
-19:53:21 epoch=1/20 loss=7.0646 held_top1=0.061 held_top10=0.190 freq_top1=0.020 freq_fmt_top1=0.025 freq_fmt_top10=0.164 n=4141 24s
-19:53:43 epoch=2/20 loss=6.1798 held_top1=0.092 held_top10=0.292 freq_top1=0.020 freq_fmt_top1=0.025 freq_fmt_top10=0.164 n=4141 22s
-19:54:07 epoch=3/20 loss=5.5792 held_top1=0.139 held_top10=0.379 freq_top1=0.020 freq_fmt_top1=0.025 freq_fmt_top10=0.164 n=4141 24s
-19:54:30 epoch=4/20 loss=5.1353 held_top1=0.172 held_top10=0.426 freq_top1=0.020 freq_fmt_top1=0.025 freq_fmt_top10=0.164 n=4141 22s
-19:54:53 epoch=5/20 loss=4.8096 held_top1=0.198 held_top10=0.486 freq_top1=0.020 freq_fmt_top1=0.025 freq_fmt_top10=0.164 n=4141 23s
-19:55:16 epoch=6/20 loss=4.5370 held_top1=0.217 held_top10=0.528 freq_top1=0.020 freq_fmt_top1=0.025 freq_fmt_top10=0.164 n=4141 24s
-19:55:40 epoch=7/20 loss=4.3104 held_top1=0.248 held_top10=0.559 freq_top1=0.020 freq_fmt_top1=0.025 freq_fmt_top10=0.164 n=4141 23s
-19:56:03 epoch=8/20 loss=4.1353 held_top1=0.262 held_top10=0.585 freq_top1=0.020 freq_fmt_top1=0.025 freq_fmt_top10=0.164 n=4141 23s
-19:56:25 epoch=9/20 loss=3.9448 held_top1=0.292 held_top10=0.617 freq_top1=0.020 freq_fmt_top1=0.025 freq_fmt_top10=0.164 n=4141 21s
-19:56:48 epoch=10/20 loss=3.8195 held_top1=0.309 held_top10=0.630 freq_top1=0.020 freq_fmt_top1=0.025 freq_fmt_top10=0.164 n=4141 23s
-19:57:12 epoch=11/20 loss=3.6962 held_top1=0.316 held_top10=0.654 freq_top1=0.020 freq_fmt_top1=0.025 freq_fmt_top10=0.164 n=4141 24s
-19:57:35 epoch=12/20 loss=3.5641 held_top1=0.337 held_top10=0.661 freq_top1=0.020 freq_fmt_top1=0.025 freq_fmt_top10=0.164 n=4141 23s
-19:57:59 epoch=13/20 loss=3.4801 held_top1=0.349 held_top10=0.674 freq_top1=0.020 freq_fmt_top1=0.025 freq_fmt_top10=0.164 n=4141 24s
-19:58:20 epoch=14/20 loss=3.3620 held_top1=0.353 held_top10=0.693 freq_top1=0.020 freq_fmt_top1=0.025 freq_fmt_top10=0.164 n=4141 21s
-19:58:42 epoch=15/20 loss=3.2962 held_top1=0.369 held_top10=0.702 freq_top1=0.020 freq_fmt_top1=0.025 freq_fmt_top10=0.164 n=4141 22s
-19:59:03 epoch=16/20 loss=3.2290 held_top1=0.381 held_top10=0.708 freq_top1=0.020 freq_fmt_top1=0.025 freq_fmt_top10=0.164 n=4141 21s
-19:59:26 epoch=17/20 loss=3.1668 held_top1=0.393 held_top10=0.718 freq_top1=0.020 freq_fmt_top1=0.025 freq_fmt_top10=0.164 n=4141 23s
-19:59:49 epoch=18/20 loss=3.1060 held_top1=0.399 held_top10=0.723 freq_top1=0.020 freq_fmt_top1=0.025 freq_fmt_top10=0.164 n=4141 23s
-20:00:13 epoch=19/20 loss=3.0223 held_top1=0.409 held_top10=0.730 freq_top1=0.020 freq_fmt_top1=0.025 freq_fmt_top10=0.164 n=4141 24s
-20:00:37 epoch=20/20 loss=2.9808 held_top1=0.407 held_top10=0.727 freq_top1=0.020 freq_fmt_top1=0.025 freq_fmt_top10=0.164 n=4141 23s
-20:00:57 final heldout={'n': 4141, 'top1': 0.40714803187635834, 'top10': 0.7266360782419705, 'freq_top1': 0.020043467761410288, 'freq_top10': 0.1289543588505192, 'freq_fmt_top1': 0.024873219029219996, 'freq_fmt_top10': 0.16421154310553007} train={'n': 7114, 'top1': 0.40694405397807143, 'top10': 0.7301096429575485, 'freq_top1': 0.024599381501265113, 'freq_top10': 0.14070846218723643, 'freq_fmt_top1': 0.024599381501265113, 'freq_fmt_top10': 0.19820073095305032}
+07:17:11 decks train=11376 heldout=1236 vocab=3519 device=cuda seed=0
+07:18:22 epoch=1/20 loss=7.0564 held_top1=0.056 held_top10=0.207 freq_top1=0.020 freq_fmt_top1=0.025 freq_fmt_top10=0.164 n=4141 70s
+07:19:34 epoch=2/20 loss=6.0837 held_top1=0.097 held_top10=0.313 freq_top1=0.020 freq_fmt_top1=0.025 freq_fmt_top10=0.164 n=4141 72s
+07:21:32 epoch=3/20 loss=5.4717 held_top1=0.143 held_top10=0.393 freq_top1=0.020 freq_fmt_top1=0.025 freq_fmt_top10=0.164 n=4141 118s
+07:23:26 epoch=4/20 loss=5.0403 held_top1=0.176 held_top10=0.461 freq_top1=0.020 freq_fmt_top1=0.025 freq_fmt_top10=0.164 n=4141 114s
+07:24:36 epoch=5/20 loss=4.6900 held_top1=0.198 held_top10=0.502 freq_top1=0.020 freq_fmt_top1=0.025 freq_fmt_top10=0.164 n=4141 70s
+07:25:46 epoch=6/20 loss=4.4152 held_top1=0.230 held_top10=0.541 freq_top1=0.020 freq_fmt_top1=0.025 freq_fmt_top10=0.164 n=4141 70s
+07:27:08 epoch=7/20 loss=4.2052 held_top1=0.264 held_top10=0.574 freq_top1=0.020 freq_fmt_top1=0.025 freq_fmt_top10=0.164 n=4141 82s
+07:29:13 epoch=8/20 loss=4.0215 held_top1=0.281 held_top10=0.605 freq_top1=0.020 freq_fmt_top1=0.025 freq_fmt_top10=0.164 n=4141 125s
+07:30:29 epoch=9/20 loss=3.8371 held_top1=0.306 held_top10=0.628 freq_top1=0.020 freq_fmt_top1=0.025 freq_fmt_top10=0.164 n=4141 76s
+07:31:40 epoch=10/20 loss=3.7129 held_top1=0.317 held_top10=0.649 freq_top1=0.020 freq_fmt_top1=0.025 freq_fmt_top10=0.164 n=4141 71s
+07:32:51 epoch=11/20 loss=3.5854 held_top1=0.333 held_top10=0.658 freq_top1=0.020 freq_fmt_top1=0.025 freq_fmt_top10=0.164 n=4141 71s
+07:34:31 epoch=12/20 loss=3.4797 held_top1=0.343 held_top10=0.678 freq_top1=0.020 freq_fmt_top1=0.025 freq_fmt_top10=0.164 n=4141 100s
+07:36:34 epoch=13/20 loss=3.3905 held_top1=0.358 held_top10=0.690 freq_top1=0.020 freq_fmt_top1=0.025 freq_fmt_top10=0.164 n=4141 123s
+07:37:37 epoch=14/20 loss=3.2939 held_top1=0.365 held_top10=0.701 freq_top1=0.020 freq_fmt_top1=0.025 freq_fmt_top10=0.164 n=4141 63s
+07:38:47 epoch=15/20 loss=3.2237 held_top1=0.371 held_top10=0.715 freq_top1=0.020 freq_fmt_top1=0.025 freq_fmt_top10=0.164 n=4141 70s
+07:39:56 epoch=16/20 loss=3.1630 held_top1=0.386 held_top10=0.720 freq_top1=0.020 freq_fmt_top1=0.025 freq_fmt_top10=0.164 n=4141 69s
+07:41:47 epoch=17/20 loss=3.1060 held_top1=0.377 held_top10=0.724 freq_top1=0.020 freq_fmt_top1=0.025 freq_fmt_top10=0.164 n=4141 111s
+07:43:48 epoch=18/20 loss=3.0475 held_top1=0.398 held_top10=0.731 freq_top1=0.020 freq_fmt_top1=0.025 freq_fmt_top10=0.164 n=4141 121s
+07:45:00 epoch=19/20 loss=2.9623 held_top1=0.409 held_top10=0.730 freq_top1=0.020 freq_fmt_top1=0.025 freq_fmt_top10=0.164 n=4141 71s
+07:46:06 epoch=20/20 loss=2.9081 held_top1=0.409 held_top10=0.746 freq_top1=0.020 freq_fmt_top1=0.025 freq_fmt_top10=0.164 n=4141 66s
+07:49:07 final heldout={'n': 4141, 'top1': 0.40859695725670125, 'top10': 0.7461965708765999, 'freq_top1': 0.020043467761410288, 'freq_top10': 0.1289543588505192, 'freq_fmt_top1': 0.024873219029219996, 'freq_fmt_top10': 0.16421154310553007} train={'n': 7114, 'top1': 0.4111610908068597, 'top10': 0.7431824571267922, 'freq_top1': 0.024599381501265113, 'freq_top10': 0.14070846218723643, 'freq_fmt_top1': 0.024599381501265113, 'freq_fmt_top10': 0.19820073095305032}

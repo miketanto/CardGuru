@@ -1,0 +1,5 @@
+| label | held-out pos/neg | c'ᵢ probe bal-acc | e_card probe bal-acc | threshold | result |
+|---|---|---|---|---|---|
+| wincon | 200/569 | 0.987 | 0.997 | ≥ 0.85 | pass |
+| answer | 120/649 | 0.969 | 0.989 | ≥ 0.8 | pass |
+| enabler | 359/410 | 0.770 | 0.696 | ≥ 0.7 | pass |

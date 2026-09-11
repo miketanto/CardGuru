@@ -150,11 +150,11 @@ STATE:   - EMBEDDER ACCEPTED: rl/artifacts/card_emb_v8 (= overnight sweep config
            If c or d passes every gate: stage it as card_emb_v9 exactly as v8 was staged
            (copy emb.pt, emb_seed1.pt, gates.json, split.json, logs; index.json; README
            from v8 with numbers), retrain deck context (8 min), commit. Drop-in for consumers.
-         - deck_ctx_v1 being RETRAINED on card_emb_v8 (hidden wsl.exe,
-           <scratchpad>/train_masked_v8.sh): rl/artifacts/deck_ctx_v1/masked_runner.log
-           gets "MASKED v8 SEED 0 EXIT k" then "PROBE v8 EXIT k"; probe table in
-           probe_roles_v8.txt. Then: correction rows in V7-VALIDATION.md §1c/2b and §2c,
-           README dependency line -> card_emb_v8, commit model_seed0.pt.
+         - deck_ctx_v1 RETRAINED on card_emb_v8 and recorded (V7-VALIDATION.md §1c/2b and
+           §2c correction rows): masked top-1 0.409 / top-10 0.746; roles 0.987 / 0.969 /
+           0.770. Tags v7-p1 (embedder) and v7-p2 (deck context) on the lane branch.
+         - PR: gh is not installed here; description in rl/PR-V7-LANE-A.md, open at
+           https://github.com/miketanto/CardGuru/pull/new/v7/lane-a
          - Deck tensors for masked training cached: rl/artifacts/deck_ctx_v1/decks_cache.pt
            (12,612 decks, 85 s, gitignored; train_masked.py rebuilds it when the corpus
            changes). train_masked.py smoke-tested end to end.
@@ -176,11 +176,11 @@ DONE:    0b PASS  rl/artifacts/cards_v1 (34,642 faces + 836 tokens, 0 unknown ov
          0c code  rl/decklists/fetch_mtgo.py, build_corpus.py (mtgo.com month
                   archives: 250-450 events/month, ~20 lists/event, cold page = 25 s)
 
-OPEN:    1. when the deck-context rerun exits: record §1c/2b and §2c correction rows, commit.
-         2. Open the PR v7/lane-a -> main (gh pr create), tag v7-p1 (embedder) and v7-p2
-            (deck context) after the rerun rows are in.
-         3. Sweep b/c/d results as they land (see STATE): record each in V7-VALIDATION.md;
-            v9 only if a config passes every gate. -> table
+OPEN:    1. User opens the PR (link in STATE). Merge after review; main must still run v6
+            (nothing under rl/xmage-src or the server changed on this branch).
+         2. Sweep b/c/d results as they land: record each in V7-VALIDATION.md; v9 only if a
+            config passes every gate (then retrain deck context, 8 min, and bump tags).
+         3. Lane A next phase: 6 (belief module) waits on Lanes B/C (3d, 4f). -> table
             into V7-VALIDATION.md §1d (v4); if PASS: move rl/artifacts/card_emb_v1/README.md
             to the passing version with numbers, commit emb.pt (18 MB fp32) + gates.json +
             index.json + emb_seed1.pt (not model.pt/ckpt), and point train_masked.py

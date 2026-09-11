@@ -554,3 +554,29 @@ configs c/d continue; a full pass becomes v9 as a drop-in.
 Consumers record `card_emb_v8`. `rl/artifacts/card_emb_v6/` is a failed
 version kept for the record.
 
+## 1c / 2b — correction: deck context retrained on the accepted `card_emb_v8` (Lane A, 2026-09-11 07:49)
+
+Same recipe as the provisional run above (which used the failed v6);
+this row supersedes it. `deck_ctx_v1/model_seed0.pt` is now the v8-based
+model.
+
+| gate | baseline | measured (held-out, 4,141 masked slots) | result |
+|---|---|---|---|
+| masked top-1 | most-frequent 0.020; per-format 0.025 | **0.409** (v6-based: 0.407) | pass |
+| masked top-10 | 0.129; per-format 0.164 | **0.746** (v6-based: 0.727) | pass |
+| train top-1 / top-10 (7,114 slots) | | 0.411 / 0.743 — no train/held-out gap | — |
+
+## 2c — correction: role probe on the v8-based deck context (Lane A, 2026-09-11 07:51)
+
+| label | held-out pos/neg | c'ᵢ probe bal-acc | e_card (v8) reference | threshold | result |
+|---|---|---|---|---|---|
+| wincon | 200/569 | 0.987 | 0.997 | ≥ 0.85 | pass |
+| answer | 120/649 | 0.969 | 0.989 | ≥ 0.80 | pass |
+| enabler | 359/410 | **0.770** (v6-based: 0.814) | 0.696 | ≥ 0.70 | pass |
+
+The context still adds on the relational label (enabler 0.70 → 0.77 over
+raw e_card) and gives back a little on card-intrinsic ones. The enabler
+number moved down by 0.044 from the v6-based run; with 769 held-out
+rows that is within the ±0.03 interval stated above plus the change of
+embedder, and it clears the pre-registered 0.70. Phase 2 gates stand.
+

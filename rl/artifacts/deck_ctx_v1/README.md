@@ -32,12 +32,12 @@ scaffolding, not part of the game-time contract.
 
 | gate | measured |
 |---|---|
-| masked-card held-out top-1 / top-10 (vocab 3,519) | 0.407 / 0.727 vs frequency baseline 0.020 / 0.129 |
-| role probe on c'ᵢ, held-out decks: wincon / answer / enabler | 0.982 / 0.960 / 0.814 (e_card reference 0.996 / 0.987 / 0.720) |
+| masked-card held-out top-1 / top-10 (vocab 3,519) | 0.409 / 0.746 vs frequency baseline 0.020 / 0.129 |
+| role probe on c'ᵢ, held-out decks: wincon / answer / enabler | 0.987 / 0.969 / 0.770 (e_card reference 0.997 / 0.989 / 0.696) |
 
 ## Dependencies, pinned
 
-`card_emb_v6/emb.pt` (frozen), `decklists_v1/decklists.jsonl.gz` (commit
+`card_emb_v8/emb.pt` (frozen; the accepted embedder), `decklists_v1/decklists.jsonl.gz` (commit
 f403ddb), `cards_v1` (Forge pin 670429bf + 123-script overlay).
 
 ## Pre-registered: what this artifact cannot do
