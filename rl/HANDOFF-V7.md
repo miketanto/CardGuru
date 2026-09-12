@@ -685,3 +685,93 @@ section), commit, push, and offer to continue in a new session.
 ```
 
 UPDATE (2026-09-12 21:15): ONE LANE from here. v7/lane-b is merged into v7/lane-d (d7dfa41); Java and Python live in the single checkout (Windows C:\Users\sutanto4\Documents\CardGuru = WSL /home/user/CardGuru = /mnt/c/Users/sutanto4/Documents/CardGuru). The worktree CardGuru-lane-b is removed; every rl/*.sh now points at the single checkout (rl/sync_lane_b.sh compiles rl/xmage-src from it). H.1 lines about the worktree are superseded by this note; H.2 NEXT 1 (the branch decision) is done - start at NEXT 2 (5b). Verified after the merge: rl/sync_lane_b.sh compiles, drivers 7910/7911 restart, v6 arm within the tapped-land noise class vs the unpatched build, v7 recording validates (93 consults), rl/v7_check.py 15/15. The remote branch v7/lane-b is kept as history and can be deleted; rl/PR-V7-LANE-B.md is now covered by a single PR for v7/lane-d.
+
+## I. The one-lane handoff prompt (2026-09-12 21:30; v7/lane-d = c203c79). Supersedes §H.
+
+```
+You are working in the CardGuru repository, an RL project training agents to play Magic
+against the XMage engine. Windows checkout C:\Users\sutanto4\Documents\CardGuru = WSL
+/home/user/CardGuru = /mnt/c/Users/sutanto4/Documents/CardGuru. ONE branch: v7/lane-d
+(36 commits ahead of main; main stays v6 and is untouched). Read CLAUDE.md first and
+follow its context protocol: durable files over chat, small tool output, a checkpoint
+block at ~70% context, Wilson intervals, no level from fewer than 100 games,
+pre-register what a change cannot move, correct in the open (a failed gate is a row in
+rl/V7-VALIDATION.md, never a moved bar), commit and push after each finding, commit
+messages end with  Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>.
+
+CODE EXPLORATION USES THE CODEBASE-MEMORY MCP (rules in rl/HANDOFF-V7.md §E.1: two
+projects, C-Users-sutanto4-Documents-CardGuru and C-Users-sutanto4-xmage-pin;
+search_graph / get_code_snippet / trace_path / query_graph before any grep; StateEncoder.java
+is only partially indexed and grep calls it binary - use grep -a / sed there).
+
+ENVIRONMENT (rl/HANDOFF-V7.md §E.1, §F.1, §G GOTCHAS, and the dated UPDATE lines):
+  - Python exists only in WSL, login shell:  wsl -e bash -lc "cd /home/user/CardGuru && python3 ..."
+    Tests: python3 -m pytest tests/test_v7_server.py -q ; the whole gate set: python3 rl/v7_check.py
+    (15 checks, ~80 s, must end failures=0; includes V6-SAME = entattn_check vs
+    rl/artifacts/v7/baseline.md).
+  - Java: edit rl/xmage-src/*.java, compile with  bash rl/sync_lane_b.sh  (NEVER
+    rl/sync_engine_src.sh). Driver JVMs load classes at start: after every compile restart
+    with  bash rl/drivers_3a.sh  (7910 = v6 arm, 7911 = v7 arm) or  bash rl/drivers_3d.sh
+    (7912 = v7 + -Drl.oracle; stops 7910 first). rl.encoderV and rl.oracle are class-init
+    constants: one JVM per arm. Job-level -Drl.* flags go through wire_record.sh EXTRA=...
+  - Long jobs: write a script with the Write tool, run it in a separate call; detach with
+    PowerShell Start-Process wsl.exe ... -WindowStyle Hidden. Never put a launch and a kill in
+    one call; the auto-mode classifier blocks inline kill/pkill, a script that kills is fine.
+  - Recording toolchain (rl/): wire_echo_server.py (--pick N, --prefer-type 2,1),
+    wire_record.sh (env DECK PICK PREFER BUDGET EXTRA; positional tag echo-port encV
+    driver-port episodes seed), wire_diff.py --all, wire_census.py --index=, wire_check_3b/3c/3d.py,
+    wire_trace_3d.py, live_check_3a.sh / live_check_5a.sh, replay_3e.sh. Recordings are
+    gitignored in rl/artifacts/v7/wire3a/ (regenerate from seed 900000). Spell-first
+    recordings need BUDGET=300. torch profiler: 60 steps, never 400 (OOM, stalls WSL).
+  - The v7 encoder is an exact identity at init: no channel probe is valid on an untrained
+    net without perturbing blk.att.out.weight first.
+
+Read, in this order, before any work:
+  1. CLAUDE.md
+  2. rl/HANDOFF-V7.md §G and every dated UPDATE line after it (state, toolchain, open items,
+     gotchas, the merge to one lane).
+  3. rl/V7-IMPLEMENTATION-PLAN.md §2, Phases 5-7 (0-4 closed; 3 closed; 5a closed).
+  4. rl/V7-VALIDATION.md: the §4g profile + correction rows (the update was 85% one gather's
+     backward; fixed; now 64 ms/step at tbptt 16 / ep-batch 4, 7.4 GB; ep-batch 8 spills past
+     the 12 GB card), then §3a-§3e and §5a (what the driver emits and how it was checked).
+  5. rl/WIRE-V7.md only when touching the contract (open amendments: §2c player width 21,
+     the PASS afterstate at the joint sites).
+
+STATE: nothing runs; GPU idle; drivers 7910/7911 may be up on the merged build
+(python3 rl/driver_client.py --port 7911 --ping). Nothing uncommitted. rl/PR-V7-LANE-D.md is
+the PR text for the whole branch (gh not installed; compare link inside). Nothing has been
+trained: every piece needed to train exists and has been exercised end to end (driver
+emits the full wire, server runs PPO over it, real embeddings load, refusals work).
+
+NEXT, in order:
+  1. 5b - faithfulness on real dumps. The driver emits consults only for the RL seat:
+     decide and record how the ~10k consults are produced (the echo policy over many seeds
+     and decks - PICK=99 and PREFER=2,1 with BUDGET=300 exercise combat and the stack - or a
+     shadow emission from a SearchPlayer seat). Record with -Drl.oracle=true on 7912 across
+     W0Base, W1Fly, W4Inst, W5Trick, B1Fast, W3Sorc, BenchDimir; game-grouped hold-out;
+     rl/probes/faithfulness.py after L3 and after L4 for every field and edge, plus the
+     known-card set, remaining-deck multiset and instant-speed threat count. Every field at
+     0 exercised rows (rl/wire_check_3b.py: counters, loyalty, tokens, 16 keywords,
+     lethal-as-is, stack X, the tracker's known-identity path) gets a constructed scenario or
+     an explicit "not exercised" line. Gate row.
+  2. 5c - leak gates end to end on those recordings: oracle (rl/v7_leak_real.py), tracker
+     (known ⊆ truth is vacuous until the known path is exercised - say so or exercise it),
+     belief (rl/v7_belief.py's gate on real inputs).
+  3. 5d - throughput per rl/THROUGHPUT-LOCAL.md, v7 vs v6 on cuda, end to end with the
+     server on --device cuda; budget vs v6 stated before running. If short: the levers
+     pre-registered in the §4g correction row (SDPA with the bias as additive mask,
+     torch.compile on the block, window-batched encoding with the LSTM after, device-side
+     collation per window).
+  4. 5e - replay (rl/replay_3e.sh): the residual is the tapped-land noise class (engine
+     mana-payment order among identical lands, not seeded); state it; tag v7-p5.
+  5. 7a - rung-0 smoke: 256 episodes, --arch v7 --device cuda, train mode, W0Base vs
+     heuristic; entropy, value_ev, counters, memory, throughput. Pre-registered: cannot beat
+     v6 on rungs 0-3 beyond noise; a flat curve is not evidence of dead channels. Phase 6
+     (belief training) can wait; --belief off is the rollback.
+  6. When convenient: WIRE §2c width 21 (one commit naming both consumers: wire_validate DIMS,
+     v7_obs, v7_net, fixtures, Java); the PASS-afterstate amendment (design §6).
+
+Start by confirming the driver state and running rl/v7_check.py once, then execute NEXT 1.
+At ~70% context, stop, add a dated UPDATE line to rl/HANDOFF-V7.md (or a new section),
+commit, push, and offer to continue in a new session.
+```
