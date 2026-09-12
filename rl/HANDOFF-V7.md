@@ -795,3 +795,96 @@ UPDATE (2026-09-12 22:30, next session's clock): **5d DONE (FAIL), 5e DONE, Phas
 UPDATE (2026-09-12 23:25, next session's clock): **7a arms A0/A1/A2 DONE** — row §7a in rl/V7-VALIDATION.md. Not the learning rate (A1 at 3e-5 / 1 epoch collapsed to always-PASS, 540-nat gap, logits climbing while grad norm 0.08: Adam-normalised steps); the logit bound (A2, tanh × 5) stops the magnitude but saturates to a uniform policy (gap 0.000, 13/256 random wins). Correction recorded: advantages ARE batch-normalised, so the drift direction is GAE-timestep/critic, not "all −1". Action-space finding: every ACTIVATE candidate on W0Base is a land mana ability (XMage getPlayable, auto-pay makes it a no-op that costs a consult) — amendment owed: filter a.isManaAbility() in RLPlayer.consult (own commit + v6-identity row). Toolchain: TRAIN line now carries entropy/max_logit/grad_norm/chosen_types for --arch v7; policy_server --epochs and --logit-bound; rl/run_7a.sh; rl/v7_init_logits.py --logit-bound; rl/v7_logit_velocity.py.
   STATE: nothing running; 7910 (v6) and 7911 (v7) drivers up, 7912 down; GPU idle; nothing uncommitted after this commit. /tmp/rl_7a_*/ hold the lane outputs (ck_256.pt copied into rl/artifacts/v7/7a/*/).
   NEXT: the B1–B4 arms pre-registered in §7a (B1 needs the mana-ability filter first: RLPlayer.consult, compile with bash rl/sync_lane_b.sh, restart drivers, v6-identity row via wire_check_3b on a W0Base recording). Then the 5d throughput levers (batcher arm). v7-p5 still withheld.
+
+## J. The handoff prompt (2026-09-12 23:50; v7/lane-d = cc6ba73). Supersedes §I.
+
+```
+You are working in the CardGuru repository, an RL project training agents to play Magic
+against the XMage engine. Windows checkout C:\Users\sutanto4\Documents\CardGuru = WSL
+/home/user/CardGuru = /mnt/c/Users/sutanto4/Documents/CardGuru. ONE branch: v7/lane-d
+(main stays v6, untouched). Read CLAUDE.md first and follow its context protocol: durable
+files over chat, small tool output, a checkpoint block at ~70% context, Wilson intervals,
+no level from fewer than 100 games, pre-register what a change cannot move, correct in the
+open (a failed gate is a row in rl/V7-VALIDATION.md, never a moved bar), commit and push
+after each finding, commit messages end with
+Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>.
+
+CODE EXPLORATION USES THE CODEBASE-MEMORY MCP (rl/HANDOFF-V7.md §E.1): projects
+C-Users-sutanto4-Documents-CardGuru and C-Users-sutanto4-xmage-pin; search_graph /
+get_code_snippet / trace_path before grep; StateEncoder.java is partially indexed (grep -a).
+
+ENVIRONMENT (rl/HANDOFF-V7.md §E.1, §F.1, §G GOTCHAS, every dated UPDATE line, and the
+memory file wsl-detached-jobs):
+  - Python only in WSL:  wsl -e bash -lc "cd /home/user/CardGuru && python3 ..."
+    Tests: python3 -m pytest tests/test_v7_server.py -q ; full gate set python3 rl/v7_check.py
+    (15 checks, ~80 s, must end failures=0).
+  - Java: edit rl/xmage-src/*.java, compile with  bash rl/sync_lane_b.sh  (NEVER
+    sync_engine_src.sh); restart drivers after every compile:  bash rl/drivers_3a.sh
+    (7910 = v6, 7911 = v7) or  bash rl/drivers_3d.sh  (7912 = v7 + -Drl.oracle). rl.encoderV,
+    rl.oracle, rl.noYields are class-init constants: one JVM per arm.
+  - LONG JOBS: launch inside ONE foreground wsl call with
+      setsid nohup bash rl/<script>.sh > /tmp/<name>.log 2>&1 < /dev/null &
+    (PowerShell Start-Process jobs die with the session). Make runners resumable. Monitor and
+    Bash run in Git Bash on Windows: use /c/Users/... paths, check WSL processes through
+    wsl -e bash -lc "pgrep -fc '...'" with a bracket in the pattern ('rung0_la[n]e'); NEVER put
+    the driver's process name literally in a command line while a lane runs - the lane's
+    pkill -f kills your shell. Strip CRLF from scripts written on Windows: sed -i 's/\r$//'.
+  - git: commit from the Windows side (WSL sees CRLF diffs on 27 files). NEVER git add a lane
+    artifact directory without excluding *.pt (a Trainer checkpoint is 246 MB; rl/artifacts/v7/**/*.pt
+    is gitignored now). Recordings in rl/artifacts/v7/wire3a/ are gitignored (regenerate from
+    rl/artifacts/v7/5b_manifest.txt).
+  - Lane: rung0_lane.sh has an ENC=7 branch (R0_ENCODER_V=7 -> --arch v7). Server knobs for
+    --arch v7: --tbptt 16 --ep-batch 4 (defaults), --epochs N, --logit-bound B, --device cuda,
+    --batch-max N; pass them via R0_SRVEXTRA. The TRAIN line carries entropy / max_logit /
+    grad_norm / chosen_types (PASS/LAND/SPELL/ACTIVATE/TARGET/ATTACK/BLOCK/OTHER) per update.
+    Runners: rl/run_5d.sh (v6 vs v7 throughput), rl/run_7a.sh (arms A0/A1/A2). Quantities:
+    rl/tp_5d.py <arm dir>. Census of a checkpoint on real consults: rl/v7_init_logits.py
+    --ckpt X [--logit-bound B] rl/artifacts/v7/wire3a/5b_*.jsonl. Logit velocity per Adam step:
+    rl/v7_logit_velocity.py.
+
+Read, in this order, before any work:
+  1. CLAUDE.md
+  2. rl/HANDOFF-V7.md §G, §I and every dated UPDATE line after §I (14:40, 21:30, 22:30, 23:25).
+  3. rl/V7-VALIDATION.md rows §5b-§5e, "Phase 5 verdict", "7a pre-registration", §7a
+     (what was measured, what failed, what is pre-registered).
+  4. rl/THROUGHPUT-LOCAL.md §2, §7, §11.4 only when touching throughput.
+
+STATE: Phase 5 closed without the v7-p5 tag (5c belief B3/B4 FAIL, 5d FAIL both per-consult
+budgets, 5e replay residual = engine mana-payment order among identical lands). 7a arms
+A0/A1/A2 done: the collapse is structural - lr 3e-5 / 1 epoch still collapses (Adam-normalised
+steps on an unbounded scorer, 540-nat gap, grad norm 0.08); a tanh bound of 5 stops the
+magnitude but saturates to a uniform policy (13/256 random wins). Advantages are batch-
+normalised (line ~890 of policy_server.py), so the drift direction is GAE timestep + critic,
+not outcome. The untrained v7 init is PASS-biased (argmax PASS on 93% of consults offering
+anything else). Every ACTIVATE candidate on the mono-colour decks is a land mana ability -
+a no-op (XMage auto-pays) that costs a consult and is the collapse's sink; on BenchDimir /
+P8Faeries a payment choice exists on 39-49% of consults (heterogeneous untapped lands,
+creature-lands). Drivers 7910/7911 up, 7912 down, GPU idle, nothing uncommitted.
+
+NEXT, in order:
+  1. Mana-ability filter (decision taken 2026-09-12 23:45, chat + §7a amendment): in
+     RLPlayer.consult, drop candidates with a.isManaAbility() at priority, behind
+     -Drl.manaCands=true to restore the old set. Own commit. v6-identity row: wire_check_3b
+     on a W0Base recording with the flag on must show 0 disagreements; with it off, the
+     candidate count per consult falls by exactly the mana abilities and nothing else changes.
+     Compile (sync_lane_b.sh), restart drivers. Pre-registered: cannot change any win rate of
+     an argmax eval probe on the mono-colour decks except through consult budget; it removes
+     ~50 ACTIVATE consults per game from the A0-style collapse. A payment sub-consult (offered
+     only when untapped sources are heterogeneous, candidate 0 = engine default) is deferred
+     until the bench decks train; the float-in-response line is recorded as closed.
+  2. 7a arms B1-B4 as pre-registered in §7a (12 min each, rl/run_7a.sh pattern, census after
+     each, "learning" defined there): B1 = A2 + the filter; B2 = A2 + AdamW weight decay 0.01
+     on the heads; B3 = heads on SGD-momentum lr 1e-3, trunk Adam 3e-5; B4 = entropy coef 0.1
+     with the bound. Add the knobs to policy_server.py behind flags (--weight-decay,
+     --heads-opt, --ent-coef); tests must stay green. Record a row per arm; do not move a bar.
+  3. 5d levers, pre-registered in §5d: --batch-max 4 on the v7 lane (play toward ~150
+     consults/s), then update_profile.py --arch v7 on real lane windows to find the 5.4x
+     update cost (PPO epochs, window padding at 28 consults/episode, first-update warm-up).
+  4. When convenient: WIRE §2c width 21, PASS-afterstate, lethal-as-is idx 57, jointBlocks
+     canBlock filter, Phase 6 belief-loss amendment (mask known slots), candidate-scorer
+     centring for the PASS bias, the §5b L4 probe on a trained checkpoint.
+
+Start by confirming the driver state (python3 rl/driver_client.py --port 7911 --ping) and
+running python3 rl/v7_check.py once, then execute NEXT 1. At ~70% context, stop, add a dated
+UPDATE line to rl/HANDOFF-V7.md, commit, push, and offer to continue in a new session.
+```
