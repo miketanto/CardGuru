@@ -1,0 +1,8 @@
+consults with tracker tokens=13171 (oracle-labelled 13171); handDrift max=9 oppHandTrunc sum=0
+slots by origin: {'opening': 25100, 'drawn': 16569, 'returned': 403}  known by origin: {'returned': 403}
+known fraction overall: 0.010
+known fraction by turn: {2: '0/4006', 3: '0/439', 4: '4/5377', 5: '0/993', 6: '24/5804', 7: '5/952', 8: '35/5862', 9: '4/818', 10: '40/5051', 11: '2/619', 12: '24/3263', 13: '1/374'}
+opponent actions: {'passed_mana_up': 30971, 'cast': 45512, 'attack': 41657, 'activate': 958, 'declined_block': 6665, 'block': 658}
+deck: Σremaining − (library + unknown slots): mean -0.10, mean |gap| 0.10 (counts saturate at 4 in the wire)
+failures: {'known_not_in_truth': 22}
+  e.g. known_not_in_truth: consult 6134: Cecil, Dark Knight x1 vs truth {'Spyglass Siren': 1}

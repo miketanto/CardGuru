@@ -103,11 +103,11 @@ THR = {"L3": {"binary": 0.99, "cat": 0.99, "real": 0.95}, "L4": {"binary": 0.95,
        "edge": 0.90, "consult": {"real": 0.90, "binary": 0.95}}
 
 
-def wake(enc, gen):
+def wake(enc, gen, std=0.05):
     for blk in enc.blocks:
         for lin in (blk.att.out, blk.ffn[-1]):
             with torch.no_grad():
-                lin.weight.copy_(torch.randn(lin.weight.shape, generator=gen) * 0.05)
+                lin.weight.copy_(torch.randn(lin.weight.shape, generator=gen) * std)
         with torch.no_grad():
             blk.att.bias_rows.copy_(torch.randn(blk.att.bias_rows.shape, generator=gen) * 1.0)
     return enc
@@ -198,6 +198,7 @@ def main():
     ap.add_argument("--layers", type=int, default=2)
     ap.add_argument("--cap", type=int, default=40000, help="max rows per token part fed to a probe")
     ap.add_argument("--batch", type=int, default=16)
+    ap.add_argument("--wake", type=float, default=0.05, help="std of the woken output projections (L4 instrument)")
     ap.add_argument("--out", default=os.path.join(HERE, "artifacts", "v7", "5b_faith.json"))
     ap.add_argument("--md", default=os.path.join(HERE, "artifacts", "v7", "5b_faith.md"))
     args = ap.parse_args()
@@ -213,7 +214,7 @@ def main():
     gen = torch.Generator().manual_seed(5)
     table = N.CardTable().float()
     build = N.TokenBuilders(table).float().eval()
-    enc = wake(E.StateGraphEncoder(layers=args.layers).float().eval(), gen)
+    enc = wake(E.StateGraphEncoder(layers=args.layers).float().eval(), gen, args.wake)
     ids = V.CardIds()
     rng = np.random.RandomState(0)
 
@@ -315,14 +316,17 @@ def main():
             if part == "ent":
                 per_zone = {}
                 for z, zn in enumerate(ZONE):
-                    rows = keep[ZN[keep] == z]
+                    # the cap is per zone: a global cap starves the small zones (stack) of rows
+                    rows = np.nonzero(ZN == z)[0]
+                    if len(rows) > args.cap:
+                        rows = np.sort(rng.choice(rows, args.cap, replace=False))
                     if len(rows) < 200:
                         continue
                     per_zone[zn] = run_probe(Xp[rows], Yp[rows], Gp[rows], fields, thr)
                     idv = np.array(IDS["ent"])[rows].astype(float); idv[idv < 0] = np.nan
                     per_zone[zn].update(run_probe(Xp[rows], idv[:, None], Gp[rows], [("identity", "cat")], thr))
                 st[part] = merge_zones(per_zone)
-                st[part + "_zone_rows"] = {zn: int((ZN[keep] == z).sum()) for z, zn in enumerate(ZONE)}
+                st[part + "_zone_rows"] = {zn: int(min((ZN == z).sum(), args.cap)) for z, zn in enumerate(ZONE)}
             else:
                 st[part] = run_probe(Xp[keep], Yp[keep], Gp[keep], fields, thr)
                 if part in ("opp_hand", "opp_deck"):

@@ -50,3 +50,23 @@ RECORD|5b2_P8Faeries_p1|rc=0|lines=916|consults=451|md5=ba316cd936dc
 RECORD|5b2_P8Faeries_p99|rc=0|lines=608|consults=297|md5=f148d04da0e8
 RECORD|5b2_P8Faeries_sf|rc=0|lines=906|consults=446|md5=f7d1c0d67ef2
 # done round 2 2026-09-12T13:51Z
+# 5b extras 2026-09-12T14:02Z
+RECORD|5bx_BenchDimir_p99dbg|rc=0|lines=990|consults=486|md5=b3cc148be739
+RECORD|5bx_W0Base_ny|rc=0|lines=1136|consults=559|md5=9962b2d3f677
+RECORD|5bx_B1Fast_ny|rc=0|lines=1474|consults=728|md5=a10123e9d795
+RECORD|5bx_KW7Probe_p1|rc=1|lines=458|consults=226|md5=01774808dfae
+RECORD|5bx_KW7Probe_sf|rc=1|lines=708|consults=349|md5=9f2847f27230
+RECORD|5bx_KW7Probe_p99|rc=1|lines=82|consults=40|md5=08f9eae3deb8
+# done extras 2026-09-12T14:06Z
+# 5b dbg+main2 2026-09-12T14:06Z
+RECORD|5bx_BenchDimir_p99dbg2|rc=0|lines=990|consults=486|md5=7c459baaf2ff
+RECORD|5bx_W0Base_m2|rc=0|lines=534|consults=258|md5=45cdbb57ac55
+RECORD|5bx_B1Fast_m2|rc=0|lines=558|consults=270|md5=6024b0dc4118
+RECORD|5bx_W1Fly_m2|rc=0|lines=548|consults=265|md5=093eacdd79c4
+# done dbg+main2 2026-09-12T14:07Z
+# 5b dbg2 2026-09-12T14:10Z
+RECORD|5bx_W4Inst_ny|rc=0|lines=972|consults=477|md5=a9f4719c1d56
+RECORD|5bx_BenchDimir_p99dbg3|rc=1|lines=0|consults=0|md5=d41d8cd98f00
+cp: cannot stat '/tmp/td_p99.txt': No such file or directory
+# done dbg2 2026-09-12T14:10Z
+# 5b dbg3 2026-09-12T14:14Z

@@ -1,0 +1,3 @@
+consults=13171 edges=160576 can_block=639 (in 1644 defending declare-blockers consults, 409 BLOCK candidates) stack_above=281 (consults with >=2 stack objects: 236)
+referent coverage: 30636/30636 = 1.0000; refersFallback sum=70
+failures: {'block_candidate_pair_not_a_can_block_edge': 31}

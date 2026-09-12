@@ -16,7 +16,11 @@ short and deterministic under -Drl.seed.  Nothing here is a policy.
 """
 import argparse
 import json
+import os
 import socket
+
+
+PASS_MAIN1 = os.environ.get("WIRE_ECHO_PASS_MAIN1") == "1"
 
 
 def serve(port, out, pick, max_conns, prefer=None):
@@ -45,6 +49,15 @@ def serve(port, out, pick, max_conns, prefer=None):
                             m = json.loads(line)
                             k = len(m["c"])
                             a = min(a, k - 1)
+                            # WIRE_ECHO_PASS_MAIN1=1: pass every main-1 consult so
+                            # lands and spells are played in main 2, after combat,
+                            # while damage is still marked on the survivors (5b:
+                            # the only consult window where ent[12] can be non-zero)
+                            if PASS_MAIN1 and "v7_game" in m and m["v7_game"][4] > 0.5:
+                                a = 0
+                                rep = b'{"a":0}\n'
+                                f.write(rep); f.flush(); c.sendall(rep)
+                                continue
                             if prefer is not None and "v7_cand_type" in m:
                                 # first candidate of the first preferred WIRE-V7
                                 # type present, in the given order (e.g. "2,1" =

@@ -142,6 +142,18 @@ public class RLKnowledgeWatcher extends Watcher {
     private static final String DEBUG = System.getProperty("rl.trackerDebug");
     private static java.io.PrintWriter debugOut;
 
+    private static String short8(UUID id) {
+        return id == null ? "-" : id.toString().substring(0, 8);
+    }
+
+    private String slotIds() {
+        StringBuilder sb = new StringBuilder();
+        for (Slot s : hand) {
+            sb.append(short8(s.card)).append(s.known ? "*" : "").append(',');
+        }
+        return sb.toString();
+    }
+
     private static synchronized void debug(String line) {
         try {
             if (debugOut == null) {
@@ -224,7 +236,9 @@ public class RLKnowledgeWatcher extends Watcher {
                     // reads hidden identities); the tracker itself never does
                     debug(turn + "|" + game.getTurnStepType() + "|" + event.getType() + "|" + zones + "|"
                             + (dc != null ? dc.getName() : sc != null ? sc.getName() : "-")
-                            + "|hand=" + (op == null ? -1 : op.getHand().size()) + "|slots=" + hand.size());
+                            + "|hand=" + (op == null ? -1 : op.getHand().size()) + "|slots=" + hand.size()
+                            // 5b diagnostic: the event's handle vs the handles the slots hold
+                            + "|tid=" + short8(event.getTargetId()) + "|sids=" + slotIds());
                 }
             } catch (RuntimeException ignored) {
                 // test-mode lookups throw on non-card ids; diagnostics only

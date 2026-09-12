@@ -1,0 +1,384 @@
+== rl/artifacts/v7/wire3a/5b2_B1Fast_p1.jsonl
+hello: wire=7 card_emb=card_emb_v8 dims={'game': 24, 'player': 16, 'ent': 64, 'cand': 40, 'opp_hand': 8, 'opp_deck': 6, 'opp_action': 8} emax=160
+consults=188  ent/consult mean=16.4 max=27  edges/consult mean=8.2  k mean=2.3 max=8
+cand types: {'TARGET': 64, 'PASS': 177, 'LAND': 62, 'ACTIVATE': 122, 'SPELL': 3}
+decision types: {'TARGET': 11, 'LAND': 29, 'ACTIVATE': 119, 'PASS': 26, 'SPELL': 3}
+edge types: {2: 51, 3: 3, 4: 1487}
+non-PASS candidates=251: refers->entity 245, refers->player-only 6, fallback(counter)=0, metaMissing=0, entityTrunc=0
+refers coverage (entity or player referent, non-PASS) = 1.0000
+== rl/artifacts/v7/wire3a/5b2_B1Fast_p99.jsonl
+hello: wire=7 card_emb=card_emb_v8 dims={'game': 24, 'player': 16, 'ent': 64, 'cand': 40, 'opp_hand': 8, 'opp_deck': 6, 'opp_action': 8} emax=160
+consults=154  ent/consult mean=16.0 max=25  edges/consult mean=9.0  k mean=2.3 max=8
+cand types: {'TARGET': 40, 'PASS': 146, 'LAND': 63, 'ACTIVATE': 94, 'SPELL': 6}
+decision types: {'TARGET': 8, 'LAND': 27, 'ACTIVATE': 90, 'PASS': 23, 'SPELL': 6}
+edge types: {2: 51, 4: 1329}
+non-PASS candidates=203: refers->entity 197, refers->player-only 6, fallback(counter)=0, metaMissing=0, entityTrunc=0
+refers coverage (entity or player referent, non-PASS) = 1.0000
+== rl/artifacts/v7/wire3a/5b2_B1Fast_sf.jsonl
+hello: wire=7 card_emb=card_emb_v8 dims={'game': 24, 'player': 16, 'ent': 64, 'cand': 40, 'opp_hand': 8, 'opp_deck': 6, 'opp_action': 8} emax=160
+consults=171  ent/consult mean=16.3 max=26  edges/consult mean=8.8  k mean=2.3 max=8
+cand types: {'TARGET': 22, 'PASS': 166, 'LAND': 92, 'ACTIVATE': 108, 'SPELL': 2}
+decision types: {'TARGET': 5, 'LAND': 31, 'ACTIVATE': 106, 'PASS': 27, 'SPELL': 2}
+edge types: {2: 52, 3: 2, 4: 1443}
+non-PASS candidates=224: refers->entity 218, refers->player-only 6, fallback(counter)=0, metaMissing=0, entityTrunc=0
+refers coverage (entity or player referent, non-PASS) = 1.0000
+== rl/artifacts/v7/wire3a/5b2_BenchDimir_p1.jsonl
+hello: wire=7 card_emb=card_emb_v8 dims={'game': 24, 'player': 16, 'ent': 64, 'cand': 40, 'opp_hand': 8, 'opp_deck': 6, 'opp_action': 8} emax=160
+consults=415  ent/consult mean=29.7 max=59  edges/consult mean=16.8  k mean=3.7 max=10
+cand types: {'TARGET': 85, 'PASS': 385, 'LAND': 73, 'ACTIVATE': 794, 'SPELL': 161, 'BLOCK': 14, 'ATTACK': 30}
+decision types: {'TARGET': 30, 'LAND': 47, 'PASS': 25, 'ACTIVATE': 248, 'BLOCK': 12, 'ATTACK': 17, 'SPELL': 36}
+edge types: {2: 60, 3: 26, 4: 6844, 6: 22, 7: 3}
+non-PASS candidates=1157: refers->entity 1145, refers->player-only 12, fallback(counter)=6, metaMissing=0, entityTrunc=0
+refers coverage (entity or player referent, non-PASS) = 0.9948
+== rl/artifacts/v7/wire3a/5b2_BenchDimir_p99.jsonl
+hello: wire=7 card_emb=card_emb_v8 dims={'game': 24, 'player': 16, 'ent': 64, 'cand': 40, 'opp_hand': 8, 'opp_deck': 6, 'opp_action': 8} emax=160
+consults=296  ent/consult mean=22.3 max=41  edges/consult mean=11.9  k mean=4.2 max=10
+cand types: {'TARGET': 25, 'PASS': 283, 'LAND': 71, 'ACTIVATE': 676, 'SPELL': 174, 'BLOCK': 2, 'ATTACK': 17}
+decision types: {'TARGET': 12, 'LAND': 36, 'ACTIVATE': 173, 'SPELL': 40, 'BLOCK': 2, 'PASS': 24, 'ATTACK': 9}
+edge types: {2: 44, 3: 9, 4: 3466, 6: 2, 7: 1}
+non-PASS candidates=965: refers->entity 940, refers->player-only 25, fallback(counter)=19, metaMissing=0, entityTrunc=0
+refers coverage (entity or player referent, non-PASS) = 0.9803
+== rl/artifacts/v7/wire3a/5b2_BenchDimir_sf.jsonl
+hello: wire=7 card_emb=card_emb_v8 dims={'game': 24, 'player': 16, 'ent': 64, 'cand': 40, 'opp_hand': 8, 'opp_deck': 6, 'opp_action': 8} emax=160
+consults=518  ent/consult mean=31.3 max=61  edges/consult mean=16.9  k mean=4.1 max=9
+cand types: {'TARGET': 58, 'PASS': 493, 'LAND': 137, 'ACTIVATE': 1337, 'SPELL': 60, 'ATTACK': 13, 'BLOCK': 18}
+decision types: {'TARGET': 25, 'LAND': 55, 'ACTIVATE': 379, 'PASS': 29, 'ATTACK': 10, 'BLOCK': 12, 'SPELL': 8}
+edge types: {2: 60, 3: 54, 4: 8570, 6: 23, 7: 30}
+non-PASS candidates=1623: refers->entity 1614, refers->player-only 9, fallback(counter)=3, metaMissing=0, entityTrunc=0
+refers coverage (entity or player referent, non-PASS) = 0.9982
+== rl/artifacts/v7/wire3a/5b2_P8Faeries_p1.jsonl
+hello: wire=7 card_emb=card_emb_v8 dims={'game': 24, 'player': 16, 'ent': 64, 'cand': 40, 'opp_hand': 8, 'opp_deck': 6, 'opp_action': 8} emax=160
+consults=451  ent/consult mean=27.2 max=49  edges/consult mean=15.6  k mean=4.8 max=19
+cand types: {'TARGET': 196, 'PASS': 416, 'LAND': 120, 'ACTIVATE': 931, 'SPELL': 409, 'BLOCK': 19, 'ATTACK': 82}
+decision types: {'TARGET': 31, 'LAND': 43, 'SPELL': 87, 'ACTIVATE': 224, 'PASS': 25, 'BLOCK': 17, 'ATTACK': 24}
+edge types: {2: 87, 3: 33, 4: 6859, 6: 30, 7: 14}
+non-PASS candidates=1757: refers->entity 1751, refers->player-only 6, fallback(counter)=0, metaMissing=0, entityTrunc=0
+refers coverage (entity or player referent, non-PASS) = 1.0000
+== rl/artifacts/v7/wire3a/5b2_P8Faeries_p99.jsonl
+hello: wire=7 card_emb=card_emb_v8 dims={'game': 24, 'player': 16, 'ent': 64, 'cand': 40, 'opp_hand': 8, 'opp_deck': 6, 'opp_action': 8} emax=160
+consults=297  ent/consult mean=21.5 max=41  edges/consult mean=13.1  k mean=5.3 max=23
+cand types: {'TARGET': 56, 'PASS': 285, 'LAND': 102, 'ACTIVATE': 671, 'SPELL': 411, 'ATTACK': 30, 'BLOCK': 13}
+decision types: {'TARGET': 10, 'LAND': 39, 'ACTIVATE': 147, 'PASS': 24, 'SPELL': 58, 'ATTACK': 10, 'BLOCK': 9}
+edge types: {2: 63, 3: 2, 4: 3810, 6: 22, 7: 6}
+non-PASS candidates=1283: refers->entity 1277, refers->player-only 6, fallback(counter)=0, metaMissing=0, entityTrunc=0
+refers coverage (entity or player referent, non-PASS) = 1.0000
+== rl/artifacts/v7/wire3a/5b2_P8Faeries_sf.jsonl
+hello: wire=7 card_emb=card_emb_v8 dims={'game': 24, 'player': 16, 'ent': 64, 'cand': 40, 'opp_hand': 8, 'opp_deck': 6, 'opp_action': 8} emax=160
+consults=446  ent/consult mean=34.4 max=67  edges/consult mean=16.7  k mean=4.7 max=22
+cand types: {'TARGET': 190, 'PASS': 406, 'LAND': 58, 'ACTIVATE': 1211, 'SPELL': 140, 'ATTACK': 40, 'BLOCK': 30}
+decision types: {'TARGET': 37, 'LAND': 42, 'ACTIVATE': 286, 'SPELL': 14, 'ATTACK': 23, 'PASS': 24, 'BLOCK': 20}
+edge types: {2: 65, 3: 56, 4: 7235, 6: 39, 7: 51}
+non-PASS candidates=1669: refers->entity 1663, refers->player-only 6, fallback(counter)=0, metaMissing=0, entityTrunc=0
+refers coverage (entity or player referent, non-PASS) = 1.0000
+== rl/artifacts/v7/wire3a/5b2_W0Base_p1.jsonl
+hello: wire=7 card_emb=card_emb_v8 dims={'game': 24, 'player': 16, 'ent': 64, 'cand': 40, 'opp_hand': 8, 'opp_deck': 6, 'opp_action': 8} emax=160
+consults=143  ent/consult mean=15.7 max=23  edges/consult mean=9.0  k mean=2.2 max=8
+cand types: {'TARGET': 30, 'PASS': 137, 'LAND': 57, 'ACTIVATE': 83, 'SPELL': 2, 'ATTACK': 2, 'BLOCK': 2}
+decision types: {'TARGET': 6, 'LAND': 25, 'ACTIVATE': 81, 'PASS': 25, 'SPELL': 2, 'ATTACK': 2, 'BLOCK': 2}
+edge types: {2: 66, 4: 1220, 6: 6}
+non-PASS candidates=176: refers->entity 170, refers->player-only 6, fallback(counter)=0, metaMissing=0, entityTrunc=0
+refers coverage (entity or player referent, non-PASS) = 1.0000
+== rl/artifacts/v7/wire3a/5b2_W0Base_p99.jsonl
+hello: wire=7 card_emb=card_emb_v8 dims={'game': 24, 'player': 16, 'ent': 64, 'cand': 40, 'opp_hand': 8, 'opp_deck': 6, 'opp_action': 8} emax=160
+consults=185  ent/consult mean=16.6 max=28  edges/consult mean=9.3  k mean=2.2 max=8
+cand types: {'TARGET': 30, 'PASS': 179, 'LAND': 67, 'ACTIVATE': 112, 'SPELL': 14, 'ATTACK': 3, 'BLOCK': 5}
+decision types: {'TARGET': 6, 'LAND': 28, 'ACTIVATE': 107, 'PASS': 26, 'SPELL': 10, 'ATTACK': 3, 'BLOCK': 5}
+edge types: {2: 68, 4: 1645, 6: 7}
+non-PASS candidates=231: refers->entity 225, refers->player-only 6, fallback(counter)=0, metaMissing=0, entityTrunc=0
+refers coverage (entity or player referent, non-PASS) = 1.0000
+== rl/artifacts/v7/wire3a/5b2_W0Base_sf.jsonl
+hello: wire=7 card_emb=card_emb_v8 dims={'game': 24, 'player': 16, 'ent': 64, 'cand': 40, 'opp_hand': 8, 'opp_deck': 6, 'opp_action': 8} emax=160
+consults=144  ent/consult mean=16.0 max=26  edges/consult mean=8.8  k mean=2.1 max=8
+cand types: {'TARGET': 30, 'PASS': 138, 'LAND': 44, 'SPELL': 7, 'ACTIVATE': 80, 'BLOCK': 4, 'ATTACK': 6}
+decision types: {'TARGET': 6, 'LAND': 23, 'SPELL': 5, 'BLOCK': 4, 'ACTIVATE': 75, 'PASS': 25, 'ATTACK': 6}
+edge types: {2: 68, 4: 1191, 6: 5}
+non-PASS candidates=171: refers->entity 165, refers->player-only 6, fallback(counter)=0, metaMissing=0, entityTrunc=0
+refers coverage (entity or player referent, non-PASS) = 1.0000
+== rl/artifacts/v7/wire3a/5b2_W1Fly_p1.jsonl
+hello: wire=7 card_emb=card_emb_v8 dims={'game': 24, 'player': 16, 'ent': 64, 'cand': 40, 'opp_hand': 8, 'opp_deck': 6, 'opp_action': 8} emax=160
+consults=167  ent/consult mean=16.2 max=24  edges/consult mean=9.2  k mean=2.2 max=8
+cand types: {'TARGET': 30, 'PASS': 161, 'LAND': 67, 'ACTIVATE': 99, 'SPELL': 4, 'ATTACK': 3, 'BLOCK': 4}
+decision types: {'TARGET': 6, 'LAND': 29, 'ACTIVATE': 95, 'PASS': 26, 'SPELL': 4, 'ATTACK': 3, 'BLOCK': 4}
+edge types: {2: 66, 4: 1459, 6: 7}
+non-PASS candidates=207: refers->entity 201, refers->player-only 6, fallback(counter)=0, metaMissing=0, entityTrunc=0
+refers coverage (entity or player referent, non-PASS) = 1.0000
+== rl/artifacts/v7/wire3a/5b2_W1Fly_p99.jsonl
+hello: wire=7 card_emb=card_emb_v8 dims={'game': 24, 'player': 16, 'ent': 64, 'cand': 40, 'opp_hand': 8, 'opp_deck': 6, 'opp_action': 8} emax=160
+consults=128  ent/consult mean=15.2 max=24  edges/consult mean=8.6  k mean=2.4 max=8
+cand types: {'TARGET': 30, 'PASS': 122, 'LAND': 82, 'ACTIVATE': 68, 'SPELL': 4, 'ATTACK': 4, 'BLOCK': 2}
+decision types: {'TARGET': 6, 'LAND': 23, 'ACTIVATE': 66, 'PASS': 23, 'SPELL': 4, 'ATTACK': 4, 'BLOCK': 2}
+edge types: {2: 57, 4: 1043, 6: 6}
+non-PASS candidates=190: refers->entity 184, refers->player-only 6, fallback(counter)=0, metaMissing=0, entityTrunc=0
+refers coverage (entity or player referent, non-PASS) = 1.0000
+== rl/artifacts/v7/wire3a/5b2_W1Fly_sf.jsonl
+hello: wire=7 card_emb=card_emb_v8 dims={'game': 24, 'player': 16, 'ent': 64, 'cand': 40, 'opp_hand': 8, 'opp_deck': 6, 'opp_action': 8} emax=160
+consults=149  ent/consult mean=16.5 max=26  edges/consult mean=9.0  k mean=2.2 max=8
+cand types: {'TARGET': 46, 'PASS': 141, 'LAND': 39, 'ACTIVATE': 85, 'SPELL': 9, 'BLOCK': 6, 'ATTACK': 4}
+decision types: {'TARGET': 8, 'LAND': 22, 'ACTIVATE': 79, 'PASS': 24, 'SPELL': 6, 'BLOCK': 6, 'ATTACK': 4}
+edge types: {2: 67, 4: 1267, 6: 8}
+non-PASS candidates=189: refers->entity 183, refers->player-only 6, fallback(counter)=0, metaMissing=0, entityTrunc=0
+refers coverage (entity or player referent, non-PASS) = 1.0000
+== rl/artifacts/v7/wire3a/5b2_W3Sorc_p1.jsonl
+hello: wire=7 card_emb=card_emb_v8 dims={'game': 24, 'player': 16, 'ent': 64, 'cand': 40, 'opp_hand': 8, 'opp_deck': 6, 'opp_action': 8} emax=160
+consults=152  ent/consult mean=16.1 max=25  edges/consult mean=9.3  k mean=2.3 max=8
+cand types: {'TARGET': 46, 'PASS': 144, 'LAND': 63, 'ACTIVATE': 85, 'SPELL': 4, 'ATTACK': 5, 'BLOCK': 4}
+decision types: {'TARGET': 8, 'LAND': 25, 'ACTIVATE': 81, 'PASS': 25, 'SPELL': 4, 'ATTACK': 5, 'BLOCK': 4}
+edge types: {2: 64, 4: 1336, 6: 9}
+non-PASS candidates=207: refers->entity 201, refers->player-only 6, fallback(counter)=0, metaMissing=0, entityTrunc=0
+refers coverage (entity or player referent, non-PASS) = 1.0000
+== rl/artifacts/v7/wire3a/5b2_W3Sorc_p99.jsonl
+hello: wire=7 card_emb=card_emb_v8 dims={'game': 24, 'player': 16, 'ent': 64, 'cand': 40, 'opp_hand': 8, 'opp_deck': 6, 'opp_action': 8} emax=160
+consults=121  ent/consult mean=15.2 max=23  edges/consult mean=8.6  k mean=2.1 max=8
+cand types: {'TARGET': 22, 'PASS': 116, 'LAND': 52, 'ACTIVATE': 67, 'SPELL': 2, 'BLOCK': 1}
+decision types: {'TARGET': 5, 'LAND': 23, 'ACTIVATE': 66, 'PASS': 24, 'SPELL': 2, 'BLOCK': 1}
+edge types: {2: 63, 4: 981, 6: 2}
+non-PASS candidates=144: refers->entity 138, refers->player-only 6, fallback(counter)=0, metaMissing=0, entityTrunc=0
+refers coverage (entity or player referent, non-PASS) = 1.0000
+== rl/artifacts/v7/wire3a/5b2_W3Sorc_sf.jsonl
+hello: wire=7 card_emb=card_emb_v8 dims={'game': 24, 'player': 16, 'ent': 64, 'cand': 40, 'opp_hand': 8, 'opp_deck': 6, 'opp_action': 8} emax=160
+consults=171  ent/consult mean=17.3 max=29  edges/consult mean=9.7  k mean=2.3 max=8
+cand types: {'TARGET': 46, 'PASS': 163, 'LAND': 68, 'ACTIVATE': 106, 'SPELL': 4, 'BLOCK': 2, 'ATTACK': 2}
+decision types: {'TARGET': 8, 'LAND': 28, 'ACTIVATE': 103, 'PASS': 25, 'SPELL': 3, 'BLOCK': 2, 'ATTACK': 2}
+edge types: {2: 65, 4: 1594, 6: 3}
+non-PASS candidates=228: refers->entity 222, refers->player-only 6, fallback(counter)=0, metaMissing=0, entityTrunc=0
+refers coverage (entity or player referent, non-PASS) = 1.0000
+== rl/artifacts/v7/wire3a/5b2_W4Inst_p1.jsonl
+hello: wire=7 card_emb=card_emb_v8 dims={'game': 24, 'player': 16, 'ent': 64, 'cand': 40, 'opp_hand': 8, 'opp_deck': 6, 'opp_action': 8} emax=160
+consults=203  ent/consult mean=17.0 max=26  edges/consult mean=9.1  k mean=2.2 max=8
+cand types: {'TARGET': 23, 'PASS': 195, 'LAND': 57, 'ACTIVATE': 117, 'SPELL': 35, 'BLOCK': 5, 'ATTACK': 9}
+decision types: {'TARGET': 8, 'LAND': 28, 'ACTIVATE': 92, 'PASS': 30, 'SPELL': 32, 'BLOCK': 4, 'ATTACK': 9}
+edge types: {2: 61, 4: 1778, 6: 7}
+non-PASS candidates=246: refers->entity 240, refers->player-only 6, fallback(counter)=0, metaMissing=0, entityTrunc=0
+refers coverage (entity or player referent, non-PASS) = 1.0000
+== rl/artifacts/v7/wire3a/5b2_W4Inst_p99.jsonl
+hello: wire=7 card_emb=card_emb_v8 dims={'game': 24, 'player': 16, 'ent': 64, 'cand': 40, 'opp_hand': 8, 'opp_deck': 6, 'opp_action': 8} emax=160
+consults=208  ent/consult mean=19.3 max=34  edges/consult mean=10.2  k mean=2.1 max=8
+cand types: {'TARGET': 36, 'PASS': 200, 'LAND': 60, 'ACTIVATE': 121, 'SPELL': 15, 'ATTACK': 5, 'BLOCK': 5}
+decision types: {'TARGET': 8, 'LAND': 31, 'ACTIVATE': 112, 'PASS': 33, 'SPELL': 14, 'ATTACK': 5, 'BLOCK': 5}
+edge types: {2: 64, 3: 3, 4: 2044, 6: 8}
+non-PASS candidates=242: refers->entity 236, refers->player-only 6, fallback(counter)=0, metaMissing=0, entityTrunc=0
+refers coverage (entity or player referent, non-PASS) = 1.0000
+== rl/artifacts/v7/wire3a/5b2_W4Inst_sf.jsonl
+hello: wire=7 card_emb=card_emb_v8 dims={'game': 24, 'player': 16, 'ent': 64, 'cand': 40, 'opp_hand': 8, 'opp_deck': 6, 'opp_action': 8} emax=160
+consults=168  ent/consult mean=16.9 max=29  edges/consult mean=8.7  k mean=2.2 max=8
+cand types: {'TARGET': 64, 'PASS': 157, 'LAND': 41, 'ACTIVATE': 95, 'SPELL': 7, 'BLOCK': 4, 'ATTACK': 7}
+decision types: {'TARGET': 11, 'LAND': 25, 'ACTIVATE': 88, 'PASS': 26, 'SPELL': 7, 'BLOCK': 4, 'ATTACK': 7}
+edge types: {2: 63, 3: 2, 4: 1394, 6: 9}
+non-PASS candidates=218: refers->entity 212, refers->player-only 6, fallback(counter)=0, metaMissing=0, entityTrunc=0
+refers coverage (entity or player referent, non-PASS) = 1.0000
+== rl/artifacts/v7/wire3a/5b2_W5Trick_p1.jsonl
+hello: wire=7 card_emb=card_emb_v8 dims={'game': 24, 'player': 16, 'ent': 64, 'cand': 40, 'opp_hand': 8, 'opp_deck': 6, 'opp_action': 8} emax=160
+consults=139  ent/consult mean=15.3 max=26  edges/consult mean=8.9  k mean=2.3 max=7
+cand types: {'TARGET': 21, 'PASS': 131, 'LAND': 74, 'ACTIVATE': 77, 'SPELL': 8, 'ATTACK': 4, 'BLOCK': 2}
+decision types: {'TARGET': 8, 'LAND': 26, 'ACTIVATE': 69, 'PASS': 22, 'SPELL': 8, 'ATTACK': 4, 'BLOCK': 2}
+edge types: {2: 59, 3: 2, 4: 1172, 6: 7}
+non-PASS candidates=186: refers->entity 180, refers->player-only 6, fallback(counter)=0, metaMissing=0, entityTrunc=0
+refers coverage (entity or player referent, non-PASS) = 1.0000
+== rl/artifacts/v7/wire3a/5b2_W5Trick_p99.jsonl
+hello: wire=7 card_emb=card_emb_v8 dims={'game': 24, 'player': 16, 'ent': 64, 'cand': 40, 'opp_hand': 8, 'opp_deck': 6, 'opp_action': 8} emax=160
+consults=173  ent/consult mean=16.0 max=26  edges/consult mean=8.9  k mean=2.4 max=8
+cand types: {'TARGET': 29, 'PASS': 164, 'LAND': 70, 'ACTIVATE': 97, 'SPELL': 43, 'BLOCK': 4, 'ATTACK': 1}
+decision types: {'TARGET': 9, 'LAND': 28, 'ACTIVATE': 77, 'SPELL': 30, 'PASS': 24, 'BLOCK': 4, 'ATTACK': 1}
+edge types: {2: 66, 4: 1458, 6: 8}
+non-PASS candidates=244: refers->entity 238, refers->player-only 6, fallback(counter)=0, metaMissing=0, entityTrunc=0
+refers coverage (entity or player referent, non-PASS) = 1.0000
+== rl/artifacts/v7/wire3a/5b2_W5Trick_sf.jsonl
+hello: wire=7 card_emb=card_emb_v8 dims={'game': 24, 'player': 16, 'ent': 64, 'cand': 40, 'opp_hand': 8, 'opp_deck': 6, 'opp_action': 8} emax=160
+consults=136  ent/consult mean=15.6 max=24  edges/consult mean=8.8  k mean=2.2 max=8
+cand types: {'TARGET': 31, 'PASS': 126, 'LAND': 52, 'ACTIVATE': 75, 'SPELL': 9, 'BLOCK': 2}
+decision types: {'TARGET': 10, 'LAND': 26, 'ACTIVATE': 67, 'PASS': 23, 'SPELL': 8, 'BLOCK': 2}
+edge types: {2: 61, 3: 3, 4: 1125, 6: 4}
+non-PASS candidates=169: refers->entity 163, refers->player-only 6, fallback(counter)=0, metaMissing=0, entityTrunc=0
+refers coverage (entity or player referent, non-PASS) = 1.0000
+== rl/artifacts/v7/wire3a/5b_B1Fast_p1.jsonl
+hello: wire=7 card_emb=card_emb_v8 dims={'game': 24, 'player': 16, 'ent': 64, 'cand': 40, 'opp_hand': 8, 'opp_deck': 6, 'opp_action': 8} emax=160
+consults=270  ent/consult mean=17.4 max=30  edges/consult mean=8.9  k mean=2.2 max=8
+cand types: {'TARGET': 86, 'PASS': 255, 'LAND': 80, 'ACTIVATE': 181, 'SPELL': 3}
+decision types: {'TARGET': 15, 'LAND': 41, 'ACTIVATE': 178, 'PASS': 33, 'SPELL': 3}
+edge types: {2: 71, 3: 6, 4: 2335}
+non-PASS candidates=350: refers->entity 342, refers->player-only 8, fallback(counter)=0, metaMissing=0, entityTrunc=0
+refers coverage (entity or player referent, non-PASS) = 1.0000
+== rl/artifacts/v7/wire3a/5b_B1Fast_p99.jsonl
+hello: wire=7 card_emb=card_emb_v8 dims={'game': 24, 'player': 16, 'ent': 64, 'cand': 40, 'opp_hand': 8, 'opp_deck': 6, 'opp_action': 8} emax=160
+consults=227  ent/consult mean=16.1 max=26  edges/consult mean=8.7  k mean=2.3 max=8
+cand types: {'TARGET': 46, 'PASS': 216, 'LAND': 102, 'ACTIVATE': 140, 'SPELL': 28}
+decision types: {'TARGET': 11, 'LAND': 39, 'ACTIVATE': 124, 'PASS': 31, 'SPELL': 22}
+edge types: {2: 66, 3: 1, 4: 1918}
+non-PASS candidates=316: refers->entity 308, refers->player-only 8, fallback(counter)=0, metaMissing=0, entityTrunc=0
+refers coverage (entity or player referent, non-PASS) = 1.0000
+== rl/artifacts/v7/wire3a/5b_B1Fast_sf.jsonl
+hello: wire=7 card_emb=card_emb_v8 dims={'game': 24, 'player': 16, 'ent': 64, 'cand': 40, 'opp_hand': 8, 'opp_deck': 6, 'opp_action': 8} emax=160
+consults=229  ent/consult mean=16.4 max=26  edges/consult mean=8.8  k mean=2.2 max=8
+cand types: {'TARGET': 40, 'PASS': 221, 'LAND': 83, 'ACTIVATE': 148, 'SPELL': 10}
+decision types: {'TARGET': 8, 'LAND': 40, 'ACTIVATE': 141, 'PASS': 33, 'SPELL': 7}
+edge types: {2: 68, 3: 4, 4: 1934}
+non-PASS candidates=281: refers->entity 273, refers->player-only 8, fallback(counter)=0, metaMissing=0, entityTrunc=0
+refers coverage (entity or player referent, non-PASS) = 1.0000
+== rl/artifacts/v7/wire3a/5b_BenchDimir_p1.jsonl
+hello: wire=7 card_emb=card_emb_v8 dims={'game': 24, 'player': 16, 'ent': 64, 'cand': 40, 'opp_hand': 8, 'opp_deck': 6, 'opp_action': 8} emax=160
+consults=556  ent/consult mean=32.2 max=74  edges/consult mean=16.7  k mean=4.2 max=11
+cand types: {'TARGET': 190, 'PASS': 512, 'LAND': 124, 'SPELL': 229, 'ACTIVATE': 1178, 'ATTACK': 110, 'BLOCK': 18}
+decision types: {'TARGET': 44, 'PASS': 27, 'LAND': 59, 'SPELL': 39, 'ACTIVATE': 334, 'ATTACK': 39, 'BLOCK': 14}
+edge types: {2: 81, 3: 48, 4: 9088, 6: 24, 7: 21}
+non-PASS candidates=1849: refers->entity 1832, refers->player-only 17, fallback(counter)=9, metaMissing=0, entityTrunc=0
+refers coverage (entity or player referent, non-PASS) = 0.9951
+== rl/artifacts/v7/wire3a/5b_BenchDimir_p99.jsonl
+hello: wire=7 card_emb=card_emb_v8 dims={'game': 24, 'player': 16, 'ent': 64, 'cand': 40, 'opp_hand': 8, 'opp_deck': 6, 'opp_action': 8} emax=160
+consults=489  ent/consult mean=26.9 max=53  edges/consult mean=13.7  k mean=4.4 max=10
+cand types: {'TARGET': 72, 'PASS': 465, 'LAND': 88, 'ACTIVATE': 1231, 'SPELL': 293, 'ATTACK': 13, 'BLOCK': 13}
+decision types: {'TARGET': 24, 'LAND': 50, 'ACTIVATE': 287, 'SPELL': 75, 'ATTACK': 11, 'PASS': 31, 'BLOCK': 11}
+edge types: {2: 70, 3: 15, 4: 6604, 6: 18, 7: 13}
+non-PASS candidates=1710: refers->entity 1676, refers->player-only 34, fallback(counter)=26, metaMissing=0, entityTrunc=0
+refers coverage (entity or player referent, non-PASS) = 0.9848
+== rl/artifacts/v7/wire3a/5b_BenchDimir_sf.jsonl
+hello: wire=7 card_emb=card_emb_v8 dims={'game': 24, 'player': 16, 'ent': 64, 'cand': 40, 'opp_hand': 8, 'opp_deck': 6, 'opp_action': 8} emax=160
+consults=708  ent/consult mean=35.4 max=68  edges/consult mean=16.4  k mean=4.1 max=10
+cand types: {'TARGET': 132, 'PASS': 668, 'LAND': 137, 'ACTIVATE': 1797, 'SPELL': 106, 'ATTACK': 36, 'BLOCK': 24}
+decision types: {'TARGET': 39, 'LAND': 67, 'ACTIVATE': 526, 'PASS': 37, 'ATTACK': 17, 'SPELL': 8, 'BLOCK': 14}
+edge types: {2: 69, 3: 74, 4: 11392, 6: 19, 7: 41}
+non-PASS candidates=2232: refers->entity 2217, refers->player-only 15, fallback(counter)=7, metaMissing=0, entityTrunc=0
+refers coverage (entity or player referent, non-PASS) = 0.9969
+== rl/artifacts/v7/wire3a/5b_P8Faeries_p1.jsonl
+hello: wire=7 card_emb=card_emb_v8 dims={'game': 24, 'player': 16, 'ent': 64, 'cand': 40, 'opp_hand': 8, 'opp_deck': 6, 'opp_action': 8} emax=160
+consults=807  ent/consult mean=32.4 max=67  edges/consult mean=17.8  k mean=5.0 max=24
+cand types: {'TARGET': 326, 'PASS': 747, 'LAND': 102, 'ACTIVATE': 2013, 'SPELL': 528, 'BLOCK': 50, 'ATTACK': 237}
+decision types: {'TARGET': 52, 'LAND': 65, 'ACTIVATE': 499, 'PASS': 28, 'SPELL': 87, 'BLOCK': 31, 'ATTACK': 45}
+edge types: {2: 111, 3: 65, 4: 14082, 6: 92, 7: 54}
+non-PASS candidates=3256: refers->entity 3248, refers->player-only 8, fallback(counter)=0, metaMissing=0, entityTrunc=0
+refers coverage (entity or player referent, non-PASS) = 1.0000
+== rl/artifacts/v7/wire3a/5b_P8Faeries_p99.jsonl
+hello: wire=7 card_emb=card_emb_v8 dims={'game': 24, 'player': 16, 'ent': 64, 'cand': 40, 'opp_hand': 8, 'opp_deck': 6, 'opp_action': 8} emax=160
+consults=713  ent/consult mean=28.4 max=53  edges/consult mean=15.6  k mean=4.9 max=18
+cand types: {'TARGET': 150, 'PASS': 677, 'LAND': 144, 'SPELL': 539, 'ACTIVATE': 1892, 'BLOCK': 43, 'ATTACK': 55}
+decision types: {'TARGET': 33, 'LAND': 65, 'ACTIVATE': 424, 'SPELL': 101, 'PASS': 35, 'BLOCK': 23, 'ATTACK': 32}
+edge types: {2: 105, 3: 25, 4: 10887, 6: 48, 7: 23}
+non-PASS candidates=2823: refers->entity 2815, refers->player-only 8, fallback(counter)=0, metaMissing=0, entityTrunc=0
+refers coverage (entity or player referent, non-PASS) = 1.0000
+== rl/artifacts/v7/wire3a/5b_P8Faeries_sf.jsonl
+hello: wire=7 card_emb=card_emb_v8 dims={'game': 24, 'player': 16, 'ent': 64, 'cand': 40, 'opp_hand': 8, 'opp_deck': 6, 'opp_action': 8} emax=160
+consults=372  ent/consult mean=23.3 max=41  edges/consult mean=12.9  k mean=4.2 max=19
+cand types: {'TARGET': 214, 'PASS': 329, 'LAND': 68, 'ACTIVATE': 688, 'SPELL': 171, 'BLOCK': 32, 'ATTACK': 43}
+decision types: {'TARGET': 41, 'LAND': 45, 'SPELL': 21, 'ACTIVATE': 189, 'PASS': 29, 'BLOCK': 23, 'ATTACK': 24}
+edge types: {2: 91, 3: 25, 4: 4622, 6: 54, 7: 24}
+non-PASS candidates=1216: refers->entity 1208, refers->player-only 8, fallback(counter)=0, metaMissing=0, entityTrunc=0
+refers coverage (entity or player referent, non-PASS) = 1.0000
+== rl/artifacts/v7/wire3a/5b_W0Base_p1.jsonl
+hello: wire=7 card_emb=card_emb_v8 dims={'game': 24, 'player': 16, 'ent': 64, 'cand': 40, 'opp_hand': 8, 'opp_deck': 6, 'opp_action': 8} emax=160
+consults=209  ent/consult mean=16.4 max=26  edges/consult mean=9.4  k mean=2.2 max=8
+cand types: {'TARGET': 16, 'PASS': 204, 'LAND': 101, 'ACTIVATE': 126, 'SPELL': 8, 'BLOCK': 8, 'ATTACK': 3}
+decision types: {'TARGET': 5, 'LAND': 37, 'ACTIVATE': 118, 'SPELL': 8, 'BLOCK': 8, 'PASS': 30, 'ATTACK': 3}
+edge types: {2: 87, 4: 1856, 6: 16}
+non-PASS candidates=262: refers->entity 254, refers->player-only 8, fallback(counter)=0, metaMissing=0, entityTrunc=0
+refers coverage (entity or player referent, non-PASS) = 1.0000
+== rl/artifacts/v7/wire3a/5b_W0Base_p99.jsonl
+hello: wire=7 card_emb=card_emb_v8 dims={'game': 24, 'player': 16, 'ent': 64, 'cand': 40, 'opp_hand': 8, 'opp_deck': 6, 'opp_action': 8} emax=160
+consults=261  ent/consult mean=16.7 max=29  edges/consult mean=9.4  k mean=2.2 max=8
+cand types: {'TARGET': 32, 'PASS': 254, 'LAND': 93, 'SPELL': 16, 'ACTIVATE': 154, 'ATTACK': 11, 'BLOCK': 7}
+decision types: {'TARGET': 7, 'LAND': 41, 'SPELL': 16, 'ACTIVATE': 146, 'ATTACK': 11, 'PASS': 33, 'BLOCK': 7}
+edge types: {2: 88, 4: 2339, 6: 15}
+non-PASS candidates=313: refers->entity 305, refers->player-only 8, fallback(counter)=0, metaMissing=0, entityTrunc=0
+refers coverage (entity or player referent, non-PASS) = 1.0000
+== rl/artifacts/v7/wire3a/5b_W0Base_sf.jsonl
+hello: wire=7 card_emb=card_emb_v8 dims={'game': 24, 'player': 16, 'ent': 64, 'cand': 40, 'opp_hand': 8, 'opp_deck': 6, 'opp_action': 8} emax=160
+consults=217  ent/consult mean=16.5 max=27  edges/consult mean=9.4  k mean=2.2 max=8
+cand types: {'TARGET': 16, 'PASS': 212, 'LAND': 98, 'ACTIVATE': 131, 'SPELL': 6, 'BLOCK': 6, 'ATTACK': 4}
+decision types: {'TARGET': 5, 'LAND': 37, 'ACTIVATE': 125, 'PASS': 34, 'SPELL': 6, 'BLOCK': 6, 'ATTACK': 4}
+edge types: {2: 91, 4: 1929, 6: 9}
+non-PASS candidates=261: refers->entity 253, refers->player-only 8, fallback(counter)=0, metaMissing=0, entityTrunc=0
+refers coverage (entity or player referent, non-PASS) = 1.0000
+== rl/artifacts/v7/wire3a/5b_W1Fly_p1.jsonl
+hello: wire=7 card_emb=card_emb_v8 dims={'game': 24, 'player': 16, 'ent': 64, 'cand': 40, 'opp_hand': 8, 'opp_deck': 6, 'opp_action': 8} emax=160
+consults=203  ent/consult mean=16.4 max=28  edges/consult mean=9.3  k mean=2.3 max=8
+cand types: {'TARGET': 56, 'PASS': 193, 'LAND': 96, 'ACTIVATE': 119, 'SPELL': 4, 'BLOCK': 4, 'ATTACK': 2}
+decision types: {'TARGET': 10, 'LAND': 34, 'ACTIVATE': 115, 'PASS': 34, 'SPELL': 4, 'BLOCK': 4, 'ATTACK': 2}
+edge types: {2: 89, 4: 1797, 6: 6}
+non-PASS candidates=281: refers->entity 273, refers->player-only 8, fallback(counter)=0, metaMissing=0, entityTrunc=0
+refers coverage (entity or player referent, non-PASS) = 1.0000
+== rl/artifacts/v7/wire3a/5b_W1Fly_p99.jsonl
+hello: wire=7 card_emb=card_emb_v8 dims={'game': 24, 'player': 16, 'ent': 64, 'cand': 40, 'opp_hand': 8, 'opp_deck': 6, 'opp_action': 8} emax=160
+consults=232  ent/consult mean=16.4 max=28  edges/consult mean=8.7  k mean=2.3 max=8
+cand types: {'TARGET': 56, 'PASS': 222, 'LAND': 99, 'ACTIVATE': 139, 'SPELL': 8, 'BLOCK': 4, 'ATTACK': 3}
+decision types: {'TARGET': 10, 'LAND': 38, 'ACTIVATE': 135, 'PASS': 34, 'SPELL': 8, 'BLOCK': 4, 'ATTACK': 3}
+edge types: {2: 91, 4: 1925, 6: 11}
+non-PASS candidates=309: refers->entity 301, refers->player-only 8, fallback(counter)=0, metaMissing=0, entityTrunc=0
+refers coverage (entity or player referent, non-PASS) = 1.0000
+== rl/artifacts/v7/wire3a/5b_W1Fly_sf.jsonl
+hello: wire=7 card_emb=card_emb_v8 dims={'game': 24, 'player': 16, 'ent': 64, 'cand': 40, 'opp_hand': 8, 'opp_deck': 6, 'opp_action': 8} emax=160
+consults=188  ent/consult mean=15.7 max=24  edges/consult mean=8.8  k mean=2.2 max=8
+cand types: {'TARGET': 40, 'PASS': 180, 'LAND': 82, 'SPELL': 3, 'ACTIVATE': 111, 'BLOCK': 3}
+decision types: {'TARGET': 8, 'LAND': 34, 'SPELL': 3, 'BLOCK': 3, 'ACTIVATE': 108, 'PASS': 32}
+edge types: {2: 89, 4: 1555, 6: 5}
+non-PASS candidates=239: refers->entity 231, refers->player-only 8, fallback(counter)=0, metaMissing=0, entityTrunc=0
+refers coverage (entity or player referent, non-PASS) = 1.0000
+== rl/artifacts/v7/wire3a/5b_W3Sorc_p1.jsonl
+hello: wire=7 card_emb=card_emb_v8 dims={'game': 24, 'player': 16, 'ent': 64, 'cand': 40, 'opp_hand': 8, 'opp_deck': 6, 'opp_action': 8} emax=160
+consults=281  ent/consult mean=18.7 max=34  edges/consult mean=10.6  k mean=2.3 max=8
+cand types: {'TARGET': 32, 'PASS': 274, 'LAND': 133, 'SPELL': 6, 'ACTIVATE': 176, 'BLOCK': 5, 'ATTACK': 8}
+decision types: {'TARGET': 7, 'LAND': 45, 'SPELL': 6, 'BLOCK': 5, 'ACTIVATE': 170, 'PASS': 40, 'ATTACK': 8}
+edge types: {2: 92, 4: 2878, 6: 8}
+non-PASS candidates=360: refers->entity 352, refers->player-only 8, fallback(counter)=0, metaMissing=0, entityTrunc=0
+refers coverage (entity or player referent, non-PASS) = 1.0000
+== rl/artifacts/v7/wire3a/5b_W3Sorc_p99.jsonl
+hello: wire=7 card_emb=card_emb_v8 dims={'game': 24, 'player': 16, 'ent': 64, 'cand': 40, 'opp_hand': 8, 'opp_deck': 6, 'opp_action': 8} emax=160
+consults=236  ent/consult mean=17.4 max=32  edges/consult mean=8.3  k mean=2.3 max=8
+cand types: {'TARGET': 112, 'PASS': 219, 'LAND': 63, 'ACTIVATE': 139, 'SPELL': 8, 'BLOCK': 4, 'ATTACK': 7}
+decision types: {'TARGET': 17, 'LAND': 32, 'ACTIVATE': 135, 'PASS': 33, 'SPELL': 8, 'BLOCK': 4, 'ATTACK': 7}
+edge types: {2: 79, 4: 1878, 6: 11}
+non-PASS candidates=333: refers->entity 325, refers->player-only 8, fallback(counter)=0, metaMissing=0, entityTrunc=0
+refers coverage (entity or player referent, non-PASS) = 1.0000
+== rl/artifacts/v7/wire3a/5b_W3Sorc_sf.jsonl
+hello: wire=7 card_emb=card_emb_v8 dims={'game': 24, 'player': 16, 'ent': 64, 'cand': 40, 'opp_hand': 8, 'opp_deck': 6, 'opp_action': 8} emax=160
+consults=198  ent/consult mean=16.2 max=26  edges/consult mean=8.8  k mean=2.1 max=8
+cand types: {'TARGET': 24, 'PASS': 192, 'LAND': 78, 'ACTIVATE': 114, 'SPELL': 7, 'BLOCK': 6, 'ATTACK': 4}
+decision types: {'TARGET': 6, 'LAND': 36, 'ACTIVATE': 108, 'PASS': 32, 'SPELL': 6, 'BLOCK': 6, 'ATTACK': 4}
+edge types: {2: 84, 4: 1640, 6: 11}
+non-PASS candidates=233: refers->entity 225, refers->player-only 8, fallback(counter)=0, metaMissing=0, entityTrunc=0
+refers coverage (entity or player referent, non-PASS) = 1.0000
+== rl/artifacts/v7/wire3a/5b_W4Inst_p1.jsonl
+hello: wire=7 card_emb=card_emb_v8 dims={'game': 24, 'player': 16, 'ent': 64, 'cand': 40, 'opp_hand': 8, 'opp_deck': 6, 'opp_action': 8} emax=160
+consults=241  ent/consult mean=17.3 max=28  edges/consult mean=9.4  k mean=2.3 max=8
+cand types: {'TARGET': 64, 'PASS': 230, 'LAND': 76, 'SPELL': 19, 'ACTIVATE': 145, 'ATTACK': 8, 'BLOCK': 4}
+decision types: {'TARGET': 11, 'LAND': 35, 'SPELL': 16, 'ACTIVATE': 132, 'ATTACK': 8, 'PASS': 35, 'BLOCK': 4}
+edge types: {2: 83, 4: 2164, 6: 9}
+non-PASS candidates=316: refers->entity 308, refers->player-only 8, fallback(counter)=0, metaMissing=0, entityTrunc=0
+refers coverage (entity or player referent, non-PASS) = 1.0000
+== rl/artifacts/v7/wire3a/5b_W4Inst_p99.jsonl
+hello: wire=7 card_emb=card_emb_v8 dims={'game': 24, 'player': 16, 'ent': 64, 'cand': 40, 'opp_hand': 8, 'opp_deck': 6, 'opp_action': 8} emax=160
+consults=294  ent/consult mean=19.9 max=36  edges/consult mean=10.6  k mean=2.2 max=8
+cand types: {'TARGET': 32, 'PASS': 287, 'LAND': 90, 'SPELL': 25, 'ACTIVATE': 186, 'ATTACK': 7, 'BLOCK': 6}
+decision types: {'TARGET': 7, 'LAND': 42, 'SPELL': 21, 'ACTIVATE': 172, 'ATTACK': 6, 'PASS': 40, 'BLOCK': 6}
+edge types: {2: 82, 3: 4, 4: 3016, 6: 8}
+non-PASS candidates=346: refers->entity 338, refers->player-only 8, fallback(counter)=0, metaMissing=0, entityTrunc=0
+refers coverage (entity or player referent, non-PASS) = 1.0000
+== rl/artifacts/v7/wire3a/5b_W4Inst_sf.jsonl
+hello: wire=7 card_emb=card_emb_v8 dims={'game': 24, 'player': 16, 'ent': 64, 'cand': 40, 'opp_hand': 8, 'opp_deck': 6, 'opp_action': 8} emax=160
+consults=222  ent/consult mean=17.1 max=28  edges/consult mean=9.3  k mean=2.2 max=8
+cand types: {'TARGET': 21, 'PASS': 215, 'LAND': 87, 'ACTIVATE': 132, 'SPELL': 14, 'ATTACK': 7, 'BLOCK': 5}
+decision types: {'TARGET': 7, 'LAND': 38, 'ACTIVATE': 120, 'PASS': 33, 'SPELL': 12, 'ATTACK': 7, 'BLOCK': 5}
+edge types: {2: 81, 3: 4, 4: 1979, 6: 7}
+non-PASS candidates=266: refers->entity 258, refers->player-only 8, fallback(counter)=0, metaMissing=0, entityTrunc=0
+refers coverage (entity or player referent, non-PASS) = 1.0000
+== rl/artifacts/v7/wire3a/5b_W5Trick_p1.jsonl
+hello: wire=7 card_emb=card_emb_v8 dims={'game': 24, 'player': 16, 'ent': 64, 'cand': 40, 'opp_hand': 8, 'opp_deck': 6, 'opp_action': 8} emax=160
+consults=260  ent/consult mean=17.1 max=31  edges/consult mean=9.5  k mean=2.2 max=6
+cand types: {'TARGET': 19, 'PASS': 251, 'LAND': 92, 'ACTIVATE': 157, 'SPELL': 15, 'ATTACK': 19, 'BLOCK': 7}
+decision types: {'TARGET': 9, 'LAND': 41, 'ACTIVATE': 144, 'PASS': 32, 'SPELL': 13, 'ATTACK': 14, 'BLOCK': 7}
+edge types: {2: 85, 4: 2377, 6: 12}
+non-PASS candidates=309: refers->entity 301, refers->player-only 8, fallback(counter)=0, metaMissing=0, entityTrunc=0
+refers coverage (entity or player referent, non-PASS) = 1.0000
+== rl/artifacts/v7/wire3a/5b_W5Trick_p99.jsonl
+hello: wire=7 card_emb=card_emb_v8 dims={'game': 24, 'player': 16, 'ent': 64, 'cand': 40, 'opp_hand': 8, 'opp_deck': 6, 'opp_action': 8} emax=160
+consults=229  ent/consult mean=16.2 max=27  edges/consult mean=8.8  k mean=2.4 max=8
+cand types: {'TARGET': 41, 'PASS': 215, 'LAND': 107, 'ACTIVATE': 124, 'SPELL': 49, 'BLOCK': 6, 'ATTACK': 1}
+decision types: {'TARGET': 14, 'LAND': 38, 'ACTIVATE': 96, 'PASS': 31, 'SPELL': 43, 'BLOCK': 6, 'ATTACK': 1}
+edge types: {2: 86, 4: 1921, 6: 8}
+non-PASS candidates=328: refers->entity 320, refers->player-only 8, fallback(counter)=0, metaMissing=0, entityTrunc=0
+refers coverage (entity or player referent, non-PASS) = 1.0000
+== rl/artifacts/v7/wire3a/5b_W5Trick_sf.jsonl
+hello: wire=7 card_emb=card_emb_v8 dims={'game': 24, 'player': 16, 'ent': 64, 'cand': 40, 'opp_hand': 8, 'opp_deck': 6, 'opp_action': 8} emax=160
+consults=206  ent/consult mean=16.4 max=27  edges/consult mean=9.3  k mean=2.2 max=8
+cand types: {'TARGET': 54, 'PASS': 192, 'LAND': 75, 'ACTIVATE': 113, 'SPELL': 15, 'BLOCK': 6, 'ATTACK': 4}
+decision types: {'TARGET': 14, 'LAND': 35, 'ACTIVATE': 100, 'PASS': 35, 'SPELL': 13, 'BLOCK': 5, 'ATTACK': 4}
+edge types: {2: 83, 3: 3, 4: 1808, 6: 14}
+non-PASS candidates=267: refers->entity 259, refers->player-only 8, fallback(counter)=0, metaMissing=0, entityTrunc=0
+refers coverage (entity or player referent, non-PASS) = 1.0000
