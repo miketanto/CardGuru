@@ -847,3 +847,24 @@ to be set from it. Neither outcome changes any 4g gate verdict. The 16.9
 ms cuda forward per consult (v6 entattn number in `baseline.md` for
 comparison) is the serving cost Phase 5d's throughput protocol measures
 end to end.
+
+### 4g (part 2) — the pre-registered window follow-up (Lane C, 2026-09-12 03:42 WSL clock)
+
+`rl/artifacts/v7/cuda_gates_4g_b.sh`, log `cuda_gates_4g_b.log`; 1,000 synthetic steps, real size, cuda, threads 1.
+
+| config | ms/step | update_s | cuda peak MB | RSS MB |
+|---|---|---|---|---|
+| `--tbptt 16 --ep-batch 2` | **489** | 477 | **2,854** | 1,805 |
+| `--tbptt 32 --ep-batch 4` (the defaults) | 589 | 575 | 11,367 | 1,814 |
+
+Reading: the smaller window takes the cuda peak from the card's limit to
+a quarter of it and removes 17 % of the step time — less than the 2×
+the window alone could explain, so the allocator was not the cost; the
+per-window activation cost of the 6-layer encoder is. Two consequences,
+both recorded rather than acted on here: (1) the server's `--tbptt` /
+`--ep-batch` defaults should move to 16 / 2 — same rate, 8.5 GB of
+headroom for the inference batcher and a driver JVM on the same card;
+(2) a 5,000-step update costs ~40 minutes at either setting, which is
+the number Phase 7's update budget (and any decision on a smaller
+encoder for rung 0) has to be set from. Neither changes a 4g verdict;
+the memory gate passes at both settings.
