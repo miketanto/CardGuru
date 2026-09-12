@@ -524,6 +524,8 @@ public final class StateEncoder {
      *  decision-type one-hot at idx 12..19). */
     public static final int C_PASS = 0, C_LAND = 1, C_SPELL = 2, C_ACTIVATE = 3,
             C_TARGET = 4, C_ATTACK = 5, C_BLOCK = 6, C_OTHER = 7;
+    /** WIRE §2e edge types 6 and 7 (v7 only; 0..5 are the v6 relations). */
+    public static final int R7_CAN_BLOCK = 6, R7_STACK_ABOVE = 7;
     /** Token index space (WIRE §2a): 0 game, 1 me, 2 opp, 3.. entities. */
     public static final int V7_TOK_GAME = 0, V7_TOK_ME = 1, V7_TOK_OPP = 2, V7_TOK_ENT0 = 3;
 
@@ -820,10 +822,49 @@ public final class StateEncoder {
             names[i] = x.faceDown ? "?" : x.name;
             tok[i] = x.token ? 1 : 0;
         }
-        int[][] edges = new int[rel.length][];
-        for (int i = 0; i < rel.length; i++) {
-            edges[i] = new int[]{rel[i][0] + 1, rel[i][1] + 1, rel[i][2]};
+        List<int[]> ed = new ArrayList<>(rel.length + 16);
+        for (int[] r : rel) {
+            ed.add(new int[]{r[0] + 1, r[1] + 1, r[2]});
         }
+        // stack_above: each stack object -> the object directly below it
+        // (game.getStack() iterates top first, the order stackEnt's depth
+        // uses). A truncated object breaks the chain rather than bridging it.
+        Integer above = null;
+        for (StackObject so : game.getStack()) {
+            Integer t = token.get(so.getId());
+            if (above != null && t != null) {
+                ed.add(new int[]{above, t, R7_STACK_ABOVE});
+            }
+            above = t;
+        }
+        // can_block: legal blocker -> attacker, engine legality
+        // (Permanent.canBlock), only in a declare-blockers consult where
+        // I am the defending player - exactly the consults where the
+        // block candidates are built from the same test.
+        if (game.getTurnStepType() == PhaseStep.DECLARE_BLOCKERS
+                && !me.equals(game.getActivePlayerId())) {
+            List<Permanent> mine = new ArrayList<>();
+            for (Permanent p : game.getBattlefield().getAllActivePermanents(me)) {
+                if (p.isCreature(game) && !p.isTapped()) {
+                    mine.add(p);
+                }
+            }
+            for (CombatGroup g : game.getCombat().getGroups()) {
+                for (UUID atk : g.getAttackers()) {
+                    Integer ta = token.get(atk);
+                    if (ta == null) {
+                        continue;
+                    }
+                    for (Permanent p : mine) {
+                        Integer tb = token.get(p.getId());
+                        if (tb != null && p.canBlock(atk, game)) {
+                            ed.add(new int[]{tb, ta, R7_CAN_BLOCK});
+                        }
+                    }
+                }
+            }
+        }
+        int[][] edges = ed.toArray(new int[0][]);
         float[][] players = {
             v7Player(game, my, me, myLands, myUntapped),
             v7Player(game, op, opp, opLands, opUntapped)};

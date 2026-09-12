@@ -12,7 +12,7 @@ RL=/home/user/CardGuru/rl
 OUT=$LB/rl/artifacts/v7/wire3a
 mkdir -p $OUT
 rm -f $OUT/$TAG.jsonl
-python3 $LB/rl/wire_echo_server.py --port $PORT --out $OUT/$TAG.jsonl --max-conns 1 --pick ${PICK:-0} \
+python3 $LB/rl/wire_echo_server.py --port $PORT --out $OUT/$TAG.jsonl --max-conns 1 --pick ${PICK:-0} ${PREFER:+--prefer-type $PREFER} \
     > $OUT/$TAG.echo.log 2>&1 &
 ECHO_PID=$!
 sleep 1
@@ -20,7 +20,7 @@ cp $RL/$DECK.dck /home/user/mage/Mage.Tests/ 2>/dev/null; cd /home/user/mage
 RL_PERSIST=1 RL_DRIVER_PORT=$DPORT timeout 1500 bash $RL/run_driver.sh \
     -Drl.episodes=$EP -Drl.agent=rl -Drl.policy=socket -Drl.port=$PORT \
     -Drl.opponent=heuristic -Drl.searchPlies=1 -Drl.searchBreadth=8 \
-    -Drl.cardFeatures=$RL/e2_features.tsv -Drl.noYields=true -Drl.consultBudget=4000 \
+    -Drl.cardFeatures=$RL/e2_features.tsv -Drl.noYields=true -Drl.consultBudget=${BUDGET:-4000} \
     -Drl.encoderV=$ENC -Drl.blockAudit=true -Drl.attackAudit=true \
     -Drl.deck=$DECK.dck -Drl.oppDeck=$DECK.dck -Drl.stopTurn=60 \
     -Drl.mode=eval -Drl.seed=$SEED -Drl.report=0 -Drl.out=$OUT/$TAG.probe.txt \

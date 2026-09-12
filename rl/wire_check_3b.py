@@ -67,8 +67,8 @@ def main(paths):
                 for c7, (c6, nm) in V6_PAIRS.items():
                     if nm.endswith("(stack)") and not stack_zone[i]:
                         continue
-                    if nm.endswith("(stack)") is False and stack_zone[i] and c7 in (10, 11, 12, 13):
-                        continue          # v6 stack rows carry no body; v7 reads the source card
+                    if nm.endswith("(stack)") is False and stack_zone[i] and c7 in (10, 11, 12, 13, 29, 30):
+                        continue          # v6 stack rows carry no body or type; v7 reads the source card
                     if not close(r[c7], v6[c6]):
                         fails[nm] += 1
                         fail_examples.setdefault(nm, f"{names[i]} v7={r[c7]:.3f} v6={v6[c6]:.3f} line-ent {n}/{i}")

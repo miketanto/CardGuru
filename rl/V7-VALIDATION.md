@@ -704,3 +704,44 @@ observed scenarios from real games with a v6 cross-check, which covers
 the operators the rung decks can produce and leaves the rest untested.
 5b's 10k heuristic-vs-heuristic consults are the coverage run; any field
 still at 0 rows there gets a constructed scenario before 5b closes.
+
+## 3c — edges and referents (Lane B, 2026-09-12 15:10; branch `v7/lane-b`)
+
+What landed: WIRE §2e types 6 and 7 appended to the shifted v6 edge list in
+`StateEncoder.v7Block` — `can_block` (legal blocker → attacker by the
+engine's `Permanent.canBlock`, emitted only in a declare-blockers consult
+where I am the defending player, i.e. the consults whose block candidates
+come from the same test) and `stack_above` (each stack object → the one
+directly below it, in `game.getStack()`'s top-first order; a truncated
+object breaks the chain rather than bridging it). `refers_to` (every
+candidate's entity indices) and the stack modes / X slots landed in 3a and
+3b. Recording policies for the evidence: `wire_echo_server.py --pick N`
+and `--prefer-type 2,1` (cast a spell whenever one is castable, else play
+a land), `rl/wire_check_3c.py`.
+
+| gate | required | measured | result |
+|---|---|---|---|
+| every edge endpoint valid | inside the token space, every consult | 0 out of range over 2,955 consults / 41,000+ edges (also the validator's own check: every stream ok) | pass |
+| `refers_to` coverage | 100 % of non-PASS candidates over 1,000 consults | **100 %** — 1,999 / 1,999 (ten 3b recordings, 1,562 consults), 2,497 / 2,497 (spell-first W4Inst, 972 consults), 1,022 / 1,022 (two spell-first runs, 221 consults); `refersFallback` 0 everywhere | pass |
+| `can_block` agrees with the candidate builder | every BLOCK candidate's (blocker, attacker) pair is a `can_block` edge of the same consult; edges only in defending declare-blockers consults; src my untapped creature, dst an attacking creature | 0 failures: 66 edges / 28 BLOCK candidates (3b set), 246 / 63 (spell-first W4Inst), 8 / 3 (last-candidate W4Inst) | pass |
+| `stack_above` chain | src and dst on the stack, dst one position deeper, n − 1 edges for n objects | 0 failures on the **2** consults that had two objects on the stack (spell-first W4Inst); every other recording had ≤ 1 | pass, barely exercised |
+
+Coverage note that is a finding: a consult with two or more objects on
+the stack is rare under these policies — 2 of 972 with the spell-first
+policy, 0 of 2,000+ otherwise — because the agent is only consulted with
+a non-empty stack when it holds priority with a castable instant or a
+mana ability (103 of 1,599 consults in a longer spell-first run had a
+non-empty stack, 26 of 972 had the agent's own object on it). The
+stack-only fields and `stack_above` therefore rest on a handful of rows
+until 5b's 10k-consult coverage run; if that run still shows < 100
+two-object consults, a constructed scenario is owed.
+
+3b coverage update from the spell-first recording (972 consults, W4Inst,
+`--consultBudget 300`): damage marked 24 rows, blocking 33, stack modes
+62, stack mine 26, SPELL afterstates 42 — **0 v6 disagreements, 0 failed
+identities**, after one checker correction: v6 stack rows carry no
+creature/land type bit (v7 reads the source card), so the type
+comparison now skips stack rows like the body comparison already did.
+A first spell-first run without a consult budget ran 1,599 consults in
+one game before it was stopped (the policy casts every castable instant
+every consult); recordings for coverage use `BUDGET=300`.

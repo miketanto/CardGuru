@@ -19,7 +19,7 @@ import json
 import socket
 
 
-def serve(port, out, pick, max_conns):
+def serve(port, out, pick, max_conns, prefer=None):
     srv = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     srv.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     srv.bind(("127.0.0.1", port))
@@ -40,10 +40,21 @@ def serve(port, out, pick, max_conns):
                     rep = b'{"ok":1}\n'
                 elif line.startswith('{"t":"consult"'):
                     a = pick
-                    if a:
+                    if a or prefer is not None:
                         try:
-                            k = len(json.loads(line)["c"])
+                            m = json.loads(line)
+                            k = len(m["c"])
                             a = min(a, k - 1)
+                            if prefer is not None and "v7_cand_type" in m:
+                                # first candidate of the first preferred WIRE-V7
+                                # type present, in the given order (e.g. "2,1" =
+                                # cast a spell whenever consulted, else play a
+                                # land, else --pick)
+                                for pt in prefer:
+                                    hits = [i for i, t in enumerate(m["v7_cand_type"]) if t == pt]
+                                    if hits:
+                                        a = hits[0]
+                                        break
                         except Exception:
                             a = 0
                     rep = f'{{"a":{a}}}\n'.encode()
@@ -62,5 +73,9 @@ if __name__ == "__main__":
     ap.add_argument("--out", required=True)
     ap.add_argument("--pick", type=int, default=0)
     ap.add_argument("--max-conns", type=int, default=0, help="exit after N connections (0 = forever)")
+    ap.add_argument("--prefer-type", default=None,
+                    help="v7 only: comma-separated WIRE-V7 candidate types in priority order; "
+                         "the first candidate of the first type present is chosen, else --pick")
     a = ap.parse_args()
-    serve(a.port, a.out, a.pick, a.max_conns)
+    prefer = [int(x) for x in a.prefer_type.split(",")] if a.prefer_type else None
+    serve(a.port, a.out, a.pick, a.max_conns, prefer)
