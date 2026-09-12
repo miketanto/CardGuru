@@ -1,0 +1,76 @@
+deck context: /home/user/CardGuru/rl/artifacts/deck_ctx_v1
+/home/miketanto/.local/lib/python3.10/site-packages/torch/nn/modules/transformer.py:382: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+resumed ckpt: 0 episodes, 0 updates
+policy server on :7940 (threads=4) device=cuda
+conn: mode=eval episodes=4
+conn closed
+conn: mode=eval episodes=4
+conn closed
+conn: mode=eval episodes=4
+conn closed
+RLLOCK|calls=235|wait_s=0.0|held_s=4.6|wait_per_call_ms=0.00|held_per_call_ms=19.38|wait_share=0.0%
+deck context: /home/user/CardGuru/rl/artifacts/deck_ctx_v1
+/home/miketanto/.local/lib/python3.10/site-packages/torch/nn/modules/transformer.py:382: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+resumed ckpt: 0 episodes, 0 updates
+policy server on :7940 (threads=4) device=cuda
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+TRAIN|update=1 episodes=32 batch_eps=32 steps=1633 batch_win_rate=0.031 mean_abs_phi=0.000 value_ev=0.0592 oracle_cover=0.000 critic_ev=nan update_s=34.41 entropy=0.490 max_logit=5.00 grad_norm=34.98 chosen_types=916/118/89/388/44/34/44/0
+RLLOCK|calls=2000|wait_s=206.0|held_s=37.7|wait_per_call_ms=102.99|held_per_call_ms=18.87|wait_share=84.5%
+conn closed
+conn closed
+conn closed
+TRAIN|update=2 episodes=64 batch_eps=32 steps=1757 batch_win_rate=0.031 mean_abs_phi=0.000 value_ev=-0.0350 oracle_cover=0.000 critic_ev=nan update_s=38.09 entropy=0.846 max_logit=5.00 grad_norm=2.49 chosen_types=807/152/102/547/34/44/71/0
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn closed
+RLLOCK|calls=4000|wait_s=303.4|held_s=75.2|wait_per_call_ms=75.85|held_per_call_ms=18.80|wait_share=80.1%
+TRAIN|update=3 episodes=96 batch_eps=32 steps=1651 batch_win_rate=0.094 mean_abs_phi=0.000 value_ev=0.0065 oracle_cover=0.000 critic_ev=nan update_s=33.57 entropy=0.861 max_logit=5.00 grad_norm=1.79 chosen_types=745/144/98/533/28/50/53/0
+RLLOCK|calls=6000|wait_s=504.5|held_s=112.9|wait_per_call_ms=84.08|held_per_call_ms=18.82|wait_share=81.7%
+conn closed
+conn closed
+conn closed
+TRAIN|update=4 episodes=128 batch_eps=32 steps=1466 batch_win_rate=0.031 mean_abs_phi=0.000 value_ev=0.0519 oracle_cover=0.000 critic_ev=nan update_s=26.30 entropy=0.864 max_logit=5.00 grad_norm=1.49 chosen_types=653/142/89/450/34/36/62/0
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn closed
+RLLOCK|calls=8000|wait_s=609.1|held_s=151.0|wait_per_call_ms=76.13|held_per_call_ms=18.88|wait_share=80.1%
+TRAIN|update=5 episodes=160 batch_eps=32 steps=1590 batch_win_rate=0.031 mean_abs_phi=0.000 value_ev=0.0992 oracle_cover=0.000 critic_ev=nan update_s=33.17 entropy=0.838 max_logit=5.00 grad_norm=1.41 chosen_types=728/151/91/493/33/34/60/0
+conn closed
+conn closed
+conn closed
+TRAIN|update=6 episodes=192 batch_eps=32 steps=1659 batch_win_rate=0.062 mean_abs_phi=0.000 value_ev=0.1800 oracle_cover=0.000 critic_ev=nan update_s=32.90 entropy=0.851 max_logit=5.00 grad_norm=1.97 chosen_types=777/144/94/512/34/42/56/0
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn closed
+RLLOCK|calls=10000|wait_s=808.5|held_s=188.9|wait_per_call_ms=80.85|held_per_call_ms=18.89|wait_share=81.1%
+TRAIN|update=7 episodes=224 batch_eps=32 steps=1797 batch_win_rate=0.094 mean_abs_phi=0.000 value_ev=0.4020 oracle_cover=0.000 critic_ev=nan update_s=38.48 entropy=0.856 max_logit=5.00 grad_norm=4.59 chosen_types=832/150/109/568/29/44/65/0
+RLLOCK|calls=12000|wait_s=1026.6|held_s=226.7|wait_per_call_ms=85.55|held_per_call_ms=18.89|wait_share=81.9%
+conn closed
+conn closed
+conn closed
+TRAIN|update=8 episodes=256 batch_eps=32 steps=1583 batch_win_rate=0.031 mean_abs_phi=0.000 value_ev=0.0440 oracle_cover=0.000 critic_ev=nan update_s=29.25 entropy=0.882 max_logit=5.00 grad_norm=3.64 chosen_types=725/154/108/469/29/33/65/0
+conn closed
+RLLOCK|calls=13136|wait_s=1082.9|held_s=248.0|wait_per_call_ms=82.44|held_per_call_ms=18.88|wait_share=81.4%
+deck context: /home/user/CardGuru/rl/artifacts/deck_ctx_v1
+/home/miketanto/.local/lib/python3.10/site-packages/torch/nn/modules/transformer.py:382: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+resumed ckpt: 256 episodes, 8 updates
+policy server on :7940 (threads=4) device=cuda
+conn: mode=eval episodes=4
+conn closed
+conn: mode=eval episodes=4
+conn closed
+conn: mode=eval episodes=4
+conn closed
+RLLOCK|calls=249|wait_s=0.0|held_s=4.5|wait_per_call_ms=0.00|held_per_call_ms=18.26|wait_share=0.0%

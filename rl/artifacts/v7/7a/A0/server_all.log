@@ -1,0 +1,73 @@
+deck context: /home/user/CardGuru/rl/artifacts/deck_ctx_v1
+/home/miketanto/.local/lib/python3.10/site-packages/torch/nn/modules/transformer.py:382: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+resumed ckpt: 0 episodes, 0 updates
+policy server on :7940 (threads=4) device=cuda
+conn: mode=eval episodes=4
+conn closed
+conn: mode=eval episodes=4
+conn closed
+conn: mode=eval episodes=4
+conn closed
+RLLOCK|calls=235|wait_s=0.0|held_s=5.1|wait_per_call_ms=0.00|held_per_call_ms=21.85|wait_share=0.0%
+deck context: /home/user/CardGuru/rl/artifacts/deck_ctx_v1
+/home/miketanto/.local/lib/python3.10/site-packages/torch/nn/modules/transformer.py:382: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+resumed ckpt: 0 episodes, 0 updates
+policy server on :7940 (threads=4) device=cuda
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+TRAIN|update=1 episodes=32 batch_eps=32 steps=1876 batch_win_rate=0.031 mean_abs_phi=0.000 value_ev=0.0378 oracle_cover=0.000 critic_ev=nan update_s=152.67 entropy=0.101 max_logit=177.38 grad_norm=39.19 chosen_types=4160/544/488/1720/156/164/272/0
+RLLOCK|calls=2000|wait_s=559.7|held_s=37.3|wait_per_call_ms=279.83|held_per_call_ms=18.63|wait_share=93.8%
+conn closed
+conn closed
+conn closed
+TRAIN|update=2 episodes=64 batch_eps=32 steps=705 batch_win_rate=0.000 mean_abs_phi=0.000 value_ev=-2.3113 oracle_cover=0.000 critic_ev=nan update_s=51.86 entropy=0.584 max_logit=278.99 grad_norm=4.12 chosen_types=2032/36/28/56/632/16/20/0
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn closed
+TRAIN|update=3 episodes=96 batch_eps=32 steps=781 batch_win_rate=0.000 mean_abs_phi=0.000 value_ev=-4.1523 oracle_cover=0.000 critic_ev=nan update_s=46.49 entropy=0.183 max_logit=274.77 grad_norm=6.84 chosen_types=780/536/0/1676/132/0/0/0
+RLLOCK|calls=4000|wait_s=798.1|held_s=74.3|wait_per_call_ms=199.52|held_per_call_ms=18.57|wait_share=91.5%
+conn closed
+conn closed
+conn closed
+TRAIN|update=4 episodes=128 batch_eps=32 steps=757 batch_win_rate=0.000 mean_abs_phi=0.000 value_ev=-7.9139 oracle_cover=0.000 critic_ev=nan update_s=46.16 entropy=0.201 max_logit=176.21 grad_norm=0.53 chosen_types=804/508/0/1556/160/0/0/0
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn closed
+TRAIN|update=5 episodes=160 batch_eps=32 steps=767 batch_win_rate=0.000 mean_abs_phi=0.000 value_ev=-0.2936 oracle_cover=0.000 critic_ev=nan update_s=43.31 entropy=0.181 max_logit=89.09 grad_norm=0.23 chosen_types=768/528/0/1624/148/0/0/0
+conn closed
+conn closed
+conn closed
+TRAIN|update=6 episodes=192 batch_eps=32 steps=768 batch_win_rate=0.000 mean_abs_phi=0.000 value_ev=0.6078 oracle_cover=0.000 critic_ev=nan update_s=43.40 entropy=0.181 max_logit=112.39 grad_norm=0.13 chosen_types=780/524/0/1620/148/0/0/0
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn closed
+RLLOCK|calls=6000|wait_s=1031.3|held_s=111.6|wait_per_call_ms=171.88|held_per_call_ms=18.59|wait_share=90.2%
+TRAIN|update=7 episodes=224 batch_eps=32 steps=772 batch_win_rate=0.000 mean_abs_phi=0.000 value_ev=0.8348 oracle_cover=0.000 critic_ev=nan update_s=44.81 entropy=0.189 max_logit=199.11 grad_norm=7.90 chosen_types=812/512/0/1604/160/0/0/0
+conn closed
+conn closed
+conn closed
+TRAIN|update=8 episodes=256 batch_eps=32 steps=870 batch_win_rate=0.000 mean_abs_phi=0.000 value_ev=0.8745 oracle_cover=0.000 critic_ev=nan update_s=47.89 entropy=0.140 max_logit=347.76 grad_norm=0.17 chosen_types=812/588/0/1960/120/0/0/0
+conn closed
+RLLOCK|calls=7296|wait_s=1230.2|held_s=135.2|wait_per_call_ms=168.62|held_per_call_ms=18.54|wait_share=90.1%
+deck context: /home/user/CardGuru/rl/artifacts/deck_ctx_v1
+/home/miketanto/.local/lib/python3.10/site-packages/torch/nn/modules/transformer.py:382: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+resumed ckpt: 256 episodes, 8 updates
+policy server on :7940 (threads=4) device=cuda
+conn: mode=eval episodes=4
+conn closed
+conn: mode=eval episodes=4
+conn closed
+conn: mode=eval episodes=4
+conn closed
+RLLOCK|calls=292|wait_s=0.0|held_s=5.2|wait_per_call_ms=0.00|held_per_call_ms=17.94|wait_share=0.0%

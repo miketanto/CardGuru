@@ -23,3 +23,5 @@ rl/artifacts/cardemb_sweep/RESULTS.md
 rl/artifacts/v7/wire3a/*.jsonl
 rl/artifacts/v7/wire3a/*.log
 rl/artifacts/v7/wire3a/*.probe.txt
+rl/artifacts/v7/7a/*/ck_256.pt
+rl/artifacts/v7/**/*.pt

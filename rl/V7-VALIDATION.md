@@ -1772,3 +1772,74 @@ and the bound is part of the architecture. If neither passes, the PASS
 constant-row design (WIRE §2f) is the next suspect and gets its own arm.
 None of this is a learning result; all three arms are pre-registered as
 unable to beat v6 on rung 0.
+
+## 7a — rung-0 smoke, three pre-registered arms (2026-09-12 23:20; branch `v7/lane-d`)
+
+`rl/run_7a.sh`: W0Base vs heuristic, 256 episodes each, conc4, cuda,
+`--arch v7`, seed 0; per-update instrumentation on the TRAIN line
+(entropy · max |logit| · pre-clip grad norm · chosen-type counts, commit
+e70d3aa); census `rl/v7_init_logits.py` on `ck_256` over 1,238 real
+consults; artifacts `rl/artifacts/v7/7a/{A0,A1,A2}/` (train_lines.txt,
+census.txt, lane.log, ck_256.pt). Chosen types are PASS/LAND/SPELL/
+ACTIVATE/TARGET/ATTACK/BLOCK per 32-episode batch.
+
+| arm | setting | update 1 → 8: entropy | max \|logit\| | grad norm (pre-clip) | chosen types at update 8 | training wins / 256 | census at 256: gap, argmax-PASS, entropy | verdict vs the pre-registered "not collapsed" |
+|---|---|---|---|---|---|---|---|---|
+| A0 | lr 3e-4, 4 epochs (5d as run) | 0.10 → 0.14 | 177 → 348 | 39 → 0.17 | 812/588/**0**/1960/120/**0**/**0** | 1 | **212 nats**, 41/1108, 0.37 | collapsed by update 1 (predicted) |
+| A1 | lr 3e-5, 1 epoch | 0.27 → 0.05 | 42 → 485 | 34 → 0.08 | 471/**0/0/0**/171/**0/0** | 0 | **540 nats**, 1046/1108, 0.005 | collapsed by update 2, to always-PASS |
+| A2 | lr 3e-5, 1 epoch, logit bound 5 | 0.49 → 0.88 | 5.0 (pinned) | 35 → 3.6 | 725/154/108/469/29/33/65 | **13** | **0.000 nats** (every finite logit at the bound: ties), argmax = first candidate = PASS 1176/1176, 0.93 | not a runaway; **saturated to uniform** |
+
+**What the arms establish.**
+1. **Not the learning rate.** A1 at a tenth of the lr and a quarter of
+   the epochs collapsed as completely as A0, in the other direction, and
+   its logits kept climbing (373 → 485 over updates 4–8) while the
+   pre-clip gradient norm was 0.08–0.5: Adam's normalised step moves
+   every parameter ~lr per step whatever the gradient, so once the
+   direction is set the magnitude runs regardless of lr. The grad-norm
+   clip at 0.5 is inert under Adam for the same reason.
+2. **The bound stops the magnitude, not the drift.** A2's pre-activation
+   logits ran to the tanh's rails on both sides — the census finds every
+   finite logit equal (gap 0.000), i.e. a uniform policy over
+   candidates, entropy 0.93 of a ~ln 5 maximum. Its 13 training wins
+   (5 %) and the mixed chosen-type counts are what a uniform-random policy
+   gets on W0Base against the heuristic, not learning; the deterministic
+   battery (argmax on ties = candidate 0 = PASS) shows 0 attacks for the
+   same reason. A2 meets the letter of "not collapsed" (gap < 5, entropy
+   > 0.3) and fails its intent (argmax-PASS 94 %, by ties).
+3. **Correction, in the open.** The velocity diagnostic and the chat
+   discussion said the loss was "advantage −1 on every sampled action"
+   because every game is lost. `_update_v7` normalises advantages per
+   batch (zero mean, unit std, line 890), so in an all-lost batch the
+   sign is set by GAE's timestep structure and the critic's values
+   (early actions positive, late negative), not by the outcome. The
+   drift's *direction* is therefore an artefact of position in the
+   game and of the critic's transient, which is why A0 and A1 landed in
+   different corners; the velocity numbers stand (they measured
+   magnitude per step, and A0's update 1 reproduced them: 177 nats).
+
+**Behaviour the collapse selects** (recorded because it is a finding
+about the action space): A0's policy plays a land, then activates a
+land's mana ability at every consult until every land is tapped, casts
+nothing, attacks and blocks nothing — ~50 ACTIVATE choices per game
+against 4–5 real decisions. Every ACTIVATE candidate on W0Base is a
+Plains mana ability (126 of 209 consults in `5b_W0Base_p1` offer one):
+`RLPlayer` builds the candidate list from XMage's `getPlayable(game,
+true)` with only the illegal-land-drop filter, and XMage auto-pays mana
+on cast, so tapping a land by hand floats mana that empties at end of
+step — a null action that costs one consult, present in v6's candidate
+set too ("v6 changes what the agent sees, never what it can choose").
+**Amendment owed**: drop `a.isManaAbility()` candidates in
+`RLPlayer.consult` (own commit, v6-identity row, as jointBlocks); it
+removes the collapse's cheapest sink and cuts consults per episode.
+
+**Pre-registered next arms** (none run; each 12 min): (B1) A2 + the
+mana-ability filter; (B2) A2 + AdamW weight decay 0.01 on the heads
+(a restoring force the bound lacks); (B3) A2 with the heads on SGD-momentum
+at lr 1e-3 while the trunk stays on Adam 3e-5 (removes the normalised
+step where the logits are made); (B4) entropy coefficient 0.1 with the
+bound (so the rails are not the maximum-entropy state). "Learning" at
+this rung is defined now: training win rate over the last 4 batches
+above the uniform-random 5 % with a Wilson interval clear of it (≥ 128
+games), argmax-PASS fraction on the census between 5 % and 90 % with a
+gap > 0.5 nats, and attacks declared > 0 in the deterministic battery.
+Pre-registered as before: no arm can beat v6 on rung 0 beyond noise.
