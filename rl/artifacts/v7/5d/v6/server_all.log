@@ -1,0 +1,73 @@
+resumed ckpt: 0 episodes, 0 updates
+policy server on :7940 (threads=4) device=cuda
+conn: mode=eval episodes=4
+conn closed
+conn: mode=eval episodes=4
+conn closed
+conn: mode=eval episodes=4
+conn closed
+RLLOCK|calls=255|wait_s=0.0|held_s=1.7|wait_per_call_ms=0.00|held_per_call_ms=6.82|wait_share=0.0%
+resumed ckpt: 0 episodes, 0 updates
+policy server on :7940 (threads=4) device=cuda
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+TRAIN|update=1 episodes=32 batch_eps=32 steps=1709 batch_win_rate=0.000 mean_abs_phi=0.000 value_ev=-0.2422 oracle_cover=0.000 critic_ev=nan update_s=22.39
+RLLOCK|calls=2000|wait_s=93.1|held_s=11.6|wait_per_call_ms=46.54|held_per_call_ms=5.78|wait_share=88.9%
+conn closed
+conn closed
+conn closed
+TRAIN|update=2 episodes=64 batch_eps=32 steps=1958 batch_win_rate=0.062 mean_abs_phi=0.000 value_ev=0.0788 oracle_cover=0.000 critic_ev=nan update_s=19.60
+conn closed
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+RLLOCK|calls=4000|wait_s=115.9|held_s=22.5|wait_per_call_ms=28.97|held_per_call_ms=5.62|wait_share=83.7%
+TRAIN|update=3 episodes=96 batch_eps=32 steps=1731 batch_win_rate=0.000 mean_abs_phi=0.000 value_ev=-0.5100 oracle_cover=0.000 critic_ev=nan update_s=15.98
+RLLOCK|calls=6000|wait_s=188.9|held_s=33.3|wait_per_call_ms=31.48|held_per_call_ms=5.54|wait_share=85.0%
+RLLOCK|calls=8000|wait_s=214.5|held_s=43.9|wait_per_call_ms=26.81|held_per_call_ms=5.49|wait_share=83.0%
+conn closed
+conn closed
+conn closed
+TRAIN|update=4 episodes=128 batch_eps=32 steps=3086 batch_win_rate=0.156 mean_abs_phi=0.000 value_ev=0.0370 oracle_cover=0.000 critic_ev=nan update_s=35.23
+conn closed
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+RLLOCK|calls=10000|wait_s=238.1|held_s=54.3|wait_per_call_ms=23.81|held_per_call_ms=5.43|wait_share=81.4%
+RLLOCK|calls=12000|wait_s=263.6|held_s=64.7|wait_per_call_ms=21.97|held_per_call_ms=5.39|wait_share=80.3%
+TRAIN|update=5 episodes=160 batch_eps=32 steps=3659 batch_win_rate=0.219 mean_abs_phi=0.000 value_ev=0.1023 oracle_cover=0.000 critic_ev=nan update_s=33.73
+RLLOCK|calls=14000|wait_s=356.8|held_s=75.2|wait_per_call_ms=25.48|held_per_call_ms=5.37|wait_share=82.6%
+conn closed
+conn closed
+RLLOCK|calls=16000|wait_s=381.4|held_s=86.0|wait_per_call_ms=23.84|held_per_call_ms=5.37|wait_share=81.6%
+conn closed
+TRAIN|update=6 episodes=192 batch_eps=32 steps=3932 batch_win_rate=0.062 mean_abs_phi=0.000 value_ev=0.0584 oracle_cover=0.000 critic_ev=nan update_s=51.83
+conn closed
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+RLLOCK|calls=18000|wait_s=408.1|held_s=97.3|wait_per_call_ms=22.67|held_per_call_ms=5.40|wait_share=80.8%
+RLLOCK|calls=20000|wait_s=435.6|held_s=108.4|wait_per_call_ms=21.78|held_per_call_ms=5.42|wait_share=80.1%
+TRAIN|update=7 episodes=224 batch_eps=32 steps=3623 batch_win_rate=0.219 mean_abs_phi=0.000 value_ev=0.0351 oracle_cover=0.000 critic_ev=nan update_s=37.74
+RLLOCK|calls=22000|wait_s=575.3|held_s=119.1|wait_per_call_ms=26.15|held_per_call_ms=5.41|wait_share=82.9%
+RLLOCK|calls=24000|wait_s=601.6|held_s=129.7|wait_per_call_ms=25.07|held_per_call_ms=5.40|wait_share=82.3%
+conn closed
+conn closed
+conn closed
+TRAIN|update=8 episodes=256 batch_eps=32 steps=4584 batch_win_rate=0.281 mean_abs_phi=0.000 value_ev=0.0355 oracle_cover=0.000 critic_ev=nan update_s=50.20
+conn closed
+RLLOCK|calls=24282|wait_s=605.1|held_s=131.2|wait_per_call_ms=24.92|held_per_call_ms=5.40|wait_share=82.2%
+resumed ckpt: 256 episodes, 8 updates
+policy server on :7940 (threads=4) device=cuda
+conn: mode=eval episodes=4
+conn closed
+conn: mode=eval episodes=4
+conn closed
+conn: mode=eval episodes=4
+conn closed
+RLLOCK|calls=1613|wait_s=0.0|held_s=6.1|wait_per_call_ms=0.00|held_per_call_ms=3.78|wait_share=0.0%

@@ -1575,3 +1575,67 @@ gated in §11 and flat for v6 because v6's forward was cheap), then the
 §4g correction-row levers (SDPA with the bias as additive mask,
 torch.compile on the block, window-batched encoding, device-side
 collation). Results appended below.
+
+**5d results** (2026-09-12 21:32; `rl/run_5d.sh`, artifacts in
+`rl/artifacts/v7/5d/{v6,v7}/`, quantities by `rl/tp_5d.py`). Both arms
+`R0_DONE`, `ck_eps=256`, no `R0_FAILED`, 8 rows each, 0 server errors or
+refusals; window = rows 1→8, 224 episodes.
+
+| quantity | v6 (same day) | v7 | ratio | budget | result |
+|---|---|---|---|---|---|
+| play consults/s | 182.5 | **50.7** | 0.28 | ≥ 1/3 (60.8) | **FAIL** (just under) |
+| update ms per stored consult | 10.82 | **58.8** | 5.4× | ≤ 3× (32.5) | **FAIL** |
+| update s mean (max) | 33.3 (51.8) | 62.3 (129.8, the first update) | | | |
+| update share of window | 66 % | 75 % | | | |
+| held per consult (last server's `RLLOCK`) | 3.78 ms | 17.8 ms | 4.7× | | |
+| eps/s | 0.609 | 0.455 | 0.75 | reported | |
+| consults per episode | 100.8 | **28.0** | 0.28 | reported | see below |
+| stored consults, rows 2–8 | 22,573 | 6,267 | | | |
+| cuda peak / host peak used / JVM / server MB | 3,699 / 3,942 / 2,143 / 2,267 | **2,337** / 4,885 / 1,743 / 3,306 | | ≤ 11 GB / ≤ 12 GB | pass |
+
+The v6 arm reproduces §7 per consult (10.5 → 10.8 ms update, 190 → 182
+consults/s play); its eps/s is 0.61 not 1.12 because these games ran
+101 consults per episode against §7's 57 — the reason the budget is on
+per-consult quantities.
+
+**Verdict: 5d FAIL on both per-consult budgets.** The per-consult forward
+predicted the play ratio (1/3 predicted, 0.28 measured — the remainder
+is the held time: 17.8 ms per consult against a 15.9 ms single forward,
+so play is serialized forward, as v6's was). The update is 5.4× v6 per
+stored consult, above the 3× the §4g synthetic rate implied: at 64 ms
+per optimiser step over 64 window-consults the update should cost ~1 ms
+per consult per epoch; 58.8 ms per stored consult says the lane's
+update does far more work per consult than the synthetic profile — the
+PPO epoch count, the window padding on short real episodes (28 consults
+per episode against tbptt 16 / ep-batch 4), or the 3 %-of-consults
+first-update warm-up (130 s) being repeated per server start. Not
+diagnosed here; it is the first thing 5d's follow-up profiles
+(`update_profile.py --arch v7` on the recorded lane windows, not
+synthetic ones). Memory is a non-issue (2.3 GB cuda peak, 4× under the
+card), which means the batcher and a larger ep-batch are both open.
+
+What eps/s cannot support: v7's 0.455 against 0.609 is 0.75, inside the
+1.8× n = 1 noise, and the two nets play different games — **the
+untrained v7 net's episodes hold 28 consults against v6's 101**, and its
+4-game eval batteries at 0 and at 256 episodes show `attacks=0/0
+blocks=0/0` (no attack or block opportunity in 8 games: no creature of
+the RL seat ever on the battlefield; turns 13.5 / 12.0 = it dies on
+schedule). That is an observation from 8 games, not a result; it says
+the v7 init policy's argmax is PASS-like on real consults, and the
+consult mix v7 was timed on (empty boards, few candidates) is *cheaper*
+than v6's, so the per-consult ratios above are lower bounds on v7's
+cost, not upper. Pre-registered for 7a: log policy entropy and the
+candidate-type histogram of the chosen actions per update; check the
+init net's logit distribution over candidate types on the 5b consults
+before training (a PASS bias at init is a heads-init finding, not a
+learning one).
+
+Pre-registered levers, in order, none run here: (1) `--batch-max 4`
+(§11: built, gated, flat for v6; v7's forward is flat in B — fwd8 = 1.97
+ms/row against fwd1 14.8 — so at conc4 it should take play from ~50
+toward ~150 consults/s); (2) profile the lane update on real windows
+and fix the per-consult excess; (3) the §4g correction-row levers. 5d
+is recorded as FAIL; the plan's gate for `v7-p5` is not met on
+throughput, and the tag waits on (1)–(2) or a stated decision to train
+at this rate (256 episodes cost 12 min end to end; a 2k-episode rung is
+~1.6 h — affordable for 7a as a smoke).
