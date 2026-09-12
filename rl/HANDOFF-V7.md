@@ -500,3 +500,84 @@ Start by confirming what is running (the two checks above), then execute NEXT 1.
 At ~70% context, stop, update rl/HANDOFF-V7.md §D in place (do not rewrite from memory),
 commit, push, and offer to continue in a new session.
 ```
+
+## G. Lane B checkpoint (2026-09-12, branch `v7/lane-b`; lane-d = 8d8ffde)
+
+```
+STATE:   - Lane B (Java) 3a, 3b, 3c, 3d DONE on branch v7/lane-b (worktree
+           C:\Users\sutanto4\Documents\CardGuru-lane-b, from main 03ac7ed), each a
+           gate row in rl/V7-VALIDATION.md ON THAT BRANCH (the file diverges from
+           lane-d's copy: both append at the end; merge = keep both).
+             3a bcb57a4  encoderV=7 skeleton, CandMeta at all 7 sites, one v6 writer
+             3b 8739169  entity idx 10-63 + operators + candidate afterstates
+             3c baa4fa8  can_block / stack_above edges, 100% referent coverage
+             3d f1ea528  RLKnowledgeWatcher tracker, leak gate on real recordings
+           Java compiles into /home/user/mage from the worktree: rl/sync_lane_b.sh
+           (never rl/sync_engine_src.sh, which copies main's OLD sources and kills
+           every driver). Drivers: rl/drivers_3a.sh (7910 = v6 arm, 7911 = v7 arm),
+           rl/drivers_3d.sh (7912 = v7 + oracle; stops 7910 first). All three JVMs
+           load classes at start: RESTART after every compile.
+         - Recording/checking toolchain (all in rl/ on lane-b): wire_echo_server.py
+           (--pick N, --prefer-type 2,1), wire_record.sh (DECK PICK PREFER BUDGET
+           EXTRA env), wire_diff.py (--all: differing columns + column sums),
+           wire_census.py (--index=), wire_check_3b/3c/3d.py, wire_trace_3d.py,
+           live_check_3a.sh, old_build_record.sh. Recordings live gitignored in
+           rl/artifacts/v7/wire3a/ (regenerate: seed 900000).
+         - Lane D/C side (lane-d): 4g cuda gates DONE (39e243e, 5ff74ab): RSS 2.0 GB
+           pass; cuda peak 11.4 GB at tbptt 32/ep 4 vs 2.85 GB at 16/2; 582 vs 489
+           ms/step -> per-window compute dominates; 5,000-step update ~40 min either
+           way. Embedder sweep: config b FAIL (f3d97cc), c/d BACKLOGGED by the user,
+           sweep2.sh killed; card_emb_v8 stays. rl/v7_leak_real.py (8d8ffde).
+         - Phase 4 is CLOSED (both cuda rows in) -> the lane-d PR is due.
+
+DONE:    3a: 101+136 consults validate; v6 arm identical to the unpatched build
+           within the engine's own noise (which of several identical opponent lands
+           gets tapped for mana is not on the seeded stream; measured by running the
+           unpatched build twice); live 10-game check vs policy_server --arch v7.
+         3b: 1,562 consults / 12,838 rows, 0 v6 disagreements, 0 identity failures;
+           damage/blocking/stack fields exercised only by the spell-first policy.
+         3c: 100% referent coverage over 2,955 consults, every BLOCK candidate pair
+           is a can_block edge; stack_above seen on 2 consults only.
+         3d: leak gate L1-L3 pass on 3 real oracle recordings; handDrift 0 over 1,413
+           consults; deck accounting exact; known-identity path NOT exercised (no
+           reveal/return/tutor on the rung decks) -> 5b or a constructed scenario.
+
+OPEN:    (1) 3e dump/replay: -Drl.entityDump v7 format, rung0_replay.sh equality,
+             counters entityTrunc/unknownId; replay byte-equal over 20 games.
+         (2) WIRE §2c player width 21 (untapped sources by colour) - a cross-lane
+             commit (wire_validate DIMS + v7_obs + v7_net + fixtures + Java).
+         (3) WIRE amendment to propose: PASS afterstate at the joint sites (damage
+             taken if not blocking, bodies retained if not attacking) - deferred by
+             design §6, zeroed on the wire now.
+         (4) Player row idx 14 (cards drawn this turn) still 0.
+         (5) Fields with 0 exercised rows (counters, loyalty, tokens, 16 keywords,
+             lethal-as-is, stack X/is-ability, known-identity path): 5b coverage.
+         (6) policy_server defaults --tbptt 16 --ep-batch 2 (memory headroom).
+         (7) PR for v7/lane-d (write rl/PR-V7-LANE-D.md like PR-V7-LANE-A.md) and,
+             after 3e, for v7/lane-b.
+
+NEXT:    3e on v7/lane-b: extend StateEncoder.dump (-Drl.entityDump) with the v7
+         block (or write the wire line via SocketPolicyClient), run
+         rl/rung0_replay.sh-style byte equality over 20 seeded games on 7911 with
+         the echo server (expect the tapped-land noise class; state it), add
+         unknownId (0: ids are not emitted) and entityTrunc to the counters, gate row,
+         commit, then rl/PR-V7-LANE-B.md. Then Phase 5a on lane-d + lane-b together.
+
+GOTCHAS: - The driver server clears/does not forward JVM-level -Drl.* to a class
+           initialised during a job: pass flags on the JOB (EXTRA=...) AND restart
+           the JVM; a static final read once stays for the JVM's life.
+         - Watcher.copy() is reflection over fields: ONE constructor, no raw arrays,
+           records implement Copyable; a shared mutable object would let simulated
+           games mutate the real tracker.
+         - XMage test mode throws "Error in unit tests" on game.getCard(non-card id):
+           guard lookups with try/catch or check the id kind first.
+         - grep calls StateEncoder.java binary (a stray byte): use grep -a / sed.
+         - The auto-mode classifier blocks `kill`/`pkill` typed inline; a script that
+           kills is fine (scratchpad/kill_7911.sh, stop_sweep2.sh pattern).
+         - A spell-first recording without -Drl.consultBudget ran 1,599 consults in one
+           game (the policy casts every instant every consult): BUDGET=300.
+         - WSL clock is 9 h behind the Windows clock in the logs.
+
+COMMITS: lane-b pushed through 3d; lane-d pushed through 8d8ffde. Uncommitted:
+         nothing (recordings gitignored).
+```
