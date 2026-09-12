@@ -74,6 +74,8 @@ public class SocketPolicyClient implements PolicyClient {
         if (encV >= 7) {
             hello += v7Hello();
         }
+        dumpOpen();
+        dump((hello + "}\n").getBytes(StandardCharsets.UTF_8));
         out.write((hello + "}\n").getBytes(StandardCharsets.UTF_8));
         out.flush();
         // READ THE REPLY. It used to be discarded, which meant a server
@@ -82,6 +84,9 @@ public class SocketPolicyClient implements PolicyClient {
         // the run died later somewhere unrelated. The server answers
         // {"ok":1} or {"ok":0,"err":"..."}.
         String ack = in.readLine();
+        if (ack != null) {
+            dump((ack + "\n").getBytes(StandardCharsets.UTF_8));
+        }
         // FAIL CLOSED: anything that is not an explicit ok is a refusal.
         // Matching on "ok":0 instead let a rejection whose JSON happened
         // to be spaced differently through, and the run then died three
@@ -294,12 +299,41 @@ public class SocketPolicyClient implements PolicyClient {
         }
     }
 
+    /** -Drl.wireDump=file (3e): every consult line as sent and every reply
+     *  as received, appended byte for byte; read per connection (a job
+     *  flag), so no JVM restart is needed. With concurrency > 1 the
+     *  connections interleave in one file: record with concurrency 1. */
+    private java.io.OutputStream dumpOut;
+
+    private void dumpOpen() {
+        String path = System.getProperty("rl.wireDump");
+        if (path != null && dumpOut == null) {
+            try {
+                dumpOut = new java.io.FileOutputStream(path, true);
+            } catch (IOException e) {
+                throw new IllegalStateException("rl.wireDump failed: " + path, e);
+            }
+        }
+    }
+
+    private void dump(byte[] bytes) throws IOException {
+        if (dumpOut != null) {
+            dumpOut.write(bytes);
+            dumpOut.flush();
+        }
+    }
+
     /** Writes sb, reads the reply, returns the candidate index. */
     private int roundTrip() throws IOException {
         long t0 = System.nanoTime();
-        out.write(sb.toString().getBytes(StandardCharsets.UTF_8));
+        byte[] bytes = sb.toString().getBytes(StandardCharsets.UTF_8);
+        dump(bytes);
+        out.write(bytes);
         out.flush();
         String line = in.readLine();
+        if (line != null) {
+            dump((line + "\n").getBytes(StandardCharsets.UTF_8));
+        }
         roundTripNanos += System.nanoTime() - t0;
         roundTrips++;
         if (line == null) {
@@ -509,10 +543,15 @@ public class SocketPolicyClient implements PolicyClient {
     @Override
     public void episodeEnd(float reward) {
         try {
-            out.write(String.format(Locale.ROOT, "{\"t\":\"end\",\"r\":%.1f}%n", reward)
-                    .getBytes(StandardCharsets.UTF_8));
+            byte[] end = String.format(Locale.ROOT, "{\"t\":\"end\",\"r\":%.1f}%n", reward)
+                    .getBytes(StandardCharsets.UTF_8);
+            dump(end);
+            out.write(end);
             out.flush();
-            in.readLine();
+            String ack = in.readLine();
+            if (ack != null) {
+                dump((ack + "\n").getBytes(StandardCharsets.UTF_8));
+            }
         } catch (IOException e) {
             throw new RuntimeException("policy IPC failed", e);
         }

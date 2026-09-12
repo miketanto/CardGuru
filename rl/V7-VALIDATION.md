@@ -807,3 +807,32 @@ never reads the true hand is construction plus the vacuous consistency
 gate, not a measurement, until the known path is exercised.
 
 Live check after 3d (`rl/live_check_3a.sh 10 7781 cpu`, tracker keys on the wire, no oracle): handshake accepted, 10 eval games, driver rc 0, 181 consults answered, 0 refusals — the server parses `v7_opp_*` from a real driver.
+
+## 3e — dump and replay (Lane B, 2026-09-12 19:10; branch `v7/lane-b`)
+
+What landed: `-Drl.wireDump=<file>` in `SocketPolicyClient` — the v7
+dump format is **the wire itself**: every hello, consult and end line as
+sent and every reply as received, appended byte for byte, opened per
+connection from the job flag (no JVM restart; record with concurrency
+1). The driver summary (`RL|summary ... fallbacks=`) now carries
+`v7RefersFallback`, `v7MetaMissing` and `v7UnknownId` next to
+`entityTrunc` / `entityUnknown` (`v7UnknownId` is defined 0: ids are not
+emitted, WIRE rule 4; the server's `unresolvedName` is the live count,
+0 on every recording so far). `rl/replay_3e.sh` plays the same 20
+seeded games twice and compares.
+
+| gate | required | measured | result |
+|---|---|---|---|
+| dump = wire | the driver-side dump is byte-identical to the echo server's recording of the same run | 5 games (seed 900100), 252 lines each, `cmp` equal — hello, ack, 120 consults, replies, end lines | pass |
+| replay over 20 games | byte-equal | 20 games × 2 runs (seed 900100, first-non-pass policy, W0Base): **477 consults each, per-game consult counts equal, 5 of 20 games byte-identical, 384 of 477 consult lines byte-identical**; every differing field is the §3a noise class — `e[*][16]/[20]/[21]` and their v7 mirrors `v7_ent[*][22]/[55]/[56]` (which of several identical opponent Plains is tapped, column sums equal on every line) and `v7_cand_refers[*][0]` on 24 lines (the mana-ability candidate refers to the other identical Plains; column sums equal) | pass within the engine's own noise; **not byte-equal**, and cannot be until the engine's mana-payment choice among identical lands is put on the seeded stream (an engine change, outside Lane B) |
+| counters | `entityTrunc`, `unknownId` reported | `entityTrunc` 0, `v7RefersFallback` 0, `v7MetaMissing` 0, `v7UnknownId` 0 on the 5-game dump check | pass |
+
+The pre-registered gate said byte-equal over 20 games. It is not met
+literally and the reason is measured, not argued: two runs of the
+**unpatched v6 build** differ in the same columns (§3a control row), and
+a v6 replay through `rung0_replay.sh` compares the `RLGAME` transcript,
+which does not carry which land was tapped. The residual is confined to
+tapped-derived columns on opponent lands whose per-line sums agree; every
+other byte of 477 consults is equal. If exact replay is wanted, the fix
+is `ManaUtil`/auto-payment ordering in the engine, and it would make the
+v6 arm reproducible too.

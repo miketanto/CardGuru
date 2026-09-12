@@ -410,6 +410,12 @@ public class EpisodeRunner {
                 fallbacks.put("entityMaxSeen", (int) StateEncoder.entityMaxSeen);
                 fallbacks.put("entityUnknown", (int) StateEncoder.entityUnknown);
             }
+            if (StateEncoder.ENCODER_V >= 7) {
+                // 3e: the v7 wire counters (static, cumulative, PUT as above)
+                fallbacks.put("v7RefersFallback", (int) SocketPolicyClient.v7RefersFallback);
+                fallbacks.put("v7MetaMissing", (int) SocketPolicyClient.v7MetaMissing);
+                fallbacks.put("v7UnknownId", 0);   // ids are not emitted (WIRE rule 4): defined 0
+            }
             // cost, in milliseconds, so "measure the cost per combat" is a
             // measurement and not an assurance. Policy search and audit
             // search are separate: the audit is an instrument and would
