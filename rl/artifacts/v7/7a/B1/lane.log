@@ -1,0 +1,5 @@
+P10INIT|out=/tmp/rl_7a_B1/init.pt|arch=v7|seed=10|cdim=94|params=17379335
+R0_START|W0Base|seed=0|budget=256|resume_at=0|out=/tmp/rl_7a_B1
+R0|W0Base|s0|trained=0|ck_eps=0|D0=0.0000 [0.000,0.490]|D1=0.0000 [0.000,0.490]|TWIN=0.0000 [0.000,0.490]|blocks=0/0|BLOCKOPT=0/0|gap=0|attacks=0/0|ATKOPT=0/0|ATKOPTCA=0/0|under_over=0/0|turns=11.0
+R0|W0Base|s0|trained=256|ck_eps=256|D0=0.0000 [0.000,0.490]|D1=0.0000 [0.000,0.490]|TWIN=0.0000 [0.000,0.490]|blocks=0/0|BLOCKOPT=0/0|gap=0|attacks=0/0|ATKOPT=0/0|ATKOPTCA=0/0|under_over=0/0|turns=12.0
+R0_DONE|W0Base|s0|trained=256|out=/tmp/rl_7a_B1
