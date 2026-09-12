@@ -574,6 +574,15 @@ public final class StateEncoder {
         public final int[][] edges;         // the v6 relations in the token index space
         public final Map<UUID, Integer> token;   // UUID -> token index (players included)
         public final int entityTrunc;       // rows dropped in THIS consult
+        /** 3d (WIRE §2g): the knowledge tracker's tokens; null = no tracker. */
+        public float[][] oppHand, oppDeck, oppActions;
+        public String[] oppHandName, oppDeckName;
+        public int[][] oppActionRefs;
+        /** WIRE §4: the TRUE opponent hand, critic / belief labels only
+         *  (-Drl.oracle); null otherwise. */
+        public String[] oeHand;
+        public int handDrift, oppHandTrunc, trackerBorn = -1;
+        public long trackerEvents;
 
         V7(float[] g, float[][] p, float[][] e, String[] n, int[] t, int[][] r,
            Map<UUID, Integer> tok, int trunc) {
@@ -868,7 +877,38 @@ public final class StateEncoder {
         float[][] players = {
             v7Player(game, my, me, myLands, myUntapped),
             v7Player(game, op, opp, opLands, opUntapped)};
-        return new V7(v7Game(game, me), players, e, names, tok, edges, token, droppedNow);
+        V7 v = new V7(v7Game(game, me), players, e, names, tok, edges, token, droppedNow);
+        // 3d: the knowledge tracker, if RLPlayer registered one for this game
+        RLKnowledgeWatcher w = game.getState().getWatcher(RLKnowledgeWatcher.class);
+        if (w != null) {
+            RLKnowledgeWatcher.Emission em = w.emit(game, opUntapped, ORACLE);
+            v.oppHand = em.hand;
+            v.oppHandName = em.handName;
+            v.oppDeck = em.deck;
+            v.oppDeckName = em.deckName;
+            v.oppActions = em.actions;
+            v.oppActionRefs = new int[em.actions.length][];
+            for (int i = 0; i < em.actions.length; i++) {
+                List<Integer> idx = new ArrayList<>();
+                for (UUID id : em.actionRefs[i]) {
+                    Integer t = token.get(id);
+                    if (t != null) {
+                        idx.add(t);
+                    }
+                }
+                int[] arr = new int[idx.size()];
+                for (int j = 0; j < arr.length; j++) {
+                    arr[j] = idx.get(j);
+                }
+                v.oppActionRefs[i] = arr;
+            }
+            v.oeHand = em.oeHand;
+            v.handDrift = em.handDrift;
+            v.oppHandTrunc = em.handTrunc;
+            v.trackerBorn = em.bornTurn;
+            v.trackerEvents = em.events;
+        }
+        return v;
     }
 
     // ------------------------------------------------------------------

@@ -745,3 +745,65 @@ comparison now skips stack rows like the body comparison already did.
 A first spell-first run without a consult budget ran 1,599 consults in
 one game before it was stopped (the policy casts every castable instant
 every consult); recordings for coverage use `BUDGET=300`.
+
+## 3d — opponent knowledge tracker (Lane B, 2026-09-12 17:40; branch `v7/lane-b`)
+
+What landed: `rl/xmage-src/RLKnowledgeWatcher.java`, an engine watcher
+(`WatcherScope.GAME`, registered by `EpisodeRunner` before the deal and
+lazily by `RLPlayer` as a fallback; copied with the game state by the
+engine's reflective watcher copy, so its state is lists and maps of
+immutable values and `Copyable` records). It builds, from public events
+only: **hand slots** (origin opening / drawn / returned-from-a-public-zone /
+tutored-or-other, age, identity-known, seen), the **remaining deck** (the
+open decklist minus every card of theirs whose identity is public),
+and the **opponent-action history** (cast, activate, attack, block,
+declined to block with an untapped creature, passed with mana up on my
+turn). WIRE §2g tokens `v7_opp_hand[_name]`, `v7_opp_deck[_name]`,
+`v7_opp_actions` / `v7_opp_action_refers`, plus `v7_oe_hand` (the true
+hand, `-Drl.oracle` only, WIRE §4) and `v7_ctr.handDrift` /
+`oppHandTrunc`. Tools: `rl/wire_check_3d.py`, `rl/wire_trace_3d.py`,
+`-Drl.trackerDebug=<file>` (an event-model diagnostic), `rl/drivers_3d.sh`
+(port 7912 = v7 + oracle; `rl.oracle` is class-init like `rl.encoderV`),
+and on lane-d `rl/v7_leak_real.py` (the 0d leak gate over a real
+recording).
+
+**The event model, measured** (`-Drl.trackerDebug`, one W0Base game): the
+opening hand is dealt as seven `DREW_CARD` events with **no**
+`ZONE_CHANGE`, before any step begins (`getTurnStepType() == null`);
+a normal draw fires `DREW_CARD` *and* `ZONE_CHANGE LIBRARY>HAND`; a cast
+fires `ZONE_CHANGE HAND>STACK` and then `SPELL_CAST`; a land play fires
+`ZONE_CHANGE HAND>BATTLEFIELD`. The tracker takes hand entries from
+`DREW_CARD` and `ZONE_CHANGE` (deduplicated by the card handle), hand
+exits from `ZONE_CHANGE` only, and public identity from any entry into a
+public zone, from `SPELL_CAST`, and from the engine's revealed /
+looked-at sets polled on every event. Two earlier readings of this
+model (reconcile on the first event; remove the slot on `SPELL_CAST`)
+each produced a measurable drift and were corrected from the trace, not
+from reasoning.
+
+| gate | required | measured | result |
+|---|---|---|---|
+| **leak gate** (`rl/probes/leak.py` levels 1–3 on real `-Drl.oracle` recordings, hidden keys `oe` + `v7_oe_hand`, encoder woken) | policy-path parse identical without the hidden keys; logits bit-identical under a hidden-content swap; critic moves | W0Base 136 consults: L1 pass, L2 max Δlogit **0.0**, L3 max Δvalue 0.069; W4Inst spell-first 300 consults: pass / 0.0 / 0.075; B1Fast 169: pass / 0.0 / 0.136 | pass |
+| consistency: known ⊆ truth | every known slot name is in the true hand (multiset), every consult | **0 violations** over 1,277 oracle-labelled consults — but 0 known slots too (next row) | pass, vacuous |
+| slot count = the opponent's hand size | every consult | 0 violations over 1,413 consults (three oracle decks + one plain W0Base run); `handDrift` **0**, `oppHandTrunc` 0 | pass |
+| remaining deck | Σ remaining = library + unknown hand slots; counts ≤ decklist | mean gap **0.00** cards on every recording (from the fraction field; the ÷4 count field saturates at 4, so 20 Plains read as 4 there) | pass |
+| action tokens | one-hot, newest first, referents in the token space | 0 violations; types seen: cast, attack, passed-with-mana-up, declined-to-block (W0Base 51 rows); activate and block 0 on these decks and policies | pass |
+| v6 arm after 3d | unchanged | `v6_new5` vs the two unpatched-build runs: the tapped-land noise class only (17 / 9 lines, column sums equal) | pass |
+| live serving | `policy_server.py --arch v7` accepts the opponent keys | see the live-check line below | — |
+
+Behaviour counters (the record): hand slots by origin over the four
+runs — opening 2,528, drawn 1,470, returned 0, other 0; **known fraction
+0.000**: the W-series, B1Fast and W4Inst decks have no reveal, no
+return-to-hand and no tutor, so the identity-known path (`known`, `seen`,
+`v7_opp_hand_name`) and the tutored origin are **not exercised** and the
+known ⊆ truth gate is vacuous on this evidence. The path exists and is
+covered by construction (identity is written only from a public zone
+entry, `SPELL_CAST`, or the engine's revealed / looked-at sets); the
+decks that exercise it (a bounce or regrowth effect, a reveal) belong to
+5b's coverage run, and if 5b has none, a constructed scenario is owed
+before 5b closes. What the leak gate cannot support: it proves the policy
+path carries nothing that changes with the true hand; that the tracker
+never reads the true hand is construction plus the vacuous consistency
+gate, not a measurement, until the known path is exercised.
+
+Live check after 3d (`rl/live_check_3a.sh 10 7781 cpu`, tracker keys on the wire, no oracle): handshake accepted, 10 eval games, driver rc 0, 181 consults answered, 0 refusals — the server parses `v7_opp_*` from a real driver.

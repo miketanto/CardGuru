@@ -141,6 +141,22 @@ public class SocketPolicyClient implements PolicyClient {
         sb.append(']');
     }
 
+    /** JSON array of strings; a null element is JSON null. */
+    private void strings(String[] v) {
+        sb.append('[');
+        for (int i = 0; i < v.length; i++) {
+            if (i > 0) {
+                sb.append(',');
+            }
+            if (v[i] == null) {
+                sb.append("null");
+            } else {
+                jsonString(sb, v[i]);
+            }
+        }
+        sb.append(']');
+    }
+
     private void triples(int[][] m) {
         sb.append('[');
         for (int i = 0; i < m.length; i++) {
@@ -447,9 +463,46 @@ public class SocketPolicyClient implements PolicyClient {
             sb.append(']');
         }
         v7RefersFallback += fallback;
-        sb.append("],\"v7_ctr\":{\"entityTrunc\":").append(v7.entityTrunc)
+        sb.append(']');
+        // 3d: the knowledge tracker's tokens (WIRE §2g), absent = no tracker
+        if (v7.oppHand != null) {
+            sb.append(",\"v7_opp_hand\":");
+            rows(v7.oppHand);
+            sb.append(",\"v7_opp_hand_name\":");
+            strings(v7.oppHandName);
+            sb.append(",\"v7_opp_deck\":");
+            rows(v7.oppDeck);
+            sb.append(",\"v7_opp_deck_name\":");
+            strings(v7.oppDeckName);
+            sb.append(",\"v7_opp_actions\":");
+            rows(v7.oppActions);
+            sb.append(",\"v7_opp_action_refers\":[");
+            for (int i = 0; i < v7.oppActionRefs.length; i++) {
+                if (i > 0) {
+                    sb.append(',');
+                }
+                sb.append('[');
+                for (int j = 0; j < v7.oppActionRefs[i].length; j++) {
+                    if (j > 0) {
+                        sb.append(',');
+                    }
+                    sb.append(v7.oppActionRefs[i][j]);
+                }
+                sb.append(']');
+            }
+            sb.append(']');
+            if (v7.oeHand != null) {
+                sb.append(",\"v7_oe_hand\":");
+                strings(v7.oeHand);
+            }
+        }
+        sb.append(",\"v7_ctr\":{\"entityTrunc\":").append(v7.entityTrunc)
           .append(",\"refersFallback\":").append(fallback)
           .append(",\"metaMissing\":").append(meta == null ? 1 : 0)
+          .append(",\"handDrift\":").append(v7.handDrift)
+          .append(",\"oppHandTrunc\":").append(v7.oppHandTrunc)
+          .append(",\"trackerBorn\":").append(v7.trackerBorn)
+          .append(",\"trackerEvents\":").append(v7.trackerEvents)
           .append('}');
     }
 

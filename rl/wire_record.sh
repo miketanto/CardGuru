@@ -23,7 +23,7 @@ RL_PERSIST=1 RL_DRIVER_PORT=$DPORT timeout 1500 bash $RL/run_driver.sh \
     -Drl.cardFeatures=$RL/e2_features.tsv -Drl.noYields=true -Drl.consultBudget=${BUDGET:-4000} \
     -Drl.encoderV=$ENC -Drl.blockAudit=true -Drl.attackAudit=true \
     -Drl.deck=$DECK.dck -Drl.oppDeck=$DECK.dck -Drl.stopTurn=60 \
-    -Drl.mode=eval -Drl.seed=$SEED -Drl.report=0 -Drl.out=$OUT/$TAG.probe.txt \
+    -Drl.mode=eval -Drl.seed=$SEED -Drl.report=0 -Drl.out=$OUT/$TAG.probe.txt ${EXTRA:-} \
     > $OUT/$TAG.driver.log 2>&1
 RC=$?
 kill $ECHO_PID 2>/dev/null

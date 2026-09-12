@@ -366,8 +366,20 @@ public class RLPlayer extends ComputerPlayer {
         return pick;
     }
 
+    /** 3d: the open decklist of the opponent (name -> {count, mv,
+     *  instant-speed}), set by EpisodeRunner; the tracker reads it. */
+    public java.util.Map<String, RLKnowledgeWatcher.DeckCard> oppDeckInfo;
+
+    /** Register the knowledge tracker for this game on first use (v7). */
+    private void ensureTracker(Game game) {
+        if (stateV >= 7) {
+            RLKnowledgeWatcher.ensure(game, playerId, opponentId(game), oppDeckInfo);
+        }
+    }
+
     private int consultInner(Game game, UUID opp, float[][] cands,
                              StateEncoder.CandMeta meta) {
+        ensureTracker(game);
         if (stateV >= 6) {
             return policy.choose(
                     StateEncoder.encodeEntityView(game, playerId, opp),
@@ -644,6 +656,7 @@ public class RLPlayer extends ComputerPlayer {
     @Override
     public boolean priority(Game game) {
         windows++;
+        ensureTracker(game);
         if (yield != YieldKind.NONE && yieldHolds(game)) {
             yieldSkipped++;
             pass(game);
