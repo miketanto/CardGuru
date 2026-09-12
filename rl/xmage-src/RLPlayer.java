@@ -680,6 +680,7 @@ public class RLPlayer extends ComputerPlayer {
                 : StateEncoder.encodeState(game, playerId, opponentId(game));
         float[][] cands = new float[playable.size() + 1][];
         StateEncoder.CandMeta meta = new StateEncoder.CandMeta(cands.length).pass(0);
+        int untappedNow = stateV >= 7 ? StateEncoder.untappedLands(game, playerId) : 0;
         cands[0] = StateEncoder.blank(StateEncoder.T_PASS);
         for (int i = 0; i < playable.size(); i++) {
             ActivatedAbility a = playable.get(i);
@@ -694,6 +695,9 @@ public class RLPlayer extends ComputerPlayer {
                     a instanceof PlayLandAbility
                             ? StateEncoder.T_LAND : StateEncoder.T_SPELL,
                     card, game);
+            if (stateV >= 7) {
+                meta.after(i + 1, StateEncoder.v7AfterPlayable(a, card, game, playerId, untappedNow));
+            }
         }
         if (CAND_DUMP != null) {
             dumpWindow(game, playerId, playable.size(), holdsInstant(game));
@@ -797,6 +801,9 @@ public class RLPlayer extends ComputerPlayer {
             for (int i = 0; i < possible.size(); i++) {
                 UUID id = possible.get(i);
                 meta.set(i, StateEncoder.C_TARGET, id);
+                if (stateV >= 7) {
+                    meta.after(i, StateEncoder.v7AfterTarget(id, game, playerId));
+                }
                 Player pl = game.getPlayer(id);
                 if (pl != null) {
                     cands[i] = StateEncoder.forTargetPlayer(
@@ -868,6 +875,9 @@ public class RLPlayer extends ComputerPlayer {
                 cands[i] = StateEncoder.forCard(StateEncoder.T_TARGET,
                         possible.get(i), game);
                 meta.set(i, StateEncoder.C_TARGET, possible.get(i).getId());
+                if (stateV >= 7) {
+                    meta.after(i, StateEncoder.v7AfterTarget(possible.get(i).getId(), game, playerId));
+                }
             }
             consults++;
             int pick = consult(game, opp, cands, "targetCard", meta);
@@ -1110,6 +1120,9 @@ public class RLPlayer extends ComputerPlayer {
         StateEncoder.CandMeta meta = new StateEncoder.CandMeta(cands.length);
         for (int i = 0; i < kept.size(); i++) {
             cands[i] = StateEncoder.forAttackSet(kept.get(i), getLife(), oppLife);
+            if (stateV >= 7) {
+                meta.after(i, StateEncoder.v7AfterAttack(kept.get(i), getLife(), oppLife));
+            }
             // referents: the attackers in the subset (over `pick`, the list
             // the search ran on); the empty subset IS the pass here
             List<UUID> refs = new ArrayList<>();
@@ -1260,6 +1273,9 @@ public class RLPlayer extends ComputerPlayer {
             for (int i = 0; i < can.size(); i++) {
                 cands[i + 1] = StateEncoder.forBlock(can.get(i), blocker, game);
                 meta.set(i + 1, StateEncoder.C_BLOCK, blocker.getId(), can.get(i).getId());
+                if (stateV >= 7) {
+                    meta.after(i + 1, StateEncoder.v7AfterBlockOne(can.get(i), blocker, getLife()));
+                }
             }
             consults++;
             blockOpportunities++;
@@ -1393,6 +1409,10 @@ public class RLPlayer extends ComputerPlayer {
                 meta.pass(i);
             } else {
                 meta.set(i, StateEncoder.C_BLOCK, refs.toArray(new UUID[0]));
+            }
+            if (stateV >= 7) {
+                meta.after(i, StateEncoder.v7AfterBlock(
+                        CombatMath.resolve(ab, bb, as, getLife()), refs.size() / 2, getLife()));
             }
         }
         consults++;

@@ -405,6 +405,14 @@ public class SocketPolicyClient implements PolicyClient {
             }
             java.util.Arrays.fill(row, 0f);
             row[types[i]] = 1f;
+            // PASS / OTHER afterstates are reserved (WIRE §2f; the pass
+            // afterstate is deferred, design §6) even where the joint
+            // sites could supply one
+            float[] af = meta == null || i >= meta.after.length
+                    || types[i] == StateEncoder.C_PASS ? null : meta.after[i];
+            if (af != null) {
+                System.arraycopy(af, 0, row, 8, Math.min(af.length, row.length - 8));
+            }
             floats(row);
         }
         // v7_cand_refers: token indices of the entities the candidate

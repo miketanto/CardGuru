@@ -648,3 +648,59 @@ only zone, side, stack position, identity and the v6 keys. The TARGET
 consults reached even by an always-passing agent (27 of 101) are v6
 behaviour (forced choices), not examined here. The recordings are
 regenerable (`rl/wire_record.sh`, seed 900000) and gitignored.
+
+## 3b — fields and operators (Lane B, 2026-09-12 13:30; branch `v7/lane-b`)
+
+What landed: every entity row idx 10–63 of WIRE §2d — body now and printed
+(`MageInt.getBaseValue`), damage, toughness remaining, loyalty, counters
+(+1/+1, −1/−1, loyalty, other), status bits, turns on battlefield, type
+bits, the 18 keyword bits **read off the object's abilities now**
+(`getAbilities(game)`, subclass-aware, so granted and lost abilities count;
+v6 reads the printed table), the operators (castable now = the engine's own
+`canActivate` on the spell or land-play ability of a card in my hand; mana
+left if cast = untapped lands − mana value, an estimate stated as such;
+legal targets for the first target; can attack / can block; would die to
+SBA as-is = creature with toughness − damage ≤ 0 or deathtouched), the
+stack-only slots (X via `CardUtil.getSourceCostsTagX`, modes chosen,
+controller is me, is ability). Candidate afterstates (WIRE §2f idx 8–39)
+for LAND / SPELL / ACTIVATE (mana left after, targets, instant- or
+sorcery-speed, flash, stack depth), TARGET (player · me · life · creature ·
+P/T · mine), ATTACK (the `CombatMath.AttackOption` fields in the §2f
+order), BLOCK (the `CombatMath.Outcome` of the joint assignment; block1
+uses the pairwise outcome). PASS / OTHER afterstates stay 0 (reserved;
+the pass afterstate is deferred, design §6) — the joint sites *could*
+supply one (damage taken if I do not block, bodies retained if I do not
+attack) and a first cut did, which the checker now rejects; that is a
+WIRE amendment to propose, not a 3b change. Player row idx 14 (cards
+drawn this turn) is still 0, and the §2c width-21 extension (untapped
+sources by colour) is **not** done: it changes `v7_dims.player` and so
+both consumers, and belongs in one cross-lane commit with the server.
+
+Evidence: `rl/wire_check_3b.py` over ten recordings (`rl/record_3b.sh`;
+six decks with the first-non-pass policy, four with the last-candidate
+policy, 5 games each, seed 900000), **1,562 consults, 12,838 entity rows**,
+all ten streams `wire_validate.py` ok, names 0 unresolved (22 distinct).
+
+| gate | required | measured | result |
+|---|---|---|---|
+| agreement with the v6 row on the same entity, every field v6 also carries (17 fields: power, toughness, damage, toughness left, mv, tapped, sick, attacking, blocking, entered, token, creature, land, can attack, can block, instant/sorcery on the stack) | 0 disagreements | **0 over 12,838 rows** | pass |
+| keyword bits vs the printed table (14 shared bits) | mismatches listed by name | **0** — no card on these decks gains or loses a keyword, so live-abilities and printed agree; the granted-ability case is not exercised | pass, not exercised for grants |
+| identities v6 does not carry | toughness left = toughness − damage; lethal-as-is ⇒ toughness left ≤ 0; castable only on my hand; stack position only on the stack; TARGET player xor object; ATTACK opp life after = opp life − damage dealt, my life after = my life − crack-back; BLOCK life after = life − damage taken; LAND is sorcery-speed; speed one-hot; PASS afterstate all 0 | **0 failures** | pass |
+| v6 arm after 3b | identical to the unpatched build | `v6_new3` is **byte-identical** to one of the two unpatched-build runs (`v6_old2a`, same md5) and differs from the other only in the tapped-land columns (the §3a noise) | pass |
+
+Exercised on these decks (rows with a non-zero value, out of 12,838):
+power / toughness / printed 11,939 · tapped 9,352 · sick 3,046 · attacking
+511 · entered 685 · instant 681 · sorcery 218 · flying 140 · vigilance
+162 · castable 3,369 · mana left 2,561 · legal targets 169 · can attack
+3,301 · can block 5,338 · stack modes / mine 8; candidate afterstates:
+ACTIVATE 971, LAND 770, SPELL 49, TARGET 60, ATTACK 21, BLOCK 28.
+
+**Not exercised** (0 rows, so nothing here is checked beyond compiling
+and the zero being correct): damage marked, blocking, loyalty and every
+counter, tokens, other-permanent type, 16 of 18 keywords, lethal-as-is,
+stack X, stack is-ability. The pre-registered 3b gate asked for one
+constructed `Mage.Tests` scenario per operator; this row substitutes
+observed scenarios from real games with a v6 cross-check, which covers
+the operators the rung decks can produce and leaves the rest untested.
+5b's 10k heuristic-vs-heuristic consults are the coverage run; any field
+still at 0 rows there gets a constructed scenario before 5b closes.

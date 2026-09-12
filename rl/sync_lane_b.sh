@@ -10,5 +10,8 @@ MAGE=/home/user/mage
 [ -f "$MAGE/.rl_ready" ] || { echo "engine not built - run rl/setup_engine.sh"; exit 1; }
 cp "$LB"/rl/xmage-src/*.java "$MAGE/Mage.Tests/src/test/java/org/mage/test/benchmark/rl/"
 cd "$MAGE"
-mvn -q -pl Mage.Tests -DskipTests -o test-compile 2>&1 | grep -v '^\[INFO\]' | head -40
+mvn -q -pl Mage.Tests -DskipTests -o test-compile > /tmp/sync_lane_b.log 2>&1
+RC=$?
+grep -v '^\[INFO\]' /tmp/sync_lane_b.log | head -40
+[ $RC = 0 ] || { echo "SYNC|FAIL|compile rc=$RC"; exit 1; }
 echo "SYNC|OK|Mage.Tests recompiled from $LB"
