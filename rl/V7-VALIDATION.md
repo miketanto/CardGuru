@@ -1668,3 +1668,50 @@ centring the candidate scorer; (b) a 98-nat gap after 8 updates at lr
 unbounded and the clip is not holding it — 7a pre-registers per-update
 entropy, max |logit|, grad norm and the chosen-type histogram, and a
 learning-rate / logit-scale decision before any 2k-episode run.
+
+## 5e — replay end to end on the merged build (2026-09-12 22:20; branch `v7/lane-d`)
+
+`rl/replay_3e.sh 20` on the one-lane build (driver 7911 restarted by
+`rl/drivers_3a.sh` after the 5d lane; W0Base, first-non-pass echo policy,
+seed 900100, 20 games × 2 runs; recordings `replay_A/B.jsonl` +
+`replay_A.dump.jsonl`, gitignored).
+
+| gate | required | measured | result |
+|---|---|---|---|
+| dump = wire | driver-side dump byte-identical to the echo recording | `IDENTICAL` (996 lines, 477 consults) | pass |
+| replay over 20 games | byte-equal | 477 consults per run, per-game consult counts equal; **102 of 996 lines differ**; every differing entity row is a **land** (212 rows, 0 non-land), in columns 22 tapped · 55 can-attack · 56 can-block only; the v6 `e` rows differ on the same lines (95) and `v7_cand_refers` on 9 (the order of referenced lands) | **not byte-equal; the 3a/3e residual class, no new class** |
+
+**Correction to §3e, in the open.** §3e wrote that the residual is confined
+to tapped-derived columns "whose per-line sums agree". Measured here: the
+tapped and can-block column sums agree on every differing line, but the
+can-attack sum over land rows **differs on 61 of the 102 lines** (`wire_diff
+--all`: `.v7_ent[*][55] column-sum DIFFERS 61`). The rows are still only
+lands and the columns still only the three tapped-derived ones, so the
+class is the same (which of several identical lands the engine's
+auto-payment taps is not seeded); why can-attack on a land follows the
+choice while can-block does not is not explained here (a land that
+entered this turn versus one that did not is the candidate, unverified).
+The statement to carry: **the residual is the engine's mana-payment
+order among identical lands, visible only in three tapped-derived columns
+of land rows; no creature, stack, hand, candidate-feature or opponent-token
+byte differs across 477 consults.** If exact replay is wanted the fix is
+in the engine's `ManaUtil` ordering, as §3e said.
+
+## Phase 5 verdict and the tag (2026-09-12 22:25)
+
+| row | result |
+|---|---|
+| 5a loopback and refusals | pass |
+| 5b faithfulness on real dumps | L3 pass; L4 8 small-scale reals FAIL at the random wake (instrument-limited; 7a checkpoint probe pre-registered) |
+| 5c leak gates | oracle pass (19,379 consults); tracker pass; belief B1/B2 pass, **B3/B4 FAIL** as pre-registered |
+| 5d throughput | **FAIL** both per-consult budgets (play 0.28× v6, update 5.4× v6); memory fine |
+| 5e replay | dump = wire pass; replay not byte-equal, the 3a residual class only |
+
+The plan's `v7-p5` tag marks "every gate passed". Three rows carry a
+FAIL, so **the tag is withheld**; what is true is that every piece is
+exercised end to end on real games and the failures are measured and
+bounded. Whether to run 7a (256 episodes, ~12 min at 5d's rate) before
+the throughput levers is a decision for the next session, taken in the
+open: the 5d follow-up (batcher, real-window update profile) and the 7a
+smoke do not block each other, and 7a's pre-registration now includes
+the init PASS bias and the logit-collapse census above.
