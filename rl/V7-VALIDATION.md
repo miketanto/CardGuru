@@ -580,3 +580,71 @@ number moved down by 0.044 from the v6-based run; with 769 held-out
 rows that is within the ±0.03 interval stated above plus the change of
 embedder, and it clears the pre-registered 0.70. Phase 2 gates stand.
 
+
+## 3a — wire skeleton behind `-Drl.encoderV=7` (Lane B, 2026-09-12 11:50; branch `v7/lane-b`)
+
+What landed (`rl/xmage-src`, all additive, nothing under `ENCODER_V < 7`
+changes): `StateEncoder` carries the WIRE-V7 widths as constants, a
+`CandMeta` (candidate type + the UUIDs a candidate acts on) and a `V7`
+block on `EntityView` built only when `ENCODER_V >= 7` — game token idx
+0–11, the two player rows (life, poison, hand, library, graveyard, exile,
+mana pool by colour, untapped sources, lands, permanents), one entity row
+per v6 entity minus the two player rows (zone one-hot, mine, face-down,
+stack position; idx 10–63 are 3b and stay 0), `v7_ent_name` /
+`v7_ent_token`, and the v6 relations shifted into the token index space.
+`RLPlayer` builds a `CandMeta` at every one of the seven consult sites
+(prio, target, targetCard, attack1, atkjoint, block1, blkjoint) and
+passes it through a new 4-arg `PolicyClient.choose`; `SocketPolicyClient`
+emits the hello keys and, per consult, the v6 line plus the `v7_*` keys
+through one shared v6 writer. Recording and checking tools:
+`rl/wire_echo_server.py` (records the raw wire, answers a fixed pick),
+`rl/wire_record.sh`, `rl/wire_diff.py` (first differing field, or every
+differing column with its per-line column sum), `rl/wire_census.py`
+(behaviour counters + name resolution), `rl/live_check_3a.sh`,
+`rl/sync_lane_b.sh`, `rl/drivers_3a.sh` (7910 = v6 arm, 7911 = v7 arm).
+
+Design decisions written into the code, stated here so 3b–3e inherit
+them: token index = v6 entity index + 1 (the player rows are v6 rows 0
+and 1 by `ORDER`, so one shift maps the edge list and the two index
+spaces cannot drift); the entity list in 3a IS the v6 list, so
+`entityTrunc` is the v6 counter and `v7_emax` = 160 is only the buffer
+bound (≤ 94 rows are ever emitted); decision type of a consult = the
+most frequent non-PASS candidate type; `ACTIVATE` = any playable that is
+neither a spell nor a land play (mana abilities included, as in v6's
+playable list); the empty attack subset and the all-unassigned block
+option are typed PASS; a non-PASS candidate whose referents are not
+emitted entities refers to the acting player's token and is counted
+(`v7_ctr.refersFallback`; `metaMissing` counts consults from an unmapped
+site); `v7_decks` is not sent yet (5a), so game idx 22–23 are 0.
+
+| gate | required | measured | result |
+|---|---|---|---|
+| schema on recorded consults | 100 consults pass `rl/wire_validate.py` | `v7_pass` (5 games, always-pass agent): **101 consults ok**; `v7_pick1` (first non-pass candidate every time): **136 consults ok** | pass |
+| v6 arm byte-identical to the unpatched build | same seeded games, old build vs new build, every byte | 3 games / 63 consults / 134 lines: 18 lines differ, **only** `e[*][16]` tapped, `e[*][20]` canAttack, `e[*][21]` canBlock on opponent lands; the tapped column sum is equal on every differing line (which of several identical Plains was tapped, not how many); `g`, `r`, `c`, hello, replies identical | pass, within the engine's own noise (next row) |
+| control: the unpatched build against itself | two runs on one JVM, same seeds | 14 lines differ, the same three columns, same column-sum pattern; the new build against itself: 18 lines, same | the residual is pre-existing: the heuristic opponent's choice among identical untapped lands is not on the seeded stream (UUID order) |
+| v7 arm's v6 keys equal the v6 arm | `wire_diff.py --ignore-keys <v7 keys>` | 14 lines, the same three columns only | pass |
+| referent coverage (3c's gate, measured early) | every non-PASS candidate refers to an entity or player token | 448/448 and 174/174 (6 + 6 are TARGET-a-player); `refersFallback` 0, `metaMissing` 0, `entityTrunc` 0 | pass |
+| names resolve (WIRE rule 4) | 0 unresolved through `cards_v1` | 3,719 entity rows, 10 distinct names, **0 unresolved** (W0Base) | pass |
+| live handshake and serving | `policy_server.py --arch v7 --frozen` with `p10_init_net.py --arch v7` (17,379,335 params), cpu, 10 eval games | accepted; 181 consults answered, 0 refusals, avg round trip 20.7 ms on cpu; driver rc 0 | pass |
+
+Behaviour counters (`wire_census.py`; the record, not a result):
+
+| recording | consults | ent/consult (max) | edges/consult | k mean (max) | candidate types | decision types |
+|---|---|---|---|---|---|---|
+| v7_pass | 101 | 14.5 (24) | 5.5 | 5.2 (8) | LAND 250, TARGET 198, PASS 74 | LAND 54, TARGET 27, PASS 20 |
+| v7_pick1 | 136 | 16.6 (26) | 9.6 | 2.3 (5) | PASS 133, ACTIVATE 82, LAND 75, TARGET 6, SPELL 5, BLOCK 4, ATTACK 2 | ACTIVATE 78, LAND 26, PASS 19, SPELL 4, BLOCK 4, TARGET 3, ATTACK 2 |
+
+Edge types seen: 2 (attacking_player) and 4 (controls) only — W0Base
+against a passing or first-candidate agent produces no blocks, targets on
+the stack, or attachments. Types 6 and 7 are 3c.
+
+What these numbers cannot support: nothing about the policy (the init
+net's encoder is an identity and every logit is equal, so the live-check
+agent chose index 0 — PASS — at every consult and took 0 actions per
+game, as pre-registered: 10 games of an untrained net are a plumbing
+check, not a level). Entity idx 10–63 and the candidate afterstate slots
+are 0 until 3b, so a faithfulness probe on these recordings would recover
+only zone, side, stack position, identity and the v6 keys. The TARGET
+consults reached even by an always-passing agent (27 of 101) are v6
+behaviour (forced choices), not examined here. The recordings are
+regenerable (`rl/wire_record.sh`, seed 900000) and gitignored.

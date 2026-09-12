@@ -19,3 +19,7 @@ rl/artifacts/cards_v1/scripts.json.gz
 rl/artifacts/cardemb_sweep/**/*.pt
 rl/artifacts/*/script_anchor.pt
 rl/artifacts/cardemb_sweep/RESULTS.md
+# v7 phase 3a wire recordings (regenerate: rl/wire_record.sh); summaries live in V7-VALIDATION.md
+rl/artifacts/v7/wire3a/*.jsonl
+rl/artifacts/v7/wire3a/*.log
+rl/artifacts/v7/wire3a/*.probe.txt

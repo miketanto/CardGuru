@@ -8,6 +8,7 @@ import mage.game.stack.StackObject;
 import mage.MageObject;
 import mage.game.permanent.Permanent;
 import mage.players.Player;
+import mage.counters.CounterType;
 
 import mage.target.Target;
 
@@ -473,6 +474,84 @@ public final class StateEncoder {
             R_ATTACHED_TO = 5;
     public static final int RTYPES = 6;
 
+    // ------------------------------------------------------------------
+    // WIRE-V7 (rl/WIRE-V7.md). Emitted ONLY when ENCODER_V >= 7, as an
+    // extra block on the EntityView; the v6 keys are untouched (WIRE rule
+    // 2). Widths are the contract with policy_server.py --arch v7 and are
+    // checked at hello; append only.
+    // ------------------------------------------------------------------
+    public static final int WIRE_V7 = 7;
+    public static final int V7_GDIM = 24, V7_PDIM = 16, V7_EDIM = 64, V7_CDIM = 40,
+            V7_OHDIM = 8, V7_ODDIM = 6, V7_OADIM = 8;
+    public static final int V7_RTYPES = 8, V7_CTYPES = 8, V7_ZONES = 7;
+    /** Buffers, not meanings (WIRE §1). v7_emax bounds v7_ent; in 3a the
+     *  entity list IS the v6 list minus the two player rows, so the emitted
+     *  count is <= EMAX - 2 and entityTrunc is the v6 counter. */
+    public static final int V7_EMAX = Integer.getInteger("rl.v7EntityMax", 160),
+            V7_KMAX = 96, V7_OHMAX = 12, V7_ODMAX = 64, V7_OAMAX = 16;
+    /** WIRE §1: the embedder artifact the server resolves names in. */
+    public static final String CARD_EMB = System.getProperty("rl.cardEmb", "card_emb_v8");
+    public static final int V7_DC = 128;
+    /** WIRE §2d zone one-hot, idx 0..6 of the entity token. */
+    public static final int V7Z_BATTLEFIELD = 0, V7Z_HAND = 1, V7Z_STACK = 2,
+            V7Z_GRAVE = 3, V7Z_EXILE = 4, V7Z_LIBKNOWN = 5, V7Z_COMMAND = 6;
+    /** WIRE §2f candidate types (v7_cand_type; also the game token's
+     *  decision-type one-hot at idx 12..19). */
+    public static final int C_PASS = 0, C_LAND = 1, C_SPELL = 2, C_ACTIVATE = 3,
+            C_TARGET = 4, C_ATTACK = 5, C_BLOCK = 6, C_OTHER = 7;
+    /** Token index space (WIRE §2a): 0 game, 1 me, 2 opp, 3.. entities. */
+    public static final int V7_TOK_GAME = 0, V7_TOK_ME = 1, V7_TOK_OPP = 2, V7_TOK_ENT0 = 3;
+
+    /** Per-candidate metadata the v7 wire needs and the v6 row does not
+     *  carry: the candidate type and the entities it acts on (WIRE §2f,
+     *  the refers_to edge). RLPlayer builds one next to every float[][]
+     *  cands; clients below v7 ignore it. */
+    public static final class CandMeta {
+        public final int[] type;
+        public final UUID[][] refs;
+        /** consults so far this game, for game token idx 21. */
+        public long consultsSoFar;
+
+        public CandMeta(int n) {
+            type = new int[n];
+            refs = new UUID[n][];
+        }
+
+        public CandMeta set(int k, int t, UUID... r) {
+            type[k] = t;
+            refs[k] = r;
+            return this;
+        }
+
+        public CandMeta pass(int k) {
+            return set(k, C_PASS);
+        }
+    }
+
+    /** The v7 block of an EntityView. Null unless ENCODER_V >= 7. */
+    public static final class V7 {
+        public final float[] game;          // V7_GDIM; idx 12..21 are per consult (client)
+        public final float[][] players;     // 2 x V7_PDIM, row 0 = me
+        public final float[][] ent;         // N x V7_EDIM, N = v6 entities minus players
+        public final String[] entName;
+        public final int[] entToken;
+        public final int[][] edges;         // the v6 relations in the token index space
+        public final Map<UUID, Integer> token;   // UUID -> token index (players included)
+        public final int entityTrunc;       // rows dropped in THIS consult
+
+        V7(float[] g, float[][] p, float[][] e, String[] n, int[] t, int[][] r,
+           Map<UUID, Integer> tok, int trunc) {
+            game = g;
+            players = p;
+            ent = e;
+            entName = n;
+            entToken = t;
+            edges = r;
+            token = tok;
+            entityTrunc = trunc;
+        }
+    }
+
     /** Emission counters, reported by the driver. entityTrunc is the one
      *  that matters: it is the number of consults that had more entities
      *  than EMAX slots, i.e. board state the agent could not see. Silent
@@ -516,6 +595,8 @@ public final class StateEncoder {
         /** opponent-hand rows, CRITIC ONLY. Empty unless -Drl.oracle.
          *  Never merged into `entities` - see patch_oracle.py. */
         public final float[][] oracle;
+        /** WIRE-V7 block; null below encoderV 7. */
+        public final V7 v7;
 
         EntityView(float[] g, float[][] e, int[][] r) {
             this(g, e, r, EMPTY);
@@ -526,6 +607,15 @@ public final class StateEncoder {
             entities = e;
             relations = r;
             oracle = o;
+            v7 = null;
+        }
+
+        EntityView(float[] g, float[][] e, int[][] r, float[][] o, V7 v) {
+            globals = g;
+            entities = e;
+            relations = r;
+            oracle = o;
+            v7 = v;
         }
     }
 
@@ -539,6 +629,11 @@ public final class StateEncoder {
         String name;            // last-resort tiebreak only
         float[] row;
         UUID id;
+        // v7 only (WIRE §2d). Set by every builder, read only when
+        // ENCODER_V >= 7; nothing in the v6 row depends on them.
+        int v7zone = -1;        // -1 = not an entity token (the player rows)
+        boolean mine, token, faceDown;
+        int stackPos = -1;
     }
 
     private static final Comparator<Ent> ORDER = Comparator
@@ -604,9 +699,11 @@ public final class StateEncoder {
         ents.sort(ORDER);
         entityConsults++;
         entityMaxSeen = Math.max(entityMaxSeen, ents.size());
+        int droppedNow = 0;
         if (ents.size() > EMAX) {
             entityTrunc++;
-            entityDropped += ents.size() - EMAX;
+            droppedNow = ents.size() - EMAX;
+            entityDropped += droppedNow;
             ents = ents.subList(0, EMAX);
         }
         Map<UUID, Integer> index = new HashMap<>();
@@ -630,8 +727,12 @@ public final class StateEncoder {
                 oracleRows[i] = oe.get(i).row;
             }
         }
-        EntityView view = new EntityView(encodeGlobals(game, me, opp), rows,
-                relations(game, me, opp, index), oracleRows);
+        int[][] rel = relations(game, me, opp, index);
+        EntityView view = ENCODER_V >= 7
+                ? new EntityView(encodeGlobals(game, me, opp), rows, rel, oracleRows,
+                        v7Block(game, me, opp, my, op, ents, rel, index, droppedNow,
+                                myLands, myUntapped, opLands, opUntapped))
+                : new EntityView(encodeGlobals(game, me, opp), rows, rel, oracleRows);
         if (DUMP != null) {
             dump(view, game, me, opp);
         }
@@ -649,6 +750,119 @@ public final class StateEncoder {
      * synthetic board cannot answer that, because the question is about
      * what the game actually produces.
      */
+    // ------------------------------------------------------------------
+    // WIRE-V7 block. 3a = structure + identity: zone, side, face-down,
+    // stack position, name, token flag, the v6 edges in the token index
+    // space, the player rows. Entity idx 10..63 and the operators are 3b.
+    // ------------------------------------------------------------------
+    private static V7 v7Block(Game game, UUID me, UUID opp, Player my, Player op,
+                              List<Ent> ents, int[][] rel, Map<UUID, Integer> index,
+                              int droppedNow, int myLands, int myUntapped,
+                              int opLands, int opUntapped) {
+        // token index = v6 entity index + 1: the player rows are v6 rows 0
+        // and 1 by ORDER (group 0, then name "me" < "opp"), so the v6 edge
+        // list maps by a shift and the two index spaces cannot drift.
+        Map<UUID, Integer> token = new HashMap<>();
+        for (Map.Entry<UUID, Integer> en : index.entrySet()) {
+            token.put(en.getKey(), en.getValue() + 1);
+        }
+        int n = Math.max(0, ents.size() - 2);
+        float[][] e = new float[n][];
+        String[] names = new String[n];
+        int[] tok = new int[n];
+        for (int i = 0; i < n; i++) {
+            Ent x = ents.get(i + 2);
+            float[] r = new float[V7_EDIM];
+            if (x.v7zone >= 0) {
+                r[x.v7zone] = 1f;
+            }
+            r[7] = x.mine ? 1f : 0f;
+            r[8] = x.faceDown ? 1f : 0f;
+            if (x.stackPos >= 0) {
+                r[9] = x.stackPos / 4f;
+            }
+            e[i] = r;
+            names[i] = x.faceDown ? "?" : x.name;
+            tok[i] = x.token ? 1 : 0;
+        }
+        int[][] edges = new int[rel.length][];
+        for (int i = 0; i < rel.length; i++) {
+            edges[i] = new int[]{rel[i][0] + 1, rel[i][1] + 1, rel[i][2]};
+        }
+        float[][] players = {
+            v7Player(game, my, me, myLands, myUntapped),
+            v7Player(game, op, opp, opLands, opUntapped)};
+        return new V7(v7Game(game, me), players, e, names, tok, edges, token, droppedNow);
+    }
+
+    /** WIRE §2b idx 0..11 (22..23 stay 0 until v7_decks is sent at hello,
+     *  5a); idx 12..21 depend on the candidates and are filled by the
+     *  client. */
+    private static float[] v7Game(Game game, UUID me) {
+        float[] g = new float[V7_GDIM];
+        g[0] = game.getTurnNum() / 30f;
+        g[1] = me.equals(game.getActivePlayerId()) ? 1f : 0f;
+        PhaseStep st = game.getTurnStepType();
+        int step = 9;                        // end: END_TURN, CLEANUP, null
+        if (st != null) {
+            switch (st) {
+                case UNTAP:
+                case UPKEEP:
+                    step = 2;
+                    break;
+                case DRAW:
+                    step = 3;
+                    break;
+                case PRECOMBAT_MAIN:
+                    step = 4;
+                    break;
+                case DECLARE_ATTACKERS:
+                    step = 5;
+                    break;
+                case DECLARE_BLOCKERS:
+                    step = 6;
+                    break;
+                case BEGIN_COMBAT:
+                case FIRST_COMBAT_DAMAGE:
+                case COMBAT_DAMAGE:
+                case END_COMBAT:
+                    step = 7;
+                    break;
+                case POSTCOMBAT_MAIN:
+                    step = 8;
+                    break;
+                default:
+                    step = 9;
+            }
+        }
+        g[step] = 1f;
+        g[10] = me.equals(game.getPriorityPlayerId()) ? 1f : 0f;
+        g[11] = game.getStack().size() / 4f;
+        return g;
+    }
+
+    /** WIRE §2c. idx 14 (cards drawn this turn) is 3b. */
+    private static float[] v7Player(Game game, Player pl, UUID id, int lands, int untapped) {
+        float[] r = new float[V7_PDIM];
+        r[0] = pl.getLife() / 20f;
+        r[1] = pl.getCountersCount(CounterType.POISON) / 10f;
+        r[2] = pl.getHand().size() / 10f;
+        r[3] = pl.getLibrary().size() / 60f;
+        r[4] = pl.getGraveyard().size() / 30f;
+        r[5] = game.getExile().getCardsOwned(game, id).size() / 10f;
+        mage.players.ManaPool mp = pl.getManaPool();
+        r[6] = mp.getWhite() / 5f;
+        r[7] = mp.getBlue() / 5f;
+        r[8] = mp.getBlack() / 5f;
+        r[9] = mp.getRed() / 5f;
+        r[10] = mp.getGreen() / 5f;
+        r[11] = mp.getColorless() / 5f;
+        r[12] = untapped / 10f;
+        r[13] = lands / 10f;
+        r[15] = game.getBattlefield().getAllActivePermanents(id).size() / 20f;
+        return r;
+    }
+
     private static final boolean DEBUG_UNKNOWN = Boolean.getBoolean("rl.debug");
     private static final java.util.Set<String> UNKNOWN_SEEN =
             java.util.Collections.synchronizedSet(new java.util.HashSet<>());
@@ -820,6 +1034,10 @@ public final class StateEncoder {
         e.id = p.getId();
         e.name = p.getName();
         e.tiebreak = p.getCreateOrder();
+        e.v7zone = V7Z_BATTLEFIELD;
+        e.mine = p.getControllerId().equals(me);
+        e.token = p instanceof mage.game.permanent.PermanentToken;
+        e.faceDown = p.isFaceDown(game);
         int pw = p.getPower().getValue();
         int to = p.getToughness().getValue();
         int dmg = p.getDamage();
@@ -862,6 +1080,9 @@ public final class StateEncoder {
         e.power = c.getPower().getValue();
         e.tough = c.getToughness().getValue();
         e.mv = c.getManaValue();
+        e.v7zone = zone == Z_HAND ? V7Z_HAND : V7Z_GRAVE;
+        e.mine = mine;
+        e.faceDown = c.isFaceDown(game);
         float[] r = new float[EDIM];
         r[0] = 1f;
         r[mine ? 1 : 2] = 1f;
@@ -882,6 +1103,9 @@ public final class StateEncoder {
         e.group = 3;
         e.id = so.getId();
         e.name = so.getName() == null ? "?" : so.getName();
+        e.v7zone = V7Z_STACK;
+        e.mine = me.equals(so.getControllerId());
+        e.stackPos = depth;
         e.mv = so.getStackAbility() == null ? 0
                 : so.getStackAbility().getManaCosts().manaValue();
         float[] r = new float[EDIM];
