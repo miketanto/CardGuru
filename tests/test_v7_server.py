@@ -289,3 +289,36 @@ def test_deck_ctx_artifact_loads_and_is_cached():
     assert g.D_me.shape == (dc.d_c,) and g.map_me and g.map_opp
     assert dc.side([["Lightning Bolt", 4], ["Mountain", 20]]) is dc.side([("Lightning Bolt", 4), ("Mountain", 20)])
     assert dc.game(None).ctx_map is None
+
+def test_v7_optimizer_knobs(tmp_path, monkeypatch):
+    """7a arms B2/B3: --weight-decay decays the heads only (AdamW); --heads-opt sgd
+    puts the heads on SGD-momentum and the rest on Adam; the checkpoint round-trips
+    under the same knobs and a differently shaped optimiser state is dropped, not fatal."""
+    monkeypatch.setattr(ps, "UPDATE_EPISODES", 2)
+    monkeypatch.setattr(ps, "WEIGHT_DECAY", 0.01)
+    tr = _small(tmp_path)
+    tr.opt = ps._v7_optimizer(tr.net, tr.net.policy_parameters())
+    assert isinstance(tr.opt, torch.optim.AdamW)
+    head_ids = {id(p) for p in tr.net.heads.parameters()}
+    heads_g = [g for g in tr.opt.param_groups if all(id(p) in head_ids for p in g["params"])]
+    rest_g = [g for g in tr.opt.param_groups if not any(id(p) in head_ids for p in g["params"])]
+    assert len(heads_g) == 1 and len(rest_g) == 1 and len(tr.opt.param_groups) == 2
+    assert heads_g[0]["weight_decay"] == 0.01 and rest_g[0]["weight_decay"] == 0.0
+    assert sum(p.numel() for p in heads_g[0]["params"]) == sum(p.numel() for p in tr.net.heads.parameters())
+    monkeypatch.setattr(ps, "WEIGHT_DECAY", 0.0)
+    monkeypatch.setattr(ps, "HEADS_OPT", "sgd")
+    tr = _small(tmp_path)
+    tr.opt = ps._v7_optimizer(tr.net, tr.net.policy_parameters())
+    assert isinstance(tr.opt, ps._MultiOpt) and len(tr.opt.opts) == 2
+    assert isinstance(tr.opt.opts[0], torch.optim.SGD) and isinstance(tr.opt.opts[1], torch.optim.Adam)
+    before = {n: p.detach().clone() for n, p in tr.net.named_parameters()}
+    _play(tr, 2, n=4)
+    assert tr.updates == 1 and os.path.exists(tr.ckpt)
+    moved = [n for n, p in tr.net.named_parameters() if not torch.equal(before[n], p)]
+    assert any(n.startswith("heads.") for n in moved) and any(not n.startswith("heads.") for n in moved)
+    tr2 = ps.Trainer(tr.ckpt, 0, None, arch="v7", card_emb="random")      # same knobs: state loads
+    assert isinstance(tr2.opt, ps._MultiOpt) and tr2.opt.opts[0].state_dict()["state"]
+    monkeypatch.setattr(ps, "HEADS_OPT", "adam")
+    tr3 = ps.Trainer(tr.ckpt, 0, None, arch="v7", card_emb="random")      # shape changed: fresh, no raise
+    assert isinstance(tr3.opt, torch.optim.Adam) and not tr3.opt.state_dict()["state"]
+

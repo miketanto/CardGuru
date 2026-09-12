@@ -57,6 +57,8 @@ import torch.nn as nn
 SDIM, CDIM = 24, 38          # defaults; --sdim/--cdim override (E2 uses a wider cdim)
 GAMMA, LAM, CLIP, LR = 0.997, 0.95, 0.2, 3e-4
 EPOCHS, ENT_COEF, VAL_COEF = 4, 0.01, 0.5
+# 7a arms B2/B3 (--weight-decay, --heads-opt, --heads-lr): see _v7_optimizer
+WEIGHT_DECAY, HEADS_OPT, HEADS_LR = 0.0, "adam", 1e-3
 UPDATE_EPISODES = 32
 MAX_K = 40                   # candidate buffer; --max-k overrides
 # MAX_K is a BUFFER SIZE, not an architectural constant: every parameter
@@ -414,6 +416,54 @@ def _to_cpu(obj):
     return obj
 
 
+class _MultiOpt:
+    """Several optimisers stepped as one (7a arm B3: heads on SGD-momentum,
+    trunk on Adam). Quacks like torch.optim.Optimizer where Trainer needs it."""
+
+    def __init__(self, opts):
+        self.opts = opts
+
+    def zero_grad(self, *a, **k):
+        for o in self.opts:
+            o.zero_grad(*a, **k)
+
+    def step(self):
+        for o in self.opts:
+            o.step()
+
+    @property
+    def param_groups(self):
+        return [g for o in self.opts for g in o.param_groups]
+
+    def state_dict(self):
+        return {"multi": [o.state_dict() for o in self.opts]}
+
+    def load_state_dict(self, sd):
+        if "multi" not in sd or len(sd["multi"]) != len(self.opts):
+            raise ValueError("optimizer state is not a _MultiOpt state of the same shape")
+        for o, s in zip(self.opts, sd["multi"]):
+            o.load_state_dict(s)
+
+
+def _v7_optimizer(net, params):
+    """PPO optimiser for --arch v7 (7a arms). Default: Adam over policy_parameters().
+    WEIGHT_DECAY > 0: AdamW, the decay on the heads' parameters only (arm B2).
+    HEADS_OPT == "sgd": heads on SGD momentum 0.9 at HEADS_LR (plus WEIGHT_DECAY),
+    everything else on Adam at LR (arm B3: no normalised step where the logits are made)."""
+    head_ids = {id(p) for p in net.heads.parameters()}
+    heads = [p for p in params if id(p) in head_ids]
+    rest = [p for p in params if id(p) not in head_ids]
+    if HEADS_OPT == "sgd":
+        opts = [torch.optim.SGD(heads, lr=HEADS_LR, momentum=0.9, weight_decay=WEIGHT_DECAY)]
+        if rest:
+            opts.append(torch.optim.Adam(rest, lr=LR))
+        return _MultiOpt(opts)
+    if WEIGHT_DECAY > 0:
+        return torch.optim.AdamW([{"params": heads, "weight_decay": WEIGHT_DECAY},
+                                  {"params": rest, "weight_decay": 0.0}], lr=LR)
+    return torch.optim.Adam(params, lr=LR)
+
+
 class Trainer:
     def __init__(self, ckpt, seed, log_path, sdim=SDIM, cdim=CDIM,
                  shape=0.0, phi_scale=2000.0, arch="e0",
@@ -481,7 +531,7 @@ class Trainer:
             # (Phase 6) and the card table rows are a buffer; --frozen
             # leaves nothing to own, so there is no optimiser at all.
             params = self.net.policy_parameters()
-            self.opt = torch.optim.Adam(params, lr=LR) if params else None
+            self.opt = _v7_optimizer(self.net, params) if params else None
             v7_obs, _, _ = _v7()
             self.ids = v7_obs.CardIds()
             self.deck_ctx = deck_ctx        # v7_deckctx.DeckCtx or None
@@ -527,7 +577,12 @@ class Trainer:
             self._check_ckpt_dims(data, ckpt)
             self.net.load_state_dict(data["net"])
             if self.opt is not None and data.get("opt") is not None:
-                self.opt.load_state_dict(data["opt"])
+                try:
+                    self.opt.load_state_dict(data["opt"])
+                except (ValueError, KeyError) as e:
+                    # 7a B arms: the optimiser shape changed under the knobs;
+                    # the checkpoint's Adam state does not apply. Start fresh.
+                    print(f"optimizer state from {ckpt} not loaded ({e}); fresh optimizer", flush=True)
             self.episodes_seen = data.get("episodes", 0)
             self.updates = data.get("updates", 0)
             if self.oracle_critic is not None and "oracle_critic" in data:
@@ -1921,6 +1976,10 @@ if __name__ == "__main__":
                          "(THROUGHPUT-LOCAL.md §10a; 0 = unchanged)")
     ap.add_argument("--epochs", type=int, default=4, help="PPO epochs per update (7a arms)")
     ap.add_argument("--logit-bound", type=float, default=0.0, help="v7: logits = B*tanh(l/B); 0 = off (7a arm A2)")
+    ap.add_argument("--ent-coef", type=float, default=None, help="entropy coefficient (default 0.01; 7a arm B4)")
+    ap.add_argument("--weight-decay", type=float, default=0.0, help="v7: AdamW weight decay on the heads (7a arm B2)")
+    ap.add_argument("--heads-opt", choices=["adam", "sgd"], default="adam", help="v7: heads on SGD-momentum, trunk on Adam (7a arm B3)")
+    ap.add_argument("--heads-lr", type=float, default=1e-3, help="v7: heads lr under --heads-opt sgd")
 
     args = ap.parse_args()
     if args.device == "cuda" and not torch.cuda.is_available():
@@ -1934,6 +1993,9 @@ if __name__ == "__main__":
         MAX_K = args.max_k
     if args.lr is not None:
         LR = args.lr
+    if args.ent_coef is not None:
+        ENT_COEF = args.ent_coef
+    WEIGHT_DECAY, HEADS_OPT, HEADS_LR = args.weight_decay, args.heads_opt, args.heads_lr
     # Phase 12: 4 game threads + N server threads on 4 cores is heavily
     # oversubscribed; measured held-time per consult rose 3.40 -> 5.75 ms
     # from conc1 to conc4. Configurable so the trade can be measured.
