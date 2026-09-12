@@ -1,0 +1,52 @@
+# 5b recordings 2026-09-12T13:45Z EP=8 port 7912 (v7+oracle) echo policies p1/p99/sf
+RECORD|5b_W0Base_p1|rc=0|lines=436|consults=209|md5=7ae0ec065908
+RECORD|5b_W0Base_p99|rc=0|lines=540|consults=261|md5=3c2971ac1551
+RECORD|5b_W0Base_sf|rc=0|lines=452|consults=217|md5=945d93a67c9e
+RECORD|5b_W1Fly_p1|rc=0|lines=424|consults=203|md5=56c5d42036e7
+RECORD|5b_W1Fly_p99|rc=0|lines=482|consults=232|md5=1bd18aeb7a41
+RECORD|5b_W1Fly_sf|rc=0|lines=394|consults=188|md5=40bd2c4d6a7f
+RECORD|5b_W4Inst_p1|rc=0|lines=500|consults=241|md5=e49e38430ff4
+RECORD|5b_W4Inst_p99|rc=0|lines=606|consults=294|md5=7e2a2d96044b
+RECORD|5b_W4Inst_sf|rc=0|lines=462|consults=222|md5=ebb62e23b3a0
+RECORD|5b_W5Trick_p1|rc=0|lines=538|consults=260|md5=7feb8b32bf8f
+RECORD|5b_W5Trick_p99|rc=0|lines=476|consults=229|md5=3a4ead86bf99
+RECORD|5b_W5Trick_sf|rc=0|lines=430|consults=206|md5=d43f247218a8
+RECORD|5b_B1Fast_p1|rc=0|lines=558|consults=270|md5=fe43924a4eee
+RECORD|5b_B1Fast_p99|rc=0|lines=472|consults=227|md5=0b4e60c86d8c
+RECORD|5b_B1Fast_sf|rc=0|lines=476|consults=229|md5=aa25354c825d
+RECORD|5b_W3Sorc_p1|rc=0|lines=580|consults=281|md5=753652783b13
+RECORD|5b_W3Sorc_p99|rc=0|lines=490|consults=236|md5=3db3656d9cf2
+RECORD|5b_W3Sorc_sf|rc=0|lines=414|consults=198|md5=8e3ef2d28589
+RECORD|5b_BenchDimir_p1|rc=0|lines=1130|consults=556|md5=1ee4751a8ef0
+RECORD|5b_BenchDimir_p99|rc=0|lines=996|consults=489|md5=c76f202f01d7
+RECORD|5b_BenchDimir_sf|rc=0|lines=1434|consults=708|md5=72c8b4a48191
+RECORD|5b_P8Faeries_p1|rc=0|lines=1632|consults=807|md5=9b911375e5fb
+RECORD|5b_P8Faeries_p99|rc=0|lines=1444|consults=713|md5=30daeecf453c
+RECORD|5b_P8Faeries_sf|rc=0|lines=762|consults=372|md5=bba579808e6b
+# done 2026-09-12T13:47Z
+# 5b round 2 2026-09-12T13:50Z EP=6 seeds +500
+RECORD|5b2_W0Base_p1|rc=0|lines=300|consults=143|md5=9e69c3d4730f
+RECORD|5b2_W0Base_p99|rc=0|lines=384|consults=185|md5=84ce58c58dd6
+RECORD|5b2_W0Base_sf|rc=0|lines=302|consults=144|md5=93d19fcf1a14
+RECORD|5b2_W1Fly_p1|rc=0|lines=348|consults=167|md5=61f97a1676e7
+RECORD|5b2_W1Fly_p99|rc=0|lines=270|consults=128|md5=65909bd89b4e
+RECORD|5b2_W1Fly_sf|rc=0|lines=312|consults=149|md5=5b32b0f23003
+RECORD|5b2_W4Inst_p1|rc=0|lines=420|consults=203|md5=1d2e91633928
+RECORD|5b2_W4Inst_p99|rc=0|lines=430|consults=208|md5=de8efbd4f994
+RECORD|5b2_W4Inst_sf|rc=0|lines=350|consults=168|md5=84675e711e50
+RECORD|5b2_W5Trick_p1|rc=0|lines=292|consults=139|md5=8bba3ad74aae
+RECORD|5b2_W5Trick_p99|rc=0|lines=360|consults=173|md5=ed9a6fa24b9c
+RECORD|5b2_W5Trick_sf|rc=0|lines=286|consults=136|md5=bd605e39e997
+RECORD|5b2_B1Fast_p1|rc=0|lines=390|consults=188|md5=a6c5342f41ab
+RECORD|5b2_B1Fast_p99|rc=0|lines=322|consults=154|md5=5b223eeebe9e
+RECORD|5b2_B1Fast_sf|rc=0|lines=356|consults=171|md5=10a08f82888e
+RECORD|5b2_W3Sorc_p1|rc=0|lines=318|consults=152|md5=0f5e5ec38d2a
+RECORD|5b2_W3Sorc_p99|rc=0|lines=256|consults=121|md5=5e502f8f09ca
+RECORD|5b2_W3Sorc_sf|rc=0|lines=356|consults=171|md5=c3f1b8a0c57e
+RECORD|5b2_BenchDimir_p1|rc=0|lines=844|consults=415|md5=a17893ac2e7d
+RECORD|5b2_BenchDimir_p99|rc=0|lines=606|consults=296|md5=b18ceb8f4e6c
+RECORD|5b2_BenchDimir_sf|rc=0|lines=1050|consults=518|md5=6afe739edf2e
+RECORD|5b2_P8Faeries_p1|rc=0|lines=916|consults=451|md5=ba316cd936dc
+RECORD|5b2_P8Faeries_p99|rc=0|lines=608|consults=297|md5=f148d04da0e8
+RECORD|5b2_P8Faeries_sf|rc=0|lines=906|consults=446|md5=f7d1c0d67ef2
+# done round 2 2026-09-12T13:51Z
