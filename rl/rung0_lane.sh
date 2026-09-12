@@ -81,6 +81,10 @@ fi
 # blockAudit is cheap enough to leave on everywhere; this one is not,
 # and putting it in ENCFLAGS would have quadrupled every training chunk
 # for a number nothing reads during training.
+if [ "$ENC" = "7" ]; then           # v7 (V7-IMPLEMENTATION-PLAN.md): its own net, no v6 flags
+    ARCH=v7
+    V6FLAGS=""
+fi
 EVALFLAGS="$ENCFLAGS -Drl.attackAudit=true"
 # v4's candidates are whole assignments, so the server's 40-slot buffer
 # is too small - raw enumeration produced 46 distinct outcomes and
@@ -92,6 +96,7 @@ SRVEXTRA=""
 # to 64, so the buffer has to clear that too or the server drops
 # candidates the policy was meant to be choosing between.
 [ "$ENC" -ge 5 ] 2>/dev/null && SRVEXTRA="--max-k 96"
+[ "$ENC" = "7" ] && SRVEXTRA=""
 # Pass-through for server flags the lane has no knob for (e.g.
 # R0_SRVEXTRA="--device cuda", THROUGHPUT-LOCAL.md). Empty by default.
 SRVEXTRA="$SRVEXTRA ${R0_SRVEXTRA:-}"

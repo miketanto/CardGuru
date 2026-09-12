@@ -1528,3 +1528,50 @@ rates against the heuristic (p1 8/112, p99 6/112, sf 3/112, Wilson
 intervals in the file) and one attack consult (5b_P8Faeries_p1, game 6,
 turn 32) where CombatMath marks two of 17 attack subsets lethal and the
 first-non-pass policy sends a single 1/1, winning on turn 48 instead.
+
+## 5d — throughput, v7 vs v6 on cuda, end to end (pre-registration 2026-09-12 22:05; branch `v7/lane-d`)
+
+**Protocol** = `rl/THROUGHPUT-LOCAL.md` §2 unchanged: `rung0_lane.sh
+B0Base B0Twin 256 0`, conc4, `R0_EVERY=256 R0_CHUNK=64 R0_EVAL_G=4
+R0_CP7_G=0`, `R0_SRVEXTRA="--device cuda"`, `UPDATE_EPISODES=32` → 8
+`train.csv` rows; eps/s over rows 1→8 (224 episodes, after the JIT
+warm-up); update seconds = col 9; memory sampled every 5 s; one run per
+arm, seed 0, fresh driver JVM per arm. Two arms, run back to back on
+the same day (`rl/run_5d.sh`): **v6** = `R0_ENCODER_V=6` (entattn, the
+§7 conc4-cuda reference arm, rerun so the comparison is same-day), **v7**
+= `R0_ENCODER_V=7` (new lane branch: `--arch v7`, no v6 flags, server
+defaults tbptt 16 / ep-batch 4, belief module on, card_emb_v8, deck
+context). The v7 driver emits the full wire (12.8 KB per consult at 18
+entities, `consult_cost.py`) on top of the v6 rows the critic still
+receives.
+
+**Component numbers known before the run** (`rl/consult_cost.py --arch
+v7 --device cuda`, GPU idle, 51 tokens): fwd1 **14.8 ms**, fwd8 15.8 ms
+= 1.97 ms/row (flat in B, so the T4 batcher that was flat for v6 should
+pay for v7), parse 0.19, validate 0.49, json 0.15, sample 0.78, total
+single 15.9 ms, Python share 7 %. v6 on the same lane held 5.16 ms per
+consult (§7). Prediction: v7 play ≈ 1/3 of v6's consults/s unbatched.
+§4g: update 64 ms per optimiser step at tbptt 16 / ep-batch 4 on
+synthetic windows, cuda peak 7.4 GB.
+
+**Budget, fixed before the run** (plan §2 row 5d: "consults/s within a
+pre-set budget of v6"):
+
+| quantity | v6 arm (same day) | v7 must be | why |
+|---|---|---|---|
+| play consults/s (stored consults ÷ (window − update s)) | measured | **≥ 1/3 of v6** | the per-consult forward predicts exactly 1/3; below it something other than the forward is the cost |
+| update ms per stored consult | measured | **≤ 3× v6** | the §4g rate at the fitted knob |
+| cuda peak (nvidia-smi) / host peak used | measured | **≤ 11 GB / ≤ 12 GB** | the 12 GB card, the 16 GB machine |
+| lane integrity | `R0_DONE`, `ck_eps=256`, no `R0_FAILED`, no server restart mid-run | same | a run that died is not a rate |
+| eps/s | measured | reported, **not gated** (n = 1 noise is 1.8×, §11.4 item 5; untrained v6 and v7 nets play different-length episodes) | |
+
+Pre-registered: this row cannot say anything about learning (both nets
+are untrained; §3.2 — sampled trajectories, not a replay); eps/s
+differences under 2× do not rank the arms; `consults_per_ep` and
+`turns_per_ep` are reported so that an eps/s gap can be split into
+per-consult cost and episode length. If v7 is over budget, the
+pre-registered levers in order: the batcher (`--batch-max 4`, built and
+gated in §11 and flat for v6 because v6's forward was cheap), then the
+§4g correction-row levers (SDPA with the bias as additive mask,
+torch.compile on the block, window-batched encoding, device-side
+collation). Results appended below.
