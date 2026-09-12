@@ -886,3 +886,30 @@ What this cannot support: nothing about play (the init net's encoder
 is an identity; every game is a loss by passing, as pre-registered). It
 is the plumbing gate for 5b–5e: real dumps for the faithfulness probe,
 the end-to-end leak gates, the throughput protocol, and replay.
+
+### 4g (part 2) — where the update time goes (torch profiler, 2026-09-12 06:55 WSL clock)
+
+`rl/artifacts/v7/cuda_profile_4g.sh` (`update_profile.py profile --arch v7 --synth --steps 60 --device cuda --tbptt 16 --ep-batch 2`; a 400-step profile was OOM-killed at rc 137 — the profiler's event store, not the update). Log `cuda_profile_4g.log`.
+
+| measure | value |
+|---|---|
+| ms/step (54 steps, 1 episode) | 416 |
+| kernel launches per step | 9,935 (median launch 2.4 µs) |
+| GPU busy | 69 % of the update wall time |
+| **`indexing_backward_kernel` (`aten::_index_put_impl_`, `IndexBackward0`)** | **13.23 s of 15.52 s kernel time = 85.3 %** |
+| next: `aten::mm` / `addmm` / `bmm` (the linear and attention matmuls) | 4.0 % / 2.3 % / 1.6 % |
+
+The op is one line: `rl/v7_encoder.py` `EdgeAttention.forward`,
+`logits + table[edges].permute(...)` — the edge-type attention bias
+gathered from an 8 × heads parameter table by a `[B, T, T]` integer
+index. Its backward is `index_put_(accumulate=True)` over B·T² indices
+per layer (up to ~90k for 300 tokens), implemented in PyTorch by a
+sort-and-segment kernel; it runs in all 6 policy-encoder layers and the 4
+value-trunk layers on every timestep of every window. The matmuls that
+are the network's actual arithmetic are 8 % of GPU time. Fix
+(pre-registered, not applied here): compute the bias as a one-hot matmul,
+`F.one_hot(edges, n_edge).to(dtype) @ table` (or `F.embedding`), whose
+backward is a dense reduction; mathematically identical, so the 4c
+exactness gates and `v7_check.py` must stay all-pass, and the expected
+effect is the step time falling to the matmul-bound floor (a large
+factor, measured after the change, not predicted here).

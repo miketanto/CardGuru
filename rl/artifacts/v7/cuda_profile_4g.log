@@ -1,0 +1,55 @@
+06:33:58 START
+/home/miketanto/.local/lib/python3.10/site-packages/torch/nn/modules/transformer.py:382: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+TRAIN|update=1 episodes=7 batch_eps=7 steps=374 batch_win_rate=0.429 mean_abs_phi=0.000 value_ev=0.0050 oracle_cover=0.000 critic_ev=nan update_s=173.11
+/home/miketanto/.local/lib/python3.10/site-packages/torch/nn/modules/transformer.py:382: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+TRAIN|update=1 episodes=7 batch_eps=7 steps=374 batch_win_rate=0.429 mean_abs_phi=0.000 value_ev=0.0050 oracle_cover=0.000 critic_ev=nan update_s=192.60
+rc=137 06:48:23 DONE
+06:48:45 START
+/home/miketanto/.local/lib/python3.10/site-packages/torch/nn/modules/transformer.py:382: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+TRAIN|update=1 episodes=1 batch_eps=1 steps=54 batch_win_rate=1.000 mean_abs_phi=0.000 value_ev=-3.8390 oracle_cover=0.000 critic_ev=nan update_s=21.80
+/home/miketanto/.local/lib/python3.10/site-packages/torch/nn/modules/transformer.py:382: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+TRAIN|update=1 episodes=1 batch_eps=1 steps=54 batch_win_rate=1.000 mean_abs_phi=0.000 value_ev=-3.8390 oracle_cover=0.000 critic_ev=nan update_s=22.45
+UPDPROF|buf steps=54 episodes=1 device=cuda|warmup_s=21.93|profiled_s=22.49|ms_per_step=416.44
+UPDMEM|rss_max_mb=11466|cuda_peak_mb=1190
+UPDKERN|launches=536471|per_step=9934.6|distinct_kernels=168|kernel_time_s=15.52|gpu_busy=69.0%|median_launch_us=2.4
+TOP10 by cuda_time_total
+------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                            Name    Self CPU %      Self CPU   CPU total %     CPU total  CPU time avg     Self CUDA   Self CUDA %    CUDA total  CUDA time avg    # of Calls  
+------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+autograd::engine::evaluate_function: IndexBac...         0.07%      16.531ms         2.32%     543.259ms     212.211us       0.000us         0.00%       13.294s       5.193ms          2560  
+                                  IndexBackward0         0.05%      12.163ms         2.23%     523.272ms     204.403us       0.000us         0.00%       13.294s       5.193ms          2560  
+                          aten::_index_put_impl_         0.35%      82.677ms         2.00%     469.473ms     139.724us       13.261s        85.53%       13.293s       3.956ms          3360  
+void (anonymous namespace)::indexing_backward...         0.00%       0.000us         0.00%       0.000us       0.000us       13.226s        85.30%       13.226s       6.123ms          2160  
+autograd::engine::evaluate_function: AddmmBac...         1.98%     463.933ms        20.16%        4.722s     152.867us       0.000us         0.00%     767.576ms      24.850us         30888  
+                                        aten::mm         3.58%     837.549ms         9.11%        2.135s      35.306us     613.382ms         3.96%     613.382ms      10.145us         60464  
+                                  AddmmBackward0         1.00%     234.941ms        11.13%        2.607s      84.388us       0.000us         0.00%     606.353ms      19.631us         30888  
+                                    aten::linear         0.49%     115.337ms         6.71%        1.571s      50.861us       0.000us         0.00%     360.007ms      11.655us         30888  
+                                     aten::addmm         2.93%     686.084ms         4.90%        1.149s      37.192us     359.862ms         2.32%     360.007ms      11.655us         30888  
+                                       aten::bmm         1.02%     239.126ms         1.82%     425.229ms      28.124us     254.075ms         1.64%     254.754ms      16.849us         15120  
+------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+Self CPU time total: 23.427s
+Self CUDA time total: 15.505s
+
+TOP10 by cpu_time_total
+------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                            Name    Self CPU %      Self CPU   CPU total %     CPU total  CPU time avg     Self CUDA   Self CUDA %    CUDA total  CUDA time avg    # of Calls  
+------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                cudaLaunchKernel        27.88%        6.531s        27.94%        6.546s      13.332us       0.000us         0.00%      54.303us       0.000us        491035  
+autograd::engine::evaluate_function: AddmmBac...         1.98%     463.933ms        20.16%        4.722s     152.867us       0.000us         0.00%     767.576ms      24.850us         30888  
+                             Command Buffer Full        16.10%        3.773s        16.10%        3.773s       5.858ms       0.000us         0.00%       0.000us       0.000us           644  
+                                     aten::copy_         0.73%     171.166ms        12.34%        2.890s      72.616us     121.378ms         0.78%     121.388ms       3.050us         39799  
+                                  AddmmBackward0         1.00%     234.941ms        11.13%        2.607s      84.388us       0.000us         0.00%     606.353ms      19.631us         30888  
+                                        aten::to         0.09%      20.410ms        10.07%        2.359s     114.704us       0.000us         0.00%      15.303ms       0.744us         20562  
+                                  aten::_to_copy         0.15%      36.101ms         9.98%        2.338s     201.199us       0.000us         0.00%      15.303ms       1.317us         11621  
+                                      aten::add_         1.93%     452.069ms         9.36%        2.193s      21.881us     200.326ms         1.29%     200.326ms       1.999us        100203  
+                           cudaStreamSynchronize         9.27%        2.171s         9.27%        2.171s     386.377us       2.016us         0.00%       2.016us       0.000us          5620  
+                                        aten::mm         3.58%     837.549ms         9.11%        2.135s      35.306us     613.382ms         3.96%     613.382ms      10.145us         60464  
+------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+Self CPU time total: 23.427s
+Self CUDA time total: 15.505s
+
+rc=0 06:55:37 DONE
