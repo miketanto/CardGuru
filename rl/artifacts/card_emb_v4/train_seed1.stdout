@@ -1,0 +1,5 @@
+18:57:13 cards=35478 train=31946 heldout=3532 distinct_struct=26324 device=cuda seed=1 text_model=sentence-transformers/all-MiniLM-L6-v2
+18:57:16 params=22923136 steps/epoch=125 total_steps=3750
+18:57:56 epoch=1/30 train_loss=3.4739 (infonce=3.4027 distill=0.0071) train_r@1=0.337 train_r@10=0.752 held_loss=2.9099 held_r@1=0.352 held_r@10=0.763 40s
+18:58:38 epoch=2/30 train_loss=0.7068 (infonce=0.6420 distill=0.0065) train_r@1=0.537 train_r@10=0.890 held_loss=1.8326 held_r@1=0.561 held_r@10=0.905 40s
+18:59:22 epoch=3/30 train_loss=0.4686 (infonce=0.4126 distill=0.0056) train_r@1=0.596 train_r@10=0.912 held_loss=1.5394 held_r@1=0.619 held_r@10=0.924 39s

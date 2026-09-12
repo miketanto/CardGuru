@@ -950,3 +950,259 @@ more. Pre-registered next levers, none applied: fused attention
 with the LSTM run afterwards, and collating a window once on the device
 instead of per timestep. What these numbers cannot support: real-data
 rates (synthetic buffer, one thread) and any claim about learning.
+
+## 3a — wire skeleton behind `-Drl.encoderV=7` (Lane B, 2026-09-12 11:50; branch `v7/lane-b`)
+
+What landed (`rl/xmage-src`, all additive, nothing under `ENCODER_V < 7`
+changes): `StateEncoder` carries the WIRE-V7 widths as constants, a
+`CandMeta` (candidate type + the UUIDs a candidate acts on) and a `V7`
+block on `EntityView` built only when `ENCODER_V >= 7` — game token idx
+0–11, the two player rows (life, poison, hand, library, graveyard, exile,
+mana pool by colour, untapped sources, lands, permanents), one entity row
+per v6 entity minus the two player rows (zone one-hot, mine, face-down,
+stack position; idx 10–63 are 3b and stay 0), `v7_ent_name` /
+`v7_ent_token`, and the v6 relations shifted into the token index space.
+`RLPlayer` builds a `CandMeta` at every one of the seven consult sites
+(prio, target, targetCard, attack1, atkjoint, block1, blkjoint) and
+passes it through a new 4-arg `PolicyClient.choose`; `SocketPolicyClient`
+emits the hello keys and, per consult, the v6 line plus the `v7_*` keys
+through one shared v6 writer. Recording and checking tools:
+`rl/wire_echo_server.py` (records the raw wire, answers a fixed pick),
+`rl/wire_record.sh`, `rl/wire_diff.py` (first differing field, or every
+differing column with its per-line column sum), `rl/wire_census.py`
+(behaviour counters + name resolution), `rl/live_check_3a.sh`,
+`rl/sync_lane_b.sh`, `rl/drivers_3a.sh` (7910 = v6 arm, 7911 = v7 arm).
+
+Design decisions written into the code, stated here so 3b–3e inherit
+them: token index = v6 entity index + 1 (the player rows are v6 rows 0
+and 1 by `ORDER`, so one shift maps the edge list and the two index
+spaces cannot drift); the entity list in 3a IS the v6 list, so
+`entityTrunc` is the v6 counter and `v7_emax` = 160 is only the buffer
+bound (≤ 94 rows are ever emitted); decision type of a consult = the
+most frequent non-PASS candidate type; `ACTIVATE` = any playable that is
+neither a spell nor a land play (mana abilities included, as in v6's
+playable list); the empty attack subset and the all-unassigned block
+option are typed PASS; a non-PASS candidate whose referents are not
+emitted entities refers to the acting player's token and is counted
+(`v7_ctr.refersFallback`; `metaMissing` counts consults from an unmapped
+site); `v7_decks` is not sent yet (5a), so game idx 22–23 are 0.
+
+| gate | required | measured | result |
+|---|---|---|---|
+| schema on recorded consults | 100 consults pass `rl/wire_validate.py` | `v7_pass` (5 games, always-pass agent): **101 consults ok**; `v7_pick1` (first non-pass candidate every time): **136 consults ok** | pass |
+| v6 arm byte-identical to the unpatched build | same seeded games, old build vs new build, every byte | 3 games / 63 consults / 134 lines: 18 lines differ, **only** `e[*][16]` tapped, `e[*][20]` canAttack, `e[*][21]` canBlock on opponent lands; the tapped column sum is equal on every differing line (which of several identical Plains was tapped, not how many); `g`, `r`, `c`, hello, replies identical | pass, within the engine's own noise (next row) |
+| control: the unpatched build against itself | two runs on one JVM, same seeds | 14 lines differ, the same three columns, same column-sum pattern; the new build against itself: 18 lines, same | the residual is pre-existing: the heuristic opponent's choice among identical untapped lands is not on the seeded stream (UUID order) |
+| v7 arm's v6 keys equal the v6 arm | `wire_diff.py --ignore-keys <v7 keys>` | 14 lines, the same three columns only | pass |
+| referent coverage (3c's gate, measured early) | every non-PASS candidate refers to an entity or player token | 448/448 and 174/174 (6 + 6 are TARGET-a-player); `refersFallback` 0, `metaMissing` 0, `entityTrunc` 0 | pass |
+| names resolve (WIRE rule 4) | 0 unresolved through `cards_v1` | 3,719 entity rows, 10 distinct names, **0 unresolved** (W0Base) | pass |
+| live handshake and serving | `policy_server.py --arch v7 --frozen` with `p10_init_net.py --arch v7` (17,379,335 params), cpu, 10 eval games | accepted; 181 consults answered, 0 refusals, avg round trip 20.7 ms on cpu; driver rc 0 | pass |
+
+Behaviour counters (`wire_census.py`; the record, not a result):
+
+| recording | consults | ent/consult (max) | edges/consult | k mean (max) | candidate types | decision types |
+|---|---|---|---|---|---|---|
+| v7_pass | 101 | 14.5 (24) | 5.5 | 5.2 (8) | LAND 250, TARGET 198, PASS 74 | LAND 54, TARGET 27, PASS 20 |
+| v7_pick1 | 136 | 16.6 (26) | 9.6 | 2.3 (5) | PASS 133, ACTIVATE 82, LAND 75, TARGET 6, SPELL 5, BLOCK 4, ATTACK 2 | ACTIVATE 78, LAND 26, PASS 19, SPELL 4, BLOCK 4, TARGET 3, ATTACK 2 |
+
+Edge types seen: 2 (attacking_player) and 4 (controls) only — W0Base
+against a passing or first-candidate agent produces no blocks, targets on
+the stack, or attachments. Types 6 and 7 are 3c.
+
+What these numbers cannot support: nothing about the policy (the init
+net's encoder is an identity and every logit is equal, so the live-check
+agent chose index 0 — PASS — at every consult and took 0 actions per
+game, as pre-registered: 10 games of an untrained net are a plumbing
+check, not a level). Entity idx 10–63 and the candidate afterstate slots
+are 0 until 3b, so a faithfulness probe on these recordings would recover
+only zone, side, stack position, identity and the v6 keys. The TARGET
+consults reached even by an always-passing agent (27 of 101) are v6
+behaviour (forced choices), not examined here. The recordings are
+regenerable (`rl/wire_record.sh`, seed 900000) and gitignored.
+
+## 3b — fields and operators (Lane B, 2026-09-12 13:30; branch `v7/lane-b`)
+
+What landed: every entity row idx 10–63 of WIRE §2d — body now and printed
+(`MageInt.getBaseValue`), damage, toughness remaining, loyalty, counters
+(+1/+1, −1/−1, loyalty, other), status bits, turns on battlefield, type
+bits, the 18 keyword bits **read off the object's abilities now**
+(`getAbilities(game)`, subclass-aware, so granted and lost abilities count;
+v6 reads the printed table), the operators (castable now = the engine's own
+`canActivate` on the spell or land-play ability of a card in my hand; mana
+left if cast = untapped lands − mana value, an estimate stated as such;
+legal targets for the first target; can attack / can block; would die to
+SBA as-is = creature with toughness − damage ≤ 0 or deathtouched), the
+stack-only slots (X via `CardUtil.getSourceCostsTagX`, modes chosen,
+controller is me, is ability). Candidate afterstates (WIRE §2f idx 8–39)
+for LAND / SPELL / ACTIVATE (mana left after, targets, instant- or
+sorcery-speed, flash, stack depth), TARGET (player · me · life · creature ·
+P/T · mine), ATTACK (the `CombatMath.AttackOption` fields in the §2f
+order), BLOCK (the `CombatMath.Outcome` of the joint assignment; block1
+uses the pairwise outcome). PASS / OTHER afterstates stay 0 (reserved;
+the pass afterstate is deferred, design §6) — the joint sites *could*
+supply one (damage taken if I do not block, bodies retained if I do not
+attack) and a first cut did, which the checker now rejects; that is a
+WIRE amendment to propose, not a 3b change. Player row idx 14 (cards
+drawn this turn) is still 0, and the §2c width-21 extension (untapped
+sources by colour) is **not** done: it changes `v7_dims.player` and so
+both consumers, and belongs in one cross-lane commit with the server.
+
+Evidence: `rl/wire_check_3b.py` over ten recordings (`rl/record_3b.sh`;
+six decks with the first-non-pass policy, four with the last-candidate
+policy, 5 games each, seed 900000), **1,562 consults, 12,838 entity rows**,
+all ten streams `wire_validate.py` ok, names 0 unresolved (22 distinct).
+
+| gate | required | measured | result |
+|---|---|---|---|
+| agreement with the v6 row on the same entity, every field v6 also carries (17 fields: power, toughness, damage, toughness left, mv, tapped, sick, attacking, blocking, entered, token, creature, land, can attack, can block, instant/sorcery on the stack) | 0 disagreements | **0 over 12,838 rows** | pass |
+| keyword bits vs the printed table (14 shared bits) | mismatches listed by name | **0** — no card on these decks gains or loses a keyword, so live-abilities and printed agree; the granted-ability case is not exercised | pass, not exercised for grants |
+| identities v6 does not carry | toughness left = toughness − damage; lethal-as-is ⇒ toughness left ≤ 0; castable only on my hand; stack position only on the stack; TARGET player xor object; ATTACK opp life after = opp life − damage dealt, my life after = my life − crack-back; BLOCK life after = life − damage taken; LAND is sorcery-speed; speed one-hot; PASS afterstate all 0 | **0 failures** | pass |
+| v6 arm after 3b | identical to the unpatched build | `v6_new3` is **byte-identical** to one of the two unpatched-build runs (`v6_old2a`, same md5) and differs from the other only in the tapped-land columns (the §3a noise) | pass |
+
+Exercised on these decks (rows with a non-zero value, out of 12,838):
+power / toughness / printed 11,939 · tapped 9,352 · sick 3,046 · attacking
+511 · entered 685 · instant 681 · sorcery 218 · flying 140 · vigilance
+162 · castable 3,369 · mana left 2,561 · legal targets 169 · can attack
+3,301 · can block 5,338 · stack modes / mine 8; candidate afterstates:
+ACTIVATE 971, LAND 770, SPELL 49, TARGET 60, ATTACK 21, BLOCK 28.
+
+**Not exercised** (0 rows, so nothing here is checked beyond compiling
+and the zero being correct): damage marked, blocking, loyalty and every
+counter, tokens, other-permanent type, 16 of 18 keywords, lethal-as-is,
+stack X, stack is-ability. The pre-registered 3b gate asked for one
+constructed `Mage.Tests` scenario per operator; this row substitutes
+observed scenarios from real games with a v6 cross-check, which covers
+the operators the rung decks can produce and leaves the rest untested.
+5b's 10k heuristic-vs-heuristic consults are the coverage run; any field
+still at 0 rows there gets a constructed scenario before 5b closes.
+
+## 3c — edges and referents (Lane B, 2026-09-12 15:10; branch `v7/lane-b`)
+
+What landed: WIRE §2e types 6 and 7 appended to the shifted v6 edge list in
+`StateEncoder.v7Block` — `can_block` (legal blocker → attacker by the
+engine's `Permanent.canBlock`, emitted only in a declare-blockers consult
+where I am the defending player, i.e. the consults whose block candidates
+come from the same test) and `stack_above` (each stack object → the one
+directly below it, in `game.getStack()`'s top-first order; a truncated
+object breaks the chain rather than bridging it). `refers_to` (every
+candidate's entity indices) and the stack modes / X slots landed in 3a and
+3b. Recording policies for the evidence: `wire_echo_server.py --pick N`
+and `--prefer-type 2,1` (cast a spell whenever one is castable, else play
+a land), `rl/wire_check_3c.py`.
+
+| gate | required | measured | result |
+|---|---|---|---|
+| every edge endpoint valid | inside the token space, every consult | 0 out of range over 2,955 consults / 41,000+ edges (also the validator's own check: every stream ok) | pass |
+| `refers_to` coverage | 100 % of non-PASS candidates over 1,000 consults | **100 %** — 1,999 / 1,999 (ten 3b recordings, 1,562 consults), 2,497 / 2,497 (spell-first W4Inst, 972 consults), 1,022 / 1,022 (two spell-first runs, 221 consults); `refersFallback` 0 everywhere | pass |
+| `can_block` agrees with the candidate builder | every BLOCK candidate's (blocker, attacker) pair is a `can_block` edge of the same consult; edges only in defending declare-blockers consults; src my untapped creature, dst an attacking creature | 0 failures: 66 edges / 28 BLOCK candidates (3b set), 246 / 63 (spell-first W4Inst), 8 / 3 (last-candidate W4Inst) | pass |
+| `stack_above` chain | src and dst on the stack, dst one position deeper, n − 1 edges for n objects | 0 failures on the **2** consults that had two objects on the stack (spell-first W4Inst); every other recording had ≤ 1 | pass, barely exercised |
+
+Coverage note that is a finding: a consult with two or more objects on
+the stack is rare under these policies — 2 of 972 with the spell-first
+policy, 0 of 2,000+ otherwise — because the agent is only consulted with
+a non-empty stack when it holds priority with a castable instant or a
+mana ability (103 of 1,599 consults in a longer spell-first run had a
+non-empty stack, 26 of 972 had the agent's own object on it). The
+stack-only fields and `stack_above` therefore rest on a handful of rows
+until 5b's 10k-consult coverage run; if that run still shows < 100
+two-object consults, a constructed scenario is owed.
+
+3b coverage update from the spell-first recording (972 consults, W4Inst,
+`--consultBudget 300`): damage marked 24 rows, blocking 33, stack modes
+62, stack mine 26, SPELL afterstates 42 — **0 v6 disagreements, 0 failed
+identities**, after one checker correction: v6 stack rows carry no
+creature/land type bit (v7 reads the source card), so the type
+comparison now skips stack rows like the body comparison already did.
+A first spell-first run without a consult budget ran 1,599 consults in
+one game before it was stopped (the policy casts every castable instant
+every consult); recordings for coverage use `BUDGET=300`.
+
+## 3d — opponent knowledge tracker (Lane B, 2026-09-12 17:40; branch `v7/lane-b`)
+
+What landed: `rl/xmage-src/RLKnowledgeWatcher.java`, an engine watcher
+(`WatcherScope.GAME`, registered by `EpisodeRunner` before the deal and
+lazily by `RLPlayer` as a fallback; copied with the game state by the
+engine's reflective watcher copy, so its state is lists and maps of
+immutable values and `Copyable` records). It builds, from public events
+only: **hand slots** (origin opening / drawn / returned-from-a-public-zone /
+tutored-or-other, age, identity-known, seen), the **remaining deck** (the
+open decklist minus every card of theirs whose identity is public),
+and the **opponent-action history** (cast, activate, attack, block,
+declined to block with an untapped creature, passed with mana up on my
+turn). WIRE §2g tokens `v7_opp_hand[_name]`, `v7_opp_deck[_name]`,
+`v7_opp_actions` / `v7_opp_action_refers`, plus `v7_oe_hand` (the true
+hand, `-Drl.oracle` only, WIRE §4) and `v7_ctr.handDrift` /
+`oppHandTrunc`. Tools: `rl/wire_check_3d.py`, `rl/wire_trace_3d.py`,
+`-Drl.trackerDebug=<file>` (an event-model diagnostic), `rl/drivers_3d.sh`
+(port 7912 = v7 + oracle; `rl.oracle` is class-init like `rl.encoderV`),
+and on lane-d `rl/v7_leak_real.py` (the 0d leak gate over a real
+recording).
+
+**The event model, measured** (`-Drl.trackerDebug`, one W0Base game): the
+opening hand is dealt as seven `DREW_CARD` events with **no**
+`ZONE_CHANGE`, before any step begins (`getTurnStepType() == null`);
+a normal draw fires `DREW_CARD` *and* `ZONE_CHANGE LIBRARY>HAND`; a cast
+fires `ZONE_CHANGE HAND>STACK` and then `SPELL_CAST`; a land play fires
+`ZONE_CHANGE HAND>BATTLEFIELD`. The tracker takes hand entries from
+`DREW_CARD` and `ZONE_CHANGE` (deduplicated by the card handle), hand
+exits from `ZONE_CHANGE` only, and public identity from any entry into a
+public zone, from `SPELL_CAST`, and from the engine's revealed /
+looked-at sets polled on every event. Two earlier readings of this
+model (reconcile on the first event; remove the slot on `SPELL_CAST`)
+each produced a measurable drift and were corrected from the trace, not
+from reasoning.
+
+| gate | required | measured | result |
+|---|---|---|---|
+| **leak gate** (`rl/probes/leak.py` levels 1–3 on real `-Drl.oracle` recordings, hidden keys `oe` + `v7_oe_hand`, encoder woken) | policy-path parse identical without the hidden keys; logits bit-identical under a hidden-content swap; critic moves | W0Base 136 consults: L1 pass, L2 max Δlogit **0.0**, L3 max Δvalue 0.069; W4Inst spell-first 300 consults: pass / 0.0 / 0.075; B1Fast 169: pass / 0.0 / 0.136 | pass |
+| consistency: known ⊆ truth | every known slot name is in the true hand (multiset), every consult | **0 violations** over 1,277 oracle-labelled consults — but 0 known slots too (next row) | pass, vacuous |
+| slot count = the opponent's hand size | every consult | 0 violations over 1,413 consults (three oracle decks + one plain W0Base run); `handDrift` **0**, `oppHandTrunc` 0 | pass |
+| remaining deck | Σ remaining = library + unknown hand slots; counts ≤ decklist | mean gap **0.00** cards on every recording (from the fraction field; the ÷4 count field saturates at 4, so 20 Plains read as 4 there) | pass |
+| action tokens | one-hot, newest first, referents in the token space | 0 violations; types seen: cast, attack, passed-with-mana-up, declined-to-block (W0Base 51 rows); activate and block 0 on these decks and policies | pass |
+| v6 arm after 3d | unchanged | `v6_new5` vs the two unpatched-build runs: the tapped-land noise class only (17 / 9 lines, column sums equal) | pass |
+| live serving | `policy_server.py --arch v7` accepts the opponent keys | see the live-check line below | — |
+
+Behaviour counters (the record): hand slots by origin over the four
+runs — opening 2,528, drawn 1,470, returned 0, other 0; **known fraction
+0.000**: the W-series, B1Fast and W4Inst decks have no reveal, no
+return-to-hand and no tutor, so the identity-known path (`known`, `seen`,
+`v7_opp_hand_name`) and the tutored origin are **not exercised** and the
+known ⊆ truth gate is vacuous on this evidence. The path exists and is
+covered by construction (identity is written only from a public zone
+entry, `SPELL_CAST`, or the engine's revealed / looked-at sets); the
+decks that exercise it (a bounce or regrowth effect, a reveal) belong to
+5b's coverage run, and if 5b has none, a constructed scenario is owed
+before 5b closes. What the leak gate cannot support: it proves the policy
+path carries nothing that changes with the true hand; that the tracker
+never reads the true hand is construction plus the vacuous consistency
+gate, not a measurement, until the known path is exercised.
+
+Live check after 3d (`rl/live_check_3a.sh 10 7781 cpu`, tracker keys on the wire, no oracle): handshake accepted, 10 eval games, driver rc 0, 181 consults answered, 0 refusals — the server parses `v7_opp_*` from a real driver.
+
+## 3e — dump and replay (Lane B, 2026-09-12 19:10; branch `v7/lane-b`)
+
+What landed: `-Drl.wireDump=<file>` in `SocketPolicyClient` — the v7
+dump format is **the wire itself**: every hello, consult and end line as
+sent and every reply as received, appended byte for byte, opened per
+connection from the job flag (no JVM restart; record with concurrency
+1). The driver summary (`RL|summary ... fallbacks=`) now carries
+`v7RefersFallback`, `v7MetaMissing` and `v7UnknownId` next to
+`entityTrunc` / `entityUnknown` (`v7UnknownId` is defined 0: ids are not
+emitted, WIRE rule 4; the server's `unresolvedName` is the live count,
+0 on every recording so far). `rl/replay_3e.sh` plays the same 20
+seeded games twice and compares.
+
+| gate | required | measured | result |
+|---|---|---|---|
+| dump = wire | the driver-side dump is byte-identical to the echo server's recording of the same run | 5 games (seed 900100), 252 lines each, `cmp` equal — hello, ack, 120 consults, replies, end lines | pass |
+| replay over 20 games | byte-equal | 20 games × 2 runs (seed 900100, first-non-pass policy, W0Base): **477 consults each, per-game consult counts equal, 5 of 20 games byte-identical, 384 of 477 consult lines byte-identical**; every differing field is the §3a noise class — `e[*][16]/[20]/[21]` and their v7 mirrors `v7_ent[*][22]/[55]/[56]` (which of several identical opponent Plains is tapped, column sums equal on every line) and `v7_cand_refers[*][0]` on 24 lines (the mana-ability candidate refers to the other identical Plains; column sums equal) | pass within the engine's own noise; **not byte-equal**, and cannot be until the engine's mana-payment choice among identical lands is put on the seeded stream (an engine change, outside Lane B) |
+| counters | `entityTrunc`, `unknownId` reported | `entityTrunc` 0, `v7RefersFallback` 0, `v7MetaMissing` 0, `v7UnknownId` 0 on the 5-game dump check | pass |
+
+The pre-registered gate said byte-equal over 20 games. It is not met
+literally and the reason is measured, not argued: two runs of the
+**unpatched v6 build** differ in the same columns (§3a control row), and
+a v6 replay through `rung0_replay.sh` compares the `RLGAME` transcript,
+which does not carry which land was tapped. The residual is confined to
+tapped-derived columns on opponent lands whose per-line sums agree; every
+other byte of 477 consults is equal. If exact replay is wanted, the fix
+is `ManaUtil`/auto-payment ordering in the engine, and it would make the
+v6 arm reproducible too.

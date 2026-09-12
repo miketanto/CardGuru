@@ -258,6 +258,11 @@ public class EpisodeRunner {
         // every other episode (harmless while every match was a mirror).
         Deck agentDeck = loadDeck(deckName);
         Deck oppDeck = loadDeck(oppDeckName == null ? deckName : oppDeckName);
+        if (rlAgent != null) {
+            // 3d: open decklists (design decision 3) - the tracker's
+            // remaining-deck tokens are the list minus what has been seen
+            rlAgent.oppDeckInfo = RLKnowledgeWatcher.deckInfo(oppDeck);
+        }
         Player first = agentOnPlay ? agent : opp;
         Player second = agentOnPlay ? opp : agent;
         Deck deckFirst = agentOnPlay ? agentDeck : oppDeck;
@@ -266,6 +271,13 @@ public class EpisodeRunner {
         game.loadCards(deckSecond.getCards(), second.getId());
         game.addPlayer(first, deckFirst);
         game.addPlayer(second, deckSecond);
+        if (rlAgent != null && rlAgent.stateV >= 7) {
+            // 3d: register the knowledge tracker BEFORE the opening hands
+            // are dealt, so their slots carry origin "opening"; RLPlayer
+            // re-registers lazily if a state reset dropped it
+            game.getState().addWatcher(new RLKnowledgeWatcher(
+                    rlAgent.getId(), opp.getId(), rlAgent.oppDeckInfo));
+        }
 
         // XMage's own advanced AIs (ComputerPlayer6/7, MCTS) build their
         // simulations through MatchPlayer, so a game with no Match behind
@@ -397,6 +409,12 @@ public class EpisodeRunner {
                 fallbacks.put("entityDropped", (int) StateEncoder.entityDropped);
                 fallbacks.put("entityMaxSeen", (int) StateEncoder.entityMaxSeen);
                 fallbacks.put("entityUnknown", (int) StateEncoder.entityUnknown);
+            }
+            if (StateEncoder.ENCODER_V >= 7) {
+                // 3e: the v7 wire counters (static, cumulative, PUT as above)
+                fallbacks.put("v7RefersFallback", (int) SocketPolicyClient.v7RefersFallback);
+                fallbacks.put("v7MetaMissing", (int) SocketPolicyClient.v7MetaMissing);
+                fallbacks.put("v7UnknownId", 0);   // ids are not emitted (WIRE rule 4): defined 0
             }
             // cost, in milliseconds, so "measure the cost per combat" is a
             // measurement and not an assurance. Policy search and audit

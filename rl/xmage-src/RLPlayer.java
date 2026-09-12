@@ -342,7 +342,17 @@ public class RLPlayer extends ComputerPlayer {
     }
 
     private int consult(Game game, UUID opp, float[][] cands, String site) {
-        int pick = consultInner(game, opp, cands);
+        return consult(game, opp, cands, site, null);
+    }
+
+    /** meta: WIRE-V7 candidate types and referents, built next to cands
+     *  at every site; null only for a site that has not been mapped. */
+    private int consult(Game game, UUID opp, float[][] cands, String site,
+                        StateEncoder.CandMeta meta) {
+        if (meta != null) {
+            meta.consultsSoFar = consults;
+        }
+        int pick = consultInner(game, opp, cands, meta);
         if (TRACE) {
             actionLog.append("t").append(game.getTurnNum())
                     .append("|  [trace] ").append(site)
@@ -356,11 +366,24 @@ public class RLPlayer extends ComputerPlayer {
         return pick;
     }
 
-    private int consultInner(Game game, UUID opp, float[][] cands) {
+    /** 3d: the open decklist of the opponent (name -> {count, mv,
+     *  instant-speed}), set by EpisodeRunner; the tracker reads it. */
+    public java.util.Map<String, RLKnowledgeWatcher.DeckCard> oppDeckInfo;
+
+    /** Register the knowledge tracker for this game on first use (v7). */
+    private void ensureTracker(Game game) {
+        if (stateV >= 7) {
+            RLKnowledgeWatcher.ensure(game, playerId, opponentId(game), oppDeckInfo);
+        }
+    }
+
+    private int consultInner(Game game, UUID opp, float[][] cands,
+                             StateEncoder.CandMeta meta) {
+        ensureTracker(game);
         if (stateV >= 6) {
             return policy.choose(
                     StateEncoder.encodeEntityView(game, playerId, opp),
-                    cands, phi(game));
+                    cands, phi(game), meta);
         }
         return policy.choose(StateEncoder.encodeState(game, playerId, opp),
                 cands, phi(game));
@@ -633,6 +656,7 @@ public class RLPlayer extends ComputerPlayer {
     @Override
     public boolean priority(Game game) {
         windows++;
+        ensureTracker(game);
         if (yield != YieldKind.NONE && yieldHolds(game)) {
             yieldSkipped++;
             pass(game);
@@ -668,9 +692,14 @@ public class RLPlayer extends ComputerPlayer {
                 ? null
                 : StateEncoder.encodeState(game, playerId, opponentId(game));
         float[][] cands = new float[playable.size() + 1][];
+        StateEncoder.CandMeta meta = new StateEncoder.CandMeta(cands.length).pass(0);
+        int untappedNow = stateV >= 7 ? StateEncoder.untappedLands(game, playerId) : 0;
         cands[0] = StateEncoder.blank(StateEncoder.T_PASS);
         for (int i = 0; i < playable.size(); i++) {
             ActivatedAbility a = playable.get(i);
+            meta.set(i + 1, a instanceof PlayLandAbility ? StateEncoder.C_LAND
+                    : a instanceof SpellAbility ? StateEncoder.C_SPELL
+                    : StateEncoder.C_ACTIVATE, a.getSourceId());
             // v3: resolve the source card for EVERY candidate (ninjutsu,
             // creature-land activations...), not just casts - non-spell
             // candidates used to encode featureless
@@ -679,6 +708,9 @@ public class RLPlayer extends ComputerPlayer {
                     a instanceof PlayLandAbility
                             ? StateEncoder.T_LAND : StateEncoder.T_SPELL,
                     card, game);
+            if (stateV >= 7) {
+                meta.after(i + 1, StateEncoder.v7AfterPlayable(a, card, game, playerId, untappedNow));
+            }
         }
         if (CAND_DUMP != null) {
             dumpWindow(game, playerId, playable.size(), holdsInstant(game));
@@ -693,7 +725,7 @@ public class RLPlayer extends ComputerPlayer {
             shadowLabel(game, playable, state, cands);
         }
         consults++;
-        int pick = consult(game, opponentId(game), cands, "prio");
+        int pick = consult(game, opponentId(game), cands, "prio", meta);
         if (CAND_DUMP != null) {
             String[] nm = new String[cands.length];
             nm[0] = "PASS";
@@ -778,8 +810,13 @@ public class RLPlayer extends ComputerPlayer {
             }
             possible.sort(Comparator.comparing(id -> canonicalName(id, game)));
             float[][] cands = new float[possible.size()][];
+            StateEncoder.CandMeta meta = new StateEncoder.CandMeta(cands.length);
             for (int i = 0; i < possible.size(); i++) {
                 UUID id = possible.get(i);
+                meta.set(i, StateEncoder.C_TARGET, id);
+                if (stateV >= 7) {
+                    meta.after(i, StateEncoder.v7AfterTarget(id, game, playerId));
+                }
                 Player pl = game.getPlayer(id);
                 if (pl != null) {
                     cands[i] = StateEncoder.forTargetPlayer(
@@ -795,7 +832,7 @@ public class RLPlayer extends ComputerPlayer {
                 }
             }
             consults++;
-            int pick = consult(game, opp, cands, "target");
+            int pick = consult(game, opp, cands, "target", meta);
             pick = Math.max(0, Math.min(pick, possible.size() - 1));
             recordTargetChoice(game, possible, pick);
             target.addTarget(possible.get(pick), source, game);
@@ -846,12 +883,17 @@ public class RLPlayer extends ComputerPlayer {
             }
             possible.sort(Comparator.comparing(MageObject::getName));
             float[][] cands = new float[possible.size()][];
+            StateEncoder.CandMeta meta = new StateEncoder.CandMeta(cands.length);
             for (int i = 0; i < possible.size(); i++) {
                 cands[i] = StateEncoder.forCard(StateEncoder.T_TARGET,
                         possible.get(i), game);
+                meta.set(i, StateEncoder.C_TARGET, possible.get(i).getId());
+                if (stateV >= 7) {
+                    meta.after(i, StateEncoder.v7AfterTarget(possible.get(i).getId(), game, playerId));
+                }
             }
             consults++;
-            int pick = consult(game, opp, cands, "targetCard");
+            int pick = consult(game, opp, cands, "targetCard", meta);
             pick = Math.max(0, Math.min(pick, possible.size() - 1));
             target.addTarget(possible.get(pick).getId(), source, game);
         }
@@ -939,9 +981,11 @@ public class RLPlayer extends ComputerPlayer {
             float[][] cands = {
                 StateEncoder.blank(StateEncoder.T_PASS),
                 StateEncoder.forCombat(StateEncoder.T_ATTACK, creature, game)};
+            StateEncoder.CandMeta meta = new StateEncoder.CandMeta(2).pass(0)
+                    .set(1, StateEncoder.C_ATTACK, creature.getId());
             consults++;
             attackOpportunities++;
-            if (consult(game, defender, cands, "attack1") == 1) {
+            if (consult(game, defender, cands, "attack1", meta) == 1) {
                 this.declareAttacker(creature.getId(), defender, game, false);
                 actions++;
                 attacksDeclared++;
@@ -1086,8 +1130,26 @@ public class RLPlayer extends ComputerPlayer {
             kept.add(search.options.get(0));
         }
         float[][] cands = new float[kept.size()][];
+        StateEncoder.CandMeta meta = new StateEncoder.CandMeta(cands.length);
         for (int i = 0; i < kept.size(); i++) {
             cands[i] = StateEncoder.forAttackSet(kept.get(i), getLife(), oppLife);
+            if (stateV >= 7) {
+                meta.after(i, StateEncoder.v7AfterAttack(kept.get(i), getLife(), oppLife));
+            }
+            // referents: the attackers in the subset (over `pick`, the list
+            // the search ran on); the empty subset IS the pass here
+            List<UUID> refs = new ArrayList<>();
+            boolean[] att = kept.get(i).attack;
+            for (int j = 0; j < att.length && j < pick.size(); j++) {
+                if (att[j]) {
+                    refs.add(pick.get(j).getId());
+                }
+            }
+            if (refs.isEmpty()) {
+                meta.pass(i);
+            } else {
+                meta.set(i, StateEncoder.C_ATTACK, refs.toArray(new UUID[0]));
+            }
         }
         attackSearchNanos += System.nanoTime() - t0;
         consults++;
@@ -1096,7 +1158,7 @@ public class RLPlayer extends ComputerPlayer {
                 + "%d distinct subsets, %d after Pareto, %.1fms",
                 avail.size(), theirs.size(), search.options.size(),
                 kept.size(), (System.nanoTime() - t0) / 1e6));
-        int idx = consult(game, defender, cands, "atkjoint");
+        int idx = consult(game, defender, cands, "atkjoint", meta);
         if (idx < 0 || idx >= kept.size()) {
             return;
         }
@@ -1219,13 +1281,18 @@ public class RLPlayer extends ComputerPlayer {
                 continue;
             }
             float[][] cands = new float[can.size() + 1][];
+            StateEncoder.CandMeta meta = new StateEncoder.CandMeta(cands.length).pass(0);
             cands[0] = StateEncoder.blank(StateEncoder.T_PASS);
             for (int i = 0; i < can.size(); i++) {
                 cands[i + 1] = StateEncoder.forBlock(can.get(i), blocker, game);
+                meta.set(i + 1, StateEncoder.C_BLOCK, blocker.getId(), can.get(i).getId());
+                if (stateV >= 7) {
+                    meta.after(i + 1, StateEncoder.v7AfterBlockOne(can.get(i), blocker, getLife()));
+                }
             }
             consults++;
             blockOpportunities++;
-            int pick = consult(game, opp, cands, "block1");
+            int pick = consult(game, opp, cands, "block1", meta);
             if (pick > 0 && pick <= can.size()) {
                 this.declareBlocker(defendingPlayerId, blocker.getId(),
                         can.get(pick - 1).getId(), game);
@@ -1339,12 +1406,34 @@ public class RLPlayer extends ComputerPlayer {
             kept.add(feats.values().iterator().next());
         }
         float[][] cands = kept.toArray(new float[0][]);
+        StateEncoder.CandMeta meta = new StateEncoder.CandMeta(cands.length);
+        for (int i = 0; i < options.size() && i < cands.length; i++) {
+            // referents: every blocker assigned and the attacker it blocks;
+            // the all-unassigned option IS the pass here
+            int[] as = options.get(i);
+            List<UUID> refs = new ArrayList<>();
+            for (int b = 0; b < as.length && b < mine.size(); b++) {
+                if (as[b] >= 0 && as[b] < attackers.size()) {
+                    refs.add(mine.get(b).getId());
+                    refs.add(attackers.get(as[b]).getId());
+                }
+            }
+            if (refs.isEmpty()) {
+                meta.pass(i);
+            } else {
+                meta.set(i, StateEncoder.C_BLOCK, refs.toArray(new UUID[0]));
+            }
+            if (stateV >= 7) {
+                meta.after(i, StateEncoder.v7AfterBlock(
+                        CombatMath.resolve(ab, bb, as, getLife()), refs.size() / 2, getLife()));
+            }
+        }
         consults++;
         blockOpportunities += B;
         log(game, String.format("  [joint] %d attackers, %d blockers, "
                 + "%d distinct outcomes, %d after Pareto",
                 A, B, byOutcome.size(), options.size()));
-        int pick = consult(game, opponentId(game), cands, "blkjoint");
+        int pick = consult(game, opponentId(game), cands, "blkjoint", meta);
         if (pick < 0 || pick >= options.size()) {
             return;
         }

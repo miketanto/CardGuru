@@ -1,0 +1,7 @@
+19:19:42 cards=35478 train=31946 heldout=3532 distinct_struct=34288 tree=True device=cuda seed=1 text_model=sentence-transformers/all-MiniLM-L6-v2
+19:19:50 params=25862016 steps/epoch=125 total_steps=3750
+/home/miketanto/.local/lib/python3.10/site-packages/torch/optim/lr_scheduler.py:182: UserWarning: Detected call of `lr_scheduler.step()` before `optimizer.step()`. In PyTorch 1.1.0 and later, you should call them in the opposite order: `optimizer.step()` before `lr_scheduler.step()`.  Failure to do this will result in PyTorch skipping the first value of the learning rate schedule. See more details at https://pytorch.org/docs/stable/optim.html#how-to-adjust-learning-rate
+  warnings.warn(
+19:20:46 epoch=1/30 train_loss=3.1091 (infonce=3.0404 distill=0.0069) train_r@1=0.468 train_r@10=0.860 held_loss=2.3763 held_r@1=0.451 held_r@10=0.851 54s
+19:21:31 epoch=2/30 train_loss=0.4673 (infonce=0.4088 distill=0.0058) train_r@1=0.715 train_r@10=0.967 held_loss=1.2793 held_r@1=0.715 held_r@10=0.963 44s
+19:22:05 epoch=3/30 train_loss=0.2580 (infonce=0.2115 distill=0.0047) train_r@1=0.792 train_r@10=0.982 held_loss=0.9644 held_r@1=0.780 held_r@10=0.978 34s

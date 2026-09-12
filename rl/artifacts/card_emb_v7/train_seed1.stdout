@@ -1,0 +1,2 @@
+20:32:41 cards=35478 train=31946 heldout=3532 distinct_struct=34288 tree=True device=cuda seed=1 text_model=sentence-transformers/all-MiniLM-L6-v2
+20:32:48 params=25847035 steps/epoch=125 total_steps=3750

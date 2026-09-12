@@ -1,0 +1,43 @@
+23:34:56 cards=35478 train=31946 heldout=3532 distinct_struct=34288 struct=tree device=cuda seed=3 text_model=sentence-transformers/all-MiniLM-L6-v2
+23:34:59 params=25828219 steps/epoch=125 total_steps=5000
+23:35:33 epoch=1/40 train_loss=5.6499 (infonce=4.1101 distill=0.0062 aux=1.4779) train_r@1=0.221 train_r@10=0.618 held_loss=3.7139 held_r@1=0.230 held_r@10=0.625 34s
+23:36:07 epoch=2/40 train_loss=1.4783 (infonce=0.8617 distill=0.0046 aux=0.5710) train_r@1=0.582 train_r@10=0.923 held_loss=1.8455 held_r@1=0.593 held_r@10=0.925 34s
+23:36:42 epoch=3/40 train_loss=0.8253 (infonce=0.3864 distill=0.0039 aux=0.3997) train_r@1=0.691 train_r@10=0.969 held_loss=1.3517 held_r@1=0.695 held_r@10=0.960 34s
+23:37:16 epoch=4/40 train_loss=0.6128 (infonce=0.2555 distill=0.0035 aux=0.3227) train_r@1=0.762 train_r@10=0.978 held_loss=1.1115 held_r@1=0.757 held_r@10=0.975 34s
+23:37:50 epoch=5/40 train_loss=0.5080 (infonce=0.1941 distill=0.0032 aux=0.2824) train_r@1=0.804 train_r@10=0.987 held_loss=0.9711 held_r@1=0.781 held_r@10=0.978 34s
+23:38:24 epoch=6/40 train_loss=0.4358 (infonce=0.1519 distill=0.0029 aux=0.2552) train_r@1=0.831 train_r@10=0.989 held_loss=0.8582 held_r@1=0.818 held_r@10=0.980 34s
+23:38:58 epoch=7/40 train_loss=0.3943 (infonce=0.1307 distill=0.0026 aux=0.2372) train_r@1=0.851 train_r@10=0.992 held_loss=0.7702 held_r@1=0.838 held_r@10=0.986 34s
+23:39:32 epoch=8/40 train_loss=0.3629 (infonce=0.1125 distill=0.0024 aux=0.2261) train_r@1=0.866 train_r@10=0.993 held_loss=0.7467 held_r@1=0.842 held_r@10=0.987 34s
+23:40:06 epoch=9/40 train_loss=0.3446 (infonce=0.1022 distill=0.0023 aux=0.2196) train_r@1=0.878 train_r@10=0.995 held_loss=0.6813 held_r@1=0.860 held_r@10=0.986 34s
+23:40:40 epoch=10/40 train_loss=0.3260 (infonce=0.0927 distill=0.0021 aux=0.2119) train_r@1=0.888 train_r@10=0.994 held_loss=0.6516 held_r@1=0.860 held_r@10=0.987 34s
+23:41:14 epoch=11/40 train_loss=0.3108 (infonce=0.0850 distill=0.0020 aux=0.2055) train_r@1=0.900 train_r@10=0.994 held_loss=0.6020 held_r@1=0.878 held_r@10=0.988 34s
+23:41:48 epoch=12/40 train_loss=0.2980 (infonce=0.0778 distill=0.0019 aux=0.2008) train_r@1=0.904 train_r@10=0.996 held_loss=0.5975 held_r@1=0.878 held_r@10=0.987 34s
+23:42:22 epoch=13/40 train_loss=0.2889 (infonce=0.0741 distill=0.0018 aux=0.1964) train_r@1=0.909 train_r@10=0.996 held_loss=0.5593 held_r@1=0.882 held_r@10=0.988 34s
+23:42:57 epoch=14/40 train_loss=0.2798 (infonce=0.0707 distill=0.0018 aux=0.1913) train_r@1=0.917 train_r@10=0.996 held_loss=0.5362 held_r@1=0.893 held_r@10=0.990 34s
+23:43:31 epoch=15/40 train_loss=0.2712 (infonce=0.0657 distill=0.0017 aux=0.1884) train_r@1=0.921 train_r@10=0.994 held_loss=0.5286 held_r@1=0.896 held_r@10=0.986 34s
+23:44:05 epoch=16/40 train_loss=0.2665 (infonce=0.0639 distill=0.0017 aux=0.1861) train_r@1=0.924 train_r@10=0.994 held_loss=0.5053 held_r@1=0.898 held_r@10=0.990 34s
+23:44:39 epoch=17/40 train_loss=0.2581 (infonce=0.0595 distill=0.0016 aux=0.1825) train_r@1=0.928 train_r@10=0.996 held_loss=0.4946 held_r@1=0.901 held_r@10=0.990 34s
+23:45:13 epoch=18/40 train_loss=0.2529 (infonce=0.0565 distill=0.0016 aux=0.1808) train_r@1=0.933 train_r@10=0.995 held_loss=0.4856 held_r@1=0.901 held_r@10=0.987 34s
+23:45:47 epoch=19/40 train_loss=0.2474 (infonce=0.0537 distill=0.0015 aux=0.1785) train_r@1=0.936 train_r@10=0.997 held_loss=0.4650 held_r@1=0.912 held_r@10=0.988 34s
+23:46:22 epoch=20/40 train_loss=0.2432 (infonce=0.0519 distill=0.0015 aux=0.1765) train_r@1=0.938 train_r@10=0.995 held_loss=0.4535 held_r@1=0.908 held_r@10=0.988 34s
+23:46:56 epoch=21/40 train_loss=0.2387 (infonce=0.0500 distill=0.0014 aux=0.1742) train_r@1=0.937 train_r@10=0.996 held_loss=0.4584 held_r@1=0.907 held_r@10=0.989 34s
+23:47:30 epoch=22/40 train_loss=0.2353 (infonce=0.0482 distill=0.0014 aux=0.1729) train_r@1=0.943 train_r@10=0.996 held_loss=0.4341 held_r@1=0.915 held_r@10=0.990 34s
+23:48:04 epoch=23/40 train_loss=0.2328 (infonce=0.0474 distill=0.0014 aux=0.1715) train_r@1=0.946 train_r@10=0.996 held_loss=0.4340 held_r@1=0.914 held_r@10=0.991 34s
+23:48:38 epoch=24/40 train_loss=0.2281 (infonce=0.0441 distill=0.0014 aux=0.1704) train_r@1=0.944 train_r@10=0.996 held_loss=0.4281 held_r@1=0.914 held_r@10=0.989 34s
+23:49:12 epoch=25/40 train_loss=0.2256 (infonce=0.0434 distill=0.0013 aux=0.1689) train_r@1=0.953 train_r@10=0.997 held_loss=0.4207 held_r@1=0.913 held_r@10=0.991 34s
+23:49:47 epoch=26/40 train_loss=0.2244 (infonce=0.0436 distill=0.0013 aux=0.1676) train_r@1=0.952 train_r@10=0.997 held_loss=0.4126 held_r@1=0.916 held_r@10=0.989 34s
+23:50:21 epoch=27/40 train_loss=0.2208 (infonce=0.0409 distill=0.0013 aux=0.1667) train_r@1=0.952 train_r@10=0.997 held_loss=0.4064 held_r@1=0.916 held_r@10=0.991 34s
+23:50:55 epoch=28/40 train_loss=0.2175 (infonce=0.0394 distill=0.0013 aux=0.1653) train_r@1=0.953 train_r@10=0.996 held_loss=0.4100 held_r@1=0.918 held_r@10=0.988 34s
+23:51:29 epoch=29/40 train_loss=0.2186 (infonce=0.0409 distill=0.0013 aux=0.1650) train_r@1=0.954 train_r@10=0.998 held_loss=0.3949 held_r@1=0.921 held_r@10=0.990 34s
+23:52:03 epoch=30/40 train_loss=0.2162 (infonce=0.0394 distill=0.0013 aux=0.1641) train_r@1=0.952 train_r@10=0.997 held_loss=0.3935 held_r@1=0.924 held_r@10=0.991 34s
+23:52:37 epoch=31/40 train_loss=0.2130 (infonce=0.0370 distill=0.0013 aux=0.1634) train_r@1=0.955 train_r@10=0.997 held_loss=0.3960 held_r@1=0.921 held_r@10=0.990 34s
+23:53:11 epoch=32/40 train_loss=0.2124 (infonce=0.0371 distill=0.0012 aux=0.1629) train_r@1=0.955 train_r@10=0.997 held_loss=0.3896 held_r@1=0.920 held_r@10=0.990 33s
+23:53:45 epoch=33/40 train_loss=0.2121 (infonce=0.0374 distill=0.0012 aux=0.1623) train_r@1=0.956 train_r@10=0.997 held_loss=0.3864 held_r@1=0.921 held_r@10=0.991 34s
+23:54:20 epoch=34/40 train_loss=0.2089 (infonce=0.0348 distill=0.0012 aux=0.1618) train_r@1=0.956 train_r@10=0.997 held_loss=0.3861 held_r@1=0.921 held_r@10=0.990 34s
+23:54:54 epoch=35/40 train_loss=0.2101 (infonce=0.0362 distill=0.0012 aux=0.1617) train_r@1=0.956 train_r@10=0.997 held_loss=0.3844 held_r@1=0.924 held_r@10=0.990 34s
+23:55:28 epoch=36/40 train_loss=0.2097 (infonce=0.0362 distill=0.0012 aux=0.1613) train_r@1=0.958 train_r@10=0.997 held_loss=0.3828 held_r@1=0.922 held_r@10=0.990 34s
+23:56:02 epoch=37/40 train_loss=0.2081 (infonce=0.0348 distill=0.0012 aux=0.1611) train_r@1=0.958 train_r@10=0.997 held_loss=0.3825 held_r@1=0.922 held_r@10=0.990 34s
+23:56:36 epoch=38/40 train_loss=0.2058 (infonce=0.0325 distill=0.0012 aux=0.1611) train_r@1=0.958 train_r@10=0.997 held_loss=0.3815 held_r@1=0.923 held_r@10=0.990 34s
+23:57:10 epoch=39/40 train_loss=0.2063 (infonce=0.0333 distill=0.0012 aux=0.1609) train_r@1=0.958 train_r@10=0.998 held_loss=0.3815 held_r@1=0.924 held_r@10=0.990 34s
+23:57:45 epoch=40/40 train_loss=0.2062 (infonce=0.0333 distill=0.0012 aux=0.1608) train_r@1=0.958 train_r@10=0.998 held_loss=0.3815 held_r@1=0.924 held_r@10=0.990 34s
+23:58:07 exported emb_seed3.pt (35478, 128) final={'train': {'r@1': 0.958251953125, 'r@10': 0.997802734375, 'loss': 0.2582207918167114, 'n': 4096}, 'heldout': {'r@1': 0.9235560297966003, 'r@10': 0.9903737306594849, 'loss': 0.3815184533596039, 'n': 3532}}

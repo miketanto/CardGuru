@@ -41,6 +41,13 @@ public interface PolicyClient {
         return choose(new float[0], candidates, phi);
     }
 
+    /** v7: the v6 view plus per-candidate type and referents (WIRE-V7
+     *  §2f). Clients below v7 fall through to the v6 consult. */
+    default int choose(StateEncoder.EntityView view, float[][] candidates,
+                       float phi, StateEncoder.CandMeta meta) {
+        return choose(view, candidates, phi);
+    }
+
     /** Terminal signal for the episode: +1 win, -1 loss, 0 draw/stall. */
     void episodeEnd(float reward);
 
