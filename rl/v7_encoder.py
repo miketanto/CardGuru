@@ -61,7 +61,13 @@ class EdgeAttention(nn.Module):
         logits = torch.einsum("bihd,bjhd->bhij", q, k) / math.sqrt(self.dk)
         table = torch.cat([self.zero_row, self.bias_rows], 0)                  # [n_edge, h]
         if edges is not None:
-            logits = logits + table[edges].permute(0, 3, 1, 2)                 # [B, h, T, T]
+            # one-hot matmul, NOT table[edges]: the gather's backward is
+            # index_put(accumulate) over B*T*T indices per layer, a
+            # sort-and-segment kernel that was 85% of the update's GPU time
+            # (V7-VALIDATION §4g profile). The matmul picks exactly one row
+            # per pair (0*x terms are exact), so the numbers are identical.
+            onehot = torch.nn.functional.one_hot(edges, table.shape[0]).to(table.dtype)
+            logits = logits + (onehot @ table).permute(0, 3, 1, 2)             # [B, h, T, T]
         logits = logits.masked_fill(~mask.view(B, 1, 1, T), float("-inf"))
         att = torch.softmax(logits, dim=-1)
         att = torch.nan_to_num(att)

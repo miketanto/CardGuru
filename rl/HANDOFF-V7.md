@@ -587,3 +587,6 @@ NEXT is Phase 5a (loopback + refusals) with rl/live_check_5a.sh on lane-b, row o
 
 UPDATE (2026-09-12 19:50): 5a DONE (row §5a on lane-d; rl/live_check_5a.sh on lane-b d9701ee): loopback 190 consults / 0 refusals; v6 driver and card_emb mismatch both refused with the reason on both sides.
 NEXT: 5b - 10k-consult coverage dump. Note: the driver emits consults only for the RL seat, so "heuristic-vs-heuristic" dumps need either the echo policy with PREFER=2,1 / PICK=99 over many seeds+decks (what 3b-3d used) or a shadow emission from a SearchPlayer seat; decide and record which. Then 5c (end-to-end leak gates: oracle, tracker, belief), 5d (throughput v7 vs v6, THROUGHPUT-LOCAL.md protocol), 5e (replay: the tapped-land residual is known; state it). Both PR texts exist: rl/PR-V7-LANE-D.md, rl/PR-V7-LANE-B.md.
+
+UPDATE (2026-09-12 20:30): 4g speed fixed on lane-d - EdgeAttention edge bias as a one-hot matmul (was table[edges]; its index backward was 85% of GPU time); v7_check 15/15; server defaults tbptt 16 / ep-batch 4: 64 ms/step, cuda peak 7.4 GB (ep-batch 8 spills past the 12 GB card). Rows: V7-VALIDATION §4g profile + correction. Next levers pre-registered there (SDPA, torch.compile, window batching, device-side collation).
+NEXT: Phase 5b (see the 19:50 note). Both branches pushed; nothing uncommitted.

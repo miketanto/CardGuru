@@ -913,3 +913,40 @@ backward is a dense reduction; mathematically identical, so the 4c
 exactness gates and `v7_check.py` must stay all-pass, and the expected
 effect is the step time falling to the matmul-bound floor (a large
 factor, measured after the change, not predicted here).
+
+### 4g (part 2) — correction: the edge-bias gather fixed, and the knob that fits (Lane C, 2026-09-12 08:20 WSL clock)
+
+Change: `rl/v7_encoder.py` `EdgeAttention.forward` computes the edge-type
+bias as a one-hot matmul (`F.one_hot(edges, n_edge) @ table`) instead of
+`table[edges]`. Mathematically identical (one nonzero term per pair);
+`rl/v7_check.py` **15 checks, 0 failures** after the change (the 4c
+exactness gates and V6-SAME included). `policy_server.py` defaults move
+to `--tbptt 16 --ep-batch 4`. Logs: `cuda_profile_4g_after.log`,
+script `cuda_profile_4g_after.sh`.
+
+| profile (cuda, real size, threads 1) | before | after |
+|---|---|---|
+| 60-step, tbptt 16 / ep-batch 2: GPU kernel time | 15.5 s | **2.55 s** |
+| same: top op | index backward 85 % | `aten::mm` (matmuls) |
+| same: GPU busy | 69 % | **9.9 %** (now CPU / launch-bound: 9,613 launches per step) |
+| same: ms/step, unprofiled warm-up | 406 | 243 |
+| 1,000-step, tbptt 16 / ep-batch 2 | 489 ms/step, cuda peak 2.85 GB | — |
+| 1,000-step, tbptt 32 / ep-batch 4 (old defaults) | 589 ms/step, 11.4 GB | — |
+| **1,000-step, tbptt 16 / ep-batch 4 (new defaults)** | — | **64 ms/step, cuda peak 7.4 GB, RSS 1.8 GB** |
+| 1,000-step, tbptt 16 / ep-batch 8 | — | 216 ms/step, cuda peak **15.6 GB** (over the 12 GB card: spilled to host memory over PCIe — not a usable setting) |
+
+Reading: the gather's backward was the 85 %; with it gone the update
+is launch-bound at small batches (GPU idle 90 % at one row per
+forward), and the batch lever works exactly as far as the card allows:
+ep-batch 4 gives **9× the original rate** (582 → 64 ms/step; a
+5,000-step update ≈ 5 min instead of 48) inside 7.4 GB, ep-batch 8
+exceeds the card and loses most of the gain to spilling. Memory scales
+with ep-batch × tbptt × T² attention activations across 10 layers, so
+ep-batch 4 / tbptt 16 is the fit on the RTX 3060 at the synthetic
+buffer's ~300-token boards; real rung-0 boards (~20 entities) will fit
+more. Pre-registered next levers, none applied: fused attention
+(`scaled_dot_product_attention` with the bias as the additive mask),
+`torch.compile` on the block, encoding a window's timesteps in one batch
+with the LSTM run afterwards, and collating a window once on the device
+instead of per timestep. What these numbers cannot support: real-data
+rates (synthetic buffer, one thread) and any claim about learning.

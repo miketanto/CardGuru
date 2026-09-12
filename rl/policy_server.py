@@ -1866,7 +1866,7 @@ if __name__ == "__main__":
                     help="v7: deck context (WIRE-V7 §5) from this "
                          "artifact dir; auto = rl/artifacts/deck_ctx_v1 "
                          "if present; none = D_me/D_opp zeros")
-    ap.add_argument("--tbptt", type=int, default=32,
+    ap.add_argument("--tbptt", type=int, default=16,
                     help="v7: BPTT window (steps between hidden detach "
                          "+ backward); the 4g memory knob")
     ap.add_argument("--ep-batch", type=int, default=4,
