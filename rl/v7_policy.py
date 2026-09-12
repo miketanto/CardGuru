@@ -88,6 +88,7 @@ class V7Policy(nn.Module):
         # "state_dict" is this class's own save(); "net" is policy_server.Trainer.save()
         # (the lane checkpoint, which also carries "opt"/"episodes"/"updates")
         net.load_state_dict(ck["state_dict"] if "state_dict" in ck else ck["net"])
+        net.heads.logit_bound = float(cfg.get("logit_bound", 0.0))
         return net.to(device)
 
 

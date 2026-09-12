@@ -46,6 +46,7 @@ def main():
     ap.add_argument("--device", default="cuda" if torch.cuda.is_available() else "cpu")
     ap.add_argument("--limit", type=int, default=2000)
     ap.add_argument("--batch", type=int, default=32)
+    ap.add_argument("--logit-bound", type=float, default=None, help="override the checkpoint bound (A2 lane checkpoints saved by Trainer)")
     args = ap.parse_args()
     hello, msgs = load(args.recordings, args.limit)
     ids = V.CardIds()
@@ -54,6 +55,8 @@ def main():
     print(f"INITLOGITS|consults={len(obs)}|files={len(args.recordings)}|device={args.device}")
     for ck in args.ckpt:
         net = P.V7Policy.load(ck, device=args.device).eval()
+        if args.logit_bound is not None:
+            net.heads.logit_bound = args.logit_bound
         ep = torch.load(ck, map_location="cpu", weights_only=False).get("episodes", 0)
         am = collections.Counter(); avail = collections.Counter(); pass_when_other = 0; n_other = 0
         ent_sum = gap_sum = ppass_sum = 0.0; n = 0

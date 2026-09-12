@@ -29,6 +29,7 @@ class V7Heads(nn.Module):
     def __init__(self, d=256, d_mem=256, hidden=256):
         super().__init__()
         self.lstm = nn.LSTMCell(d, d_mem)
+        self.logit_bound = 0.0          # > 0: logits = B * tanh(logits / B) (7a arm A2); 0 = unbounded (default, identity)
         self.game_out = nn.Linear(d_mem, d)                     # memory path, residual on the game token
         nn.init.zeros_(self.game_out.weight)                    # at init game_vec == g exactly (information-preserving)
         nn.init.zeros_(self.game_out.bias)
@@ -56,7 +57,10 @@ class V7Heads(nn.Module):
         ptr = self.pointer(cand).squeeze(-1)                          # [B, K]
         bil = self.bilinear(game_vec.unsqueeze(1).expand(B, K, self.d).reshape(B * K, self.d),
                             cand.reshape(B * K, self.d)).view(B, K)
-        logits = (ptr + bil).masked_fill(~cmask, float("-inf"))
+        logits = ptr + bil
+        if self.logit_bound:
+            logits = self.logit_bound * torch.tanh(logits / self.logit_bound)
+        logits = logits.masked_fill(~cmask, float("-inf"))
         return logits, game_vec, (h, c)
 
     @staticmethod

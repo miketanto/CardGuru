@@ -847,6 +847,7 @@ class Trainer:
         return a
 
     def _update_v7(self):
+        self._v7st = dict(ent=0.0, n=0, maxl=0.0, gn=0.0, types=[0] * 8)   # 7a instrumentation
         """PPO over V7Obs buffers: GAE exactly as _update_body, then
         true-BPTT windows exactly as _update_recurrent (episodes batched
         ep_batch at a time, hidden detached and the window backwarded
@@ -931,6 +932,14 @@ class Trainer:
                                     torch.clamp(ratio, 1 - CLIP, 1 + CLIP) * a)
                     vloss = (value - ret[it]) ** 2
                     ent = dist.entropy()
+                    _st = self._v7st
+                    _st["ent"] += float(ent.detach().sum()); _st["n"] += int(ent.numel())
+                    _fin = logits.detach()[torch.isfinite(logits.detach())]
+                    if _fin.numel():
+                        _st["maxl"] = max(_st["maxl"], float(_fin.abs().max()))
+                    if "cand_type" in b:
+                        for _v in b["cand_type"].gather(1, actions[it].view(-1, 1)).view(-1).tolist():
+                            _st["types"][int(_v)] += 1
                     losses.append((pg + VAL_COEF * vloss
                                    - ENT_COEF * ent).sum())
                     if (t + 1) % tbptt == 0:
@@ -938,7 +947,7 @@ class Trainer:
                         losses = []
                 if losses:
                     torch.stack(losses).sum().div(denom).backward()
-                nn.utils.clip_grad_norm_(params, 0.5)
+                self._v7st["gn"] = max(self._v7st["gn"], float(nn.utils.clip_grad_norm_(params, 0.5)))
                 self.opt.step()
                 h = c = None
         self._finish_update(n=n, phis=phis)
@@ -1240,6 +1249,10 @@ class Trainer:
                 f"oracle_cover={getattr(self, 'oracle_cover', 0.0):.3f} "
                 f"critic_ev={getattr(self, 'critic_ev', float('nan')):.4f} "
                 f"update_s={update_s:.2f}")
+        _st = getattr(self, "_v7st", None)
+        if _st and _st["n"]:
+            line += (f" entropy={_st['ent'] / _st['n']:.3f} max_logit={_st['maxl']:.2f} grad_norm={_st['gn']:.2f}"
+                     f" chosen_types={'/'.join(str(x) for x in _st['types'])}")
         print("TRAIN|" + line, flush=True)
         if self.log_path:
             with open(self.log_path, "a") as f:
@@ -1906,6 +1919,9 @@ if __name__ == "__main__":
                     help="torch intra-op threads DURING update() only; "
                          "restored to the inference count on exit "
                          "(THROUGHPUT-LOCAL.md §10a; 0 = unchanged)")
+    ap.add_argument("--epochs", type=int, default=4, help="PPO epochs per update (7a arms)")
+    ap.add_argument("--logit-bound", type=float, default=0.0, help="v7: logits = B*tanh(l/B); 0 = off (7a arm A2)")
+
     args = ap.parse_args()
     if args.device == "cuda" and not torch.cuda.is_available():
         raise RuntimeError("--device cuda requested but "
@@ -1957,6 +1973,10 @@ if __name__ == "__main__":
                  frozen=args.frozen, deck_ctx=dc)
     if args.arch == "v7":
         _t.tbptt, _t.ep_batch = args.tbptt, args.ep_batch
+        globals()["EPOCHS"] = args.epochs
+        if args.logit_bound:
+            _t.net.heads.logit_bound = args.logit_bound
+            _t.net.config["logit_bound"] = args.logit_bound
     _t.frozen = args.frozen
     _t.update_threads = args.update_threads
     _t.oracle_probe = args.oracle_probe
