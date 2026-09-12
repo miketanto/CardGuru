@@ -56,6 +56,8 @@ public class RLPlayer extends ComputerPlayer {
     public long consults = 0;
     public long yieldSkipped = 0;
     public long autoPassK0 = 0;
+    /** priority candidates dropped because a.isManaAbility() (7a amendment) */
+    public long manaCandsDropped = 0;
     public long actions = 0;
     public long failedActivations = 0;
     /** C7 emergence metric: flash/instant-speed-castable PERMANENT spells
@@ -208,6 +210,14 @@ public class RLPlayer extends ComputerPlayer {
      * mana-loop) degrades to always-pass instead of hanging the driver */
     public long consultBudget = Long.getLong("rl.consultBudget", 20000L);
     public boolean budgetExhausted = false;
+    /** -Drl.manaCands=true restores mana abilities to the priority candidate
+     * set. Default off (7a amendment): XMage auto-pays mana on cast, so a
+     * hand-tapped land floats mana that empties at end of step - a consult
+     * that at best does nothing and at worst wastes the land for the turn;
+     * it was the 7a collapse sink (~50 ACTIVATE consults per game). Read per
+     * job (instance field), not a class-init constant. A payment sub-consult
+     * for heterogeneous untapped sources is deferred (V7-VALIDATION 7a). */
+    public boolean manaCands = Boolean.getBoolean("rl.manaCands");
     public final Map<String, Integer> fallbackCalls = new TreeMap<>();
     /** rl.debug transcript: one line per chosen action (RLGAME block) */
     public final StringBuilder actionLog = new StringBuilder();
@@ -511,7 +521,7 @@ public class RLPlayer extends ComputerPlayer {
         budgetExhausted = false;
         yield = YieldKind.NONE;
         shuffleCount = 0;
-        windows = consults = yieldSkipped = autoPassK0 = 0;
+        windows = consults = yieldSkipped = autoPassK0 = manaCandsDropped = 0;
         actions = failedActivations = 0;
         blocksDeclared = blockOpportunities = 0;
         blockCombats = blockCombatsOptimal = blockScoreGap = blockTruncated = 0;
@@ -672,6 +682,11 @@ public class RLPlayer extends ComputerPlayer {
         List<ActivatedAbility> playable = new ArrayList<>(getPlayable(game, true));
         // phantom land drop: getPlayable lists it at illegal steps
         playable.removeIf(a -> a instanceof PlayLandAbility && !sorceryWindow);
+        if (!manaCands) {
+            int before = playable.size();
+            playable.removeIf(a -> a.isManaAbility());
+            manaCandsDropped += before - playable.size();
+        }
         if (playable.isEmpty()) {
             autoPassK0++;
             if (CAND_DUMP != null) {

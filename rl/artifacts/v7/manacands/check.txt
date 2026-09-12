@@ -1,0 +1,44 @@
+== W0Base
+MC|control|on=423|off=423|pairs=423|vanished=0|removed=0|removed_mana=0
+MC|control|census|e|16:220 20:144 21:220
+MC|control|census|v7_ent|22:220 55:144 56:220
+MC|filter|on=423|off=78|pairs=78|vanished=345|removed=401|removed_mana=401
+MC|filter|census|e|16:36 20:24 21:36
+MC|filter|census|v7_ent|22:36 55:24 56:36
+MC|filter|census|v7_game|20:56 21:71
+MC|filter|census|v7_opp_actions|7:472
+MC|derived_only|v7_game:20 v7_game:21 v7_opp_actions:7
+MC|probe|manaCandsDropped=401|removed=401
+MC|PASS|fails=0
+MCCHECK W0Base rc=0
+== BenchDimir
+MC|control|on=611|off=611|pairs=611|vanished=0|removed=0|removed_mana=0
+MC|control|census|e|16:172 20:127 21:172
+MC|control|census|v7_cand_refers|0:16
+MC|control|census|v7_ent|22:172 55:127 56:172
+MC|control|census|v7_opp_action_refers|0:38
+MC|filter|on=611|off=506|pairs=506|vanished=105|removed=1661|removed_mana=1661
+MC|filter|census|e|16:72 20:72 21:72
+MC|filter|census|v7_cand_refers|0:6
+MC|filter|census|v7_ent|22:72 55:72 56:72
+MC|filter|census|v7_game|13:1 14:242 15:243 20:464 21:499
+MC|filter|census|v7_opp_actions|7:265
+MC|derived_only|v7_game:13 v7_game:14 v7_game:15 v7_game:20 v7_game:21 v7_opp_actions:7
+MC|probe|manaCandsDropped=1661|removed=1661
+MC|PASS|fails=0
+MCCHECK BenchDimir rc=0
+== B1Fast
+MC|control|on=514|off=514|pairs=514|vanished=0|removed=0|removed_mana=0
+MC|control|census|e|16:310 20:269 21:310
+MC|control|census|v7_cand_refers|0:9
+MC|control|census|v7_ent|22:310 55:269 56:310
+MC|filter|on=514|off=261|pairs=261|vanished=253|removed=486|removed_mana=486
+MC|filter|census|e|16:124 20:98 21:124
+MC|filter|census|v7_cand_refers|0:10
+MC|filter|census|v7_ent|22:124 55:98 56:124
+MC|filter|census|v7_game|20:233 21:255
+MC|filter|census|v7_opp_actions|7:540
+MC|derived_only|v7_game:20 v7_game:21 v7_opp_actions:7
+MC|probe|manaCandsDropped=486|removed=486
+MC|PASS|fails=0
+MCCHECK B1Fast rc=0

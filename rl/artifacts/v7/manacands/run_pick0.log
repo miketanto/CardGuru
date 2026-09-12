@@ -1,0 +1,92 @@
+RECORD|mc_on_W0Base|rc=0|lines=134|consults=63|md5=a3d384212516
+RL|summary|episodes=3|wins=0|losses=3|draws=0|stalls=0|win_rate=0.0000|games_per_sec=1.435|agent_consults_per_ep=21.0|agent_windows_per_ep=102.0|agent_actions_per_ep=0.0|turns_per_ep=11.7|opponent=heuristic|policy=socket|deck=W0Base.dck|oppDeck=W0Base.dck|seed=900000|fallbacks=attackAuditMs=0 attackCombats=0 attackCombatsChoice=0 attackLethalMissed=0 attackOpportunities=0 attackOptimal=0 attackOptimalCA=0 attackOptimalChoice=0 attackOver=0 attackRefDeclared=0 attackRefDeclaredCA=0 attackReplyTruncated=0 attackScoreGap=0 attackScoreGapCA=0 attackSearchKNodes=0 attackSearchMs=0 attackTruncated=0 attackUnder=0 attacksDeclared=0 autoPassEmpty=272 blockCombats=0 blockFatal=0 blockOpportunities=0 blockOptimal=0 blockScoreGap=0 blockTruncated=0 blocksDeclared=0 entityConsults=63 entityDropped=0 entityMaxSeen=26 entityTrunc=0 entityUnknown=0 flashThreats=0 flashThreatsOppTurn=0 manaCandsDropped=0 v7MetaMissing=0 v7RefersFallback=0 v7UnknownId=0 windows=306 
+RECORD|mc_off_W0Base|rc=0|lines=134|consults=63|md5=96f82c902821
+RL|summary|episodes=3|wins=0|losses=3|draws=0|stalls=0|win_rate=0.0000|games_per_sec=4.735|agent_consults_per_ep=21.0|agent_windows_per_ep=102.0|agent_actions_per_ep=0.0|turns_per_ep=11.7|opponent=heuristic|policy=socket|deck=W0Base.dck|oppDeck=W0Base.dck|seed=900000|fallbacks=attackAuditMs=0 attackCombats=0 attackCombatsChoice=0 attackLethalMissed=0 attackOpportunities=0 attackOptimal=0 attackOptimalCA=0 attackOptimalChoice=0 attackOver=0 attackRefDeclared=0 attackRefDeclaredCA=0 attackReplyTruncated=0 attackScoreGap=0 attackScoreGapCA=0 attackSearchKNodes=0 attackSearchMs=0 attackTruncated=0 attackUnder=0 attacksDeclared=0 autoPassEmpty=272 blockCombats=0 blockFatal=0 blockOpportunities=0 blockOptimal=0 blockScoreGap=0 blockTruncated=0 blocksDeclared=0 entityConsults=126 entityDropped=0 entityMaxSeen=26 entityTrunc=0 entityUnknown=0 flashThreats=0 flashThreatsOppTurn=0 manaCandsDropped=0 v7MetaMissing=0 v7RefersFallback=0 v7UnknownId=0 windows=306 
+RECORD|mc_on_BenchDimir|rc=0|lines=194|consults=93|md5=6668b2f00c42
+RL|summary|episodes=3|wins=0|losses=3|draws=0|stalls=0|win_rate=0.0000|games_per_sec=1.147|agent_consults_per_ep=31.0|agent_windows_per_ep=156.0|agent_actions_per_ep=0.0|turns_per_ep=16.3|opponent=heuristic|policy=socket|deck=BenchDimir.dck|oppDeck=BenchDimir.dck|seed=900000|fallbacks=attackAuditMs=0 attackCombats=0 attackCombatsChoice=0 attackLethalMissed=0 attackOpportunities=0 attackOptimal=0 attackOptimalCA=0 attackOptimalChoice=0 attackOver=0 attackRefDeclared=0 attackRefDeclaredCA=0 attackReplyTruncated=0 attackScoreGap=0 attackScoreGapCA=0 attackSearchKNodes=0 attackSearchMs=0 attackTruncated=0 attackUnder=0 attacksDeclared=0 autoPassEmpty=420 blockCombats=0 blockFatal=0 blockOpportunities=0 blockOptimal=0 blockScoreGap=0 blockTruncated=0 blocksDeclared=0 entityConsults=219 entityDropped=0 entityMaxSeen=36 entityTrunc=0 entityUnknown=120 flashThreats=0 flashThreatsOppTurn=0 manaCandsDropped=0 v7MetaMissing=0 v7RefersFallback=0 v7UnknownId=0 windows=468 
+RECORD|mc_off_BenchDimir|rc=0|lines=194|consults=93|md5=8574f764624b
+RL|summary|episodes=3|wins=0|losses=3|draws=0|stalls=0|win_rate=0.0000|games_per_sec=2.179|agent_consults_per_ep=31.0|agent_windows_per_ep=156.0|agent_actions_per_ep=0.0|turns_per_ep=16.3|opponent=heuristic|policy=socket|deck=BenchDimir.dck|oppDeck=BenchDimir.dck|seed=900000|fallbacks=attackAuditMs=0 attackCombats=0 attackCombatsChoice=0 attackLethalMissed=0 attackOpportunities=0 attackOptimal=0 attackOptimalCA=0 attackOptimalChoice=0 attackOver=0 attackRefDeclared=0 attackRefDeclaredCA=0 attackReplyTruncated=0 attackScoreGap=0 attackScoreGapCA=0 attackSearchKNodes=0 attackSearchMs=0 attackTruncated=0 attackUnder=0 attacksDeclared=0 autoPassEmpty=420 blockCombats=0 blockFatal=0 blockOpportunities=0 blockOptimal=0 blockScoreGap=0 blockTruncated=0 blocksDeclared=0 entityConsults=312 entityDropped=0 entityMaxSeen=36 entityTrunc=0 entityUnknown=240 flashThreats=0 flashThreatsOppTurn=0 manaCandsDropped=0 v7MetaMissing=0 v7RefersFallback=0 v7UnknownId=0 windows=468 
+RECORD|mc6_on_W0Base|rc=0|lines=134|consults=63|md5=040cc48c12e1
+RL|summary|episodes=3|wins=0|losses=3|draws=0|stalls=0|win_rate=0.0000|games_per_sec=2.043|agent_consults_per_ep=21.0|agent_windows_per_ep=102.0|agent_actions_per_ep=0.0|turns_per_ep=11.7|opponent=heuristic|policy=socket|deck=W0Base.dck|oppDeck=W0Base.dck|seed=900000|fallbacks=attackAuditMs=0 attackCombats=0 attackCombatsChoice=0 attackLethalMissed=0 attackOpportunities=0 attackOptimal=0 attackOptimalCA=0 attackOptimalChoice=0 attackOver=0 attackRefDeclared=0 attackRefDeclaredCA=0 attackReplyTruncated=0 attackScoreGap=0 attackScoreGapCA=0 attackSearchKNodes=0 attackSearchMs=0 attackTruncated=0 attackUnder=0 attacksDeclared=0 autoPassEmpty=272 blockCombats=0 blockFatal=0 blockOpportunities=0 blockOptimal=0 blockScoreGap=0 blockTruncated=0 blocksDeclared=0 entityConsults=63 entityDropped=0 entityMaxSeen=26 entityTrunc=0 entityUnknown=0 flashThreats=0 flashThreatsOppTurn=0 manaCandsDropped=0 windows=306 
+RECORD|mc6_off_W0Base|rc=0|lines=134|consults=63|md5=339893250da2
+RL|summary|episodes=3|wins=0|losses=3|draws=0|stalls=0|win_rate=0.0000|games_per_sec=4.816|agent_consults_per_ep=21.0|agent_windows_per_ep=102.0|agent_actions_per_ep=0.0|turns_per_ep=11.7|opponent=heuristic|policy=socket|deck=W0Base.dck|oppDeck=W0Base.dck|seed=900000|fallbacks=attackAuditMs=0 attackCombats=0 attackCombatsChoice=0 attackLethalMissed=0 attackOpportunities=0 attackOptimal=0 attackOptimalCA=0 attackOptimalChoice=0 attackOver=0 attackRefDeclared=0 attackRefDeclaredCA=0 attackReplyTruncated=0 attackScoreGap=0 attackScoreGapCA=0 attackSearchKNodes=0 attackSearchMs=0 attackTruncated=0 attackUnder=0 attacksDeclared=0 autoPassEmpty=272 blockCombats=0 blockFatal=0 blockOpportunities=0 blockOptimal=0 blockScoreGap=0 blockTruncated=0 blocksDeclared=0 entityConsults=126 entityDropped=0 entityMaxSeen=26 entityTrunc=0 entityUnknown=0 flashThreats=0 flashThreatsOppTurn=0 manaCandsDropped=0 windows=306 
+RECORD|mc_p1_off_W0Base|rc=0|lines=286|consults=139|md5=c6de8bf562d0
+RL|summary|episodes=3|wins=2|losses=1|draws=0|stalls=0|win_rate=0.6667|games_per_sec=1.843|agent_consults_per_ep=46.3|agent_windows_per_ep=336.3|agent_actions_per_ep=50.0|turns_per_ep=31.0|opponent=heuristic|policy=socket|deck=W0Base.dck|oppDeck=W0Base.dck|seed=900000|fallbacks=attackAuditMs=34 attackCombats=38 attackCombatsChoice=38 attackLethalMissed=3 attackOpportunities=89 attackOptimal=15 attackOptimalCA=15 attackOptimalChoice=15 attackOver=19 attackRefDeclared=28 attackRefDeclaredCA=24 attackReplyTruncated=0 attackScoreGap=116 attackScoreGapCA=123 attackSearchKNodes=178 attackSearchMs=40 attackTruncated=0 attackUnder=1 attacksDeclared=38 autoPassEmpty=942 blockCombats=31 blockFatal=0 blockOpportunities=55 blockOptimal=25 blockScoreGap=42 blockTruncated=0 blocksDeclared=45 entityConsults=451 entityDropped=0 entityMaxSeen=47 entityTrunc=0 entityUnknown=240 flashThreats=0 flashThreatsOppTurn=0 manaCandsDropped=845 v7MetaMissing=0 v7RefersFallback=0 v7UnknownId=0 windows=1009 
+CHECK3B rc=0
+v6 disagreements / failed identities: none
+MC|on=63|off=63|pairs=5|on_only=0|removed=0|removed_mana=0|removed_v6unknown=0|game_type_onehot_diffs=0|ctr_diffs=0|ctr_keys={}
+MC|probe_dropped_on=0|probe_dropped_off=0|removed=0
+FAIL ON#5: no OFF partner and non-mana candidates present (types [4, 4, 4, 4, 4, 4, 4, 4])
+FAIL ON#6: no OFF partner and non-mana candidates present (types [0, 1, 1, 1, 1, 1])
+FAIL ON#7: no OFF partner and non-mana candidates present (types [0, 1, 1, 1, 1, 1])
+FAIL ON#8: no OFF partner and non-mana candidates present (types [4, 4, 4, 4, 4, 4, 4, 4])
+FAIL ON#9: no OFF partner and non-mana candidates present (types [0])
+FAIL ON#10: no OFF partner and non-mana candidates present (types [0, 1, 1, 1, 1, 1])
+FAIL ON#11: no OFF partner and non-mana candidates present (types [0, 1, 1, 1, 1, 1])
+FAIL ON#12: no OFF partner and non-mana candidates present (types [4, 4, 4, 4, 4, 4, 4, 4])
+FAIL ON#13: no OFF partner and non-mana candidates present (types [0])
+FAIL ON#14: no OFF partner and non-mana candidates present (types [0, 1, 1, 1, 1, 1, 1])
+FAIL ON#15: no OFF partner and non-mana candidates present (types [0, 1, 1, 1, 1, 1, 1])
+FAIL ON#16: no OFF partner and non-mana candidates present (types [4, 4, 4, 4, 4, 4, 4, 4])
+FAIL ON#17: no OFF partner and non-mana candidates present (types [0])
+FAIL ON#18: no OFF partner and non-mana candidates present (types [0, 1, 1, 1, 1, 1, 1, 1])
+FAIL ON#19: no OFF partner and non-mana candidates present (types [0, 1, 1, 1, 1, 1, 1, 1])
+FAIL ON#20: no OFF partner and non-mana candidates present (types [4, 4, 4, 4, 4, 4, 4, 4])
+FAIL ON#21: no OFF partner and non-mana candidates present (types [0])
+FAIL ON#22: no OFF partner and non-mana candidates present (types [0, 1, 1, 1])
+FAIL ON#23: no OFF partner and non-mana candidates present (types [0, 1, 1, 1])
+FAIL ON#24: no OFF partner and non-mana candidates present (types [4, 4, 4, 4, 4, 4, 4, 4])
+MC|FAIL|fails=59
+MCCHECK W0Base rc=1
+MC|on=93|off=93|pairs=37|on_only=0|removed=0|removed_mana=0|removed_v6unknown=0|game_type_onehot_diffs=0|ctr_diffs=0|ctr_keys={}
+MC|probe_dropped_on=0|probe_dropped_off=0|removed=0
+FAIL ON#37: no OFF partner and non-mana candidates present (types [4, 4, 4, 4, 4, 4, 4, 4])
+FAIL ON#38: no OFF partner and non-mana candidates present (types [0, 1, 1, 1])
+FAIL ON#39: no OFF partner and non-mana candidates present (types [0, 1, 1, 1])
+FAIL ON#40: no OFF partner and non-mana candidates present (types [4, 4, 4, 4, 4, 4, 4, 4])
+FAIL ON#41: no OFF partner and non-mana candidates present (types [0])
+FAIL ON#42: no OFF partner and non-mana candidates present (types [0, 1, 1, 1])
+FAIL ON#43: no OFF partner and non-mana candidates present (types [0, 1, 1, 1])
+FAIL ON#44: no OFF partner and non-mana candidates present (types [4, 4, 4, 4, 4, 4, 4, 4])
+FAIL ON#45: no OFF partner and non-mana candidates present (types [0])
+FAIL ON#46: no OFF partner and non-mana candidates present (types [0, 1, 1])
+FAIL ON#47: no OFF partner and non-mana candidates present (types [0, 1, 1])
+FAIL ON#48: no OFF partner and non-mana candidates present (types [4, 4, 4, 4, 4, 4, 4, 4])
+FAIL ON#49: no OFF partner and non-mana candidates present (types [0])
+FAIL ON#50: no OFF partner and non-mana candidates present (types [0, 1, 1])
+FAIL ON#51: no OFF partner and non-mana candidates present (types [0, 1, 1])
+FAIL ON#52: no OFF partner and non-mana candidates present (types [4, 4, 4, 4, 4, 4, 4, 4])
+FAIL ON#53: no OFF partner and non-mana candidates present (types [0])
+FAIL ON#54: no OFF partner and non-mana candidates present (types [0, 1, 1, 1])
+FAIL ON#55: no OFF partner and non-mana candidates present (types [0, 1, 1, 1])
+FAIL ON#56: no OFF partner and non-mana candidates present (types [4, 4, 4, 4, 4, 4, 4, 4])
+MC|FAIL|fails=57
+MCCHECK BenchDimir rc=1
+MC|on=63|off=63|pairs=63|on_only=0|removed=0|removed_mana=0|removed_v6unknown=0|game_type_onehot_diffs=0|ctr_diffs=0|ctr_keys={}
+MC|probe_dropped_on=0|probe_dropped_off=0|removed=0
+FAIL ON#9/OFF#9: candidate subsequence but other fields differ: [('e', None)]
+FAIL ON#10/OFF#10: candidate subsequence but other fields differ: [('e', None)]
+FAIL ON#11/OFF#11: candidate subsequence but other fields differ: [('e', None)]
+FAIL ON#12/OFF#12: candidate subsequence but other fields differ: [('e', None)]
+FAIL ON#17/OFF#17: candidate subsequence but other fields differ: [('e', None)]
+FAIL ON#18/OFF#18: candidate subsequence but other fields differ: [('e', None)]
+FAIL ON#19/OFF#19: candidate subsequence but other fields differ: [('e', None)]
+FAIL ON#20/OFF#20: candidate subsequence but other fields differ: [('e', None)]
+FAIL ON#21/OFF#21: candidate subsequence but other fields differ: [('e', None)]
+FAIL ON#28/OFF#28: candidate subsequence but other fields differ: [('e', None)]
+FAIL ON#29/OFF#29: candidate subsequence but other fields differ: [('e', None)]
+FAIL ON#30/OFF#30: candidate subsequence but other fields differ: [('e', None)]
+FAIL ON#31/OFF#31: candidate subsequence but other fields differ: [('e', None)]
+FAIL ON#36/OFF#36: candidate subsequence but other fields differ: [('e', None)]
+FAIL ON#37/OFF#37: candidate subsequence but other fields differ: [('e', None)]
+FAIL ON#38/OFF#38: candidate subsequence but other fields differ: [('e', None)]
+FAIL ON#39/OFF#39: candidate subsequence but other fields differ: [('e', None)]
+FAIL ON#40/OFF#40: candidate subsequence but other fields differ: [('e', None)]
+MC|FAIL|fails=18
+MCCHECK v6 rc=1
+TYPES mc_on_W0Base consults 63 meanK 5.17 types {0: 46, 1: 156, 4: 124}
+TYPES mc_off_W0Base consults 63 meanK 5.17 types {0: 46, 1: 156, 4: 124}
+TYPES mc_p1_off_W0Base consults 139 meanK 3.04 types {0: 124, 1: 78, 2: 72, 4: 4, 5: 95, 6: 49}
+TYPES mc_on_BenchDimir consults 93 meanK 4.27 types {0: 69, 1: 148, 4: 180}
+TYPES mc_off_BenchDimir consults 93 meanK 4.27 types {0: 69, 1: 148, 4: 180}
+DONE

@@ -430,6 +430,7 @@ public class EpisodeRunner {
             // denominator for "is a cheap can-I-act-at-all pre-check worth
             // building"; it was counted in RLPlayer but never surfaced.
             fallbacks.merge("autoPassEmpty", (int) rlAgent.autoPassK0, Integer::sum);
+            fallbacks.merge("manaCandsDropped", (int) rlAgent.manaCandsDropped, Integer::sum);
             fallbacks.merge("windows", (int) rlAgent.windows, Integer::sum);
         }
         if (agent instanceof org.mage.test.benchmark.SearchPlayer) {

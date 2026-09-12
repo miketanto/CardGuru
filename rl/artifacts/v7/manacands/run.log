@@ -1,0 +1,69 @@
+RECORD|mcL_on_W0Base|rc=0|lines=856|consults=423|md5=2ec69bd243b1
+RL|summary|episodes=4|wins=0|losses=4|draws=0|stalls=0|win_rate=0.0000|games_per_sec=3.456|agent_consults_per_ep=105.8|agent_windows_per_ep=106.3|agent_actions_per_ep=5.5|turns_per_ep=11.5|opponent=heuristic|policy=socket|deck=W0Base.dck|oppDeck=W0Base.dck|seed=900000|fallbacks=attackAuditMs=0 attackCombats=0 attackCombatsChoice=0 attackLethalMissed=0 attackOpportunities=0 attackOptimal=0 attackOptimalCA=0 attackOptimalChoice=0 attackOver=0 attackRefDeclared=0 attackRefDeclaredCA=0 attackReplyTruncated=0 attackScoreGap=0 attackScoreGapCA=0 attackSearchKNodes=0 attackSearchMs=0 attackTruncated=0 attackUnder=0 attacksDeclared=0 autoPassEmpty=20 blockCombats=0 blockFatal=0 blockOpportunities=0 blockOptimal=0 blockScoreGap=0 blockTruncated=0 blocksDeclared=0 entityConsults=874 entityDropped=0 entityMaxSeen=47 entityTrunc=0 entityUnknown=240 flashThreats=0 flashThreatsOppTurn=0 manaCandsDropped=0 v7MetaMissing=0 v7RefersFallback=0 v7UnknownId=0 windows=425 
+RECORD|mcL_on2_W0Base|rc=0|lines=856|consults=423|md5=cfae91085c06
+RL|summary|episodes=4|wins=0|losses=4|draws=0|stalls=0|win_rate=0.0000|games_per_sec=3.488|agent_consults_per_ep=105.8|agent_windows_per_ep=106.3|agent_actions_per_ep=5.5|turns_per_ep=11.5|opponent=heuristic|policy=socket|deck=W0Base.dck|oppDeck=W0Base.dck|seed=900000|fallbacks=attackAuditMs=0 attackCombats=0 attackCombatsChoice=0 attackLethalMissed=0 attackOpportunities=0 attackOptimal=0 attackOptimalCA=0 attackOptimalChoice=0 attackOver=0 attackRefDeclared=0 attackRefDeclaredCA=0 attackReplyTruncated=0 attackScoreGap=0 attackScoreGapCA=0 attackSearchKNodes=0 attackSearchMs=0 attackTruncated=0 attackUnder=0 attacksDeclared=0 autoPassEmpty=20 blockCombats=0 blockFatal=0 blockOpportunities=0 blockOptimal=0 blockScoreGap=0 blockTruncated=0 blocksDeclared=0 entityConsults=1297 entityDropped=0 entityMaxSeen=47 entityTrunc=0 entityUnknown=240 flashThreats=0 flashThreatsOppTurn=0 manaCandsDropped=0 v7MetaMissing=0 v7RefersFallback=0 v7UnknownId=0 windows=425 
+RECORD|mcL_off_W0Base|rc=0|lines=166|consults=78|md5=2fbcbf688d4c
+RL|summary|episodes=4|wins=0|losses=4|draws=0|stalls=0|win_rate=0.0000|games_per_sec=6.523|agent_consults_per_ep=19.5|agent_windows_per_ep=106.3|agent_actions_per_ep=5.5|turns_per_ep=11.5|opponent=heuristic|policy=socket|deck=W0Base.dck|oppDeck=W0Base.dck|seed=900000|fallbacks=attackAuditMs=0 attackCombats=0 attackCombatsChoice=0 attackLethalMissed=0 attackOpportunities=0 attackOptimal=0 attackOptimalCA=0 attackOptimalChoice=0 attackOver=0 attackRefDeclared=0 attackRefDeclaredCA=0 attackReplyTruncated=0 attackScoreGap=0 attackScoreGapCA=0 attackSearchKNodes=0 attackSearchMs=0 attackTruncated=0 attackUnder=0 attacksDeclared=0 autoPassEmpty=365 blockCombats=0 blockFatal=0 blockOpportunities=0 blockOptimal=0 blockScoreGap=0 blockTruncated=0 blocksDeclared=0 entityConsults=1375 entityDropped=0 entityMaxSeen=47 entityTrunc=0 entityUnknown=240 flashThreats=0 flashThreatsOppTurn=0 manaCandsDropped=401 v7MetaMissing=0 v7RefersFallback=0 v7UnknownId=0 windows=425 
+RECORD|mcL_on_BenchDimir|rc=0|lines=1232|consults=611|md5=c7b71d2e23ca
+RL|summary|episodes=4|wins=0|losses=4|draws=0|stalls=0|win_rate=0.0000|games_per_sec=1.362|agent_consults_per_ep=152.8|agent_windows_per_ep=152.8|agent_actions_per_ep=4.8|turns_per_ep=15.5|opponent=heuristic|policy=socket|deck=BenchDimir.dck|oppDeck=BenchDimir.dck|seed=900000|fallbacks=attackAuditMs=0 attackCombats=0 attackCombatsChoice=0 attackLethalMissed=0 attackOpportunities=0 attackOptimal=0 attackOptimalCA=0 attackOptimalChoice=0 attackOver=0 attackRefDeclared=0 attackRefDeclaredCA=0 attackReplyTruncated=0 attackScoreGap=0 attackScoreGapCA=0 attackSearchKNodes=0 attackSearchMs=0 attackTruncated=0 attackUnder=0 attacksDeclared=0 autoPassEmpty=38 blockCombats=0 blockFatal=0 blockOpportunities=0 blockOptimal=0 blockScoreGap=0 blockTruncated=0 blocksDeclared=0 chooseUse=2 entityConsults=1986 entityDropped=0 entityMaxSeen=47 entityTrunc=0 entityUnknown=1037 flashThreats=0 flashThreatsOppTurn=0 manaCandsDropped=0 v7MetaMissing=0 v7RefersFallback=26 v7UnknownId=0 windows=611 
+RECORD|mcL_on2_BenchDimir|rc=0|lines=1232|consults=611|md5=bcdd045f8818
+RL|summary|episodes=4|wins=0|losses=4|draws=0|stalls=0|win_rate=0.0000|games_per_sec=1.431|agent_consults_per_ep=152.8|agent_windows_per_ep=152.8|agent_actions_per_ep=4.8|turns_per_ep=15.5|opponent=heuristic|policy=socket|deck=BenchDimir.dck|oppDeck=BenchDimir.dck|seed=900000|fallbacks=attackAuditMs=0 attackCombats=0 attackCombatsChoice=0 attackLethalMissed=0 attackOpportunities=0 attackOptimal=0 attackOptimalCA=0 attackOptimalChoice=0 attackOver=0 attackRefDeclared=0 attackRefDeclaredCA=0 attackReplyTruncated=0 attackScoreGap=0 attackScoreGapCA=0 attackSearchKNodes=0 attackSearchMs=0 attackTruncated=0 attackUnder=0 attacksDeclared=0 autoPassEmpty=38 blockCombats=0 blockFatal=0 blockOpportunities=0 blockOptimal=0 blockScoreGap=0 blockTruncated=0 blocksDeclared=0 chooseUse=2 entityConsults=2597 entityDropped=0 entityMaxSeen=47 entityTrunc=0 entityUnknown=1834 flashThreats=0 flashThreatsOppTurn=0 manaCandsDropped=0 v7MetaMissing=0 v7RefersFallback=52 v7UnknownId=0 windows=611 
+RECORD|mcL_off_BenchDimir|rc=0|lines=1022|consults=506|md5=1913aaa94511
+RL|summary|episodes=4|wins=0|losses=4|draws=0|stalls=0|win_rate=0.0000|games_per_sec=1.515|agent_consults_per_ep=126.5|agent_windows_per_ep=152.8|agent_actions_per_ep=4.8|turns_per_ep=15.5|opponent=heuristic|policy=socket|deck=BenchDimir.dck|oppDeck=BenchDimir.dck|seed=900000|fallbacks=attackAuditMs=0 attackCombats=0 attackCombatsChoice=0 attackLethalMissed=0 attackOpportunities=0 attackOptimal=0 attackOptimalCA=0 attackOptimalChoice=0 attackOver=0 attackRefDeclared=0 attackRefDeclaredCA=0 attackReplyTruncated=0 attackScoreGap=0 attackScoreGapCA=0 attackSearchKNodes=0 attackSearchMs=0 attackTruncated=0 attackUnder=0 attacksDeclared=0 autoPassEmpty=143 blockCombats=0 blockFatal=0 blockOpportunities=0 blockOptimal=0 blockScoreGap=0 blockTruncated=0 blocksDeclared=0 chooseUse=2 entityConsults=3103 entityDropped=0 entityMaxSeen=47 entityTrunc=0 entityUnknown=2544 flashThreats=0 flashThreatsOppTurn=0 manaCandsDropped=1661 v7MetaMissing=0 v7RefersFallback=78 v7UnknownId=0 windows=611 
+RECORD|mcL_on_B1Fast|rc=0|lines=1038|consults=514|md5=e6ff8daeb108
+RL|summary|episodes=4|wins=0|losses=4|draws=0|stalls=0|win_rate=0.0000|games_per_sec=2.953|agent_consults_per_ep=128.5|agent_windows_per_ep=127.5|agent_actions_per_ep=5.8|turns_per_ep=14.0|opponent=heuristic|policy=socket|deck=B1Fast.dck|oppDeck=B1Fast.dck|seed=900000|fallbacks=attackAuditMs=0 attackCombats=0 attackCombatsChoice=0 attackLethalMissed=0 attackOpportunities=0 attackOptimal=0 attackOptimalCA=0 attackOptimalChoice=0 attackOver=0 attackRefDeclared=0 attackRefDeclaredCA=0 attackReplyTruncated=0 attackScoreGap=0 attackScoreGapCA=0 attackSearchKNodes=0 attackSearchMs=0 attackTruncated=0 attackUnder=0 attacksDeclared=0 autoPassEmpty=20 blockCombats=0 blockFatal=0 blockOpportunities=0 blockOptimal=0 blockScoreGap=0 blockTruncated=0 blocksDeclared=0 entityConsults=3617 entityDropped=0 entityMaxSeen=47 entityTrunc=0 entityUnknown=2544 flashThreats=0 flashThreatsOppTurn=0 manaCandsDropped=0 v7MetaMissing=0 v7RefersFallback=78 v7UnknownId=0 windows=510 
+RECORD|mcL_on2_B1Fast|rc=0|lines=1038|consults=514|md5=a2967a99858c
+RL|summary|episodes=4|wins=0|losses=4|draws=0|stalls=0|win_rate=0.0000|games_per_sec=3.044|agent_consults_per_ep=128.5|agent_windows_per_ep=127.5|agent_actions_per_ep=5.8|turns_per_ep=14.0|opponent=heuristic|policy=socket|deck=B1Fast.dck|oppDeck=B1Fast.dck|seed=900000|fallbacks=attackAuditMs=0 attackCombats=0 attackCombatsChoice=0 attackLethalMissed=0 attackOpportunities=0 attackOptimal=0 attackOptimalCA=0 attackOptimalChoice=0 attackOver=0 attackRefDeclared=0 attackRefDeclaredCA=0 attackReplyTruncated=0 attackScoreGap=0 attackScoreGapCA=0 attackSearchKNodes=0 attackSearchMs=0 attackTruncated=0 attackUnder=0 attacksDeclared=0 autoPassEmpty=20 blockCombats=0 blockFatal=0 blockOpportunities=0 blockOptimal=0 blockScoreGap=0 blockTruncated=0 blocksDeclared=0 entityConsults=4131 entityDropped=0 entityMaxSeen=47 entityTrunc=0 entityUnknown=2544 flashThreats=0 flashThreatsOppTurn=0 manaCandsDropped=0 v7MetaMissing=0 v7RefersFallback=78 v7UnknownId=0 windows=510 
+RECORD|mcL_off_B1Fast|rc=0|lines=532|consults=261|md5=4102eef8bdc6
+RL|summary|episodes=4|wins=0|losses=4|draws=0|stalls=0|win_rate=0.0000|games_per_sec=4.263|agent_consults_per_ep=65.3|agent_windows_per_ep=127.5|agent_actions_per_ep=5.8|turns_per_ep=14.0|opponent=heuristic|policy=socket|deck=B1Fast.dck|oppDeck=B1Fast.dck|seed=900000|fallbacks=attackAuditMs=0 attackCombats=0 attackCombatsChoice=0 attackLethalMissed=0 attackOpportunities=0 attackOptimal=0 attackOptimalCA=0 attackOptimalChoice=0 attackOver=0 attackRefDeclared=0 attackRefDeclaredCA=0 attackReplyTruncated=0 attackScoreGap=0 attackScoreGapCA=0 attackSearchKNodes=0 attackSearchMs=0 attackTruncated=0 attackUnder=0 attacksDeclared=0 autoPassEmpty=273 blockCombats=0 blockFatal=0 blockOpportunities=0 blockOptimal=0 blockScoreGap=0 blockTruncated=0 blocksDeclared=0 entityConsults=4392 entityDropped=0 entityMaxSeen=47 entityTrunc=0 entityUnknown=2544 flashThreats=0 flashThreatsOppTurn=0 manaCandsDropped=486 v7MetaMissing=0 v7RefersFallback=78 v7UnknownId=0 windows=510 
+CHECK3B rc=0
+v6 disagreements / failed identities: none
+MC|control|on=423|off=423|pairs=423|vanished=0|removed=0|removed_mana=0
+MC|control|census|e|16:220 20:144 21:220
+MC|control|census|v7_ent|22:220 55:144 56:220
+MC|filter|on=423|off=78|pairs=78|vanished=345|removed=401|removed_mana=401
+MC|filter|census|e|16:36 20:24 21:36
+MC|filter|census|v7_ent|22:36 55:24 56:36
+MC|filter|census|v7_game|20:56 21:71
+MC|filter|census|v7_opp_actions|7:472
+MC|probe|manaCandsDropped=401|removed=401
+FAIL filter diff census outside the control residual: [('v7_game', 20), ('v7_game', 21), ('v7_opp_actions', 7)]
+MC|FAIL|fails=1
+MCCHECK W0Base rc=1
+MC|control|on=611|off=611|pairs=611|vanished=0|removed=0|removed_mana=0
+MC|control|census|e|16:172 20:127 21:172
+MC|control|census|v7_cand_refers|0:16
+MC|control|census|v7_ent|22:172 55:127 56:172
+MC|control|census|v7_opp_action_refers|0:38
+MC|filter|on=611|off=506|pairs=506|vanished=105|removed=1661|removed_mana=1661
+MC|filter|census|e|16:72 20:72 21:72
+MC|filter|census|v7_cand_refers|0:6
+MC|filter|census|v7_ent|22:72 55:72 56:72
+MC|filter|census|v7_game|13:1 14:242 15:243 20:464 21:499
+MC|filter|census|v7_opp_actions|7:265
+MC|probe|manaCandsDropped=1661|removed=1661
+FAIL filter diff census outside the control residual: [('v7_game', 13), ('v7_game', 14), ('v7_game', 15), ('v7_game', 20), ('v7_game', 21), ('v7_opp_actions', 7)]
+MC|FAIL|fails=1
+MCCHECK BenchDimir rc=1
+MC|control|on=514|off=514|pairs=514|vanished=0|removed=0|removed_mana=0
+MC|control|census|e|16:310 20:269 21:310
+MC|control|census|v7_cand_refers|0:9
+MC|control|census|v7_ent|22:310 55:269 56:310
+MC|filter|on=514|off=261|pairs=261|vanished=253|removed=486|removed_mana=486
+MC|filter|census|e|16:124 20:98 21:124
+MC|filter|census|v7_cand_refers|0:10
+MC|filter|census|v7_ent|22:124 55:98 56:124
+MC|filter|census|v7_game|20:233 21:255
+MC|filter|census|v7_opp_actions|7:540
+MC|probe|manaCandsDropped=486|removed=486
+FAIL filter diff census outside the control residual: [('v7_game', 20), ('v7_game', 21), ('v7_opp_actions', 7)]
+MC|FAIL|fails=1
+MCCHECK B1Fast rc=1
+TYPES mcL_on_W0Base consults 423 meanK 2.63 types {0: 421, 1: 58, 2: 228, 3: 401, 4: 4}
+TYPES mcL_off_W0Base consults 78 meanK 4.69 types {0: 76, 1: 58, 2: 228, 4: 4}
+TYPES mc_p1_off_W0Base consults 139 meanK 3.04 types {0: 124, 1: 78, 2: 72, 4: 4, 5: 95, 6: 49}
+TYPES mcL_on_BenchDimir consults 611 meanK 7.04 types {0: 600, 1: 45, 2: 1601, 3: 1981, 4: 76}
+TYPES mcL_off_BenchDimir consults 506 meanK 5.01 types {0: 495, 1: 45, 2: 1601, 3: 320, 4: 76}
+TYPES mcL_on_B1Fast consults 514 meanK 2.96 types {0: 510, 1: 60, 2: 443, 3: 486, 4: 20}
+TYPES mcL_off_B1Fast consults 261 meanK 2.99 types {0: 257, 1: 60, 2: 443, 4: 20}
+DONE

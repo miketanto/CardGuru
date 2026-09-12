@@ -1843,3 +1843,89 @@ above the uniform-random 5 % with a Wilson interval clear of it (≥ 128
 games), argmax-PASS fraction on the census between 5 % and 90 % with a
 gap > 0.5 nats, and attacks declared > 0 in the deterministic battery.
 Pre-registered as before: no arm can beat v6 on rung 0 beyond noise.
+
+## 7a amendment — mana-ability filter in `RLPlayer.priority` (2026-09-13 00:40; branch `v7/lane-d`)
+
+**Change.** `RLPlayer.priority` drops every candidate with
+`a.isManaAbility()` right after the phantom-land-drop filter, before the
+empty-check (so a window that offered only mana abilities is now an
+`autoPassEmpty` window with no consult). `-Drl.manaCands=true` restores the
+old set; it is an instance field read per job (like `rl.consultBudget`),
+not a class-init constant, so it goes on the job line and needs no JVM
+restart. The per-game count reaches the summary as
+`fallbacks=... manaCandsDropped=N`. The v6 arm shares the site (one
+`getPlayable` call, before the encoder branch), so v6's candidate set
+changes identically — as pre-registered, "own commit, v6-identity row".
+
+Why it is not a no-op to leave in: XMage auto-pays on cast, so a
+hand-activated land mana ability floats mana that empties at end of step
+**and leaves the land tapped** — null at best, a wasted land for the turn
+at worst, and one consult either way. It was the cheapest sink of the 7a
+collapse (A0: ~50 ACTIVATE choices per game).
+
+**Pre-registered (before the recordings):** the filter cannot change any
+win rate of an argmax eval probe on the mono-colour decks except through
+the consult budget (fewer consults per game); it removes the ACTIVATE
+consults from the A0-style collapse; a payment sub-consult (offered only
+when the untapped sources are heterogeneous, candidate 0 = engine default)
+is deferred until the bench decks train. Win rates are **not** measured
+here (they need ≥ 100 games; the first battery on the new build is the
+B arms' deterministic eval, 4 games — too few to say anything).
+
+**v6-identity evidence** (`rl/run_manacands.sh` → `rl/manacands_check.py`,
+`rl/artifacts/v7/manacands/{check.txt,check3b.txt,run.log}`; recordings
+`rl/artifacts/v7/wire3a/mcL_{on,on2,off}_<deck>.jsonl`, gitignored). Driver
+7911 (v7) on the compiled build, 4 seeded games per recording, echo policy
+`PREFER=1` (play the first land drop, else PASS: lands reach the
+battlefield so mana abilities are offered, none is ever chosen). ON =
+`-Drl.manaCands=true` recorded **twice** (the same-build run-to-run
+residual is the control), OFF = default.
+
+| deck | consults ON | consults OFF | windows that vanished | candidates removed | of which land mana abilities | `manaCandsDropped` (probe) | control ON vs ON2 |
+|---|---|---|---|---|---|---|---|
+| W0Base | 423 | 78 | 345 | 401 | 401 | 401 | 423/423 aligned, 0 removed |
+| BenchDimir | 611 | 506 | 105 | 1,661 | 1,661 | 1,661 | 611/611, 0 |
+| B1Fast | 514 | 261 | 253 | 486 | 486 | 486 | 514/514, 0 |
+
+Candidate-type census (PASS · LAND · SPELL · ACTIVATE · TARGET), ON → OFF:
+W0Base 421·58·228·**401**·4 → 76·58·228·**0**·4; BenchDimir
+600·45·1601·**1981**·76 → 495·45·1601·**320**·76 (the 320 survivors are the
+creature-land / non-mana activations); B1Fast 510·60·443·**486**·20 →
+257·60·443·**0**·20. LAND, SPELL and TARGET counts are identical on every
+deck; only PASS rows (one per consult) and ACTIVATE rows move.
+
+What differs between ON and OFF beyond the removed rows, by (key, column):
+* the control residual (present in ON vs ON2 as well): `v7_ent` idx 22 /
+  55 / 56 (tapped, can-attack, can-block) on identical-land rows — the 5e
+  replay residual (engine payment order among identical lands); W0Base
+  control 220/144/220 rows, filter 36/24/36;
+* fields defined by the candidate list or the consult count, which move by
+  construction: game token idx 20 (K), 21 (consults so far), 12–19
+  (decision type; BenchDimir only, 242 consults whose first candidate was a
+  mana ability and is now a spell), opp-action idx 7 (consult age). The
+  checker names them `derived_only` and fails on anything else: nothing
+  else differs on any deck (`MC|PASS|fails=0` ×3).
+* `rl/wire_check_3b.py` over the six `mcL_*` recordings plus
+  `mc_p1_off_W0Base`: **0 v6 disagreements, 0 failed identities**.
+
+A PICK=1 recording under the default (`mc_p1_off_W0Base`, 3 games, 139
+consults) offers PASS 124 · LAND 78 · SPELL 72 · TARGET 4 · ATTACK 95 ·
+BLOCK 49 and **no ACTIVATE at all** on W0Base — against 126 of 209 consults
+offering a Plains mana ability in `5b_W0Base_p1` (the old set).
+
+Method note, in the open: the first attempt (`run_pick0.log`) used an
+always-pass echo policy; it aligned 63/63 consults on W0Base with 0 removed
+because a seat that never plays a land is never offered a mana ability —
+vacuous, replaced by the prefer-land policy above. Same-flag recordings of
+the same seed are **not** byte-identical (the residual above); the
+identity claim is therefore "OFF = ON minus the mana abilities, up to the
+residual two ON runs already show", which is what the control column
+establishes. The ENC=6 driver (7910) recordings in `run_pick0.log` are
+the vacuous kind and are not evidence for the v6 arm; the v6 candidate
+rows (`c`) of the v7 recordings are, and they align row for row.
+
+What this cannot support: any statement about play strength or the
+collapse (B1 measures that); the filter's effect on decks with mana
+abilities that have side effects (none in the bench set); the payment
+choice on BenchDimir / P8Faeries (39–49 % of consults per §7a), which the
+engine now makes alone until the deferred sub-consult exists.

@@ -1,0 +1,91 @@
+consults=2532
+exercised (rows with a non-zero value):
+  ent[10] power                18486
+  ent[11] toughness            18486
+  ent[12] damage               0
+  ent[13] tough_left           18486
+  ent[14] printed_power        18384
+  ent[15] printed_tough        18384
+  ent[16] loyalty              168
+  ent[17] mv                   23033
+  ent[18] ctr_p1p1             0
+  ent[19] ctr_m1m1             0
+  ent[20] ctr_loyalty          168
+  ent[21] ctr_other            0
+  ent[22] tapped               8002
+  ent[23] sick                 5446
+  ent[24] attacking            1121
+  ent[25] blocking             0
+  ent[26] entered              2493
+  ent[27] token                1507
+  ent[28] turns_on_bf          24005
+  ent[29] creature             18488
+  ent[30] land                 21745
+  ent[31] instant              2861
+  ent[32] sorcery              536
+  ent[33] other_perm           2756
+  ent[34] kw_flying            3576
+  ent[35] kw_haste             0
+  ent[36] kw_deathtouch        1072
+  ent[37] kw_lifelink          835
+  ent[38] kw_first_strike      0
+  ent[39] kw_double_strike     0
+  ent[40] kw_trample           0
+  ent[41] kw_vigilance         864
+  ent[42] kw_flash             3874
+  ent[43] kw_menace            0
+  ent[44] kw_reach             0
+  ent[45] kw_defender          0
+  ent[46] kw_ward              0
+  ent[47] kw_hexproof          102
+  ent[48] kw_shroud            0
+  ent[49] kw_protection        0
+  ent[50] kw_prowess           0
+  ent[51] kw_ninjutsu          951
+  ent[52] castable             6186
+  ent[53] mana_left_if_cast    11320
+  ent[54] legal_targets        1532
+  ent[55] can_attack           14084
+  ent[56] can_block            18496
+  ent[57] lethal_as_is         0
+  ent[58] stack_X              0
+  ent[59] stack_modes          209
+  ent[60] stack_mine           0
+  ent[61] stack_is_ability     113
+  cand.ACTIVATE[10]        3188
+  cand.ACTIVATE[13]        305
+  cand.ACTIVATE[8]         3188
+  cand.ATTACK[10]          75
+  cand.ATTACK[11]          14
+  cand.ATTACK[12]          95
+  cand.ATTACK[13]          94
+  cand.ATTACK[14]          64
+  cand.ATTACK[15]          64
+  cand.ATTACK[16]          64
+  cand.ATTACK[17]          52
+  cand.ATTACK[18]          95
+  cand.ATTACK[8]           25
+  cand.ATTACK[9]           78
+  cand.BLOCK[10]           35
+  cand.BLOCK[11]           34
+  cand.BLOCK[12]           34
+  cand.BLOCK[14]           49
+  cand.BLOCK[15]           49
+  cand.BLOCK[8]            10
+  cand.BLOCK[9]            35
+  cand.LAND[11]            404
+  cand.LAND[8]             303
+  cand.SPELL[10]           3406
+  cand.SPELL[11]           1210
+  cand.SPELL[12]           2028
+  cand.SPELL[13]           380
+  cand.SPELL[8]            3652
+  cand.SPELL[9]            1378
+  cand.TARGET[11]          106
+  cand.TARGET[12]          106
+  cand.TARGET[13]          106
+  cand.TARGET[14]          176
+  cand.TARGET[8]           28
+  cand.TARGET[9]           14
+v6 disagreements / failed identities: none
+keyword bits differing from the printed table (v7 = live abilities): {'lifelink:Cecil, Dark Knight': 233, 'hexproof:Kaito, Bane of Nightmares': 102, 'lifelink:stack ability (<i>Darkness</i> &mdash; Whenever {this} deals damage, you lose that much life. Then if your life total is less than or equal to half your starting life total, untap {this} and transform it.)': 4}
