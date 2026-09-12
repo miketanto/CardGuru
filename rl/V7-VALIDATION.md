@@ -1715,3 +1715,60 @@ the throughput levers is a decision for the next session, taken in the
 open: the 5d follow-up (batcher, real-window update profile) and the 7a
 smoke do not block each other, and 7a's pre-registration now includes
 the init PASS bias and the logit-collapse census above.
+
+## 7a pre-registration — is the 5d collapse structural or the learning rate? (2026-09-12 22:50)
+
+`rl/v7_logit_velocity.py`: from `init.pt`, on a fixed batch of 64 real
+consults (W0Base, B1Fast; each with ≥ 2 candidates), on-policy Adam steps
+over `policy_parameters()` on the loss the 5d run produced (advantage −1
+on every sampled action, the first-epoch PPO gradient), three learning
+rates from the same init. Mean top-1 − top-2 logit gap in nats (`max |logit|`
+in brackets) after k steps:
+
+| lr | step 0 | 1 | 2 | 4 | 8 | entropy at 8 | grad norm at 8 |
+|---|---|---|---|---|---|---|---|
+| 3e-5 | 0.50 (0.7) | 3.4 (2.9) | 3.9 | 5.2 | **5.0** (4.4) | 0.31 | 5.3 |
+| 1e-4 | 0.50 | 9.0 (7.8) | 16.6 | 27.6 | **41.9** (38.1) | 0.01 | 0.14 |
+| 3e-4 | 0.50 | **20.5** (18.2) | 12.8 | 77.1 | **165** (157) | 0.00 | 0.02 |
+
+Reading, against the pre-registered one in the script's docstring:
+
+1. **The velocity is Adam step-size × parameter count on an unbounded
+   scorer.** One step at 3e-4 moves the gap by 20 nats; at 1e-4 by 9; at
+   3e-5 by 3.4 — monotone in lr, sub-linear (6 : 2.6 : 1 for 10 : 3.3 : 1).
+   The init gradient norm is 9.2; after the softmax saturates it falls to
+   0.02–0.14 and stays there: the collapse is a **one-way door** — once
+   the gap is tens of nats the gradient (and PPO's clip, whose ratio is 1
+   on a deterministic policy) can no longer pull it back, and the 0.01
+   entropy bonus is far too small. That is the 5d `ck_256` state (gap 98).
+2. **A lane update is ~113 Adam steps** (1,808 stored consults ÷ 64
+   window-consults per step × 4 epochs), so even 3e-5's 3–5 nats per
+   step is not safe by itself; its plateau at ~5 nats over 8 steps
+   (entropy 0.31, gradient alive) is the one encouraging number, and it
+   is 8 steps, not 113.
+3. So "only LR" is **not shown**, and the structural half is measured:
+   the candidate scorer's logits are unbounded and the 15.6 M-parameter
+   Adam step moves them by nats per step at any lr a v6 lane used (v6:
+   0.7 M policy parameters, trained at 3e-4 without this). lr reduces the
+   velocity roughly in proportion; nothing in the current heads bounds
+   the destination.
+
+Pre-registered 7a arms (256 episodes each, W0Base vs heuristic, cuda; a
+census with `rl/v7_init_logits.py` on `ck_256` and per-update entropy /
+max |logit| / grad norm / chosen-type histogram on the TRAIN line, added
+before the first arm runs):
+
+| arm | change | predicted |
+|---|---|---|
+| A0 | lr 3e-4 (5d as run) | collapse by update 1–2 (gap > 20) — the control |
+| A1 | lr 3e-5, 1 PPO epoch | gap grows but stays < 20 over 8 updates; may still drift |
+| A2 | lr 3e-5 + bounded logits (scorer output scaled to a fixed range, e.g. `tanh` × 5 or a LayerNorm before the scorer, chosen and gated so the init gap is unchanged and `v7_check.py` passes) | gap < 5 at 256, entropy > 0.3, P(PASS) between 0.05 and 0.9 |
+
+"Not collapsed" is defined now as: gap at `ck_256` < 5 nats, mean
+entropy > 0.3 nats, argmax-PASS fraction on the census between 5 % and
+90 %. If A1 passes that, lr suffices in practice for this budget and A2
+is a robustness change; if only A2 passes, the collapse is structural
+and the bound is part of the architecture. If neither passes, the PASS
+constant-row design (WIRE §2f) is the next suspect and gets its own arm.
+None of this is a learning result; all three arms are pre-registered as
+unable to beat v6 on rung 0.
