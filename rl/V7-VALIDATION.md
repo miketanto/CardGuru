@@ -1483,3 +1483,18 @@ row 5c said "all three pass"; the belief gate does not, and the row stays
 open on that until Phase 6 measures it properly. The recordings, both
 scripts and the JSON reports are on disk; recordings gitignored
 (regenerate from the manifest).
+
+**B3 on the 48 non-duplicate recordings** (`rl/run_5c_belief_clean.sh`,
+rounds 1–2 only, same seed and steps; `rl/artifacts/v7/5c_belief_clean.txt`):
+13,118 oracle-labelled consults, 336 games, 8,846 held-out slots —
+held-out log-lik **−2.373 vs uniform −2.542: +0.169** (paired SE 0.011),
+vs the multiset prior −2.508: **+0.135** (SE 0.010); train −2.127; P(in
+hand) BCE 0.362 vs 0.459, AUC 0.847; B4 139 known slots, mass 0.070;
+B1 240 consults, Δlogit 0.0. So the duplicated games did inflate the gate
+run's margin (0.239 → 0.169) — the FAIL against 0.3 stands on either
+set, the signal over uniform and over the multiset prior is 12–15
+standard errors on either set, and the train / held-out gap (0.25 nats)
+says the 2-layer module on a random card table is overfitting games
+rather than short of capacity. All 52 unmatched true cards on this set
+are the returned known cards (none from the phantom-slot defect: the
+pre-fix recording is not in it).
