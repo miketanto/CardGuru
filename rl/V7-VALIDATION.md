@@ -1398,9 +1398,9 @@ recording (8 decks + KW7Probe, 3 echo policies, the extras).
 
 | gate | required | measured | result |
 |---|---|---|---|
-| level 1: policy-path parse identical with and without the hidden keys | every consult | RUNNING — see the line appended below | — |
-| level 2: policy logits bit-identical under a hidden-content swap (tol 1e-6) | every consult, woken net | RUNNING | — |
-| level 3: the critic moves under the same swap (min 1e-4) | every recording | RUNNING | — |
+| level 1: policy-path parse identical with and without the hidden keys | every consult | **63 recordings, 19,379 consults, first_bad none** on every recording | pass |
+| level 2: policy logits bit-identical under a hidden-content swap (tol 1e-6) | every consult, woken net | max Δlogit **0.0** on every recording (19,379 consults) | pass |
+| level 3: the critic moves under the same swap (min 1e-4) | every recording | moved on every recording; smallest per-recording max movement 0.059 | pass |
 
 **Tracker** — the gate is 3d's "known ⊆ truth" (every known slot's name
 is in the true hand, multiset), which was **vacuous at 3d** (0 known
@@ -1474,7 +1474,7 @@ when `identity known` = 1), and the attach for a known slot should carry
 its identity, not a pointer expectation. Not changed in `v7_belief.py`
 in this row (it is a Phase 6 change with its own gate).
 
-**5c verdict.** Oracle: see the appended line. Tracker: pass, as measured
+**5c verdict.** Oracle: pass on every consult of every recording. Tracker: pass, as measured
 at 5b (cited, not re-run). Belief: the two mechanism gates pass on real
 inputs (no leak with the features on, no gradient into the builders);
 the two predictive gates FAIL as pre-registered — B3 by 0.06 nats against
@@ -1513,3 +1513,18 @@ module memorises games past it. What this fixes for Phase 6: the belief
 loss needs early stopping on held-out games (or dropout / weight decay,
 both 0 now) and a bar set from the multiset prior, not from uniform; the
 gate row for Phase 6 pre-registers those before it runs.
+
+**Oracle gate, closed** (`rl/artifacts/v7/5c_leak.txt`, 63 lines): every
+recording passes all three levels; the run was cut once by a session end
+and resumed (the runner skips recordings already gated), so the file has
+two start stamps. What it cannot support: it proves the policy path
+carries nothing that changes with the true hand or the critic rows; that
+the tracker itself does not read the truth is the "known ⊆ truth" gate
+above plus construction (3d).
+
+**Gameplay sample** for the record, from the same recordings
+(`rl/artifacts/v7/5b_gameplay_sample.md`): the echo policies' pooled win
+rates against the heuristic (p1 8/112, p99 6/112, sf 3/112, Wilson
+intervals in the file) and one attack consult (5b_P8Faeries_p1, game 6,
+turn 32) where CombatMath marks two of 17 attack subsets lethal and the
+first-non-pass policy sends a single 1/1, winning on turn 48 instead.
