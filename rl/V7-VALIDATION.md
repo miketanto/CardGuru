@@ -786,3 +786,39 @@ Notes and what these numbers cannot support:
   buffer is ~75 MB; the memory gate is about the per-window activations,
   not the buffer.
 
+
+## 1d — sweep config (b): script-structure GNN + stability recipe — **FAIL** (Lane A, 2026-09-12 11:10); c and d backlogged
+
+`rl/cardemb/sweep.sh` config b = config a with `--struct script` (the
+ability-script channel instead of the hashed tree). Four seeds trained
+(~2 h each; held-out recall@1 0.957 / 0.959 / 0.958 / 0.956 against
+a's 0.928 / 0.929 / 0.928 / 0.924, the best training metric of any
+run), artifact = per-slice Procrustes mean of seeds 0+1, G3 against the
+mean of seeds 2+3. Full table in `rl/artifacts/cardemb_sweep/RESULTS.md`.
+
+| gate | threshold | measured (held-out) | result |
+|---|---|---|---|
+| G1 mv / power / toughness | ≥ 0.9 | 0.993 / 0.996 / 0.993 | pass |
+| G1 colours, types | ≥ 0.97 | 1.000, 1.000 | pass |
+| G1 keywords (11, f1) | ≥ 0.8 | **min 0.516 (reach)**; a had 0.817 | **FAIL** |
+| G1 answer classes (5, f1) | ≥ 0.8 | **min 0.723 (ans_minus_toughness)**; a had 0.725 | **FAIL** |
+| G2 Cancel / Counterspell | ≥ 0.85 | 0.982 | pass |
+| G2 Spell Snare / Force Spike | Spike ∉ Snare top-10 | **rank 11** (a: 28) | **FAIL** |
+| G2 functional reprints | 10/10 | 10/10 | pass |
+| G2 swap pairs | ≥ 14/16 within 500, median ≤ 50 | 15/16, **median 52** | **FAIL** |
+| G3 artifact(0+1) vs artifact(2+3) top-10 Jaccard | ≥ 0.40, same G2 verdicts | 0.773 but **G2 verdicts differ between halves** | **FAIL** |
+
+Reading: the script channel makes the text↔graph objective easier
+(recall@1 up three points) and the embedding more seed-stable (0.773 vs
+0.680), but what it stabilises is less of the mechanical detail the
+gates ask for — two keyword probes and the Snare/Spike separation are
+worse than a, not better. Recall@1 is not a gate and this is the second
+run where it moved opposite to the gates (v7 was the first). `card_emb_v8`
+(config a) stays the accepted artifact.
+
+**Decision (user, 2026-09-12):** configs c and d (the BCE pos_weight
+readout, 2 h + 8 h of GPU) are **backlogged**, not run: `sweep2.sh` was
+stopped before it started them so the GPU goes to the v7 4g cuda gates
+and Phase 5. The pre-registered prediction for c/d in the config-(a)
+row stands untested; if the embedder is revisited, run c first
+(`bash rl/cardemb/sweep2.sh c`) and compare against this row and a's.
