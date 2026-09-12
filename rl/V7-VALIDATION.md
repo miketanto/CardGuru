@@ -1498,3 +1498,18 @@ says the 2-layer module on a random card table is overfitting games
 rather than short of capacity. All 52 unmatched true cards on this set
 are the returned known cards (none from the phantom-slot defect: the
 pre-fix recording is not in it).
+
+**Longer-training diagnostic** (`rl/run_5c_belief_diag.sh`: 6,000 steps,
+seed 1, the 63-file set; `rl/artifacts/v7/5c_belief_diag.txt` — a
+diagnostic, the bar is unchanged): held-out log-lik **−3.149 vs uniform
+−2.501: −0.65 nats, worse than uniform** (SE 0.030), train −1.466; P(in
+hand) AUC 0.835 (unchanged); 78 held-out known slots at mass 0.53 (the
+pointer memorised name-matching on train, which is the wrong target for
+a known slot, see B4). So the 1,500-step result was not
+training-limited: four times the steps takes the module from +0.24 to
+−0.65 against uniform. The held-out signal in real hidden hands (from a
+random card table and the public tokens) is small, and the 2-layer
+module memorises games past it. What this fixes for Phase 6: the belief
+loss needs early stopping on held-out games (or dropout / weight decay,
+both 0 now) and a bar set from the multiset prior, not from uniform; the
+gate row for Phase 6 pre-registers those before it runs.

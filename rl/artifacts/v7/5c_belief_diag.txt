@@ -1,0 +1,35 @@
+# 5c belief DIAGNOSTIC 2026-09-12T20:48:38Z steps=6000 seed=1 batch=64 leak-per-file=5
+BELIEF5C|consults=19379|games=441|files=63|train=15509|test=3870|true_cards=60285|unmatched=167|unmatched_that_are_known_slot_names=164|known_slots=793|device=cuda
+BELIEF5C|unmatched_names|Cecil, Dark Knight=118|Elektra, Daughter of the Hand=49
+BELIEF5C|B2|builder_grads_zero=True|belief_grads_nonzero=True|pass=True
+BELIEF5C|train|step=0|loss=3.3006|t=69s
+BELIEF5C|train|step=250|loss=2.7892|t=78s
+BELIEF5C|train|step=500|loss=2.6775|t=85s
+BELIEF5C|train|step=750|loss=2.6194|t=95s
+BELIEF5C|train|step=1000|loss=2.6263|t=104s
+BELIEF5C|train|step=1250|loss=2.7527|t=116s
+BELIEF5C|train|step=1500|loss=2.5258|t=126s
+BELIEF5C|train|step=1750|loss=2.5205|t=137s
+BELIEF5C|train|step=2000|loss=2.3655|t=150s
+BELIEF5C|train|step=2250|loss=2.3535|t=167s
+BELIEF5C|train|step=2500|loss=2.2805|t=184s
+BELIEF5C|train|step=2750|loss=2.5284|t=200s
+BELIEF5C|train|step=3000|loss=2.0794|t=216s
+BELIEF5C|train|step=3250|loss=2.0773|t=231s
+BELIEF5C|train|step=3500|loss=2.0720|t=248s
+BELIEF5C|train|step=3750|loss=1.9527|t=264s
+BELIEF5C|train|step=4000|loss=2.0903|t=277s
+BELIEF5C|train|step=4250|loss=1.7459|t=291s
+BELIEF5C|train|step=4500|loss=1.6475|t=299s
+BELIEF5C|train|step=4750|loss=1.7885|t=309s
+BELIEF5C|train|step=5000|loss=1.6467|t=317s
+BELIEF5C|train|step=5250|loss=1.5850|t=326s
+BELIEF5C|train|step=5500|loss=1.8250|t=335s
+BELIEF5C|train|step=5750|loss=1.4552|t=343s
+BELIEF5C|train|step=5999|loss=1.7027|t=352s
+BELIEF5C|B3|test_loglik=-3.149|uniform=-2.501|multiset=-2.478|slots=10848|se_vs_uniform=0.0298|se_vs_multiset=0.0295|train_loglik=-1.466|pass=False
+BELIEF5C|p_hand|test_bce=0.419|base_bce=0.457|base_rate=0.171|auc=0.835
+BELIEF5C|B4|known_slots=78|mass=0.5349239538877454|pass=False
+BELIEF5C|B1|consults=315|max_abs_dlogit=0.0|nondegenerate=278|pass=True
+BELIEF5C|pass=False|B4=False|seconds=370|out=rl/artifacts/v7/5c_belief_diag.json
+# done 2026-09-12T20:54:55Z rc=1
