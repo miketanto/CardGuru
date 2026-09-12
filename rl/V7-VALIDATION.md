@@ -1639,3 +1639,32 @@ is recorded as FAIL; the plan's gate for `v7-p5` is not met on
 throughput, and the tag waits on (1)–(2) or a stated decision to train
 at this rate (256 episodes cost 12 min end to end; a 2k-episode rung is
 ~1.6 h — affordable for 7a as a smoke).
+
+**Checkpoint census on real consults** (`rl/v7_init_logits.py`, 1,238
+consults from four 5b recordings, memoryless scoring, cuda) — the
+pre-registered check above, done the same evening:
+
+| checkpoint | argmax = PASS when a non-PASS candidate exists | mean P(PASS) | mean entropy (nats) | mean top-1 − top-2 logit gap | argmax by type (chosen / consults offering it) |
+|---|---|---|---|---|---|
+| `init.pt` (0 episodes) | **1,033 / 1,108** | 0.534 | 0.902 | 0.39 | PASS 1163/1176 · LAND 0/177 · SPELL 13/191 · ACTIVATE 0/781 · TARGET 62/62 · ATTACK 0/47 · BLOCK 0/27 |
+| `ck_256.pt` (256 episodes, lr 3e-4) | **0 / 1,108** | 0.105 | 0.352 | **98.4** | PASS 130/1176 · LAND 177/177 · SPELL 14/191 · ACTIVATE 781/781 · TARGET 62/62 · ATTACK 47/47 · BLOCK 27/27 |
+
+So the init net is PASS-biased by construction (PASS wins the argmax on
+93 % of consults that offer anything else, with a soft 0.39-nat gap —
+that is the 28-consult episodes and the empty boards in the 5d v7 arm),
+and 256 episodes of PPO took it to the opposite corner: never pass,
+always the first LAND / ACTIVATE / ATTACK / BLOCK on offer, with a 98-nat
+logit gap and entropy 0.35 — a collapse, not a curve. `ACTIVATE 781/781`
+is the tell: the untrained agent activates every mana ability offered,
+which is how a game burns its consult budget without a creature ever
+attacking (the 256-episode battery: `attacks=0/0`). Both are 7a's
+findings to act on, recorded here because they came out of the 5d run:
+(a) the PASS bias at init is a heads-init property (the PASS candidate
+row is all zeros after its type one-hot, WIRE §2f, so it scores the
+candidate MLP's bias alone), to be measured on the init net before 7a's
+first update and either accepted as the starting point or removed by
+centring the candidate scorer; (b) a 98-nat gap after 8 updates at lr
+3e-4 with 4 PPO epochs on a 17 M-parameter net says the logit scale is
+unbounded and the clip is not holding it — 7a pre-registers per-update
+entropy, max |logit|, grad norm and the chosen-type histogram, and a
+learning-rate / logit-scale decision before any 2k-episode run.
