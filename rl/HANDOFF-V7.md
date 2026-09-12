@@ -542,8 +542,8 @@ DONE:    3a: 101+136 consults validate; v6 arm identical to the unpatched build
            consults; deck accounting exact; known-identity path NOT exercised (no
            reveal/return/tutor on the rung decks) -> 5b or a constructed scenario.
 
-OPEN:    (1) 3e dump/replay: -Drl.entityDump v7 format, rung0_replay.sh equality,
-             counters entityTrunc/unknownId; replay byte-equal over 20 games.
+OPEN:    (1) 3e DONE (row on lane-b): replay is byte-equal except the tapped-land noise;
+             exact replay needs the engine mana-payment order on the seeded stream.
          (2) WIRE §2c player width 21 (untapped sources by colour) - a cross-lane
              commit (wire_validate DIMS + v7_obs + v7_net + fixtures + Java).
          (3) WIRE amendment to propose: PASS afterstate at the joint sites (damage
@@ -581,3 +581,6 @@ GOTCHAS: - The driver server clears/does not forward JVM-level -Drl.* to a class
 COMMITS: lane-b pushed through 3d; lane-d pushed through 8d8ffde. Uncommitted:
          nothing (recordings gitignored).
 ```
+
+UPDATE (2026-09-12 19:25): 3e DONE = 9792354 on v7/lane-b (row §3e; rl/PR-V7-LANE-B.md written).
+NEXT is Phase 5a (loopback + refusals) with rl/live_check_5a.sh on lane-b, row on lane-d.
