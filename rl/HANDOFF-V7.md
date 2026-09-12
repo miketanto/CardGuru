@@ -683,3 +683,5 @@ Start by confirming the driver state and running rl/v7_check.py once, then execu
 At ~70% context, stop, update rl/HANDOFF-V7.md (a new dated UPDATE line under §G or a new
 section), commit, push, and offer to continue in a new session.
 ```
+
+UPDATE (2026-09-12 21:15): ONE LANE from here. v7/lane-b is merged into v7/lane-d (d7dfa41); Java and Python live in the single checkout (Windows C:\Users\sutanto4\Documents\CardGuru = WSL /home/user/CardGuru = /mnt/c/Users/sutanto4/Documents/CardGuru). The worktree CardGuru-lane-b is removed; every rl/*.sh now points at the single checkout (rl/sync_lane_b.sh compiles rl/xmage-src from it). H.1 lines about the worktree are superseded by this note; H.2 NEXT 1 (the branch decision) is done - start at NEXT 2 (5b). Verified after the merge: rl/sync_lane_b.sh compiles, drivers 7910/7911 restart, v6 arm within the tapped-land noise class vs the unpatched build, v7 recording validates (93 consults), rl/v7_check.py 15/15. The remote branch v7/lane-b is kept as history and can be deleted; rl/PR-V7-LANE-B.md is now covered by a single PR for v7/lane-d.
