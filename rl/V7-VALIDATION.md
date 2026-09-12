@@ -868,3 +868,21 @@ headroom for the inference batcher and a driver JVM on the same card;
 the number Phase 7's update budget (and any decision on a smaller
 encoder for rung 0) has to be set from. Neither changes a 4g verdict;
 the memory gate passes at both settings.
+
+## 5a — loopback and refusals (Lanes B + C, 2026-09-12 19:45; driver `v7/lane-b` 9792354, server `v7/lane-d`)
+
+`rl/live_check_5a.sh` (on lane-b): `policy_server.py --arch v7 --frozen`
+on cpu with the real `card_emb_v8` and `deck_ctx_v1`, an init checkpoint
+from `p10_init_net.py --arch v7`, W0Base eval games from the persistent
+v7 driver (port 7911, `-Drl.encoderV=7`, the 3d tracker on the wire).
+
+| gate | required | measured | result |
+|---|---|---|---|
+| loopback | 100 consults, no refusals | 10 games, **190 consults**, 0 refusals, 0 tracebacks, driver rc 0; avg round trip 22.6 ms (cpu, full net) | pass |
+| handshake refuses a v6 driver | reason on both sides | v6 driver (port 7910, `-Drl.encoderV=6`) → driver: `policy server refused the handshake: {"ok":0,...}`, job rc 1; server: `HANDSHAKE MISMATCH: server is --arch v7 but the driver hello carries wire=None ... Run the driver with -Drl.encoderV=7` | pass |
+| handshake refuses a wrong `card_emb` | reason on both sides | server started on a checkpoint minted with `--card-emb card_emb_v6` (`p10_init_net.py`; the server also refuses to *start* when `--card-emb` disagrees with the checkpoint's table) → driver rc 1 with the refusal; server: `HANDSHAKE MISMATCH: engine card_emb 'card_emb_v8' vs server 'card_emb_v6'` | pass |
+
+What this cannot support: nothing about play (the init net's encoder
+is an identity; every game is a loss by passing, as pre-registered). It
+is the plumbing gate for 5b–5e: real dumps for the faithfulness probe,
+the end-to-end leak gates, the throughput protocol, and replay.

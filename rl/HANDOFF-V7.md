@@ -584,3 +584,6 @@ COMMITS: lane-b pushed through 3d; lane-d pushed through 8d8ffde. Uncommitted:
 
 UPDATE (2026-09-12 19:25): 3e DONE = 9792354 on v7/lane-b (row §3e; rl/PR-V7-LANE-B.md written).
 NEXT is Phase 5a (loopback + refusals) with rl/live_check_5a.sh on lane-b, row on lane-d.
+
+UPDATE (2026-09-12 19:50): 5a DONE (row §5a on lane-d; rl/live_check_5a.sh on lane-b d9701ee): loopback 190 consults / 0 refusals; v6 driver and card_emb mismatch both refused with the reason on both sides.
+NEXT: 5b - 10k-consult coverage dump. Note: the driver emits consults only for the RL seat, so "heuristic-vs-heuristic" dumps need either the echo policy with PREFER=2,1 / PICK=99 over many seeds+decks (what 3b-3d used) or a shadow emission from a SearchPlayer seat; decide and record which. Then 5c (end-to-end leak gates: oracle, tracker, belief), 5d (throughput v7 vs v6, THROUGHPUT-LOCAL.md protocol), 5e (replay: the tapped-land residual is known; state it). Both PR texts exist: rl/PR-V7-LANE-D.md, rl/PR-V7-LANE-B.md.
