@@ -1375,3 +1375,111 @@ buries a small-scale field" predicts and what "the block structure loses
 it" does not; `n_cand` (÷32, mostly 1–5 candidates) is the one field
 under the bar at both settings. The trained-checkpoint probe at 7a is the
 measurement that settles it.
+
+## 5c — leak gates end to end on the 5b recordings (2026-09-12 21:15; branch `v7/lane-d`)
+
+Plan §2 row 5c: "leak gates end to end: oracle, tracker, belief — all
+three pass". All three are run or cited on the 5b recordings (oracle JVM
+7912, `-Drl.encoderV=7 -Drl.oracle=true`, `rl/artifacts/v7/5b_manifest.txt`):
+every file matching `5b*.jsonl` — **63 recordings** = the 48 of rounds
+1–2 (13,171 consults) + the 15 extras (KW7Probe, `noYields=false`,
+main-1-pass, and three `trackerDebug` re-recordings of 5b_BenchDimir_p99
+under its own seed, which duplicate its games — see the confound line
+under the belief gate). Pre-registration commit 097bc4a (both scripts,
+thresholds in the docstrings) precedes the first run.
+
+**Oracle** — `rl/run_5c_leak.sh` → `rl/v7_leak_real.py` per recording,
+every consult (`--limit 2000`), `rl/probes/leak.py` levels 1–3 with the
+hidden keys `oe` + `v7_oe_hand`, encoder woken (att.out / ffn[-1] std
+0.05), 2 layers; one line per recording in `rl/artifacts/v7/5c_leak.txt`.
+3d measured this instrument on one W0Base recording of 136 consults; 5c
+is the same instrument over every oracle-labelled consult of every 5b
+recording (8 decks + KW7Probe, 3 echo policies, the extras).
+
+| gate | required | measured | result |
+|---|---|---|---|
+| level 1: policy-path parse identical with and without the hidden keys | every consult | RUNNING — see the line appended below | — |
+| level 2: policy logits bit-identical under a hidden-content swap (tol 1e-6) | every consult, woken net | RUNNING | — |
+| level 3: the critic moves under the same swap (min 1e-4) | every recording | RUNNING | — |
+
+**Tracker** — the gate is 3d's "known ⊆ truth" (every known slot's name
+is in the true hand, multiset), which was **vacuous at 3d** (0 known
+slots over 1,277 consults) and is **measured at 5b** after the DFC fix
+(`rl/artifacts/v7/5b_check3d_fixed.txt`): 17,918 oracle-labelled
+consults, `handDrift` max 0 on every file, `oppHandTrunc` 0, 517 returned
+slots all identity-known, **0 known-not-in-truth**; slot count = hand size
+on every consult. No new run here: 5c cites that measurement as the
+tracker gate — pass. What it cannot support: the only known-identity path
+exercised is return-to-hand; reveal and tutor origins are 0 rows. Two
+pre-fix recordings are in the 5c set (5bx_BenchDimir_m2 and the dbg
+extras record before the fix): the belief label census below finds the
+phantom-slot defect on 5bx_BenchDimir_m2 — 3 consults with Cecil, Dark
+Knight in the true hand, no known slot, and not among the remaining
+tokens — the §5b finding-1 signature, on a recording made before the
+fix, not a new defect.
+
+**Belief** — `rl/v7_belief_real.py` (`rl/artifacts/v7/5c_belief.txt` +
+`.json`): 4f's four gates on real consults with labels from `v7_oe_hand`.
+19,379 oracle-labelled consults, 441 games, game-grouped 20 % hold-out
+(15,281 / 4,098 consults), 60,285 true cards; BeliefModule d 256, 2
+layers, Adam 3e-4, 1,500 steps of 64 on cuda, random card table (as the
+oracle gate), untrained builders. Labels: slot target = the remaining-deck
+token of the true card in that slot (known slots first, the rest in
+deck-token order — one of the equivalent permutations); P(in hand) target
+per remaining token; next-draw target −1 everywhere (the next draw is not
+on the wire, so that loss term is identically 0 here).
+
+| gate | required (fixed at 097bc4a) | measured | result |
+|---|---|---|---|
+| B1 leak with belief ON | logits bit-identical (tol 1e-6) under the `oe` / `v7_oe_hand` swap with the belief features attached, ≥ 200 real consults | **2,520 consults** (40 per recording), max Δlogit **0.0**, 2,248 non-degenerate logit rows | pass |
+| B2 stop-gradient on real inputs | every builder grad None/0, some belief grad ≠ 0 after `loss.backward()` on a real minibatch | builders 0, belief non-zero | pass |
+| B3 held-out slot log-lik of the true hand vs uniform-over-remaining | margin ≥ 0.3 nats | **−2.350 vs −2.589: +0.239** (11,876 held-out slots; train −2.221); vs the multiset prior −2.556: **+0.206** | **FAIL as pre-registered** |
+| B4 known slots: pointer mass on the true token | ≥ 0.95 | 153 held-out known slots, mean mass **0.082** (uniform over ~13 tokens ≈ 0.077) | **FAIL — and ill-posed, below** |
+| reported, not gated: P(in hand) | — | held-out BCE 0.341 vs base-rate BCE 0.441 (base rate 0.161), rank AUC **0.828** | — |
+
+What the two FAIL rows can and cannot support.
+
+*B3.* The module learns a real signal on real inputs: it beats uniform
+and the multiset prior on the held-out games, and P(in hand) has AUC 0.83
+against 0.5 — the mechanism (legal tokens in, its own loss, features
+out) works on the wire as recorded. The 0.3-nat bar was borrowed from 4f,
+where the planted rule is deterministic and the attainable margin is
+unbounded; on real hands the attainable margin is bounded by how
+predictable the hidden hand is from the public state, which nobody
+measured before fixing the bar. It is recorded as a FAIL against the bar
+as written, not moved. Phase 6 sets its bar from a baseline measured on
+the same data (the multiset prior, and a count-only model), not from
+uniform. Confound, in the module's favour: the three `trackerDebug`
+re-recordings duplicate 5b_BenchDimir_p99's games (≈ 1,450 of 19,379
+consults), and a duplicated game can sit in train and in the hold-out —
+that can only inflate the held-out margin, so it cannot rescue the FAIL;
+the run on the 48 non-duplicate recordings is appended below.
+Training was not converged at 1,500 steps (loss still falling); the
+longer-training diagnostic is appended below, labelled a diagnostic.
+
+*B4.* The pre-registration assumed a known slot's card is among the
+remaining-deck tokens. It is not, by the WIRE §2f definition: remaining =
+decklist minus every card seen, and a returned-to-hand card has been
+seen. The label census shows it: 167 true cards have no remaining token,
+**164 of them the returned known cards** (Cecil, Dark Knight 118, Elektra,
+Daughter of the Hand 49); the 153 held-out known slots that did get a
+target got it only because another copy of the same name was still in
+the library — the pointer was asked "which remaining copy is this card",
+a question with no right answer, and it answers at chance. So B4 as
+written is not a measurement of the module; the identity of a known slot
+is on its own token (5b: `opp_hand.identity` 1.0 at L3 and L4) and needs
+no belief. Design consequence for Phase 6, recorded here so it is not
+lost: the pointer loss must exclude known slots (mask `slot_target` to −1
+when `identity known` = 1), and the attach for a known slot should carry
+its identity, not a pointer expectation. Not changed in `v7_belief.py`
+in this row (it is a Phase 6 change with its own gate).
+
+**5c verdict.** Oracle: see the appended line. Tracker: pass, as measured
+at 5b (cited, not re-run). Belief: the two mechanism gates pass on real
+inputs (no leak with the features on, no gradient into the builders);
+the two predictive gates FAIL as pre-registered — B3 by 0.06 nats against
+a bar not calibrated to real data, B4 by construction of the label. Plan
+row 5c said "all three pass"; the belief gate does not, and the row stays
+open on that until Phase 6 measures it properly. The recordings, both
+scripts and the JSON reports are on disk; recordings gitignored
+(regenerate from the manifest).

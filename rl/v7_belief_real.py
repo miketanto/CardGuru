@@ -98,13 +98,13 @@ def labels(m, o):
             slot_t[h] = idx[n]
             rem[n] -= 1
     left = sorted([n for n, c in rem.items() for _ in range(c) if n in idx], key=lambda n: idx[n])
-    unmatched = sum(c for n, c in rem.items() if n not in idx)
+    unmatched = [n for n, c in rem.items() for _ in range(c) if n not in idx]
     k = 0
     for h, n in enumerate(hn):
         if slot_t[h] < 0 and k < len(left):
             slot_t[h] = idx[left[k]]
             k += 1
-    return slot_t, hand_t, len(true), unmatched
+    return slot_t, hand_t, len(true), unmatched, [n for n in hn if n]
 
 
 def collate_labels(items, Hmax, Dmax):
@@ -156,19 +156,22 @@ def main():
         return 2
     ids = V.CardIds()
     obs, labs, meta = [], [], []
-    n_true = n_unm = n_known = 0
+    n_true = n_unm = n_known = n_unm_known = 0
+    unm_names = Counter()
     for m, gid, fi in msgs:
         o = V.parse_consult(m, ids, hello)
-        s, h, nt, nu = labels(m, o)
+        s, h, nt, nu, kn = labels(m, o)
         obs.append(o); labs.append((s, h)); meta.append((gid, fi))
-        n_true += nt; n_unm += nu; n_known += int((o.opp_hand_id >= 0).sum())
+        n_true += nt; n_unm += len(nu); n_known += int((o.opp_hand_id >= 0).sum())
+        unm_names.update(nu); n_unm_known += sum(1 for n in nu if n in kn)
     games = sorted({g for g, _ in meta})
     rng = random.Random(args.seed)
     held = set(rng.sample(games, max(1, int(round(0.2 * len(games))))))
     tr = [i for i, (g, _) in enumerate(meta) if g not in held]
     te = [i for i, (g, _) in enumerate(meta) if g in held]
     print(f"BELIEF5C|consults={len(obs)}|games={len(games)}|files={len(args.recordings)}|train={len(tr)}|test={len(te)}"
-          f"|true_cards={n_true}|unmatched={n_unm}|known_slots={n_known}|device={args.device}")
+          f"|true_cards={n_true}|unmatched={n_unm}|unmatched_that_are_known_slot_names={n_unm_known}|known_slots={n_known}|device={args.device}")
+    print("BELIEF5C|unmatched_names|" + "|".join(f"{n}={c}" for n, c in unm_names.most_common(12)))
 
     dev = torch.device(args.device)
     table = N.CardTable(random=True)
@@ -176,7 +179,8 @@ def main():
     belief = BL.BeliefModule(d=256, layers=2).to(dev)
     opt = torch.optim.Adam(belief.parameters(), lr=args.lr)
     report = {"consults": len(obs), "games": len(games), "files": args.recordings, "train": len(tr), "test": len(te),
-              "true_cards": n_true, "unmatched": n_unm, "known_slots": n_known, "thresholds": THR, "steps": args.steps}
+              "true_cards": n_true, "unmatched": n_unm, "unmatched_known": n_unm_known, "unmatched_names": dict(unm_names.most_common(30)),
+              "known_slots": n_known, "thresholds": THR, "steps": args.steps}
 
     # ---- B2: stop-gradient on a real minibatch (builders in train mode, grads cleared) ----
     build.train(); belief.train()
@@ -214,6 +218,7 @@ def main():
 
     def evaluate(idx_list):
         ll_sum = base_sum = ms_sum = 0.0; n_ok = 0
+        du_sum = du_sq = dm_sum = dm_sq = 0.0                          # paired per-slot margins -> SE
         known_mass = 0.0; n_known_eval = 0
         bce_sum = 0.0; n_deck = 0; pos = []; neg = []
         for s in range(0, len(idx_list), 128):
@@ -230,7 +235,10 @@ def main():
             base_sum += (-(n.log().unsqueeze(1).expand_as(g)))[ok].sum().item()
             cnt = b["opp_deck"][..., 0] * dm.float()                        # count remaining (÷4, saturating)
             ms = (cnt / cnt.sum(1, keepdim=True).clamp(min=1e-9) + 1e-9).log()   # [B, D]
-            ms_sum += ms.gather(1, st.clamp(min=0)).masked_fill(~ok, 0).sum().item()
+            msg_ = ms.gather(1, st.clamp(min=0))
+            ms_sum += msg_.masked_fill(~ok, 0).sum().item()
+            du = (g + n.log().unsqueeze(1).expand_as(g))[ok]; dmm = (g - msg_)[ok]
+            du_sum += du.sum().item(); du_sq += (du ** 2).sum().item(); dm_sum += dmm.sum().item(); dm_sq += (dmm ** 2).sum().item()
             kn = ok & (b["opp_hand_id"] >= 0)
             if kn.any():
                 known_mass += out["pointer"].gather(2, st.clamp(min=0).unsqueeze(-1)).squeeze(-1)[kn].sum().item()
@@ -245,7 +253,11 @@ def main():
         rs = random.Random(1)
         ps = rs.sample(pos, min(2000, len(pos))); ns = rs.sample(neg, min(2000, len(neg)))
         auc = sum((1.0 if a > c else 0.5 if a == c else 0.0) for a in ps for c in ns) / max(1, len(ps) * len(ns))
+        def se(sm, sq):
+            n = max(1, n_ok); mu = sm / n
+            return ((max(0.0, sq / n - mu * mu)) / n) ** 0.5
         return {"slots": n_ok, "loglik": ll_sum / max(1, n_ok), "uniform": base_sum / max(1, n_ok),
+                "se_vs_uniform": se(du_sum, du_sq), "se_vs_multiset": se(dm_sum, dm_sq),
                 "multiset": ms_sum / max(1, n_ok), "known_slots": n_known_eval,
                 "known_mass": (known_mass / n_known_eval) if n_known_eval else None,
                 "p_hand_bce": bce_sum / max(1, n_deck), "base_rate": p_base, "base_bce": bce_base, "auc": auc}
@@ -254,7 +266,8 @@ def main():
     report["B3"] = {"train": ev_tr, "test": ev_te,
                     "pass": ev_te["loglik"] > ev_te["uniform"] + THR["B3_margin"]}
     print(f"BELIEF5C|B3|test_loglik={ev_te['loglik']:.3f}|uniform={ev_te['uniform']:.3f}|multiset={ev_te['multiset']:.3f}"
-          f"|slots={ev_te['slots']}|train_loglik={ev_tr['loglik']:.3f}|pass={report['B3']['pass']}")
+          f"|slots={ev_te['slots']}|se_vs_uniform={ev_te['se_vs_uniform']:.4f}|se_vs_multiset={ev_te['se_vs_multiset']:.4f}"
+          f"|train_loglik={ev_tr['loglik']:.3f}|pass={report['B3']['pass']}")
     print(f"BELIEF5C|p_hand|test_bce={ev_te['p_hand_bce']:.3f}|base_bce={ev_te['base_bce']:.3f}|base_rate={ev_te['base_rate']:.3f}|auc={ev_te['auc']:.3f}")
     if ev_te["known_slots"] >= THR["B4_min_rows"]:
         b4 = {"known_slots": ev_te["known_slots"], "mass": ev_te["known_mass"], "pass": ev_te["known_mass"] >= THR["B4_mass"]}
@@ -296,7 +309,7 @@ def main():
         c = logits(m)
         d = (a - c).abs().max().item() if a.shape == c.shape else float("inf")
         max_d = max(max_d, d)
-        if a.numel() and a.std().item() > 0:
+        if a.numel() > 1 and a.std().item() > 0:
             n_moved += 1
     b1 = {"consults": len(pick), "max_abs_dlogit": max_d, "logit_rows_nondegenerate": n_moved,
           "pass": max_d <= THR["B1_tol"] and len(pick) >= THR["B1_min_consults"]}

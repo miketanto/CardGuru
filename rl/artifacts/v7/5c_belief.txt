@@ -1,0 +1,17 @@
+# 5c belief gates 2026-09-12T20:43:59Z steps=1500 batch=64 leak-per-file=40
+BELIEF5C|consults=19379|games=441|files=63|train=15281|test=4098|true_cards=60285|unmatched=167|unmatched_that_are_known_slot_names=164|known_slots=793|device=cuda
+BELIEF5C|unmatched_names|Cecil, Dark Knight=118|Elektra, Daughter of the Hand=49
+BELIEF5C|B2|builder_grads_zero=True|belief_grads_nonzero=True|pass=True
+BELIEF5C|train|step=0|loss=3.5601|t=72s
+BELIEF5C|train|step=250|loss=2.7695|t=81s
+BELIEF5C|train|step=500|loss=2.7361|t=89s
+BELIEF5C|train|step=750|loss=2.7866|t=96s
+BELIEF5C|train|step=1000|loss=2.4991|t=103s
+BELIEF5C|train|step=1250|loss=2.4313|t=111s
+BELIEF5C|train|step=1499|loss=2.4642|t=119s
+BELIEF5C|B3|test_loglik=-2.350|uniform=-2.589|multiset=-2.556|slots=11876|train_loglik=-2.221|pass=False
+BELIEF5C|p_hand|test_bce=0.341|base_bce=0.441|base_rate=0.161|auc=0.828
+BELIEF5C|B4|known_slots=153|mass=0.0816965326666832|pass=False
+BELIEF5C|B1|consults=2520|max_abs_dlogit=0.0|nondegenerate=2248|pass=True
+BELIEF5C|pass=False|B4=False|seconds=211|out=rl/artifacts/v7/5c_belief.json
+# done 2026-09-12T20:47:34Z rc=1
