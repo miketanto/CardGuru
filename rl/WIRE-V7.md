@@ -282,3 +282,32 @@ and position of the first violation.
 - That `v7_ent_id` is present (it is optional).
 - That `v7_opp_*` keys are present before 3d.
 - Any field marked reserved: read as 0, never as meaning.
+- That an ACTIVATE candidate can be a mana ability, or that a window whose
+  only non-PASS candidates were mana abilities produces a consult (§8, 2026-09-13).
+
+## 8. Amendments (dated; the row that establishes each is in rl/V7-VALIDATION.md)
+
+- **2026-09-13 — candidate set: no mana abilities at priority.**
+  `RLPlayer.priority` drops `isManaAbility()` candidates before the empty
+  check (7a amendment; `-Drl.manaCands=true` restores the old set for a
+  job). XMage auto-pays on cast, so a hand-tapped land floats mana that
+  empties at end of step and leaves the land tapped. Consequences a
+  consumer must carry: ACTIVATE never denotes a mana ability; a window
+  whose only non-PASS candidates were mana abilities is an
+  `autoPassEmpty` window with no consult; §2b idx 20 (K), 21 (consults
+  so far) and §2g consult age count the consults that remain. The v6
+  arm's candidate set changes identically (one `getPlayable` site).
+  Evidence: V7-VALIDATION "7a amendment — mana-ability filter" (three
+  decks, same-flag control, wire_check_3b 0 disagreements).
+- **2026-09-12 — §2d idx 57 (lethal-as-is) is 0 at every consult by
+  construction.** State-based actions resolve before priority, so a
+  creature with lethal damage marked is never on the battlefield when a
+  consult is built (5b: 0 of 17,918 oracle-labelled rows). The slot keeps
+  its definition but reads as 0 until an afterstate carries it (a
+  combat-damage afterstate would); consumers treat it as reserved.
+- **Open, not amended:** §2c player width 21 (untapped sources by
+  colour, five slots) and the PASS afterstate at the joint sites (§2f
+  "deferred"). Both change `DIMS` on both sides (Java, `v7_obs`,
+  `v7_net`, fixtures, `wire_validate`) and land as one commit naming both
+  consumers, after the running lane finishes (the lane restarts its
+  server from disk).
