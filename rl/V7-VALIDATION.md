@@ -1929,3 +1929,24 @@ collapse (B1 measures that); the filter's effect on decks with mana
 abilities that have side effects (none in the bench set); the payment
 choice on BenchDimir / P8Faeries (39–49 % of consults per §7a), which the
 engine now makes alone until the deferred sub-consult exists.
+
+### 7a — B arms: baseline correction pre-registered before any B result is read (2026-09-13 01:20)
+
+B1's first TRAIN line (32 games played by the init policy before update 1,
+on the filter build) reports 6 wins — 0.19, Wilson [0.09, 0.36] — where the
+§7a "learning" definition set the bar at "above the uniform-random 5 %".
+That 5 % was A2's uniform policy *with* the mana-ability sink; removing the
+sink changes what a near-uniform policy does (every sampled action is now a
+land, a spell, an attack or a block), so the bar is stale on this build
+and 32 games cannot replace it. Pre-registered now, before B1 finishes:
+
+* **B0** (`rl/run_7b0.sh`): the B arms' own init checkpoint, frozen,
+  sampled as in training, 128 games W0Base vs heuristic on the filter
+  build. Its Wilson interval is the "wins" bar for B1–B4: an arm "learns"
+  on the wins criterion only if its last-4-batch rate (128 games) has a
+  Wilson interval clear of B0's. The census and battery criteria stand
+  as written. B0 cannot inform the collapse question (it never updates).
+* The B arms' first-batch rows are not independent evidence of B0's rate
+  (same init, same driver seed schedule); B0 uses its own seeds.
+* Nothing in this correction moves a bar for a result already read: no B
+  row exists yet.
