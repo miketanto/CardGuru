@@ -1,0 +1,69 @@
+# per file: handDrift max / returned slots / known_not_in_truth
+5b_B1Fast_p1.jsonl handDrift max=0 
+5b_B1Fast_p99.jsonl handDrift max=0 
+5b_B1Fast_sf.jsonl handDrift max=0 
+5b_BenchDimir_p1.jsonl handDrift max=0 returned': 45 
+5b_BenchDimir_p99.jsonl handDrift max=0 returned': 77 
+5b_BenchDimir_sf.jsonl handDrift max=0 returned': 36 
+5b_P8Faeries_p1.jsonl handDrift max=0 returned': 19 
+5b_P8Faeries_p99.jsonl handDrift max=0 returned': 21 
+5b_P8Faeries_sf.jsonl handDrift max=0 returned': 48 
+5b_W0Base_p1.jsonl handDrift max=0 
+5b_W0Base_p99.jsonl handDrift max=0 
+5b_W0Base_sf.jsonl handDrift max=0 
+5b_W1Fly_p1.jsonl handDrift max=0 
+5b_W1Fly_p99.jsonl handDrift max=0 
+5b_W1Fly_sf.jsonl handDrift max=0 
+5b_W3Sorc_p1.jsonl handDrift max=0 
+5b_W3Sorc_p99.jsonl handDrift max=0 
+5b_W3Sorc_sf.jsonl handDrift max=0 
+5b_W4Inst_p1.jsonl handDrift max=0 
+5b_W4Inst_p99.jsonl handDrift max=0 
+5b_W4Inst_sf.jsonl handDrift max=0 
+5b_W5Trick_p1.jsonl handDrift max=0 
+5b_W5Trick_p99.jsonl handDrift max=0 
+5b_W5Trick_sf.jsonl handDrift max=0 
+5b2_B1Fast_p1.jsonl handDrift max=0 
+5b2_B1Fast_p99.jsonl handDrift max=0 
+5b2_B1Fast_sf.jsonl handDrift max=0 
+5b2_BenchDimir_p1.jsonl handDrift max=0 returned': 27 
+5b2_BenchDimir_p99.jsonl handDrift max=0 returned': 60 
+5b2_BenchDimir_sf.jsonl handDrift max=0 returned': 23 
+5b2_P8Faeries_p1.jsonl handDrift max=0 
+5b2_P8Faeries_p99.jsonl handDrift max=0 returned': 1 
+5b2_P8Faeries_sf.jsonl handDrift max=0 returned': 29 
+5b2_W0Base_p1.jsonl handDrift max=0 
+5b2_W0Base_p99.jsonl handDrift max=0 
+5b2_W0Base_sf.jsonl handDrift max=0 
+5b2_W1Fly_p1.jsonl handDrift max=0 
+5b2_W1Fly_p99.jsonl handDrift max=0 
+5b2_W1Fly_sf.jsonl handDrift max=0 
+5b2_W3Sorc_p1.jsonl handDrift max=0 
+5b2_W3Sorc_p99.jsonl handDrift max=0 
+5b2_W3Sorc_sf.jsonl handDrift max=0 
+5b2_W4Inst_p1.jsonl handDrift max=0 
+5b2_W4Inst_p99.jsonl handDrift max=0 
+5b2_W4Inst_sf.jsonl handDrift max=0 
+5b2_W5Trick_p1.jsonl handDrift max=0 
+5b2_W5Trick_p99.jsonl handDrift max=0 
+5b2_W5Trick_sf.jsonl handDrift max=0 
+5bx_B1Fast_ny.jsonl handDrift max=0 
+5bx_W0Base_ny.jsonl handDrift max=0 
+5bx_W4Inst_ny.jsonl handDrift max=0 
+5bx_B1Fast_m2.jsonl handDrift max=0 
+5bx_BenchDimir_m2.jsonl handDrift max=0 returned': 120 
+5bx_P8Faeries_m2.jsonl handDrift max=0 returned': 11 
+5bx_W0Base_m2.jsonl handDrift max=0 
+5bx_W1Fly_m2.jsonl handDrift max=0 
+5bx_W4Inst_m2.jsonl handDrift max=0 
+5bx_KW7Probe_p1.jsonl handDrift max=0 
+5bx_KW7Probe_p99.jsonl handDrift max=0 
+5bx_KW7Probe_sf.jsonl handDrift max=0 
+# pooled
+consults with tracker tokens=17918 (oracle-labelled 17918); handDrift max=0 oppHandTrunc sum=0
+slots by origin: {'opening': 32989, 'drawn': 22558, 'returned': 517}  known by origin: {'returned': 517}
+known fraction overall: 0.009
+known fraction by turn: {2: '0/5422', 3: '0/512', 4: '8/7055', 5: '3/1274', 6: '28/7631', 7: '5/1192', 8: '47/7703', 9: '4/1075', 10: '40/6613', 11: '1/921', 12: '41/4296', 13: '1/475'}
+opponent actions: {'cast': 62676, 'passed_mana_up': 42648, 'attack': 58260, 'declined_block': 10513, 'activate': 1374, 'block': 1312}
+deck: Σremaining − (library + unknown slots): mean -0.09, mean |gap| 0.09 (counts saturate at 4 in the wire)
+failures: none

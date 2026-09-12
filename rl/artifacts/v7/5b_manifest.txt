@@ -70,3 +70,12 @@ RECORD|5bx_BenchDimir_p99dbg3|rc=1|lines=0|consults=0|md5=d41d8cd98f00
 cp: cannot stat '/tmp/td_p99.txt': No such file or directory
 # done dbg2 2026-09-12T14:10Z
 # 5b dbg3 2026-09-12T14:14Z
+RECORD|5bx_BenchDimir_p99dbg3|rc=0|lines=996|consults=489|md5=9e7d73eb54cf
+RECORD|5bx_W4Inst_m2|rc=0|lines=638|consults=310|md5=599449a549a0
+RECORD|5bx_BenchDimir_m2|rc=0|lines=1352|consults=667|md5=12714c337a7e
+RECORD|5bx_P8Faeries_m2|rc=0|lines=1320|consults=651|md5=9efa9373a26e
+# done dbg3 2026-09-12T14:14Z
+# 5b tracker fix 2026-09-12T14:16Z
+RECORD|5b_BenchDimir_p1|rc=0|lines=1030|consults=506|md5=e0f3193aa6a7
+RECORD|5b_BenchDimir_p99|rc=0|lines=990|consults=486|md5=41c19e788c54
+# done tracker fix 2026-09-12T14:19Z

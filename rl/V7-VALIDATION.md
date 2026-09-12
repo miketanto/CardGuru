@@ -1206,3 +1206,172 @@ tapped-derived columns on opponent lands whose per-line sums agree; every
 other byte of 477 consults is equal. If exact replay is wanted, the fix
 is `ManaUtil`/auto-payment ordering in the engine, and it would make the
 v6 arm reproducible too.
+
+## 5b — faithfulness on real dumps and the coverage run (2026-09-12 14:30; branch `v7/lane-d`)
+
+**How the consults were produced (the decision the 19:50 note asked
+for):** the echo policy on the RL seat (`rl/wire_echo_server.py`) against
+the heuristic opponent, not a shadow emission from a SearchPlayer seat —
+the emitter under test is the one that will serve training, and a shadow
+path would be a second emitter with its own faithfulness question. Three
+echo policies per deck (`PICK=1` first non-pass, `PICK=99` last candidate =
+largest attack subset / block assignment, `PREFER=2,1 BUDGET=300`
+spell-first), eight decks (W0Base W1Fly W4Inst W5Trick B1Fast W3Sorc
+BenchDimir P8Faeries — the last two carry planeswalkers, tokens, counters,
+flash, ninjutsu, counterspells, animated lands, a transforming DFC), on
+the oracle JVM (7912, `-Drl.encoderV=7 -Drl.oracle=true`, so 5c reuses the
+recordings). `rl/record_5b.sh` (8 games each) + `rl/record_5b_r2.sh` (6
+games, fresh seeds): **48 recordings, 13,171 consults, 336 games**. Extras
+(`rl/record_5b_extra.sh`, `_dbg.sh`, `_dbg3.sh`): a constructed keyword deck
+`rl/KW7Probe.dck` (haste, first strike, double strike, trample, menace,
+reach, defender, shroud, protection, prowess, an X spell), `-Drl.noYields=false`
+runs, and `WIRE_ECHO_PASS_MAIN1=1` runs (the echo policy passes main 1 so
+lands and spells are played in main 2 with combat damage still marked).
+The probe set is **56 recordings, 15,866 consults, 385 games**; the
+manifest with every seed and md5 is `rl/artifacts/v7/5b_manifest.txt`
+(recordings gitignored, regenerable). Every consult validates
+(`v7_obs.parse_consult` validates on load); `rl/wire_check_3b.py` over the
+48: **0 v6 disagreements, 0 identity failures** (`rl/artifacts/v7/5b_check3b.txt`).
+
+**Instrument** (`rl/v7_faith_real.py`, thresholds fixed in its docstring
+and committed at a3e9289 before the first run): per-field linear readout
+(`rl/probes/faithfulness.py`) on the L3 token-builder output and on the L4
+encoder output with the encoder woken as in `rl/v7_leak_real.py` (att.out
+and ffn[-1] at std 0.05, edge-bias rows at std 1.0; at init L4 = L3
+exactly). Game-grouped 20 % hold-out; entity readouts per zone (4b has one
+MLPSkip per zone, so one linear map across zones is not implied by the
+architecture); a field is "not exercised" below 20 minority rows overall
+or 10 on the held-out games. Edges: balanced pairs, features
+[x_i, x_j, x_i·x_j], L4 only (L3 tokens never see edges). Thresholds:
+L3 binary/cat ≥ 0.99, real R² ≥ 0.95; L4 ≥ 0.95 / ≥ 0.90; edges ≥ 0.90;
+consult-level ≥ 0.90 / ≥ 0.95. Full tables: `rl/artifacts/v7/5b_faith.md`
+(+ `.json`).
+
+| gate | required | measured | result |
+|---|---|---|---|
+| every field after L3 | ≥ threshold on held-out games | **135 pass, 0 fail, 31 not exercised** (game 24, players 16, entity 62 + identity, candidate 8 + 4 groups, opp hand 8 + identity, opp deck 6 + identity, opp actions 8); every exercised binary and cat field at 1.000, every real ≥ 0.999 | pass |
+| every field after L4 | ≥ threshold | **127 pass, 8 FAIL**: `game.n_cand` R² 0.856, `players.exile` 0.728, `players.pool_R` 0.814 (105 rows), `players.pool_C` 0.862 (208), `ent.ctr_p1p1` 0.470 (204), `ent.stack_pos` 0.892 (281), `cand.ATTACK.crack_back` 0.876 (n 119), `cand.BLOCK.blockers_used` 0.832 (n 108); all 8 are reals with a small wire scale (÷32, ÷10, ÷5, ÷4) or few rows; every binary and cat field passes (keyword bits 0.999–1.0, identity 1.0 in every zone, loyalty 0.961, tokens 1.0) | **FAIL on 8 of 135** |
+| every edge after L4 | balanced acc ≥ 0.90 | attacking_player 0.999 (4,108 positives), targets 0.989 (361), controls 0.997 (20,074), **can_block 1.000 (1,141)**, stack_above 1.000 (281), refers_to 0.984, referred_by 0.986; blocks / blocked_by / attached_to not exercised (no consult inside combat after blocks; no auras or equipment on any deck) | pass, 3 not exercised |
+| known-card set | per-name acc ≥ 0.95 (L4, pooled readout) | 3 names exercised (the ninjutsu-returned cards on BenchDimir / P8Faeries), mean **0.982**; per-token `opp_hand.known` 1.0, `identity` 1.0 at L3 and L4 | pass |
+| remaining-deck multiset | per-name count R² ≥ 0.90 (L4, pooled readout) | pooled linear readout mean R² **0.10** over 66 names → FAIL; per token (the multiset *is* the token set) `opp_deck.identity` 1.0 / `count` 1.0 / `fraction` 1.0 / `mv` 1.0 at L3, 1.0 / 0.976 / 0.976 / 0.998 at L4 | **FAIL as pre-registered; pass per token** |
+| instant-speed threat count | R² ≥ 0.90 (L4 pooled) | **0.931** (distinct remaining instant-speed cards castable with their open mana now; 5,505 exercised consults) | pass |
+
+What the two FAIL rows can and cannot support. The pooled per-name
+count is not linearly readable from linear-skip tokens by construction:
+count enters each token additively, so a mean over tokens carries the
+identity set and the total count but not their product; that readout
+was a bad pre-registration, and the per-token row is the evidence that
+the multiset is on the wire and carried — it is recorded as written, not
+moved. The eight L4 real fields are the small-magnitude ones; the L4
+instrument is a *randomly woken* encoder whose perturbation is of the
+order of those fields' scale, so this row cannot separate "the
+architecture loses them" from "the wake noise buries them". A diagnostic
+at wake std 0.02 is appended below; the pre-registered follow-up is the
+same probe on the 7a checkpoint after training (if a field is still
+below threshold on a trained net, that is an architecture finding).
+
+**Coverage census** (`rl/artifacts/v7/5b_check3b.txt`, 166k entity rows;
+3b's zero-row fields, in order). Exercised now: loyalty 518 · +1/+1
+counters 698 · −1/−1 161 · loyalty counters 518 · other counters 71 ·
+tokens 3,741 · other-permanent type 12,368 · deathtouch 3,856 · lifelink
+3,248 · hexproof 66 · ninjutsu 4,466 · stack modes 1,609 / controller
+1,590 / is-ability 458; the **granted-ability path** (v7 reads live
+abilities, v6 the printed table): Soulstone Sanctuary vigilance 489 rows,
+Restless Reef deathtouch 192, Cecil transformed deathtouch 207 / lifelink
+649, Kaito hexproof 66, and The Wondrous Wasp flying 32 rows where the
+printed table has no flying (the table is wrong, the engine is right —
+see finding 2). The constructed deck adds haste 416 · first strike 394 ·
+double strike 509 · trample 1,262 · menace 685 · reach 1,024 · defender
+655 · shroud 384 · protection 1,025 · prowess 416, each recovered at
+1.000 after L3 and ≥ 0.999 after L4. **Still not exercised**, with the
+reason: ward (no ward card in the deck; the same `V7_KW` class loop as the
+other 17 bits); damage marked (5 rows, all v6-agreeing: a consult only
+sees marked damage in main 2 of the RL seat's own turn on its surviving
+attackers, and the heuristic blocks 9 % of the time); blocking (21 rows,
+v6-agreeing); **lethal-as-is is 0 at every consult by construction**
+(state-based actions run before priority, so a creature with lethal
+damage is never on the battlefield when the policy is asked — a WIRE §2d
+amendment: drop or redefine idx 57); stack X and the candidate's X-chosen
+slot (Stonecoil Serpent was cast, 181 battlefield rows with X > 0, but no
+consult happens while an X spell of the RL seat is on the stack, and the
+candidate row is built before X is chosen — the slot cannot be filled by
+the generator as it stands); player idx 14 cards-drawn-this-turn (open
+item, still 0); poison; face-down; exile / library-known / command zones;
+opp-hand origin "tutored/other"; opp-action "other"; candidate type
+OTHER; TARGET life-if-player; ATTACK lethal (27 rows, under the held-out
+minimum); BLOCK defender-dies.
+
+**Findings, in the open.**
+1. **Tracker: phantom known slot on a transforming double-faced card.**
+   `rl/wire_check_3d.py` over the 48: `handDrift` max 9 and 22
+   known-not-in-truth consults on two recordings (5b_BenchDimir_p1, _p99);
+   the returned-to-hand origin (403 slots, all known) is exercised for the
+   first time, so the 3d "known ⊆ truth" gate is no longer vacuous — and it
+   failed. Traced with the id diagnostic added to `-Drl.trackerDebug`
+   (`rl/artifacts/v7/wire3a/5bx_td_p99.log`): Cecil, Dark Knight returned by
+   Kaito's ninjutsu as `BATTLEFIELD>HAND tid=43a68e5c`, cast again as
+   `HAND>STACK tid=f6a8b9b8` — the permanent's id is not the card's id for
+   a DFC, so the slot was never matched, `reconcile()` evicted a real
+   unknown slot instead, and the known Cecil slot outlived the card by
+   seven turns. Fix: slots keyed by `Card.getMainCard().getId()`
+   (`RLKnowledgeWatcher.mainId`, on zone changes and draws). Pre-registered:
+   changes only `v7_opp_hand*` on games with a returned DFC; the v6 arm and
+   every other v7 field are untouched. Re-check after the fix: see the
+   line appended below.
+2. **31 BLOCK candidates are engine-illegal pairs** (`5b_check3c.txt`: a
+   flying attacker — The Wondrous Wasp, Pestermite, Faerie Vandal — assigned
+   to a ground blocker). The `can_block` edge is right (engine legality);
+   `RLPlayer.jointBlocks` enumerates `assign[b]` over every attacker with no
+   `canBlock` filter (the pairwise `block1` site filters) and the
+   declaration loop silently skips the illegal pair, so the policy can
+   "choose" a block that does not happen. 3c saw 0 because its decks had no
+   flyer facing a ground blocker in a joint consult. Not fixed here: it
+   changes the v6 arm's candidate set, so it is its own commit with its own
+   v6-identity row (pre-registered: no v7 field changes; only consults
+   with an illegal joint assignment lose candidates).
+3. **XMage's own AI throws on the keyword deck** (`AI can't find good
+   blocker combination`, the heuristic opponent choosing blocks against
+   menace / trample attackers): the KW7Probe jobs ended with rc 1 after
+   2, 4 and 0 complete games. An opponent-side engine limitation to keep in
+   mind for the 7b deck.
+4. `-Drl.noYields=true` (the recording default) is the *every-window*
+   setting; `false` enables the hand-crafted yields. The driver server
+   refuses a job whose value differs from the JVM's pinned one — as it
+   should.
+
+**Tracker re-check after the fix** (`rl/record_5b_fix.sh`: compile,
+restart 7912, re-record 5b_BenchDimir_p1 / _p99 under their original
+seeds, `rl/wire_check_3d.py` per file and pooled →
+`rl/artifacts/v7/5b_check3d_fixed.txt`): over **17,918 oracle-labelled
+consults** (48 + the extras), `handDrift` max **0** on every file,
+`oppHandTrunc` 0, **517 returned slots, all identity-known, 0
+known-not-in-truth** — the 3d consistency gate "known ⊆ truth" is now
+measured, not vacuous; slot count = hand size on every consult; deck
+accounting mean |gap| 0.09 (the ÷4 count saturation). Known fraction
+0.009 overall: the only known-identity path these decks exercise is
+return-to-hand; reveal and tutor origins remain unexercised (origin
+"tutored/other" 0 rows).
+
+**5b verdict.** L3 carries every exercised field exactly; L4 (random
+wake) carries every binary and cat field and every edge, and loses
+precision on eight small-scale reals at the pre-registered bar — a FAIL
+row, with the trained-checkpoint follow-up pre-registered; the
+consult-level pooled deck-count readout FAILs by construction while the
+per-token multiset passes. Coverage: 10 keywords, loyalty, counters,
+tokens, the granted-ability path and the tracker's known path are
+exercised for the first time; lethal-as-is is dead by construction; ward,
+damage marked, blocking, stack X remain unexercised with the reasons
+above. One emitter defect found and fixed (tracker DFC handle), one
+candidate-generator defect found and deferred (illegal joint blocks).
+Nothing here blocks 5c–5e; 5c reuses these recordings.
+
+**L4 instrument diagnostic (not a gate; the bar above stays where it
+was).** The same probe with the wake at std 0.02 instead of 0.05
+(`--wake 0.02`, `rl/artifacts/v7/5b_faith_wake002.md`): L4 **134 pass,
+1 FAIL** (`game.n_cand` R² 0.889, still under 0.90); the other seven
+reals recover above threshold. So seven of the eight L4 failures scale
+with the size of the random perturbation, which is what "the wake noise
+buries a small-scale field" predicts and what "the block structure loses
+it" does not; `n_cand` (÷32, mostly 1–5 candidates) is the one field
+under the bar at both settings. The trained-checkpoint probe at 7a is the
+measurement that settles it.

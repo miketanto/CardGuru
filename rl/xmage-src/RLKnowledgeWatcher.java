@@ -319,6 +319,11 @@ public class RLKnowledgeWatcher extends Watcher {
         if (id == null) {
             return;
         }
+        try {
+            id = mainId(game.getCard(id), id);
+        } catch (RuntimeException ignored) {
+            // test-mode lookups throw on non-card ids; keep the handle
+        }
         int origin = game.getTurnStepType() == null ? O_OPENING
                 : searchPending ? O_OTHER : O_DRAWN;
         searchPending = false;
@@ -335,12 +340,29 @@ public class RLKnowledgeWatcher extends Watcher {
         hand.add(s);
     }
 
+    /** The handle a hand slot is keyed by: the MAIN card's id. A transforming
+     *  double-faced permanent leaves the battlefield under a different id
+     *  from the one its card carries in hand (5b, BenchDimir: Cecil, Dark
+     *  Knight returned by ninjutsu as 43a68e5c, cast again as f6a8b9b8), so
+     *  keying by the event id left a phantom known slot behind and
+     *  reconcile() then evicted a real unknown one - measured as handDrift 9
+     *  and 22 known-not-in-truth consults on two of 48 recordings. */
+    private static UUID mainId(Card c, UUID id) {
+        try {
+            Card m = c == null ? null : c.getMainCard();
+            return m != null ? m.getId() : id;
+        } catch (RuntimeException e) {
+            return id;
+        }
+    }
+
     private void onZoneChange(ZoneChangeEvent z, Game game) {
         UUID id = z.getTargetId();
         Card c = game.getCard(id);
         if (c == null || !opp.equals(c.getOwnerId())) {
             return;
         }
+        id = mainId(c, id);
         Zone from = z.getFromZone(), to = z.getToZone();
         if (to == Zone.HAND) {
             int origin;
