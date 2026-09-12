@@ -822,3 +822,28 @@ stopped before it started them so the GPU goes to the v7 4g cuda gates
 and Phase 5. The pre-registered prediction for c/d in the config-(a)
 row stands untested; if the embedder is revisited, run c first
 (`bash rl/cardemb/sweep2.sh c`) and compare against this row and a's.
+
+### 4g (part 2) — correction: the two cuda gates (Lane C, 2026-09-12 03:22 WSL clock; GPU idle after the embedder sweep)
+
+`rl/artifacts/v7/cuda_gates_4g.sh`, log `rl/artifacts/v7/cuda_gates_4g.log`.
+
+| gate | required | measured | result |
+|---|---|---|---|
+| memory gate | `update_profile.py threads --arch v7 --synth --steps 5000 --device cuda --threads 1`: peak RSS within the 16 GB cgroup | `UPDMEM|rss_max_mb=2044|cuda_peak_mb=11360`; 4,984 buffered steps / 90 episodes, defaults `--tbptt 32 --ep-batch 4` | pass on RSS; **cuda peak is at the card's limit** (11.4 of 12 GB on the RTX 3060) |
+| update time (not a gate, recorded) | — | `UPDTHREADS|threads=1|update_s=2899.61|ms_per_step=581.78` — **48 minutes for one 5,000-step update**, slower per step than the 2-layer CPU smoke (472 ms) | the number to fix before Phase 7 |
+| consult cost | `consult_cost.py --arch v7 --device cuda` | `CONSULT|entities=18|k=2|tokens=51|wire_bytes=12849|json_ms=0.16|obs_ms=0.20|validate_ms=0.51|fwd1_ms=16.91|fwd8_ms=16.91|fwd8_per_row_ms=2.11|sample_ms=0.83|total_single_ms=18.10|python_share=7%` | recorded; 18 ms per consult single, 2.1 ms per row batched by 8 |
+
+What these numbers cannot support: the 582 ms/step is one configuration
+(`tbptt 32`, `ep-batch 4`, threads 1) at a cuda peak that leaves ~0.6 GB
+free, which is where the caching allocator starts freeing and
+re-allocating every window; it says nothing about the rate at a smaller
+window. Pre-registered follow-up, run next: the same profile at
+`--tbptt 16 --ep-batch 2 --steps 1000` (`cuda_gates_4g_b.sh`); if
+ms/step falls by more than the 2× the smaller window alone explains,
+the allocator was the cost and the server defaults move to the knob
+that fits; if not, the per-window activation cost of the 6-layer
+encoder over ~50 tokens is the cost and the Phase 7 update budget has
+to be set from it. Neither outcome changes any 4g gate verdict. The 16.9
+ms cuda forward per consult (v6 entattn number in `baseline.md` for
+comparison) is the serving cost Phase 5d's throughput protocol measures
+end to end.

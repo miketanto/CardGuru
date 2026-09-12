@@ -1,0 +1,15 @@
+02:32:53 GATES START 387 MiB
+=== update_profile threads --arch v7 --synth --steps 5000 --device cuda --threads 1
+UPDPROF|buf steps=4984 episodes=90 device=cuda torch=2.7.1+cu126
+/home/miketanto/.local/lib/python3.10/site-packages/torch/nn/modules/transformer.py:382: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+TRAIN|update=1 episodes=90 batch_eps=90 steps=4984 batch_win_rate=0.422 mean_abs_phi=0.000 value_ev=-0.0093 oracle_cover=0.000 critic_ev=nan update_s=2899.56
+UPDTHREADS|threads=1|update_s=2899.61|ms_per_step=581.78|max_abs_dw_vs_first=0.000e+00|threads_restored=yes
+UPDMEM|rss_max_mb=2044|cuda_peak_mb=11360
+rc=0
+=== consult_cost --arch v7 --device cuda
+/home/miketanto/.local/lib/python3.10/site-packages/torch/nn/modules/transformer.py:382: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+CONSULT|arch=v7|device=cuda|entities=18|k=2|tokens=51|wire_bytes=12849|json_ms=0.16|obs_ms=0.20|validate_ms=0.51|fwd1_ms=16.91|fwd8_ms=16.91|fwd8_per_row_ms=2.11|sample_ms=0.83|total_single_ms=18.10|python_share=7%
+rc=0
+03:21:43 GATES DONE
