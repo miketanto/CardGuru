@@ -1,0 +1,12 @@
+  consults_per_ep: 32.04
+  peak_used_mb: 3968
+  peak_jvm_mb: 2077
+  peak_srv_mb: 1887
+  peak_gpu_mb: 2219
+  rllock_last: RLLOCK|calls=347|wait_s=0.0|held_s=1.7|wait_per_call_ms=0.00|held_per_call_ms=4.89|wait_share=0.0%
+  train_lines: 8
+  r0_done: True
+  r0_failed: False
+  ck_eps_last: 0
+  turns_probe0: 13.5
+  driver_tail: []

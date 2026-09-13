@@ -1,0 +1,5 @@
+P10INIT|out=/tmp/rl_5d_v6f/init.pt|arch=entattn|seed=10|cdim=94|params=715806
+R0_START|B0Base|seed=0|budget=256|resume_at=0|out=/tmp/rl_5d_v6f
+R0|B0Base|s0|trained=0|ck_eps=0|D0=0.0000 [0.000,0.490]|D1=0.0000 [0.000,0.490]|TWIN=0.0000 [0.000,0.490]|blocks=0/0|BLOCKOPT=0/0|gap=0|attacks=0/0|ATKOPT=0/0|ATKOPTCA=0/0|under_over=0/0|turns=13.5
+R0|B0Base|s0|trained=256|ck_eps=256|D0=1.0000 [0.510,1.000]|D1=1.0000 [0.510,1.000]|TWIN=0.5000 [0.150,0.850]|blocks=26/27|BLOCKOPT=17/20|gap=8|attacks=51/54|ATKOPT=22/32|ATKOPTCA=18/32|under_over=0/10|turns=19.5
+R0_DONE|B0Base|s0|trained=256|out=/tmp/rl_5d_v6f
