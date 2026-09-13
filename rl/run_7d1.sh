@@ -22,4 +22,9 @@ job() {   # $1 out, rest -D flags
 job $ART/cp7_vs_heur.txt        -Drl.episodes=100 -Drl.agent=heuristic -Drl.opponent=cp7 -Drl.seed=7100
 job $ART/search_p1b8_vs_heur.txt -Drl.episodes=100 -Drl.agent=search -Drl.agentPlies=1 -Drl.agentBreadth=8 -Drl.opponent=heuristic -Drl.seed=7100
 job $ART/search_p2b8_vs_heur.txt -Drl.episodes=100 -Drl.agent=search -Drl.agentPlies=2 -Drl.agentBreadth=8 -Drl.opponent=heuristic -Drl.seed=7100
+# controls (added after the first three landed: p1b8 and p2b8 were identical, 37/100, turns 12.9)
+job $ART/heur_vs_heur.txt        -Drl.episodes=100 -Drl.agent=heuristic -Drl.opponent=heuristic -Drl.seed=7100
+job $ART/search_p1b16_vs_heur.txt -Drl.episodes=100 -Drl.agent=search -Drl.agentPlies=1 -Drl.agentBreadth=16 -Drl.opponent=heuristic -Drl.seed=7100
+job $ART/search_p3b8_vs_heur.txt  -Drl.episodes=100 -Drl.agent=search -Drl.agentPlies=3 -Drl.agentBreadth=8 -Drl.opponent=heuristic -Drl.seed=7100
+job $ART/search_p1b8_vs_heur_s7200.txt -Drl.episodes=100 -Drl.agent=search -Drl.agentPlies=1 -Drl.agentBreadth=8 -Drl.opponent=heuristic -Drl.seed=7200
 echo "7D1|all_done|$(date -u +%FT%TZ)"

@@ -2318,3 +2318,56 @@ bench decks; rank CP7 against the search teacher head to head (not run).
 Loads: three jobs on 7911 share the CPU with the C1 lane, so C1's wall
 time per seed is not comparable to 7c's; its results are unaffected
 (`rl.attackTotalCap` is a leaf count, not a timer).
+
+## 7d piece (1a) — teacher choice: CP7 is the teacher (2026-09-13 05:20; branch `v7/lane-d`)
+
+`rl/run_7d1.sh` on driver 7911, artifacts `rl/artifacts/v7/7d1/`, W0Base
+mirror, 100 games per arm, seats alternating, seed 7100 unless named,
+concurrency 2 beside the C1 lane. The three pre-registered arms plus four
+controls added after the first three landed (in the open: p1b8 and p2b8
+came back identical, 37/100 with 12.9 turns per game, and the first
+reading was "the plies flag is ignored" — the node counter says otherwise,
+see item 2). "Teacher wins" for the CP7 row is `losses` of the heuristic
+agent's summary, CP7 being in the opponent seat.
+
+| arm | teacher wins/100 | Wilson | games/s (conc 2) | turns/game | search decisions | search nodes |
+|---|---|---|---|---|---|---|
+| **cp7_vs_heur** (CP7, `rl.aiSkill` 6) | **68/100** | **[0.583, 0.763]** | 3.2 | 18.2 | – | – |
+| heur_vs_heur (control) | 50/100 | [0.404, 0.596] | 12.0 | 12.7 | – | – |
+| search p1b8 | 37/100 | [0.282, 0.468] | 11.4 | 12.9 | 802 | 2,529 |
+| search p1b16 | 37/100 | [0.282, 0.468] | 9.6 | 12.9 | 802 | 2,529 |
+| search p2b8 | 37/100 | [0.282, 0.468] | 10.1 | 12.9 | 802 | 5,860 |
+| search p3b8 | 37/100 | [0.282, 0.468] | 8.5 | 12.9 | 802 | 5,860 |
+| search p1b8, seed 7200 | 41/100 | [0.319, 0.508] | 10.1 | 12.7 | 781 | – |
+
+1. **CP7 is the teacher by the pre-registered criterion.** Its interval
+   [0.58, 0.76] is clear of every search arm (best 0.41 [0.32, 0.51]) and
+   of the heuristic mirror. Cost: 0.6 s per game at concurrency 2 on a
+   loaded machine; at ~32 consults per filter-build game a 20k-consult
+   recording is ~650 games, minutes not hours.
+2. **The search teacher loses to the plain heuristic on W0Base**, 37/100
+   [0.28, 0.47] against the mirror's 50/100 [0.40, 0.60], and no search
+   knob moves it: plies 1/2/3 and breadth 8/16 give the same 37 wins
+   and the same 12.9 turns per game on the same seed. The node counter
+   shows the flags are honoured (2,529 → 5,860 nodes for plies 2; plies 3
+   evaluates the same 5,860 as plies 2, so the search stops at two plies
+   on this deck — a property of `valueStatic`, not measured further) and
+   the search fires on ~8 decisions per game (802 / 100); the rest of the
+   game is the heuristic. On a mono-white creature deck the one-ply
+   static score picks the same ability at every depth, and that pick is
+   worse than D0's own rule. The seed-7200 repeat (41/100) is inside the
+   seed-7100 interval. This is consistent with PHASE5-VERDICT C1's v6
+   imitation reaching 0.36–0.40: the student matched a teacher that
+   plays at ~0.37.
+3. Confounds carried: CP7 was measured from the opponent seat (the driver
+   has no CP7 agent kind; seats alternate so play/draw is balanced, and
+   the control mirror is 50/100); the machine was shared with the C1
+   lane (speeds are relative, not the THROUGHPUT-LOCAL protocol); CP7 at
+   `rl.aiSkill` 6 only; W0Base only.
+
+**Cannot** (pre-registered): say anything about either teacher on the RL
+seat under a consult budget; anything about the bench decks; rank CP7
+against the search teacher head to head (not run). Piece (1b) now needs a
+`rl.agent=cp7` seat in `EpisodeRunner` that dumps the v7 wire with CP7's
+chosen candidate index — a Java change, so it waits for the lane to idle
+(never recompile while a lane runs).
