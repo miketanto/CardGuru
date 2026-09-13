@@ -2446,3 +2446,62 @@ three seeds):**
 
 Cannot: any of the above as a level for C1 (one seed); attribute the
 recovery to a flag (B8 and the ablations); the 1024 census (pending).
+
+### 7d piece (1b) design — CP7 teacher recording on the v7 wire (pre-registered 2026-09-13 06:05; Java not started, the lane owns the engine until C1 finishes)
+
+What exists: the v7 consult is assembled by `RLPlayer.consultInner` from
+`StateEncoder.encodeEntityView(game, me, opp)`, the candidate rows plus
+`CandMeta` (afterstates via `v7AfterPlayable`), `phi(game)`, and
+`SocketPolicyClient.choose(view, cands, phi, meta)`; the recording is
+server-side (the policy server's recorder, as for the 5b/7c sets). The
+v6 teacher path (`shadowLabel`) computed a static search label inside the
+RL seat's consult; CP7 is a whole `Player` whose choice comes out of
+`ComputerPlayer6.simulatePriority` and is applied by `act()` — one or
+more `activateAbility` calls per priority window — so the label has to be
+read *after* CP7 acts while the consult state is taken *before*.
+
+Design (one Java commit + one wire amendment, after the lane idles):
+1. `CP7TeacherPlayer extends mage.player.ai.ComputerPlayer7`, agent kind
+   `rl.agent=cp7` in `EpisodeRunner` (mirrors the opponent branch:
+   `RangeOfInfluence.ONE`, `rl.aiSkill` 6, the fake match). Overrides
+   `priority(game)`: (a) build the candidate list exactly as
+   `RLPlayer.priority` does (same `getPlayable`, phantom-land and
+   mana-ability filters, same ordering) and the pre-action consult (view,
+   cands, meta); (b) `super.priority(game)`; (c) an overridden
+   `activateAbility` records the FIRST ability CP7 activates in this
+   window, keyed `sourceId|rule` as `shadowLabel` does; (d) send the
+   consult with label `y` = that candidate's index (0 = CP7 passed, −1 =
+   CP7 acted on something outside the candidate set, e.g. a mana
+   ability), reply ignored. Extra activations in the same window are
+   counted (`teacherMultiAct`), not labelled.
+2. Joint sites: `RLPlayer.selectAttackers` / `selectBlockers` candidates
+   come from `CombatMath` (`jointAttacks` / `jointBlocks`); CP7's
+   `selectAttackers` / `selectBlockers` declare through the game. The
+   teacher player builds the same joint candidate list before delegating
+   to CP7, then reads the declared set from the game and labels the
+   candidate whose set matches (−1 if none; counted `teacherJointMiss`).
+   If the joint builders cannot be lifted out of `RLPlayer` cheaply the
+   first recording is priority-only and BC trains the priority head only,
+   with the attack/block heads left at init — stated in the row either way.
+3. Wire: consults gain an optional integer `y` (teacher label) and hello
+   gains `teacher: "cp7"`; absent = unchanged v7 contract (WIRE-V7 §8
+   entry with the commit; `wire_validate` accepts and ignores `y`).
+   The opponent-knowledge tracker is attached the way `RLPlayer` attaches
+   it (`ensureTracker` = `RLKnowledgeWatcher.ensure(game, me, opp, oppDeckInfo)`, static), so §2g fields match an RL-seat consult.
+4. Recording: bench decks (W0Base first, then the 5b deck set), both
+   seats via the driver's play/draw parity, `rl.consultBudget` 300, ≥ 20k
+   labelled consults; `rl/artifacts/v7/7d1b/` (gitignored jsonl),
+   counters in the summary: consults, labelled, `y=-1`, multi-act,
+   joint-miss. Faithfulness: `rl/probes/faithfulness.py` on 100 consults
+   of the recording (the 5b gate) — a CP7-seat consult must pass the same
+   gate as an RL-seat one.
+
+Pre-registered readings for the recording row: fraction labelled (−1
+excluded) ≥ 0.9 of consults, else the candidate set is not CP7's action
+space and BC is not attempted on it; CP7's label type census (PASS / LAND
+/ SPELL / ATTACK / BLOCK shares) recorded as the target the BC census is
+read against. Cannot: change CP7's strength (it is what it is, 0.68 on
+W0Base); make the RL seat's consult budget CP7's (CP7 sees every window;
+the recording counts windows the RL seat would have auto-passed as
+`autoPassEmpty` and skips them the same way); say anything about BC
+(piece 2).
