@@ -5,3 +5,12 @@ R0|W0Base|s0|trained=2048|ck_eps=2048|D0=0.8600 [0.779,0.915]|D1=0.8700 [0.790,0
 R0|W0Base|s0|trained=2560|ck_eps=2560|D0=NA [0.000,0.037]|D1=NA [0.000,0.037]|TWIN=NA [0.000,0.037]|blocks=0/0|BLOCKOPT=0/0|gap=0|attacks=0/0|ATKOPT=0/0|ATKOPTCA=0/0|under_over=0/0|turns=
 R0|W0Base|s0|trained=3072|ck_eps=3072|D0=NA [0.000,0.037]|D1=NA [0.000,0.037]|TWIN=NA [0.000,0.037]|blocks=0/0|BLOCKOPT=0/0|gap=0|attacks=0/0|ATKOPT=0/0|ATKOPTCA=0/0|under_over=0/0|turns=
 R0_DONE|W0Base|s0|trained=3072|out=/tmp/rl_7l_L0
+==> /tmp/rl_7l_L1/lane.log <==
+R0_INIT|from=/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/7c1/s0/ck_2048.pt|episodes=2048
+R0_START|W0Base|seed=0|budget=3072|resume_at=2048|out=/tmp/rl_7l_L1|league=/tmp/rl_7c1_s0/ck_1024.pt,/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/7c1/s0/ck_2048.pt|driver=7912
+R0|W0Base|s0|trained=2048|ck_eps=2048|D0=0.8600 [0.779,0.915]|D1=0.8700 [0.790,0.922]|TWIN=0.8800 [0.802,0.930]|blocks=1543/2159|BLOCKOPT=721/750|gap=223|attacks=1432/5866|ATKOPT=693/1401|ATKOPTCA=759/1401|under_over=466/192|turns=34.9
+R0_OPP|trained=2048|block=0|ckpt=/tmp/rl_7c1_s0/ck_1024.pt
+R0|W0Base|s0|trained=2560|ck_eps=2560|D0=0.8700 [0.790,0.922]|D1=0.8800 [0.802,0.930]|TWIN=0.8800 [0.802,0.930]|blocks=1778/2382|BLOCKOPT=792/827|gap=222|attacks=1365/6246|ATKOPT=1005/1500|ATKOPTCA=1080/1500|under_over=420/52|turns=36.4
+R0_OPP|trained=2560|block=1|ckpt=/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/7c1/s0/ck_2048.pt
+R0|W0Base|s0|trained=3072|ck_eps=3072|D0=0.6800 [0.583,0.763]|D1=0.6600 [0.563,0.745]|TWIN=0.5800 [0.482,0.672]|blocks=1777/2521|BLOCKOPT=815/855|gap=286|attacks=1468/8226|ATKOPT=1150/1824|ATKOPTCA=1306/1824|under_over=594/34|turns=44.5
+R0_DONE|W0Base|s0|trained=3072|out=/tmp/rl_7l_L1

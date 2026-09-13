@@ -1,0 +1,128 @@
+KL|update=1|approx_kl=0.0492|samples=250|stopped=1
+TRAIN|update=1 episodes=32 batch_eps=32 steps=944 batch_win_rate=0.594 mean_abs_phi=0.000 value_ev=0.0104 oracle_cover=0.000 critic_ev=nan update_s=4.82 entropy=0.583 max_logit=5.00 grad_norm=67.25 chosen_types=9/56/76/0/5/49/55/0
+KL|update=2|approx_kl=0.0157|samples=1047|stopped=0
+TRAIN|update=2 episodes=64 batch_eps=32 steps=1047 batch_win_rate=0.688 mean_abs_phi=0.000 value_ev=-0.1283 oracle_cover=0.000 critic_ev=nan update_s=15.81 entropy=0.602 max_logit=5.00 grad_norm=34.05 chosen_types=59/235/319/0/17/194/223/0
+KL|update=3|approx_kl=0.0265|samples=831|stopped=1
+TRAIN|update=3 episodes=96 batch_eps=32 steps=945 batch_win_rate=0.750 mean_abs_phi=0.000 value_ev=-0.0119 oracle_cover=0.000 critic_ev=nan update_s=13.49 entropy=0.604 max_logit=5.00 grad_norm=4.13 chosen_types=39/172/273/0/16/160/171/0
+KL|update=4|approx_kl=0.0000|samples=1042|stopped=0
+TRAIN|update=4 episodes=128 batch_eps=32 steps=1042 batch_win_rate=0.594 mean_abs_phi=0.000 value_ev=-0.0019 oracle_cover=0.000 critic_ev=nan update_s=15.45 entropy=0.561 max_logit=5.00 grad_norm=11.34 chosen_types=53/241/315/0/15/209/209/0
+KL|update=5|approx_kl=0.0000|samples=1021|stopped=0
+TRAIN|update=5 episodes=160 batch_eps=32 steps=1021 batch_win_rate=0.562 mean_abs_phi=0.000 value_ev=0.0505 oracle_cover=0.000 critic_ev=nan update_s=16.37 entropy=0.590 max_logit=5.00 grad_norm=4.10 chosen_types=52/223/315/0/18/192/221/0
+KL|update=6|approx_kl=0.0000|samples=1002|stopped=0
+TRAIN|update=6 episodes=192 batch_eps=32 steps=1002 batch_win_rate=0.688 mean_abs_phi=0.000 value_ev=0.0336 oracle_cover=0.000 critic_ev=nan update_s=14.93 entropy=0.629 max_logit=5.00 grad_norm=6.87 chosen_types=39/205/324/0/20/209/205/0
+KL|update=7|approx_kl=-0.0000|samples=1086|stopped=0
+TRAIN|update=7 episodes=224 batch_eps=32 steps=1086 batch_win_rate=0.656 mean_abs_phi=0.000 value_ev=0.0470 oracle_cover=0.000 critic_ev=nan update_s=16.78 entropy=0.624 max_logit=5.00 grad_norm=4.15 chosen_types=48/225/337/0/18/221/237/0
+KL|update=8|approx_kl=0.0000|samples=1127|stopped=0
+TRAIN|update=8 episodes=256 batch_eps=32 steps=1127 batch_win_rate=0.625 mean_abs_phi=0.000 value_ev=0.0336 oracle_cover=0.000 critic_ev=nan update_s=16.97 entropy=0.554 max_logit=5.00 grad_norm=8.15 chosen_types=41/238/344/0/16/231/257/0
+KL|update=9|approx_kl=0.0000|samples=1071|stopped=0
+TRAIN|update=9 episodes=288 batch_eps=32 steps=1071 batch_win_rate=0.656 mean_abs_phi=0.000 value_ev=0.0757 oracle_cover=0.000 critic_ev=nan update_s=16.77 entropy=0.582 max_logit=5.00 grad_norm=7.91 chosen_types=43/238/331/0/18/221/220/0
+KL|update=10|approx_kl=-0.0000|samples=1043|stopped=0
+TRAIN|update=10 episodes=320 batch_eps=32 steps=1043 batch_win_rate=0.625 mean_abs_phi=0.000 value_ev=0.0993 oracle_cover=0.000 critic_ev=nan update_s=15.58 entropy=0.633 max_logit=5.00 grad_norm=5.32 chosen_types=41/236/321/0/17/213/215/0
+KL|update=11|approx_kl=-0.0000|samples=1037|stopped=0
+TRAIN|update=11 episodes=352 batch_eps=32 steps=1037 batch_win_rate=0.562 mean_abs_phi=0.000 value_ev=0.0988 oracle_cover=0.000 critic_ev=nan update_s=17.18 entropy=0.585 max_logit=5.00 grad_norm=7.16 chosen_types=57/227/313/0/20/189/231/0
+KL|update=12|approx_kl=-0.0000|samples=1149|stopped=0
+TRAIN|update=12 episodes=384 batch_eps=32 steps=1149 batch_win_rate=0.625 mean_abs_phi=0.000 value_ev=0.1619 oracle_cover=0.000 critic_ev=nan update_s=17.40 entropy=0.520 max_logit=5.00 grad_norm=5.85 chosen_types=52/231/355/0/19/237/255/0
+KL|update=13|approx_kl=0.0000|samples=1031|stopped=0
+TRAIN|update=13 episodes=416 batch_eps=32 steps=1031 batch_win_rate=0.750 mean_abs_phi=0.000 value_ev=0.0589 oracle_cover=0.000 critic_ev=nan update_s=16.05 entropy=0.581 max_logit=5.00 grad_norm=7.45 chosen_types=41/212/328/0/21/225/204/0
+KL|update=14|approx_kl=-0.0000|samples=1091|stopped=0
+TRAIN|update=14 episodes=448 batch_eps=32 steps=1091 batch_win_rate=0.625 mean_abs_phi=0.000 value_ev=0.0591 oracle_cover=0.000 critic_ev=nan update_s=16.38 entropy=0.549 max_logit=5.00 grad_norm=6.13 chosen_types=44/223/337/0/20/227/240/0
+KL|update=15|approx_kl=0.0000|samples=967|stopped=0
+TRAIN|update=15 episodes=480 batch_eps=32 steps=967 batch_win_rate=0.531 mean_abs_phi=0.000 value_ev=0.2357 oracle_cover=0.000 critic_ev=nan update_s=16.80 entropy=0.594 max_logit=5.00 grad_norm=7.59 chosen_types=55/220/291/0/19/182/200/0
+KL|update=16|approx_kl=-0.0000|samples=1084|stopped=0
+TRAIN|update=16 episodes=512 batch_eps=32 steps=1084 batch_win_rate=0.562 mean_abs_phi=0.000 value_ev=0.1190 oracle_cover=0.000 critic_ev=nan update_s=16.25 entropy=0.567 max_logit=5.00 grad_norm=6.87 chosen_types=47/242/324/0/16/213/242/0
+KL|update=17|approx_kl=0.0000|samples=1000|stopped=0
+TRAIN|update=17 episodes=544 batch_eps=32 steps=1000 batch_win_rate=0.531 mean_abs_phi=0.000 value_ev=0.2094 oracle_cover=0.000 critic_ev=nan update_s=18.51 entropy=0.578 max_logit=5.00 grad_norm=6.69 chosen_types=53/240/291/0/19/191/206/0
+KL|update=18|approx_kl=0.0000|samples=1059|stopped=0
+TRAIN|update=18 episodes=576 batch_eps=32 steps=1059 batch_win_rate=0.750 mean_abs_phi=0.000 value_ev=0.1096 oracle_cover=0.000 critic_ev=nan update_s=16.07 entropy=0.555 max_logit=5.00 grad_norm=6.30 chosen_types=39/217/339/0/17/215/232/0
+KL|update=19|approx_kl=-0.0000|samples=1051|stopped=0
+TRAIN|update=19 episodes=608 batch_eps=32 steps=1051 batch_win_rate=0.562 mean_abs_phi=0.000 value_ev=0.1136 oracle_cover=0.000 critic_ev=nan update_s=15.66 entropy=0.560 max_logit=5.00 grad_norm=10.65 chosen_types=44/230/327/0/16/201/233/0
+KL|update=20|approx_kl=0.0000|samples=1032|stopped=0
+TRAIN|update=20 episodes=640 batch_eps=32 steps=1032 batch_win_rate=0.625 mean_abs_phi=0.000 value_ev=0.1820 oracle_cover=0.000 critic_ev=nan update_s=16.93 entropy=0.600 max_logit=5.00 grad_norm=5.52 chosen_types=48/239/303/0/18/212/212/0
+KL|update=21|approx_kl=0.0000|samples=983|stopped=0
+TRAIN|update=21 episodes=672 batch_eps=32 steps=983 batch_win_rate=0.625 mean_abs_phi=0.000 value_ev=0.2314 oracle_cover=0.000 critic_ev=nan update_s=15.80 entropy=0.611 max_logit=5.00 grad_norm=6.72 chosen_types=52/214/310/0/20/189/198/0
+KL|update=22|approx_kl=-0.0000|samples=988|stopped=0
+TRAIN|update=22 episodes=704 batch_eps=32 steps=988 batch_win_rate=0.594 mean_abs_phi=0.000 value_ev=0.2759 oracle_cover=0.000 critic_ev=nan update_s=15.32 entropy=0.588 max_logit=5.00 grad_norm=6.30 chosen_types=50/197/316/0/19/199/207/0
+KL|update=23|approx_kl=0.0000|samples=1039|stopped=0
+TRAIN|update=23 episodes=736 batch_eps=32 steps=1039 batch_win_rate=0.594 mean_abs_phi=0.000 value_ev=0.2015 oracle_cover=0.000 critic_ev=nan update_s=17.22 entropy=0.623 max_logit=5.00 grad_norm=6.44 chosen_types=46/234/310/0/22/205/222/0
+KL|update=24|approx_kl=0.0000|samples=1134|stopped=0
+TRAIN|update=24 episodes=768 batch_eps=32 steps=1134 batch_win_rate=0.500 mean_abs_phi=0.000 value_ev=0.2251 oracle_cover=0.000 critic_ev=nan update_s=17.93 entropy=0.532 max_logit=5.00 grad_norm=5.33 chosen_types=74/252/323/0/15/237/233/0
+KL|update=25|approx_kl=0.0000|samples=1013|stopped=0
+TRAIN|update=25 episodes=800 batch_eps=32 steps=1013 batch_win_rate=0.406 mean_abs_phi=0.000 value_ev=0.0210 oracle_cover=0.000 critic_ev=nan update_s=15.36 entropy=0.605 max_logit=5.00 grad_norm=7.97 chosen_types=47/212/322/0/20/172/240/0
+KL|update=26|approx_kl=-0.0000|samples=1109|stopped=0
+TRAIN|update=26 episodes=832 batch_eps=32 steps=1109 batch_win_rate=0.781 mean_abs_phi=0.000 value_ev=0.0549 oracle_cover=0.000 critic_ev=nan update_s=17.67 entropy=0.557 max_logit=5.00 grad_norm=6.05 chosen_types=55/225/341/0/18/222/248/0
+KL|update=27|approx_kl=-0.0000|samples=1070|stopped=0
+TRAIN|update=27 episodes=864 batch_eps=32 steps=1070 batch_win_rate=0.688 mean_abs_phi=0.000 value_ev=0.0757 oracle_cover=0.000 critic_ev=nan update_s=16.61 entropy=0.592 max_logit=5.00 grad_norm=3.93 chosen_types=43/207/343/0/19/220/238/0
+KL|update=28|approx_kl=0.0000|samples=1084|stopped=0
+TRAIN|update=28 episodes=896 batch_eps=32 steps=1084 batch_win_rate=0.719 mean_abs_phi=0.000 value_ev=0.1854 oracle_cover=0.000 critic_ev=nan update_s=17.74 entropy=0.569 max_logit=5.00 grad_norm=3.12 chosen_types=44/244/329/0/17/225/225/0
+KL|update=29|approx_kl=-0.0000|samples=1130|stopped=0
+TRAIN|update=29 episodes=928 batch_eps=32 steps=1130 batch_win_rate=0.562 mean_abs_phi=0.000 value_ev=0.1226 oracle_cover=0.000 critic_ev=nan update_s=17.66 entropy=0.565 max_logit=5.00 grad_norm=9.71 chosen_types=51/229/351/0/17/212/270/0
+KL|update=30|approx_kl=0.0000|samples=972|stopped=0
+TRAIN|update=30 episodes=960 batch_eps=32 steps=972 batch_win_rate=0.594 mean_abs_phi=0.000 value_ev=0.2467 oracle_cover=0.000 critic_ev=nan update_s=15.93 entropy=0.649 max_logit=5.00 grad_norm=6.64 chosen_types=57/220/289/0/20/189/197/0
+KL|update=31|approx_kl=0.0000|samples=1013|stopped=0
+TRAIN|update=31 episodes=992 batch_eps=32 steps=1013 batch_win_rate=0.594 mean_abs_phi=0.000 value_ev=0.1785 oracle_cover=0.000 critic_ev=nan update_s=15.24 entropy=0.569 max_logit=5.00 grad_norm=5.17 chosen_types=38/219/314/0/19/195/228/0
+KL|update=32|approx_kl=0.0000|samples=986|stopped=0
+TRAIN|update=32 episodes=1024 batch_eps=32 steps=986 batch_win_rate=0.656 mean_abs_phi=0.000 value_ev=0.3254 oracle_cover=0.000 critic_ev=nan update_s=16.09 entropy=0.671 max_logit=5.00 grad_norm=5.31 chosen_types=51/207/317/0/23/204/184/0
+KL|update=33|approx_kl=-0.0000|samples=1066|stopped=0
+TRAIN|update=33 episodes=1056 batch_eps=32 steps=1066 batch_win_rate=0.625 mean_abs_phi=0.000 value_ev=0.3085 oracle_cover=0.000 critic_ev=nan update_s=18.42 entropy=0.563 max_logit=5.00 grad_norm=7.27 chosen_types=46/239/318/0/17/228/218/0
+KL|update=34|approx_kl=0.0000|samples=1026|stopped=0
+TRAIN|update=34 episodes=1088 batch_eps=32 steps=1026 batch_win_rate=0.719 mean_abs_phi=0.000 value_ev=0.2518 oracle_cover=0.000 critic_ev=nan update_s=15.72 entropy=0.599 max_logit=5.00 grad_norm=2.82 chosen_types=45/216/332/0/16/220/197/0
+KL|update=35|approx_kl=-0.0000|samples=1042|stopped=0
+TRAIN|update=35 episodes=1120 batch_eps=32 steps=1042 batch_win_rate=0.625 mean_abs_phi=0.000 value_ev=0.1324 oracle_cover=0.000 critic_ev=nan update_s=15.67 entropy=0.587 max_logit=5.00 grad_norm=4.76 chosen_types=41/214/327/0/19/209/232/0
+KL|update=36|approx_kl=0.0000|samples=982|stopped=0
+TRAIN|update=36 episodes=1152 batch_eps=32 steps=982 batch_win_rate=0.656 mean_abs_phi=0.000 value_ev=0.1738 oracle_cover=0.000 critic_ev=nan update_s=16.04 entropy=0.639 max_logit=5.00 grad_norm=6.99 chosen_types=41/218/313/0/18/199/193/0
+KL|update=37|approx_kl=-0.0000|samples=1027|stopped=0
+TRAIN|update=37 episodes=1184 batch_eps=32 steps=1027 batch_win_rate=0.531 mean_abs_phi=0.000 value_ev=0.1649 oracle_cover=0.000 critic_ev=nan update_s=15.76 entropy=0.601 max_logit=5.00 grad_norm=4.24 chosen_types=49/216/317/0/19/192/234/0
+KL|update=38|approx_kl=-0.0000|samples=1063|stopped=0
+TRAIN|update=38 episodes=1216 batch_eps=32 steps=1063 batch_win_rate=0.781 mean_abs_phi=0.000 value_ev=0.1800 oracle_cover=0.000 critic_ev=nan update_s=15.84 entropy=0.622 max_logit=5.00 grad_norm=4.50 chosen_types=35/233/339/0/16/233/207/0
+KL|update=39|approx_kl=0.0000|samples=1061|stopped=0
+TRAIN|update=39 episodes=1248 batch_eps=32 steps=1061 batch_win_rate=0.719 mean_abs_phi=0.000 value_ev=0.2074 oracle_cover=0.000 critic_ev=nan update_s=17.24 entropy=0.579 max_logit=5.00 grad_norm=3.45 chosen_types=42/206/335/0/25/231/222/0
+KL|update=40|approx_kl=0.0000|samples=1096|stopped=0
+TRAIN|update=40 episodes=1280 batch_eps=32 steps=1096 batch_win_rate=0.562 mean_abs_phi=0.000 value_ev=0.0686 oracle_cover=0.000 critic_ev=nan update_s=17.25 entropy=0.582 max_logit=5.00 grad_norm=7.87 chosen_types=51/236/328/0/18/217/246/0
+KL|update=41|approx_kl=0.0000|samples=1137|stopped=0
+TRAIN|update=41 episodes=1312 batch_eps=32 steps=1137 batch_win_rate=0.688 mean_abs_phi=0.000 value_ev=0.2287 oracle_cover=0.000 critic_ev=nan update_s=17.89 entropy=0.564 max_logit=5.00 grad_norm=2.24 chosen_types=55/260/326/0/19/251/226/0
+KL|update=42|approx_kl=0.0000|samples=1013|stopped=0
+TRAIN|update=42 episodes=1344 batch_eps=32 steps=1013 batch_win_rate=0.719 mean_abs_phi=0.000 value_ev=0.2290 oracle_cover=0.000 critic_ev=nan update_s=15.71 entropy=0.617 max_logit=5.00 grad_norm=4.01 chosen_types=43/233/303/0/21/208/205/0
+KL|update=43|approx_kl=-0.0000|samples=1048|stopped=0
+TRAIN|update=43 episodes=1376 batch_eps=32 steps=1048 batch_win_rate=0.438 mean_abs_phi=0.000 value_ev=0.2416 oracle_cover=0.000 critic_ev=nan update_s=17.12 entropy=0.611 max_logit=5.00 grad_norm=5.68 chosen_types=52/225/325/0/18/190/238/0
+KL|update=44|approx_kl=-0.0000|samples=1112|stopped=0
+TRAIN|update=44 episodes=1408 batch_eps=32 steps=1112 batch_win_rate=0.781 mean_abs_phi=0.000 value_ev=-0.1133 oracle_cover=0.000 critic_ev=nan update_s=16.08 entropy=0.584 max_logit=5.00 grad_norm=7.50 chosen_types=40/232/346/0/17/240/237/0
+KL|update=45|approx_kl=0.0000|samples=1082|stopped=0
+TRAIN|update=45 episodes=1440 batch_eps=32 steps=1082 batch_win_rate=0.688 mean_abs_phi=0.000 value_ev=0.1833 oracle_cover=0.000 critic_ev=nan update_s=17.50 entropy=0.604 max_logit=5.00 grad_norm=3.07 chosen_types=49/232/331/0/17/230/223/0
+KL|update=46|approx_kl=0.0000|samples=1072|stopped=0
+TRAIN|update=46 episodes=1472 batch_eps=32 steps=1072 batch_win_rate=0.812 mean_abs_phi=0.000 value_ev=0.2000 oracle_cover=0.000 critic_ev=nan update_s=16.96 entropy=0.559 max_logit=5.00 grad_norm=2.42 chosen_types=39/227/331/0/16/230/229/0
+KL|update=47|approx_kl=0.0000|samples=1052|stopped=0
+TRAIN|update=47 episodes=1504 batch_eps=32 steps=1052 batch_win_rate=0.594 mean_abs_phi=0.000 value_ev=0.1667 oracle_cover=0.000 critic_ev=nan update_s=17.22 entropy=0.570 max_logit=5.00 grad_norm=6.33 chosen_types=46/228/322/0/16/222/218/0
+KL|update=48|approx_kl=0.0000|samples=1049|stopped=0
+TRAIN|update=48 episodes=1536 batch_eps=32 steps=1049 batch_win_rate=0.688 mean_abs_phi=0.000 value_ev=0.2195 oracle_cover=0.000 critic_ev=nan update_s=16.36 entropy=0.602 max_logit=5.00 grad_norm=3.15 chosen_types=36/199/352/0/16/214/232/0
+KL|update=49|approx_kl=-0.0000|samples=1004|stopped=0
+TRAIN|update=49 episodes=1568 batch_eps=32 steps=1004 batch_win_rate=0.500 mean_abs_phi=0.000 value_ev=0.2322 oracle_cover=0.000 critic_ev=nan update_s=17.65 entropy=0.556 max_logit=5.00 grad_norm=3.41 chosen_types=58/229/302/0/17/186/212/0
+KL|update=50|approx_kl=0.0000|samples=1153|stopped=0
+TRAIN|update=50 episodes=1600 batch_eps=32 steps=1153 batch_win_rate=0.750 mean_abs_phi=0.000 value_ev=0.1752 oracle_cover=0.000 critic_ev=nan update_s=17.32 entropy=0.565 max_logit=5.00 grad_norm=3.69 chosen_types=50/242/344/0/16/253/248/0
+KL|update=51|approx_kl=0.0000|samples=1027|stopped=0
+TRAIN|update=51 episodes=1632 batch_eps=32 steps=1027 batch_win_rate=0.594 mean_abs_phi=0.000 value_ev=0.2036 oracle_cover=0.000 critic_ev=nan update_s=15.78 entropy=0.596 max_logit=5.00 grad_norm=4.66 chosen_types=36/213/322/0/19/210/227/0
+KL|update=52|approx_kl=0.0000|samples=1028|stopped=0
+TRAIN|update=52 episodes=1664 batch_eps=32 steps=1028 batch_win_rate=0.750 mean_abs_phi=0.000 value_ev=0.3158 oracle_cover=0.000 critic_ev=nan update_s=15.51 entropy=0.614 max_logit=5.00 grad_norm=3.89 chosen_types=42/212/327/0/15/224/208/0
+KL|update=53|approx_kl=-0.0000|samples=1034|stopped=0
+TRAIN|update=53 episodes=1696 batch_eps=32 steps=1034 batch_win_rate=0.719 mean_abs_phi=0.000 value_ev=0.0922 oracle_cover=0.000 critic_ev=nan update_s=16.56 entropy=0.581 max_logit=5.00 grad_norm=4.54 chosen_types=52/221/312/0/20/211/218/0
+KL|update=54|approx_kl=0.0000|samples=1065|stopped=0
+TRAIN|update=54 episodes=1728 batch_eps=32 steps=1065 batch_win_rate=0.562 mean_abs_phi=0.000 value_ev=0.2038 oracle_cover=0.000 critic_ev=nan update_s=16.94 entropy=0.596 max_logit=5.00 grad_norm=5.97 chosen_types=44/225/328/0/18/209/241/0
+KL|update=55|approx_kl=-0.0000|samples=1058|stopped=0
+TRAIN|update=55 episodes=1760 batch_eps=32 steps=1058 batch_win_rate=0.719 mean_abs_phi=0.000 value_ev=0.1335 oracle_cover=0.000 critic_ev=nan update_s=16.25 entropy=0.637 max_logit=5.00 grad_norm=4.65 chosen_types=40/227/335/0/17/215/224/0
+KL|update=56|approx_kl=-0.0000|samples=1017|stopped=0
+TRAIN|update=56 episodes=1792 batch_eps=32 steps=1017 batch_win_rate=0.500 mean_abs_phi=0.000 value_ev=0.1875 oracle_cover=0.000 critic_ev=nan update_s=16.63 entropy=0.589 max_logit=5.00 grad_norm=6.56 chosen_types=50/229/307/0/21/192/218/0
+KL|update=57|approx_kl=-0.0000|samples=1048|stopped=0
+TRAIN|update=57 episodes=1824 batch_eps=32 steps=1048 batch_win_rate=0.625 mean_abs_phi=0.000 value_ev=0.1406 oracle_cover=0.000 critic_ev=nan update_s=15.65 entropy=0.602 max_logit=5.00 grad_norm=4.45 chosen_types=47/235/313/0/19/215/219/0
+KL|update=58|approx_kl=0.0000|samples=1068|stopped=0
+TRAIN|update=58 episodes=1856 batch_eps=32 steps=1068 batch_win_rate=0.844 mean_abs_phi=0.000 value_ev=0.1276 oracle_cover=0.000 critic_ev=nan update_s=16.16 entropy=0.651 max_logit=5.00 grad_norm=2.80 chosen_types=25/227/341/0/16/237/222/0
+KL|update=59|approx_kl=0.0000|samples=1040|stopped=0
+TRAIN|update=59 episodes=1888 batch_eps=32 steps=1040 batch_win_rate=0.656 mean_abs_phi=0.000 value_ev=0.2792 oracle_cover=0.000 critic_ev=nan update_s=15.30 entropy=0.612 max_logit=5.00 grad_norm=3.65 chosen_types=38/247/317/0/17/202/219/0
+KL|update=60|approx_kl=0.0000|samples=1028|stopped=0
+TRAIN|update=60 episodes=1920 batch_eps=32 steps=1028 batch_win_rate=0.719 mean_abs_phi=0.000 value_ev=0.2402 oracle_cover=0.000 critic_ev=nan update_s=15.72 entropy=0.620 max_logit=5.00 grad_norm=3.30 chosen_types=40/204/332/0/18/204/230/0
+KL|update=61|approx_kl=0.0000|samples=1030|stopped=0
+TRAIN|update=61 episodes=1952 batch_eps=32 steps=1030 batch_win_rate=0.625 mean_abs_phi=0.000 value_ev=0.2939 oracle_cover=0.000 critic_ev=nan update_s=15.73 entropy=0.603 max_logit=5.00 grad_norm=3.94 chosen_types=42/231/313/0/18/210/216/0
+KL|update=62|approx_kl=0.0000|samples=984|stopped=0
+TRAIN|update=62 episodes=1984 batch_eps=32 steps=984 batch_win_rate=0.500 mean_abs_phi=0.000 value_ev=0.1623 oracle_cover=0.000 critic_ev=nan update_s=15.07 entropy=0.592 max_logit=5.00 grad_norm=3.45 chosen_types=40/220/297/0/20/194/213/0
+KL|update=63|approx_kl=0.0000|samples=939|stopped=0
+TRAIN|update=63 episodes=2016 batch_eps=32 steps=939 batch_win_rate=0.688 mean_abs_phi=0.000 value_ev=0.2962 oracle_cover=0.000 critic_ev=nan update_s=15.62 entropy=0.613 max_logit=5.00 grad_norm=4.34 chosen_types=48/196/293/0/22/201/179/0
+KL|update=64|approx_kl=0.0000|samples=1006|stopped=0
+TRAIN|update=64 episodes=2048 batch_eps=32 steps=1006 batch_win_rate=0.656 mean_abs_phi=0.000 value_ev=0.1564 oracle_cover=0.000 critic_ev=nan update_s=16.19 entropy=0.585 max_logit=5.00 grad_norm=5.05 chosen_types=49/204/316/0/20/211/206/0

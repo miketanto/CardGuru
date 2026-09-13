@@ -3098,3 +3098,65 @@ including 22 draws at the cap, reported as such. The H2H opponent server
 and the lane's league servers use argmax over classes; the training-time
 opponent was argmax too (eval hello) - a deterministic opponent, which is
 part of why one policy can overfit it.
+
+## 7d Q1 — D-PPO two seeds vs C1 two seeds: "IL hurts" at n=200, marginally (2026-09-13 18:55 next-session clock; WSL 13:50; fixed argmax-classes protocol on both sides)
+
+`rl/run_7d3.sh` seeds 0 and 1 (`rl/artifacts/v7/7d3/s{0,1}/`; seed 1: 64
+updates, KL stopped 2/64, no NA rows), both from `bc.pt`, C1's recipe.
+`python3 rl/summ_7c1.py rl/artifacts/v7/7d3/s0 rl/artifacts/v7/7d3/s1`.
+
+| point | D-PPO s0 D0 | D-PPO s1 D0 | **D-PPO pooled D0** | **C1 pooled D0 (fixed protocol)** | pooled D1 (D-PPO / C1) | pooled TWIN (D-PPO / C1) |
+|---|---|---|---|---|---|---|
+| 512 | 0.69 [0.594, 0.772] | 0.80 [0.711, 0.867] | 149/200 = 0.745 [0.680, 0.800] | 138/200 = 0.690 [0.623, 0.750] | 0.790 [0.728, 0.841] / 0.720 [0.654, 0.778] | 0.695 [0.628, 0.755] / 0.680 [0.612, 0.741] |
+| 1024 | 0.50 [0.404, 0.596] | 0.70 [0.604, 0.781] | 120/200 = 0.600 [0.531, 0.665] | (s0 0.79 fixed; s1 re-battery pending) | – | – |
+| 1536 | 0.71 [0.615, 0.790] | 0.76 [0.668, 0.833] | 147/200 = 0.735 | (pending) | – | – |
+| 2048 | 0.68 [0.583, 0.763] | 0.81 [0.722, 0.875] | **149/200 = 0.745 [0.680, 0.800]** | **172/200 = 0.860 [0.805, 0.901]** | 0.755 [0.691, 0.809] / 0.850 [0.794, 0.893] | 0.745 [0.680, 0.800] / 0.885 [0.833, 0.922] |
+
+(C1's fixed-protocol 512 rows are the re-battery's: s0 0.78, s1 0.60 - the
+plain-argmax lane rows were 0.77 / 0.61. The 1024/1536 rows of the
+re-battery were still running when this was written; the 2048 comparison
+is complete on both sides.)
+
+**Pre-registered reading at 2048: "IL hurts" — D-PPO's pooled D0 0.745
+[0.680, 0.800] is clear below C1's 0.860 [0.805, 0.901], by 0.005 of
+interval.** That is the reading as written, and it is marginal: one more
+D-PPO win in 200 games (0.750 [0.685, 0.805]) would overlap. D1 and TWIN
+say the same with more room (0.755 vs 0.850, 0.745 vs 0.885 - both clear).
+At 512 the "faster start" clause is not met either: 0.745 vs 0.690,
+overlapping (D-PPO numerically above). Per seed at n=100 the two D-PPO
+seeds disagree in magnitude (s0 0.68, s1 0.81) where C1's two agree (0.86,
+0.86): s1's 0.81 [0.722, 0.875] alone overlaps C1's seeds; the verdict
+comes from pooling and from s0.
+
+Behaviour, both seeds (the mechanism, still a hypothesis at two seeds):
+* **BC removes the dead stretch on both seeds:** first-8-batch sampled
+  wins 163/256 (s0) and 165/256 (s1) - pooled 328/512 = 0.641 [0.598,
+  0.681] - vs C1's 16/256 and 137/256.
+* **The clone's argmax never moved on seed 1:** the ck_2048 type census of
+  s1 is IDENTICAL to bc.pt's on the 1,101-consult census set (PASS 0/1070,
+  LAND 224/313, SPELL 348/368, ATTACK 279/279, BLOCK 207/207, gap 3.86,
+  entropy 0.72, argmax-LAND at ≥ 3 lands 0.73) while its battery rose 0.58
+  → 0.81; s0's moved to LAND 301/313 / SPELL 271/368 (attack/block
+  unchanged at all-offers). Whatever PPO changed lives in the sampled
+  policy and in decisions off this census set (combat sets, targets), not
+  in the argmax on these windows.
+* **Over-attacking, C1's opposite:** at 2048 the D0 battery's under/over
+  counts are 46/283 (s0) and 138/371 (s1) - the clone attacks into bad
+  boards - where C1's seeds under-attack (458/178, 337/163); ATKOPT
+  413/744 (s0), 363/1089 (s1); games 22 / 30 turns vs C1's 31–35. The
+  type-level clone of a teacher that "always acts" carried "always
+  attack" into the combat head it was never trained on, and PPO under the
+  KL budget (10/64, 2/64 stopped) did not undo it in 2,048 episodes.
+* Not collapsed in the 7a sense (entropy 0.72, gap 3.6–3.9) but rigid:
+  argmax-PASS 0 % at 1536/2048 on both seeds (the census clause's 5 %
+  floor fails, as it did for bc.pt); max |logit| on the bound throughout.
+
+Cannot: call it more than "IL hurts at n=200 by a hair" (two seeds, the
+margin is one game); generalise off W0Base or past CP7 skill 6 as the
+teacher; separate the three confounds the pre-registration named -
+priority-only labels (combat never imitated, then generalised to
+attack-everything), the type-level clone (CE 0.71 vs the 0.28 ceiling:
+CP7's card choices were never learned), and the consult budget - from
+"imitation as such"; a card-level clone or joint-site labels could seed a
+different start. The one thing IL bought that survives every caveat is
+the first 256 episodes (0.64 vs 0.30 sampled).
