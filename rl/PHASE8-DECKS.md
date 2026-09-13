@@ -109,3 +109,4 @@ B4. Handoff: UPDATE line + §M prompt in rl/HANDOFF-V7.md with the two one-line
 
 ## STATE (append dated lines; newest last)
 - 2026-09-14 (start): nothing running; Phase A not started.
+- 2026-09-13 16:55 (WSL 16:50; the runbook date 2026-09-14 is the session clock, the WSL clock is a day behind): A1 DONE - rl/record_8a_census.sh recorded 7c_BenchDimir_{p1,p99,sf}.jsonl on driver 7911 (8 games each, 292/311/300 consults = 903 with consults; echo win rates .625/.375/.625, ~37 consults per game, ~22 turns - NOT the ~126 the runbook expected from the PREFER=1 mcL_off set: the p1/p99 echoes cast less); rl/v7_land_census.py --type {LAND|SPELL} (LAND output byte-identical to census.txt: s0 ck_2048 lands>=3 140/219; SPELL on the mcL_off set = P(cast) by lands, tag SPELLCENSUS); rl/BenchBurn.dck copied from Mage.Tests (the runbook names it; it was never in rl/). Log rl/artifacts/v7/8a/record_census.log.
