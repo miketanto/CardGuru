@@ -2090,3 +2090,5 @@ Cannot support: any per-consult claim finer than the 512-consult windows
 would let the batch reach 8 and is the obvious next play-side arm, but
 THROUGHPUT-LOCAL §7 measured conc4 as the CPU limit on this machine); the
 update-side levers, which need the profile run first.
+
+**Argmax play, two games of B2 `ck_256` vs the heuristic, W0Base, `rl.debug` transcript (seeds 4242/4243, both lost at turns 14 and 17; scratch run, transcript in /tmp/rl_play_B2/driver.log, WSL-local):** plays a land on its first two land turns and never a third; casts one two-mana creature per turn while two Plains cover it; blocks every turn it is attacked, always the solver's block (audit MATCH throughout); never attacks; in game 1 it stopped casting after turn 5 and died on an empty board, in game 2 it traded one creature into a block per turn until outgrown. A two-land, one-creature-a-turn wall. Consistent with the census (argmax LAND 51/177, ATTACK 47/47 only when the attack candidate is the sole non-PASS option in those consults). The battery attacks (16/22) are against D0/D1/TWIN, not the heuristic. Two games: a description, not a level.
