@@ -42,6 +42,13 @@ public class SocketPolicyClient implements PolicyClient {
      *  CandMeta (an unmapped site). */
     public static long v7RefersFallback = 0, v7MetaMissing = 0;
 
+    /** 7d piece (1b): the teacher label for the NEXT v7 consult (set by
+     *  CP7TeacherPlayer right before choose); NO_LABEL = none. Sent as
+     *  "y":<int> on that consult only, then cleared (WIRE-V7 §8: absent =
+     *  the unchanged contract). */
+    public static final int NO_LABEL = Integer.MIN_VALUE;
+    public int teacherY = NO_LABEL;
+
     /** The encoder version THIS SEAT emits. Normally the global
      *  StateEncoder.ENCODER_V; the opponent seat can differ, which is
      *  what makes a v5-vs-v6 match possible in one JVM (see
@@ -120,6 +127,9 @@ public class SocketPolicyClient implements PolicyClient {
          .append(",\"v7_ohmax\":").append(StateEncoder.V7_OHMAX)
          .append(",\"v7_odmax\":").append(StateEncoder.V7_ODMAX)
          .append(",\"v7_oamax\":").append(StateEncoder.V7_OAMAX);
+        if ("cp7".equals(System.getProperty("rl.agent"))) {
+            h.append(",\"teacher\":\"cp7\"");   // 7d piece (1b): labelled consults follow
+        }
         return h.toString();
     }
 
@@ -374,6 +384,10 @@ public class SocketPolicyClient implements PolicyClient {
             sb.setLength(0);
             appendV6(view, candidates, phi);
             appendV7(view.v7, candidates.length, meta);
+            if (teacherY != NO_LABEL) {
+                sb.append(",\"y\":").append(teacherY);
+                teacherY = NO_LABEL;
+            }
             sb.append("}\n");
             return roundTrip();
         } catch (IOException e) {

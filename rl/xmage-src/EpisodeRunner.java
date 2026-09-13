@@ -124,6 +124,7 @@ public class EpisodeRunner {
         String agentKind = System.getProperty("rl.agent", "rl");
         Player agent;
         RLPlayer rlAgent = null;
+        CP7TeacherPlayer teacher = null;      // 7d piece (1b): rl.agent=cp7
         if ("heuristic".equals(agentKind)) {
             HeuristicPlayer h = new HeuristicPlayer("Agent");
             h.benchSeed = seed;
@@ -170,6 +171,19 @@ public class EpisodeRunner {
             tp.out = imitateOut;
             tp.setTestMode(true);
             agent = tp;
+        } else if ("cp7".equals(agentKind)) {
+            // 7d piece (1b): XMage's ComputerPlayer7 as the imitation
+            // teacher on the v7 wire - plays as CP7, emits the RL seat's
+            // priority consult labelled with what CP7 did (y). Mirrors
+            // the cp7 OPPONENT branch below (range ONE, rl.aiSkill 6,
+            // the fake match).
+            CP7TeacherPlayer c7 = new CP7TeacherPlayer("Agent", RangeOfInfluence.ONE,
+                    Integer.getInteger("rl.aiSkill", 6));
+            c7.policy = policy;
+            c7.benchSeed = seed;
+            c7.setTestMode(true);
+            teacher = c7;
+            agent = c7;
         } else {
             rlAgent = new RLPlayer("Agent");
             rlAgent.policy = policy;
@@ -263,6 +277,9 @@ public class EpisodeRunner {
             // remaining-deck tokens are the list minus what has been seen
             rlAgent.oppDeckInfo = RLKnowledgeWatcher.deckInfo(oppDeck);
         }
+        if (teacher != null) {
+            teacher.oppDeckInfo = RLKnowledgeWatcher.deckInfo(oppDeck);
+        }
         Player first = agentOnPlay ? agent : opp;
         Player second = agentOnPlay ? opp : agent;
         Deck deckFirst = agentOnPlay ? agentDeck : oppDeck;
@@ -278,6 +295,12 @@ public class EpisodeRunner {
             game.getState().addWatcher(new RLKnowledgeWatcher(
                     rlAgent.getId(), opp.getId(), rlAgent.oppDeckInfo));
         }
+        if (teacher != null && StateEncoder.ENCODER_V >= 7) {
+            // the teacher seat's consults carry the same §2g fields as an
+            // RL-seat consult, so its tracker is registered the same way
+            game.getState().addWatcher(new RLKnowledgeWatcher(
+                    teacher.getId(), opp.getId(), teacher.oppDeckInfo));
+        }
 
         // XMage's own advanced AIs (ComputerPlayer6/7, MCTS) build their
         // simulations through MatchPlayer, so a game with no Match behind
@@ -287,7 +310,8 @@ public class EpisodeRunner {
         // currentMatch.addPlayer); we do the same, and only when one of
         // those seats is actually in play, so every pre-existing lane
         // constructs its game exactly as before.
-        if ("cp7".equals(opponentKind) || "mcts".equals(opponentKind)) {
+        if ("cp7".equals(opponentKind) || "mcts".equals(opponentKind)
+                || "cp7".equals(agentKind)) {
             mage.game.match.MatchOptions mo =
                     new mage.game.match.MatchOptions("rl match", "rl", true);
             mage.game.match.Match fakeMatch = new mage.game.FreeForAllMatch(mo);
@@ -437,6 +461,18 @@ public class EpisodeRunner {
             org.mage.test.benchmark.SearchPlayer sp = (org.mage.test.benchmark.SearchPlayer) agent;
             fallbacks.merge("agentSearchNodes", (int) Math.min(Integer.MAX_VALUE, sp.nodesEvaluated), Integer::sum);
             fallbacks.merge("agentSearchDecisions", (int) sp.searchDecisions, Integer::sum);
+        }
+        if (agent instanceof CP7TeacherPlayer) {
+            CP7TeacherPlayer c7 = (CP7TeacherPlayer) agent;
+            fallbacks.merge("teacherConsults", (int) c7.consults, Integer::sum);
+            fallbacks.merge("teacherLabelled", (int) c7.teacherLabelled, Integer::sum);
+            fallbacks.merge("teacherPassed", (int) c7.teacherPassed, Integer::sum);
+            fallbacks.merge("teacherOutside", (int) c7.teacherOutside, Integer::sum);
+            fallbacks.merge("teacherMultiAct", (int) c7.teacherMultiAct, Integer::sum);
+            fallbacks.merge("teacherBudgetSkipped", (int) c7.teacherBudgetSkipped, Integer::sum);
+            fallbacks.merge("autoPassEmpty", (int) c7.autoPassK0, Integer::sum);
+            fallbacks.merge("manaCandsDropped", (int) c7.manaCandsDropped, Integer::sum);
+            fallbacks.merge("windows", (int) c7.windows, Integer::sum);
         }
         if (agent instanceof TeacherLogPlayer) {
             TeacherLogPlayer tp = (TeacherLogPlayer) agent;
