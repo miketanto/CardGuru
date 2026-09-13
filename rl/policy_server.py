@@ -61,6 +61,9 @@ EPOCHS, ENT_COEF, VAL_COEF = 4, 0.01, 0.5
 WEIGHT_DECAY, HEADS_OPT, HEADS_LR = 0.0, "adam", 1e-3
 # --adv-norm (7a arm B8): how the v7 update normalises advantages per batch
 ADV_NORM = "batch"
+# --target-kl (C1): stop the v7 update once the mean approx KL to the behaviour
+# policy passes this (0 = off). --argmax-classes (B7): eval argmax over candidate classes.
+TARGET_KL, ARGMAX_CLASSES = 0.0, False
 UPDATE_EPISODES = 32
 MAX_K = 40                   # candidate buffer; --max-k overrides
 # MAX_K is a BUFFER SIZE, not an architectural constant: every parameter
@@ -437,6 +440,29 @@ def _norm_adv(adv, rewards, mode):
     if mode == "std" or (mode == "auto" and len(set(float(r) for r in rewards)) < 2):
         return adv / (sd + 1e-8)
     return (adv - adv.mean()) / (sd + 1e-8)
+
+
+def _argmax_classes(logits, msg):
+    """7a arm B7: argmax over candidate CLASSES. Identical cards are separate
+    candidates (WIRE 2f, one per playable), so k copies split the softmax mass and
+    the plain argmax is biased against any action offered as copies (the init puts
+    0.63 on "play a land" and never argmaxes one). Sum the probability over
+    candidates with the same (type, afterstate row, referent card names) and take
+    the first candidate of the heaviest class. Sampling already sums mass and is
+    unaffected."""
+    t = msg["v7_cand_type"]
+    rows = msg["v7_cand"]
+    refs = msg.get("v7_cand_refers") or [[] for _ in t]
+    names = msg.get("v7_ent_name") or []
+    pr = torch.softmax(logits[:len(t)].float(), 0)
+    mass, first = {}, {}
+    for k in range(len(t)):
+        nm = tuple((names[r - 3] if 0 <= r - 3 < len(names) else r) for r in refs[k])
+        key = (t[k], tuple(round(float(x), 4) for x in rows[k]), nm)
+        mass[key] = mass.get(key, 0.0) + float(pr[k])
+        first.setdefault(key, k)
+    return first[max(mass, key=mass.get)]
+
 
 
 class _MultiOpt:
@@ -838,7 +864,8 @@ class Trainer:
                      if self.recurrent else None,
                      store_or))
             else:
-                a = int(torch.argmax(logits[0]))
+                a = (_argmax_classes(logits[0], msg) if ARGMAX_CLASSES
+                     else int(torch.argmax(logits[0])))
             return a
 
     # ------------------------------------------------------------ v7 path
@@ -976,6 +1003,7 @@ class Trainer:
         episodes = [(s, e) for s, e, _ in self.completed if e > s]
         tbptt, ep_batch = self.tbptt, self.ep_batch
         params = self.net.policy_parameters()
+        kl_sum, kl_n, kl_stop = 0.0, 0, False
         for _ in range(EPOCHS):
             order = torch.randperm(len(episodes))
             for g0 in range(0, len(episodes), ep_batch):
@@ -1004,6 +1032,7 @@ class Trainer:
                     dist = torch.distributions.Categorical(logits=logits)
                     logp = dist.log_prob(actions[it])
                     ratio = torch.exp(logp - old_logp[it])
+                    kl_sum += float((old_logp[it] - logp).detach().sum()); kl_n += logp.numel()
                     a = adv[it]
                     pg = -torch.min(ratio * a,
                                     torch.clamp(ratio, 1 - CLIP, 1 + CLIP) * a)
@@ -1027,6 +1056,12 @@ class Trainer:
                 self._v7st["gn"] = max(self._v7st["gn"], float(nn.utils.clip_grad_norm_(params, 0.5)))
                 self.opt.step()
                 h = c = None
+                if TARGET_KL > 0 and kl_n and kl_sum / kl_n > TARGET_KL:
+                    kl_stop = True
+                    break
+            if kl_stop:
+                break
+        print(f"KL|update={self.updates + 1}|approx_kl={kl_sum / max(1, kl_n):.4f}|samples={kl_n}|stopped={int(kl_stop)}", flush=True)
         self._finish_update(n=n, phis=phis)
 
     def end_episode(self, reward, training, session=None):
@@ -2004,6 +2039,8 @@ if __name__ == "__main__":
     ap.add_argument("--heads-lr", type=float, default=1e-3, help="v7: heads lr under --heads-opt sgd")
     ap.add_argument("--adv-norm", choices=["batch", "std", "auto", "none"], default="batch",
                     help="v7: per-batch advantage normalisation (7a arm B8; batch = through 7c)")
+    ap.add_argument("--target-kl", type=float, default=0.0, help="v7: stop the update once mean approx KL passes this (C1)")
+    ap.add_argument("--argmax-classes", action="store_true", help="v7 eval: argmax over candidate classes (B7)")
 
     args = ap.parse_args()
     if args.device == "cuda" and not torch.cuda.is_available():
@@ -2021,6 +2058,7 @@ if __name__ == "__main__":
         ENT_COEF = args.ent_coef
     WEIGHT_DECAY, HEADS_OPT, HEADS_LR = args.weight_decay, args.heads_opt, args.heads_lr
     ADV_NORM = args.adv_norm
+    TARGET_KL, ARGMAX_CLASSES = args.target_kl, args.argmax_classes
     # Phase 12: 4 game threads + N server threads on 4 cores is heavily
     # oversubscribed; measured held-time per consult rose 3.40 -> 5.75 ms
     # from conc1 to conc4. Configurable so the trade can be measured.

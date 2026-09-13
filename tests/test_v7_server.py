@@ -337,3 +337,16 @@ def test_norm_adv_modes():
     assert torch.equal(ps._norm_adv(adv.clone(), lost, "none"), adv)
     assert torch.equal(ps._norm_adv(torch.zeros(3), lost, "std"), torch.zeros(3))
 
+def test_argmax_classes_sums_identical_candidates():
+    """B7: three identical Plains (same type, row, referent name) outweigh a single
+    PASS that is the plain argmax; distinct spells stay distinct."""
+    msg = {"v7_cand_type": [0, 1, 1, 1, 2],
+           "v7_cand": [[0.0] * 4, [1.0, 0.5, 0, 0], [1.0, 0.5, 0, 0], [1.0, 0.5, 0, 0], [2.0, 0, 0, 0]],
+           "v7_cand_refers": [[], [3], [4], [5], [6]],
+           "v7_ent_name": ["Plains", "Plains", "Plains", "Elite Vanguard"]}
+    lg = torch.tensor([1.0, 0.6, 0.6, 0.6, 0.2])
+    assert int(lg.argmax()) == 0
+    assert ps._argmax_classes(lg, msg) == 1                 # first of the heaviest class
+    lg2 = torch.tensor([2.0, 0.1, 0.1, 0.1, 0.9])         # e^2 > 3 e^0.1
+    assert ps._argmax_classes(lg2, msg) == 0                # PASS still wins when it is heaviest
+

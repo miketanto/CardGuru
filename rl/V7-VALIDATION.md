@@ -2242,3 +2242,46 @@ over 100 games each on W0Base.
 ### 7c interruption — the attack search has no total budget (2026-09-13 03:45; fixed, resumed)
 
 Seed 0 trained 512 episodes (16 updates: batch win rate 0.25 → 0.78, last four 84/128, entropy 0.79, max |logit| 4.1, grad norm 3.3, all action types chosen) and then hung in the trained=512 battery: the driver JVM at 100 % CPU for 25 min, the server idle. Thread dump: `RLPlayer.selectAttackers` → `CombatMath.bestAttack` → the defender-reply `enumerate`. The attack candidates are priced by a one-ply search, up to `rl.attackCap` 4,096 subsets each with a `rl.attackReplyCap` 200,000-leaf reply — 8 × 10⁸ combat resolutions on one consult when both boards are wide. It runs in every game (training too), and no earlier policy ever kept a wide board, so it never showed. Fix (this commit): `rl.attackTotalCap` (default 2,000,000 leaves per call) across all subsets; once spent, the remaining subsets stay in the option list (the candidate **set** never changes) but are priced under a 200-leaf reply cap; `BestAttack.budgetHit` → `fallbacks=... attackBudgetHit=N` in the summary. Pre-registered: no consult whose search stays under the budget changes in any field (same code path); the count of budget hits per battery is recorded with the 7c row, and a consult that hits it has less exact ATTACK afterstates than before, which the row must carry. Resumed from `agent.pt` at 512 (the lane reads `episodes` from the checkpoint); the trained=0 probes are cached, so the seed continues at the 512 battery on the fixed engine. Same-recipe noise noted: this seed at 256 episodes had batch rates 0.34–0.62 where arm B2 (identical recipe, different engine scheduling) had 0.19–0.28 — one seed is not a curve.
+
+## C1 pre-registration — the fixed recipe to 2,048 episodes, three seeds (2026-09-13 04:10; 7c stopped, B8 superseded)
+
+Decision (chat, 2026-09-13 04:00): stop 7c (seed 0 at 512 episodes on B2's
+recipe, resumed once after the attack-budget fix; its 16 updates are in
+`rl/artifacts/v7/7c/` and the "7c interruption" note) and make the loop
+fixes first, then run the three seeds on the fixed recipe. B8's isolated
+test of `--adv-norm auto` is superseded by C1 and kept as an ablation to
+run later; its pre-registration stands unchanged.
+
+Fixes landed with this row, each behind a flag whose default is the old
+behaviour, tested (`test_norm_adv_modes`, `test_argmax_classes_sums_identical_candidates`,
+server tests, `v7_check.py`):
+* `--adv-norm auto` — centre advantages only when the batch's outcomes vary (B8 row).
+* `--target-kl 0.02` — the v7 update stops once the mean approximate KL
+  (old log-prob − new) over the samples seen so far passes 0.02; one `KL|`
+  line per update reports the KL and whether it stopped. With 1 PPO epoch
+  this bounds how far one update can move the policy; it is the trust
+  region PPO's ratio clip cannot provide once a policy is deterministic.
+* `--argmax-classes` — evaluation argmax over candidate classes (same type,
+  afterstate row and referent card names; B7). Training sampling unchanged.
+* Engine: `rl.attackTotalCap` (already in, af89167).
+
+C1 = B2's optimiser + the three flags, `rl/run_7c1.sh`: W0Base vs heuristic,
+2,048 episodes, seeds 0/1/2, batteries of 100 games per opponent every
+512, census + land census on every `ck_512..2048`, `attackBudgetHit`
+counts per battery.
+
+Pre-registered readings (the 7c readings, restated for C1):
+* **Trains:** sampled last-4-batch win rate rises across the four
+  512-points on ≥ 2 of 3 seeds, the last point's interval clear of the
+  first; argmax D0 battery rises with it.
+* **Third land:** P(land) at ≥ 3 lands on the census set ≥ 0.5 at ck_2048
+  on ≥ 2 of 3 seeds (the B2 signature was 0.08).
+* **Not collapsed** at every point: argmax-PASS in [5 %, 90 %], gap > 0.5,
+  entropy > 0.3, max |logit| < 5.
+* **KL budget:** the fraction of updates stopped by the KL budget is
+  reported; if it is 0 the flag was inert and is recorded as such.
+Cannot: attribute an effect to one flag (that is B8 and the later
+ablations); beat v6 on rung 0 — the LEVELSET v6 figure on W0Base is the
+comparison, three seeds pooled, and parity on one seed is noise; say
+anything about other decks. Levels only from ≥ 100 games per point per
+seed; pool only finished seeds.
