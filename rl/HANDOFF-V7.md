@@ -900,3 +900,118 @@ UPDATE (2026-09-13 02:50, next session's clock): **7c RUNNING** - `rl/run_7c.sh`
 UPDATE (2026-09-13 03:50): 7c seed 0 hung at its 512 battery in CombatMath.bestAttack (4096 subsets x 200k defender replies on a wide board - the trained policy keeps a board, nothing before did); fixed with rl.attackTotalCap (af89167, row "7c interruption"), engine recompiled, 7911 restarted alone, 7c RESUMED at 512 from agent.pt (run_7c.sh relaunched, log rl/artifacts/v7/7c/run_7c.log). Seed 0 through 512: batch win rate 0.25 -> 0.78, last four 84/128, entropy 0.79 - already past arm B2 on the same recipe (same-recipe noise; one seed is not a curve). Also landed: --adv-norm {batch,std,auto,none} (6f25dad; default unchanged) with B8 pre-registered and QUEUED (rl/run_7b8.sh waits for run_7c.sh, then B2 + --adv-norm auto, 256 episodes, census + land census); 7d plan (BC from XMage CP7, then PPO) written in V7-VALIDATION.md under B8. NEXT: read 7c per seed as before (land census per ck, battery.txt, attackBudgetHit counts from the summaries), then B8's row against its predictions, then 7d piece (1) (teacher choice: CP7 vs the search teacher, 100 games each).
 
 UPDATE (2026-09-13 04:15): decision (chat) - 7c STOPPED at seed 0 / 512 episodes, fixes first. Landed: --target-kl (mean approx KL budget per update, KL| line per update), --argmax-classes (eval argmax over candidate classes, B7), with --adv-norm auto (6f25dad) and rl.attackTotalCap (af89167); 13 server tests + v7_check 15/15. **C1 RUNNING**: rl/run_7c1.sh = B2 optimiser + the three flags, 2,048 episodes x seeds 0/1/2, batteries 100 games per opponent every 512, census + land census per ck; log rl/artifacts/v7/7c1/run_7c1.log, state /tmp/rl_7c1_s<seed>/, resumable. Row "C1 pre-registration" carries the readings. B8 superseded (ablation later). NEXT: read C1 per seed (s<seed>/census_all.txt, battery.txt, budget_hits.txt, KL| lines in train_lines.txt), write the C1 row; then 7d piece (1).
+
+## K. The handoff prompt (2026-09-13 04:30; v7/lane-d = 97b174b). Supersedes §J.
+
+You are working in the CardGuru repository, an RL project training agents to play Magic
+against the XMage engine. Windows checkout C:\Users\sutanto4\Documents\CardGuru = WSL
+/home/user/CardGuru = /mnt/c/Users/sutanto4/Documents/CardGuru. ONE branch: v7/lane-d
+(main stays v6, untouched). Read CLAUDE.md first and follow its context protocol: durable
+files over chat, small tool output, a checkpoint block at ~70% context, Wilson intervals,
+no level from fewer than 100 games, pre-register what a change cannot move, correct in the
+open (a failed gate is a row in rl/V7-VALIDATION.md, never a moved bar), commit and push
+after each finding, commit messages end with
+Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>.
+
+CODE EXPLORATION USES THE CODEBASE-MEMORY MCP (rl/HANDOFF-V7.md §E.1): projects
+C-Users-sutanto4-Documents-CardGuru and C-Users-sutanto4-xmage-pin; search_graph /
+get_code_snippet / trace_path before grep; StateEncoder.java is partially indexed (grep -a).
+
+ENVIRONMENT (rl/HANDOFF-V7.md §E.1, §F.1, §G GOTCHAS, every dated UPDATE line after §J,
+and the memory file wsl-detached-jobs):
+  - Python only in WSL:  wsl -e bash -lc "cd /home/user/CardGuru && python3 ..."
+    Tests: python3 -m pytest tests/test_v7_server.py -q (13 tests); full gate set
+    python3 rl/v7_check.py (15 checks, ~80 s, must end failures=0).
+  - Java: edit rl/xmage-src/*.java, compile with  bash rl/sync_lane_b.sh  (NEVER
+    sync_engine_src.sh). Drivers: 7910 belongs to the LANE (rung0_lane.sh autostarts and
+    restarts it; never run drivers_3a.sh while a lane runs); 7911 = the v7 recording driver,
+    restart it alone with  bash rl/driver_server.sh start 7911 "-Dmage.randomPerThread=true
+    -XX:+UseParallelGC -Dmage.playableCache=on -Drl.encoderV=7"  (a lane restart can kill it).
+    rl.encoderV, rl.oracle, rl.noYields, rl.debug are class-init constants: one JVM per arm.
+    rl.manaCands (7a amendment) and rl.attackTotalCap are per-job properties.
+  - NEVER edit server-side Python (policy_server.py, v7_*.py) or Java while a lane runs:
+    the lane restarts its server every 512 episodes and its driver per arm FROM DISK. Every
+    knob is a flag whose default is the old behaviour for this reason.
+  - LONG JOBS: launch inside ONE foreground wsl call with
+      setsid nohup bash rl/<script>.sh > /mnt/c/.../rl/artifacts/v7/<dir>/<name>.log 2>&1 < /dev/null &
+    (log on the /mnt/c side so a Git-Bash Monitor can tail /c/Users/... ). Runners are
+    resumable (a seed/arm with its census.txt is skipped; a dead lane resumes from
+    /tmp/rl_<run>_s<seed>/agent.pt via rung0_lane.sh resume_at). Check WSL processes with
+    wsl -e bash -lc "pgrep -fc 'run_7c[1]'" - a bracket in the pattern, and NEVER the
+    launched script's literal name in the same shell string you pgrep in. pkill patterns
+    with a bracket still carry a '.' wildcard: name waiter/kill scripts so their own
+    patterns cannot match them (chai[n].sh matched chain2.sh; kill_chain2.sh killed itself).
+    Kill only via a script file (the auto-mode classifier blocks inline kill/pkill). Do not
+    put a launch and a pkill in the same Bash call. Strip CRLF: sed -i 's/\r$//'.
+  - Bash heredocs with backticks inside a  wsl -e bash -lc "..."  string are expanded by the
+    outer shell: write text with the Write tool to the scratchpad and append it with sed
+    (CRLF-aware: rl/V7-VALIDATION.md and rl/HANDOFF-V7.md may be CRLF; check with grep $'\r').
+  - git: commit from the Windows side. NEVER git add a lane artifact directory without
+    excluding *.pt (rl/artifacts/v7/**/*.pt is gitignored; recordings in wire3a/ too).
+  - Lane knobs for --arch v7 via R0_SRVEXTRA: --device cuda --epochs N --logit-bound B
+    --weight-decay W (AdamW on the heads) --heads-opt sgd --heads-lr L --ent-coef E
+    --adv-norm {batch,std,auto,none} --target-kl K --argmax-classes --batch-max N.
+    TRAIN line: entropy / max_logit / grad_norm / chosen_types (PASS/LAND/SPELL/ACTIVATE/
+    TARGET/ATTACK/BLOCK/OTHER); KL line per update (approx_kl, samples, stopped).
+    Tools: rl/summ_7a.py <arms> (table + the pre-registered learning test),
+    rl/v7_init_logits.py --ckpt X --logit-bound 5 (type census), rl/v7_land_census.py
+    --ckpt X --logit-bound 5 --device cpu <7c_W0Base_{p1,p99,sf}.jsonl> (P(land) by lands in
+    play), rl/tp_5d.py <dir> (throughput), rl/manacands_check.py (v6-identity), scratch
+    play transcript: rl.debug on a fresh driver JVM (the RLGAME block in
+    /tmp/rl_p9/driver_server_<port>.log; the earlier scratch script is in the session's
+    scratchpad, rewrite it: frozen server on 7947, driver 7913, -Drl.mode=eval -Drl.debug=true).
+
+Read, in this order, before any work:
+  1. CLAUDE.md
+  2. rl/HANDOFF-V7.md §G GOTCHAS and every dated UPDATE line after §J (00:30, 00:35, 00:50,
+     02:50, 03:50, 04:15).
+  3. rl/V7-VALIDATION.md from "7a amendment — mana-ability filter" to the end: the 7a
+     amendment row, "7a — arms B0–B4", the B2 argmax play note and its correction, "5d
+     follow-up", "7c pre-registration", "7c — land census", "B8 pre-registration", "7d plan",
+     "7c interruption", "C1 pre-registration", and the "C1 first update" paragraph.
+  4. rl/WIRE-V7.md §8 (amendments) when touching the contract.
+
+STATE: C1 is RUNNING (rl/run_7c1.sh, log rl/artifacts/v7/7c1/run_7c1.log, state
+/tmp/rl_7c1_s<seed>/): B2's optimiser (lr 3e-5, 1 epoch, logit bound 5, AdamW wd 0.01 on the
+heads) + --adv-norm auto + --target-kl 0.02 + --argmax-classes, on the engine with the
+mana-ability filter and rl.attackTotalCap; W0Base vs heuristic, 2,048 episodes x seeds 0/1/2,
+100-game batteries per opponent every 512, census + land census per ck into
+rl/artifacts/v7/7c1/s<seed>/{census_all.txt,battery.txt,budget_hits.txt,train_lines.txt}.
+Seed 0 started 03:34 WSL clock (~1.5 h per seed). Its first update: approx KL 0.33 after one
+window step, stopped (budget 0.02) - the budget binds at the first step; C2 (--target-kl 0.1)
+is pre-stated in the C1 row if seed 0's batch win rate at 512 is below 7c seed 0's on the
+same recipe without the budget (0.62 at 256, 0.78 at 512). What is established: the 7a
+collapse is structural in the heads' optimiser (B2 = decay on the heads meets all three
+learning tests; B3 = SGD heads wins sampled but its argmax never attacks); batch-centred
+advantages in all-lost batches manufacture "early good, late bad" (B2 unlearned the third
+land: P(land) 0.86 -> 0.08 with lands in play); identical cards split softmax mass (argmax
+biased against k-copy actions; --argmax-classes); the 5d play budget passes with
+--batch-max 4 (71 consults/s, 0.47 of v6), the update budget fails (58 ms per stored
+consult, 6.7x); a trained policy that keeps a board sent CombatMath.bestAttack into 8e8
+resolves per consult (bounded now; attackBudgetHit counted per game). 7c is stopped by
+decision at seed 0 / 512; B8 (adv-norm auto alone) is superseded, kept as an ablation.
+Drivers: the lane owns 7910; 7911 may be down (restart alone if you record); GPU busy with C1.
+
+NEXT, in order:
+  1. Read C1 as each seed lands (7C1|seed=N|rc= in the log): the four batteries (100 games
+     each = levels), the sampled curve (train_lines.txt), KL| stopped fraction, land census
+     per ck (census_all.txt), attackBudgetHit counts. Write the C1 row against the
+     pre-registered readings ("trains", "third land", "not collapsed", "KL budget"). If the
+     budget starved it, C2 = --target-kl 0.1 (same script with the flag changed, new ART dir
+     7c2), pre-registered as the C1 row says. Pool only finished seeds; three seeds pooled
+     before any comparison with v6's W0Base level in LEVELSET.md.
+  2. 7d piece (1): teacher choice - XMage ComputerPlayer7 (cp7 opponent in the lane) vs the
+     project's search teacher (rl.agent=search), 100 games each vs the heuristic on W0Base;
+     then the recording of consults with the teacher's chosen candidate index on the v7 wire
+     (>= 20k consults, bench decks, both seats); then rl/v7_bc.py; then PPO from the BC
+     checkpoint with C1's flags. Each its own row; the cannots are in the 7d plan.
+  3. Ablations when the GPU is free: B8 (adv-norm auto alone, rl/run_7b8.sh, 256 episodes),
+     B6 (candidate-scorer centring), B2/B3 extra seeds.
+  4. Update-side: rl/update_profile.py profile --arch v7 --device cuda --buf
+     rl/artifacts/v7/5d/v7f/rl_buf.pt (the 6.7x); then the §2c width-21 / PASS-afterstate
+     contract commit with the lane idle.
+
+Start by confirming C1 is alive (pgrep as above, tail the log) and reading its latest
+TRAIN and KL lines from /tmp/rl_7c1_s0/server_all.log or server.log; do not edit
+server-side code while it runs. At ~70% context, stop, add a dated UPDATE line to
+rl/HANDOFF-V7.md, commit, push, and offer to continue in a new session.
