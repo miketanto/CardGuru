@@ -1,0 +1,14 @@
+BC|data|files=14|labelled=20735|games=1400|held_games=140|train=18669|held=2066|dropped={}|load_s=34
+BC|labels|LAND=8564|SPELL=12171
+BC|offered|PASS=20735|LAND=10552|SPELL=14766
+/home/miketanto/.local/lib/python3.10/site-packages/torch/nn/modules/transformer.py:382: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+BC|epoch=0|held_ce=1.2429|held_top1=0.168|held_type1=0.307|init_episodes=0
+BC|epoch=1|train_ce=0.7119|train_top1=0.601|held_ce=0.7131|held_top1=0.606|held_type1=0.887|s=36
+BC|epoch=2|train_ce=0.7092|train_top1=0.602|held_ce=0.7131|held_top1=0.606|held_type1=0.887|s=38
+BC|epoch=3|train_ce=0.7092|train_top1=0.602|held_ce=0.7131|held_top1=0.606|held_type1=0.887|s=37
+BC|epoch=4|train_ce=0.7092|train_top1=0.602|held_ce=0.7131|held_top1=0.606|held_type1=0.887|s=36
+BC|early_stop|epoch=4|best_epoch=1
+BC|saved=/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/7d2/bc.pt|best_epoch=1|held_ce=0.7131|held_top1=0.606|held_type1=0.887|wall_s=188
+BC|census|python3 rl/v7_init_logits.py --ckpt /mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/7d2/bc.pt --logit-bound 5 --device cpu --limit 1500 /mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/wire3a/7c_W0Base_p1.jsonl /mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/wire3a/7c_W0Base_p99.jsonl /mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/wire3a/7c_W0Base_sf.jsonl
+BC|census|python3 rl/v7_land_census.py --ckpt /mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/7d2/bc.pt --logit-bound 5 --device cpu /mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/wire3a/7c_W0Base_p1.jsonl /mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/wire3a/7c_W0Base_p99.jsonl /mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/wire3a/7c_W0Base_sf.jsonl
