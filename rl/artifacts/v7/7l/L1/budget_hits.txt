@@ -1,0 +1,8 @@
+      1 attackBudgetHit=100
+      2 attackBudgetHit=114
+      1 attackBudgetHit=125
+      1 attackBudgetHit=138
+      1 attackBudgetHit=141
+      1 attackBudgetHit=182
+      1 attackBudgetHit=216
+      1 attackBudgetHit=263

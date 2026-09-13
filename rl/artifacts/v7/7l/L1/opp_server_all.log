@@ -1,0 +1,171 @@
+deck context: /home/user/CardGuru/rl/artifacts/deck_ctx_v1
+/home/miketanto/.local/lib/python3.10/site-packages/torch/nn/modules/transformer.py:382: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+resumed ckpt: 1024 episodes, 32 updates
+policy server on :7960 (threads=4) device=cuda
+conn: mode=eval episodes=64
+conn: mode=eval episodes=64
+conn: mode=eval episodes=64
+conn: mode=eval episodes=64
+RLLOCK|calls=2000|wait_s=21.7|held_s=54.7|wait_per_call_ms=10.87|held_per_call_ms=27.33|wait_share=28.5%
+RLLOCK|calls=4000|wait_s=43.2|held_s=106.1|wait_per_call_ms=10.80|held_per_call_ms=26.53|wait_share=28.9%
+conn closed
+conn closed
+conn closed
+conn closed
+conn: mode=eval episodes=64
+conn: mode=eval episodes=64
+conn: mode=eval episodes=64
+conn: mode=eval episodes=64
+RLLOCK|calls=6000|wait_s=69.9|held_s=159.2|wait_per_call_ms=11.65|held_per_call_ms=26.54|wait_share=30.5%
+RLLOCK|calls=8000|wait_s=93.6|held_s=211.8|wait_per_call_ms=11.71|held_per_call_ms=26.48|wait_share=30.7%
+conn closed
+conn closed
+conn closed
+conn closed
+conn: mode=eval episodes=64
+conn: mode=eval episodes=64
+conn: mode=eval episodes=64
+conn: mode=eval episodes=64
+RLLOCK|calls=10000|wait_s=114.9|held_s=265.3|wait_per_call_ms=11.49|held_per_call_ms=26.53|wait_share=30.2%
+RLLOCK|calls=12000|wait_s=135.1|held_s=317.9|wait_per_call_ms=11.26|held_per_call_ms=26.49|wait_share=29.8%
+conn closed
+conn closed
+conn closed
+conn closed
+conn: mode=eval episodes=64
+conn: mode=eval episodes=64
+conn: mode=eval episodes=64
+conn: mode=eval episodes=64
+RLLOCK|calls=14000|wait_s=152.7|held_s=372.2|wait_per_call_ms=10.90|held_per_call_ms=26.59|wait_share=29.1%
+RLLOCK|calls=16000|wait_s=170.4|held_s=424.5|wait_per_call_ms=10.65|held_per_call_ms=26.53|wait_share=28.7%
+conn closed
+conn closed
+conn closed
+conn closed
+conn: mode=eval episodes=64
+conn: mode=eval episodes=64
+conn: mode=eval episodes=64
+conn: mode=eval episodes=64
+RLLOCK|calls=18000|wait_s=188.2|held_s=476.5|wait_per_call_ms=10.45|held_per_call_ms=26.47|wait_share=28.3%
+RLLOCK|calls=20000|wait_s=206.8|held_s=529.3|wait_per_call_ms=10.34|held_per_call_ms=26.46|wait_share=28.1%
+conn closed
+conn closed
+conn closed
+conn closed
+conn: mode=eval episodes=64
+conn: mode=eval episodes=64
+conn: mode=eval episodes=64
+conn: mode=eval episodes=64
+RLLOCK|calls=22000|wait_s=225.7|held_s=582.0|wait_per_call_ms=10.26|held_per_call_ms=26.45|wait_share=27.9%
+RLLOCK|calls=24000|wait_s=246.7|held_s=634.1|wait_per_call_ms=10.28|held_per_call_ms=26.42|wait_share=28.0%
+conn closed
+conn closed
+conn closed
+conn closed
+conn: mode=eval episodes=64
+conn: mode=eval episodes=64
+conn: mode=eval episodes=64
+conn: mode=eval episodes=64
+RLLOCK|calls=26000|wait_s=264.7|held_s=685.7|wait_per_call_ms=10.18|held_per_call_ms=26.37|wait_share=27.8%
+RLLOCK|calls=28000|wait_s=282.2|held_s=738.5|wait_per_call_ms=10.08|held_per_call_ms=26.37|wait_share=27.6%
+conn closed
+conn closed
+conn closed
+conn closed
+conn: mode=eval episodes=64
+conn: mode=eval episodes=64
+conn: mode=eval episodes=64
+conn: mode=eval episodes=64
+RLLOCK|calls=30000|wait_s=299.8|held_s=792.5|wait_per_call_ms=9.99|held_per_call_ms=26.42|wait_share=27.4%
+RLLOCK|calls=32000|wait_s=315.8|held_s=846.8|wait_per_call_ms=9.87|held_per_call_ms=26.46|wait_share=27.2%
+RLLOCK|calls=34000|wait_s=334.8|held_s=900.1|wait_per_call_ms=9.85|held_per_call_ms=26.47|wait_share=27.1%
+conn closed
+conn closed
+conn closed
+conn closed
+RLLOCK|calls=34247|wait_s=336.0|held_s=906.7|wait_per_call_ms=9.81|held_per_call_ms=26.47|wait_share=27.0%
+deck context: /home/user/CardGuru/rl/artifacts/deck_ctx_v1
+/home/miketanto/.local/lib/python3.10/site-packages/torch/nn/modules/transformer.py:382: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+resumed ckpt: 2048 episodes, 64 updates
+policy server on :7960 (threads=4) device=cuda
+conn: mode=eval episodes=64
+conn: mode=eval episodes=64
+conn: mode=eval episodes=64
+conn: mode=eval episodes=64
+RLLOCK|calls=2000|wait_s=28.9|held_s=54.7|wait_per_call_ms=14.46|held_per_call_ms=27.37|wait_share=34.6%
+conn closed
+conn closed
+conn closed
+conn closed
+conn: mode=eval episodes=64
+conn: mode=eval episodes=64
+conn: mode=eval episodes=64
+conn: mode=eval episodes=64
+RLLOCK|calls=4000|wait_s=54.0|held_s=107.8|wait_per_call_ms=13.50|held_per_call_ms=26.95|wait_share=33.4%
+RLLOCK|calls=6000|wait_s=79.3|held_s=159.4|wait_per_call_ms=13.21|held_per_call_ms=26.56|wait_share=33.2%
+conn closed
+conn closed
+conn closed
+conn closed
+conn: mode=eval episodes=64
+conn: mode=eval episodes=64
+conn: mode=eval episodes=64
+conn: mode=eval episodes=64
+RLLOCK|calls=8000|wait_s=103.7|held_s=209.6|wait_per_call_ms=12.96|held_per_call_ms=26.20|wait_share=33.1%
+RLLOCK|calls=10000|wait_s=125.5|held_s=261.1|wait_per_call_ms=12.55|held_per_call_ms=26.11|wait_share=32.5%
+conn closed
+conn closed
+conn closed
+conn closed
+conn: mode=eval episodes=64
+conn: mode=eval episodes=64
+conn: mode=eval episodes=64
+conn: mode=eval episodes=64
+RLLOCK|calls=12000|wait_s=146.1|held_s=312.7|wait_per_call_ms=12.18|held_per_call_ms=26.06|wait_share=31.9%
+RLLOCK|calls=14000|wait_s=168.6|held_s=363.4|wait_per_call_ms=12.04|held_per_call_ms=25.95|wait_share=31.7%
+conn closed
+conn closed
+conn closed
+conn closed
+conn: mode=eval episodes=64
+conn: mode=eval episodes=64
+conn: mode=eval episodes=64
+conn: mode=eval episodes=64
+RLLOCK|calls=16000|wait_s=188.2|held_s=414.2|wait_per_call_ms=11.76|held_per_call_ms=25.88|wait_share=31.2%
+RLLOCK|calls=18000|wait_s=207.7|held_s=464.8|wait_per_call_ms=11.54|held_per_call_ms=25.82|wait_share=30.9%
+conn closed
+conn closed
+conn closed
+conn closed
+conn: mode=eval episodes=64
+conn: mode=eval episodes=64
+conn: mode=eval episodes=64
+conn: mode=eval episodes=64
+RLLOCK|calls=20000|wait_s=228.1|held_s=515.9|wait_per_call_ms=11.41|held_per_call_ms=25.79|wait_share=30.7%
+RLLOCK|calls=22000|wait_s=244.5|held_s=567.5|wait_per_call_ms=11.11|held_per_call_ms=25.80|wait_share=30.1%
+conn closed
+conn closed
+conn closed
+conn closed
+conn: mode=eval episodes=64
+conn: mode=eval episodes=64
+conn: mode=eval episodes=64
+conn: mode=eval episodes=64
+RLLOCK|calls=24000|wait_s=261.6|held_s=619.2|wait_per_call_ms=10.90|held_per_call_ms=25.80|wait_share=29.7%
+conn closed
+conn closed
+conn closed
+conn closed
+conn: mode=eval episodes=64
+conn: mode=eval episodes=64
+conn: mode=eval episodes=64
+conn: mode=eval episodes=64
+RLLOCK|calls=26000|wait_s=277.6|held_s=674.2|wait_per_call_ms=10.68|held_per_call_ms=25.93|wait_share=29.2%
+RLLOCK|calls=28000|wait_s=293.1|held_s=726.5|wait_per_call_ms=10.47|held_per_call_ms=25.95|wait_share=28.8%
+conn closed
+conn closed
+conn closed
+conn closed
+RLLOCK|calls=29382|wait_s=303.3|held_s=764.1|wait_per_call_ms=10.32|held_per_call_ms=26.01|wait_share=28.4%

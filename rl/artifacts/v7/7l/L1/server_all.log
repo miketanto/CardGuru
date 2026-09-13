@@ -1,0 +1,296 @@
+deck context: /home/user/CardGuru/rl/artifacts/deck_ctx_v1
+/home/miketanto/.local/lib/python3.10/site-packages/torch/nn/modules/transformer.py:382: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+resumed ckpt: 2048 episodes, 64 updates
+policy server on :7951 (threads=4) device=cuda
+conn: mode=eval episodes=100
+RLLOCK|calls=2000|wait_s=0.0|held_s=47.1|wait_per_call_ms=0.00|held_per_call_ms=23.55|wait_share=0.0%
+RLLOCK|calls=4000|wait_s=0.0|held_s=92.3|wait_per_call_ms=0.00|held_per_call_ms=23.08|wait_share=0.0%
+conn closed
+conn: mode=eval episodes=100
+RLLOCK|calls=6000|wait_s=0.0|held_s=135.9|wait_per_call_ms=0.00|held_per_call_ms=22.66|wait_share=0.0%
+RLLOCK|calls=8000|wait_s=0.0|held_s=178.0|wait_per_call_ms=0.00|held_per_call_ms=22.25|wait_share=0.0%
+conn closed
+conn: mode=eval episodes=100
+RLLOCK|calls=10000|wait_s=0.0|held_s=221.2|wait_per_call_ms=0.00|held_per_call_ms=22.12|wait_share=0.0%
+RLLOCK|calls=12000|wait_s=0.0|held_s=264.7|wait_per_call_ms=0.00|held_per_call_ms=22.06|wait_share=0.0%
+RLLOCK|calls=14000|wait_s=0.0|held_s=307.2|wait_per_call_ms=0.00|held_per_call_ms=21.94|wait_share=0.0%
+conn closed
+RLLOCK|calls=14053|wait_s=0.0|held_s=308.4|wait_per_call_ms=0.00|held_per_call_ms=21.94|wait_share=0.0%
+deck context: /home/user/CardGuru/rl/artifacts/deck_ctx_v1
+/home/miketanto/.local/lib/python3.10/site-packages/torch/nn/modules/transformer.py:382: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+resumed ckpt: 2048 episodes, 64 updates
+policy server on :7951 (threads=4) device=cuda
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+RLLOCK|calls=2000|wait_s=30.8|held_s=57.8|wait_per_call_ms=15.40|held_per_call_ms=28.92|wait_share=34.8%
+KL|update=65|approx_kl=0.0133|samples=2191|stopped=0
+TRAIN|update=65 episodes=2080 batch_eps=32 steps=2191 batch_win_rate=0.062 mean_abs_phi=0.000 value_ev=-0.0253 oracle_cover=0.000 critic_ev=nan update_s=36.88 entropy=0.547 max_logit=5.00 grad_norm=3.71 chosen_types=663/428/644/0/19/167/270/0
+RLLOCK|calls=4000|wait_s=184.5|held_s=114.2|wait_per_call_ms=46.13|held_per_call_ms=28.56|wait_share=61.8%
+conn closed
+conn closed
+conn closed
+KL|update=66|approx_kl=0.0067|samples=2223|stopped=0
+TRAIN|update=66 episodes=2112 batch_eps=32 steps=2223 batch_win_rate=0.062 mean_abs_phi=0.000 value_ev=-0.0077 oracle_cover=0.000 critic_ev=nan update_s=35.84 entropy=0.511 max_logit=5.00 grad_norm=7.16 chosen_types=663/445/641/0/19/169/286/0
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn closed
+RLLOCK|calls=6000|wait_s=230.5|held_s=173.4|wait_per_call_ms=38.42|held_per_call_ms=28.90|wait_share=57.1%
+KL|update=67|approx_kl=0.0110|samples=1986|stopped=0
+TRAIN|update=67 episodes=2144 batch_eps=32 steps=1986 batch_win_rate=0.094 mean_abs_phi=0.000 value_ev=0.0107 oracle_cover=0.000 critic_ev=nan update_s=35.33 entropy=0.491 max_logit=4.99 grad_norm=2.90 chosen_types=573/418/596/0/23/169/207/0
+RLLOCK|calls=8000|wait_s=373.0|held_s=231.2|wait_per_call_ms=46.62|held_per_call_ms=28.89|wait_share=61.7%
+conn closed
+conn closed
+conn closed
+KL|update=68|approx_kl=0.0037|samples=2176|stopped=0
+TRAIN|update=68 episodes=2176 batch_eps=32 steps=2176 batch_win_rate=0.000 mean_abs_phi=0.000 value_ev=-0.0447 oracle_cover=0.000 critic_ev=nan update_s=34.79 entropy=0.481 max_logit=4.99 grad_norm=2.11 chosen_types=632/447/656/0/16/176/249/0
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn closed
+RLLOCK|calls=10000|wait_s=419.6|held_s=288.8|wait_per_call_ms=41.96|held_per_call_ms=28.88|wait_share=59.2%
+KL|update=69|approx_kl=0.0060|samples=2176|stopped=0
+TRAIN|update=69 episodes=2208 batch_eps=32 steps=2176 batch_win_rate=0.031 mean_abs_phi=0.000 value_ev=-0.0964 oracle_cover=0.000 critic_ev=nan update_s=33.70 entropy=0.522 max_logit=4.99 grad_norm=4.84 chosen_types=642/438/648/0/17/173/258/0
+RLLOCK|calls=12000|wait_s=554.1|held_s=347.6|wait_per_call_ms=46.18|held_per_call_ms=28.96|wait_share=61.5%
+conn closed
+conn closed
+conn closed
+KL|update=70|approx_kl=0.0273|samples=1179|stopped=1
+TRAIN|update=70 episodes=2240 batch_eps=32 steps=2362 batch_win_rate=0.000 mean_abs_phi=0.000 value_ev=-0.0675 oracle_cover=0.000 critic_ev=nan update_s=18.07 entropy=0.540 max_logit=4.98 grad_norm=2.07 chosen_types=367/229/344/0/11/84/144/0
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn closed
+RLLOCK|calls=14000|wait_s=598.3|held_s=407.7|wait_per_call_ms=42.73|held_per_call_ms=29.12|wait_share=59.5%
+KL|update=71|approx_kl=0.0064|samples=2451|stopped=0
+TRAIN|update=71 episodes=2272 batch_eps=32 steps=2451 batch_win_rate=0.031 mean_abs_phi=0.000 value_ev=-0.0503 oracle_cover=0.000 critic_ev=nan update_s=35.49 entropy=0.638 max_logit=4.98 grad_norm=4.48 chosen_types=849/463/699/0/16/180/244/0
+RLLOCK|calls=16000|wait_s=734.6|held_s=465.8|wait_per_call_ms=45.91|held_per_call_ms=29.11|wait_share=61.2%
+conn closed
+conn closed
+conn closed
+RLLOCK|calls=18000|wait_s=771.2|held_s=522.3|wait_per_call_ms=42.84|held_per_call_ms=29.02|wait_share=59.6%
+KL|update=72|approx_kl=0.0121|samples=2468|stopped=0
+TRAIN|update=72 episodes=2304 batch_eps=32 steps=2468 batch_win_rate=0.000 mean_abs_phi=0.000 value_ev=0.0159 oracle_cover=0.000 critic_ev=nan update_s=36.24 entropy=0.595 max_logit=4.99 grad_norm=2.12 chosen_types=846/464/699/0/19/158/282/0
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn closed
+RLLOCK|calls=20000|wait_s=802.9|held_s=580.3|wait_per_call_ms=40.14|held_per_call_ms=29.02|wait_share=58.0%
+KL|update=73|approx_kl=0.0044|samples=2418|stopped=0
+TRAIN|update=73 episodes=2336 batch_eps=32 steps=2418 batch_win_rate=0.031 mean_abs_phi=0.000 value_ev=0.0064 oracle_cover=0.000 critic_ev=nan update_s=35.83 entropy=0.620 max_logit=4.98 grad_norm=1.71 chosen_types=843/460/693/0/23/156/243/0
+RLLOCK|calls=22000|wait_s=954.2|held_s=638.6|wait_per_call_ms=43.37|held_per_call_ms=29.03|wait_share=59.9%
+conn closed
+conn closed
+conn closed
+KL|update=74|approx_kl=0.0032|samples=2286|stopped=0
+TRAIN|update=74 episodes=2368 batch_eps=32 steps=2286 batch_win_rate=0.094 mean_abs_phi=0.000 value_ev=0.0033 oracle_cover=0.000 critic_ev=nan update_s=33.13 entropy=0.614 max_logit=4.99 grad_norm=3.88 chosen_types=746/447/678/0/26/167/222/0
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn closed
+RLLOCK|calls=24000|wait_s=989.0|held_s=696.5|wait_per_call_ms=41.21|held_per_call_ms=29.02|wait_share=58.7%
+KL|update=75|approx_kl=0.0016|samples=2355|stopped=0
+TRAIN|update=75 episodes=2400 batch_eps=32 steps=2355 batch_win_rate=0.062 mean_abs_phi=0.000 value_ev=0.0012 oracle_cover=0.000 critic_ev=nan update_s=35.48 entropy=0.610 max_logit=4.99 grad_norm=2.94 chosen_types=778/460/688/0/19/176/234/0
+RLLOCK|calls=26000|wait_s=1130.3|held_s=753.9|wait_per_call_ms=43.47|held_per_call_ms=29.00|wait_share=60.0%
+conn closed
+conn closed
+conn closed
+KL|update=76|approx_kl=0.0076|samples=2325|stopped=0
+TRAIN|update=76 episodes=2432 batch_eps=32 steps=2325 batch_win_rate=0.094 mean_abs_phi=0.000 value_ev=-0.0020 oracle_cover=0.000 critic_ev=nan update_s=35.69 entropy=0.689 max_logit=4.99 grad_norm=6.26 chosen_types=835/434/673/0/24/160/199/0
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn closed
+RLLOCK|calls=28000|wait_s=1166.9|held_s=810.8|wait_per_call_ms=41.68|held_per_call_ms=28.96|wait_share=59.0%
+KL|update=77|approx_kl=0.0049|samples=2399|stopped=0
+TRAIN|update=77 episodes=2464 batch_eps=32 steps=2399 batch_win_rate=0.031 mean_abs_phi=0.000 value_ev=0.0190 oracle_cover=0.000 critic_ev=nan update_s=37.68 entropy=0.647 max_logit=4.99 grad_norm=1.61 chosen_types=881/445/685/0/18/153/217/0
+RLLOCK|calls=30000|wait_s=1316.1|held_s=868.6|wait_per_call_ms=43.87|held_per_call_ms=28.95|wait_share=60.2%
+RLLOCK|calls=32000|wait_s=1347.7|held_s=927.5|wait_per_call_ms=42.11|held_per_call_ms=28.98|wait_share=59.2%
+conn closed
+conn closed
+conn closed
+KL|update=78|approx_kl=0.0159|samples=2459|stopped=0
+TRAIN|update=78 episodes=2496 batch_eps=32 steps=2459 batch_win_rate=0.031 mean_abs_phi=0.000 value_ev=0.0092 oracle_cover=0.000 critic_ev=nan update_s=39.86 entropy=0.584 max_logit=4.99 grad_norm=3.65 chosen_types=914/458/693/0/20/128/246/0
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn closed
+RLLOCK|calls=34000|wait_s=1384.9|held_s=987.0|wait_per_call_ms=40.73|held_per_call_ms=29.03|wait_share=58.4%
+KL|update=79|approx_kl=0.0152|samples=2473|stopped=0
+TRAIN|update=79 episodes=2528 batch_eps=32 steps=2473 batch_win_rate=0.031 mean_abs_phi=0.000 value_ev=-0.0093 oracle_cover=0.000 critic_ev=nan update_s=39.52 entropy=0.715 max_logit=4.99 grad_norm=1.66 chosen_types=934/474/674/0/27/133/231/0
+RLLOCK|calls=36000|wait_s=1537.4|held_s=1045.8|wait_per_call_ms=42.71|held_per_call_ms=29.05|wait_share=59.5%
+conn closed
+conn closed
+conn closed
+KL|update=80|approx_kl=0.0030|samples=2387|stopped=0
+TRAIN|update=80 episodes=2560 batch_eps=32 steps=2387 batch_win_rate=0.062 mean_abs_phi=0.000 value_ev=0.0056 oracle_cover=0.000 critic_ev=nan update_s=38.42 entropy=0.653 max_logit=4.98 grad_norm=1.58 chosen_types=855/438/684/0/22/142/246/0
+conn closed
+RLLOCK|calls=37135|wait_s=1557.6|held_s=1078.9|wait_per_call_ms=41.94|held_per_call_ms=29.05|wait_share=59.1%
+deck context: /home/user/CardGuru/rl/artifacts/deck_ctx_v1
+/home/miketanto/.local/lib/python3.10/site-packages/torch/nn/modules/transformer.py:382: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+resumed ckpt: 2560 episodes, 80 updates
+policy server on :7951 (threads=4) device=cuda
+conn: mode=eval episodes=100
+RLLOCK|calls=2000|wait_s=0.0|held_s=43.9|wait_per_call_ms=0.00|held_per_call_ms=21.93|wait_share=0.0%
+RLLOCK|calls=4000|wait_s=0.0|held_s=89.2|wait_per_call_ms=0.00|held_per_call_ms=22.30|wait_share=0.0%
+conn closed
+conn: mode=eval episodes=100
+RLLOCK|calls=6000|wait_s=0.0|held_s=133.2|wait_per_call_ms=0.00|held_per_call_ms=22.20|wait_share=0.0%
+RLLOCK|calls=8000|wait_s=0.0|held_s=176.8|wait_per_call_ms=0.00|held_per_call_ms=22.11|wait_share=0.0%
+conn closed
+conn: mode=eval episodes=100
+RLLOCK|calls=10000|wait_s=0.0|held_s=221.7|wait_per_call_ms=0.00|held_per_call_ms=22.17|wait_share=0.0%
+RLLOCK|calls=12000|wait_s=0.0|held_s=264.2|wait_per_call_ms=0.00|held_per_call_ms=22.01|wait_share=0.0%
+RLLOCK|calls=14000|wait_s=0.0|held_s=308.5|wait_per_call_ms=0.00|held_per_call_ms=22.03|wait_share=0.0%
+conn closed
+RLLOCK|calls=14469|wait_s=0.0|held_s=318.9|wait_per_call_ms=0.00|held_per_call_ms=22.04|wait_share=0.0%
+deck context: /home/user/CardGuru/rl/artifacts/deck_ctx_v1
+/home/miketanto/.local/lib/python3.10/site-packages/torch/nn/modules/transformer.py:382: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+resumed ckpt: 2560 episodes, 80 updates
+policy server on :7951 (threads=4) device=cuda
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+RLLOCK|calls=2000|wait_s=44.2|held_s=58.3|wait_per_call_ms=22.09|held_per_call_ms=29.14|wait_share=43.1%
+KL|update=81|approx_kl=0.0074|samples=2189|stopped=0
+TRAIN|update=81 episodes=2592 batch_eps=32 steps=2189 batch_win_rate=0.344 mean_abs_phi=0.000 value_ev=0.0055 oracle_cover=0.000 critic_ev=nan update_s=39.15 entropy=0.620 max_logit=4.97 grad_norm=3.13 chosen_types=660/437/623/0/20/203/246/0
+RLLOCK|calls=4000|wait_s=215.2|held_s=115.9|wait_per_call_ms=53.79|held_per_call_ms=28.99|wait_share=65.0%
+conn closed
+conn closed
+conn closed
+KL|update=82|approx_kl=0.0033|samples=1964|stopped=0
+TRAIN|update=82 episodes=2624 batch_eps=32 steps=1964 batch_win_rate=0.469 mean_abs_phi=0.000 value_ev=0.0072 oracle_cover=0.000 critic_ev=nan update_s=36.47 entropy=0.578 max_logit=4.97 grad_norm=2.89 chosen_types=559/386/575/0/24/176/244/0
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn closed
+RLLOCK|calls=6000|wait_s=272.1|held_s=173.4|wait_per_call_ms=45.35|held_per_call_ms=28.89|wait_share=61.1%
+KL|update=83|approx_kl=0.0007|samples=2176|stopped=0
+TRAIN|update=83 episodes=2656 batch_eps=32 steps=2176 batch_win_rate=0.531 mean_abs_phi=0.000 value_ev=0.0165 oracle_cover=0.000 critic_ev=nan update_s=35.62 entropy=0.574 max_logit=4.97 grad_norm=3.07 chosen_types=622/416/611/0/29/209/289/0
+RLLOCK|calls=8000|wait_s=434.1|held_s=230.0|wait_per_call_ms=54.26|held_per_call_ms=28.75|wait_share=65.4%
+conn closed
+conn closed
+conn closed
+KL|update=84|approx_kl=0.0035|samples=2155|stopped=0
+TRAIN|update=84 episodes=2688 batch_eps=32 steps=2155 batch_win_rate=0.344 mean_abs_phi=0.000 value_ev=0.0200 oracle_cover=0.000 critic_ev=nan update_s=34.83 entropy=0.587 max_logit=4.97 grad_norm=3.96 chosen_types=603/442/610/0/19/200/281/0
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn closed
+RLLOCK|calls=10000|wait_s=487.9|held_s=285.1|wait_per_call_ms=48.79|held_per_call_ms=28.51|wait_share=63.1%
+KL|update=85|approx_kl=0.0130|samples=2078|stopped=0
+TRAIN|update=85 episodes=2720 batch_eps=32 steps=2078 batch_win_rate=0.312 mean_abs_phi=0.000 value_ev=0.0180 oracle_cover=0.000 critic_ev=nan update_s=35.65 entropy=0.555 max_logit=4.98 grad_norm=2.82 chosen_types=611/408/583/0/18/170/288/0
+RLLOCK|calls=12000|wait_s=639.9|held_s=342.7|wait_per_call_ms=53.32|held_per_call_ms=28.56|wait_share=65.1%
+conn closed
+conn closed
+conn closed
+KL|update=86|approx_kl=0.0104|samples=2125|stopped=0
+TRAIN|update=86 episodes=2752 batch_eps=32 steps=2125 batch_win_rate=0.469 mean_abs_phi=0.000 value_ev=0.0332 oracle_cover=0.000 critic_ev=nan update_s=35.14 entropy=0.615 max_logit=4.97 grad_norm=5.03 chosen_types=671/419/590/0/21/189/235/0
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn closed
+RLLOCK|calls=14000|wait_s=691.1|held_s=398.9|wait_per_call_ms=49.37|held_per_call_ms=28.50|wait_share=63.4%
+KL|update=87|approx_kl=0.0230|samples=2188|stopped=1
+TRAIN|update=87 episodes=2784 batch_eps=32 steps=2188 batch_win_rate=0.719 mean_abs_phi=0.000 value_ev=-0.0366 oracle_cover=0.000 critic_ev=nan update_s=35.83 entropy=0.629 max_logit=4.99 grad_norm=4.92 chosen_types=674/402/625/0/19/216/252/0
+RLLOCK|calls=16000|wait_s=842.4|held_s=455.5|wait_per_call_ms=52.65|held_per_call_ms=28.47|wait_share=64.9%
+conn closed
+conn closed
+conn closed
+KL|update=88|approx_kl=0.0148|samples=2031|stopped=0
+TRAIN|update=88 episodes=2816 batch_eps=32 steps=2031 batch_win_rate=0.719 mean_abs_phi=0.000 value_ev=0.0117 oracle_cover=0.000 critic_ev=nan update_s=36.16 entropy=0.585 max_logit=4.98 grad_norm=3.52 chosen_types=641/379/580/0/21/182/228/0
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn closed
+RLLOCK|calls=18000|wait_s=885.1|held_s=511.4|wait_per_call_ms=49.17|held_per_call_ms=28.41|wait_share=63.4%
+KL|update=89|approx_kl=0.0087|samples=1968|stopped=0
+TRAIN|update=89 episodes=2848 batch_eps=32 steps=1968 batch_win_rate=0.656 mean_abs_phi=0.000 value_ev=0.0302 oracle_cover=0.000 critic_ev=nan update_s=33.14 entropy=0.610 max_logit=4.98 grad_norm=1.90 chosen_types=634/384/557/0/30/152/211/0
+RLLOCK|calls=20000|wait_s=1022.4|held_s=567.2|wait_per_call_ms=51.12|held_per_call_ms=28.36|wait_share=64.3%
+conn closed
+conn closed
+conn closed
+KL|update=90|approx_kl=0.0228|samples=1879|stopped=1
+TRAIN|update=90 episodes=2880 batch_eps=32 steps=2089 batch_win_rate=0.406 mean_abs_phi=0.000 value_ev=0.0215 oracle_cover=0.000 critic_ev=nan update_s=31.21 entropy=0.630 max_logit=4.98 grad_norm=3.61 chosen_types=645/339/536/0/15/136/208/0
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn closed
+RLLOCK|calls=22000|wait_s=1062.8|held_s=623.7|wait_per_call_ms=48.31|held_per_call_ms=28.35|wait_share=63.0%
+KL|update=91|approx_kl=0.0223|samples=938|stopped=1
+TRAIN|update=91 episodes=2912 batch_eps=32 steps=1929 batch_win_rate=0.719 mean_abs_phi=0.000 value_ev=0.0258 oracle_cover=0.000 critic_ev=nan update_s=17.57 entropy=0.609 max_logit=4.98 grad_norm=2.74 chosen_types=308/176/266/0/16/61/111/0
+RLLOCK|calls=24000|wait_s=1150.2|held_s=679.9|wait_per_call_ms=47.93|held_per_call_ms=28.33|wait_share=62.8%
+conn closed
+conn closed
+conn closed
+KL|update=92|approx_kl=0.0126|samples=2182|stopped=0
+TRAIN|update=92 episodes=2944 batch_eps=32 steps=2182 batch_win_rate=0.688 mean_abs_phi=0.000 value_ev=0.0160 oracle_cover=0.000 critic_ev=nan update_s=34.87 entropy=0.628 max_logit=4.99 grad_norm=4.44 chosen_types=794/409/612/0/20/138/209/0
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn closed
+RLLOCK|calls=26000|wait_s=1187.7|held_s=737.2|wait_per_call_ms=45.68|held_per_call_ms=28.35|wait_share=61.7%
+KL|update=93|approx_kl=0.0026|samples=2059|stopped=0
+TRAIN|update=93 episodes=2976 batch_eps=32 steps=2059 batch_win_rate=0.750 mean_abs_phi=0.000 value_ev=-0.0454 oracle_cover=0.000 critic_ev=nan update_s=37.00 entropy=0.593 max_logit=4.99 grad_norm=2.40 chosen_types=746/381/599/0/19/108/206/0
+RLLOCK|calls=28000|wait_s=1329.1|held_s=796.8|wait_per_call_ms=47.47|held_per_call_ms=28.46|wait_share=62.5%
+conn closed
+conn closed
+conn closed
+KL|update=94|approx_kl=0.0086|samples=1890|stopped=0
+TRAIN|update=94 episodes=3008 batch_eps=32 steps=1890 batch_win_rate=0.656 mean_abs_phi=0.000 value_ev=0.0477 oracle_cover=0.000 critic_ev=nan update_s=33.54 entropy=0.629 max_logit=4.98 grad_norm=2.84 chosen_types=682/360/554/0/23/93/178/0
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn closed
+RLLOCK|calls=30000|wait_s=1365.3|held_s=856.1|wait_per_call_ms=45.51|held_per_call_ms=28.54|wait_share=61.5%
+KL|update=95|approx_kl=0.0059|samples=2026|stopped=0
+TRAIN|update=95 episodes=3040 batch_eps=32 steps=2026 batch_win_rate=0.781 mean_abs_phi=0.000 value_ev=0.0047 oracle_cover=0.000 critic_ev=nan update_s=33.61 entropy=0.555 max_logit=4.98 grad_norm=1.93 chosen_types=729/394/600/0/18/105/180/0
+RLLOCK|calls=32000|wait_s=1496.6|held_s=914.1|wait_per_call_ms=46.77|held_per_call_ms=28.57|wait_share=62.1%
+conn closed
+conn closed
+conn closed
+KL|update=96|approx_kl=0.0013|samples=1899|stopped=0
+TRAIN|update=96 episodes=3072 batch_eps=32 steps=1899 batch_win_rate=0.781 mean_abs_phi=0.000 value_ev=0.0047 oracle_cover=0.000 critic_ev=nan update_s=33.03 entropy=0.530 max_logit=4.98 grad_norm=5.23 chosen_types=678/372/576/0/22/97/154/0
+conn closed
+RLLOCK|calls=32948|wait_s=1509.7|held_s=942.8|wait_per_call_ms=45.82|held_per_call_ms=28.62|wait_share=61.6%
+deck context: /home/user/CardGuru/rl/artifacts/deck_ctx_v1
+/home/miketanto/.local/lib/python3.10/site-packages/torch/nn/modules/transformer.py:382: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+resumed ckpt: 3072 episodes, 96 updates
+policy server on :7951 (threads=4) device=cuda
+conn: mode=eval episodes=100
+RLLOCK|calls=2000|wait_s=0.0|held_s=42.5|wait_per_call_ms=0.00|held_per_call_ms=21.26|wait_share=0.0%
+RLLOCK|calls=4000|wait_s=0.0|held_s=88.8|wait_per_call_ms=0.00|held_per_call_ms=22.19|wait_share=0.0%
+conn closed
+conn: mode=eval episodes=100
+RLLOCK|calls=6000|wait_s=0.0|held_s=132.3|wait_per_call_ms=0.00|held_per_call_ms=22.05|wait_share=0.0%
+RLLOCK|calls=8000|wait_s=0.0|held_s=175.6|wait_per_call_ms=0.00|held_per_call_ms=21.95|wait_share=0.0%
+RLLOCK|calls=10000|wait_s=0.0|held_s=219.6|wait_per_call_ms=0.00|held_per_call_ms=21.96|wait_share=0.0%
+conn closed
+conn: mode=eval episodes=100
+RLLOCK|calls=12000|wait_s=0.0|held_s=264.1|wait_per_call_ms=0.00|held_per_call_ms=22.00|wait_share=0.0%
+RLLOCK|calls=14000|wait_s=0.0|held_s=308.9|wait_per_call_ms=0.00|held_per_call_ms=22.06|wait_share=0.0%
+RLLOCK|calls=16000|wait_s=0.0|held_s=353.3|wait_per_call_ms=0.00|held_per_call_ms=22.08|wait_share=0.0%
+conn closed
+RLLOCK|calls=17032|wait_s=0.0|held_s=374.9|wait_per_call_ms=0.00|held_per_call_ms=22.01|wait_share=0.0%

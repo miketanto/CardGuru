@@ -2,3 +2,11 @@
 7L|arm=L0|rc=0|end=2026-09-13T11:18:09Z
 POSTLANE|out=/tmp/rl_7l_L0|art=/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/7l/L0|start=2026-09-13T11:18:09Z
 POSTLANE|art=/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/7l/L0|rows=4|census_lines=24|last_ck=3072|end=2026-09-13T11:19:42Z
+7L|arm=L0|skip=done
+7L|arm=L1|start=2026-09-13T12:47:27Z|init=/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/7c1/s0/ck_2048.pt
+7L|arm=L1|rc=0|end=2026-09-13T14:54:22Z
+POSTLANE|out=/tmp/rl_7l_L1|art=/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/7l/L1|start=2026-09-13T14:54:22Z
+POSTLANE|art=/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/7l/L1|rows=6|census_lines=24|last_ck=3072|end=2026-09-13T14:55:36Z
+R0|W0Base|s0|trained=3072|ck_eps=3072|D0=0.6800 [0.583,0.763]|D1=0.6600 [0.563,0.745]|TWIN=0.5800 [0.482,0.672]|blocks=1777/2521|BLOCKOPT=815/855|gap=286|attacks=1468/8226|ATKOPT=1150/1824|ATKOPTCA=13
+R0_DONE|W0Base|s0|trained=3072|out=/tmp/rl_7l_L1
+7L|done=2026-09-13T14:55:36Z

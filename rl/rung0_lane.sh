@@ -279,7 +279,11 @@ while [ "$trained" -lt "$BUDGET" ]; do
             -Drl.consultBudget=4000 $ENCFLAGS -Drl.deck=$BASE.dck \
             -Drl.oppDeck=$BASE.dck -Drl.stopTurn=60 -Drl.mode=train \
             -Drl.seed=$((80000000 + SEED * 1000000 + trained)) \
-            -Drl.report=0 > /dev/null 2>&1
+            -Drl.report=0 2>&1 | grep '^RL|summary\|^RLJOB|error\|^RL_DRIVER' >> $OUT/jobs.log
+        # jobs.log (7d): the per-job RL|summary lines - wins/losses/draws/stalls
+        # per training chunk - used to go to /dev/null, so a block whose sampled
+        # win rate sat at 0.0 (L1 vs its frozen ck_1024) could not be read as
+        # stalls vs losses.
         trained=$((trained + CHUNK))
     done
     battery $trained
