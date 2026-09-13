@@ -3298,3 +3298,82 @@ NUMBER of rows is cut:
    CP7 row). The "helps / hurts" readings are read on the pooled 400-game
    suites instead of 600.
 Everything else in the pre-registration stands.
+
+## 8a — seed 0 interim at 512 episodes: the recipe collapses to "land, pass" on Dimir (2026-09-13 18:55 next-session clock; WSL 17:50; seed 0 still running to 1024; not the 8a row)
+
+Read from `/tmp/rl_8a_s0/` while the lane runs (`rl/run_8a.sh`, C1's recipe
+on `rung0_lane.sh BenchDimir BenchDimir 1024 0`, amended rows: D0 only at
+512). Recorded now because the 512 point is a behaviour finding, not a
+level to wait for.
+
+**Battery at 512** (100 games, heuristic on BenchDimir, fixed protocol):
+**D0 0/100 = 0.000 [0.000, 0.037]**, 16.6 turns, 0 stalls, `attacks 0/0`,
+`blocks 0/0` — the agent had NO attack and NO block opportunity in 100
+games: it never had a creature. 124 consults and 157 windows per game
+against **3.6 actions per game** (its lands). At trained=0 the same
+battery was also 0/100 but with attacks 0/90 and blocks 1/56: the random
+init did cast creatures; the trained policy does not.
+
+**Sampled curve, seed 0** (64-episode jobs, `jobs.log`; TRAIN lines):
+
+| job | episodes | wins | stalls | games/s | consults/game | KL-stopped (updates) |
+|---|---|---|---|---|---|---|
+| 1 | 64 | 3 | 0 | 0.68 | 51 | 4 of 1–8 |
+| 2 | 128 | 0 | 1 | 0.37 | 84 | |
+| 3 | 192 | 0 | 0 | 0.23 | 115 | |
+| 4 | 256 | 0 | 0 | 0.19 | 143 | |
+| 5–8 | 512 | 0, 0, 0, 0 | 0, 4, 3, 1 | 0.19–0.20 | 132–150 | 0 of 9–16 |
+
+3/512 sampled wins; entropy 0.18–0.33 on updates 7–10, max |logit| 4.79;
+`update_s` 70–90 s for ~4,500 stored consults (~18 ms per consult — the
+5d figure was 58 ms). Consults per game rose 51 → 150 while the policy
+lost: the losing Dimir policy is consulted MORE (every priority window on
+a board it does nothing with), not less.
+
+**Census at `ck_512`** (the Dimir census set, 903 consults):
+`INITLOGITS argmax_type PASS=554/790 LAND=190/221 SPELL=0/257 ACTIVATE=0/210
+TARGET=112/112 ATTACK=0/111 BLOCK=47/47`; argmax-PASS when another
+candidate exists 489/838 = 58 %, mean P(PASS) 0.61, entropy 0.37, gap 3.09.
+LAND census: argmax-land 24/24, 27/27, 24/24, 30/30 at 0–3 lands, 0.79 at
+≥ 3 (P(land) 0.75). **SPELL census: argmax-SPELL 0 of 257 consults that
+offer a spell; P(any SPELL) 0.000 / 0.001 / 0.003 / 0.010 at 1–4 lands,
+P(PASS) on those consults 0.67–0.999.** The policy plays every land it
+is offered and casts nothing, ever; TARGET 112/112 and BLOCK 47/47 are
+argmax on windows it never reaches in play (no spell → no target, no
+creature → no block).
+
+**Reading against the pre-registration (interim, one seed, 512 only):**
+* "Not collapsed" clauses at 512 — all four hold as written (58 % in
+  [5, 90], gap 3.09, entropy 0.37, logits 4.79 < 5). The clauses were
+  written for W0Base, where "PASS vs a creature" is the collapse axis;
+  on Dimir the axis is SPELL vs PASS, and on that axis the policy IS
+  collapsed: argmax-SPELL 0/257. The 8a row will read the census clause
+  AND the SPELL census; this paragraph pre-states that the SPELL census
+  (argmax-SPELL > 0 when a spell is offered at ≥ 2 lands) is the deciding
+  behaviour counter for "not collapsed on Dimir", stated before the 1024
+  point is read.
+* Mechanism (hypothesis, the B2/C1 signature seen from the spell side):
+  after update 1 (3 wins in 64) every batch is all-lost; `--adv-norm auto`
+  does not centre a constant-outcome batch, every advantage is negative,
+  and the actions the policy took most (its spells) are pushed down
+  hardest; PASS inherits the mass; the board empties, games shorten (20 →
+  17 turns) and the win probability of a passing policy against the
+  heuristic on Dimir is ~0 — no update 9 recovery as on W0Base (where a
+  random-ish creature deck still wins 10–30 % of games). The value head
+  should absorb a constant −1 return and zero the advantages eventually;
+  whether it does by 1024 is what the next point reads.
+* Throughput: ~7 min per 64-episode job in the dead stretch (5.3 min of
+  play at 0.2 games/s + 80 s update); 1024 episodes ≈ 2 h with batteries
+  — under the 6 h bar; seed 1 is a decision, not a cost problem.
+
+**Pre-stated before the 1024 point:** if D0 at 1024 is still 0/100 with
+argmax-SPELL 0 on the census, the 8a row reads "does not train on Dimir
+from scratch in 1,024 episodes" (a failed gate, not a moved bar) and
+seed 1 is NOT run (nothing to confirm at 0/100 — the amendment's rule).
+One follow-up arm, pre-registered here and run only after 8b: **8a-e** =
+C1's recipe + `--ent-coef 0.01` (the lane's existing knob; the only lever
+that acts on the SPELL-vs-PASS collapse without changing the credit
+path), one seed to 512, read on the SPELL census (argmax-SPELL > 0) and
+the D0 battery (> 0/100) only; it cannot give a level or a v6
+comparison. Other levers (batch-centred advantages = B2, a BC warm start
+= D-PPO, reward shaping) are named, not run.
