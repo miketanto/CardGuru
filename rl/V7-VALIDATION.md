@@ -2505,3 +2505,22 @@ W0Base); make the RL seat's consult budget CP7's (CP7 sees every window;
 the recording counts windows the RL seat would have auto-passed as
 `autoPassEmpty` and skips them the same way); say anything about BC
 (piece 2).
+
+**Seed 0 at 1024 (06:15):** battery D0 **0.81 [0.722, 0.875]**, D1 0.79
+[0.700, 0.858], TWIN 0.75 [0.657, 0.825]; blocks 1877/2570, BLOCKOPT
+806/869, attacks 1429/7267, ATKOPT 879/1648, under/over 548/149, 40.3
+turns. Census at `ck_1024` (`census_1024.txt`): argmax-PASS 148/1070 =
+14 %, gap 2.99, entropy 0.63, argmax types unchanged from 512 (LAND
+204/313, ATTACK 132/279, BLOCK 206/207); P(land) at ≥ 3 lands **0.73**
+(argmax-land 140/219), the 3–4-land dip now 0.54 / 0.50 with SPELL still
+the argmax there. So the three census clauses of "not collapsed" hold at
+1024 while max |logit| sits on the bound (5.00 at updates 30–32): the
+bound is clipping, the policy is not on a rail. **`attackBudgetHit` rose
+to 170 / 166 / 185 per 100-game battery** (from 47 / 46 / 40 at 512):
+games are longer (40 turns) and boards wider, so ~1.7 consults per game
+now price ATTACK candidates under the 200-leaf reply cap — the exactness
+of the attack afterstates is degrading as the policy gets better at
+keeping a board, and the row carries it; a per-consult count (not per
+game) is the better counter and is not yet emitted. D0 at 512 → 1024:
+0.77 → 0.81, intervals overlapping (no claim). Levels stand as one
+seed's points; the C1 row waits for seeds 1 and 2.
