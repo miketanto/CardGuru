@@ -2524,3 +2524,12 @@ keeping a board, and the row carries it; a per-consult count (not per
 game) is the better counter and is not yet emitted. D0 at 512 → 1024:
 0.77 → 0.81, intervals overlapping (no claim). Levels stand as one
 seed's points; the C1 row waits for seeds 1 and 2.
+
+**Seed 0 at 1536 (07:05):** D0 **0.83 [0.745, 0.891]**, D1 0.82 [0.733,
+0.883], TWIN 0.83 [0.745, 0.891]; turns 31.1 (down from 40.3), attacks
+1258/4179, blocks 1377/1686, under/over 330/303. Census `ck_1536`:
+argmax-PASS **61/1070 = 5.7 %** (inside [5 %, 90 %] but at the floor — the
+PASS share is falling 14 → 14 → 6 %, watched at 2048), gap 2.57, entropy
+0.75, P(land) at ≥ 3 lands 0.74. `attackBudgetHit` 44 / 35 / 65 (the
+1024 spike tracked game length, not a monotone trend). D0 512 → 1536:
+0.77 → 0.81 → 0.83, every consecutive pair overlapping.

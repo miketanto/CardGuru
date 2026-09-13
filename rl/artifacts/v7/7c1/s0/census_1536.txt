@@ -1,0 +1,19 @@
+INITLOGITS|consults=1101|files=3|device=cpu
+INITLOGITS|ckpt=ck_1536.pt|episodes=1536|argmax_pass_when_other_exists=61/1070|mean_entropy_nats=0.748|mean_top_gap=2.565|mean_P(PASS)=0.096
+INITLOGITS|argmax_type|PASS=92/1002|LAND=204/313|SPELL=368/368|TARGET=12/12|ATTACK=219/279|BLOCK=206/207
+LANDCENSUS|ckpt=rl_7c1_s0/ck_1536.pt|lands=0|consults=24|argmax_land=24|p_land_mean=0.999|p_pass_mean=0.001|other_types={}
+LANDCENSUS|ckpt=rl_7c1_s0/ck_1536.pt|lands=1|consults=28|argmax_land=22|p_land_mean=0.915|p_pass_mean=0.001|other_types={'SPELL': 6}
+LANDCENSUS|ckpt=rl_7c1_s0/ck_1536.pt|lands=2|consults=42|argmax_land=18|p_land_mean=0.613|p_pass_mean=0.000|other_types={'SPELL': 24}
+LANDCENSUS|ckpt=rl_7c1_s0/ck_1536.pt|lands=3|consults=40|argmax_land=16|p_land_mean=0.548|p_pass_mean=0.000|other_types={'SPELL': 24}
+LANDCENSUS|ckpt=rl_7c1_s0/ck_1536.pt|lands=4|consults=37|argmax_land=13|p_land_mean=0.514|p_pass_mean=0.000|other_types={'SPELL': 24}
+LANDCENSUS|ckpt=rl_7c1_s0/ck_1536.pt|lands=5|consults=33|argmax_land=18|p_land_mean=0.654|p_pass_mean=0.000|other_types={'SPELL': 15}
+LANDCENSUS|ckpt=rl_7c1_s0/ck_1536.pt|lands=6|consults=31|argmax_land=21|p_land_mean=0.820|p_pass_mean=0.000|other_types={'SPELL': 10}
+LANDCENSUS|ckpt=rl_7c1_s0/ck_1536.pt|lands=7|consults=20|argmax_land=17|p_land_mean=0.921|p_pass_mean=0.000|other_types={'SPELL': 3}
+LANDCENSUS|ckpt=rl_7c1_s0/ck_1536.pt|lands=8|consults=18|argmax_land=15|p_land_mean=0.913|p_pass_mean=0.000|other_types={'SPELL': 3}
+LANDCENSUS|ckpt=rl_7c1_s0/ck_1536.pt|lands=9|consults=12|argmax_land=12|p_land_mean=1.000|p_pass_mean=0.000|other_types={}
+LANDCENSUS|ckpt=rl_7c1_s0/ck_1536.pt|lands=10|consults=7|argmax_land=7|p_land_mean=1.000|p_pass_mean=0.000|other_types={}
+LANDCENSUS|ckpt=rl_7c1_s0/ck_1536.pt|lands=11|consults=7|argmax_land=7|p_land_mean=1.000|p_pass_mean=0.000|other_types={}
+LANDCENSUS|ckpt=rl_7c1_s0/ck_1536.pt|lands=12|consults=5|argmax_land=5|p_land_mean=1.000|p_pass_mean=0.000|other_types={}
+LANDCENSUS|ckpt=rl_7c1_s0/ck_1536.pt|lands=13|consults=5|argmax_land=5|p_land_mean=1.000|p_pass_mean=0.000|other_types={}
+LANDCENSUS|ckpt=rl_7c1_s0/ck_1536.pt|lands=14|consults=4|argmax_land=4|p_land_mean=1.000|p_pass_mean=0.000|other_types={}
+LANDCENSUS|ckpt=rl_7c1_s0/ck_1536.pt|lands>=3|consults=219|argmax_land=140|argmax_land_frac=0.639|p_land_mean=0.743
