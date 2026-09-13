@@ -2942,3 +2942,71 @@ seed; W0Base only; the league opponents are the policy's own ancestors
 (C1 s0 ck_1024 / ck_2048) — a weak league; (b) also measures CP7's
 non-heuristic play, which neither arm trained against. L0's (b) runs now
 (only D-PPO s0 trains: two servers); L0's (a) needs L1's ck_3072.
+
+## 7d D-PPO — seed 0: PPO from bc.pt with C1's recipe (2026-09-13 13:50 next-session clock; WSL 07:45; ONE seed — seed 1 owed, `rl/run_7d3.sh` resumable; fixed argmax-classes protocol)
+
+`rl/run_7d3.sh` seed 0 (parent stopped after seed 0 by decision,
+`rl/stop_7d3_parent.sh`; post-processed by `rl/wait_7d3_s0.sh`): `R0_INIT` =
+`rl/artifacts/v7/7d2/bc.pt`, C1's flags, 2,048 episodes, 64 updates, KL
+stopped 10/64; artifacts `rl/artifacts/v7/7d3/s0/` (no NA rows).
+
+| point | D0 | D1 | TWIN | turns | sampled last-4 | argmax-PASS | gap | entropy | argmax-LAND ≥ 3 lands | ATTACK argmax | budget hits |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| 0 (bc.pt) | 0.58 [0.482, 0.672] | 0.59 [0.492, 0.681] | 0.57 [0.472, 0.663] | 20.6 | – | 0 % | 3.96 | 0.57 | 0.73 | 279/279 | – |
+| 512 | 0.69 [0.594, 0.772] | 0.77 [0.678, 0.842] | 0.66 [0.563, 0.745] | 21.5 | 87/128 = 0.680 [0.595, 0.754] | 2 % | 3.12 | 0.72 | 0.80 | 261/279 | – |
+| 1024 | **0.50 [0.404, 0.596]** | 0.50 [0.404, 0.596] | 0.45 [0.356, 0.548] | **46.9** | 101/128 = 0.789 [0.710, 0.851] | 18 % | 3.54 | 0.71 | 0.65 | **82/279** | 284 / 287 / 284 |
+| 1536 | 0.71 [0.615, 0.790] | 0.76 [0.668, 0.833] | 0.67 [0.573, 0.754] | 20.5 | 91/128 = 0.711 [0.627, 0.782] | 0 % | 3.57 | 0.72 | 0.94 | 279/279 | – |
+| 2048 | **0.68 [0.583, 0.763]** | 0.73 [0.636, 0.807] | 0.72 [0.625, 0.799] | 21.9 | 90/128 = 0.703 [0.619, 0.775] | **0 %** | 3.58 | 0.72 | 0.95 | 279/279 | 3 / 3 / 7 |
+
+("argmax-LAND ≥ 3 lands" = `argmax_land_frac` of the land census; its
+`p_land_mean` printed 0.801 at every checkpoint including bc.pt, which is a
+tool artefact to look at, not a reading. max |logit| sat on the bound 5.00
+at every point.)
+
+**Q1 on one seed — "IL hurts", as pre-registered, one seed.** D-PPO s0's
+D0 at 2048, 0.68 [0.583, 0.763], is clear BELOW C1's pooled two-seed 0.850
+[0.794, 0.893] (plain argmax; C1 s0 under the fixed protocol is 0.86
+[0.779, 0.915], also clear). At 512 D-PPO's 0.69 [0.594, 0.772] overlaps
+C1's pooled 512 (0.690 [0.623, 0.750]) — no faster start. The one-seed
+caveat is real: C1's own seed 1 dipped to 0.49 at 1024 and recovered to
+0.85 by 2048; D-PPO s0 dipped to 0.50 at 1024 and recovered only to 0.68.
+Two seeds decide; this seed says IL hurt.
+
+What BC seeded and what PPO did with it:
+* **The dead stretch is gone:** first-8-batch sampled wins **163/256**
+  (C1 s0 16/256, s1 137/256) — BC's "always act" start wins from batch 1
+  (0.59, 0.44, 0.66 ...). That is the one thing BC unambiguously bought.
+* **The sampled curve is flat at ~0.70 from 512** (0.68 / 0.79 / 0.71 /
+  0.70) while C1's seeds reached 0.84–0.86; the argmax level never passed
+  0.71 after 512. Chosen-type counts per update (PASS/LAND/SPELL/ACT/TGT/
+  ATK/BLK): update 1 14/54/88/0/2/52/55 → update 64 93/236/342/0/19/182/237
+  — the policy's sampled behaviour stayed BC-shaped throughout (lands and
+  spells whenever offered, attack and block on most offers).
+* **Rigidity, not collapse in the 7a sense:** entropy 0.72, gap 3.6, but
+  argmax-PASS **0 %** at 1536 and 2048 (below the 5 % floor of the "not
+  collapsed" clause — the clause FAILS at those points and at ck_0; the
+  bc.pt census was 0 % too), LAND 301/313 and ATTACK 279/279 / BLOCK
+  207/207 at 2048: it plays a land on every offer, attacks with every
+  offered set, blocks on every offer; games last 22 turns (C1 s0/s1:
+  31–35). The 1024 dip is the exception that shows the mechanism: at
+  ck_1024 the argmax stopped attacking (82/279) and passed 18 %, games
+  went to 47 turns and the level fell to 0.50 — the same "stop attacking,
+  stall" shape as C1 s1's 1024 dip — then it snapped back to the BC
+  attack-everything rule and the level came back only to 0.68–0.71.
+* **The candidate mechanism** (stated as the hypothesis for seed 1, not
+  a finding): BC installed a saturated type-level prior (logits on the
+  bound, gap 3.6 nats, PASS never) that PPO at lr 3e-5 under the KL
+  budget (10/64 stopped) could not unlearn — C1's from-scratch seeds
+  found selective attacking (C1 s0 attacks 1429/7267 offers at 1024 and
+  1258/4179 at 1536 in its batteries; D-PPO 279/279 in the census) and win 0.85; the
+  BC-started seed never left "attack everything". Third land: 0.95 at
+  2048 (CP7's habit, kept).
+* Attack budget: 3 / 3 / 7 hits at 2048 (short games, small boards) —
+  the exactness caveat is small here.
+
+Cannot: call this the two-seed Q1 answer (seed 1 owed); separate BC's
+type-only fit (piece 2: CE 0.71 vs the 0.28 ceiling) from "IL as such" —
+a card-level BC might seed differently; separate the priority-only labels
+(combat heads never imitated, then generalised to attack-everything) from
+the imitation itself; generalise off W0Base. Pre-registered cannots stand
+(consult budget, k-copy bias — under the fixed protocol here).

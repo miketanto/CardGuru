@@ -1,0 +1,4 @@
+      2 attackBudgetHit=284
+      1 attackBudgetHit=287
+      2 attackBudgetHit=3
+      1 attackBudgetHit=7

@@ -147,6 +147,12 @@ start_server() {   # $1 extra-flags
     # server lifetime, so RLLOCK|/TRAIN| lines from training survive the
     # battery restart. server.log itself keeps its fresh-per-start meaning.
     [ -s $OUT/server.log ] && cat $OUT/server.log >> $OUT/server_all.log
+    # TRUNCATE SYNCHRONOUSLY before the launch (7d: the L0 NA battery rows).
+    # The background job's own `> server.log` happens in the child after the
+    # fork, so the first poll below could read the OLD server's "policy
+    # server" line, return at once, and send the probes into a server that
+    # had not bound yet - every probe refused in 0.0 s, an NA row.
+    : > $OUT/server.log
     RL_TORCH_THREADS=1 setsid nohup python3 $RL/policy_server.py \
         --port $PORT --ckpt $CKPT --seed $SEED --sdim $SDIM --cdim $CDIM --arch $ARCH \
         --threads $CONC --log $OUT/train.csv \
