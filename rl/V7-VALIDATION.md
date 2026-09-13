@@ -2579,3 +2579,106 @@ at 2048 has an interval clear of v6's 2,111 point (0.705 [0.638, 0.764])
 and of v6's 512 point. Whether that survives pooling is the C1 row's
 question. Cannot: attribute the recovery from the dead stretch to a flag;
 say anything about other decks; call the 2048 level a v7 level (one seed).
+
+## 7d overnight — correction in the open: `--argmax-classes` is INERT on the v7 path (found 2026-09-13 08:40 next-session clock; WSL 01:35, C1 seed 1 at its 512 battery)
+
+While writing the league lane (OVERNIGHT-7D A4) the eval branch of
+`Trainer.act_v7` in `rl/policy_server.py` turned out to be a plain
+`torch.argmax(logits[0])`; `_argmax_classes` (B7) is called only from the
+v6 `Trainer.act` path (line ~867). The flag was tested on the function
+(`test_argmax_classes_sums_identical_candidates`) and never on the v7
+serving path, so **every C1 battery (seeds 0 and 1, every 512-point) and
+the 7c/B-row batteries that said "argmax over classes" were plain-argmax
+batteries.** The B7 pre-registration ("identical cards split softmax
+mass; the argmax is biased against k-copy actions") therefore still
+describes the batteries as run. Nothing in the C1 census or land-census
+rows is affected (those tools score the checkpoints directly); the levels
+stand as plain-argmax levels and are relabelled so in the C1 two-seed row.
+Fix (Phase B, server-side, after the seed-1 lane idles): apply
+`_argmax_classes` in `act_v7`'s eval branch behind the same flag, plus a
+test that drives a fixture consult with two identical candidates through
+`act_v7(sample=False)` with the flag on and off. Consequence for tonight's
+comparison: D-PPO / L0 / L1 batteries run on the fixed server, so the
+**C1 checkpoints (s0, s1: `ck_512..2048.pt` under /tmp and `ck_2048.pt`
+in the artifacts) are re-batteried on the fixed server in Phase C** (100
+games per opponent per point, same seeds) before the Q1 reading, and both
+protocols are reported. Cannot: say tonight which way the fix moves a
+level (B7's prediction is "up on LAND-copy windows"; it is a prediction).
+
+## 7d overnight pre-registration — D-BC, D-PPO (Q1) and the league L0/L1 (Q2) (2026-09-13 08:45 next-session clock; runbook `rl/OVERNIGHT-7D.md`)
+
+Decision (chat, runbook header): C1 stops after seed 1 (`rl/stop_c1_parent.sh`);
+seeds 0 and 1 are the no-IL baseline; seed 2 is owed and resumable. The
+Java for piece (1b) is `rl/xmage-src/CP7TeacherPlayer.java` +
+`rl.agent=cp7` in `EpisodeRunner` + the per-consult `y` / hello
+`teacher:"cp7"` in `SocketPolicyClient` (9e24145, source only until the
+lane idles). **Priority-only**: CP7's combat goes through
+`ComputerPlayer6.declareAttackers/declareBlockers` and lifting
+`RLPlayer.jointAttacks/jointBlocks` out of `RLPlayer` blind (no compile
+while the lane owns the engine) was judged not cheap; a cp7-seat recording
+therefore holds priority consults only (no atkjoint/blkjoint consults at
+all), and BC trains the shared candidate head on priority windows only -
+the attack/block behaviour of bc.pt is the init's. Stated here, before
+the recording, as the design row allowed.
+
+* **Recording (piece 1b)** — `rl/record_7d1b.sh`: echo policy on the
+  teacher seat (`-Drl.agent=cp7 -Drl.opponent=heuristic`, W0Base mirror,
+  both seats by episode parity, `rl.consultBudget` 300, driver 7911 with
+  the v7 flags), several seeded jobs until ≥ 20k labelled consults;
+  artifacts `rl/artifacts/v7/7d1b/` (jsonl gitignored, counts committed).
+  Readings as in the design row: labelled fraction (y ≥ 0) ≥ 0.9 of
+  consults, else no BC; `teacherMultiAct` and `teacherOutside` reported;
+  CP7's label type census (PASS/LAND/SPELL shares) = the target the BC
+  census is read against; `wire_validate` on 100 consults; the 5b
+  faithfulness gate (`rl/v7_faith_real.py`) on the recording. Cannot:
+  change CP7's strength (0.68 vs D0 on W0Base, piece 1a); label combat.
+* **D-BC** — `rl/v7_bc.py` (e863751): init = a P10INIT v7 init (seed 10,
+  cdim 94, the lane's shape), AdamW with the B2/C1 decay on the heads,
+  10 % of GAMES held out, early stopping on held-out CE, memoryless
+  scoring (fresh heads state per consult, as `v7_init_logits.py`), logit
+  bound 5. Readings: held-out top-1 agreement and type agreement
+  (reported, no bar); the BC battery = the D-PPO lane's battery at
+  trained=0 (100 games each D0/D1/TWIN on the fixed argmax-classes server)
+  - expected ≤ CP7's 0.68 vs D0; type census + land census on bc.pt
+  against the label census. Cannot: beat CP7; say anything off W0Base;
+  move the attack/block heads (priority-only labels).
+* **D-PPO (Q1)** — `rl/run_7d3.sh` = `run_7c1.sh` with `R0_INIT=bc.pt`
+  (the `R0_INIT` hook added to `rung0_lane.sh` in Phase B: copy the given
+  checkpoint to `$OUT/init.pt` instead of regenerating it; bc.pt carries
+  episodes=0 so the lane counts from 0), C1's exact flags, 2,048 episodes,
+  seeds 0 and 1, batteries every 512, artifacts `rl/artifacts/v7/7d3/s<seed>/`.
+  **Readings, pooled two seeds vs C1's pooled two seeds (200 games per
+  opponent per point), both on the fixed argmax-classes server (C1's
+  checkpoints re-batteried, see the correction above):** "IL helps" if
+  D-PPO's pooled D0 at 2048 has a Wilson interval clear above C1's, OR
+  D-PPO's pooled D0 at 512 is clear above C1's 512 (a faster start,
+  stated separately); "IL hurts" if clear below at 2048; else "no
+  difference shown at n=200". Also: the first-8-batch sampled wins (C1
+  seed 0: 14/256 - does BC remove the dead stretch), the land census per
+  ck, the KL-stopped fraction. Cannot: separate BC's effect from its
+  consult budget or from the priority-only labels; generalise off W0Base;
+  call any of it a level from < 2 finished seeds; compare against C1's
+  plain-argmax batteries as if they were the same protocol.
+* **L0 / L1 (Q2)** — `rl/run_7l.sh`, both from C1 seed 0 `ck_2048.pt`
+  (`rl/artifacts/v7/7c1/s0/ck_2048.pt`), 1,024 more episodes each, one
+  seed each, driver 7912, own ports (7950/7951, opponent 7960); the
+  battery is run at the start (+0 row, trained=2048) and at 2560 / 3072
+  (absolute labels; +512 / +1024 relative). **L0** = `rung0_lane.sh` with
+  `R0_INIT` vs the heuristic (the same-compute control); **L1** =
+  `rung0_lane_league.sh` vs frozen C1 checkpoints alternating per
+  512-block: block 0 = C1 s0 `ck_1024.pt`, block 1 = C1 s0 `ck_2048.pt`
+  (the lane logs `R0_OPP|` per block), the opponent served frozen /
+  eval-mode / argmax over classes. Readings: L1's D0 / D1 / TWIN at 3072 vs
+  L0's at 3072 (100 games each; one seed, so only "clear of" counts and
+  the row says one seed); L1's sampled rate against its league opponent
+  per 512-block (from the TRAIN lines) as the behaviour counter; land
+  census at 2560 / 3072 for both. Cannot: claim a league level from one
+  seed; say anything about self-play from scratch; separate "a stronger
+  opponent" from "a different opponent" (the frozen checkpoint is both).
+
+What none of this can move, stated in advance: the attack-budget caveat
+(`attackBudgetHit`) on every ATTACK afterstate; the 5d update-cost FAIL;
+the plain-argmax k-copy bias of every battery run BEFORE the Phase B fix.
+GPU: D-PPO and the L lanes share the 12 GB card (C1 peaked 4.9 GB); if the
+second lane OOMs or D-PPO's update time doubles, L0/L1 run after D-PPO and
+the row says so.
