@@ -2287,3 +2287,34 @@ anything about other decks. Levels only from ≥ 100 games per point per
 seed; pool only finished seeds.
 
 **C1 first update, stated before the 512 battery (03:38 WSL clock):** `KL|update=1|approx_kl=0.3253|samples=236|stopped=1` — the first window step already moved the policy 0.33 nats mean KL (16× the budget), so the update took one step and stopped; batch 1 win rate 0.094, entropy 1.01, max |logit| 1.9. This is the §7a logit-velocity finding seen from the KL side: one Adam step at lr 3e-5 is a large policy move. The budget will bind on every update, so C1 trains at ~1 optimiser step per 32 episodes (~64 steps over 2,048) where B2 took ~28 per update. Pre-stated follow-up, not a moved bar: if seed 0's batch win rate at 512 is below 7c seed 0's on the same games (0.62 at 256, 0.78 at 512, no budget), the KL budget starved the optimiser and **C2 = C1 with `--target-kl 0.1`** (and, if still binding on every update, a per-step KL check inside the window loop rather than a stop) is the next arm; C1's reading is then "budget too tight", not "fixes failed". If seed 0 matches or exceeds 7c at 512 with the third land back, the budget is doing its job.
+
+## 7d piece (1a) pre-registration — teacher choice, CP7 vs the search teacher (2026-09-13 05:05; C1 seed 0 at 256 episodes, GPU busy)
+
+The 7d plan owes one decision before any recording: is the teacher XMage's
+ComputerPlayer7 (the lane's `cp7` opponent, `rl.aiSkill` 6) or the
+project's search teacher (`rl.agent=search`, one-ply / breadth-8 by
+default)? Measured now, while C1 holds the GPU, as pure-Java games on
+driver 7911 (`rl/run_7d1.sh`, artifacts `rl/artifacts/v7/7d1/`): W0Base
+mirror, 100 games each, `rl.stopTurn` 60, seats alternating play/draw by
+episode parity, seed 7100, concurrency 2 (the lane keeps its conc4; 16
+cores, load 2.5 before launch).
+
+* `cp7_vs_heur`: the driver has no CP7 *agent* kind, so CP7 sits in the
+  opponent seat against the heuristic as agent; CP7's rate is
+  `losses / episodes` of that summary. Seats alternate, so the seat swap
+  is not a confound beyond the usual play/draw parity.
+* `search_p1b8_vs_heur` and `search_p2b8_vs_heur`: the search teacher as
+  agent at plies 1 / breadth 8 (the driver defaults, the setting the v6
+  imitation used per PHASE5-VERDICT C1) and plies 2 / breadth 8.
+
+Pre-registered reading: the teacher is the one whose Wilson interval vs
+the heuristic is higher and clear of the other's; if the intervals
+overlap, the cheaper one per game (games per second in the summary)
+wins, because piece (1b) needs ≥ 20k consults. Draws and stalls are
+carried, not folded into wins.
+Cannot: say anything about either teacher on the RL seat with a consult
+budget (the recording in piece (1b) adds that); say anything about the
+bench decks; rank CP7 against the search teacher head to head (not run).
+Loads: three jobs on 7911 share the CPU with the C1 lane, so C1's wall
+time per seed is not comparable to 7c's; its results are unaffected
+(`rl.attackTotalCap` is a leaf count, not a timer).
