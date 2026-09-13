@@ -350,3 +350,26 @@ def test_argmax_classes_sums_identical_candidates():
     lg2 = torch.tensor([2.0, 0.1, 0.1, 0.1, 0.9])         # e^2 > 3 e^0.1
     assert ps._argmax_classes(lg2, msg) == 0                # PASS still wins when it is heaviest
 
+
+
+def test_act_v7_eval_honours_argmax_classes(tmp_path, monkeypatch):
+    """7d correction: act_v7's eval branch must apply _argmax_classes when the flag is
+    on (it used to be a plain argmax; the flag lived on the v6 act() path only)."""
+    tr = _small(tmp_path)
+    msgs = F.valid_stream("block", seed=3, n=1, with_opp=True)
+    hello, m = msgs[0], dict(msgs[1])
+    ps.check_hello(hello, tr)
+    tr.hello, tr.n_validated, tr.hidden = hello, 0, None
+    tr.deck = None
+    # candidate 1 duplicated as candidate 2 (same type / row / referents): one class
+    for key in ("c", "v7_cand_type", "v7_cand", "v7_cand_refers"):
+        m[key] = list(m[key]) + [m[key][1]]
+    K = len(m["v7_cand_type"])
+    lg = torch.full((1, K), -5.0)
+    lg[0, 0], lg[0, 1], lg[0, K - 1] = 0.6, 0.5, 0.5     # plain argmax 0; class mass of 1 + its copy (K-1) > 0
+    monkeypatch.setattr(ps.Trainer, "_v7_forward", staticmethod(lambda *a, **k: (lg, torch.zeros(1), None)))
+    monkeypatch.setattr(ps, "ARGMAX_CLASSES", False)
+    assert tr.act_v7(m, sample=False) == 0
+    tr.hidden = None
+    monkeypatch.setattr(ps, "ARGMAX_CLASSES", True)
+    assert tr.act_v7(m, sample=False) == 1

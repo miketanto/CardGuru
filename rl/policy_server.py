@@ -948,7 +948,11 @@ class Trainer:
                          float(value[0]), math.tanh(phi / self.phi_scale),
                          oe, deck))
             else:
-                a = int(torch.argmax(logits[0]))
+                # 7d correction: --argmax-classes (B7) used to apply on the
+                # v6 act() path only; every v7 eval consult before this was
+                # a plain argmax (V7-VALIDATION "7d overnight - correction")
+                a = (_argmax_classes(logits[0], msg) if ARGMAX_CLASSES
+                     else int(torch.argmax(logits[0])))
         return a
 
     def _update_v7(self):

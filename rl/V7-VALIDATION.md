@@ -2682,3 +2682,84 @@ the plain-argmax k-copy bias of every battery run BEFORE the Phase B fix.
 GPU: D-PPO and the L lanes share the 12 GB card (C1 peaked 4.9 GB); if the
 second lane OOMs or D-PPO's update time doubles, L0/L1 run after D-PPO and
 the row says so.
+
+## C1 — two seeds (2026-09-13 09:40 next-session clock; WSL 03:40; seed 2 OWED, not run: the runner was stopped by decision after seed 1, `rl/stop_c1_parent.sh`, OVERNIGHT-7D)
+
+**This is a two-seed row.** The pre-registration asked for three seeds; C1 seed 2 is
+resumable (`rl/run_7c1.sh` skips finished seeds) and every "≥ 2 of 3 seeds" clause is
+read here as "on both seeds / on one of two", stated as such. **Battery protocol:
+plain argmax** — the `--argmax-classes` flag was inert on the v7 serving path for every
+battery in this row (correction row "7d overnight — correction in the open"); the
+class-argmax re-battery of these checkpoints is a Phase C item and gets its own row.
+`python3 rl/summ_7c1.py rl/artifacts/v7/7c1/s0 rl/artifacts/v7/7c1/s1`; seed 1's
+artifacts are `rl/artifacts/v7/7c1/s1/` (post-processed by `rl/post_7c1_seed.sh 1`).
+
+Seed 1 (64 updates, KL stopped 5/64):
+
+| point | D0 | D1 | TWIN | turns | sampled last-4 | argmax-PASS | gap | entropy | P(land) ≥ 3 | budget hits |
+|---|---|---|---|---|---|---|---|---|---|---|
+| 512 | 0.61 [0.512, 0.700] | 0.61 [0.512, 0.700] | 0.58 [0.482, 0.672] | 48.8 | 92/128 = 0.719 [0.635, 0.789] | 18 % | 1.62 | 0.83 | 0.49 | 564 / 546 / 597 |
+| 1024 | **0.49 [0.394, 0.587]** | 0.51 [0.413, 0.606] | 0.46 [0.366, 0.557] | 47.4 | 90/128 = 0.703 [0.619, 0.775] | 20 % | 1.64 | 0.76 | 0.44 | 400 / 385 / 421 |
+| 1536 | 0.78 [0.689, 0.850] | 0.86 [0.779, 0.915] | 0.78 [0.689, 0.850] | 42.7 | 110/128 = 0.859 [0.789, 0.909] | 21 % | 1.86 | 0.71 | 0.36 | 284 / 279 / 287 |
+| 2048 | **0.85 [0.767, 0.907]** | 0.82 [0.733, 0.883] | 0.88 [0.802, 0.930] | 31.5 | 107/128 = 0.836 [0.762, 0.890] | 18 % | 1.00 | 0.84 | **0.38** | 63 / 58 / 77 |
+
+Pooled over the two finished seeds (200 games per opponent per point; seed 0's
+points are in "C1 — seed 0 complete"):
+
+| point | D0 | D1 | TWIN |
+|---|---|---|---|
+| 512 | 138/200 = 0.690 [0.623, 0.750] | 141/200 = 0.705 [0.638, 0.764] | 137/200 = 0.685 [0.618, 0.745] |
+| 1024 | 130/200 = 0.650 [0.582, 0.713] | 130/200 = 0.650 [0.582, 0.713] | 121/200 = 0.605 [0.536, 0.670] |
+| 1536 | 161/200 = 0.805 [0.745, 0.854] | 168/200 = 0.840 [0.783, 0.884] | 161/200 = 0.805 [0.745, 0.854] |
+| 2048 | **170/200 = 0.850 [0.794, 0.893]** | 167/200 = 0.835 [0.777, 0.880] | 176/200 = 0.880 [0.828, 0.918] |
+
+The four pre-registered readings, on two seeds:
+* **Trains — sampled clause NOT met on either seed; argmax clause met on
+  both, but not monotone on seed 1.** Sampled last-4 rates: seed 0 0.84 →
+  0.80 (flat from 512), seed 1 0.72 → 0.70 → 0.86 → 0.84 (last not clear
+  of first). Argmax D0: seed 0 0.77 → 0.85 (rising at every point), seed
+  1 0.61 → **0.49** → 0.78 → 0.85 — a dip at 1024 whose interval [0.394,
+  0.587] is clear BELOW its own 2048 point and below seed 0's 1024 point
+  [0.722, 0.875]; then a recovery to the same 0.85 as seed 0. Pooled D0
+  2048 [0.794, 0.893] is clear of pooled 512 [0.623, 0.750]: the level
+  rises from 512 to 2048 on the pooled read, through a pooled 1024 dip
+  (0.65) that seed 1 alone produces. Recorded as "rises 512 → 2048 on
+  both seeds' endpoints; the path is not monotone (seed 1's 1024 dip);
+  the sampled rate is flat" — not a pass of the clause as written.
+* **Third land — met on ONE of two seeds.** Seed 0 0.72 at ck_2048; seed
+  1 0.49 → 0.44 → 0.36 → **0.38** (argmax-land at ≥ 3 lands 0.64 → 0.22),
+  i.e. the B2 signature (unlearning the third land as a probability)
+  returns on seed 1 *while its argmax D0 reaches 0.85*: on W0Base a policy
+  can win at this level with two lands and a curve of 2-drops (the B2
+  argmax play note), so the land census is not a proxy for the level. The
+  clause fails on this seed and the row says so.
+* **Not collapsed — met on both seeds at every point:** argmax-PASS 14 /
+  14 / 6 / 10 % (s0) and 18 / 20 / 21 / 18 % (s1), gap 3.55 → 1.70 and
+  1.62 → 1.00, entropy 0.63–0.84; max |logit| touched the bound (5.00)
+  only on seed 0 at 1024.
+* **KL budget — active on both, binding more on seed 0:** 13/64 (0.20)
+  vs 5/64 (0.08) updates stopped; seeds 0/1 first-update approx KL 0.33
+  / 0.11. Not inert.
+
+Behaviour counters carried: the first-8-batch sampled wins are **16/256
+(seed 0) vs 137/256 (seed 1)** — seed 0's dead stretch (four all-lost
+batches) did not happen on seed 1, which won from batch 3 on; pooled
+153/512 = 0.299 [0.261, 0.340]. Seed 1's games are LONG at 512–1536 (47–49
+turns vs seed 0's 31–40) with `attackBudgetHit` 546–597 per 100-game
+battery at 512 (seed 0: 40–47): the seed-1 policy held wide boards early,
+and ~5–6 consults per game priced ATTACK candidates under the reply cap;
+the exactness caveat on ATTACK afterstates is largest exactly where seed
+1's levels are lowest, and the row cannot separate the two.
+
+**Against v6 on rung 0 (the LEVELSET comparison, two seeds pooled, plain
+argmax both):** v6's W0Base D0 was 0.568 at 512 (two seeds pooled), 0.78
+at 1,407–1,919 and 0.705 [0.638, 0.764] at 2,111 (seed 0,
+`rl/artifacts/rung0/W0Base/report.txt`). C1 pooled D0 at 2048, 0.850
+[0.794, 0.893], is clear of v6's 2,111 point; C1 pooled 512 (0.690
+[0.623, 0.750]) is clear of v6's 512 (0.568, its interval not on file
+here). Two seeds, not three: this is the strongest statement the row can
+make and it is "v7 C1 is above v6's seed-0 rung-0 level at 2k on W0Base,
+two seeds pooled, 200 games, plain argmax" — not a v7 level, not a claim
+about other decks. Cannot: attribute anything to one flag (B8/B6
+ablations owed); read the 1024 dip as anything but one seed's path;
+compare with class-argmax batteries until the Phase C re-battery is in.

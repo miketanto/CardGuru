@@ -1,0 +1,12 @@
+      1 attackBudgetHit=279
+      1 attackBudgetHit=284
+      1 attackBudgetHit=287
+      1 attackBudgetHit=385
+      1 attackBudgetHit=400
+      1 attackBudgetHit=421
+      1 attackBudgetHit=546
+      1 attackBudgetHit=564
+      1 attackBudgetHit=58
+      1 attackBudgetHit=597
+      1 attackBudgetHit=63
+      1 attackBudgetHit=77

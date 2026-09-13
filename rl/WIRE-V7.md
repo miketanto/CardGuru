@@ -287,6 +287,16 @@ and position of the first violation.
 
 ## 8. Amendments (dated; the row that establishes each is in rl/V7-VALIDATION.md)
 
+- **2026-09-13 — teacher label `y` on a consult; hello `teacher`.** A
+  consult may carry an optional integer `y` (7d piece 1b, V7-VALIDATION
+  "7d piece (1b) design" / "7d overnight pre-registration"): the index of
+  the candidate the teacher seat (`rl.agent=cp7`, `CP7TeacherPlayer`)
+  acted on after the consult state was taken - 0 = passed, i+1 = the
+  i-th playable, -1 = outside the candidate set. The hello of such a seat
+  carries `"teacher":"cp7"`. Absent = the unchanged contract; a server
+  ignores both (`wire_validate` checks required keys only, so no change
+  there). Emitted by `SocketPolicyClient.teacherY` (9e24145, compiled
+  with the Phase B build); consumed by `rl/v7_bc.py` only.
 - **2026-09-13 — candidate set: no mana abilities at priority.**
   `RLPlayer.priority` drops `isManaAbility()` candidates before the empty
   check (7a amendment; `-Drl.manaCands=true` restores the old set for a

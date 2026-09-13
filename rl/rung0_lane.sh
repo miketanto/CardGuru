@@ -108,15 +108,29 @@ for D in $BASE $TWIN; do cp $RL/$D.dck /home/user/mage/Mage.Tests/; done
 # The persistent driver JVM fixes rl.encoderV at StateEncoder class-init,
 # so a JVM that has already served one arm CANNOT serve the other. Kill it
 # here; RL_AUTOSTART=1 brings up a fresh one on this arm's first job.
-pkill -f "[R]LDriverServer" 2>/dev/null
+# 7d: stop only THIS lane's driver port (RL_DRIVER_PORT, default 7910). The
+# former blanket `pkill -f "[R]LDriverServer"` took every JVM down - the
+# recording driver 7911 and a second lane's 7912 included.
+bash $RL/driver_server.sh stop ${RL_DRIVER_PORT:-7910} > /dev/null 2>&1
 sleep 2
 
 INIT=$OUT/init.pt
-INITEXTRA=""
-[ "$ARCH" = "entattn" ] && INITEXTRA="--gdim 16 --edim 48"
-[ "${R0_RELATIONS:-1}" = "0" ] && [ "$ARCH" = "entattn" ] && INITEXTRA="$INITEXTRA --r0"
-python3 $RL/p10_init_net.py --out $INIT --seed $((10 + SEED)) --sdim $SDIM \
-    --cdim $CDIM --arch $ARCH $INITEXTRA 2>/dev/null | tail -1
+if [ -n "${R0_INIT:-}" ]; then
+    # 7d: start from a given checkpoint (bc.pt, or a trained ck_N.pt). Its
+    # "episodes" counter is kept: `trained` starts there and the budget is
+    # absolute (from ck_2048 with budget 3072 the rows are 2560 and 3072).
+    [ -s "$R0_INIT" ] || { echo "R0_FAILED|init|$R0_INIT missing"; exit 1; }
+    cp "$R0_INIT" $INIT
+    echo "R0_INIT|from=$R0_INIT|episodes=$(python3 -c "
+import torch
+print(int(torch.load('$INIT',map_location='cpu',weights_only=False).get('episodes',0)))" 2>/dev/null)"
+else
+    INITEXTRA=""
+    [ "$ARCH" = "entattn" ] && INITEXTRA="--gdim 16 --edim 48"
+    [ "${R0_RELATIONS:-1}" = "0" ] && [ "$ARCH" = "entattn" ] && INITEXTRA="$INITEXTRA --r0"
+    python3 $RL/p10_init_net.py --out $INIT --seed $((10 + SEED)) --sdim $SDIM \
+        --cdim $CDIM --arch $ARCH $INITEXTRA 2>/dev/null | tail -1
+fi
 CKPT=$OUT/agent.pt
 [ -s $CKPT ] || cp $INIT $CKPT
 
@@ -238,7 +252,11 @@ try: print(int(torch.load('$CKPT',map_location='cpu',weights_only=False).get('ep
 except Exception: print(0)" 2>/dev/null || echo 0)
 echo "R0_START|$BASE|seed=$SEED|budget=$BUDGET|resume_at=$trained|out=$OUT"
 
-[ "$trained" -eq 0 ] && battery 0
+# R0_BATTERY_START=1 (7d): a lane resumed/started from a trained checkpoint
+# runs the battery once at its start too (the +0 row), skipped if present.
+if [ "$trained" -eq 0 ] || { [ "${R0_BATTERY_START:-0}" = "1" ] && [ ! -s $OUT/probe_TWIN_${trained}.txt ]; }; then
+    battery $trained
+fi
 
 while [ "$trained" -lt "$BUDGET" ]; do
     stop_server
