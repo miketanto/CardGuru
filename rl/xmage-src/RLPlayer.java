@@ -1085,6 +1085,9 @@ public class RLPlayer extends ComputerPlayer {
         if (!search.replyExhaustive) {
             countFallback("attackReplyCapped");
         }
+        if (search.budgetHit) {
+            countFallback("attackBudgetHit");
+        }
 
         // PARETO FILTER, four objectives. Blocks use three; attacks need
         // RETAINED POWER as a fourth, and leaving it out would be a

@@ -518,6 +518,9 @@ public final class CombatMath {
         public long considered;                // resolve() calls
         public boolean exhaustive;             // subset enumeration complete
         public boolean replyExhaustive;        // every inner reply complete
+        /** rl.attackTotalCap hit: later subsets priced under a 200-leaf
+         *  reply cap (7c: a wide board took 4096 x 200k resolves per consult) */
+        public boolean budgetHit;
     }
 
     /**
@@ -548,6 +551,12 @@ public final class CombatMath {
             out.exhaustive = false;
         }
         java.util.Set<String> seen = new java.util.HashSet<>();
+        // Total leaf budget across ALL subsets: subsetCap x replyCap is 8e8
+        // resolves on a wide board (the 7c hang, minutes per consult). Once
+        // the budget is spent the remaining subsets keep their place in the
+        // option list (the candidate SET never changes) but are priced under
+        // a 200-leaf reply cap; budgetHit reports it, RLPlayer counts it.
+        long totalCap = Long.getLong("rl.attackTotalCap", 2000000L);
         for (long mask = 0; mask < space; mask++) {
             List<String> sig = new ArrayList<>();
             for (int i = 0; i < A; i++) {
@@ -563,8 +572,13 @@ public final class CombatMath {
             for (int i = 0; i < A; i++) {
                 attack[i] = (mask & (1L << i)) != 0;
             }
+            long rc = replyCap;
+            if (out.considered > totalCap) {
+                rc = Math.min(replyCap, 200L);
+                out.budgetHit = true;
+            }
             AttackOption op = evaluate(mine, attack, theirs, myLife, oppLife,
-                    replyCap);
+                    rc);
             out.considered += op.considered;
             out.replyExhaustive &= op.replyExhaustive;
             out.options.add(op);
