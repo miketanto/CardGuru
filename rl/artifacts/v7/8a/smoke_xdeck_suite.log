@@ -1,0 +1,6 @@
+XDECK|ck=ck_2048.pt|agent=W0Base|vs=heuristic|oppDeck=W0Base|4/4 = 1.000 [0.510,1.000]|losses=0 draws=0 stalls=0 turns_per_ep=37.5 attackBudgetHit=5
+XDECK|ck=ck_2048.pt|agent=W0Base|vs=heuristic|oppDeck=BenchDimir|4/4 = 1.000 [0.510,1.000]|losses=0 draws=0 stalls=0 turns_per_ep=36.0
+XDECK|ck=ck_2048.pt|agent=W0Base|vs=heuristic|oppDeck=BenchBurn|1/4 = 0.250 [0.046,0.699]|losses=3 draws=0 stalls=0 turns_per_ep=16.8
+XDECK|ck=ck_2048.pt|agent=W0Base|vs=cp7|oppDeck=W0Base|3/4 = 0.750 [0.301,0.954]|losses=0 draws=1 stalls=1 turns_per_ep=48.3 attackBudgetHit=11
+XDECK|pooled|ck=ck_2048.pt|agent=W0Base|rows=4|12/16 = 0.750 [0.505,0.898]
+XDECK|done|ck_2048.pt|2026-09-13T21:56:27Z

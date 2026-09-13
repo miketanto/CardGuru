@@ -32,13 +32,13 @@ report() {   # $1 tag $2 file
 start $PORT "$CK" $OUT/server_${LB}.log
 cd /home/user/mage
 f=$OUT/probe_CP7_${LB}.txt
-if [ ! -s $f ]; then
+if [ ! -s $f ] && [ "${SKIP_CP7:-0}" != 1 ]; then   # SKIP_CP7=1 (Phase 8): head-to-head only
     RL_PERSIST=1 RL_AUTOSTART=1 timeout 7200 bash $RL/run_driver.sh \
         -Drl.episodes=$G -Drl.agent=rl -Drl.policy=socket -Drl.port=$PORT -Drl.opponent=cp7 -Drl.aiSkill=6 \
         -Drl.cardFeatures=$FEATS -Drl.noYields=true -Drl.consultBudget=4000 $EVALFLAGS \
         -Drl.deck=W0Base.dck -Drl.oppDeck=W0Base.dck -Drl.stopTurn=60 -Drl.mode=eval -Drl.seed=910000 -Drl.report=0 -Drl.out=$f > $OUT/driver_CP7_${LB}.log 2>&1
 fi
-report CP7 $f
+[ -s $f ] && report CP7 $f
 if [ -n "$OPPCK" ]; then
     OPORT=$((PORT + 1))
     start $OPORT "$OPPCK" $OUT/oppserver_${LB}.log
