@@ -2533,3 +2533,49 @@ PASS share is falling 14 → 14 → 6 %, watched at 2048), gap 2.57, entropy
 0.75, P(land) at ≥ 3 lands 0.74. `attackBudgetHit` 44 / 35 / 65 (the
 1024 spike tracked game length, not a monotone trend). D0 512 → 1536:
 0.77 → 0.81 → 0.83, every consecutive pair overlapping.
+
+## C1 — seed 0 complete (2026-09-13 07:40; seeds 1 and 2 running; the C1 row is written when all three are in)
+
+`python3 rl/summ_7c1.py rl/artifacts/v7/7c1/s0` (64 updates; probes
+copied into `s0/` so the budget-hit column maps):
+
+| point | D0 | D1 | TWIN | turns | sampled last-4 | argmax-PASS | gap | entropy | P(land) ≥ 3 | budget hits |
+|---|---|---|---|---|---|---|---|---|---|---|
+| 512 | 0.77 [0.678, 0.842] | 0.80 [0.711, 0.867] | 0.79 [0.700, 0.858] | 35.5 | 107/128 = 0.836 [0.762, 0.890] | 14 % | 3.55 | 0.64 | 0.70 | 47 / 46 / 40 |
+| 1024 | 0.81 [0.722, 0.875] | 0.79 [0.700, 0.858] | 0.75 [0.657, 0.825] | 40.3 | 110/128 = 0.859 [0.789, 0.909] | 14 % | 2.99 | 0.63 | 0.73 | 170 / 166 / 185 |
+| 1536 | 0.83 [0.745, 0.891] | 0.82 [0.733, 0.883] | 0.83 [0.745, 0.891] | 31.1 | 82/128 = 0.641 [0.555, 0.719] | 6 % | 2.56 | 0.75 | 0.74 | 44 / 35 / 65 |
+| 2048 | **0.85 [0.767, 0.907]** | 0.85 [0.767, 0.907] | 0.88 [0.802, 0.930] | 34.8 | 102/128 = 0.797 [0.719, 0.857] | 10 % | 1.70 | 0.76 | **0.72** | 114–122 |
+
+Seed 0 against the four pre-registered readings (each decided on three seeds):
+* **Trains — the sampled clause is NOT met, the argmax clause is.** The
+  sampled last-4 rate was already 0.84 at 512 and did not rise (0.86,
+  0.64, 0.80; last not clear of first); the argmax D0 level rose at every
+  point, 0.77 → 0.81 → 0.83 → 0.85, consecutive intervals overlapping and
+  the 2048 interval [0.767, 0.907] overlapping the 512 one [0.678,
+  0.842]. The reading was written for a slowly climbing curve (the 7c
+  "undertraining" question); this seed reached its sampled plateau
+  inside the first 512 episodes, then the argmax battery kept improving
+  while the sampled rate wandered — the sampled rate is against the
+  heuristic with exploration noise (entropy 0.6–0.8), the battery is
+  argmax over classes; the two are not the same quantity. Recorded as
+  "sampled flat from 512, argmax rising, neither clear" — not as a pass.
+* **Third land — met** on this seed: P(land) at ≥ 3 lands 0.72 at
+  ck_2048 (0.70 / 0.73 / 0.74 / 0.72 along the way; B2 was 0.08).
+* **Not collapsed — met at every point** on the census clauses
+  (argmax-PASS 14 / 14 / 6 / 10 %, gap 3.55 → 1.70, entropy 0.63–0.76);
+  max |logit| touched the bound (5.00) inside the 512–1024 stretch and sat
+  at 4.98–4.99 after. The gap is shrinking (3.55 → 1.70) while entropy
+  rises: the policy is getting *less* deterministic with training, which
+  is the opposite of the 7a rail.
+* **KL budget — active, not binding:** 13 of 64 updates stopped (0.20),
+  5 of them in the first 8.
+* Attack budget: 114–122 hits per 100-game battery at 2048; the exactness
+  caveat on ATTACK afterstates stands for every C1 level.
+
+Context, not a claim (one seed; the v6 comparison waits for three): v6's
+rung-0 W0Base D0 levels were 0.568 at 512 (two seeds pooled), 0.78 at
+1,407–1,919 and 0.705 at 2,111 (seed 0); C1 seed 0's 0.85 [0.767, 0.907]
+at 2048 has an interval clear of v6's 2,111 point (0.705 [0.638, 0.764])
+and of v6's 512 point. Whether that survives pooling is the C1 row's
+question. Cannot: attribute the recovery from the dead stretch to a flag;
+say anything about other decks; call the 2048 level a v7 level (one seed).

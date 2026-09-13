@@ -1,0 +1,8 @@
+ck_2048 INITLOGITS|consults=1101|files=3|device=cpu
+ck_2048 INITLOGITS|ckpt=ck_2048.pt|episodes=2048|argmax_pass_when_other_exists=104/1070|mean_entropy_nats=0.761|mean_top_gap=1.695|mean_P(PASS)=0.135
+ck_2048 INITLOGITS|argmax_type|PASS=135/1002|LAND=204/313|SPELL=368/368|TARGET=12/12|ATTACK=176/279|BLOCK=206/207
+ck_2048 LANDCENSUS|ckpt=rl_7c1_s0/ck_2048.pt|lands=0|consults=24|argmax_land=24|p_land_mean=0.863|p_pass_mean=0.137|other_types={}
+ck_2048 LANDCENSUS|ckpt=rl_7c1_s0/ck_2048.pt|lands=1|consults=28|argmax_land=22|p_land_mean=0.807|p_pass_mean=0.124|other_types={'SPELL': 6}
+ck_2048 LANDCENSUS|ckpt=rl_7c1_s0/ck_2048.pt|lands=2|consults=42|argmax_land=18|p_land_mean=0.557|p_pass_mean=0.063|other_types={'SPELL': 24}
+ck_2048 LANDCENSUS|ckpt=rl_7c1_s0/ck_2048.pt|lands=3|consults=40|argmax_land=16|p_land_mean=0.512|p_pass_mean=0.035|other_types={'SPELL': 24}
+ck_2048 LANDCENSUS|ckpt=rl_7c1_s0/ck_2048.pt|lands>=3|consults=219|argmax_land=140|argmax_land_frac=0.639|p_land_mean=0.719

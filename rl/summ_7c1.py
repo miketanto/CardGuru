@@ -83,6 +83,11 @@ def seed_summary(d):
                               float(re.search(r"entropy=([0-9.]+)", ln).group(1)),
                               float(re.search(r"max_logit=([0-9.]+)", ln).group(1)))
         elif ln.startswith("KL|"):
+            m = re.search(r"update=(\d+)", ln)
+            key = ("kl", m.group(1) if m else ln)
+            if key in seen:
+                continue          # train_lines.txt duplicates server_all.log
+            seen.add(key)
             kl_n += 1
             kl_stop += "stopped=1" in ln
     curve = {}
