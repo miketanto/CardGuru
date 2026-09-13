@@ -17,6 +17,14 @@ import re
 import sys
 
 
+# The point set: SUMM_FIRST / SUMM_FINAL (env) name the first and last 512-point the
+# readings compare (default 512 / 2048 = C1); a lane started from a checkpoint (7d L0/L1:
+# 2048 -> 3072) sets SUMM_FIRST=2560 SUMM_FINAL=3072. The table shows every point seen.
+FIRST = int(os.environ.get("SUMM_FIRST", 512))
+FINAL = int(os.environ.get("SUMM_FINAL", 2048))
+POINTS = tuple(range(FIRST, FINAL + 1, 512))
+
+
 def wilson(k, n, z=1.96):
     if n == 0:
         return (0.0, 0.0)
@@ -91,7 +99,7 @@ def seed_summary(d):
             kl_n += 1
             kl_stop += "stopped=1" in ln
     curve = {}
-    for point in (512, 1024, 1536, 2048):
+    for point in sorted(set(POINTS) | set(rows)):
         us = [u for u in sorted(upd) if upd[u][0] <= point and upd[u][0] > point - 128]
         if len(us) == 4:
             k = sum(upd[u][1] for u in us)
@@ -128,7 +136,7 @@ def main(dirs):
         print(f"\n=== {d}  (updates seen: {len(s['upd'])}, KL stopped {s['kl'][0]}/{s['kl'][1]})")
         print("| point | D0 | D1 | TWIN | turns | sampled last-4 | entropy min | max|logit| | argmax-PASS | gap | ent | P(land)>=3 | budget hits D0/D1/TWIN |")
         print("|---|---|---|---|---|---|---|---|---|---|---|---|---|")
-        for p in (0, 512, 1024, 1536, 2048):
+        for p in sorted(set(s["rows"]) | set(s["curve"]) | set(s["cens"])):
             r = s["rows"].get(p, {})
             c = s["curve"].get(p)
             ce = s["cens"].get(p, {})
@@ -142,28 +150,29 @@ def main(dirs):
             print("/".join(str(s['hits'].get((p, o), '-')) for o in ("D0", "D1", "TWIN")) + " |")
         # readings
         c = s["curve"]
-        if 512 in c and 2048 in c:
-            lo_last, _ = wilson(c[2048][0], c[2048][1])
-            _, hi_first = wilson(c[512][0], c[512][1])
-            rising = all(c[a][0] / c[a][1] <= c[b][0] / c[b][1] for a, b in ((512, 1024), (1024, 1536), (1536, 2048)))
+        if FIRST in c and FINAL in c:
+            lo_last, _ = wilson(c[FINAL][0], c[FINAL][1])
+            _, hi_first = wilson(c[FIRST][0], c[FIRST][1])
+            pts = [p for p in sorted(c) if FIRST <= p <= FINAL]
+            rising = all(c[a][0] / c[a][1] <= c[b][0] / c[b][1] for a, b in zip(pts, pts[1:]))
             print(f"reading TRAINS (sampled): last clear of first = {lo_last > hi_first}; monotone = {rising}; "
-                  f"D0 2048 vs 512: {s['rows'].get(2048, {}).get('D0', '-')} vs {s['rows'].get(512, {}).get('D0', '-')}")
-        if 2048 in s["cens"] and "pland" in s["cens"][2048]:
-            print(f"reading THIRD LAND: P(land)>=3 at ck_2048 = {s['cens'][2048]['pland']:.2f} (bar 0.5) -> {s['cens'][2048]['pland'] >= 0.5}")
+                  f"D0 {FINAL} vs {FIRST}: {s['rows'].get(FINAL, {}).get('D0', '-')} vs {s['rows'].get(FIRST, {}).get('D0', '-')}")
+        if FINAL in s["cens"] and "pland" in s["cens"][FINAL]:
+            print(f"reading THIRD LAND: P(land)>=3 at ck_{FINAL} = {s['cens'][FINAL]['pland']:.2f} (bar 0.5) -> {s['cens'][FINAL]['pland'] >= 0.5}")
         bad = [p for p, ce in s["cens"].items() if 'pass_k' in ce and not (0.05 <= ce['pass_k'] / ce['pass_n'] <= 0.9 and ce['gap'] > 0.5 and ce['ent'] > 0.3)]
         lg = [p for p, cc in c.items() if cc[3] >= 5.0]
         print(f"reading NOT COLLAPSED: census clauses fail at {bad or 'none'}; max|logit| at the bound at points {lg or 'none'}")
         print(f"reading KL BUDGET: stopped {s['kl'][0]}/{s['kl'][1]} = {(s['kl'][0] / s['kl'][1]) if s['kl'][1] else 0:.2f}" + ("  (0 -> flag inert)" if s['kl'][1] and not s['kl'][0] else ""))
-        if 2048 in s["rows"]:
+        if FINAL in s["rows"]:
             for o in ("D0", "D1", "TWIN"):
-                if o in s["rows"][2048]:
+                if o in s["rows"][FINAL]:
                     pooled.setdefault(o, [0, 0])
-                    pooled[o][0] += round(s["rows"][2048][o][0] * s["games"])
+                    pooled[o][0] += round(s["rows"][FINAL][o][0] * s["games"])
                     pooled[o][1] += s["games"]
     if pooled:
-        print("\n=== pooled at 2048 over finished seeds:", ", ".join(f"{o} {fmt(*pooled[o])}" for o in pooled))
+        print(f"\n=== pooled at {FINAL} over finished seeds:", ", ".join(f"{o} {fmt(*pooled[o])}" for o in pooled))
     else:
-        print("\n(no seed has a 2048 row yet: nothing pooled)")
+        print(f"\n(no seed has a {FINAL} row yet: nothing pooled)")
 
 
 if __name__ == "__main__":
