@@ -1,0 +1,3 @@
+INITLOGITS|consults=1238|files=4|device=cuda
+INITLOGITS|ckpt=ck_256.pt|episodes=256|argmax_pass_when_other_exists=1046/1108|mean_entropy_nats=0.316|mean_top_gap=5.390|mean_P(PASS)=0.787
+INITLOGITS|argmax_type|PASS=1176/1176|LAND=0/177|SPELL=0/191|ACTIVATE=0/781|TARGET=62/62|ATTACK=0/47|BLOCK=0/27

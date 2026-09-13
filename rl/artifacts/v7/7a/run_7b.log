@@ -1,0 +1,22 @@
+7A|arm=B1|lr=3e-5|extra=--epochs 1 --logit-bound 5|start=2026-09-12T23:09:17Z
+7A|arm=B1|rc=0|end=2026-09-12T23:16:51Z
+R0|W0Base|s0|trained=0|ck_eps=0|D0=0.0000 [0.000,0.490]|D1=0.0000 [0.000,0.490]|TWIN=0.0000 [0.000,0.490]|blocks=0/0|BLOCKOPT=0/0|gap=0|attacks=0/0|ATKOPT=0/0|ATKOPTCA=0/0|under_over=0/0|turns=11.0
+R0|W0Base|s0|trained=256|ck_eps=256|D0=0.0000 [0.000,0.490]|D1=0.0000 [0.000,0.490]|TWIN=0.0000 [0.000,0.490]|blocks=0/0|BLOCKOPT=0/0|gap=0|attacks=0/0|ATKOPT=0/0|ATKOPTCA=0/0|under_over=0/0|turns=12.0
+R0_DONE|W0Base|s0|trained=256|out=/tmp/rl_7a_B1
+7A|arm=B2|lr=3e-5|extra=--epochs 1 --logit-bound 5 --weight-decay 0.01|start=2026-09-12T23:16:58Z
+7A|arm=B2|rc=0|end=2026-09-12T23:23:05Z
+R0|W0Base|s0|trained=0|ck_eps=0|D0=0.0000 [0.000,0.490]|D1=0.0000 [0.000,0.490]|TWIN=0.0000 [0.000,0.490]|blocks=0/0|BLOCKOPT=0/0|gap=0|attacks=0/0|ATKOPT=0/0|ATKOPTCA=0/0|under_over=0/0|turns=11.0
+R0|W0Base|s0|trained=256|ck_eps=256|D0=0.0000 [0.000,0.490]|D1=0.0000 [0.000,0.490]|TWIN=0.2500 [0.046,0.699]|blocks=24/25|BLOCKOPT=16/20|gap=43|attacks=16/22|ATKOPT=9/15|ATKOPTCA=9/15|under_over=4/2|turns=21.0
+R0_DONE|W0Base|s0|trained=256|out=/tmp/rl_7a_B2
+7A|arm=B3|lr=3e-5|extra=--epochs 1 --logit-bound 5 --heads-opt sgd --heads-lr 1e-3|start=2026-09-12T23:23:12Z
+7A|arm=B3|rc=0|end=2026-09-13T00:05:21Z
+R0|W0Base|s0|trained=0|ck_eps=0|D0=0.0000 [0.000,0.490]|D1=0.0000 [0.000,0.490]|TWIN=0.0000 [0.000,0.490]|blocks=0/0|BLOCKOPT=0/0|gap=0|attacks=0/0|ATKOPT=0/0|ATKOPTCA=0/0|under_over=0/0|turns=11.0
+R0|W0Base|s0|trained=256|ck_eps=256|D0=0.0000 [0.000,0.490]|D1=0.0000 [0.000,0.490]|TWIN=0.0000 [0.000,0.490]|blocks=86/177|BLOCKOPT=31/34|gap=26|attacks=0/840|ATKOPT=25/104|ATKOPTCA=31/104|under_over=79/0|turns=60.0
+R0_DONE|W0Base|s0|trained=256|out=/tmp/rl_7a_B3
+7A|arm=B4|lr=3e-5|extra=--epochs 1 --logit-bound 5 --ent-coef 0.1|start=2026-09-13T00:05:29Z
+7A|arm=B4|rc=0|end=2026-09-13T00:12:22Z
+R0|W0Base|s0|trained=0|ck_eps=0|D0=0.0000 [0.000,0.490]|D1=0.0000 [0.000,0.490]|TWIN=0.0000 [0.000,0.490]|blocks=0/0|BLOCKOPT=0/0|gap=0|attacks=0/0|ATKOPT=0/0|ATKOPTCA=0/0|under_over=0/0|turns=11.0
+R0|W0Base|s0|trained=256|ck_eps=256|D0=0.0000 [0.000,0.490]|D1=0.0000 [0.000,0.490]|TWIN=0.0000 [0.000,0.490]|blocks=0/0|BLOCKOPT=0/0|gap=0|attacks=0/0|ATKOPT=0/0|ATKOPTCA=0/0|under_over=0/0|turns=12.0
+R0_DONE|W0Base|s0|trained=256|out=/tmp/rl_7a_B4
+7A|done=2026-09-13T00:12:29Z
+7B0|start=2026-09-13T00:12:48Z
