@@ -222,6 +222,10 @@ except Exception: print(-1)" 2>/dev/null || echo -1)
     local spec
     for spec in "heuristic|$BASE|D0" "search|$BASE|D1" "heuristic|$TWIN|TWIN"; do
         IFS='|' read -r OPP DK LB <<< "$spec"
+        # R0_ROWS / R0_ROWS_FINAL (Phase 8 amendment): the battery rows to run (default
+        # all three; R0_ROWS_FINAL applies at trained >= BUDGET); a skipped row prints LB=skip
+        local rows=${R0_ROWS:-"D0 D1 TWIN"}; [ "$tr" -ge "$BUDGET" ] && rows=${R0_ROWS_FINAL:-$rows}
+        case " $rows " in *" $LB "*) ;; *) line="$line|$LB=skip"; continue ;; esac
         local f=$OUT/probe_${LB}_${tr}.txt
         probe "$f" "$OPP" "$DK" "$EVAL_G" $((900000 + tr))
         local wr=$(field $f win_rate)
@@ -260,7 +264,7 @@ echo "R0_START|$BASE|seed=$SEED|budget=$BUDGET|resume_at=$trained|out=$OUT"
 
 # R0_BATTERY_START=1 (7d): a lane resumed/started from a trained checkpoint
 # runs the battery once at its start too (the +0 row), skipped if present.
-if [ "$trained" -eq 0 ] || { [ "${R0_BATTERY_START:-0}" = "1" ] && [ ! -s $OUT/probe_TWIN_${trained}.txt ]; }; then
+if [ "$trained" -eq 0 ] || { [ "${R0_BATTERY_START:-0}" = "1" ] && [ ! -s $OUT/probe_D0_${trained}.txt ]; }; then
     battery $trained
 fi
 

@@ -95,6 +95,30 @@ A4. **Pre-register** (append to rl/V7-VALIDATION.md as "Phase 8 pre-registration
       (the W0Base opponent entry = `rl:<L0 ck_3072>:W0Base.dck`), same
       yardstick against its own control (8a continued +1024 vs the heuristic).
 
+
+**Amendment (2026-09-13 17:40 next-session clock; decided by the user
+before any Phase B result was read; development-phase budget).** Games
+per row stay at 100 (the project rule; n=100 is already +-0.09); the
+NUMBER of rows is cut:
+1. **8a**: at 512 only D0 (heuristic on BenchDimir); at 1024 D0 and D1;
+   TWIN on Dimir is dropped entirely (it is a second D0 sample, not a
+   second matchup) — the lane's `R0_ROWS="D0"` / `R0_ROWS_FINAL="D0 D1"`
+   knobs (a skipped row prints `LB=skip`). Seed 1 runs only if seed 0's
+   1024 reading is worth confirming: clear above 0.5, or inside v6's
+   [.486, .622]; the decision is stated in the 8a row. With one seed the
+   "trains on Dimir" reading is read on 100 games (a level, not the
+   pooled 200 the original text asked for) and says so.
+2. **The cross-deck suite is four rows**: the heuristic on W0Base /
+   BenchDimir / BenchBurn + CP7 on the checkpoint's home deck only
+   (`rl/battery_xdeck.sh` default `ROWS`; 400 games per suite).
+3. **8b**: one battery row per block (D0 on the home deck, `R0_ROWS="D0"`),
+   the four-row suite on L2's final checkpoint (labelled ck_4096 in the
+   lane's absolute count = L0 ck_3072 + 1,024) and on L0 ck_3072, plus
+   the head-to-head (`SKIP_CP7=1` in `rl/hard_battery.sh`: no duplicate
+   CP7 row). The "helps / hurts" readings are read on the pooled 400-game
+   suites instead of 600.
+Everything else in the pre-registration stands.
+
 ## Phase B — run, sequential on the one GPU (two servers max)
 
 B1. `run_8a.sh` seed 0 detached under a keepalive; read the 512 battery and
@@ -110,3 +134,4 @@ B4. Handoff: UPDATE line + §M prompt in rl/HANDOFF-V7.md with the two one-line
 ## STATE (append dated lines; newest last)
 - 2026-09-14 (start): nothing running; Phase A not started.
 - 2026-09-13 16:55 (WSL 16:50; the runbook date 2026-09-14 is the session clock, the WSL clock is a day behind): A1 DONE - rl/record_8a_census.sh recorded 7c_BenchDimir_{p1,p99,sf}.jsonl on driver 7911 (8 games each, 292/311/300 consults = 903 with consults; echo win rates .625/.375/.625, ~37 consults per game, ~22 turns - NOT the ~126 the runbook expected from the PREFER=1 mcL_off set: the p1/p99 echoes cast less); rl/v7_land_census.py --type {LAND|SPELL} (LAND output byte-identical to census.txt: s0 ck_2048 lands>=3 140/219; SPELL on the mcL_off set = P(cast) by lands, tag SPELLCENSUS); rl/BenchBurn.dck copied from Mage.Tests (the runbook names it; it was never in rl/). Log rl/artifacts/v7/8a/record_census.log.
+- 2026-09-13 17:50 (WSL 17:00): A2 DONE - rl/rung0_lane_league.sh R0_OPP_SPEC="kind:arg:deck,..." (heuristic | cp7 skill 6 | rl frozen ckpt; -Drl.oppDeck per entry; R0_OPP|kind=..|arg=..|deck=.. per block; R0_OPP_CKPTS kept as the old rl-only form). Cross-deck check: a 4-game W0Base-vs-BenchDimir echo job (8x_W0Base_vs_BenchDimir.jsonl, 133 consults) reports oppDeck=BenchDimir.dck and its v7_opp_deck_name carries the Dimir cards (0 W0Base names), wire_validate ok - the v7 HELLO carries no decklists (its keys are dims/emb only); the decks ride on the consults (own hand/ents + v7_opp_deck). Smoke rl/smoke_xdeck_league.sh (rl/artifacts/v7/8a/smoke_xdeck_league.log): from C1 s0 ck_2048, three 64-episode blocks heuristic:BenchDimir (45/64, 0.67 g/s) / cp7:BenchBurn (17/64, 0.98 g/s) / rl(ck_2048):BenchDimir (56/64, 0.60 g/s, 4 opp-server conns), 4-game batteries between, rc=0. First attempt failed: the two job-line substitutions had not applied (the job still said -Drl.opponent=rl -> connection refused on 7961); fixed. A3 DONE - rl/battery_xdeck.sh (smoke rl/artifacts/v7/8a/smoke_xdeck_suite.log: 4 rows x 4 games on C1 s0 ck_2048/W0Base: heuristic W0Base 4/4, BenchDimir 4/4, BenchBurn 1/4 (17 turns - Burn races), CP7 W0Base 3/4 with 1 stall; XDECK|pooled line). A4 DONE - "Phase 8 pre-registration" appended to rl/V7-VALIDATION.md + the AMENDMENT (user, before any Phase B result): 100 games per row, fewer rows - 8a D0 only at 512, D0+D1 at 1024, no TWIN, seed 1 conditional; suite = 4 rows (heuristic x3 decks + CP7 on the home deck); 8b one D0 row per block, 4-row suites, H2H without the CP7 duplicate. Knobs: rung0_lane.sh + league R0_ROWS / R0_ROWS_FINAL (LB=skip), hard_battery.sh SKIP_CP7=1. Runners written: rl/run_8a.sh (SEEDS default "0"), rl/run_8b.sh.

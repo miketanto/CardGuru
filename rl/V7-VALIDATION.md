@@ -3176,3 +3176,125 @@ Every fixed-protocol point sits inside its plain-argmax interval: **the
 protocol correction moves nothing at any C1 point**, early checkpoints
 included — B7's k-copy prediction is not visible on these policies at
 n=100. The C1 rows stand as levels under either protocol.
+
+## Phase 8 pre-registration — a real deck (8a, Dimir) and a diverse cross-deck league (8b) (2026-09-13 17:20 next-session clock; WSL 17:15; runbook `rl/PHASE8-DECKS.md`; written BEFORE any 8a battery)
+
+Why: every v7 number so far is W0Base (a mono-white creature mirror) and
+the one league tried (L1) was two frozen ancestors of the policy itself,
+which it overfit to. Two questions, in order: **Q3** does the C1 recipe
+train on BenchDimir (removal, instants, payment choices) and where does it
+land against v6's Dimir result; **Q4** does a league of diverse strategies
+across decks (mono-white aggro, Dimir midrange, Burn) improve a W0Base
+policy where the ancestors-only league hurt it.
+
+Preparation landed with this row (Phase A of the runbook): the Dimir
+census set `7c_BenchDimir_{p1,p99,sf}.jsonl` (903 consults, 8 games per
+echo policy, driver 7911); `rl/v7_land_census.py --type SPELL` (P(cast)
+and argmax-SPELL by lands in play; LAND output unchanged); the league
+lane's `R0_OPP_SPEC="kind:arg:deck,..."` (heuristic / cp7 skill 6 / rl
+frozen checkpoint, the opponent's deck per entry, one entry per block in
+turn, `R0_OPP|` per block; `-Drl.oppDeck` carries the opponent's deck and
+the consults' `v7_opp_deck_name` carries that deck's cards — checked on a
+4-game W0Base-vs-BenchDimir echo job, `wire_validate` ok); the cross-deck
+suite `rl/battery_xdeck.sh` (six rows: vs the heuristic and vs CP7, each on
+W0Base / BenchDimir / BenchBurn, 100 games per row, fixed argmax-classes
+protocol, stalls reported, one server + one JVM). Every battery in Phase 8
+is under the fixed protocol (`--argmax-classes` on the serving path).
+
+Reference points: v6 Dimir (`rl/DIMIR-V6-2K-RESULT.md`, entattn, one seed,
+D0 and TWIN = two samples of the same matchup): D0 **.555 [.486, .622]** at
+1024, .585 at 2048; D1 .290 at 1024. v7 C1 on W0Base: D0 0.86 [0.81, 0.90]
+pooled 2 seeds at 2048; L0 (+1024 vs the heuristic from C1 s0 ck_2048)
+0.91 vs D0, 0.80 vs CP7; L1 (ancestors league) 0.68 vs D0, 0.67 vs CP7.
+
+**8a — Dimir** (`rl/run_8a.sh`): the C1 recipe exactly (lr 3e-5, 1 epoch,
+logit bound 5, AdamW wd 0.01 on the heads, `--adv-norm auto --target-kl
+0.02 --argmax-classes`, mana-ability filter + attack-budget build) on
+`rung0_lane.sh BenchDimir BenchDimir 1024 <seed>`, seeds 0 then 1,
+batteries at 512 and 1024 (D0 / D1 / TWIN = a second D0 sample, 100 games
+each), LAND + SPELL + type census on ck_512 / ck_1024 over the Dimir census
+set, `jobs.log` kept (stalls per chunk), the suite on each ck_1024.
+Readings:
+* **Trains on Dimir** if the pooled two-seed D0 at 1024 (200 games) is
+  clear above 0.5 AND the sampled last-4-batch rate at 1024 is clear of
+  the first-4 (per seed, then pooled).
+* **vs v6**: whether the pooled D0 interval at 1024 is above / overlapping
+  / below v6's .555 [.486, .622] (one seed, 100 games, D0 alone; v6's
+  D0+TWIN pooled .478 at 1024 is the second yardstick). Parity is a
+  finding: v6 needed a deck-specific encoder, v7 is the deck-agnostic one.
+* **Not collapsed** as in C1, at 512 and 1024: argmax-PASS in [5 %, 90 %],
+  gap > 0.5, entropy > 0.3, max |logit| inside the bound (on the bound =
+  clipping, carried as in C1).
+* **Behaviour** (counters, not a bar): P(land) at >= 3 lands (the third
+  land, 0.5 bar as in C1), P(cast) by lands (SPELLCENSUS), the TARGET
+  census (does removal get pointed at creatures), the D0 battery's
+  under/over and BLOCKOPT, turns per game, stalls.
+* **Throughput**: episodes per hour in the first 512 (the runbook
+  expected ~3-4x slower than W0Base from 126 consults per game; the echo
+  recordings show ~37 consults per game, so the estimate is open); if a
+  seed to 1024 exceeds 6 h the run drops to one seed and says so.
+Cannots: beat v6 at 2048 (not run); the payment sub-consult is still the
+engine's; CP7's Dimir strength is not calibrated (the suite gives it as a
+by-product); one deck says nothing about Burn; two seeds at 100 games per
+point give a level, not a curve.
+
+**8b — diverse league** (`rl/run_8b.sh`): **L2** = L0 ck_3072 (the W0Base
+policy after C1 + 1024 heuristic episodes) continued +1024 episodes on
+W0Base with `R0_OPP_SPEC` rotating per 256-block (`R0_EVERY=256`, four
+blocks, batteries at every block): `heuristic::BenchDimir.dck`,
+`cp7::BenchBurn.dck`, `rl:<8a s0 ck_1024>:BenchDimir.dck`,
+`heuristic::BenchBurn.dck`. **Control = L0** (already run: the same
+checkpoint +1024 vs the heuristic on W0Base; its ck_4096 does not exist,
+so the control is L0 ck_3072 itself = the same starting point +0, and the
+comparison is "did the league move the suite"). Yardstick = the suite on
+L0 ck_3072 and on L2 ck_4096 (600 games each, pooled and per row) + the
+home battery (D0 / D1 / TWIN on W0Base) + head-to-head L2 vs L0 ck_3072
+(100 games, stalls separate, `rl/hard_battery.sh` H2H path).
+Readings:
+* **Diverse league helps** if L2's pooled suite rate (600 games) is clear
+  above L0 ck_3072's AND L2's home D0 is not clear below L0's +1024 row
+  (0.91 [0.838, 0.952]).
+* **Hurts** if the pooled suite is clear below L0's.
+* Else "no difference shown at n=600" — and then the per-row table says
+  which rows moved (a cross-deck gain paid for by a home loss is a
+  finding, not a null).
+Cannots: one seed; the pool is fixed-strength (no PFSP, no refresh); the
+trainee plays one deck (deck-general play is 8c); CP7 on Burn is CP7's
+Burn, not a trained Burn policy; L2's +1024 on mixed opponents is not
+compute-matched to L0's +1024 on the heuristic in *games against the
+heuristic*, only in episodes; the head-to-head is the L1 instrument and
+carries its stall caveat.
+
+**8c (only if 8a "trains on Dimir" and time remains)**: L2d = 8a s0
+ck_1024 continued +1024 on BenchDimir with the same rotating spec (the
+W0Base entry = `rl:<L0 ck_3072>:W0Base.dck`), against its own control =
+8a s0 ck_1024 continued +1024 vs the heuristic on BenchDimir, same
+yardstick (suite + home battery + head-to-head). If not run, the reason is
+written in the runbook STATE and here.
+
+Pre-stated, what none of this can move: the C1 W0Base level (0.86) and the
+Q1/Q2 verdicts; the attack-budget caveat (`attackBudgetHit` carried); the
+update cost (58 ms per stored consult).
+
+**Amendment (2026-09-13 17:40 next-session clock; decided by the user
+before any Phase B result was read; development-phase budget).** Games
+per row stay at 100 (the project rule; n=100 is already +-0.09); the
+NUMBER of rows is cut:
+1. **8a**: at 512 only D0 (heuristic on BenchDimir); at 1024 D0 and D1;
+   TWIN on Dimir is dropped entirely (it is a second D0 sample, not a
+   second matchup) — the lane's `R0_ROWS="D0"` / `R0_ROWS_FINAL="D0 D1"`
+   knobs (a skipped row prints `LB=skip`). Seed 1 runs only if seed 0's
+   1024 reading is worth confirming: clear above 0.5, or inside v6's
+   [.486, .622]; the decision is stated in the 8a row. With one seed the
+   "trains on Dimir" reading is read on 100 games (a level, not the
+   pooled 200 the original text asked for) and says so.
+2. **The cross-deck suite is four rows**: the heuristic on W0Base /
+   BenchDimir / BenchBurn + CP7 on the checkpoint's home deck only
+   (`rl/battery_xdeck.sh` default `ROWS`; 400 games per suite).
+3. **8b**: one battery row per block (D0 on the home deck, `R0_ROWS="D0"`),
+   the four-row suite on L2's final checkpoint (labelled ck_4096 in the
+   lane's absolute count = L0 ck_3072 + 1,024) and on L0 ck_3072, plus
+   the head-to-head (`SKIP_CP7=1` in `rl/hard_battery.sh`: no duplicate
+   CP7 row). The "helps / hurts" readings are read on the pooled 400-game
+   suites instead of 600.
+Everything else in the pre-registration stands.
