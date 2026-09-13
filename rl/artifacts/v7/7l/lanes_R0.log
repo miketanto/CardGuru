@@ -1,0 +1,7 @@
+==> /tmp/rl_7l_L0/lane.log <==
+R0_INIT|from=/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/7c1/s0/ck_2048.pt|episodes=2048
+R0_START|W0Base|seed=0|budget=3072|resume_at=2048|out=/tmp/rl_7l_L0
+R0|W0Base|s0|trained=2048|ck_eps=2048|D0=0.8600 [0.779,0.915]|D1=0.8700 [0.790,0.922]|TWIN=0.8800 [0.802,0.930]|blocks=1545/2163|BLOCKOPT=722/750|gap=211|attacks=1431/5864|ATKOPT=691/1400|ATKOPTCA=758/1400|under_over=467/192|turns=34.9
+R0|W0Base|s0|trained=2560|ck_eps=2560|D0=NA [0.000,0.037]|D1=NA [0.000,0.037]|TWIN=NA [0.000,0.037]|blocks=0/0|BLOCKOPT=0/0|gap=0|attacks=0/0|ATKOPT=0/0|ATKOPTCA=0/0|under_over=0/0|turns=
+R0|W0Base|s0|trained=3072|ck_eps=3072|D0=NA [0.000,0.037]|D1=NA [0.000,0.037]|TWIN=NA [0.000,0.037]|blocks=0/0|BLOCKOPT=0/0|gap=0|attacks=0/0|ATKOPT=0/0|ATKOPTCA=0/0|under_over=0/0|turns=
+R0_DONE|W0Base|s0|trained=3072|out=/tmp/rl_7l_L0

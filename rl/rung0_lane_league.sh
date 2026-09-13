@@ -103,6 +103,11 @@ CKPT=$OUT/agent.pt
 start_server() {   # $1 extra-flags
     pkill -f "policy_serve[r].py --port $PORT" 2>/dev/null
     [ -s $OUT/server.log ] && cat $OUT/server.log >> $OUT/server_all.log
+    # TRUNCATE SYNCHRONOUSLY before the launch (7d L0 NA rows): the background
+    # job's own `> server.log` happens in the child after the fork, so the
+    # first poll below could still read the OLD server's "policy server" line,
+    # return at once, and send the probes into a server that had not bound yet.
+    : > $OUT/server.log
     RL_TORCH_THREADS=1 setsid nohup python3 $RL/policy_server.py \
         --port $PORT --ckpt $CKPT --seed $SEED --sdim $SDIM --cdim $CDIM --arch $ARCH \
         --threads $CONC --log $OUT/train.csv \
@@ -122,6 +127,7 @@ stop_server() { pkill -f "policy_serve[r].py --port $PORT" 2>/dev/null; sleep 1;
 start_opp_server() {   # $1 ckpt
     pkill -f "policy_serve[r].py --port $OPP_PORT" 2>/dev/null
     [ -s $OUT/opp_server.log ] && cat $OUT/opp_server.log >> $OUT/opp_server_all.log
+    : > $OUT/opp_server.log            # the same race as start_server
     RL_TORCH_THREADS=1 setsid nohup python3 $RL/policy_server.py \
         --port $OPP_PORT --ckpt "$1" --seed $((SEED + 500)) --sdim $SDIM --cdim $CDIM --arch $ARCH \
         --threads $CONC --frozen $OPP_SRVEXTRA $V6FLAGS > $OUT/opp_server.log 2>&1 &

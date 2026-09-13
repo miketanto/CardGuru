@@ -2864,3 +2864,47 @@ behaviour (untrained, generalised) from the priority behaviour in the
 level. What this changes for Q1: D-PPO starts from a policy that already
 wins 0.58 on argmax and never passes — the dead stretch (C1 seed 0's
 16/256) is the first counter to read.
+
+## 7d L0 — the same-compute control from C1 s0 ck_2048, +1,024 vs the heuristic (2026-09-13 12:40 next-session clock; WSL 06:35; fixed argmax-classes protocol; one seed)
+
+`rl/run_7l.sh` arm L0 = `rung0_lane.sh` with `R0_INIT` = C1 s0 `ck_2048.pt`,
+budget 3072 (absolute), C1's recipe, driver 7912 / server 7950; artifacts
+`rl/artifacts/v7/7l/L0/` (32 updates, KL stopped 2/32). **Two of its three
+battery rows came out NA, and the cause is a race in the lane script, not
+the driver:** `start_server()` appends the old `server.log` to
+`server_all.log` and launches the new server with `> $OUT/server.log` *in
+the background job*; that truncation happens in the child after the fork,
+so the parent's first poll (`grep -q "policy server" server.log`) can still
+read the OLD (training) server's ready line, return at once, and send the
+three probe jobs into a server that has not bound yet - each is refused in
+0.0 s (driver 7912 jobs 12-14 and 24-26, `rc=1|sec=0.0`, no connection ever
+reaching the battery server, whose log is empty because the lane's
+`stop_server` killed it 2 s later: `server.log` mtime 06:18:07, the NA row
+06:18:09). It needs the old log to contain the ready line (so never the
+first battery of a lane - the +0 row and every C1 trained=0 row were safe)
+and the parent to win the fork race, which it did twice under this
+night's load and never in C1's 16 batteries. Fix: truncate synchronously
+(`: > $OUT/server.log`) before the launch - applied to
+`rung0_lane_league.sh` now, owed to `rung0_lane.sh` when no lane runs it
+(D-PPO's remaining batteries carry the same exposure; any NA row is
+recovered from its `ck_<N>.pt` with `rl/fill_na_batteries.sh`, same game
+seeds). The L0 points are recovered the same way (`rl/recover_L0.sh` →
+`rl/battery_ck.sh` on ck_2560 / ck_3072, server 7948 / driver 7914, one at a
+time under the memory rule) and appended below when they land.
+
+| point | D0 | D1 | TWIN | sampled last-4 | argmax-PASS | gap | entropy | P(land) ≥ 3 |
+|---|---|---|---|---|---|---|---|---|
+| 2048 (+0) | 0.86 [0.779, 0.915] | 0.87 [0.790, 0.922] | 0.88 [0.802, 0.930] | – | 10 % | 1.70 | 0.76 | 0.72 |
+| 2560 (+512) | *lane NA → recovered below* | | | 102/128 = 0.797 [0.719, 0.857] | 11 % | 2.38 | 0.66 | 0.75 |
+| 3072 (+1024) | *lane NA → recovered below* | | | 111/128 = 0.867 [0.798, 0.915] | 7 % | 2.69 | 0.68 | 0.74 |
+
+Sampled rate 0.80 → 0.87 (overlapping); third land 0.74 at 3072; not
+collapsed; KL 2/32. Aside from the RLLOCK line of the block-2 server:
+`wait_share=95.0%` (13,189 s waited on the server lock across 21,901
+calls, 602 ms per call) - three lanes' servers and JVMs on an 11 GB box
+were serialising on memory, not on the GPU (the machine swapped between
+WSL 05:05 and 06:04; one training chunk took 3,810 s). L1 was stopped
+before it trained (`rl/stop_7l.sh`) and restarts from the same ck_2048 on
+the fixed league script once memory allows (a JVM is 3.4 GB RSS, a server
+1.7 GB: D-PPO + L1 + L1's opponent server = 3 servers + 2 JVMs ≈ 12 GB, so
+L1 waits for D-PPO to end).
