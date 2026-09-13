@@ -3010,3 +3010,29 @@ a card-level BC might seed differently; separate the priority-only labels
 (combat heads never imitated, then generalised to attack-everything) from
 the imitation itself; generalise off W0Base. Pre-registered cannots stand
 (consult budget, k-copy bias — under the fixed protocol here).
+
+## C1 — correction in the open: the two seeds' ck_2048 under the FIXED argmax-classes protocol (2026-09-13 14:20 next-session clock; WSL 08:15)
+
+`rl/rebattery_c1.sh` / `rl/chain_s1rebat_then_7l.sh` → `rl/battery_ck.sh` (same
+game seeds as the lane's batteries, 100 games per opponent; rows in
+`rl/artifacts/v7/7c1/rebattery/s<seed>/rows.txt`):
+
+| seed, ck_2048 | protocol | D0 | D1 | TWIN |
+|---|---|---|---|---|
+| s0 | plain argmax (lane) | 0.85 [0.767, 0.907] | 0.85 [0.767, 0.907] | 0.88 [0.802, 0.930] |
+| s0 | argmax over classes | 0.86 [0.779, 0.915] | 0.87 [0.790, 0.922] | 0.88 [0.802, 0.930] |
+| s1 | plain argmax (lane) | 0.85 [0.767, 0.907] | 0.82 [0.733, 0.883] | 0.88 [0.802, 0.930] |
+| s1 | argmax over classes | 0.86 [0.779, 0.915] | 0.83 [0.745, 0.891] | 0.89 [0.814, 0.937] |
+| **pooled, fixed protocol** | argmax over classes | **172/200 = 0.860 [0.805, 0.901]** | 170/200 = 0.850 [0.794, 0.893] | 177/200 = 0.885 [0.833, 0.922] |
+
+The fix moves nothing at 2048 (every paired difference is 0–2 games out of
+100): B7's prediction that the plain argmax was biased against k-copy
+actions is not visible at this level of training — by 2048 the policy's
+argmax on land-copy windows is already a land (census argmax-LAND 0.72 /
+0.38 at ≥ 3 lands is about *whether*, not *which copy*). The C1 two-seed
+level stands at **0.86 [0.805, 0.901]** under the fixed protocol (0.850
+[0.794, 0.893] plain), and the D-PPO seed-0 Q1 reading is unchanged: 0.68
+[0.583, 0.763] is clear below both. The 512/1024/1536 re-batteries are
+still owed (resumable, `rl/rebattery_c1.sh`, after the lanes). Cannot: say
+the flag is inert in general (the B7 mechanism lives in early checkpoints
+and in bc.pt-like policies, not tested here).
