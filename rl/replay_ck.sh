@@ -22,7 +22,7 @@ for spec in "heuristic|6001|" "cp7|6002|-Drl.aiSkill=6"; do
     IFS='|' read -r OPP SEED EXTRA <<< "$spec"
     f=$OUT/${TAG}_vs_${OPP}_s${SEED}.probe.txt
     RL_PERSIST=1 RL_AUTOSTART=0 RL_DRIVER_PORT=$DPORT timeout 1800 bash $RL/run_driver.sh \
-        -Drl.episodes=1 -Drl.agent=rl -Drl.policy=socket -Drl.port=$PORT -Drl.opponent=$OPP $EXTRA \
+        -Drl.episodes=1 -Drl.agent=rl -Drl.policy=socket -Drl.port=$PORT -Drl.opponent=$OPP $EXTRA -Drl.debug=true \
         -Drl.searchPlies=1 -Drl.searchBreadth=8 -Drl.cardFeatures=$FEATS -Drl.noYields=true -Drl.consultBudget=4000 \
         -Drl.encoderV=7 -Drl.blockAudit=true -Drl.attackAudit=true -Drl.deck=W0Base.dck -Drl.oppDeck=W0Base.dck \
         -Drl.stopTurn=60 -Drl.mode=eval -Drl.seed=$SEED -Drl.report=0 -Drl.out=$f > $OUT/${TAG}_vs_${OPP}_s${SEED}.driver.log 2>&1
