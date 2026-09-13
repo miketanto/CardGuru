@@ -1950,3 +1950,80 @@ and 32 games cannot replace it. Pre-registered now, before B1 finishes:
   (same init, same driver seed schedule); B0 uses its own seeds.
 * Nothing in this correction moves a bar for a result already read: no B
   row exists yet.
+
+## 7a — arms B0–B4 (2026-09-13 00:25; branch `v7/lane-d`)
+
+`rl/run_7b.sh` (B1–B4) and `rl/run_7b0.sh` (B0), all on the mana-ability-filter
+build; artifacts `rl/artifacts/v7/7a/{B0,B1,B2,B3,B4}/`, rows by
+`rl/summ_7a.py`. Common recipe = A2: W0Base vs heuristic, 256 episodes,
+conc4, cuda, seed 0, lr 3e-5, 1 PPO epoch, logit bound 5. B0 = the same
+seed-0 `init.pt` frozen (`--frozen`), sampled as in training, 128 games
+(seeds 90000000 / 90000064, 74 s).
+
+| arm | change on A2 (+ filter) | entropy 1→8 | max \|logit\| | grad norm 1→8 | chosen types at 8 (PASS/LAND/SPELL/ACT/TGT/ATK/BLK) | wins/256 | last 4 batches, Wilson | census ck_256: gap · argmax-PASS · entropy | battery at 256 | tests |
+|---|---|---|---|---|---|---|---|---|---|---|
+| B0 | init policy, frozen, sampled | – | – | – | – | 19/128 | **0.148 [0.097, 0.220]** = the wins bar | – | – | – |
+| B1 | filter only | 0.67 → 0.53 | 5 → 5 | 41.7 → 0.10 | 455/0/0/0/171/0/0 | 6 | 0/128 = 0.000 [0.000, 0.029] | 1.81 · 1046/1108 (0.94) · 0.73 | attacks 0/0, turns 12 | none |
+| B2 | AdamW, wd 0.01 on the heads | 0.93 → 0.65 | 3 → 4 | 31.0 → 7.6 | 409/152/260/0/24/149/197 | 66 | **43/128 = 0.336 [0.260, 0.421]** | 1.26 · 126/1108 (0.11) · 0.66 | **attacks 16/22, blocks 24/25**, TWIN 1/4, turns 21 | **wins · census · attacks** |
+| B3 | heads on SGD-momentum lr 1e-3, trunk Adam 3e-5 | 0.90 → 0.88 | 3 → 3 | 29.6 → 5.4 | 420/255/377/0/18/168/237 | 120 | **83/128 = 0.648 [0.562, 0.726]** | 0.91 · 47/1108 (**0.04**) · 0.76 | **attacks 0/840**, blocks 86/177, ATKOPT 25/104, turns 60 (cap) | wins only |
+| B4 | entropy coef 0.1 | 0.66 → 0.54 | 5 → 5 | 42.9 → 0.08 | 451/0/0/0/171/0/0 | 5 | 0/128 = 0.000 [0.000, 0.029] | 5.39 · 1046/1108 (0.94) · 0.32 | attacks 0/0, turns 12 | none |
+
+The B1–B4 first batches (played by the init policy before update 1) sum
+to 6 + 3 + 6 + 5 = 20/128 = 0.156, consistent with B0; they were not used
+as the bar (same init, correlated seed schedule; pre-registered above).
+
+**What the arms establish.**
+1. **The sink was not the drift.** B1 (filter alone) repeats A2's fate in
+   A1's direction: always-PASS from update 2, gradient norm 0.10 at
+   update 8, the bound holding the gap at 1.8 nats with PASS on top.
+   B4's trajectory is B1's to two decimals: an entropy coefficient of
+   0.1 does not change where the policy goes (the rails are where a
+   bounded scorer under Adam ends up regardless of the bonus).
+2. **The optimiser on the heads is the variable.** Both arms that change
+   it keep the gradient alive (5–8 at update 8 against 0.1), keep the
+   logits off the rail (max |logit| 3–4 under a bound of 5), keep the
+   policy mixed (entropy 0.65 / 0.88, every candidate type chosen), and
+   win sampled games against the heuristic with intervals clear of B0:
+   B2 0.336 [0.260, 0.421], B3 0.648 [0.562, 0.726] vs 0.148 [0.097,
+   0.220]. This is the first v7 policy in the project that wins more as
+   it trains.
+3. **Sampled and argmax behaviour split B2 from B3.** B2's argmax
+   attacks (16 of 22 chances), blocks (24 of 25) and passes on 11 % of
+   census consults with a 1.26-nat gap — the three pre-registered tests
+   are met, so B2 "learns" in the §7a sense. B3's sampled policy attacks
+   168 times in its last batch and wins 65 %, but its argmax never
+   attacks (0 of 840 chances; the engine's own optimiser found 25 of 104
+   attack windows worth taking; battery games run to the turn-60 cap,
+   which is why the arm took 42 min) and passes on only 4 % of census
+   consults (floor 5 %): the PASS bias flipped to never-pass at
+   priority while ATTACK is positive-probability but never top-1
+   (census ATTACK argmax 0/47). Two of three tests fail; recorded as
+   "wins only", not moved.
+4. **Pre-registered "cannot", confirmed:** no arm beats v6 on rung 0.
+   The deterministic D0/D1 batteries are 0/4 for every arm (four games:
+   no level, by rule). B2's TWIN 1/4 is likewise not a level.
+
+**Reading for the 7a question.** The collapse is structural in the
+optimiser–scorer pairing — Adam's normalised step on the head parameters
+of an unbounded (A0/A1) or bounded (A2/B1/B4) scorer — and not the lr
+(A1), not the bound alone (A2), not the entropy bonus (B4), not the
+action-space sink alone (B1). Decoupling the heads (decay toward zero,
+or a step proportional to the gradient) is what changes the outcome.
+
+**What this cannot support.** One seed per arm, 256 episodes; the win
+rates are *training* rates (sampled, vs heuristic, the policy's own
+games), not an eval level; B2 vs B3 (0.336 vs 0.648) is not a ranking
+— one seed each, different failure modes under argmax. The B0 bar
+holds for this init and this build only. Consults per episode moved
+with play (B3's last batches store 46 per episode against B1's 28), so
+the 5d throughput numbers do not transfer to these arms without a
+re-measurement (the 5d lever run that follows uses B0Base, as 5d did).
+
+**Pre-registered next arms** (none run): B2 and B3 with two more seeds
+each (pool only finished seeds; 3 × 128 last-batch games per arm) —
+does the argmax-attacks split hold across seeds or is it seed 0; B5 =
+SGD heads + wd 0.01 (both levers); B6 = B2 with the census's PASS-bias
+centring (candidate-scorer mean subtracted) if the argmax-PASS
+fraction is what separates B3's sampled and argmax policies. "Learning"
+keeps the §7a definition with the B0 bar; the 2k rung waits for a
+recipe that passes it on three seeds.
