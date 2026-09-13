@@ -3160,3 +3160,19 @@ CP7's card choices were never learned), and the consult budget - from
 "imitation as such"; a card-level clone or joint-site labels could seed a
 different start. The one thing IL bought that survives every caveat is
 the first 256 episodes (0.64 vs 0.30 sampled).
+
+**C1 early checkpoints under the fixed protocol (`rl/rebattery_c1.sh`, done 2026-09-13 18:44Z; same game seeds as the lane):**
+
+| seed | point | plain argmax (lane) D0 | argmax over classes D0 | D1 / TWIN (classes) |
+|---|---|---|---|---|
+| s0 | 512 | 0.77 [0.678, 0.842] | 0.78 [0.689, 0.850] | 0.83 / 0.80 |
+| s0 | 1024 | 0.81 [0.722, 0.875] | 0.79 [0.700, 0.858] | 0.83 / 0.79 |
+| s0 | 1536 | 0.83 [0.745, 0.891] | 0.88 [0.802, 0.930] | 0.84 / 0.82 |
+| s1 | 512 | 0.61 [0.512, 0.700] | 0.60 [0.502, 0.691] | 0.61 / 0.56 |
+| s1 | 1024 | 0.49 [0.394, 0.587] | 0.50 [0.404, 0.596] | 0.53 / 0.44 |
+| s1 | 1536 | 0.78 [0.689, 0.850] | 0.80 [0.711, 0.867] | 0.86 / 0.78 |
+
+Every fixed-protocol point sits inside its plain-argmax interval: **the
+protocol correction moves nothing at any C1 point**, early checkpoints
+included — B7's k-copy prediction is not visible on these policies at
+n=100. The C1 rows stand as levels under either protocol.
