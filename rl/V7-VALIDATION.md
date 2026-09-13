@@ -2787,7 +2787,7 @@ not-exercised-scale artefact of 60 rows) / L4 26/0.
 | teacherOutside (y = −1) | 0 |
 | teacherMultiAct | 0 |
 | teacherBudgetSkipped | 0 |
-| CP7 wins / losses / draws / stalls | 958 / 442 / 0 / 0 → **0.684 [0.660, 0.708]** |
+| CP7 wins / losses / draws / stalls | 958 / 442 / 0 / 0 → **0.684 [0.659, 0.708]** |
 | `wire_validate` on `7d1b_s7400.jsonl` | ok, 1,488 consults |
 
 **Labelled fraction 20,735 / 20,735 = 1.00 (gate ≥ 0.9: pass).** Label
