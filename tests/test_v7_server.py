@@ -322,3 +322,18 @@ def test_v7_optimizer_knobs(tmp_path, monkeypatch):
     tr3 = ps.Trainer(tr.ckpt, 0, None, arch="v7", card_emb="random")      # shape changed: fresh, no raise
     assert isinstance(tr3.opt, torch.optim.Adam) and not tr3.opt.state_dict()["state"]
 
+def test_norm_adv_modes():
+    """7a arm B8: in an all-lost batch 'batch' centring flips early actions positive;
+    'std' and 'auto' keep every advantage's sign; 'auto' centres once outcomes vary."""
+    adv = torch.tensor([-0.2, -0.5, -0.9, -1.0])          # GAE of one lost game, early -> late
+    lost = [-1.0, -1.0]
+    b = ps._norm_adv(adv.clone(), lost, "batch")
+    assert b[0] > 0 and b[-1] < 0                          # the manufactured sign
+    for mode in ("std", "auto"):
+        o = ps._norm_adv(adv.clone(), lost, mode)
+        assert (o < 0).all() and abs(float(o.std()) - 1.0) < 1e-4
+    a = ps._norm_adv(adv.clone(), [-1.0, 1.0], "auto")
+    assert torch.allclose(a, b)                            # outcomes vary: centred as 'batch'
+    assert torch.equal(ps._norm_adv(adv.clone(), lost, "none"), adv)
+    assert torch.equal(ps._norm_adv(torch.zeros(3), lost, "std"), torch.zeros(3))
+

@@ -2177,3 +2177,64 @@ by item 2; the equivalent unconfounded criterion is **P(land) at ≥ 3
 lands above 0.5** (summed over land candidates), read from
 `v7_land_census.py` on each `ck_512..2048`. Both are recorded; the P(land)
 one decides.
+
+### B8 pre-registration — stop centring advantages in constant-outcome batches (2026-09-13 03:20, before any 7c battery beyond trained=0 was read)
+
+Mechanism (§7a correction, 7c land census): `_update_v7` normalises
+advantages to zero mean / unit std per batch. In a batch whose episode
+outcomes are all −1 the centring leaves only the GAE timestep structure
+and the critic transient, so early actions get positive advantage and
+late actions negative whatever they were — a fake, position-dependent
+gradient. B2 learned it as P(land) falling monotonically with lands in
+play. Batching is not the problem; centring across a degenerate batch is.
+
+Change (commit with this row): `policy_server.py --adv-norm
+{batch,std,auto,none}`, default `batch` = the recipe through 7c (so the
+running 7c lane, which restarts its server from disk, is untouched).
+`std` scales by the std and never centres; `auto` centres only when the
+batch's outcomes vary; `none` is raw GAE. Unit test `test_norm_adv_modes`
+(an all-lost batch: `batch` flips the early actions positive, `std`/`auto`
+keep every sign, `auto` centres once outcomes vary).
+
+Arm B8 = B2's recipe + `--adv-norm auto`, W0Base, 256 episodes, seed 0,
+then 2,048 on three seeds if the 256 census reads as predicted (`rl/run_7b.sh`
+pattern; runs after 7c releases the GPU).
+
+Pre-registered predictions:
+* P(land) at ≥ 3 lands on the filter-build census set does **not** fall
+  with lands in play at ck_256 (B2's 0.86 → 0.08 was the signature; B8's
+  curve is predicted flat or rising past 2 lands, ≥ 0.3 at ≥ 3 lands);
+* the sampled last-4-batch win rate is not worse than B2's 0.336 [0.260,
+  0.421] (interval overlap suffices — "not worse", not "better");
+* argmax-PASS on the census stays in [5 %, 90 %] with a gap > 0.5.
+Cannot: raise the update speed; fix the k-copy argmax bias (B7); beat
+v6 on rung 0; say anything from one seed beyond "the signature moved".
+If `auto` never centres in 256 episodes (no batch with a win), the arm is
+equivalent to `std` and is recorded as such.
+
+### 7d plan — behaviour cloning from XMage's strongest AI, then PPO (agreed 2026-09-13 03:20; not started)
+
+Why: the terminal reward carries no information while every game is
+lost; a warm start that wins sometimes gives the batch outcome variance,
+which is what every normalisation scheme needs and what the critic
+needs. v6 imitation from the search teacher reached 0.36–0.40 vs the
+heuristic (PHASE5-VERDICT C1), so it is a start, not a ceiling; anvil's
+BC → self-play loop worked at scale.
+
+Pieces, in order, each its own row: (1) a recording of consults with the
+teacher's chosen candidate index — XMage ComputerPlayer7 (the alpha-beta
+AI the lane calls CP7) on the RL seat with the v7 wire dumped and the
+choice logged (the `shadowLabel` / `imitateOut` path exists for the v6
+search teacher; the v7 version must record the wire message plus the
+chosen index, ≥ 20k consults over the bench decks, both seats); (2)
+`v7_bc.py`: cross-entropy over candidates on those consults through the
+same V7Policy (heads + encoder + adapter; belief off), held-out games for
+early stopping, the land census and the argmax-type census as the
+behaviour counters, a 100-game argmax battery vs the heuristic as the
+level; (3) PPO from the BC checkpoint with B2's optimiser and `--adv-norm
+auto`, three seeds, the 7c readings. Pre-registered cannot: BC alone
+cannot beat its teacher (it copies CP7's mistakes and its consult budget
+is CP7's); the k-copy argmax bias applies to BC too (B7 first). Decision
+owed before (1): CP7 as the teacher vs the project's own search teacher
+(`rl.agent=search`, plies/breadth), measured by their heuristic win rate
+over 100 games each on W0Base.

@@ -59,6 +59,8 @@ GAMMA, LAM, CLIP, LR = 0.997, 0.95, 0.2, 3e-4
 EPOCHS, ENT_COEF, VAL_COEF = 4, 0.01, 0.5
 # 7a arms B2/B3 (--weight-decay, --heads-opt, --heads-lr): see _v7_optimizer
 WEIGHT_DECAY, HEADS_OPT, HEADS_LR = 0.0, "adam", 1e-3
+# --adv-norm (7a arm B8): how the v7 update normalises advantages per batch
+ADV_NORM = "batch"
 UPDATE_EPISODES = 32
 MAX_K = 40                   # candidate buffer; --max-k overrides
 # MAX_K is a BUFFER SIZE, not an architectural constant: every parameter
@@ -414,6 +416,27 @@ def _to_cpu(obj):
     if isinstance(obj, (list, tuple)):
         return type(obj)(_to_cpu(v) for v in obj)
     return obj
+
+
+def _norm_adv(adv, rewards, mode):
+    """Per-batch advantage normalisation for _update_v7 (7a arm B8).
+    batch: zero mean, unit std (the recipe through 7c). In a batch whose episode
+           outcomes are all equal this manufactures a position-dependent sign
+           (early actions up, late actions down) out of the GAE timestep structure
+           and the critic transient - the drift direction of the 7a collapse and
+           B2's "no third land" (V7-VALIDATION 7c land census).
+    std:   scale by the std only, never centre - the sign stays the sign of
+           (return - value).
+    auto:  centre only when the batch's episode outcomes vary, else std.
+    none:  raw GAE advantages."""
+    if mode == "none" or adv.numel() == 0:
+        return adv
+    sd = adv.std()
+    if sd <= 1e-6:
+        return adv
+    if mode == "std" or (mode == "auto" and len(set(float(r) for r in rewards)) < 2):
+        return adv / (sd + 1e-8)
+    return (adv - adv.mean()) / (sd + 1e-8)
 
 
 class _MultiOpt:
@@ -942,8 +965,7 @@ class Trainer:
         mv = mc.var()
         self.last_ev = (float(1.0 - (mc - values).var() / mv)
                         if float(mv) > 1e-8 else float("nan"))
-        if adv.std() > 1e-6:
-            adv = (adv - adv.mean()) / (adv.std() + 1e-8)
+        adv = _norm_adv(adv, [r for _, _, r in self.completed], ADV_NORM)
         dev = self.device
         adv, ret = adv.to(dev), ret.to(dev)
         actions, old_logp = actions.to(dev), old_logp.to(dev)
@@ -1980,6 +2002,8 @@ if __name__ == "__main__":
     ap.add_argument("--weight-decay", type=float, default=0.0, help="v7: AdamW weight decay on the heads (7a arm B2)")
     ap.add_argument("--heads-opt", choices=["adam", "sgd"], default="adam", help="v7: heads on SGD-momentum, trunk on Adam (7a arm B3)")
     ap.add_argument("--heads-lr", type=float, default=1e-3, help="v7: heads lr under --heads-opt sgd")
+    ap.add_argument("--adv-norm", choices=["batch", "std", "auto", "none"], default="batch",
+                    help="v7: per-batch advantage normalisation (7a arm B8; batch = through 7c)")
 
     args = ap.parse_args()
     if args.device == "cuda" and not torch.cuda.is_available():
@@ -1996,6 +2020,7 @@ if __name__ == "__main__":
     if args.ent_coef is not None:
         ENT_COEF = args.ent_coef
     WEIGHT_DECAY, HEADS_OPT, HEADS_LR = args.weight_decay, args.heads_opt, args.heads_lr
+    ADV_NORM = args.adv_norm
     # Phase 12: 4 game threads + N server threads on 4 cores is heavily
     # oversubscribed; measured held-time per consult rose 3.40 -> 5.75 ms
     # from conc1 to conc4. Configurable so the trade can be measured.
