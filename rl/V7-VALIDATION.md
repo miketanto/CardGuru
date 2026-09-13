@@ -3379,3 +3379,102 @@ comparison. Other levers (batch-centred advantages = B2, a BC warm start
 = D-PPO, reward shaping) are named, not run.
 
 **Correction, 15 minutes later (before the 1024 point):** `--ent-coef` defaults to 0.01 in `policy_server.py` (`ENT_COEF = 0.01`; the B4 arm of 7a raised it to 0.1), so C1 — and 8a — already carry 0.01, and "8a-e = C1 + `--ent-coef 0.01`" is the 8a recipe itself: void, withdrawn. The 7a record says the entropy lever alone does not stop this kind of collapse (B4 at 0.1 rode B1's PASS rail to 0/128 with attacks 0/0). The replacement follow-up, pre-registered here with the same scope (one seed to 512, after 8b, read on the SPELL census and a D0 > 0/100 only): **8a-b = C1's recipe with `--adv-norm batch`** — batch centring is the direct antidote to the hypothesised mechanism (an all-lost batch centres to zero advantage instead of pushing every taken action down), so a policy that keeps casting under 8a-b and stops under 8a confirms the mechanism; B2's own failure mode (batch centring manufactures "early good, late bad" once batches mix outcomes, and unlearned the third land on W0Base) is the pre-stated cost and is read on the LAND census. It cannot give a level or a v6 comparison.
+
+**Amendment 2 — the two-tier game budget (2026-09-13 19:10 next-session
+clock; decided by the user; replaces the "100 games per row" clause of
+Amendment 1, everything else there stands).** Interim battery points
+(every point before a run's final one) and every cross-deck suite row
+drop to **50 games**, labelled **development probe** with their (wider)
+Wilson interval, used for go / no-go only and never called a level; a
+run's **final point stays at 100 games per row** and is the only one
+called a level; a suite is read **pooled across its four rows (200
+games)** as the comparison, its per-row numbers are descriptive. Lane
+knob: `R0_EVAL_G_INTERIM=50` (both lane scripts; the `R0|` row now
+carries `games=N`); suite knob: `G=50` in `rl/battery_xdeck.sh`.
+
+## 8a — seed 0: STOPPED at 512 by decision; the C1 recipe as-is does not train on Dimir (2026-09-13 19:15 next-session clock; WSL 18:00; one seed; 1024 not run; seed 1 not run)
+
+Decision (user, at the 512 reading): the interim paragraph above is
+decisive for "the C1 recipe as-is on BenchDimir" — D0 0/100 [0.000,
+0.037], P(SPELL) ≤ 0.01 at every land count, argmax-SPELL 0/257, a
+land-and-pass rail with no creature in 100 games — and the 1024 point
+cannot rescue an argmax policy that never casts. `rl/stop_8a.sh` stopped
+the lane at 512 + 1 job (576 episodes played, 19 updates, KL-stopped
+4/19; the ninth job had 1 win in 64 with 175 consults per game). Seed 1
+is not run (nothing to confirm at 0/100 — Amendment 1's rule).
+Artifacts: `rl/artifacts/v7/8a/s0/` (battery.txt, train_lines.txt,
+jobs.log, census_all.txt at ck_512, probe files, STOPPED.txt; ck_512.pt
+on disk, not committed).
+
+**Readings against the pre-registration:**
+* **Trains on Dimir — NO** (failed gate, not a moved bar): D0 0/100 at
+  512 is below 0.5 with the whole interval; the sampled curve is 3/64 then
+  0/64 x 7 then 1/64 — the last-4 rate is not clear of the first-4, it is
+  below it.
+* **vs v6 — not made as pre-registered**: the comparison point was 1024
+  (not reached), and v6 has no valid 512 level (its 0 / 512 / 1024
+  progression was 10-game probes, retracted in `rl/DIMIR-V6-2K-RESULT.md`
+  §0). What can be said: 0/100 at 512 is clear below v6's 1024 interval
+  [.486, .622], and a policy that never casts does not reach it at 1024
+  either — the deck-agnostic v7 recipe from scratch is below the
+  deck-specific v6 on this deck, with the caveat that the points differ.
+* **Not collapsed — the four clauses hold and the policy is collapsed**:
+  argmax-PASS 58 %, gap 3.09, entropy 0.37, max |logit| 4.79 (all inside
+  the clauses); SPELL census argmax-SPELL 0/257, P(SPELL) ≤ 0.010. The
+  clauses were built on W0Base's PASS-vs-creature axis; on Dimir the
+  collapse axis is SPELL-vs-PASS and the clauses do not see it. Recorded
+  as a limitation of the clause set (the SPELL census is the Dimir
+  counter from here on), not as a pass.
+* **Behaviour**: lands played at every land count (argmax-land 0.79 at
+  ≥ 3, P(land) 0.75 — the third land is not the problem here); P(cast)
+  ~0; TARGET 112/112 and BLOCK 47/47 on census windows the played policy
+  never reaches; 3.6 actions per game against 124 consults; games 16.6
+  turns (the heuristic's creatures kill an empty board on schedule).
+* **Throughput** (the one thing the runbook asked to measure and write
+  down): 0.68 games/s on the first job (51 consults per game, 20.5
+  turns) falling to 0.15–0.20 games/s as the rail formed (132–175
+  consults per game); ~7 min per 64-episode job in the rail; `update_s`
+  70–90 s for ~4,500 stored consults (~18 ms per consult). A 1024-episode
+  seed would have been ~2 h — under the 6 h bar; cost was not the reason
+  to stop.
+
+**Cannot**: say the recipe cannot train on Dimir with more episodes (not
+run: the value head might zero the advantages later); say anything about
+a second seed (the collapse is deterministic in mechanism, not shown
+twice); separate the three confounds — the all-lost-batch mechanism
+(8a-b tests it), the KL budget at 0.02 (8a-c, if 8a-b rails), and the
+deck itself (a 20-land midrange deck with no creature on turns 1–2 means
+the random init loses every game, so the first batch has no positive
+signal at all: the W0Base recipe's first update saw 3–9 % wins).
+
+## 8a-b pre-registration — the mechanism test: C1's recipe + `--adv-norm batch` on Dimir (2026-09-13 19:15 next-session clock; WSL 18:00; written at launch, before any 8a-b probe)
+
+`rl/run_8ab.sh`: C1's recipe with ONE change, `--adv-norm batch` (batch
+centring; the B2 form) instead of `auto`, on `rung0_lane.sh BenchDimir
+BenchDimir 512 0`, one seed, 512 episodes; two-tier rule: 50-game D0
+development probes at 0 and 256, 100-game D0 + D1 at 512 (the level);
+LAND + SPELL + type census on ck_256 and ck_512 over the Dimir census
+set; `jobs.log` kept. Lane state `/tmp/rl_8ab_s0`, driver 7910 / server
+7940; artifacts `rl/artifacts/v7/8ab/s0/`.
+
+Readings, both stated:
+* **Escapes the rail** if at ck_512 P(SPELL) at ≥ 3 lands is > 0.1 on the
+  SPELL census AND argmax-SPELL > 0 on the type census (8a: 0.011 and
+  0/257).
+* **Trains** only if D0 at 512 (100 games) is clear above 0.037 (the
+  upper bound of 8a's 0/100); "escapes the rail" without "trains" is a
+  mechanism finding, not a level.
+* Costs read alongside (B2's known failure mode): the LAND census at
+  ≥ 3 lands (B2 unlearned the third land under batch centring once
+  batches mixed outcomes), and the sampled curve for the "early good,
+  late bad" shape.
+Consequences, pre-stated: if 8a-b also rails, one more single-change arm
+runs before 8b — **8a-c = C1 + `--target-kl 0.1`** (the C2 arm that was
+never run; the same lane, `TKL=0.1`, `adv-norm auto`), same readings; if
+8a-b trains, its ck_512 is the Dimir `rl:` entry of the 8b pool; if
+neither trains, 8b's pool entry `rl:...:BenchDimir.dck` becomes
+`cp7::BenchDimir.dck` and the 8b row says why.
+Cannot: give a level or a v6 comparison (one seed, 512 episodes, 100
+games); attribute an effect to anything but the one flag changed;
+generalise to W0Base (where `auto` was chosen over `batch` for B2's
+reasons).

@@ -193,10 +193,13 @@ except Exception: print(-1)" 2>/dev/null || echo -1)
         # all three; R0_ROWS_FINAL applies at trained >= BUDGET); a skipped row prints LB=skip
         local rows=${R0_ROWS:-"D0 D1 TWIN"}; [ "$tr" -ge "$BUDGET" ] && rows=${R0_ROWS_FINAL:-$rows}
         case " $rows " in *" $LB "*) ;; *) line="$line|$LB=skip"; continue ;; esac
+        # R0_EVAL_G_INTERIM (Phase 8 two-tier rule): games per row at every point BEFORE
+        # the final one (development probes); the final point (trained >= BUDGET) uses EVAL_G
+        local g=$EVAL_G; [ "$tr" -lt "$BUDGET" ] && g=${R0_EVAL_G_INTERIM:-$EVAL_G}
         local f=$OUT/probe_${LB}_${tr}.txt
-        probe "$f" "$OPP" "$DK" "$EVAL_G" $((900000 + tr))
+        probe "$f" "$OPP" "$DK" "$g" $((900000 + tr))
         local wr=$(field $f win_rate)
-        line="$line|$LB=${wr:-NA} $(band $EVAL_G ${wr:-0})"
+        line="$line|$LB=${wr:-NA} $(band $g ${wr:-0})|games=$g"
     done
     local bo=$(field $OUT/probe_D0_${tr}.txt blockOpportunities)
     local bd=$(field $OUT/probe_D0_${tr}.txt blocksDeclared)
