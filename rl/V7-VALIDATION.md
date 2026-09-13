@@ -2371,3 +2371,78 @@ against the search teacher head to head (not run). Piece (1b) now needs a
 `rl.agent=cp7` seat in `EpisodeRunner` that dumps the v7 wire with CP7's
 chosen candidate index — a Java change, so it waits for the lane to idle
 (never recompile while a lane runs).
+
+Addendum to 7d piece (1a), in the open (05:40): `rl/RUNG0-CEILING-TEST.md`
+already had these two players in the same seat vs D0 on W0Base — 1-ply
+search .410 [.319, .508], CP7 .650 [.524, .758] (n=60) — and LEVELSET's
+".614 over the heuristic" for the search opponent is the multi-deck
+figure with the caveat "a worse pilot than the heuristic on four of six
+archetype decks". The 7d1 numbers (search .37/.41, CP7 .68) replicate the
+ceiling-test rows on this build; they are not a new finding about the
+search teacher, and the decision stands.
+
+## C1 — seed 0 interim at 512 and 1024 episodes (2026-09-13 05:45; seed 0 still running; not the C1 row)
+
+Read from `/tmp/rl_7c1_s0/` while the lane runs; the C1 row waits for
+three finished seeds. Recorded now because the pre-stated C2 trigger is
+read at seed 0's 512 point.
+
+**Sampled curve, seed 0** (batch of 32 episodes per update; `rl/artifacts/v7/7c1/s0/` gets `train_lines.txt` at seed end):
+
+| updates | episodes | batch win rates | last-4 wins | entropy | max \|logit\| | KL-stopped |
+|---|---|---|---|---|---|---|
+| 1–8 | 256 | .09 .28 .06 .00 .00 .00 .09 .00 | 3/128 = 0.023 [0.008, 0.067] | 1.01 → 0.39 | 1.9 → 4.6 | 5/8 |
+| 9–16 | 512 | .53 .56 .84 .78 .78 .72 .91 .94 | **107/128 = 0.836 [0.762, 0.890]** | 0.49–0.64 | 4.6 → 4.93 | 1/8 |
+| 17–32 | 1024 | .78–.91, no trend | 110/128 = 0.859 [0.788, 0.909] | 0.56–0.69 | 4.74 → **5.00** (updates 30–32) | 1/16 |
+
+Consults per episode ran 27 → 70 through the dead stretch (updates 4–8:
+long games, 250+ blocks and < 30 attacks per batch — the B3 wall, sampled)
+and back to ~40 once the policy started winning (attacks 113–170 per
+batch from update 11). The first eight batches are the C2 question:
+after the first three KL-bound single steps (KL 0.33 / 0.17 / 0.03) the
+batch went to zero wins for five updates, during which `--adv-norm auto`
+does not centre (no outcome variance) and every advantage is negative;
+the policy climbed out at update 9 without any intervention.
+
+**Argmax battery at 512** (100 games per opponent, `--argmax-classes`,
+levels by the project rule): **D0 0.77 [0.678, 0.842]**, D1 0.80 [0.711,
+0.867], TWIN 0.79 [0.700, 0.858]; blocks 1611/2081, BLOCKOPT 758/815,
+attacks 1227/5049, ATKOPT 913/1409, under/over 390/84, 35.5 turns;
+`attackBudgetHit` 47 / 46 / 40 per 100-game battery (so ~45 % of games
+had at least one consult priced under the 200-leaf reply cap — carried,
+not corrected).
+
+**Census at `ck_512`** (`rl/artifacts/v7/7c1/s0/census_512.txt`, the
+7c_W0Base p1/p99/sf set, 1,101 consults): argmax-PASS when another
+candidate exists 149/1070 = **14 %**, mean top gap **3.55** nats, entropy
+0.64; argmax types LAND 204/313, SPELL 368/368, ATTACK 130/279, BLOCK
+207/207. Land census: P(land) 1.00 at zero lands, 0.85 at one, 0.53 at
+two, 0.48 at three, 0.45 at four, then rising to 0.75 at six and 1.00 at
+nine or more; **P(land) at ≥ 3 lands = 0.70** (argmax-land 140/219), and
+P(PASS) on land-offering consults is 0.000 at every land count — the dip
+at 3–4 lands is SPELL winning the argmax (24 of 40 consults), not PASS.
+B2's signature at the same point was 0.08 falling monotonically.
+
+**Readings, seed 0 only (the pre-registered ones are decided at 2,048 on
+three seeds):**
+* C2 trigger — **not fired.** Seed 0's batch rate at 512 (0.94, last four
+  0.836) is above 7c seed 0's 0.78 on the same recipe without the budget;
+  the KL budget bound 5 of the first 8 updates and 2 of the next 24. The
+  budget is not starving the optimiser; `rl/run_7c2.sh` is staged and not
+  launched.
+* Third land: 0.70 at ck_512 against the 0.5 bar (the bar is read at
+  ck_2048).
+* Not collapsed at 512: all four clauses hold (14 %, 3.55, 0.64, 4.93).
+  At 1024 the logit clause is **at the bound** — max |logit| 5.00 on
+  updates 30–32 — while entropy stays 0.64–0.69 and every type is chosen;
+  whether the census at ck_1024 keeps the other three is read when its
+  battery lands.
+* Context, not a comparison (one seed): v6's rung-0 W0Base curve
+  (`rl/artifacts/rung0/W0Base/report.txt`) is D0 0.568 [0.519, 0.615]
+  at 512 pooled over two seeds, 0.78 at 1,407–1,919, 0.705 at 2,111 (seed
+  0 alone). C1 seed 0's 0.77 at 512 has an interval clear of v6's 512
+  point; the pre-registered "cannot" (parity on one seed is noise; three
+  seeds pooled before any comparison) stands.
+
+Cannot: any of the above as a level for C1 (one seed); attribute the
+recovery to a flag (B8 and the ablations); the 1024 census (pending).
