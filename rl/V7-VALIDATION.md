@@ -3478,3 +3478,81 @@ Cannot: give a level or a v6 comparison (one seed, 512 episodes, 100
 games); attribute an effect to anything but the one flag changed;
 generalise to W0Base (where `auto` was chosen over `batch` for B2's
 reasons).
+
+## 8a-b — C1's recipe + `--adv-norm batch` on Dimir: escapes the rail and trains at 512 (2026-09-13 19:50 next-session clock; WSL 18:25; ONE seed, 512 episodes; fixed argmax-classes protocol; `rl/artifacts/v7/8ab/s0/`)
+
+`rl/run_8ab.sh` (lane 17:57–18:22 WSL, 25 min for 512 episodes + 250
+battery games; 16 updates, KL-stopped 4/16, all in the first five).
+
+| point | games | D0 (heuristic, BenchDimir) | D1 (search) | attacks | blocks | turns |
+|---|---|---|---|---|---|---|
+| 0 | 50 (dev. probe) | 0/50 = 0.00 [0.000, 0.071] | – | 0/46 | 0/35 | 19.0 |
+| 256 | 50 (dev. probe) | 17/50 = 0.34 [0.224, 0.478] | – | 305/325 | 4/98 | 19.5 |
+| **512** | **100 (level)** | **41/100 = 0.41 [0.319, 0.508]** | 29/100 = 0.29 [0.210, 0.385] | 668/701 | 5/168 | 18.4 |
+
+0 stalls and 0 draws in every battery; no `attackBudgetHit` (Dimir boards
+are small). Sampled curve (32-episode batches, `train_lines.txt`): .19
+.50 .31 .31 .22 .38 .41 .38 .25 .22 .44 .34 .44 .38 .13 .44 — first-4
+42/128 = 0.328 [0.253, 0.412], last-4 44/128 = 0.344 [0.267, 0.429]:
+flat, not clear of each other. Entropy 0.76 → 0.29, max |logit| 1.9 →
+4.81; chosen types in the last batch PASS 1545 / LAND 226 / SPELL 342 /
+ACTIVATE 58 / TARGET 153 / ATTACK 136 / BLOCK 18.
+
+**Census** (the Dimir set, 903 consults): ck_512 `argmax_type PASS=230/790
+LAND=221/221 SPELL=228/257 ACTIVATE=0/210 TARGET=112/112 ATTACK=111/111
+BLOCK=1/47`, argmax-PASS when another candidate exists 165/838 = 20 %, gap
+2.77, entropy 0.43, P(PASS) 0.24. **SPELL census: argmax-SPELL 175/198 =
+0.88 at ≥ 3 lands, P(SPELL) 0.884** (0.99 / 0.92 / 0.94 at 2 / 3 / 4
+lands, P(PASS) 0.007). LAND census: argmax-land 146/146, P(land) 0.98 at
+≥ 3. The argmax census at ck_512 is identical, count for count, to
+ck_256's (P(SPELL) 0.80 → 0.88, gap 1.73 → 2.77, entropy 0.57 → 0.43):
+the second 256 episodes sharpened the same argmax on this set.
+
+**Readings, as pre-registered for 8a-b:**
+* **Escapes the rail — YES**: P(SPELL) at ≥ 3 lands 0.884 > 0.1 and
+  argmax-SPELL 228/257 > 0 (8a: 0.011 and 0/257). Already true at ck_256.
+* **Trains — YES** on the 8a-b bar: D0 0.41 [0.319, 0.508] is clear
+  above 0.037. On the ORIGINAL 8a bar ("clear above 0.5 and the last-4
+  sampled rate clear of the first-4") it is NOT met at 512: the interval
+  reaches 0.508 and the sampled curve is flat from the first batch.
+  So: a policy that plays Magic on Dimir at 512 episodes, at a level not
+  shown above a coin flip against the heuristic, with no visible learning
+  after update 2.
+* **Mechanism**: the one change was `auto` → `batch` advantage centring.
+  8a's second batch was 0/32 (uncentred under `auto`: every advantage
+  negative, entropy 0.79 → 0.20 in five updates, spells gone); 8a-b's
+  batches never went to zero (min 4/32) and entropy fell to 0.29 over 16
+  updates while spells stayed. Caveat: the first batches differed by
+  chance before any flag could act (3/32 vs 6/32 wins from the same init
+  and game seeds — concurrent play is not replay-deterministic), and 8a's
+  0/32 second batch is where the flags diverge; one seed each, so the
+  mechanism is shown once, not established.
+* **B2's cost, read as pre-stated**: the third land is NOT unlearned here
+  (argmax-land 1.00 at ≥ 3 lands vs B2's 0.08 on W0Base); no "early good,
+  late bad" shape in 16 updates (flat instead). The lever's known failure
+  mode did not appear by 512 on this deck; it is not excluded later.
+* **Behaviour**: attacks 668/701 (attacks with everything: under/over
+  0/70), blocks 5/168 with BLOCKOPT 64/146 (never blocks — BLOCK 1/47 on
+  the census: the combat head learned "attack" and not "block"), D1 0.29
+  (the 1-ply search punishes the all-in attacks), 18.4-turn games. TARGET
+  112/112 on the census (it points removal when asked); ACTIVATE 0/210.
+
+**vs v6 (context, not the pre-registered comparison)**: v6 Dimir's D0
+.555 [.486, .622] is a 1024 point; 8a-b's 0.41 [0.319, 0.508] at 512
+lies below it with the intervals touching at the edge (0.508 vs 0.486 —
+overlapping). Not comparable as pre-registered (different points, one
+seed each); what it says is that the batch-centred v7 recipe at half the
+episodes is in v6's neighbourhood, not clearly below.
+
+**Consequence (pre-stated in the 8a-b pre-registration): 8a-b trains →
+its ck_512 is the Dimir `rl:` entry of the 8b pool** (`rl/run_8b.sh`
+`DIMIR=rl/artifacts/v7/8ab/s0/ck_512.pt`); 8a-c (`--target-kl 0.1`) is
+not run.
+
+Cannot: call 0.41 a level for "v7 on Dimir" beyond this one seed and
+point; say the recipe keeps training past 512 (flat curve; 1024 not run);
+attribute the escape to anything but the centring flag — with the
+first-batch caveat above; say anything about W0Base (where `auto` was
+chosen for B2's reasons and C1 trained with it); rank 8a-b's Dimir
+policy against CP7 (no suite run on it — the suite budget goes to 8b's
+two checkpoints).

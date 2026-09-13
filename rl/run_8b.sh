@@ -17,14 +17,14 @@ RL=/home/user/CardGuru/rl
 LB=/mnt/c/Users/sutanto4/Documents/CardGuru
 ART=$LB/rl/artifacts/v7/8b
 INIT=${INIT:-$LB/rl/artifacts/v7/7l/L0/ck_3072.pt}
-DIMIR=${DIMIR:-$LB/rl/artifacts/v7/8a/s0/ck_1024.pt}
+DIMIR=${DIMIR:-$LB/rl/artifacts/v7/8ab/s0/ck_512.pt}   # the 8a-b Dimir policy (8a railed; PHASE8-DECKS STATE 19:10)
 mkdir -p $ART
 for f in "$INIT" "$DIMIR"; do [ -s "$f" ] || { echo "8B|FAILED|missing $f"; exit 1; }; done
 OUT=/tmp/rl_8b_L2
 if [ -s $ART/L2/census.txt ]; then echo "8B|L2|skip=done"; else
     mkdir -p $OUT
     echo "8B|L2|start=$(date -u +%FT%TZ)|init=$INIT|dimir=$DIMIR"
-    R0_ENCODER_V=7 R0_EVERY=256 R0_CHUNK=64 R0_CP7_G=0 R0_CONC=4 R0_LR=3e-5 RL_LOCK_STATS=1 R0_ROWS="D0" \
+    R0_ENCODER_V=7 R0_EVERY=256 R0_CHUNK=64 R0_CP7_G=0 R0_CONC=4 R0_LR=3e-5 RL_LOCK_STATS=1 R0_ROWS="D0" R0_EVAL_G=100 R0_EVAL_G_INTERIM=50 \
     RL_DRIVER_PORT=7912 R0_BATTERY_START=1 R0_PORT=7952 R0_OPP_PORT=7960 \
     R0_INIT=$INIT \
     R0_OPP_SPEC="heuristic::BenchDimir.dck,cp7::BenchBurn.dck,rl:$DIMIR:BenchDimir.dck,heuristic::BenchBurn.dck" \
@@ -38,7 +38,7 @@ fi
 suite() {   # $1 ckpt  $2 out dir  $3 label
     if grep -q 'XDECK|done' $2.txt 2>/dev/null; then echo "8B|suite|$3|skip=done"; return; fi
     echo "8B|suite|$3|start=$(date -u +%FT%TZ)"
-    bash $RL/battery_xdeck.sh "$1" W0Base $2 7947 7913 2>&1 | grep '^XDECK' | tee $2.txt
+    G=${SUITE_G:-50} bash $RL/battery_xdeck.sh "$1" W0Base $2 7947 7913 2>&1 | grep '^XDECK' | tee $2.txt   # Amendment 2: 50-game suite rows, read pooled
 }
 L2CK=$ART/L2/ck_4096.pt; [ -s $L2CK ] || L2CK=$OUT/ck_4096.pt
 suite $L2CK $ART/suite_L2_4096 L2_4096

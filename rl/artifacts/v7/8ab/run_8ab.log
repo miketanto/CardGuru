@@ -1,0 +1,5 @@
+8ab|seed=0|start=2026-09-13T22:57:05Z|adv=batch|extra=
+8ab|seed=0|rc=0|end=2026-09-13T23:22:13Z
+R0|BenchDimir|s0|trained=512|ck_eps=512|D0=0.4100 [0.319,0.508]|games=100|D1=0.2900 [0.210,0.385]|games=100|TWIN=skip|blocks=5/168|BLOCKOPT=64/146|gap=399|attacks=668/701|ATKOPT=379/449|ATKOPTCA=359/449|under_over=0/70|t
+R0_DONE|BenchDimir|s0|trained=512|out=/tmp/rl_8ab_s0
+8ab|done=2026-09-13T23:23:00Z
