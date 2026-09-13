@@ -2125,3 +2125,55 @@ non-training signatures from each other (B6 alone does that).
 Levels: the batteries are 100 games per opponent per point, so each is a
 level by the project rule; the sampled training rate is a curve, not a
 level. Pool only finished seeds.
+
+### 7c — land census of the 7a checkpoints, and a pre-registration amendment (2026-09-13 02:40, before seed 0's first battery)
+
+`rl/v7_land_census.py` over `7c_W0Base_{p1,p99,sf}` (filter build, 8 games
+each, 1,101 consults, 313 offering a land; `rl/artifacts/v7/7c/land_census_7a.txt`):
+on every consult that offers a LAND candidate, the summed probability of
+playing a land and whether the argmax is a land, by lands the agent
+controls (player token idx 13).
+
+| lands in play | consults | init P(land) · argmax-land | B2 ck_256 | B3 ck_256 |
+|---|---|---|---|---|
+| 0 | 24 | 0.63 · 0 | 0.86 · 24 | 0.96 · 24 |
+| 1 | 28 | 0.57 · 0 | 0.60 · 14 | 0.77 · 22 |
+| 2 | 42 | 0.41 · 0 | 0.24 · 0 | 0.44 · 18 |
+| 3 | 40 | 0.38 · 0 | 0.16 · 0 | 0.37 · 16 |
+| 4–6 | 101 | 0.35 · 0 | 0.08 · 0 | 0.36 · 49 |
+| 7–14 | 78 | 0.36 · 0 | 0.03 · 0 | 0.55 · 71 |
+| ≥ 3 pooled | 219 | 0.36 · 0.000 | **0.08 · 0.000** | 0.43 · 0.621 |
+
+1. **B2's third-land refusal is a learned probability, not a rank
+   artefact.** P(land) falls monotonically with lands in play, 0.86 →
+   0.24 at two lands → 0.02 at nine, while P(PASS) rises to 0.97. Lands
+   in play is a proxy for turn; this is the late-game-negative-advantage
+   signature (§7a correction: batch-normalised GAE gives late actions
+   negative advantage in a mostly-lost batch) written into the policy.
+   Sampled, B2 still plays a third land 16 % of the time, which is why
+   the sampled rate is 34 % and the argmax wall loses. B3 is the other
+   corner: P(land) rises again past six lands and its argmax keeps
+   playing lands (62 % at ≥ 3) — and never attacks.
+2. **Identical cards split the softmax mass — a structural bias of the
+   argmax battery.** The init at zero lands puts 0.63 on "play a land"
+   and 0.37 on PASS yet never argmaxes a land: three Plains in hand are
+   three LAND candidates (WIRE §2f, one per playable), each below the
+   single PASS row. Any action offered as k identical copies needs k
+   times PASS's share to win the rank. This is the mechanism behind the
+   init's "argmax PASS on 93 %" and it biases every deterministic
+   battery against lands (and against identical creatures) relative to
+   the sampled policy. Pre-registered fix, not run: **B7 — argmax over
+   candidate classes** (sum probabilities over candidates with the same
+   card and rule before taking the argmax; eval-side only, no training
+   change; the training sampler is unaffected because sampling already
+   sums mass). It cannot change a sampled rate; it can only move argmax
+   batteries, and it is expected to move the init's argmax-PASS fraction
+   most.
+
+**Pre-registration amendment to 7c** (in the open, before seed 0's first
+battery at 512 — the lane had no update yet, only the trained=0 battery, when this was
+written): the "argmax-LAND at 3+ lands above 50 %" criterion is confounded
+by item 2; the equivalent unconfounded criterion is **P(land) at ≥ 3
+lands above 0.5** (summed over land candidates), read from
+`v7_land_census.py` on each `ck_512..2048`. Both are recorded; the P(land)
+one decides.

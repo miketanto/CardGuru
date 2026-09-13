@@ -1,0 +1,49 @@
+LANDCENSUS|consults_with_land=313|files=3
+LANDCENSUS|ckpt=B0/init.pt|lands=0|consults=24|argmax_land=0|p_land_mean=0.629|p_pass_mean=0.371|other_types={}
+LANDCENSUS|ckpt=B0/init.pt|lands=1|consults=28|argmax_land=0|p_land_mean=0.565|p_pass_mean=0.377|other_types={'SPELL': 6}
+LANDCENSUS|ckpt=B0/init.pt|lands=2|consults=42|argmax_land=0|p_land_mean=0.406|p_pass_mean=0.326|other_types={'SPELL': 24}
+LANDCENSUS|ckpt=B0/init.pt|lands=3|consults=40|argmax_land=0|p_land_mean=0.376|p_pass_mean=0.318|other_types={'SPELL': 24}
+LANDCENSUS|ckpt=B0/init.pt|lands=4|consults=37|argmax_land=0|p_land_mean=0.336|p_pass_mean=0.326|other_types={'SPELL': 24}
+LANDCENSUS|ckpt=B0/init.pt|lands=5|consults=33|argmax_land=0|p_land_mean=0.352|p_pass_mean=0.427|other_types={'SPELL': 15}
+LANDCENSUS|ckpt=B0/init.pt|lands=6|consults=31|argmax_land=0|p_land_mean=0.364|p_pass_mean=0.518|other_types={'SPELL': 10}
+LANDCENSUS|ckpt=B0/init.pt|lands=7|consults=20|argmax_land=0|p_land_mean=0.374|p_pass_mean=0.574|other_types={'SPELL': 3}
+LANDCENSUS|ckpt=B0/init.pt|lands=8|consults=18|argmax_land=0|p_land_mean=0.344|p_pass_mean=0.596|other_types={'SPELL': 3}
+LANDCENSUS|ckpt=B0/init.pt|lands=9|consults=12|argmax_land=0|p_land_mean=0.364|p_pass_mean=0.636|other_types={}
+LANDCENSUS|ckpt=B0/init.pt|lands=10|consults=7|argmax_land=0|p_land_mean=0.363|p_pass_mean=0.637|other_types={}
+LANDCENSUS|ckpt=B0/init.pt|lands=11|consults=7|argmax_land=0|p_land_mean=0.362|p_pass_mean=0.638|other_types={}
+LANDCENSUS|ckpt=B0/init.pt|lands=12|consults=5|argmax_land=0|p_land_mean=0.362|p_pass_mean=0.638|other_types={}
+LANDCENSUS|ckpt=B0/init.pt|lands=13|consults=5|argmax_land=0|p_land_mean=0.363|p_pass_mean=0.637|other_types={}
+LANDCENSUS|ckpt=B0/init.pt|lands=14|consults=4|argmax_land=0|p_land_mean=0.364|p_pass_mean=0.636|other_types={}
+LANDCENSUS|ckpt=B0/init.pt|lands>=3|consults=219|argmax_land=0|argmax_land_frac=0.000|p_land_mean=0.359
+LANDCENSUS|ckpt=B2/ck_256.pt|lands=0|consults=24|argmax_land=24|p_land_mean=0.855|p_pass_mean=0.145|other_types={}
+LANDCENSUS|ckpt=B2/ck_256.pt|lands=1|consults=28|argmax_land=14|p_land_mean=0.596|p_pass_mean=0.215|other_types={'SPELL': 6}
+LANDCENSUS|ckpt=B2/ck_256.pt|lands=2|consults=42|argmax_land=0|p_land_mean=0.238|p_pass_mean=0.209|other_types={'SPELL': 24}
+LANDCENSUS|ckpt=B2/ck_256.pt|lands=3|consults=40|argmax_land=0|p_land_mean=0.158|p_pass_mean=0.251|other_types={'SPELL': 24}
+LANDCENSUS|ckpt=B2/ck_256.pt|lands=4|consults=37|argmax_land=0|p_land_mean=0.094|p_pass_mean=0.264|other_types={'SPELL': 24}
+LANDCENSUS|ckpt=B2/ck_256.pt|lands=5|consults=33|argmax_land=0|p_land_mean=0.090|p_pass_mean=0.461|other_types={'SPELL': 15}
+LANDCENSUS|ckpt=B2/ck_256.pt|lands=6|consults=31|argmax_land=0|p_land_mean=0.065|p_pass_mean=0.617|other_types={'SPELL': 10}
+LANDCENSUS|ckpt=B2/ck_256.pt|lands=7|consults=20|argmax_land=0|p_land_mean=0.061|p_pass_mean=0.792|other_types={'SPELL': 3}
+LANDCENSUS|ckpt=B2/ck_256.pt|lands=8|consults=18|argmax_land=0|p_land_mean=0.038|p_pass_mean=0.799|other_types={'SPELL': 3}
+LANDCENSUS|ckpt=B2/ck_256.pt|lands=9|consults=12|argmax_land=0|p_land_mean=0.035|p_pass_mean=0.965|other_types={}
+LANDCENSUS|ckpt=B2/ck_256.pt|lands=10|consults=7|argmax_land=0|p_land_mean=0.029|p_pass_mean=0.971|other_types={}
+LANDCENSUS|ckpt=B2/ck_256.pt|lands=11|consults=7|argmax_land=0|p_land_mean=0.024|p_pass_mean=0.976|other_types={}
+LANDCENSUS|ckpt=B2/ck_256.pt|lands=12|consults=5|argmax_land=0|p_land_mean=0.023|p_pass_mean=0.977|other_types={}
+LANDCENSUS|ckpt=B2/ck_256.pt|lands=13|consults=5|argmax_land=0|p_land_mean=0.021|p_pass_mean=0.979|other_types={}
+LANDCENSUS|ckpt=B2/ck_256.pt|lands=14|consults=4|argmax_land=0|p_land_mean=0.021|p_pass_mean=0.979|other_types={}
+LANDCENSUS|ckpt=B2/ck_256.pt|lands>=3|consults=219|argmax_land=0|argmax_land_frac=0.000|p_land_mean=0.081
+LANDCENSUS|ckpt=B3/ck_256.pt|lands=0|consults=24|argmax_land=24|p_land_mean=0.962|p_pass_mean=0.038|other_types={}
+LANDCENSUS|ckpt=B3/ck_256.pt|lands=1|consults=28|argmax_land=22|p_land_mean=0.772|p_pass_mean=0.055|other_types={'SPELL': 6}
+LANDCENSUS|ckpt=B3/ck_256.pt|lands=2|consults=42|argmax_land=18|p_land_mean=0.439|p_pass_mean=0.069|other_types={'SPELL': 24}
+LANDCENSUS|ckpt=B3/ck_256.pt|lands=3|consults=40|argmax_land=16|p_land_mean=0.371|p_pass_mean=0.099|other_types={'SPELL': 24}
+LANDCENSUS|ckpt=B3/ck_256.pt|lands=4|consults=37|argmax_land=11|p_land_mean=0.289|p_pass_mean=0.128|other_types={'SPELL': 24}
+LANDCENSUS|ckpt=B3/ck_256.pt|lands=5|consults=33|argmax_land=17|p_land_mean=0.376|p_pass_mean=0.216|other_types={'SPELL': 15}
+LANDCENSUS|ckpt=B3/ck_256.pt|lands=6|consults=31|argmax_land=21|p_land_mean=0.413|p_pass_mean=0.298|other_types={'SPELL': 10}
+LANDCENSUS|ckpt=B3/ck_256.pt|lands=7|consults=20|argmax_land=16|p_land_mean=0.497|p_pass_mean=0.366|other_types={'SPELL': 3}
+LANDCENSUS|ckpt=B3/ck_256.pt|lands=8|consults=18|argmax_land=15|p_land_mean=0.481|p_pass_mean=0.367|other_types={'SPELL': 3}
+LANDCENSUS|ckpt=B3/ck_256.pt|lands=9|consults=12|argmax_land=12|p_land_mean=0.589|p_pass_mean=0.411|other_types={}
+LANDCENSUS|ckpt=B3/ck_256.pt|lands=10|consults=7|argmax_land=7|p_land_mean=0.602|p_pass_mean=0.398|other_types={}
+LANDCENSUS|ckpt=B3/ck_256.pt|lands=11|consults=7|argmax_land=7|p_land_mean=0.621|p_pass_mean=0.379|other_types={}
+LANDCENSUS|ckpt=B3/ck_256.pt|lands=12|consults=5|argmax_land=5|p_land_mean=0.630|p_pass_mean=0.370|other_types={}
+LANDCENSUS|ckpt=B3/ck_256.pt|lands=13|consults=5|argmax_land=5|p_land_mean=0.637|p_pass_mean=0.363|other_types={}
+LANDCENSUS|ckpt=B3/ck_256.pt|lands=14|consults=4|argmax_land=4|p_land_mean=0.650|p_pass_mean=0.350|other_types={}
+LANDCENSUS|ckpt=B3/ck_256.pt|lands>=3|consults=219|argmax_land=136|argmax_land_frac=0.621|p_land_mean=0.429
