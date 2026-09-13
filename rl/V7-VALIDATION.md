@@ -2908,3 +2908,37 @@ before it trained (`rl/stop_7l.sh`) and restarts from the same ck_2048 on
 the fixed league script once memory allows (a JVM is 3.4 GB RSS, a server
 1.7 GB: D-PPO + L1 + L1's opponent server = 3 servers + 2 JVMs ≈ 12 GB, so
 L1 waits for D-PPO to end).
+
+**L0 recovered rows** (`rl/recover_L0.sh` → `rl/battery_ck.sh`, same game seeds as
+the lane, fixed argmax-classes protocol, 100 games each; `rl/artifacts/v7/7l/L0_rebat/`):
+
+| point | D0 | D1 | TWIN |
+|---|---|---|---|
+| 2048 (+0) | 0.86 [0.779, 0.915] | 0.87 [0.790, 0.922] | 0.88 [0.802, 0.930] |
+| 2560 (+512) | **0.92 [0.850, 0.959]** | 0.92 [0.850, 0.959] | 0.84 [0.756, 0.899] |
+| 3072 (+1024) | **0.91 [0.838, 0.952]** | 0.92 [0.850, 0.959] | 0.90 [0.826, 0.945] |
+
+L0 (+1024 more episodes vs the heuristic from C1 s0 ck_2048) sits at 0.91–0.92
+against the heuristic family, the +1024 intervals overlapping the +0 ones. One seed.
+
+## Q2 pre-registration amendment — the heuristic-family batteries cannot decide Q2 (2026-09-13 13:20 next-session clock; WSL 07:15; written BEFORE L1 trains)
+
+The control L0 is at 0.91–0.92 vs D0/D1 at +512/+1024, so a 100-game
+battery of L1 against the same family could be "clear above" only at
+> 0.96: the pre-registered Q2 reading (L1's D0/D1/TWIN at +1024 vs L0's)
+is at the ceiling of its instrument and is **reported but cannot decide**.
+Deciding comparison, added now, both arms at +1024 (ck_3072), fixed
+protocol, 100 games each, `rl/hard_battery.sh`:
+* **(a) head-to-head** L1 ck_3072 vs L0 ck_3072 — `rl.opponent=rl` with the
+  opponent served by a second frozen eval-mode server (argmax over
+  classes; the C5 league mechanism), seats alternating by episode parity;
+  L1's win rate with Wilson; 0.5 [0.40, 0.60] = no difference.
+* **(b) vs CP7** (`rl.opponent=cp7`, `rl.aiSkill` 6, `rl.stopTurn` 60) for
+  each arm — CP7 is 0.68 vs the heuristic (piece 1a), the harder
+  yardstick; the rung-0 v6 policy's 7/10 vs CP7 was never a level.
+Reading: **"league helps" only if (a) is clear above 0.5 AND (b) L1 > L0
+with intervals clear; otherwise "no difference shown"**. Cannot: one
+seed; W0Base only; the league opponents are the policy's own ancestors
+(C1 s0 ck_1024 / ck_2048) — a weak league; (b) also measures CP7's
+non-heuristic play, which neither arm trained against. L0's (b) runs now
+(only D-PPO s0 trains: two servers); L0's (a) needs L1's ck_3072.
