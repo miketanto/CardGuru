@@ -1,0 +1,7 @@
+R0_INIT|from=/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/7c1/s0/ck_2048.pt|episodes=2048
+R0_START|W0Base|seed=0|budget=2112|resume_at=2048|out=/tmp/rl_7l_smoke|league=/tmp/rl_7c1_s0/ck_1024.pt,/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/7c1/s0/ck_2048.pt|driver=7912
+R0|W0Base|s0|trained=2048|ck_eps=2048|D0=0.7500 [0.301,0.954]|D1=0.7500 [0.301,0.954]|TWIN=0.7500 [0.301,0.954]|blocks=66/101|BLOCKOPT=33/34|gap=8|attacks=60/255|ATKOPT=31/63|ATKOPTCA=35/63|under_over=20/8|turns=39.8
+R0_OPP|trained=2048|block=0|ckpt=/tmp/rl_7c1_s0/ck_1024.pt
+R0|W0Base|s0|trained=2112|ck_eps=2112|D0=0.5000 [0.150,0.850]|D1=0.5000 [0.150,0.850]|TWIN=0.5000 [0.150,0.850]|blocks=28/31|BLOCKOPT=20/20|gap=0|attacks=39/142|ATKOPT=23/35|ATKOPTCA=24/35|under_over=5/5|turns=28.0
+R0_DONE|W0Base|s0|trained=2112|out=/tmp/rl_7l_smoke
+SMOKEL|rc=0|opp_conns=/tmp/rl_7l_smoke/opp_server.log:4|train_lines=2|episodes=4 wins=2
