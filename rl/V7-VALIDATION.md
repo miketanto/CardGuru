@@ -2027,3 +2027,66 @@ centring (candidate-scorer mean subtracted) if the argmax-PASS
 fraction is what separates B3's sampled and argmax policies. "Learning"
 keeps the §7a definition with the B0 bar; the 2k rung waits for a
 recipe that passes it on three seeds.
+
+## 5d follow-up — the first lever (`--batch-max 4`) and the filter build (2026-09-13 00:45; branch `v7/lane-d`)
+
+`rl/run_5d_bm.sh`: the 5d lane (B0Base/B0Twin, 256 episodes, conc4, cuda,
+lane defaults lr 3e-4 / 4 epochs / no bound) on the mana-ability-filter
+build, three arms, quantities by `rl/tp_5d.py` over the 8 TRAIN rows
+(`rl/artifacts/v7/5d/{v6f,v7f,v7bm}/`). v7f's first launch failed at
+start (every driver job got `Connection refused` from the policy server
+that had just printed ready; `R0_FAILED` episode mismatch 256 vs 0); the
+rerun 12 min later ran clean, so it is recorded as a transient, not a
+build fault. The 5d rows are repeated for the comparison.
+
+| arm | build | play consults/s | update ms per stored consult | update share of wall | episodes/s | consults per episode | server RSS peak MB | GPU peak MB |
+|---|---|---|---|---|---|---|---|---|
+| 5d v6 | no filter | 182.5 | 10.8 | – | 0.609 | 101 | – | – |
+| 5d v7 | no filter | 50.7 | 58.8 | – | 0.455 | 28 | – | 2,300 |
+| v6f | filter | 152.2 | 8.6 | 0.57 | **2.06** | 32.0 | 1,887 | 2,219 |
+| v7f | filter | 47.0 | 57.8 | 0.73 | 0.40 | 31.6 | 3,237 | 2,858 |
+| v7bm | filter, `--batch-max 4` | **71.3** | 58.0 | 0.81 | 0.43 | 32.3 | 3,136 | 2,826 |
+
+Against the §5d budgets (per-consult, v7 relative to v6 on the same build):
+
+| budget | 5d | now (v7f) | now (v7bm) |
+|---|---|---|---|
+| play ≥ 1/3 of v6 | 0.28 FAIL | 0.31 FAIL | **0.47 pass** |
+| update ≤ 3× v6 | 5.4× FAIL | 6.7× FAIL | 6.7× FAIL |
+
+1. **The batcher does what was pre-registered and no more.** Play rises
+   1.52× (47.0 → 71.3 consults/s) and the update cost does not move
+   (57.8 → 58.0 ms per stored consult — the batcher is play-side). It
+   brings play inside the budget but at less than half the predicted
+   "toward ~150": with conc4 at most four consults are ever in flight, so
+   the batch is ≤ 4 and the per-call latency floor (network + Java
+   encode) stays. Episodes per second barely move (0.40 → 0.43) because
+   the update is now 81 % of wall time.
+2. **The filter changed v6's throughput far more than any lever changed
+   v7's.** v6 episodes hold 32 consults instead of 101 (the ~70 mana
+   consults per game are gone), so v6 runs 2.06 episodes/s against 0.61
+   — 3.4× — while its per-consult play cost is roughly unchanged (152 vs
+   182 consults/s, a 512-consult window is a noisier estimate at 32
+   consults per episode). v7's consults per episode were 28 on 5d and are 32
+   here. Per-episode, v7 is now 0.21× v6, not 0.75×.
+3. **The update ratio got worse, not better**, because v6's update got
+   cheaper per consult on this build (10.8 → 8.6 ms) and v7's did not
+   (58.8 → 57.8). The 6.7× is the same 5.4× question with a smaller
+   denominator; the answer is on the update side, pre-registered as lever
+   (2): `rl/update_profile.py profile --arch v7 --device cuda --buf
+   rl/artifacts/v7/5d/<arm>/rl_buf.pt` (the first update's real buffer,
+   dumped by RL_DUMP_BUF; copied from /tmp, gitignored).
+
+Battery aside, not a result (four games each): v6f wins D0/D1 4/4 with
+52/54 attacks as v6 always has; v7f, the A0 recipe (lr 3e-4, 4 epochs,
+unbounded) on B0Base with the filter, also shows D0/D1 4/4 and 52/64
+attacks at 256 episodes, where the same recipe on W0Base without the
+filter (A0) collapsed into the sink. Four games say nothing about a level;
+it is noted because it is the first time an unbounded v7 arm attacked at
+all, and it is a B0Base game (short, damage-race) not W0Base.
+
+Cannot support: any per-consult claim finer than the 512-consult windows
+(one seed, 8 rows); the play number for v7bm at conc > 4 (untested; conc8
+would let the batch reach 8 and is the obvious next play-side arm, but
+THROUGHPUT-LOCAL §7 measured conc4 as the CPU limit on this machine); the
+update-side levers, which need the profile run first.

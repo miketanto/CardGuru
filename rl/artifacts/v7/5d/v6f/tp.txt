@@ -1,3 +1,15 @@
+=== rl/artifacts/v7/5d/v6f
+  rows: 8
+  window_s: 109
+  episodes: 224
+  eps_per_s: 2.055
+  update_s_mean: 8.659
+  update_s_max: 10.2
+  consults_stored: 7177
+  update_ms_per_consult: 8.615
+  update_share: 0.5672
+  play_s: 47.17
+  play_consults_per_s: 152.2
   consults_per_ep: 32.04
   peak_used_mb: 3968
   peak_jvm_mb: 2077

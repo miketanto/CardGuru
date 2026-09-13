@@ -1,0 +1,24 @@
+=== rl/artifacts/v7/5d/v7bm
+  rows: 8
+  window_s: 521
+  episodes: 224
+  eps_per_s: 0.4299
+  update_s_mean: 60.08
+  update_s_max: 65.29
+  consults_stored: 7234
+  update_ms_per_consult: 58
+  update_share: 0.8053
+  play_s: 101.4
+  play_consults_per_s: 71.32
+  consults_per_ep: 32.29
+  peak_used_mb: 5113
+  peak_jvm_mb: 2119
+  peak_srv_mb: 3136
+  peak_gpu_mb: 2826
+  rllock_last: None
+  train_lines: 8
+  r0_done: True
+  r0_failed: False
+  ck_eps_last: 0
+  turns_probe0: 13.5
+  driver_tail: []

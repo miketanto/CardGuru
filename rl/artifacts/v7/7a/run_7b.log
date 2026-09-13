@@ -20,3 +20,7 @@ R0|W0Base|s0|trained=256|ck_eps=256|D0=0.0000 [0.000,0.490]|D1=0.0000 [0.000,0.4
 R0_DONE|W0Base|s0|trained=256|out=/tmp/rl_7a_B4
 7A|done=2026-09-13T00:12:29Z
 7B0|start=2026-09-13T00:12:48Z
+7B0|chunk=0|rc=0
+7B0|chunk=1|rc=0
+episodes=64 wins=11 win_rate=0.1719 episodes=64 wins=8 win_rate=0.1250
+7B0|done=2026-09-13T00:14:01Z

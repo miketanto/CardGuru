@@ -1,0 +1,24 @@
+=== rl/artifacts/v7/5d/v7f
+  rows: 8
+  window_s: 560
+  episodes: 224
+  eps_per_s: 0.4
+  update_s_mean: 57.36
+  update_s_max: 68.49
+  consults_stored: 7082
+  update_ms_per_consult: 57.79
+  update_share: 0.7308
+  play_s: 150.8
+  play_consults_per_s: 46.98
+  consults_per_ep: 31.62
+  peak_used_mb: 5244
+  peak_jvm_mb: 2189
+  peak_srv_mb: 3237
+  peak_gpu_mb: 2858
+  rllock_last: RLLOCK|calls=371|wait_s=0.0|held_s=6.9|wait_per_call_ms=0.00|held_per_call_ms=18.55|wait_share=0.0%
+  train_lines: 8
+  r0_done: True
+  r0_failed: False
+  ck_eps_last: 0
+  turns_probe0: 13.5
+  driver_tail: []

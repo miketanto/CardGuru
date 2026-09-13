@@ -1,0 +1,29 @@
+5D|arm=v6f|enc=6|extra=|start=2026-09-13T00:14:01Z
+5D|arm=v6f|rc=0|end=2026-09-13T00:16:39Z
+R0|B0Base|s0|trained=0|ck_eps=0|D0=0.0000 [0.000,0.490]|D1=0.0000 [0.000,0.490]|TWIN=0.0000 [0.000,0.490]|blocks=0/0|BLOCKOPT=0/0|gap=0|attacks=0/0|ATKOPT=0/0|ATKOPTCA=0/0|under_over=0/0|turns=13.5
+R0|B0Base|s0|trained=256|ck_eps=256|D0=1.0000 [0.510,1.000]|D1=1.0000 [0.510,1.000]|TWIN=0.5000 [0.150,0.850]|blocks=26/27|BLOCKOPT=17/20|gap=8|attacks=51/54|ATKOPT=22/32|ATKOPTCA=18/32|under_over=0/10|turns=19.5
+R0_DONE|B0Base|s0|trained=256|out=/tmp/rl_5d_v6f
+5D|arm=v7f|enc=7|extra=|start=2026-09-13T00:16:43Z
+5D|arm=v7f|rc=1|end=2026-09-13T00:17:16Z
+R0_START|B0Base|seed=0|budget=256|resume_at=0|out=/tmp/rl_5d_v7f
+R0|B0Base|s0|trained=0|ck_eps=0|D0=0.0000 [0.000,0.490]|D1=0.0000 [0.000,0.490]|TWIN=0.0000 [0.000,0.490]|blocks=0/0|BLOCKOPT=0/0|gap=0|attacks=0/0|ATKOPT=0/0|ATKOPTCA=0/0|under_over=0/0|turns=13.5
+R0_FAILED|episode mismatch: lane counted 256, checkpoint has 0 - the server died mid-run (see /tmp/rl_5d_v7f/server.log)
+5D|arm=v7bm|enc=7|extra=--batch-max 4|start=2026-09-13T00:17:18Z
+5D|arm=v7bm|rc=0|end=2026-09-13T00:28:02Z
+R0|B0Base|s0|trained=0|ck_eps=0|D0=0.0000 [0.000,0.490]|D1=0.0000 [0.000,0.490]|TWIN=0.0000 [0.000,0.490]|blocks=0/0|BLOCKOPT=0/0|gap=0|attacks=0/0|ATKOPT=0/0|ATKOPTCA=0/0|under_over=0/0|turns=13.5
+R0|B0Base|s0|trained=256|ck_eps=256|D0=0.0000 [0.000,0.490]|D1=0.0000 [0.000,0.490]|TWIN=0.0000 [0.000,0.490]|blocks=0/22|BLOCKOPT=1/14|gap=107|attacks=20/27|ATKOPT=6/13|ATKOPTCA=9/13|under_over=4/3|turns=11.5
+R0_DONE|B0Base|s0|trained=256|out=/tmp/rl_5d_v7bm
+5D|done=2026-09-13T00:28:04Z
+5D|rerun v7f 2026-09-13T00:28:23Z
+5D|arm=v6f|skip=done
+5D|arm=v7f|enc=7|extra=|start=2026-09-13T00:28:23Z
+5D|arm=v6f|skip=done
+5D|arm=v7f|enc=7|extra=|start=2026-09-13T00:28:37Z
+5D|arm=v6f|skip=done
+5D|arm=v7f|enc=7|extra=|start=2026-09-13T00:29:08Z
+5D|arm=v7f|rc=0|end=2026-09-13T00:40:26Z
+R0|B0Base|s0|trained=0|ck_eps=0|D0=0.0000 [0.000,0.490]|D1=0.0000 [0.000,0.490]|TWIN=0.0000 [0.000,0.490]|blocks=0/0|BLOCKOPT=0/0|gap=0|attacks=0/0|ATKOPT=0/0|ATKOPTCA=0/0|under_over=0/0|turns=13.5
+R0|B0Base|s0|trained=256|ck_eps=256|D0=1.0000 [0.510,1.000]|D1=1.0000 [0.510,1.000]|TWIN=0.5000 [0.150,0.850]|blocks=28/38|BLOCKOPT=18/27|gap=22|attacks=52/64|ATKOPT=21/36|ATKOPTCA=15/36|under_over=0/10|turns=21.5
+R0_DONE|B0Base|s0|trained=256|out=/tmp/rl_5d_v7f
+5D|arm=v7bm|skip=done
+5D|done=2026-09-13T00:40:30Z
