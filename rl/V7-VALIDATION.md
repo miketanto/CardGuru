@@ -2763,3 +2763,48 @@ two seeds pooled, 200 games, plain argmax" — not a v7 level, not a claim
 about other decks. Cannot: attribute anything to one flag (B8/B6
 ablations owed); read the 1024 dip as anything but one seed's path;
 compare with class-argmax batteries until the Phase C re-battery is in.
+
+## 7d piece (1b) — recording: 20,735 CP7-labelled priority consults on W0Base (2026-09-13 10:00 next-session clock; WSL 03:55; branch `v7/lane-d`)
+
+Build: the Phase B engine (CP7TeacherPlayer / `rl.agent=cp7`, 9e24145 +
+this commit's compile), driver 7911 with the v7 flags. `rl/record_7d1b.sh`
+→ `rl/record_cp7.sh`: 14 jobs × 100 games, seeds 7400–7413, W0Base mirror
+vs the heuristic, seats alternating by episode parity, `rl.consultBudget`
+300, concurrency 1, echo policy (reply ignored). Artifacts
+`rl/artifacts/v7/7d1b/7d1b_s<seed>.jsonl` (gitignored), `counts.txt`,
+`record_7d1b.log`, per-job `.probe.txt`. Smoke first (`rl/smoke_cp7.sh`, 4
+games): hello carries `teacher:"cp7"`, every consult carries `y`,
+`wire_validate` ok, faithfulness probe on the 60 consults L3 25/1 (a
+not-exercised-scale artefact of 60 rows) / L4 26/0.
+
+| counter (pooled over 1,400 games) | value |
+|---|---|
+| windows (priority calls on the teacher seat) | 255,655 |
+| autoPassEmpty (no candidate after the filters; no consult) | 234,920 |
+| manaCandsDropped | 139,734 |
+| **teacherConsults = teacherLabelled** | **20,735** (14.8 per game) |
+| teacherPassed (y = 0) | **0** |
+| teacherOutside (y = −1) | 0 |
+| teacherMultiAct | 0 |
+| teacherBudgetSkipped | 0 |
+| CP7 wins / losses / draws / stalls | 958 / 442 / 0 / 0 → **0.684 [0.660, 0.708]** |
+| `wire_validate` on `7d1b_s7400.jsonl` | ok, 1,488 consults |
+
+**Labelled fraction 20,735 / 20,735 = 1.00 (gate ≥ 0.9: pass).** Label
+type census — the target the BC census is read against: **LAND 8,564
+(41.3 %), SPELL 12,171 (58.7 %), PASS 0, ACTIVATE 0.** Offered: PASS in
+every consult, LAND in 10,552, SPELL in 14,766; k = 2 in 7,122 consults,
+3 in 4,684, 4 in 4,522, 5 in 2,919, 6–8 in 1,488. Two things the census
+says before BC: (1) **CP7 never passes a window it can act in** on
+W0Base (0 of 20,735) — so BC's target is "always play something", and
+PASS is only ever the label-free alternative; a BC policy cannot learn
+*when* to hold from this teacher, only *what* to play; (2) ACTIVATE is
+never offered (the mana-ability filter removes every activation W0Base
+has), so the priority head is trained on LAND-vs-SPELL-vs-(never)PASS.
+CP7's pooled rate 0.684 replicates piece (1a)'s 0.68 [0.58, 0.76] at
+n=1,400. Priority-only, as pre-registered: no atkjoint/blkjoint consults
+exist in these files. Cannot: label combat; say anything about a
+budgeted RL seat (the teacher sees every window, 15 consults per game
+where the C1 policy makes 30–100 — the RL seat's extra consults are the
+combat and target sites and the windows where it passes); generalise off
+W0Base.

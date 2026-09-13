@@ -1,0 +1,16 @@
+RECORD|7d1b_s7400|rc=0|episodes=100|consults=1488|labelled=1488|y_neg=0|ends=100||wins=67 losses=33 win_rate=0.6700
+RECORD|7d1b_s7401|rc=0|episodes=100|consults=1456|labelled=1456|y_neg=0|ends=100||wins=68 losses=32 win_rate=0.6800
+RECORD|7d1b_s7402|rc=0|episodes=100|consults=1448|labelled=1448|y_neg=0|ends=100||wins=68 losses=32 win_rate=0.6800
+RECORD|7d1b_s7403|rc=0|episodes=100|consults=1453|labelled=1453|y_neg=0|ends=100||wins=67 losses=33 win_rate=0.6700
+RECORD|7d1b_s7404|rc=0|episodes=100|consults=1515|labelled=1515|y_neg=0|ends=100||wins=72 losses=28 win_rate=0.7200
+RECORD|7d1b_s7405|rc=0|episodes=100|consults=1448|labelled=1448|y_neg=0|ends=100||wins=70 losses=30 win_rate=0.7000
+RECORD|7d1b_s7406|rc=0|episodes=100|consults=1493|labelled=1493|y_neg=0|ends=100||wins=73 losses=27 win_rate=0.7300
+RECORD|7d1b_s7407|rc=0|episodes=100|consults=1462|labelled=1462|y_neg=0|ends=100||wins=68 losses=32 win_rate=0.6800
+RECORD|7d1b_s7408|rc=0|episodes=100|consults=1500|labelled=1500|y_neg=0|ends=100||wins=63 losses=37 win_rate=0.6300
+RECORD|7d1b_s7409|rc=0|episodes=100|consults=1509|labelled=1509|y_neg=0|ends=100||wins=67 losses=33 win_rate=0.6700
+RECORD|7d1b_s7410|rc=0|episodes=100|consults=1481|labelled=1481|y_neg=0|ends=100||wins=68 losses=32 win_rate=0.6800
+RECORD|7d1b_s7411|rc=0|episodes=100|consults=1461|labelled=1461|y_neg=0|ends=100||wins=61 losses=39 win_rate=0.6100
+REC7D1B|done=2026-09-13T08:49:46Z|jobs=12|labelled_total=17714|consults=17714|y_neg=0|ends=1200
+RECORD|7d1b_s7412|rc=0|episodes=100|consults=1502|labelled=1502|y_neg=0|ends=100||wins=74 losses=26 win_rate=0.7400
+RECORD|7d1b_s7413|rc=0|episodes=100|consults=1519|labelled=1519|y_neg=0|ends=100||wins=72 losses=28 win_rate=0.7200
+REC7D1B|done=2026-09-13T08:52:08Z|jobs=14|labelled_total=20735|consults=20735|y_neg=0|ends=1400
