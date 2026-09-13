@@ -2092,3 +2092,36 @@ THROUGHPUT-LOCAL §7 measured conc4 as the CPU limit on this machine); the
 update-side levers, which need the profile run first.
 
 **Argmax play, two games of B2 `ck_256` vs the heuristic, W0Base, `rl.debug` transcript (seeds 4242/4243, both lost at turns 14 and 17; scratch run, transcript in /tmp/rl_play_B2/driver.log, WSL-local):** plays a land on its first two land turns and never a third; casts one two-mana creature per turn while two Plains cover it; blocks every turn it is attacked, always the solver's block (audit MATCH throughout); declares no attack — and, correction on re-reading the log, never HAD an attack window: the attack audit (on, prints whenever an attacker is available) fired 0 times, every creature being summoning-sick on its own turn and traded in a block the turn after; in game 1 it stopped casting after turn 5 and died on an empty board, in game 2 it traded one creature into a block per turn until outgrown. A two-land, one-creature-a-turn wall. Consistent with the census argmax LAND 51/177 (the third land loses to PASS); the census ATTACK 47/47 says the argmax attacks whenever an attack is offered, and these two games offered none. The battery attacks (16/22) are against D0/D1/TWIN, not the heuristic. Two games: a description, not a level.
+
+## 7c pre-registration — the B2 recipe unchanged to 2,048 episodes, three seeds (2026-09-13 01:35)
+
+Question (from the B2 play note): is the two-land wall undertraining or
+the scorer's PASS rank plus late-game credit? `rl/run_7c.sh`: B2's recipe
+exactly (lr 3e-5, 1 PPO epoch, logit bound 5, AdamW wd 0.01 on the heads,
+filter build), W0Base vs heuristic, 2,048 episodes, seeds 0/1/2 in
+sequence, battery every 512 episodes with the lane defaults (100 argmax
+games per opponent D0/D1/TWIN, CP7 off), census on `ck_512..2048` over a
+filter-build consult set (`7c_W0Base_{p1,p99,sf}`, recorded on 7911 with the
+three echo policies, 8 games each) and the new `rl/v7_land_census.py`
+(P(LAND) and argmax-LAND by lands in play, on consults that offer a land).
+
+Pre-registered readings, decided before seed 0's first battery:
+* **Undertraining** if, by 2,048, the sampled last-4-batch win rate keeps
+  rising across the four 512-points on ≥ 2 of 3 seeds AND the argmax
+  battery vs D0 rises with it (Wilson intervals of consecutive points
+  overlapping is fine; the last point must be clear of the first) AND the
+  land census shows argmax-LAND at 3+ lands in play above 50 %.
+* **Rank / credit** if the sampled rate rises while the argmax D0 rate
+  stays inside its 512-point interval and argmax-LAND at 3+ lands stays
+  under 50 % — then B6 (scorer centring) and a credit change are the next
+  arms, not more episodes.
+* Anything else is "neither shown"; recorded as such.
+
+Cannot do: beat v6 on rung 0 (v6's 2k level on W0Base is the LEVELSET
+figure; a v7 point inside v6's interval would be noise, not parity, on one
+seed — three seeds pooled is the minimum for any such claim and it is not
+the question here); say anything about other decks; separate the two
+non-training signatures from each other (B6 alone does that).
+Levels: the batteries are 100 games per opponent per point, so each is a
+level by the project rule; the sampled training rate is a curve, not a
+level. Pool only finished seeds.
