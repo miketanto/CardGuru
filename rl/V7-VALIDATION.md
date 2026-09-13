@@ -2808,3 +2808,59 @@ budgeted RL seat (the teacher sees every window, 15 consults per game
 where the C1 policy makes 30–100 — the RL seat's extra consults are the
 combat and target sites and the windows where it passes); generalise off
 W0Base.
+
+## 7d piece (2) — BC: CP7's type, not its card (2026-09-13 10:20 next-session clock; WSL 04:10; branch `v7/lane-d`)
+
+`python3 rl/v7_bc.py --init /tmp/rl_7c1_s0/init.pt --out rl/artifacts/v7/7d2/bc.pt
+--device cuda rl/artifacts/v7/7d1b/7d1b_s*.jsonl` (defaults: lr 1e-4, AdamW wd
+0.01 on the heads, batch 32, logit bound 5, 10 % of games held out, patience 3);
+`bc.log`, `census.txt` in `rl/artifacts/v7/7d2/` (bc.pt gitignored). Data:
+20,735 labelled consults / 1,400 games → 18,669 train / 2,066 held-out (140
+games). 188 s wall.
+
+| epoch | train CE | train top-1 | held-out CE | held-out top-1 | held-out type agreement |
+|---|---|---|---|---|---|
+| 0 (init) | – | – | 1.2429 | 0.168 | 0.307 |
+| 1 | 0.7119 | 0.601 | **0.7131** | **0.606** | **0.887** |
+| 2–4 | 0.7092 | 0.602 | 0.7131 | 0.606 | 0.887 |
+
+Early stop at epoch 4 (best = 1); bc.pt = epoch 1. **The copy ceiling** (the
+label is one index among identical candidates — same type, afterstate row and
+referent names, the B7 class key): mean log(#copies of the labelled class)
+over the 20,735 consults = **0.280 nats**, and the label is the first index
+of its class on **0.833** of consults (2.76 classes per consult on average).
+BC stopped at 0.713 nats / 0.606 — well short of 0.280 / 0.833 — while its
+type agreement is 0.887: **BC learned CP7's decision TYPE (land vs spell)
+and not which card**; within the LAND / SPELL classes it does not follow
+CP7's choice (which creature to cast, which land) beyond chance-of-first.
+The flat CE from epoch 1 on (0.7092 to four decimals for three epochs) says
+the optimiser found a type-level rule immediately and nothing further at lr
+1e-4; a card-level fit is either not in this net's reach from a memoryless
+consult or needs a different schedule — not settled here (a second BC with
+lr 3e-4 / no early stop is the obvious follow-up, not run tonight).
+
+Census on bc.pt (`v7_init_logits.py`, 1,101 real consults; init in the same
+file for reference): **argmax-PASS 0/1070** (init 708/1070), P(PASS) 0.03,
+entropy 0.58 nats, gap 3.96; argmax types LAND 224/313, SPELL 348/368,
+TARGET 12/12, **ATTACK 279/279, BLOCK 207/207** — the shared candidate head
+generalised "never pass" from the priority labels to the never-labelled
+combat sites, so bc.pt attacks and blocks with everything offered. Land
+census: P(land) at ≥ 3 lands **0.80** (argmax-land 160/219), 1.00 / 0.92 /
+0.70 / 0.67 at 0 / 1 / 2 / 3 lands in play — the third land is CP7's habit
+and BC has it.
+
+**BC battery** (= the D-PPO lane's trained=0 row, `rl/artifacts/v7/7d3/`
+seed 0, **fixed argmax-classes protocol**, 100 games each): **D0 0.58
+[0.482, 0.672]**, D1 0.59 [0.492, 0.681], TWIN 0.57 [0.472, 0.663]; attacks
+935/1013 (under 0 / over 218), blocks 855/893 (BLOCKOPT 605/697), 20.6
+turns. Below CP7's 0.684 [0.659, 0.708] as pre-registered ("expected ≤
+CP7"), and far above the init (0.00 at trained=0 in C1) — a type-level
+"always play a land, always cast, always attack, always block" policy is
+worth ~0.58 vs the heuristic on W0Base. Same-deck TWIN 0.57: no card-identity
+dependence visible (it never learned card identity). Cannot: beat CP7 (it
+does not); attribute the 0.58 to imitation of CP7's *choices* (the CE says
+it is CP7's *types*); say anything off W0Base; separate the combat
+behaviour (untrained, generalised) from the priority behaviour in the
+level. What this changes for Q1: D-PPO starts from a policy that already
+wins 0.58 on argmax and never passes — the dead stretch (C1 seed 0's
+16/256) is the first counter to read.
