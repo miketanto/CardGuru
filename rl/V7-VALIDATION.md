@@ -3036,3 +3036,65 @@ level stands at **0.86 [0.805, 0.901]** under the fixed protocol (0.850
 still owed (resumable, `rl/rebattery_c1.sh`, after the lanes). Cannot: say
 the flag is inert in general (the B7 mechanism lives in early checkpoints
 and in bc.pt-like policies, not tested here).
+
+## 7d Q2 — L1 (league) vs L0 (heuristic) from C1 s0 ck_2048, +1,024 episodes each (2026-09-13 16:30 next-session clock; WSL 11:25; ONE seed each; fixed argmax-classes protocol)
+
+L1 = `rl/rung0_lane_league.sh` (frozen opponents C1 s0 ck_1024 for block 0,
+ck_2048 for block 1; argmax over classes, eval-mode hello), L0 =
+`rung0_lane.sh` vs the heuristic; both C1's recipe, driver 7912, artifacts
+`rl/artifacts/v7/7l/{L0,L1}/`, L0's +512/+1024 rows recovered (`L0_rebat/`).
+Hard batteries `rl/artifacts/v7/7l/hard/` (`rl/hard_battery.sh`).
+
+| point | L0 D0 | L0 D1 | L0 TWIN | L1 D0 | L1 D1 | L1 TWIN | L1 turns / under-over |
+|---|---|---|---|---|---|---|---|
+| 2048 (+0) | 0.86 [0.779, 0.915] | 0.87 [0.790, 0.922] | 0.88 [0.802, 0.930] | 0.86 [0.779, 0.915] | 0.87 [0.790, 0.922] | 0.88 [0.802, 0.930] | 34.9 / 466-192 |
+| 2560 (+512) | 0.92 [0.850, 0.959] | 0.92 [0.850, 0.959] | 0.84 [0.756, 0.899] | 0.87 [0.790, 0.922] | 0.88 [0.802, 0.930] | 0.88 [0.802, 0.930] | 36.4 / 420-52 |
+| 3072 (+1024) | **0.91 [0.838, 0.952]** | 0.92 [0.850, 0.959] | 0.90 [0.826, 0.945] | **0.68 [0.583, 0.763]** | 0.66 [0.563, 0.745] | 0.58 [0.482, 0.672] | 44.5 / 594-34 |
+
+| deciding battery at +1024 (ck_3072), 100 games | L0 | L1 |
+|---|---|---|
+| (b) vs CP7 (aiSkill 6) | **80/100 = 0.80 [0.711, 0.867]** (6 losses, 14 stalls, 44 turns) | **67/100 = 0.67 [0.573, 0.754]** (27 losses, 6 stalls, 39 turns) |
+| (a) head-to-head, L1's rate | – | **76/100 = 0.76 [0.668, 0.833]** (2 losses, **22 stalls**, 46 turns) |
+
+Sampled league curve (TRAIN lines, L1): block 0 vs ck_1024 (updates
+65–80) **0.00–0.09** on every batch; block 1 vs ck_2048 (81–96) 0.34 → 0.78
+(0.34, 0.47, 0.53, 0.34, 0.31, 0.47, 0.72, 0.72, 0.66, 0.41, 0.72, 0.69,
+0.75, 0.66, 0.78, 0.78). The block-0 zeros cannot be separated into losses
+and turn-cap stalls: the lane discarded the per-job `RL|summary` lines
+(fixed in both lane scripts after this run: `jobs.log`); the 40-turn
+boards of ck_1024 (C1 s0's 1024 point was 40.3 turns) make stalls the
+likely reading, not losses. Census: argmax-PASS 12 % → 19 %, gap 1.59 →
+3.07, entropy 0.80 → 0.55, argmax-LAND at ≥ 3 lands 0.81 / 0.81; KL 4/32.
+
+**Reading against the pre-registration (one seed):**
+* Heuristic family (reported, cannot decide): L1's +1024 D0 0.68 [0.583,
+  0.763] is clear **below** L0's 0.91 [0.838, 0.952] and below L1's own
+  +0 / +512 (0.86 / 0.87): **a regression, not "flat"** - L1 got worse
+  against D0, D1 and TWIN during block 1 while its sampled rate against
+  its frozen ancestor rose 0.34 → 0.78; games went to 44.5 turns with
+  under-attacks 594 vs 34 over (it stopped attacking into the heuristic).
+* (a) head-to-head: L1 beats L0 0.76 [0.668, 0.833] - clear above 0.5 -
+  with only 2 losses and **22 stalls** at 46 turns: what it learned
+  against ck_2048 transfers to ck_2048's sibling L0 (same ancestor, +1024
+  vs the heuristic), and a quarter of those games hit the turn cap.
+* (b) vs CP7: L1 0.67 [0.573, 0.754] vs L0 0.80 [0.711, 0.867] - L1
+  below, intervals overlapping (L0's lower bound 0.711 < L1's upper 0.754):
+  not clear, and pointing down.
+* **Verdict: NOT "league helps"** (it needed (a) clear above 0.5 AND (b)
+  L1 clear above L0; (b) fails). On the CP7 yardstick "no difference
+  shown" (one seed, n=100, L1 below); on the heuristic family "league
+  hurts" (clear). The whole pattern - wins against the family it trained
+  against (its ancestors and their sibling), loses ground against every
+  opponent it did not - is the self-play overfit signature on a
+  two-ancestor league whose opponents are the policy's own line.
+
+Cannot: one seed per arm (no level, only "clear of" at n=100); a
+two-ancestor league of the policy's own ancestors (weak, unweighted
+opponent sampling: block 0 = ck_1024, block 1 = ck_2048, no PFSP); W0Base
+only; separate "a stronger opponent" from "a different opponent"; read
+the block-0 zeros as losses (stalls likely, not recorded); the head-to-head
+stalls (22) are a quarter of its games - the 0.76 is a rate over games
+including 22 draws at the cap, reported as such. The H2H opponent server
+and the lane's league servers use argmax over classes; the training-time
+opponent was argmax too (eval hello) - a deterministic opponent, which is
+part of why one policy can overfit it.

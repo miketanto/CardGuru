@@ -1,0 +1,7 @@
+HARD|CP7|ck=ck_3072.pt|label=L1_3072|67/100 = 0.670 [0.573,0.754]|losses=27 draws=6 stalls=6 turns_per_ep=39.3
+HARD|H2H|ck=ck_3072.pt|label=L1_3072|76/100 = 0.760 [0.668,0.833]|losses=2 draws=22 stalls=22 turns_per_ep=46.3
+HARD|done|L1_3072|2026-09-13T16:21:28Z
+uments/CardGuru/rl/artifacts/v7/7l/hard/probe_H2H_L1_3072.txt: No such file or directory
+grep: /mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/7l/hard/probe_H2H_L1_3072.txt: No such file or directory
+HARD|H2H|ck=ck_3072.pt|label=L1_3072|0/1 = 0.000 [0.000,0.793]|
+HARD|done|L1_3072|2026-09-13T16:08:39Z
