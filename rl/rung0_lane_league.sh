@@ -20,6 +20,14 @@
 #   R0_OPP_CKPTS=a.pt,b.pt       frozen opponents, one per 512-block in
 #                                turn (block i uses entry i mod n); each
 #                                block's choice is logged as R0_OPP|.
+#   R0_OPP_SPEC="kind:arg:deck,..." (Phase 8 A2) one entry per 512-block in turn
+#                                (block i uses entry i mod n): kind = heuristic |
+#                                cp7 (rl.aiSkill R0_CP7_SKILL, default 6) | rl
+#                                (arg = the frozen checkpoint served on OPP_PORT);
+#                                deck = the OPPONENT's .dck (-Drl.oppDeck), the
+#                                agent keeps $BASE. Overrides R0_OPP_CKPTS, which
+#                                is the old form "rl:a:$BASE.dck,rl:b:$BASE.dck".
+#                                Each block logs R0_OPP|kind=..|arg=..|deck=..
 #   R0_OPP_PORT (7960)           the opponent server's port
 #   RL_DRIVER_PORT (7912)        the driver JVM this lane owns (never 7910:
 #                                that is the C1/D-PPO lane's; the original
@@ -181,6 +189,10 @@ except Exception: print(-1)" 2>/dev/null || echo -1)
     local spec
     for spec in "heuristic|$BASE|D0" "search|$BASE|D1" "heuristic|$TWIN|TWIN"; do
         IFS='|' read -r OPP DK LB <<< "$spec"
+        # R0_ROWS / R0_ROWS_FINAL (Phase 8 amendment): the battery rows to run (default
+        # all three; R0_ROWS_FINAL applies at trained >= BUDGET); a skipped row prints LB=skip
+        local rows=${R0_ROWS:-"D0 D1 TWIN"}; [ "$tr" -ge "$BUDGET" ] && rows=${R0_ROWS_FINAL:-$rows}
+        case " $rows " in *" $LB "*) ;; *) line="$line|$LB=skip"; continue ;; esac
         local f=$OUT/probe_${LB}_${tr}.txt
         probe "$f" "$OPP" "$DK" "$EVAL_G" $((900000 + tr))
         local wr=$(field $f win_rate)
@@ -211,13 +223,21 @@ import torch,sys
 try: print(int(torch.load('$CKPT',map_location='cpu',weights_only=False).get('episodes',0)))
 except Exception: print(0)" 2>/dev/null || echo 0)
 start_trained=$trained
-echo "R0_START|$BASE|seed=$SEED|budget=$BUDGET|resume_at=$trained|out=$OUT|league=${R0_OPP_CKPTS:-none}|driver=$DPORT"
+echo "R0_START|$BASE|seed=$SEED|budget=$BUDGET|resume_at=$trained|out=$OUT|league=${R0_OPP_SPEC:-${R0_OPP_CKPTS:-none}}|driver=$DPORT"
 
-if [ "$trained" -eq 0 ] || { [ "${R0_BATTERY_START:-0}" = "1" ] && [ ! -s $OUT/probe_TWIN_${trained}.txt ]; }; then
+if [ "$trained" -eq 0 ] || { [ "${R0_BATTERY_START:-0}" = "1" ] && [ ! -s $OUT/probe_D0_${trained}.txt ]; }; then
     battery $trained
 fi
 
-IFS=',' read -r -a OPPS <<< "${R0_OPP_CKPTS:-}"
+# the opponent roster (R0_OPP_SPEC, else R0_OPP_CKPTS in the old rl-only form)
+if [ -n "${R0_OPP_SPEC:-}" ]; then
+    IFS=',' read -r -a OPPS <<< "$R0_OPP_SPEC"
+else
+    IFS=',' read -r -a CKS <<< "${R0_OPP_CKPTS:-}"
+    OPPS=(); for c in "${CKS[@]}"; do [ -n "$c" ] && OPPS+=("rl:$c:$BASE.dck"); done
+fi
+[ ${#OPPS[@]} -gt 0 ] || { echo "R0_FAILED|no opponent roster (R0_OPP_SPEC or R0_OPP_CKPTS)"; exit 1; }
+for e in "${OPPS[@]}"; do d=${e##*:}; d=${d%.dck}; [ -n "$d" ] && { cp $RL/$d.dck /home/user/mage/Mage.Tests/ || { echo "R0_FAILED|opp deck missing: $RL/$d.dck"; exit 1; }; }; done
 block=0
 while [ "$trained" -lt "$BUDGET" ]; do
     stop_server
@@ -227,20 +247,27 @@ while [ "$trained" -lt "$BUDGET" ]; do
     # this block's frozen opponent (resume-safe: the block index is derived
     # from the trained counter, not from how often this loop ran)
     block=$(( (trained - start_trained) / EVERY ))
-    OPPCK=${OPPS[$(( block % ${#OPPS[@]} ))]}
-    [ -s "$OPPCK" ] || { echo "R0_FAILED|opp ckpt missing: $OPPCK"; exit 1; }
+    entry=${OPPS[$(( block % ${#OPPS[@]} ))]}
+    KIND=${entry%%:*}; rest=${entry#*:}; OPPCK=${rest%:*}; ODECK=${rest##*:}; ODECK=${ODECK%.dck}
+    [ -n "$ODECK" ] || ODECK=$BASE
     stop_opp_server
-    start_opp_server "$OPPCK"
-    echo "R0_OPP|trained=$trained|block=$block|ckpt=$OPPCK"
+    case "$KIND" in
+        rl)        [ -s "$OPPCK" ] || { echo "R0_FAILED|opp ckpt missing: $OPPCK"; exit 1; }
+                   start_opp_server "$OPPCK"; OPPFLAGS="-Drl.opponent=rl -Drl.oppPort=$OPP_PORT" ;;
+        heuristic) OPPFLAGS="-Drl.opponent=heuristic" ;;
+        cp7)       OPPFLAGS="-Drl.opponent=cp7 -Drl.aiSkill=${R0_CP7_SKILL:-6}" ;;
+        *)         echo "R0_FAILED|unknown opponent kind: $KIND (entry $entry)"; exit 1 ;;
+    esac
+    echo "R0_OPP|trained=$trained|block=$block|kind=$KIND|arg=$OPPCK|deck=$ODECK.dck"
     while [ "$trained" -lt "$local_end" ]; do
         RL_PERSIST=1 RL_AUTOSTART=1 RL_CONC=$CONC timeout 3600 \
         bash $RL/run_driver.sh \
             -Drl.episodes=$CHUNK -Drl.agent=rl -Drl.policy=socket \
-            -Drl.port=$PORT -Drl.opponent=rl -Drl.oppPort=$OPP_PORT \
+            -Drl.port=$PORT $OPPFLAGS \
             -Drl.searchPlies=1 -Drl.searchBreadth=8 \
             -Drl.cardFeatures=$FEATS -Drl.noYields=true \
             -Drl.consultBudget=4000 $ENCFLAGS -Drl.deck=$BASE.dck \
-            -Drl.oppDeck=$BASE.dck -Drl.stopTurn=60 -Drl.mode=train \
+            -Drl.oppDeck=$ODECK.dck -Drl.stopTurn=60 -Drl.mode=train \
             -Drl.seed=$((80000000 + SEED * 1000000 + trained)) \
             -Drl.report=0 2>&1 | grep '^RL|summary\|^RLJOB|error\|^RL_DRIVER' >> $OUT/jobs.log
         # jobs.log (7d): the per-job RL|summary lines (wins/losses/draws/stalls
