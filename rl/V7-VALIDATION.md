@@ -4384,3 +4384,10 @@ split is confounded by more episodes and by the heuristic anchor returning in st
 Card-text sensitivity was sharpened in M_D (0.263) and M_L (0.086) but largely erased in M_W
 (0.0023, during stage 2). No keyword use is shown, and sensitivity is not use: the most
 card-sensitive main casts Requiting Hex on its own creature.
+
+## 11 — pre-registration and amendments (2026-09-14; runbook `rl/PHASE11-DRILL.md`, whose "Pre-registered readings" and Amendments 1–3 are the record)
+
+- **Pre-registration** (runbook Part B): the drill-down continuation of M_D and M_L from their Phase 10 state (M_W frozen at M_W_04096 as a cross-deck member; stage-2 mix with the quota; block 256; +4,096 episodes per main). Levels = 100-game probes vs the heuristic on the own mirror at +1,024 / +2,048 / +3,072 / +4,096. Readings: keeps growing / plateau / regresses, and the card-use counters of the A1/A2 census (final vs `M_D_s1end` / `M_L_s1end` vs the CP7 reference).
+- **Amendment 1** (before Part B data): the flash bar becomes "flash casts on the opponent's turn or in response, clear above the corrected Phase 9 8a-b level 0/120 [0.000, 0.031]". It was built on P3's mis-indexed rule (correction in "11 / A1-A2").
+- **Amendment 2** (before Part B data, from the Phase 10 pairing games): a new counter, removal cast when the only legal targets are the seat's own creatures (offered / taken). A correct policy takes it at 0.
+- **Amendment 3** (the user, 16:20Z, after drill blocks 0–2 and before any B2 census): a 50-game heuristic census after every main block, one `L11|check` line each. These are development probes; the 100-game points stay the levels; CP7 census (25 games) at +2,048 / +4,096; the stop moves from controller hour 10 to hour 13 (~04:50Z) to absorb the census overhead; the two saturated landfall counters stay out of the check line until verified.

@@ -1,0 +1,10 @@
+L11|wrapper|start=2026-09-14T15:50:21Z|args=
+L11|seed|from=/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/state.json|art=/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/11/drill|learners=M_D,M_L,X_D,X_L|frozen=M_W|schedule=M_D,M_L,X_D,M_D,M_L,X_L|block=256|hours=10.0|start_trained=M_D:4096,M_L:3840|latest=M_D:M_D_04096,M_L:M_L_03840,X_D:X_D.g1_00256,X_L:X_L.g1_00256,M_W:M_W_04096|stage=2|srvextra=--device cuda --epochs 1 --logit-bound 5 --weight-decay 0.01 --adv-norm batch --target-kl 0.02 --argmax-classes --cand-refers-pool
+L11|block|n=0|h=0.17|stage=2|learner=M_D|gen=0|trained=4096->4352|bucket=cross(quota)|opp=M_L_03840|odeck=G1Landfall|W/L/D/S=141/115/0/0|wr=0.551|probe=-|wall=618s|rc=0
+L11|block|n=1|h=0.32|stage=2|learner=M_L|gen=0|trained=3840->4096|bucket=cross(quota)|opp=M_D_04352|odeck=BenchDimir|W/L/D/S=79/177/0/0|wr=0.309|probe=-|wall=510s|rc=0
+L11|block|n=2|h=0.81|stage=2|learner=X_D|gen=1|trained=256->512|bucket=exploit|opp=M_D_04352|odeck=BenchDimir|W/L/D/S=0/256/0/0|wr=0.000|probe=-|wall=1780s|rc=0
+L11|done|reason=stopfile|blocks=3|h=0.81|stage=2|graduated=M_W|results=/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/11/drill/results.tsv
+L11|wrapper|rc=0|end=2026-09-14T16:39:01Z
+L11|wrapper|start=2026-09-14T16:39:48Z|args=--census-every-block --hours 13
+L11|resume|n=3|sched_i=3|stage=2|h=0.82|pending=False
+L11|block|n=3|h=0.97|stage=2|learner=M_D|gen=0|trained=4352->4608|bucket=heur(quota)|opp=heuristic|odeck=BenchDimir|W/L/D/S=133/122/1/1|wr=0.520|probe=-|wall=527s|rc=0

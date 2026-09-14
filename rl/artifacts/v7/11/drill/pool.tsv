@@ -1,0 +1,5 @@
+event	name	learner	gen	deck	trained	n	pool	time_utc	path
+snap	M_D_04352	M_D	0	BenchDimir	4352	0	M_D	2026-09-14T16:00:47Z	/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/11/drill/pool/M_D_04352.pt
+snap	M_L_04096	M_L	0	G1Landfall	4096	1	M_L	2026-09-14T16:09:17Z	/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/11/drill/pool/M_L_04096.pt
+snap	X_D.g1_00512	X_D	1	BenchDimir	512	2		2026-09-14T16:38:57Z	/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/11/drill/pool/X_D.g1_00512.pt
+snap	M_D_04608	M_D	0	BenchDimir	4608	3	M_D	2026-09-14T16:48:37Z	/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/11/drill/pool/M_D_04608.pt

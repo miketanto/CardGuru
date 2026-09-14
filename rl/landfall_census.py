@@ -62,6 +62,7 @@ class LandfallGame(GameState):
         self.lands = 0
         self.blk_pairs = 0
         self.blk_small = 0
+        self.creatures = 0
 
 
 def census(paths):
@@ -91,6 +92,10 @@ def census(paths):
         ch, cht = c.a, c.ct[c.a]
         T = g.turns[c.turn] if c.active else None
 
+        if cht == SPELL:
+            i = c.ent(ch)
+            if i is not None and c.ents[i][29] > 0.5:
+                g.creatures += 1
         if cht == LAND:
             g.lands += 1
             if T is not None:
@@ -215,6 +220,7 @@ def report(name, S, by, games, A=None, audit_src=None):
     pre = sum(t.search_pre for x in games for t in x.turns.values() if t.lf_attacked)
     L.append(P + "land_search|cast %d of %d offering consults|precombat on a landfall-attack turn=%d|by card:step %s" % (
         S["search_cast"], S["search_off"], pre, ";".join("%s %d" % kv for kv in sorted(by["search_step"].items()))))
+    L.append(P + "board|creatures_cast_per_game=%s" % mean_ci([x.creatures for x in games]))
     L.append(P + "adventuring_gear|cast %s|equip %s" % (fmt(S["gear_cast"], S["gear_off"]), fmt(S["equip_taken"], S["equip_off"])))
     L.append(P + "blocks|consults=%d|blocked %s|small-into-big pairs (blocker P and T both lower) %s [source: recording]" % (
         S["blk_consults"], fmt(S["blk_blocked"], S["blk_consults"]), fmt(S["blk_small"], S["blk_pairs"])))

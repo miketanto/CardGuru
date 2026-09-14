@@ -54,6 +54,7 @@ import json
 import math
 import os
 import random
+import re
 import shutil
 import subprocess
 import sys
@@ -114,6 +115,51 @@ def field(path, key):
     except OSError:
         pass
     return None
+
+
+FLASH_NAMES = ("Floodpits Drowner", "Enduring Curiosity", "The Wondrous Wasp", "Nowhere to Run")
+
+
+def _g(pat, text, default="-"):
+    m = re.search(pat, text)
+    return m.group(1) if m else default
+
+
+def check_line(name, n, h, ta, opp, text):
+    """One compact L11|check line from a record_census.sh output (CENSUSREC + DC|/LC| lines)."""
+    w = int(_g(r"wins=(\d+)", text, "0"))
+    g = int(_g(r"\|games=(\d+)", text, "0"))
+    c = int(_g(r"\|consults=(\d+)", text, "0"))
+    if g:
+        lo, hi = wilson(w, g)
+        wr = f"{w}/{g} = {w / g:.2f} [{lo:.3f},{hi:.3f}]"
+    else:
+        wr = "NA"
+    parts = ["L11", "check", name, f"n={n}", f"h={h:.2f}", f"trained={ta}", f"opp={opp}", f"wr={wr}"]
+    if name == "M_D":
+        fl = flr = 0
+        for part in _g(r"\|cast_timing\|([^\n]*)", text, "").split(";"):
+            for nm in FLASH_NAMES:
+                if part.startswith(nm + " "):
+                    for k, v in re.findall(r"(\w+):(\d+)", part[len(nm):]):
+                        fl += int(v)
+                        flr += int(v) if k in ("opp_turn", "response") else 0
+        m = re.search(r"ninjutsu\|offered_windows=(\d+)[^|]*\|taken (\d+)/", text)
+        ninja = f"{m.group(2)}/{m.group(1)}" if m else "-"
+        sr = _g(r"only own legal targets -> cast (\d+/\d+)", text)
+        ct = _g(r"windows offering one: taken (\d+/\d+)", text)
+        bg = _g(r"highest-power enemy chosen (\d+/\d+)", text)
+        cp = _g(r"creatures_cast_per_game=([0-9.]+)", text)
+        parts += [f"selfrem={sr}", f"counter={ct}", f"flash_opp={flr}/{fl}", f"ninja={ninja}", f"biggest={bg}", f"cpg={cp}"]
+    else:
+        m = re.search(r"land_search\|cast (\d+) of (\d+)", text)
+        sb = _g(r"small-into-big pairs \(blocker P and T both lower\) (\d+/\d+)", text)
+        sn = _g(r"solver would not block (\d+/\d+)", text)
+        cp = _g(r"creatures_cast_per_game=([0-9.]+)", text)
+        ls = m.group(1) + "/" + m.group(2) if m else "-"
+        parts += [f"smallbig={sb}(solver_no_block={sn})", f"landsearch={ls}", f"cpg={cp}"]
+    parts.append(f"consults_pg={c / g:.1f}" if g else "consults_pg=NA")
+    return "|".join(parts)
 
 
 class League:
@@ -385,10 +431,6 @@ class League:
                 say("L11", "probe0", name, f"wr={float(v0):.3f} [{lo0:.3f},{hi0:.3f}]", f"games={a.probe_games}")
                 self.st.setdefault("probe0", {})[name] = float(v0)
         sname = self.snapshot(name, L, ta) if ok else ""
-        if ok and is_main and self.st.get("drill"):
-            gained = spec["budget"] - self.st["drill"]["start_trained"].get(name, 0)
-            if gained in self.a.census_at:
-                self.census(name, L, sname, gained)
         wall = time.time() - t0
         row = [self.st["n"], utc(), f"{self.hour():.3f}", self.st["stage"], name, L["gen"], spec["trained_before"], ta,
                spec["bucket"], spec["draw"], kind, opp or "heuristic", odeck, N, W, Lo, D, S,
@@ -433,6 +475,9 @@ class League:
                 self.st["learners"][name] = self.new_learner(name, L["gen"] + 1)
                 say("L11", "reset", name, f"gen={L['gen']}->{L['gen'] + 1}", f"why={reset}", f"wr={wr:.3f}",
                     f"added_to_{m}={'yes' if add else 'no'}")
+        self.save()
+        if is_main and self.st.get("drill"):
+            self.drill_checks(name, L, sname, spec)
         self.check_stage2()
         self.save()
         return True
@@ -446,14 +491,36 @@ class League:
             return False
         return self.st["learners"][m].get("trained", 0) >= d["start_trained"][m] + self.a.episodes_per_main
 
-    def census(self, name, L, sname, gained):
-        tag = f"drill_{name}_p{gained}"
+    def drill_checks(self, name, L, sname, spec):
+        gained = spec["budget"] - self.st["drill"]["start_trained"].get(name, 0)
+        if not self.a.census_every_block:                 # the pre-registered cadence (default)
+            if gained in self.a.census_at:
+                self.census(name, L, sname, gained)
+            return
+        ta = L.get("trained", 0)
+        self.census(name, L, sname, gained, "heuristic", self.a.census_games, f"drill_{name}_n{self.st['n']:03d}_t{ta:05d}")
+        if gained in self.a.census_at:
+            self.census(name, L, sname, gained, "cp7", self.a.census_cp7_games, f"drill_{name}_p{gained}_cp7")
+
+    def census(self, name, L, sname, gained, opp="heuristic", games=None, tag=None):
+        games = games or self.a.census_games
+        tag = tag or f"drill_{name}_p{gained}"
         path = self.st["snaps"][sname]["path"]
-        say("L11", "census_start", name, f"tag={tag}", f"ckpt={os.path.basename(path)}", f"games={self.a.census_games}")
-        out = subprocess.run(["bash", f"{RL}/record_census.sh", path, L["deck"], "heuristic", str(self.a.census_games),
-                              tag, "11000"], capture_output=True, text=True, cwd="/home/user/CardGuru")
-        for ln in out.stdout.splitlines():
-            if ln.startswith(("CENSUSREC|", "DC|", "LC|")):
+        # nothing else resident: the lane's idle driver JVM goes (the next block's lane autostarts it)
+        subprocess.call(["bash", f"{RL}/driver_server.sh", "stop", str(self.a.dport)],
+                        stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        if not self.a.census_every_block:
+            say("L11", "census_start", name, f"tag={tag}", f"ckpt={os.path.basename(path)}", f"games={games}")
+        out = subprocess.run(["bash", f"{RL}/record_census.sh", path, L["deck"], opp, str(games), tag,
+                              "11000" if opp == "heuristic" else "11500"], capture_output=True, text=True,
+                             cwd="/home/user/CardGuru")
+        lines = [ln for ln in out.stdout.splitlines() if ln.startswith(("CENSUSREC|", "DC|", "LC|"))]
+        with open(os.path.join(self.art, "census_lines.txt"), "a") as fh:
+            fh.write("\n".join(lines) + "\n")
+        if self.a.census_every_block:
+            say(check_line(name, self.st["n"], self.hour(), L.get("trained", 0), opp, "\n".join(lines)))
+        else:
+            for ln in lines:
                 say("L11", "census", ln)
 
     def dry(self, n):
@@ -540,6 +607,9 @@ def main():
     ap.add_argument("--episodes-per-main", type=int, default=4096)
     ap.add_argument("--census-at", default="2048,4096")
     ap.add_argument("--census-games", type=int, default=50)
+    ap.add_argument("--census-every-block", action="store_true",
+                    help="Phase 11 Amendment 3 (user): a heuristic census after EVERY main block, one L11|check line each; CP7 at --census-at")
+    ap.add_argument("--census-cp7-games", type=int, default=25)
     ap.add_argument("--dry-run", type=int, default=0, help="print N schedule steps' opponent choices and exit")
     ap.add_argument("--block", type=int, default=256)
     ap.add_argument("--chunk", type=int, default=64)
