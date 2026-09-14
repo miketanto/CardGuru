@@ -4023,3 +4023,40 @@ Cannot: say anything about how well an RL policy will play it (no reference, fir
 number is the league's); the heuristic's play of Harrow / Evolving Wilds / Lotus Cobra mana
 is the engine AI's (the payment and library-search sub-choices are the engine's for the
 RL seat too).
+
+## 10 - pre-registration and Amendment 3 (2026-09-14; the Phase 10 pre-registration is the runbook rl/PHASE10-LEAGUE.md, "Opponent selection per block" and "Pre-registered readings"; this section records the one amendment made while the league ran)
+
+**Amendment 3 (sampling shortfall) — 2026-09-14, WSL ~11:00Z, controller at block 40 / hour ~7; written BEFORE any Q6 number exists**
+
+Found by the main session. `league10.py` draws each block's bucket from
+`random.Random(10000 + n).random()`. The generator is sound (29 % of first draws ≥ 0.7 over
+5,000 seeds), but which n values happened to land on main blocks left the realized mix well
+short of the pre-registered one:
+
+| | main picks | self | pfsp | expl | heur | cross |
+|---|---|---|---|---|---|---|
+| stage 1 (n 0–26; first blocks excluded) | 18 (6 per main) | 5 | 10 | 3 | **0** (pre-reg. 15 %) | — |
+| stage 2 (n 27–39) | 9 (3 per main) | 4 | 2 | 3 | **0** (pre-reg. 10 %) | **0** (pre-reg. 30 %) |
+
+The precomputed draws for n = 40..55 give cross only at n = 40, 41 and 54, and heur only at
+n = 48. Stage 2 would therefore have ended at ~14 % cross instead of 30 %, about one
+256-episode cross-deck block per main, which is too little for Q6 to mean anything.
+
+**Stage 1 ran with no heuristic anchor at all.** That is a condition, and it goes into the Q5
+row. The flat development probes coincide with it: M_D 0.48 → 0.46 and M_L 0.44 → 0.42 at
+1024 → 2048, while M_W went 0.74 → 0.70. Stage 2 was forced at hour 5.10 (n = 27) with only
+M_W graduated (probe 0.74 [0.604, 0.841] at 1024). So M_W's cross pool is every other main
+(the forced rule), and M_D's and M_L's cross pool is M_W.
+
+**Change (stops the controller cleanly after block 40, then resumes it; nothing else moves):**
+in stage 2, before the bucket is used, each main gets a quota on its **realized** stage-2
+shares (rc-0 rows, a fallback counted as what it fell back to). If its cross share is below
+0.30, the pick is forced to cross; else if its heur share is below 0.10, it is forced to
+heur; else the MIX2 draw stands. The draw is still consumed, so seeding, PFSP, resolve, the
+exploiters and the hour-10 hard stop are identical. Forced picks are logged as
+`bucket=cross(quota)` / `heur(quota)`. The quota restores the pre-registered stage-2 shares;
+it does not change them. With 3 stage-2 blocks already played per main, the next picks per
+main are forced to cross, cross, heur, then sampled; with ~3 h left, most mains reach ≈ 2
+cross + 1 heur blocks in stage 2. Q6's confound statement (cross-deck stage + more
+episodes; no control arm) is unchanged. The small cross-deck episode count is stated in the
+Q6 row whatever it reads.

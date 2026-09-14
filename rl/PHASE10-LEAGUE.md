@@ -161,9 +161,45 @@ the per-block results table summarised, Q5, Q6, Q7, league health), a
 "Phase 10 verdict" paragraph (two sentences with the numbers), a dated
 UPDATE line + new section prompt in rl/HANDOFF-V7.md.
 
+### Amendment 3 (sampling shortfall) — 2026-09-14, WSL ~11:00Z, controller at block 40 / hour ~7; written BEFORE any Q6 number exists
+
+Found by the main session. `league10.py` draws each block's bucket from
+`random.Random(10000 + n).random()`. The generator is sound (29 % of first draws ≥ 0.7 over
+5,000 seeds), but which n values happened to land on main blocks left the realized mix well
+short of the pre-registered one:
+
+| | main picks | self | pfsp | expl | heur | cross |
+|---|---|---|---|---|---|---|
+| stage 1 (n 0–26; first blocks excluded) | 18 (6 per main) | 5 | 10 | 3 | **0** (pre-reg. 15 %) | — |
+| stage 2 (n 27–39) | 9 (3 per main) | 4 | 2 | 3 | **0** (pre-reg. 10 %) | **0** (pre-reg. 30 %) |
+
+The precomputed draws for n = 40..55 give cross only at n = 40, 41 and 54, and heur only at
+n = 48. Stage 2 would therefore have ended at ~14 % cross instead of 30 %, about one
+256-episode cross-deck block per main, which is too little for Q6 to mean anything.
+
+**Stage 1 ran with no heuristic anchor at all.** That is a condition, and it goes into the Q5
+row. The flat development probes coincide with it: M_D 0.48 → 0.46 and M_L 0.44 → 0.42 at
+1024 → 2048, while M_W went 0.74 → 0.70. Stage 2 was forced at hour 5.10 (n = 27) with only
+M_W graduated (probe 0.74 [0.604, 0.841] at 1024). So M_W's cross pool is every other main
+(the forced rule), and M_D's and M_L's cross pool is M_W.
+
+**Change (stops the controller cleanly after block 40, then resumes it; nothing else moves):**
+in stage 2, before the bucket is used, each main gets a quota on its **realized** stage-2
+shares (rc-0 rows, a fallback counted as what it fell back to). If its cross share is below
+0.30, the pick is forced to cross; else if its heur share is below 0.10, it is forced to
+heur; else the MIX2 draw stands. The draw is still consumed, so seeding, PFSP, resolve, the
+exploiters and the hour-10 hard stop are identical. Forced picks are logged as
+`bucket=cross(quota)` / `heur(quota)`. The quota restores the pre-registered stage-2 shares;
+it does not change them. With 3 stage-2 blocks already played per main, the next picks per
+main are forced to cross, cross, heur, then sampled; with ~3 h left, most mains reach ≈ 2
+cross + 1 heur blocks in stage 2. Q6's confound statement (cross-deck stage + more
+episodes; no control arm) is unchanged. The small cross-deck episode count is stated in the
+Q6 row whatever it reads.
+
 ## STATE (append dated lines; newest last)
 - 2026-09-14 (start): nothing running from Phase 10; Phase 9 agent may be running P2–P4.
 - 2026-09-14 (session clock): A1 DONE (ce38ccc: --cand-refers-pool in v7_net/v7_policy/policy_server/p10_init_net, default OFF = HEAD bit for bit via golden fixture; 18/18 server tests, v7_check 15/15). A2 DONE - GATE PASSED: rl/p10_a2.sh (probe copy rl/p10_cardswap.py), ON text dp 0.0516 [0.0490,0.0542] vs OFF 0.00000 (pt 0.040, cost 0.043, type 0.069; strict flips 0.13), row 10 / A1-A2 in V7-VALIDATION.md, artifacts rl/artifacts/v7/10/a2/. Phase 9 probe still resident (server 7947 + JVM 7911) - no lane launched. A3 smoke running on driver 7913 (rl/p10_a3_smoke.sh -> rl/artifacts/v7/10/a3/).
 - 2026-09-14 (session clock): A3 DONE - rl/G1Landfall.dck (R/G, 24 lands incl. 4 Evolving Wilds; 16 distinct cards, set numbers from Mage.Sets), smoke on driver 7913: 20-game heuristic mirror 9-11, 13.0 turns, 0 exceptions; 4-game wire check validate ok 136 consults, 0 unknown cards (3 stack-ability names only); row 10 / A3. Phase 9 probe no longer resident (pgrep empty). A4 controller rl/league10.py + rl/run_league10.sh written; smoke (2 blocks x 32 on W0Base: M_W vs heuristic, X_W vs frozen M_W) running.
 - 2026-09-14 (session clock; WSL 03:57Z): A4 SMOKE PASSED (rl/artifacts/v7/10/smoke/: league10.log, results.tsv, pool.tsv, state.json): block 0 M_W vs heuristic 32 eps 9/23, probe0 0/4, probe 2/4, 74 s; block 1 X_W vs frozen M_W_00032 (rl opponent, opp server built cand_refers_pool=True from config, no strict=False) 12/20, 86 s; both rc=0, snapshots opt-stripped, L10|done|reason=max_blocks, driver 7912 stopped. Not exercised by the smoke (logic only): self/pfsp/cross buckets, exploiter reset, graduation, stage 2. Keepalive: hidden cmd start /min wsl sleep 43200 (12 h, started ~03:55Z WSL).
 - 2026-09-14 (session clock; WSL 03:58Z): B1 LAUNCHED - rl/run_league10.sh detached (setsid nohup) at 03:57:44Z WSL, verified by pgrep after the launching call ended: controller python3 rl/league10.py, lane rung0_lane_league.sh W0Base (M_W, budget 256, seed 1), learner server 7950, driver JVM 7912 (opp server 7960 only in rl-opponent blocks), keepalive sleep 43200. LOG rl/artifacts/v7/10/league10.log; per block one line L10|block|n=..|h=..|stage=..|learner=..|gen=..|trained=a->b|bucket=..|opp=..|odeck=..|W/L/D/S=..|wr=..|probe=..|wall=..s|rc=..; also L10|probe0 / L10|grad / L10|stage2 / L10|reset / L10|error; at exit L10|done|reason=..|blocks=..|h=..|stage=..|graduated=.. then L10|wrapper|rc=. Tables rl/artifacts/v7/10/results.tsv, pool.tsv, state.json; lane state /tmp/rl_10_<learner>[_g<gen>]/ (lane.log, jobs.log, agent.pt); pool .pt in rl/artifacts/v7/10/pool/ (gitignored). Hard stop at controller hour 10 (~13:58Z WSL + the running block). Clean stop: touch rl/artifacts/v7/10/STOP. Resume: rerun the launch line (state.json; a running block is re-run with the same opponent). NEXT at L10|done: check pgrep empty, then setsid nohup bash rl/p10_eval.sh > rl/artifacts/v7/10/eval/eval.log (B2, one job at a time, E10| lines, E10|done), then Phase C rows + HANDOFF section.
+- 2026-09-14 (WSL ~11:05Z): AMENDMENT 3 (sampling shortfall) written above STATE and in V7-VALIDATION '10 - pre-registration and Amendment 3': stage 1 drew heur 0/18 main picks, stage 2 cross 0/9 and heur 0/9; rl/league10.py stage-2 quota (f23c67b: cross < 0.30 -> cross(quota), else heur < 0.10 -> heur(quota), else MIX2; draw still consumed). STOP touched at 11:02Z; the controller finishes block 40 and exits; resume with the same launch line.
