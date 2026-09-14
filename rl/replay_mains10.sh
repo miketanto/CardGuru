@@ -4,7 +4,7 @@
 # have exited (the 11 GB box holds two servers), then runs the three mains one at a time.
 [ -f ~/.profile ] && . ~/.profile
 cd /home/user/CardGuru || exit 1
-P=rl/artifacts/v7/10/pool; OUT=rl/artifacts/v7/10/replay
+P=/home/user/CardGuru/rl/artifacts/v7/10/pool; OUT=/home/user/CardGuru/rl/artifacts/v7/10/replay
 echo "RPL10|wait|$(date -u +%FT%TZ)"
 while pgrep -f 'league1[0]\.py' > /dev/null || pgrep -f 'rung0_lan[e]' > /dev/null; do sleep 20; done
 echo "RPL10|start|$(date -u +%FT%TZ)"

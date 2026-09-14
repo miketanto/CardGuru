@@ -1,0 +1,48 @@
+RLGAME|reward=-1.0|seed=6002
+t2|Swamp (Play Swamp)
+t3|== incoming: life 20-20, creatures 0-2
+t3|  attacked by Spyglass Siren 1/1
+t3|  [joint] 1 attackers, 0 blockers, 1 distinct outcomes, 1 after Pareto
+t4|Island (Play Island)
+t4|  KILL    Spyglass Siren 1/1 tap   [of 2, 2 enemy: Spyglass Siren 1/1 tap, Spyglass Siren 1/1]
+t4|Bitter Triumph (destroy target creature or planeswalker.)
+t5|== incoming: life 19-20, creatures 0-2
+t5|  attacked by Spyglass Siren 1/1
+t5|  [joint] 1 attackers, 0 blockers, 1 distinct outcomes, 1 after Pareto
+t6|Nowhere to Run
+t6|  KILL    Spyglass Siren 1/1 tap   [of 2, 2 enemy: Floodpits Drowner 2/1, Spyglass Siren 1/1 tap]
+t6|Watery Grave (Play Watery Grave)
+t7|== incoming: life 16-20, creatures 0-2
+t7|  attacked by Floodpits Drowner 2/1
+t7|  [joint] 1 attackers, 0 blockers, 1 distinct outcomes, 1 after Pareto
+t8|Floodpits Drowner
+t8|Restless Reef (Play Restless Reef)
+t9|== incoming: life 14-22, creatures 0-2
+t9|  attacked by Kaito, Bane of Nightmares 5/6
+t9|  [joint] 1 attackers, 0 blockers, 1 distinct outcomes, 1 after Pareto
+t10|The Wondrous Wasp
+t10|Gloomlake Verge (Play Gloomlake Verge)
+t11|== incoming: life 9-20, creatures 1-2
+t11|  attacked by Kaito, Bane of Nightmares 6/7, Restless Reef 4/4
+t11|  [joint] 2 attackers, 1 blockers, 3 distinct outcomes, 2 after Pareto
+t11|  BLOCK   The Wondrous Wasp 2/1  <- Kaito, Bane of Nightmares 6/7
+t11|  [audit] policy The Wondrous Wasp 2/1->Kaito, Bane of Nightmares 6/7 (score 3) | solver The Wondrous Wasp 2/1->Kaito, Bane of Nightmares 6/7 (score 3)  MATCH
+t12|Hidden Lair (Play Hidden Lair)
+t14|Floodpits Drowner
+t16|Hidden Lair (Play Hidden Lair)
+t16|== my combat: life 5-20, creatures 1-1
+t16|  [atkjoint] 1 avail, 1 defenders, 2 distinct subsets, 2 after Pareto, 0.1ms
+t16|  ATTACK  Floodpits Drowner 2/1
+t16|  [atkaudit] policy Floodpits Drowner 2/1 (0, dealt 0, lost 1, killed 1, back 0) | ref (none) (0)  MATCH
+t17|We Say Thee Nay! (counter target spell unless its controller pays {2}. Counter that spell unless its controller pays {4} instead if this spell was cast using teamwork.)
+t17|Spell Snare (counter target spell with mana value 2.)
+t17|== incoming: life 5-20, creatures 0-3
+t17|  attacked by Restless Reef 4/4
+t17|  [joint] 1 attackers, 0 blockers, 1 distinct outcomes, 1 after Pareto
+t18|Enduring Curiosity
+t19|== incoming: life 1-20, creatures 1-3
+t19|  attacked by Kaito, Bane of Nightmares 9/10, Restless Reef 4/4, Spyglass Siren 1/1
+t19|  [joint] 3 attackers, 1 blockers, 4 distinct outcomes, 3 after Pareto
+t19|  BLOCK   Enduring Curiosity 4/3  <- Kaito, Bane of Nightmares 9/10
+t19|  [audit] policy Enduring Curiosity 4/3->Kaito, Bane of Nightmares 9/10 (LETHAL) | solver Enduring Curiosity 4/3->-- (LETHAL)  MATCH
+RLGAME_END
