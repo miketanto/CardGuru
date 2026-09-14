@@ -4110,3 +4110,88 @@ Reading (32 games per seat — development-probe scale, not a level): the 8a-b p
 **Correction to 9 / P3 (in the open).** `rl/probes/instant_speed.py` sets `STEP_MAIN1, STEP_MAIN2 = 4, 8` and then reads `game[2 + STEP_MAIN1]`, i.e. `v7_game[6]` (declare-blockers) and `[10]` (holds priority, 1.0 in 339/375 consults of `rec_dim_dimir.jsonl`), so its "main phase" test was nearly always true, and "at instant speed" collapsed to "not the active player, or the stack is non-empty". Rerun with indices 2 / 6 (a scratchpad copy; the probe file is unchanged): **DIM 207/254 = 0.815 [0.763, 0.858], excluding counterspells 151/195 = 0.774 [0.711, 0.827]** (published 0.280 / 0.077); CP7 unchanged (14/148, 6/136: it casts only in main phases or in response). The published sentence "every flash creature (103 casts) went down at sorcery speed" is wrong. By the literal rule most went down at instant speed, but in DIM's own upkeep and draw step, never on the opponent's turn and never in response. The substantive P3 reading survives in a sharper form: DIM casts what is castable in the first window it gets (its own upkeep), which is neither flash play nor holding. The Phase 11 pre-registration's flash bar ("clear above the Phase 9 floor 0.077") was built on the bug. It is re-based in `rl/PHASE11-DRILL.md` Amendment 1 before any Part B data.
 
 Landfall tool (A2): parse-checked only. There is no G1Landfall recording with a policy's choices yet; the 4-game wire echo `rl/artifacts/v7/wire3a/p10_G1Landfall_wire.jsonl` exercises every counter (land drops, precombat share, land search by step, landfall attacks with and without a prior land drop, block pairs). The `[audit]` parser was run on the two M_L replay transcripts (`rl/artifacts/v7/10/replay/M_L_*`): 9 combats, 8 policy block pairs, 7 small-into-big, of which the solver would not have blocked 5. Real validation = the A3 smoke.
+
+## 10 / league run and Q5 — self-play per deck: home levels (2026-09-14; branch `v7/lane-d`; ONE seed per learner; fixed argmax-classes protocol; `rl/artifacts/v7/10/`)
+
+**The run.** `rl/league10.py` ran from 03:57Z to 14:16Z WSL. The controller clock reached
+10.32 h (the hard stop at hour 10 of the original clock, plus the block that was running) in
+62 blocks of 256 episodes. It was stopped twice by STOP files, both resumed with the clock
+continuing:
+- 11:02–11:10Z for Amendment 3 (the stage-2 quota);
+- 12:10–12:25Z, a pause the user asked for, for the interim card-swap check and the replays
+  (resumed with `--hours 10.2`, recorded in the STATE lines).
+
+| learner | blocks | episodes | training W / N | stalls |
+|---|---|---|---|---|
+| M_W (W0Base) | 16 | 4,096 | 2,207 / 4,096 | 78 |
+| M_D (BenchDimir) | 16 | 4,096 | 1,814 / 4,096 | 10 |
+| M_L (G1Landfall) | 15 | 3,840 | 1,768 / 3,840 | 2 |
+| X_W / X_D / X_L | 5 each | 1,280 each | 341 / 471 / 398 | 6 / 5 / 0 |
+
+Tables: `results.tsv` (one row per block, including bucket, draw, opponent, W/L/D/S and
+probe), `pool.tsv`, `state.json`, `league10.log`. The pool `.pt` files are gitignored.
+
+- M_W graduated at 1,024 (probe 0.74 [0.604, 0.841]); M_D and M_L never did.
+- Stage 2 was **forced** at hour 5.10 (n = 27) with only M_W graduated. So M_W's cross pool
+  was every other main, and M_D's and M_L's was M_W.
+- Main per-block sampled training rates ran 0.10–0.74 (the per-block list is in
+  `results.tsv`).
+
+**Stage 1 had effectively no heuristic anchor (Amendment 3).** The draws gave the
+heuristic 0 of 18 main picks. One heuristic block happened anyway, as a fallback: n = 5,
+M_D, `expl->heur`, before any exploiter snapshot existed. So the realized share is 1/18
+against the pre-registered 15 %. In stage 2 the quota produced 2–3 heuristic blocks per
+main. This condition belongs to every Q5 reading below.
+
+**Development probes** (50 games vs the heuristic on the own mirror; the first is at
+trained = 0):
+
+| main | 0 | 1024 | 2048 | 3072 | 4096 |
+|---|---|---|---|---|---|
+| M_W | 0.02 [0.004, 0.105] | 0.74 [0.604, 0.841] | 0.70 [0.562, 0.809] | 0.72 [0.583, 0.825] | 0.46 [0.330, 0.596] |
+| M_D | 0.02 [0.004, 0.105] | 0.48 [0.348, 0.615] | 0.46 [0.330, 0.596] | 0.58 [0.442, 0.706] | 0.46 [0.330, 0.596] |
+| M_L | 0.28 [0.175, 0.417] | 0.44 [0.312, 0.577] | 0.42 [0.294, 0.558] | 0.44 [0.312, 0.577] | (final at 3,840; no probe) |
+
+**Home levels, final snapshots** (`rl/p10_eval.sh`, `eval/eval.log`; 100 games each; the
+agent on its own deck):
+
+| main | vs heuristic, own mirror | vs CP7 (skill 6), own deck | turns (heur / CP7) |
+|---|---|---|---|
+| M_W (M_W_04096) | **0.52 [0.423, 0.615]** | 0.62 [0.522, 0.709] | 13.5 / 20.9 |
+| M_D (M_D_04096) | **0.59 [0.492, 0.681]** | 0.17 [0.109, 0.255] | 19.7 / 18.8 |
+| M_L (M_L_03840) | **0.49 [0.394, 0.587]** | 0.37 [0.282, 0.468] | 11.8 / 12.5 |
+
+No draws or stalls in any home row.
+
+**Q5, as pre-registered:** "final home rate vs the heuristic clearly above its first
+development probe AND at or above the deck's reference where one exists".
+- **M_W: NOT met.** It is clear above its first probe (0.52 vs 0.02). It is **clear below**
+  the W0Base reference, C1 0.86 [0.81, 0.90].
+- **M_D: met.** It is clear above its first probe (0.59 vs 0.02). Its point is above the
+  Dimir reference, 8a-b 0.41 [0.319, 0.508], but the intervals overlap by 0.016, so it is
+  at or above the reference, not clear above it.
+- **M_L: NOT met.** 0.49 against its first probe 0.28 [0.175, 0.417]: the intervals overlap
+  (0.394 < 0.417). There is no reference; the heuristic mirror was 0.45 over 20 games (A3).
+
+**M_W is a regression candidate, not flat.** Its three stage-1/early-stage-2 development
+probes pool to 108/150 = 0.72 [0.643, 0.786]. The final 100-game home level, 0.52
+[0.423, 0.615], is disjoint from that pool, and the 4096 probe is 0.46. The decline
+coincides with stage 2. Between probe 3072 and probe 4096 it trained 4 blocks: cross vs
+M_D (quota), heur (quota), pfsp, cross vs M_L (quota). Pooling three checkpoints' probes is
+not a level. The direct test is M_W_s1end on the same 100-game home battery, which was
+**not run: owed**. The same stretch took M_W's text sensitivity from 0.025 to 0.0023 (Q7).
+That is a coincidence in time, not a shown cause.
+
+**The same checkpoint, read twice.** M_D_04096 read 0.46 [0.330, 0.596] at 50 games (the
+in-league probe) and 0.59 [0.492, 0.681] at 100 (the home battery), on different game seeds.
+The intervals overlap; this is the Amendment 2 reason for using 50-game probes only for
+development.
+
+**Cannot:**
+- one seed per learner; about 4k episodes per main;
+- stage 1 ran without an anchor;
+- stage 2 was forced with one graduate;
+- the league lost 0.25 h to the two stops, both inside the hour-10 clock;
+- the landfall deck has no reference;
+- CP7 rows are single 100-game levels (M_W beats CP7 more often than it beats the heuristic;
+  M_D is weak against CP7, 0.17).

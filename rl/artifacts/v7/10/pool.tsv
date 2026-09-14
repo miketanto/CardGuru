@@ -1,0 +1,66 @@
+event	name	learner	gen	deck	trained	n	pool	time_utc	path
+snap	M_W_00256	M_W	0	W0Base	256	0	M_W	2026-09-14T04:03:09Z	/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/M_W_00256.pt
+snap	M_D_00256	M_D	0	BenchDimir	256	1	M_D	2026-09-14T04:11:46Z	/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/M_D_00256.pt
+snap	M_L_00256	M_L	0	G1Landfall	256	2	M_L	2026-09-14T04:18:14Z	/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/M_L_00256.pt
+snap	X_W.g0_00256	X_W	0	W0Base	256	3		2026-09-14T04:23:12Z	/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/X_W.g0_00256.pt
+snap	M_W_00512	M_W	0	W0Base	512	4	M_W	2026-09-14T04:31:37Z	/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/M_W_00512.pt
+snap	M_D_00512	M_D	0	BenchDimir	512	5	M_D	2026-09-14T04:40:59Z	/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/M_D_00512.pt
+snap	M_L_00512	M_L	0	G1Landfall	512	6	M_L	2026-09-14T04:58:01Z	/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/M_L_00512.pt
+snap	X_D.g0_00256	X_D	0	BenchDimir	256	7		2026-09-14T05:13:30Z	/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/X_D.g0_00256.pt
+snap	M_W_00768	M_W	0	W0Base	768	8	M_W	2026-09-14T05:21:45Z	/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/M_W_00768.pt
+snap	M_D_00768	M_D	0	BenchDimir	768	9	M_D	2026-09-14T05:40:01Z	/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/M_D_00768.pt
+snap	M_L_00768	M_L	0	G1Landfall	768	10	M_L	2026-09-14T05:55:48Z	/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/M_L_00768.pt
+snap	X_L.g0_00256	X_L	0	G1Landfall	256	11		2026-09-14T06:04:01Z	/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/X_L.g0_00256.pt
+snap	M_W_01024	M_W	0	W0Base	1024	12	M_W	2026-09-14T06:13:19Z	/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/M_W_01024.pt
+snap	M_D_01024	M_D	0	BenchDimir	1024	13	M_D	2026-09-14T06:30:25Z	/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/M_D_01024.pt
+snap	M_L_01024	M_L	0	G1Landfall	1024	14	M_L	2026-09-14T06:44:48Z	/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/M_L_01024.pt
+snap	X_W.g0_00512	X_W	0	W0Base	512	15		2026-09-14T06:52:30Z	/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/X_W.g0_00512.pt
+snap	M_W_01280	M_W	0	W0Base	1280	16	M_W	2026-09-14T07:01:00Z	/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/M_W_01280.pt
+snap	M_D_01280	M_D	0	BenchDimir	1280	17	M_D	2026-09-14T07:17:15Z	/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/M_D_01280.pt
+snap	M_L_01280	M_L	0	G1Landfall	1280	18	M_L	2026-09-14T07:30:52Z	/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/M_L_01280.pt
+snap	X_D.g0_00512	X_D	0	BenchDimir	512	19		2026-09-14T07:45:44Z	/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/X_D.g0_00512.pt
+snap	M_W_01536	M_W	0	W0Base	1536	20	M_W	2026-09-14T07:54:12Z	/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/M_W_01536.pt
+snap	M_D_01536	M_D	0	BenchDimir	1536	21	M_D	2026-09-14T08:08:02Z	/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/M_D_01536.pt
+snap	M_L_01536	M_L	0	G1Landfall	1536	22	M_L	2026-09-14T08:16:53Z	/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/M_L_01536.pt
+snap	X_L.g0_00512	X_L	0	G1Landfall	512	23		2026-09-14T08:25:36Z	/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/X_L.g0_00512.pt
+snap	M_W_01792	M_W	0	W0Base	1792	24	M_W	2026-09-14T08:33:01Z	/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/M_W_01792.pt
+snap	M_D_01792	M_D	0	BenchDimir	1792	25	M_D	2026-09-14T08:47:29Z	/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/M_D_01792.pt
+snap	M_L_01792	M_L	0	G1Landfall	1792	26	M_L	2026-09-14T08:55:34Z	/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/M_L_01792.pt
+snap	X_W.g0_00768	X_W	0	W0Base	768	27		2026-09-14T09:03:29Z	/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/X_W.g0_00768.pt
+s1end	M_W_s1end	M_W	0	W0Base	1792	27		2026-09-14T09:03:31Z	/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/M_W_s1end.pt
+s1end	M_D_s1end	M_D	0	BenchDimir	1792	27		2026-09-14T09:03:32Z	/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/M_D_s1end.pt
+s1end	M_L_s1end	M_L	0	G1Landfall	1792	27		2026-09-14T09:03:33Z	/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/M_L_s1end.pt
+snap	M_W_02048	M_W	0	W0Base	2048	28	M_W	2026-09-14T09:11:57Z	/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/M_W_02048.pt
+snap	M_D_02048	M_D	0	BenchDimir	2048	29	M_D	2026-09-14T09:29:59Z	/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/M_D_02048.pt
+snap	M_L_02048	M_L	0	G1Landfall	2048	30	M_L	2026-09-14T09:38:47Z	/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/M_L_02048.pt
+snap	X_D.g0_00768	X_D	0	BenchDimir	768	31		2026-09-14T09:53:14Z	/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/X_D.g0_00768.pt
+snap	M_W_02304	M_W	0	W0Base	2304	32	M_W	2026-09-14T10:01:27Z	/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/M_W_02304.pt
+snap	M_D_02304	M_D	0	BenchDimir	2304	33	M_D	2026-09-14T10:11:48Z	/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/M_D_02304.pt
+snap	M_L_02304	M_L	0	G1Landfall	2304	34	M_L	2026-09-14T10:20:06Z	/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/M_L_02304.pt
+snap	X_L.g0_00768	X_L	0	G1Landfall	768	35		2026-09-14T10:26:28Z	/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/X_L.g0_00768.pt
+snap	M_W_02560	M_W	0	W0Base	2560	36	M_W	2026-09-14T10:34:52Z	/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/M_W_02560.pt
+snap	M_D_02560	M_D	0	BenchDimir	2560	37	M_D	2026-09-14T10:46:27Z	/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/M_D_02560.pt
+snap	M_L_02560	M_L	0	G1Landfall	2560	38	M_L	2026-09-14T10:52:01Z	/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/M_L_02560.pt
+snap	X_W.g0_01024	X_W	0	W0Base	1024	39		2026-09-14T10:59:46Z	/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/X_W.g0_01024.pt
+snap	M_W_02816	M_W	0	W0Base	2816	40	M_W	2026-09-14T11:10:11Z	/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/M_W_02816.pt
+snap	M_D_02816	M_D	0	BenchDimir	2816	41	M_D	2026-09-14T11:19:49Z	/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/M_D_02816.pt
+snap	M_L_02816	M_L	0	G1Landfall	2816	42	M_L	2026-09-14T11:26:07Z	/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/M_L_02816.pt
+snap	X_D.g0_01024	X_D	0	BenchDimir	1024	43		2026-09-14T11:37:56Z	/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/X_D.g0_01024.pt
+snap	M_W_03072	M_W	0	W0Base	3072	44	M_W	2026-09-14T11:47:53Z	/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/M_W_03072.pt
+snap	M_D_03072	M_D	0	BenchDimir	3072	45	M_D	2026-09-14T11:58:51Z	/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/M_D_03072.pt
+snap	M_L_03072	M_L	0	G1Landfall	3072	46	M_L	2026-09-14T12:07:13Z	/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/M_L_03072.pt
+snap	X_L.g0_01024	X_L	0	G1Landfall	1024	47		2026-09-14T12:17:35Z	/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/X_L.g0_01024.pt
+snap	M_W_03328	M_W	0	W0Base	3328	48	M_W	2026-09-14T12:29:45Z	/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/M_W_03328.pt
+snap	M_D_03328	M_D	0	BenchDimir	3328	49	M_D	2026-09-14T12:37:38Z	/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/M_D_03328.pt
+snap	M_L_03328	M_L	0	G1Landfall	3328	50	M_L	2026-09-14T12:42:29Z	/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/M_L_03328.pt
+snap	X_W.g1_00256	X_W	1	W0Base	256	51		2026-09-14T12:46:54Z	/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/X_W.g1_00256.pt
+snap	M_W_03584	M_W	0	W0Base	3584	52	M_W	2026-09-14T12:54:17Z	/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/M_W_03584.pt
+snap	M_D_03584	M_D	0	BenchDimir	3584	53	M_D	2026-09-14T13:05:41Z	/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/M_D_03584.pt
+snap	M_L_03584	M_L	0	G1Landfall	3584	54	M_L	2026-09-14T13:11:13Z	/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/M_L_03584.pt
+snap	X_D.g1_00256	X_D	1	BenchDimir	256	55		2026-09-14T13:35:03Z	/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/X_D.g1_00256.pt
+snap	M_W_03840	M_W	0	W0Base	3840	56	M_W	2026-09-14T13:40:46Z	/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/M_W_03840.pt
+snap	M_D_03840	M_D	0	BenchDimir	3840	57	M_D	2026-09-14T13:47:58Z	/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/M_D_03840.pt
+snap	M_L_03840	M_L	0	G1Landfall	3840	58	M_L	2026-09-14T13:54:22Z	/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/M_L_03840.pt
+snap	X_L.g1_00256	X_L	1	G1Landfall	256	59		2026-09-14T14:00:25Z	/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/X_L.g1_00256.pt
+snap	M_W_04096	M_W	0	W0Base	4096	60	M_W	2026-09-14T14:08:09Z	/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/M_W_04096.pt
+snap	M_D_04096	M_D	0	BenchDimir	4096	61	M_D	2026-09-14T14:16:38Z	/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/M_D_04096.pt

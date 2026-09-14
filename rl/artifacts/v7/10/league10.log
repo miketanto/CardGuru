@@ -1,0 +1,91 @@
+L10|wrapper|start=2026-09-14T03:57:44Z|args=
+L10|start|art=/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10|learners=M_W,M_D,M_L,X_W,X_D,X_L|schedule=M_W,M_D,M_L,X_W,M_W,M_D,M_L,X_D,M_W,M_D,M_L,X_L|block=256|hours=10.0|srvextra=--device cuda --epochs 1 --logit-bound 5 --weight-decay 0.01 --adv-norm batch --target-kl 0.02 --argmax-classes --cand-refers-pool
+L10|init|M_W|gen=0|seed=1001|P10INIT|out=/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/inits/M_W_g0.pt|arch=v7|seed=1001|cdim=94|params=17478151
+L10|probe0|M_W|wr=0.020 [0.004,0.105]|games=50
+L10|block|n=0|h=0.09|stage=1|learner=M_W|gen=0|trained=0->256|bucket=first|opp=heuristic|odeck=W0Base|W/L/D/S=138/117/1/1|wr=0.539|probe=-|wall=322s|rc=0
+L10|init|M_D|gen=0|seed=1002|P10INIT|out=/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/inits/M_D_g0.pt|arch=v7|seed=1002|cdim=94|params=17478151
+L10|probe0|M_D|wr=0.020 [0.004,0.105]|games=50
+L10|block|n=1|h=0.23|stage=1|learner=M_D|gen=0|trained=0->256|bucket=first|opp=heuristic|odeck=BenchDimir|W/L/D/S=40/215/1/1|wr=0.156|probe=-|wall=514s|rc=0
+L10|init|M_L|gen=0|seed=1003|P10INIT|out=/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/inits/M_L_g0.pt|arch=v7|seed=1003|cdim=94|params=17478151
+L10|probe0|M_L|wr=0.280 [0.175,0.417]|games=50
+L10|block|n=2|h=0.34|stage=1|learner=M_L|gen=0|trained=0->256|bucket=first|opp=heuristic|odeck=G1Landfall|W/L/D/S=25/231/0/0|wr=0.098|probe=-|wall=386s|rc=0
+L10|init|X_W|gen=0|seed=1004|P10INIT|out=/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/inits/X_W_g0.pt|arch=v7|seed=1004|cdim=94|params=17478151
+L10|block|n=3|h=0.42|stage=1|learner=X_W|gen=0|trained=0->256|bucket=exploit|opp=M_W_00256|odeck=W0Base|W/L/D/S=36/220/0/0|wr=0.141|probe=-|wall=295s|rc=0
+L10|block|n=4|h=0.56|stage=1|learner=M_W|gen=0|trained=256->512|bucket=pfsp->self|opp=M_W_00256|odeck=W0Base|W/L/D/S=139/111/6/6|wr=0.543|probe=-|wall=505s|rc=0
+L10|block|n=5|h=0.72|stage=1|learner=M_D|gen=0|trained=256->512|bucket=expl->heur|opp=heuristic|odeck=BenchDimir|W/L/D/S=80/176/0/0|wr=0.312|probe=-|wall=561s|rc=0
+L10|block|n=6|h=1.00|stage=1|learner=M_L|gen=0|trained=256->512|bucket=self|opp=M_L_00256|odeck=G1Landfall|W/L/D/S=169/86/1/1|wr=0.660|probe=-|wall=1022s|rc=0
+L10|init|X_D|gen=0|seed=1005|P10INIT|out=/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/inits/X_D_g0.pt|arch=v7|seed=1005|cdim=94|params=17478151
+L10|block|n=7|h=1.26|stage=1|learner=X_D|gen=0|trained=0->256|bucket=exploit|opp=M_D_00512|odeck=BenchDimir|W/L/D/S=156/99/1/1|wr=0.609|probe=-|wall=926s|rc=0
+L10|block|n=8|h=1.40|stage=1|learner=M_W|gen=0|trained=512->768|bucket=self|opp=M_W_00512|odeck=W0Base|W/L/D/S=131/113/12/12|wr=0.512|probe=-|wall=494s|rc=0
+L10|block|n=9|h=1.70|stage=1|learner=M_D|gen=0|trained=512->768|bucket=self|opp=M_D_00512|odeck=BenchDimir|W/L/D/S=133/121/2/2|wr=0.520|probe=-|wall=1095s|rc=0
+L10|block|n=10|h=1.97|stage=1|learner=M_L|gen=0|trained=512->768|bucket=pfsp|opp=M_L_00256|odeck=G1Landfall|W/L/D/S=175/81/0/0|wr=0.684|probe=-|wall=946s|rc=0
+L10|init|X_L|gen=0|seed=1006|P10INIT|out=/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/inits/X_L_g0.pt|arch=v7|seed=1006|cdim=94|params=17478151
+L10|block|n=11|h=2.10|stage=1|learner=X_L|gen=0|trained=0->256|bucket=exploit|opp=M_L_00768|odeck=G1Landfall|W/L/D/S=102/154/0/0|wr=0.398|probe=-|wall=490s|rc=0
+L10|block|n=12|h=2.26|stage=1|learner=M_W|gen=0|trained=768->1024|bucket=pfsp|opp=M_W_00512|odeck=W0Base|W/L/D/S=160/84/12/12|wr=0.625|probe=0.740 [0.604,0.841]|wall=558s|rc=0
+L10|grad|M_W|trained=1024|probe=0.740 [0.604,0.841]|h=2.26
+L10|block|n=13|h=2.54|stage=1|learner=M_D|gen=0|trained=768->1024|bucket=self|opp=M_D_00768|odeck=BenchDimir|W/L/D/S=101/154/1/1|wr=0.395|probe=0.480 [0.348,0.615]|wall=1026s|rc=0
+L10|block|n=14|h=2.78|stage=1|learner=M_L|gen=0|trained=768->1024|bucket=pfsp|opp=M_L_00512|odeck=G1Landfall|W/L/D/S=132/124/0/0|wr=0.516|probe=0.440 [0.312,0.577]|wall=863s|rc=0
+L10|block|n=15|h=2.91|stage=1|learner=X_W|gen=0|trained=256->512|bucket=exploit|opp=M_W_01024|odeck=W0Base|W/L/D/S=28/227/1/1|wr=0.109|probe=-|wall=462s|rc=0
+L10|block|n=16|h=3.05|stage=1|learner=M_W|gen=0|trained=1024->1280|bucket=pfsp|opp=M_W_00256|odeck=W0Base|W/L/D/S=185/57/14/14|wr=0.723|probe=-|wall=509s|rc=0
+L10|block|n=17|h=3.32|stage=1|learner=M_D|gen=0|trained=1024->1280|bucket=pfsp|opp=M_D_00768|odeck=BenchDimir|W/L/D/S=136/119/1/1|wr=0.531|probe=-|wall=975s|rc=0
+L10|block|n=18|h=3.55|stage=1|learner=M_L|gen=0|trained=1024->1280|bucket=pfsp|opp=M_L_00512|odeck=G1Landfall|W/L/D/S=134/122/0/0|wr=0.523|probe=-|wall=818s|rc=0
+L10|block|n=19|h=3.80|stage=1|learner=X_D|gen=0|trained=256->512|bucket=exploit|opp=M_D_01280|odeck=BenchDimir|W/L/D/S=133/121/2/2|wr=0.520|probe=-|wall=891s|rc=0
+L10|block|n=20|h=3.94|stage=1|learner=M_W|gen=0|trained=1280->1536|bucket=expl|opp=X_W.g0_00512|odeck=W0Base|W/L/D/S=188/64/4/4|wr=0.734|probe=-|wall=508s|rc=0
+L10|block|n=21|h=4.17|stage=1|learner=M_D|gen=0|trained=1280->1536|bucket=pfsp|opp=M_D_01024|odeck=BenchDimir|W/L/D/S=107/147/2/2|wr=0.418|probe=-|wall=829s|rc=0
+L10|block|n=22|h=4.32|stage=1|learner=M_L|gen=0|trained=1280->1536|bucket=expl|opp=X_L.g0_00256|odeck=G1Landfall|W/L/D/S=149/107/0/0|wr=0.582|probe=-|wall=531s|rc=0
+L10|block|n=23|h=4.46|stage=1|learner=X_L|gen=0|trained=256->512|bucket=exploit|opp=M_L_01536|odeck=G1Landfall|W/L/D/S=105/151/0/0|wr=0.410|probe=-|wall=522s|rc=0
+L10|block|n=24|h=4.59|stage=1|learner=M_W|gen=0|trained=1536->1792|bucket=self|opp=M_W_01536|odeck=W0Base|W/L/D/S=147/106/3/3|wr=0.574|probe=-|wall=445s|rc=0
+L10|block|n=25|h=4.83|stage=1|learner=M_D|gen=0|trained=1536->1792|bucket=pfsp|opp=M_D_00256|odeck=BenchDimir|W/L/D/S=189/64/3/3|wr=0.738|probe=-|wall=868s|rc=0
+L10|block|n=26|h=4.96|stage=1|learner=M_L|gen=0|trained=1536->1792|bucket=pfsp|opp=M_L_01280|odeck=G1Landfall|W/L/D/S=116/140/0/0|wr=0.453|probe=-|wall=485s|rc=0
+L10|block|n=27|h=5.10|stage=1|learner=X_W|gen=0|trained=512->768|bucket=exploit|opp=M_W_01792|odeck=W0Base|W/L/D/S=102/153/1/1|wr=0.398|probe=-|wall=475s|rc=0
+L10|stage2|n=27|h=5.10|graduated=M_W|forced=1
+L10|block|n=28|h=5.24|stage=2|learner=M_W|gen=0|trained=1792->2048|bucket=pfsp|opp=M_W_00512|odeck=W0Base|W/L/D/S=144/110/2/2|wr=0.562|probe=0.700 [0.562,0.809]|wall=503s|rc=0
+L10|block|n=29|h=5.54|stage=2|learner=M_D|gen=0|trained=1792->2048|bucket=self|opp=M_D_01792|odeck=BenchDimir|W/L/D/S=178/78/0/0|wr=0.695|probe=0.460 [0.330,0.596]|wall=1082s|rc=0
+L10|block|n=30|h=5.68|stage=2|learner=M_L|gen=0|trained=1792->2048|bucket=expl|opp=X_L.g0_00512|odeck=G1Landfall|W/L/D/S=173/82/1/1|wr=0.676|probe=0.420 [0.294,0.558]|wall=527s|rc=0
+L10|block|n=31|h=5.92|stage=2|learner=X_D|gen=0|trained=512->768|bucket=exploit|opp=M_D_02048|odeck=BenchDimir|W/L/D/S=89/166/1/1|wr=0.348|probe=-|wall=866s|rc=0
+L10|block|n=32|h=6.06|stage=2|learner=M_W|gen=0|trained=2048->2304|bucket=self|opp=M_W_02048|odeck=W0Base|W/L/D/S=143/102/11/11|wr=0.559|probe=-|wall=492s|rc=0
+L10|block|n=33|h=6.23|stage=2|learner=M_D|gen=0|trained=2048->2304|bucket=expl|opp=X_D.g0_00768|odeck=BenchDimir|W/L/D/S=106/150/0/0|wr=0.414|probe=-|wall=622s|rc=0
+L10|block|n=34|h=6.37|stage=2|learner=M_L|gen=0|trained=2048->2304|bucket=expl|opp=X_L.g0_00512|odeck=G1Landfall|W/L/D/S=178/78/0/0|wr=0.695|probe=-|wall=497s|rc=0
+L10|block|n=35|h=6.48|stage=2|learner=X_L|gen=0|trained=512->768|bucket=exploit|opp=M_L_02304|odeck=G1Landfall|W/L/D/S=71/185/0/0|wr=0.277|probe=-|wall=381s|rc=0
+L10|block|n=36|h=6.62|stage=2|learner=M_W|gen=0|trained=2304->2560|bucket=pfsp|opp=M_W_01280|odeck=W0Base|W/L/D/S=55/190/11/11|wr=0.215|probe=-|wall=504s|rc=0
+L10|block|n=37|h=6.81|stage=2|learner=M_D|gen=0|trained=2304->2560|bucket=self|opp=M_D_02304|odeck=BenchDimir|W/L/D/S=85/171/0/0|wr=0.332|probe=-|wall=696s|rc=0
+L10|block|n=38|h=6.90|stage=2|learner=M_L|gen=0|trained=2304->2560|bucket=self|opp=M_L_02304|odeck=G1Landfall|W/L/D/S=90/166/0/0|wr=0.352|probe=-|wall=334s|rc=0
+L10|block|n=39|h=7.03|stage=2|learner=X_W|gen=0|trained=768->1024|bucket=exploit|opp=M_W_02560|odeck=W0Base|W/L/D/S=83/169/4/4|wr=0.324|probe=-|wall=464s|rc=0
+L10|reset|X_W|gen=0->1|why=4blocks|wr=0.324|added_to_M_W=no
+L10|block|n=40|h=7.21|stage=2|learner=M_W|gen=0|trained=2560->2816|bucket=cross|opp=M_D_02560|odeck=BenchDimir|W/L/D/S=119/137/0/0|wr=0.465|probe=-|wall=625s|rc=0
+L10|done|reason=stopfile|blocks=41|h=7.21|stage=2|graduated=M_W|results=/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/results.tsv
+L10|wrapper|rc=0|end=2026-09-14T11:10:14Z
+L10|wrapper|start=2026-09-14T11:10:32Z|args=
+L10|resume|n=41|sched_i=41|stage=2|h=7.21|pending=False
+L10|block|n=41|h=7.37|stage=2|learner=M_D|gen=0|trained=2560->2816|bucket=cross(quota)|opp=M_W_02816|odeck=W0Base|W/L/D/S=67/189/0/0|wr=0.262|probe=-|wall=556s|rc=0
+L10|block|n=42|h=7.47|stage=2|learner=M_L|gen=0|trained=2560->2816|bucket=cross(quota)|opp=M_W_02816|odeck=W0Base|W/L/D/S=58/198/0/0|wr=0.227|probe=-|wall=378s|rc=0
+L10|block|n=43|h=7.67|stage=2|learner=X_D|gen=0|trained=768->1024|bucket=exploit|opp=M_D_02816|odeck=BenchDimir|W/L/D/S=92/164/0/0|wr=0.359|probe=-|wall=708s|rc=0
+L10|reset|X_D|gen=0->1|why=4blocks|wr=0.359|added_to_M_D=no
+L10|block|n=44|h=7.84|stage=2|learner=M_W|gen=0|trained=2816->3072|bucket=cross(quota)|opp=M_D_02816|odeck=BenchDimir|W/L/D/S=136/120/0/0|wr=0.531|probe=0.720 [0.583,0.825]|wall=597s|rc=0
+L10|block|n=45|h=8.02|stage=2|learner=M_D|gen=0|trained=2816->3072|bucket=cross(quota)|opp=M_W_03072|odeck=W0Base|W/L/D/S=102/154/0/0|wr=0.398|probe=0.580 [0.442,0.706]|wall=657s|rc=0
+L10|block|n=46|h=8.16|stage=2|learner=M_L|gen=0|trained=2816->3072|bucket=cross(quota)|opp=M_W_03072|odeck=W0Base|W/L/D/S=64/192/0/0|wr=0.250|probe=0.440 [0.312,0.577]|wall=502s|rc=0
+L10|block|n=47|h=8.33|stage=2|learner=X_L|gen=0|trained=768->1024|bucket=exploit|opp=M_L_03072|odeck=G1Landfall|W/L/D/S=90/166/0/0|wr=0.352|probe=-|wall=620s|rc=0
+L10|reset|X_L|gen=0->1|why=4blocks|wr=0.352|added_to_M_L=no
+L10|done|reason=stopfile|blocks=48|h=8.33|stage=2|graduated=M_W|results=/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/results.tsv
+L10|wrapper|rc=0|end=2026-09-14T12:17:39Z
+L10|wrapper|start=2026-09-14T12:24:50Z|args=--hours 10.2
+L10|resume|n=48|sched_i=48|stage=2|h=8.45|pending=False
+L10|block|n=48|h=8.53|stage=2|learner=M_W|gen=0|trained=3072->3328|bucket=heur(quota)|opp=heuristic|odeck=W0Base|W/L/D/S=122/134/0/0|wr=0.477|probe=-|wall=294s|rc=0
+L10|block|n=49|h=8.66|stage=2|learner=M_D|gen=0|trained=3072->3328|bucket=heur(quota)|opp=heuristic|odeck=BenchDimir|W/L/D/S=126/130/0/0|wr=0.492|probe=-|wall=473s|rc=0
+L10|block|n=50|h=8.75|stage=2|learner=M_L|gen=0|trained=3072->3328|bucket=heur(quota)|opp=heuristic|odeck=G1Landfall|W/L/D/S=96/160/0/0|wr=0.375|probe=-|wall=290s|rc=0
+L10|init|X_W|gen=1|seed=1014|P10INIT|out=/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/inits/X_W_g1.pt|arch=v7|seed=1014|cdim=94|params=17478151
+L10|block|n=51|h=8.82|stage=2|learner=X_W|gen=1|trained=0->256|bucket=exploit|opp=M_W_03328|odeck=W0Base|W/L/D/S=92/164/0/0|wr=0.359|probe=-|wall=263s|rc=0
+L10|block|n=52|h=8.94|stage=2|learner=M_W|gen=0|trained=3328->3584|bucket=pfsp|opp=M_W_01536|odeck=W0Base|W/L/D/S=106/149/1/1|wr=0.414|probe=-|wall=442s|rc=0
+L10|block|n=53|h=9.13|stage=2|learner=M_D|gen=0|trained=3328->3584|bucket=pfsp|opp=M_D_02304|odeck=BenchDimir|W/L/D/S=136/120/0/0|wr=0.531|probe=-|wall=684s|rc=0
+L10|block|n=54|h=9.22|stage=2|learner=M_L|gen=0|trained=3328->3584|bucket=cross|opp=M_W_03584|odeck=W0Base|W/L/D/S=71/185/0/0|wr=0.277|probe=-|wall=331s|rc=0
+L10|init|X_D|gen=1|seed=1015|P10INIT|out=/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/inits/X_D_g1.pt|arch=v7|seed=1015|cdim=94|params=17478151
+L10|block|n=55|h=9.62|stage=2|learner=X_D|gen=1|trained=0->256|bucket=exploit|opp=M_D_03584|odeck=BenchDimir|W/L/D/S=1/254/1/1|wr=0.004|probe=-|wall=1428s|rc=0
+L10|block|n=56|h=9.72|stage=2|learner=M_W|gen=0|trained=3584->3840|bucket=cross(quota)|opp=M_L_03584|odeck=G1Landfall|W/L/D/S=159/97/0/0|wr=0.621|probe=-|wall=343s|rc=0
+L10|block|n=57|h=9.84|stage=2|learner=M_D|gen=0|trained=3584->3840|bucket=cross(quota)|opp=M_W_03840|odeck=W0Base|W/L/D/S=106/150/0/0|wr=0.414|probe=-|wall=432s|rc=0
+L10|block|n=58|h=9.94|stage=2|learner=M_L|gen=0|trained=3584->3840|bucket=self|opp=M_L_03584|odeck=G1Landfall|W/L/D/S=138/118/0/0|wr=0.539|probe=-|wall=384s|rc=0
+L10|init|X_L|gen=1|seed=1016|P10INIT|out=/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/inits/X_L_g1.pt|arch=v7|seed=1016|cdim=94|params=17478151
+L10|block|n=59|h=10.04|stage=2|learner=X_L|gen=1|trained=0->256|bucket=exploit|opp=M_L_03840|odeck=G1Landfall|W/L/D/S=30/226/0/0|wr=0.117|probe=-|wall=359s|rc=0
+L10|block|n=60|h=10.17|stage=2|learner=M_W|gen=0|trained=3840->4096|bucket=pfsp|opp=M_W_01792|odeck=W0Base|W/L/D/S=135/120/1/1|wr=0.527|probe=0.460 [0.330,0.596]|wall=464s|rc=0
+L10|block|n=61|h=10.31|stage=2|learner=M_D|gen=0|trained=3840->4096|bucket=heur|opp=heuristic|odeck=BenchDimir|W/L/D/S=122/134/0/0|wr=0.477|probe=0.460 [0.330,0.596]|wall=509s|rc=0
+L10|done|reason=hours|blocks=62|h=10.32|stage=2|graduated=M_W|results=/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/results.tsv
+L10|wrapper|rc=0|end=2026-09-14T14:16:41Z

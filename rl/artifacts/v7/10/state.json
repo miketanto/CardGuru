@@ -1,0 +1,618 @@
+{
+ "start": 1789358265.567557,
+ "start_utc": "2026-09-14T03:57:45Z",
+ "n": 62,
+ "sched_i": 62,
+ "stage": 2,
+ "stage2": {
+  "n": 27,
+  "h": 5.096,
+  "graduated": [
+   "M_W"
+  ],
+  "forced": true
+ },
+ "learners": {
+  "M_W": {
+   "deck": "W0Base",
+   "gen": 0,
+   "lane_seed": 1,
+   "init_seed": 1001,
+   "out": "/tmp/rl_10_M_W",
+   "blocks": 16,
+   "gen_blocks": 0,
+   "graduated": true,
+   "grad": {
+    "n": 12,
+    "trained": 1024,
+    "probe": 0.74,
+    "h": 2.259
+   },
+   "latest": "M_W_04096"
+  },
+  "M_D": {
+   "deck": "BenchDimir",
+   "gen": 0,
+   "lane_seed": 2,
+   "init_seed": 1002,
+   "out": "/tmp/rl_10_M_D",
+   "blocks": 16,
+   "gen_blocks": 0,
+   "graduated": false,
+   "grad": null,
+   "latest": "M_D_04096"
+  },
+  "M_L": {
+   "deck": "G1Landfall",
+   "gen": 0,
+   "lane_seed": 3,
+   "init_seed": 1003,
+   "out": "/tmp/rl_10_M_L",
+   "blocks": 15,
+   "gen_blocks": 0,
+   "graduated": false,
+   "grad": null,
+   "latest": "M_L_03840"
+  },
+  "X_W": {
+   "deck": "W0Base",
+   "gen": 1,
+   "lane_seed": 14,
+   "init_seed": 1014,
+   "out": "/tmp/rl_10_X_W_g1",
+   "blocks": 1,
+   "gen_blocks": 1,
+   "graduated": false,
+   "grad": null,
+   "latest": "X_W.g1_00256"
+  },
+  "X_D": {
+   "deck": "BenchDimir",
+   "gen": 1,
+   "lane_seed": 15,
+   "init_seed": 1015,
+   "out": "/tmp/rl_10_X_D_g1",
+   "blocks": 1,
+   "gen_blocks": 1,
+   "graduated": false,
+   "grad": null,
+   "latest": "X_D.g1_00256"
+  },
+  "X_L": {
+   "deck": "G1Landfall",
+   "gen": 1,
+   "lane_seed": 16,
+   "init_seed": 1016,
+   "out": "/tmp/rl_10_X_L_g1",
+   "blocks": 1,
+   "gen_blocks": 1,
+   "graduated": false,
+   "grad": null,
+   "latest": "X_L.g1_00256"
+  }
+ },
+ "pools": {
+  "M_W": [
+   "M_W_00256",
+   "M_W_00512",
+   "M_W_00768",
+   "M_W_01024",
+   "M_W_01280",
+   "M_W_01536",
+   "M_W_01792",
+   "M_W_02048",
+   "M_W_02304",
+   "M_W_02560",
+   "M_W_02816",
+   "M_W_03072",
+   "M_W_03328",
+   "M_W_03584",
+   "M_W_03840",
+   "M_W_04096"
+  ],
+  "M_D": [
+   "M_D_00256",
+   "M_D_00512",
+   "M_D_00768",
+   "M_D_01024",
+   "M_D_01280",
+   "M_D_01536",
+   "M_D_01792",
+   "M_D_02048",
+   "M_D_02304",
+   "M_D_02560",
+   "M_D_02816",
+   "M_D_03072",
+   "M_D_03328",
+   "M_D_03584",
+   "M_D_03840",
+   "M_D_04096"
+  ],
+  "M_L": [
+   "M_L_00256",
+   "M_L_00512",
+   "M_L_00768",
+   "M_L_01024",
+   "M_L_01280",
+   "M_L_01536",
+   "M_L_01792",
+   "M_L_02048",
+   "M_L_02304",
+   "M_L_02560",
+   "M_L_02816",
+   "M_L_03072",
+   "M_L_03328",
+   "M_L_03584",
+   "M_L_03840"
+  ]
+ },
+ "snaps": {
+  "M_W_00256": {
+   "path": "/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/M_W_00256.pt",
+   "learner": "M_W",
+   "gen": 0,
+   "deck": "W0Base",
+   "trained": 256
+  },
+  "M_D_00256": {
+   "path": "/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/M_D_00256.pt",
+   "learner": "M_D",
+   "gen": 0,
+   "deck": "BenchDimir",
+   "trained": 256
+  },
+  "M_L_00256": {
+   "path": "/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/M_L_00256.pt",
+   "learner": "M_L",
+   "gen": 0,
+   "deck": "G1Landfall",
+   "trained": 256
+  },
+  "X_W.g0_00256": {
+   "path": "/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/X_W.g0_00256.pt",
+   "learner": "X_W",
+   "gen": 0,
+   "deck": "W0Base",
+   "trained": 256
+  },
+  "M_W_00512": {
+   "path": "/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/M_W_00512.pt",
+   "learner": "M_W",
+   "gen": 0,
+   "deck": "W0Base",
+   "trained": 512
+  },
+  "M_D_00512": {
+   "path": "/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/M_D_00512.pt",
+   "learner": "M_D",
+   "gen": 0,
+   "deck": "BenchDimir",
+   "trained": 512
+  },
+  "M_L_00512": {
+   "path": "/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/M_L_00512.pt",
+   "learner": "M_L",
+   "gen": 0,
+   "deck": "G1Landfall",
+   "trained": 512
+  },
+  "X_D.g0_00256": {
+   "path": "/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/X_D.g0_00256.pt",
+   "learner": "X_D",
+   "gen": 0,
+   "deck": "BenchDimir",
+   "trained": 256
+  },
+  "M_W_00768": {
+   "path": "/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/M_W_00768.pt",
+   "learner": "M_W",
+   "gen": 0,
+   "deck": "W0Base",
+   "trained": 768
+  },
+  "M_D_00768": {
+   "path": "/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/M_D_00768.pt",
+   "learner": "M_D",
+   "gen": 0,
+   "deck": "BenchDimir",
+   "trained": 768
+  },
+  "M_L_00768": {
+   "path": "/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/M_L_00768.pt",
+   "learner": "M_L",
+   "gen": 0,
+   "deck": "G1Landfall",
+   "trained": 768
+  },
+  "X_L.g0_00256": {
+   "path": "/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/X_L.g0_00256.pt",
+   "learner": "X_L",
+   "gen": 0,
+   "deck": "G1Landfall",
+   "trained": 256
+  },
+  "M_W_01024": {
+   "path": "/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/M_W_01024.pt",
+   "learner": "M_W",
+   "gen": 0,
+   "deck": "W0Base",
+   "trained": 1024
+  },
+  "M_D_01024": {
+   "path": "/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/M_D_01024.pt",
+   "learner": "M_D",
+   "gen": 0,
+   "deck": "BenchDimir",
+   "trained": 1024
+  },
+  "M_L_01024": {
+   "path": "/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/M_L_01024.pt",
+   "learner": "M_L",
+   "gen": 0,
+   "deck": "G1Landfall",
+   "trained": 1024
+  },
+  "X_W.g0_00512": {
+   "path": "/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/X_W.g0_00512.pt",
+   "learner": "X_W",
+   "gen": 0,
+   "deck": "W0Base",
+   "trained": 512
+  },
+  "M_W_01280": {
+   "path": "/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/M_W_01280.pt",
+   "learner": "M_W",
+   "gen": 0,
+   "deck": "W0Base",
+   "trained": 1280
+  },
+  "M_D_01280": {
+   "path": "/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/M_D_01280.pt",
+   "learner": "M_D",
+   "gen": 0,
+   "deck": "BenchDimir",
+   "trained": 1280
+  },
+  "M_L_01280": {
+   "path": "/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/M_L_01280.pt",
+   "learner": "M_L",
+   "gen": 0,
+   "deck": "G1Landfall",
+   "trained": 1280
+  },
+  "X_D.g0_00512": {
+   "path": "/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/X_D.g0_00512.pt",
+   "learner": "X_D",
+   "gen": 0,
+   "deck": "BenchDimir",
+   "trained": 512
+  },
+  "M_W_01536": {
+   "path": "/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/M_W_01536.pt",
+   "learner": "M_W",
+   "gen": 0,
+   "deck": "W0Base",
+   "trained": 1536
+  },
+  "M_D_01536": {
+   "path": "/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/M_D_01536.pt",
+   "learner": "M_D",
+   "gen": 0,
+   "deck": "BenchDimir",
+   "trained": 1536
+  },
+  "M_L_01536": {
+   "path": "/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/M_L_01536.pt",
+   "learner": "M_L",
+   "gen": 0,
+   "deck": "G1Landfall",
+   "trained": 1536
+  },
+  "X_L.g0_00512": {
+   "path": "/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/X_L.g0_00512.pt",
+   "learner": "X_L",
+   "gen": 0,
+   "deck": "G1Landfall",
+   "trained": 512
+  },
+  "M_W_01792": {
+   "path": "/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/M_W_01792.pt",
+   "learner": "M_W",
+   "gen": 0,
+   "deck": "W0Base",
+   "trained": 1792
+  },
+  "M_D_01792": {
+   "path": "/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/M_D_01792.pt",
+   "learner": "M_D",
+   "gen": 0,
+   "deck": "BenchDimir",
+   "trained": 1792
+  },
+  "M_L_01792": {
+   "path": "/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/M_L_01792.pt",
+   "learner": "M_L",
+   "gen": 0,
+   "deck": "G1Landfall",
+   "trained": 1792
+  },
+  "X_W.g0_00768": {
+   "path": "/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/X_W.g0_00768.pt",
+   "learner": "X_W",
+   "gen": 0,
+   "deck": "W0Base",
+   "trained": 768
+  },
+  "M_W_s1end": {
+   "path": "/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/M_W_s1end.pt",
+   "learner": "M_W",
+   "gen": 0,
+   "deck": "W0Base",
+   "trained": 1792
+  },
+  "M_D_s1end": {
+   "path": "/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/M_D_s1end.pt",
+   "learner": "M_D",
+   "gen": 0,
+   "deck": "BenchDimir",
+   "trained": 1792
+  },
+  "M_L_s1end": {
+   "path": "/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/M_L_s1end.pt",
+   "learner": "M_L",
+   "gen": 0,
+   "deck": "G1Landfall",
+   "trained": 1792
+  },
+  "M_W_02048": {
+   "path": "/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/M_W_02048.pt",
+   "learner": "M_W",
+   "gen": 0,
+   "deck": "W0Base",
+   "trained": 2048
+  },
+  "M_D_02048": {
+   "path": "/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/M_D_02048.pt",
+   "learner": "M_D",
+   "gen": 0,
+   "deck": "BenchDimir",
+   "trained": 2048
+  },
+  "M_L_02048": {
+   "path": "/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/M_L_02048.pt",
+   "learner": "M_L",
+   "gen": 0,
+   "deck": "G1Landfall",
+   "trained": 2048
+  },
+  "X_D.g0_00768": {
+   "path": "/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/X_D.g0_00768.pt",
+   "learner": "X_D",
+   "gen": 0,
+   "deck": "BenchDimir",
+   "trained": 768
+  },
+  "M_W_02304": {
+   "path": "/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/M_W_02304.pt",
+   "learner": "M_W",
+   "gen": 0,
+   "deck": "W0Base",
+   "trained": 2304
+  },
+  "M_D_02304": {
+   "path": "/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/M_D_02304.pt",
+   "learner": "M_D",
+   "gen": 0,
+   "deck": "BenchDimir",
+   "trained": 2304
+  },
+  "M_L_02304": {
+   "path": "/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/M_L_02304.pt",
+   "learner": "M_L",
+   "gen": 0,
+   "deck": "G1Landfall",
+   "trained": 2304
+  },
+  "X_L.g0_00768": {
+   "path": "/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/X_L.g0_00768.pt",
+   "learner": "X_L",
+   "gen": 0,
+   "deck": "G1Landfall",
+   "trained": 768
+  },
+  "M_W_02560": {
+   "path": "/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/M_W_02560.pt",
+   "learner": "M_W",
+   "gen": 0,
+   "deck": "W0Base",
+   "trained": 2560
+  },
+  "M_D_02560": {
+   "path": "/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/M_D_02560.pt",
+   "learner": "M_D",
+   "gen": 0,
+   "deck": "BenchDimir",
+   "trained": 2560
+  },
+  "M_L_02560": {
+   "path": "/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/M_L_02560.pt",
+   "learner": "M_L",
+   "gen": 0,
+   "deck": "G1Landfall",
+   "trained": 2560
+  },
+  "X_W.g0_01024": {
+   "path": "/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/X_W.g0_01024.pt",
+   "learner": "X_W",
+   "gen": 0,
+   "deck": "W0Base",
+   "trained": 1024
+  },
+  "M_W_02816": {
+   "path": "/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/M_W_02816.pt",
+   "learner": "M_W",
+   "gen": 0,
+   "deck": "W0Base",
+   "trained": 2816
+  },
+  "M_D_02816": {
+   "path": "/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/M_D_02816.pt",
+   "learner": "M_D",
+   "gen": 0,
+   "deck": "BenchDimir",
+   "trained": 2816
+  },
+  "M_L_02816": {
+   "path": "/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/M_L_02816.pt",
+   "learner": "M_L",
+   "gen": 0,
+   "deck": "G1Landfall",
+   "trained": 2816
+  },
+  "X_D.g0_01024": {
+   "path": "/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/X_D.g0_01024.pt",
+   "learner": "X_D",
+   "gen": 0,
+   "deck": "BenchDimir",
+   "trained": 1024
+  },
+  "M_W_03072": {
+   "path": "/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/M_W_03072.pt",
+   "learner": "M_W",
+   "gen": 0,
+   "deck": "W0Base",
+   "trained": 3072
+  },
+  "M_D_03072": {
+   "path": "/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/M_D_03072.pt",
+   "learner": "M_D",
+   "gen": 0,
+   "deck": "BenchDimir",
+   "trained": 3072
+  },
+  "M_L_03072": {
+   "path": "/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/M_L_03072.pt",
+   "learner": "M_L",
+   "gen": 0,
+   "deck": "G1Landfall",
+   "trained": 3072
+  },
+  "X_L.g0_01024": {
+   "path": "/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/X_L.g0_01024.pt",
+   "learner": "X_L",
+   "gen": 0,
+   "deck": "G1Landfall",
+   "trained": 1024
+  },
+  "M_W_03328": {
+   "path": "/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/M_W_03328.pt",
+   "learner": "M_W",
+   "gen": 0,
+   "deck": "W0Base",
+   "trained": 3328
+  },
+  "M_D_03328": {
+   "path": "/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/M_D_03328.pt",
+   "learner": "M_D",
+   "gen": 0,
+   "deck": "BenchDimir",
+   "trained": 3328
+  },
+  "M_L_03328": {
+   "path": "/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/M_L_03328.pt",
+   "learner": "M_L",
+   "gen": 0,
+   "deck": "G1Landfall",
+   "trained": 3328
+  },
+  "X_W.g1_00256": {
+   "path": "/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/X_W.g1_00256.pt",
+   "learner": "X_W",
+   "gen": 1,
+   "deck": "W0Base",
+   "trained": 256
+  },
+  "M_W_03584": {
+   "path": "/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/M_W_03584.pt",
+   "learner": "M_W",
+   "gen": 0,
+   "deck": "W0Base",
+   "trained": 3584
+  },
+  "M_D_03584": {
+   "path": "/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/M_D_03584.pt",
+   "learner": "M_D",
+   "gen": 0,
+   "deck": "BenchDimir",
+   "trained": 3584
+  },
+  "M_L_03584": {
+   "path": "/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/M_L_03584.pt",
+   "learner": "M_L",
+   "gen": 0,
+   "deck": "G1Landfall",
+   "trained": 3584
+  },
+  "X_D.g1_00256": {
+   "path": "/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/X_D.g1_00256.pt",
+   "learner": "X_D",
+   "gen": 1,
+   "deck": "BenchDimir",
+   "trained": 256
+  },
+  "M_W_03840": {
+   "path": "/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/M_W_03840.pt",
+   "learner": "M_W",
+   "gen": 0,
+   "deck": "W0Base",
+   "trained": 3840
+  },
+  "M_D_03840": {
+   "path": "/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/M_D_03840.pt",
+   "learner": "M_D",
+   "gen": 0,
+   "deck": "BenchDimir",
+   "trained": 3840
+  },
+  "M_L_03840": {
+   "path": "/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/M_L_03840.pt",
+   "learner": "M_L",
+   "gen": 0,
+   "deck": "G1Landfall",
+   "trained": 3840
+  },
+  "X_L.g1_00256": {
+   "path": "/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/X_L.g1_00256.pt",
+   "learner": "X_L",
+   "gen": 1,
+   "deck": "G1Landfall",
+   "trained": 256
+  },
+  "M_W_04096": {
+   "path": "/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/M_W_04096.pt",
+   "learner": "M_W",
+   "gen": 0,
+   "deck": "W0Base",
+   "trained": 4096
+  },
+  "M_D_04096": {
+   "path": "/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/M_D_04096.pt",
+   "learner": "M_D",
+   "gen": 0,
+   "deck": "BenchDimir",
+   "trained": 4096
+  }
+ },
+ "pending": null,
+ "fails": 0,
+ "probe0": {
+  "M_W": 0.02,
+  "M_D": 0.02,
+  "M_L": 0.28
+ },
+ "expl_latest": {
+  "X_W": "X_W.g1_00256",
+  "X_D": "X_D.g1_00256",
+  "X_L": "X_L.g1_00256"
+ }
+}
