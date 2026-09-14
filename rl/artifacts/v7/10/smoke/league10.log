@@ -1,0 +1,9 @@
+L10|wrapper|start=2026-09-14T03:54:28Z|args=--tag smoke --learners M_W,X_W --schedule M_W,X_W --block 32 --chunk 32 --probe-every 1 --probe-games 4 --max-blocks 2
+L10|start|art=/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/smoke|learners=M_W,X_W|schedule=M_W,X_W|block=32|hours=10.0|srvextra=--device cuda --epochs 1 --logit-bound 5 --weight-decay 0.01 --adv-norm batch --target-kl 0.02 --argmax-classes --cand-refers-pool
+L10|init|M_W|gen=0|seed=1001|P10INIT|out=/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/smoke/inits/M_W_g0.pt|arch=v7|seed=1001|cdim=94|params=17478151
+L10|probe0|M_W|wr=0.000 [0.000,0.490]|games=4
+L10|block|n=0|h=0.02|stage=1|learner=M_W|gen=0|trained=0->32|bucket=first|opp=heuristic|odeck=W0Base|W/L/D/S=9/23/0/0|wr=0.281|probe=0.500 [0.150,0.850]|wall=74s|rc=0
+L10|init|X_W|gen=0|seed=1004|P10INIT|out=/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/smoke/inits/X_W_g0.pt|arch=v7|seed=1004|cdim=94|params=17478151
+L10|block|n=1|h=0.05|stage=1|learner=X_W|gen=0|trained=0->32|bucket=exploit|opp=M_W_00032|odeck=W0Base|W/L/D/S=12/20/0/0|wr=0.375|probe=-|wall=86s|rc=0
+L10|done|reason=max_blocks|blocks=2|h=0.05|stage=1|graduated=none|results=/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/smoke/results.tsv
+L10|wrapper|rc=0|end=2026-09-14T03:57:17Z

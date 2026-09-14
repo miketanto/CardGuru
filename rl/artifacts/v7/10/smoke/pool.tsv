@@ -1,0 +1,3 @@
+event	name	learner	gen	deck	trained	n	pool	time_utc	path
+snap	M_W_00032	M_W	0	W0Base	32	0	M_W	2026-09-14T03:55:46Z	/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/smoke/pool/M_W_00032.pt
+snap	X_W.g0_00032	X_W	0	W0Base	32	1		2026-09-14T03:57:15Z	/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/smoke/pool/X_W.g0_00032.pt

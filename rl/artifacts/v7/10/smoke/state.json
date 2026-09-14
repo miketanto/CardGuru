@@ -1,0 +1,65 @@
+{
+ "start": 1789358069.8144367,
+ "start_utc": "2026-09-14T03:54:29Z",
+ "n": 2,
+ "sched_i": 2,
+ "stage": 1,
+ "stage2": null,
+ "learners": {
+  "M_W": {
+   "deck": "W0Base",
+   "gen": 0,
+   "lane_seed": 1,
+   "init_seed": 1001,
+   "out": "/tmp/rl_10smoke_M_W",
+   "blocks": 1,
+   "gen_blocks": 0,
+   "graduated": false,
+   "grad": null,
+   "latest": "M_W_00032"
+  },
+  "X_W": {
+   "deck": "W0Base",
+   "gen": 0,
+   "lane_seed": 4,
+   "init_seed": 1004,
+   "out": "/tmp/rl_10smoke_X_W",
+   "blocks": 1,
+   "gen_blocks": 1,
+   "graduated": false,
+   "grad": null,
+   "latest": "X_W.g0_00032"
+  }
+ },
+ "pools": {
+  "M_W": [
+   "M_W_00032"
+  ],
+  "M_D": [],
+  "M_L": []
+ },
+ "snaps": {
+  "M_W_00032": {
+   "path": "/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/smoke/pool/M_W_00032.pt",
+   "learner": "M_W",
+   "gen": 0,
+   "deck": "W0Base",
+   "trained": 32
+  },
+  "X_W.g0_00032": {
+   "path": "/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/smoke/pool/X_W.g0_00032.pt",
+   "learner": "X_W",
+   "gen": 0,
+   "deck": "W0Base",
+   "trained": 32
+  }
+ },
+ "pending": null,
+ "fails": 0,
+ "probe0": {
+  "M_W": 0.0
+ },
+ "expl_latest": {
+  "X_W": "X_W.g0_00032"
+ }
+}
