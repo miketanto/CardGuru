@@ -3556,3 +3556,124 @@ first-batch caveat above; say anything about W0Base (where `auto` was
 chosen for B2's reasons and C1 trained with it); rank 8a-b's Dimir
 policy against CP7 (no suite run on it — the suite budget goes to 8b's
 two checkpoints).
+
+## 8b / Q4 — L2, the diverse cross-deck league, vs L0: "no difference shown" on the suite, a regression at home, a head-to-head loss (2026-09-13 20:30 next-session clock; WSL 19:20; ONE seed; fixed argmax-classes protocol; Amendment 2 budget; `rl/artifacts/v7/8b/`)
+
+`rl/run_8b.sh` (lane 18:24–18:52 WSL, 28 min for 1,024 episodes + 300
+probe games; 32 updates, KL-stopped 4/32; suites and head-to-head to
+19:11). L2 = L0 ck_3072 (the W0Base policy after C1 + 1,024 heuristic
+episodes) continued +1,024 on W0Base against the pool, one entry per
+256-block: heuristic on BenchDimir → CP7 (skill 6) on BenchBurn → the
+8a-b Dimir policy (frozen ck_512, 0.41 vs the heuristic) on BenchDimir →
+heuristic on BenchBurn. Control = L0 ck_3072 itself (the starting point;
+L0's own +1024 heuristic row 0.91 [0.838, 0.952] is the home yardstick).
+
+**The cross-deck suite** (`rl/battery_xdeck.sh`, 50 games per row =
+development probes, read POOLED; the agent on W0Base in every row):
+
+| row | L2 ck_4096 | L0 ck_3072 |
+|---|---|---|
+| vs heuristic, opp W0Base | 40/50 = 0.80 [0.670, 0.888], 24.0 turns | 44/50 = 0.88 [0.762, 0.944], 2 stalls, 32.4 turns |
+| vs heuristic, opp BenchDimir | 41/50 = 0.82 [0.692, 0.902], 21.3 turns | 44/50 = 0.88 [0.762, 0.944], 28.7 turns |
+| vs heuristic, opp BenchBurn | 38/50 = 0.76 [0.626, 0.857], 14.3 turns | 32/50 = 0.64 [0.501, 0.759], 17.3 turns |
+| vs CP7, opp W0Base | 34/50 = 0.68 [0.542, 0.792], 0 stalls, 26.0 turns | 33/50 = 0.66 [0.522, 0.776], **12 stalls**, 41.8 turns |
+| **pooled (200 games)** | **153/200 = 0.765 [0.702, 0.818]** | **153/200 = 0.765 [0.702, 0.818]** |
+
+The two pooled suite rates are the same number: 153 wins of 200 each.
+Per row (descriptive, 50 games): L2 traded W0Base and Dimir wins (−4,
+−3) for Burn wins (+6) and stall-free CP7 games (+1 win, 12 → 0 stalls).
+
+**Home battery** (D0 = heuristic on W0Base, the lane's rows; 50-game
+probes per block, 100 at the final point):
+
+| trained | opponent of the block just played | D0 | games | blocks | under/over | turns |
+|---|---|---|---|---|---|---|
+| 3072 (+0) | – | 0.86 [0.738, 0.930] | 50 | 773/978 | 163/162 | 32.4 |
+| 3328 | heuristic, BenchDimir | 0.94 [0.838, 0.979] | 50 | 727/896 | 149/122 | 30.9 |
+| 3584 | CP7, BenchBurn | 0.78 [0.648, 0.872] | 50 | 559/679 | 81/88 | 24.1 |
+| 3840 | 8a-b Dimir policy, BenchDimir | 0.82 [0.692, 0.902] | 50 | 609/784 | 76/102 | 26.6 |
+| **4096 (level)** | heuristic, BenchBurn | **0.73 [0.636, 0.807]** | **100** | 1067/1291 | 118/92 | 23.9 |
+
+L2's home level 0.73 [0.636, 0.807] is clear below L0's +1024 home row
+0.91 [0.838, 0.952] — a regression on the home deck, not "flat".
+
+**Head-to-head** (`rl/hard_battery.sh` H2H, 100 games, seats alternate):
+L2 ck_4096 vs L0 ck_3072 = **32/100 = 0.32 [0.237, 0.417]**, 48 losses,
+**20 stalls** (draws at the 60-turn stop), 43.1 turns per game. L0 wins
+the decided games 48–32.
+
+**Per-block sampled rates vs each pool member** (`jobs.log`, 64-episode
+jobs, stalls now separable):
+
+| block | pool member | wins per job | block rate | stalls |
+|---|---|---|---|---|
+| 0 | heuristic on BenchDimir | 49 44 42 45 | 180/256 = 0.70 | 1 |
+| 1 | CP7 on BenchBurn | 10 15 15 25 | 65/256 = 0.25 | 0 |
+| 2 | 8a-b Dimir policy on BenchDimir | 47 41 48 52 | 188/256 = 0.73 | 0 |
+| 3 | heuristic on BenchBurn | 43 33 37 46 | 159/256 = 0.62 | 0 |
+
+No stall wall this time (1 stall in 1,024 training games; L1 had a 0.00–0.09
+block against its frozen ancestor). CP7 on Burn is the one member the
+policy loses to (0.25, rising 10 → 25 within its block); the 8a-b Dimir
+policy is beaten at 0.73 — a weak member, as the pre-registration's
+"cannot" foresaw.
+
+**Census at ck_4096** (the W0Base set): argmax PASS 94/1002, LAND
+259/313, SPELL 313/368, ATTACK 217/279, BLOCK 206/207; P(land) at ≥ 3
+lands 0.74 — identical to L0 ck_3072 except ATTACK 199 → 217 and PASS
+111 → 94: the league moved the argmax on 18 attack windows and 17 pass
+windows out of 1,002, nothing else on this set. Entropy 0.66, max
+|logit| 4.99.
+
+**Reading, as pre-registered (with Amendment 2):**
+* **"Diverse league helps"** — NO: the pooled suite is not clear above
+  L0's (identical, 153/200 each) and the home D0 IS clear below L0's 0.91.
+* **"Hurts"** — NOT SHOWN on the suite (the suites are identical, not
+  clear below).
+* **Verdict: "no difference shown at n=200" on the cross-deck suite**,
+  with a home-deck regression (0.73 vs 0.91, clear) and a head-to-head
+  loss (0.32, 20 stalls). The pre-stated tie-break applies: a cross-deck
+  gain paid for by a home loss is a finding — here the per-row table says
+  the gain is on Burn (+6 of 50, the two rows overlap) and against CP7
+  the stalls vanished (12 → 0) at the same win count, while W0Base and
+  Dimir rows dropped 4 and 3. The suite's total did not move; its
+  composition did.
+* **Mechanism note** (counters, L2 4096 vs L0 3072 under the same
+  protocol): games got SHORTER (23.9 vs 32.4 turns at home; 26 vs 42 vs
+  CP7) and the attack balance flipped from even (under/over 163/162) to
+  over-attacking (118/92 at home; the block-2 and block-3 rows 76/102,
+  81/88), ATKOPT 613/825 = 0.74 vs 277/613 = 0.45 (more of its attacks are
+  the solver's), blocks 1067/1291 = 0.83 vs 773/978 = 0.79. This is not
+  L1's signature (L1 stalled: 44-turn games, under/over 594/34, blocks
+  down): the cross-deck pool — two Burn blocks and a Dimir policy that
+  attacks with everything — taught it to race. Racing wins against Burn
+  and ends CP7 games before the 60-turn stop; at home against a
+  heuristic that blocks well it loses 18 more games in 100 than L0's
+  patient play, and against L0 itself (a policy that blocks 0.79 of
+  opportunities) racing loses 48–32 with 20 games stalled out.
+* The regression at home is the same *direction* as L1's (0.68) but
+  half the size and by a different route; the league mechanism has now
+  hurt the home level twice in two configurations.
+
+Cannot: one seed (every number above is a single run; the suite
+rows are 50-game probes and only the pooled 200 is compared); the pool
+is fixed-strength — no PFSP weighting, no refresh, and the Dimir member
+is a 512-episode 0.41 policy, so block 2 was near-free wins; the trainee
+plays one deck (deck-general play is 8c); L2's +1024 on mixed opponents
+is not compute-matched to L0's +1024 on the heuristic in heuristic games;
+the head-to-head is the L1 instrument and carries its stall caveat (20 of
+100 games undecided); CP7 on Burn is CP7's Burn.
+
+## 8c — not run (2026-09-13 20:35 next-session clock)
+
+8c (the Dimir trainee continued +1024 with the cross-deck pool, against
+its own heuristic-continued control) was conditioned on "8a trains and
+time remains". 8a as-is did not train (0/100, the never-cast rail); the
+policy that does play Dimir is 8a-b — one seed, 512 episodes, a flat
+sampled curve and a 0.41 level whose interval contains 0.5 — not a
+foundation for a second-order question; and the league mechanism has now
+regressed the home level twice (L1 0.68, L2 0.73 vs L0 0.91) in two
+different ways. Running 8c tonight would produce a one-seed number on a
+weak trainee about a mechanism that is currently negative at home. It is
+owed after the 8a-b second seed and 1024 point, and after a league with
+opponent sampling (PFSP) rather than a fixed rotation.

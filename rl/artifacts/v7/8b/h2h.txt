@@ -1,0 +1,2 @@
+HARD|H2H|ck=ck_4096.pt|label=L2_4096|32/100 = 0.320 [0.237,0.417]|losses=48 draws=20 stalls=20 turns_per_ep=43.1
+HARD|done|L2_4096|2026-09-14T00:10:54Z

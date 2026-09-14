@@ -1,0 +1,24 @@
+8B|L2|start=2026-09-13T23:24:07Z|init=/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/7l/L0/ck_3072.pt|dimir=/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/8ab/s0/ck_512.pt
+8B|L2|rc=0|end=2026-09-13T23:52:25Z
+POSTLANE|out=/tmp/rl_8b_L2|art=/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/8b/L2|start=2026-09-13T23:52:25Z
+POSTLANE|art=/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/8b/L2|rows=10|census_lines=40|last_ck=4096|end=2026-09-13T23:53:59Z
+R0|W0Base|s0|trained=4096|ck_eps=4096|D0=0.7300 [0.636,0.807]|games=100|D1=skip|TWIN=skip|blocks=1067/1291|BLOCKOPT=617/654|gap=273|attacks=1018/2215|ATKOPT=613/825|ATKOPTCA=603/825|under_over=118/92|
+R0_DONE|W0Base|s0|trained=4096|out=/tmp/rl_8b_L2
+8B|suite|L2_4096|start=2026-09-13T23:53:59Z
+XDECK|ck=ck_4096.pt|agent=W0Base|vs=heuristic|oppDeck=W0Base|40/50 = 0.800 [0.670,0.888]|losses=10 draws=0 stalls=0 turns_per_ep=24.0 attackBudgetHit=2
+XDECK|ck=ck_4096.pt|agent=W0Base|vs=heuristic|oppDeck=BenchDimir|41/50 = 0.820 [0.692,0.902]|losses=9 draws=0 stalls=0 turns_per_ep=21.3
+XDECK|ck=ck_4096.pt|agent=W0Base|vs=heuristic|oppDeck=BenchBurn|38/50 = 0.760 [0.626,0.857]|losses=12 draws=0 stalls=0 turns_per_ep=14.3
+XDECK|ck=ck_4096.pt|agent=W0Base|vs=cp7|oppDeck=W0Base|34/50 = 0.680 [0.542,0.792]|losses=16 draws=0 stalls=0 turns_per_ep=26.0 attackBudgetHit=11
+XDECK|pooled|ck=ck_4096.pt|agent=W0Base|rows=4|153/200 = 0.765 [0.702,0.818]
+XDECK|done|ck_4096.pt|2026-09-13T23:58:05Z
+8B|suite|L0_3072|start=2026-09-13T23:58:05Z
+XDECK|ck=ck_3072.pt|agent=W0Base|vs=heuristic|oppDeck=W0Base|44/50 = 0.880 [0.762,0.944]|losses=4 draws=2 stalls=2 turns_per_ep=32.4 attackBudgetHit=18
+XDECK|ck=ck_3072.pt|agent=W0Base|vs=heuristic|oppDeck=BenchDimir|44/50 = 0.880 [0.762,0.944]|losses=6 draws=0 stalls=0 turns_per_ep=28.7
+XDECK|ck=ck_3072.pt|agent=W0Base|vs=heuristic|oppDeck=BenchBurn|32/50 = 0.640 [0.501,0.759]|losses=18 draws=0 stalls=0 turns_per_ep=17.3
+XDECK|ck=ck_3072.pt|agent=W0Base|vs=cp7|oppDeck=W0Base|33/50 = 0.660 [0.522,0.776]|losses=5 draws=12 stalls=12 turns_per_ep=41.8 attackBudgetHit=53
+XDECK|pooled|ck=ck_3072.pt|agent=W0Base|rows=4|153/200 = 0.765 [0.702,0.818]
+XDECK|done|ck_3072.pt|2026-09-14T00:04:46Z
+8B|h2h|start=2026-09-14T00:04:46Z
+HARD|H2H|ck=ck_4096.pt|label=L2_4096|32/100 = 0.320 [0.237,0.417]|losses=48 draws=20 stalls=20 turns_per_ep=43.1
+HARD|done|L2_4096|2026-09-14T00:10:54Z
+8B|done=2026-09-14T00:10:54Z

@@ -1,0 +1,6 @@
+XDECK|ck=ck_3072.pt|agent=W0Base|vs=heuristic|oppDeck=W0Base|44/50 = 0.880 [0.762,0.944]|losses=4 draws=2 stalls=2 turns_per_ep=32.4 attackBudgetHit=18
+XDECK|ck=ck_3072.pt|agent=W0Base|vs=heuristic|oppDeck=BenchDimir|44/50 = 0.880 [0.762,0.944]|losses=6 draws=0 stalls=0 turns_per_ep=28.7
+XDECK|ck=ck_3072.pt|agent=W0Base|vs=heuristic|oppDeck=BenchBurn|32/50 = 0.640 [0.501,0.759]|losses=18 draws=0 stalls=0 turns_per_ep=17.3
+XDECK|ck=ck_3072.pt|agent=W0Base|vs=cp7|oppDeck=W0Base|33/50 = 0.660 [0.522,0.776]|losses=5 draws=12 stalls=12 turns_per_ep=41.8 attackBudgetHit=53
+XDECK|pooled|ck=ck_3072.pt|agent=W0Base|rows=4|153/200 = 0.765 [0.702,0.818]
+XDECK|done|ck_3072.pt|2026-09-14T00:04:46Z
