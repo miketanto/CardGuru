@@ -3677,3 +3677,135 @@ different ways. Running 8c tonight would produce a one-seed number on a
 weak trainee about a mechanism that is currently negative at home. It is
 owed after the 8a-b second seed and 1024 point, and after a league with
 opponent sampling (PFSP) rather than a fixed rotation.
+
+## 9 / P1 — card-swap counterfactual: the v7 candidate scorer is identity-blind, by mechanism (2026-09-14; branch `v7/lane-d`; runbook `rl/PHASE9-PROBES.md`)
+
+`bash rl/probes/run_p1.sh` → `python3 rl/probes/cardswap.py` over the six
+pre-registered consult files (`7c_W0Base_{p1,p99,sf}` 1,101 + `7c_BenchDimir_{p1,p99,sf}`
+903 = 2,004 consults), five subjects: `init` (`/tmp/rl_7c1_s0/init.pt`, P10INIT seed 10,
+copied to `rl/artifacts/v7/9/init.pt`), `C1s0` (7c1 s0 ck_2048), `L0` (7l ck_3072), `BC`
+(7d2 bc.pt), `DIM` (8ab s0 ck_512). Same memoryless scoring path as `rl/v7_init_logits.py`
+(fresh LSTM state, no deck context, logit bound 5 applied to the raw logits; init's config
+carries no bound so 5 is imposed on every subject). Artifacts in `rl/artifacts/v7/9/`:
+`pairs_{text,pt,cost,type,sources}.txt`, `cardswap_<subject>.tsv` (one row per swap),
+`cardswap_summary.txt`, `p1_run.log`.
+
+**Pairs** (from `rl/artifacts/cards_v1/{fields,oracle}.jsonl.gz`, ids via `v7_obs.CardIds`;
+sources = the 28 cards referred by SPELL candidates in the two sets, of which 9 are
+creatures with keyword-only text — the nine W0Base vanilla creatures; the Dimir creatures
+all carry non-keyword text and get type pairs only): **text 19** (same mana cost, types,
+supertypes, P/T; both texts keyword-only; sets differ by 1–2 keywords: lifelink 9,
+vigilance 6, first strike 1, first strike+lifelink 1, flying 1, prowess 1), **pt 12**
+(|dP|+|dT| = 1, all else equal), **cost 6** (mana value ±1, same colours, all else equal),
+**type 120** (same mana cost, non-creature non-land spell without subtypes), ≤ 8 partners
+per source. **The pre-registered ≥ 40 pairs is not met for text/pt/cost**: with the
+identical-cost-and-type-line definition the corpus holds that few partners for these nine
+cards (e.g. 2/2 for {1}{W} with exactly one keyword and nothing else: 5). Kept as
+pre-registered rather than loosened; the shortfall is immaterial given the result (every
+class, including the 6,704 type swaps, is at floor).
+
+**Swapped fields**: text = `ent_id` (embedding row) + keyword bits 34–51 (variants:
+`text_emb` embedding only, `text_kw` bits only); pt = `ent_id` + fields 10, 11, 13, 14, 15;
+cost = `ent_id` + field 17; type = `ent_id` + is-creature 29 + type flags 30–33 + P/T
+fields zeroed + keyword bits. NOT swapped, by construction: the candidate afterstate row
+(`v7_cand[8..]`: mana left after, castable-now, speed flags) — the one place the cost
+reaches the scorer, see the control. `self_mana` = a control that changes the candidate's
+OWN afterstate field 8 (mana left after) by 1/6, no identity change.
+
+Δp = |p_after − p_before| on the swapped candidate, mean over partners per (consult,
+candidate), bootstrap 95 % CI over consults (2,000 resamples); `flip` = the argmax moves to
+a candidate of a different (type, card) class; `flip_strict` = a flip between two
+candidates whose pre-swap logits differed by > 1e-3 (identical-row candidates tie
+*exactly*, so a plain flip counts tie-breaking noise).
+
+| subject | class | n cand / consults / swaps | mean Δp [95 % CI] | mean Δlogit (bounded) | flip | flip_strict |
+|---|---|---|---|---|---|---|
+| init | text | 322 / 229 / 1,547 | 0.00000 [0.00000, 0.00000] | 0.00000 | 0.000 | 0.000 |
+| init | pt | 401 / 276 / 878 | 0.00000 | 0.00000 | 0.000 | 0.000 |
+| init | cost | 302 / 220 / 454 | 0.00000 | 0.00000 | 0.000 | 0.000 |
+| init | type | 838 / 503 / 6,704 | 0.00000 | 0.00000 | 0.000 | 0.000 |
+| init | self_mana | 838 / 503 / 838 | 0.00404 [0.00395, 0.00413] | 0.0205 | 0.135 | 0.080 |
+| C1s0 | text | 322 / 229 / 1,547 | 0.00004 [0.00003, 0.00004] | 0.0023 | 0.060 | **0.000** |
+| C1s0 | text_emb / text_kw | | 0.00004 / 0.00000 | 0.0020 / 0.0004 | 0.057 / 0.053 | 0.000 / 0.000 |
+| C1s0 | pt | 401 / 276 / 878 | 0.00001 [0.00001, 0.00002] | 0.0010 | 0.034 | 0.000 |
+| C1s0 | cost | 302 / 220 / 454 | 0.00002 [0.00001, 0.00002] | 0.0012 | 0.018 | 0.000 |
+| C1s0 | type | 838 / 503 / 6,704 | 0.00014 [0.00012, 0.00015] | 0.0065 | 0.054 | 0.000 |
+| C1s0 | self_mana | 838 / 503 / 838 | 0.00082 [0.00074, 0.00090] | 0.0069 | 0.143 | 0.027 |
+| L0 | text | 322 / 229 / 1,547 | 0.00001 [0.00001, 0.00001] | 0.0003 | 0.021 | 0.000 |
+| L0 | pt / cost / type | | 0.00000 / 0.00000 / 0.00003 | 0.0001 / 0.0003 / 0.0014 | 0.027 / 0.004 / 0.063 | 0.000 / 0.000 / 0.000 |
+| L0 | self_mana | 838 / 503 / 838 | 0.00028 [0.00026, 0.00030] | 0.0021 | 0.146 | 0.038 |
+| BC | text / pt / cost / type | as above | 0.00000 (all) | 0.0000 (all; raw 0.011–0.085) | 0.000 | 0.000 |
+| BC | self_mana | 838 / 503 / 838 | 0.00000 | 0.0000 (raw 0.139) | 0.000 | 0.000 |
+| DIM | text | 322 / 229 / 1,547 | 0.00003 [0.00003, 0.00004] | 0.0017 | 0.074 | 0.000 |
+| DIM | text_emb / text_kw | | 0.00003 / 0.00001 | 0.0015 / 0.0003 | 0.076 / 0.059 | 0.000 / 0.000 |
+| DIM | pt / cost / type | | 0.00002 / 0.00004 / 0.00007 | 0.0008 / 0.0020 / 0.0036 | 0.054 / 0.042 / 0.072 | 0.000 / 0.000 / 0.000 |
+| DIM | self_mana | 838 / 503 / 838 | 0.00296 [0.00273, 0.00321] | 0.0275 | 0.098 | 0.011 |
+
+Yardstick (the scorer's working range on the same consults, bounded logits): mean
+top-1/top-2 gap init 0.37, C1s0 1.76, L0 2.82, BC 4.03, DIM 2.74; within-consult logit
+s.d. 0.24 / 1.82 / 3.22 / 4.80 / 2.91. The largest identity effect anywhere (C1s0 type
+swaps, 0.0065 nats) is 0.4 % of that subject's top gap; the text swaps are 0.01–0.13 %.
+BC's raw logits average |43| (bounded 4.0 gap): its tanh bound is saturated, so its Δ under
+the bound is exactly 0 and even its raw Δlogit (0.035 text, 0.139 self control) is < 1 %
+of its raw scale.
+
+**Tie census** (base scoring, no swap): among pairs of SPELL candidates in the same consult
+that name DIFFERENT cards but carry the same afterstate row (e.g. Silvercoat Lion vs Glory
+Seeker, Dromoka Warrior vs Blade of the Sixth Pride), n = 219 pairs: mean |Δlogit| =
+0.00000 and **219/219 tied to < 1e-4 in every subject** (init, C1s0, L0, BC, DIM); pairs
+with different rows (n = 306) differ by 0.05 / 0.036 / 0.020 / 0.000 / 0.28 nats. Every
+"flip" in the table is one of these exact ties being broken by a 1e-3 perturbation
+(SPELL→SPELL between same-row cards: 93/93 of C1s0's text flips, 114/114 of DIM's), hence
+`flip_strict` = 0.000 in every identity class of every subject.
+
+**Mechanism** (`P1|<subject>|mechanism` lines): `StateGraphEncoder` zero-initialises the
+attention output projection, the FFN output layer and every per-edge attention-bias row
+(the encoder is the identity on the builder tokens at init — `rl/v7_encoder.py` docstring,
+a Phase 4c exactness property). After training, mean |W| of `att.out` is 0.00017–0.00052
+and of `ffn.out` 0.00019–0.00051 against 0.0313 for the input projections, and the
+**`refers_to` edge bias (candidate → its referent) is ≤ 0.0027 in every subject** (init 0;
+C1s0 max 0.0016, L0 0.0027, BC 0.0016, DIM 0.0007; all edge types ≤ 0.0027). With the edge
+bias at zero, a candidate token attends to the entity tokens with exactly the same weights
+as every other candidate of the same row: it receives the consult-wide mixture of
+entities, never *its* card. The encoder does move tokens (relative change of the candidate
+encoding 0.25–0.99, of the game token 2.0–6.4 — the FFN and the aggregate attention are
+live), but nothing in it distinguishes the referent from the rest of the board. The swap
+Δlogits above are the referent's change leaking into that shared mixture — which shifts
+every candidate of the consult by nearly the same amount, so p barely moves. At the lane's
+lr 3e-5 with ~64–100 updates, a zero-initialised bias cannot travel further than ~3e-3;
+the wire's identity channel (§2f "identity reaches the candidate through
+`v7_cand_refers`") is therefore closed in every checkpoint the project has trained.
+
+**Pre-registered readings, computed as written and then corrected in the open.** The
+text-blind / text-sensitive rule compares mean Δp(text) with 0.10× and 0.5× mean Δp(pt).
+Computed: init 0/0 (undefined), C1s0 ratio 2.66, L0 2.41, BC undefined (0/0), DIM 1.82 —
+the rule would print "text-sensitive" for three subjects. **That reading is void**: its
+premise was that a P/T swap moves the scorer and the text swap is compared against it;
+the P/T control is itself at floor (≤ 0.00002, strict flips 0/878 in every subject), as
+are the cost and type controls. The reading that the numbers support is a fourth one the
+pre-registration did not list: **identity-blind** — the scorer reads none of its
+referent's text, P/T, cost or type, in any subject, at any level of training. The
+training-effect clause (trained text CI vs init's) is likewise void (all intervals sit at
+0.0000x; "sharpened" 0.00001 over 0 is not a sharpening). BC, the interesting subject
+(supervised card labels), is the clearest case: exactly 0 under its saturated bound,
+raw Δlogit < 1 % of its scale — it could not have learned CP7's card because the card
+never reached its scorer, which is the mechanism behind the "type, not card" BC row
+(top-1 0.606 vs the 0.833 copy ceiling; type agreement 0.887).
+
+What this says about the policies: a v7 policy can condition a SPELL decision only on the
+candidate's own row (type, mana left after, targets legal, speed flags, stack position)
+and on the game/player tokens plus the consult-wide entity mixture; "which creature to
+cast" among same-cost cards is decided by an exact tie, i.e. by candidate order. The
+type-level policies (wall-then-race, attack-everything, cast-anything) are what this
+network can express. ATTACK / BLOCK / TARGET candidates carry CombatMath / target P/T in
+their own afterstate rows, so size-awareness there is possible without identity (P2 tests
+it); keyword-awareness is not.
+
+Cannot: say what a *trained* refers bias would buy (no checkpoint has one); attribute the
+closed channel to the learning rate vs the zero-init alone (untangled by a run with the
+edge biases initialised non-zero, or a larger lr on them — a pre-registrable follow-up,
+not run here); reach the 40-pair bar for text/pt/cost (19/12/6, see above); speak to
+opponent-hand or deck tokens (not swapped); speak to the belief module (not on this path).
+Pre-stated: P4's "training erases / preserves keyword information" will read
+"preserved" trivially — the entity tokens are never asked for their keywords by a
+candidate, so nothing acts on them either way.

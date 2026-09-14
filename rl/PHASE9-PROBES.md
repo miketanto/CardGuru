@@ -120,3 +120,4 @@ not swappable, a missing corpus attribute), record why and move on.
 
 ## STATE (append dated lines; newest last)
 - 2026-09-14 (start): nothing running; P1 not started.
+- 2026-09-14 (P1 DONE): rl/probes/cardswap.py + run_p1.sh; artifacts rl/artifacts/v7/9/ (pairs 19/12/6/120, cardswap_<subject>.tsv, cardswap_summary.txt). Result: every identity swap class at floor in every subject (text dp <= 0.00004, pt <= 0.00002, cost <= 0.00004, type <= 0.00014; strict argmax flips 0/all), 219/219 different-card same-row SPELL pairs tied to <1e-4; mechanism = the refers_to attention bias never left its zero init (<= 0.0027). Reading "identity-blind" (pre-registered ratio void: the PT control is at floor). Section "9 / P1" in V7-VALIDATION.md. Next: P4.

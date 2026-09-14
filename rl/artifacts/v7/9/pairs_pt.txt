@@ -1,0 +1,12 @@
+Elite Vanguard	Eager Cadet	pt:2/1->1/1
+Foot Soldiers	Dutiful Servants	pt:2/4->2/5
+Foot Soldiers	Ironclad Krovod	pt:2/4->2/5
+Glory Seeker	Starfleet Crew	pt:2/2->2/3
+Glory Seeker	Kyoshi Warrior Guard	pt:2/2->2/3
+Glory Seeker	Squire	pt:2/2->1/2
+Knight of the Keep	Pearled Unicorn	pt:3/2->2/2
+Regal Unicorn	Pearled Unicorn	pt:2/3->2/2
+Regal Unicorn	Those Who Serve	pt:2/3->2/4
+Silvercoat Lion	Starfleet Crew	pt:2/2->2/3
+Silvercoat Lion	Squire	pt:2/2->1/2
+Silvercoat Lion	Kyoshi Warrior Guard	pt:2/2->2/3
