@@ -1,0 +1,120 @@
+Blade of the Sixth Pride	Potion of Healing	type:Creature->Artifact
+Blade of the Sixth Pride	Sonar Strike	type:Creature->Instant
+Blade of the Sixth Pride	Kellan's Lightblades	type:Creature->Instant
+Blade of the Sixth Pride	Font of Vigor	type:Creature->Enchantment
+Blade of the Sixth Pride	Clear	type:Creature->Instant
+Blade of the Sixth Pride	Defiant Stand	type:Creature->Instant
+Blade of the Sixth Pride	Swift Response	type:Creature->Instant
+Blade of the Sixth Pride	Absolute Grace	type:Creature->Enchantment
+Cecil, Dark Knight	Font of Agonies	type:Creature->Enchantment
+Cecil, Dark Knight	Mind Peel	type:Creature->Sorcery
+Cecil, Dark Knight	Lethal Throwdown	type:Creature->Sorcery
+Cecil, Dark Knight	Zuko's Conviction	type:Creature->Instant
+Cecil, Dark Knight	Rat Out	type:Creature->Instant
+Cecil, Dark Knight	Boon of Erebos	type:Creature->Instant
+Cecil, Dark Knight	Final Vengeance	type:Creature->Sorcery
+Cecil, Dark Knight	One with Nothing	type:Creature->Instant
+Dromoka Warrior	Soul Parry	type:Creature->Instant
+Dromoka Warrior	True Identity	type:Creature->Enchantment
+Dromoka Warrior	Angelsong	type:Creature->Instant
+Dromoka Warrior	Will of the All-Hunter	type:Creature->Instant
+Dromoka Warrior	Last Breath	type:Creature->Instant
+Dromoka Warrior	Curtain of Light	type:Creature->Instant
+Dromoka Warrior	Unlikely Alliance	type:Creature->Enchantment
+Dromoka Warrior	Phalanx Tactics	type:Creature->Instant
+Elektra, Daughter of the Hand	Slaughter	type:Creature->Instant
+Elektra, Daughter of the Hand	Isildur's Fateful Strike	type:Creature->Instant
+Elektra, Daughter of the Hand	Cursecloth Wrappings	type:Creature->Artifact
+Elektra, Daughter of the Hand	Damnation	type:Creature->Sorcery
+Elektra, Daughter of the Hand	Drag to the Bottom	type:Creature->Sorcery
+Elektra, Daughter of the Hand	Befoul	type:Creature->Sorcery
+Elektra, Daughter of the Hand	Common Black Removal	type:Creature->Instant
+Elektra, Daughter of the Hand	Court of Ambition	type:Creature->Enchantment
+Elite Vanguard	Strip Bare	type:Creature->Instant
+Elite Vanguard	Scent of Jasmine	type:Creature->Instant
+Elite Vanguard	Inheritance	type:Creature->Enchantment
+Elite Vanguard	Swallow Whole	type:Creature->Sorcery
+Elite Vanguard	Soul Snare	type:Creature->Enchantment
+Elite Vanguard	You Cannot Pass!	type:Creature->Instant
+Elite Vanguard	Burst of Energy	type:Creature->Instant
+Elite Vanguard	Gideon's Defeat	type:Creature->Instant
+Enduring Curiosity	Devious Cover-Up	type:Creature->Instant
+Enduring Curiosity	See Double	type:Creature->Instant
+Enduring Curiosity	Discombobulate	type:Creature->Instant
+Enduring Curiosity	Statute of Denial	type:Creature->Instant
+Enduring Curiosity	Teferi's Ageless Insight	type:Creature->Enchantment
+Enduring Curiosity	Land Equilibrium	type:Creature->Enchantment
+Enduring Curiosity	Whelming Wave	type:Creature->Sorcery
+Enduring Curiosity	Breaking Wave	type:Creature->Sorcery
+Floodpits Drowner	Ior Ruin Expedition	type:Creature->Enchantment
+Floodpits Drowner	Futurist Forge	type:Creature->Artifact
+Floodpits Drowner	Prologue to Phyresis	type:Creature->Instant
+Floodpits Drowner	Joint Exploration	type:Creature->Instant
+Floodpits Drowner	Miscalculation	type:Creature->Instant
+Floodpits Drowner	Brackish Blunder	type:Creature->Instant
+Floodpits Drowner	Foreshadow	type:Creature->Instant
+Floodpits Drowner	Absorb Identity	type:Creature->Instant
+Foot Soldiers	Crack in Time	type:Creature->Enchantment
+Foot Soldiers	Allied Reinforcements	type:Creature->Sorcery
+Foot Soldiers	Frantic Salvage	type:Creature->Instant
+Foot Soldiers	Replenish	type:Creature->Sorcery
+Foot Soldiers	Circle of Solace	type:Creature->Enchantment
+Foot Soldiers	Veiled Ascension	type:Creature->Enchantment
+Foot Soldiers	Abuna's Chant	type:Creature->Instant
+Foot Soldiers	Conclave Tribunal	type:Creature->Enchantment
+Glory Seeker	Nahiri's Machinations	type:Creature->Enchantment
+Glory Seeker	Bathe in Light	type:Creature->Instant
+Glory Seeker	Lumithread Field	type:Creature->Enchantment
+Glory Seeker	Desperate Lunge	type:Creature->Instant
+Glory Seeker	Steadfastness	type:Creature->Sorcery
+Glory Seeker	Bovine Intervention	type:Creature->Instant
+Glory Seeker	True Identity	type:Creature->Enchantment
+Glory Seeker	Search for Dagger	type:Creature->Enchantment
+Knight of the Keep	Aura Fracture	type:Creature->Enchantment
+Knight of the Keep	Bargain	type:Creature->Sorcery
+Knight of the Keep	Lingering Souls	type:Creature->Sorcery
+Knight of the Keep	Wand of the Worldsoul	type:Creature->Artifact
+Knight of the Keep	Endless Foot Assault	type:Creature->Enchantment
+Knight of the Keep	Leo's Guidance	type:Creature->Instant
+Knight of the Keep	Words of Worship	type:Creature->Enchantment
+Knight of the Keep	Armistice	type:Creature->Enchantment
+Regal Unicorn	Promise of Tomorrow	type:Creature->Enchantment
+Regal Unicorn	Thorough Investigation	type:Creature->Enchantment
+Regal Unicorn	We Ride at Dawn	type:Creature->Enchantment
+Regal Unicorn	Charge of the Mites	type:Creature->Instant
+Regal Unicorn	Phyrexian Unlife	type:Creature->Enchantment
+Regal Unicorn	Dauntless Onslaught	type:Creature->Instant
+Regal Unicorn	Sheer Drop	type:Creature->Sorcery
+Regal Unicorn	Healing Hands	type:Creature->Sorcery
+Shu Elite Infantry	Excoriate	type:Creature->Sorcery
+Shu Elite Infantry	Unexplained Absence	type:Creature->Instant
+Shu Elite Infantry	Akroma's Will	type:Creature->Instant
+Shu Elite Infantry	Rapid Fire	type:Creature->Instant
+Shu Elite Infantry	Wall Off	type:Creature->Instant
+Shu Elite Infantry	On Wings of Gold	type:Creature->Enchantment
+Shu Elite Infantry	Abuna's Chant	type:Creature->Instant
+Shu Elite Infantry	Retether	type:Creature->Sorcery
+Silvercoat Lion	Ajani's Mantra	type:Creature->Enchantment
+Silvercoat Lion	Lead Astray	type:Creature->Instant
+Silvercoat Lion	Rune of Protection: White	type:Creature->Enchantment
+Silvercoat Lion	Oath of Lieges	type:Creature->Enchantment
+Silvercoat Lion	Recommission	type:Creature->Sorcery
+Silvercoat Lion	Immolating Glare	type:Creature->Instant
+Silvercoat Lion	Valorous Stance	type:Creature->Instant
+Silvercoat Lion	Family Reunion	type:Creature->Instant
+Spyglass Siren	Rookie Mistake	type:Creature->Instant
+Spyglass Siren	Thassa's Ire	type:Creature->Enchantment
+Spyglass Siren	Brainstorm	type:Creature->Instant
+Spyglass Siren	Mystic Speculation	type:Creature->Sorcery
+Spyglass Siren	Slip Out the Back	type:Creature->Instant
+Spyglass Siren	Extract	type:Creature->Sorcery
+Spyglass Siren	Champion's Victory	type:Creature->Instant
+Spyglass Siren	Tidal Flats	type:Creature->Enchantment
+The Wondrous Wasp	Psychic Rebuttal	type:Creature->Instant
+The Wondrous Wasp	Split Decision	type:Creature->Instant
+The Wondrous Wasp	Pale Moon	type:Creature->Instant
+The Wondrous Wasp	Thassa's Rebuff	type:Creature->Instant
+The Wondrous Wasp	Ovinize	type:Creature->Instant
+The Wondrous Wasp	Dress Down	type:Creature->Enchantment
+The Wondrous Wasp	Lazotep Plating	type:Creature->Instant
+The Wondrous Wasp	Expel from Orazca	type:Creature->Instant

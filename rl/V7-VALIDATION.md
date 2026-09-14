@@ -4060,3 +4060,22 @@ main are forced to cross, cross, heur, then sampled; with ~3 h left, most mains 
 cross + 1 heur blocks in stage 2. Q6's confound statement (cross-deck stage + more
 episodes; no control arm) is unchanged. The small cross-deck episode count is stated in the
 Q6 row whatever it reads.
+
+### 10 — interim card-swap check on the league mains (2026-09-14 12:15Z; league paused by the user for it; NOT the Q7 row)
+
+`rl/p10_cardswap.py` exactly as the A2 gate ran it (the six 7c W0Base + BenchDimir consult sets, 2,004 consults, same pair lists), on the latest pool snapshots M_W_03072, M_D_03072, M_L_02816 against the untrained flag-ON net; CPU, run while the league was still in its last block. Artifacts `rl/artifacts/v7/10/interim_p1/`.
+
+| subject | text-only Δp | its embedding part | keyword bits only | P/T | cost | type | strict argmax flips, text | same-row different-card pairs tied |
+|---|---|---|---|---|---|---|---|---|
+| untrained, flag ON | 0.052 [0.049, 0.054] | 0.047 | 0.009 | 0.040 | 0.043 | 0.069 | 0.127 | 0 / 219 |
+| M_W (W0Base, 3,072 ep) | 0.025 [0.021, 0.029] | 0.024 | 0.001 | 0.010 | 0.010 | 0.084 | 0.186 | 0 / 219 |
+| M_D (BenchDimir, 3,072 ep) | **0.218 [0.195, 0.242]** | 0.219 | 0.003 | 0.067 | 0.125 | 0.327 | 0.116 | 0 / 219 |
+| M_L (G1Landfall, 2,816 ep) | **0.102 [0.090, 0.116]** | 0.104 | 0.009 | 0.046 | 0.025 | 0.206 | 0.128 | 0 / 219 |
+
+Phase 9's trained mains (flag OFF) were at ≤ 0.00004 on every row with 219/219 ties.
+
+1. **The channel survived training in all three mains.** No pair of different cards offered through the same action row is tied any more (0/219 in every subject; mean |Δlogit| 0.09 / 0.83 / 0.44 for W / D / L), and swapping only a card's text flips the argmax on 12–19 % of affected consults.
+2. **Against the pre-registered comparison** (text-only Δp vs the untrained flag-ON net): Dimir and landfall are **above** it with disjoint intervals (4.2× and 2.0×); the white main is **below** it (0.025 vs 0.052, disjoint) while its strict flip rate is higher (0.186 vs 0.127). The trained policies are far sharper than the untrained one (mean top gap 2.3–3.2 nats vs 0.38), so Δp is not scale-free across subjects; the flip rate is the steadier comparison, and on it none of the three has erased text sensitivity.
+3. **The signal comes through the card embedding, not the explicit keyword bits**: swapping only the 18 keyword bits moves the trained mains by 0.001–0.009 with 0–4 % flips, while the embedding part carries essentially all of the text effect. Text moves each main more than P/T does (ratios 2.5 / 3.2 / 2.2).
+
+Cannot: sensitivity is not use — this says the policy's output depends on which card it is, not that the dependence is correct play; the consult sets are W0Base and BenchDimir (the landfall main is scored on decks it did not train on); these are mid-run snapshots, and the Q7 row stays with the final checkpoints in the morning evaluation.

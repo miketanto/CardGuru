@@ -1,0 +1,28 @@
+Bitter Triumph	25	1 B	Instant	None/None	As an additional cost to cast this spell, discard a card or pay 3 life. | Destroy target c	not a creature
+Blade of the Sixth Pride	91	1 W	Creature	3/1		
+Cecil, Dark Knight	1	B	Creature	2/3	Deathtouch | Darkness — Whenever Cecil deals damage, you lose that much life. Then if your	source text is not keyword-only (no text/pt/cost pairs); type pairs only
+Day of Black Sun	21	X B B	Sorcery	None/None	Each creature with mana value X or less loses all abilities until end of turn. Destroy tho	not a creature
+Dromoka Warrior	135	1 W	Creature	3/1		
+Elektra, Daughter of the Hand	16	2 B B	Creature	3/3	Sneak {1}{B}{B} (You may cast this spell for {1}{B}{B} if you also return an unblocked att	source text is not keyword-only (no text/pt/cost pairs); type pairs only
+Elite Vanguard	44	W	Creature	2/1		
+Enduring Curiosity	52	2 U U	Enchantment/Creature	4/3	Flash | Whenever a creature you control deals combat damage to a player, draw a card. | Wh	source text is not keyword-only (no text/pt/cost pairs); type pairs only
+Floodpits Drowner	33	1 U	Creature	2/1	Flash | Vigilance | When Floodpits Drowner enters, tap target creature an opponent control	source text is not keyword-only (no text/pt/cost pairs); type pairs only
+Foot Soldiers	51	3 W	Creature	2/4		
+Gloomlake Verge	1	no cost	Land	None/None	{T}: Add {U}. | {T}: Add {B}. Activate only if you control an Island or a Swamp.	not a creature
+Glory Seeker	66	1 W	Creature	2/2		
+Hidden Lair	8	no cost	Land	None/None	{T}: Add {C}. | {T}: Add {U} or {B}. Activate only if this land entered this turn or if yo	not a creature
+Kaito, Bane of Nightmares	29	2 U B	Planeswalker	None/None	Ninjutsu {1}{U}{B} ({1}{U}{B}, Return an unblocked attacker you control to hand: Put this 	not a creature
+Knight of the Keep	55	2 W	Creature	3/2		
+Nowhere to Run	25	1 B	Enchantment	None/None	Flash | When Nowhere to Run enters, target creature an opponent controls gets -3/-3 until 	not a creature
+Regal Unicorn	76	2 W	Creature	2/3		
+Requiting Hex	49	B	Instant	None/None	As an additional cost to cast this spell, you may blight 1. (You may put a -1/-1 counter o	not a creature
+Restless Reef	8	no cost	Land	None/None	Restless Reef enters tapped. | {T}: Add {U} or {B}. | {2}{U}{B}: Restless Reef becomes a 4	not a creature
+Shoot the Sheriff	13	1 B	Instant	None/None	Destroy target non-outlaw creature. (Assassins, Mercenaries, Pirates, Rogues, and Warlocks	not a creature
+Shu Elite Infantry	41	3 W	Creature	3/3		
+Silvercoat Lion	109	1 W	Creature	2/2		
+Soulstone Sanctuary	3	no cost	Land	None/None	{T}: Add {C}. | {4}: This land becomes a 3/3 creature with vigilance and all creature type	not a creature
+Spell Pierce	10	U	Instant	None/None	Counter target noncreature spell unless its controller pays {2}.	not a creature
+Spyglass Siren	33	U	Creature	1/1	Flying | When Spyglass Siren enters, create a Map token. (It's an artifact with "{1}, {T},	source text is not keyword-only (no text/pt/cost pairs); type pairs only
+The Wondrous Wasp	35	1 U	Creature	2/1	Flash | Flying | Wasp's Sting — When The Wondrous Wasp enters, tap up to one target creatu	source text is not keyword-only (no text/pt/cost pairs); type pairs only
+Watery Grave	2	no cost	Land	None/None	({T}: Add {U} or {B}.) | As Watery Grave enters, you may pay 2 life. If you don't, it ente	not a creature
+We Say Thee Nay!	11	1 U	Instant	None/None	Teamwork 2 (As an additional cost to cast this spell, you may tap any number of creatures 	not a creature
