@@ -1083,3 +1083,67 @@ OWED, in priority order (pre-stated, none run):
 3. P3's missing heuristic reference (record the heuristic's own casts with timing: needs a driver-side log of opponent casts with step, or a `TeacherLogPlayer`-style heuristic seat) and P2's equal-stat text test (needs a deck built for it, e.g. `rl/KW7Probe.dck`-style pairs of same-P/T creatures with and without keywords).
 
 Every launch: as §M (session-independent keepalive first, `setsid nohup ... &` inside one wsl call, verify with `pgrep -fa 'a|b'`, kill only via script files, ≤ 2 policy servers + 2 driver JVMs). Recording a policy's own play: `bash rl/probes/record_p9.sh {driver,dim,stop}` (frozen server 7947 + `rl/probes/record_proxy.py` on 7948 + driver 7911; the `dim` stage replaces any 7947 server); a teacher seat: `record_p9.sh cp7`. Scoring recorded consults offline: `rl/probes/cardswap.score` (bound applied to raw logits) and `target_probe.py` show the pattern.
+
+UPDATE (2026-09-14, Phase 10 closed; v7/lane-d = HEAD): **PHASE10-LEAGUE executed**. The
+runbook `rl/PHASE10-LEAGUE.md` and its STATE lines are the record, including Amendment 3 and
+the two pauses. The rows in `rl/V7-VALIDATION.md` are:
+- "10 / A1-A2", "10 / A3", "10 - pre-registration and Amendment 3", "10 — interim card-swap
+  check";
+- "10 / league run and Q5", "10 / Q6", "10 / Q7", "10 / league health", "Phase 10 verdict".
+
+Code:
+- `--cand-refers-pool` (`v7_net` / `v7_policy` / `policy_server` / `p10_init_net`; default
+  OFF = HEAD bit for bit; an ON checkpoint carries it in its config);
+- `rl/league10.py` + `rl/run_league10.sh` (controller, resumable, stage-2 quota);
+- `rl/p10_eval.sh`, `rl/p10_h2h.sh` (deck-parameterised head-to-head), `rl/p10_cardswap.py`
+  (the P1 probe copy), `rl/p10_a2.sh`, `rl/p10_a3_smoke.sh`;
+- `rl/G1Landfall.dck`.
+
+Artifacts `rl/artifacts/v7/10/`:
+- `results.tsv`, `pool.tsv`, `state.json`, `league10.log`;
+- `eval/` (B2);
+- `replay/` and `pairs/` (user-requested transcripts);
+- `pool/*.pt` and `inits/*.pt` on disk, gitignored.
+
+## O. The handoff prompt (2026-09-14; v7/lane-d = HEAD). Supersedes §N for Phase 10's lines; a Phase 11 section may follow.
+
+Read CLAUDE.md, then `rl/PHASE10-LEAGUE.md` (runbook, Amendment 3, STATE), then
+`rl/V7-VALIDATION.md` from "10 / A1-A2" to "Phase 10 verdict". Then read §K's environment
+block and the §M/§N launch rules (still valid). Add this Phase 10 lesson: never pass a
+commit message with double quotes through PowerShell; use `git commit -F <file>`.
+
+STATE at handoff: **Phase 10 runs nothing.** The final league checkpoints are:
+- `rl/artifacts/v7/10/pool/M_W_04096.pt`, `M_D_04096.pt`, `M_L_03840.pt`;
+- the `_s1end` snapshots at 1,792 episodes;
+- every per-block snapshot (optimiser stripped; a frozen server loads them as they are).
+
+Lane state is in `/tmp/rl_10_<learner>[_g1]/` (WSL-local, resumable). A Phase 11 agent may be
+running its own jobs.
+
+The answer in one line: with the card path open, per-deck self-play plus exploiters gives a
+Dimir main above its reference (0.59) but a W0Base main far below C1 (0.52 vs 0.86) and a
+landfall main at about 0.49. The cross-deck stage shows no pooled generalisation gain (0.59 →
+0.64, overlapping), and card sensitivity survives training in two of three mains.
+
+OWED, in priority order (pre-stated, none run):
+1. **M_W_s1end home battery at 100 games**, vs the heuristic on W0Base and vs CP7. This
+   settles M_W's stage-2 regression candidate (Q5) and Q6's home clause for all three mains:
+   `G=100 ROWS="heuristic:<deck> cp7:<deck>" bash rl/battery_xdeck.sh rl/artifacts/v7/10/pool/<m>_s1end.pt <deck> rl/artifacts/v7/10/eval/<m>_s1end_home`.
+2. **The Q6 control**: the exploiter-and-self-only continuation from each `_s1end` for the
+   same 2k episodes (league10.py with MIX2's cross weight moved to self). Also an
+   anchor-only arm, because the unseen suite is all heuristic pilots and stage 2
+   reintroduced the heuristic.
+3. **A second seed** of the league (one seed per learner so far), with the stage-1 anchor
+   quota applied from the start: the same realized-share quota as stage 2, heur ≥ 0.15.
+4. **M_W's card-sensitivity collapse** (text Δp 0.025 → 0.0023 in stage 2): run
+   `rl/p10_cardswap.py` on every M_W pool snapshot (`pool/M_W_*.pt`) to date it against the
+   stage-2 blocks.
+5. **The own-creature removal play**: M_D casts Requiting Hex into an empty enemy board at
+   its own Spyglass Siren (both pairing games). Count it over a recorded set (a
+   removal-target census: target controller vs enemy creatures present).
+6. §N's owed list (identity-channel variants are now superseded by `--cand-refers-pool`;
+   the rest stands).
+
+Every launch: as §M (session-independent keepalive first, `setsid nohup ... &` inside one wsl
+call, verify with pgrep, never with the launched script's literal name in the pgrep string's
+own shell; kill only via script files; ≤ 2 policy servers + 2 driver JVMs).
