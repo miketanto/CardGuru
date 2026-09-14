@@ -4497,3 +4497,57 @@ Also recorded in Phase 11: the recorder-faithfulness check (5be785c), the Q6 add
 **Landfall:** also a plateau (0.49 → 0.41 → 0.53 vs the heuristic), and 0.12 [0.042, 0.300] vs CP7 at +2,048. Its Phase 10 block restraint (13 small-into-big pairs per 50 games) eroded back to the stage-1-end level (up to 195), and its land search swung to being held (90 cast of 1,225 offers).
 
 The leading hypothesis is self-play drift: 16 of 18 main blocks faced league-internal opponents that move with the learner, the heuristic was the only fixed opponent, and CP7 was never in the pool. That motivates a CP7 warm start to competence before any self-play league (`rl/PHASE12-CP7.md`). It rests on one seed and no fixed-opponent control, and the coarse terminal reward alone could also flatten the levels.
+
+## 12 — pre-registration, amendments and start points (2026-09-14; runbook `rl/PHASE12-CP7.md`, branch `v7/lane-d`)
+
+Why: the Phase 11 drill-down was stopped by the user (see "Phase 11 verdict"); the leading
+hypothesis is self-play drift. Phase 12 warm-starts each deck main against a fixed opponent mix:
+75 % CP7 (`rl.aiSkill` 6) / 25 % heuristic on the own mirror, the Phase 10/11 learner recipe
+unchanged (lr 3e-5, 1 epoch, logit bound 5, AdamW wd 0.01 on the heads, `--adv-norm batch`,
+`--target-kl 0.02`, `--argmax-classes`, `--cand-refers-pool`). **Graduated** = a 100-game level vs
+CP7 on the own mirror ≥ 0.70 AND Wilson lower bound ≥ 0.60, measured every 1,024 episodes, with a
+50-game heuristic guard at the same points and the 3-deck unseen suite (heuristic on BenchBurn /
+HoldoutControl / HoldoutMidrange, 50 each) at the start, at graduation and at the end. The
+pre-registered readings (competent / improving vs CP7 / over-fit to CP7 / Dimir card habits converge
+/ landfall / the drift-hypothesis test) and the cannots are in the runbook and are not restated here.
+Controller `rl/phase12.py` (runner `rl/run_phase12.sh`; `rl/stop_p12.sh`, `rl/kill_p12.sh`); log
+`rl/artifacts/v7/12/phase12.log`; `results.tsv`, `levels.tsv`, `census_lines.txt` beside it.
+
+**Amendment 1 (before any data): implementation choices.** The 75/25 mix is realised exactly by the
+fixed rotation cp7, heuristic, cp7, cp7 per main (Phase 10's Amendment 3 showed random draws
+under-delivering a small bucket). Battery row seeds and the census seed (12500) are fixed, so every
+level and every check sees the same deals (points are paired). The start point is CP7 100 +
+heuristic 50 (the guard's size) + unseen 150 + the 25-game CP7 census. M_W's unseen rows are Phase
+10's own rows of the same checkpoint on the same suite, reused, not re-run. The white check has no
+census tool; it uses the block/attack audit lines and `rl/dimir_census.py`'s board line for creatures
+per game, a field not validated on W0Base. Snapshots carry no optimiser state, so AdamW starts fresh.
+
+**Amendment 2 (user, ~23:45Z, before any M_D level beyond the start): tonight is Dimir only.** The
+controller was stopped gracefully after M_D's first block and its check. No M_L or M_W block had
+run. Landfall and white are paused at their start points, with their state saved untouched; their
+readings are **deferred, not dropped**. M_D continues with everything else identical (rotation,
+checks, levels, guard, graduation rule, seeds, the hour-10.5 stop from the 22:24Z start).
+Consequence: tonight's drift-hypothesis test rests on one deck and one seed.
+
+**Start points** (argmax protocol of `rl/battery_xdeck.sh`; the unseen suite pooled over 150):
+
+| main | start snapshot (episodes) | vs CP7, own mirror (100) | vs heuristic, own mirror (50) | unseen suite (150) | BenchBurn / HoldoutControl / HoldoutMidrange |
+|---|---|---|---|---|---|
+| M_D (BenchDimir) | M_D_06400 (6,400) | 19/100 = 0.190 [0.125, 0.278] | 35/50 = 0.700 [0.562, 0.809] | 98/150 = 0.653 [0.574, 0.725] | 29 / 39 / 30 |
+| M_L (G1Landfall) | M_L_06144 (6,144) | 35/100 = 0.350 [0.264, 0.447] | 23/50 = 0.460 [0.330, 0.596] | 93/150 = 0.620 [0.540, 0.694] | 25 / 48 / 20 |
+| M_W (W0Base) | M_W_s1end (1,792) | 58/100 = 0.580 [0.482, 0.672] | 33/50 = 0.660 [0.522, 0.776] | 116/150 = 0.773 [0.700, 0.833] | 41 / 50 / 25 (Phase 10 rows) |
+
+**Start checks** (25 CP7 games, own mirror, seed 12500):
+- M_D: 4/25. Removal cast with only its own creatures as legal targets 7/7; counterspell windows taken 31/38; flash on the opponent's turn 5/74; ninjutsu 2/3; highest-power enemy chosen 18/24; 3.84 creatures per game.
+- M_L: 11/25. Small-into-big blocks 27/32, of which the combat search would not block 15/24; land search cast 42/738; 4.76 creatures per game.
+- M_W: 16/25. Blocks matching the combat search 92/119; attacks declared 225/245 windows; attack audit MATCH 104/245; 10.88 creatures per game (field unvalidated for this deck).
+
+What the start points cannot support: a 50-game guard is a development probe, not a level. The M_D
+heuristic start (0.70) sits above the Phase 11 100-game level at +1,024 (0.62, 5,120 episodes), but a
+different snapshot and different deals are involved, and the intervals overlap. CP7 levels are
+paired across points only through the fixed seeds; the policy changes, so the deals diverge after
+the first decisions.
+
+Throughput: M_D's first block against CP7 ran 256 episodes in 1,249 s, 738 episodes/h. That is
+1.39 h of lane time per 1,024 episodes, plus ~5.5 min per 25-game check and ~0.25 h per level
+point.

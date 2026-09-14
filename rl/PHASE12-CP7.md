@@ -104,6 +104,38 @@ in every pool as fixed anchors (proposed ≥ 25 % combined), loss-weighted
 opponent selection, and the same fixed yardsticks every 1,024 episodes. Its
 runbook is written only after Phase 12 has graduates.
 
+## Amendment 1 (2026-09-14 22:24Z, before any data) — implementation choices
+
+Recorded in the 22:24Z STATE line: the 75/25 mix realised exactly by the rotation
+cp7, heuristic, cp7, cp7 per main; start point = CP7 100 + heuristic 50 + unseen 150
++ the 25-game CP7 census (M_W's unseen rows reused from Phase 10, same checkpoint and
+suite); fixed battery and census seeds (paired points); the white check fields;
+snapshots carry no optimiser state.
+
+## Amendment 2 (2026-09-14 ~23:45Z, user decision; before any M_D level beyond the start point) — tonight is Dimir only
+
+Scope narrowed to Dimir by the user for tonight, to benchmark the hardest deck
+faster. **Landfall (M_L) and white (M_W) are paused after their start points**;
+no M_L or M_W training block had run (the controller stopped gracefully after M_D's
+block n=0 and its check, before the rotation reached M_L). Their start points stand
+as measured (the 23:36Z STATE line) and their saved state is untouched
+(rl/artifacts/v7/12/state.json: trained = start, blocks = 0; lanes /tmp/rl_12_M_L,
+/tmp/rl_12_M_W not created) — **their readings are deferred, not dropped**; they
+resume later with `--mains` naming them.
+
+Everything else is identical for M_D: the fixed cp7, heuristic, cp7, cp7 rotation
+(M_D's block n=0 was its rotation slot 0, cp7), the per-block 25-game CP7 check
+(seed 12500), the 100-game CP7 level + 50-game heuristic guard every 1,024 episodes
+(fixed seeds), the graduation rule (≥ 0.70 AND Wilson lower bound ≥ 0.60), the unseen
+suite at graduation or the end, the same hour-10.5 stop from the original 22:24Z
+start (~08:54Z; no new block after it) and the end phase for M_D only. Code:
+`rl/phase12.py --mains M_D` (default = all three, the original behaviour).
+
+What this changes for the readings: the per-main readings for M_L / M_W cannot be
+made tonight; the drift-hypothesis test rests on Dimir alone (one seed, one deck), and
+the row says so. Dimir gets ~3x the wall time it had in the rotation, so its level
+points come every ~2 h instead of ~5 h.
+
 ## STATE (append dated lines; newest last)
 - 2026-09-14 ~22:15Z WSL: Phase 11 drill-down being stopped by the user (rl/stop_drill11.sh); Phase 12 not started.
 - 2026-09-14 22:24Z WSL: LAUNCHED (nothing resident verified before; pgrep 60 s after: runner, controller, battery_xdeck, server 7947, driver JVM). Controller rl/phase12.py via rl/run_phase12.sh --hours 10.5 (no new block after hour 10.5, then the end phase); LOG rl/artifacts/v7/12/phase12.log; state/results/levels/census_lines/battery_lines in rl/artifacts/v7/12/; lanes /tmp/rl_12_<main>/ (seeds 21/22/23), snapshots rl/artifacts/v7/12/pool/<main>_<trained>.pt (opt stripped, gitignored). Start snapshots M_D_06400 (drill pool), M_L_06144 (drill pool), M_W_s1end (1,792 ep). Implementation choices stated before any data: (1) the 75/25 mix is realised EXACTLY by the rotation cp7,heuristic,cp7,cp7 per main (every 1,024-episode window is 3 CP7 blocks + 1 heuristic block; Phase 10 Amendment 3 showed random draws under-delivering); (2) the starting point per main = CP7 100 + heuristic 50 (same G as the guard) + unseen 150 + the 25-game CP7 census; M_W's unseen rows are Phase 10's own rows of the same checkpoint and suite (rl/artifacts/v7/10/eval/M_W_s1end_unseen, 116/150), copied in, not re-run; (3) battery row seeds and the census seed (12500) are fixed, so every level and every check sees the same deals (paired across points); (4) the white check (no census tool for W0Base) = win rate, blocks matching the combat search ([audit] MATCH share), attacks declared / attack windows and [atkaudit] MATCH share, creatures per game from rl/dimir_census.py's board line; (5) snapshots carry no optimiser state, so the first block of each main starts AdamW fresh. Lines: L12|start|<main>|..., L12|block|n=..|main=..|opp=..|wr=..|wall=.., L12|tput|<main>|opp=..|eps_per_h=.., L12|check|<main>|n=..|trained=..|opp=cp7|wr=..|<fields>, L12|level|<main>|point=start/train/end|trained=..|cp7=k/100 = p [lo,hi]|heur=k/50 = ..|graduated=0/1, L12|grad|<main>|..., L12|end|<main>|..., L12|done|reason=... Graceful stop: bash rl/stop_p12.sh; hard: bash rl/kill_p12.sh. Second 18 h keepalive started 22:18Z (to ~16:20Z).

@@ -386,7 +386,8 @@ class P12:
             if self.st.get("ended"):
                 reason = self.st["ended"]
                 break
-            live = [m for m in ORDER if not self.st["mains"][m]["graduated"]]
+            act = [m for m in a.mains.split(",") if m in ORDER]
+            live = [m for m in ORDER if m in act and not self.st["mains"][m]["graduated"]]
             if not live:
                 reason = "all_graduated"
             elif self.hour() >= a.hours:
@@ -404,7 +405,7 @@ class P12:
                 continue
             # end phase (not after a STOP): the last level + unseen suite for every main that did not graduate
             self.st["ended"] = reason
-            self.st["todo"] += [["end", m] for m in ORDER]
+            self.st["todo"] += [["end", m] for m in act]
             self.save()
         free_lane()
         grads = ",".join(m for m in ORDER if self.st["mains"][m]["graduated"]) or "none"
@@ -421,6 +422,8 @@ def main():
     ap.add_argument("--guard-games", type=int, default=50)
     ap.add_argument("--unseen-games", type=int, default=50)
     ap.add_argument("--census-games", type=int, default=25)
+    ap.add_argument("--mains", default=",".join(ORDER),
+                    help="mains that train and get the end phase (Amendment 2: M_D only); the others keep their state")
     ap.add_argument("--dry-run", action="store_true")
     a = ap.parse_args()
     if a.dry_run:
