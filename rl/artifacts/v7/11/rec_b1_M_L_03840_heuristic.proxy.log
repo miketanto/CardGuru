@@ -1,0 +1,2 @@
+record proxy on :7948 -> :7947 -> /mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/11/rec_b1_M_L_03840_heuristic.jsonl
+connection 1 closed after 1270 lines

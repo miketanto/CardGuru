@@ -1,0 +1,9 @@
+CENSUSREC|b1_M_L_03840_heuristic|rc=0|ckpt=/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/M_L_03840.pt|deck=G1Landfall|opp=heuristic|games=50|seed=11000|consults=1219|acts=1219|ends=50|wins=29 losses=21 draws=0 stalls=0 turns_per_ep=11.8|cand_refers_pool=True|rlgame_blocks=50|audit_lines=121
+LC|b1_M_L_03840_heuristic|games=50|W/L/D/cut=29/21/0/0|consults_with_choice=1219|no_choice=0|turns_per_game=11.84 [11.27,12.41] (n=50)
+LC|b1_M_L_03840_heuristic|land_drops|per_game=4.66 [4.35,4.97] (n=50)|per_own_turn_with_a_consult=0.782 (233/298)
+LC|b1_M_L_03840_heuristic|precombat_land_drop|on attack turns 144/144=1.000 [0.974,1.000]|all own turns 233/233=1.000 [0.984,1.000]
+LC|b1_M_L_03840_heuristic|landfall_attacks|P(a landfall creature attacks | one can): with a land drop before the declaration 144/144=1.000 [0.974,1.000]; without 61/61=1.000 [0.941,1.000]
+LC|b1_M_L_03840_heuristic|land_search|cast 98 of 248 offering consults|precombat on a landfall-attack turn=88|by card:step Evolving Wilds:main1 37;Harrow:draw 1;Harrow:main1 13;Harrow:upkeep 2;Nissa's Pilgrimage:main1 10;Rampant Growth:main1 35
+LC|b1_M_L_03840_heuristic|adventuring_gear|cast 24/50=0.480 [0.348,0.615]|equip 9/176=0.051 [0.027,0.094]
+LC|b1_M_L_03840_heuristic|blocks|consults=121|blocked 12/121=0.099 [0.058,0.165]|small-into-big pairs (blocker P and T both lower) 9/13=0.692 [0.424,0.873] [source: recording]
+LC|b1_M_L_03840_heuristic|blocks_audit|source=rec_b1_M_L_03840_heuristic.audit.txt|combats=121|policy block pairs=9|small-into-big 6/9=0.667 [0.354,0.879]|of those the solver would not block 1/6=0.167 [0.030,0.564]|unparsed=0

@@ -1,0 +1,9 @@
+files=/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/11/rec_b1_M_L_s1end_cp7.jsonl
+LC|b1_M_L_s1end_cp7|games=25|W/L/D/cut=8/17/0/0|consults_with_choice=737|no_choice=0|turns_per_game=16.32 [14.49,18.15] (n=25)
+LC|b1_M_L_s1end_cp7|land_drops|per_game=5.64 [4.90,6.38] (n=25)|per_own_turn_with_a_consult=0.709 (141/199)
+LC|b1_M_L_s1end_cp7|precombat_land_drop|on attack turns 69/69=1.000 [0.947,1.000]|all own turns 141/141=1.000 [0.973,1.000]
+LC|b1_M_L_s1end_cp7|landfall_attacks|P(a landfall creature attacks | one can): with a land drop before the declaration 69/69=1.000 [0.947,1.000]; without 43/43=1.000 [0.918,1.000]
+LC|b1_M_L_s1end_cp7|land_search|cast 72 of 135 offering consults|precombat on a landfall-attack turn=38|by card:step Evolving Wilds:main1 26;Harrow:draw 7;Harrow:main1 4;Harrow:upkeep 5;Nissa's Pilgrimage:main1 11;Rampant Growth:main1 19
+LC|b1_M_L_s1end_cp7|adventuring_gear|cast 7/19=0.368 [0.191,0.590]|equip 50/76=0.658 [0.546,0.755]
+LC|b1_M_L_s1end_cp7|blocks|consults=63|blocked 63/63=1.000 [0.943,1.000]|small-into-big pairs (blocker P and T both lower) 71/72=0.986 [0.925,0.998] [source: recording]
+LC|b1_M_L_s1end_cp7|blocks_audit|source=rec_b1_M_L_s1end_cp7.audit.txt|combats=63|policy block pairs=63|small-into-big 63/63=1.000 [0.943,1.000]|of those the solver would not block 31/63=0.492 [0.373,0.612]|unparsed=0

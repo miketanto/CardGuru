@@ -1,0 +1,8 @@
+deck context: /home/user/CardGuru/rl/artifacts/deck_ctx_v1
+/home/miketanto/.local/lib/python3.10/site-packages/torch/nn/modules/transformer.py:382: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+resumed ckpt: 3840 episodes, 120 updates
+cand_refers_pool=True
+policy server on :7947 device=cuda
+conn: mode=eval episodes=50
+conn closed

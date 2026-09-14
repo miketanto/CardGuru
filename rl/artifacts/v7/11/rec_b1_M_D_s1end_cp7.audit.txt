@@ -1,0 +1,63 @@
+RLGAME|reward=-1.0|seed=11500
+RLGAME|reward=-1.0|seed=11501
+t4|  [atkaudit] policy Spyglass Siren 1/1 (0, dealt 0, lost 1, killed 1, back 1) | ref (none) (0)  MATCH
+RLGAME|reward=-1.0|seed=11502
+RLGAME|reward=-1.0|seed=11503
+t6|  [atkaudit] policy Spyglass Siren 2/2 (-3, dealt 0, lost 1, killed 1, back 0) | ref (none) (0)  GAP 3 OVER
+RLGAME|reward=-1.0|seed=11504
+t7|  [audit] policy Spyglass Siren 1/1->Floodpits Drowner 2/1 (score 7) | solver Spyglass Siren 1/1->Floodpits Drowner 2/1 (score 7)  MATCH
+t11|  [audit] policy Cecil, Dark Knight 2/3->-- (score 0) | solver Cecil, Dark Knight 2/3->Spyglass Siren 1/1 (score 8)  GAP 8
+t12|  [atkaudit] policy (none) (0, dealt 0, lost 0, killed 0, back 1) | ref (none) (0)  MATCH
+t13|  [audit] policy Cecil, Dark Knight 2/3->-- (LETHAL) | solver Cecil, Dark Knight 2/3->Spyglass Siren 1/1 (score 8)  AVOIDABLE DEATH
+RLGAME|reward=-1.0|seed=11505
+t8|  [atkaudit] policy (none) (0, dealt 0, lost 0, killed 0, back 0) | ref (none) (0)  MATCH
+RLGAME|reward=-1.0|seed=11506
+RLGAME|reward=-1.0|seed=11507
+RLGAME|reward=-1.0|seed=11508
+t3|  [audit] policy Cecil, Dark Knight 2/3->Cecil, Dark Knight 2/3 (score 4) | solver Cecil, Dark Knight 2/3->Cecil, Dark Knight 2/3 (score 4)  MATCH
+RLGAME|reward=-1.0|seed=11509
+t6|  [atkaudit] policy The Wondrous Wasp 2/1 (0, dealt 0, lost 1, killed 1, back 0) | ref (none) (0)  MATCH
+RLGAME|reward=-1.0|seed=11510
+RLGAME|reward=-1.0|seed=11511
+t5|  [audit] policy Cecil, Dark Knight 2/3->Cecil, Dark Knight 2/3 (score 4) | solver Cecil, Dark Knight 2/3->Cecil, Dark Knight 2/3 (score 4)  MATCH
+t7|  [audit] policy The Wondrous Wasp 2/1->Cecil, Dark Knight 2/3 (score -5) | solver The Wondrous Wasp 2/1->-- (score 0)  GAP 5
+t9|  [audit] policy Cecil, Dark Knight 2/3->Cecil, Dark Knight 2/3 (score 4) | solver Cecil, Dark Knight 2/3->Spyglass Siren 1/1 (score 8)  GAP 4
+RLGAME|reward=-1.0|seed=11512
+t9|  [audit] policy The Wondrous Wasp 2/1->Cecil, Dark Knight 1/2 (score 2) | solver The Wondrous Wasp 2/1->Cecil, Dark Knight 1/2 (score 2)  MATCH
+RLGAME|reward=-1.0|seed=11513
+t3|  [audit] policy Cecil, Dark Knight 2/3->Cecil, Dark Knight 2/3 (score 4) | solver Cecil, Dark Knight 2/3->Cecil, Dark Knight 2/3 (score 4)  MATCH
+t13|  [audit] policy Spyglass Siren 2/2->Cecil, Dark Knight 2/3 (score -8) | solver Spyglass Siren 2/2->-- (score 0)  GAP 8
+RLGAME|reward=-1.0|seed=11514
+RLGAME|reward=-1.0|seed=11515
+t14|  [atkaudit] policy Kaito, Bane of Nightmares 7/8 (9, dealt 0, lost 0, killed 1, back 4) | ref Kaito, Bane of Nightmares 7/8 (9)  MATCH
+RLGAME|reward=-1.0|seed=11516
+t6|  [atkaudit] policy Floodpits Drowner 2/1 (4, dealt 2, lost 0, killed 0, back 0) | ref Floodpits Drowner 2/1 (4)  MATCH
+t7|  [audit] policy Floodpits Drowner 2/1->--, Cecil, Dark Knight 2/3->Cecil, Dark Knight 2/3 (score 4) | solver Floodpits Drowner 2/1->Cecil, Dark Knight 2/3, Cecil, Dark Knight 2/3->Cecil, Dark Knight 2/3 (score 10)  GAP 6
+t8|  [atkaudit] policy Floodpits Drowner 2/1 (4, dealt 2, lost 0, killed 0, back 0) | ref Floodpits Drowner 2/1 (4)  MATCH
+t10|  [atkaudit] policy Floodpits Drowner 2/1 + Spyglass Siren 2/2 (-8, dealt 2, lost 1, killed 0, back 2) | ref (none) (0)  GAP 8 OVER
+t12|  [atkaudit] policy (none) (0, dealt 0, lost 0, killed 0, back 0) | ref (none) (0)  MATCH
+t13|  [audit] policy Spyglass Siren 1/1->Cecil, Redeemed Paladin 4/4, Spyglass Siren 2/2->-- (score 2) | solver Spyglass Siren 1/1->Enduring Curiosity 4/3, Spyglass Siren 2/2->Enduring Curiosity 4/3 (score 11)  GAP 9
+t14|  [atkaudit] policy Spyglass Siren 2/2 (4, dealt 2, lost 0, killed 0, back 0) | ref Spyglass Siren 2/2 (4)  MATCH
+RLGAME|reward=-1.0|seed=11517
+t8|  [atkaudit] policy Floodpits Drowner 2/1 (4, dealt 2, lost 0, killed 0, back 0) | ref Floodpits Drowner 2/1 (4)  MATCH
+t9|  [audit] policy Floodpits Drowner 2/1->Kaito, Bane of Nightmares 5/6 (score 1) | solver Floodpits Drowner 2/1->Kaito, Bane of Nightmares 5/6 (score 1)  MATCH
+RLGAME|reward=-1.0|seed=11518
+t7|  [audit] policy Spyglass Siren 2/2->Cecil, Dark Knight 2/3 (score -8) | solver Spyglass Siren 2/2->-- (score 0)  GAP 8
+t9|  [audit] policy The Wondrous Wasp 2/1->Floodpits Drowner 2/1 (score 4) | solver The Wondrous Wasp 2/1->Floodpits Drowner 2/1 (score 4)  MATCH
+t10|  [atkaudit] policy Cecil, Dark Knight 2/3 (4, dealt 2, lost 0, killed 0, back 2) | ref Cecil, Dark Knight 2/3 (4)  MATCH  | refCA (none) (0 vs policy 0)
+t12|  [atkaudit] policy (none) (0, dealt 0, lost 0, killed 0, back 6) | ref (none) (0)  MATCH
+RLGAME|reward=-1.0|seed=11519
+RLGAME|reward=-1.0|seed=11520
+t5|  [audit] policy Cecil, Dark Knight 2/3->-- (score 0) | solver Cecil, Dark Knight 2/3->Spyglass Siren 1/1 (score 8)  GAP 8
+t6|  [atkaudit] policy Cecil, Dark Knight 2/3 (4, dealt 2, lost 0, killed 0, back 2) | ref Cecil, Dark Knight 2/3 (4)  MATCH  | refCA (none) (0 vs policy 0)
+t8|  [atkaudit] policy Kaito, Bane of Nightmares 5/6 (9, dealt 0, lost 0, killed 1, back 0) | ref Kaito, Bane of Nightmares 5/6 (9)  MATCH
+t9|  [audit] policy Cecil, Dark Knight 2/3->-- (score 0) | solver Cecil, Dark Knight 2/3->Spyglass Siren 1/1 (score 8)  GAP 8
+t10|  [atkaudit] policy Kaito, Bane of Nightmares 6/7 (12, dealt 6, lost 0, killed 0, back 0) | ref Cecil, Dark Knight 2/3 + Kaito, Bane of Nightmares 6/7 (16)  GAP 4 UNDER
+t12|  [atkaudit] policy Kaito, Bane of Nightmares 7/8 (14, dealt 7, lost 0, killed 0, back 0) | ref Kaito, Bane of Nightmares 7/8 (14)  MATCH
+t22|  [atkaudit] policy Restless Reef 4/4 (6, dealt 0, lost 0, killed 1, back 0) | ref Restless Reef 4/4 (6)  MATCH
+RLGAME|reward=-1.0|seed=11521
+RLGAME|reward=-1.0|seed=11522
+RLGAME|reward=-1.0|seed=11523
+t4|  [atkaudit] policy Spyglass Siren 2/2 (0, dealt 0, lost 1, killed 2, back 0) | ref (none) (0)  MATCH  | refCA Spyglass Siren 2/2 (0 vs policy 0)
+t6|  [atkaudit] policy (none) (0, dealt 0, lost 0, killed 0, back 0) | ref (none) (0)  MATCH
+RLGAME|reward=-1.0|seed=11524
