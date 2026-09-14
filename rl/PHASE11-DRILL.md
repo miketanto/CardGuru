@@ -141,5 +141,20 @@ table per main with the census columns), a "Phase 11 verdict" paragraph (two
 sentences per deck with numbers), a dated UPDATE line + new section prompt
 in rl/HANDOFF-V7.md.
 
+## Amendment 1 (2026-09-14, before any Part B data): the flash bar
+
+The "Phase 9 floor 0.077 [0.047, 0.123]" came from `rl/probes/instant_speed.py`, whose main-phase
+test was mis-indexed (correction in V7-VALIDATION "11 / A1-A2"). Corrected, the 8a-b policy casts
+96/120 flash cards "at instant speed" by the literal rule, all in its own upkeep / draw / damage
+step, and 0/120 = 0.000 [0.000, 0.031] on the opponent's turn or in response. The flash reading
+becomes: **flash casts on the opponent's turn or in response, clear above 0/120 [0.000, 0.031]**
+(the strategic use); the literal-rule rate (0.800 for 8a-b) is reported beside it and is not a bar,
+because casting in one's own upkeep inflates it. Ninjutsu: the pre-registered first check passed
+(offered to both seats: CP7 2 windows, took 1; 8a-b 7 windows, took 0), so ninjutsu use is reported.
+Removal targeting: the census counts enemy creatures only (8a-b: +0.192 [+0.077, +0.308] over
+chance); P2's +0.16 included own-side targets. CP7 gives no removal reference (no TARGET consults
+through the teacher seat).
+
 ## STATE (append dated lines; newest last)
 - 2026-09-14 (start, ~12:45Z WSL): Phase 10 league running to hour 10.2, its evaluation follows; Part A may start now.
+- 2026-09-14 (WSL ~13:10Z): A1 + A2 DONE, A3 WRITTEN (263e2a7 + this commit). rl/dimir_census.py, rl/landfall_census.py, rl/record_census.sh; validation outputs rl/artifacts/v7/11/validation/; section "11 / A1-A2" in V7-VALIDATION.md. Pre-registered check: ninjutsu IS offered (CP7 2 windows took 1; 8a-b 7 windows took 0) - no engine finding, no Java change. FOUND a bug in 9 / P3 (main-phase test mis-indexed): correction in the open under P3 and in 11 / A1-A2; flash bar re-based (Amendment 1). Landfall census parse-checked only (wire echo + M_L transcript audit lines). A3 smoke NOT run: Phase 10 league at h~8.9 of 10.2, evaluation after. NEXT (after E10|done and nothing resident): bash rl/record_census.sh <ck> BenchDimir heuristic 2 smoke_d, then G1Landfall 2 smoke_l; check rlgame_blocks/audit_lines and the census lines; then B1.

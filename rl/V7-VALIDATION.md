@@ -3945,6 +3945,8 @@ differ; both are size-aware).
 
 ## 9 / P3 — instant-speed play: forced by legality, not chosen (2026-09-14; branch `v7/lane-d`)
 
+> **Correction in the open (2026-09-14, Phase 11 A1):** the instant-speed rule used by this section mis-indexed the main-phase test (`instant_speed.py` reads `v7_game[6]` = declare-blockers and `[10]` = holds-priority instead of `[4]` / `[8]`), so its DIM numbers and the flash reading below are wrong. Corrected numbers and reading: section "11 / A1-A2" (with its "correction to 9 / P3" paragraph) at the end of this file. The table is left as published.
+
 `bash rl/probes/run_p3.sh` → `rl/probes/instant_speed.py`; summary
 `rl/artifacts/v7/9/instant_speed_summary.txt`. CP7 on BenchDimir vs the heuristic recorded
 through the teacher seat (`record_p9.sh cp7`, `rec_cp7_dimir{,_b}.jsonl`, 8 + 24 games,
@@ -4079,3 +4081,32 @@ Phase 9's trained mains (flag OFF) were at ≤ 0.00004 on every row with 219/219
 3. **The signal comes through the card embedding, not the explicit keyword bits**: swapping only the 18 keyword bits moves the trained mains by 0.001–0.009 with 0–4 % flips, while the embedding part carries essentially all of the text effect. Text moves each main more than P/T does (ratios 2.5 / 3.2 / 2.2).
 
 Cannot: sensitivity is not use — this says the policy's output depends on which card it is, not that the dependence is correct play; the consult sets are W0Base and BenchDimir (the landfall main is scored on decks it did not train on); these are mid-run snapshots, and the Q7 row stays with the final checkpoints in the morning evaluation.
+
+## 11 / A1-A2 — the Dimir and landfall census tools, validated on the Phase 9 recordings (2026-09-14; branch `v7/lane-d`; runbook `rl/PHASE11-DRILL.md`)
+
+Tools: `rl/dimir_census.py`, `rl/landfall_census.py` (shared reader: teacher `y` labels, or the `{"a":k}` reply after a consult; an echo server's replies are ignored in teacher files), recorder `rl/record_census.sh` (A3; smoke deferred until Phase 10's evaluation ends). Outputs `rl/artifacts/v7/11/validation/` (summary `.txt` + per-game `.tsv`). Inputs: CP7 in the seat, `rec_cp7_dimir{,_b}.jsonl` (32 games, 29–3, 1,001 labelled consults; 103 unlabelled skipped) and the 8a-b policy (ck_512, argmax, frozen server) `rec_dim_dimir{,_b}.jsonl` (32 games, 10–22, 1,969 consults), BenchDimir vs the heuristic. Step one-hot checked on data: LAND is offered only in the sorcery window, and every LAND-offer consult has `v7_game[4]` (main1, 49) or `[8]` (main2, 4) set.
+
+**Pre-registered first check — is ninjutsu ever OFFERED? Yes, to both seats; not an engine finding, no Java change.** Kaito's ninjutsu (an ACTIVATE candidate whose referent is Kaito in HAND) appears only on the seat's own turn in the declare-blockers or combat-damage step (0 hand-ACTIVATE offers anywhere else). Own declare-blockers consults are rare (CP7 14, DIM 22 of the step census), because the seat is consulted there only when something is playable (`RLPlayer.priority`: an empty `getPlayable` passes without a consult).
+
+| counter | CP7 (reference) | DIM (8a-b ck_512) |
+|---|---|---|
+| ninjutsu windows (blockers / damage step) | 2 (2 / 0) | 7 (2 / 5) |
+| ninjutsu taken | 1/2 = 0.50 [0.09, 0.91] | **0/7 = 0.00 [0.00, 0.35]** |
+| attack turns with Kaito in hand and ≥ 3 untapped lands / of those with a blockers-step window | 0 / 0 | 3 / 2 |
+| Kaito cast as a spell (of consults offering it) | 30/50, all main 1 | 35/53, all main 1 |
+| flash card offered at instant speed → cast | 1/141 = 0.007 [0.001, 0.039] | **96/96 = 1.000 [0.962, 1.000]** |
+| flash casts at instant speed (literal rule) | 1/96 = 0.010 [0.002, 0.057] | 96/120 = 0.800 [0.720, 0.862] |
+| … of which on the opponent's turn or in response | 1 (Nowhere to Run, in response) | **0/120 = 0.000 [0.000, 0.031]**: own upkeep 51, own draw 43, own damage step 2 |
+| counterspell offered → cast | 8/24 = 0.333 [0.180, 0.533] | **56/56 = 1.000 [0.936, 1.000]** |
+| removal TARGET consults with ≥ 1 enemy creature | 0 (CP7 chooses targets inside the teacher; no consult, no reference) | 37 |
+| highest-power enemy creature chosen | – | 34/37 = 0.919 [0.787, 0.972]; ≥ 2 enemy creatures: +0.192 [+0.077, +0.308] over chance 0.692 (n = 26, bootstrap) |
+| tapped target chosen when an untapped one of ≥ power was legal | – | 0/7 |
+| creatures cast per game | 3.81 [3.31, 4.31] | 4.19 [3.58, 4.79] |
+| own turn of the first creature | 1.97 [1.52, 2.42] | 2.25 [1.64, 2.86] |
+| land drops by own turn 4 | 3.56 [3.31, 3.81] | 3.50 [3.16, 3.84] |
+
+Reading (32 games per seat — development-probe scale, not a level): the 8a-b policy is offered ninjutsu and never takes it, casts every counterspell and every flash card the moment it is castable, and aims removal at the largest enemy creature (+0.19 over chance with enemy targets only; P2's +0.162 counted own-side targets too). CP7 took ninjutsu once in two windows and holds counterspells two times in three. Opponent's-turn flash: neither seat was ever offered a flash card on the opponent's turn. 22 DIM opponent-turn priority consults held a flash card with enough untapped lands by count, and every one had only Hidden Lair (colourless, plus a conditional coloured ability), Soulstone Sanctuary (colourless) or Swamps untapped. So no blue source was open and nothing points at the driver: DIM spends its blue mana on its own turn. Cannots: the opportunity counter cannot see whether an attacker went unblocked (an upper bound); "affordable" counts lands, not colours; removal targeting on CP7 is not recordable through the teacher seat.
+
+**Correction to 9 / P3 (in the open).** `rl/probes/instant_speed.py` sets `STEP_MAIN1, STEP_MAIN2 = 4, 8` and then reads `game[2 + STEP_MAIN1]`, i.e. `v7_game[6]` (declare-blockers) and `[10]` (holds priority, 1.0 in 339/375 consults of `rec_dim_dimir.jsonl`), so its "main phase" test was nearly always true, and "at instant speed" collapsed to "not the active player, or the stack is non-empty". Rerun with indices 2 / 6 (a scratchpad copy; the probe file is unchanged): **DIM 207/254 = 0.815 [0.763, 0.858], excluding counterspells 151/195 = 0.774 [0.711, 0.827]** (published 0.280 / 0.077); CP7 unchanged (14/148, 6/136: it casts only in main phases or in response). The published sentence "every flash creature (103 casts) went down at sorcery speed" is wrong. By the literal rule most went down at instant speed, but in DIM's own upkeep and draw step, never on the opponent's turn and never in response. The substantive P3 reading survives in a sharper form: DIM casts what is castable in the first window it gets (its own upkeep), which is neither flash play nor holding. The Phase 11 pre-registration's flash bar ("clear above the Phase 9 floor 0.077") was built on the bug. It is re-based in `rl/PHASE11-DRILL.md` Amendment 1 before any Part B data.
+
+Landfall tool (A2): parse-checked only. There is no G1Landfall recording with a policy's choices yet; the 4-game wire echo `rl/artifacts/v7/wire3a/p10_G1Landfall_wire.jsonl` exercises every counter (land drops, precombat share, land search by step, landfall attacks with and without a prior land drop, block pairs). The `[audit]` parser was run on the two M_L replay transcripts (`rl/artifacts/v7/10/replay/M_L_*`): 9 combats, 8 policy block pairs, 7 small-into-big, of which the solver would not have blocked 5. Real validation = the A3 smoke.
