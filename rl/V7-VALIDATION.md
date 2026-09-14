@@ -4258,3 +4258,77 @@ A positive per-main reading is therefore "stage 2 (cross + anchor + more episode
 Only W over L is clear of 0.5. The deck and the policy are confounded in every cell (each
 main plays only its own deck). Six debug-logged pairing games (one per seating), requested
 by the user, are in `rl/artifacts/v7/10/pairs/` (the Dimir Requiting Hex play is in Q7).
+
+## 10 / Q7 — card use: the channel stays open in two of three mains; no keyword use shown (2026-09-14; branch `v7/lane-d`; final snapshots; artifacts `rl/artifacts/v7/10/eval/p1/`, `eval/eval.log`)
+
+**P1 card swap.** `rl/p10_cardswap.py`, run exactly as the A2 gate ran it (2,004 consults,
+the same pairs). The final mains are compared with the fresh flag-ON net (A2's
+`init_on.pt`). Mean Δp, 95 % bootstrap CI:
+
+| subject | text-only | P/T | type | vs fresh text | pre-registered reading |
+|---|---|---|---|---|---|
+| FRESH_ON (untrained) | 0.0516 [0.0490, 0.0542] | 0.0403 | 0.0688 | — | — |
+| M_W (4,096 ep) | 0.0023 [0.0020, 0.0026] | 0.0010 | 0.0159 | 0.04× | **erased** (disjoint, below) |
+| M_D (4,096 ep) | 0.2632 [0.2414, 0.2857] | 0.0651 | 0.2602 | 5.1× | **sharpened** (disjoint, above) |
+| M_L (3,840 ep) | 0.0856 [0.0722, 0.1003] | 0.0490 | 0.2370 | 1.7× | **sharpened** (disjoint, above) |
+
+Against the interim check (section "10 — interim card-swap check", 3d4c5dd; same probe,
+same consult sets; M_W at 3,072 episodes):
+
+| M_W measure | at 3,072 | final (4,096) |
+|---|---|---|
+| text-only mean Δp | 0.025 | 0.0023 |
+| strict text flips | 0.186 | 0.058 [0.033, 0.087] |
+| same-row different-card mean \|Δlogit\| | 0.087 | 0.022 (still 0/219 tied) |
+| type flips | 0.167 | 0.167 |
+| mean \|raw logit\| | — | 17.7 |
+
+- **M_W's card sensitivity fell by an order of magnitude over its last 1,024 episodes.**
+- M_D and M_L kept theirs: text Δp 0.263 and 0.086 (interim 0.218 and 0.102), strict text
+  flips 0.062 and 0.097.
+
+**Neither Δp nor the flip rate is scale-free.** Every trained main has a lower strict flip
+rate than the fresh net (0.127), because the trained policies are sharper. The ratios
+compare sensitivity, not use.
+
+**Reading.** Dimir and landfall preserved or sharpened their card-text sensitivity. The
+white main largely lost it during stage 2. That is the same stretch in which its home level
+fell from about 0.72 (pooled probes) to 0.52 and its unseen-deck rate from 0.77 to 0.69.
+In one seed this is a coincidence, not a demonstrated cause, but it is worth naming.
+
+**Keyword decks** (zero-shot for M_W, 50 games each). The agent is on W1X; the opponent is
+the heuristic on W0Base. M_W's reference is its W0Base home, 52/100 = 0.52
+[0.423, 0.615]. The heuristic's own shift is the heuristic piloting W1X against the
+heuristic on W0Base:
+
+| deck | M_W | heuristic (same pairing) | M_W − W0Base home | heuristic − its W0Base 0.60 |
+|---|---|---|---|---|
+| W1Fly | 0.60 [0.462, 0.724] | 0.44 [0.312, 0.577] | +0.08 | −0.16 |
+| W1Lif | 0.64 [0.501, 0.759] | 0.44 [0.312, 0.577] | +0.12 | −0.16 |
+| W1Fst | 0.64 [0.501, 0.759] | 0.58 [0.442, 0.706] | +0.12 | −0.02 |
+| W1Vig | 0.54 [0.404, 0.670] | 0.62 [0.482, 0.741] | +0.02 | +0.02 |
+
+**Q7 keyword reading: "uses keyword X" is not shown for any X.** No W1X rate is clear above
+the W0Base home rate. Directionally, M_W holds or gains on the flying and lifelink decks,
+where the heuristic loses 0.16. That is suggestive at n = 50 with every interval
+overlapping, and it sits beside M_W's near-zero final text sensitivity, which argues against
+M_W reading its keywords.
+
+**What the transcripts show** (`rl/artifacts/v7/10/replay/`: M_W / M_D / M_L at 3,072 vs the
+heuristic and vs CP7, debug-logged; `rl/artifacts/v7/10/pairs/`: the six cross-deck pairing
+games of the final mains, both seatings):
+- In **both** of its pairing games, the Dimir main casts **Requiting Hex on turn 3 at its own
+  Spyglass Siren**. The transcript line is `KILL Spyglass Siren 1/1 (MINE) [of 1, 0 enemy]`:
+  the enemy board was empty, so its own creature was the only legal target. The spell reads
+  "target creature with mana value 2 or less", any controller; the main session checked this
+  in the engine.
+- It lost that game against M_W (14 turns) and won it against M_L (15 turns).
+- So the SPELL decision to cast removal into an empty enemy board is taken with the
+  card-sensitive scorer. **Sensitivity is not use**: M_D has the largest text effect of any
+  subject and still makes this play.
+
+**Cannot:**
+- the consult sets are W0Base and BenchDimir, so the landfall main is scored off its deck;
+- Δp compares sensitivity across policies of different sharpness;
+- the keyword decks are 50-game rows;
+- there are two pairing transcripts per pair (anecdote, not rate).
