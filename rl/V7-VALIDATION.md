@@ -4332,3 +4332,31 @@ games of the final mains, both seatings):
 - Δp compares sensitivity across policies of different sharpness;
 - the keyword decks are 50-game rows;
 - there are two pairing transcripts per pair (anecdote, not rate).
+
+## 10 / league health — exploiters (2026-09-14; from `rl/artifacts/v7/10/results.tsv`)
+
+Each exploiter's block win rate against the frozen latest of its main, 256 episodes per
+block:
+
+| exploiter | gen 0: block 1 | block 2 | block 3 | block 4 → reset | gen 1: block 1 |
+|---|---|---|---|---|---|
+| X_W (vs M_W) | 0.14 | 0.11 | 0.40 | 0.32 → reset (4 blocks) | 0.36 (vs M_W_03328) |
+| X_D (vs M_D) | **0.61** | 0.52 | 0.35 | 0.36 → reset (4 blocks) | 0.004 (1/256, vs M_D_03584) |
+| X_L (vs M_L) | 0.40 | 0.41 | 0.28 | 0.35 → reset (4 blocks) | 0.12 (vs M_L_03840) |
+
+- **Three resets, all by the 4-block rule; none by winning.** No block reached 0.70.
+- **None was added to its main's PFSP pool.** Every 4th-block rate was below 0.55.
+- Stalls in exploiter blocks: 6 / 5 / 0.
+
+The health counter, as pre-stated ("should fall as mains harden"):
+- It falls for X_D (0.61 → 0.36; the Dimir main was beatable early by a fresh net).
+- It does not fall monotonically for X_W (0.14 → 0.40 → 0.32) or X_L (flat 0.28–0.41).
+- A fresh gen-1 exploiter's first block is far below the gen-0 exploiter's last. That is
+  what one 256-episode block from scratch buys, not a hardening measurement.
+- **No exploiter beats its final main at ≥ 0.70**, so "exploitable" is not shown. But these
+  exploiters had 5 blocks each (1,280 episodes), so this is weak evidence that the mains are
+  not exploitable.
+
+**PFSP had little to work with.** Main PFSP pools held only the mains' own past snapshots.
+The per-snapshot p values mostly sit near 0.5–0.7, so the (1 − p)² weights stayed close to
+uniform.
