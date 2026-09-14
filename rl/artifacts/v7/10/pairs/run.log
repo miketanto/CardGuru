@@ -1,0 +1,15 @@
+PAIRS10|wait|2026-09-14T14:02:44Z
+PAIRS10|start|2026-09-14T14:16:44Z
+PAIRS10|PAIR|M_W_vs_M_D|A=M_W_04096.pt:W0Base|B=M_D_04096.pt:BenchDimir|seed=7101|wins=0 losses=1 draws=0 stalls=0 turns_per_ep=16.0
+PAIRS10|PAIR|transcript=/home/user/CardGuru/rl/artifacts/v7/10/pairs/M_W_vs_M_D.txt|lines=70|RLGAME|reward=-1.0|seed=7101
+PAIRS10|PAIR|M_D_vs_M_W|A=M_D_04096.pt:BenchDimir|B=M_W_04096.pt:W0Base|seed=7102|wins=0 losses=1 draws=0 stalls=0 turns_per_ep=14.0
+PAIRS10|PAIR|transcript=/home/user/CardGuru/rl/artifacts/v7/10/pairs/M_D_vs_M_W.txt|lines=38|RLGAME|reward=-1.0|seed=7102
+PAIRS10|PAIR|M_W_vs_M_L|A=M_W_04096.pt:W0Base|B=M_L_03840.pt:G1Landfall|seed=7103|wins=1 losses=0 draws=0 stalls=0 turns_per_ep=11.0
+PAIRS10|PAIR|transcript=/home/user/CardGuru/rl/artifacts/v7/10/pairs/M_W_vs_M_L.txt|lines=39|RLGAME|reward=1.0|seed=7103
+PAIRS10|PAIR|M_L_vs_M_W|A=M_L_03840.pt:G1Landfall|B=M_W_04096.pt:W0Base|seed=7104|wins=0 losses=1 draws=0 stalls=0 turns_per_ep=16.0
+PAIRS10|PAIR|transcript=/home/user/CardGuru/rl/artifacts/v7/10/pairs/M_L_vs_M_W.txt|lines=39|RLGAME|reward=-1.0|seed=7104
+PAIRS10|PAIR|M_D_vs_M_L|A=M_D_04096.pt:BenchDimir|B=M_L_03840.pt:G1Landfall|seed=7105|wins=1 losses=0 draws=0 stalls=0 turns_per_ep=15.0
+PAIRS10|PAIR|transcript=/home/user/CardGuru/rl/artifacts/v7/10/pairs/M_D_vs_M_L.txt|lines=62|RLGAME|reward=1.0|seed=7105
+PAIRS10|PAIR|M_L_vs_M_D|A=M_L_03840.pt:G1Landfall|B=M_D_04096.pt:BenchDimir|seed=7106|wins=0 losses=1 draws=0 stalls=0 turns_per_ep=16.0
+PAIRS10|PAIR|transcript=/home/user/CardGuru/rl/artifacts/v7/10/pairs/M_L_vs_M_D.txt|lines=49|RLGAME|reward=-1.0|seed=7106
+PAIRS10|done|2026-09-14T14:18:59Z

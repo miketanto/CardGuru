@@ -1,0 +1,49 @@
+RLGAME|reward=-1.0|seed=7106
+t1|Forest (Play Forest)
+t3|Forest (Play Forest)
+t3|Lotus Cobra
+t5|Forest (Play Forest)
+t5|Khalni Heart Expedition
+t7|Forest (Play Forest)
+t9|Evolving Wilds (Play Evolving Wilds)
+t9|Evolving Wilds ({T}, Sacrifice {this}: Search your library for a basic land card, put it onto the battlefield tapped, then shuffle.)
+t9|Snapping Gnarlid
+t9|Khalni Heart Expedition (Remove three quest counters from {this} and sacrifice it: Search your library for up to two basic land cards, put them onto the battlefield tapped, then shuffle.)
+t10|== incoming: life 20-20, creatures 1-2
+t10|  attacked by Floodpits Drowner 2/1
+t10|  [joint] 1 attackers, 1 blockers, 2 distinct outcomes, 2 after Pareto
+t10|  decline Snapping Gnarlid 2/2
+t10|  [audit] policy Snapping Gnarlid 2/2->-- (score 0) | solver Snapping Gnarlid 2/2->Floodpits Drowner 2/1 (score 1)  GAP 1
+t11|Scythe Leopard
+t11|== my combat: life 18-20, creatures 2-2
+t11|  [atkjoint] 1 avail, 2 defenders, 2 distinct subsets, 1 after Pareto, 0.1ms
+t11|  hold    Snapping Gnarlid 2/2
+t11|  [atkaudit] policy (none) (0, dealt 0, lost 0, killed 0, back 2) | ref (none) (0)  MATCH
+t12|== incoming: life 18-18, creatures 2-4
+t12|  attacked by Enduring Curiosity 5/4, Floodpits Drowner 2/1
+t12|  [joint] 2 attackers, 2 blockers, 8 distinct outcomes, 5 after Pareto
+t12|  decline Scythe Leopard 1/1
+t12|  decline Snapping Gnarlid 2/2
+t12|  [audit] policy Scythe Leopard 1/1->--, Snapping Gnarlid 2/2->-- (score 0) | solver Scythe Leopard 1/1->Floodpits Drowner 2/1, Snapping Gnarlid 2/2->-- (score 7)  GAP 7
+t13|Forest (Play Forest)
+t13|== my combat: life 11-18, creatures 2-4
+t13|  [atkjoint] 2 avail, 3 defenders, 4 distinct subsets, 3 after Pareto, 0.5ms
+t13|  hold    Scythe Leopard 2/2
+t13|  ATTACK  Snapping Gnarlid 3/3
+t13|  [atkaudit] policy Snapping Gnarlid 3/3 (-12, dealt 0, lost 1, killed 1, back 2) | ref (none) (0)  GAP 12 OVER
+t14|== incoming: life 11-18, creatures 1-3
+t14|  attacked by Enduring Curiosity 5/4, Floodpits Drowner 2/1
+t14|  [joint] 2 attackers, 1 blockers, 3 distinct outcomes, 3 after Pareto
+t14|  decline Scythe Leopard 1/1
+t14|  [audit] policy Scythe Leopard 1/1->-- (score 0) | solver Scythe Leopard 1/1->Floodpits Drowner 2/1 (score 7)  GAP 7
+t15|Scythe Leopard
+t15|== my combat: life 4-18, creatures 2-3
+t15|  [atkjoint] 1 avail, 2 defenders, 2 distinct subsets, 1 after Pareto, 0.1ms
+t15|  hold    Scythe Leopard 1/1
+t15|  [atkaudit] policy (none) (0, dealt 0, lost 0, killed 0, back 2) | ref (none) (0)  MATCH
+t16|== incoming: life 4-16, creatures 1-6
+t16|  attacked by Enduring Curiosity 4/3, Enduring Curiosity 5/4, Floodpits Drowner 2/1
+t16|  [joint] 3 attackers, 1 blockers, 4 distinct outcomes, 3 after Pareto
+t16|  decline Scythe Leopard 1/1
+t16|  [audit] policy Scythe Leopard 1/1->-- (LETHAL) | solver Scythe Leopard 1/1->-- (LETHAL)  MATCH
+RLGAME_END

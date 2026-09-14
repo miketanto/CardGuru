@@ -1,0 +1,38 @@
+RLGAME|reward=-1.0|seed=7102
+t1|Swamp (Play Swamp)
+t3|Island (Play Island)
+t3|Spyglass Siren
+t3|  KILL    Spyglass Siren 1/1 (MINE)   [of 1, 0 enemy: Spyglass Siren 1/1]
+t3|Requiting Hex (destroy target creature with mana value 2 or less. If this spell's additional cost was paid, you gain 2 life.)
+t5|Swamp (Play Swamp)
+t6|We Say Thee Nay! (counter target spell unless its controller pays {2}. Counter that spell unless its controller pays {4} instead if this spell was cast using teamwork.)
+t6|== incoming: life 20-20, creatures 0-1
+t6|  attacked by Glory Seeker 2/2
+t6|  [joint] 1 attackers, 0 blockers, 1 distinct outcomes, 1 after Pareto
+t8|== incoming: life 18-20, creatures 0-2
+t8|  attacked by Glory Seeker 2/2
+t8|  [joint] 1 attackers, 0 blockers, 1 distinct outcomes, 1 after Pareto
+t9|Restless Reef (Play Restless Reef)
+t10|== incoming: life 16-20, creatures 0-4
+t10|  attacked by Foot Soldiers 2/4, Glory Seeker 2/2
+t10|  [joint] 2 attackers, 0 blockers, 1 distinct outcomes, 1 after Pareto
+t11|Enduring Curiosity
+t12|== incoming: life 12-20, creatures 1-6
+t12|  attacked by Blade of the Sixth Pride 3/1, Blade of the Sixth Pride 3/1, Foot Soldiers 2/4, Glory Seeker 2/2
+t12|  [joint] 4 attackers, 1 blockers, 4 distinct outcomes, 2 after Pareto
+t12|  BLOCK   Enduring Curiosity 4/3  <- Foot Soldiers 2/4
+t12|  [audit] policy Enduring Curiosity 4/3->Foot Soldiers 2/4 (score 22) | solver Enduring Curiosity 4/3->Foot Soldiers 2/4 (score 22)  MATCH
+t13|Enduring Curiosity
+t13|== my combat: life 4-20, creatures 2-5
+t13|  [atkjoint] 1 avail, 2 defenders, 2 distinct subsets, 2 after Pareto, 0.1ms
+t13|  ATTACK  Enduring Curiosity 4/3
+t13|  [atkaudit] policy Enduring Curiosity 4/3 (-6, dealt 0, lost 1, killed 1, back 2) | ref (none) (0)  GAP 6 OVER
+t13|Gloomlake Verge (Play Gloomlake Verge)
+t13|  KILL    Enduring Curiosity 4/3 (MINE)   [of 2, 0 enemy: Enduring Curiosity 4/3, Enduring Curiosity 4/3 tap]
+t13|{1}, {T}, Sacrifice this artifact: Target creature you control explores. Activate only as a sorcery.
+t14|== incoming: life 4-16, creatures 2-5
+t14|  attacked by Blade of the Sixth Pride 3/1, Blade of the Sixth Pride 3/1, Glory Seeker 2/2, Knight of the Keep 3/2, Silvercoat Lion 2/2
+t14|  [joint] 5 attackers, 1 blockers, 4 distinct outcomes, 1 after Pareto
+t14|  BLOCK   Enduring Curiosity 5/4  <- Knight of the Keep 3/2
+t14|  [audit] policy Enduring Curiosity 5/4->Knight of the Keep 3/2 (LETHAL) | solver Enduring Curiosity 5/4->-- (LETHAL)  MATCH
+RLGAME_END

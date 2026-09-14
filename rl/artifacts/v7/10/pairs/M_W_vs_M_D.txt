@@ -1,0 +1,70 @@
+RLGAME|reward=-1.0|seed=7101
+t1|Plains (Play Plains)
+t3|Plains (Play Plains)
+t3|Silvercoat Lion
+t4|== incoming: life 20-22, creatures 0-1
+t4|  attacked by Cecil, Dark Knight 1/2
+t4|  [joint] 1 attackers, 0 blockers, 1 distinct outcomes, 1 after Pareto
+t5|Plains (Play Plains)
+t5|Regal Unicorn
+t7|Plains (Play Plains)
+t7|Regal Unicorn
+t7|== my combat: life 19-21, creatures 2-2
+t7|  [atkjoint] 1 avail, 2 defenders, 2 distinct subsets, 2 after Pareto, 0.1ms
+t7|  hold    Regal Unicorn 2/3
+t7|  [atkaudit] policy (none) (0, dealt 0, lost 0, killed 0, back 1) | ref (none) (0)  MATCH
+t8|== incoming: life 19-21, creatures 2-3
+t8|  attacked by Cecil, Dark Knight 1/2, The Wondrous Wasp 2/1
+t8|  [joint] 2 attackers, 1 blockers, 3 distinct outcomes, 1 after Pareto
+t8|  [audit] policy Regal Unicorn 2/3->-- (score 0) | solver Regal Unicorn 2/3->The Wondrous Wasp 2/1 (score 13)  GAP 13
+t9|Plains (Play Plains)
+t9|Silvercoat Lion
+t9|Glory Seeker
+t9|== my combat: life 16-20, creatures 4-3
+t9|  [atkjoint] 1 avail, 1 defenders, 2 distinct subsets, 2 after Pareto, 0.1ms
+t9|  hold    Regal Unicorn 2/3
+t9|  [atkaudit] policy (none) (0, dealt 0, lost 0, killed 0, back 0) | ref Regal Unicorn 2/3 (4)  GAP 4 UNDER  | refCA (none) (0 vs policy 0)
+t10|== incoming: life 16-20, creatures 4-4
+t10|  attacked by Floodpits Drowner 2/1, The Wondrous Wasp 2/1
+t10|  [joint] 2 attackers, 3 blockers, 9 distinct outcomes, 3 after Pareto
+t10|  decline Glory Seeker 2/2
+t10|  decline Silvercoat Lion 2/2
+t10|  BLOCK   Regal Unicorn 2/3  <- Floodpits Drowner 2/1
+t10|  [audit] policy Glory Seeker 2/2->--, Silvercoat Lion 2/2->--, Regal Unicorn 2/3->Floodpits Drowner 2/1 (score 13) | solver Glory Seeker 2/2->The Wondrous Wasp 2/1, Silvercoat Lion 2/2->--, Regal Unicorn 2/3->Floodpits Drowner 2/1 (score 14)  GAP 1
+t11|Silvercoat Lion
+t11|Plains (Play Plains)
+t11|== my combat: life 14-20, creatures 5-3
+t11|  [atkjoint] 4 avail, 2 defenders, 9 distinct subsets, 4 after Pareto, 0.2ms
+t11|  ATTACK  Glory Seeker 2/2
+t11|  ATTACK  Silvercoat Lion 2/2
+t11|  ATTACK  Regal Unicorn 2/3
+t11|  ATTACK  Regal Unicorn 2/3
+t11|  [atkaudit] policy Glory Seeker 2/2 + Silvercoat Lion 2/2 + Regal Unicorn 2/3 + Regal Unicorn 2/3 (-3, dealt 6, lost 1, killed 0, back 5) | ref (none) (0)  GAP 3 OVER
+t12|== incoming: life 14-16, creatures 3-4
+t12|  attacked by Cecil, Dark Knight 1/2, Enduring Curiosity 3/2, The Wondrous Wasp 2/1
+t12|  [joint] 3 attackers, 0 blockers, 1 distinct outcomes, 1 after Pareto
+t13|Elite Vanguard
+t13|== my combat: life 8-15, creatures 4-3
+t13|  [atkjoint] 3 avail, 0 defenders, 6 distinct subsets, 4 after Pareto, 0.1ms
+t13|  ATTACK  Glory Seeker 2/2
+t13|  ATTACK  Silvercoat Lion 2/2
+t13|  ATTACK  Regal Unicorn 2/3
+t13|  [atkaudit] policy Glory Seeker 2/2 + Silvercoat Lion 2/2 + Regal Unicorn 2/3 (12, dealt 6, lost 0, killed 0, back 0) | ref Glory Seeker 2/2 + Silvercoat Lion 2/2 + Regal Unicorn 2/3 (12)  MATCH
+t14|== incoming: life 8-7, creatures 4-7
+t14|  attacked by Cecil, Dark Knight 1/2, Enduring Curiosity 3/2, Kaito, Bane of Nightmares 5/6, The Wondrous Wasp 2/1
+t14|  [joint] 4 attackers, 1 blockers, 5 distinct outcomes, 3 after Pareto
+t14|  BLOCK   Elite Vanguard 2/1  <- Kaito, Bane of Nightmares 5/6
+t14|  [audit] policy Elite Vanguard 2/1->Kaito, Bane of Nightmares 5/6 (score 1) | solver Elite Vanguard 2/1->Kaito, Bane of Nightmares 5/6 (score 1)  MATCH
+t15|Glory Seeker
+t15|== my combat: life 2-6, creatures 4-6
+t15|  [atkjoint] 3 avail, 3 defenders, 6 distinct subsets, 3 after Pareto, 0.2ms
+t15|  ATTACK  Glory Seeker 2/2
+t15|  ATTACK  Silvercoat Lion 2/2
+t15|  hold    Regal Unicorn 2/3
+t15|  [atkaudit] policy Glory Seeker 2/2 + Silvercoat Lion 2/2 (-12, dealt 0, lost 2, killed 2, back 0) | ref (none) (0)  GAP 12 OVER
+t16|== incoming: life 2-5, creatures 2-7
+t16|  attacked by Cecil, Redeemed Paladin 3/3, Enduring Curiosity 3/2, Kaito, Bane of Nightmares 6/7, Soulstone Sanctuary 6/6, Spyglass Siren 1/1, Spyglass Siren 1/1, The Wondrous Wasp 2/1
+t16|  [joint] 7 attackers, 1 blockers, 6 distinct outcomes, 3 after Pareto
+t16|  BLOCK   Regal Unicorn 2/3  <- Kaito, Bane of Nightmares 6/7
+t16|  [audit] policy Regal Unicorn 2/3->Kaito, Bane of Nightmares 6/7 (LETHAL) | solver Regal Unicorn 2/3->-- (LETHAL)  MATCH
+RLGAME_END

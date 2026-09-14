@@ -1,0 +1,39 @@
+RLGAME|reward=1.0|seed=7103
+t1|Plains (Play Plains)
+t1|Elite Vanguard
+t3|Plains (Play Plains)
+t3|Silvercoat Lion
+t3|== my combat: life 20-20, creatures 2-0
+t3|  [atkjoint] 1 avail, 0 defenders, 2 distinct subsets, 2 after Pareto, 1.6ms
+t3|  ATTACK  Elite Vanguard 2/1
+t3|  [atkaudit] policy Elite Vanguard 2/1 (4, dealt 2, lost 0, killed 0, back 0) | ref Elite Vanguard 2/1 (4)  MATCH
+t5|Glory Seeker
+t5|Plains (Play Plains)
+t5|== my combat: life 20-18, creatures 3-1
+t5|  [atkjoint] 2 avail, 1 defenders, 4 distinct subsets, 3 after Pareto, 0.6ms
+t5|  ATTACK  Elite Vanguard 2/1
+t5|  ATTACK  Silvercoat Lion 2/2
+t5|  [atkaudit] policy Elite Vanguard 2/1 + Silvercoat Lion 2/2 (4, dealt 2, lost 1, killed 1, back 0) | ref Elite Vanguard 2/1 + Silvercoat Lion 2/2 (4)  MATCH
+t7|Knight of the Keep
+t7|== my combat: life 20-16, creatures 3-1
+t7|  [atkjoint] 2 avail, 1 defenders, 4 distinct subsets, 4 after Pareto, 0.1ms
+t7|  ATTACK  Elite Vanguard 2/1
+t7|  ATTACK  Glory Seeker 2/2
+t7|  [atkaudit] policy Elite Vanguard 2/1 + Glory Seeker 2/2 (1, dealt 2, lost 1, killed 1, back 0) | ref Glory Seeker 2/2 (4)  GAP 3 OVER
+t9|Blade of the Sixth Pride
+t9|Plains (Play Plains)
+t9|== my combat: life 20-12, creatures 4-1
+t9|  [atkjoint] 3 avail, 1 defenders, 8 distinct subsets, 8 after Pareto, 0.1ms
+t9|  ATTACK  Elite Vanguard 2/1
+t9|  ATTACK  Glory Seeker 2/2
+t9|  ATTACK  Knight of the Keep 3/2
+t9|  [atkaudit] policy Elite Vanguard 2/1 + Glory Seeker 2/2 + Knight of the Keep 3/2 (7, dealt 5, lost 1, killed 1, back 0) | ref Glory Seeker 2/2 + Knight of the Keep 3/2 (10)  GAP 3 OVER
+t11|Knight of the Keep
+t11|== my combat: life 20-8, creatures 5-0
+t11|  [atkjoint] 4 avail, 0 defenders, 16 distinct subsets, 9 after Pareto, 0.2ms
+t11|  ATTACK  Elite Vanguard 2/1
+t11|  ATTACK  Blade of the Sixth Pride 3/1
+t11|  ATTACK  Glory Seeker 2/2
+t11|  ATTACK  Knight of the Keep 3/2
+t11|  [atkaudit] policy Elite Vanguard 2/1 + Blade of the Sixth Pride 3/1 + Glory Seeker 2/2 + Knight of the Keep 3/2 (LETHAL, dealt 10, lost 0, killed 0, back 0) | ref Elite Vanguard 2/1 + Blade of the Sixth Pride 3/1 + Knight of the Keep 3/2 (LETHAL)  MATCH
+RLGAME_END

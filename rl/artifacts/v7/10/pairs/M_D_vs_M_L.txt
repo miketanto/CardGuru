@@ -1,0 +1,62 @@
+RLGAME|reward=1.0|seed=7105
+t1|Island (Play Island)
+t1|Spyglass Siren
+t3|Gloomlake Verge (Play Gloomlake Verge)
+t3|  KILL    Spyglass Siren 1/1 (MINE)   [of 1, 0 enemy: Spyglass Siren 1/1]
+t3|Requiting Hex (destroy target creature with mana value 2 or less. If this spell's additional cost was paid, you gain 2 life.)
+t5|Nowhere to Run
+t7|Floodpits Drowner
+t7|Hidden Lair (Play Hidden Lair)
+t7|{1}, {T}, Sacrifice this artifact: Target creature you control explores. Activate only as a sorcery.
+t9|Swamp (Play Swamp)
+t9|Kaito, Bane of Nightmares
+t9|Kaito, Bane of Nightmares (+1: You get an emblem with "Ninjas you control get +1/+1.")
+t9|== my combat: life 20-20, creatures 2-2
+t9|  [atkjoint] 1 avail, 1 defenders, 2 distinct subsets, 2 after Pareto, 5.1ms
+t9|  ATTACK  Floodpits Drowner 2/1
+t9|  [atkaudit] policy Floodpits Drowner 2/1 (3, dealt 0, lost 1, killed 1, back 0) | ref Floodpits Drowner 2/1 (3)  MATCH
+t10|== incoming: life 20-18, creatures 1-3
+t10|  attacked by Snapping Gnarlid 2/2, Snapping Gnarlid 2/2
+t10|  [joint] 2 attackers, 1 blockers, 2 distinct outcomes, 2 after Pareto
+t10|  BLOCK   Floodpits Drowner 2/1  <- Snapping Gnarlid 2/2
+t10|  [audit] policy Floodpits Drowner 2/1->Snapping Gnarlid 2/2 (score 7) | solver Floodpits Drowner 2/1->Snapping Gnarlid 2/2 (score 7)  MATCH
+t11|Enduring Curiosity
+t11|Kaito, Bane of Nightmares (+1: You get an emblem with "Ninjas you control get +1/+1.")
+t11|Hidden Lair (Play Hidden Lair)
+t11|== my combat: life 18-18, creatures 2-2
+t11|  [atkjoint] 1 avail, 1 defenders, 2 distinct subsets, 2 after Pareto, 0.1ms
+t11|  ATTACK  Kaito, Bane of Nightmares 5/6
+t11|  [atkaudit] policy Kaito, Bane of Nightmares 5/6 (6, dealt 0, lost 0, killed 1, back 0) | ref Kaito, Bane of Nightmares 5/6 (6)  MATCH
+t12|== incoming: life 18-13, creatures 1-3
+t12|  attacked by Plated Geopede 1/1, Snapping Gnarlid 2/2
+t12|  [joint] 2 attackers, 1 blockers, 3 distinct outcomes, 1 after Pareto
+t12|  BLOCK   Enduring Curiosity 4/3  <- Snapping Gnarlid 2/2
+t12|  [audit] policy Enduring Curiosity 4/3->Snapping Gnarlid 2/2 (score 16) | solver Enduring Curiosity 4/3->Snapping Gnarlid 2/2 (score 16)  MATCH
+t13|The Wondrous Wasp
+t13|Kaito, Bane of Nightmares (+1: You get an emblem with "Ninjas you control get +1/+1.")
+t13|Watery Grave (Play Watery Grave)
+t13|Kaito, Bane of Nightmares
+t13|  KILL    Kaito, Bane of Nightmares 6/7 (MINE)   [of 2, 0 enemy: Kaito, Bane of Nightmares 6/7, Kaito, Bane of Nightmares 6/7]
+t13|Kaito, Bane of Nightmares (+1: You get an emblem with "Ninjas you control get +1/+1.")
+t13|== my combat: life 15-13, creatures 3-2
+t13|  [atkjoint] 1 avail, 1 defenders, 2 distinct subsets, 2 after Pareto, 0.1ms
+t13|  ATTACK  Enduring Curiosity 4/3
+t13|  [atkaudit] policy Enduring Curiosity 4/3 (6, dealt 0, lost 0, killed 1, back 0) | ref Enduring Curiosity 4/3 (6)  MATCH
+t14|== incoming: life 15-9, creatures 2-2
+t14|  attacked by Plated Geopede 3/3, Scythe Leopard 2/2
+t14|  [joint] 2 attackers, 1 blockers, 3 distinct outcomes, 3 after Pareto
+t14|  BLOCK   The Wondrous Wasp 2/1  <- Plated Geopede 3/3
+t14|  [audit] policy The Wondrous Wasp 2/1->Plated Geopede 3/3 (score -3) | solver The Wondrous Wasp 2/1->Scythe Leopard 2/2 (score 7)  GAP 10
+t15|  KILL    Plated Geopede 1/1 tap   [of 2, 2 enemy: Plated Geopede 1/1 tap, Scythe Leopard 1/1 tap]
+t15|  KILL    Enduring Curiosity 4/3 (MINE)   [of 2, 0 enemy: Enduring Curiosity 4/3, Kaito, Bane of Nightmares 7/8]
+t15|Requiting Hex (destroy target creature with mana value 2 or less. If this spell's additional cost was paid, you gain 2 life.)
+t15|Kaito, Bane of Nightmares (+1: You get an emblem with "Ninjas you control get +1/+1.")
+t15|Spyglass Siren
+t15|  KILL    Enduring Curiosity 3/2 (MINE)   [of 3, 0 enemy: Enduring Curiosity 3/2, Kaito, Bane of Nightmares 8/9, Spyglass Siren 1/1]
+t15|{1}, {T}, Sacrifice this artifact: Target creature you control explores. Activate only as a sorcery.
+t15|== my combat: life 15-9, creatures 3-1
+t15|  [atkjoint] 2 avail, 0 defenders, 4 distinct subsets, 4 after Pareto, 0.1ms
+t15|  ATTACK  Enduring Curiosity 4/3
+t15|  ATTACK  Kaito, Bane of Nightmares 8/9
+t15|  [atkaudit] policy Enduring Curiosity 4/3 + Kaito, Bane of Nightmares 8/9 (LETHAL, dealt 12, lost 0, killed 0, back 0) | ref Enduring Curiosity 4/3 + Kaito, Bane of Nightmares 8/9 (LETHAL)  MATCH
+RLGAME_END

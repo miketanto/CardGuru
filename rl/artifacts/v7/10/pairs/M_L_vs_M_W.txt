@@ -1,0 +1,39 @@
+RLGAME|reward=-1.0|seed=7104
+t1|Forest (Play Forest)
+t3|Forest (Play Forest)
+t3|Snapping Gnarlid
+t5|Mountain (Play Mountain)
+t5|Harrow (search your library for up to two basic land cards, put them onto the battlefield, then shuffle.)
+t5|== my combat: life 20-20, creatures 1-1
+t5|  [atkjoint] 1 avail, 1 defenders, 2 distinct subsets, 2 after Pareto, 2.1ms
+t5|  ATTACK  Snapping Gnarlid 3/3
+t5|  [atkaudit] policy Snapping Gnarlid 3/3 (-6, dealt 0, lost 1, killed 1, back 0) | ref (none) (0)  GAP 6 OVER
+t6|== incoming: life 20-17, creatures 1-2
+t6|  attacked by Dromoka Warrior 3/1
+t6|  [joint] 1 attackers, 0 blockers, 1 distinct outcomes, 1 after Pareto
+t7|Khalni Heart Expedition
+t7|== my combat: life 17-17, creatures 1-2
+t7|  [atkjoint] 1 avail, 1 defenders, 2 distinct subsets, 1 after Pareto, 0.1ms
+t7|  hold    Snapping Gnarlid 2/2
+t7|  [atkaudit] policy (none) (0, dealt 0, lost 0, killed 0, back 0) | ref (none) (0)  MATCH
+t8|== incoming: life 17-17, creatures 1-3
+t8|  attacked by Dromoka Warrior 3/1
+t8|  [joint] 1 attackers, 1 blockers, 2 distinct outcomes, 2 after Pareto
+t8|  BLOCK   Snapping Gnarlid 2/2  <- Dromoka Warrior 3/1
+t8|  [audit] policy Snapping Gnarlid 2/2->Dromoka Warrior 3/1 (score 6) | solver Snapping Gnarlid 2/2->Dromoka Warrior 3/1 (score 6)  MATCH
+t9|Rampant Growth (search your library for a basic land card, put that card onto the battlefield tapped, then shuffle.)
+t11|Harrow (search your library for up to two basic land cards, put them onto the battlefield, then shuffle.)
+t12|== incoming: life 17-17, creatures 0-4
+t12|  attacked by Foot Soldiers 2/4, Regal Unicorn 2/3, Regal Unicorn 2/3
+t12|  [joint] 3 attackers, 0 blockers, 1 distinct outcomes, 1 after Pareto
+t13|Rampant Growth (search your library for a basic land card, put that card onto the battlefield tapped, then shuffle.)
+t14|== incoming: life 11-17, creatures 0-6
+t14|  attacked by Foot Soldiers 2/4, Foot Soldiers 2/4, Regal Unicorn 2/3, Regal Unicorn 2/3
+t14|  [joint] 4 attackers, 0 blockers, 1 distinct outcomes, 1 after Pareto
+t15|Grazing Gladehart
+t16|== incoming: life 3-17, creatures 1-8
+t16|  attacked by Elite Vanguard 2/1, Foot Soldiers 2/4, Foot Soldiers 2/4, Regal Unicorn 2/3, Regal Unicorn 2/3, Shu Elite Infantry 3/3
+t16|  [joint] 6 attackers, 1 blockers, 4 distinct outcomes, 3 after Pareto
+t16|  BLOCK   Grazing Gladehart 2/2  <- Shu Elite Infantry 3/3
+t16|  [audit] policy Grazing Gladehart 2/2->Shu Elite Infantry 3/3 (LETHAL) | solver Grazing Gladehart 2/2->-- (LETHAL)  MATCH
+RLGAME_END
