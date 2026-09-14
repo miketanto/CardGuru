@@ -1,0 +1,21 @@
+RPL10|wait|2026-09-14T12:22:44Z
+RPL10|start|2026-09-14T12:22:44Z
+RPL10|M_W|ckpt=M_W_03072.pt|deck=W0Base
+RPL10|M_W|REPLAY|heuristic|seed=6001|wins=1 losses=0 draws=0 stalls=0 turns_per_ep=23.0
+RPL10|M_W|REPLAY|transcript=/home/user/CardGuru/rl/artifacts/v7/10/replay/M_W_M_W_03072_vs_heuristic_s6001.txt|lines=98|RLGAME|reward=1.0|seed=6001
+RPL10|M_W|REPLAY|cp7|seed=6002|wins=1 losses=0 draws=0 stalls=0 turns_per_ep=19.0
+RPL10|M_W|REPLAY|transcript=/home/user/CardGuru/rl/artifacts/v7/10/replay/M_W_M_W_03072_vs_cp7_s6002.txt|lines=77|RLGAME|reward=1.0|seed=6002
+RPL10|M_W|REPLAY|done|2026-09-14T12:23:02Z
+RPL10|M_D|ckpt=M_D_03072.pt|deck=BenchDimir
+RPL10|M_D|REPLAY|heuristic|seed=6001|wins=0 losses=1 draws=0 stalls=0 turns_per_ep=15.0
+RPL10|M_D|REPLAY|transcript=/home/user/CardGuru/rl/artifacts/v7/10/replay/M_D_M_D_03072_vs_heuristic_s6001.txt|lines=41|RLGAME|reward=-1.0|seed=6001
+RPL10|M_D|REPLAY|cp7|seed=6002|wins=0 losses=1 draws=0 stalls=0 turns_per_ep=19.0
+RPL10|M_D|REPLAY|transcript=/home/user/CardGuru/rl/artifacts/v7/10/replay/M_D_M_D_03072_vs_cp7_s6002.txt|lines=48|RLGAME|reward=-1.0|seed=6002
+RPL10|M_D|REPLAY|done|2026-09-14T12:23:56Z
+RPL10|M_L|ckpt=M_L_03072.pt|deck=G1Landfall
+RPL10|M_L|REPLAY|heuristic|seed=6001|wins=0 losses=1 draws=0 stalls=0 turns_per_ep=14.0
+RPL10|M_L|REPLAY|transcript=/home/user/CardGuru/rl/artifacts/v7/10/replay/M_L_M_L_03072_vs_heuristic_s6001.txt|lines=54|RLGAME|reward=-1.0|seed=6001
+RPL10|M_L|REPLAY|cp7|seed=6002|wins=0 losses=1 draws=0 stalls=0 turns_per_ep=16.0
+RPL10|M_L|REPLAY|transcript=/home/user/CardGuru/rl/artifacts/v7/10/replay/M_L_M_L_03072_vs_cp7_s6002.txt|lines=54|RLGAME|reward=-1.0|seed=6002
+RPL10|M_L|REPLAY|done|2026-09-14T12:24:22Z
+RPL10|done|2026-09-14T12:24:22Z

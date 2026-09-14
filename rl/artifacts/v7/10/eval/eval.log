@@ -1,0 +1,72 @@
+E10|start=2026-09-14T14:19:46Z
+E10|final|M_W|/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/M_W_04096.pt
+E10|home|M_W|XDECK|ck=M_W_04096.pt|agent=W0Base|vs=heuristic|oppDeck=W0Base|52/100 = 0.520 [0.423,0.615]|losses=48 draws=0 stalls=0 turns_per_ep=13.5
+E10|home|M_W|XDECK|ck=M_W_04096.pt|agent=W0Base|vs=cp7|oppDeck=W0Base|62/100 = 0.620 [0.522,0.709]|losses=38 draws=0 stalls=0 turns_per_ep=20.9 attackBudgetHit=2
+E10|home|M_W|XDECK|done|M_W_04096.pt|2026-09-14T14:22:50Z
+E10|final|M_D|/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/M_D_04096.pt
+E10|home|M_D|XDECK|ck=M_D_04096.pt|agent=BenchDimir|vs=heuristic|oppDeck=BenchDimir|59/100 = 0.590 [0.492,0.681]|losses=41 draws=0 stalls=0 turns_per_ep=19.7
+E10|home|M_D|XDECK|ck=M_D_04096.pt|agent=BenchDimir|vs=cp7|oppDeck=BenchDimir|17/100 = 0.170 [0.109,0.255]|losses=83 draws=0 stalls=0 turns_per_ep=18.8
+E10|home|M_D|XDECK|done|M_D_04096.pt|2026-09-14T14:43:59Z
+E10|final|M_L|/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/M_L_03840.pt
+E10|home|M_L|XDECK|ck=M_L_03840.pt|agent=G1Landfall|vs=heuristic|oppDeck=G1Landfall|49/100 = 0.490 [0.394,0.587]|losses=51 draws=0 stalls=0 turns_per_ep=11.8
+E10|home|M_L|XDECK|ck=M_L_03840.pt|agent=G1Landfall|vs=cp7|oppDeck=G1Landfall|37/100 = 0.370 [0.282,0.468]|losses=63 draws=0 stalls=0 turns_per_ep=12.5
+E10|home|M_L|XDECK|done|M_L_03840.pt|2026-09-14T14:51:46Z
+E10|unseen|M_W|final|XDECK|ck=M_W_04096.pt|agent=W0Base|vs=heuristic|oppDeck=BenchBurn|24/50 = 0.480 [0.348,0.615]|losses=26 draws=0 stalls=0 turns_per_ep=10.1
+E10|unseen|M_W|final|XDECK|ck=M_W_04096.pt|agent=W0Base|vs=heuristic|oppDeck=HoldoutControl|50/50 = 1.000 [0.929,1.000]|losses=0 draws=0 stalls=0 turns_per_ep=12.0
+E10|unseen|M_W|final|XDECK|ck=M_W_04096.pt|agent=W0Base|vs=heuristic|oppDeck=HoldoutMidrange|29/50 = 0.580 [0.442,0.706]|losses=21 draws=0 stalls=0 turns_per_ep=12.7
+E10|unseen|M_W|final|XDECK|pooled|ck=M_W_04096.pt|agent=W0Base|rows=3|103/150 = 0.687 [0.609,0.755]
+E10|unseen|M_W|final|XDECK|done|M_W_04096.pt|2026-09-14T14:53:24Z
+E10|unseen|M_W|s1end|XDECK|ck=M_W_s1end.pt|agent=W0Base|vs=heuristic|oppDeck=BenchBurn|41/50 = 0.820 [0.692,0.902]|losses=9 draws=0 stalls=0 turns_per_ep=13.9
+E10|unseen|M_W|s1end|XDECK|ck=M_W_s1end.pt|agent=W0Base|vs=heuristic|oppDeck=HoldoutControl|50/50 = 1.000 [0.929,1.000]|losses=0 draws=0 stalls=0 turns_per_ep=13.0
+E10|unseen|M_W|s1end|XDECK|ck=M_W_s1end.pt|agent=W0Base|vs=heuristic|oppDeck=HoldoutMidrange|25/50 = 0.500 [0.366,0.634]|losses=25 draws=0 stalls=0 turns_per_ep=18.9
+E10|unseen|M_W|s1end|XDECK|pooled|ck=M_W_s1end.pt|agent=W0Base|rows=3|116/150 = 0.773 [0.700,0.833]
+E10|unseen|M_W|s1end|XDECK|done|M_W_s1end.pt|2026-09-14T14:55:23Z
+E10|unseen|M_D|final|XDECK|ck=M_D_04096.pt|agent=BenchDimir|vs=heuristic|oppDeck=BenchBurn|27/50 = 0.540 [0.404,0.670]|losses=23 draws=0 stalls=0 turns_per_ep=14.0
+E10|unseen|M_D|final|XDECK|ck=M_D_04096.pt|agent=BenchDimir|vs=heuristic|oppDeck=HoldoutControl|41/50 = 0.820 [0.692,0.902]|losses=9 draws=0 stalls=0 turns_per_ep=19.6
+E10|unseen|M_D|final|XDECK|ck=M_D_04096.pt|agent=BenchDimir|vs=heuristic|oppDeck=HoldoutMidrange|28/50 = 0.560 [0.423,0.688]|losses=22 draws=0 stalls=0 turns_per_ep=17.4
+E10|unseen|M_D|final|XDECK|pooled|ck=M_D_04096.pt|agent=BenchDimir|rows=3|96/150 = 0.640 [0.561,0.712]
+E10|unseen|M_D|final|XDECK|done|M_D_04096.pt|2026-09-14T14:58:27Z
+E10|unseen|M_D|s1end|XDECK|ck=M_D_s1end.pt|agent=BenchDimir|vs=heuristic|oppDeck=BenchBurn|12/50 = 0.240 [0.143,0.374]|losses=38 draws=0 stalls=0 turns_per_ep=12.0
+E10|unseen|M_D|s1end|XDECK|ck=M_D_s1end.pt|agent=BenchDimir|vs=heuristic|oppDeck=HoldoutControl|35/50 = 0.700 [0.562,0.809]|losses=15 draws=0 stalls=0 turns_per_ep=20.1
+E10|unseen|M_D|s1end|XDECK|ck=M_D_s1end.pt|agent=BenchDimir|vs=heuristic|oppDeck=HoldoutMidrange|9/50 = 0.180 [0.098,0.308]|losses=41 draws=0 stalls=0 turns_per_ep=15.6
+E10|unseen|M_D|s1end|XDECK|pooled|ck=M_D_s1end.pt|agent=BenchDimir|rows=3|56/150 = 0.373 [0.300,0.453]
+E10|unseen|M_D|s1end|XDECK|done|M_D_s1end.pt|2026-09-14T15:04:51Z
+E10|unseen|M_L|final|XDECK|ck=M_L_03840.pt|agent=G1Landfall|vs=heuristic|oppDeck=BenchBurn|20/50 = 0.400 [0.276,0.538]|losses=30 draws=0 stalls=0 turns_per_ep=10.7
+E10|unseen|M_L|final|XDECK|ck=M_L_03840.pt|agent=G1Landfall|vs=heuristic|oppDeck=HoldoutControl|47/50 = 0.940 [0.838,0.979]|losses=3 draws=0 stalls=0 turns_per_ep=14.4
+E10|unseen|M_L|final|XDECK|ck=M_L_03840.pt|agent=G1Landfall|vs=heuristic|oppDeck=HoldoutMidrange|24/50 = 0.480 [0.348,0.615]|losses=26 draws=0 stalls=0 turns_per_ep=13.9
+E10|unseen|M_L|final|XDECK|pooled|ck=M_L_03840.pt|agent=G1Landfall|rows=3|91/150 = 0.607 [0.527,0.681]
+E10|unseen|M_L|final|XDECK|done|M_L_03840.pt|2026-09-14T15:07:13Z
+E10|unseen|M_L|s1end|XDECK|ck=M_L_s1end.pt|agent=G1Landfall|vs=heuristic|oppDeck=BenchBurn|30/50 = 0.600 [0.462,0.724]|losses=20 draws=0 stalls=0 turns_per_ep=13.7
+E10|unseen|M_L|s1end|XDECK|ck=M_L_s1end.pt|agent=G1Landfall|vs=heuristic|oppDeck=HoldoutControl|48/50 = 0.960 [0.865,0.989]|losses=2 draws=0 stalls=0 turns_per_ep=14.5
+E10|unseen|M_L|s1end|XDECK|ck=M_L_s1end.pt|agent=G1Landfall|vs=heuristic|oppDeck=HoldoutMidrange|15/50 = 0.300 [0.191,0.438]|losses=35 draws=0 stalls=0 turns_per_ep=16.9
+E10|unseen|M_L|s1end|XDECK|pooled|ck=M_L_s1end.pt|agent=G1Landfall|rows=3|93/150 = 0.620 [0.540,0.694]
+E10|unseen|M_L|s1end|XDECK|done|M_L_s1end.pt|2026-09-14T15:09:52Z
+E10|cross|HARD|H2H|A=M_W_04096.pt:W0Base|B=M_D_04096.pt:BenchDimir|label=M_W_vs_M_D|26/50 = 0.520 [0.385,0.652]|losses=24 draws=0 stalls=0 turns_per_ep=17.8
+E10|cross|HARD|H2H|A=M_W_04096.pt:W0Base|B=M_L_03840.pt:G1Landfall|label=M_W_vs_M_L|38/50 = 0.760 [0.626,0.857]|losses=12 draws=0 stalls=0 turns_per_ep=13.8
+E10|cross|HARD|H2H|A=M_D_04096.pt:BenchDimir|B=M_L_03840.pt:G1Landfall|label=M_D_vs_M_L|28/50 = 0.560 [0.423,0.688]|losses=22 draws=0 stalls=0 turns_per_ep=17.3
+E10|kw|M_W|XDECK|ck=M_W_04096.pt|agent=W1Fly|vs=heuristic|oppDeck=W0Base|30/50 = 0.600 [0.462,0.724]|losses=20 draws=0 stalls=0 turns_per_ep=14.3
+E10|kw|M_W|XDECK|done|M_W_04096.pt|2026-09-14T15:15:58Z
+E10|kw|M_W|XDECK|ck=M_W_04096.pt|agent=W1Lif|vs=heuristic|oppDeck=W0Base|32/50 = 0.640 [0.501,0.759]|losses=18 draws=0 stalls=0 turns_per_ep=14.7
+E10|kw|M_W|XDECK|done|M_W_04096.pt|2026-09-14T15:16:50Z
+E10|kw|M_W|XDECK|ck=M_W_04096.pt|agent=W1Fst|vs=heuristic|oppDeck=W0Base|32/50 = 0.640 [0.501,0.759]|losses=18 draws=0 stalls=0 turns_per_ep=14.0
+E10|kw|M_W|XDECK|done|M_W_04096.pt|2026-09-14T15:17:41Z
+E10|kw|M_W|XDECK|ck=M_W_04096.pt|agent=W1Vig|vs=heuristic|oppDeck=W0Base|27/50 = 0.540 [0.404,0.670]|losses=23 draws=0 stalls=0 turns_per_ep=13.8
+E10|kw|M_W|XDECK|done|M_W_04096.pt|2026-09-14T15:18:30Z
+E10|kwref|heuristic|W0Base|episodes=50 wins=30 win_rate=0.6000
+E10|kwref|heuristic|W1Fly|episodes=50 wins=22 win_rate=0.4400
+E10|kwref|heuristic|W1Lif|episodes=50 wins=22 win_rate=0.4400
+E10|kwref|heuristic|W1Fst|episodes=50 wins=29 win_rate=0.5800
+E10|kwref|heuristic|W1Vig|episodes=50 wins=31 win_rate=0.6200
+E10|p1|P1|FRESH_ON|text|mean_dp=0.05163 [0.04895,0.05420]
+E10|p1|P1|FRESH_ON|pt|mean_dp=0.04029 [0.03789,0.04253]
+E10|p1|P1|FRESH_ON|type|mean_dp=0.06880 [0.06676,0.07097]
+E10|p1|P1|M_W|text|mean_dp=0.00229 [0.00197,0.00262]
+E10|p1|P1|M_W|pt|mean_dp=0.00095 [0.00073,0.00118]
+E10|p1|P1|M_W|type|mean_dp=0.01588 [0.01342,0.01891]
+E10|p1|P1|M_D|text|mean_dp=0.26322 [0.24140,0.28572]
+E10|p1|P1|M_D|pt|mean_dp=0.06510 [0.05654,0.07299]
+E10|p1|P1|M_D|type|mean_dp=0.26016 [0.24429,0.27590]
+E10|p1|P1|M_L|text|mean_dp=0.08555 [0.07222,0.10031]
+E10|p1|P1|M_L|pt|mean_dp=0.04901 [0.04114,0.05697]
+E10|p1|P1|M_L|type|mean_dp=0.23700 [0.22015,0.25370]
+E10|done=2026-09-14T15:20:25Z

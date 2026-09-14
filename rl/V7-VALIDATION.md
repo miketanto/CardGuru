@@ -4195,3 +4195,66 @@ development.
 - the landfall deck has no reference;
 - CP7 rows are single 100-game levels (M_W beats CP7 more often than it beats the heuristic;
   M_D is weak against CP7, 0.17).
+
+## 10 / Q6 — cross-deck stage vs generalisation: "no difference shown" on the pool; per main one up, one down, one flat; and the cross matrix (2026-09-14; branch `v7/lane-d`; `rl/artifacts/v7/10/eval/`)
+
+**Unseen-opponent suite.** Each main plays its own deck against the heuristic piloting
+BenchBurn, HoldoutControl and HoldoutMidrange, 50 games each, pooled 150 per main. The same
+game seeds are used for `_s1end` and final, so the rows are paired.
+- `_s1end` is the stage-1/2 boundary snapshot, n = 27, 1,792 episodes each.
+- Final is +2,304 (M_W, M_D) or +2,048 (M_L) stage-2 episodes on top.
+
+| main | checkpoint | BenchBurn | HoldoutControl | HoldoutMidrange | pooled 150 |
+|---|---|---|---|---|---|
+| M_W | s1end | 0.82 | 1.00 | 0.50 | 116/150 = 0.773 [0.700, 0.833] |
+| M_W | final | 0.48 | 1.00 | 0.58 | 103/150 = 0.687 [0.609, 0.755] |
+| M_D | s1end | 0.24 | 0.70 | 0.18 | 56/150 = 0.373 [0.300, 0.453] |
+| M_D | final | 0.54 | 0.82 | 0.56 | **96/150 = 0.640 [0.561, 0.712]** |
+| M_L | s1end | 0.60 | 0.96 | 0.30 | 93/150 = 0.620 [0.540, 0.694] |
+| M_L | final | 0.40 | 0.94 | 0.48 | 91/150 = 0.607 [0.527, 0.681] |
+
+No draws or stalls.
+
+**Pooled over all three mains, 450 games each:**
+- `_s1end`: 265/450 = 0.589 [0.543, 0.633]
+- final: 290/450 = 0.644 [0.599, 0.687]
+
+**Q6, as pre-registered (on the pool): "no difference shown".** The intervals overlap
+(0.599 < 0.633). The home clause cannot be read directly, because `_s1end` home at 100
+games was not run. The in-league probes put M_W's final home below its stage-1 probes (the
+Q5 regression candidate), so for M_W "home not clear below" is not established.
+
+**Per main** (not the pre-registered reading; stated because the pool hides it):
+- **M_D: clear up** (0.373 → 0.640, disjoint). Largest on BenchBurn (0.24 → 0.54) and
+  HoldoutMidrange (0.18 → 0.56).
+- **M_W: down, overlapping** (0.773 → 0.687). BenchBurn fell 0.82 → 0.48, disjoint at 50
+  games each ([0.692, 0.902] vs [0.348, 0.615]).
+- **M_L: flat** (0.620 → 0.607). BenchBurn down 0.20, Midrange up 0.18.
+
+**Confounds, stated in advance and now:**
+1. **More episodes.** Final has 2,048–2,304 more episodes than `_s1end`. The control
+   (exploiter-and-self-only continuation) was not run.
+2. **Few cross-deck episodes.** Each main played 3 cross-deck blocks in stage 2 (768
+   episodes, a third of its stage-2 episodes), all after Amendment 3's quota. Before the
+   quota, the draw gave none.
+3. **The anchor came back at the same time.** Stage 2 is also where the heuristic returned
+   (2–3 blocks per main, after 1/18 in stage 1). **Every unseen opponent is a heuristic
+   pilot**, so M_D's gain is equally consistent with "re-exposure to the heuristic" as with
+   "cross-deck play". This one run cannot separate them.
+4. One seed.
+
+A positive per-main reading is therefore "stage 2 (cross + anchor + more episodes)", never
+"cross-deck".
+
+**Cross matrix** (final mains against each other, each on its own deck, 50 games per pair,
+`rl/p10_h2h.sh`, seats alternate):
+
+| A vs B | A's wins | turns | stalls |
+|---|---|---|---|
+| M_W (W0Base) vs M_D (BenchDimir) | 26/50 = 0.52 [0.385, 0.652] | 17.8 | 0 |
+| M_W (W0Base) vs M_L (G1Landfall) | 38/50 = **0.76 [0.626, 0.857]** | 13.8 | 0 |
+| M_D (BenchDimir) vs M_L (G1Landfall) | 28/50 = 0.56 [0.423, 0.688] | 17.3 | 0 |
+
+Only W over L is clear of 0.5. The deck and the policy are confounded in every cell (each
+main plays only its own deck). Six debug-logged pairing games (one per seating), requested
+by the user, are in `rl/artifacts/v7/10/pairs/` (the Dimir Requiting Hex play is in Q7).
