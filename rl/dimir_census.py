@@ -58,7 +58,12 @@ KW_HEXPROOF, KW_SHROUD = 34 + 13, 34 + 14
 
 
 def self_only(c, nm):
-    """True when every legal permanent target of removal spell `nm` is the seat's own (>= 1 own, 0 enemy).
+    own, enemy = legal_counts(c, nm)
+    return own > 0 and enemy == 0
+
+
+def legal_counts(c, nm):
+    """(own, enemy) legal permanent targets of removal spell `nm` on the battlefield (the destroy target).
     Requiting Hex: creature with MV <= 2; Bitter Triumph: creature or planeswalker; Shoot the Sheriff:
     creature (outlaw clause ignored).  Enemy hexproof / shroud and own shroud are not legal."""
     own = enemy = 0
@@ -79,7 +84,7 @@ def self_only(c, nm):
             own += e[KW_SHROUD] < 0.5
         elif e[KW_HEXPROOF] < 0.5 and e[KW_SHROUD] < 0.5:
             enemy += 1
-    return own > 0 and enemy == 0
+    return own, enemy
 
 
 # ------------------------------------------------------------------ helpers (shared with landfall_census)
@@ -253,7 +258,8 @@ class DimirGame(GameState):
         self.rem_best = 0
         self.selfrem_off = 0
         self.selfrem_taken = 0
-        self.self_target = 0
+        self.rh_blight = 0
+        self.rh = None
         self.prev = None
 
 
@@ -387,13 +393,27 @@ def census(paths):
                 src = top if top in REMOVAL else ("Nowhere to Run" if NTR_TRIGGER in top else None)
             if src is not None:
                 E = [k for k, t in enumerate(c.ct) if t == TGT and c.cand[k][11] > 0.5 and c.cand[k][14] < 0.5]
-                if src in SELF_REM and g.prev == (SPELL, src):        # the spell's own target consult
-                    S["rem_first"] += 1
-                    if cht == TGT and c.cand[ch][11] > 0.5 and c.cand[ch][14] > 0.5:
-                        S["rem_first_own"] += 1
-                        g.self_target += 1
-                        if not E:
-                            S["rem_first_own_noenemy"] += 1
+                if src == "Requiting Hex" and g.rh is not None:
+                    # blight = "put a -1/-1 counter on a creature you control" (any mana value); destroy = a
+                    # creature with mana value <= 2, any controller (a single legal one is picked without a consult)
+                    cks = [k for k, t in enumerate(c.ct) if t == TGT and c.cand[k][11] > 0.5]
+                    own_gt2 = any(c.cand[k][14] > 0.5 and c.ent(k) is not None and round(c.ents[c.ent(k)][17] * 6) > 2
+                                  for k in cks)
+                    enemy = any(c.cand[k][14] < 0.5 for k in cks)
+                    if own_gt2 or (not enemy and (g.rh["d"] <= 1 or g.rh["destroy_seen"])):
+                        S["rh_blight"] += 1
+                        g.rh_blight += 1
+                        if g.rh["self"]:
+                            S["rh_blight_in_forced"] += 1
+                        if cht == TGT and c.cand[ch][14] > 0.5 and round(c.cand[ch][13] * 6) <= 1:
+                            S["rh_blight_kill"] += 1
+                    else:
+                        g.rh["destroy_seen"] = True
+                        S["rh_destroy_consult"] += 1
+                        if enemy and g.rh["self"]:
+                            S["rh_filter_mismatch"] += 1
+                        if cht == TGT and c.cand[ch][14] > 0.5:
+                            S["rh_destroy_own"] += 1
                 if not E:
                     S["rem_no_enemy_creature"] += 1
                 else:
@@ -419,6 +439,13 @@ def census(paths):
                         S["rem_tap_alt"] += 1
                         if ch in E and tapped[ch] and any(not tapped[u] and pw[u] >= pw[ch] for u in E):
                             S["rem_tap_chosen"] += 1
+        if cht == SPELL and c.name(ch) == "Requiting Hex":
+            own_n, en_n = legal_counts(c, "Requiting Hex")
+            g.rh = {"self": own_n > 0 and en_n == 0, "d": own_n + en_n, "destroy_seen": False}
+            S["rh_casts"] += 1
+            S["rh_forced_self"] += g.rh["self"]
+        elif cht != TGT:
+            g.rh = None
         g.prev = (cht, c.name(ch))
     if g is not None:
         games.append(g)
@@ -470,10 +497,13 @@ def report(name, S, by, rem_hits, rem_chance, games):
                  fmt(S["rem_tap_chosen"], S["rem_tap_alt"]), S["rem_no_enemy_creature"],
                  ";".join("%s %d/%d" % (nm, by["rem_best"][nm], by["rem_n"][nm]) for nm in REMOVAL)))
     L.append(P + "self_removal|removal offered with only own legal targets -> cast %s|per card (cast/offered) %s|"
-             "target level: first target consult after casting one of the three=%d, own creature chosen=%d (no enemy creature offered: %d)|games with a self-removal cast=%d" % (
+             "requiting_hex: casts=%d, forced self-destroy (every legal destroy target own)=%d, destroy-target consults=%d "
+             "(own chosen %d; enemy offered while the filter said own-only %d), blight paid through a consult=%d "
+             "(on an X/1, killed by the blight %d; during forced self-destroy casts %d)|games with a self-removal cast=%d" % (
                  fmt(S["selfrem_taken"], S["selfrem_off"]),
                  ";".join("%s %d/%d" % (nm, by["selfrem_take"][nm], by["selfrem_off"][nm]) for nm in SELF_REM),
-                 S["rem_first"], S["rem_first_own"], S["rem_first_own_noenemy"], sum(1 for x in games if x.selfrem_taken)))
+                 S["rh_casts"], S["rh_forced_self"], S["rh_destroy_consult"], S["rh_destroy_own"], S["rh_filter_mismatch"],
+                 S["rh_blight"], S["rh_blight_kill"], S["rh_blight_in_forced"], sum(1 for x in games if x.selfrem_taken)))
     L.append(P + "board|creatures_cast_per_game=%s|first_creature_own_turn=%s (games with none: %d)|land_drops_by_own_turn4=%s|land_drops_per_game=%s" % (
         mean_ci([x.creatures for x in games]), mean_ci([x.first_creature for x in games]),
         sum(1 for x in games if x.first_creature is None), mean_ci([x.lands_by4 for x in games]), mean_ci([x.lands for x in games])))
@@ -481,12 +511,12 @@ def report(name, S, by, rem_hits, rem_chance, games):
 
 
 def game_rows(name, games):
-    hdr = "set\tgame\tfile\tr\tturns\tcreatures\tfirst_creature_own_turn\tlands_by4\tlands\tnin_windows\tnin_taken\tnin_opp_turns\tflash_inst_off\tflash_inst_taken\tctr_off\tctr_taken\trem_n\trem_best"
+    hdr = "set\tgame\tfile\tr\tturns\tcreatures\tfirst_creature_own_turn\tlands_by4\tlands\tnin_windows\tnin_taken\tnin_opp_turns\tflash_inst_off\tflash_inst_taken\tctr_off\tctr_taken\trem_n\trem_best\tselfrem_off\tselfrem_taken\trh_blight"
     rows = [hdr]
     for i, x in enumerate(games):
         rows.append("\t".join(str(v) for v in (name, i, os.path.basename(x.f), x.r, x.turn_max, x.creatures, x.first_creature,
                                                x.lands_by4, x.lands, x.nin_win, x.nin_taken, len(x.nin_opp_turns), x.flash_off,
-                                               x.flash_taken, x.ctr_off, x.ctr_taken, x.rem_n, x.rem_best, x.selfrem_off, x.selfrem_taken, x.self_target)))
+                                               x.flash_taken, x.ctr_off, x.ctr_taken, x.rem_n, x.rem_best, x.selfrem_off, x.selfrem_taken, x.rh_blight)))
     return rows
 
 

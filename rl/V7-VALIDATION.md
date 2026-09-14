@@ -4391,3 +4391,23 @@ card-sensitive main casts Requiting Hex on its own creature.
 - **Amendment 1** (before Part B data): the flash bar becomes "flash casts on the opponent's turn or in response, clear above the corrected Phase 9 8a-b level 0/120 [0.000, 0.031]". It was built on P3's mis-indexed rule (correction in "11 / A1-A2").
 - **Amendment 2** (before Part B data, from the Phase 10 pairing games): a new counter, removal cast when the only legal targets are the seat's own creatures (offered / taken). A correct policy takes it at 0.
 - **Amendment 3** (the user, 16:20Z, after drill blocks 0–2 and before any B2 census): a 50-game heuristic census after every main block, one `L11|check` line each. These are development probes; the 100-game points stay the levels; CP7 census (25 games) at +2,048 / +4,096; the stop moves from controller hour 10 to hour 13 (~04:50Z) to absorb the census overhead; the two saturated landfall counters stay out of the check line until verified.
+
+## 11 — measurement check: Requiting Hex's blight cost vs its destroy target (2026-09-14 ~18:45Z; the self-removal figures stand)
+
+Question (coordinator, from the n009 transcripts): Requiting Hex has an optional additional cost, blight 1 (put a -1/-1 counter on a creature *you control*, gain 2 life), beside "destroy target creature with mana value ≤ 2". RLPlayer's transcript labels **every** creature target the seat picks as `KILL … (MINE) [of N, E enemy: …]` (its target-choice audit, `RLPlayer` ~l.474), so the blight choice prints as a KILL too. Example: seed 11022 t15 "KILL Elektra 3/3 (MINE) [of 3, 0 enemy: Elektra 3/3, Curiosity 4/3, Siren 1/1]" offers creatures with mana value 3 and 4, so it is the blight cost. The destroy target had one legal choice, the seat's own Spyglass Siren. The driver picks a single legal target without a consult. Afterwards the board is "creatures 2-0" with Elektra a 2/2, so the Siren was destroyed and Elektra blighted.
+
+Does the published self-removal counter include blight choices? **No.** The Amendment 2 counter is spell-level: a cast of Requiting Hex, Bitter Triumph or Shoot the Sheriff while every legal destroy target on the battlefield is the seat's own (`self_only` in `rl/dimir_census.py`). It does not read any TARGET consult. Checked against the engine: over every recording below, **0** destroy-target consults offered an enemy creature while the filter said own-only. So 14/19 (Phase 9 8a-b), 23/23 + 7/7 (B1 M_D final vs heuristic / CP7), 24/24 (drill n003), 24/50 (n006) and 28/28 (n009) are casts that destroyed the seat's own creature, and the Phase 10 Q7 pairing-game note stands (the Siren was the only legal destroy target). What *did* include blight is the census line's secondary "target level: first target consult after the cast, own creature chosen" field. It appeared only in the census count files, never in a published table, and is replaced from now on.
+
+Split (the census tool now reports it; destroy vs blight is told apart by the consult's candidates: an own creature with mana value > 2, or a second consult for the same cast, or a sole legal destroy target, means blight):
+
+| recording | RH casts | forced self-destroy (all legal destroy targets own) | destroy-target consults (own chosen) | blight paid through a consult | … on an X/1 (the blight killed it) | … during forced self-destroy casts |
+|---|---|---|---|---|---|---|
+| Phase 9 8a-b (32 g) | 39 | 10 | 20 (3) | 27 | 18 | 10 |
+| B1 M_D final vs heuristic (50 g) | 40 | 13 | 17 (3) | 29 | 13 | 13 |
+| B1 M_D final vs CP7 (25 g) | 23 | 4 | 9 (1) | 10 | 5 | 4 |
+| B1 M_D_s1end vs heuristic (50 g) | 8 | 2 | 5 (1) | 6 | 2 | 2 |
+| drill n003 (50 g) | 45 | 15 | 15 (4) | 30 | 15 | 15 |
+| drill n006 (50 g) | 40 | 17 | 8 (1) | 25 | 13 | 17 |
+| drill n009 (50 g) | 44 | 18 | 14 (3) | 29 | 15 | 18 |
+
+Reading: the Dimir main pays blight in most of its Requiting Hex casts, and in **every** forced self-destroy cast in these recordings. About half its blights land on an X/1 and kill that creature. So a single forced cast often costs two of its own creatures (the destroyed one and a blighted X/1). Blight is only visible when it is paid through a consult: a single own creature is chosen without one, so these counts are lower bounds. Whether the optional cost is offered as a separate yes/no choice is not measured. Also corrected: the `*_games.tsv` files written by the census before this change have a header 3 names short of their 21 columns (the self-removal columns); the tool writes 21 names from now on.
