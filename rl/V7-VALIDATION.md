@@ -3996,3 +3996,30 @@ training).** What the policies do read is the candidate's own afterstate row and
 game token — enough for removal to prefer the larger creature (DIM +0.16 [0.10, 0.23]
 over chance) and for instants to be cast when legal (0.077 at instant speed excluding
 forced counterspells, vs CP7 0.044), and nothing that depends on which card it is.
+
+## 10 / A3 — the landfall deck `rl/G1Landfall.dck`: smoke (2026-09-14; branch `v7/lane-d`)
+
+60 cards, R/G, 24 lands: 4 Evolving Wilds [ROE:228], 13 Forest [M19:277], 7 Mountain
+[FDN:278]; creatures (24, the landfall base): 4 Scythe Leopard [BFZ:188], 4 Plated Geopede
+[ZEN:141], 4 Snapping Gnarlid [BFZ:190], 2 Oran-Rief Survivalist [ZEN:174], 2 Lotus Cobra
+[ZEN:168], 3 Grazing Gladehart [ZEN:163], 3 Valakut Predator [BFZ:160], 2 Rampaging Baloths
+[ZEN:178]; land search (8): 4 Rampant Growth [M10:201], 2 Harrow [ZEN:165], 2 Nissa's
+Pilgrimage [ORI:190]; other (4): 2 Adventuring Gear [ZEN:195], 2 Khalni Heart Expedition
+[ZEN:167]. Set numbers resolved from the pinned `Mage.Sets` classes (WSL /home/user/mage,
+7554968c96); every name is in `rl/artifacts/cards_v1/index.json` (lower-cased keys).
+Territorial Baloths (a candidate) has no XMage class; not used. Basics reuse printings
+already in the project's decks. Copied to `Mage.Tests/`.
+
+Smoke (`bash rl/p10_a3_smoke.sh 7913 7785`; driver 7913 because the Phase 9 probe held 7911;
+artifacts `rl/artifacts/v7/10/a3/`): **20 games heuristic vs heuristic mirror: all end, 9–11
+(0.45), 0 draws, 0 stalls, 13.0 turns per game, 0 exceptions** (driver and JVM logs). 4-game
+v7 wire recording (echo policy pick 1 vs the heuristic): **wire_validate ok on 136 consults;
+all 16 distinct deck cards resolve to an embedding id (0 unknown cards)** — the 3 names
+without an id are stack-ability objects (the Baloths / Leopard landfall triggers, the
+Survivalist-style sacrifice-search ability), which are not cards. 13 turns vs W0Base's ~23:
+the heuristic mirror races (landfall bodies grow on every land drop); stated, not a fault.
+
+Cannot: say anything about how well an RL policy will play it (no reference, first
+number is the league's); the heuristic's play of Harrow / Evolving Wilds / Lotus Cobra mana
+is the engine AI's (the payment and library-search sub-choices are the engine's for the
+RL seat too).
