@@ -4360,3 +4360,25 @@ The health counter, as pre-stated ("should fall as mains harden"):
 **PFSP had little to work with.** Main PFSP pools held only the mains' own past snapshots.
 The per-snapshot p values mostly sit near 0.5–0.7, so the (1 − p)² weights stayed close to
 uniform.
+
+## Phase 10 verdict (2026-09-14)
+
+Opening the candidate-to-card path (`--cand-refers-pool`) made the untrained scorer
+card-sensitive (text Δp 0.052 vs 0.000; gate passed). Fresh per-deck self-play leagues with
+it then trained three mains in about 4k episodes each (one seed, stage 1 without a
+heuristic anchor). Only the Dimir main meets the pre-registered Q5:
+
+| main | home vs heuristic (100) | reference | note |
+|---|---|---|---|
+| M_D (Dimir) | 0.59 [0.492, 0.681] | 8a-b 0.41 | meets Q5 |
+| M_L (landfall) | 0.49 [0.394, 0.587] | none | not clear above its first probe, 0.28 |
+| M_W (W0Base) | 0.52 [0.423, 0.615] | C1 0.86 | clear below the reference; regression candidate from 0.72 pooled stage-1 probes |
+
+The cross-deck stage shows **no difference** on the pre-registered pooled unseen-opponent
+suite: 265/450 = 0.589 [0.543, 0.633] at `_s1end` vs 290/450 = 0.644 [0.599, 0.687] final.
+The per-main split is M_D clear up (0.37 → 0.64), M_W down (0.77 → 0.69), M_L flat. That
+split is confounded by more episodes and by the heuristic anchor returning in stage 2.
+
+Card-text sensitivity was sharpened in M_D (0.263) and M_L (0.086) but largely erased in M_W
+(0.0023, during stage 2). No keyword use is shown, and sensitivity is not use: the most
+card-sensitive main casts Requiting Hex on its own creature.
