@@ -1,0 +1,2 @@
+wire echo server on :7784 -> /mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/9/rec_cp7_dimir.jsonl
+connection 1 closed

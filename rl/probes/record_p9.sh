@@ -24,7 +24,7 @@ driver)
     echo "P9REC|driver|rc=$?|$(tail -1 $OUT/driver_start.log | cut -c1-100)"
     ;;
 cp7)
-    TAG=rec_cp7_dimir
+    TAG=rec_cp7_dimir${TAGSFX:-}
     rm -f $OUT/$TAG.jsonl
     python3 $LB/rl/wire_echo_server.py --port $EPORT --out $OUT/$TAG.jsonl --max-conns 1 --pick 0 > $OUT/$TAG.echo.log 2>&1 &
     EPID=$!; sleep 1
@@ -37,9 +37,10 @@ cp7)
     grep -h 'Exception\|refused\|RLJOB|error' $OUT/$TAG.driver.log | head -3
     ;;
 dim)
-    TAG=rec_dim_dimir
+    TAG=rec_dim_dimir${TAGSFX:-}
     CK=$LB/rl/artifacts/v7/8ab/s0/ck_512.pt
     rm -f $OUT/$TAG.jsonl
+    pkill -f "policy_serve[r].py --port $SPORT" 2>/dev/null; sleep 2
     : > $OUT/dim_server.log
     cd /home/user/CardGuru
     RL_TORCH_THREADS=1 setsid nohup python3 $RL/policy_server.py --port $SPORT --ckpt "$CK" --seed 0 \

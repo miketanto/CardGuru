@@ -3905,3 +3905,94 @@ Cannot: say the trained league nets will USE the path (that is Q7, after trainin
 anything about the P1 pair shortfall (19/12/6 text/pt/cost pairs, below the 40 pre-registered
 in Phase 9 — the same pairs, kept); the self_mana control moved 0.0040 → 0.0032 because the
 added term changes every referring candidate's token scale (not a fault).
+
+## 9 / P2 — removal targeting on Dimir: size-aware through the afterstate row, text not testable (2026-09-14; branch `v7/lane-d`)
+
+Recordings: the three Dimir echo sets (24 games) plus two fresh DIM argmax recordings on
+BenchDimir vs the heuristic (`rl/probes/record_p9.sh dim`: frozen 8ab ck_512 on 7947 with
+`--argmax-classes`, the new `rl/probes/record_proxy.py` on 7948 logging the driver's
+consults and the server's `{"a":k}` replies, driver 7911 with the v7 flags; 8 + 24 games,
+seeds 9100 / 9200; DIM 3–5 and 7–17, 16.4 / 20.3 turns; `rec_dim_dimir{,_b}.jsonl`, not
+committed). `bash rl/probes/run_p2.sh` → `rl/probes/target_probe.py`; summary
+`rl/artifacts/v7/9/target_probe_summary.txt`. **157 TARGET consults with k ≥ 2 creature
+targets** (90 from the DIM recordings, 67 from the echo sets); the equal-P/T-different-text
+subset is **n = 6 → "not testable at this n"** (pre-registered stop at n < 30; the Dimir
+mirror's creatures are Siren 1/1, Wasp 2/1, Drowner 2/1, Curiosity 4/3, Elektra 3/3,
+Cecil 2/3 — the only equal-stat pair is Wasp/Drowner and both carry text). The combat-
+optimiser reference was not built (not cheap). Chance = #largest-power targets / k per
+consult; diff = P(picks a largest) − chance, bootstrap 95 % CI over consults.
+
+| row | n | P(largest) | chance | diff [95 % CI] | reading | P(opponent's creature ∣ both sides offered) |
+|---|---|---|---|---|---|---|
+| DIM as recorded (lane server, LSTM state, argmax-classes) | 90 | 0.856 | 0.694 | **+0.162 [0.100, 0.227]** | size-aware | 1.000 (n = 28) |
+| DIM, memoryless argmax | 157 | 0.936 | 0.654 | +0.282 [0.233, 0.332] | size-aware | 1.000 (n = 45) |
+| BC | 157 | 0.936 | 0.654 | +0.282 [0.233, 0.332] | size-aware | 1.000 |
+| init | 157 | 0.879 | 0.654 | +0.225 [0.169, 0.281] | size-aware | 1.000 |
+| C1s0 | 157 | 0.624 | 0.654 | −0.030 [−0.086, 0.027] | not size-aware | **0.022** |
+| L0 | 157 | 0.631 | 0.654 | −0.023 [−0.079, 0.033] | not size-aware | **0.000** |
+
+The size signal is the TARGET candidate's own afterstate row (`v7_cand[12]` = power ÷ 6,
+[14] = mine), which P1 showed is the only thing the scorer reads per candidate: the
+*untrained* init is already "size-aware" (a random readout of the power field that
+happens to favour the larger), DIM and BC keep that sign, and the two W0Base PPO policies
+(C1s0, L0 — trained on a deck with no removal) have drifted to targeting their **own**
+creatures (0.02 / 0.00 opponent-side) at chance size. Nothing here is card knowledge:
+Cecil, Dark Knight (deathtouch) vs Elektra (3/3) is decided by the power field. Cannot:
+say anything about non-creature targets (excluded); test text-awareness (n = 6); separate
+"largest power" from "largest toughness" (correlated on these six creatures); attribute
+the recorded 0.856 vs memoryless 0.936 gap (LSTM state and the argmax-classes protocol
+differ; both are size-aware).
+
+## 9 / P3 — instant-speed play: forced by legality, not chosen (2026-09-14; branch `v7/lane-d`)
+
+`bash rl/probes/run_p3.sh` → `rl/probes/instant_speed.py`; summary
+`rl/artifacts/v7/9/instant_speed_summary.txt`. CP7 on BenchDimir vs the heuristic recorded
+through the teacher seat (`record_p9.sh cp7`, `rec_cp7_dimir{,_b}.jsonl`, 8 + 24 games,
+seeds 9100 / 9300, CP7 7–1 and 22–2, 16.4 / 16.3 turns, 1,104 labelled consults); DIM =
+the P2 recordings (1,969 consults). An "instant-capable cast" = a chosen SPELL whose
+referent is an instant (`v7_ent[31]`) or has flash (bit 42); "at instant speed" = the
+consult's game token says not the active player, or a non-main step, or a non-empty stack
+(in response). Counterspells (We Say Thee Nay!, Spell Pierce, Spell Snare) are legal only
+with a spell on the stack, so their timing is forced; they are split out.
+
+| seat | games | casts | instant-capable | at instant speed | fraction (Wilson) | excluding counterspells |
+|---|---|---|---|---|---|---|
+| CP7 (reference) | 32 | 231 | 148 | 14 | 0.095 [0.057, 0.153] | 6/136 = 0.044 [0.020, 0.093] |
+| DIM (8ab ck_512, argmax) | 32 | 333 | 254 | 71 | **0.280 [0.228, 0.338]** | 15/195 = **0.077 [0.047, 0.123]** |
+| CP7 on W0Base (7d1b, 1,400 games) | 1,400 | 12,171 | 0 | – | not testable: the deck has no instants | – |
+| heuristic (opponent rows) | 64 | 539 | 295 | – | **not measurable** (0/295 first reports find the spell still on the stack: the seat is never consulted while the opponent's spell is pending, so the wire cannot date the cast) | – |
+
+Per card (at instant speed / capable casts): DIM — We Say Thee Nay! **45/45**, Spell Snare
+8/11, Spell Pierce 3/3, Requiting Hex 13/49, Bitter Triumph 2/20, Nowhere to Run 0/18,
+Shoot the Sheriff 0/5, The Wondrous Wasp **0/34**, Floodpits Drowner **0/48**, Enduring
+Curiosity **0/21**; CP7 — We Say Thee Nay! 4/8, Spell Snare 3/3, Spell Pierce 1/1,
+Requiting Hex 3/19, Bitter Triumph 2/17, Nowhere to Run 1/12, Wasp 0/31, Drowner 0/36,
+Curiosity 0/20. Windows in which an instant-capable cast was offered: DIM 274 (cast in
+254 = 93 %), CP7 652 (cast in 148 = 23 %).
+
+**Pre-registered reading**: "instant-aware if DIM's fraction is clear above the
+heuristic's" — **not evaluable**: the heuristic's timing is not readable from the wire
+(above; its code, `HeuristicPlayer` v3, holds instants reactively and casts flash at the
+opponent's end step, but that is not a measurement). Against the reference: DIM's 0.280
+is clear above CP7's 0.095, and that gap is the 45/45 We Say Thee Nay! casts — a
+counterspell can only be cast at instant speed. **Excluding counterspells DIM is 0.077
+[0.047, 0.123] vs CP7 0.044 [0.020, 0.093], overlapping, and every flash creature (103
+casts) went down at sorcery speed.** DIM fires an instant-capable card in 93 % of the
+windows that offer one: it does not hold, it casts what is castable — the same
+"cast-anything" rule as its SPELL play (8a-b row), applied to instants. Reading: **not
+instant-aware beyond legality**. Cannot: distinguish "held on purpose" from "had no mana"
+(the 7 % non-counter instant-speed casts are not analysed for mana); the n is 32 games per
+seat; the heuristic reference is missing for the reason stated.
+
+## Phase 9 verdict (2026-09-14)
+
+**The v7 policy does not read card nuance — it cannot: in every checkpoint (init, C1s0,
+L0, BC, DIM) swapping a SPELL candidate's card for a same-cost/same-type/same-P/T card
+with different rules text moves its probability by ≤ 0.00004 (P/T, cost and type swaps ≤
+0.00014; 0 strict argmax flips in 11,839 identity swaps; 219/219 different-card same-row
+candidates exactly tied), because the `refers_to` attention bias that would let a
+candidate token look at its own card never left its zero initialisation (≤ 0.0027 after
+training).** What the policies do read is the candidate's own afterstate row and the
+game token — enough for removal to prefer the larger creature (DIM +0.16 [0.10, 0.23]
+over chance) and for instants to be cast when legal (0.077 at instant speed excluding
+forced counterspells, vs CP7 0.044), and nothing that depends on which card it is.

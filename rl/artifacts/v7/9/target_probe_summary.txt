@@ -1,0 +1,8 @@
+P2|consults_with_k>=2_creature_targets=157|files=5|by_file=rec_dim_dimir_b.jsonl:74,7c_BenchDimir_p99.jsonl:25,7c_BenchDimir_sf.jsonl:22,7c_BenchDimir_p1.jsonl:20,rec_dim_dimir.jsonl:16
+P2|equal_PT_different_text_subset|n=6
+P2|recorded_seat|n=90|P(largest)=0.856|chance=0.694|diff=0.162 [0.100,0.227]|size-aware|P(opp side | both offered)=1.000 (n=28)|equal-PT: picks keyworded nan (n=0)
+P2|init|n=157|P(largest)=0.879|chance=0.654|diff=0.225 [0.169,0.281]|size-aware|P(opp side | both offered)=1.000 (n=45)|equal-PT: picks keyworded 1.00 (n=4)
+P2|C1s0|n=157|P(largest)=0.624|chance=0.654|diff=-0.030 [-0.086,0.027]|not size-aware (interval covers 0)|P(opp side | both offered)=0.022 (n=45)|equal-PT: picks keyworded nan (n=0)
+P2|L0|n=157|P(largest)=0.631|chance=0.654|diff=-0.023 [-0.079,0.033]|not size-aware (interval covers 0)|P(opp side | both offered)=0.000 (n=45)|equal-PT: picks keyworded nan (n=0)
+P2|BC|n=157|P(largest)=0.936|chance=0.654|diff=0.282 [0.233,0.332]|size-aware|P(opp side | both offered)=1.000 (n=45)|equal-PT: picks keyworded 1.00 (n=4)
+P2|DIM|n=157|P(largest)=0.936|chance=0.654|diff=0.282 [0.233,0.332]|size-aware|P(opp side | both offered)=1.000 (n=45)|equal-PT: picks keyworded 1.00 (n=4)

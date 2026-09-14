@@ -1,0 +1,2 @@
+record proxy on :7948 -> :7947 -> /mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/9/rec_dim_dimir_b.jsonl
+connection 1 closed after 1619 lines
