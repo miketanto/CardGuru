@@ -201,8 +201,28 @@ class League:
             if r < acc:
                 bucket = b
                 break
+        # Amendment 3 (sampling shortfall, rl/PHASE10-LEAGUE.md): in stage 2 each main
+        # gets a quota on its REALIZED stage-2 shares - cross below 0.30 forces cross,
+        # else heur below 0.10 forces heur, else the MIX2 draw above stands. The draw is
+        # still consumed, so seeding / PFSP / resolve are unchanged.
+        label = bucket
+        if self.st["stage"] == 2:
+            cross_s, heur_s = self.stage2_shares(name)
+            if cross_s < 0.30:
+                bucket, label = "cross", "cross(quota)"
+            elif heur_s < 0.10:
+                bucket, label = "heur", "heur(quota)"
         opp, eff = self.resolve(name, bucket, rng)
-        return (bucket if eff == bucket else f"{bucket}->{eff}"), r, opp
+        return (label if eff == bucket else f"{label}->{eff}"), r, opp
+
+    def stage2_shares(self, name):
+        """Realized stage-2 shares of effective cross / heur blocks for a main (rc 0 rows;
+        a fallback counts as what it fell back to)."""
+        rows = [x for x in self.results() if x["learner"] == name and x["stage"] == "2" and x["rc"] == "0"]
+        if not rows:
+            return 0.0, 0.0
+        eff = [x["bucket"].split("->")[-1].replace("(quota)", "") for x in rows]
+        return eff.count("cross") / len(rows), eff.count("heur") / len(rows)
 
     def resolve(self, name, bucket, rng):
         L = self.st["learners"][name]
