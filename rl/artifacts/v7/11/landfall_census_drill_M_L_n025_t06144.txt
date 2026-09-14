@@ -1,0 +1,10 @@
+files=/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/11/rec_drill_M_L_n025_t06144.jsonl
+LC|drill_M_L_n025_t06144|games=50|W/L/D/cut=25/25/0/0|consults_with_choice=2309|no_choice=0|turns_per_game=13.16 [12.45,13.87] (n=50)
+LC|drill_M_L_n025_t06144|land_drops|per_game=4.92 [4.59,5.25] (n=50)|per_own_turn_with_a_consult=0.748 (246/329)
+LC|drill_M_L_n025_t06144|precombat_land_drop|on attack turns 155/155=1.000 [0.976,1.000]|all own turns 246/246=1.000 [0.985,1.000]
+LC|drill_M_L_n025_t06144|landfall_attacks|P(a landfall creature attacks | one can): with a land drop before the declaration 155/155=1.000 [0.976,1.000]; without 77/77=1.000 [0.952,1.000]
+LC|drill_M_L_n025_t06144|land_search|cast 90 of 1225 offering consults|precombat on a landfall-attack turn=84|by card:step Evolving Wilds:main1 18;Harrow:main1 18;Nissa's Pilgrimage:main1 13;Rampant Growth:main1 41
+LC|drill_M_L_n025_t06144|board|creatures_cast_per_game=4.48 [4.03,4.93] (n=50)
+LC|drill_M_L_n025_t06144|adventuring_gear|cast 26/53=0.491 [0.361,0.621]|equip 105/287=0.366 [0.312,0.423]
+LC|drill_M_L_n025_t06144|blocks|consults=144|blocked 71/144=0.493 [0.413,0.574]|small-into-big pairs (blocker P and T both lower) 48/76=0.632 [0.519,0.731] [source: recording]
+LC|drill_M_L_n025_t06144|blocks_audit|source=rec_drill_M_L_n025_t06144.audit.txt|combats=144|policy block pairs=69|small-into-big 43/69=0.623 [0.505,0.728]|of those the solver would not block 13/43=0.302 [0.186,0.451]|unparsed=0

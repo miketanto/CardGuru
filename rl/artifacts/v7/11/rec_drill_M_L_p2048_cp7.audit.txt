@@ -1,0 +1,188 @@
+RLGAME|reward=-1.0|seed=11500
+t6|  [audit] policy Grazing Gladehart 2/2->-- (score 0) | solver Grazing Gladehart 2/2->-- (score 0)  MATCH
+t7|  [atkaudit] policy Grazing Gladehart 2/2 (4, dealt 2, lost 0, killed 0, back 1) | ref Grazing Gladehart 2/2 (4)  MATCH
+t9|  [atkaudit] policy Grazing Gladehart 2/2 (0, dealt 0, lost 1, killed 1, back 0) | ref (none) (0)  MATCH
+t10|  [audit] policy Snapping Gnarlid 2/2->Plated Geopede 5/5 (score -2) | solver Snapping Gnarlid 2/2->-- (score 0)  GAP 2
+t12|  [audit] policy Snapping Gnarlid 2/2->Plated Geopede 5/5 (score -2) | solver Snapping Gnarlid 2/2->Plated Geopede 5/5 (score -2)  MATCH
+RLGAME|reward=1.0|seed=11501
+t5|  [audit] policy Oran-Rief Survivalist 2/2->-- (score 0) | solver Oran-Rief Survivalist 2/2->-- (score 0)  MATCH
+t6|  [atkaudit] policy Oran-Rief Survivalist 2/2 (0, dealt 0, lost 1, killed 1, back 0) | ref (none) (0)  MATCH
+t8|  [atkaudit] policy Grazing Gladehart 2/2 (0, dealt 0, lost 1, killed 1, back 2) | ref (none) (0)  MATCH
+t10|  [atkaudit] policy Snapping Gnarlid 4/4 (0, dealt 0, lost 1, killed 2, back 0) | ref (none) (0)  MATCH  | refCA Snapping Gnarlid 4/4 (0 vs policy 0)
+t11|  [audit] policy Valakut Predator 2/2->-- (score 0) | solver Valakut Predator 2/2->-- (score 0)  MATCH
+t12|  [atkaudit] policy Snapping Gnarlid 3/3 + Valakut Predator 4/4 (2, dealt 4, lost 1, killed 1, back 2) | ref Snapping Gnarlid 3/3 + Valakut Predator 4/4 (2)  MATCH  | refCA (none) (0 vs policy -2)
+t14|  [atkaudit] policy Snapping Gnarlid 3/3 + Valakut Predator 4/4 + Rampaging Baloths 6/6 (14, dealt 10, lost 1, killed 1, back 4) | ref Snapping Gnarlid 3/3 + Valakut Predator 4/4 + Rampaging Baloths 6/6 (14)  MATCH  | refCA Valakut Predator 4/4 + Rampaging Baloths 6/6 (8 vs policy 6)
+t16|  [atkaudit] policy Plated Geopede 3/3 + Snapping Gnarlid 3/3 + Beast Token 4/4 + Valakut Predator 4/4 + Rampaging Baloths 6/6 (26, dealt 7, lost 1, killed 3, back 2) | ref Plated Geopede 3/3 + Snapping Gnarlid 3/3 + Beast Token 4/4 + Valakut Predator 4/4 + Rampaging Baloths 6/6 (26)  MATCH
+RLGAME|reward=-1.0|seed=11502
+t4|  [audit] policy Lotus Cobra 2/1->-- (score 0) | solver Lotus Cobra 2/1->Scythe Leopard 2/2 (score 7)  GAP 7
+t5|  [atkaudit] policy Lotus Cobra 2/1 (-3, dealt 0, lost 1, killed 1, back 0) | ref (none) (0)  GAP 3 OVER
+t6|  [audit] policy Plated Geopede 1/1->-- (score 0) | solver Plated Geopede 1/1->-- (score 0)  MATCH
+t7|  [atkaudit] policy Plated Geopede 3/3 (6, dealt 3, lost 0, killed 0, back 2) | ref Plated Geopede 3/3 (6)  MATCH
+t8|  [audit] policy Plated Geopede 1/1->-- (score 0) | solver Plated Geopede 1/1->Scythe Leopard 4/4 (score 2)  GAP 2
+t9|  [atkaudit] policy Plated Geopede 3/3 + Plated Geopede 3/3 (12, dealt 6, lost 0, killed 0, back 0) | ref Plated Geopede 3/3 + Plated Geopede 3/3 (12)  MATCH
+t11|  [atkaudit] policy Plated Geopede 3/3 + Plated Geopede 3/3 (12, dealt 6, lost 0, killed 0, back 0) | ref Plated Geopede 3/3 + Plated Geopede 3/3 (12)  MATCH
+t12|  [audit] policy Scythe Leopard 1/1->-- (LETHAL) | solver Scythe Leopard 1/1->Oran-Rief Survivalist 2/2 (score -2)  AVOIDABLE DEATH
+RLGAME|reward=-1.0|seed=11503
+RLGAME|reward=-1.0|seed=11504
+t7|  [atkaudit] policy Plated Geopede 3/3 (6, dealt 3, lost 0, killed 0, back 2) | ref Plated Geopede 3/3 (6)  MATCH
+t8|  [audit] policy Grazing Gladehart 2/2->Valakut Predator 6/6 (score 0) | solver Grazing Gladehart 2/2->-- (score 0)  MATCH
+t9|  [atkaudit] policy Plated Geopede 3/3 (6, dealt 3, lost 0, killed 0, back 2) | ref Plated Geopede 3/3 (6)  MATCH
+t10|  [audit] policy Plated Geopede 1/1->--, Grazing Gladehart 2/2->-- (score 0) | solver Plated Geopede 1/1->Valakut Predator 14/14, Grazing Gladehart 2/2->-- (score 22)  GAP 22
+t11|  [atkaudit] policy Plated Geopede 1/1 + Plated Geopede 1/1 + Grazing Gladehart 2/2 (-1, dealt 1, lost 2, killed 2, back 0) | ref Plated Geopede 1/1 + Plated Geopede 1/1 (2)  GAP 3 OVER
+t12|  [audit] policy Plated Geopede 1/1->Valakut Predator 8/8 (score 10) | solver Plated Geopede 1/1->Valakut Predator 8/8 (score 10)  MATCH
+t13|  [atkaudit] policy Plated Geopede 1/1 + Grazing Gladehart 2/2 (4, dealt 2, lost 1, killed 1, back 0) | ref Grazing Gladehart 2/2 (4)  MATCH
+t15|  [atkaudit] policy Grazing Gladehart 2/2 + Valakut Predator 2/2 (-9, dealt 0, lost 2, killed 2, back 2) | ref (none) (0)  GAP 9 OVER
+t16|  [audit] policy Scythe Leopard 1/1->Lotus Cobra 2/1 (LETHAL) | solver Scythe Leopard 1/1->-- (LETHAL)  MATCH
+RLGAME|reward=-1.0|seed=11505
+t6|  [atkaudit] policy Plated Geopede 3/3 (6, dealt 3, lost 0, killed 0, back 1) | ref Plated Geopede 3/3 (6)  MATCH
+t7|  [audit] policy Grazing Gladehart 2/2->Plated Geopede 3/3 (score -6) | solver Grazing Gladehart 2/2->-- (score 0)  GAP 6
+t8|  [atkaudit] policy Plated Geopede 3/3 (6, dealt 3, lost 0, killed 0, back 1) | ref Plated Geopede 3/3 (6)  MATCH
+t10|  [atkaudit] policy Plated Geopede 3/3 (6, dealt 3, lost 0, killed 0, back 2) | ref Plated Geopede 3/3 (6)  MATCH
+t11|  [audit] policy Plated Geopede 1/1->Valakut Predator 4/4 (score 2) | solver Plated Geopede 1/1->Valakut Predator 4/4 (score 2)  MATCH
+t12|  [atkaudit] policy Plated Geopede 3/3 (3, dealt 0, lost 1, killed 2, back 0) | ref Plated Geopede 3/3 (3)  MATCH
+t13|  [audit] policy Plated Geopede 1/1->Lotus Cobra 2/1 (LETHAL) | solver Plated Geopede 1/1->-- (LETHAL)  MATCH
+RLGAME|reward=-1.0|seed=11506
+t5|  [atkaudit] policy Plated Geopede 1/1 (2, dealt 1, lost 0, killed 0, back 2) | ref Plated Geopede 1/1 (2)  MATCH  | refCA (none) (0 vs policy -2)
+t7|  [atkaudit] policy Plated Geopede 1/1 (2, dealt 1, lost 0, killed 0, back 0) | ref Plated Geopede 1/1 (2)  MATCH
+t9|  [atkaudit] policy Plated Geopede 5/5 (6, dealt 0, lost 0, killed 1, back 1) | ref Plated Geopede 5/5 (6)  MATCH
+t11|  [atkaudit] policy Plated Geopede 1/1 (0, dealt 0, lost 1, killed 1, back 0) | ref (none) (0)  MATCH
+t12|  [audit] policy Lotus Cobra 2/1->Lotus Cobra 2/1 (score 4) | solver Lotus Cobra 2/1->Lotus Cobra 2/1 (score 4)  MATCH
+t14|  [audit] policy Snapping Gnarlid 2/2->Plated Geopede 7/7 (score 2) | solver Snapping Gnarlid 2/2->Plated Geopede 7/7 (score 2)  MATCH
+t16|  [audit] policy Scythe Leopard 1/1->Plated Geopede 5/5, Valakut Predator 2/2->-- (score 4) | solver Scythe Leopard 1/1->Plated Geopede 5/5, Valakut Predator 2/2->-- (score 4)  MATCH
+t17|  [atkaudit] policy Valakut Predator 4/4 (8, dealt 4, lost 0, killed 0, back 0) | ref Valakut Predator 4/4 (8)  MATCH
+t19|  [atkaudit] policy Valakut Predator 6/6 (6, dealt 0, lost 0, killed 1, back 0) | ref Oran-Rief Survivalist 3/3 + Valakut Predator 6/6 (12)  GAP 6 UNDER
+t20|  [audit] policy Oran-Rief Survivalist 2/2->--, Oran-Rief Survivalist 3/3->-- (score 0) | solver Oran-Rief Survivalist 2/2->Grazing Gladehart 4/4, Oran-Rief Survivalist 3/3->Grazing Gladehart 4/4 (score 20)  GAP 20
+t21|  [atkaudit] policy Valakut Predator 4/4 (8, dealt 4, lost 0, killed 0, back 0) | ref Oran-Rief Survivalist 2/2 + Oran-Rief Survivalist 3/3 + Valakut Predator 4/4 (18)  GAP 10 UNDER
+t22|  [audit] policy Oran-Rief Survivalist 2/2->Grazing Gladehart 6/6, Oran-Rief Survivalist 3/3->-- (score 0) | solver Oran-Rief Survivalist 2/2->Grazing Gladehart 6/6, Oran-Rief Survivalist 3/3->-- (score 0)  MATCH
+t23|  [atkaudit] policy Valakut Predator 4/4 (8, dealt 4, lost 0, killed 0, back 0) | ref Oran-Rief Survivalist 3/3 + Valakut Predator 4/4 (14)  GAP 6 UNDER
+t25|  [atkaudit] policy Valakut Predator 2/2 (0, dealt 0, lost 1, killed 1, back 0) | ref (none) (0)  MATCH
+t26|  [audit] policy Scythe Leopard 1/1->Snapping Gnarlid 5/5, Oran-Rief Survivalist 3/3->-- (score 4) | solver Scythe Leopard 1/1->Snapping Gnarlid 5/5, Oran-Rief Survivalist 3/3->-- (score 4)  MATCH
+t27|  [atkaudit] policy Oran-Rief Survivalist 3/3 (6, dealt 3, lost 0, killed 0, back 0) | ref Oran-Rief Survivalist 3/3 (6)  MATCH
+RLGAME|reward=-1.0|seed=11507
+t4|  [atkaudit] policy Scythe Leopard 2/2 (4, dealt 2, lost 0, killed 0, back 0) | ref Scythe Leopard 2/2 (4)  MATCH
+t6|  [atkaudit] policy Scythe Leopard 2/2 + Snapping Gnarlid 3/3 (6, dealt 3, lost 1, killed 1, back 0) | ref Snapping Gnarlid 3/3 (6)  MATCH
+t8|  [atkaudit] policy Snapping Gnarlid 3/3 + Valakut Predator 4/4 (14, dealt 7, lost 0, killed 0, back 2) | ref Snapping Gnarlid 3/3 + Valakut Predator 4/4 (14)  MATCH
+t10|  [atkaudit] policy Snapping Gnarlid 2/2 + Valakut Predator 2/2 (-2, dealt 2, lost 1, killed 1, back 2) | ref (none) (0)  GAP 2 OVER
+t11|  [audit] policy Lotus Cobra 2/1->Snapping Gnarlid 4/4 (score -1) | solver Lotus Cobra 2/1->Oran-Rief Survivalist 2/2 (score 7)  GAP 8
+t12|  [atkaudit] policy Snapping Gnarlid 2/2 + Valakut Predator 2/2 (4, dealt 2, lost 1, killed 1, back 0) | ref Snapping Gnarlid 2/2 + Valakut Predator 2/2 (4)  MATCH
+t13|  [audit] policy Plated Geopede 1/1->-- (score 0) | solver Plated Geopede 1/1->-- (score 0)  MATCH
+t14|  [atkaudit] policy Plated Geopede 1/1 + Valakut Predator 2/2 (-4, dealt 1, lost 1, killed 1, back 2) | ref (none) (0)  GAP 4 OVER
+t15|  [audit] policy Grazing Gladehart 2/2->Valakut Predator 8/8 (score 4) | solver Grazing Gladehart 2/2->Valakut Predator 8/8 (score 4)  MATCH
+t16|  [atkaudit] policy Valakut Predator 2/2 (-6, dealt 0, lost 1, killed 1, back 2) | ref (none) (0)  GAP 6 OVER
+t17|  [audit] policy Snapping Gnarlid 2/2->Valakut Predator 4/4 (LETHAL) | solver Snapping Gnarlid 2/2->-- (LETHAL)  MATCH
+RLGAME|reward=-1.0|seed=11508
+t10|  [audit] policy Plated Geopede 1/1->Plated Geopede 13/13 (LETHAL) | solver Plated Geopede 1/1->-- (LETHAL)  MATCH
+RLGAME|reward=-1.0|seed=11509
+t4|  [atkaudit] policy Scythe Leopard 1/1 (2, dealt 1, lost 0, killed 0, back 0) | ref Scythe Leopard 1/1 (2)  MATCH
+t6|  [atkaudit] policy Scythe Leopard 1/1 + Scythe Leopard 1/1 (-4, dealt 1, lost 1, killed 0, back 2) | ref (none) (0)  GAP 4 OVER
+t8|  [atkaudit] policy Scythe Leopard 2/2 (4, dealt 2, lost 0, killed 0, back 0) | ref Scythe Leopard 2/2 (4)  MATCH
+t9|  [audit] policy Snapping Gnarlid 2/2->Valakut Predator 6/6 (score 0) | solver Snapping Gnarlid 2/2->Valakut Predator 6/6 (score 0)  MATCH
+t10|  [atkaudit] policy (none) (0, dealt 0, lost 0, killed 0, back 8) | ref (none) (0)  MATCH
+t11|  [audit] policy Scythe Leopard 1/1->Rampaging Baloths 6/6 (LETHAL) | solver Scythe Leopard 1/1->-- (LETHAL)  MATCH
+RLGAME|reward=1.0|seed=11510
+t3|  [atkaudit] policy Scythe Leopard 2/2 (4, dealt 2, lost 0, killed 0, back 0) | ref Scythe Leopard 2/2 (4)  MATCH
+t5|  [atkaudit] policy Scythe Leopard 2/2 + Snapping Gnarlid 3/3 (10, dealt 5, lost 0, killed 0, back 0) | ref Scythe Leopard 2/2 + Snapping Gnarlid 3/3 (10)  MATCH
+t7|  [atkaudit] policy Grazing Gladehart 2/2 + Scythe Leopard 2/2 + Snapping Gnarlid 3/3 (14, dealt 7, lost 0, killed 0, back 0) | ref Grazing Gladehart 2/2 + Scythe Leopard 2/2 + Snapping Gnarlid 3/3 (14)  MATCH
+t9|  [atkaudit] policy Grazing Gladehart 2/2 + Scythe Leopard 2/2 + Plated Geopede 3/3 + Snapping Gnarlid 3/3 (LETHAL, dealt 10, lost 0, killed 0, back 0) | ref Grazing Gladehart 2/2 + Scythe Leopard 2/2 + Plated Geopede 3/3 (LETHAL)  MATCH
+RLGAME|reward=1.0|seed=11511
+t4|  [atkaudit] policy Scythe Leopard 2/2 (4, dealt 2, lost 0, killed 0, back 1) | ref Scythe Leopard 2/2 (4)  MATCH
+t5|  [audit] policy Snapping Gnarlid 2/2->-- (score 0) | solver Snapping Gnarlid 2/2->-- (score 0)  MATCH
+t6|  [atkaudit] policy Scythe Leopard 2/2 + Snapping Gnarlid 3/3 (6, dealt 3, lost 1, killed 1, back 0) | ref Snapping Gnarlid 3/3 (6)  MATCH
+t8|  [atkaudit] policy Snapping Gnarlid 4/4 (8, dealt 4, lost 0, killed 0, back 0) | ref Snapping Gnarlid 4/4 (8)  MATCH
+t9|  [audit] policy Lotus Cobra 2/1->Plated Geopede 5/5, Snapping Gnarlid 2/2->-- (score 1) | solver Lotus Cobra 2/1->Plated Geopede 5/5, Snapping Gnarlid 2/2->-- (score 1)  MATCH
+t10|  [atkaudit] policy Snapping Gnarlid 2/2 + Snapping Gnarlid 2/2 (8, dealt 4, lost 0, killed 0, back 0) | ref Snapping Gnarlid 2/2 + Snapping Gnarlid 2/2 (8)  MATCH
+t11|  [audit] policy Grazing Gladehart 2/2->Plated Geopede 13/13 (score 14) | solver Grazing Gladehart 2/2->Plated Geopede 13/13 (score 14)  MATCH
+t12|  [atkaudit] policy Snapping Gnarlid 3/3 + Snapping Gnarlid 3/3 (12, dealt 6, lost 0, killed 0, back 0) | ref Snapping Gnarlid 3/3 + Snapping Gnarlid 3/3 (12)  MATCH
+t13|  [audit] policy Valakut Predator 2/2->Plated Geopede 5/5 (score -2) | solver Valakut Predator 2/2->-- (score 0)  GAP 2
+t14|  [atkaudit] policy Snapping Gnarlid 3/3 + Snapping Gnarlid 3/3 (LETHAL, dealt 6, lost 0, killed 0, back 2) | ref Snapping Gnarlid 3/3 + Snapping Gnarlid 3/3 (LETHAL)  MATCH
+RLGAME|reward=-1.0|seed=11512
+t3|  [atkaudit] policy Scythe Leopard 2/2 (4, dealt 2, lost 0, killed 0, back 1) | ref Scythe Leopard 2/2 (4)  MATCH
+t5|  [atkaudit] policy Scythe Leopard 2/2 (0, dealt 0, lost 1, killed 1, back 0) | ref (none) (0)  MATCH
+t8|  [audit] policy Grazing Gladehart 2/2->-- (score 0) | solver Grazing Gladehart 2/2->-- (score 0)  MATCH
+t9|  [atkaudit] policy Grazing Gladehart 2/2 (-6, dealt 0, lost 1, killed 1, back 4) | ref (none) (0)  GAP 6 OVER
+t10|  [audit] policy Scythe Leopard 1/1->Lotus Cobra 2/1 (score 7) | solver Scythe Leopard 1/1->Lotus Cobra 2/1 (score 7)  MATCH
+t11|  [atkaudit] policy Grazing Gladehart 2/2 (4, dealt 2, lost 0, killed 0, back 0) | ref Grazing Gladehart 2/2 (4)  MATCH
+t12|  [audit] policy Plated Geopede 1/1->Plated Geopede 5/5 (score 4) | solver Plated Geopede 1/1->Plated Geopede 5/5 (score 4)  MATCH
+t13|  [atkaudit] policy Grazing Gladehart 2/2 (4, dealt 2, lost 0, killed 0, back 1) | ref Grazing Gladehart 2/2 (4)  MATCH
+t15|  [atkaudit] policy Grazing Gladehart 2/2 (-6, dealt 0, lost 1, killed 1, back 3) | ref (none) (0)  GAP 6 OVER
+t17|  [atkaudit] policy Grazing Gladehart 2/2 + Oran-Rief Survivalist 2/2 (-18, dealt 0, lost 2, killed 1, back 11) | ref (none) (0)  GAP 18 OVER
+RLGAME|reward=-1.0|seed=11513
+t5|  [audit] policy Snapping Gnarlid 2/2->-- (score 0) | solver Snapping Gnarlid 2/2->-- (score 0)  MATCH
+t6|  [atkaudit] policy Snapping Gnarlid 3/3 (6, dealt 3, lost 0, killed 0, back 1) | ref Snapping Gnarlid 3/3 (6)  MATCH
+t8|  [atkaudit] policy Snapping Gnarlid 4/4 (6, dealt 0, lost 0, killed 1, back 0) | ref Snapping Gnarlid 4/4 (6)  MATCH
+t9|  [audit] policy Plated Geopede 1/1->Snapping Gnarlid 3/3 (score 0) | solver Plated Geopede 1/1->-- (score 0)  MATCH
+t10|  [atkaudit] policy Snapping Gnarlid 3/3 (6, dealt 3, lost 0, killed 0, back 1) | ref Snapping Gnarlid 3/3 (6)  MATCH
+t11|  [audit] policy Grazing Gladehart 2/2->Plated Geopede 3/3 (score -6) | solver Grazing Gladehart 2/2->-- (score 0)  GAP 6
+t12|  [atkaudit] policy Snapping Gnarlid 3/3 (0, dealt 0, lost 1, killed 2, back 0) | ref (none) (0)  MATCH  | refCA Snapping Gnarlid 3/3 (0 vs policy 0)
+t13|  [audit] policy Lotus Cobra 2/1->Plated Geopede 3/3 (LETHAL) | solver Lotus Cobra 2/1->-- (LETHAL)  MATCH
+RLGAME|reward=-1.0|seed=11514
+t5|  [atkaudit] policy Snapping Gnarlid 3/3 (6, dealt 3, lost 0, killed 0, back 2) | ref Snapping Gnarlid 3/3 (6)  MATCH
+t7|  [atkaudit] policy Snapping Gnarlid 2/2 (4, dealt 2, lost 0, killed 0, back 1) | ref Snapping Gnarlid 2/2 (4)  MATCH
+t8|  [audit] policy Oran-Rief Survivalist 2/2->-- (score 0) | solver Oran-Rief Survivalist 2/2->-- (score 0)  MATCH
+t9|  [atkaudit] policy Snapping Gnarlid 5/5 (6, dealt 0, lost 0, killed 1, back 0) | ref Snapping Gnarlid 5/5 (6)  MATCH
+t10|  [audit] policy Oran-Rief Survivalist 2/2->-- (score 0) | solver Oran-Rief Survivalist 2/2->Snapping Gnarlid 8/8 (score 4)  GAP 4
+t11|  [atkaudit] policy Oran-Rief Survivalist 2/2 + Snapping Gnarlid 2/2 (-2, dealt 2, lost 1, killed 1, back 2) | ref (none) (0)  GAP 2 OVER
+t12|  [audit] policy Grazing Gladehart 2/2->Grazing Gladehart 2/2 (LETHAL) | solver Grazing Gladehart 2/2->-- (LETHAL)  MATCH
+RLGAME|reward=-1.0|seed=11515
+t4|  [atkaudit] policy Scythe Leopard 3/3 (6, dealt 3, lost 0, killed 0, back 1) | ref Scythe Leopard 3/3 (6)  MATCH
+t6|  [atkaudit] policy Scythe Leopard 1/1 (0, dealt 0, lost 1, killed 1, back 0) | ref (none) (0)  MATCH
+t7|  [audit] policy Snapping Gnarlid 2/2->Plated Geopede 3/3 (score -6) | solver Snapping Gnarlid 2/2->-- (score 0)  GAP 6
+t9|  [audit] policy Grazing Gladehart 2/2->Valakut Predator 6/6 (score 0) | solver Grazing Gladehart 2/2->Valakut Predator 6/6 (score 0)  MATCH
+t11|  [audit] policy Grazing Gladehart 2/2->Valakut Predator 4/4 (LETHAL) | solver Grazing Gladehart 2/2->-- (LETHAL)  MATCH
+RLGAME|reward=-1.0|seed=11516
+t5|  [atkaudit] policy Snapping Gnarlid 3/3 (6, dealt 3, lost 0, killed 0, back 2) | ref Snapping Gnarlid 3/3 (6)  MATCH
+t6|  [audit] policy Oran-Rief Survivalist 2/2->-- (score 0) | solver Oran-Rief Survivalist 2/2->-- (score 0)  MATCH
+t7|  [atkaudit] policy Snapping Gnarlid 3/3 (0, dealt 0, lost 1, killed 2, back 0) | ref (none) (0)  MATCH
+t8|  [audit] policy Grazing Gladehart 2/2->--, Oran-Rief Survivalist 2/2->-- (score 0) | solver Grazing Gladehart 2/2->Plated Geopede 3/3, Oran-Rief Survivalist 2/2->Plated Geopede 3/3 (score 12)  GAP 12
+t9|  [atkaudit] policy Grazing Gladehart 2/2 + Oran-Rief Survivalist 2/2 + Snapping Gnarlid 4/4 (6, dealt 6, lost 1, killed 1, back 2) | ref Snapping Gnarlid 4/4 (6)  MATCH
+t10|  [audit] policy Scythe Leopard 1/1->-- (score 0) | solver Scythe Leopard 1/1->-- (score 0)  MATCH
+t11|  [atkaudit] policy Grazing Gladehart 2/2 + Scythe Leopard 2/2 + Snapping Gnarlid 3/3 (10, dealt 5, lost 1, killed 1, back 0) | ref Grazing Gladehart 2/2 + Scythe Leopard 2/2 + Snapping Gnarlid 3/3 (10)  MATCH
+t13|  [atkaudit] policy Grazing Gladehart 2/2 + Snapping Gnarlid 2/2 (4, dealt 2, lost 1, killed 1, back 0) | ref Grazing Gladehart 2/2 + Snapping Gnarlid 2/2 (4)  MATCH
+t15|  [atkaudit] policy Grazing Gladehart 2/2 + Grazing Gladehart 2/2 (-9, dealt 0, lost 2, killed 2, back 2) | ref (none) (0)  GAP 9 OVER
+RLGAME|reward=-1.0|seed=11517
+t5|  [audit] policy Oran-Rief Survivalist 2/2->-- (score 0) | solver Oran-Rief Survivalist 2/2->-- (score 0)  MATCH
+t6|  [atkaudit] policy Oran-Rief Survivalist 2/2 (4, dealt 2, lost 0, killed 0, back 0) | ref Oran-Rief Survivalist 2/2 (4)  MATCH
+t7|  [audit] policy Grazing Gladehart 2/2->Plated Geopede 5/5 (score -2) | solver Grazing Gladehart 2/2->-- (score 0)  GAP 2
+t8|  [atkaudit] policy Oran-Rief Survivalist 2/2 (0, dealt 0, lost 1, killed 1, back 0) | ref (none) (0)  MATCH
+RLGAME|reward=-1.0|seed=11518
+t7|  [atkaudit] policy Grazing Gladehart 2/2 (-6, dealt 0, lost 1, killed 1, back 2) | ref (none) (0)  GAP 6 OVER
+t8|  [audit] policy Oran-Rief Survivalist 2/2->--, Valakut Predator 2/2->-- (score 0) | solver Oran-Rief Survivalist 2/2->Plated Geopede 3/3, Valakut Predator 2/2->Plated Geopede 3/3 (score 12)  GAP 12
+t9|  [atkaudit] policy Grazing Gladehart 2/2 + Oran-Rief Survivalist 2/2 + Valakut Predator 4/4 (12, dealt 6, lost 1, killed 1, back 0) | ref Grazing Gladehart 2/2 + Oran-Rief Survivalist 2/2 + Valakut Predator 4/4 (12)  MATCH
+t11|  [atkaudit] policy Grazing Gladehart 2/2 + Valakut Predator 4/4 (12, dealt 6, lost 0, killed 0, back 0) | ref Grazing Gladehart 2/2 + Valakut Predator 4/4 (12)  MATCH
+RLGAME|reward=-1.0|seed=11519
+t5|  [audit] policy Scythe Leopard 1/1->-- (score 0) | solver Scythe Leopard 1/1->Snapping Gnarlid 5/5 (score 4)  GAP 4
+t6|  [atkaudit] policy Scythe Leopard 2/2 (4, dealt 2, lost 0, killed 0, back 1) | ref Scythe Leopard 2/2 (4)  MATCH
+t7|  [audit] policy Grazing Gladehart 2/2->Plated Geopede 9/9 (score 6) | solver Grazing Gladehart 2/2->Plated Geopede 9/9 (score 6)  MATCH
+t8|  [atkaudit] policy Scythe Leopard 1/1 (2, dealt 1, lost 0, killed 0, back 0) | ref Scythe Leopard 1/1 (2)  MATCH
+t9|  [audit] policy Scythe Leopard 1/1->Snapping Gnarlid 8/8, Lotus Cobra 2/1->-- (score 10) | solver Scythe Leopard 1/1->Snapping Gnarlid 8/8, Lotus Cobra 2/1->Plated Geopede 5/5 (score 11)  GAP 1
+t10|  [atkaudit] policy Scythe Leopard 1/1 + Lotus Cobra 2/1 (6, dealt 3, lost 0, killed 0, back 0) | ref Scythe Leopard 1/1 + Lotus Cobra 2/1 (6)  MATCH
+t11|  [audit] policy Plated Geopede 1/1->Plated Geopede 5/5, Scythe Leopard 1/1->-- (score 4) | solver Plated Geopede 1/1->Plated Geopede 5/5, Scythe Leopard 1/1->-- (score 4)  MATCH
+t12|  [atkaudit] policy Lotus Cobra 2/1 + Scythe Leopard 2/2 + Scythe Leopard 2/2 (5, dealt 4, lost 1, killed 1, back 0) | ref Scythe Leopard 2/2 + Scythe Leopard 2/2 (8)  GAP 3 OVER
+t13|  [audit] policy Oran-Rief Survivalist 2/2->Snapping Gnarlid 8/8, Valakut Predator 2/2->Plated Geopede 5/5 (LETHAL) | solver Oran-Rief Survivalist 2/2->--, Valakut Predator 2/2->-- (LETHAL)  MATCH
+RLGAME|reward=-1.0|seed=11520
+t7|  [atkaudit] policy Grazing Gladehart 2/2 (0, dealt 0, lost 1, killed 1, back 2) | ref (none) (0)  MATCH
+t8|  [audit] policy Valakut Predator 2/2->-- (score 0) | solver Valakut Predator 2/2->Snapping Gnarlid 8/8 (score 4)  GAP 4
+t9|  [atkaudit] policy Valakut Predator 2/2 (4, dealt 2, lost 0, killed 0, back 0) | ref Valakut Predator 2/2 (4)  MATCH
+t10|  [audit] policy Plated Geopede 1/1->--, Lotus Cobra 2/1->-- (score 0) | solver Plated Geopede 1/1->Snapping Gnarlid 5/5, Lotus Cobra 2/1->-- (score 4)  GAP 4
+t11|  [atkaudit] policy Lotus Cobra 2/1 + Plated Geopede 3/3 + Valakut Predator 4/4 (-14, dealt 5, lost 1, killed 0, back 6) | ref (none) (0)  GAP 14 OVER
+RLGAME|reward=-1.0|seed=11521
+t9|  [audit] policy Valakut Predator 2/2->Snapping Gnarlid 5/5 (score -2) | solver Valakut Predator 2/2->Snapping Gnarlid 5/5 (score -2)  MATCH
+t11|  [audit] policy Scythe Leopard 1/1->Snapping Gnarlid 5/5, Valakut Predator 2/2->-- (score 4) | solver Scythe Leopard 1/1->Snapping Gnarlid 5/5, Valakut Predator 2/2->-- (score 4)  MATCH
+t12|  [atkaudit] policy Valakut Predator 4/4 (8, dealt 4, lost 0, killed 0, back 2) | ref Valakut Predator 4/4 (8)  MATCH
+RLGAME|reward=-1.0|seed=11522
+t5|  [atkaudit] policy Plated Geopede 3/3 (6, dealt 3, lost 0, killed 0, back 0) | ref Plated Geopede 3/3 (6)  MATCH
+t7|  [atkaudit] policy Plated Geopede 5/5 (10, dealt 5, lost 0, killed 0, back 2) | ref Plated Geopede 5/5 (10)  MATCH
+t9|  [atkaudit] policy Plated Geopede 5/5 (10, dealt 5, lost 0, killed 0, back 0) | ref Plated Geopede 5/5 (10)  MATCH
+RLGAME|reward=-1.0|seed=11523
+t4|  [atkaudit] policy Scythe Leopard 3/3 (6, dealt 3, lost 0, killed 0, back 0) | ref Scythe Leopard 3/3 (6)  MATCH
+t6|  [atkaudit] policy Scythe Leopard 2/2 (4, dealt 2, lost 0, killed 0, back 0) | ref Scythe Leopard 2/2 (4)  MATCH
+t8|  [atkaudit] policy Scythe Leopard 2/2 + Plated Geopede 3/3 (0, dealt 3, lost 1, killed 1, back 2) | ref (none) (0)  MATCH
+t10|  [atkaudit] policy (none) (0, dealt 0, lost 0, killed 0, back 0) | ref (none) (0)  MATCH
+t11|  [audit] policy Plated Geopede 1/1->Rampaging Baloths 6/6, Scythe Leopard 1/1->-- (score 6) | solver Plated Geopede 1/1->Rampaging Baloths 6/6, Scythe Leopard 1/1->Plated Geopede 5/5 (score 10)  GAP 4
+RLGAME|reward=-1.0|seed=11524
+t5|  [atkaudit] policy Snapping Gnarlid 3/3 (6, dealt 3, lost 0, killed 0, back 2) | ref Snapping Gnarlid 3/3 (6)  MATCH
+t7|  [atkaudit] policy Snapping Gnarlid 3/3 (6, dealt 3, lost 0, killed 0, back 2) | ref Snapping Gnarlid 3/3 (6)  MATCH
+t9|  [atkaudit] policy Snapping Gnarlid 4/4 (8, dealt 4, lost 0, killed 0, back 2) | ref Snapping Gnarlid 4/4 (8)  MATCH
+t10|  [audit] policy Oran-Rief Survivalist 2/2->-- (score 0) | solver Oran-Rief Survivalist 2/2->-- (score 0)  MATCH
+t11|  [atkaudit] policy Snapping Gnarlid 4/4 (0, dealt 0, lost 1, killed 2, back 0) | ref Oran-Rief Survivalist 2/2 + Snapping Gnarlid 4/4 (4)  GAP 4 UNDER
+t12|  [audit] policy Oran-Rief Survivalist 2/2->-- (LETHAL) | solver Oran-Rief Survivalist 2/2->-- (LETHAL)  MATCH

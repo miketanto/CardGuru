@@ -4411,3 +4411,89 @@ Split (the census tool now reports it; destroy vs blight is told apart by the co
 | drill n009 (50 g) | 44 | 18 | 14 (3) | 29 | 15 | 18 |
 
 Reading: the Dimir main pays blight in most of its Requiting Hex casts, and in **every** forced self-destroy cast in these recordings. About half its blights land on an X/1 and kill that creature. So a single forced cast often costs two of its own creatures (the destroyed one and a blighted X/1). Blight is only visible when it is paid through a consult: a single own creature is chosen without one, so these counts are lower bounds. Whether the optional cost is offered as a separate yes/no choice is not measured. Also corrected: the `*_games.tsv` files written by the census before this change have a header 3 names short of their 21 columns (the self-removal columns); the tool writes 21 names from now on.
+
+## 11 / B1 — baseline census of the Phase 10 mains (2026-09-14; 50 argmax games vs the heuristic + 25 vs CP7 per checkpoint, own mirror; development-probe scale)
+
+`rl/run_b1_census.sh` → `rl/record_census.sh` (frozen eval server, record proxy, fresh driver JVM). It is faithful to the evaluation battery: `M_D_s1end` scored 10/50 in the recorder vs 27/100 = 0.270 [0.193, 0.364] through `battery_xdeck.sh`, and `M_D_04096` 25/50 vs the evaluation's 0.590 (section "Addendum to Q6"). Table `rl/artifacts/v7/11/b1_summary.txt`; per row `rec_b1_*.counts.txt`.
+
+| checkpoint vs | win rate | removal cast with only own creatures legal | counterspell cast / offered | flash cast on opp. turn or in response | ninjutsu taken / offered | removal on the biggest enemy | creatures / game |
+|---|---|---|---|---|---|---|---|
+| M_D_s1end (1,792) vs heuristic | 0.200 [0.112, 0.330] | 2/432 | 4/102 | 9/56 | 3/3 | 2/8 | 2.40 |
+| M_D_s1end vs CP7 | 0.000 [0.000, 0.133] | 1/33 | 3/40 | 4/17 | 1/1 | 1/2 | 1.48 |
+| M_D final (4,096) vs heuristic | 0.500 [0.366, 0.634] | 23/23 | 54/56 | 1/173 | 6/6 | 37/44 | 4.34 |
+| M_D final vs CP7 | 0.280 [0.143, 0.476] | 7/7 | 26/26 | 0/74 | 1/1 | 18/24 | 3.44 |
+
+| checkpoint vs | win rate | small-into-big block pairs (solver would not block) | land search cast / offered | creatures / game |
+|---|---|---|---|---|
+| M_L_s1end vs heuristic | 0.320 [0.208, 0.458] | 121/187 (43/106) | 127/282 | 5.26 |
+| M_L_s1end vs CP7 | 0.320 [0.172, 0.516] | 71/72 (31/63) | 72/135 | 5.12 |
+| M_L final (3,840) vs heuristic | 0.580 [0.442, 0.706] | 9/13 (1/6) | 98/248 | 4.12 |
+| M_L final vs CP7 | 0.200 [0.089, 0.391] | 13/14 (2/12) | 57/114 | 3.44 |
+
+Reading: between its stage-1 end and its final checkpoint, the Dimir main moved from holding its cards to firing everything castable. That includes destroying its own creature every time removal had only its own creatures as legal targets (30/30; blight is counted separately in "11 — measurement check"). It never casts a flash card on the opponent's turn. The landfall main's final blocks far less (13 small-into-big block pairs in 50 games vs 187), and the blocks it makes are mostly ones the solver agrees with. The precombat land-drop share and landfall-attack counters read 1.000 on every row. They look saturated, are not verified against a transcript, and are not reported.
+
+## 11 / B2 — the drill-down continuation: STOPPED EARLY BY USER DECISION at the +2,048 point (2026-09-14; branch `v7/lane-d`)
+
+Run: `rl/league11.py` (= `rl/league10.py` plus the Phase 11 changes: seeded from the Phase 10 state with the lane dirs copied, M_W frozen at M_W_04096, cross over every other main, 100-game levels every +1,024) via `rl/chain11.sh` after B1.
+- It started at 15:50:21Z.
+- It was stopped once by stopfile for Amendment 3, the per-block census (`--census-every-block`), and resumed at 16:39Z with `--hours 13`.
+- **The user stopped it at ~21:55Z.** The main session killed it mid-block (`rl/stop_drill11.sh`) while exploiter X_D was training. That block, n=26, was lost; no learner state was lost. The last completed blocks are n=24 (M_D, 6,400 episodes) and n=25 (M_L, 6,144).
+- Of the 26 blocks, 18 were for the mains. Their opponents: M_D cross 3 / self 3 / pfsp 1 / expl 1 / heur 1; M_L cross 3 / pfsp 3 / self 1 / expl 1 / heur 1. That is **16 of 18 against league-internal opponents, 2 against the heuristic and 0 against CP7**.
+- Exploiters X_D and X_L (4 blocks each, mean training win rate 0.13 / 0.18) both reset after 4 blocks without entering a pool.
+
+Artifacts: `rl/artifacts/v7/11/drill/` (league11.log, results.tsv, state.json, census_lines.txt) and `rl/artifacts/v7/11/rec_drill_*`.
+
+**Levels (100 games vs the heuristic, own mirror; the pre-registered yardstick):**
+
+| main | start (P10 evaluation) | +1,024 | +2,048 | +3,072 / +4,096 | vs CP7 (not a pre-registered level) |
+|---|---|---|---|---|---|
+| M_D | 0.590 [0.492, 0.681] | 0.620 [0.522, 0.709] | 0.590 [0.492, 0.681] | not reached | 0.170 [0.109, 0.255] (P10, 100 g) → 5/25 = 0.20 [0.089, 0.391] at +2,048 |
+| M_L | 0.490 [0.394, 0.587] | 0.410 [0.319, 0.508] | 0.530 [0.433, 0.625] | not reached | 0.37 (P10, 100 g) → 3/25 = 0.12 [0.042, 0.300] at +2,048 |
+
+Pre-registered reading: **plateau for both mains** (every point inside the first point's interval), on **two of the four planned points**. The CP7 rows are 25-game checks, not levels.
+
+**Per-block census (Amendment 3; 50 argmax games vs the heuristic after every main block, seed 11000 each time; development probes). This is the main result:**
+
+| M_D block (episodes) | win / 50 | self-destroy cast / offered | counterspell | flash on opp. turn / resp. | ninjutsu | biggest | creatures / game | consults / game |
+|---|---|---|---|---|---|---|---|---|
+| n3 (4,608) | 27 | 24/24 | 61/61 | 2/166 | 8/10 | 35/42 | 4.60 | 63.5 |
+| n6 (4,864) | 22 | 24/50 | 33/148 | 30/123 | 2/12 | 19/26 | 3.50 | 88.2 |
+| n9 (5,120) | 24 | 28/28 | 58/61 | 5/172 | 10/10 | 32/37 | 4.46 | 35.9 |
+| n12 (5,376) | 29 | 30/32 | 72/85 | 22/162 | 5/6 | 37/44 | 4.26 | 48.4 |
+| n15 (5,632) | 29 | 28/38 | 51/83 | 49/107 | 6/6 | 28/38 | 3.10 | 94.9 |
+| n18 (5,888) | 23 | 17/43 | 22/127 | 50/57 | 11/11 | 28/34 | 1.90 | 106.4 |
+| n21 (6,144) | 30 | 25/40 | 35/88 | 39/153 | 7/8 | 32/41 | 4.14 | 63.7 |
+| n21 vs CP7 (25 g) | 5/25 | 12/16 | 15/42 | 12/64 | 2/2 | 10/15 | 3.40 | 69.6 |
+| n24 (6,400) | 25 | 25/25 | 61/68 | 6/170 | 6/8 | 35/46 | 4.54 | 61.4 |
+
+| M_L block (episodes) | win / 50 | small-into-big block pairs (solver would not block) | land search cast / offered | creatures / game | consults / game |
+|---|---|---|---|---|---|
+| n4 (4,352) | 27 | 5/13 (1/2) | 99/231 | 4.08 | 23.4 |
+| n7 (4,608) | 28 | 35/57 (12/32) | 112/715 | 4.56 | 35.9 |
+| n10 (4,864) | 24 | 92/171 (29/83) | 131/324 | 5.34 | 32.0 |
+| n13 (5,120) | 17 | 118/195 (47/108) | 130/294 | 5.40 | 36.4 |
+| n16 (5,376) | 21 | 109/183 (36/96) | 121/317 | 5.40 | 33.5 |
+| n19 (5,632) | 19 | 79/136 (18/70) | 106/698 | 4.94 | 38.7 |
+| n22 (5,888) | 30 | 45/74 (10/39) | 98/576 | 4.70 | 33.0 |
+| n22 vs CP7 (25 g) | 3/25 | 35/40 (9/29) | 53/368 | 4.00 | 32.2 |
+| n25 (6,144) | 25 | 48/76 (13/43) | 90/1,225 | 4.48 | 46.2 |
+
+Readings:
+- **Dimir's card use swung and did not converge.** Its counters went through three full swings between "cast everything" and "hold everything". Cast everything: self-destroy about 1.0, counterspells about 1.0, flash on the opponent's turn about 0.02, 35–64 consults per game (n3, n9, n12, n24). Hold everything: counterspells 0.17–0.61, flash on the opponent's turn up to 0.88, creatures per game down to 1.9, 88–106 consults per game (n6, n15, n18). The self-destroy counter never settled near CP7's 0 (0.40–1.00 across the run; CP7 0/164 in the Phase 9 reference).
+- **Landfall's block restraint eroded.** The small-into-big block count went from the Phase 10 final's 13 per 50 games back to the stage-1-end level (171–195 at n10–n16, 76 at n25). The small-into-big share of blocks stayed about 0.6 throughout. So what changed is how often it blocks, not how it picks. Land search swung to being held: the cast count stayed at 90–131 while the offers grew to 1,225.
+- **The win rate barely moved through all of this.** It stayed at 22–30 of 50 for M_D and 17–30 of 50 for M_L.
+
+**Leading hypothesis (put forward by the user): self-play drift.**
+- About 90 % of the training opponents are league-internal and move with the learner (16 of 18 main blocks here). The only fixed opponent is the heuristic, at about 10 % (2 blocks). CP7 is absent from the training pool. The exploiters never entered a pool in five resets (Phase 10 and here).
+- Supporting evidence: in-league win rates of 70–87 % against flat fixed-opponent levels (Phase 10 rows; here M_D beat its own M_D_01792 216/256 = 0.84 in block n9 while its heuristic level stayed at 0.59–0.62). The oscillation of card use between opposite policies with a flat heuristic win rate is what a learner chasing moving opponents would show. The project's best result, L0 (0.91 at +1,024), was a continuation trained against the heuristic only.
+- **What it does not prove:** this is one seed per main. There was no control arm on fixed opponents in this phase. The coarse terminal reward (win / loss only) would also flatten the levels on its own. The per-block censuses are 50-game development probes.
+
+Also recorded in Phase 11: the recorder-faithfulness check (5be785c), the Q6 addendum (169d6ba), census transcripts kept per recording (69b0843), the Requiting Hex blight / destroy measurement check (3014f62; the self-destroy figures stand), and the correction to 9 / P3 (d2a8b45).
+
+## Phase 11 verdict (2026-09-14)
+
+**Dimir:** over +2,048 episodes of league continuation its heuristic level did not move (0.59 → 0.62 → 0.59; plateau on two of the four planned points), and against CP7 it stayed low (0.20 [0.089, 0.391] over 25 games at +2,048, vs 0.17 at the start). Its card use did not converge. Per-block censuses swung three times between casting everything (self-destroy about 1.0, counterspells about 1.0, flash on the opponent's turn about 0.02) and holding everything (counterspells 0.17–0.61, flash on the opponent's turn up to 0.88, 1.9 creatures per game). It never stopped destroying its own creatures when removal had only its own targets (0.40–1.00, vs CP7's 0/164).
+
+**Landfall:** also a plateau (0.49 → 0.41 → 0.53 vs the heuristic), and 0.12 [0.042, 0.300] vs CP7 at +2,048. Its Phase 10 block restraint (13 small-into-big pairs per 50 games) eroded back to the stage-1-end level (up to 195), and its land search swung to being held (90 cast of 1,225 offers).
+
+The leading hypothesis is self-play drift: 16 of 18 main blocks faced league-internal opponents that move with the learner, the heuristic was the only fixed opponent, and CP7 was never in the pool. That motivates a CP7 warm start to competence before any self-play league (`rl/PHASE12-CP7.md`). It rests on one seed and no fixed-opponent control, and the coarse terminal reward alone could also flatten the levels.

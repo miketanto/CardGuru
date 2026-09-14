@@ -1,0 +1,10 @@
+CENSUSREC|drill_M_L_n007_t04608|rc=0|ckpt=/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/11/drill/pool/M_L_04608.pt|deck=G1Landfall|opp=heuristic|games=50|seed=11000|consults=1795|acts=1795|ends=50|wins=28 losses=22 draws=0 stalls=0 turns_per_ep=13.1|cand_refers_pool=True|rlgame_blocks=50|audit_lines=136
+LC|drill_M_L_n007_t04608|games=50|W/L/D/cut=28/22/0/0|consults_with_choice=1795|no_choice=0|turns_per_game=13.10 [12.43,13.77] (n=50)
+LC|drill_M_L_n007_t04608|land_drops|per_game=4.98 [4.65,5.31] (n=50)|per_own_turn_with_a_consult=0.757 (249/329)
+LC|drill_M_L_n007_t04608|precombat_land_drop|on attack turns 132/132=1.000 [0.972,1.000]|all own turns 249/249=1.000 [0.985,1.000]
+LC|drill_M_L_n007_t04608|landfall_attacks|P(a landfall creature attacks | one can): with a land drop before the declaration 132/135=0.978 [0.937,0.992]; without 74/74=1.000 [0.951,1.000]
+LC|drill_M_L_n007_t04608|land_search|cast 112 of 715 offering consults|precombat on a landfall-attack turn=92|by card:step Evolving Wilds:main1 27;Evolving Wilds:main2 2;Evolving Wilds:opp_damage 2;Evolving Wilds:opp_main1 2;Harrow:main1 21;Nissa's Pilgrimage:main1 13;Rampant Growth:main1 45
+LC|drill_M_L_n007_t04608|board|creatures_cast_per_game=4.56 [4.14,4.98] (n=50)
+LC|drill_M_L_n007_t04608|adventuring_gear|cast 23/36=0.639 [0.476,0.775]|equip 75/237=0.316 [0.261,0.378]
+LC|drill_M_L_n007_t04608|blocks|consults=136|blocked 53/136=0.390 [0.312,0.474]|small-into-big pairs (blocker P and T both lower) 35/57=0.614 [0.484,0.729] [source: recording]
+LC|drill_M_L_n007_t04608|blocks_audit|source=rec_drill_M_L_n007_t04608.audit.txt|combats=136|policy block pairs=53|small-into-big 32/53=0.604 [0.469,0.724]|of those the solver would not block 12/32=0.375 [0.229,0.547]|unparsed=0

@@ -1147,3 +1147,10 @@ OWED, in priority order (pre-stated, none run):
 Every launch: as §M (session-independent keepalive first, `setsid nohup ... &` inside one wsl
 call, verify with pgrep, never with the launched script's literal name in the pgrep string's
 own shell; kill only via script files; ≤ 2 policy servers + 2 driver JVMs).
+
+UPDATE (2026-09-14 ~22:30Z, Phase 11 closed; v7/lane-d = HEAD): **PHASE11-DRILL executed.**
+- Record: runbook `rl/PHASE11-DRILL.md` (Amendments 1–3 and the STATE lines), and the V7-VALIDATION sections "11 / A1-A2" (with the correction to 9 / P3), "11 — pre-registration and amendments", "11 — measurement check" (Requiting Hex blight vs destroy), "11 / B1", "11 / B2", "Phase 11 verdict", plus the Q6 addendum.
+- Tools: `rl/dimir_census.py`, `rl/landfall_census.py`, `rl/record_census.sh` (keeps full transcripts per recording, gitignored), `rl/league11.py` (`--census-every-block`), `rl/run_b1_census.sh`, `rl/run_drill11.sh`, `rl/chain11.sh`, `rl/swap_rc.sh`, `rl/swap_dc.sh`.
+- Result: **the user stopped the drill-down at +2,048. Both mains are on a plateau vs the heuristic (M_D 0.59→0.62→0.59, M_L 0.49→0.41→0.53) and weak vs CP7 (0.20 / 0.12 over 25 games). Dimir's card use swung three times between "cast everything" and "hold everything" without converging, and landfall's block restraint eroded. Leading hypothesis: self-play drift (16/18 main blocks vs league-internal opponents; CP7 never in the pool).**
+- NEXT PHASE: `rl/PHASE12-CP7.md` (a CP7 warm start to competence before any self-play league), written by the main session and run by its own agent.
+- Owed from Phase 11: the landfall precombat-share and landfall-attack counters (saturated at 1.000, unverified against a transcript); census `*_games.tsv` files written before 3014f62 have a header 3 names short.

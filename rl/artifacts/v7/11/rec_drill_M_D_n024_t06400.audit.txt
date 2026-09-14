@@ -1,0 +1,280 @@
+RLGAME|reward=-1.0|seed=11000
+t3|  [atkaudit] policy Cecil, Dark Knight 2/3 (4, dealt 2, lost 0, killed 0, back 0) | ref Cecil, Dark Knight 2/3 (4)  MATCH
+t7|  [atkaudit] policy Cecil, Dark Knight 2/3 (-6, dealt 0, lost 1, killed 1, back 2) | ref (none) (0)  GAP 6 OVER
+t12|  [audit] policy Spyglass Siren 1/1->Floodpits Drowner 2/1 (score 7) | solver Spyglass Siren 1/1->Floodpits Drowner 2/1 (score 7)  MATCH
+t13|  [atkaudit] policy (none) (0, dealt 0, lost 0, killed 0, back 2) | ref (none) (0)  MATCH
+t14|  [audit] policy The Wondrous Wasp 2/1->Cecil, Redeemed Paladin 4/4 (LETHAL) | solver The Wondrous Wasp 2/1->-- (LETHAL)  MATCH
+RLGAME|reward=-1.0|seed=11001
+t9|  [audit] policy The Wondrous Wasp 2/1->Elektra, Daughter of the Hand 3/3 (score -3) | solver The Wondrous Wasp 2/1->-- (score 0)  GAP 3
+t14|  [atkaudit] policy Kaito, Bane of Nightmares 5/6 (-3, dealt 0, lost 1, killed 2, back 0) | ref (none) (0)  GAP 3 OVER  | refCA Kaito, Bane of Nightmares 5/6 (-3 vs policy -3)
+t15|  [audit] policy The Wondrous Wasp 2/1->Enduring Curiosity 4/3 (LETHAL) | solver The Wondrous Wasp 2/1->-- (LETHAL)  MATCH
+RLGAME|reward=1.0|seed=11002
+t11|  [atkaudit] policy Elektra, Daughter of the Hand 3/3 (-3, dealt 0, lost 1, killed 2, back 0) | ref (none) (0)  GAP 3 OVER
+t12|  [audit] policy Spyglass Siren 1/1->The Wondrous Wasp 2/1 (score 7) | solver Spyglass Siren 1/1->The Wondrous Wasp 2/1 (score 7)  MATCH
+t13|  [atkaudit] policy Elektra, Daughter of the Hand 3/3 (6, dealt 3, lost 0, killed 0, back 0) | ref Elektra, Daughter of the Hand 3/3 (6)  MATCH
+t15|  [atkaudit] policy Elektra, Daughter of the Hand 3/3 (6, dealt 3, lost 0, killed 0, back 0) | ref Elektra, Daughter of the Hand 3/3 (6)  MATCH
+t17|  [atkaudit] policy Elektra, Daughter of the Hand 3/3 (6, dealt 3, lost 0, killed 0, back 0) | ref Elektra, Daughter of the Hand 3/3 (6)  MATCH
+t19|  [atkaudit] policy Floodpits Drowner 2/1 + Elektra, Daughter of the Hand 3/3 (3, dealt 3, lost 1, killed 1, back 0) | ref Elektra, Daughter of the Hand 3/3 (6)  GAP 3 OVER
+t21|  [atkaudit] policy Floodpits Drowner 2/1 + Cecil, Dark Knight 2/3 + Elektra, Daughter of the Hand 3/3 (7, dealt 2, lost 1, killed 2, back 0) | ref Cecil, Dark Knight 2/3 + Elektra, Daughter of the Hand 3/3 (10)  GAP 3 OVER
+RLGAME|reward=-1.0|seed=11003
+t4|  [atkaudit] policy Cecil, Dark Knight 2/3 (4, dealt 2, lost 0, killed 0, back 1) | ref Cecil, Dark Knight 2/3 (4)  MATCH
+t5|  [audit] policy Spyglass Siren 1/1->Spyglass Siren 1/1 (score 2) | solver Spyglass Siren 1/1->Spyglass Siren 1/1 (score 2)  MATCH
+t6|  [atkaudit] policy Cecil, Dark Knight 2/3 (4, dealt 2, lost 0, killed 0, back 0) | ref Cecil, Dark Knight 2/3 (4)  MATCH
+t8|  [atkaudit] policy Cecil, Dark Knight 2/3 (4, dealt 2, lost 0, killed 0, back 0) | ref Cecil, Dark Knight 2/3 (4)  MATCH
+t19|  [audit] policy Cecil, Dark Knight 2/3->Elektra, Daughter of the Hand 3/3 (score -9) | solver Cecil, Dark Knight 2/3->-- (score 0)  GAP 9
+RLGAME|reward=1.0|seed=11004
+t29|  [atkaudit] policy Cecil, Dark Knight 2/3 (4, dealt 2, lost 0, killed 0, back 0) | ref Cecil, Dark Knight 2/3 (4)  MATCH
+t31|  [atkaudit] policy Cecil, Dark Knight 2/3 (4, dealt 2, lost 0, killed 0, back 0) | ref Cecil, Dark Knight 2/3 (4)  MATCH
+t33|  [atkaudit] policy Cecil, Dark Knight 2/3 (4, dealt 2, lost 0, killed 0, back 0) | ref Cecil, Dark Knight 2/3 (4)  MATCH
+t35|  [atkaudit] policy Elektra, Daughter of the Hand 3/3 (6, dealt 3, lost 0, killed 0, back 0) | ref Elektra, Daughter of the Hand 3/3 (6)  MATCH
+t37|  [atkaudit] policy Elektra, Daughter of the Hand 3/3 + Enduring Curiosity 4/3 (LETHAL, dealt 7, lost 0, killed 0, back 0) | ref Elektra, Daughter of the Hand 3/3 + Enduring Curiosity 4/3 (LETHAL)  MATCH
+RLGAME|reward=1.0|seed=11005
+t10|  [atkaudit] policy Floodpits Drowner 2/1 (-3, dealt 0, lost 1, killed 1, back 0) | ref (none) (0)  GAP 3 OVER
+t11|  [audit] policy Floodpits Drowner 2/1->Cecil, Dark Knight 2/3 (score -5) | solver Floodpits Drowner 2/1->-- (score 0)  GAP 5
+t15|  [audit] policy Cecil, Dark Knight 2/3->Kaito, Bane of Nightmares 3/4 (score -9) | solver Cecil, Dark Knight 2/3->Cecil, Dark Knight 2/3 (score 4)  GAP 13
+t17|  [audit] policy Cecil, Dark Knight 2/3->Cecil, Redeemed Paladin 4/4 (score -7) | solver Cecil, Dark Knight 2/3->-- (score 0)  GAP 7
+t19|  [audit] policy Spyglass Siren 1/1->Spyglass Siren 1/1 (score 2) | solver Spyglass Siren 1/1->Spyglass Siren 1/1 (score 2)  MATCH
+t22|  [atkaudit] policy Enduring Curiosity 4/3 (8, dealt 4, lost 0, killed 0, back 0) | ref Enduring Curiosity 4/3 (8)  MATCH
+t24|  [atkaudit] policy Enduring Curiosity 4/3 (8, dealt 4, lost 0, killed 0, back 0) | ref Enduring Curiosity 4/3 (8)  MATCH
+t26|  [atkaudit] policy Enduring Curiosity 4/3 + Kaito, Bane of Nightmares 5/6 (LETHAL, dealt 9, lost 0, killed 0, back 0) | ref Enduring Curiosity 4/3 + Kaito, Bane of Nightmares 5/6 (LETHAL)  MATCH
+RLGAME|reward=-1.0|seed=11006
+t3|  [atkaudit] policy Spyglass Siren 1/1 (2, dealt 1, lost 0, killed 0, back 0) | ref Spyglass Siren 1/1 (2)  MATCH
+t9|  [atkaudit] policy Spyglass Siren 1/1 (2, dealt 1, lost 0, killed 0, back 6) | ref Spyglass Siren 1/1 (2)  MATCH  | refCA (none) (-8 vs policy -10)
+t11|  [atkaudit] policy (none) (0, dealt 0, lost 0, killed 0, back 4) | ref (none) (0)  MATCH
+t12|  [audit] policy Spyglass Siren 1/1->Floodpits Drowner 2/1, Spyglass Siren 1/1->Floodpits Drowner 2/1 (score 14) | solver Spyglass Siren 1/1->Floodpits Drowner 2/1, Spyglass Siren 1/1->Floodpits Drowner 2/1 (score 14)  MATCH
+RLGAME|reward=1.0|seed=11007
+t16|  [atkaudit] policy Kaito, Bane of Nightmares 5/6 (10, dealt 5, lost 0, killed 0, back 0) | ref Kaito, Bane of Nightmares 5/6 (10)  MATCH
+t18|  [atkaudit] policy Kaito, Bane of Nightmares 6/7 (12, dealt 6, lost 0, killed 0, back 0) | ref Kaito, Bane of Nightmares 6/7 (12)  MATCH
+t22|  [atkaudit] policy Kaito, Bane of Nightmares 9/10 (LETHAL, dealt 9, lost 0, killed 0, back 0) | ref Kaito, Bane of Nightmares 9/10 (LETHAL)  MATCH
+RLGAME|reward=-1.0|seed=11008
+t6|  [audit] policy The Wondrous Wasp 2/1->Floodpits Drowner 2/1 (score 4) | solver The Wondrous Wasp 2/1->Floodpits Drowner 2/1 (score 4)  MATCH
+t9|  [atkaudit] policy The Wondrous Wasp 2/1 (4, dealt 2, lost 0, killed 0, back 0) | ref The Wondrous Wasp 2/1 (4)  MATCH
+t11|  [atkaudit] policy (none) (0, dealt 0, lost 0, killed 0, back 1) | ref (none) (0)  MATCH
+t12|  [audit] policy Spyglass Siren 1/1->Cecil, Redeemed Paladin 4/4, The Wondrous Wasp 2/1->-- (score 2) | solver Spyglass Siren 1/1->Cecil, Redeemed Paladin 4/4, The Wondrous Wasp 2/1->-- (score 2)  MATCH
+t13|  [atkaudit] policy (none) (0, dealt 0, lost 0, killed 0, back 0) | ref (none) (0)  MATCH
+t14|  [audit] policy Floodpits Drowner 2/1->--, The Wondrous Wasp 2/1->Enduring Curiosity 4/3 (score -1) | solver Floodpits Drowner 2/1->Enduring Curiosity 4/3, The Wondrous Wasp 2/1->Enduring Curiosity 4/3 (score 11)  GAP 12
+t15|  [atkaudit] policy (none) (0, dealt 0, lost 0, killed 0, back 0) | ref (none) (0)  MATCH
+t16|  [audit] policy Floodpits Drowner 2/1->Enduring Curiosity 4/3, Cecil, Dark Knight 2/3->Cecil, Redeemed Paladin 4/4 (score -8) | solver Floodpits Drowner 2/1->Cecil, Redeemed Paladin 4/4, Cecil, Dark Knight 2/3->Cecil, Redeemed Paladin 4/4 (score 8)  GAP 16
+RLGAME|reward=1.0|seed=11009
+t4|  [atkaudit] policy Cecil, Dark Knight 2/3 (4, dealt 2, lost 0, killed 0, back 0) | ref Cecil, Dark Knight 2/3 (4)  MATCH
+t8|  [atkaudit] policy Floodpits Drowner 2/1 (4, dealt 2, lost 0, killed 0, back 0) | ref Floodpits Drowner 2/1 (4)  MATCH
+t9|  [audit] policy Floodpits Drowner 2/1->Floodpits Drowner 2/1 (score 4) | solver Floodpits Drowner 2/1->Floodpits Drowner 2/1 (score 4)  MATCH
+t10|  [atkaudit] policy Cecil, Dark Knight 2/3 (4, dealt 2, lost 0, killed 0, back 2) | ref Cecil, Dark Knight 2/3 (4)  MATCH  | refCA (none) (0 vs policy 0)
+t12|  [atkaudit] policy Cecil, Dark Knight 2/3 + Enduring Curiosity 4/3 (12, dealt 6, lost 0, killed 0, back 2) | ref Cecil, Dark Knight 2/3 + Enduring Curiosity 4/3 (12)  MATCH  | refCA Enduring Curiosity 4/3 (8 vs policy 8)
+t13|  [audit] policy Spyglass Siren 1/1->The Wondrous Wasp 2/1 (score 7) | solver Spyglass Siren 1/1->The Wondrous Wasp 2/1 (score 7)  MATCH
+t14|  [atkaudit] policy Cecil, Dark Knight 2/3 + Enduring Curiosity 4/3 (LETHAL, dealt 6, lost 0, killed 0, back 0) | ref Enduring Curiosity 4/3 (LETHAL)  MATCH
+RLGAME|reward=1.0|seed=11010
+t9|  [atkaudit] policy Cecil, Dark Knight 2/3 + Kaito, Bane of Nightmares 5/6 (13, dealt 2, lost 0, killed 1, back 0) | ref Cecil, Dark Knight 2/3 + Kaito, Bane of Nightmares 5/6 (13)  MATCH
+t11|  [atkaudit] policy Cecil, Dark Knight 2/3 + Kaito, Bane of Nightmares 6/7 (10, dealt 2, lost 0, killed 1, back 2) | ref Cecil, Dark Knight 2/3 + Kaito, Bane of Nightmares 6/7 (10)  MATCH  | refCA Kaito, Bane of Nightmares 6/7 (6 vs policy 6)
+t13|  [atkaudit] policy Kaito, Bane of Nightmares 7/8 (LETHAL, dealt 7, lost 0, killed 0, back 0) | ref Kaito, Bane of Nightmares 7/8 (LETHAL)  MATCH
+RLGAME|reward=1.0|seed=11011
+t10|  [atkaudit] policy Kaito, Bane of Nightmares 5/6 (10, dealt 5, lost 0, killed 0, back 0) | ref Kaito, Bane of Nightmares 5/6 (10)  MATCH
+t12|  [atkaudit] policy Floodpits Drowner 2/1 + Kaito, Bane of Nightmares 6/7 (16, dealt 8, lost 0, killed 0, back 0) | ref Floodpits Drowner 2/1 + Kaito, Bane of Nightmares 6/7 (16)  MATCH
+t14|  [atkaudit] policy Floodpits Drowner 2/1 + Floodpits Drowner 2/1 + Kaito, Bane of Nightmares 7/8 (29, dealt 4, lost 0, killed 1, back 0) | ref Floodpits Drowner 2/1 + Floodpits Drowner 2/1 + Kaito, Bane of Nightmares 7/8 (29)  MATCH
+RLGAME|reward=1.0|seed=11012
+t3|  [atkaudit] policy Cecil, Dark Knight 2/3 (4, dealt 2, lost 0, killed 0, back 0) | ref Cecil, Dark Knight 2/3 (4)  MATCH
+t7|  [atkaudit] policy Cecil, Dark Knight 2/3 (4, dealt 2, lost 0, killed 0, back 0) | ref Cecil, Dark Knight 2/3 (4)  MATCH
+t9|  [atkaudit] policy Floodpits Drowner 2/1 (4, dealt 2, lost 0, killed 0, back 0) | ref Floodpits Drowner 2/1 (4)  MATCH
+t13|  [atkaudit] policy Floodpits Drowner 2/1 + The Wondrous Wasp 2/1 + Cecil, Dark Knight 2/3 (8, dealt 4, lost 1, killed 1, back 0) | ref Floodpits Drowner 2/1 + The Wondrous Wasp 2/1 + Cecil, Dark Knight 2/3 (8)  MATCH
+t14|  [audit] policy Floodpits Drowner 2/1->Floodpits Drowner 2/1 (score 4) | solver Floodpits Drowner 2/1->Floodpits Drowner 2/1 (score 4)  MATCH
+t15|  [atkaudit] policy Cecil, Dark Knight 2/3 + Kaito, Bane of Nightmares 5/6 (10, dealt 2, lost 0, killed 1, back 0) | ref Cecil, Dark Knight 2/3 + Kaito, Bane of Nightmares 5/6 (10)  MATCH
+t17|  [atkaudit] policy The Wondrous Wasp 2/1 + Cecil, Redeemed Paladin 4/4 (LETHAL, dealt 6, lost 0, killed 0, back 0) | ref The Wondrous Wasp 2/1 (LETHAL)  MATCH
+RLGAME|reward=-1.0|seed=11013
+t11|  [audit] policy Cecil, Dark Knight 2/3->Cecil, Dark Knight 2/3 (score 4) | solver Cecil, Dark Knight 2/3->Cecil, Dark Knight 2/3 (score 4)  MATCH
+t13|  [audit] policy Spyglass Siren 1/1->Floodpits Drowner 2/1 (score 7) | solver Spyglass Siren 1/1->Floodpits Drowner 2/1 (score 7)  MATCH
+RLGAME|reward=1.0|seed=11014
+t7|  [atkaudit] policy Spyglass Siren 1/1 (0, dealt 0, lost 1, killed 1, back 0) | ref (none) (0)  MATCH
+t9|  [atkaudit] policy Spyglass Siren 1/1 + The Wondrous Wasp 2/1 + Cecil, Dark Knight 2/3 (3, dealt 3, lost 1, killed 1, back 0) | ref Cecil, Dark Knight 2/3 (4)  GAP 1 OVER
+t11|  [atkaudit] policy Cecil, Dark Knight 2/3 (4, dealt 2, lost 0, killed 0, back 0) | ref Cecil, Dark Knight 2/3 (4)  MATCH
+t13|  [atkaudit] policy Cecil, Dark Knight 2/3 (4, dealt 2, lost 0, killed 0, back 0) | ref Cecil, Dark Knight 2/3 (4)  MATCH
+t15|  [atkaudit] policy Floodpits Drowner 2/1 + Cecil, Dark Knight 2/3 (8, dealt 4, lost 0, killed 0, back 0) | ref Floodpits Drowner 2/1 + Cecil, Dark Knight 2/3 (8)  MATCH
+t17|  [atkaudit] policy Floodpits Drowner 2/1 + Elektra, Daughter of the Hand 2/2 (LETHAL, dealt 4, lost 0, killed 0, back 0) | ref Floodpits Drowner 2/1 (LETHAL)  MATCH
+RLGAME|reward=1.0|seed=11015
+t12|  [atkaudit] policy The Wondrous Wasp 2/1 (4, dealt 2, lost 0, killed 0, back 0) | ref The Wondrous Wasp 2/1 (4)  MATCH
+t16|  [atkaudit] policy Cecil, Dark Knight 2/3 (4, dealt 2, lost 0, killed 0, back 0) | ref Cecil, Dark Knight 2/3 (4)  MATCH
+t18|  [atkaudit] policy Spyglass Siren 1/1 + Cecil, Dark Knight 2/3 (6, dealt 3, lost 0, killed 0, back 0) | ref Spyglass Siren 1/1 + Cecil, Dark Knight 2/3 (6)  MATCH
+t20|  [atkaudit] policy Spyglass Siren 1/1 + Spyglass Siren 1/1 + Enduring Curiosity 4/3 + Cecil, Redeemed Paladin 4/4 (18, dealt 9, lost 1, killed 1, back 0) | ref Spyglass Siren 1/1 + Spyglass Siren 1/1 + Enduring Curiosity 4/3 + Cecil, Redeemed Paladin 4/4 (18)  MATCH
+t22|  [atkaudit] policy Spyglass Siren 1/1 + Spyglass Siren 1/1 + Cecil, Redeemed Paladin 3/3 + Enduring Curiosity 4/3 + Kaito, Bane of Nightmares 5/6 (LETHAL, dealt 14, lost 0, killed 0, back 2) | ref Spyglass Siren 1/1 + Spyglass Siren 1/1 + Cecil, Redeemed Paladin 3/3 + Enduring Curiosity 4/3 (LETHAL)  MATCH
+RLGAME|reward=-1.0|seed=11016
+RLGAME|reward=-1.0|seed=11017
+t6|  [atkaudit] policy Spyglass Siren 1/1 (2, dealt 1, lost 0, killed 0, back 2) | ref Spyglass Siren 1/1 (2)  MATCH  | refCA (none) (0 vs policy -2)
+t7|  [audit] policy The Wondrous Wasp 2/1->Floodpits Drowner 2/1 (score 4) | solver The Wondrous Wasp 2/1->Floodpits Drowner 2/1 (score 4)  MATCH
+t12|  [atkaudit] policy Floodpits Drowner 2/1 (4, dealt 2, lost 0, killed 0, back 0) | ref Floodpits Drowner 2/1 (4)  MATCH
+t14|  [atkaudit] policy (none) (0, dealt 0, lost 0, killed 0, back 0) | ref (none) (0)  MATCH
+t15|  [audit] policy Spyglass Siren 1/1->Enduring Curiosity 4/3 (score 2) | solver Spyglass Siren 1/1->Enduring Curiosity 4/3 (score 2)  MATCH
+RLGAME|reward=-1.0|seed=11018
+t5|  [atkaudit] policy Spyglass Siren 1/1 (2, dealt 1, lost 0, killed 0, back 0) | ref Spyglass Siren 1/1 (2)  MATCH
+t7|  [atkaudit] policy (none) (0, dealt 0, lost 0, killed 0, back 0) | ref (none) (0)  MATCH
+t8|  [audit] policy Spyglass Siren 1/1->Cecil, Dark Knight 2/3, The Wondrous Wasp 2/1->-- (score -2) | solver Spyglass Siren 1/1->Cecil, Dark Knight 2/3, The Wondrous Wasp 2/1->Cecil, Dark Knight 2/3 (score 4)  GAP 6
+RLGAME|reward=1.0|seed=11019
+t20|  [atkaudit] policy Kaito, Bane of Nightmares 5/6 (10, dealt 5, lost 0, killed 0, back 0) | ref Kaito, Bane of Nightmares 5/6 (10)  MATCH
+t22|  [atkaudit] policy Kaito, Bane of Nightmares 6/7 (12, dealt 6, lost 0, killed 0, back 0) | ref Kaito, Bane of Nightmares 6/7 (12)  MATCH
+t24|  [atkaudit] policy Spyglass Siren 1/1 + Kaito, Bane of Nightmares 7/8 (LETHAL, dealt 8, lost 0, killed 0, back 0) | ref Kaito, Bane of Nightmares 7/8 (LETHAL)  MATCH
+RLGAME|reward=-1.0|seed=11020
+t15|  [atkaudit] policy Floodpits Drowner 2/1 (0, dealt 0, lost 1, killed 1, back 0) | ref (none) (0)  MATCH
+t17|  [atkaudit] policy Floodpits Drowner 2/1 (0, dealt 0, lost 1, killed 1, back 0) | ref (none) (0)  MATCH
+t19|  [atkaudit] policy Floodpits Drowner 2/1 (4, dealt 2, lost 0, killed 0, back 0) | ref Floodpits Drowner 2/1 (4)  MATCH
+t20|  [audit] policy Floodpits Drowner 2/1->Kaito, Bane of Nightmares 3/4 (score -3) | solver Floodpits Drowner 2/1->-- (score 0)  GAP 3
+RLGAME|reward=1.0|seed=11021
+t12|  [atkaudit] policy Spyglass Siren 1/1 + Enduring Curiosity 4/3 (2, dealt 4, lost 1, killed 0, back 4) | ref Enduring Curiosity 4/3 (3)  GAP 1 OVER
+t14|  [atkaudit] policy Spyglass Siren 1/1 + The Wondrous Wasp 2/1 + Enduring Curiosity 4/3 + Enduring Curiosity 4/3 (18, dealt 9, lost 1, killed 1, back 0) | ref Spyglass Siren 1/1 + Enduring Curiosity 4/3 + Enduring Curiosity 4/3 (18)  MATCH
+t20|  [atkaudit] policy Spyglass Siren 1/1 (2, dealt 1, lost 0, killed 0, back 0) | ref Spyglass Siren 1/1 (2)  MATCH
+t22|  [atkaudit] policy Spyglass Siren 1/1 + Spyglass Siren 1/1 (LETHAL, dealt 2, lost 0, killed 0, back 0) | ref Spyglass Siren 1/1 (LETHAL)  MATCH
+RLGAME|reward=1.0|seed=11022
+t5|  [atkaudit] policy Cecil, Dark Knight 2/3 (4, dealt 2, lost 0, killed 0, back 1) | ref Cecil, Dark Knight 2/3 (4)  MATCH
+t6|  [audit] policy Spyglass Siren 1/1->Spyglass Siren 1/1, The Wondrous Wasp 2/1->-- (score 2) | solver Spyglass Siren 1/1->Spyglass Siren 1/1, The Wondrous Wasp 2/1->-- (score 2)  MATCH
+t7|  [atkaudit] policy The Wondrous Wasp 2/1 (4, dealt 2, lost 0, killed 0, back 0) | ref The Wondrous Wasp 2/1 (4)  MATCH
+t9|  [atkaudit] policy Floodpits Drowner 2/1 + The Wondrous Wasp 2/1 (0, dealt 0, lost 2, killed 2, back 0) | ref (none) (0)  MATCH
+t17|  [atkaudit] policy Enduring Curiosity 4/3 (6, dealt 0, lost 0, killed 1, back 0) | ref Enduring Curiosity 4/3 (6)  MATCH
+t19|  [atkaudit] policy Enduring Curiosity 3/2 (6, dealt 3, lost 0, killed 0, back 0) | ref Enduring Curiosity 3/2 (6)  MATCH
+t21|  [atkaudit] policy Spyglass Siren 1/1 + Enduring Curiosity 3/2 + Enduring Curiosity 4/3 (23, dealt 4, lost 0, killed 1, back 0) | ref Spyglass Siren 1/1 + Enduring Curiosity 3/2 + Enduring Curiosity 4/3 (23)  MATCH
+RLGAME|reward=1.0|seed=11023
+t12|  [atkaudit] policy Floodpits Drowner 2/1 (0, dealt 0, lost 1, killed 1, back 0) | ref (none) (0)  MATCH
+t14|  [atkaudit] policy Elektra, Daughter of the Hand 3/3 (6, dealt 3, lost 0, killed 0, back 0) | ref The Wondrous Wasp 2/1 + Elektra, Daughter of the Hand 3/3 (10)  GAP 4 UNDER
+t16|  [atkaudit] policy Floodpits Drowner 2/1 + The Wondrous Wasp 2/1 + Elektra, Daughter of the Hand 3/3 (1, dealt 5, lost 1, killed 0, back 2) | ref Elektra, Daughter of the Hand 3/3 (6)  GAP 5 OVER
+t17|  [audit] policy Spyglass Siren 1/1->--, Enduring Curiosity 4/3->Cecil, Redeemed Paladin 4/4 (score 11) | solver Spyglass Siren 1/1->--, Enduring Curiosity 4/3->Cecil, Redeemed Paladin 4/4 (score 11)  MATCH
+t18|  [atkaudit] policy Spyglass Siren 1/1 + The Wondrous Wasp 2/1 + Elektra, Daughter of the Hand 3/3 (-3, dealt 3, lost 1, killed 1, back 4) | ref (none) (0)  GAP 3 OVER
+t19|  [audit] policy Cecil, Dark Knight 2/3->Enduring Curiosity 4/3 (score -7) | solver Cecil, Dark Knight 2/3->-- (score 0)  GAP 7
+t20|  [atkaudit] policy Elektra, Daughter of the Hand 2/2 (4, dealt 2, lost 0, killed 0, back 0) | ref Elektra, Daughter of the Hand 2/2 (4)  MATCH
+t22|  [atkaudit] policy Elektra, Daughter of the Hand 2/2 (LETHAL, dealt 2, lost 0, killed 0, back 0) | ref Elektra, Daughter of the Hand 2/2 (LETHAL)  MATCH
+RLGAME|reward=-1.0|seed=11024
+t4|  [audit] policy Spyglass Siren 1/1->Cecil, Dark Knight 2/3 (score -2) | solver Spyglass Siren 1/1->-- (score 0)  GAP 2
+t6|  [audit] policy The Wondrous Wasp 2/1->Cecil, Dark Knight 2/3 (score -5) | solver The Wondrous Wasp 2/1->-- (score 0)  GAP 5
+RLGAME|reward=-1.0|seed=11025
+t4|  [atkaudit] policy Cecil, Dark Knight 2/3 (4, dealt 2, lost 0, killed 0, back 0) | ref Cecil, Dark Knight 2/3 (4)  MATCH
+t6|  [atkaudit] policy Spyglass Siren 1/1 + Cecil, Dark Knight 2/3 (6, dealt 3, lost 0, killed 0, back 0) | ref Spyglass Siren 1/1 + Cecil, Dark Knight 2/3 (6)  MATCH
+t8|  [atkaudit] policy Spyglass Siren 1/1 + Cecil, Dark Knight 2/3 (-13, dealt 1, lost 1, killed 0, back 4) | ref (none) (0)  GAP 13 OVER
+t12|  [atkaudit] policy Enduring Curiosity 4/3 (8, dealt 4, lost 0, killed 0, back 2) | ref Enduring Curiosity 4/3 (8)  MATCH
+t13|  [audit] policy Spyglass Siren 1/1->Floodpits Drowner 2/1 (score 7) | solver Spyglass Siren 1/1->Floodpits Drowner 2/1 (score 7)  MATCH
+t19|  [audit] policy The Wondrous Wasp 2/1->Elektra, Daughter of the Hand 3/3 (LETHAL) | solver The Wondrous Wasp 2/1->-- (LETHAL)  MATCH
+RLGAME|reward=-1.0|seed=11026
+t11|  [atkaudit] policy Enduring Curiosity 4/3 (8, dealt 4, lost 0, killed 0, back 0) | ref Enduring Curiosity 4/3 (8)  MATCH
+RLGAME|reward=-1.0|seed=11027
+t6|  [atkaudit] policy Cecil, Dark Knight 2/3 (0, dealt 0, lost 1, killed 2, back 2) | ref (none) (0)  MATCH  | refCA Cecil, Dark Knight 2/3 (-4 vs policy -4)
+t8|  [atkaudit] policy Cecil, Dark Knight 2/3 (4, dealt 2, lost 0, killed 0, back 2) | ref Cecil, Dark Knight 2/3 (4)  MATCH  | refCA (none) (0 vs policy 0)
+t10|  [atkaudit] policy Cecil, Dark Knight 2/3 (4, dealt 2, lost 0, killed 0, back 2) | ref Cecil, Dark Knight 2/3 (4)  MATCH  | refCA (none) (0 vs policy 0)
+t12|  [atkaudit] policy Cecil, Redeemed Paladin 4/4 (8, dealt 4, lost 0, killed 0, back 0) | ref Cecil, Redeemed Paladin 4/4 (8)  MATCH
+t15|  [audit] policy Spyglass Siren 1/1->Elektra, Daughter of the Hand 3/3 (score 0) | solver Spyglass Siren 1/1->Floodpits Drowner 2/1 (score 7)  GAP 7
+t17|  [audit] policy Enduring Curiosity 4/3->Enduring Curiosity 4/3 (score 8) | solver Enduring Curiosity 4/3->Enduring Curiosity 4/3 (score 8)  MATCH
+RLGAME|reward=-1.0|seed=11028
+t3|  [atkaudit] policy Spyglass Siren 1/1 (0, dealt 0, lost 1, killed 1, back 0) | ref (none) (0)  MATCH
+t4|  [audit] policy Spyglass Siren 1/1->Spyglass Siren 1/1 (score 2) | solver Spyglass Siren 1/1->Spyglass Siren 1/1 (score 2)  MATCH
+t5|  [atkaudit] policy Spyglass Siren 1/1 (2, dealt 1, lost 0, killed 0, back 0) | ref Spyglass Siren 1/1 (2)  MATCH
+t14|  [audit] policy Cecil, Dark Knight 2/3->Enduring Curiosity 4/3 (score -7) | solver Cecil, Dark Knight 2/3->Cecil, Dark Knight 2/3 (score 4)  GAP 11
+RLGAME|reward=1.0|seed=11029
+t14|  [atkaudit] policy Kaito, Bane of Nightmares 5/6 (9, dealt 0, lost 0, killed 1, back 0) | ref Kaito, Bane of Nightmares 5/6 (9)  MATCH
+t15|  [audit] policy Enduring Curiosity 4/3->Enduring Curiosity 4/3 (score 8) | solver Enduring Curiosity 4/3->Enduring Curiosity 4/3 (score 8)  MATCH
+t18|  [atkaudit] policy Enduring Curiosity 4/3 (8, dealt 4, lost 0, killed 0, back 0) | ref Enduring Curiosity 4/3 (8)  MATCH
+t20|  [atkaudit] policy Enduring Curiosity 3/2 (6, dealt 3, lost 0, killed 0, back 0) | ref Enduring Curiosity 3/2 (6)  MATCH
+t22|  [atkaudit] policy Enduring Curiosity 3/2 + Cecil, Dark Knight 2/3 + Elektra, Daughter of the Hand 5/5 (LETHAL, dealt 10, lost 0, killed 0, back 0) | ref Enduring Curiosity 3/2 + Cecil, Dark Knight 2/3 (LETHAL)  MATCH
+RLGAME|reward=-1.0|seed=11030
+t24|  [audit] policy The Wondrous Wasp 2/1->Floodpits Drowner 2/1 (LETHAL) | solver The Wondrous Wasp 2/1->-- (LETHAL)  MATCH
+RLGAME|reward=-1.0|seed=11031
+t5|  [audit] policy Spyglass Siren 1/1->Spyglass Siren 1/1 (score 2) | solver Spyglass Siren 1/1->Spyglass Siren 1/1 (score 2)  MATCH
+t12|  [atkaudit] policy Kaito, Bane of Nightmares 5/6 (10, dealt 5, lost 0, killed 0, back 0) | ref Kaito, Bane of Nightmares 5/6 (10)  MATCH
+RLGAME|reward=1.0|seed=11032
+t4|  [audit] policy Spyglass Siren 1/1->Spyglass Siren 1/1 (score 2) | solver Spyglass Siren 1/1->Spyglass Siren 1/1 (score 2)  MATCH
+t9|  [atkaudit] policy Kaito, Bane of Nightmares 5/6 (10, dealt 5, lost 0, killed 0, back 0) | ref Kaito, Bane of Nightmares 5/6 (10)  MATCH
+t11|  [atkaudit] policy Enduring Curiosity 4/3 + Kaito, Bane of Nightmares 6/7 (20, dealt 10, lost 0, killed 0, back 0) | ref Enduring Curiosity 4/3 + Kaito, Bane of Nightmares 6/7 (20)  MATCH
+t13|  [atkaudit] policy Enduring Curiosity 4/3 + Enduring Curiosity 4/3 + Kaito, Bane of Nightmares 7/8 (LETHAL, dealt 15, lost 0, killed 0, back 0) | ref Enduring Curiosity 4/3 + Enduring Curiosity 4/3 (LETHAL)  MATCH
+RLGAME|reward=-1.0|seed=11033
+t11|  [audit] policy Elektra, Daughter of the Hand 3/3->Kaito, Bane of Nightmares 3/4 (score -12) | solver Elektra, Daughter of the Hand 3/3->-- (score 0)  GAP 12
+t14|  [atkaudit] policy Kaito, Bane of Nightmares 5/6 (10, dealt 5, lost 0, killed 0, back 0) | ref Kaito, Bane of Nightmares 5/6 (10)  MATCH
+t16|  [atkaudit] policy Kaito, Bane of Nightmares 6/7 (12, dealt 6, lost 0, killed 0, back 4) | ref Kaito, Bane of Nightmares 6/7 (12)  MATCH
+t20|  [atkaudit] policy Kaito, Bane of Nightmares 8/9 (9, dealt 0, lost 0, killed 1, back 4) | ref Kaito, Bane of Nightmares 8/9 (9)  MATCH
+t22|  [atkaudit] policy Kaito, Bane of Nightmares 9/10 (9, dealt 0, lost 0, killed 1, back 0) | ref Kaito, Bane of Nightmares 9/10 (9)  MATCH
+RLGAME|reward=-1.0|seed=11034
+t9|  [atkaudit] policy Spyglass Siren 1/1 + Floodpits Drowner 2/1 (-1, dealt 1, lost 1, killed 1, back 4) | ref (none) (0)  GAP 1 OVER
+t10|  [audit] policy The Wondrous Wasp 2/1->Floodpits Drowner 2/1 (score 4) | solver The Wondrous Wasp 2/1->Floodpits Drowner 2/1 (score 4)  MATCH
+t11|  [atkaudit] policy Spyglass Siren 1/1 + Floodpits Drowner 2/1 (6, dealt 3, lost 0, killed 0, back 0) | ref Spyglass Siren 1/1 + Floodpits Drowner 2/1 (6)  MATCH
+t12|  [audit] policy Floodpits Drowner 2/1->Kaito, Bane of Nightmares 3/4 (score -3) | solver Floodpits Drowner 2/1->The Wondrous Wasp 2/1 (score 4)  GAP 7
+t13|  [atkaudit] policy Floodpits Drowner 2/1 (4, dealt 2, lost 0, killed 0, back 0) | ref Floodpits Drowner 2/1 (4)  MATCH
+t16|  [audit] policy Enduring Curiosity 4/3->Kaito, Bane of Nightmares 3/4 (score 6) | solver Enduring Curiosity 4/3->Kaito, Bane of Nightmares 3/4 (score 6)  MATCH
+RLGAME|reward=1.0|seed=11035
+t4|  [atkaudit] policy Spyglass Siren 1/1 (2, dealt 1, lost 0, killed 0, back 0) | ref Spyglass Siren 1/1 (2)  MATCH
+t6|  [atkaudit] policy Spyglass Siren 1/1 + Spyglass Siren 1/1 (4, dealt 2, lost 0, killed 0, back 0) | ref Spyglass Siren 1/1 + Spyglass Siren 1/1 (4)  MATCH
+t8|  [atkaudit] policy Spyglass Siren 1/1 + Spyglass Siren 1/1 (4, dealt 2, lost 0, killed 0, back 2) | ref Spyglass Siren 1/1 + Spyglass Siren 1/1 (4)  MATCH  | refCA Spyglass Siren 1/1 (2 vs policy 0)
+t10|  [atkaudit] policy Spyglass Siren 1/1 + Spyglass Siren 1/1 + Floodpits Drowner 2/1 (4, dealt 2, lost 1, killed 1, back 2) | ref Spyglass Siren 1/1 + Spyglass Siren 1/1 (4)  MATCH  | refCA Spyglass Siren 1/1 (2 vs policy 0)
+t12|  [atkaudit] policy Floodpits Drowner 2/1 + Kaito, Bane of Nightmares 5/6 (10, dealt 5, lost 1, killed 1, back 0) | ref Floodpits Drowner 2/1 + Kaito, Bane of Nightmares 5/6 (10)  MATCH
+t13|  [audit] policy The Wondrous Wasp 2/1->Floodpits Drowner 2/1 (score 4) | solver The Wondrous Wasp 2/1->Floodpits Drowner 2/1 (score 4)  MATCH
+t14|  [atkaudit] policy Floodpits Drowner 2/1 + Kaito, Bane of Nightmares 6/7 (LETHAL, dealt 8, lost 0, killed 0, back 0) | ref Kaito, Bane of Nightmares 6/7 (LETHAL)  MATCH
+RLGAME|reward=-1.0|seed=11036
+t8|  [audit] policy Spyglass Siren 1/1->Cecil, Dark Knight 2/3 (score -2) | solver Spyglass Siren 1/1->-- (score 0)  GAP 2
+RLGAME|reward=-1.0|seed=11037
+t15|  [audit] policy The Wondrous Wasp 2/1->Enduring Curiosity 4/3 (score -1) | solver The Wondrous Wasp 2/1->-- (score 0)  GAP 1
+RLGAME|reward=1.0|seed=11038
+t6|  [audit] policy The Wondrous Wasp 2/1->Spyglass Siren 1/1 (score -1) | solver The Wondrous Wasp 2/1->-- (score 0)  GAP 1
+t11|  [atkaudit] policy Elektra, Daughter of the Hand 3/3 (0, dealt 0, lost 1, killed 2, back 0) | ref (none) (0)  MATCH  | refCA Elektra, Daughter of the Hand 3/3 (0 vs policy 0)
+t13|  [atkaudit] policy The Wondrous Wasp 2/1 + Cecil, Dark Knight 2/3 + Elektra, Daughter of the Hand 3/3 (4, dealt 2, lost 2, killed 3, back 0) | ref Cecil, Dark Knight 2/3 + Elektra, Daughter of the Hand 3/3 (4)  MATCH
+t15|  [atkaudit] policy Enduring Curiosity 4/3 + Kaito, Bane of Nightmares 5/6 (18, dealt 9, lost 0, killed 0, back 0) | ref Enduring Curiosity 4/3 + Kaito, Bane of Nightmares 5/6 (18)  MATCH
+t17|  [atkaudit] policy Enduring Curiosity 4/3 + Elektra, Daughter of the Hand 6/6 + Kaito, Bane of Nightmares 6/7 (LETHAL, dealt 16, lost 0, killed 0, back 3) | ref Enduring Curiosity 4/3 + Elektra, Daughter of the Hand 6/6 (LETHAL)  MATCH
+RLGAME|reward=1.0|seed=11039
+t3|  [audit] policy Cecil, Dark Knight 2/3->Cecil, Dark Knight 2/3 (score 4) | solver Cecil, Dark Knight 2/3->Cecil, Dark Knight 2/3 (score 4)  MATCH
+t6|  [atkaudit] policy Spyglass Siren 1/1 (2, dealt 1, lost 0, killed 0, back 0) | ref Spyglass Siren 1/1 (2)  MATCH
+t8|  [atkaudit] policy Spyglass Siren 1/1 + Spyglass Siren 1/1 (4, dealt 2, lost 0, killed 0, back 0) | ref Spyglass Siren 1/1 + Spyglass Siren 1/1 (4)  MATCH
+t10|  [atkaudit] policy Spyglass Siren 1/1 + Spyglass Siren 1/1 (4, dealt 2, lost 0, killed 0, back 0) | ref Spyglass Siren 1/1 + Spyglass Siren 1/1 (4)  MATCH
+t12|  [atkaudit] policy Spyglass Siren 1/1 + Spyglass Siren 1/1 + Floodpits Drowner 2/1 (-5, dealt 2, lost 1, killed 0, back 4) | ref (none) (0)  GAP 5 OVER
+t13|  [audit] policy Enduring Curiosity 4/3->Enduring Curiosity 4/3 (score 8) | solver Enduring Curiosity 4/3->Enduring Curiosity 4/3 (score 8)  MATCH
+t14|  [atkaudit] policy Spyglass Siren 1/1 + Spyglass Siren 1/1 (4, dealt 2, lost 0, killed 0, back 0) | ref Spyglass Siren 1/1 + Spyglass Siren 1/1 (4)  MATCH
+t16|  [atkaudit] policy Spyglass Siren 1/1 + Spyglass Siren 1/1 (4, dealt 2, lost 0, killed 0, back 0) | ref Spyglass Siren 1/1 + Spyglass Siren 1/1 (4)  MATCH
+t18|  [atkaudit] policy Spyglass Siren 1/1 + Spyglass Siren 1/1 + Enduring Curiosity 4/3 (LETHAL, dealt 6, lost 0, killed 0, back 0) | ref Spyglass Siren 1/1 (LETHAL)  MATCH
+RLGAME|reward=-1.0|seed=11040
+t7|  [atkaudit] policy (none) (0, dealt 0, lost 0, killed 0, back 2) | ref (none) (0)  MATCH
+t9|  [atkaudit] policy Floodpits Drowner 2/1 (0, dealt 0, lost 1, killed 1, back 0) | ref (none) (0)  MATCH
+RLGAME|reward=1.0|seed=11041
+t4|  [atkaudit] policy Spyglass Siren 1/1 (2, dealt 1, lost 0, killed 0, back 2) | ref Spyglass Siren 1/1 (2)  MATCH  | refCA (none) (0 vs policy -2)
+t5|  [audit] policy Spyglass Siren 1/1->The Wondrous Wasp 2/1 (score 7) | solver Spyglass Siren 1/1->The Wondrous Wasp 2/1 (score 7)  MATCH
+t6|  [atkaudit] policy Spyglass Siren 1/1 (2, dealt 1, lost 0, killed 0, back 0) | ref Spyglass Siren 1/1 (2)  MATCH
+t8|  [atkaudit] policy Spyglass Siren 1/1 (2, dealt 1, lost 0, killed 0, back 0) | ref Spyglass Siren 1/1 (2)  MATCH
+t9|  [audit] policy Elektra, Daughter of the Hand 3/3->Kaito, Bane of Nightmares 3/4 (score -12) | solver Elektra, Daughter of the Hand 3/3->-- (score 0)  GAP 12
+t10|  [atkaudit] policy Spyglass Siren 1/1 (0, dealt 0, lost 1, killed 1, back 0) | ref (none) (0)  MATCH
+t12|  [atkaudit] policy Spyglass Siren 1/1 (2, dealt 1, lost 0, killed 0, back 0) | ref Spyglass Siren 1/1 (2)  MATCH
+t16|  [atkaudit] policy Kaito, Bane of Nightmares 5/6 (10, dealt 5, lost 0, killed 0, back 0) | ref Kaito, Bane of Nightmares 5/6 (10)  MATCH
+t17|  [audit] policy Enduring Curiosity 4/3->Kaito, Bane of Nightmares 3/4 (score 6) | solver Enduring Curiosity 4/3->Kaito, Bane of Nightmares 3/4 (score 6)  MATCH
+t18|  [atkaudit] policy Kaito, Bane of Nightmares 6/7 (12, dealt 6, lost 0, killed 0, back 0) | ref Kaito, Bane of Nightmares 6/7 (12)  MATCH
+t20|  [atkaudit] policy Kaito, Bane of Nightmares 7/8 (LETHAL, dealt 7, lost 0, killed 0, back 0) | ref Kaito, Bane of Nightmares 7/8 (LETHAL)  MATCH
+RLGAME|reward=-1.0|seed=11042
+t8|  [audit] policy The Wondrous Wasp 2/1->Floodpits Drowner 2/1 (score 4) | solver The Wondrous Wasp 2/1->Floodpits Drowner 2/1 (score 4)  MATCH
+t11|  [atkaudit] policy Enduring Curiosity 4/3 (-3, dealt 0, lost 1, killed 1, back 4) | ref (none) (0)  GAP 3 OVER
+t12|  [audit] policy Spyglass Siren 1/1->Elektra, Daughter of the Hand 3/3 (score 0) | solver Spyglass Siren 1/1->Floodpits Drowner 2/1 (score 7)  GAP 7
+t13|  [atkaudit] policy Enduring Curiosity 4/3 + Kaito, Bane of Nightmares 5/6 (5, dealt 4, lost 1, killed 2, back 0) | ref Enduring Curiosity 4/3 + Kaito, Bane of Nightmares 5/6 (5)  MATCH
+RLGAME|reward=1.0|seed=11043
+t9|  [audit] policy Cecil, Dark Knight 2/3->Cecil, Dark Knight 2/3 (score 4) | solver Cecil, Dark Knight 2/3->Cecil, Dark Knight 2/3 (score 4)  MATCH
+t14|  [atkaudit] policy Kaito, Bane of Nightmares 5/6 (10, dealt 5, lost 0, killed 0, back 0) | ref Kaito, Bane of Nightmares 5/6 (10)  MATCH
+t16|  [atkaudit] policy Kaito, Bane of Nightmares 6/7 (12, dealt 6, lost 0, killed 0, back 0) | ref Kaito, Bane of Nightmares 6/7 (12)  MATCH
+t18|  [atkaudit] policy Kaito, Bane of Nightmares 7/8 (LETHAL, dealt 7, lost 0, killed 0, back 0) | ref Kaito, Bane of Nightmares 7/8 (LETHAL)  MATCH
+RLGAME|reward=1.0|seed=11044
+t4|  [audit] policy Spyglass Siren 1/1->Spyglass Siren 1/1 (score 2) | solver Spyglass Siren 1/1->Spyglass Siren 1/1 (score 2)  MATCH
+t7|  [atkaudit] policy Spyglass Siren 1/1 (2, dealt 1, lost 0, killed 0, back 0) | ref Spyglass Siren 1/1 (2)  MATCH
+t9|  [atkaudit] policy Spyglass Siren 1/1 + The Wondrous Wasp 2/1 (6, dealt 3, lost 0, killed 0, back 0) | ref Spyglass Siren 1/1 + The Wondrous Wasp 2/1 (6)  MATCH
+t11|  [atkaudit] policy Spyglass Siren 1/1 + Floodpits Drowner 2/1 + The Wondrous Wasp 2/1 (-3, dealt 3, lost 1, killed 0, back 4) | ref (none) (0)  GAP 3 OVER
+t13|  [atkaudit] policy Spyglass Siren 1/1 + The Wondrous Wasp 2/1 + Kaito, Bane of Nightmares 5/6 (3, dealt 6, lost 1, killed 0, back 2) | ref Kaito, Bane of Nightmares 5/6 (10)  GAP 7 OVER
+t14|  [audit] policy Cecil, Dark Knight 2/3->Kaito, Bane of Nightmares 3/4, Enduring Curiosity 4/3->Enduring Curiosity 4/3 (score -1) | solver Cecil, Dark Knight 2/3->--, Enduring Curiosity 4/3->Enduring Curiosity 4/3 (score 8)  GAP 9
+t15|  [atkaudit] policy Spyglass Siren 1/1 + Kaito, Bane of Nightmares 6/7 (17, dealt 1, lost 0, killed 1, back 0) | ref Spyglass Siren 1/1 + Kaito, Bane of Nightmares 6/7 (17)  MATCH
+t21|  [atkaudit] policy Kaito, Bane of Nightmares 8/9 (LETHAL, dealt 8, lost 0, killed 0, back 0) | ref Kaito, Bane of Nightmares 8/9 (LETHAL)  MATCH
+RLGAME|reward=-1.0|seed=11045
+RLGAME|reward=1.0|seed=11046
+t3|  [atkaudit] policy Cecil, Dark Knight 1/2 (2, dealt 1, lost 0, killed 0, back 0) | ref Cecil, Dark Knight 1/2 (2)  MATCH
+t5|  [atkaudit] policy Spyglass Siren 1/1 (2, dealt 1, lost 0, killed 0, back 0) | ref Spyglass Siren 1/1 (2)  MATCH
+t12|  [audit] policy Floodpits Drowner 2/1->Kaito, Bane of Nightmares 3/4 (score -3) | solver Floodpits Drowner 2/1->-- (score 0)  GAP 3
+t14|  [audit] policy Enduring Curiosity 4/3->Kaito, Bane of Nightmares 3/4 (score 6) | solver Enduring Curiosity 4/3->Kaito, Bane of Nightmares 3/4 (score 6)  MATCH
+t17|  [atkaudit] policy Kaito, Bane of Nightmares 5/6 (10, dealt 5, lost 0, killed 0, back 0) | ref Kaito, Bane of Nightmares 5/6 (10)  MATCH
+t18|  [audit] policy Floodpits Drowner 2/1->Kaito, Bane of Nightmares 3/4, Floodpits Drowner 2/1->-- (score -3) | solver Floodpits Drowner 2/1->Kaito, Bane of Nightmares 3/4, Floodpits Drowner 2/1->Kaito, Bane of Nightmares 3/4 (score 9)  GAP 12
+t19|  [atkaudit] policy Floodpits Drowner 2/1 + Kaito, Bane of Nightmares 6/7 (16, dealt 8, lost 0, killed 0, back 0) | ref Floodpits Drowner 2/1 + Kaito, Bane of Nightmares 6/7 (16)  MATCH
+t20|  [audit] policy Floodpits Drowner 2/1->Kaito, Bane of Nightmares 3/4, Floodpits Drowner 2/1->-- (score -3) | solver Floodpits Drowner 2/1->Kaito, Bane of Nightmares 3/4, Floodpits Drowner 2/1->Kaito, Bane of Nightmares 3/4 (score 9)  GAP 12
+t21|  [atkaudit] policy Floodpits Drowner 2/1 + Kaito, Bane of Nightmares 7/8 (LETHAL, dealt 9, lost 0, killed 0, back 0) | ref Kaito, Bane of Nightmares 7/8 (LETHAL)  MATCH
+RLGAME|reward=-1.0|seed=11047
+RLGAME|reward=1.0|seed=11048
+t5|  [atkaudit] policy Floodpits Drowner 2/1 (4, dealt 2, lost 0, killed 0, back 0) | ref Floodpits Drowner 2/1 (4)  MATCH
+t7|  [atkaudit] policy Spyglass Siren 1/1 + Floodpits Drowner 2/1 + Floodpits Drowner 2/1 (10, dealt 5, lost 0, killed 0, back 0) | ref Spyglass Siren 1/1 + Floodpits Drowner 2/1 + Floodpits Drowner 2/1 (10)  MATCH
+t8|  [audit] policy Floodpits Drowner 2/1->--, Floodpits Drowner 2/1->-- (score 0) | solver Floodpits Drowner 2/1->--, Floodpits Drowner 2/1->-- (score 0)  MATCH
+t9|  [atkaudit] policy Floodpits Drowner 2/1 + Floodpits Drowner 2/1 (8, dealt 4, lost 0, killed 0, back 0) | ref Floodpits Drowner 2/1 + Floodpits Drowner 2/1 (8)  MATCH
+t11|  [atkaudit] policy Floodpits Drowner 2/1 + Floodpits Drowner 2/1 (8, dealt 4, lost 0, killed 0, back 0) | ref Floodpits Drowner 2/1 + Floodpits Drowner 2/1 (8)  MATCH
+t13|  [atkaudit] policy Floodpits Drowner 2/1 + Floodpits Drowner 2/1 + Elektra, Daughter of the Hand 3/3 (LETHAL, dealt 7, lost 0, killed 0, back 0) | ref Floodpits Drowner 2/1 + Elektra, Daughter of the Hand 3/3 (LETHAL)  MATCH
+RLGAME|reward=1.0|seed=11049
+t14|  [atkaudit] policy Floodpits Drowner 2/1 (4, dealt 2, lost 0, killed 0, back 0) | ref Floodpits Drowner 2/1 (4)  MATCH
+t15|  [audit] policy Floodpits Drowner 2/1->Enduring Curiosity 4/3 (score -1) | solver Floodpits Drowner 2/1->-- (score 0)  GAP 1
+t17|  [audit] policy Elektra, Daughter of the Hand 3/3->Enduring Curiosity 4/3 (score 11) | solver Elektra, Daughter of the Hand 3/3->Enduring Curiosity 4/3 (score 11)  MATCH
+t20|  [atkaudit] policy Enduring Curiosity 4/3 (8, dealt 4, lost 0, killed 0, back 0) | ref Enduring Curiosity 4/3 (8)  MATCH
+t22|  [atkaudit] policy The Wondrous Wasp 2/1 + Kaito, Bane of Nightmares 5/6 (7, dealt 5, lost 1, killed 1, back 0) | ref The Wondrous Wasp 2/1 + Kaito, Bane of Nightmares 5/6 (7)  MATCH
+t24|  [atkaudit] policy The Wondrous Wasp 2/1 + Enduring Curiosity 4/3 + Kaito, Bane of Nightmares 6/7 (LETHAL, dealt 12, lost 0, killed 0, back 0) | ref Enduring Curiosity 4/3 (LETHAL)  MATCH

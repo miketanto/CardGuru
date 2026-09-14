@@ -1,0 +1,2 @@
+record proxy on :7948 -> :7947 -> /mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/11/rec_drill_M_L_p2048_cp7.jsonl
+connection 1 closed after 830 lines
