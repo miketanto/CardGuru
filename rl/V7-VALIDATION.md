@@ -4259,6 +4259,8 @@ Only W over L is clear of 0.5. The deck and the policy are confounded in every c
 main plays only its own deck). Six debug-logged pairing games (one per seating), requested
 by the user, are in `rl/artifacts/v7/10/pairs/` (the Dimir Requiting Hex play is in Q7).
 
+**Addendum to Q6 (2026-09-14 ~15:50Z, from Phase 11; the row above is unchanged).** The home level of `M_D_s1end` (1,792 episodes), which this row did not have: **27/100 = 0.270 [0.193, 0.364]** vs the heuristic on the BenchDimir mirror, measured through the evaluation's own path (`rl/battery_xdeck.sh`, G=100, ports 7949 / 7915; `rl/artifacts/v7/11/check_s1end_battery/`). The Phase 11 census recorder agrees (10/50 = 0.20 [0.11, 0.33]; faithfulness check in `rl/PHASE11-DRILL.md` STATE). Against the final's 0.590 [0.492, 0.681], Dimir's stage-2 change is clear at home as well as on the unseen suite (0.373 → 0.640). The s1end snapshot sat in a dip below the 50-game probes of the 1,024 and 2,048 checkpoints (0.48 / 0.46). Reading: **for Dimir the stage-2 gain is general improvement out of a dip, not evidence of cross-deck generalisation specifically**. The Q6 pooled reading ("no difference shown") stands. Cannot: one seed; the dip's cause (the pfsp / self blocks around 1,536–1,792) is not isolated.
+
 ## 10 / Q7 — card use: the channel stays open in two of three mains; no keyword use shown (2026-09-14; branch `v7/lane-d`; final snapshots; artifacts `rl/artifacts/v7/10/eval/p1/`, `eval/eval.log`)
 
 **P1 card swap.** `rl/p10_cardswap.py`, run exactly as the A2 gate ran it (2,004 consults,
