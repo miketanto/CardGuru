@@ -1,0 +1,19 @@
+Foot Soldiers	Makindi Griffin	kw:vanilla->flying
+Glory Seeker	Story Seeker	kw:vanilla->lifelink
+Glory Seeker	Bishop's Soldier	kw:vanilla->lifelink
+Glory Seeker	Sun Sentinel	kw:vanilla->vigilance
+Glory Seeker	Head of Security	kw:vanilla->first strike
+Glory Seeker	Agent of Atlas	kw:vanilla->prowess
+Glory Seeker	Huatli's Snubhorn	kw:vanilla->vigilance
+Glory Seeker	Alabaster Host Sanctifier	kw:vanilla->lifelink
+Glory Seeker	Mesa Unicorn	kw:vanilla->lifelink
+Knight of the Keep	Sickbay Orderly	kw:vanilla->lifelink
+Shu Elite Infantry	Aardvark Sloth	kw:vanilla->lifelink
+Silvercoat Lion	Alabaster Host Sanctifier	kw:vanilla->lifelink
+Silvercoat Lion	Bishop's Soldier	kw:vanilla->lifelink
+Silvercoat Lion	Story Seeker	kw:vanilla->lifelink
+Silvercoat Lion	Mesa Unicorn	kw:vanilla->lifelink
+Silvercoat Lion	Alpine Watchdog	kw:vanilla->vigilance
+Silvercoat Lion	Huatli's Snubhorn	kw:vanilla->vigilance
+Silvercoat Lion	Agent of Atlas	kw:vanilla->prowess
+Silvercoat Lion	Head of Security	kw:vanilla->first strike

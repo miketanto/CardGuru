@@ -3852,3 +3852,56 @@ two decks' (16 cards, keyword positives are Spyglass Siren / The Wondrous Wasp f
 and one transformed Cecil for lifelink), so the probe is far easier than a corpus-wide
 one; the granted-vs-printed distinction is not separable on these rows (no pump effects
 in play).
+
+## 10 / A1-A2 — the candidate-to-card path behind `--cand-refers-pool`, and the gate (2026-09-14; branch `v7/lane-d`; runbook `rl/PHASE10-LEAGUE.md`)
+
+**A1 (code, ce38ccc).** `v7_net.TokenBuilders(cand_refers_pool=True)`: `refers` ([B, K, T_wire])
+restricted to the entity slice (tokens 3..), masked by `ent_mask`, row-normalised, pools the
+referents' `[c', unk, ent-fields]` rows — the same `x` the zone MLPs read — into
+[B, K, 193]; `cand_ref = Linear(193, 256, bias=False)` with default (non-zero) init adds it to
+the candidate token before masking. The same for `opp_act` with `opp_act_refers`
+(`opp_act_ref`; cheap, done). Design choices stated: **no bias**, so a candidate with no
+entity referent (PASS, a player target) keeps its exact flag-OFF token (tested); the two
+layers are drawn from a **forked RNG** (`initial_seed() + 7919`), so every other parameter of
+a seeded fresh net equals the flag-OFF net's (tested). Flag OFF: no parameter, no config key,
+outputs **bit-identical to HEAD** (golden `tests/fixtures/v7_golden_off.pt` written by
+bfd547d; `torch.equal` on logits / value / game_vec). The config key `cand_refers_pool` is
+written only when ON; an ON checkpoint rebuilds ON from its config with no flag (a frozen
+league opponent server needs none); an OFF checkpoint under the flag loads `strict=False`
+and prints the two fresh keys (`V7Policy.load(..., cand_refers_pool=True)`, and `Trainer`
+under `policy_server.py --cand-refers-pool`, which also prints `cand_refers_pool=<bool>` at
+start). `p10_init_net.py --cand-refers-pool` mints fresh ON inits. Tests 18/18 (4 new),
+`rl/v7_check.py` 15/15 failures=0.
+
+**A2 (the gate), `bash rl/p10_a2.sh`** → `rl/artifacts/v7/10/a2/` (`cardswap_summary.txt`,
+`cardswap_{OFF,ON}.tsv`, `a2_run.log`). The P1 probe (a frozen copy, `rl/p10_cardswap.py`;
+the Phase 9 file untouched) on the same 2,004 consults (W0Base + Dimir sets) and the same
+pairs as 9/P1. OFF = `rl/artifacts/v7/9/init.pt` (P10INIT seed 10, the 9/P1 `init`
+subject); ON = the **same trunk** + the two new layers (loaded strict=False, saved as
+`init_on.pt`), so the only difference is the path.
+
+| subject | text | text_emb | text_kw | pt | cost | type | self_mana (control) |
+|---|---|---|---|---|---|---|---|
+| OFF mean Δp | 0.00000 | 0.00000 | 0.00000 | 0.00000 | 0.00000 | 0.00000 | 0.00404 [0.00395, 0.00413] |
+| ON mean Δp | **0.05163 [0.04895, 0.05420]** | 0.04716 | 0.00944 | 0.04029 | 0.04318 | 0.06880 | 0.00315 [0.00309, 0.00320] |
+| ON flip_strict | 0.127 [0.102, 0.153] | 0.093 | 0.022 | 0.133 | 0.101 | 0.175 | 0.000 |
+
+(n: text 1,547 swaps / 322 candidates / 229 consults; pt 878; cost 454; type 6,704; self 838.)
+Per keyword (ON text): first strike 0.034, flying 0.063, lifelink 0.042, prowess 0.043,
+vigilance 0.031. Tie census ON: the 219 different-card same-row SPELL pairs that tied
+exactly in every 9/P1 subject now differ by mean |Δlogit| 0.273, 0/219 tied. Mechanism line
+ON: encoder still the identity at init (att.out / ffn.out / every edge bias 0) — the effect
+is the builder path alone, as designed.
+
+**Gate (pre-registered): ON's mean Δp on text-only swaps ≥ 0.01 AND ≥ 10× OFF's → PASSED**
+(0.0516, lower bound 0.0490; OFF 0.00000, so the ratio is unbounded). No fix attempt was
+needed. Reading: with the flag the untrained scorer is identity-sensitive at every class,
+with a text effect ~13× the own-afterstate control (0.0516 / 0.0040 at OFF's control), where
+OFF is identity-blind. The keyword-bits-only variant (text_kw 0.0094) is below the bar on
+its own: most of the text effect rides on the embedding row, as the pool's input width says
+(128 embedding dims vs 18 keyword bits).
+
+Cannot: say the trained league nets will USE the path (that is Q7, after training); say
+anything about the P1 pair shortfall (19/12/6 text/pt/cost pairs, below the 40 pre-registered
+in Phase 9 — the same pairs, kept); the self_mana control moved 0.0040 → 0.0032 because the
+added term changes every referring candidate's token scale (not a fault).

@@ -163,3 +163,4 @@ UPDATE line + new section prompt in rl/HANDOFF-V7.md.
 
 ## STATE (append dated lines; newest last)
 - 2026-09-14 (start): nothing running from Phase 10; Phase 9 agent may be running P2–P4.
+- 2026-09-14 (session clock): A1 DONE (ce38ccc: --cand-refers-pool in v7_net/v7_policy/policy_server/p10_init_net, default OFF = HEAD bit for bit via golden fixture; 18/18 server tests, v7_check 15/15). A2 DONE - GATE PASSED: rl/p10_a2.sh (probe copy rl/p10_cardswap.py), ON text dp 0.0516 [0.0490,0.0542] vs OFF 0.00000 (pt 0.040, cost 0.043, type 0.069; strict flips 0.13), row 10 / A1-A2 in V7-VALIDATION.md, artifacts rl/artifacts/v7/10/a2/. Phase 9 probe still resident (server 7947 + JVM 7911) - no lane launched. A3 smoke running on driver 7913 (rl/p10_a3_smoke.sh -> rl/artifacts/v7/10/a3/).

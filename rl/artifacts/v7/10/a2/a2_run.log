@@ -1,0 +1,29 @@
+/home/miketanto/.local/lib/python3.10/site-packages/torch/nn/modules/transformer.py:382: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+CARDSWAP|consults=2004|files=6|sources=28|pairs=text:19,pt:12,cost:6,type:120
+CARDSWAP|sources_without_pairs|Bitter Triumph: not a creature; Cecil, Dark Knight: source text is not keyword-only (no text/pt/cost pairs); type pairs only; Day of Black Sun: not a creature; Elektra, Daughter of the Hand: source text is not keyword-only (no text/pt/cost pairs); type pairs only; Enduring Curiosity: source text is not keyword-only (no text/pt/cost pairs); type pairs only; Floodpits Drowner: source text is not keyword-only (no text/pt/cost pairs); type pairs only; Gloomlake Verge: not a creature; Hidden Lair: not a creature; Kaito, Bane of Nightmares: not a creature; Nowhere to Run: not a creature; Requiting Hex: not a creature; Restless Reef: not a creature; Shoot the Sheriff: not a creature; Soulstone Sanctuary: not a creature; Spell Pierce: not a creature; Spyglass Siren: source text is not keyword-only (no text/pt/cost pairs); type pairs only; The Wondrous Wasp: source text is not keyword-only (no text/pt/cost pairs); type pairs only; Watery Grave: not a creature; We Say Thee Nay!: not a creature
+CARDSWAP|swap_jobs=13515|device=cuda
+P1|OFF|text|mean_dp=0.00000 [0.00000,0.00000]|mean_dlogit=0.00000|mean_dlogit_raw=0.00000|max_dlogit=0.0000|flip=0.000 [0.000,0.000]|flip_strict=0.000 [0.000,0.000]|cand=322|consults=229|swaps=1547
+P1|OFF|text_emb|mean_dp=0.00000 [0.00000,0.00000]|mean_dlogit=0.00000|mean_dlogit_raw=0.00000|max_dlogit=0.0000|flip=0.000 [0.000,0.000]|flip_strict=0.000 [0.000,0.000]|cand=322|consults=229|swaps=1547
+P1|OFF|text_kw|mean_dp=0.00000 [0.00000,0.00000]|mean_dlogit=0.00000|mean_dlogit_raw=0.00000|max_dlogit=0.0000|flip=0.000 [0.000,0.000]|flip_strict=0.000 [0.000,0.000]|cand=322|consults=229|swaps=1547
+P1|OFF|pt|mean_dp=0.00000 [0.00000,0.00000]|mean_dlogit=0.00000|mean_dlogit_raw=0.00000|max_dlogit=0.0000|flip=0.000 [0.000,0.000]|flip_strict=0.000 [0.000,0.000]|cand=401|consults=276|swaps=878
+P1|OFF|cost|mean_dp=0.00000 [0.00000,0.00000]|mean_dlogit=0.00000|mean_dlogit_raw=0.00000|max_dlogit=0.0000|flip=0.000 [0.000,0.000]|flip_strict=0.000 [0.000,0.000]|cand=302|consults=220|swaps=454
+P1|OFF|type|mean_dp=0.00000 [0.00000,0.00000]|mean_dlogit=0.00000|mean_dlogit_raw=0.00000|max_dlogit=0.0000|flip=0.000 [0.000,0.000]|flip_strict=0.000 [0.000,0.000]|cand=838|consults=503|swaps=6704
+P1|OFF|self_mana|mean_dp=0.00404 [0.00395,0.00413]|mean_dlogit=0.02054|mean_dlogit_raw=0.02080|max_dlogit=0.0270|flip=0.135 [0.107,0.163]|flip_strict=0.080 [0.053,0.107]|cand=838|consults=503|swaps=838
+P1|OFF|text_by_keyword|first strike=0.00000(n=175)|flying=0.00000(n=51)|lifelink=0.00000(n=796)|prowess=0.00000(n=175)|vigilance=0.00000(n=350)
+P1|OFF|tie_census|diff-name SPELL pairs, same afterstate row: n=219 mean|dlogit|=0.00000 tied(<1e-4)=1.000 | different row: n=306 mean|dlogit|=0.050
+P1|OFF|yardstick|mean_top_gap=0.366|mean_within_consult_logit_std=0.240|mean_abs_raw_logit=0.35
+P1|OFF|mechanism|rel|enc(cand)-build(cand)|=0.00000|rel|enc(game)-build(game)|=0.00000|mean|W| att.qkv=0.0313 att.out=0.00000 ffn.in=0.0313 ffn.out=0.00000|edge_bias refers_to max=0.00000 mean=0.00000|all edges max=0.00000
+P1|OFF|reading=text-sensitive|ratio_text_over_pt=1.028
+P1|ON|text|mean_dp=0.05163 [0.04895,0.05420]|mean_dlogit=0.25476|mean_dlogit_raw=0.27797|max_dlogit=0.6176|flip=0.127 [0.102,0.153]|flip_strict=0.127 [0.102,0.153]|cand=322|consults=229|swaps=1547
+P1|ON|text_emb|mean_dp=0.04716 [0.04473,0.04954]|mean_dlogit=0.23310|mean_dlogit_raw=0.25355|max_dlogit=0.5711|flip=0.093 [0.068,0.121]|flip_strict=0.093 [0.068,0.121]|cand=322|consults=229|swaps=1547
+P1|ON|text_kw|mean_dp=0.00944 [0.00904,0.00982]|mean_dlogit=0.04653|mean_dlogit_raw=0.05031|max_dlogit=0.1044|flip=0.022 [0.009,0.037]|flip_strict=0.022 [0.009,0.037]|cand=322|consults=229|swaps=1547
+P1|ON|pt|mean_dp=0.04029 [0.03789,0.04253]|mean_dlogit=0.19882|mean_dlogit_raw=0.21346|max_dlogit=0.4675|flip=0.133 [0.105,0.162]|flip_strict=0.133 [0.105,0.162]|cand=401|consults=276|swaps=878
+P1|ON|cost|mean_dp=0.04318 [0.04062,0.04581]|mean_dlogit=0.21078|mean_dlogit_raw=0.22642|max_dlogit=0.4032|flip=0.101 [0.071,0.133]|flip_strict=0.101 [0.071,0.133]|cand=302|consults=220|swaps=454
+P1|ON|type|mean_dp=0.06880 [0.06676,0.07097]|mean_dlogit=0.35140|mean_dlogit_raw=0.36887|max_dlogit=1.1189|flip=0.175 [0.158,0.193]|flip_strict=0.175 [0.158,0.193]|cand=838|consults=503|swaps=6704
+P1|ON|self_mana|mean_dp=0.00315 [0.00309,0.00320]|mean_dlogit=0.01533|mean_dlogit_raw=0.01636|max_dlogit=0.0226|flip=0.000 [0.000,0.000]|flip_strict=0.000 [0.000,0.000]|cand=838|consults=503|swaps=838
+P1|ON|text_by_keyword|first strike=0.03372(n=175)|flying=0.06322(n=51)|lifelink=0.04235(n=796)|prowess=0.04309(n=175)|vigilance=0.03069(n=350)
+P1|ON|tie_census|diff-name SPELL pairs, same afterstate row: n=219 mean|dlogit|=0.27348 tied(<1e-4)=0.000 | different row: n=306 mean|dlogit|=0.232
+P1|ON|yardstick|mean_top_gap=0.383|mean_within_consult_logit_std=0.316|mean_abs_raw_logit=0.47
+P1|ON|mechanism|rel|enc(cand)-build(cand)|=0.00000|rel|enc(game)-build(game)|=0.00000|mean|W| att.qkv=0.0313 att.out=0.00000 ffn.in=0.0313 ffn.out=0.00000|edge_bias refers_to max=0.00000 mean=0.00000|all edges max=0.00000
+P1|ON|reading=text-sensitive|ratio_text_over_pt=1.282
