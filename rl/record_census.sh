@@ -8,9 +8,10 @@
 #   bash rl/record_census.sh <ckpt> <deck> <heuristic|cp7> <games> <tag> [seed, default 11000]
 #   bash rl/record_census.sh stop
 # Output (rl/artifacts/v7/11/): rec_<tag>.jsonl (gitignored), rec_<tag>.audit.txt (RLGAME headers +
-# audit lines), rec_<tag>.counts.txt (the CENSUSREC line + the census lines for the deck),
+# audit lines), rec_<tag>.transcripts.txt (every full RLGAME block of this recording, gitignored),
+# rec_<tag>.counts.txt (the CENSUSREC line + the census lines for the deck),
 # rec_<tag>.{server,proxy,driver}.log, rec_<tag>.probe.txt.
-# Prints:  CENSUSREC|<tag>|rc=..|ckpt=..|deck=..|opp=..|games=..|seed=..|consults=..|acts=..|ends=..|wins=.. losses=.. ...|cand_refers_pool=..|rlgame_blocks=..|audit_lines=..
+# Prints:  CENSUSREC|<tag>|rc=..|ckpt=..|deck=..|opp=..|games=..|seed=..|consults=..|acts=..|ends=..|wins=.. losses=.. ...|cand_refers_pool=..|rlgame_blocks=..|audit_lines=..|transcript_games=..
 #          then the DC| or LC| census lines, then  CENSUSREC|done|<tag>|<utc>
 [ -f ~/.profile ] && . ~/.profile
 set -u
@@ -63,11 +64,14 @@ RL_PERSIST=1 RL_AUTOSTART=0 RL_DRIVER_PORT=$DPORT timeout 7200 bash $RL/run_driv
 RC=$?
 kill $PP 2>/dev/null; wait $PP 2>/dev/null
 tail -n +$((N0 + 1)) $DLOG 2>/dev/null | grep -a '^RLGAME|\|\[audit\]\|\[atkaudit\]' > $P.audit.txt
+# every full RLGAME block of this recording (replay_ck.sh's awk, all blocks instead of the last);
+# the driver log is overwritten by the next census, so this is the only copy
+tail -n +$((N0 + 1)) $DLOG 2>/dev/null | awk '/^RLGAME\|/{on=1} on{print} /^RLGAME_END/{on=0}' > $P.transcripts.txt
 C=$(grep -c '"t":"consult"' $P.jsonl); A=$(grep -c '^{"a":' $P.jsonl); E=$(grep -c '"t":"end"' $P.jsonl)
 WL=$(grep -o 'wins=[0-9]*\|losses=[0-9]*\|draws=[0-9]*\|stalls=[0-9]*\|turns_per_ep=[0-9.]*' $P.probe.txt 2>/dev/null | paste -sd' ')
 CRP=$(grep -o 'cand_refers_pool=[A-Za-z]*' $P.server.log | head -1)
-RG=$(grep -c '^RLGAME|' $P.audit.txt); AU=$(grep -c '\[audit\]' $P.audit.txt)
-echo "CENSUSREC|$TAG|rc=$RC|ckpt=$CK|deck=$DECK|opp=$OPP|games=$G|seed=$SEED|consults=$C|acts=$A|ends=$E|$WL|$CRP|rlgame_blocks=$RG|audit_lines=$AU" | tee $P.counts.txt
+RG=$(grep -c '^RLGAME|' $P.audit.txt); AU=$(grep -c '\[audit\]' $P.audit.txt); TG=$(grep -c '^RLGAME|' $P.transcripts.txt)
+echo "CENSUSREC|$TAG|rc=$RC|ckpt=$CK|deck=$DECK|opp=$OPP|games=$G|seed=$SEED|consults=$C|acts=$A|ends=$E|$WL|$CRP|rlgame_blocks=$RG|audit_lines=$AU|transcript_games=$TG" | tee $P.counts.txt
 grep -h 'Exception\|refused\|RLJOB|error' $P.driver.log | head -3
 stop_all
 cd /home/user/CardGuru

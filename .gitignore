@@ -27,3 +27,4 @@ rl/artifacts/v7/7a/*/ck_256.pt
 rl/artifacts/v7/**/*.pt
 rl/artifacts/v7/7d1b/*.jsonl
 rl/artifacts/v7/11/*.jsonl
+rl/artifacts/v7/11/*.transcripts.txt
