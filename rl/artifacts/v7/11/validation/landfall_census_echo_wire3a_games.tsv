@@ -1,0 +1,5 @@
+set	game	file	r	turns	lands	own_turns	attack_turns	precombat_drops_on_attack_turns	drops_on_attack_turns	lf_can_turns	lf_attack_turns	blk_pairs	blk_small
+echo_wire3a	0	p10_G1Landfall_wire.jsonl	-1.0	13	3	6	5	2	2	5	5	1	1
+echo_wire3a	1	p10_G1Landfall_wire.jsonl	-1.0	15	6	7	1	1	1	1	1	5	3
+echo_wire3a	2	p10_G1Landfall_wire.jsonl	1.0	48	10	24	20	7	7	20	10	6	5
+echo_wire3a	3	p10_G1Landfall_wire.jsonl	-1.0	19	7	9	1	1	1	1	1	7	7
