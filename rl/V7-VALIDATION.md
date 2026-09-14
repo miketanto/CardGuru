@@ -3809,3 +3809,46 @@ opponent-hand or deck tokens (not swapped); speak to the belief module (not on t
 Pre-stated: P4's "training erases / preserves keyword information" will read
 "preserved" trivially — the entity tokens are never asked for their keywords by a
 candidate, so nothing acts on them either way.
+
+## 9 / P4 — linear probes on the entity tokens: everything is decodable, before and after training (2026-09-14; branch `v7/lane-d`)
+
+`bash rl/probes/run_p4.sh` → `python3 rl/probes/token_probe.py` over the same 2,004
+consults; rows = every battlefield creature entity (`v7_ent` zone 0, is-creature) whose
+name the corpus knows: **8,386 rows / 1,825 consults / 16 distinct cards** (Kaito,
+Soulstone Sanctuary, Restless Reef rows skipped: no printed P/T in the corpus). Labels from
+`cards_v1` graph features / printed P/T: flying 802 positives, lifelink 79 (Cecil, Redeemed
+Paladin), first strike **0 (not testable: no first-strike creature in either deck)**,
+any-keyword 1,770, power bucket {≤1: 583, 2: 4,910, 3: 2,438, ≥4: 455}, toughness bucket
+{2,583 / 2,288 / 2,312 / 1,203}. Views: `raw` = the 64-float wire row; `build:init` = the
+builder token (card embedding + row through the zone MLP); `enc:<subject>` = the encoder
+output token. L2 logistic probe, class-balanced, 5-fold GroupKFold over consults, balanced
+accuracy on out-of-fold predictions, bootstrap 95 % CI over consults. Artifacts
+`rl/artifacts/v7/9/token_probe_summary.txt`, `p4_run.log`.
+
+| view | flying | lifelink | any-keyword | power bucket | toughness bucket |
+|---|---|---|---|---|---|
+| raw wire row | 0.999 [0.997, 1.000] | 1.000 | 0.999 [0.997, 1.000] | 1.000 | 1.000 |
+| build (init) | 1.000 | 1.000 | 1.000 | 1.000 | 1.000 |
+| enc: init | 1.000 | 1.000 | 1.000 | 1.000 | 1.000 |
+| enc: C1s0 | 1.000 | 1.000 | 1.000 | 1.000 | 1.000 |
+| enc: L0 | 1.000 | 1.000 | 1.000 | 1.000 | 1.000 |
+| enc: BC | 1.000 | 1.000 | 1.000 | 1.000 | 1.000 |
+| enc: DIM | 1.000 | 1.000 | 1.000 | 1.000 | 1.000 |
+
+(every CI is [1.000, 1.000] unless shown; first strike not testable.)
+
+**Pre-registered reading, per label and subject: "preserves" everywhere** (every trained
+interval overlaps init's; all sit at 1.000). **The raw wire row already carries the
+keywords**: `v7_ent` fields 34–51 are the 18 keyword bits after continuous effects (WIRE
+§2d) and 14–15 the printed P/T, so the probe is a read-out of explicit input fields, not
+of the card embedding — the clause "if the wire has no keyword field ... the only route is
+the card embedding" does not apply. The encoder output stays linearly decodable because,
+per P1's mechanism line, the encoder is close to the identity plus a per-token FFN on the
+builder tokens (att.out / ffn.out weights ≤ 0.0005). As pre-stated in P1, this result is
+trivial in the direction that matters: the entity tokens *hold* the keywords in every
+subject, and the candidate scorer never *reads* its referent's token (P1), so decodability
+here says nothing about use. Cannot: linear decodability is not use; the label set is the
+two decks' (16 cards, keyword positives are Spyglass Siren / The Wondrous Wasp for flying
+and one transformed Cecil for lifelink), so the probe is far easier than a corpus-wide
+one; the granted-vs-printed distinction is not separable on these rows (no pump effects
+in play).

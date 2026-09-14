@@ -1,0 +1,62 @@
+P4|raw|flying|bacc=0.999 [0.997,1.000]|n=8386|classes=2
+P4|raw|lifelink|bacc=1.000 [1.000,1.000]|n=8386|classes=2
+P4|raw|first_strike|not testable (one class: {0: 8386})
+P4|raw|any_keyword|bacc=0.999 [0.997,1.000]|n=8386|classes=2
+P4|raw|power_bucket|bacc=1.000 [1.000,1.000]|n=8386|classes=4
+P4|raw|toughness_bucket|bacc=1.000 [1.000,1.000]|n=8386|classes=4
+P4|build:init|flying|bacc=1.000 [1.000,1.000]|n=8386|classes=2
+P4|build:init|lifelink|bacc=1.000 [1.000,1.000]|n=8386|classes=2
+P4|build:init|first_strike|not testable (one class: {0: 8386})
+P4|build:init|any_keyword|bacc=1.000 [1.000,1.000]|n=8386|classes=2
+P4|build:init|power_bucket|bacc=1.000 [1.000,1.000]|n=8386|classes=4
+P4|build:init|toughness_bucket|bacc=1.000 [1.000,1.000]|n=8386|classes=4
+P4|enc:init|flying|bacc=1.000 [1.000,1.000]|n=8386|classes=2
+P4|enc:init|lifelink|bacc=1.000 [1.000,1.000]|n=8386|classes=2
+P4|enc:init|first_strike|not testable (one class: {0: 8386})
+P4|enc:init|any_keyword|bacc=1.000 [1.000,1.000]|n=8386|classes=2
+P4|enc:init|power_bucket|bacc=1.000 [1.000,1.000]|n=8386|classes=4
+P4|enc:init|toughness_bucket|bacc=1.000 [1.000,1.000]|n=8386|classes=4
+P4|enc:C1s0|flying|bacc=1.000 [1.000,1.000]|n=8386|classes=2
+P4|enc:C1s0|lifelink|bacc=1.000 [1.000,1.000]|n=8386|classes=2
+P4|enc:C1s0|first_strike|not testable (one class: {0: 8386})
+P4|enc:C1s0|any_keyword|bacc=1.000 [1.000,1.000]|n=8386|classes=2
+P4|enc:C1s0|power_bucket|bacc=1.000 [1.000,1.000]|n=8386|classes=4
+P4|enc:C1s0|toughness_bucket|bacc=1.000 [1.000,1.000]|n=8386|classes=4
+P4|enc:L0|flying|bacc=1.000 [1.000,1.000]|n=8386|classes=2
+P4|enc:L0|lifelink|bacc=1.000 [1.000,1.000]|n=8386|classes=2
+P4|enc:L0|first_strike|not testable (one class: {0: 8386})
+P4|enc:L0|any_keyword|bacc=1.000 [1.000,1.000]|n=8386|classes=2
+P4|enc:L0|power_bucket|bacc=1.000 [1.000,1.000]|n=8386|classes=4
+P4|enc:L0|toughness_bucket|bacc=1.000 [1.000,1.000]|n=8386|classes=4
+P4|enc:BC|flying|bacc=1.000 [1.000,1.000]|n=8386|classes=2
+P4|enc:BC|lifelink|bacc=1.000 [1.000,1.000]|n=8386|classes=2
+P4|enc:BC|first_strike|not testable (one class: {0: 8386})
+P4|enc:BC|any_keyword|bacc=1.000 [1.000,1.000]|n=8386|classes=2
+P4|enc:BC|power_bucket|bacc=1.000 [1.000,1.000]|n=8386|classes=4
+P4|enc:BC|toughness_bucket|bacc=1.000 [1.000,1.000]|n=8386|classes=4
+P4|enc:DIM|flying|bacc=1.000 [1.000,1.000]|n=8386|classes=2
+P4|enc:DIM|lifelink|bacc=1.000 [1.000,1.000]|n=8386|classes=2
+P4|enc:DIM|first_strike|not testable (one class: {0: 8386})
+P4|enc:DIM|any_keyword|bacc=1.000 [1.000,1.000]|n=8386|classes=2
+P4|enc:DIM|power_bucket|bacc=1.000 [1.000,1.000]|n=8386|classes=4
+P4|enc:DIM|toughness_bucket|bacc=1.000 [1.000,1.000]|n=8386|classes=4
+P4|reading|C1s0|flying|preserves|trained=1.000 [1.000,1.000]|init=1.000 [1.000,1.000]
+P4|reading|C1s0|lifelink|preserves|trained=1.000 [1.000,1.000]|init=1.000 [1.000,1.000]
+P4|reading|C1s0|any_keyword|preserves|trained=1.000 [1.000,1.000]|init=1.000 [1.000,1.000]
+P4|reading|C1s0|power_bucket|preserves|trained=1.000 [1.000,1.000]|init=1.000 [1.000,1.000]
+P4|reading|C1s0|toughness_bucket|preserves|trained=1.000 [1.000,1.000]|init=1.000 [1.000,1.000]
+P4|reading|L0|flying|preserves|trained=1.000 [1.000,1.000]|init=1.000 [1.000,1.000]
+P4|reading|L0|lifelink|preserves|trained=1.000 [1.000,1.000]|init=1.000 [1.000,1.000]
+P4|reading|L0|any_keyword|preserves|trained=1.000 [1.000,1.000]|init=1.000 [1.000,1.000]
+P4|reading|L0|power_bucket|preserves|trained=1.000 [1.000,1.000]|init=1.000 [1.000,1.000]
+P4|reading|L0|toughness_bucket|preserves|trained=1.000 [1.000,1.000]|init=1.000 [1.000,1.000]
+P4|reading|BC|flying|preserves|trained=1.000 [1.000,1.000]|init=1.000 [1.000,1.000]
+P4|reading|BC|lifelink|preserves|trained=1.000 [1.000,1.000]|init=1.000 [1.000,1.000]
+P4|reading|BC|any_keyword|preserves|trained=1.000 [1.000,1.000]|init=1.000 [1.000,1.000]
+P4|reading|BC|power_bucket|preserves|trained=1.000 [1.000,1.000]|init=1.000 [1.000,1.000]
+P4|reading|BC|toughness_bucket|preserves|trained=1.000 [1.000,1.000]|init=1.000 [1.000,1.000]
+P4|reading|DIM|flying|preserves|trained=1.000 [1.000,1.000]|init=1.000 [1.000,1.000]
+P4|reading|DIM|lifelink|preserves|trained=1.000 [1.000,1.000]|init=1.000 [1.000,1.000]
+P4|reading|DIM|any_keyword|preserves|trained=1.000 [1.000,1.000]|init=1.000 [1.000,1.000]
+P4|reading|DIM|power_bucket|preserves|trained=1.000 [1.000,1.000]|init=1.000 [1.000,1.000]
+P4|reading|DIM|toughness_bucket|preserves|trained=1.000 [1.000,1.000]|init=1.000 [1.000,1.000]
