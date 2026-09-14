@@ -47,6 +47,8 @@ def main():
     # name; the belief flag is part of the config the server reloads.
     ap.add_argument("--card-emb", default="card_emb_v8")
     ap.add_argument("--no-belief", action="store_true")
+    ap.add_argument("--cand-refers-pool", action="store_true",
+                    help="v7: build the Phase 10 A1 candidate-to-card path (recorded in config)")
     args = ap.parse_args()
 
     if os.path.exists(args.out):
@@ -57,7 +59,8 @@ def main():
     extra = {}
     if args.arch == "v7":
         net = ps.build_net("v7", args.sdim, args.cdim, v7=dict(
-            card_emb=args.card_emb, belief=not args.no_belief))
+            card_emb=args.card_emb, belief=not args.no_belief,
+            **({"cand_refers_pool": True} if args.cand_refers_pool else {})))
         # PPO's parameter set (belief excluded, card rows are a buffer)
         opt = torch.optim.Adam(net.policy_parameters(), lr=ps.LR)
         dims = net.dims()               # the WIRE-V7 record

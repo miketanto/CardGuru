@@ -519,7 +519,7 @@ class Trainer:
                  desperation=0.0, gdim=GDIM, edim=EDIM, emax=EMAX,
                  n_rtypes=len(RTYPES), r0=False, oracle=False,
                  card_emb="card_emb_v8", belief=True, frozen=False,
-                 deck_ctx=None):
+                 deck_ctx=None, cand_refers_pool=False):
         torch.manual_seed(seed)
         self.sdim, self.cdim = sdim, cdim
         # v6 state path; unused (and unvalidated) by the v1-v5 arches
@@ -570,11 +570,21 @@ class Trainer:
                     raise RuntimeError(
                         f"ckpt card table {cfg['card_emb']} != requested "
                         f"--card-emb {card_emb}")
-            self.net = build_net(arch, sdim, cdim, v7=dict(
+            # Phase 10 A1 (--cand-refers-pool): a checkpoint whose config carries
+            # the candidate-to-card path rebuilds it without the flag (a frozen
+            # league opponent needs none); an older checkpoint under the flag
+            # loads strict=False below and says so. Flag off + no key = HEAD.
+            crp = bool(cfg.get("cand_refers_pool", False)) or bool(cand_refers_pool)
+            self._crp_upgrade = (crp and self._ckpt_data is not None
+                                 and not cfg.get("cand_refers_pool", False))
+            v7kw = dict(
                 card_emb=card_emb, belief=cfg.get("belief", belief),
                 frozen=frozen, d=cfg.get("d", 256),
                 layers=cfg.get("layers", 6), heads=cfg.get("heads", 8),
-                value_layers=cfg.get("value_layers", 4))).to(DEVICE)
+                value_layers=cfg.get("value_layers", 4))
+            if crp:
+                v7kw["cand_refers_pool"] = True
+            self.net = build_net(arch, sdim, cdim, v7=v7kw).to(DEVICE)
             # PPO owns the builders, encoder, heads, critic and the card
             # adapter. The belief module trains under its own loss
             # (Phase 6) and the card table rows are a buffer; --frozen
@@ -624,7 +634,19 @@ class Trainer:
                 raise RuntimeError(
                     f"ckpt arch {ck_arch} != requested {arch}")
             self._check_ckpt_dims(data, ckpt)
-            self.net.load_state_dict(data["net"])
+            if getattr(self, "_crp_upgrade", False):
+                res = self.net.load_state_dict(data["net"], strict=False)
+                bad = [k for k in res.missing_keys
+                       if ".cand_ref." not in k and ".opp_act_ref." not in k]
+                if bad or res.unexpected_keys:
+                    raise RuntimeError(
+                        f"--cand-refers-pool: {ckpt} missing {bad} "
+                        f"unexpected {list(res.unexpected_keys)}")
+                print(f"--cand-refers-pool: {ckpt} has no candidate-refers pool; "
+                      f"loaded strict=False, fresh {sorted(res.missing_keys)}",
+                      flush=True)
+            else:
+                self.net.load_state_dict(data["net"])
             if self.opt is not None and data.get("opt") is not None:
                 try:
                     self.opt.load_state_dict(data["opt"])
@@ -2045,6 +2067,9 @@ if __name__ == "__main__":
                     help="v7: per-batch advantage normalisation (7a arm B8; batch = through 7c)")
     ap.add_argument("--target-kl", type=float, default=0.0, help="v7: stop the update once mean approx KL passes this (C1)")
     ap.add_argument("--argmax-classes", action="store_true", help="v7 eval: argmax over candidate classes (B7)")
+    ap.add_argument("--cand-refers-pool", action="store_true",
+                    help="v7 (Phase 10 A1): pool the candidate's referred entities into its token "
+                         "(default off = the pre-Phase-10 network; a checkpoint that has it keeps it)")
 
     args = ap.parse_args()
     if args.device == "cuda" and not torch.cuda.is_available():
@@ -2099,7 +2124,10 @@ if __name__ == "__main__":
                  args.gdim, args.edim, args.emax,
                  len(RTYPES), args.r0, args.oracle,
                  card_emb=args.card_emb, belief=not args.no_belief,
-                 frozen=args.frozen, deck_ctx=dc)
+                 frozen=args.frozen, deck_ctx=dc,
+                 cand_refers_pool=args.cand_refers_pool)
+    if args.arch == "v7":
+        print(f"cand_refers_pool={bool(_t.net.config.get('cand_refers_pool', False))}", flush=True)
     if args.arch == "v7":
         _t.tbptt, _t.ep_batch = args.tbptt, args.ep_batch
         globals()["EPOCHS"] = args.epochs

@@ -18,6 +18,18 @@ cards of the two decks, and the pooled deck vectors `D_me`, `D_opp`
 join the game token, exactly as the design's L1 says.  With no `ctx`
 the game token gets zeros there.
 
+Phase 10 A1 (`cand_refers_pool`, server flag `--cand-refers-pool`, default OFF =
+the network above bit for bit): the candidate token is otherwise built from its
+type and its 40-float row only, and the card reaches it only through the
+encoder's `refers_to` bias, which starts at zero and never moved in training
+(V7-VALIDATION "9 / P1").  ON: `refers` restricted to the entity slice and
+row-normalised pools the referents' `[c', unk, ent-fields]` (the same `x` the
+zone MLPs read) and `cand_ref = Linear(d_c+1+64, d, bias=False)` (default init,
+drawn from a forked RNG so the rest of a seeded fresh net is unchanged) adds it
+to the candidate token; the same for `opp_act` with `opp_act_refers`
+(`opp_act_ref`).  No bias: a candidate with no entity referent (PASS, a player
+target) keeps its exact flag-OFF token.
+
 The faithfulness probe (rl/probes/faithfulness.py) is applied to the
 outputs of this stage in tests/test_v7_net.py: every planted input
 field must be linearly recoverable after the MLPs.
@@ -95,7 +107,7 @@ class CardTable(nn.Module):
 
 
 class TokenBuilders(nn.Module):
-    def __init__(self, table, d=D_TOK, n_ctypes=W.CTYPES):
+    def __init__(self, table, d=D_TOK, n_ctypes=W.CTYPES, cand_refers_pool=False):
         super().__init__()
         self.table = table
         d_c = table.adapter.out_features
@@ -109,6 +121,23 @@ class TokenBuilders(nn.Module):
         self.opp_act_mlp = mlp(W.DIMS["opp_action"], d)
         self.unknown_hand = nn.Parameter(torch.zeros(d_c))                # identity vector of an unknown hand card
         self.d = d
+        # Phase 10 A1: the candidate-to-card path. OFF creates nothing and draws no RNG.
+        self.cand_refers_pool = bool(cand_refers_pool)
+        if self.cand_refers_pool:
+            d_x = d_c + 1 + W.DIMS["ent"]
+            with torch.random.fork_rng(devices=[]):
+                torch.manual_seed(torch.initial_seed() + 7919)
+                self.cand_ref = nn.Linear(d_x, d, bias=False)
+                self.opp_act_ref = nn.Linear(d_x, d, bias=False)
+
+    @staticmethod
+    def _pool_refers(refers, x, ent_mask):
+        """refers [B, K, T_wire] multi-hot -> the mean of the referred entities' x rows
+        [B, K, d_x] (entity slice only: token 3.. = entity 0..; zero when none)."""
+        n = x.shape[1]
+        r = refers[..., 3:3 + n].to(x.dtype) * ent_mask.unsqueeze(1).to(x.dtype)
+        r = r / r.sum(-1, keepdim=True).clamp(min=1.0)
+        return torch.bmm(r, x)
 
     def forward(self, b, ctx=None, D_me=None, D_opp=None):
         """b: the dict from v7_obs.collate (tensors on this module's device)."""
@@ -131,6 +160,8 @@ class TokenBuilders(nn.Module):
                                         D_opp if D_opp is not None else zeros], -1)).unsqueeze(1)
         # candidates
         cand = self.cand_mlp(torch.cat([self.ctype_emb(b["cand_type"]), b["cand"]], -1))
+        if self.cand_refers_pool:
+            cand = cand + self.cand_ref(self._pool_refers(b["refers"], x, b["ent_mask"]))
         cand = cand * b["cand_mask"].unsqueeze(-1).to(cand.dtype)
         # opponent tokens
         ch, unk_h = self.table(b["opp_hand_id"], ctx)
@@ -138,7 +169,10 @@ class TokenBuilders(nn.Module):
         opp_hand = self.opp_hand_mlp(torch.cat([ch, unk_h, b["opp_hand"]], -1)) * b["opp_hand_mask"].unsqueeze(-1).float()
         cd, unk_d = self.table(b["opp_deck_id"], ctx)
         opp_deck = self.opp_deck_mlp(torch.cat([cd, unk_d, b["opp_deck"]], -1)) * b["opp_deck_mask"].unsqueeze(-1).float()
-        opp_act = self.opp_act_mlp(b["opp_act"]) * b["opp_act_mask"].unsqueeze(-1).float()
+        opp_act = self.opp_act_mlp(b["opp_act"])
+        if self.cand_refers_pool:
+            opp_act = opp_act + self.opp_act_ref(self._pool_refers(b["opp_act_refers"], x, b["ent_mask"]))
+        opp_act = opp_act * b["opp_act_mask"].unsqueeze(-1).float()
         return {"game": game, "players": players, "ent": ent, "cand": cand,
                 "opp_hand": opp_hand, "opp_deck": opp_deck, "opp_act": opp_act,
                 "ent_mask": b["ent_mask"], "cand_mask": b["cand_mask"], "tok_mask": b["tok_mask"],

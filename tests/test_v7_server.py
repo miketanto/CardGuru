@@ -373,3 +373,102 @@ def test_act_v7_eval_honours_argmax_classes(tmp_path, monkeypatch):
     tr.hidden = None
     monkeypatch.setattr(ps, "ARGMAX_CLASSES", True)
     assert tr.act_v7(m, sample=False) == 1
+
+
+# ----------------------------------------------------------------- Phase 10 A1: --cand-refers-pool
+
+GOLDEN = os.path.join(HERE, "fixtures", "v7_golden_off.pt")     # written by the HEAD code (bfd547d)
+
+
+def _fixture_obs(seed=3, n=6):
+    msgs = F.valid_stream("block", seed=seed, n=n, with_opp=True)
+    ids = V.CardIds()
+    return [V.parse_consult(m, ids, msgs[0]) for m in msgs[1:] if m.get("t") == "consult"]
+
+
+def _small_net(seed=0, **kw):
+    torch.manual_seed(seed)
+    return P.V7Policy(random_table=True, layers=2, value_layers=1, **kw).eval()
+
+
+def test_cand_refers_pool_off_is_head_bit_for_bit():
+    """Flag OFF = the pre-Phase-10 network bit for bit: same seed + fixture batch as the
+    golden file written by the HEAD code; no new parameter, no new config key."""
+    g = torch.load(GOLDEN, weights_only=False)
+    net = _small_net()
+    assert not any("cand_ref" in k or "opp_act_ref" in k for k in net.state_dict())
+    assert "cand_refers_pool" not in net.config
+    with torch.no_grad():
+        logits, value, gv, _ = net(V.collate(_fixture_obs()))
+    assert torch.equal(logits, g["logits"]) and torch.equal(value, g["value"]) and torch.equal(gv, g["game_vec"])
+
+
+def test_cand_refers_pool_on_sees_the_referent():
+    """Flag ON, untrained: changing the card id of an entity a candidate refers to moves that
+    candidate's logit by > 1e-3 and > 10x the flag-OFF change (closed at init, 9/P1); the rest
+    of the seeded fresh net equals the flag-OFF net; a candidate with no entity referent keeps
+    its exact flag-OFF token."""
+    off, on = _small_net(), _small_net(cand_refers_pool=True)
+    so, sn = off.state_dict(), on.state_dict()
+    assert set(sn) - set(so) == {"build.cand_ref.weight", "build.opp_act_ref.weight"}
+    assert all(torch.equal(so[k], sn[k]) for k in so)
+    obs = _fixture_obs()
+    b = V.collate(obs)
+    hits = [(bi, k, t - 3) for bi, o in enumerate(obs) for k in range(o.cand.shape[0])
+            for t in torch.nonzero(o.refers[k]).flatten().tolist()[:1] if t >= 3]
+    assert hits
+    worst = []
+    for bi, k, i in hits:
+        b2 = dict(b)
+        b2["ent_id"] = b["ent_id"].clone()
+        b2["ent_id"][bi, i] = (int(b["ent_id"][bi, i]) + 17) % on.table.n
+        with torch.no_grad():
+            d_on = (on(b2)[0][bi, k] - on(b)[0][bi, k]).abs().item()
+            d_off = (off(b2)[0][bi, k] - off(b)[0][bi, k]).abs().item()
+        worst.append((d_on, d_off))
+    assert all(d_on > 1e-3 for d_on, _ in worst), worst
+    assert all(d_on > 10 * d_off for d_on, d_off in worst), worst
+    with torch.no_grad():
+        t_on, t_off = on.build(b), off.build(b)
+    noref = (b["refers"][..., 3:].sum(-1) == 0) & b["cand_mask"]
+    assert noref.any()
+    assert torch.equal(t_on["cand"][noref], t_off["cand"][noref])
+
+
+def test_cand_refers_pool_checkpoints(tmp_path, capsys):
+    """An OFF checkpoint loads as before, and under cand_refers_pool=True strict=False (said);
+    an ON checkpoint rebuilds ON from its config with no flag (frozen league opponents)."""
+    off = _small_net()
+    p_off = str(tmp_path / "off.pt")
+    off.save(p_off)
+    assert "cand_refers_pool" not in P.V7Policy.load(p_off).config
+    up = P.V7Policy.load(p_off, cand_refers_pool=True)
+    assert "strict=False" in capsys.readouterr().out
+    assert up.config.get("cand_refers_pool") is True
+    so, su = off.state_dict(), up.state_dict()
+    assert all(torch.equal(so[k], su[k]) for k in so)
+    p_on = str(tmp_path / "on.pt")
+    up.save(p_on)
+    back = P.V7Policy.load(p_on)
+    assert back.config.get("cand_refers_pool") is True
+    sb = back.state_dict()
+    assert all(torch.equal(v, sb[k]) for k, v in su.items())
+
+
+def test_trainer_cand_refers_pool_flag(tmp_path, capsys):
+    """Trainer: --cand-refers-pool on an OFF lane checkpoint = strict=False + a printed line;
+    without the flag the same checkpoint loads exactly as before; a saved ON checkpoint
+    comes back ON with no flag."""
+    tr = _trainer(tmp_path, ckpt="t.pt")
+    tr.save()
+    assert "cand_refers_pool" not in tr.net.config
+    tr2 = ps.Trainer(str(tmp_path / "t.pt"), 0, None, arch="v7", card_emb="random", cand_refers_pool=True)
+    assert "strict=False" in capsys.readouterr().out
+    assert tr2.net.config.get("cand_refers_pool") is True
+    tr3 = ps.Trainer(str(tmp_path / "t.pt"), 0, None, arch="v7", card_emb="random")
+    assert "cand_refers_pool" not in tr3.net.config
+    tr2.ckpt = str(tmp_path / "t_on.pt")
+    tr2.save()
+    tr4 = ps.Trainer(str(tmp_path / "t_on.pt"), 0, None, arch="v7", card_emb="random")
+    assert tr4.net.config.get("cand_refers_pool") is True
+    assert "strict=False" not in capsys.readouterr().out

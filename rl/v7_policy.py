@@ -29,16 +29,18 @@ import wire_validate as W    # noqa: E402
 
 class V7Policy(nn.Module):
     def __init__(self, card_emb="card_emb_v8", d=256, layers=6, heads=8, value_layers=4, belief=True,
-                 random_table=False, frozen=False):
+                 random_table=False, frozen=False, cand_refers_pool=False):
         super().__init__()
         self.table = N.CardTable(card_emb, random=random_table)
-        self.build = N.TokenBuilders(self.table, d=d)
+        self.build = N.TokenBuilders(self.table, d=d, cand_refers_pool=cand_refers_pool)
         self.enc = E.StateGraphEncoder(d=d, heads=heads, layers=layers)
         self.heads = H.V7Heads(d=d)
         self.critic = VT.ValueTrunk(self.table, d=d, layers=value_layers)
         self.belief = BL.BeliefModule(d=d, heads=heads, off=not belief)
         self.config = dict(arch="v7", card_emb=self.table.version, d=d, layers=layers, heads=heads,
                            value_layers=value_layers, belief=belief)
+        if cand_refers_pool:            # Phase 10 A1; absent (not False) when off, so OFF configs are unchanged
+            self.config["cand_refers_pool"] = True
         self.frozen = frozen
         if frozen:
             for p in self.parameters():
@@ -71,7 +73,10 @@ class V7Policy(nn.Module):
                     "state_dict": self.state_dict(), **(extra or {})}, path)
 
     @classmethod
-    def load(cls, path, device="cpu", frozen=False, hello=None):
+    def load(cls, path, device="cpu", frozen=False, hello=None, cand_refers_pool=None):
+        """cand_refers_pool=True builds the Phase 10 A1 path even when the checkpoint has
+        none (loaded strict=False, printed); a checkpoint whose config carries it always
+        rebuilds it."""
         ck = torch.load(path, map_location="cpu", weights_only=False)
         if ck.get("arch") != "v7":
             raise ValueError(f"{path}: arch {ck.get('arch')!r} is not v7")
@@ -82,12 +87,23 @@ class V7Policy(nn.Module):
         for k in ("wire", "v7_dims", "v7_rtypes", "v7_ctypes", "v7_zones", "card_emb", "d_c"):
             if have.get(k) != want.get(k):
                 raise ValueError(f"{path}: dims record {k}={have.get(k)!r} disagrees with this server's {want.get(k)!r}")
+        has = bool(cfg.get("cand_refers_pool", False))
+        crp = has or bool(cand_refers_pool)
         net = cls(card_emb=cfg["card_emb"], d=cfg["d"], layers=cfg["layers"], heads=cfg["heads"],
                   value_layers=cfg["value_layers"], belief=cfg["belief"], frozen=frozen,
-                  random_table=(cfg["card_emb"] == "random"))
+                  random_table=(cfg["card_emb"] == "random"), cand_refers_pool=crp)
         # "state_dict" is this class's own save(); "net" is policy_server.Trainer.save()
         # (the lane checkpoint, which also carries "opt"/"episodes"/"updates")
-        net.load_state_dict(ck["state_dict"] if "state_dict" in ck else ck["net"])
+        sd = ck["state_dict"] if "state_dict" in ck else ck["net"]
+        if crp and not has:
+            res = net.load_state_dict(sd, strict=False)
+            bad = [k for k in res.missing_keys if ".cand_ref." not in k and ".opp_act_ref." not in k]
+            if bad or res.unexpected_keys:
+                raise ValueError(f"{path}: cand_refers_pool upgrade: missing {bad} unexpected {list(res.unexpected_keys)}")
+            print(f"V7Policy.load: {path} has no candidate-refers pool; built with it, loaded strict=False "
+                  f"(fresh {sorted(res.missing_keys)})", flush=True)
+        else:
+            net.load_state_dict(sd)
         net.heads.logit_bound = float(cfg.get("logit_bound", 0.0))
         return net.to(device)
 
