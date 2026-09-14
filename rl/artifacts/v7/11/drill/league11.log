@@ -8,3 +8,14 @@ L11|wrapper|rc=0|end=2026-09-14T16:39:01Z
 L11|wrapper|start=2026-09-14T16:39:48Z|args=--census-every-block --hours 13
 L11|resume|n=3|sched_i=3|stage=2|h=0.82|pending=False
 L11|block|n=3|h=0.97|stage=2|learner=M_D|gen=0|trained=4352->4608|bucket=heur(quota)|opp=heuristic|odeck=BenchDimir|W/L/D/S=133/122/1/1|wr=0.520|probe=-|wall=527s|rc=0
+L11|check|M_D|n=3|h=1.01|trained=4608|opp=heuristic|wr=27/50 = 0.54 [0.404,0.670]|selfrem=24/24|counter=61/61|flash_opp=2/166|ninja=8/10|biggest=35/42|cpg=4.60|consults_pg=63.5
+L11|block|n=4|h=1.11|stage=2|learner=M_L|gen=0|trained=4096->4352|bucket=heur(quota)|opp=heuristic|odeck=G1Landfall|W/L/D/S=95/161/0/0|wr=0.371|probe=-|wall=364s|rc=0
+L11|check|M_L|n=4|h=1.13|trained=4352|opp=heuristic|wr=27/50 = 0.54 [0.404,0.670]|smallbig=5/13(solver_no_block=1/2)|landsearch=99/231|cpg=4.08|consults_pg=23.4
+L11|block|n=5|h=1.31|stage=2|learner=X_L|gen=1|trained=256->512|bucket=exploit|opp=M_L_04352|odeck=G1Landfall|W/L/D/S=39/217/0/0|wr=0.152|probe=-|wall=642s|rc=0
+L11|block|n=6|h=1.50|stage=2|learner=M_D|gen=0|trained=4608->4864|bucket=self|opp=M_D_04608|odeck=BenchDimir|W/L/D/S=109/147/0/0|wr=0.426|probe=-|wall=698s|rc=0
+L11|check|M_D|n=6|h=1.54|trained=4864|opp=heuristic|wr=22/50 = 0.44 [0.312,0.577]|selfrem=24/50|counter=33/148|flash_opp=30/123|ninja=2/12|biggest=19/26|cpg=3.50|consults_pg=88.2
+L11|block|n=7|h=1.65|stage=2|learner=M_L|gen=0|trained=4352->4608|bucket=self|opp=M_L_04352|odeck=G1Landfall|W/L/D/S=94/162/0/0|wr=0.367|probe=-|wall=393s|rc=0
+L11|check|M_L|n=7|h=1.67|trained=4608|opp=heuristic|wr=28/50 = 0.56 [0.423,0.688]|smallbig=35/57(solver_no_block=12/32)|landsearch=112/715|cpg=4.56|consults_pg=35.9
+L11|block|n=8|h=2.27|stage=2|learner=X_D|gen=1|trained=512->768|bucket=exploit|opp=M_D_04864|odeck=BenchDimir|W/L/D/S=5/244/7/7|wr=0.020|probe=-|wall=2137s|rc=0
+L11|block|n=9|h=2.54|stage=2|learner=M_D|gen=0|trained=4864->5120|bucket=pfsp|opp=M_D_01792|odeck=BenchDimir|W/L/D/S=216/40/0/0|wr=0.844|probe=0.620 [0.522,0.709]|wall=986s|rc=0
+L11|check|M_D|n=9|h=2.57|trained=5120|opp=heuristic|wr=24/50 = 0.48 [0.348,0.615]|selfrem=28/28|counter=58/61|flash_opp=5/172|ninja=10/10|biggest=32/37|cpg=4.46|consults_pg=35.9
