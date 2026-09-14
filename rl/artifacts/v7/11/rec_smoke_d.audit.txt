@@ -1,0 +1,8 @@
+RLGAME|reward=-1.0|seed=11900
+RLGAME|reward=1.0|seed=11901
+t6|  [atkaudit] policy Floodpits Drowner 2/1 (4, dealt 2, lost 0, killed 0, back 0) | ref Floodpits Drowner 2/1 (4)  MATCH
+t7|  [audit] policy Floodpits Drowner 2/1->--, Cecil, Dark Knight 2/3->Cecil, Dark Knight 2/3 (score 4) | solver Floodpits Drowner 2/1->Cecil, Dark Knight 2/3, Cecil, Dark Knight 2/3->Cecil, Dark Knight 2/3 (score 10)  GAP 6
+t15|  [audit] policy The Wondrous Wasp 2/1->Enduring Curiosity 4/3 (score -1) | solver The Wondrous Wasp 2/1->-- (score 0)  GAP 1
+t18|  [atkaudit] policy Kaito, Bane of Nightmares 5/6 (9, dealt 0, lost 0, killed 1, back 0) | ref Restless Reef 4/4 + Kaito, Bane of Nightmares 5/6 (17)  GAP 8 UNDER
+t20|  [atkaudit] policy Kaito, Bane of Nightmares 6/7 (9, dealt 0, lost 0, killed 1, back 0) | ref Restless Reef 4/4 + Kaito, Bane of Nightmares 6/7 (17)  GAP 8 UNDER
+t22|  [atkaudit] policy Kaito, Bane of Nightmares 8/9 (LETHAL, dealt 8, lost 0, killed 0, back 0) | ref Kaito, Bane of Nightmares 8/9 (LETHAL)  MATCH

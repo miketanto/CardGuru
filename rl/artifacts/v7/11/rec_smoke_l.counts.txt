@@ -1,0 +1,9 @@
+CENSUSREC|smoke_l|rc=0|ckpt=/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/M_L_03840.pt|deck=G1Landfall|opp=heuristic|games=2|seed=11900|consults=32|acts=32|ends=2|wins=2 losses=0 draws=0 stalls=0 turns_per_ep=10.5|cand_refers_pool=True|rlgame_blocks=2|audit_lines=3
+LC|smoke_l|games=2|W/L/D/cut=2/0/0/0|consults_with_choice=32|no_choice=0|turns_per_game=10.50 [7.56,13.44] (n=2)
+LC|smoke_l|land_drops|per_game=5.50 [4.52,6.48] (n=2)|per_own_turn_with_a_consult=1.000 (11/11)
+LC|smoke_l|precombat_land_drop|on attack turns 8/8=1.000 [0.676,1.000]|all own turns 11/11=1.000 [0.741,1.000]
+LC|smoke_l|landfall_attacks|P(a landfall creature attacks | one can): with a land drop before the declaration 8/8=1.000 [0.676,1.000]; without 0/0=nan
+LC|smoke_l|land_search|cast 0 of 0 offering consults|precombat on a landfall-attack turn=0|by card:step 
+LC|smoke_l|adventuring_gear|cast 0/0=nan|equip 0/0=nan
+LC|smoke_l|blocks|consults=3|blocked 0/3=0.000 [0.000,0.562]|small-into-big pairs (blocker P and T both lower) 0/0=nan [source: recording]
+LC|smoke_l|blocks_audit|source=rec_smoke_l.audit.txt|combats=3|policy block pairs=0|small-into-big 0/0=nan|of those the solver would not block 0/0=nan|unparsed=0

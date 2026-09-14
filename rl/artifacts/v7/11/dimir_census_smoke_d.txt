@@ -1,0 +1,13 @@
+files=rl/artifacts/v7/11/rec_smoke_d.jsonl
+DC|smoke_d|games=2|W/L/D/cut=1/1/0/0|consults_with_choice=56|no_choice=0|turns_per_game=18.00 [10.16,25.84] (n=2)
+DC|smoke_d|consult_steps|own_main1:25 own_upkeep:11 opp_block:9 own_draw:6 own_attack:4 opp_end:1
+DC|smoke_d|ninjutsu|offered_windows=0 (blockers 0, damage 0)|taken 0/0=nan (blockers 0/0=nan, damage 0/0=nan)|games_with_window=0|hand_ACT_outside_combat=0 {}|opportunity_turns(attack, Kaito in hand, >=3 untapped lands)=0, with a blockers-step window=0|kaito_cast_as_spell=1 of 1 offers, steps {'main1': 1}
+DC|smoke_d|flash|instant-speed windows offering a flash card: taken 6/6=1.000 [0.610,1.000]|per card (taken/offered at instant speed) Floodpits Drowner 2/3;Enduring Curiosity 1/1;The Wondrous Wasp 3/3;Nowhere to Run 0/0|sorcery-speed windows: taken 2/2=1.000 [0.342,1.000]
+DC|smoke_d|flash_casts|at instant speed 6/8=0.750 [0.409,0.929]|per card (instant/all) Floodpits Drowner 2/3;Enduring Curiosity 1/1;The Wondrous Wasp 3/4;Nowhere to Run 0/0
+DC|smoke_d|flash_oppturn|windows on the OPPONENT's turn offering a flash card: taken 0/0=nan
+DC|smoke_d|cast_timing|Floodpits Drowner own_main:1 own_upkeep:2;Enduring Curiosity own_upkeep:1;The Wondrous Wasp own_draw:1 own_main:1 own_upkeep:2;Spell Snare response:1;We Say Thee Nay! response:1;Bitter Triumph own_draw:1;Requiting Hex own_draw:1 own_main:1 own_upkeep:1;Kaito, Bane of Nightmares own_main:1
+DC|smoke_d|counterspells|windows offering one: taken 2/2=1.000 [0.342,1.000]|offered with empty stack=0|per card (taken/offered) Spell Snare 1/1;Spell Pierce 0/0;We Say Thee Nay! 1/1
+DC|smoke_d|instant_removal_casts|per card (instant/all) Bitter Triumph 1/1;Requiting Hex 2/3;Shoot the Sheriff 0/0
+DC|smoke_d|removal_targeting|consults with >=1 enemy creature=1|highest-power enemy chosen 1/1=1.000 [0.207,1.000]|k>=2 enemy: P(highest) vs chance diff nan (n=0, chance nan)|not an enemy creature chosen=0|tapped chosen when an untapped >= power was legal 0/0=nan|no enemy creature offered=3|per source (best/n) Bitter Triumph 0/0;Requiting Hex 1/1;Shoot the Sheriff 0/0;Nowhere to Run 0/0
+DC|smoke_d|self_removal|removal offered with only own legal targets -> cast 1/1=1.000 [0.207,1.000]|per card (cast/offered) Requiting Hex 1/1;Bitter Triumph 0/0;Shoot the Sheriff 0/0|target level: first target consult after casting one of the three=3, own creature chosen=2 (no enemy creature offered: 2)|games with a self-removal cast=1
+DC|smoke_d|board|creatures_cast_per_game=4.50 [3.52,5.48] (n=2)|first_creature_own_turn=1.50 [0.52,2.48] (n=2) (games with none: 0)|land_drops_by_own_turn4=3.50 [2.52,4.48] (n=2)|land_drops_per_game=5.00 [3.04,6.96] (n=2)

@@ -155,6 +155,22 @@ Removal targeting: the census counts enemy creatures only (8a-b: +0.192 [+0.077,
 chance); P2's +0.16 included own-side targets. CP7 gives no removal reference (no TARGET consults
 through the teacher seat).
 
+## Amendment 2 (2026-09-14 15:25Z, coordinator + user, before any Part B data): self-removal
+
+The Phase 10 pairing games (`rl/artifacts/v7/10/pairs/`) show the Dimir main casting Requiting Hex
+on turn 3 with its own Spyglass Siren as the only legal target, destroying its own creature, in
+both of its games. New pre-registered Dimir counter (census + B2 readings): **removal cast when the
+only legal targets are its own creatures** - offered = consults offering Requiting Hex (creature
+MV <= 2, any controller), Bitter Triumph (creature or planeswalker) or Shoot the Sheriff (creature;
+the outlaw clause ignored) while every legal permanent target is the seat's own (>= 1 own, 0 enemy;
+enemy hexproof / shroud excluded); taken = that spell chosen. Target-level check beside it: the
+first TARGET consult after casting one of the three, with an own creature chosen. Map-token
+explores (and any ability that is not one of the three spells) are not counted. Reading: a correct
+policy takes this at 0; B2 records whether the rate falls, with Wilson intervals, per checkpoint.
+Reference levels (Phase 10 evaluation, 100 games, own mirror): M_D final 0.59 [0.492, 0.681] vs
+heuristic, 0.17 vs CP7; M_L final 0.49 [0.394, 0.587] vs heuristic, 0.37 vs CP7.
+
 ## STATE (append dated lines; newest last)
 - 2026-09-14 (start, ~12:45Z WSL): Phase 10 league running to hour 10.2, its evaluation follows; Part A may start now.
 - 2026-09-14 (WSL ~13:10Z): A1 + A2 DONE, A3 WRITTEN (263e2a7 + this commit). rl/dimir_census.py, rl/landfall_census.py, rl/record_census.sh; validation outputs rl/artifacts/v7/11/validation/; section "11 / A1-A2" in V7-VALIDATION.md. Pre-registered check: ninjutsu IS offered (CP7 2 windows took 1; 8a-b 7 windows took 0) - no engine finding, no Java change. FOUND a bug in 9 / P3 (main-phase test mis-indexed): correction in the open under P3 and in 11 / A1-A2; flash bar re-based (Amendment 1). Landfall census parse-checked only (wire echo + M_L transcript audit lines). A3 smoke NOT run: Phase 10 league at h~8.9 of 10.2, evaluation after. NEXT (after E10|done and nothing resident): bash rl/record_census.sh <ck> BenchDimir heuristic 2 smoke_d, then G1Landfall 2 smoke_l; check rlgame_blocks/audit_lines and the census lines; then B1.
+- 2026-09-14 (WSL ~15:40Z): E10|done (coordinator, 15:20:25Z); nothing resident verified. AMENDMENT 2 (self-removal counter, from the Phase 10 pairing games) written before any Part B data; counter in rl/dimir_census.py (Phase 9 check: 8a-b cast removal with only own legal targets 14/19 = 0.737 [0.512,0.882]; CP7 0/164). A3 SMOKE PASSED: rec_smoke_d (M_D_04096) / rec_smoke_l (M_L_03840), 2 games each vs heuristic: rc=0, consults=acts (56/32), 2 ends each, cand_refers_pool=True, 2 RLGAME blocks, audit lines 2/3, DC|/LC| lines print. B2 controller rl/league11.py = rl/league10.py + asserted patch (seed from 10/state.json with lane dirs copied to /tmp/rl_11_*, M_W frozen, cross over every other main, 100-game probe every +1,024, census 50 heur games at +2,048/+4,096 via record_census.sh, stop at +4,096 per main or hour 10); dry run OK (start M_D 4096 / M_L 3840; cross draws M_W_04096 or the other main; exploiters vs their main). LAUNCHED rl/chain11.sh (B1 = rl/run_b1_census.sh, 8 recordings one at a time, then B2 = rl/run_drill11.sh only after B1|done): logs rl/artifacts/v7/11/chain11.log, b1.log, drill/league11.log. V7-VALIDATION untouched until the Phase 10 verdict commit.

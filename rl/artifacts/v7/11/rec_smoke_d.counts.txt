@@ -1,0 +1,1 @@
+CENSUSREC|smoke_d|rc=0|ckpt=/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/M_D_04096.pt|deck=BenchDimir|opp=heuristic|games=2|seed=11900|consults=56|acts=56|ends=2|wins=1 losses=1 draws=0 stalls=0 turns_per_ep=18.0|cand_refers_pool=True|rlgame_blocks=2|audit_lines=2

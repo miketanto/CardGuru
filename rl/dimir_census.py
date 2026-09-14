@@ -53,6 +53,33 @@ FLASH = ("Floodpits Drowner", "Enduring Curiosity", "The Wondrous Wasp", "Nowher
 COUNTER = ("Spell Snare", "Spell Pierce", "We Say Thee Nay!")
 REMOVAL = ("Bitter Triumph", "Requiting Hex", "Shoot the Sheriff", "Nowhere to Run")
 NTR_TRIGGER = "gets -3/-3"   # Nowhere to Run's ETB trigger is named by its rule text on the stack
+SELF_REM = ("Requiting Hex", "Bitter Triumph", "Shoot the Sheriff")   # any-controller removal (Amendment 2)
+KW_HEXPROOF, KW_SHROUD = 34 + 13, 34 + 14
+
+
+def self_only(c, nm):
+    """True when every legal permanent target of removal spell `nm` is the seat's own (>= 1 own, 0 enemy).
+    Requiting Hex: creature with MV <= 2; Bitter Triumph: creature or planeswalker; Shoot the Sheriff:
+    creature (outlaw clause ignored).  Enemy hexproof / shroud and own shroud are not legal."""
+    own = enemy = 0
+    for e in c.ents:
+        if e[0] < 0.5:
+            continue
+        creature = e[29] > 0.5
+        walker = (not creature) and e[33] > 0.5 and e[16] > 0.01
+        if nm == "Requiting Hex":
+            ok = creature and round(e[17] * 6) <= 2
+        elif nm == "Bitter Triumph":
+            ok = creature or walker
+        else:
+            ok = creature
+        if not ok:
+            continue
+        if e[7] > 0.5:
+            own += e[KW_SHROUD] < 0.5
+        elif e[KW_HEXPROOF] < 0.5 and e[KW_SHROUD] < 0.5:
+            enemy += 1
+    return own > 0 and enemy == 0
 
 
 # ------------------------------------------------------------------ helpers (shared with landfall_census)
@@ -224,6 +251,10 @@ class DimirGame(GameState):
         self.ctr_taken = 0
         self.rem_n = 0
         self.rem_best = 0
+        self.selfrem_off = 0
+        self.selfrem_taken = 0
+        self.self_target = 0
+        self.prev = None
 
 
 def census(paths):
@@ -320,6 +351,18 @@ def census(paths):
                 g.ctr_taken += 1
                 by["ctr_take"][c.name(ch)] += 1
 
+        # self-removal (Amendment 2): a removal spell whose only legal targets are own permanents
+        sk = [k for k in c.cands(SPELL, SELF_REM) if self_only(c, c.name(k))]
+        if sk:
+            S["selfrem_off"] += 1
+            g.selfrem_off += 1
+            for k in sk:
+                by["selfrem_off"][c.name(k)] += 1
+            if ch in sk:
+                S["selfrem_taken"] += 1
+                g.selfrem_taken += 1
+                by["selfrem_take"][c.name(ch)] += 1
+
         # every cast by timing
         if cht == SPELL:
             nm = c.name(ch)
@@ -344,6 +387,13 @@ def census(paths):
                 src = top if top in REMOVAL else ("Nowhere to Run" if NTR_TRIGGER in top else None)
             if src is not None:
                 E = [k for k, t in enumerate(c.ct) if t == TGT and c.cand[k][11] > 0.5 and c.cand[k][14] < 0.5]
+                if src in SELF_REM and g.prev == (SPELL, src):        # the spell's own target consult
+                    S["rem_first"] += 1
+                    if cht == TGT and c.cand[ch][11] > 0.5 and c.cand[ch][14] > 0.5:
+                        S["rem_first_own"] += 1
+                        g.self_target += 1
+                        if not E:
+                            S["rem_first_own_noenemy"] += 1
                 if not E:
                     S["rem_no_enemy_creature"] += 1
                 else:
@@ -369,6 +419,7 @@ def census(paths):
                         S["rem_tap_alt"] += 1
                         if ch in E and tapped[ch] and any(not tapped[u] and pw[u] >= pw[ch] for u in E):
                             S["rem_tap_chosen"] += 1
+        g.prev = (cht, c.name(ch))
     if g is not None:
         games.append(g)
     return S, by, rem_hits, rem_chance, games
@@ -418,6 +469,11 @@ def report(name, S, by, rem_hits, rem_chance, games):
                  (sum(rem_chance) / len(rem_chance)) if rem_chance else float("nan"), S["rem_not_enemy_creature"],
                  fmt(S["rem_tap_chosen"], S["rem_tap_alt"]), S["rem_no_enemy_creature"],
                  ";".join("%s %d/%d" % (nm, by["rem_best"][nm], by["rem_n"][nm]) for nm in REMOVAL)))
+    L.append(P + "self_removal|removal offered with only own legal targets -> cast %s|per card (cast/offered) %s|"
+             "target level: first target consult after casting one of the three=%d, own creature chosen=%d (no enemy creature offered: %d)|games with a self-removal cast=%d" % (
+                 fmt(S["selfrem_taken"], S["selfrem_off"]),
+                 ";".join("%s %d/%d" % (nm, by["selfrem_take"][nm], by["selfrem_off"][nm]) for nm in SELF_REM),
+                 S["rem_first"], S["rem_first_own"], S["rem_first_own_noenemy"], sum(1 for x in games if x.selfrem_taken)))
     L.append(P + "board|creatures_cast_per_game=%s|first_creature_own_turn=%s (games with none: %d)|land_drops_by_own_turn4=%s|land_drops_per_game=%s" % (
         mean_ci([x.creatures for x in games]), mean_ci([x.first_creature for x in games]),
         sum(1 for x in games if x.first_creature is None), mean_ci([x.lands_by4 for x in games]), mean_ci([x.lands for x in games])))
@@ -430,7 +486,7 @@ def game_rows(name, games):
     for i, x in enumerate(games):
         rows.append("\t".join(str(v) for v in (name, i, os.path.basename(x.f), x.r, x.turn_max, x.creatures, x.first_creature,
                                                x.lands_by4, x.lands, x.nin_win, x.nin_taken, len(x.nin_opp_turns), x.flash_off,
-                                               x.flash_taken, x.ctr_off, x.ctr_taken, x.rem_n, x.rem_best)))
+                                               x.flash_taken, x.ctr_off, x.ctr_taken, x.rem_n, x.rem_best, x.selfrem_off, x.selfrem_taken, x.self_target)))
     return rows
 
 
