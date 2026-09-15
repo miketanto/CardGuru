@@ -138,16 +138,31 @@ public class CP7TeacherPlayer extends mage.player.ai.ComputerPlayer7 {
                 extraActs++;
             }
         }
-        // 13a (a): targets preset by CP7's search - label them here
+        // 13a (a): targets preset by CP7's search. Attempt 2: the picks are
+        // read here, the consults are built AFTER the activation, with the
+        // spell / ability on the stack (the RL seat's target consult sees
+        // it there; attempt 1 took the view with the spell still in hand,
+        // so the targeting object was invisible). Costs are paid by then.
+        List<Target> presetT = null;
+        List<List<UUID>> presetP = null;
         if (live(game) && !ability.isManaAbility() && !inChoose
                 && !ability.getTargets().isEmpty()) {
+            presetT = new ArrayList<>();
+            presetP = new ArrayList<>();
+            for (Target t : ability.getTargets()) {
+                presetT.add(t.copy());
+                presetP.add(new ArrayList<>(t.getTargets()));
+            }
+        }
+        boolean ok = super.activateAbility(ability, game);
+        if (ok && presetT != null) {
             try {
-                labelPresetTargets(ability, game);
+                labelPresetTargets(presetT, presetP, ability, game);
             } catch (RuntimeException e) {
                 tgtOutside++;       // never let a label break CP7's play
             }
         }
-        return super.activateAbility(ability, game);
+        return ok;
     }
 
     @Override
@@ -434,10 +449,12 @@ public class CP7TeacherPlayer extends mage.player.ai.ComputerPlayer7 {
         }
     }
 
-    private void labelPresetTargets(ActivatedAbility ability, Game game) {
+    private void labelPresetTargets(List<Target> ts, List<List<UUID>> allPicks,
+                                    ActivatedAbility ability, Game game) {
         StateEncoder.EntityView view = null;
-        for (Target t : ability.getTargets()) {
-            List<UUID> picks = new ArrayList<>(t.getTargets());
+        for (int ti = 0; ti < ts.size(); ti++) {
+            Target t = ts.get(ti);
+            List<UUID> picks = allPicks.get(ti);
             if (picks.isEmpty()) {
                 continue;
             }
