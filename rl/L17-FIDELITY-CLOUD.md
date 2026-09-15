@@ -711,9 +711,14 @@ New in this branch (`data/l17-cloud`), alongside everything in
 * `rl/l17/build_specs.py`, `rl/l17/L17Rebuild.java` — extended with the five
   variants; **with no `--variant` / `-Dl17.variant` the base spec and the base
   behaviour are unchanged**, which is what makes §1a a reproduction.
-* Per-game results: `rl/l17_dsk/fidelity_games_s200{,g,_abil,_choice,_oppo,_order,_all,_resync}_cloud.csv`,
-  `perturn_s200_resync{,choice}_cloud.csv`, `cascade_s200_cloud.csv`, and the
-  `all2000_*_cloud` files for the full-sample runs.
+* Per-game results: `rl/l17_dsk/fidelity_games_s200{,g,_abil,_choice,_oppo,_order,_all,_resync,_resyncchoice}_cloud.csv`,
+  `perturn_s200_resync{,choice}_cloud.csv`, `cascade_s200_cloud.csv`,
+  `causes_s200_cloud.csv`, and the `all2000_*_cloud` files for the full-sample
+  runs.
+* The nondeterminism evidence of §1a: `fidelity_games_rep{1,2,3}_cloud.csv`
+  (three more full 200-game runs of the same configuration) and
+  `fidelity_games_repeat7_{4..11}_cloud.csv` (eight repeats of the seven games
+  that differed from the local run).
 
 ```
 bash rl/setup_engine.sh                                   # step 1
