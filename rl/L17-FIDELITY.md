@@ -4,7 +4,7 @@ Plan and pre-stated readings: `rl/L17-CLOUD.md` §3 (not changed after seeing da
 Data: `rl/l17_dsk/DSK_top2000.jsonl.gz` (2,000 DSK PremierDraft games, strong players, seed 17).
 Harness: `rl/l17/`. Results as text/CSV in `rl/l17_dsk/`.
 
-Status: **engine, coverage, 20-game debug and 200-game run done (NO-GO, §6); 2,000-game run in progress.**
+Status: **done** — engine check, coverage, 20-game debug, 200-game and 2,000-game runs (base and guided). Outcome **NO-GO** (§6).
 
 ## 1. Engine
 
@@ -216,6 +216,22 @@ ok, about 22 minutes of wall time under the caps.
 The 200-game sample was representative: every reading agrees with §4 within
 its interval.
 
+The 8 games that break on their first side-turn were checked by hand; none is
+a harness fault. In 7 the opponent's logged hand drops by one during the
+user's turn 1 with no logged opponent cast (e.g. game 305: 6 after its own
+turn 1, 5 after the user's) — an unlogged opponent action. In game 114 the log
+is internally inconsistent: a 6-card opening hand with 0 mulligans that does
+not contain the land the log plays on turn 1 (on the play, no draw).
+
+Guided rebuild, all 2,000 games (`fidelity_games_allg.csv`,
+`fidelity_summary_allg.txt`): median 3 turns matched (mean 2.91); ≥ 8 turns
+4/2000 = 0.002 [0.001, 0.005] (4/1409 of the long games); fully matched 25/2000
+= 0.013 [0.008, 0.018]; histogram 0: 8, 1: 251, 2: 552, 3: 586, 4: 390, 5:
+148, 6: 46, 7: 15, 8: 4; first field user_creatures 467, user_hand 408,
+user_life 343, oppo_life 340, oppo_hand 206, user_lands 154, user_noncreatures
+57; labels 5.93 per game, 0.374 unambiguous. Longer than base in 405 games,
+shorter in 21.
+
 ## 5. Why the replay breaks (base, 200 games; `rl/l17/causes.py`)
 
 One cause per game with a mismatch (199 of 200), first rule that applies:
@@ -236,6 +252,17 @@ broke → an activated or triggered ability; otherwise the field.
 The classes are heuristic: "ability id logged" includes triggered abilities
 the engine does replay, and "hidden choice" only counts choices the guided
 rules cover, so it is a floor.
+
+The same classification on all 2,000 games (`causes_all.csv`,
+`causes_summary_all.txt`; 1,985 games with a mismatch) keeps the ranking:
+
+| cause (base, 1,985 mismatched games) | games | share |
+|---|---|---|
+| forced action impossible after unseen drift (logged draw already in the graveyard 134, cast not payable / activation failed 166, land or card not in hand 134, opponent card unavailable 94, blocker absent 65, attacker absent/tapped/refused 45, other 15) | 653 | 0.33 |
+| ability id logged on the breaking side-turn | 534 | 0.27 |
+| hidden choice (guided run matched longer) | 280 | 0.14 |
+| life total only (user 134, opponent 130) | 264 | 0.13 |
+| other single fields (user creatures 130, hand 77, opponent hand 31, non-creatures 10, lands 6) | 254 | 0.13 |
 
 The three biggest causes, with an example each and what would fix them:
 
@@ -278,6 +305,8 @@ Bar: coverage ≥ 0.6 **and** ≥ 50 % of covered games match ≥ 8 turns.
 * ≥ 8 turns matched: base 0/200 = 0.000, Wilson 95 % [0.000, 0.019] — the
   upper bound is 26× below the bar. Even restricted to the 143 games logged
   ≥ 8 turns: 0/143 [0.000, 0.026].
+* All 2,000 games, base: 1/2000 = 0.0005 [0.000, 0.003]; guided (not the
+  pre-stated reading): 4/2000 = 0.002 [0.001, 0.005].
 
 **Outcome: NO-GO** for building the rebuilder properly in this form. Per the
 plan, the dominant mismatch is recorded (§5) and the work stops here.
