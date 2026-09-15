@@ -1,0 +1,279 @@
+ability_id,occurrences,card,coverage,lift,accepted,is_basic_land,runner_up,runner_up_coverage
+1268,1210,Glimmerlight,0.9992,8.89,1,0,Glimmer,0.7545
+174356,903,Glimmer,0.9867,5.49,1,0,Tunnel Surveyor,0.4695
+174533,789,Oblivious Bookworm,1.0,20.22,1,0,Forest,0.9823
+166736,713,Wary Watchdog,0.9986,16.15,1,0,Forest,0.9719
+174437,692,Most Valuable Slayer,0.9899,17.2,1,0,Mountain,0.9841
+121394,653,,0.7825,15.49,0,0,Appendage Amalgam,0.2297
+174309,651,,0.4685,10.37,0,0,Threats Around Every Corner,0.2888
+174349,618,Stalked Researcher,1.0,26.18,1,0,Island,0.9919
+88024,576,,0.7604,21.99,0,0,Forest,0.4861
+64584,546,Patchwork Beastie,0.9982,28.21,1,0,Forest,0.9963
+1005,539,Forest,1.0,2.25,1,1,Monstrous Emergence,0.269
+140062,533,Spineseeker Centipede,0.9981,13.19,1,0,Forest,0.9906
+174320,500,,0.394,9.73,0,0,Cursed Windbreaker,0.342
+174287,480,Optimistic Scavenger,1.0,32.7,1,0,Plains,0.9771
+174430,460,Glassworks // Shattered Yard,1.0,11.1,1,0,Shattered Yard,0.0739
+174517,456,Gremlin Tamer,1.0,39.6,1,0,Gremlin,0.9912
+174429,451,Glassworks,0.9601,46.73,1,0,Glassworks // Shattered Yard,0.9911
+174306,425,Trapped in the Screen,1.0,12.55,1,0,Plains,0.9741
+174361,407,,0.8108,51.82,0,0,Underwater Tunnel // Slimy Aquarium,1.0
+174387,399,,0.6391,16.13,0,0,Bashful Beastie,0.381
+174337,388,,0.8943,54.35,0,0,Meat Locker // Drowned Diner,0.9974
+1002,372,Island,0.9973,2.12,1,1,Glimmerburst,0.1774
+174435,364,Irreverent Gremlin,1.0,31.95,1,0,Mountain,0.9588
+174497,361,Threats Around Every Corner,1.0,29.28,1,0,Forest,0.9972
+1004,360,Mountain,0.9972,2.28,1,1,Grab the Prize,0.1056
+174346,359,Scrabbling Skullcrab,1.0,52.3,1,0,Island,0.9944
+174281,351,,0.8746,60.69,0,0,Grand Entryway // Elegant Rotunda,0.9943
+174420,347,Clockwork Percussionist,0.9971,17.54,1,0,Mountain,0.9885
+174417,340,Chainsaw,0.9971,49.91,1,0,Mountain,0.9471
+1003,334,Swamp,1.0,2.71,1,1,Final Vengeance,0.2365
+174362,330,,0.3303,63.14,0,0,Underwater Tunnel // Slimy Aquarium,1.0
+174458,310,Vicious Clown,0.9968,36.58,1,0,Mountain,0.9645
+174546,308,Smoky Lounge // Misty Salon,0.9968,49.2,1,0,Spirit,0.4805
+174442,299,Painter's Studio // Defaced Gallery,1.0,29.66,1,0,Defaced Gallery,0.2074
+174282,296,Grand Entryway // Elegant Rotunda,1.0,14.03,1,0,Elegant Rotunda,0.2568
+174445,285,Razorkin Hordecaller,0.9965,33.96,1,0,Gremlin,0.9754
+143859,284,Surgical Suite // Hospital Room,1.0,31.91,1,0,Hospital Room,0.1444
+174323,281,Entity Tracker,0.9929,66.91,1,0,Island,0.9964
+174364,270,Unwilling Vessel,1.0,45.71,1,0,Island,0.9852
+174324,268,Erratic Apparition,1.0,52.43,1,0,Island,0.9776
+174451,267,Ticket Booth,0.9401,79.06,1,0,Ticket Booth // Tunnel of Hate,0.9963
+1001,255,Plains,1.0,2.2,1,1,Glimmer,0.3529
+174472,251,Flesh Burrower,0.996,25.17,1,0,Forest,0.992
+152741,246,Floodpits Drowner,0.9919,26.67,1,0,Island,0.9715
+174276,242,Fear of Immobility,0.9959,27.23,1,0,Plains,0.9876
+174469,236,Cryptid Inspector,1.0,33.48,1,0,Forest,1.0
+174559,231,Ghost Vacuum,1.0,47.57,1,0,Swamp,0.5238
+174483,230,,0.8522,90.49,0,0,Moldering Gym // Weight Room,1.0
+174338,225,,0.2933,92.05,0,0,Meat Locker // Drowned Diner,0.9911
+174344,222,Paranormal Analyst,1.0,31.67,1,0,Island,0.982
+143643,221,Bottomless Pool // Locker Room,1.0,21.41,1,0,Locker Room,0.1403
+174265,221,Cult Healer,1.0,50.42,1,0,Plains,0.991
+174316,218,,0.8716,96.96,0,0,Bottomless Pool // Locker Room,0.9908
+174452,217,Ticket Booth // Tunnel of Hate,0.9954,18.36,1,0,Tunnel of Hate,0.0922
+174397,214,Osseous Sticktwister,1.0,42.48,1,0,Swamp,0.972
+89789,213,"Stay Hidden, Stay Silent",1.0,25.99,1,0,Island,0.9859
+174301,208,Splitskin Doll,1.0,34.75,1,0,Plains,0.9904
+174484,203,,0.3645,103.58,0,0,Moldering Gym // Weight Room,1.0
+1156,200,,0.525,26.28,0,0,Baseball Bat,0.175
+174367,199,Balemurk Leech,1.0,61.48,1,0,Swamp,0.9749
+121357,194,Broodspinner,0.9948,34.8,1,0,Swamp,0.9588
+174438,187,"Norin, Swift Survivalist",0.9947,52.28,1,0,Mountain,1.0
+174540,187,Roaring Furnace // Steaming Sauna,1.0,50.91,1,0,Steaming Sauna,0.139
+76556,184,,0.5652,36.34,0,0,Hedge Shredder,0.4076
+140075,182,Enduring Curiosity,1.0,68.27,1,0,Island,1.0
+174545,180,Skullsnap Nuisance,1.0,89.47,1,0,Fear of Infinity,0.25
+174277,180,Friendly Ghost,1.0,34.3,1,0,Plains,1.0
+20997,177,Sheltered by Ghosts,1.0,35.64,1,0,Plains,0.9831
+174395,175,Nowhere to Run,1.0,27.74,1,0,Swamp,0.9486
+176695,175,Turn Inside Out,1.0,31.24,1,0,Mountain,0.9886
+174283,174,Hardened Escort,0.9885,48.11,1,0,Plains,0.9828
+174404,171,Unholy Annex // Ritual Chamber,0.9942,60.24,1,0,Demon,0.4444
+174311,171,Veteran Survivor,1.0,52.43,1,0,Plains,0.9825
+93266,165,Grasping Longneck,0.9818,32.82,1,0,Forest,0.9515
+174382,165,Fear of Lost Teeth,1.0,33.7,1,0,Swamp,1.0
+174447,161,Razorkin Needlehead,1.0,74.56,1,0,Mountain,0.9752
+174285,161,Lionheart Glimmer,1.0,68.71,1,0,Plains,0.9876
+174375,158,Horror,0.9873,79.85,1,0,Defiled Crypt // Cadaver Lab,0.9937
+174480,155,Insidious Fungus,1.0,40.28,1,0,Forest,0.9871
+174381,152,Fanatic of the Harrowing,1.0,47.04,1,0,Swamp,0.9737
+174264,149,Acrobatic Cheerleader,1.0,29.53,1,0,Plains,0.9799
+174441,147,,0.6463,143.03,0,0,Painter's Studio // Defaced Gallery,0.9864
+174544,147,Shroudstomper,1.0,74.04,1,0,Neglected Manor,0.2449
+116851,144,,0.8403,57.74,0,0,Piggy Bank,1.0
+174507,143,"Arabella, Abandoned Doll",0.993,55.38,1,0,Mountain,0.979
+174403,143,Sporogenic Infection,1.0,50.79,1,0,Swamp,0.972
+174401,142,Popular Egotist,0.9718,54.06,1,0,Swamp,1.0
+174425,140,Fear of Burning Alive,1.0,34.58,1,0,Mountain,0.9857
+174513,140,Disturbing Mirth,1.0,49.82,1,0,Swamp,1.0
+174478,137,House Cartographer,1.0,53.77,1,0,Forest,0.9927
+174432,136,Hand That Feeds,0.9853,28.19,1,0,Mountain,1.0
+141939,135,,0.3778,13.46,0,0,Lionheart Glimmer,0.2667
+174443,131,Ragged Playmate,1.0,30.04,1,0,Mountain,0.9695
+174288,130,Orphans of the Wheat,0.9923,70.97,1,0,Plains,0.9692
+174424,128,Enduring Courage,1.0,96.01,1,0,Mountain,0.9688
+174487,128,Omnivorous Flytrap,0.9922,75.31,1,0,Forest,0.9844
+174280,126,Glimmer Seeker,0.9762,54.3,1,0,Glimmer,0.9524
+174272,124,,0.2581,19.45,0,0,Enduring Courage,0.2258
+174302,123,,0.748,163.82,0,0,Surgical Suite // Hospital Room,1.0
+174548,121,The Swarmweaver,0.9917,58.08,1,0,Insect,0.9917
+146583,117,Enduring Innocence,1.0,75.36,1,0,Dazzling Theater // Prop Room,0.0684
+174518,117,Growing Dread,1.0,27.24,1,0,Oblivious Bookworm,0.3846
+174426,116,Fear of Burning Alive,1.0,34.58,1,0,Mountain,0.9914
+174348,115,Silent Hallcreeper,1.0,79.64,1,0,Island,0.9913
+2792,114,Conductive Machete,0.9912,24.49,1,0,Forest,0.5351
+174554,110,"Primo, the Indivisible",1.0,89.09,1,0,"Zimone, All-Questioning",1.0
+2316,103,,0.2136,12.2,0,0,Swamp,0.9612
+174376,102,,0.7843,63.43,0,0,Defiled Crypt // Cadaver Lab,0.9804
+174325,100,Fear of Falling,0.99,47.74,1,0,Island,0.99
+174492,99,Rootwise Survivor,0.9798,73.31,1,0,Baseball Bat,0.1414
+8938,98,,0.5714,29.02,0,0,Cracked Skull,0.2755
+174521,97,The Jolly Balloon Man,0.9897,116.25,1,0,Mountain,0.9381
+174394,97,Miasma Demon,1.0,70.79,1,0,Swamp,0.9691
+174332,96,Ghostly Keybearer,0.9896,70.77,1,0,Mirror Room // Fractured Realm,0.1458
+149382,95,Overlord of the Floodpits,0.9684,107.74,1,0,Island,1.0
+174509,95,Baseball Bat,1.0,142.07,1,0,Forest,1.0
+174514,95,,0.8211,40.91,0,0,Sawblade Skinripper,0.2737
+174279,94,Ghostly Dancers,1.0,105.13,1,0,Spirit,0.9787
+174365,93,Unwilling Vessel,1.0,45.71,1,0,Spirit,0.5699
+174378,93,Derelict Attic // Widow's Walk,0.9892,47.71,1,0,Derelict Attic,0.914
+174467,91,Cautious Survivor,1.0,63.14,1,0,Forest,1.0
+1319,91,,0.5165,82.9,0,0,Killer's Mask,0.4945
+174506,90,Wickerfolk Thresher,0.9889,44.81,1,0,Forest,0.9778
+174400,90,Popular Egotist,0.9667,53.77,1,0,Swamp,1.0
+6091,87,,0.2299,8.15,0,0,Forest,0.8851
+174547,86,Spirit,0.9767,53.48,1,0,Smoky Lounge // Misty Salon,0.9884
+174328,85,,0.7529,20.24,0,0,Island,0.9765
+174470,85,Defiant Survivor,0.9647,60.91,1,0,Forest,0.9412
+174293,85,Reluctant Role Model,0.9882,98.01,1,0,Baseball Bat,0.1294
+174427,84,Fear of Missing Out,1.0,73.26,1,0,Mountain,0.9881
+174379,84,Derelict Attic // Widow's Walk,0.9762,47.08,1,0,Widow's Walk,0.1429
+174542,83,Sawblade Skinripper,1.0,79.95,1,0,Disturbing Mirth,0.2892
+174411,83,Vile Mutilator,1.0,71.27,1,0,Valgavoth's Faithful,0.1807
+174539,82,Roaring Furnace // Steaming Sauna,1.0,50.91,1,0,Roaring Furnace,0.7561
+18661,81,Dissection Tools,1.0,47.14,1,0,Mountain,0.5185
+174268,81,Dollmaker's Shop // Porcelain Gallery,1.0,138.33,1,0,Toy,0.9877
+174541,80,Sawblade Skinripper,1.0,79.95,1,0,Razortrap Gorge,0.2875
+174416,80,Chainsaw,1.0,50.06,1,0,Mountain,0.95
+174374,79,Dashing Bloodsucker,1.0,138.33,1,0,Fear of the Dark,0.1646
+6072,78,,0.3333,18.64,0,0,Island,0.9103
+174398,78,Overlord of the Balemurk,0.9872,120.68,1,0,Swamp,0.9487
+174307,77,Unidentified Hovership,0.987,63.46,1,0,Plains,0.987
+174564,77,Malevolent Chandelier,1.0,78.46,1,0,Horror,0.1948
+174318,77,Central Elevator // Promising Stairs,1.0,133.08,1,0,Restricted Office // Lecture Hall,0.1169
+174289,76,Overlord of the Mistmoors,1.0,128.99,1,0,Insect,0.8684
+176358,75,The Jolly Balloon Man,1.0,117.46,1,0,Mountain,0.9333
+174463,75,Anthropede,1.0,87.97,1,0,Forest,0.9733
+174405,74,Unholy Annex // Ritual Chamber,1.0,60.59,1,0,Demon,0.9865
+174516,73,,0.726,35.92,0,0,Swamp,0.9452
+174373,73,Cynical Loner,0.9863,88.62,1,0,Swamp,0.9726
+174415,73,Boilerbilges Ripper,1.0,80.56,1,0,Mountain,1.0
+174407,70,Unstoppable Slasher,0.9857,63.77,1,0,Swamp,0.9571
+174304,69,"Toby, Beastie Befriender",1.0,93.87,1,0,Beast,0.9855
+174498,69,Twitching Doll,1.0,76.46,1,0,Forest,0.971
+174576,69,Miasma Demon,1.0,70.79,1,0,Swamp,0.971
+174326,68,Fear of Impostors,1.0,84.78,1,0,Island,0.9853
+174315,68,Abhorrent Oculus,0.9412,115.73,1,0,Island,0.9853
+174274,68,Fear of Abduction,1.0,68.49,1,0,Plains,0.9706
+174402,67,Resurrected Cultist,1.0,65.1,1,0,Swamp,1.0
+174278,67,Ghostly Dancers,1.0,105.13,1,0,Spirit,0.4776
+90761,66,Friendly Teddy,1.0,89.85,1,0,Leyline of Resonance,0.0152
+6111,65,Plains,0.9538,2.1,1,1,Shepherding Spirits,0.1538
+174551,64,"Victor, Valgavoth's Seneschal",1.0,202.17,1,0,Horror,0.2969
+149473,61,Charred Foyer // Warped Space,1.0,214.55,1,0,Painter's Studio // Defaced Gallery,0.2787
+174399,61,Overlord of the Balemurk,1.0,122.24,1,0,Swamp,0.9672
+174371,60,Cracked Skull,1.0,110.08,1,0,Swamp,0.9833
+151523,60,Valgavoth's Faithful,1.0,81.18,1,0,Vile Mutilator,0.2333
+174434,56,Infernal Phantom,0.9821,105.9,1,0,Cursed Recording,0.1071
+174577,56,Boilerbilges Ripper,1.0,80.56,1,0,Mountain,1.0
+174461,55,,0.8182,47.39,0,0,Forest,1.0
+174476,54,Hedge Shredder,0.963,135.89,1,0,Forest,0.9444
+174558,54,,0.7778,151.42,0,0,Swamp,0.6111
+174290,54,Overlord of the Mistmoors,0.9815,126.61,1,0,Insect,0.9815
+174490,51,Everywhere,1.0,202.17,1,0,Overlord of the Hauntwoods,1.0
+174423,50,Diversion Specialist,0.98,71.55,1,0,Undead Sprinter,0.16
+174512,49,Insect,0.9796,39.61,1,0,Broodspinner,1.0
+166072,49,,0.7959,99.61,0,0,Island,0.6735
+137218,47,Funeral Room // Awakening Hall,1.0,256.41,1,0,Funeral Room,0.1702
+2250,46,,0.2609,30.14,0,0,Mountain,0.8696
+174440,46,Overlord of the Boilerbilges,0.9783,140.88,1,0,Mountain,1.0
+93125,43,Baseball Bat,1.0,142.07,1,0,Forest,1.0
+174575,43,Come Back Wrong,0.9767,218.48,1,0,Swamp,0.9767
+174286,43,Living Phone,1.0,111.25,1,0,"Arabella, Abandoned Doll",0.2093
+174351,42,,0.8571,22.28,0,0,Island,1.0
+174439,42,Overlord of the Boilerbilges,1.0,144.01,1,0,Mountain,1.0
+174477,41,Hedge Shredder,1.0,141.11,1,0,Forest,0.9512
+136285,40,,0.775,166.28,0,0,Forest,0.6
+174566,40,Saw,1.0,160.5,1,0,Disturbing Mirth,0.175
+174319,40,Creeping Peeper,0.925,34.73,1,0,Intruding Soulrager,0.2
+174449,39,The Rollercrusher Ride,1.0,120.15,1,0,Mountain,0.9487
+133218,38,Infernal Phantom,0.9737,104.99,1,0,Mountain,0.9737
+143752,37,,0.8108,46.33,0,0,Swamp,1.0
+174428,37,Fear of Missing Out,0.973,71.28,1,0,Mountain,1.0
+137205,37,Clammy Prowler,1.0,129.79,1,0,Island,1.0
+174406,37,Unstoppable Slasher,1.0,64.7,1,0,Swamp,0.8919
+174292,37,Possessed Goat,0.973,103.32,1,0,Plains,1.0
+174474,37,Hauntwoods Shrieker,1.0,192.9,1,0,Forest,1.0
+1055,36,,0.6667,52.3,0,0,Overgrown Zealot,0.3889
+174520,36,Intruding Soulrager,1.0,93.45,1,0,Charred Foyer,0.0833
+174543,35,Shrewd Storyteller,1.0,186.07,1,0,Dazzling Theater // Prop Room,0.1143
+174562,35,Haunted Screen,1.0,74.04,1,0,"Victor, Valgavoth's Seneschal",0.0857
+174342,34,Overlord of the Floodpits,1.0,111.25,1,0,Fear of Failed Tests,0.2059
+174275,34,,0.8529,58.42,0,0,Plains,0.9706
+174383,34,Fear of the Dark,0.9706,110.91,1,0,Vile Mutilator,0.2059
+174531,33,Shard,1.0,200.25,1,0,"Niko, Light of Hope",0.9697
+174530,33,"Nashi, Searcher in the Dark",1.0,208.18,1,0,Gloomlake Verge,0.1515
+174340,32,Mirror Room // Fractured Realm,1.0,154.6,1,0,Mirror Room,0.4375
+174421,32,Cursed Recording,1.0,323.48,1,0,Razortrap Gorge,0.3125
+174464,31,,0.8387,75.04,0,0,Forest,1.0
+169639,30,Ripchain Razorkin,0.9667,98.19,1,0,Mountain,1.0
+174473,29,Greenhouse // Rickety Gazebo,1.0,134.78,1,0,Rickety Gazebo,0.6897
+174317,29,Central Elevator // Promising Stairs,1.0,133.08,1,0,Central Elevator,0.6552
+174535,29,Restricted Office // Lecture Hall,1.0,155.75,1,0,Restricted Office,0.931
+174295,28,Savior of the Small,1.0,132.24,1,0,Shardmage's Rescue,0.2143
+174308,27,,0.7778,50.01,0,0,Plains,1.0
+174555,26,Attack-in-the-Box,0.9615,269.56,1,0,Lecture Hall,0.0385
+176357,26,Anthropede,1.0,87.97,1,0,Forest,0.9615
+174578,26,Cursed Recording,1.0,323.48,1,0,Scorching Dragonfire,0.3077
+2799,26,Enduring Tenacity,1.0,219.02,1,0,Funeral Room // Awakening Hall,0.2308
+174552,24,"Winter, Misanthropic Guide",1.0,584.06,1,0,Cryptid Inspector,0.375
+174422,24,Cursed Recording,1.0,323.48,1,0,Scorching Dragonfire,0.3333
+177396,23,Waltz of Rage,1.0,259.58,1,0,Piggy Bank,0.3043
+174536,23,"Rip, Spawn Hunter",1.0,300.37,1,0,Etched Cornfield,0.3043
+174499,22,Spider,1.0,396.72,1,0,Twitching Doll,1.0
+174489,22,Everywhere,1.0,202.17,1,0,Overlord of the Hauntwoods,1.0
+174500,22,"Tyvar, the Pummeler",0.9545,159.29,1,0,"Rip, Spawn Hunter",0.1818
+174294,22,Reluctant Role Model,0.9545,94.67,1,0,Plains,0.9545
+174393,22,Meathook Massacre II,1.0,323.48,1,0,Fear of Failed Tests,0.2273
+174501,21,"Tyvar, the Pummeler",1.0,166.87,1,0,Rootwise Survivor,0.1905
+210,21,Shard,0.9048,181.18,1,0,"Niko, Light of Hope",0.4286
+174392,21,Meathook Massacre II,1.0,323.48,1,0,Fear of Failed Tests,0.2381
+174560,20,,0.75,35.68,0,0,Spectral Snatcher,0.25
+174524,19,"Kaito, Bane of Nightmares",1.0,284.14,1,0,Withering Torment,0.2105
+174481,19,"Kona, Rescue Beastie",1.0,262.82,1,0,"Valgavoth, Terror Eater",0.1053
+174450,18,Screaming Nemesis,1.0,182.83,1,0,Pyroclasm,0.1111
+174475,18,Hauntwoods Shrieker,1.0,192.9,1,0,"Rip, Spawn Hunter",0.1667
+174526,17,"Kaito, Bane of Nightmares",1.0,284.14,1,0,Cynical Loner,0.1765
+174563,16,,0.8125,101.69,0,0,Thornspire Verge,0.1875
+174462,15,,0.2667,15.45,0,0,Valgavoth's Faithful,0.2
+174525,15,"Kaito, Bane of Nightmares",1.0,284.14,1,0,Murky Sewer,0.5333
+174494,15,"Altanak, the Thrice-Called",1.0,57.92,1,0,Say Its Name,0.8667
+91932,15,Fear of Failed Tests,1.0,160.5,1,0,Tunnel of Hate,0.1333
+1131,14,Bleeding Woods,1.0,26.18,1,0,Monstrous Emergence,0.4286
+174386,14,Grievous Wound,1.0,999,1,0,Enduring Tenacity,0.2143
+174532,14,,0.8571,171.64,0,0,"Niko, Light of Hope",0.7857
+174581,11,Attack-in-the-Box,0.9091,254.86,1,0,Lecture Hall,0.0909
+18472,11,,0.5455,40.38,0,0,Neglected Manor,0.6364
+4407,10,Strangled Cemetery,1.0,30.83,1,0,Monstrous Emergence,0.6
+174580,10,Shard,0.9,180.22,1,0,"Niko, Light of Hope",0.8
+1211,10,Razortrap Gorge,1.0,38.94,1,0,Blazemire Verge,0.4
+1167,9,Murky Sewer,1.0,29.99,1,0,"Victor, Valgavoth's Seneschal",0.2222
+174384,8,Funeral Room // Awakening Hall,1.0,256.41,1,0,Awakening Hall,0.25
+168506,8,"Kaito, Bane of Nightmares",1.0,284.14,1,0,Roaring Furnace,0.125
+174391,8,Meathook Massacre II,1.0,323.48,1,0,Enduring Tenacity,0.125
+4247,8,Raucous Carnival,1.0,30.3,1,0,Central Elevator // Promising Stairs,0.25
+146547,7,Spirit Cleric,1.0,999,1,0,Hallowed Haunting,1.0
+174352,6,The Tale of Tamiyo,1.0,914.17,1,0,Get Out,0.3333
+174353,6,The Tale of Tamiyo,1.0,914.17,1,0,Malevolent Chandelier,0.3333
+174354,6,,0.8333,761.81,0,0,Fear of Infinity,0.5
+1039,6,Peculiar Lighthouse,1.0,30.56,1,0,Elegant Rotunda,0.1667
+18504,6,Lakeside Shack,1.0,23.68,1,0,Meathook Massacre II,0.1667
+2639,6,Soul Warden,1.0,999,1,0,Living Phone,0.6667
+174408,5,,0.8,600.74,0,0,"Kona, Rescue Beastie",0.2
+1203,5,Etched Cornfield,1.0,46.93,1,0,Anthropede,0.4
+6538,4,,1.0,876.08,0,0,Silent Hallcreeper,0.25
+183,4,,0.75,28.78,0,0,Surgical Suite,0.25
+174488,4,,1.0,40.91,0,0,Growing Dread,0.75
+174527,4,,1.0,999,0,0,Greenhouse // Rickety Gazebo,0.75
+174504,3,,1.0,999,0,0,Forgotten Cellar,0.3333
+2374,3,,1.0,84.78,0,0,Hushwood Verge,0.3333
+174355,3,,1.0,914.17,0,0,Fear of Infinity,0.6667
+174572,3,,1.0,96.01,0,0,Keys to the House,0.6667
+174568,3,,1.0,137.42,0,0,Unstoppable Slasher,0.6667
+174570,2,,1.0,125.15,0,0,Horrid Vigor,0.5
+1209,1,,1.0,219.02,0,0,Final Vengeance,1.0
+174380,1,,1.0,999,0,0,Unsettling Twins,1.0
+15671,1,,1.0,999,0,0,Funeral Room // Awakening Hall,1.0
+174436,1,,1.0,999,0,0,Rampaging Soulrager,1.0
