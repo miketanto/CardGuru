@@ -5047,3 +5047,67 @@ judged on argmax-classes alone.
 
 What this cannot support: one seed, one deck; two sampled points and the two-stage readout not run
 (cancelled by the user); no claim about landfall or white (paused), or about Phase 13.
+
+## 13a — the recording: 68,500 CP7-labelled consults on BenchDimir, labels on priority, target and joint attack/block (2026-09-15; branch `v7/lane-d`; runbook `rl/PHASE13-BC.md`)
+
+**Build** (compiled with `rl/sync_lane_b.sh`, nothing else on the engine). `rl/xmage-src/JointCands.java`:
+RLPlayer's joint attack / block candidate builders (`jointAttacks` / `jointBlocks` + `attackChoiceSet`,
+`theirBlockers`) lifted verbatim to package-static; RLPlayer now calls them, so the RL seat and the teacher
+build their lists on one code path (the RL seat's behaviour after the lift was compiled, not re-measured in
+a paired battery — a cannot below). `CP7TeacherPlayer` (75d1428, b03cf7f): priority labels as in 7d1b;
+**target** labels one consult per required target as `policyPickTargets` / `policyPickCards` build them —
+targets preset by CP7's search are read at `activateAbility` and labelled **after** the activation (spell or
+ability on the stack), triggered / choose-style targets through wrapped `chooseTarget` / `choose`; **joint**
+labels: the list is built before CP7 declares, the declared set is read back and matched by body multiset
+(exact) or outcome key (alias), else y = −1 (`teacherJointMiss`).
+
+**Time-box.** Target labels took two attempts. Attempt 1 labelled preset targets with the spell still in
+**hand** — the targeting object was invisible to the clone and to `dimir_census`' removal counter; that
+7-minute recording was stopped and set aside (`rec/attempt1/`, unused). Joint labels: one attempt. Two
+defects the smokes found and fixed before the recording: CP7's pass is itself an activated `PassAbility`
+(had been read as "outside", 27 of 266 priority consults) — now y = 0; a same-source, same-class fallback
+for rule-text differences (`prioAlias`, fired 0 times in the recording).
+
+**Recording** (`rl/run_13a.sh`, 12:59–15:24Z WSL): two lanes, 50-game jobs, BenchDimir mirror, seats by
+episode parity, `rl.aiSkill` 6, `rl.consultBudget` 4000; lane H vs the heuristic (15 jobs), lane C the CP7
+mirror (10 jobs); every job rc = 0. Artifacts `rl/artifacts/v7/13/rec/` (jsonl gitignored; `counts.txt`,
+`summary.txt`, `run_13a.log`).
+
+| decision kind (teacher's own counters) | consults | labelled | fraction | gate ≥ 0.9 | misses |
+|---|---|---|---|---|---|
+| priority | 51,628 | 51,611 | **1.000** | pass | 17 outside the list |
+| target | 6,626 | 6,626 | **1.000** | pass | 0 (3,400 preset + the rest wrapped; 0 optional) |
+| joint attack | 6,095 | 5,780 | **0.948** | pass | 315 `teacherJointMiss` (exact 5,780, alias 0) |
+| joint block | 4,603 | 4,483 | **0.974** | pass | 120 `teacherJointMiss` (exact 4,419, alias 64) |
+| all | 68,952 | **68,500** | 0.993 | | multi-act 0, budget-skipped 0 |
+
+1,250 games, 55.2 consults per game; windows 249,507, of which 197,879 had no candidate after the filters
+(auto-pass, no consult). **Priority label census** (the target the BC census is read against): **PASS
+28,222 (54.7 %)**, LAND 7,742 (15.0 %), SPELL 10,401 (20.2 %), ACTIVATE 5,246 (10.2 %). On Dimir CP7
+passes more than half the windows it can act in (on W0Base it never passed, 7d1b) — this recording can
+teach *when to hold*, which the 7d1b one could not. **CP7's level** over the recording (Wilson 95 %): vs the
+heuristic **623/750 = 0.831 [0.802, 0.856]**; CP7 mirror 246/500 = 0.492 [0.448, 0.536].
+
+**Gate view, correction in the open.** The first summary tool gated per candidate-type class, where a
+PASS-only joint consult (k = 1) falls under "trivial"; that view read blocks 0.884 on the first 100 games and
+would have dropped the kind. The pre-registered gate is per decision kind, read from the teacher's
+counters (table above); the type view is kept as `REC13SUM|types=` (types block 1,556/1,676 = 0.928,
+trivial 3,029/3,196 = 0.948 — 167 of the joint misses are k = 1 consults).
+
+**Joint misses** are CP7 choices outside CombatMath's list: the vanilla model has no evasion, so it can offer
+blocks that are illegal and prune the legal alternative as dominated, and it prices attacks with flyers as
+if they could be blocked (one logged miss: CP7 attacked with a subset the Pareto filter had dropped). The RL
+seat is offered the same list; these decisions are counted, not labelled, and BC drops them.
+
+**Faithfulness** (the 5b gate, 100 consults over 24 games): `wire_validate` ok; L3 53 pass / 0 fail, L4 52 /
+1 (`ent.mana_left_if_cast` R² 0.896 vs 0.90 — the 5b "small-scale real at the random wake" class), edges 3 / 0
+(`faith13.md`). Context, not the gate: over 25 games (1,271 consults) L3 101 / 7, L4 99 / 9, against an
+RL-seat BenchDimir census of 25 games at L3 85 / 0, L4 83 / 2 (`faith_ctrl_p12n012.md`); the teacher's
+consults exercise 23 more fields and fail on small-n fields (stack tokens n_test 49, opp-hand age, candidate
+counts) or on a sub-slice of grouped fields whose pooled score is ≥ 0.995. Which sub-slice is owed.
+
+**Readings.** Every decision kind passes the 0.9 gate; all four are cloned in 13b. Cannot: make the teacher's
+target state identical to the RL seat's (preset-target consults see the spell on the stack with costs already
+paid, lands tapped); say the RL seat plays unchanged after the JointCands lift (verbatim move, compiled, not
+re-measured); label CP7's choices CombatMath does not offer (435 joint decisions); say anything off
+BenchDimir or about CP7 at other skills.
