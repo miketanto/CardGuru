@@ -102,3 +102,15 @@ guessed.
    coverage check and the rebuilder, run them on the sample, commit the §3
    readings to `rl/L17-FIDELITY.md` on that branch and push.
 4. Here: pull the branch and relay. Phase 13 on this box is untouched throughout.
+
+## 6. Status (2026-09-15)
+
+* Sample extracted: 2,000 of 264,720 eligible games (1,011,949 rows read);
+  median 9 turns, 1,409 games with ≥ 8 turns; won share 0.62; 887 card ids,
+  862 mapped, 25 unmapped (all small ids 0–33, probably tokens).
+* **miketanto/CardGuru is a public repo.** The sample (4.1 MB) was pushed to
+  branch `data/l17-dsk` (c95d82f) after the user was told it would be public and
+  that 17Lands' licence is unverified, and said to push anyway. Raw files stayed
+  local.
+* Cloud session launched on `data/l17-dsk` with the §2–§3 runbook; results land
+  in `rl/L17-FIDELITY.md` and `rl/l17_dsk/fidelity_games.csv` on that branch.
