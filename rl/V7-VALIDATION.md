@@ -5280,7 +5280,7 @@ Pre-registered readings:
   only for "forgets" and is not triggered by this verdict.
 
 Behaviour (census, 25-game argmax checks): the clearest change from bc.pt is fewer counters — We Say Thee Nay!
-offered about twice as often but cast rarely (bc.pt 8/27, 2,048 check 5/58 region); Spell Snare / Spell Pierce
+offered about twice as often but cast rarely (bc.pt 8/27, 1,024 check 5/58); Spell Snare / Spell Pierce
 still taken almost always; flash creatures drift toward main-phase casting (instant-speed share 0.17 → ~0.08,
 intervals overlap); removal targeting and board development unchanged. Transcripts (bc.pt vs 1,024 check):
 losses end ~turn 17–18 with the learner at ~3 life and CP7 at 12–15 (races lost, not stalls); attacks match the
