@@ -392,3 +392,80 @@ times in 5 for the first eight side-turns and about 2 times in 7 after that.**
 The decline is not drift — every one of these side-turns starts from the logged
 state — so it measures how much *more* there is to get wrong per turn as boards
 grow: more permanents with triggers, more targets to choose, more combat.
+
+### 4.1 `resync` + `choice`: per-turn fidelity with hidden choices steered too
+
+The `resync` row above uses the **base** decision rules inside each turn — the
+AI still picks every target, manifest and search. Running `resync` and `choice`
+together (`-Dl17.variant=resync,choice`) gives the ceiling this data can reach
+per turn when the logged outcome is also used to steer those choices:
+
+| side-turns | `resync` | `resync` + `choice` |
+|---|---|---|
+| 1–2 | 1.000 [0.990, 1.000] | 1.000 [0.990, 1.000] |
+| 3–4 | 0.917 [0.886, 0.941] | **0.943** [0.915, 0.961] |
+| 5–6 | 0.710 [0.664, 0.752] | **0.812** [0.771, 0.848] |
+| 7–8 | 0.539 [0.490, 0.588] | **0.641** [0.593, 0.687] |
+| 9–12 | 0.350 [0.316, 0.385] | **0.426** [0.391, 0.463] |
+| 13–16 | 0.262 [0.227, 0.302] | **0.315** [0.277, 0.356] |
+| 17+ | 0.209 [0.174, 0.249] | **0.282** [0.243, 0.324] |
+| **1–8** | 0.793 [0.772, 0.812] | **0.850** [0.832, 0.867] |
+| **9+** | 0.286 [0.265, 0.308] | **0.353** [0.331, 0.376] |
+| **all** | 0.530 [0.513, 0.547] | **0.592** [0.575, 0.608] |
+
+The intervals do not overlap at any depth past side-turn 2, so this is a real
+effect and not the noise the whole-game variants produced. It is the same
+steering that bought only a third of a turn in the whole-game rebuild: **the
+gain from knowing the outcome is worth much more per turn than it is per game,
+because in a whole-game replay one un-repaired divergence ends the count
+anyway.**
+
+## 5. The top three remaining causes
+
+Taken on the side-turns that started from a provably correct state and still
+ended wrong (1,558 of 3,313 in the `resync` run), so that drift is excluded by
+construction and what is left is what one turn of replay gets wrong.
+
+| class | share of failing clean side-turns |
+|---|---|
+| 1. a permanent differs — identity or presence | 1047 = 0.672 |
+| 2. life totals only | 159 = 0.102 |
+| 3. the user's hand only | 149 = 0.096 |
+| 4. the opponent's hand count only | 114 = 0.073 |
+| mixed / other | 89 = 0.057 |
+
+**1. A hidden choice put a different permanent on the battlefield (0.672).**
+Example, **game 19, user turn 5**: the log has *Fear of Falling* among the
+user's creatures where the engine has a *Plains* — a manifest dread that turned
+up a different card. No forced action failed on that turn and no ability id was
+logged; the divergence is entirely the choice. Fix: the `choice` steering,
+which is exactly what §4.1 measures — it lifts side-turns 5–6 from 0.710 to
+0.812 — plus steering the choices it still does not cover (modes, "may"
+triggers, which copy of a permanent an effect hits). Ceiling: whatever the log
+does not name still cannot be steered, and a `[Face-Down Card]` never is.
+
+**2. A target on a trigger changed the combat arithmetic (0.102).** Example,
+**game 39, opponent turn 4**: the user's life is 16 logged, 19 rebuilt. The
+turn logs ability id `174277`, which `rl/l17/ability_map.py` traces to *Friendly
+Ghost* with coverage 1.00 — and `AbilityKinds` says that card's only ability is
+an enters-the-battlefield **trigger** that gives a target creature +2/+4. The
+engine did fire the trigger; the AI aimed it at a different creature, so a
+different body survived combat and 3 damage landed elsewhere. Fix: steer
+trigger targets the way spell targets are already steered, using the logged
+kills, the logged combat damage on each side, and the logged end-of-turn
+toughness implied by which creatures died. Ceiling: the log records *that* a
+creature died and how much damage each player took, not which permanent a pump
+was aimed at, so this is inference from consequences and will be wrong whenever
+two targets produce the same end state.
+
+**3. The opponent's hand is invented (0.073 as the only broken field, and it
+also drives an unknown share of class 1).** Example, **game 55, user turn 8**:
+the opponent's life is 25 logged, 26 rebuilt, with ability id `174430`
+(*Glassworks // Shattered Yard*, a DSK room) logged that turn. Only the *count*
+of the opponent's hand is logged, so the synthetic deck holds the cards it was
+seen using plus basic-land filler, and everything it never visibly used is
+wrong. The `oppo` variant shows the count is not the binding constraint (§3.1).
+Fix: none available from this data — it would need the opponent's deck list,
+which 17Lands does not log for the opponent. The honest move is to stop
+comparing opponent-side fields and score only the user's seat, which would
+remove this class and shrink class 1.

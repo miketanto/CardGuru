@@ -1,0 +1,3518 @@
+game,turn,side,evaluated,clean_start,matched,fields
+10,1,oppo_1,1,1,1,
+10,2,user_1,1,1,1,
+10,3,oppo_2,1,1,1,
+10,4,user_2,1,1,0,user_hand
+10,5,oppo_3,1,1,1,
+10,6,user_3,1,1,0,user_lands user_hand
+10,7,oppo_4,1,1,0,oppo_hand
+10,8,user_4,1,1,0,oppo_life user_creatures user_hand
+10,9,oppo_5,1,1,0,oppo_hand
+10,10,user_5,1,1,0,oppo_life user_creatures user_hand
+10,11,oppo_6,1,1,1,
+10,12,user_6,1,1,1,
+10,13,oppo_7,1,1,1,
+10,14,user_7,1,0,0,oppo_hand
+19,1,oppo_1,1,1,1,
+19,2,user_1,1,1,1,
+19,3,oppo_2,1,1,1,
+19,4,user_2,1,1,1,
+19,5,oppo_3,1,1,1,
+19,6,user_3,1,1,1,
+19,7,oppo_4,1,1,1,
+19,8,user_4,1,1,1,
+19,9,oppo_5,1,1,1,
+19,10,user_5,1,1,1,
+19,11,oppo_6,1,1,1,
+19,12,user_6,1,1,1,
+19,13,oppo_7,1,1,1,
+19,14,user_7,1,1,0,user_noncreatures
+19,15,oppo_8,1,1,0,oppo_hand
+19,16,user_8,1,1,0,oppo_life user_creatures user_noncreatures user_hand oppo_hand
+19,17,oppo_9,1,1,0,user_creatures user_noncreatures
+19,18,user_9,1,1,0,oppo_life user_lands user_creatures user_noncreatures user_hand
+19,19,oppo_10,1,1,0,user_creatures user_noncreatures oppo_hand
+19,20,user_10,1,1,0,oppo_life user_creatures user_noncreatures user_hand oppo_hand
+19,21,oppo_11,1,1,0,user_creatures user_noncreatures
+36,1,oppo_1,1,1,1,
+36,2,user_1,1,1,1,
+36,3,oppo_2,1,1,1,
+36,4,user_2,1,1,1,
+36,5,oppo_3,1,1,1,
+36,6,user_3,1,1,1,
+36,7,oppo_4,1,1,1,
+36,8,user_4,1,1,0,user_creatures
+36,9,oppo_5,1,1,0,user_creatures user_noncreatures
+36,10,user_5,1,1,0,user_creatures user_noncreatures
+36,11,oppo_6,1,1,0,user_creatures user_noncreatures
+36,12,user_6,1,1,0,user_creatures user_noncreatures
+36,13,oppo_7,1,0,0,user_life oppo_life user_creatures user_noncreatures
+36,14,user_7,1,0,0,oppo_life user_creatures user_noncreatures
+36,15,oppo_8,1,0,0,user_creatures user_noncreatures
+36,16,user_8,1,0,0,oppo_life user_creatures user_hand
+36,17,oppo_9,1,1,0,user_creatures user_noncreatures oppo_hand
+36,18,user_9,1,1,0,user_creatures user_noncreatures user_hand
+39,1,user_1,1,1,1,
+39,2,oppo_1,1,1,1,
+39,3,user_2,1,1,1,
+39,4,oppo_2,1,1,1,
+39,5,user_3,1,1,1,
+39,6,oppo_3,1,1,1,
+39,7,user_4,1,1,1,
+39,8,oppo_4,1,1,0,user_life
+39,9,user_5,1,1,0,user_lands
+39,10,oppo_5,1,1,1,
+39,11,user_6,1,1,0,user_lands
+39,12,oppo_6,1,1,0,user_life user_creatures
+39,13,user_7,1,1,1,
+39,14,oppo_7,1,1,0,user_life user_hand
+42,1,oppo_1,1,1,1,
+42,2,user_1,1,1,1,
+42,3,oppo_2,1,1,1,
+42,4,user_2,1,1,1,
+42,5,oppo_3,1,1,1,
+42,6,user_3,1,1,1,
+42,7,oppo_4,1,1,1,
+42,8,user_4,1,1,1,
+42,9,oppo_5,1,1,1,
+42,10,user_5,1,1,0,oppo_life user_creatures
+42,11,oppo_6,1,1,1,
+42,12,user_6,1,1,0,user_creatures
+55,1,oppo_1,1,1,1,
+55,2,user_1,1,1,1,
+55,3,oppo_2,1,1,1,
+55,4,user_2,1,1,1,
+55,5,oppo_3,1,1,1,
+55,6,user_3,1,1,1,
+55,7,oppo_4,1,1,1,
+55,8,user_4,1,1,0,user_hand
+55,9,oppo_5,1,1,0,oppo_hand
+55,10,user_5,1,1,0,user_hand
+55,11,oppo_6,1,1,0,oppo_hand
+55,12,user_6,1,1,1,
+55,13,oppo_7,1,1,0,oppo_hand
+55,14,user_7,1,1,1,
+55,15,oppo_8,1,1,0,user_noncreatures oppo_hand
+55,16,user_8,1,1,0,oppo_life
+55,17,oppo_9,1,1,1,
+55,18,user_9,1,1,0,oppo_life
+55,19,oppo_10,1,1,1,
+55,20,user_10,1,1,0,oppo_life user_creatures user_noncreatures
+55,21,oppo_11,1,1,0,user_hand
+55,22,user_11,1,1,1,
+100,1,oppo_1,1,1,1,
+100,2,user_1,1,1,1,
+100,3,oppo_2,1,1,1,
+100,4,user_2,1,1,0,oppo_life user_hand
+100,5,oppo_3,1,1,1,
+100,6,user_3,1,1,0,oppo_life user_hand
+100,7,oppo_4,1,1,1,
+100,8,user_4,1,1,0,user_hand
+100,9,oppo_5,1,1,0,oppo_hand
+100,10,user_5,1,1,0,user_lands user_noncreatures user_hand
+100,11,oppo_6,1,1,0,user_creatures user_noncreatures
+100,12,user_6,1,1,0,oppo_life user_creatures user_noncreatures user_hand
+100,13,oppo_7,1,1,0,user_creatures user_noncreatures
+100,14,user_7,1,1,0,oppo_life user_lands user_creatures user_noncreatures user_hand
+100,15,oppo_8,1,1,0,user_creatures user_noncreatures
+101,1,oppo_1,1,1,1,
+101,2,user_1,1,1,1,
+101,3,oppo_2,1,1,1,
+101,4,user_2,1,1,1,
+101,5,oppo_3,1,1,1,
+101,6,user_3,1,1,1,
+101,7,oppo_4,1,1,1,
+101,8,user_4,1,1,1,
+101,9,oppo_5,1,1,0,user_life user_creatures
+101,10,user_5,1,0,0,user_creatures
+101,11,oppo_6,1,0,0,user_life
+101,12,user_6,1,0,1,
+101,13,oppo_7,1,0,0,user_life
+101,14,user_7,1,1,0,user_lands user_noncreatures user_hand
+101,15,oppo_8,1,1,1,
+101,16,user_8,1,1,1,
+101,17,oppo_9,1,1,1,
+102,1,user_1,1,1,1,
+102,2,oppo_1,1,1,1,
+102,3,user_2,1,1,1,
+102,4,oppo_2,1,1,1,
+102,5,user_3,1,1,1,
+102,6,oppo_3,1,1,0,user_hand
+102,7,user_4,1,1,1,
+102,8,oppo_4,1,1,1,
+102,9,user_5,1,1,0,oppo_life user_creatures
+102,10,oppo_5,1,1,0,user_creatures oppo_hand
+102,11,user_6,1,1,1,
+102,12,oppo_6,1,1,1,
+102,13,user_7,1,1,0,user_creatures
+102,14,oppo_7,1,1,1,
+102,15,user_8,1,1,0,user_creatures
+102,16,oppo_8,1,1,1,
+102,17,user_9,1,1,0,user_life oppo_life
+102,18,oppo_9,1,1,1,
+102,19,user_10,1,1,1,
+102,20,oppo_10,1,1,0,user_life oppo_life oppo_hand
+102,21,user_11,1,1,0,user_hand
+103,1,oppo_1,1,1,1,
+103,2,user_1,1,1,1,
+103,3,oppo_2,1,1,1,
+103,4,user_2,1,1,0,user_hand
+103,5,oppo_3,1,1,1,
+103,6,user_3,1,1,0,user_hand
+103,7,oppo_4,1,1,1,
+103,8,user_4,1,1,0,user_hand
+103,9,oppo_5,1,1,0,oppo_hand
+103,10,user_5,1,1,0,user_creatures user_hand
+103,11,oppo_6,1,1,0,user_life user_lands
+103,12,user_6,1,1,0,user_creatures user_hand
+103,13,oppo_7,1,1,0,user_lands user_creatures oppo_hand
+103,14,user_7,1,1,0,user_lands user_creatures user_hand
+103,15,oppo_8,1,1,0,user_lands user_creatures oppo_hand
+103,16,user_8,1,1,0,user_lands user_creatures
+103,17,oppo_9,1,1,0,user_lands user_creatures user_noncreatures user_hand
+103,18,user_9,1,1,0,user_lands user_creatures
+103,19,oppo_10,1,1,0,user_lands user_creatures
+103,20,user_10,1,1,0,user_lands user_creatures
+103,21,oppo_11,1,1,0,user_lands user_creatures
+103,22,user_11,1,1,0,user_lands user_creatures
+103,23,oppo_12,1,1,0,user_lands user_creatures
+103,24,user_12,1,1,0,user_lands user_creatures
+103,25,oppo_13,1,1,0,user_life user_lands user_hand
+105,1,oppo_1,1,1,1,
+105,2,user_1,1,1,1,
+105,3,oppo_2,1,1,1,
+105,4,user_2,1,1,0,user_creatures
+105,5,oppo_3,1,1,0,user_life
+105,6,user_3,1,1,1,
+105,7,oppo_4,1,1,0,user_life
+105,8,user_4,1,1,1,
+105,9,oppo_5,1,1,0,user_life
+105,10,user_5,1,1,1,
+105,11,oppo_6,1,1,0,user_life
+105,12,user_6,1,1,0,user_creatures
+105,13,oppo_7,1,1,1,
+105,14,user_7,1,1,0,oppo_life
+105,15,oppo_8,1,1,0,user_life
+105,16,user_8,1,1,0,oppo_life
+105,17,oppo_9,1,1,0,user_life user_hand
+110,1,user_1,1,1,1,
+110,2,oppo_1,1,1,1,
+110,3,user_2,1,1,1,
+110,4,oppo_2,1,1,1,
+110,5,user_3,1,1,1,
+110,6,oppo_3,1,1,1,
+110,7,user_4,1,1,0,oppo_life user_creatures user_noncreatures
+110,8,oppo_4,1,1,1,
+110,9,user_5,1,1,1,
+110,10,oppo_5,1,1,0,user_creatures
+110,11,user_6,1,1,0,oppo_life
+110,12,oppo_6,1,1,0,user_creatures
+110,13,user_7,1,1,0,oppo_life user_creatures
+110,14,oppo_7,1,1,0,user_hand
+110,15,user_8,1,1,1,
+119,1,oppo_1,1,1,1,
+119,2,user_1,1,1,1,
+119,3,oppo_2,1,1,0,user_life
+119,4,user_2,1,1,1,
+119,5,oppo_3,1,1,0,user_life
+119,6,user_3,1,1,1,
+119,7,oppo_4,1,1,0,user_life
+119,8,user_4,1,1,1,
+119,9,oppo_5,1,1,0,user_life user_creatures
+127,1,user_1,1,1,1,
+127,2,oppo_1,1,1,1,
+127,3,user_2,1,1,1,
+127,4,oppo_2,1,1,1,
+127,5,user_3,1,1,1,
+127,6,oppo_3,1,1,1,
+127,7,user_4,1,1,0,user_creatures
+127,8,oppo_4,1,1,0,user_creatures user_noncreatures
+127,9,user_5,1,1,0,oppo_life user_creatures user_noncreatures
+127,10,oppo_5,1,1,0,user_creatures user_noncreatures
+127,11,user_6,1,1,0,user_creatures user_noncreatures oppo_hand
+127,12,oppo_6,1,0,0,user_creatures user_noncreatures
+127,13,user_7,1,0,0,user_creatures user_noncreatures
+127,14,oppo_7,1,0,0,user_creatures user_noncreatures
+127,15,user_8,1,0,0,user_creatures user_noncreatures
+127,16,oppo_8,1,0,0,user_creatures user_noncreatures
+127,17,user_9,1,0,0,oppo_life user_creatures user_noncreatures user_hand
+127,18,oppo_9,1,1,0,user_creatures user_noncreatures oppo_hand
+127,19,user_10,1,1,0,user_creatures user_noncreatures user_hand
+127,20,oppo_10,1,1,0,user_life user_creatures user_noncreatures oppo_hand
+127,21,user_11,1,1,0,user_creatures user_noncreatures
+127,22,oppo_11,1,1,0,user_life oppo_life user_noncreatures
+127,23,user_12,1,1,0,oppo_life user_creatures
+127,24,oppo_12,1,1,0,user_life oppo_life user_noncreatures user_hand oppo_hand
+131,1,user_1,1,1,1,
+131,2,oppo_1,1,1,1,
+131,3,user_2,1,1,1,
+131,4,oppo_2,1,1,1,
+131,5,user_3,1,1,1,
+131,6,oppo_3,1,1,1,
+131,7,user_4,1,1,1,
+131,8,oppo_4,1,1,1,
+131,9,user_5,1,1,1,
+131,10,oppo_5,1,1,0,user_creatures oppo_hand
+131,11,user_6,1,1,0,user_lands user_hand
+131,12,oppo_6,1,1,0,oppo_hand
+131,13,user_7,1,1,0,user_hand
+131,14,oppo_7,1,1,0,user_life user_creatures oppo_hand
+131,15,user_8,1,1,0,oppo_life user_noncreatures user_hand
+131,16,oppo_8,1,1,0,user_noncreatures oppo_hand
+131,17,user_9,1,1,0,user_noncreatures
+131,18,oppo_9,1,1,0,user_life user_noncreatures user_hand oppo_hand
+141,1,oppo_1,1,1,1,
+141,2,user_1,1,1,1,
+141,3,oppo_2,1,1,1,
+141,4,user_2,1,1,1,
+141,5,oppo_3,1,1,1,
+141,6,user_3,1,1,1,
+141,7,oppo_4,1,1,0,user_life user_creatures
+141,8,user_4,1,1,1,
+141,9,oppo_5,1,1,1,
+141,10,user_5,1,1,1,
+141,11,oppo_6,1,1,0,user_life user_creatures user_noncreatures user_hand
+141,12,user_6,1,1,0,user_creatures user_noncreatures
+141,13,oppo_7,1,1,0,user_creatures user_noncreatures oppo_hand
+141,14,user_7,1,1,0,user_lands user_creatures user_noncreatures user_hand
+141,15,oppo_8,1,1,0,user_creatures user_noncreatures
+141,16,user_8,1,1,0,user_creatures user_noncreatures
+141,17,oppo_9,1,1,0,user_life user_creatures user_noncreatures user_hand
+141,18,user_9,1,1,0,user_life oppo_life user_creatures user_noncreatures
+141,19,oppo_10,1,1,0,user_life user_creatures user_noncreatures user_hand oppo_hand
+141,20,user_10,1,1,0,user_life oppo_life user_creatures user_noncreatures user_hand
+141,21,oppo_11,1,1,0,user_life user_creatures user_noncreatures user_hand
+141,22,user_11,1,1,0,user_noncreatures
+153,1,user_1,1,1,1,
+153,2,oppo_1,1,1,1,
+153,3,user_2,1,1,1,
+153,4,oppo_2,1,1,1,
+153,5,user_3,1,1,1,
+153,6,oppo_3,1,1,1,
+153,7,user_4,1,1,0,user_creatures
+153,8,oppo_4,1,1,0,user_life oppo_life
+153,9,user_5,1,1,0,oppo_life user_noncreatures
+153,10,oppo_5,1,1,1,
+153,11,user_6,1,1,0,user_creatures user_hand
+153,12,oppo_6,1,1,0,user_creatures
+153,13,user_7,1,1,0,oppo_life user_creatures
+153,14,oppo_7,1,1,1,
+153,15,user_8,1,1,0,oppo_life user_creatures oppo_hand
+153,16,oppo_8,1,0,1,
+153,17,user_9,1,0,0,oppo_life user_creatures
+153,18,oppo_9,1,1,0,oppo_hand
+153,19,user_10,1,1,0,oppo_life user_creatures user_hand
+153,20,oppo_10,1,1,1,
+167,1,oppo_1,1,1,1,
+167,2,user_1,1,1,1,
+167,3,oppo_2,1,1,1,
+167,4,user_2,1,1,1,
+167,5,oppo_3,1,1,1,
+167,6,user_3,1,1,1,
+167,7,oppo_4,1,1,1,
+167,8,user_4,1,1,1,
+167,9,oppo_5,1,1,0,user_creatures
+167,10,user_5,1,1,0,user_lands user_creatures user_hand
+167,11,oppo_6,1,1,0,user_lands user_creatures
+167,12,user_6,1,1,0,oppo_life user_lands user_creatures user_noncreatures user_hand
+167,13,oppo_7,1,1,0,user_lands user_creatures oppo_hand
+167,14,user_7,1,1,0,user_lands user_creatures
+167,15,oppo_8,1,1,0,user_lands user_creatures
+167,16,user_8,1,1,0,user_lands user_creatures user_hand
+167,17,oppo_9,1,1,0,user_lands user_creatures user_noncreatures user_hand oppo_hand
+167,18,user_9,1,1,0,user_lands user_creatures user_hand
+167,19,oppo_10,1,1,0,user_lands user_creatures
+167,20,user_10,1,1,0,oppo_life user_lands user_creatures user_hand
+167,21,oppo_11,1,1,0,user_creatures oppo_hand
+167,22,user_11,1,1,0,oppo_life user_lands user_creatures user_hand
+174,1,oppo_1,1,1,1,
+174,2,user_1,1,1,1,
+174,3,oppo_2,1,1,1,
+174,4,user_2,1,1,1,
+174,5,oppo_3,1,1,1,
+174,6,user_3,1,1,1,
+174,7,oppo_4,1,1,0,user_life oppo_life user_creatures oppo_hand
+174,8,user_4,1,1,0,user_creatures user_noncreatures user_hand
+174,9,oppo_5,1,1,1,
+174,10,user_5,1,1,0,user_noncreatures user_hand
+174,11,oppo_6,1,1,1,
+174,12,user_6,1,1,0,user_hand
+174,13,oppo_7,1,1,1,
+174,14,user_7,1,1,1,
+174,15,oppo_8,1,1,0,user_life user_creatures user_noncreatures
+174,16,user_8,1,1,0,user_creatures user_noncreatures user_hand
+174,17,oppo_9,1,1,0,user_life user_creatures user_noncreatures
+174,18,user_9,1,1,0,user_creatures user_noncreatures
+174,19,oppo_10,1,1,0,user_creatures user_noncreatures
+174,20,user_10,1,1,0,oppo_life user_creatures user_noncreatures
+174,21,oppo_11,1,1,0,user_creatures user_noncreatures
+174,22,user_11,1,1,0,oppo_life user_creatures user_noncreatures
+190,1,user_1,1,1,1,
+190,2,oppo_1,1,1,1,
+190,3,user_2,1,1,1,
+190,4,oppo_2,1,1,1,
+190,5,user_3,1,1,1,
+190,6,oppo_3,1,1,0,oppo_hand
+190,7,user_4,1,1,1,
+190,8,oppo_4,1,1,0,oppo_hand
+190,9,user_5,1,1,1,
+190,10,oppo_5,1,1,0,oppo_hand
+190,11,user_6,1,0,0,oppo_life user_creatures oppo_hand
+190,12,oppo_6,1,1,0,oppo_hand
+190,13,user_7,1,1,0,oppo_life user_creatures
+190,14,oppo_7,1,1,0,oppo_hand
+190,15,user_8,1,0,0,oppo_life user_noncreatures
+190,16,oppo_8,1,1,0,user_life
+190,17,user_9,1,1,0,oppo_life user_lands user_creatures user_hand
+190,18,oppo_9,1,1,1,
+190,19,user_10,1,1,0,user_creatures
+190,20,oppo_10,1,1,0,user_creatures oppo_hand
+190,21,user_11,1,1,0,oppo_life user_creatures
+190,22,oppo_11,1,1,0,user_lands user_creatures oppo_hand
+190,23,user_12,1,1,0,user_lands user_creatures
+192,1,user_1,1,1,1,
+192,2,oppo_1,1,1,1,
+192,3,user_2,1,1,1,
+192,4,oppo_2,1,1,1,
+192,5,user_3,1,1,1,
+192,6,oppo_3,1,1,1,
+192,7,user_4,1,1,1,
+192,8,oppo_4,1,1,0,user_hand oppo_hand
+192,9,user_5,1,1,0,user_life user_creatures user_hand
+192,10,oppo_5,1,1,1,
+192,11,user_6,1,1,1,
+192,12,oppo_6,1,1,1,
+192,13,user_7,1,1,0,user_lands user_noncreatures user_hand
+192,14,oppo_7,1,1,1,
+192,15,user_8,1,1,1,
+225,1,oppo_1,1,1,1,
+225,2,user_1,1,1,1,
+225,3,oppo_2,1,1,1,
+225,4,user_2,1,1,1,
+225,5,oppo_3,1,1,1,
+225,6,user_3,1,1,0,oppo_life user_creatures user_hand
+225,7,oppo_4,1,1,0,user_life user_creatures user_noncreatures
+225,8,user_4,1,1,0,oppo_life user_creatures user_noncreatures
+225,9,oppo_5,1,1,0,user_creatures user_noncreatures
+225,10,user_5,1,1,0,user_creatures user_noncreatures
+225,11,oppo_6,1,1,0,user_creatures user_noncreatures
+225,12,user_6,1,1,0,oppo_life user_creatures user_noncreatures
+225,13,oppo_7,1,1,0,user_creatures user_noncreatures
+225,14,user_7,1,1,0,oppo_life user_creatures user_noncreatures user_hand
+226,1,oppo_1,1,1,1,
+226,2,user_1,1,1,1,
+226,3,oppo_2,1,1,1,
+226,4,user_2,1,1,1,
+226,5,oppo_3,1,1,1,
+226,6,user_3,1,1,1,
+226,7,oppo_4,1,1,1,
+226,8,user_4,1,1,1,
+226,9,oppo_5,1,1,1,
+226,10,user_5,1,1,1,
+226,11,oppo_6,1,1,1,
+226,12,user_6,1,1,0,oppo_life
+226,13,oppo_7,1,1,1,
+226,14,user_7,1,1,0,oppo_life user_creatures user_hand
+226,15,oppo_8,1,1,1,
+226,16,user_8,1,1,1,
+226,17,oppo_9,1,1,1,
+226,18,user_9,1,1,1,
+239,1,oppo_1,1,1,1,
+239,2,user_1,1,1,1,
+239,3,oppo_2,1,1,1,
+239,4,user_2,1,1,1,
+239,5,oppo_3,1,1,1,
+239,6,user_3,1,1,1,
+239,7,oppo_4,1,1,0,user_creatures
+239,8,user_4,1,1,0,user_creatures
+239,9,oppo_5,1,1,0,user_lands user_creatures oppo_hand
+239,10,user_5,1,1,0,oppo_life user_lands user_creatures
+239,11,oppo_6,1,1,0,user_lands user_creatures oppo_hand
+239,12,user_6,1,1,0,user_lands user_creatures user_noncreatures
+239,13,oppo_7,1,1,0,user_lands user_creatures user_noncreatures user_hand oppo_hand
+252,1,user_1,1,1,1,
+252,2,oppo_1,1,1,1,
+252,3,user_2,1,1,0,user_creatures user_hand
+252,4,oppo_2,1,1,1,
+252,5,user_3,1,1,1,
+252,6,oppo_3,1,1,0,user_life
+252,7,user_4,1,1,1,
+252,8,oppo_4,1,1,1,
+252,9,user_5,1,1,1,
+252,10,oppo_5,1,1,1,
+252,11,user_6,1,1,0,user_lands user_creatures user_hand
+252,12,oppo_6,1,1,1,
+252,13,user_7,1,1,1,
+252,14,oppo_7,1,1,1,
+252,15,user_8,1,1,1,
+252,16,oppo_8,1,1,1,
+252,17,user_9,1,1,0,user_life oppo_life user_noncreatures user_hand
+252,18,oppo_9,1,1,0,user_noncreatures
+252,19,user_10,1,1,0,user_lands user_creatures user_hand
+252,20,oppo_10,1,1,0,oppo_hand
+252,21,user_11,1,0,1,
+265,1,user_1,1,1,1,
+265,2,oppo_1,1,1,1,
+265,3,user_2,1,1,1,
+265,4,oppo_2,1,1,1,
+265,5,user_3,1,1,0,user_hand
+265,6,oppo_3,1,1,1,
+265,7,user_4,1,1,1,
+265,8,oppo_4,1,1,1,
+265,9,user_5,1,1,1,
+265,10,oppo_5,1,1,1,
+265,11,user_6,1,1,0,user_creatures
+265,12,oppo_6,1,0,1,
+265,13,user_7,1,0,0,oppo_life user_creatures user_hand
+265,14,oppo_7,1,1,0,user_life
+265,15,user_8,1,1,1,
+265,16,oppo_8,1,1,0,user_life user_creatures oppo_hand
+265,17,user_9,1,1,1,
+265,18,oppo_9,1,1,0,user_life oppo_hand
+265,19,user_10,1,1,1,
+281,1,oppo_1,1,1,1,
+281,2,user_1,1,1,1,
+281,3,oppo_2,1,1,1,
+281,4,user_2,1,1,0,user_hand
+281,5,oppo_3,1,1,1,
+281,6,user_3,1,1,0,user_creatures user_hand
+281,7,oppo_4,1,1,1,
+281,8,user_4,1,1,0,user_hand
+281,9,oppo_5,1,1,0,oppo_hand
+281,10,user_5,1,1,0,user_lands user_hand
+281,11,oppo_6,1,1,0,user_creatures oppo_hand
+281,12,user_6,1,1,0,oppo_life user_noncreatures user_hand
+283,1,user_1,1,1,1,
+283,2,oppo_1,1,1,1,
+283,3,user_2,1,1,1,
+283,4,oppo_2,1,1,1,
+283,5,user_3,1,1,1,
+283,6,oppo_3,1,1,1,
+283,7,user_4,1,1,1,
+283,8,oppo_4,1,1,0,user_creatures user_noncreatures user_hand
+283,9,user_5,1,1,0,oppo_life user_lands user_creatures user_noncreatures
+283,10,oppo_5,1,1,0,user_lands user_creatures user_noncreatures
+283,11,user_6,1,1,0,oppo_life user_lands user_creatures user_noncreatures
+283,12,oppo_6,1,1,0,user_life user_lands user_creatures user_noncreatures
+283,13,user_7,1,1,0,oppo_life user_lands user_creatures user_noncreatures
+283,14,oppo_7,1,1,0,user_life user_lands user_creatures user_noncreatures
+283,15,user_8,1,1,0,oppo_life user_lands
+283,16,oppo_8,1,1,1,
+286,1,oppo_1,1,1,1,
+286,2,user_1,1,1,1,
+286,3,oppo_2,1,1,1,
+286,4,user_2,1,1,1,
+286,5,oppo_3,1,1,1,
+286,6,user_3,1,1,1,
+286,7,oppo_4,1,1,1,
+286,8,user_4,1,1,1,
+286,9,oppo_5,1,1,1,
+286,10,user_5,1,1,0,user_hand
+286,11,oppo_6,1,1,1,
+286,12,user_6,1,1,0,user_creatures user_hand
+286,13,oppo_7,1,1,1,
+286,14,user_7,1,1,0,user_creatures user_hand
+286,15,oppo_8,1,1,0,user_life oppo_life
+286,16,user_8,1,1,0,user_creatures user_hand
+286,17,oppo_9,1,1,0,user_life oppo_life user_lands user_creatures
+286,18,user_9,1,1,0,oppo_life user_lands user_creatures user_hand
+286,19,oppo_10,1,1,0,user_lands user_creatures user_noncreatures
+286,20,user_10,1,1,0,oppo_life user_lands user_creatures user_hand
+286,21,oppo_11,1,1,0,user_life oppo_life user_lands user_creatures user_hand oppo_hand
+286,22,user_11,1,1,0,oppo_life user_lands user_creatures user_hand
+290,1,user_1,1,1,1,
+290,2,oppo_1,1,1,1,
+290,3,user_2,1,1,1,
+290,4,oppo_2,1,1,1,
+290,5,user_3,1,1,1,
+290,6,oppo_3,1,1,1,
+290,7,user_4,1,1,1,
+290,8,oppo_4,1,1,1,
+290,9,user_5,1,1,0,oppo_life
+290,10,oppo_5,1,1,1,
+290,11,user_6,1,1,1,
+290,12,oppo_6,1,1,1,
+290,13,user_7,1,1,0,user_creatures
+290,14,oppo_7,1,1,0,oppo_hand
+308,1,oppo_1,1,1,1,
+308,2,user_1,1,1,1,
+308,3,oppo_2,1,1,1,
+308,4,user_2,1,1,0,user_hand
+308,5,oppo_3,1,1,1,
+308,6,user_3,1,1,0,user_hand
+308,7,oppo_4,1,1,0,user_life
+308,8,user_4,1,1,0,oppo_life user_hand
+308,9,oppo_5,1,1,1,
+308,10,user_5,1,1,0,oppo_life user_creatures user_hand oppo_hand
+308,11,oppo_6,1,1,1,
+308,12,user_6,1,1,0,user_lands user_creatures user_hand
+308,13,oppo_7,1,1,0,oppo_hand
+308,14,user_7,1,1,0,oppo_life user_creatures user_noncreatures user_hand
+308,15,oppo_8,1,1,0,user_creatures user_noncreatures user_hand
+308,16,user_8,1,1,0,oppo_life user_creatures user_noncreatures
+308,17,oppo_9,1,1,0,user_creatures user_noncreatures
+308,18,user_9,1,1,0,oppo_life user_creatures user_noncreatures
+308,19,oppo_10,1,1,0,user_creatures user_noncreatures oppo_hand
+308,20,user_10,1,1,0,user_creatures user_noncreatures user_hand
+308,21,oppo_11,1,1,0,user_life user_lands user_creatures user_noncreatures oppo_hand
+308,22,user_11,1,1,0,oppo_life user_lands user_creatures user_noncreatures user_hand
+308,23,oppo_12,1,1,0,user_creatures user_noncreatures oppo_hand
+309,1,oppo_1,1,1,1,
+309,2,user_1,1,1,1,
+309,3,oppo_2,1,1,1,
+309,4,user_2,1,1,1,
+309,5,oppo_3,1,1,1,
+309,6,user_3,1,1,0,oppo_life
+309,7,oppo_4,1,1,0,oppo_hand
+309,8,user_4,1,1,0,oppo_life
+309,9,oppo_5,1,1,1,
+309,10,user_5,1,1,0,user_hand
+309,11,oppo_6,1,1,1,
+309,12,user_6,1,1,0,user_creatures
+309,13,oppo_7,1,1,0,user_creatures oppo_hand
+309,14,user_7,1,1,0,oppo_hand
+330,1,user_1,1,1,1,
+330,2,oppo_1,1,1,1,
+330,3,user_2,1,1,1,
+330,4,oppo_2,1,1,1,
+330,5,user_3,1,1,0,oppo_life user_creatures user_hand
+330,6,oppo_3,1,1,1,
+330,7,user_4,1,1,1,
+330,8,oppo_4,1,1,1,
+330,9,user_5,1,1,0,user_lands user_hand
+330,10,oppo_5,1,1,1,
+330,11,user_6,1,1,0,user_creatures user_hand oppo_hand
+330,12,oppo_6,1,1,1,
+330,13,user_7,1,1,0,oppo_life
+330,14,oppo_7,1,1,0,user_life
+330,15,user_8,1,1,1,
+330,16,oppo_8,1,1,0,user_life user_hand oppo_hand
+334,1,oppo_1,1,1,1,
+334,2,user_1,1,1,1,
+334,3,oppo_2,1,1,1,
+334,4,user_2,1,1,1,
+334,5,oppo_3,1,1,1,
+334,6,user_3,1,1,1,
+334,7,oppo_4,1,1,0,user_creatures user_noncreatures oppo_hand
+334,8,user_4,1,1,0,user_lands user_noncreatures
+334,9,oppo_5,1,1,1,
+334,10,user_5,1,1,0,user_creatures
+334,11,oppo_6,1,1,0,user_life user_creatures user_noncreatures
+334,12,user_6,1,1,0,oppo_life user_lands user_noncreatures user_hand
+334,13,oppo_7,1,1,0,user_noncreatures oppo_hand
+334,14,user_7,1,1,0,oppo_life user_noncreatures
+334,15,oppo_8,1,1,0,user_noncreatures user_hand oppo_hand
+349,1,oppo_1,1,1,1,
+349,2,user_1,1,1,1,
+349,3,oppo_2,1,1,1,
+349,4,user_2,1,1,0,user_creatures oppo_hand
+349,5,oppo_3,1,1,1,
+349,6,user_3,1,1,1,
+349,7,oppo_4,1,1,1,
+349,8,user_4,1,1,0,user_lands user_hand
+349,9,oppo_5,1,1,1,
+349,10,user_5,1,1,0,oppo_life
+349,11,oppo_6,1,1,1,
+349,12,user_6,1,1,1,
+349,13,oppo_7,1,1,1,
+349,14,user_7,1,1,0,oppo_life user_lands user_creatures user_hand
+349,15,oppo_8,1,1,1,
+349,16,user_8,1,1,1,
+349,17,oppo_9,1,1,0,user_life
+349,18,user_9,1,1,0,user_hand
+357,1,user_1,1,1,1,
+357,2,oppo_1,1,1,1,
+357,3,user_2,1,1,1,
+357,4,oppo_2,1,1,1,
+357,5,user_3,1,1,1,
+357,6,oppo_3,1,1,1,
+357,7,user_4,1,1,1,
+357,8,oppo_4,1,1,0,oppo_hand
+357,9,user_5,1,1,1,
+357,10,oppo_5,1,1,1,
+357,11,user_6,1,1,1,
+357,12,oppo_6,1,1,0,user_life
+357,13,user_7,1,0,0,user_creatures
+357,14,oppo_7,1,1,0,user_lands user_creatures oppo_hand
+357,15,user_8,1,1,0,user_lands
+357,16,oppo_8,1,1,0,oppo_hand
+357,17,user_9,1,1,1,
+357,18,oppo_9,1,1,1,
+357,19,user_10,1,1,1,
+357,20,oppo_10,1,1,0,oppo_hand
+357,21,user_11,1,1,1,
+357,22,oppo_11,1,1,1,
+357,23,user_12,1,1,1,
+357,24,oppo_12,1,1,1,
+375,1,oppo_1,1,1,1,
+375,2,user_1,1,1,1,
+375,3,oppo_2,1,1,1,
+375,4,user_2,1,1,1,
+375,5,oppo_3,1,1,0,oppo_hand
+375,6,user_3,1,1,1,
+394,1,user_1,1,1,1,
+394,2,oppo_1,1,1,1,
+394,3,user_2,1,1,1,
+394,4,oppo_2,1,1,1,
+394,5,user_3,1,1,0,oppo_life user_creatures
+394,6,oppo_3,1,1,1,
+394,7,user_4,1,1,1,
+394,8,oppo_4,1,1,1,
+394,9,user_5,1,1,1,
+394,10,oppo_5,1,1,1,
+394,11,user_6,1,1,1,
+394,12,oppo_6,1,1,0,user_life user_creatures oppo_hand
+394,13,user_7,1,1,1,
+394,14,oppo_7,1,1,1,
+394,15,user_8,1,0,1,
+394,16,oppo_8,1,0,0,user_life user_creatures
+394,17,user_9,1,0,1,
+394,18,oppo_9,1,0,0,user_life user_creatures oppo_hand
+394,19,user_10,1,0,0,user_creatures user_hand
+394,20,oppo_10,1,0,0,oppo_hand
+400,1,user_1,1,1,1,
+400,2,oppo_1,1,1,1,
+400,3,user_2,1,1,1,
+400,4,oppo_2,1,1,1,
+400,5,user_3,1,1,1,
+400,6,oppo_3,1,1,1,
+400,7,user_4,1,1,1,
+400,8,oppo_4,1,1,1,
+400,9,user_5,1,1,0,oppo_life
+400,10,oppo_5,1,1,1,
+400,11,user_6,1,1,0,user_creatures
+400,12,oppo_6,1,1,0,user_noncreatures
+400,13,user_7,1,1,0,user_creatures
+400,14,oppo_7,1,1,0,oppo_hand
+400,15,user_8,1,1,0,oppo_life user_lands user_noncreatures user_hand
+400,16,oppo_8,1,1,0,oppo_hand
+402,1,user_1,1,1,1,
+402,2,oppo_1,1,1,1,
+402,3,user_2,1,1,1,
+402,4,oppo_2,1,1,1,
+402,5,user_3,1,1,1,
+402,6,oppo_3,1,1,1,
+402,7,user_4,1,1,1,
+402,8,oppo_4,1,1,1,
+402,9,user_5,1,1,1,
+402,10,oppo_5,1,1,0,user_life
+402,11,user_6,1,1,0,user_creatures user_hand
+402,12,oppo_6,1,1,0,user_life user_lands user_creatures
+402,13,user_7,1,1,0,user_lands
+402,14,oppo_7,1,1,0,user_life user_hand oppo_hand
+402,15,user_8,1,1,1,
+402,16,oppo_8,1,1,0,user_life
+402,17,user_9,1,1,1,
+402,18,oppo_9,1,1,0,user_life
+402,19,user_10,1,1,1,
+402,20,oppo_10,1,1,0,user_life
+402,21,user_11,1,1,1,
+402,22,oppo_11,1,1,0,user_life oppo_life user_creatures oppo_hand
+402,23,user_12,1,1,0,user_noncreatures user_hand
+402,24,oppo_12,1,1,0,user_life oppo_life user_noncreatures
+402,25,user_13,1,1,0,user_creatures
+402,26,oppo_13,1,1,0,user_life user_creatures user_noncreatures
+402,27,user_14,1,1,0,oppo_life user_creatures user_noncreatures
+402,28,oppo_14,1,1,0,user_creatures user_noncreatures oppo_hand
+406,1,user_1,1,1,1,
+406,2,oppo_1,1,1,1,
+406,3,user_2,1,1,1,
+406,4,oppo_2,1,1,1,
+406,5,user_3,1,1,0,oppo_life
+406,6,oppo_3,1,1,1,
+406,7,user_4,1,1,1,
+406,8,oppo_4,1,1,1,
+406,9,user_5,1,1,0,oppo_life
+406,10,oppo_5,1,1,1,
+406,11,user_6,1,1,1,
+406,12,oppo_6,1,1,1,
+406,13,user_7,1,1,0,user_creatures
+406,14,oppo_7,1,1,0,oppo_hand
+406,15,user_8,1,1,1,
+430,1,oppo_1,1,1,1,
+430,2,user_1,1,1,1,
+430,3,oppo_2,1,1,1,
+430,4,user_2,1,1,1,
+430,5,oppo_3,1,1,1,
+430,6,user_3,1,1,1,
+430,7,oppo_4,1,1,1,
+430,8,user_4,1,1,1,
+430,9,oppo_5,1,1,1,
+430,10,user_5,1,1,1,
+430,11,oppo_6,1,1,1,
+430,12,user_6,1,1,0,user_hand
+430,13,oppo_7,1,1,1,
+430,14,user_7,1,1,0,user_life oppo_life user_creatures user_hand
+430,15,oppo_8,1,1,0,user_lands user_creatures user_noncreatures
+430,16,user_8,1,1,0,user_lands user_creatures user_noncreatures user_hand
+430,17,oppo_9,1,1,0,user_lands user_creatures user_noncreatures user_hand
+430,18,user_9,1,1,0,oppo_life user_lands user_creatures user_noncreatures user_hand oppo_hand
+434,1,user_1,1,1,1,
+434,2,oppo_1,1,1,1,
+434,3,user_2,1,1,1,
+434,4,oppo_2,1,1,1,
+434,5,user_3,1,1,1,
+434,6,oppo_3,1,1,1,
+434,7,user_4,1,1,1,
+434,8,oppo_4,1,1,0,user_creatures
+434,9,user_5,1,1,0,oppo_life user_lands user_creatures user_hand
+434,10,oppo_5,1,1,0,user_lands user_creatures
+434,11,user_6,1,1,0,oppo_life user_lands user_creatures
+434,12,oppo_6,1,1,0,oppo_life user_lands user_creatures oppo_hand
+434,13,user_7,1,1,0,oppo_life user_lands user_creatures
+434,14,oppo_7,1,1,0,user_lands user_creatures
+437,1,user_1,1,1,1,
+437,2,oppo_1,1,1,1,
+437,3,user_2,1,1,0,user_hand
+437,4,oppo_2,1,1,1,
+437,5,user_3,1,1,1,
+437,6,oppo_3,1,1,1,
+437,7,user_4,1,1,1,
+437,8,oppo_4,1,1,0,user_life
+437,9,user_5,1,1,0,user_lands user_creatures user_hand
+437,10,oppo_5,1,1,0,user_lands user_creatures
+437,11,user_6,1,1,0,oppo_life user_lands user_creatures user_hand oppo_hand
+437,12,oppo_6,1,1,0,user_life user_creatures user_noncreatures oppo_hand
+437,13,user_7,1,1,0,oppo_life user_creatures user_noncreatures
+460,1,user_1,1,1,1,
+460,2,oppo_1,1,1,1,
+460,3,user_2,1,1,1,
+460,4,oppo_2,1,1,1,
+460,5,user_3,1,1,0,user_lands user_hand
+460,6,oppo_3,1,1,1,
+460,7,user_4,1,1,0,user_creatures
+460,8,oppo_4,1,1,0,user_life oppo_life user_lands
+460,9,user_5,1,1,0,user_lands user_hand
+460,10,oppo_5,1,1,1,
+460,11,user_6,1,1,1,
+460,12,oppo_6,1,1,1,
+460,13,user_7,1,1,1,
+460,14,oppo_7,1,1,1,
+489,1,oppo_1,1,1,1,
+489,2,user_1,1,1,1,
+489,3,oppo_2,1,1,1,
+489,4,user_2,1,1,1,
+489,5,oppo_3,1,1,0,user_life
+489,6,user_3,1,1,1,
+489,7,oppo_4,1,1,0,user_life user_hand
+489,8,user_4,1,1,1,
+489,9,oppo_5,1,1,0,user_life
+489,10,user_5,1,1,0,user_life
+489,11,oppo_6,1,1,0,oppo_hand
+489,12,user_6,1,1,1,
+489,13,oppo_7,1,1,0,user_life oppo_hand
+489,14,user_7,1,1,1,
+489,15,oppo_8,1,1,1,
+489,16,user_8,1,1,1,
+489,17,oppo_9,1,1,0,oppo_hand
+489,18,user_9,1,1,0,user_hand
+489,19,oppo_10,1,1,0,user_creatures oppo_hand
+489,20,user_10,1,1,1,
+489,21,oppo_11,1,1,0,user_creatures oppo_hand
+489,22,user_11,1,1,0,user_hand
+489,23,oppo_12,1,1,0,user_life oppo_hand
+489,24,user_12,1,1,1,
+495,1,oppo_1,1,1,1,
+495,2,user_1,1,1,1,
+495,3,oppo_2,1,1,1,
+495,4,user_2,1,1,1,
+495,5,oppo_3,1,1,1,
+495,6,user_3,1,1,1,
+495,7,oppo_4,1,1,1,
+495,8,user_4,1,1,0,oppo_life user_creatures user_hand
+495,9,oppo_5,1,1,1,
+495,10,user_5,1,1,0,user_creatures user_hand
+495,11,oppo_6,1,1,1,
+495,12,user_6,1,1,0,user_hand
+495,13,oppo_7,1,1,1,
+495,14,user_7,1,1,0,user_creatures oppo_hand
+495,15,oppo_8,1,1,0,user_life
+495,16,user_8,1,1,1,
+509,1,oppo_1,1,1,1,
+509,2,user_1,1,1,1,
+509,3,oppo_2,1,1,1,
+509,4,user_2,1,1,1,
+509,5,oppo_3,1,1,0,user_hand
+509,6,user_3,1,1,1,
+509,7,oppo_4,1,1,1,
+509,8,user_4,1,1,1,
+509,9,oppo_5,1,1,1,
+509,10,user_5,1,1,0,user_hand
+509,11,oppo_6,1,1,1,
+509,12,user_6,1,1,0,user_lands user_creatures user_hand
+509,13,oppo_7,1,1,1,
+509,14,user_7,1,1,0,user_creatures user_hand
+509,15,oppo_8,1,0,1,
+509,16,user_8,1,0,1,
+509,17,oppo_9,1,0,0,user_life oppo_life user_creatures oppo_hand
+509,18,user_9,1,0,1,
+512,1,user_1,1,1,1,
+512,2,oppo_1,1,1,1,
+512,3,user_2,1,1,1,
+512,4,oppo_2,1,1,0,user_hand
+512,5,user_3,1,1,1,
+512,6,oppo_3,1,1,1,
+512,7,user_4,1,1,1,
+512,8,oppo_4,1,1,1,
+512,9,user_5,1,1,0,user_creatures
+512,10,oppo_5,1,1,0,user_creatures
+512,11,user_6,1,1,1,
+512,12,oppo_6,1,1,0,oppo_life user_creatures
+512,13,user_7,1,1,1,
+512,14,oppo_7,1,1,1,
+512,15,user_8,1,1,1,
+512,16,oppo_8,1,1,1,
+512,17,user_9,1,1,0,user_hand
+512,18,oppo_9,1,1,1,
+512,19,user_10,1,1,1,
+512,20,oppo_10,1,1,1,
+512,21,user_11,1,1,1,
+512,22,oppo_11,1,1,1,
+512,23,user_12,1,1,1,
+512,24,oppo_12,1,1,1,
+512,25,user_13,1,1,1,
+512,26,oppo_13,1,1,1,
+512,27,user_14,1,1,0,user_creatures
+512,28,oppo_14,1,1,1,
+512,29,user_15,1,1,0,user_creatures
+513,1,oppo_1,1,1,1,
+513,2,user_1,1,1,1,
+513,3,oppo_2,1,1,1,
+513,4,user_2,1,1,1,
+513,5,oppo_3,1,1,0,user_life
+513,6,user_3,1,1,1,
+513,7,oppo_4,1,1,0,user_life
+513,8,user_4,1,1,1,
+513,9,oppo_5,1,1,0,user_life
+513,10,user_5,1,1,0,oppo_life
+513,11,oppo_6,1,1,1,
+513,12,user_6,1,1,1,
+513,13,oppo_7,1,1,0,oppo_hand
+513,14,user_7,1,1,0,user_life user_lands user_hand
+513,15,oppo_8,1,1,0,oppo_hand
+513,16,user_8,1,1,1,
+513,17,oppo_9,1,1,1,
+514,1,oppo_1,1,1,1,
+514,2,user_1,1,1,1,
+514,3,oppo_2,1,1,1,
+514,4,user_2,1,1,1,
+514,5,oppo_3,1,1,1,
+514,6,user_3,1,1,1,
+514,7,oppo_4,1,1,1,
+514,8,user_4,1,1,1,
+514,9,oppo_5,1,1,1,
+514,10,user_5,1,1,0,user_noncreatures
+514,11,oppo_6,1,1,0,user_life user_creatures
+514,12,user_6,1,1,0,user_hand
+514,13,oppo_7,1,1,0,oppo_life
+514,14,user_7,1,1,0,user_creatures
+514,15,oppo_8,1,1,0,oppo_life oppo_hand
+514,16,user_8,1,1,0,user_life oppo_life
+514,17,oppo_9,1,1,0,oppo_life
+514,18,user_9,1,1,0,oppo_life user_creatures
+516,1,oppo_1,1,1,1,
+516,2,user_1,1,1,1,
+516,3,oppo_2,1,1,1,
+516,4,user_2,1,1,1,
+516,5,oppo_3,1,1,1,
+516,6,user_3,1,1,1,
+516,7,oppo_4,1,1,1,
+516,8,user_4,1,1,0,user_creatures
+516,9,oppo_5,1,1,1,
+516,10,user_5,1,1,0,user_creatures
+516,11,oppo_6,1,1,0,user_lands user_creatures
+516,12,user_6,1,1,0,user_lands user_creatures
+516,13,oppo_7,1,1,0,user_lands oppo_hand
+516,14,user_7,1,1,0,user_lands user_hand
+516,15,oppo_8,1,1,0,user_life user_lands user_creatures user_noncreatures user_hand oppo_hand
+516,16,user_8,1,1,0,oppo_life user_creatures
+516,17,oppo_9,1,1,0,user_life
+516,18,user_9,1,1,0,user_lands user_hand
+516,19,oppo_10,1,1,0,user_creatures oppo_hand
+528,1,user_1,1,1,1,
+528,2,oppo_1,1,1,1,
+528,3,user_2,1,1,1,
+528,4,oppo_2,1,1,1,
+528,5,user_3,1,1,1,
+528,6,oppo_3,1,1,1,
+528,7,user_4,1,1,0,user_life
+528,8,oppo_4,1,1,1,
+528,9,user_5,1,1,0,user_life oppo_life
+528,10,oppo_5,1,1,1,
+528,11,user_6,1,1,0,user_life oppo_life
+528,12,oppo_6,1,1,0,user_life user_creatures
+528,13,user_7,1,1,0,user_hand
+528,14,oppo_7,1,1,1,
+528,15,user_8,1,1,0,user_creatures
+528,16,oppo_8,1,1,0,user_life user_creatures oppo_hand
+528,17,user_9,1,1,1,
+528,18,oppo_9,1,1,0,user_life oppo_life user_creatures
+528,19,user_10,1,1,0,user_hand
+543,1,user_1,1,1,1,
+543,2,oppo_1,1,1,1,
+543,3,user_2,1,1,1,
+543,4,oppo_2,1,1,1,
+543,5,user_3,1,1,0,oppo_life
+543,6,oppo_3,1,1,1,
+543,7,user_4,1,1,1,
+543,8,oppo_4,1,1,1,
+543,9,user_5,1,1,1,
+543,10,oppo_5,1,1,0,user_creatures
+543,11,user_6,1,1,0,user_creatures
+543,12,oppo_6,1,1,0,user_life user_lands user_creatures
+543,13,user_7,1,1,0,oppo_life user_lands user_creatures
+543,14,oppo_7,1,1,0,user_lands user_creatures oppo_hand
+543,15,user_8,1,1,0,oppo_life user_lands user_creatures
+543,16,oppo_8,1,1,0,user_lands user_creatures oppo_hand
+543,17,user_9,1,0,0,oppo_life user_lands user_creatures
+543,18,oppo_9,1,0,1,
+547,1,oppo_1,1,1,1,
+547,2,user_1,1,1,1,
+547,3,oppo_2,1,1,1,
+547,4,user_2,1,1,1,
+547,5,oppo_3,1,1,1,
+547,6,user_3,1,1,1,
+547,7,oppo_4,1,1,1,
+547,8,user_4,1,1,1,
+547,9,oppo_5,1,1,1,
+547,10,user_5,1,1,1,
+547,11,oppo_6,1,1,1,
+547,12,user_6,1,1,1,
+547,13,oppo_7,1,1,0,oppo_hand
+547,14,user_7,1,1,0,user_lands user_creatures user_hand
+547,15,oppo_8,1,1,0,user_life oppo_life
+547,16,user_8,1,1,0,user_life oppo_life user_noncreatures user_hand oppo_hand
+547,17,oppo_9,0,0,0,
+558,1,oppo_1,1,1,1,
+558,2,user_1,1,1,1,
+558,3,oppo_2,1,1,1,
+558,4,user_2,1,1,1,
+558,5,oppo_3,1,1,1,
+558,6,user_3,1,1,1,
+558,7,oppo_4,1,1,1,
+558,8,user_4,1,1,0,user_creatures
+558,9,oppo_5,1,1,1,
+558,10,user_5,1,1,0,oppo_life
+558,11,oppo_6,1,1,0,user_life oppo_life user_creatures oppo_hand
+558,12,user_6,1,1,0,oppo_life
+558,13,oppo_7,1,1,0,oppo_life oppo_hand
+558,14,user_7,1,1,1,
+558,15,oppo_8,1,1,1,
+558,16,user_8,1,1,1,
+558,17,oppo_9,1,1,1,
+558,18,user_9,1,1,0,user_life oppo_life oppo_hand
+558,19,oppo_10,1,1,1,
+558,20,user_10,1,1,0,oppo_life
+558,21,oppo_11,1,1,1,
+564,1,oppo_1,1,1,1,
+564,2,user_1,1,1,1,
+564,3,oppo_2,1,1,1,
+564,4,user_2,1,1,1,
+564,5,oppo_3,1,1,1,
+564,6,user_3,1,1,1,
+564,7,oppo_4,1,1,0,user_creatures
+564,8,user_4,1,1,1,
+564,9,oppo_5,1,1,1,
+564,10,user_5,1,0,0,oppo_life user_hand
+564,11,oppo_6,1,1,0,oppo_hand
+564,12,user_6,1,1,1,
+564,13,oppo_7,1,1,0,user_life oppo_hand
+564,14,user_7,1,1,0,oppo_life
+564,15,oppo_8,1,1,0,user_life oppo_hand
+564,16,user_8,1,1,1,
+569,1,user_1,1,1,1,
+569,2,oppo_1,1,1,1,
+569,3,user_2,1,1,1,
+569,4,oppo_2,1,1,1,
+569,5,user_3,1,1,1,
+569,6,oppo_3,1,1,0,user_hand
+569,7,user_4,1,1,1,
+569,8,oppo_4,1,1,1,
+569,9,user_5,1,1,0,user_hand
+569,10,oppo_5,1,1,0,oppo_hand
+569,11,user_6,1,1,0,user_creatures user_noncreatures user_hand
+569,12,oppo_6,1,1,0,user_noncreatures oppo_hand
+569,13,user_7,1,1,0,user_creatures user_noncreatures
+569,14,oppo_7,1,1,0,user_noncreatures
+569,15,user_8,1,1,0,user_noncreatures
+569,16,oppo_8,1,0,0,user_noncreatures
+569,17,user_9,1,0,0,user_noncreatures
+593,1,oppo_1,1,1,1,
+593,2,user_1,1,1,1,
+593,3,oppo_2,1,1,1,
+593,4,user_2,1,1,1,
+593,5,oppo_3,1,1,1,
+593,6,user_3,1,1,1,
+593,7,oppo_4,1,1,1,
+593,8,user_4,1,1,1,
+593,9,oppo_5,1,1,1,
+593,10,user_5,1,1,0,oppo_life
+593,11,oppo_6,1,1,1,
+593,12,user_6,1,1,0,user_creatures
+593,13,oppo_7,1,1,1,
+593,14,user_7,1,1,0,user_life oppo_life oppo_hand
+604,1,user_1,1,1,1,
+604,2,oppo_1,1,1,1,
+604,3,user_2,1,1,1,
+604,4,oppo_2,1,1,1,
+604,5,user_3,1,1,1,
+604,6,oppo_3,1,1,0,user_life
+604,7,user_4,1,1,1,
+604,8,oppo_4,1,1,0,oppo_hand
+604,9,user_5,1,1,0,user_creatures user_hand
+604,10,oppo_5,1,1,1,
+604,11,user_6,1,1,1,
+604,12,oppo_6,1,1,0,user_noncreatures oppo_hand
+604,13,user_7,1,1,1,
+604,14,oppo_7,1,1,1,
+604,15,user_8,1,1,1,
+604,16,oppo_8,1,1,1,
+604,17,user_9,1,1,1,
+604,18,oppo_9,1,1,0,oppo_hand
+621,1,user_1,1,1,1,
+621,2,oppo_1,1,1,1,
+621,3,user_2,1,1,1,
+621,4,oppo_2,1,1,1,
+621,5,user_3,1,1,1,
+621,6,oppo_3,1,1,1,
+621,7,user_4,1,1,0,user_creatures user_hand
+621,8,oppo_4,1,1,1,
+621,9,user_5,1,1,0,user_creatures
+621,10,oppo_5,1,1,0,oppo_hand
+621,11,user_6,1,1,0,user_hand
+621,12,oppo_6,1,1,0,user_life oppo_life oppo_hand
+621,13,user_7,1,1,0,user_life
+621,14,oppo_7,1,1,0,user_life oppo_hand
+621,15,user_8,1,1,0,oppo_life user_noncreatures
+621,16,oppo_8,1,1,0,user_creatures
+621,17,user_9,1,0,0,user_creatures
+621,18,oppo_9,1,0,0,user_life user_creatures user_hand oppo_hand
+621,19,user_10,0,0,0,
+624,1,user_1,1,1,1,
+624,2,oppo_1,1,1,1,
+624,3,user_2,1,1,1,
+624,4,oppo_2,1,1,1,
+624,5,user_3,1,1,0,user_creatures user_noncreatures user_hand
+624,6,oppo_3,1,1,0,user_lands user_creatures
+624,7,user_4,1,1,0,user_lands user_creatures
+624,8,oppo_4,1,1,0,user_lands user_creatures
+624,9,user_5,1,1,0,user_creatures user_hand
+624,10,oppo_5,1,1,0,user_lands user_creatures
+624,11,user_6,1,1,0,oppo_life user_lands user_creatures
+624,12,oppo_6,1,1,0,user_lands user_creatures user_hand
+624,13,user_7,1,1,0,user_life oppo_life user_lands user_creatures user_hand
+624,14,oppo_7,1,1,0,user_lands user_creatures
+629,1,oppo_1,1,1,1,
+629,2,user_1,1,1,1,
+629,3,oppo_2,1,1,1,
+629,4,user_2,1,1,1,
+629,5,oppo_3,1,1,1,
+629,6,user_3,1,1,1,
+629,7,oppo_4,1,1,1,
+629,8,user_4,1,1,1,
+629,9,oppo_5,1,1,0,user_hand
+629,10,user_5,1,1,0,oppo_life
+629,11,oppo_6,1,1,1,
+629,12,user_6,1,1,0,oppo_life
+629,13,oppo_7,1,1,1,
+629,14,user_7,1,1,0,oppo_life
+629,15,oppo_8,1,1,0,oppo_life oppo_hand
+629,16,user_8,1,1,0,oppo_life
+629,17,oppo_9,1,1,0,oppo_hand
+629,18,user_9,1,1,0,oppo_life oppo_hand
+633,1,oppo_1,1,1,1,
+633,2,user_1,1,1,1,
+633,3,oppo_2,1,1,1,
+633,4,user_2,1,1,1,
+633,5,oppo_3,1,1,1,
+633,6,user_3,1,1,1,
+633,7,oppo_4,1,1,1,
+633,8,user_4,1,1,1,
+633,9,oppo_5,1,1,1,
+633,10,user_5,1,1,0,user_creatures
+633,11,oppo_6,1,1,0,user_lands user_creatures oppo_hand
+633,12,user_6,1,1,0,user_lands user_creatures user_hand
+633,13,oppo_7,1,1,0,user_lands user_creatures
+633,14,user_7,1,1,0,user_lands user_creatures
+633,15,oppo_8,1,1,0,user_life user_lands user_creatures oppo_hand
+633,16,user_8,1,1,0,user_creatures
+633,17,oppo_9,1,1,0,user_creatures
+633,18,user_9,1,1,0,oppo_life user_creatures
+633,19,oppo_10,1,1,0,user_creatures oppo_hand
+633,20,user_10,1,0,0,user_creatures
+634,1,user_1,1,1,1,
+634,2,oppo_1,1,1,1,
+634,3,user_2,1,1,1,
+634,4,oppo_2,1,1,1,
+634,5,user_3,1,1,0,user_hand
+634,6,oppo_3,1,1,1,
+634,7,user_4,1,1,1,
+634,8,oppo_4,1,1,1,
+634,9,user_5,1,1,1,
+634,10,oppo_5,1,1,1,
+634,11,user_6,1,1,1,
+634,12,oppo_6,1,1,0,user_life oppo_life oppo_hand
+634,13,user_7,1,1,1,
+634,14,oppo_7,1,1,0,user_creatures
+634,15,user_8,1,1,0,oppo_life user_creatures user_noncreatures
+634,16,oppo_8,1,1,1,
+634,17,user_9,1,1,0,oppo_life user_noncreatures
+638,1,user_1,1,1,1,
+638,2,oppo_1,1,1,1,
+638,3,user_2,1,1,1,
+638,4,oppo_2,1,1,1,
+638,5,user_3,1,1,1,
+638,6,oppo_3,1,1,1,
+638,7,user_4,1,1,1,
+638,8,oppo_4,1,1,1,
+638,9,user_5,1,1,0,user_creatures
+638,10,oppo_5,1,1,1,
+638,11,user_6,1,1,0,oppo_life user_creatures oppo_hand
+638,12,oppo_6,1,1,1,
+638,13,user_7,1,1,0,oppo_life user_hand
+646,1,oppo_1,1,1,1,
+646,2,user_1,1,1,1,
+646,3,oppo_2,1,1,1,
+646,4,user_2,1,1,1,
+646,5,oppo_3,1,1,1,
+646,6,user_3,1,1,1,
+646,7,oppo_4,1,1,1,
+646,8,user_4,1,1,0,user_creatures
+646,9,oppo_5,1,1,0,user_lands user_creatures
+646,10,user_5,1,1,0,user_lands user_creatures user_noncreatures user_hand
+646,11,oppo_6,1,1,0,user_lands user_creatures user_hand
+646,12,user_6,1,1,0,oppo_life user_lands user_creatures
+646,13,oppo_7,1,1,0,user_lands user_creatures oppo_hand
+646,14,user_7,1,1,0,oppo_life user_lands user_creatures user_hand
+646,15,oppo_8,1,1,0,user_lands user_creatures
+647,1,user_1,1,1,1,
+647,2,oppo_1,1,1,1,
+647,3,user_2,1,1,1,
+647,4,oppo_2,1,1,1,
+647,5,user_3,1,1,1,
+647,6,oppo_3,1,1,1,
+647,7,user_4,1,1,0,user_creatures
+647,8,oppo_4,1,1,0,user_lands user_creatures user_noncreatures
+647,9,user_5,1,1,0,user_noncreatures
+647,10,oppo_5,1,1,0,user_noncreatures oppo_hand
+647,11,user_6,1,1,0,oppo_life user_noncreatures
+647,12,oppo_6,1,1,0,user_noncreatures oppo_hand
+647,13,user_7,1,1,0,oppo_life user_noncreatures
+647,14,oppo_7,1,1,0,user_noncreatures oppo_hand
+647,15,user_8,1,1,0,user_noncreatures
+647,16,oppo_8,1,1,0,user_life user_noncreatures oppo_hand
+647,17,user_9,1,1,0,oppo_life user_lands user_noncreatures user_hand
+647,18,oppo_9,1,1,0,user_life user_noncreatures oppo_hand
+647,19,user_10,1,1,0,user_noncreatures
+647,20,oppo_10,1,1,0,user_creatures user_noncreatures oppo_hand
+647,21,user_11,1,0,0,user_creatures user_noncreatures user_hand oppo_hand
+647,22,oppo_11,1,0,0,user_life user_creatures
+650,1,user_1,1,1,1,
+650,2,oppo_1,1,1,1,
+650,3,user_2,1,1,1,
+650,4,oppo_2,1,1,1,
+650,5,user_3,1,1,0,user_lands user_hand
+650,6,oppo_3,1,1,1,
+650,7,user_4,1,1,1,
+650,8,oppo_4,1,1,1,
+650,9,user_5,1,1,1,
+650,10,oppo_5,1,1,1,
+650,11,user_6,1,1,1,
+650,12,oppo_6,1,1,0,user_noncreatures
+650,13,user_7,1,1,0,user_creatures
+650,14,oppo_7,1,1,1,
+650,15,user_8,1,1,1,
+650,16,oppo_8,1,1,1,
+653,1,user_1,1,1,1,
+653,2,oppo_1,1,1,1,
+653,3,user_2,1,1,1,
+653,4,oppo_2,1,1,1,
+653,5,user_3,1,1,1,
+653,6,oppo_3,1,1,1,
+653,7,user_4,1,1,1,
+653,8,oppo_4,1,1,1,
+653,9,user_5,1,1,0,oppo_life user_creatures
+653,10,oppo_5,1,1,1,
+653,11,user_6,1,1,0,oppo_life
+653,12,oppo_6,1,1,1,
+653,13,user_7,1,1,0,oppo_life user_noncreatures user_hand
+653,14,oppo_7,1,1,0,user_creatures user_noncreatures
+653,15,user_8,1,1,0,user_creatures user_noncreatures user_hand
+677,1,user_1,1,1,1,
+677,2,oppo_1,1,1,1,
+677,3,user_2,1,1,1,
+677,4,oppo_2,1,1,1,
+677,5,user_3,1,1,1,
+677,6,oppo_3,1,1,1,
+677,7,user_4,1,1,0,oppo_life user_lands user_hand
+677,8,oppo_4,1,1,1,
+677,9,user_5,1,1,0,oppo_life
+677,10,oppo_5,1,1,1,
+677,11,user_6,1,1,1,
+677,12,oppo_6,1,1,0,oppo_hand
+677,13,user_7,1,1,0,oppo_life
+680,1,oppo_1,1,1,1,
+680,2,user_1,1,1,1,
+680,3,oppo_2,1,1,1,
+680,4,user_2,1,1,1,
+680,5,oppo_3,1,1,1,
+680,6,user_3,1,1,1,
+680,7,oppo_4,1,1,1,
+680,8,user_4,1,1,1,
+680,9,oppo_5,1,1,1,
+680,10,user_5,1,1,1,
+680,11,oppo_6,1,1,0,user_life oppo_life user_creatures user_noncreatures oppo_hand
+686,1,user_1,1,1,1,
+686,2,oppo_1,1,1,1,
+686,3,user_2,1,1,1,
+686,4,oppo_2,1,1,1,
+686,5,user_3,1,1,0,user_hand
+686,6,oppo_3,1,1,1,
+686,7,user_4,1,1,1,
+686,8,oppo_4,1,1,1,
+686,9,user_5,1,1,1,
+686,10,oppo_5,1,1,1,
+686,11,user_6,1,1,0,user_life oppo_life
+686,12,oppo_6,1,1,1,
+688,1,oppo_1,1,1,1,
+688,2,user_1,1,1,1,
+688,3,oppo_2,1,1,1,
+688,4,user_2,1,1,1,
+688,5,oppo_3,1,1,1,
+688,6,user_3,1,1,1,
+688,7,oppo_4,1,1,1,
+688,8,user_4,1,1,0,oppo_life
+688,9,oppo_5,1,1,1,
+688,10,user_5,1,1,1,
+688,11,oppo_6,1,1,1,
+688,12,user_6,1,1,0,user_life user_creatures
+688,13,oppo_7,1,1,1,
+688,14,user_7,1,1,1,
+688,15,oppo_8,1,1,1,
+688,16,user_8,1,1,0,oppo_life user_creatures
+688,17,oppo_9,1,1,0,user_creatures user_noncreatures
+688,18,user_9,1,1,0,user_creatures user_noncreatures
+712,1,oppo_1,1,1,1,
+712,2,user_1,1,1,1,
+712,3,oppo_2,1,1,1,
+712,4,user_2,1,1,1,
+712,5,oppo_3,1,1,1,
+712,6,user_3,1,1,1,
+712,7,oppo_4,1,1,0,oppo_hand
+712,8,user_4,1,1,1,
+712,9,oppo_5,1,1,0,user_life
+712,10,user_5,1,1,1,
+712,11,oppo_6,1,1,0,oppo_hand
+712,12,user_6,1,1,0,user_lands user_creatures
+712,13,oppo_7,1,1,0,user_lands user_creatures
+712,14,user_7,1,1,0,oppo_life user_lands user_creatures oppo_hand
+712,15,oppo_8,1,1,0,user_lands user_creatures
+712,16,user_8,1,1,0,user_lands user_creatures user_hand
+726,1,oppo_1,1,1,1,
+726,2,user_1,1,1,1,
+726,3,oppo_2,1,1,1,
+726,4,user_2,1,1,1,
+726,5,oppo_3,1,1,1,
+726,6,user_3,1,1,1,
+726,7,oppo_4,1,1,0,oppo_hand
+726,8,user_4,1,1,1,
+726,9,oppo_5,1,1,0,oppo_hand
+726,10,user_5,1,0,0,oppo_life user_creatures
+726,11,oppo_6,1,1,1,
+726,12,user_6,1,1,0,user_creatures oppo_hand
+736,1,oppo_1,1,1,1,
+736,2,user_1,1,1,1,
+736,3,oppo_2,1,1,1,
+736,4,user_2,1,1,1,
+736,5,oppo_3,1,1,1,
+736,6,user_3,1,1,1,
+736,7,oppo_4,1,1,1,
+736,8,user_4,1,1,1,
+736,9,oppo_5,1,1,1,
+736,10,user_5,1,1,1,
+736,11,oppo_6,1,1,1,
+736,12,user_6,1,1,0,user_hand
+736,13,oppo_7,1,1,0,user_hand
+736,14,user_7,1,1,1,
+736,15,oppo_8,1,1,0,user_creatures
+736,16,user_8,1,1,1,
+736,17,oppo_9,1,1,1,
+736,18,user_9,1,1,0,user_creatures
+736,19,oppo_10,1,1,0,user_life oppo_life user_creatures user_hand
+736,20,user_10,1,1,0,oppo_life user_creatures
+736,21,oppo_11,1,1,0,user_creatures oppo_hand
+736,22,user_11,1,1,1,
+736,23,oppo_12,1,1,0,user_creatures
+736,24,user_12,1,1,1,
+748,1,user_1,1,1,1,
+748,2,oppo_1,1,1,1,
+748,3,user_2,1,1,1,
+748,4,oppo_2,1,1,1,
+748,5,user_3,1,1,1,
+748,6,oppo_3,1,1,0,user_hand
+748,7,user_4,1,1,0,user_lands user_creatures
+748,8,oppo_4,1,1,0,user_life user_lands user_creatures user_noncreatures user_hand
+748,9,user_5,1,1,0,user_lands user_creatures
+748,10,oppo_5,1,1,0,user_life user_lands user_creatures user_hand oppo_hand
+748,11,user_6,1,1,0,oppo_life user_lands user_noncreatures
+748,12,oppo_6,1,1,0,user_creatures
+748,13,user_7,1,1,0,oppo_life user_lands user_creatures
+748,14,oppo_7,1,1,0,user_lands user_creatures
+748,15,user_8,1,1,0,oppo_life user_lands user_creatures
+748,16,oppo_8,1,1,0,user_lands user_creatures oppo_hand
+748,17,user_9,1,1,0,user_lands user_creatures user_noncreatures user_hand
+762,1,user_1,1,1,1,
+762,2,oppo_1,1,1,1,
+762,3,user_2,1,1,1,
+762,4,oppo_2,1,1,1,
+762,5,user_3,1,1,1,
+762,6,oppo_3,1,1,1,
+762,7,user_4,1,1,1,
+762,8,oppo_4,1,1,1,
+762,9,user_5,1,1,0,user_hand
+762,10,oppo_5,1,1,1,
+762,11,user_6,1,1,0,user_creatures user_noncreatures user_hand
+762,12,oppo_6,1,1,0,user_creatures user_noncreatures
+762,13,user_7,1,1,0,user_life user_creatures user_noncreatures user_hand
+762,14,oppo_7,1,1,0,user_creatures user_noncreatures
+762,15,user_8,1,1,0,user_lands user_creatures user_noncreatures user_hand
+762,16,oppo_8,1,1,0,user_lands user_creatures user_noncreatures oppo_hand
+762,17,user_9,1,1,0,user_lands user_creatures user_hand
+762,18,oppo_9,1,1,0,user_lands user_creatures
+762,19,user_10,1,1,0,user_lands user_creatures user_hand
+762,20,oppo_10,1,1,0,user_lands user_creatures
+762,21,user_11,1,1,0,oppo_life user_lands user_creatures user_hand oppo_hand
+767,1,user_1,1,1,1,
+767,2,oppo_1,1,1,1,
+767,3,user_2,1,1,1,
+767,4,oppo_2,1,1,1,
+767,5,user_3,1,1,1,
+767,6,oppo_3,1,1,1,
+767,7,user_4,1,1,1,
+767,8,oppo_4,1,1,0,user_hand
+767,9,user_5,1,1,1,
+767,10,oppo_5,1,1,0,user_life oppo_life
+767,11,user_6,1,1,1,
+767,12,oppo_6,1,1,1,
+767,13,user_7,1,1,1,
+786,1,user_1,1,1,1,
+786,2,oppo_1,1,1,1,
+786,3,user_2,1,1,1,
+786,4,oppo_2,1,1,1,
+786,5,user_3,1,1,0,user_life user_creatures
+786,6,oppo_3,1,1,1,
+786,7,user_4,1,1,1,
+786,8,oppo_4,1,1,1,
+786,9,user_5,1,1,1,
+786,10,oppo_5,1,1,1,
+786,11,user_6,1,1,0,oppo_hand
+801,1,user_1,1,1,1,
+801,2,oppo_1,1,1,1,
+801,3,user_2,1,1,1,
+801,4,oppo_2,1,1,1,
+801,5,user_3,1,1,1,
+801,6,oppo_3,1,1,0,user_creatures user_noncreatures
+801,7,user_4,1,0,1,
+801,8,oppo_4,1,1,1,
+801,9,user_5,1,1,0,oppo_life
+801,10,oppo_5,1,1,1,
+801,11,user_6,1,1,0,oppo_life
+801,12,oppo_6,1,1,1,
+801,13,user_7,1,1,0,oppo_life
+801,14,oppo_7,1,1,0,oppo_life oppo_hand
+801,15,user_8,1,1,0,oppo_life
+801,16,oppo_8,1,1,1,
+801,17,user_9,1,1,0,oppo_life user_creatures user_noncreatures
+801,18,oppo_9,1,1,1,
+801,19,user_10,1,1,0,user_creatures
+801,20,oppo_10,1,1,0,user_life user_lands user_creatures
+801,21,user_11,1,1,0,user_lands user_creatures
+801,22,oppo_11,1,0,0,oppo_life user_lands user_creatures oppo_hand
+801,23,user_12,1,0,0,user_lands user_creatures user_hand
+822,1,user_1,1,1,1,
+822,2,oppo_1,1,1,1,
+822,3,user_2,1,1,1,
+822,4,oppo_2,1,1,1,
+822,5,user_3,1,1,1,
+822,6,oppo_3,1,1,1,
+822,7,user_4,1,1,1,
+822,8,oppo_4,1,1,1,
+822,9,user_5,1,1,1,
+822,10,oppo_5,1,1,1,
+822,11,user_6,1,1,1,
+822,12,oppo_6,1,1,0,oppo_hand
+822,13,user_7,1,1,1,
+822,14,oppo_7,1,1,1,
+822,15,user_8,1,1,0,user_creatures user_hand
+825,1,oppo_1,1,1,1,
+825,2,user_1,1,1,1,
+825,3,oppo_2,1,1,0,user_life
+825,4,user_2,1,1,1,
+825,5,oppo_3,1,1,0,user_life
+825,6,user_3,1,1,1,
+825,7,oppo_4,1,1,0,user_life
+825,8,user_4,1,1,1,
+825,9,oppo_5,1,1,0,user_life oppo_life user_creatures
+825,10,user_5,1,1,1,
+825,11,oppo_6,1,1,0,oppo_hand
+825,12,user_6,1,1,1,
+825,13,oppo_7,1,1,1,
+826,1,user_1,1,1,1,
+826,2,oppo_1,1,1,1,
+826,3,user_2,1,1,1,
+826,4,oppo_2,1,1,1,
+826,5,user_3,1,1,1,
+826,6,oppo_3,1,1,1,
+826,7,user_4,1,1,0,oppo_life user_lands user_hand
+826,8,oppo_4,1,1,1,
+826,9,user_5,1,1,1,
+826,10,oppo_5,1,1,1,
+826,11,user_6,1,1,0,user_creatures
+826,12,oppo_6,1,1,0,user_life
+826,13,user_7,1,1,0,oppo_life
+826,14,oppo_7,1,1,0,user_life user_creatures
+826,15,user_8,1,1,0,oppo_life oppo_hand
+830,1,oppo_1,1,1,1,
+830,2,user_1,1,1,1,
+830,3,oppo_2,1,1,1,
+830,4,user_2,1,1,1,
+830,5,oppo_3,1,1,1,
+830,6,user_3,1,1,1,
+830,7,oppo_4,1,1,1,
+830,8,user_4,1,1,1,
+830,9,oppo_5,1,1,0,user_creatures
+830,10,user_5,1,1,0,user_creatures
+830,11,oppo_6,1,1,1,
+830,12,user_6,1,1,0,user_life oppo_hand
+830,13,oppo_7,1,1,0,oppo_hand
+830,14,user_7,1,1,0,user_life
+830,15,oppo_8,1,1,0,user_life user_creatures oppo_hand
+830,16,user_8,1,1,0,user_life oppo_life user_creatures
+830,17,oppo_9,1,1,1,
+830,18,user_9,1,1,0,oppo_life
+830,19,oppo_10,1,1,1,
+830,20,user_10,1,1,0,oppo_life
+830,21,oppo_11,1,1,1,
+830,22,user_11,1,1,1,
+830,23,oppo_12,1,1,0,user_life user_noncreatures
+830,24,user_12,1,1,1,
+836,1,user_1,1,1,1,
+836,2,oppo_1,1,1,1,
+836,3,user_2,1,1,1,
+836,4,oppo_2,1,1,1,
+836,5,user_3,1,1,1,
+836,6,oppo_3,1,1,1,
+836,7,user_4,1,1,0,oppo_life
+836,8,oppo_4,1,1,1,
+836,9,user_5,1,1,0,oppo_life
+836,10,oppo_5,1,1,1,
+836,11,user_6,1,1,1,
+836,12,oppo_6,1,1,1,
+836,13,user_7,1,1,0,oppo_life
+836,14,oppo_7,1,1,1,
+836,15,user_8,1,1,0,user_life oppo_life
+836,16,oppo_8,1,1,1,
+839,1,oppo_1,1,1,1,
+839,2,user_1,1,1,1,
+839,3,oppo_2,1,1,1,
+839,4,user_2,1,1,1,
+839,5,oppo_3,1,1,1,
+839,6,user_3,1,1,1,
+839,7,oppo_4,1,1,1,
+839,8,user_4,1,1,1,
+839,9,oppo_5,1,1,1,
+839,10,user_5,1,1,0,oppo_life user_hand
+839,11,oppo_6,1,1,1,
+839,12,user_6,1,1,0,user_creatures
+839,13,oppo_7,1,1,0,oppo_hand
+839,14,user_7,1,1,1,
+848,1,user_1,1,1,1,
+848,2,oppo_1,1,1,1,
+848,3,user_2,1,1,0,user_hand
+848,4,oppo_2,1,1,1,
+848,5,user_3,1,1,0,user_creatures user_hand
+848,6,oppo_3,1,1,0,oppo_hand
+848,7,user_4,1,0,0,user_creatures user_hand
+848,8,oppo_4,1,0,0,user_creatures
+848,9,user_5,1,0,0,user_creatures user_hand
+848,10,oppo_5,1,0,0,user_creatures user_noncreatures
+848,11,user_6,1,0,0,oppo_life user_creatures user_noncreatures user_hand
+848,12,oppo_6,1,1,0,user_creatures user_noncreatures
+848,13,user_7,1,1,0,oppo_life user_lands user_creatures user_noncreatures user_hand
+848,14,oppo_7,1,1,0,user_lands user_creatures user_noncreatures
+848,15,user_8,1,1,0,user_lands user_creatures user_noncreatures
+858,1,user_1,1,1,1,
+858,2,oppo_1,1,1,1,
+858,3,user_2,1,1,1,
+858,4,oppo_2,1,1,1,
+858,5,user_3,1,1,1,
+858,6,oppo_3,1,1,0,oppo_hand
+858,7,user_4,1,1,1,
+858,8,oppo_4,1,1,0,oppo_hand
+858,9,user_5,1,1,0,oppo_life oppo_hand
+858,10,oppo_5,1,1,0,oppo_hand
+858,11,user_6,1,1,0,oppo_life
+858,12,oppo_6,1,1,0,oppo_hand
+859,1,oppo_1,1,1,1,
+859,2,user_1,1,1,1,
+859,3,oppo_2,1,1,0,oppo_hand
+859,4,user_2,1,1,1,
+859,5,oppo_3,1,1,1,
+859,6,user_3,1,1,1,
+859,7,oppo_4,1,1,1,
+859,8,user_4,1,1,1,
+859,9,oppo_5,1,1,0,user_creatures oppo_hand
+859,10,user_5,1,1,1,
+859,11,oppo_6,1,1,1,
+859,12,user_6,1,1,1,
+859,13,oppo_7,1,1,0,oppo_hand
+859,14,user_7,1,1,1,
+886,1,user_1,1,1,1,
+886,2,oppo_1,1,1,1,
+886,3,user_2,1,1,1,
+886,4,oppo_2,1,1,1,
+886,5,user_3,1,1,0,oppo_life
+886,6,oppo_3,1,1,1,
+886,7,user_4,1,1,0,oppo_life user_creatures oppo_hand
+886,8,oppo_4,1,1,1,
+886,9,user_5,1,1,1,
+886,10,oppo_5,1,1,0,user_life
+886,11,user_6,1,1,0,user_noncreatures
+886,12,oppo_6,1,1,0,user_creatures
+886,13,user_7,1,1,0,user_noncreatures oppo_hand
+886,14,oppo_7,1,1,1,
+886,15,user_8,1,1,0,oppo_life user_creatures user_hand
+886,16,oppo_8,1,1,0,user_life
+886,17,user_9,1,0,0,user_hand
+956,1,user_1,1,1,1,
+956,2,oppo_1,1,1,1,
+956,3,user_2,1,1,1,
+956,4,oppo_2,1,1,1,
+956,5,user_3,1,1,1,
+956,6,oppo_3,1,1,1,
+956,7,user_4,1,1,0,user_hand
+956,8,oppo_4,1,1,1,
+956,9,user_5,1,1,1,
+956,10,oppo_5,1,1,1,
+956,11,user_6,1,1,0,user_lands user_noncreatures
+956,12,oppo_6,1,1,1,
+956,13,user_7,1,1,0,user_creatures user_noncreatures user_hand
+956,14,oppo_7,1,1,0,user_noncreatures oppo_hand
+956,15,user_8,1,0,0,user_noncreatures user_hand
+956,16,oppo_8,1,0,0,user_life user_noncreatures user_hand oppo_hand
+956,17,user_9,1,0,0,user_noncreatures
+970,1,oppo_1,1,1,1,
+970,2,user_1,1,1,1,
+970,3,oppo_2,1,1,1,
+970,4,user_2,1,1,1,
+970,5,oppo_3,1,1,1,
+970,6,user_3,1,1,1,
+970,7,oppo_4,1,1,1,
+970,8,user_4,1,1,1,
+970,9,oppo_5,1,1,1,
+970,10,user_5,1,1,1,
+970,11,oppo_6,1,1,1,
+970,12,user_6,1,1,0,oppo_life user_lands user_creatures user_hand
+970,13,oppo_7,1,1,0,user_creatures user_noncreatures
+970,14,user_7,1,1,0,user_hand
+977,1,oppo_1,1,1,1,
+977,2,user_1,1,1,1,
+977,3,oppo_2,1,1,1,
+977,4,user_2,1,1,1,
+977,5,oppo_3,1,1,1,
+977,6,user_3,1,1,1,
+977,7,oppo_4,1,1,1,
+977,8,user_4,1,1,1,
+977,9,oppo_5,1,1,1,
+977,10,user_5,1,1,0,user_lands user_hand
+977,11,oppo_6,1,1,0,user_life
+977,12,user_6,1,1,0,user_lands user_creatures user_hand
+977,13,oppo_7,1,1,0,user_life
+977,14,user_7,1,1,0,oppo_life user_creatures
+977,15,oppo_8,1,1,0,user_creatures oppo_hand
+977,16,user_8,1,1,0,oppo_life
+977,17,oppo_9,1,1,0,user_life oppo_hand
+977,18,user_9,1,1,0,oppo_life user_creatures
+977,19,oppo_10,1,1,0,user_life oppo_hand
+983,1,oppo_1,1,1,1,
+983,2,user_1,1,1,1,
+983,3,oppo_2,1,1,1,
+983,4,user_2,1,1,1,
+983,5,oppo_3,1,1,1,
+983,6,user_3,1,1,0,user_life user_creatures user_hand
+983,7,oppo_4,1,1,1,
+983,8,user_4,1,1,0,user_lands user_hand
+983,9,oppo_5,1,1,0,oppo_hand
+983,10,user_5,1,0,1,
+983,11,oppo_6,1,0,0,user_life
+983,12,user_6,1,0,0,user_creatures
+983,13,oppo_7,1,0,0,user_life user_creatures
+993,1,user_1,1,1,1,
+993,2,oppo_1,1,1,1,
+993,3,user_2,1,1,1,
+993,4,oppo_2,1,1,1,
+993,5,user_3,1,1,1,
+993,6,oppo_3,1,1,1,
+993,7,user_4,1,1,1,
+993,8,oppo_4,1,1,0,user_creatures
+993,9,user_5,1,1,0,user_hand
+993,10,oppo_5,1,1,0,user_life
+993,11,user_6,1,1,1,
+993,12,oppo_6,1,1,0,user_life user_hand
+993,13,user_7,1,1,0,user_noncreatures user_hand
+993,14,oppo_7,1,1,0,user_life
+993,15,user_8,1,1,0,oppo_life user_lands user_noncreatures user_hand oppo_hand
+996,1,oppo_1,1,1,1,
+996,2,user_1,1,1,1,
+996,3,oppo_2,1,1,1,
+996,4,user_2,1,1,1,
+996,5,oppo_3,1,1,1,
+996,6,user_3,1,1,1,
+996,7,oppo_4,1,1,1,
+996,8,user_4,1,1,1,
+996,9,oppo_5,1,1,1,
+996,10,user_5,1,1,0,user_lands user_creatures
+996,11,oppo_6,1,1,0,user_lands user_creatures
+996,12,user_6,1,1,0,user_lands user_creatures
+996,13,oppo_7,1,1,0,user_life user_lands user_creatures user_hand oppo_hand
+996,14,user_7,1,1,0,user_lands user_creatures
+996,15,oppo_8,1,1,0,user_life oppo_life user_lands user_creatures oppo_hand
+996,16,user_8,1,1,0,user_lands user_creatures
+996,17,oppo_9,1,1,0,user_lands user_creatures user_noncreatures user_hand
+996,18,user_9,1,1,0,user_life oppo_life user_lands user_creatures user_hand
+996,19,oppo_10,1,1,0,user_life oppo_life user_lands user_creatures user_noncreatures
+996,20,user_10,1,1,0,user_life oppo_life user_lands user_creatures user_hand
+996,21,oppo_11,1,1,0,user_lands user_creatures user_noncreatures user_hand
+996,22,user_11,1,1,0,user_life oppo_life user_lands user_creatures user_hand
+996,23,oppo_12,1,1,0,user_lands user_creatures user_noncreatures oppo_hand
+1027,1,oppo_1,1,1,1,
+1027,2,user_1,1,1,1,
+1027,3,oppo_2,1,1,1,
+1027,4,user_2,1,1,1,
+1027,5,oppo_3,1,1,0,user_life
+1027,6,user_3,1,1,1,
+1027,7,oppo_4,1,1,1,
+1027,8,user_4,1,1,0,user_creatures
+1027,9,oppo_5,1,1,0,user_life user_creatures user_noncreatures oppo_hand
+1027,10,user_5,1,1,0,oppo_life user_lands user_creatures user_noncreatures user_hand
+1027,11,oppo_6,1,1,0,user_life user_creatures user_noncreatures
+1027,12,user_6,1,1,0,user_creatures user_noncreatures
+1027,13,oppo_7,1,1,0,user_creatures user_noncreatures user_hand
+1027,14,user_7,1,1,0,oppo_life user_creatures user_noncreatures
+1027,15,oppo_8,1,1,0,user_life user_creatures user_noncreatures
+1036,1,user_1,1,1,1,
+1036,2,oppo_1,1,1,1,
+1036,3,user_2,1,1,1,
+1036,4,oppo_2,1,1,1,
+1036,5,user_3,1,1,1,
+1036,6,oppo_3,1,1,0,user_hand
+1036,7,user_4,1,1,1,
+1036,8,oppo_4,1,1,0,user_life oppo_hand
+1036,9,user_5,1,1,1,
+1036,10,oppo_5,1,1,0,user_life user_hand
+1036,11,user_6,1,1,1,
+1036,12,oppo_6,1,1,0,oppo_hand
+1036,13,user_7,1,1,1,
+1036,14,oppo_7,1,1,0,user_hand
+1036,15,user_8,1,1,1,
+1036,16,oppo_8,1,1,0,oppo_hand
+1036,17,user_9,1,1,0,user_noncreatures user_hand
+1038,1,user_1,1,1,1,
+1038,2,oppo_1,1,1,1,
+1038,3,user_2,1,1,1,
+1038,4,oppo_2,1,1,1,
+1038,5,user_3,1,1,1,
+1038,6,oppo_3,1,1,1,
+1038,7,user_4,1,1,0,user_creatures user_hand
+1038,8,oppo_4,1,1,0,user_creatures
+1038,9,user_5,1,0,0,oppo_life
+1038,10,oppo_5,1,0,0,user_life
+1038,11,user_6,1,0,0,oppo_life
+1038,12,oppo_6,1,0,0,oppo_hand
+1069,1,oppo_1,1,1,1,
+1069,2,user_1,1,1,1,
+1069,3,oppo_2,1,1,1,
+1069,4,user_2,1,1,1,
+1069,5,oppo_3,1,1,1,
+1069,6,user_3,1,1,1,
+1069,7,oppo_4,1,1,1,
+1069,8,user_4,1,1,1,
+1069,9,oppo_5,1,1,1,
+1069,10,user_5,1,1,1,
+1069,11,oppo_6,1,1,0,oppo_hand
+1069,12,user_6,1,1,0,oppo_life
+1069,13,oppo_7,1,1,1,
+1069,14,user_7,1,1,1,
+1069,15,oppo_8,1,1,1,
+1069,16,user_8,1,1,0,oppo_life
+1069,17,oppo_9,1,1,1,
+1069,18,user_9,1,1,1,
+1069,19,oppo_10,1,1,0,user_noncreatures oppo_hand
+1069,20,user_10,1,1,0,oppo_life user_creatures
+1069,21,oppo_11,1,1,0,oppo_hand
+1069,22,user_11,1,1,0,user_creatures
+1069,23,oppo_12,1,1,0,oppo_hand
+1069,24,user_12,1,1,1,
+1075,1,user_1,1,1,1,
+1075,2,oppo_1,1,1,1,
+1075,3,user_2,1,1,1,
+1075,4,oppo_2,1,1,1,
+1075,5,user_3,1,1,1,
+1075,6,oppo_3,1,1,1,
+1075,7,user_4,1,1,0,user_life oppo_life user_creatures
+1075,8,oppo_4,1,1,0,user_life oppo_life user_noncreatures user_hand
+1075,9,user_5,1,1,1,
+1075,10,oppo_5,1,1,0,user_creatures oppo_hand
+1075,11,user_6,1,1,1,
+1075,12,oppo_6,1,1,0,oppo_hand
+1075,13,user_7,1,1,1,
+1075,14,oppo_7,1,1,1,
+1075,15,user_8,1,1,0,user_life oppo_life user_creatures
+1079,1,oppo_1,1,1,1,
+1079,2,user_1,1,1,1,
+1079,3,oppo_2,1,1,1,
+1079,4,user_2,1,1,1,
+1079,5,oppo_3,1,1,1,
+1079,6,user_3,1,1,0,user_lands user_noncreatures user_hand
+1079,7,oppo_4,1,1,1,
+1079,8,user_4,1,1,1,
+1079,9,oppo_5,1,1,1,
+1079,10,user_5,1,1,1,
+1079,11,oppo_6,1,1,1,
+1079,12,user_6,1,1,0,user_noncreatures user_hand
+1079,13,oppo_7,1,1,0,user_life oppo_life user_creatures user_hand oppo_hand
+1079,14,user_7,1,1,0,oppo_life
+1079,15,oppo_8,1,1,0,oppo_hand
+1079,16,user_8,1,1,1,
+1079,17,oppo_9,1,1,0,user_hand oppo_hand
+1079,18,user_9,1,1,0,oppo_life user_lands user_creatures
+1079,19,oppo_10,1,1,0,user_lands user_creatures user_noncreatures
+1079,20,user_10,1,1,0,oppo_life user_lands user_creatures user_noncreatures user_hand
+1079,21,oppo_11,1,1,0,user_lands user_creatures user_noncreatures
+1079,22,user_11,1,1,0,oppo_life user_lands user_creatures user_noncreatures user_hand oppo_hand
+1079,23,oppo_12,0,0,0,
+1079,24,user_12,0,0,0,
+1079,25,oppo_13,0,0,0,
+1079,26,user_13,0,0,0,
+1079,27,oppo_14,0,0,0,
+1079,28,user_14,0,0,0,
+1079,29,oppo_15,0,0,0,
+1090,1,user_1,1,1,1,
+1090,2,oppo_1,1,1,1,
+1090,3,user_2,1,1,1,
+1090,4,oppo_2,1,1,1,
+1090,5,user_3,1,1,1,
+1090,6,oppo_3,1,1,1,
+1090,7,user_4,1,1,1,
+1090,8,oppo_4,1,1,1,
+1090,9,user_5,1,1,1,
+1090,10,oppo_5,1,1,1,
+1090,11,user_6,1,1,0,oppo_life
+1090,12,oppo_6,1,1,0,oppo_hand
+1090,13,user_7,1,0,0,oppo_life user_creatures oppo_hand
+1091,1,oppo_1,1,1,1,
+1091,2,user_1,1,1,1,
+1091,3,oppo_2,1,1,1,
+1091,4,user_2,1,1,1,
+1091,5,oppo_3,1,1,1,
+1091,6,user_3,1,1,1,
+1091,7,oppo_4,1,1,1,
+1091,8,user_4,1,1,1,
+1091,9,oppo_5,1,1,1,
+1091,10,user_5,1,1,1,
+1091,11,oppo_6,1,1,0,user_life oppo_hand
+1091,12,user_6,1,1,1,
+1091,13,oppo_7,1,1,0,user_life oppo_life user_hand oppo_hand
+1091,14,user_7,1,1,0,oppo_life user_creatures
+1091,15,oppo_8,1,1,1,
+1091,16,user_8,1,1,1,
+1099,1,oppo_1,1,1,1,
+1099,2,user_1,1,1,1,
+1099,3,oppo_2,1,1,1,
+1099,4,user_2,1,1,1,
+1099,5,oppo_3,1,1,1,
+1099,6,user_3,1,1,0,user_creatures
+1099,7,oppo_4,1,1,0,user_creatures
+1099,8,user_4,1,1,0,oppo_life user_creatures
+1099,9,oppo_5,1,1,0,user_hand
+1099,10,user_5,1,1,0,oppo_life user_creatures
+1099,11,oppo_6,1,1,0,user_lands user_creatures
+1099,12,user_6,1,1,0,oppo_life
+1099,13,oppo_7,1,1,1,
+1099,14,user_7,1,1,0,user_hand
+1105,1,oppo_1,1,1,1,
+1105,2,user_1,1,1,1,
+1105,3,oppo_2,1,1,1,
+1105,4,user_2,1,1,1,
+1105,5,oppo_3,1,1,1,
+1105,6,user_3,1,1,1,
+1105,7,oppo_4,1,1,0,user_hand
+1105,8,user_4,1,1,1,
+1105,9,oppo_5,1,1,1,
+1105,10,user_5,1,1,0,user_hand
+1105,11,oppo_6,1,1,1,
+1105,12,user_6,1,1,1,
+1105,13,oppo_7,1,1,0,user_creatures
+1105,14,user_7,1,1,0,oppo_life user_hand oppo_hand
+1105,15,oppo_8,1,1,0,user_creatures
+1105,16,user_8,1,0,0,user_hand
+1105,17,oppo_9,1,1,1,
+1105,18,user_9,1,1,0,user_creatures user_hand
+1105,19,oppo_10,1,1,0,user_creatures user_noncreatures oppo_hand
+1106,1,oppo_1,1,1,1,
+1106,2,user_1,1,1,1,
+1106,3,oppo_2,1,1,1,
+1106,4,user_2,1,1,1,
+1106,5,oppo_3,1,1,1,
+1106,6,user_3,1,1,1,
+1106,7,oppo_4,1,1,0,user_creatures
+1106,8,user_4,1,1,1,
+1106,9,oppo_5,1,1,0,user_life user_creatures
+1106,10,user_5,1,1,1,
+1106,11,oppo_6,1,1,0,user_creatures user_noncreatures user_hand oppo_hand
+1110,1,oppo_1,1,1,1,
+1110,2,user_1,1,1,1,
+1110,3,oppo_2,1,1,1,
+1110,4,user_2,1,1,1,
+1110,5,oppo_3,1,1,1,
+1110,6,user_3,1,1,1,
+1110,7,oppo_4,1,1,1,
+1110,8,user_4,1,1,1,
+1110,9,oppo_5,1,1,1,
+1110,10,user_5,1,1,0,user_lands user_hand
+1110,11,oppo_6,1,1,1,
+1110,12,user_6,1,1,1,
+1110,13,oppo_7,1,1,0,oppo_hand
+1110,14,user_7,1,0,1,
+1110,15,oppo_8,1,1,1,
+1110,16,user_8,1,0,1,
+1110,17,oppo_9,1,0,1,
+1110,18,user_9,1,0,0,user_hand
+1112,1,oppo_1,1,1,1,
+1112,2,user_1,1,1,1,
+1112,3,oppo_2,1,1,1,
+1112,4,user_2,1,1,1,
+1112,5,oppo_3,1,1,1,
+1112,6,user_3,1,1,0,user_hand
+1112,7,oppo_4,1,1,0,user_life
+1112,8,user_4,1,1,1,
+1112,9,oppo_5,1,1,1,
+1112,10,user_5,1,1,0,user_noncreatures oppo_hand
+1112,11,oppo_6,1,1,1,
+1112,12,user_6,1,1,1,
+1112,13,oppo_7,1,1,1,
+1112,14,user_7,1,1,1,
+1112,15,oppo_8,1,1,1,
+1112,16,user_8,1,1,1,
+1112,17,oppo_9,1,1,1,
+1112,18,user_9,1,1,0,oppo_hand
+1112,19,oppo_10,1,1,0,user_life
+1112,20,user_10,1,1,0,user_hand
+1112,21,oppo_11,1,1,0,user_life
+1112,22,user_11,1,1,0,user_creatures user_hand
+1112,23,oppo_12,1,1,0,user_creatures user_noncreatures
+1112,24,user_12,1,1,0,user_creatures user_noncreatures user_hand
+1112,25,oppo_13,1,1,0,user_creatures user_noncreatures
+1112,26,user_13,1,1,0,oppo_life user_creatures user_noncreatures user_hand
+1112,27,oppo_14,1,1,0,user_creatures user_noncreatures
+1112,28,user_14,1,1,0,oppo_life user_creatures user_noncreatures user_hand oppo_hand
+1128,1,oppo_1,1,1,1,
+1128,2,user_1,1,1,1,
+1128,3,oppo_2,1,1,1,
+1128,4,user_2,1,1,1,
+1128,5,oppo_3,1,1,1,
+1128,6,user_3,1,1,1,
+1128,7,oppo_4,1,1,0,user_hand
+1128,8,user_4,1,1,1,
+1128,9,oppo_5,1,1,0,user_life user_creatures
+1128,10,user_5,1,0,1,
+1128,11,oppo_6,1,0,0,user_life
+1128,12,user_6,1,0,1,
+1133,1,user_1,1,1,1,
+1133,2,oppo_1,1,1,1,
+1133,3,user_2,1,1,1,
+1133,4,oppo_2,1,1,1,
+1133,5,user_3,1,1,1,
+1133,6,oppo_3,1,1,1,
+1133,7,user_4,1,1,1,
+1133,8,oppo_4,1,1,1,
+1133,9,user_5,1,1,1,
+1133,10,oppo_5,1,1,1,
+1133,11,user_6,1,1,1,
+1133,12,oppo_6,1,1,1,
+1133,13,user_7,1,1,1,
+1133,14,oppo_7,1,1,0,user_creatures user_noncreatures oppo_hand
+1133,15,user_8,1,1,0,user_creatures user_noncreatures
+1133,16,oppo_8,1,1,0,user_lands user_creatures
+1133,17,user_9,1,1,0,user_lands user_creatures
+1133,18,oppo_9,1,1,0,user_lands user_creatures oppo_hand
+1133,19,user_10,1,1,0,user_lands user_creatures
+1133,20,oppo_10,1,1,0,user_life user_lands user_hand oppo_hand
+1133,21,user_11,1,1,1,
+1137,1,user_1,1,1,1,
+1137,2,oppo_1,1,1,1,
+1137,3,user_2,1,1,1,
+1137,4,oppo_2,1,1,1,
+1137,5,user_3,1,1,1,
+1137,6,oppo_3,1,1,1,
+1137,7,user_4,1,1,1,
+1137,8,oppo_4,1,1,1,
+1137,9,user_5,1,1,1,
+1137,10,oppo_5,1,1,0,user_life oppo_life
+1137,11,user_6,1,1,0,user_life user_creatures
+1137,12,oppo_6,1,1,1,
+1137,13,user_7,1,1,1,
+1137,14,oppo_7,1,1,0,user_life
+1137,15,user_8,1,1,0,user_life
+1137,16,oppo_8,1,1,1,
+1137,17,user_9,1,1,1,
+1137,18,oppo_9,1,1,1,
+1137,19,user_10,1,1,1,
+1140,1,oppo_1,1,1,1,
+1140,2,user_1,1,1,1,
+1140,3,oppo_2,1,1,1,
+1140,4,user_2,1,1,1,
+1140,5,oppo_3,1,1,1,
+1140,6,user_3,1,1,1,
+1140,7,oppo_4,1,1,0,user_life user_noncreatures user_hand
+1140,8,user_4,1,1,1,
+1140,9,oppo_5,1,1,0,user_life user_hand
+1140,10,user_5,1,1,1,
+1140,11,oppo_6,1,1,0,user_life
+1140,12,user_6,1,1,1,
+1140,13,oppo_7,1,1,0,user_life user_noncreatures user_hand
+1140,14,user_7,1,1,1,
+1140,15,oppo_8,1,1,1,
+1140,16,user_8,1,1,0,user_lands user_hand
+1140,17,oppo_9,1,1,0,user_life user_creatures user_noncreatures
+1140,18,user_9,1,1,0,user_hand
+1140,19,oppo_10,1,1,0,user_life
+1140,20,user_10,1,1,1,
+1140,21,oppo_11,1,1,1,
+1144,1,user_1,1,1,1,
+1144,2,oppo_1,1,1,1,
+1144,3,user_2,1,1,1,
+1144,4,oppo_2,1,1,1,
+1144,5,user_3,1,1,0,oppo_life user_creatures user_noncreatures
+1144,6,oppo_3,1,1,1,
+1144,7,user_4,1,1,0,oppo_life user_creatures user_noncreatures
+1144,8,oppo_4,1,1,0,user_noncreatures
+1144,9,user_5,1,1,0,user_creatures user_noncreatures user_hand
+1144,10,oppo_5,1,1,0,user_noncreatures user_hand
+1144,11,user_6,1,1,0,oppo_life user_noncreatures user_hand
+1144,12,oppo_6,1,1,0,user_life user_noncreatures user_hand
+1144,13,user_7,1,1,0,user_noncreatures user_hand
+1144,14,oppo_7,1,1,0,user_noncreatures user_hand
+1144,15,user_8,1,1,0,oppo_life user_creatures user_noncreatures
+1144,16,oppo_8,1,1,0,oppo_hand
+1144,17,user_9,1,1,0,oppo_life
+1144,18,oppo_9,1,1,0,user_hand oppo_hand
+1144,19,user_10,1,1,0,oppo_life user_creatures oppo_hand
+1144,20,oppo_10,1,1,1,
+1144,21,user_11,1,1,0,oppo_life user_creatures user_hand
+1155,1,user_1,1,1,1,
+1155,2,oppo_1,1,1,1,
+1155,3,user_2,1,1,1,
+1155,4,oppo_2,1,1,1,
+1155,5,user_3,1,1,1,
+1155,6,oppo_3,1,1,1,
+1155,7,user_4,1,1,0,oppo_life
+1155,8,oppo_4,1,1,0,user_creatures
+1155,9,user_5,1,1,1,
+1155,10,oppo_5,1,1,1,
+1170,1,user_1,1,1,1,
+1170,2,oppo_1,1,1,1,
+1170,3,user_2,1,1,1,
+1170,4,oppo_2,1,1,1,
+1170,5,user_3,1,1,1,
+1170,6,oppo_3,1,1,1,
+1170,7,user_4,1,1,0,user_life oppo_life
+1170,8,oppo_4,1,1,1,
+1170,9,user_5,1,1,0,oppo_life user_noncreatures
+1170,10,oppo_5,1,1,0,user_creatures oppo_hand
+1170,11,user_6,1,1,0,user_creatures
+1170,12,oppo_6,1,1,0,user_lands user_creatures
+1170,13,user_7,1,1,0,user_lands user_creatures
+1177,1,user_1,1,1,1,
+1177,2,oppo_1,1,1,1,
+1177,3,user_2,1,1,1,
+1177,4,oppo_2,1,1,1,
+1177,5,user_3,1,1,1,
+1177,6,oppo_3,1,1,0,user_life user_creatures
+1177,7,user_4,1,1,0,user_hand
+1177,8,oppo_4,1,1,1,
+1177,9,user_5,1,1,0,user_life user_noncreatures
+1177,10,oppo_5,1,1,1,
+1177,11,user_6,1,1,1,
+1177,12,oppo_6,1,1,0,user_creatures
+1177,13,user_7,1,1,1,
+1177,14,oppo_7,1,1,0,oppo_hand
+1177,15,user_8,1,1,0,oppo_life user_lands
+1177,16,oppo_8,1,1,0,user_life
+1177,17,user_9,1,1,1,
+1177,18,oppo_9,1,1,0,user_creatures
+1177,19,user_10,1,1,1,
+1177,20,oppo_10,1,1,1,
+1177,21,user_11,1,1,0,oppo_hand
+1179,1,user_1,1,1,1,
+1179,2,oppo_1,1,1,1,
+1179,3,user_2,1,1,0,user_hand
+1179,4,oppo_2,1,1,1,
+1179,5,user_3,1,1,0,user_creatures user_hand
+1179,6,oppo_3,1,1,0,oppo_hand
+1179,7,user_4,1,1,0,user_hand
+1179,8,oppo_4,1,1,1,
+1179,9,user_5,1,1,0,user_lands user_creatures user_noncreatures
+1179,10,oppo_5,1,1,0,user_creatures user_hand
+1179,11,user_6,1,1,1,
+1179,12,oppo_6,1,1,1,
+1179,13,user_7,1,1,0,oppo_life user_hand
+1179,14,oppo_7,1,1,1,
+1184,1,oppo_1,1,1,1,
+1184,2,user_1,1,1,1,
+1184,3,oppo_2,1,1,1,
+1184,4,user_2,1,1,1,
+1184,5,oppo_3,1,1,1,
+1184,6,user_3,1,1,1,
+1184,7,oppo_4,1,1,0,user_life
+1184,8,user_4,1,1,1,
+1184,9,oppo_5,1,1,0,user_creatures
+1184,10,user_5,1,1,0,user_hand
+1184,11,oppo_6,1,1,0,user_life user_creatures
+1184,12,user_6,1,1,0,user_hand
+1184,13,oppo_7,1,1,0,user_life user_creatures user_hand
+1184,14,user_7,0,0,0,
+1184,15,oppo_8,0,0,0,
+1184,16,user_8,0,0,0,
+1184,17,oppo_9,0,0,0,
+1187,1,oppo_1,1,1,1,
+1187,2,user_1,1,1,1,
+1187,3,oppo_2,1,1,1,
+1187,4,user_2,1,1,1,
+1187,5,oppo_3,1,1,0,user_hand
+1187,6,user_3,1,1,1,
+1187,7,oppo_4,1,1,1,
+1187,8,user_4,1,1,0,user_lands user_hand
+1187,9,oppo_5,1,1,0,user_hand
+1187,10,user_5,1,1,0,user_lands
+1187,11,oppo_6,1,1,1,
+1187,12,user_6,1,1,1,
+1187,13,oppo_7,1,1,0,user_hand oppo_hand
+1187,14,user_7,1,1,1,
+1187,15,oppo_8,1,1,1,
+1187,16,user_8,1,1,1,
+1187,17,oppo_9,1,1,1,
+1187,18,user_9,1,1,1,
+1187,19,oppo_10,1,1,1,
+1208,1,oppo_1,1,1,1,
+1208,2,user_1,1,1,1,
+1208,3,oppo_2,1,1,1,
+1208,4,user_2,1,1,1,
+1208,5,oppo_3,1,1,1,
+1208,6,user_3,1,1,0,user_hand
+1208,7,oppo_4,1,1,1,
+1208,8,user_4,1,1,0,user_hand
+1208,9,oppo_5,1,1,1,
+1208,10,user_5,1,1,0,user_hand
+1208,11,oppo_6,1,1,0,user_life oppo_life oppo_hand
+1208,12,user_6,1,1,1,
+1208,13,oppo_7,1,1,0,user_life user_creatures user_hand oppo_hand
+1208,14,user_7,1,1,1,
+1208,15,oppo_8,1,1,0,oppo_hand
+1208,16,user_8,1,1,1,
+1208,17,oppo_9,1,1,0,user_life oppo_hand
+1208,18,user_9,1,1,1,
+1208,19,oppo_10,1,1,0,oppo_hand
+1208,20,user_10,1,1,1,
+1208,21,oppo_11,1,1,0,oppo_hand
+1208,22,user_11,1,1,0,user_creatures user_noncreatures
+1208,23,oppo_12,1,1,0,user_creatures user_noncreatures oppo_hand
+1208,24,user_12,1,1,0,oppo_life user_creatures user_noncreatures
+1228,1,oppo_1,1,1,1,
+1228,2,user_1,1,1,1,
+1228,3,oppo_2,1,1,1,
+1228,4,user_2,1,1,1,
+1228,5,oppo_3,1,1,1,
+1228,6,user_3,1,1,1,
+1228,7,oppo_4,1,1,0,user_life
+1228,8,user_4,1,1,1,
+1228,9,oppo_5,1,1,1,
+1228,10,user_5,1,1,0,oppo_life
+1228,11,oppo_6,1,1,1,
+1228,12,user_6,1,1,0,oppo_life user_creatures
+1236,1,oppo_1,1,1,1,
+1236,2,user_1,1,1,1,
+1236,3,oppo_2,1,1,1,
+1236,4,user_2,1,1,1,
+1236,5,oppo_3,1,1,1,
+1236,6,user_3,1,1,1,
+1236,7,oppo_4,1,1,0,oppo_hand
+1236,8,user_4,1,1,0,user_hand
+1236,9,oppo_5,1,1,0,user_creatures oppo_hand
+1236,10,user_5,1,1,0,user_hand
+1236,11,oppo_6,1,1,1,
+1236,12,user_6,1,1,0,user_hand
+1271,1,oppo_1,1,1,1,
+1271,2,user_1,1,1,1,
+1271,3,oppo_2,1,1,1,
+1271,4,user_2,1,1,1,
+1271,5,oppo_3,1,1,1,
+1271,6,user_3,1,1,0,oppo_life
+1271,7,oppo_4,1,1,1,
+1271,8,user_4,1,1,0,user_hand
+1271,9,oppo_5,1,1,1,
+1271,10,user_5,1,1,0,user_hand
+1271,11,oppo_6,1,1,1,
+1271,12,user_6,1,1,1,
+1271,13,oppo_7,1,1,1,
+1271,14,user_7,1,1,1,
+1271,15,oppo_8,1,1,0,user_life oppo_life
+1296,1,user_1,1,1,1,
+1296,2,oppo_1,1,1,1,
+1296,3,user_2,1,1,1,
+1296,4,oppo_2,1,1,1,
+1296,5,user_3,1,1,0,user_creatures
+1296,6,oppo_3,1,1,1,
+1296,7,user_4,1,1,0,oppo_life user_creatures user_hand
+1296,8,oppo_4,1,1,1,
+1296,9,user_5,1,1,1,
+1296,10,oppo_5,1,1,0,user_creatures
+1296,11,user_6,1,1,0,oppo_life
+1296,12,oppo_6,1,1,1,
+1303,1,oppo_1,1,1,1,
+1303,2,user_1,1,1,1,
+1303,3,oppo_2,1,1,1,
+1303,4,user_2,1,1,1,
+1303,5,oppo_3,1,1,1,
+1303,6,user_3,1,1,1,
+1303,7,oppo_4,1,1,0,user_creatures
+1303,8,user_4,1,1,1,
+1303,9,oppo_5,1,1,0,oppo_hand
+1303,10,user_5,1,1,0,user_creatures
+1303,11,oppo_6,1,1,0,user_lands user_creatures
+1303,12,user_6,1,1,0,user_lands user_creatures user_hand
+1303,13,oppo_7,1,1,0,user_lands user_creatures
+1303,14,user_7,1,1,0,user_lands user_creatures
+1303,15,oppo_8,1,1,0,oppo_life user_lands user_noncreatures user_hand oppo_hand
+1303,16,user_8,1,1,0,user_noncreatures
+1303,17,oppo_9,1,1,0,user_life user_noncreatures user_hand
+1308,1,oppo_1,1,1,1,
+1308,2,user_1,1,1,1,
+1308,3,oppo_2,1,1,1,
+1308,4,user_2,1,1,0,user_hand
+1308,5,oppo_3,1,1,1,
+1308,6,user_3,1,1,0,user_creatures user_hand
+1308,7,oppo_4,1,1,1,
+1308,8,user_4,1,1,0,user_life oppo_life user_creatures user_hand
+1308,9,oppo_5,1,1,0,user_lands user_creatures
+1308,10,user_5,1,1,0,oppo_life user_lands user_creatures user_hand
+1308,11,oppo_6,1,1,0,user_lands user_creatures oppo_hand
+1308,12,user_6,1,1,0,oppo_life user_lands user_noncreatures user_hand
+1308,13,oppo_7,1,1,0,user_life user_noncreatures oppo_hand
+1308,14,user_7,1,1,0,oppo_life user_creatures user_noncreatures user_hand
+1308,15,oppo_8,0,0,0,
+1308,16,user_8,0,0,0,
+1308,17,oppo_9,0,0,0,
+1308,18,user_9,0,0,0,
+1311,1,oppo_1,1,1,1,
+1311,2,user_1,1,1,1,
+1311,3,oppo_2,1,1,1,
+1311,4,user_2,1,1,0,user_hand
+1311,5,oppo_3,1,1,1,
+1311,6,user_3,1,1,0,user_hand
+1311,7,oppo_4,1,1,0,user_lands user_hand
+1311,8,user_4,1,1,0,user_lands user_creatures user_noncreatures user_hand
+1311,9,oppo_5,1,1,1,
+1311,10,user_5,1,1,0,user_creatures user_hand
+1311,11,oppo_6,1,1,1,
+1311,12,user_6,1,1,0,user_lands user_hand
+1311,13,oppo_7,1,1,1,
+1311,14,user_7,1,1,0,oppo_life user_creatures user_hand oppo_hand
+1311,15,oppo_8,1,1,0,user_creatures
+1311,16,user_8,1,1,0,user_hand
+1311,17,oppo_9,1,1,1,
+1311,18,user_9,1,1,0,user_hand
+1311,19,oppo_10,1,1,0,user_hand
+1311,20,user_10,1,1,1,
+1311,21,oppo_11,1,1,1,
+1311,22,user_11,1,1,0,oppo_life user_creatures oppo_hand
+1346,1,oppo_1,1,1,1,
+1346,2,user_1,1,1,1,
+1346,3,oppo_2,1,1,1,
+1346,4,user_2,1,1,1,
+1346,5,oppo_3,1,1,1,
+1346,6,user_3,1,1,1,
+1346,7,oppo_4,1,1,1,
+1346,8,user_4,1,1,0,user_noncreatures
+1346,9,oppo_5,1,1,0,user_life oppo_hand
+1346,10,user_5,1,1,1,
+1346,11,oppo_6,1,1,0,user_life
+1346,12,user_6,1,1,1,
+1346,13,oppo_7,1,1,0,user_life
+1346,14,user_7,1,1,0,user_creatures user_hand
+1346,15,oppo_8,1,1,0,user_life user_creatures user_noncreatures user_hand
+1348,1,user_1,1,1,1,
+1348,2,oppo_1,1,1,1,
+1348,3,user_2,1,1,1,
+1348,4,oppo_2,1,1,1,
+1348,5,user_3,1,1,1,
+1348,6,oppo_3,1,1,1,
+1348,7,user_4,1,1,1,
+1348,8,oppo_4,1,1,1,
+1348,9,user_5,1,1,1,
+1348,10,oppo_5,1,1,0,user_life user_noncreatures
+1348,11,user_6,1,0,1,
+1348,12,oppo_6,1,0,0,user_life
+1348,13,user_7,1,0,0,user_creatures user_hand
+1348,14,oppo_7,1,1,0,oppo_hand
+1348,15,user_8,1,1,0,user_creatures
+1348,16,oppo_8,1,1,1,
+1348,17,user_9,1,1,1,
+1348,18,oppo_9,1,1,1,
+1348,19,user_10,1,1,0,user_creatures
+1348,20,oppo_10,1,1,0,user_life
+1354,1,user_1,1,1,1,
+1354,2,oppo_1,1,1,1,
+1354,3,user_2,1,1,1,
+1354,4,oppo_2,1,1,1,
+1354,5,user_3,1,1,1,
+1354,6,oppo_3,1,1,1,
+1354,7,user_4,1,1,0,oppo_life
+1354,8,oppo_4,1,1,1,
+1354,9,user_5,1,1,1,
+1385,1,user_1,1,1,1,
+1385,2,oppo_1,1,1,1,
+1385,3,user_2,1,1,1,
+1385,4,oppo_2,1,1,1,
+1385,5,user_3,1,1,1,
+1385,6,oppo_3,1,1,1,
+1385,7,user_4,1,1,1,
+1385,8,oppo_4,1,0,1,
+1385,9,user_5,1,0,1,
+1385,10,oppo_5,1,0,1,
+1397,1,user_1,1,1,1,
+1397,2,oppo_1,1,1,1,
+1397,3,user_2,1,1,1,
+1397,4,oppo_2,1,1,1,
+1397,5,user_3,1,1,1,
+1397,6,oppo_3,1,1,1,
+1397,7,user_4,1,1,1,
+1397,8,oppo_4,1,1,0,user_life
+1397,9,user_5,1,1,0,user_lands user_hand
+1397,10,oppo_5,1,1,0,user_life
+1397,11,user_6,1,1,0,oppo_life user_lands user_hand
+1397,12,oppo_6,1,1,0,user_life user_creatures
+1397,13,user_7,1,1,0,oppo_life user_hand
+1397,14,oppo_7,1,1,0,user_life user_creatures
+1397,15,user_8,1,1,0,oppo_hand
+1401,1,user_1,1,1,1,
+1401,2,oppo_1,1,1,1,
+1401,3,user_2,1,1,1,
+1401,4,oppo_2,1,1,1,
+1401,5,user_3,1,1,1,
+1401,6,oppo_3,1,1,1,
+1401,7,user_4,1,1,1,
+1401,8,oppo_4,1,1,1,
+1401,9,user_5,1,1,0,oppo_life user_creatures user_noncreatures user_hand
+1401,10,oppo_5,1,1,1,
+1401,11,user_6,1,1,1,
+1401,12,oppo_6,1,1,1,
+1404,1,oppo_1,1,1,1,
+1404,2,user_1,1,1,1,
+1404,3,oppo_2,1,1,1,
+1404,4,user_2,1,1,1,
+1404,5,oppo_3,1,1,0,user_life
+1404,6,user_3,1,1,1,
+1404,7,oppo_4,1,1,1,
+1404,8,user_4,1,1,1,
+1404,9,oppo_5,1,1,0,user_life
+1404,10,user_5,1,1,1,
+1404,11,oppo_6,1,1,0,user_life user_creatures
+1404,12,user_6,1,1,1,
+1404,13,oppo_7,1,1,1,
+1404,14,user_7,1,1,0,user_creatures user_noncreatures user_hand
+1404,15,oppo_8,1,1,0,user_creatures
+1404,16,user_8,1,1,0,oppo_life user_creatures
+1404,17,oppo_9,1,1,1,
+1404,18,user_9,1,1,0,oppo_life user_lands user_creatures user_noncreatures user_hand oppo_hand
+1404,19,oppo_10,1,1,1,
+1404,20,user_10,1,1,0,oppo_life user_creatures oppo_hand
+1415,1,user_1,1,1,1,
+1415,2,oppo_1,1,1,1,
+1415,3,user_2,1,1,1,
+1415,4,oppo_2,1,1,0,user_hand
+1415,5,user_3,1,1,1,
+1415,6,oppo_3,1,1,1,
+1415,7,user_4,1,1,1,
+1415,8,oppo_4,1,1,1,
+1415,9,user_5,1,1,1,
+1415,10,oppo_5,1,1,1,
+1415,11,user_6,1,1,1,
+1415,12,oppo_6,1,1,0,user_creatures
+1415,13,user_7,1,1,1,
+1415,14,oppo_7,1,1,1,
+1415,15,user_8,1,1,1,
+1442,1,user_1,1,1,1,
+1442,2,oppo_1,1,1,1,
+1442,3,user_2,1,1,1,
+1442,4,oppo_2,1,1,1,
+1442,5,user_3,1,1,1,
+1442,6,oppo_3,1,1,1,
+1442,7,user_4,1,1,1,
+1442,8,oppo_4,1,1,1,
+1442,9,user_5,1,1,1,
+1442,10,oppo_5,1,1,1,
+1442,11,user_6,1,1,0,oppo_life user_creatures
+1442,12,oppo_6,1,1,0,user_creatures user_noncreatures
+1444,1,oppo_1,1,1,1,
+1444,2,user_1,1,1,1,
+1444,3,oppo_2,1,1,1,
+1444,4,user_2,1,1,1,
+1444,5,oppo_3,1,1,1,
+1444,6,user_3,1,1,1,
+1444,7,oppo_4,1,1,0,user_hand
+1444,8,user_4,1,1,1,
+1444,9,oppo_5,1,1,0,user_noncreatures user_hand
+1444,10,user_5,1,1,0,user_creatures
+1444,11,oppo_6,1,1,1,
+1444,12,user_6,1,1,0,oppo_life user_creatures
+1444,13,oppo_7,1,1,1,
+1444,14,user_7,1,1,1,
+1444,15,oppo_8,1,1,0,user_hand
+1444,16,user_8,1,0,1,
+1445,1,user_1,1,1,1,
+1445,2,oppo_1,1,1,1,
+1445,3,user_2,1,1,1,
+1445,4,oppo_2,1,1,1,
+1445,5,user_3,1,1,1,
+1445,6,oppo_3,1,1,1,
+1445,7,user_4,1,1,1,
+1445,8,oppo_4,1,1,0,user_creatures
+1445,9,user_5,1,1,1,
+1445,10,oppo_5,1,1,0,oppo_hand
+1445,11,user_6,1,1,1,
+1445,12,oppo_6,1,0,1,
+1445,13,user_7,1,0,0,user_lands user_hand
+1445,14,oppo_7,1,0,0,user_creatures oppo_hand
+1445,15,user_8,1,0,0,oppo_life
+1445,16,oppo_8,1,0,1,
+1464,1,oppo_1,1,1,1,
+1464,2,user_1,1,1,1,
+1464,3,oppo_2,1,1,1,
+1464,4,user_2,1,1,1,
+1464,5,oppo_3,1,1,0,user_life
+1464,6,user_3,1,1,1,
+1464,7,oppo_4,1,1,0,user_life
+1464,8,user_4,1,1,0,user_creatures
+1464,9,oppo_5,1,1,0,user_life
+1464,10,user_5,1,1,1,
+1464,11,oppo_6,1,1,0,user_life oppo_hand
+1464,12,user_6,1,1,1,
+1464,13,oppo_7,1,1,0,user_life user_hand
+1465,1,oppo_1,1,1,1,
+1465,2,user_1,1,1,1,
+1465,3,oppo_2,1,1,1,
+1465,4,user_2,1,1,1,
+1465,5,oppo_3,1,1,0,user_noncreatures user_hand
+1465,6,user_3,1,1,1,
+1465,7,oppo_4,1,1,1,
+1465,8,user_4,1,1,1,
+1465,9,oppo_5,1,1,1,
+1465,10,user_5,1,1,1,
+1465,11,oppo_6,1,1,1,
+1465,12,user_6,1,1,1,
+1465,13,oppo_7,1,1,0,user_life user_creatures
+1465,14,user_7,1,0,0,user_creatures user_hand oppo_hand
+1465,15,oppo_8,1,1,0,user_lands user_creatures
+1465,16,user_8,1,1,0,user_lands user_creatures user_noncreatures user_hand oppo_hand
+1465,17,oppo_9,1,0,0,user_lands user_creatures user_noncreatures oppo_hand
+1465,18,user_9,1,0,0,user_lands user_creatures user_noncreatures user_hand
+1465,19,oppo_10,1,1,0,user_life user_lands user_creatures user_noncreatures oppo_hand
+1465,20,user_10,1,1,0,user_lands user_creatures user_noncreatures user_hand
+1465,21,oppo_11,1,1,0,user_life user_lands user_creatures user_noncreatures oppo_hand
+1465,22,user_11,1,1,0,user_creatures user_noncreatures
+1465,23,oppo_12,1,1,0,user_creatures user_noncreatures oppo_hand
+1465,24,user_12,1,1,0,user_creatures user_noncreatures user_hand
+1465,25,oppo_13,1,1,0,user_creatures user_noncreatures
+1465,26,user_13,1,1,0,oppo_life user_creatures user_noncreatures user_hand
+1483,1,oppo_1,1,1,1,
+1483,2,user_1,1,1,1,
+1483,3,oppo_2,1,1,1,
+1483,4,user_2,1,1,1,
+1483,5,oppo_3,1,1,1,
+1483,6,user_3,1,1,1,
+1483,7,oppo_4,1,1,1,
+1483,8,user_4,1,1,1,
+1483,9,oppo_5,1,1,1,
+1483,10,user_5,1,1,1,
+1483,11,oppo_6,1,1,1,
+1483,12,user_6,1,1,1,
+1483,13,oppo_7,1,1,1,
+1483,14,user_7,1,1,0,oppo_life
+1483,15,oppo_8,1,1,1,
+1483,16,user_8,1,1,1,
+1483,17,oppo_9,1,1,0,user_creatures
+1483,18,user_9,1,1,1,
+1483,19,oppo_10,1,1,0,user_life oppo_life
+1484,1,oppo_1,1,1,1,
+1484,2,user_1,1,1,1,
+1484,3,oppo_2,1,1,1,
+1484,4,user_2,1,1,1,
+1484,5,oppo_3,1,1,1,
+1484,6,user_3,1,1,1,
+1484,7,oppo_4,1,1,1,
+1484,8,user_4,1,1,1,
+1484,9,oppo_5,1,1,0,user_life
+1484,10,user_5,1,1,0,user_lands user_noncreatures
+1484,11,oppo_6,1,1,1,
+1484,12,user_6,1,1,0,user_creatures user_hand
+1484,13,oppo_7,1,1,0,user_creatures user_noncreatures
+1484,14,user_7,1,1,0,user_creatures user_noncreatures
+1484,15,oppo_8,1,1,0,user_creatures user_noncreatures oppo_hand
+1484,16,user_8,1,1,0,user_creatures user_noncreatures
+1484,17,oppo_9,1,1,0,user_creatures user_noncreatures
+1484,18,user_9,1,1,0,user_creatures user_noncreatures
+1484,19,oppo_10,1,0,0,user_noncreatures oppo_hand
+1484,20,user_10,1,1,0,user_creatures user_noncreatures oppo_hand
+1484,21,oppo_11,1,1,0,user_life user_lands user_creatures oppo_hand
+1484,22,user_11,1,1,0,oppo_life user_creatures
+1484,23,oppo_12,1,1,1,
+1492,1,oppo_1,1,1,1,
+1492,2,user_1,1,1,1,
+1492,3,oppo_2,1,1,1,
+1492,4,user_2,1,1,1,
+1492,5,oppo_3,1,1,1,
+1492,6,user_3,1,1,0,oppo_life user_creatures
+1492,7,oppo_4,1,1,1,
+1492,8,user_4,1,1,1,
+1492,9,oppo_5,1,1,0,user_life
+1492,10,user_5,1,1,1,
+1492,11,oppo_6,1,1,1,
+1492,12,user_6,1,1,0,user_creatures user_noncreatures user_hand
+1492,13,oppo_7,1,1,1,
+1492,14,user_7,1,1,0,user_creatures user_hand
+1492,15,oppo_8,1,1,1,
+1492,16,user_8,1,1,0,oppo_life user_creatures
+1492,17,oppo_9,1,1,0,oppo_hand
+1492,18,user_9,1,1,1,
+1498,1,oppo_1,1,1,1,
+1498,2,user_1,1,1,1,
+1498,3,oppo_2,1,1,1,
+1498,4,user_2,1,1,1,
+1498,5,oppo_3,1,1,1,
+1498,6,user_3,1,1,1,
+1498,7,oppo_4,1,1,1,
+1498,8,user_4,1,1,1,
+1498,9,oppo_5,1,1,0,user_life
+1498,10,user_5,1,1,1,
+1498,11,oppo_6,1,1,1,
+1498,12,user_6,1,1,1,
+1513,1,oppo_1,1,1,1,
+1513,2,user_1,1,1,1,
+1513,3,oppo_2,1,1,1,
+1513,4,user_2,1,1,1,
+1513,5,oppo_3,1,1,1,
+1513,6,user_3,1,1,1,
+1513,7,oppo_4,1,1,1,
+1513,8,user_4,1,1,0,user_creatures
+1513,9,oppo_5,1,1,1,
+1513,10,user_5,1,1,0,user_life oppo_life user_creatures
+1513,11,oppo_6,1,1,0,user_creatures user_noncreatures
+1513,12,user_6,1,1,1,
+1513,13,oppo_7,1,1,1,
+1513,14,user_7,1,1,0,user_lands
+1513,15,oppo_8,1,1,0,oppo_hand
+1513,16,user_8,1,1,1,
+1525,1,user_1,1,1,1,
+1525,2,oppo_1,1,1,1,
+1525,3,user_2,1,1,1,
+1525,4,oppo_2,1,1,1,
+1525,5,user_3,1,1,1,
+1525,6,oppo_3,1,1,1,
+1525,7,user_4,1,1,1,
+1525,8,oppo_4,1,1,0,user_creatures
+1525,9,user_5,1,1,0,oppo_life user_creatures user_hand
+1525,10,oppo_5,1,1,0,user_creatures oppo_hand
+1525,11,user_6,1,1,0,user_lands user_hand
+1525,12,oppo_6,1,1,0,user_life user_creatures
+1525,13,user_7,1,1,0,oppo_life user_lands user_hand
+1525,14,oppo_7,1,1,1,
+1528,1,user_1,1,1,1,
+1528,2,oppo_1,1,1,1,
+1528,3,user_2,1,1,0,user_hand
+1528,4,oppo_2,1,1,1,
+1528,5,user_3,1,1,1,
+1528,6,oppo_3,1,1,1,
+1528,7,user_4,1,1,1,
+1528,8,oppo_4,1,1,1,
+1528,9,user_5,1,1,1,
+1530,1,user_1,1,1,1,
+1530,2,oppo_1,1,1,1,
+1530,3,user_2,1,1,1,
+1530,4,oppo_2,1,1,1,
+1530,5,user_3,1,1,1,
+1530,6,oppo_3,1,1,1,
+1530,7,user_4,1,1,0,user_lands user_creatures user_hand
+1530,8,oppo_4,1,1,0,user_life user_lands
+1530,9,user_5,1,0,1,
+1530,10,oppo_5,1,0,1,
+1530,11,user_6,1,0,0,oppo_life
+1530,12,oppo_6,1,1,1,
+1530,13,user_7,1,1,1,
+1530,14,oppo_7,1,1,0,user_life user_creatures oppo_hand
+1530,15,user_8,1,1,0,oppo_life user_lands user_creatures
+1530,16,oppo_8,1,1,0,user_lands user_creatures oppo_hand
+1530,17,user_9,1,1,0,user_lands user_creatures
+1530,18,oppo_9,1,1,0,user_lands user_creatures
+1532,1,oppo_1,1,1,1,
+1532,2,user_1,1,1,1,
+1532,3,oppo_2,1,1,1,
+1532,4,user_2,1,1,1,
+1532,5,oppo_3,1,1,1,
+1532,6,user_3,1,1,1,
+1532,7,oppo_4,1,1,1,
+1532,8,user_4,1,1,0,user_hand
+1532,9,oppo_5,1,1,1,
+1532,10,user_5,1,1,0,user_life user_lands user_creatures user_hand
+1532,11,oppo_6,1,1,1,
+1532,12,user_6,1,1,1,
+1532,13,oppo_7,1,1,0,oppo_hand
+1532,14,user_7,1,1,0,user_creatures user_noncreatures
+1532,15,oppo_8,1,1,0,oppo_hand
+1532,16,user_8,1,1,0,user_creatures
+1532,17,oppo_9,1,1,0,user_life oppo_life user_noncreatures oppo_hand
+1532,18,user_9,1,1,0,user_life user_lands user_hand
+1532,19,oppo_10,1,1,0,user_life oppo_life user_noncreatures oppo_hand
+1532,20,user_10,1,1,0,user_hand
+1540,1,oppo_1,1,1,1,
+1540,2,user_1,1,1,1,
+1540,3,oppo_2,1,1,1,
+1540,4,user_2,1,1,1,
+1540,5,oppo_3,1,1,1,
+1540,6,user_3,1,1,1,
+1540,7,oppo_4,1,1,0,oppo_hand
+1540,8,user_4,1,1,0,oppo_hand
+1540,9,oppo_5,1,1,0,user_hand
+1540,10,user_5,1,1,1,
+1540,11,oppo_6,1,1,1,
+1540,12,user_6,1,1,1,
+1542,1,user_1,1,1,1,
+1542,2,oppo_1,1,1,1,
+1542,3,user_2,1,1,1,
+1542,4,oppo_2,1,1,1,
+1542,5,user_3,1,1,1,
+1542,6,oppo_3,1,1,1,
+1542,7,user_4,1,1,1,
+1542,8,oppo_4,1,1,1,
+1542,9,user_5,1,1,1,
+1542,10,oppo_5,1,1,0,oppo_hand
+1542,11,user_6,1,0,0,oppo_life
+1542,12,oppo_6,1,0,1,
+1542,13,user_7,1,0,0,oppo_life
+1542,14,oppo_7,1,0,1,
+1542,15,user_8,1,1,0,oppo_life
+1542,16,oppo_8,1,1,0,oppo_hand
+1542,17,user_9,1,1,0,user_life oppo_life user_noncreatures user_hand
+1568,1,oppo_1,1,1,1,
+1568,2,user_1,1,1,1,
+1568,3,oppo_2,1,1,1,
+1568,4,user_2,1,1,0,oppo_life
+1568,5,oppo_3,1,1,1,
+1568,6,user_3,1,1,1,
+1568,7,oppo_4,1,1,1,
+1568,8,user_4,1,1,1,
+1568,9,oppo_5,1,1,1,
+1568,10,user_5,1,1,1,
+1568,11,oppo_6,1,1,1,
+1568,12,user_6,1,1,1,
+1568,13,oppo_7,1,1,0,user_life
+1568,14,user_7,1,0,0,oppo_life user_creatures
+1568,15,oppo_8,1,0,0,user_life
+1568,16,user_8,1,0,0,oppo_life user_creatures oppo_hand
+1568,17,oppo_9,0,0,0,
+1578,1,oppo_1,1,1,1,
+1578,2,user_1,1,1,1,
+1578,3,oppo_2,1,1,1,
+1578,4,user_2,1,1,0,user_hand
+1578,5,oppo_3,1,1,1,
+1578,6,user_3,1,1,0,user_hand
+1578,7,oppo_4,1,1,0,user_hand
+1578,8,user_4,1,1,0,user_lands user_hand
+1578,9,oppo_5,1,1,0,user_creatures user_noncreatures oppo_hand
+1578,10,user_5,1,1,0,user_creatures user_noncreatures user_hand
+1578,11,oppo_6,1,1,0,user_noncreatures
+1578,12,user_6,1,1,0,user_noncreatures
+1578,13,oppo_7,1,1,0,user_noncreatures
+1578,14,user_7,1,1,0,user_noncreatures
+1578,15,oppo_8,1,1,0,user_noncreatures
+1578,16,user_8,1,1,0,user_noncreatures
+1578,17,oppo_9,1,1,0,user_noncreatures oppo_hand
+1578,18,user_9,1,1,0,user_lands user_noncreatures user_hand oppo_hand
+1578,19,oppo_10,1,1,0,user_noncreatures user_hand
+1578,20,user_10,1,1,0,user_noncreatures
+1578,21,oppo_11,1,1,0,user_noncreatures user_hand oppo_hand
+1578,22,user_11,1,1,0,user_noncreatures
+1578,23,oppo_12,1,1,0,user_noncreatures
+1578,24,user_12,1,1,0,user_creatures
+1578,25,oppo_13,1,1,0,user_hand
+1578,26,user_13,1,1,0,oppo_life
+1578,27,oppo_14,1,1,0,user_life
+1578,28,user_14,1,1,0,oppo_life
+1578,29,oppo_15,1,1,1,
+1578,30,user_15,1,1,0,user_life oppo_life user_creatures oppo_hand
+1585,1,oppo_1,1,1,1,
+1585,2,user_1,1,1,1,
+1585,3,oppo_2,1,1,1,
+1585,4,user_2,1,1,1,
+1585,5,oppo_3,1,1,1,
+1585,6,user_3,1,1,1,
+1585,7,oppo_4,1,1,1,
+1585,8,user_4,1,1,1,
+1585,9,oppo_5,1,1,0,user_life
+1585,10,user_5,1,1,0,user_creatures
+1585,11,oppo_6,1,1,0,user_life user_creatures oppo_hand
+1585,12,user_6,1,1,1,
+1585,13,oppo_7,1,1,1,
+1585,14,user_7,1,1,1,
+1585,15,oppo_8,1,1,0,user_life
+1585,16,user_8,1,1,1,
+1585,17,oppo_9,1,1,0,user_life
+1585,18,user_9,1,1,1,
+1585,19,oppo_10,1,1,0,user_life oppo_hand
+1602,1,oppo_1,1,1,1,
+1602,2,user_1,1,1,1,
+1602,3,oppo_2,1,1,1,
+1602,4,user_2,1,1,1,
+1602,5,oppo_3,1,1,1,
+1602,6,user_3,1,1,1,
+1602,7,oppo_4,1,1,1,
+1602,8,user_4,1,1,1,
+1602,9,oppo_5,1,1,1,
+1602,10,user_5,1,1,0,user_hand
+1602,11,oppo_6,1,1,1,
+1602,12,user_6,1,1,1,
+1602,13,oppo_7,1,1,0,user_creatures
+1602,14,user_7,1,1,0,user_lands user_creatures
+1602,15,oppo_8,1,1,0,oppo_life user_lands user_creatures
+1602,16,user_8,1,1,0,user_lands user_creatures user_hand
+1602,17,oppo_9,1,1,0,oppo_life user_lands user_creatures oppo_hand
+1602,18,user_9,1,1,0,user_lands user_creatures
+1602,19,oppo_10,1,1,0,user_life oppo_life user_lands user_creatures
+1602,20,user_10,1,0,0,user_lands user_creatures
+1602,21,oppo_11,1,0,0,user_life user_lands user_creatures user_hand
+1610,1,user_1,1,1,1,
+1610,2,oppo_1,1,1,1,
+1610,3,user_2,1,1,1,
+1610,4,oppo_2,1,1,1,
+1610,5,user_3,1,1,1,
+1610,6,oppo_3,1,1,1,
+1610,7,user_4,1,1,1,
+1610,8,oppo_4,1,1,1,
+1610,9,user_5,1,0,0,oppo_life user_creatures
+1610,10,oppo_5,1,1,1,
+1610,11,user_6,1,1,0,user_creatures
+1610,12,oppo_6,1,1,0,oppo_hand
+1610,13,user_7,1,0,0,oppo_hand
+1621,1,oppo_1,1,1,1,
+1621,2,user_1,1,1,1,
+1621,3,oppo_2,1,1,1,
+1621,4,user_2,1,1,1,
+1621,5,oppo_3,1,1,1,
+1621,6,user_3,1,1,1,
+1621,7,oppo_4,1,1,1,
+1621,8,user_4,1,1,1,
+1621,9,oppo_5,1,1,0,user_creatures
+1621,10,user_5,1,1,0,user_creatures user_noncreatures
+1621,11,oppo_6,1,1,0,user_life user_noncreatures
+1621,12,user_6,1,1,0,oppo_life user_noncreatures
+1621,13,oppo_7,1,1,0,user_noncreatures
+1621,14,user_7,1,1,0,user_noncreatures
+1621,15,oppo_8,1,1,0,user_creatures
+1621,16,user_8,1,1,1,
+1621,17,oppo_9,1,1,1,
+1621,18,user_9,1,1,1,
+1641,1,oppo_1,1,1,1,
+1641,2,user_1,1,1,1,
+1641,3,oppo_2,1,1,1,
+1641,4,user_2,1,1,1,
+1641,5,oppo_3,1,1,1,
+1641,6,user_3,1,1,1,
+1641,7,oppo_4,1,1,0,user_creatures user_hand
+1641,8,user_4,1,1,0,user_noncreatures user_hand
+1641,9,oppo_5,1,1,0,user_noncreatures
+1641,10,user_5,1,1,0,user_noncreatures oppo_hand
+1641,11,oppo_6,1,1,0,user_noncreatures
+1642,1,oppo_1,1,1,1,
+1642,2,user_1,1,1,1,
+1642,3,oppo_2,1,1,1,
+1642,4,user_2,1,1,1,
+1642,5,oppo_3,1,1,0,user_hand
+1642,6,user_3,1,1,1,
+1642,7,oppo_4,1,1,0,user_life user_creatures user_hand
+1642,8,user_4,1,1,1,
+1642,9,oppo_5,1,1,1,
+1642,10,user_5,1,1,1,
+1642,11,oppo_6,1,1,0,user_creatures user_noncreatures
+1642,12,user_6,1,1,0,user_hand
+1642,13,oppo_7,1,1,1,
+1642,14,user_7,1,1,0,user_hand
+1642,15,oppo_8,1,1,1,
+1642,16,user_8,1,1,0,oppo_life user_creatures user_hand
+1642,17,oppo_9,1,1,0,user_life
+1642,18,user_9,1,1,1,
+1642,19,oppo_10,1,1,0,user_life oppo_life oppo_hand
+1642,20,user_10,1,1,0,user_creatures
+1642,21,oppo_11,1,1,0,user_life user_lands user_creatures
+1642,22,user_11,1,1,0,oppo_life user_lands user_creatures
+1642,23,oppo_12,1,1,0,user_life user_lands user_creatures oppo_hand
+1642,24,user_12,1,1,0,oppo_life user_lands user_creatures user_noncreatures
+1642,25,oppo_13,1,1,0,user_lands user_creatures
+1643,1,user_1,1,1,1,
+1643,2,oppo_1,1,1,1,
+1643,3,user_2,1,1,1,
+1643,4,oppo_2,1,1,1,
+1643,5,user_3,1,1,1,
+1643,6,oppo_3,1,1,1,
+1643,7,user_4,1,1,0,user_creatures
+1643,8,oppo_4,1,1,0,oppo_hand
+1643,9,user_5,1,1,0,user_noncreatures user_hand
+1643,10,oppo_5,1,1,1,
+1643,11,user_6,1,1,0,user_creatures oppo_hand
+1643,12,oppo_6,1,1,1,
+1643,13,user_7,1,1,1,
+1643,14,oppo_7,1,1,1,
+1643,15,user_8,1,1,0,user_creatures
+1643,16,oppo_8,1,1,0,user_life user_noncreatures
+1643,17,user_9,1,1,0,user_lands user_creatures user_hand
+1643,18,oppo_9,1,1,0,user_life oppo_hand
+1643,19,user_10,1,1,1,
+1643,20,oppo_10,1,1,0,user_life user_creatures
+1648,1,oppo_1,1,1,1,
+1648,2,user_1,1,1,1,
+1648,3,oppo_2,1,1,1,
+1648,4,user_2,1,1,1,
+1648,5,oppo_3,1,1,1,
+1648,6,user_3,1,1,1,
+1648,7,oppo_4,1,1,1,
+1648,8,user_4,1,1,1,
+1648,9,oppo_5,1,1,1,
+1648,10,user_5,1,1,1,
+1648,11,oppo_6,1,1,1,
+1648,12,user_6,1,1,0,user_creatures
+1648,13,oppo_7,1,0,0,user_life
+1648,14,user_7,1,0,0,user_creatures user_hand
+1648,15,oppo_8,1,0,0,user_creatures
+1648,16,user_8,1,1,1,
+1648,17,oppo_9,1,1,0,user_life user_creatures
+1648,18,user_9,1,1,0,oppo_life
+1648,19,oppo_10,1,1,0,user_life oppo_hand
+1648,20,user_10,1,1,0,user_life oppo_life
+1648,21,oppo_11,1,1,0,oppo_hand
+1648,22,user_11,1,1,0,user_life
+1648,23,oppo_12,1,1,0,oppo_hand
+1648,24,user_12,1,1,1,
+1648,25,oppo_13,1,1,0,user_life oppo_hand
+1648,26,user_13,1,1,1,
+1652,1,user_1,1,1,1,
+1652,2,oppo_1,1,1,1,
+1652,3,user_2,1,1,1,
+1652,4,oppo_2,1,1,1,
+1652,5,user_3,1,1,1,
+1652,6,oppo_3,1,1,1,
+1652,7,user_4,1,1,1,
+1652,8,oppo_4,1,1,0,user_life user_creatures user_noncreatures user_hand oppo_hand
+1652,9,user_5,1,0,0,user_life user_lands user_creatures
+1652,10,oppo_5,1,0,0,user_life user_lands
+1652,11,user_6,1,1,0,user_life
+1652,12,oppo_6,1,1,0,user_life user_creatures oppo_hand
+1652,13,user_7,1,1,0,user_life
+1652,14,oppo_7,1,1,0,user_life oppo_hand
+1652,15,user_8,0,0,0,
+1652,16,oppo_8,0,0,0,
+1660,1,oppo_1,1,1,1,
+1660,2,user_1,1,1,1,
+1660,3,oppo_2,1,1,1,
+1660,4,user_2,1,1,1,
+1660,5,oppo_3,1,1,1,
+1660,6,user_3,1,1,1,
+1660,7,oppo_4,1,1,1,
+1660,8,user_4,1,1,1,
+1660,9,oppo_5,1,1,1,
+1660,10,user_5,1,1,1,
+1660,11,oppo_6,1,1,1,
+1660,12,user_6,1,1,1,
+1660,13,oppo_7,1,1,1,
+1660,14,user_7,1,1,1,
+1660,15,oppo_8,1,1,0,user_creatures
+1660,16,user_8,1,1,0,user_creatures user_noncreatures
+1660,17,oppo_9,1,1,0,oppo_hand
+1660,18,user_9,1,1,1,
+1660,19,oppo_10,1,1,0,user_creatures user_hand
+1660,20,user_10,1,0,1,
+1660,21,oppo_11,1,0,1,
+1660,22,user_11,1,0,1,
+1660,23,oppo_12,1,0,0,oppo_hand
+1660,24,user_12,1,0,1,
+1660,25,oppo_13,1,1,1,
+1660,26,user_13,1,1,1,
+1660,27,oppo_14,1,1,0,oppo_hand
+1663,1,oppo_1,1,1,1,
+1663,2,user_1,1,1,1,
+1663,3,oppo_2,1,1,1,
+1663,4,user_2,1,1,1,
+1663,5,oppo_3,1,1,0,user_life user_hand
+1663,6,user_3,1,1,1,
+1663,7,oppo_4,1,1,0,user_life
+1663,8,user_4,1,1,0,user_creatures user_hand
+1663,9,oppo_5,1,1,0,user_life oppo_hand
+1663,10,user_5,1,1,1,
+1663,11,oppo_6,1,1,0,user_hand
+1664,1,oppo_1,1,1,1,
+1664,2,user_1,1,1,1,
+1664,3,oppo_2,1,1,1,
+1664,4,user_2,1,1,1,
+1664,5,oppo_3,1,1,1,
+1664,6,user_3,1,1,1,
+1664,7,oppo_4,1,1,1,
+1664,8,user_4,1,1,1,
+1664,9,oppo_5,1,1,1,
+1664,10,user_5,1,1,0,user_hand
+1664,11,oppo_6,1,1,0,oppo_hand
+1664,12,user_6,1,1,0,user_creatures user_hand
+1664,13,oppo_7,1,1,0,oppo_hand
+1664,14,user_7,1,0,0,user_hand
+1664,15,oppo_8,1,1,0,oppo_hand
+1664,16,user_8,1,1,0,user_life oppo_life user_lands user_creatures user_hand
+1664,17,oppo_9,1,1,1,
+1664,18,user_9,1,1,0,user_life user_hand
+1664,19,oppo_10,1,1,1,
+1664,20,user_10,1,1,0,user_life user_creatures
+1664,21,oppo_11,1,1,0,oppo_hand
+1664,22,user_11,1,1,0,oppo_life
+1665,1,user_1,1,1,1,
+1665,2,oppo_1,1,1,1,
+1665,3,user_2,1,1,1,
+1665,4,oppo_2,1,1,1,
+1665,5,user_3,1,1,1,
+1665,6,oppo_3,1,1,1,
+1665,7,user_4,1,1,1,
+1665,8,oppo_4,1,1,1,
+1665,9,user_5,1,1,0,user_lands user_creatures user_hand
+1665,10,oppo_5,1,1,1,
+1665,11,user_6,1,1,0,user_hand
+1665,12,oppo_6,1,1,0,user_creatures
+1665,13,user_7,1,1,0,user_creatures user_hand
+1665,14,oppo_7,1,1,0,oppo_life user_creatures oppo_hand
+1665,15,user_8,1,1,0,user_lands user_creatures user_hand
+1665,16,oppo_8,1,0,0,oppo_hand
+1665,17,user_9,1,0,0,oppo_life
+1665,18,oppo_9,1,1,0,oppo_hand
+1665,19,user_10,1,1,1,
+1665,20,oppo_10,1,1,0,user_creatures
+1665,21,user_11,1,1,1,
+1665,22,oppo_11,1,1,0,user_life user_creatures user_hand oppo_hand
+1665,23,user_12,0,0,0,
+1665,24,oppo_12,0,0,0,
+1665,25,user_13,0,0,0,
+1669,1,user_1,1,1,1,
+1669,2,oppo_1,1,1,1,
+1669,3,user_2,1,1,1,
+1669,4,oppo_2,1,1,1,
+1669,5,user_3,1,1,0,user_life
+1669,6,oppo_3,1,1,1,
+1669,7,user_4,1,1,1,
+1669,8,oppo_4,1,1,1,
+1669,9,user_5,1,1,0,user_hand
+1669,10,oppo_5,1,1,1,
+1669,11,user_6,1,1,0,user_creatures user_hand
+1669,12,oppo_6,1,1,0,user_life user_creatures oppo_hand
+1669,13,user_7,1,1,1,
+1669,14,oppo_7,1,1,1,
+1669,15,user_8,1,1,0,oppo_hand
+1672,1,oppo_1,1,1,1,
+1672,2,user_1,1,1,1,
+1672,3,oppo_2,1,1,1,
+1672,4,user_2,1,1,1,
+1672,5,oppo_3,1,1,1,
+1672,6,user_3,1,1,1,
+1672,7,oppo_4,1,1,1,
+1672,8,user_4,1,1,0,user_hand
+1672,9,oppo_5,1,1,0,oppo_hand
+1672,10,user_5,1,1,0,user_creatures user_hand
+1672,11,oppo_6,1,1,0,user_life
+1672,12,user_6,1,1,0,user_lands user_noncreatures user_hand
+1672,13,oppo_7,1,1,0,user_creatures user_noncreatures
+1672,14,user_7,1,1,0,user_lands user_creatures user_noncreatures user_hand oppo_hand
+1672,15,oppo_8,1,1,0,user_creatures user_noncreatures
+1672,16,user_8,1,1,0,oppo_life user_creatures user_noncreatures
+1672,17,oppo_9,1,1,0,user_noncreatures oppo_hand
+1672,18,user_9,1,1,1,
+1672,19,oppo_10,1,1,0,user_life oppo_hand
+1672,20,user_10,1,1,0,user_hand
+1672,21,oppo_11,1,1,0,user_creatures
+1672,22,user_11,1,1,1,
+1672,23,oppo_12,1,1,1,
+1672,24,user_12,1,1,1,
+1672,25,oppo_13,1,1,0,oppo_hand
+1672,26,user_13,1,1,1,
+1697,1,oppo_1,1,1,1,
+1697,2,user_1,1,1,1,
+1697,3,oppo_2,1,1,1,
+1697,4,user_2,1,1,1,
+1697,5,oppo_3,1,1,1,
+1697,6,user_3,1,1,1,
+1697,7,oppo_4,1,1,1,
+1697,8,user_4,1,1,1,
+1697,9,oppo_5,1,1,1,
+1697,10,user_5,1,1,1,
+1697,11,oppo_6,1,1,1,
+1697,12,user_6,1,1,1,
+1697,13,oppo_7,1,1,1,
+1697,14,user_7,1,1,0,oppo_life oppo_hand
+1697,15,oppo_8,1,1,0,user_life
+1697,16,user_8,1,1,0,user_creatures
+1697,17,oppo_9,1,1,0,user_lands user_hand
+1718,1,oppo_1,1,1,1,
+1718,2,user_1,1,1,1,
+1718,3,oppo_2,1,1,1,
+1718,4,user_2,1,1,1,
+1718,5,oppo_3,1,1,1,
+1718,6,user_3,1,1,1,
+1718,7,oppo_4,1,1,0,user_noncreatures user_hand
+1718,8,user_4,1,1,1,
+1718,9,oppo_5,1,1,0,user_creatures
+1718,10,user_5,1,1,1,
+1718,11,oppo_6,1,1,1,
+1718,12,user_6,1,1,0,user_creatures
+1718,13,oppo_7,1,1,1,
+1718,14,user_7,1,1,0,user_lands user_creatures user_hand
+1718,15,oppo_8,1,1,0,user_lands user_creatures oppo_hand
+1718,16,user_8,1,1,0,user_lands user_creatures
+1718,17,oppo_9,1,1,0,user_life user_lands user_creatures user_hand
+1718,18,user_9,0,0,0,
+1718,19,oppo_10,0,0,0,
+1718,20,user_10,0,0,0,
+1718,21,oppo_11,0,0,0,
+1718,22,user_11,0,0,0,
+1718,23,oppo_12,0,0,0,
+1718,24,user_12,0,0,0,
+1718,25,oppo_13,0,0,0,
+1724,1,user_1,1,1,1,
+1724,2,oppo_1,1,1,1,
+1724,3,user_2,1,1,1,
+1724,4,oppo_2,1,1,1,
+1724,5,user_3,1,1,1,
+1724,6,oppo_3,1,1,1,
+1724,7,user_4,1,1,1,
+1724,8,oppo_4,1,1,1,
+1724,9,user_5,1,1,0,oppo_life user_lands user_creatures user_noncreatures user_hand
+1724,10,oppo_5,1,1,1,
+1724,11,user_6,1,1,1,
+1724,12,oppo_6,1,1,0,user_noncreatures
+1724,13,user_7,1,1,1,
+1724,14,oppo_7,1,1,1,
+1724,15,user_8,1,1,0,user_noncreatures
+1724,16,oppo_8,1,1,1,
+1724,17,user_9,1,1,0,user_life oppo_life user_creatures oppo_hand
+1724,18,oppo_9,1,1,1,
+1724,19,user_10,1,1,0,oppo_life
+1724,20,oppo_10,1,1,0,oppo_hand
+1724,21,user_11,1,1,0,user_life oppo_life user_lands user_creatures
+1724,22,oppo_11,1,1,0,oppo_hand
+1724,23,user_12,1,1,0,user_life
+1724,24,oppo_12,1,0,0,oppo_hand
+1724,25,user_13,1,0,0,user_life user_noncreatures
+1724,26,oppo_13,1,1,0,user_noncreatures user_hand oppo_hand
+1724,27,user_14,1,1,0,user_life oppo_life user_noncreatures user_hand
+1733,1,user_1,1,1,1,
+1733,2,oppo_1,1,1,1,
+1733,3,user_2,1,1,0,user_hand
+1733,4,oppo_2,1,1,1,
+1733,5,user_3,1,1,0,user_hand
+1733,6,oppo_3,1,1,1,
+1733,7,user_4,1,1,0,user_hand
+1733,8,oppo_4,1,1,1,
+1733,9,user_5,1,1,0,user_hand oppo_hand
+1733,10,oppo_5,1,1,1,
+1733,11,user_6,1,1,0,user_hand
+1733,12,oppo_6,1,1,1,
+1733,13,user_7,1,1,0,user_hand
+1733,14,oppo_7,1,1,1,
+1733,15,user_8,1,1,0,user_lands user_creatures user_hand
+1733,16,oppo_8,1,1,1,
+1733,17,user_9,1,1,0,user_hand
+1758,1,oppo_1,1,1,1,
+1758,2,user_1,1,1,1,
+1758,3,oppo_2,1,1,1,
+1758,4,user_2,1,1,1,
+1758,5,oppo_3,1,1,1,
+1758,6,user_3,1,1,0,user_hand
+1758,7,oppo_4,1,1,1,
+1758,8,user_4,1,1,1,
+1758,9,oppo_5,1,1,1,
+1758,10,user_5,1,1,1,
+1758,11,oppo_6,1,1,1,
+1758,12,user_6,1,1,1,
+1758,13,oppo_7,1,1,1,
+1758,14,user_7,1,1,1,
+1758,15,oppo_8,1,1,1,
+1760,1,oppo_1,1,1,1,
+1760,2,user_1,1,1,1,
+1760,3,oppo_2,1,1,1,
+1760,4,user_2,1,1,1,
+1760,5,oppo_3,1,1,1,
+1760,6,user_3,1,1,1,
+1760,7,oppo_4,1,1,0,user_life
+1760,8,user_4,1,1,1,
+1760,9,oppo_5,1,1,0,user_life
+1760,10,user_5,1,1,0,user_lands user_noncreatures user_hand
+1760,11,oppo_6,1,1,0,user_life user_creatures
+1760,12,user_6,1,1,0,user_lands user_noncreatures user_hand oppo_hand
+1760,13,oppo_7,1,1,0,user_creatures oppo_hand
+1760,14,user_7,1,0,1,
+1760,15,oppo_8,1,0,0,user_life
+1760,16,user_8,1,1,0,user_lands user_hand
+1777,1,user_1,1,1,1,
+1777,2,oppo_1,1,1,1,
+1777,3,user_2,1,1,0,user_hand
+1777,4,oppo_2,1,1,1,
+1777,5,user_3,1,1,1,
+1777,6,oppo_3,1,1,1,
+1777,7,user_4,1,1,1,
+1777,8,oppo_4,1,1,0,user_hand
+1777,9,user_5,1,1,0,oppo_life user_lands user_hand
+1777,10,oppo_5,1,1,0,user_life
+1777,11,user_6,1,1,0,user_creatures oppo_hand
+1777,12,oppo_6,1,1,1,
+1777,13,user_7,1,1,0,oppo_life
+1777,14,oppo_7,1,1,0,oppo_hand
+1777,15,user_8,1,1,0,oppo_life
+1777,16,oppo_8,1,1,1,
+1777,17,user_9,1,1,1,
+1777,18,oppo_9,1,1,1,
+1777,19,user_10,1,1,0,user_creatures user_hand
+1777,20,oppo_10,1,1,1,
+1777,21,user_11,1,1,1,
+1777,22,oppo_11,1,1,1,
+1777,23,user_12,1,1,1,
+1777,24,oppo_12,1,1,1,
+1777,25,user_13,1,1,1,
+1777,26,oppo_13,1,1,1,
+1777,27,user_14,1,1,1,
+1777,28,oppo_14,1,1,1,
+1777,29,user_15,1,1,1,
+1777,30,oppo_15,1,1,1,
+1777,31,user_16,1,1,1,
+1777,32,oppo_16,1,1,1,
+1777,33,user_17,1,1,1,
+1777,34,oppo_17,1,1,0,oppo_hand
+1792,1,oppo_1,1,1,1,
+1792,2,user_1,1,1,1,
+1792,3,oppo_2,1,1,1,
+1792,4,user_2,1,1,1,
+1792,5,oppo_3,1,1,1,
+1792,6,user_3,1,1,1,
+1792,7,oppo_4,1,1,1,
+1792,8,user_4,1,1,1,
+1792,9,oppo_5,1,1,0,user_life
+1792,10,user_5,1,1,1,
+1792,11,oppo_6,1,1,0,user_life
+1807,1,oppo_1,1,1,1,
+1807,2,user_1,1,1,1,
+1807,3,oppo_2,1,1,1,
+1807,4,user_2,1,1,1,
+1807,5,oppo_3,1,1,0,user_life
+1807,6,user_3,1,1,0,user_hand
+1807,7,oppo_4,1,1,0,user_life user_hand oppo_hand
+1807,8,user_4,1,1,0,oppo_life user_hand
+1807,9,oppo_5,1,1,0,user_life
+1807,10,user_5,1,1,0,oppo_life user_creatures
+1807,11,oppo_6,1,1,0,user_creatures
+1807,12,user_6,1,1,1,
+1807,13,oppo_7,1,1,1,
+1807,14,user_7,1,0,0,user_noncreatures user_hand
+1807,15,oppo_8,1,1,0,oppo_hand
+1807,16,user_8,1,1,0,user_creatures user_noncreatures user_hand
+1807,17,oppo_9,1,1,1,
+1807,18,user_9,1,1,0,oppo_life user_creatures user_noncreatures user_hand
+1807,19,oppo_10,1,1,0,user_hand
+1807,20,user_10,1,1,0,oppo_life oppo_hand
+1818,1,oppo_1,1,1,1,
+1818,2,user_1,1,1,1,
+1818,3,oppo_2,1,1,1,
+1818,4,user_2,1,1,1,
+1818,5,oppo_3,1,1,1,
+1818,6,user_3,1,1,0,oppo_life user_creatures oppo_hand
+1818,7,oppo_4,1,1,1,
+1818,8,user_4,1,1,1,
+1818,9,oppo_5,1,1,0,oppo_hand
+1818,10,user_5,1,1,1,
+1818,11,oppo_6,1,1,1,
+1818,12,user_6,1,1,1,
+1818,13,oppo_7,1,1,1,
+1822,1,user_1,1,1,1,
+1822,2,oppo_1,1,1,1,
+1822,3,user_2,1,1,1,
+1822,4,oppo_2,1,1,1,
+1822,5,user_3,1,1,1,
+1822,6,oppo_3,1,1,0,user_life user_creatures
+1822,7,user_4,1,1,1,
+1822,8,oppo_4,1,1,0,user_life
+1822,9,user_5,1,1,1,
+1822,10,oppo_5,1,1,0,user_life user_creatures user_hand oppo_hand
+1822,11,user_6,0,0,0,
+1822,12,oppo_6,0,0,0,
+1822,13,user_7,0,0,0,
+1822,14,oppo_7,0,0,0,
+1822,15,user_8,0,0,0,
+1822,16,oppo_8,0,0,0,
+1836,1,oppo_1,1,1,1,
+1836,2,user_1,1,1,1,
+1836,3,oppo_2,1,1,1,
+1836,4,user_2,1,1,1,
+1836,5,oppo_3,1,1,0,oppo_hand
+1836,6,user_3,1,1,1,
+1836,7,oppo_4,1,1,0,user_creatures user_hand
+1836,8,user_4,1,1,0,user_lands user_hand
+1836,9,oppo_5,1,1,1,
+1836,10,user_5,1,1,1,
+1836,11,oppo_6,1,1,0,user_creatures oppo_hand
+1836,12,user_6,1,1,0,user_lands user_hand
+1836,13,oppo_7,1,1,1,
+1836,14,user_7,1,1,1,
+1836,15,oppo_8,1,1,1,
+1836,16,user_8,1,1,0,oppo_life user_creatures
+1836,17,oppo_9,1,1,1,
+1836,18,user_9,1,1,1,
+1836,19,oppo_10,1,1,0,user_life user_creatures
+1836,20,user_10,1,1,0,user_life oppo_life user_creatures
+1846,1,user_1,1,1,1,
+1846,2,oppo_1,1,1,1,
+1846,3,user_2,1,1,1,
+1846,4,oppo_2,1,1,1,
+1846,5,user_3,1,1,1,
+1846,6,oppo_3,1,1,1,
+1846,7,user_4,1,1,0,oppo_life
+1846,8,oppo_4,1,1,1,
+1846,9,user_5,1,1,1,
+1846,10,oppo_5,1,1,0,oppo_hand
+1846,11,user_6,1,1,0,oppo_life user_creatures oppo_hand
+1846,12,oppo_6,1,1,1,
+1846,13,user_7,1,1,0,oppo_life user_creatures oppo_hand
+1858,1,oppo_1,1,1,1,
+1858,2,user_1,1,1,1,
+1858,3,oppo_2,1,1,1,
+1858,4,user_2,1,1,1,
+1858,5,oppo_3,1,1,1,
+1858,6,user_3,1,1,1,
+1858,7,oppo_4,1,1,1,
+1858,8,user_4,1,1,1,
+1858,9,oppo_5,1,1,1,
+1858,10,user_5,1,1,0,oppo_life user_creatures oppo_hand
+1858,11,oppo_6,1,1,1,
+1858,12,user_6,1,1,0,oppo_life
+1858,13,oppo_7,1,1,0,user_life oppo_hand
+1858,14,user_7,1,1,1,
+1858,15,oppo_8,1,1,0,user_life
+1858,16,user_8,1,1,1,
+1858,17,oppo_9,1,0,0,user_life user_creatures oppo_hand
+1858,18,user_9,1,0,0,user_hand
+1858,19,oppo_10,1,1,0,oppo_hand
+1861,1,user_1,1,1,1,
+1861,2,oppo_1,1,1,1,
+1861,3,user_2,1,1,1,
+1861,4,oppo_2,1,1,1,
+1861,5,user_3,1,1,1,
+1861,6,oppo_3,1,1,1,
+1861,7,user_4,1,1,0,oppo_life user_noncreatures
+1861,8,oppo_4,1,1,1,
+1861,9,user_5,1,1,0,oppo_life user_creatures oppo_hand
+1861,10,oppo_5,1,1,1,
+1861,11,user_6,1,1,0,oppo_life
+1861,12,oppo_6,1,1,1,
+1861,13,user_7,1,1,0,oppo_life
+1863,1,oppo_1,1,1,1,
+1863,2,user_1,1,1,1,
+1863,3,oppo_2,1,1,1,
+1863,4,user_2,1,1,1,
+1863,5,oppo_3,1,1,1,
+1863,6,user_3,1,1,1,
+1863,7,oppo_4,1,1,0,user_creatures oppo_hand
+1863,8,user_4,1,1,1,
+1863,9,oppo_5,1,1,0,user_hand
+1863,10,user_5,1,1,1,
+1863,11,oppo_6,1,1,0,user_life user_creatures user_hand
+1863,12,user_6,1,1,0,user_creatures
+1863,13,oppo_7,1,1,0,user_life user_creatures
+1863,14,user_7,1,1,1,
+1863,15,oppo_8,1,1,1,
+1863,16,user_8,1,1,1,
+1863,17,oppo_9,1,1,0,user_creatures user_noncreatures user_hand
+1863,18,user_9,1,1,0,user_noncreatures
+1863,19,oppo_10,1,1,0,user_noncreatures
+1877,1,user_1,1,1,1,
+1877,2,oppo_1,1,1,1,
+1877,3,user_2,1,1,1,
+1877,4,oppo_2,1,1,1,
+1877,5,user_3,1,1,1,
+1877,6,oppo_3,1,1,0,user_hand
+1877,7,user_4,1,1,1,
+1877,8,oppo_4,1,1,1,
+1877,9,user_5,1,1,0,user_creatures
+1877,10,oppo_5,1,1,0,user_life oppo_hand
+1877,11,user_6,1,1,1,
+1877,12,oppo_6,1,1,1,
+1877,13,user_7,1,1,0,user_creatures
+1877,14,oppo_7,1,1,1,
+1877,15,user_8,1,1,0,oppo_life user_creatures user_hand
+1877,16,oppo_8,1,1,1,
+1877,17,user_9,1,1,0,user_hand
+1877,18,oppo_9,1,1,0,oppo_hand
+1877,19,user_10,1,1,1,
+1877,20,oppo_10,1,1,0,oppo_hand
+1877,21,user_11,1,0,0,oppo_life user_creatures oppo_hand
+1877,22,oppo_11,0,0,0,
+1877,23,user_12,0,0,0,
+1877,24,oppo_12,0,0,0,
+1877,25,user_13,0,0,0,
+1877,26,oppo_13,0,0,0,
+1877,27,user_14,0,0,0,
+1877,28,oppo_14,0,0,0,
+1877,29,user_15,0,0,0,
+1879,1,oppo_1,1,1,1,
+1879,2,user_1,1,1,1,
+1879,3,oppo_2,1,1,1,
+1879,4,user_2,1,1,1,
+1879,5,oppo_3,1,1,1,
+1879,6,user_3,1,1,1,
+1879,7,oppo_4,1,1,0,user_life user_hand
+1879,8,user_4,1,0,0,user_hand
+1879,9,oppo_5,1,0,0,user_life oppo_hand
+1879,10,user_5,1,0,1,
+1879,11,oppo_6,1,0,0,user_life
+1879,12,user_6,1,0,0,user_life oppo_life user_lands user_creatures user_hand
+1879,13,oppo_7,1,0,0,user_life oppo_life user_creatures oppo_hand
+1879,14,user_7,1,0,1,
+1879,15,oppo_8,1,0,1,
+1879,16,user_8,1,0,0,user_creatures user_hand
+1879,17,oppo_9,1,0,1,
+1879,18,user_9,1,0,1,
+1879,19,oppo_10,1,1,1,
+1879,20,user_10,1,1,0,user_hand
+1879,21,oppo_11,1,1,0,oppo_hand
+1879,22,user_11,1,1,0,user_life oppo_life user_lands user_creatures user_hand oppo_hand
+1879,23,oppo_12,1,1,0,user_life oppo_life oppo_hand
+1879,24,user_12,1,1,1,
+1879,25,oppo_13,1,1,1,
+1879,26,user_13,1,1,1,
+1879,27,oppo_14,1,1,0,user_life oppo_hand
+1879,28,user_14,1,1,0,user_life oppo_life user_creatures user_hand
+1879,29,oppo_15,1,1,0,oppo_life
+1879,30,user_15,1,1,1,
+1879,31,oppo_16,1,1,1,
+1884,1,oppo_1,1,1,1,
+1884,2,user_1,1,1,1,
+1884,3,oppo_2,1,1,1,
+1884,4,user_2,1,1,1,
+1884,5,oppo_3,1,1,1,
+1884,6,user_3,1,1,1,
+1884,7,oppo_4,1,1,1,
+1884,8,user_4,1,1,1,
+1884,9,oppo_5,1,1,0,user_life oppo_life oppo_hand
+1884,10,user_5,1,1,0,oppo_life oppo_hand
+1884,11,oppo_6,1,1,0,user_life oppo_life
+1884,12,user_6,1,1,1,
+1884,13,oppo_7,1,1,0,user_life oppo_life user_creatures user_hand oppo_hand
+1884,14,user_7,0,0,0,
+1884,15,oppo_8,0,0,0,
+1896,1,oppo_1,1,1,1,
+1896,2,user_1,1,1,1,
+1896,3,oppo_2,1,1,1,
+1896,4,user_2,1,1,1,
+1896,5,oppo_3,1,1,1,
+1896,6,user_3,1,1,1,
+1896,7,oppo_4,1,1,0,user_life
+1896,8,user_4,1,1,1,
+1896,9,oppo_5,1,1,0,user_life
+1896,10,user_5,1,1,0,user_hand
+1896,11,oppo_6,1,1,0,user_life user_creatures
+1896,12,user_6,1,1,0,user_noncreatures
+1896,13,oppo_7,1,1,0,user_noncreatures oppo_hand
+1896,14,user_7,1,1,0,user_creatures user_noncreatures oppo_hand
+1896,15,oppo_8,1,1,0,user_noncreatures
+1896,16,user_8,1,1,0,user_noncreatures user_hand
+1896,17,oppo_9,1,1,0,user_life user_noncreatures user_hand
+1924,1,oppo_1,1,1,1,
+1924,2,user_1,1,1,1,
+1924,3,oppo_2,1,1,1,
+1924,4,user_2,1,1,1,
+1924,5,oppo_3,1,1,0,user_life oppo_hand
+1924,6,user_3,1,1,1,
+1924,7,oppo_4,1,1,1,
+1924,8,user_4,1,1,1,
+1924,9,oppo_5,1,1,1,
+1924,10,user_5,1,1,0,oppo_hand
+1924,11,oppo_6,1,1,0,oppo_hand
+1924,12,user_6,1,1,1,
+1924,13,oppo_7,1,1,0,user_life
+1924,14,user_7,1,1,1,
+1924,15,oppo_8,1,1,0,user_creatures user_noncreatures
+1924,16,user_8,1,1,0,oppo_life user_noncreatures
+1924,17,oppo_9,1,1,0,user_life user_creatures
+1924,18,user_9,1,1,0,user_creatures oppo_hand
+1924,19,oppo_10,1,0,1,
+1924,20,user_10,1,0,0,oppo_life user_creatures oppo_hand
+1924,21,oppo_11,0,0,0,
+1935,1,oppo_1,1,1,1,
+1935,2,user_1,1,1,1,
+1935,3,oppo_2,1,1,1,
+1935,4,user_2,1,1,1,
+1935,5,oppo_3,1,1,1,
+1935,6,user_3,1,1,1,
+1935,7,oppo_4,1,1,1,
+1935,8,user_4,1,1,1,
+1935,9,oppo_5,1,1,0,user_hand
+1935,10,user_5,1,1,0,oppo_life
+1935,11,oppo_6,1,1,0,user_creatures oppo_hand
+1935,12,user_6,1,1,0,user_life user_creatures oppo_hand
+1935,13,oppo_7,1,1,0,oppo_life oppo_hand
+1935,14,user_7,1,1,0,user_life
+1935,15,oppo_8,1,1,0,user_noncreatures oppo_hand
+1935,16,user_8,1,1,0,user_noncreatures
+1935,17,oppo_9,1,1,0,user_noncreatures oppo_hand
+1935,18,user_9,1,1,0,user_life user_creatures user_noncreatures
+1935,19,oppo_10,1,1,0,user_noncreatures
+1935,20,user_10,1,1,0,user_life oppo_life user_noncreatures
+1935,21,oppo_11,1,1,0,user_noncreatures oppo_hand
+1935,22,user_11,1,1,0,user_life oppo_life user_noncreatures
+1935,23,oppo_12,1,1,0,user_noncreatures
+1935,24,user_12,1,1,0,user_life oppo_life user_creatures user_noncreatures
+1935,25,oppo_13,1,1,0,user_noncreatures oppo_hand
+1935,26,user_13,1,1,0,user_creatures user_noncreatures
+1935,27,oppo_14,1,1,0,user_life oppo_life user_noncreatures oppo_hand
+1935,28,user_14,1,1,0,user_creatures user_noncreatures
+1935,29,oppo_15,1,1,0,user_life oppo_hand
+1935,30,user_15,1,1,0,user_creatures
+1935,31,oppo_16,1,1,0,user_creatures
+1935,32,user_16,1,0,0,user_lands user_hand
+1935,33,oppo_17,1,0,0,user_life user_hand oppo_hand
+1948,1,oppo_1,1,1,1,
+1948,2,user_1,1,1,1,
+1948,3,oppo_2,1,1,1,
+1948,4,user_2,1,1,1,
+1948,5,oppo_3,1,1,0,user_hand oppo_hand
+1948,6,user_3,1,1,0,user_noncreatures user_hand
+1948,7,oppo_4,1,1,0,user_creatures user_noncreatures
+1948,8,user_4,1,1,0,user_creatures user_noncreatures
+1948,9,oppo_5,1,1,0,user_creatures user_noncreatures
+1948,10,user_5,1,1,0,user_creatures user_noncreatures
+1948,11,oppo_6,1,1,0,oppo_life user_lands user_creatures user_noncreatures
+1948,12,user_6,1,1,0,user_lands user_hand
+1948,13,oppo_7,1,1,0,user_noncreatures user_hand oppo_hand
+1948,14,user_7,1,1,0,oppo_life user_creatures user_noncreatures user_hand
+1948,15,oppo_8,1,1,0,user_hand oppo_hand
+1948,16,user_8,1,1,1,
+1948,17,oppo_9,1,1,1,
+1948,18,user_9,1,1,1,
+1948,19,oppo_10,1,1,1,
+1948,20,user_10,1,1,1,
+1948,21,oppo_11,1,1,0,oppo_hand
+1948,22,user_11,1,1,0,oppo_hand
+1948,23,oppo_12,1,1,0,user_life
+1948,24,user_12,1,1,1,
+1948,25,oppo_13,1,1,1,
+1948,26,user_13,1,1,0,user_creatures oppo_hand
+1948,27,oppo_14,1,1,0,user_life user_creatures user_hand oppo_hand
+1956,1,user_1,1,1,1,
+1956,2,oppo_1,1,1,1,
+1956,3,user_2,1,1,1,
+1956,4,oppo_2,1,1,1,
+1956,5,user_3,1,1,0,user_lands user_hand
+1956,6,oppo_3,1,1,1,
+1956,7,user_4,1,1,1,
+1956,8,oppo_4,1,1,1,
+1956,9,user_5,1,1,0,oppo_life
+1956,10,oppo_5,1,1,1,
+1956,11,user_6,1,0,0,oppo_life
+1956,12,oppo_6,1,0,0,user_life
+1956,13,user_7,1,0,0,oppo_life
+1956,14,oppo_7,1,0,0,user_life
+1956,15,user_8,1,0,0,user_creatures user_noncreatures
+1956,16,oppo_8,1,0,0,user_life user_noncreatures
+1956,17,user_9,1,1,0,user_creatures user_noncreatures user_hand
+1956,18,oppo_9,1,1,0,user_noncreatures
+1956,19,user_10,1,1,0,user_noncreatures
+1960,1,user_1,1,1,1,
+1960,2,oppo_1,1,1,1,
+1960,3,user_2,1,1,1,
+1960,4,oppo_2,1,1,1,
+1960,5,user_3,1,1,0,user_creatures
+1960,6,oppo_3,1,1,0,user_lands user_creatures
+1960,7,user_4,1,1,0,oppo_life user_lands user_creatures
+1960,8,oppo_4,1,1,0,user_lands user_creatures
+1960,9,user_5,1,1,0,oppo_life user_lands user_creatures
+1960,10,oppo_5,1,1,1,
+1960,11,user_6,1,1,0,oppo_life oppo_hand
+1961,1,user_1,1,1,1,
+1961,2,oppo_1,1,1,1,
+1961,3,user_2,1,1,1,
+1961,4,oppo_2,1,1,1,
+1961,5,user_3,1,1,1,
+1961,6,oppo_3,1,1,1,
+1961,7,user_4,1,1,1,
+1961,8,oppo_4,1,1,1,
+1961,9,user_5,1,1,1,
+1961,10,oppo_5,1,1,0,user_life oppo_life oppo_hand
+1961,11,user_6,1,1,1,
+1961,12,oppo_6,1,1,0,user_life oppo_life
+1961,13,user_7,1,1,1,
+1965,1,user_1,1,1,1,
+1965,2,oppo_1,1,1,1,
+1965,3,user_2,1,1,1,
+1965,4,oppo_2,1,1,1,
+1965,5,user_3,1,1,1,
+1965,6,oppo_3,1,1,1,
+1965,7,user_4,1,1,1,
+1965,8,oppo_4,1,1,1,
+1965,9,user_5,1,1,0,user_lands user_creatures
+1965,10,oppo_5,1,1,0,user_lands user_creatures oppo_hand
+1965,11,user_6,1,1,0,user_lands user_creatures
+1965,12,oppo_6,1,1,0,user_lands user_creatures
+1965,13,user_7,1,1,0,user_lands user_creatures
+1965,14,oppo_7,1,1,0,user_life user_lands user_creatures oppo_hand
+1965,15,user_8,1,1,0,user_lands user_creatures
+1965,16,oppo_8,1,1,0,user_lands user_creatures
+1965,17,user_9,1,1,0,user_lands user_creatures
+1965,18,oppo_9,1,1,0,user_lands user_creatures oppo_hand
+1965,19,user_10,1,0,0,user_lands user_creatures oppo_hand
+1967,1,user_1,1,1,1,
+1967,2,oppo_1,1,1,1,
+1967,3,user_2,1,1,1,
+1967,4,oppo_2,1,1,1,
+1967,5,user_3,1,1,1,
+1967,6,oppo_3,1,1,1,
+1967,7,user_4,1,1,1,
+1967,8,oppo_4,1,1,1,
+1967,9,user_5,1,1,1,
+1967,10,oppo_5,1,1,1,
+1967,11,user_6,1,1,0,user_creatures
+1967,12,oppo_6,1,1,0,user_life user_creatures user_noncreatures oppo_hand
+1967,13,user_7,1,0,0,oppo_life user_creatures
+1967,14,oppo_7,1,0,0,user_life user_creatures oppo_hand
+1967,15,user_8,1,0,0,oppo_life
+1967,16,oppo_8,1,0,0,user_life oppo_life
+1993,1,user_1,1,1,1,
+1993,2,oppo_1,1,1,1,
+1993,3,user_2,1,1,1,
+1993,4,oppo_2,1,1,1,
+1993,5,user_3,1,1,1,
+1993,6,oppo_3,1,1,1,
+1993,7,user_4,1,1,1,
+1993,8,oppo_4,1,1,1,
+1993,9,user_5,1,1,1,
+1993,10,oppo_5,1,1,1,
+1993,11,user_6,1,1,1,
+1993,12,oppo_6,1,1,1,
+1993,13,user_7,1,1,1,
+1993,14,oppo_7,1,1,0,user_creatures
+1993,15,user_8,1,1,0,oppo_life oppo_hand
