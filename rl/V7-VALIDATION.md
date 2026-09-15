@@ -4678,3 +4678,58 @@ What this cannot support:
 - **The start snapshot is the Phase 11 drill's last point.** Its own trajectory was oscillating
   (see "Phase 11 verdict"), so part of any fall could be that trajectory continuing and not this
   phase's opponent mix.
+
+### 12 / M_D — Amendment 4 diagnostic: the argmax readout on the census states (2026-09-15 ~03:30Z WSL)
+
+**Amendment 4** (pre-registered in `rl/PHASE12-CP7.md` before any result; it adds a measurement,
+and the argmax levels and graduation rule are unchanged). Hypothesis: the policy's acting mass is
+spread over several distinct candidates, so the argmax-over-classes readout picks PASS / hold even
+when P(act) > 0.5. Two parts:
+- **(1) Sampled levels** of the three level snapshots. **Paused for memory** at launch: the box
+  swapped and the lane's update time rose from ~20 s to 35–37 s. Rescheduled unattended after the
+  controller's final `L12|done` (`rl/after_p12.sh`). Box rule from now on: the lane plus at most
+  one other model-holding process.
+- **(2) The readout on the recorded census consults**, below.
+
+Rescoring used `rl/p12_readout.py`: each 25-game CP7 census recording, scored with the snapshot
+that played it, on CPU, bound 5 applied as the server does, and the server's argmax-over-classes
+choice recomputed. The recomputed choice **matches the recorded one at 6,160 / 6,160 consults**.
+
+| point (snapshot) | consults offering PASS | argmax PASS | **PASS while P(non-PASS) > 0.5** | of the PASS choices | act rate, argmax | act rate, sampled (mean P(non-PASS)) | creature spell offered: argmax casts | sampled creature mass | non-creature chosen while creature mass > the chosen class |
+|---|---|---|---|---|---|---|---|---|---|
+| start (6,400) | 1,342 | 0.649 | **205/1,342 = 0.153 [0.135, 0.173]** | 0.235 | 0.351 | 0.594 | 96/119 = 0.807 | 0.530 | 1/119 = 0.008 |
+| +1,024 (7,424) | 1,938 | 0.748 | **323/1,938 = 0.167 [0.151, 0.184]** | 0.223 | 0.252 | 0.511 | 90/600 = 0.150 | 0.362 | 65/600 = 0.108 |
+| +2,048 (8,448) | 2,341 | 0.870 | **1,001/2,341 = 0.428 [0.408, 0.448]** | 0.492 | 0.130 | 0.553 | 59/1,422 = 0.041 | 0.282 | 124/1,422 = 0.087 |
+
+**What it shows.**
+- **The PASS-despite-majority rate rises across the three points.** It is flat to +1,024 and
+  jumps at +2,048: 0.153 → 0.167 → 0.428, clear at the last point. At +2,048, half of all PASS
+  choices (0.492) are made while the policy puts more than 0.5 on acting.
+- **On the same states the policy's acting mass is roughly steady.** The mean summed P(non-PASS)
+  goes 0.594 → 0.511 → 0.553, while the argmax readout's act rate falls 0.351 → 0.252 → 0.130. The
+  readout, not the distribution, drives most of the "hold" shape the census recorded.
+- **The creature-spell fall is only partly a readout effect.** The sampled creature mass also
+  falls, 0.53 → 0.36 → 0.28. The "non-creature chosen despite a larger creature mass" case is
+  small (0.01, 0.11, 0.09). The argmax readout amplifies a real decline (0.81 → 0.15 → 0.04 argmax
+  casts) rather than creating it.
+
+**Reading against the pre-statement.** The pre-stated "argmax artifact" reading needs both halves.
+The readout half is **met** (the rate rises). The sampled-level half is **pending** the
+rescheduled battery. "Real regression" cannot be ruled out until the sampled levels are in. No
+reading is declared yet.
+
+What this cannot support:
+- **These are the states argmax play reaches.** At +2,048 there are more consults per game and
+  more held-priority states, so the three rows are not the same state set. The act-rate comparison
+  is valid within a row, and the across-row trend is a trend of both the policy and its states.
+- **One census per point** (25 games, fixed seed 12500), one seed, one deck.
+
+**Amendment 5 (pre-registered ~03:35Z, before any result): a two-stage argmax readout.** It is an
+evaluation-only readout. First, act versus pass by summed probability: act if and only if
+Σ P(non-PASS) > P(PASS). Then, if acting, the argmax over the acting candidates by class. The
+server flag is `--argmax-two-stage`, default off. It is implemented and tested only after
+training ends, then run on the same three snapshots and seeds (100 vs CP7 + 50 vs the heuristic),
+one evaluation at a time after the sampled battery. Reading: if the two-stage levels track the
+sampled levels and both stay flat or rise while the argmax-classes levels fall, the decline is a
+readout artifact and argmax-classes is retired for this policy family. If all three fall
+together, it is a real regression. The full text is in `rl/PHASE12-CP7.md` Amendment 5.
