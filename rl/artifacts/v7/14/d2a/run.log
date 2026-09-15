@@ -1,0 +1,4 @@
+D2A|start|2026-09-15T23:18:42Z
+XDECKS|ck=bc.pt|agent=BenchDimir|vs=cp7|skill=1|oppDeck=BenchDimir|23/100 = 0.230 [0.158,0.322]|losses=77 draws=0 stalls=0 turns_per_ep=18.8
+XDECKS|ck=bc.pt|agent=BenchDimir|vs=cp7|skill=3|oppDeck=BenchDimir|18/100 = 0.180 [0.117,0.267]|losses=82 draws=0 stalls=0 turns_per_ep=18.7
+D2A|done|2026-09-15T23:33:32Z
