@@ -1,0 +1,32 @@
+D1|data|files=25|consults=68952|games=1250|labelled_games=1250|held_games=125|val_games=112|train=55502|val=5915|held=7535|dropped={'unfinished_game_consults': 0}|load_s=176|rss_mb=1964
+D1|data|r_mean_held=0.579|r_var_held=0.665|draws_held=0|stage_mix_held=early:3875,mid:3179,late:481
+D1|B0|coef_std|life_me=+0.713,life_opp=-0.961,hand_me=+0.449,hand_opp=-0.319,lands_me=+0.551,lands_opp=-0.321,nonland_perm_me=+0.484,nonland_perm_opp=-0.274,turn=-0.190,my_turn=+0.191|intercept=+1.267
+/home/miketanto/.local/lib/python3.10/site-packages/torch/nn/modules/transformer.py:382: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+D1|N2|game_vec_s=56
+D1|N2|best_epoch|8|val_mse=0.6378|dim=256
+D1|N1|params|6889635
+D1|N1|epoch=1|train_mse=0.5677|val_mse=0.5893|val_ev=0.2784|s=84
+D1|N1|epoch=2|train_mse=0.4326|val_mse=0.5600|val_ev=0.3143|s=80
+D1|N1|epoch=3|train_mse=0.3630|val_mse=0.6379|val_ev=0.2189|s=80
+D1|N1|epoch=4|train_mse=0.2922|val_mse=0.7305|val_ev=0.1054|s=83
+D1|N1|epoch=5|train_mse=0.2346|val_mse=0.6279|val_ev=0.2311|s=79
+D1|N1|early_stop|epoch=5|best_epoch=2
+D1|N1|best_epoch|2|val_mse=0.5600
+D1|held|model=N1|stage=all|n=7535|games=125|ev=0.095|ev_ci=[-0.172,0.256]|auc=0.788|auc_ci=[0.710,0.859]
+D1|held|model=N1|stage=early|n=3875|games=125|ev=-0.116|ev_ci=[-0.452,0.087]|auc=0.686|auc_ci=[0.610,0.768]
+D1|held|model=N1|stage=mid|n=3179|games=118|ev=0.353|ev_ci=[0.047,0.553]|auc=0.875|auc_ci=[0.781,0.946]
+D1|held|model=N1|stage=late|n=481|games=17|ev=0.028|ev_ci=[-1.155,0.661]|auc=0.717|auc_ci=[0.510,0.983]
+D1|held|model=N2|stage=all|n=7535|games=125|ev=0.146|ev_ci=[-0.011,0.228]|auc=0.761|auc_ci=[0.710,0.815]
+D1|held|model=N2|stage=early|n=3875|games=125|ev=-0.019|ev_ci=[-0.218,0.076]|auc=0.653|auc_ci=[0.596,0.705]
+D1|held|model=N2|stage=mid|n=3179|games=118|ev=0.341|ev_ci=[0.183,0.447]|auc=0.874|auc_ci=[0.820,0.925]
+D1|held|model=N2|stage=late|n=481|games=17|ev=0.123|ev_ci=[-0.554,0.488]|auc=0.713|auc_ci=[0.575,0.966]
+D1|held|model=B0|stage=all|n=7535|games=125|ev=0.196|ev_ci=[0.002,0.315]|auc=0.799|auc_ci=[0.725,0.869]
+D1|held|model=B0|stage=early|n=3875|games=125|ev=0.001|ev_ci=[-0.168,0.085]|auc=0.667|auc_ci=[0.590,0.742]
+D1|held|model=B0|stage=mid|n=3179|games=118|ev=0.377|ev_ci=[0.182,0.516]|auc=0.887|auc_ci=[0.812,0.947]
+D1|held|model=B0|stage=late|n=481|games=17|ev=0.434|ev_ci=[-1.146,0.760]|auc=0.932|auc_ci=[0.833,1.000]
+D1|diff|N1-B0|ev_diff=-0.101|ci=[-0.293,+0.074]
+D1|diff|N2-B0|ev_diff=-0.050|ci=[-0.178,+0.081]
+D1|diff|N1-N2|ev_diff=-0.051|ci=[-0.212,+0.072]
+D1|reading|barely_predicts|N1_ev=0.095|B0_ev=0.196|N1-B0=-0.101|B0>=N1
+D1|done|wall_s=689

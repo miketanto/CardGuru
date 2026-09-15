@@ -5347,3 +5347,57 @@ not climb" at skill 1 cannot be read as "the recipe cannot climb against a weake
 climb against this off-distribution opponent, from this start, in 1,024 episodes". Also pre-stated: the training
 lane runs 4 concurrent driver jobs while the eval rows run 1–2, and CP7 at skill 1 is limited by wall-clock think
 time, so the opponent trained against and the one scored against are not guaranteed to be equally strong.
+
+### 14 / D1 — offline value fit on the 13a recordings: can the network predict outcomes from what it sees?
+
+Every consult with a v7 state in the 25 recordings (68,952 consults, 1,250 games) targets the recorded seat's
+final outcome (±1). Hold-out = the 13b split reproduced exactly (`rl/v7_bc.py`: labelled games, sorted,
+`Random(0).shuffle`, first 10 %) — 125 games, 7,535 consults, held-out mean r = 0.579, Var = 0.665, 0 draws.
+Early stopping uses a validation split of 10 % of the *training* games (`Random(1)`), so the hold-out is never
+used for model selection (a deliberate departure from `v7_bc.py`, which early-stops on its hold-out).
+Script `rl/p14_d1.py`; log + JSON in `rl/artifacts/v7/14/d1/`. Intervals = 1,000 bootstrap resamples of held-out
+GAMES (consults of a game move together). Stage = own-turn number, ceil(global turn / 2): early ≤ 6, mid 7–12,
+late ≥ 13.
+
+Models: **N1** = bc.pt's own critic (`rl/v7_value.py` ValueTrunk — its own token builders, its own 4-layer
+encoder and value MLP, the path `policy_server.py` trains), trained on the outcome; BC never trained it
+(`v7_bc.py` runs `with_value=False`), so it starts from the fresh P10INIT critic. **N2** = the clone's
+representation frozen: the game vector the policy heads return, from an untouched load of bc.pt, with a value MLP
+of the critic's shape on top. **B0** = logistic regression on ten scalars from the same consults (life, hand size,
+lands, non-land permanents — each me and opponent — global turn, my-turn flag; `E[r] = 2p − 1`).
+
+| model | overall EV | overall AUC | early EV / AUC | mid EV / AUC | late EV / AUC |
+|---|---|---|---|---|---|
+| N1 (critic trained on outcome) | **0.095** [−0.172, 0.256] | 0.788 [0.710, 0.859] | −0.116 / 0.686 | 0.353 / 0.875 | 0.028 / 0.717 |
+| N2 (frozen clone representation) | 0.146 [−0.011, 0.228] | 0.761 [0.710, 0.815] | −0.019 / 0.653 | 0.341 / 0.874 | 0.123 / 0.713 |
+| B0 (ten scalars) | **0.196** [0.002, 0.315] | 0.799 [0.725, 0.869] | 0.001 / 0.667 | 0.377 / 0.887 | 0.434 / 0.932 |
+
+Paired differences on the held-out games: N1 − B0 = **−0.101** [−0.293, +0.074] EV; N2 − B0 = −0.050
+[−0.178, +0.081]; N1 − N2 = −0.051 [−0.212, +0.072]. Stage sizes: early 3,875 consults / 125 games, mid 3,179 /
+118, late 481 / 17.
+
+Pre-registered readings:
+* **"The encoding can predict outcomes": NOT met.** It needed N1 EV ≥ 0.35 AND N1 − B0 ≥ 0.05; N1 is 0.095 and is
+  *below* B0.
+* **"Outcomes are barely predictable from observations": MET** (N1 EV 0.095 ≤ 0.25).
+* **"If B0 ≥ N1, say so": B0 ≥ N1.** Ten hand-picked counters explain outcome variance at least as well as the
+  6.9 M-parameter critic trained on the same states — the network is not using the state better than a handful of
+  scalars. The interval on the difference includes 0, so B0 is not *clearly better* either; what is established is
+  that the network is not better.
+
+Two further observations, not pre-registered:
+* **Rank vs calibration.** All three models have AUC ≈ 0.76–0.80 while EV ≈ 0.10–0.20: the *ordering* of positions
+  carries real signal, the squared-error fit does not. A critic used for GAE needs the magnitude, not just the order.
+* **The critic overfits fast.** N1's best epoch was 2 of 12 (val_mse 0.5600); by epoch 5 train_mse had fallen
+  0.5677 → 0.2346 while val_mse rose to 0.6279. At 1,125 training games this fit is data-limited, not capacity-limited.
+
+Cannots. These are CP7-vs-CP7 and CP7-vs-heuristic positions, **not the learner's own states**, so this bounds what
+a critic could learn from *these* recordings, not what the online critic sees. The hold-out pools two opponent
+populations — lane H (CP7 vs the heuristic, CP7 winning 0.831) and lane C (the mirror, 0.492) — so part of every
+model's explained variance is "which population is this game from", readable from the opponent's deck and play;
+that inflates all three EVs relative to a single-opponent setting, and the recordings kept no per-row lane label in
+`d1.json`, so the split was not measured. One seed; the late bucket is 481 consults over 17 games and its interval
+spans almost the whole range. The target here is the undiscounted ±1 outcome, while the lane's `value_ev` uses a
+discounted Monte-Carlo return, so these numbers are not the same quantity as 13c's 0.05–0.22 (they are of similar
+size). The critic was given no privileged rows, because the recordings carry none — this is the unprivileged value
+path, not the `oe`-fed one `policy_server.py` can build.
