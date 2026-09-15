@@ -4791,3 +4791,53 @@ What this cannot support:
 - "Clear below the start" still fails narrowly by the overlap criterion.
 - The oscillation reading rests on 25-game checks. One swing from n=7 to n=8 to n=11 is recorded,
   not a period.
+
+### 12 / M_D — fourth level point, +4,096 episodes (2026-09-15 ~07:30Z WSL)
+
+**Level at 10,496 episodes (+4,096):** CP7 on the own mirror **31/100 = 0.310 [0.228, 0.406]**
+(0 stalls). Heuristic guard **38/50 = 0.760 [0.626, 0.857]**. Not graduated.
+
+| point | trained | CP7 (100), argmax-classes | heuristic guard (50) |
+|---|---|---|---|
+| start | 6,400 | 19/100 = 0.190 [0.125, 0.278] | 35/50 = 0.700 [0.562, 0.809] |
+| +1,024 | 7,424 | 18/100 = 0.180 [0.117, 0.267] | 32/50 = 0.640 [0.501, 0.759] |
+| +2,048 | 8,448 | 9/100 = 0.090 [0.048, 0.162] | 25/50 = 0.500 [0.366, 0.634] |
+| +3,072 | 9,472 | 8/100 = 0.080 [0.041, 0.150] | 26/50 = 0.520 [0.385, 0.652] |
+| +4,096 | 10,496 | 31/100 = 0.310 [0.228, 0.406] | 38/50 = 0.760 [0.626, 0.857] |
+
+Training blocks n=12..15 (sampled play): n=12 cp7 48/208 = 0.188; n=13 heuristic 163/93 = 0.637;
+n=14 cp7 49/207 = 0.191; n=15 cp7 63/193 = 0.246. The last is the best sampled CP7 block of the
+phase; the earlier CP7 blocks were 0.102–0.191.
+
+Per-block CP7 checks n=12..15 (25 argmax games, seed 12500):
+
+| check | trained | CP7 wins | selfrem | counter taken | flash on opp turn | ninjutsu | biggest | creatures/game | consults/game |
+|---|---|---|---|---|---|---|---|---|---|
+| n=12 | 9,728 | 7/25 | 3/256 | 4/107 | 20/47 | 3/3 | 3/5 | 2.88 | 118.9 |
+| n=13 | 9,984 | 10/25 | 15/132 | 16/114 | 31/86 | 8/8 | 13/18 | 4.84 | 107.9 |
+| n=14 | 10,240 | 2/25 | 4/127 | 5/110 | 21/52 | 2/8 | 7/17 | 3.00 | 108.3 |
+| n=15 | 10,496 | 6/25 | 7/122 | 14/79 | 34/68 | 1/6 | 19/27 | 3.80 | 96.8 |
+
+**Reading at +4,096, in the pre-registered terms.**
+
+- **The CP7 level reversed:** 0.19 → 0.18 → 0.09 → 0.08 → **0.31**. It is the best of the phase and
+  the first point above the start. Its interval [0.228, 0.406] still overlaps the start's
+  [0.125, 0.278], so **"improving vs CP7" is not met** by the overlap test.
+- **The heuristic guard is also at its best:** 0.76 against the start's 0.70.
+- **Card habits keep oscillating check to check.** Counter selectivity goes 0.04 → 0.14 → 0.05 →
+  0.18, creatures per game 2.88 → 4.84 → 3.00 → 3.80. Flash on the opponent's turn rose
+  (0.43 → 0.50 at n=15, against 0.04–0.26 earlier in the night). Self-destroy stays low except
+  0.11 at n=13. Consults per game stay high (97–119).
+- **Carried plainly:** one level-to-level swing (0.08 → 0.31 in 1,024 episodes) is as large as the
+  whole night's range. That is consistent with the Amendment 4 readout artifact on an oscillating
+  policy: which side of the act/pass swing a checkpoint lands on moves its argmax level. **No
+  single point is a trend.**
+- **What decides it:** the sampled and two-stage reruns on the saved level snapshots (Amendments 4
+  and 5). The rerun set now covers the start, 7,424, 8,448, 9,472 and 10,496; `rl/run_p12s.sh` is
+  extended, and it runs after the controller's final `L12|done`. The readout at the n=8 snapshot
+  (8,704, the act-swing state) is also owed, on its recorded census consults.
+
+What this cannot support:
+- A trend from any single level. The whole argmax series is within one 1,024-episode swing.
+- One seed and one deck.
+- Graduation remains far off by the argmax rule: 31/100 against 70/100.
