@@ -1,0 +1,15 @@
+C13|wait|2026-09-15T13:13:00Z
+C13|recording_done|2026-09-15T15:25:01Z|RUN13A|done=2026-09-15T15:23:56Z|labelled_total=68500
+C13|REC13SUM|files=25|games=1250|consults=68952|labelled=68500|per_game=55.2|probes_missing=0
+C13|REC13GATE|kind=prio|consults=51628|labelled=51611|frac=1.000|gate=pass
+C13|REC13GATE|kind=target|consults=6626|labelled=6626|frac=1.000|gate=pass
+C13|REC13GATE|kind=attack|consults=6095|labelled=5780|frac=0.948|gate=pass|exact=5780|alias=0|miss=315
+C13|REC13GATE|kind=block|consults=4603|labelled=4483|frac=0.974|gate=pass|exact=4419|alias=64|miss=120
+C13|REC13SUM|types=prio|consults=51628|labelled=51611|y_neg=17|no_y=0|frac=1.000|gate_types=pass|mean_k=3.18|labels=PASS:28222,LAND:7742,SPELL:10401,ACTIVATE:5246
+C13|REC13SUM|types=target|consults=6626|labelled=6626|y_neg=0|no_y=0|frac=1.000|gate_types=pass|mean_k=2.31
+C13|REC13SUM|types=attack|consults=5826|labelled=5678|y_neg=148|no_y=0|frac=0.975|gate_types=pass|mean_k=3.17
+C13|REC13SUM|types=block|consults=1676|labelled=1556|y_neg=120|no_y=0|frac=0.928|gate_types=pass|mean_k=2.21
+C13|REC13SUM|types=trivial|consults=3196|labelled=3029|y_neg=167|no_y=0|frac=0.948|gate_types=pass|mean_k=1.00
+C13|kinds=prio,target,attack,block
+C13|drivers_left=0
+C13|13b_rc=0|2026-09-15T16:53:13Z

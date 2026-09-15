@@ -1,0 +1,21 @@
+B13|start|2026-09-15T15:26:23Z|kinds=prio,target,attack,block
+B13|bc|rc=0|BC|saved=/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/13/bc/bc.pt|best_epoch=6|held_ce=0.2920|held_top1=0.884|held_cls1=0.898|held_type1=0.932|wall_s=1299
+B13|bc|BC|ceiling|held|kind=attack|n=598|ce_floor=0.0000|top1_ceiling=1.000|classes_per_consult=3.38
+B13|bc|BC|ceiling|held|kind=block|n=174|ce_floor=0.0000|top1_ceiling=1.000|classes_per_consult=2.23
+B13|bc|BC|ceiling|held|kind=prio|n=5677|ce_floor=0.0587|top1_ceiling=0.977|classes_per_consult=2.94
+B13|bc|BC|ceiling|held|kind=target|n=718|ce_floor=0.0494|top1_ceiling=0.960|classes_per_consult=2.13
+B13|bc|BC|best|kind=prio|n=5677|held_ce=0.3176|top1=0.876|cls1=0.890|type1=0.919
+B13|bc|BC|best|kind=target|n=718|held_ce=0.2570|top1=0.889|cls1=0.918|type1=1.000
+B13|bc|BC|best|kind=attack|n=598|held_ce=0.0703|top1=0.977|cls1=0.977|type1=0.995
+B13|bc|BC|best|kind=block|n=174|held_ce=0.3655|top1=0.799|cls1=0.799|type1=0.828
+B13|swap|rc=0
+B13|cp7ref|rc=0|lines=12
+B13|census|rc=0 games=25 wins=10 losses=15 games=25
+B13|levels|L13|bc|sampled|cp7|XDECKS|ck=bc.pt|agent=BenchDimir|vs=cp7|oppDeck=BenchDimir|33/100 = 0.330 [0.246,0.427]|losses=67 draws=0 stalls=0 turns_per_ep=17.2
+B13|levels|L13|bc|sampled|heuristic|XDECKS|ck=bc.pt|agent=BenchDimir|vs=heuristic|oppDeck=BenchDimir|39/50 = 0.780 [0.648,0.872]|losses=11 draws=0 stalls=0 turns_per_ep=18.2
+B13|levels|L13|FAIL|bc|twostage|cp7
+B13|levels|L13|FAIL|bc|twostage|heuristic
+B13|levels|L13|FAIL|bc|argmax|cp7
+B13|levels|L13|FAIL|bc|argmax|heuristic
+B13|levels|L13|done|bc|2026-09-15T16:53:13Z
+B13|done|2026-09-15T16:53:13Z

@@ -92,7 +92,7 @@ def battery(ck, deck, rows, games, out, ro="argmax"):
         env["SRVEXTRA"] = TWO
     p = subprocess.run(["bash", f"{RL}/{script}", ck, deck, out], env=env, capture_output=True,
                        text=True, cwd="/home/user/CardGuru")
-    res, lines = {}, [ln for ln in p.stdout.splitlines() if ln.startswith("XDECK|")]
+    res, lines = {}, [ln for ln in p.stdout.splitlines() if ln.startswith(("XDECK|", "XDECKS|"))]  # battery_p12s.sh prints XDECKS|
     for ln in lines:
         m = XD.search(ln)
         if m:

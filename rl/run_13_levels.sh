@@ -25,9 +25,9 @@ for ro in $READOUTS; do
         if grep -q "^$key" $O/levels.txt; then echo "L13|skip|$NAME|$ro|$opp"; continue; fi
         d=$O/${NAME}_${ro}_${opp}
         case $ro in
-            sampled)  line=$(G=$g ROWS="$opp:BenchDimir" bash $RL/battery_p12s.sh "$CK" BenchDimir $d 2>&1 | grep '^XDECKS' | grep -v done | tail -1) ;;
-            twostage) line=$(G=$g ROWS="$opp:BenchDimir" SRVEXTRA="$TWO" bash $RL/battery_xdeck.sh "$CK" BenchDimir $d 7947 7913 2>&1 | grep '^XDECKS' | grep -v done | tail -1) ;;
-            argmax)   line=$(G=$g ROWS="$opp:BenchDimir" bash $RL/battery_xdeck.sh "$CK" BenchDimir $d 7947 7913 2>&1 | grep '^XDECKS' | grep -v done | tail -1) ;;
+            sampled)  line=$(G=$g ROWS="$opp:BenchDimir" bash $RL/battery_p12s.sh "$CK" BenchDimir $d 2>&1 | grep -E '^XDECKS?|' | grep -v done | tail -1) ;;
+            twostage) line=$(G=$g ROWS="$opp:BenchDimir" SRVEXTRA="$TWO" bash $RL/battery_xdeck.sh "$CK" BenchDimir $d 7947 7913 2>&1 | grep -E '^XDECKS?|' | grep -v done | tail -1) ;;
+            argmax)   line=$(G=$g ROWS="$opp:BenchDimir" bash $RL/battery_xdeck.sh "$CK" BenchDimir $d 7947 7913 2>&1 | grep -E '^XDECKS?|' | grep -v done | tail -1) ;;
             *) echo "L13|bad_readout|$ro"; continue ;;
         esac
         if [ -n "$line" ]; then echo "$key$line" | tee -a $O/levels.txt; else echo "L13|FAIL|$NAME|$ro|$opp"; fi

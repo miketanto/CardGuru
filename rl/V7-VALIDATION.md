@@ -5151,3 +5151,100 @@ against CP7's own ~0 rate, not against the RL seat's Phase 12 rate. Cannot: say 
 Enduring Curiosity at instant speed (affects both seats; owed).
 
 **Correction (2026-09-15 ~16:00Z, same session).** The addendum's line 'Enduring Curiosity ... never offered at instant speed to EITHER seat' is wrong as written: `dimir_census` over the full recording counts Enduring Curiosity offered at instant speed 1,684 times (taken 9) - on CP7's OWN turn (non-main steps or a non-empty stack). What the scans show is narrower: it is never offered on the OPPONENT's turn (teacher 0 of 178 castable-looking states, RL seat 0 of 135). The owed question is that one. The answer to the coordinator's question is unchanged (flash on the opponent's turn: offered 141, taken 11 = 0.078 [0.044, 0.134]; all flash casts at instant speed 141/3,786 = 0.037 [0.032, 0.044]).
+
+## 13b — the clone: a fresh card-aware network behaviour-cloned on 68,500 CP7 labels (2026-09-15; branch `v7/lane-d`; runbook `rl/PHASE13-BC.md`)
+
+**Recipe** (`rl/run_13b.sh`, chained after the recording by `rl/chain_13ab.sh`). Init: a **fresh** P10INIT net,
+`--cand-refers-pool`, seed 13 (`rl/artifacts/v7/13/init_on_s13.pt`, 17.5 M parameters). `rl/v7_bc.py` with its
+defaults, fixed before the run: lr 1e-4, AdamW with decay 0.01 on the heads, batch 32, grad clip 1.0, logit
+bound 5, 10 % of **games** held out, early stop on held-out CE with patience 3, one run, seed 0; all four
+decision kinds (each passed the 13a gate); y = −1 and PASS-only k = 1 consults dropped. Memoryless scoring
+(fresh heads state per consult), as in 7d. Best epoch 6 of 9, 1,299 s on cuda. `bc.pt` gitignored; `bc.log`.
+
+| decision kind | held-out n | held-out CE (floor) | top-1 | copy ceiling | top-1 / ceiling | class top-1 | type | trivial predictor |
+|---|---|---|---|---|---|---|---|---|
+| priority | 5,677 | 0.318 (0.059) | **0.876** | 0.977 | **0.897** | 0.890 | 0.919 | PASS 0.547 |
+| target | 718 | 0.257 (0.049) | 0.889 | 0.960 | 0.926 | 0.918 | 1.000 | index 0 0.623 |
+| joint attack | 598 | 0.070 (0.000) | 0.977 | 1.000 | 0.977 | 0.977 | 0.995 | **last candidate 0.924** |
+| joint block | 174 | 0.366 (0.000) | 0.799 | 1.000 | 0.799 | 0.799 | 0.828 | position 1 0.517 |
+| all | 7,167 | 0.292 | 0.884 | | | 0.898 | 0.932 | |
+
+(Copy ceiling as in 7d: the label is one index among identical candidates — the `_argmax_classes` key — so the
+best reachable exact top-1 is the share of labels that are the first index of their class; CE floor = mean
+log #copies. Trivial predictor = the best single label position over the whole recording, `rl/bc13_baseline.py`.)
+Against Phase 7d's clone (W0Base, priority only): held-out top-1 0.606 against a 0.833 ceiling (0.727 of it),
+type agreement 0.887 — this clone's priority top-1 is 0.897 of its ceiling and its class top-1 0.890, so it
+follows CP7's card choice, not only its action type, on held-out games. **The attack head's 0.977 is only
+0.05 above "take the last candidate"** (CP7's declared attack is the last option of CombatMath's kept list
+0.924 of the time) — it cannot be read as learned attack judgement.
+
+**Card-swap** (`rl/p10_cardswap.py`, the 10/A2 pairs and consult sets; `cardswap/cardswap_summary.txt`), mean Δp
+with bootstrap 95 % CI:
+
+| swap class | fresh flag-ON init | bc.pt |
+|---|---|---|
+| **text only** | 0.0430 [0.0405, 0.0456] | **0.0424 [0.0375, 0.0477]** (Δlogit 0.289 vs 0.235; strict flips 0.207 vs 0.119) |
+| P/T | 0.018 | 0.025 |
+| cost | 0.038 | 0.028 |
+| type | 0.099 | 0.104 |
+| own-afterstate control | 0.0015 | 0.0153 |
+
+**CP7's reference census** (`dimir_census` over the 1,250 recording games, `census_cp7ref.txt`): self-removal
+0.007, counterspells taken when offered 0.472, creatures cast per game 3.84, flash at instant speed 0.037,
+ninjutsu taken 0.339, removal on the highest-power enemy 0.975.
+
+**Census of bc.pt** (`rl/record_census.sh bc.pt BenchDimir cp7 25 p13_bc 13700`: argmax-classes play vs CP7,
+25 games, the seed of the 13c per-block checks, transcripts kept; `census_bc.txt`), against CP7's reference:
+
+| counter | bc.pt (25 games) | CP7 (1,250 games) | pre-registered clause |
+|---|---|---|---|
+| removal cast with only own legal targets | 2/120 = **0.017** [0.005, 0.059] | 0.007 | < 0.2 — **met** |
+| counterspells taken when offered | 22/35 = **0.629** [0.463, 0.768] | 0.472 [0.446, 0.499] | in [0.2, 0.5] — **not met** (above) |
+| creatures cast per game | **3.88** [2.99, 4.77] | 3.84 | ≥ 3 — **met** |
+| flash cast at instant speed | 13/75 = 0.173 | 0.037 | — |
+| removal on the highest-power enemy | 24/24 | 0.975 | — |
+| ninjutsu taken | 2/9 | 0.339 | — |
+| games won (a census, not a level) | 10/25 | — | — |
+
+**Levels of bc.pt, three readouts on the same seeds** (`rl/run_13_levels.sh`, row seed 930000, BenchDimir
+mirror; frozen server; `rl/artifacts/v7/13/levels/`):
+
+| readout | vs CP7 (100) | vs heuristic (50) |
+|---|---|---|
+| sampled (`battery_p12s.sh`, -Drl.mode=train) | **33/100 = 0.330 [0.246, 0.427]** | 39/50 = 0.780 [0.648, 0.872] |
+| two-stage (`--argmax-two-stage`, flag checked on the live server) | **31/100 = 0.310 [0.228, 0.406]** | 37/50 = 0.740 [0.604, 0.841] |
+| argmax-classes (continuity only) | 32/100 = 0.320 [0.237, 0.417] | 37/50 = 0.740 [0.604, 0.841] |
+
+0 stalls in every row; 17.2 turns per game vs CP7. **Script fault, not a failed measurement:** `run_13b.log`
+marks the two-stage and argmax rows `L13|FAIL` — `run_13_levels.sh` grepped `^XDECKS` (the prefix of
+`battery_p12s.sh`), while `battery_xdeck.sh` prints `XDECK|`; the games ran and the numbers above are read from
+the rows' probe files (`probe_*_BenchDimir.txt`). Fixed for reruns (`^XDECKS?|`). The same prefix mismatch, the
+other way round, was in the generated 13c controller (phase12's `battery()` kept only `XDECK|` lines, so the
+sampled readout would have parsed as 0/0 at every 13c level); fixed in `rl/make_phase13.py` and regenerated
+before 13c launched. **The three readouts agree** (0.33 / 0.31 / 0.32 vs CP7): the Phase 12 argmax artifact (PASS
+against an acting majority) does not show on the clone. Against Phase 12's Dimir main: sampled 0.330 is clear
+above its sampled start 0.120 [0.070, 0.198] (intervals disjoint) and above its best sampled point 0.220 [0.150,
+0.311] by the point, overlapping.
+
+**Readings, as pre-registered.**
+* **Card-level clone — NOT met by the rule's letter, so "type-level clone again" is the recorded label**, with
+  the ceiling fraction stated as the runbook asks: the first clause holds (held-out priority top-1 0.876 =
+  **0.897 of its 0.977 copy ceiling**, ≥ 0.8; target 0.926, attack 0.977, block 0.799 of theirs), the second does not (text-only card-swap Δp of bc.pt 0.0424
+  [0.0375, 0.0477] vs the fresh flag-ON net's 0.0430 [0.0405, 0.0456]; lower by 0.0006, intervals overlapping).
+  What the label cannot carry, stated beside it rather than instead of it: this is not the 7d failure in the
+  7d sense — 7d's clone reached 0.727 of its ceiling and a type agreement that exceeded its card agreement by
+  0.28; this one's class top-1 (0.890) is within 0.03 of its type agreement (0.919), and on text swaps bc.pt's
+  logit shift (0.289 vs 0.235) and argmax flip rate (0.207 vs 0.119) are both higher than the fresh net's; the
+  Δp measure is compressed by bc.pt's far sharper logits (mean top gap 4.21 vs 0.35). The pre-registered
+  measure was Δp, and on Δp the clause fails.
+* **Competent start — NOT met:** sampled 0.330 [0.246, 0.427] and two-stage 0.310 [0.228, 0.406] vs CP7 are both
+  below 0.35, with the bar inside both intervals. The clone is nevertheless clear above Phase 12's sampled start
+  (0.120 [0.070, 0.198], disjoint) and above its best sampled point (0.220) by the point estimate — 13c starts
+  from a policy that already wins a third of its games against CP7 under every readout.
+* **Habits cloned — 2 of 3 clauses met:** self-destroy 0.017 (< 0.2), creatures 3.88 per game (≥ 3); counterspells
+  0.629 is above the [0.2, 0.5] band (CP7's own 0.472 sits inside it; the clone over-counters on 35 offers).
+* **Positional caveat:** the attack head's 0.977 agreement is 0.05 above "take the last candidate" (0.924).
+
+Cannot: exceed its teacher in expectation (a faithful clone in the CP7 mirror sits near 0.5 at best); say
+anything off BenchDimir; separate imitation from the positional regularity in the attack labels; say the clone
+plays draw-go flash (the teacher does not, 13a addendum); read the census as a level (25 games, argmax).
