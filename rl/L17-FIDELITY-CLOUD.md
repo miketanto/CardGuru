@@ -469,3 +469,51 @@ Fix: none available from this data — it would need the opponent's deck list,
 which 17Lands does not log for the opponent. The honest move is to stop
 comparing opponent-side fields and score only the user's seat, which would
 remove this class and shrink class 1.
+
+## 6. What these numbers cannot support
+
+`rl/L17-FIDELITY.md` §7 applies unchanged; everything there is still true of
+every variant here. The additions this work forces:
+
+* **The opponent seat is reconstructed, and the `oppo` variant did not change
+  that.** Its deck is synthetic (the cards it was seen using, plus basic-land
+  filler), its hand contents are invented, and its hidden choices are the AI's.
+  Forcing its hand *size* to the logged count moved nothing, which says the
+  count was never what was wrong. Any reading that includes `oppo_life` or
+  `oppo_hand` — including the per-turn fidelity of §4, where those two fields
+  account for 385 and 387 of the mismatching fields — is partly a measurement
+  of that reconstruction, not of the engine or of the log.
+* **Order and targets are still guessed.** 60.1 % of user turns had more than
+  one possible order and the `order` variant did not improve on the fixed rule;
+  every target on every spell and every trigger is the AI's choice unless
+  `choice` steers it, and `choice` steers it *using the logged outcome*.
+* **The `choice` and `guided` gains are not fidelity a pipeline could claim.**
+  Both use what the log says happened to decide what to do. The §4.1 ceiling of
+  0.850 over side-turns 1–8 is an upper bound on a *reconstructor* that already
+  knows the answer, not on a policy that does not.
+* **The ability map is an inference, and it maps to a card, not an ability.**
+  217 of 278 ids are accepted by a co-occurrence rule with a coverage threshold;
+  the 61 rejected ids carry 25.3 % of ability occurrences and are unmapped. Even
+  for an accepted id, the map names the owning card — which ability of that card
+  it is remains unknown, and for 5 of 6 occurrences the card has no activated
+  ability at all, so the id is a trigger and the map cannot say which.
+* **Per-turn fidelity is measured with the log's own end state as the start.**
+  The resync writes the logged lives, hands and battlefields into the engine; it
+  cannot write graveyards, exile, counters, tapped status, or library order,
+  because the log does not hold them. A side-turn that "started correct" started
+  correct *in the seven compared fields*, and 4.4 % of side-turns could not even
+  reach that (a token or face-down permanent the engine did not already have).
+  The 0.530 and 0.592 figures are therefore optimistic about the start and
+  strict about the end.
+* **Silent removal is not a legal game action.** To rebuild a battlefield the
+  resync yanks permanents off it without firing leave-the-battlefield triggers
+  and puts logged ones on without enters-the-battlefield triggers
+  (`CardUtil.putCardOntoBattlefieldWithEffects`, XMage's own cheat path). That
+  is the right thing for a state reset and the wrong thing for a rules test: a
+  card whose value is in its ETB or LTB trigger is silently mishandled at every
+  resync boundary.
+* **One set, strong players only**, `TestPlayer`/`TestComputerPlayer` in local
+  test mode, not a server game. And: the harness is **not deterministic** —
+  two runs of the same configuration disagree on 3–5 of 200 games (§1a), so no
+  difference below about ±0.05 turns of mean is a result. Three of the five
+  variants sit inside that band.
