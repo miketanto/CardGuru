@@ -5149,3 +5149,5 @@ flash play from CP7; what it can learn is CP7's main-phase flash use and its cou
 are offered and taken on the opponent's turn). The phase goes on; the 13b census reads flash-at-instant-speed
 against CP7's own ~0 rate, not against the RL seat's Phase 12 rate. Cannot: say why the engine never offers
 Enduring Curiosity at instant speed (affects both seats; owed).
+
+**Correction (2026-09-15 ~16:00Z, same session).** The addendum's line 'Enduring Curiosity ... never offered at instant speed to EITHER seat' is wrong as written: `dimir_census` over the full recording counts Enduring Curiosity offered at instant speed 1,684 times (taken 9) - on CP7's OWN turn (non-main steps or a non-empty stack). What the scans show is narrower: it is never offered on the OPPONENT's turn (teacher 0 of 178 castable-looking states, RL seat 0 of 135). The owed question is that one. The answer to the coordinator's question is unchanged (flash on the opponent's turn: offered 141, taken 11 = 0.078 [0.044, 0.134]; all flash casts at instant speed 141/3,786 = 0.037 [0.032, 0.044]).
