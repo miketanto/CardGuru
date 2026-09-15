@@ -517,3 +517,77 @@ every variant here. The additions this work forces:
   two runs of the same configuration disagree on 3–5 of 200 games (§1a), so no
   difference below about ±0.05 turns of mean is a result. Three of the five
   variants sit inside that band.
+
+## 7. Label yield: what each design would actually produce
+
+The point of the whole exercise is labelled human decisions. Over the 200
+games, the log records **23.32 user decisions per game** (land 6.61, spell 8.57,
+attack 6.25, block 1.90). How many survive each design:
+
+| design | labelled decisions per game | share of all logged user decisions | unambiguous share |
+|---|---|---|---|
+| whole-game rebuild, `base` (decisions before the first mismatch) | 4.94 | 0.212 | 0.365 |
+| whole-game rebuild, `choice` | 6.01 | 0.258 | 0.360 |
+| **per-turn, `resync`+`choice` (decisions in side-turns that replayed correctly)** | **9.91** | **0.425** | — |
+
+Per-turn resync roughly doubles the yield of the whole-game rebuild, and it
+concentrates it where the replay is most trustworthy: side-turns 1–8, where
+per-turn fidelity is 0.850 [0.832, 0.867].
+
+## 8. Recommendation
+
+**Full-game imitation from these logs is not viable. Per-turn labels after a
+resync are, for the first eight side-turns only, and only as a *reconstruction*
+that uses the logged outcome.**
+
+The three findings that decide it:
+
+1. **No rebuilder change gets whole games back.** Five variants, chosen to
+   attack the causes the local run measured, in the order of their counts. Four
+   moved nothing outside the harness's own ±0.05-turn noise, and the fifth
+   reproduced a gain already known. `≥ 8 turns` stayed 0/200 — Wilson upper
+   bound 0.019 — in every one of the seven rebuilds. The bar was 0.50. The gap
+   is not a tuning gap.
+2. **The whole-game framing was the wrong unit, and the cascade reading shows
+   why.** Only 8 of 199 mismatched games [0.021, 0.077] fail a forced action
+   before the state visibly diverges, so failures are symptoms; and one visible
+   divergence ends the count regardless of what the replay gets right
+   afterwards. The same steering worth ⅓ of a turn per *game* is worth 0.06 of
+   fidelity per *turn* (§4.1) — the whole-game metric throws that away.
+3. **Per-turn fidelity is a usable number, and it has a cliff.** Given a
+   correct start, 0.850 [0.832, 0.867] of side-turns 1–8 replay correctly with
+   outcome-steered choices, against 0.353 [0.331, 0.376] from side-turn 9 on.
+   The cliff is not drift — every one of these turns starts from the log — it is
+   board complexity, and it is where the remaining causes of §5 live.
+
+What it would take to make the per-turn design real, in order of leverage:
+
+* **Score only the user's seat.** The opponent's hand contents are unknowable
+  from this data and its life and hand count are 772 of the mismatching fields
+  in §4. Dropping `oppo_life` and `oppo_hand` from the comparison removes a
+  class the data cannot fix, at the cost of no longer testing anything about the
+  opponent. This is a half-day of work in `analyze.py` and `perturn.py`.
+* **Steer trigger targets from consequences**, not just spell targets (§5, class
+  2): use the logged kills, combat damage and survivors to pick the target of
+  every triggered pump, removal and tap. Days, not weeks; it is the same
+  machinery `chooseTarget` already uses.
+* **Cap the label harvest at side-turn 8** (roughly the first 4 rounds) and
+  state the cap. That is where 1,354 of the 1,964 correct side-turns are, and
+  where fidelity is above 0.8.
+* **Do not buy the abilities table.** The finding that changes the plan most is
+  that the `*_abilities` column is a log of abilities that *resolved*, not of
+  activations: only 16.5 % of mapped occurrences are even on a card with a
+  non-mana activated ability. Downloading the real 17Lands ability table would
+  replace an inference (coverage ≥ 0.90 over 2,000 games) with a fact, but it
+  would not make the other five sixths replayable, because the engine already
+  replays them.
+* **Accept that this is a reconstructor, not a demonstrator.** Every number
+  above past `base` uses the logged outcome to make choices. A dataset built
+  this way teaches a policy what a human's *result* looked like with hindsight,
+  and the honest way to use it is as a source of *state → action* pairs for the
+  four logged decision kinds, never as a source of ground-truth play quality.
+
+If the per-turn design is not worth that work, the alternative this trial
+supports is: **stop**, and keep the 17Lands data for what it measures without
+any engine at all — card win rates, deck composition, and the ~23 logged
+decisions per game as features, none of which need a replay to be correct.
