@@ -141,3 +141,21 @@ excluded from the opponent check; they are assumed to be tokens.
 Guided matched longer in 5 of 20 games and shorter in none. Per-game rows:
 `rl/l17_dsk/fidelity_games_debug20{,g}.csv`; summaries `fidelity_summary_debug20{,g}.txt`,
 `causes_summary_debug20.txt`.
+
+## 4. 200-game run (seeded sample: `random.Random(17).sample(range(2000), 200)`)
+
+Preliminary (base rebuild only; guided and cause classification to follow).
+`rl/l17_dsk/fidelity_games_s200.csv`, `fidelity_summary_s200.txt`.
+
+| reading (base, 200 games, all engine runs ok) | value |
+|---|---|
+| median turns matched before first mismatch | **2** (mean 2.58; median turns logged 9) |
+| games matching ≥ 8 turns | **0/200 = 0.000**, Wilson 95% [0.000, 0.019] |
+| same, among the 143 games logged ≥ 8 turns | 0/143, [0.000, 0.026] |
+| games fully matched to their logged end | 1/200 = 0.005, [0.001, 0.028] |
+| turns-matched histogram | 1: 31, 2: 73, 3: 59, 4: 27, 5: 6, 6: 4 |
+| first mismatching field | user_creatures 57, user_life 42, user_hand 41, oppo_life 30, user_lands 13, oppo_hand 11, user_noncreatures 5 |
+| labels per game before the first mismatch | land 2.62, spell 1.64, attack 0.58, block 0.08 (total 4.92) |
+| unambiguous share of those labels | land 0.421, spell 0.034, attack 1.000, block 0.938 (all 0.368) |
+| user turns with more than one possible order | 1058/1759 = 0.601 (all logged user turns) |
+| targeted user spells cast by the engine | 248 |
