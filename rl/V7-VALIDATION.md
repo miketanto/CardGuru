@@ -5111,3 +5111,41 @@ target state identical to the RL seat's (preset-target consults see the spell on
 paid, lands tapped); say the RL seat plays unchanged after the JointCands lift (verbatim move, compiled, not
 re-measured); label CP7's choices CombatMath does not offer (435 joint decisions); say anything off
 BenchDimir or about CP7 at other skills.
+
+### 13a — addendum: are instant-speed flash decisions recorded? (2026-09-15 ~15:50Z WSL; coordinator's check)
+
+Question (main session): `dimir_census` on `rec13_C_s13500` (50 mirror games) reported opponent-turn windows
+recorded but "flash_oppturn: windows on the OPPONENT's turn offering a flash card: 0/0", where the Phase 12
+RL seat on the same deck was offered one 60–170 times per 25 games. Recording gap, or CP7 tapping out?
+
+**Candidate-building path: identical.** `CP7TeacherPlayer.priority` builds its list as `RLPlayer.priority`
+does (`getPlayable(game, true)`, the phantom-land filter, the mana-ability filter, the name|rule sort); no class
+in CP7's chain (ComputerPlayer → 6 → 7) overrides `getPlayable` or the mana-availability path; both seats' drivers
+ran `-Dmage.playableCache=on`. A direct test of the playable memo: 60 teacher games vs the heuristic on a side driver with `-Dmage.playableCache=verify` (`rl/artifacts/v7/13/rec/flashtest_verify.*`): `RL|playableMemo|mode=verify|hits=0|misses=123062|mismatches=0` - the memo never served a cached list to the teacher seat (every `getPlayable` freshly computed), so it cannot have hidden a candidate; the flash picture is unchanged there (Enduring Curiosity 15 castable-looking states, offered 0).
+
+**Recording, all 25 files (1,250 games; opponent-turn = `v7_game[1] < 0.5`; `rl/probes/flash13_scan*.py`):**
+opponent-turn consults 11,292 of 68,952; a flash card was offered as a SPELL candidate on the opponent's turn
+in **141** consults and cast **11** times; on CP7's own turn flash cards were offered 13,853 times and cast
+**3,775** times. Opponent-turn priority consults with a flash card in hand: 3,643; with ≥ 2 untapped own lands
+918 (offered 141), with ≥ 3 364 (offered 49). CP7 is usually tapped low on the opponent's turn (in a 150-game
+sample 52 % of its opponent-turn consults had ≤ 1 untapped land; the RL-seat control 17 %).
+
+**Per card, states where the card is in hand on the opponent's turn with lands ≥ its mana value (and a blue source
+for the blue cards), teacher vs the RL-seat control (`rec_p12_M_D_n012_t09728`, 25 games):**
+
+| card | teacher: castable-looking states / offered | RL seat: states / offered | reading |
+|---|---|---|---|
+| Floodpits Drowner ({1}{U}) | 0 / 0 | 360 / 360 | CP7 never holds it with mana up — it casts it on its own turn |
+| The Wondrous Wasp | 21 / **21** | 223 / 223 | offered whenever castable, both seats |
+| Nowhere to Run ({1}{B}) | 43 / 0 | 13 / 13 | the teacher's 43 states have only Gloomlake Verge / Hidden Lair / Soulstone Sanctuary untapped: Gloomlake's {B} and Hidden Lair's colours are conditional (XMage `ActivateIfConditionManaAbility`), Sanctuary is colourless — no black mana, correctly not offered; the RL seat's 13 had a Swamp / Watery Grave up |
+| Enduring Curiosity ({2}{U}) | 178 / **0** | 135 / **0** | never offered at instant speed to EITHER seat although XMage's card has `FlashAbility` — an engine/card-level fact, not a teacher gap (owed: why; `dimir_census`' FLASH list counts it) |
+
+**Answer.** Not a recording gap: the teacher seat is offered exactly what the RL seat would be offered in the
+same state, and the 0/0 in the census comes from CP7's behaviour — it casts its flash creatures in its own main
+phase (3,775 own-turn casts vs 11 on the opponent's turn) and is rarely holding a castable flash card with the
+right mana open on the opponent's turn. **Consequence for the clone:** these labels carry almost no
+instant-speed flash decisions (141 offers, 11 casts in 68,952 consults), so the clone cannot learn draw-go
+flash play from CP7; what it can learn is CP7's main-phase flash use and its counterspell timing (counterspells
+are offered and taken on the opponent's turn). The phase goes on; the 13b census reads flash-at-instant-speed
+against CP7's own ~0 rate, not against the RL seat's Phase 12 rate. Cannot: say why the engine never offers
+Enduring Curiosity at instant speed (affects both seats; owed).
