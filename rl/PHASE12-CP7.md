@@ -146,6 +146,41 @@ CP7 block n=6 and its check; relaunch `--mains M_D --hours 12`). **No other chan
 rotation, the per-block checks, the 1,024-episode level cadence, the seeds and the
 graduation rule are unchanged; M_L / M_W stay paused (Amendment 2).
 
+## Amendment 4 (2026-09-15 ~03:40Z, coordinator; before any of its results) — sampled-play diagnostic
+
+Observation at +2,048: the sampled training win rate vs CP7 stayed flat (~0.16) and vs the
+heuristic rose (0.48 → 0.605) while the argmax levels fell (CP7 0.19 → 0.18 → 0.09, heuristic
+0.70 → 0.64 → 0.50). Hypothesis (main session): the policy's acting mass is spread over several
+distinct candidates, so the argmax-over-classes readout picks PASS / hold even when P(act) > 0.5 —
+which would produce the census's "hold" shape and a falling argmax level while the sampled policy
+holds or improves. **This adds a measurement only; the pre-registered argmax levels and the
+graduation rule are unchanged.**
+
+1. **Sampled levels** of the three level snapshots (M_D 6,400 start, 7,424, 8,448 in
+   `rl/artifacts/v7/12/pool/`, the start = the drill's M_D_06400): frozen server (`--frozen`, no
+   updates), sampled as in training (`-Drl.mode=train`, as `rl/run_7b0.sh`), otherwise the level
+   battery's flags and seeds exactly — 100 games vs CP7 and 50 vs the heuristic on the Dimir
+   mirror — `rl/battery_p12s.sh` (a copy of `battery_xdeck.sh` with the mode switched; the
+   original is in use by the running controller and is not edited). Side job beside training:
+   server 7949 / driver 7914 (7948 is the census proxy's port), one evaluation at a time; the
+   controller always frees the lane before its own census / level, so the total stays ≤ 2 servers
+   + 2 JVMs.
+2. **Rescoring the census consults** already recorded at those three points (25 CP7 games each:
+   `rec_p12_M_D_start`, `rec_p12_M_D_n003_t07424`, `rec_p12_M_D_n007_t08448`) with the snapshot
+   that played them, on CPU, raw logits with the bound applied as the server does: per consult
+   offering PASS, count "the argmax-over-classes choice is PASS while the summed probability of
+   the non-PASS candidates > 0.5"; and "the choice is not a creature spell while the summed
+   probability of the creature-spell candidates > the chosen class's probability".
+
+**Reading, pre-stated:** "**argmax artifact**" if the sampled levels stay flat or rise across the
+three points while the argmax levels fall, AND the PASS-despite-majority rate rises across the
+points; "**real regression**" if the sampled levels fall with the argmax ones. Anything else
+(e.g. sampled flat but the PASS-despite-majority rate flat) is reported as neither, with what it
+does show. Cannots: 100/50 games per point — a sampled level is a level of the stochastic policy,
+not of a deployable argmax player; the census consults are argmax-play states (the rescoring
+measures the readout on the states argmax play reaches, not on the sampled policy's own states);
+one seed, one deck.
+
 ## STATE (append dated lines; newest last)
 - 2026-09-14 ~22:15Z WSL: Phase 11 drill-down being stopped by the user (rl/stop_drill11.sh); Phase 12 not started.
 - 2026-09-14 22:24Z WSL: LAUNCHED (nothing resident verified before; pgrep 60 s after: runner, controller, battery_xdeck, server 7947, driver JVM). Controller rl/phase12.py via rl/run_phase12.sh --hours 10.5 (no new block after hour 10.5, then the end phase); LOG rl/artifacts/v7/12/phase12.log; state/results/levels/census_lines/battery_lines in rl/artifacts/v7/12/; lanes /tmp/rl_12_<main>/ (seeds 21/22/23), snapshots rl/artifacts/v7/12/pool/<main>_<trained>.pt (opt stripped, gitignored). Start snapshots M_D_06400 (drill pool), M_L_06144 (drill pool), M_W_s1end (1,792 ep). Implementation choices stated before any data: (1) the 75/25 mix is realised EXACTLY by the rotation cp7,heuristic,cp7,cp7 per main (every 1,024-episode window is 3 CP7 blocks + 1 heuristic block; Phase 10 Amendment 3 showed random draws under-delivering); (2) the starting point per main = CP7 100 + heuristic 50 (same G as the guard) + unseen 150 + the 25-game CP7 census; M_W's unseen rows are Phase 10's own rows of the same checkpoint and suite (rl/artifacts/v7/10/eval/M_W_s1end_unseen, 116/150), copied in, not re-run; (3) battery row seeds and the census seed (12500) are fixed, so every level and every check sees the same deals (paired across points); (4) the white check (no census tool for W0Base) = win rate, blocks matching the combat search ([audit] MATCH share), attacks declared / attack windows and [atkaudit] MATCH share, creatures per game from rl/dimir_census.py's board line; (5) snapshots carry no optimiser state, so the first block of each main starts AdamW fresh. Lines: L12|start|<main>|..., L12|block|n=..|main=..|opp=..|wr=..|wall=.., L12|tput|<main>|opp=..|eps_per_h=.., L12|check|<main>|n=..|trained=..|opp=cp7|wr=..|<fields>, L12|level|<main>|point=start/train/end|trained=..|cp7=k/100 = p [lo,hi]|heur=k/50 = ..|graduated=0/1, L12|grad|<main>|..., L12|end|<main>|..., L12|done|reason=... Graceful stop: bash rl/stop_p12.sh; hard: bash rl/kill_p12.sh. Second 18 h keepalive started 22:18Z (to ~16:20Z).
@@ -156,3 +191,4 @@ graduation rule are unchanged; M_L / M_W stay paused (Amendment 2).
 - 2026-09-15 ~01:15Z WSL: FIRST M_D LEVEL (+1,024, 7,424 ep, h=2.83): CP7 18/100 = 0.180 [0.117,0.267] (start 0.190), heuristic 32/50 = 0.640 [0.501,0.759] (start 0.700); not graduated. Checks n=0..3: CP7 7,6,5,4 /25; selfrem 8/9 -> 6/115 -> 2/255 -> 5/258; counter 32/44 -> 6/88 -> 7/105 -> 3/103; flash_opp 3/83 -> 0/73 -> 23/62 -> 8/66; consults/game 69 -> 71 -> 106 -> 85; training blocks vs CP7 0.168, 0.156, 0.137 (heuristic block 0.480). Reading: CP7 level flat; card counters stepped to 'hold' after the heuristic block and stayed three checks (self-destroy near CP7's 0, counterspells almost never cast vs CP7 ~1/3, longer games); no pre-registered reading fires yet (one of up to five points; convergence clauses need four checks). Row: V7-VALIDATION '12 / M_D - first level point'. Next level ~02:55Z.
 - 2026-09-15 02:27Z WSL: AMENDMENT 3 APPLIED (user: stop extended to controller hour 12). STOP touched 02:20:45Z; block n=6 (cp7, 7936->8192, 41/215 = 0.160, 1,365 s) and its check (CP7 4/25; selfrem 7/154, counter 2/80, flash_opp 10/66, cpg 3.72, consults/game 80.6) completed; clean L12|done|reason=stopfile|blocks=7|h=4.04; nothing resident; RESUMED 02:26:43Z with --hours 12 --mains M_D, verified by pgrep 60 s later (runner, controller, lane to 8,448, server 7950, driver JVM; L12|resume|n=7|h=4.05|todo=0). No new block after ~10:24Z. Keepalive sleep 64800 pid 92509 (started 22:18Z) runs to ~16:18Z: covers the end. Also at n=4/n=5 (not in a STATE line before): n=4 cp7 check and n=5 heuristic block 155/101 = 0.605, check 3/25, selfrem 4/57, counter 6/95. PROJECTED M_D levels: +2,048 (8,448) ~03:12Z, +3,072 ~05:00Z, +4,096 ~06:50Z, +5,120 ~08:40Z, +6,144 ~10:30Z if its fourth block starts before 10:24Z (else the end-phase level at ~+5,888); end phase done ~10:45-11:00Z.
 - 2026-09-15 ~03:20Z WSL: SECOND M_D LEVEL (+2,048, 8,448 ep, h=4.88): CP7 9/100 = 0.090 [0.048,0.162] (0.190 -> 0.180 -> 0.090), heuristic 25/50 = 0.500 [0.366,0.634] (0.700 -> 0.640 -> 0.500); not graduated. Checks n=4..7: CP7 6,3,4,2 /25; selfrem 4/294, 4/57, 7/154, 1/148; counter 3/92, 6/95, 2/80, 6/81; flash_opp 9/49, 6/47, 10/66, 8/38; cpg 3.00, 2.88, 3.72, 2.36; consults/game 98, 90, 81, 100. Training blocks vs CP7 flat ~0.16 (n=4 0.164, n=6 0.160, n=7 0.176); heuristic block n=5 0.605. Reading: both yardsticks falling, neither yet clear below start (intervals overlap narrowly) - a regression in the point estimates, not flat; 'improving vs CP7' not met; 'over-fit to CP7' does not apply (CP7 level itself falling); selfrem clause met, counter clause fails every check since n=1, cpg < 3 at two of the last four -> 'card habits converge' not met, habits settled on 'hold' (no oscillation yet); sampled training rates flat/rising while argmax levels fall. Row: V7-VALIDATION '12 / M_D - second level point'. Next level (+3,072) ~05:00Z.
+- 2026-09-15 03:22Z WSL: AMENDMENT 4 recorded (sampled-play diagnostic, before any of its results). Side job rl/run_p12s.sh launched 03:21Z (rl/battery_p12s.sh: frozen server 7949, driver 7914, -Drl.mode=train, the level battery's seeds; start/p1024/p2048 x CP7 100 + heuristic 50; log rl/artifacts/v7/12/sampled/p12s.log, lines P12S|<point>|XDECKS|...), verified by pgrep (server 7949 + driver JVM beside the lane's 7950 + JVM = 2 + 2); memory 1.26 GB available + 8 GB swap. Readout rl/p12_readout.py (CPU, 2 threads) on the three census recordings -> rl/artifacts/v7/12/sampled/readout.txt.
