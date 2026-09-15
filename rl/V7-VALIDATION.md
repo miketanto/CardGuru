@@ -4551,3 +4551,54 @@ the first decisions.
 Throughput: M_D's first block against CP7 ran 256 episodes in 1,249 s, 738 episodes/h. That is
 1.39 h of lane time per 1,024 episodes, plus ~5.5 min per 25-game check and ~0.25 h per level
 point.
+
+### 12 / M_D — first level point, +1,024 episodes (2026-09-15 ~01:15Z WSL; Dimir only, Amendment 2)
+
+**Level at 7,424 episodes (+1,024; blocks cp7, heuristic, cp7, cp7):** CP7 on the own mirror
+**18/100 = 0.180 [0.117, 0.267]** (0 stalls) against the start's 19/100 = 0.190 [0.125, 0.278].
+Heuristic guard 32/50 = 0.640 [0.501, 0.759] against 35/50 = 0.700. Not graduated.
+
+Training blocks (sampled play, the block's own opponent):
+
+| n | opponent | W/L/D/S | win rate | wall |
+|---|---|---|---|---|
+| 0 | cp7 | 43/213/0/0 | 0.168 | 1,249 s |
+| 1 | heuristic | 123/132/1/1 | 0.480 | 503 s |
+| 2 | cp7 | 40/216/0/0 | 0.156 | 1,389 s |
+| 3 | cp7 | 35/221/0/0 | 0.137 | 1,422 s |
+
+Per-block CP7 checks (25 argmax games, own mirror, seed 12500; start = the start snapshot):
+
+| check | trained | CP7 wins | selfrem (only own legal targets → cast) | counter taken | flash on opp turn | ninjutsu | biggest | creatures/game | consults/game |
+|---|---|---|---|---|---|---|---|---|---|
+| start | 6,400 | 4/25 | 7/7 | 31/38 | 5/74 | 2/3 | 18/24 | 3.84 | 61.2 |
+| n=0 | 6,656 | 7/25 | 8/9 | 32/44 | 3/83 | 3/3 | 23/24 | 4.32 | 68.8 |
+| n=1 | 6,912 | 6/25 | 6/115 | 6/88 | 0/73 | 0/0 | 11/12 | 3.72 | 71.3 |
+| n=2 | 7,168 | 5/25 | 2/255 | 7/105 | 23/62 | 1/5 | 7/8 | 3.32 | 105.9 |
+| n=3 | 7,424 | 4/25 | 5/258 | 3/103 | 8/66 | 1/1 | 13/16 | 3.60 | 85.0 |
+
+**Reading at this point.** Vs CP7 the level is flat after +1,024: 0.19 → 0.18, the intervals
+almost identical. The sampled training win rate vs CP7 edged down across the three CP7 blocks
+(0.168, 0.156, 0.137), a trend the 256-game blocks cannot separate from noise.
+
+The card counters moved sharply toward "hold" in one step, right after the heuristic block (n=1),
+and have stayed there for three checks. Self-destroy is now near CP7's own 0/164: 6/115, 2/255,
+5/258. But counterspells are almost never cast (0.07, 0.07, 0.03 of the windows offering one;
+CP7 ~0.33), and games are longer (consults per game 69 → 106 → 85).
+
+In the pre-registered terms, one clause is on track and one is off. The selfrem clause (below 0.3
+over the last four checks) has three checks in, all below. The counter-selectivity clause
+([0.2, 0.5] over the last four) is outside its range at every check since n=1. Creatures per game
+has stayed ≥ 3 (3.32–4.32).
+
+**No pre-registered reading fires yet.** This is one level point of up to five tonight, and every
+convergence clause needs four checks.
+
+What this cannot support: whether "hold" is a settled habit or the first half of another Phase 11
+swing; only the next checks can tell. Also out of reach: whether the heuristic block caused the
+step or merely preceded it. The n=0 → n=1 step also coincides with the second block after
+AdamW's fresh start (Amendment 1).
+
+The selfrem denominators grew 9 → 115–258. Removal windows where only own creatures were legal
+became far more frequent once the policy held its removal, so the rates at n=0 and n=1..3 are on
+very different bases.
