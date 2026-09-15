@@ -1,0 +1,26 @@
+P1|FRESH|text|mean_dp=0.04298 [0.04054,0.04556]|mean_dlogit=0.23462|mean_dlogit_raw=0.23483|max_dlogit=0.5621|flip=0.119 [0.082,0.157]|flip_strict=0.119 [0.082,0.157]|cand=322|consults=229|swaps=1547
+P1|FRESH|text_emb|mean_dp=0.04315 [0.04093,0.04551]|mean_dlogit=0.23556|mean_dlogit_raw=0.23576|max_dlogit=0.5400|flip=0.115 [0.080,0.152]|flip_strict=0.115 [0.080,0.152]|cand=322|consults=229|swaps=1547
+P1|FRESH|text_kw|mean_dp=0.00352 [0.00337,0.00366]|mean_dlogit=0.01860|mean_dlogit_raw=0.01861|max_dlogit=0.0367|flip=0.059 [0.030,0.091]|flip_strict=0.059 [0.030,0.091]|cand=322|consults=229|swaps=1547
+P1|FRESH|pt|mean_dp=0.01760 [0.01646,0.01871]|mean_dlogit=0.09718|mean_dlogit_raw=0.09721|max_dlogit=0.4074|flip=0.062 [0.037,0.086]|flip_strict=0.062 [0.037,0.086]|cand=401|consults=276|swaps=878
+P1|FRESH|cost|mean_dp=0.03843 [0.03727,0.03972]|mean_dlogit=0.21105|mean_dlogit_raw=0.21113|max_dlogit=0.4470|flip=0.097 [0.069,0.127]|flip_strict=0.097 [0.069,0.127]|cand=302|consults=220|swaps=454
+P1|FRESH|type|mean_dp=0.09934 [0.09474,0.10379]|mean_dlogit=0.57324|mean_dlogit_raw=0.57830|max_dlogit=1.6123|flip=0.185 [0.166,0.206]|flip_strict=0.185 [0.166,0.206]|cand=838|consults=503|swaps=6704
+P1|FRESH|self_mana|mean_dp=0.00152 [0.00148,0.00157]|mean_dlogit=0.00827|mean_dlogit_raw=0.00829|max_dlogit=0.0242|flip=0.012 [0.005,0.020]|flip_strict=0.012 [0.005,0.020]|cand=838|consults=503|swaps=838
+P1|FRESH|text_by_keyword|first strike=0.08384(n=175)|flying=0.07640(n=51)|lifelink=0.02959(n=796)|prowess=0.02680(n=175)|vigilance=0.06088(n=350)
+P1|FRESH|context|mean_p_before(text cands)=0.388
+P1|FRESH|tie_census|diff-name SPELL pairs, same afterstate row: n=219 mean|dlogit|=0.09769 tied(<1e-4)=0.000 | different row: n=306 mean|dlogit|=0.184
+P1|FRESH|yardstick|mean_top_gap=0.350|mean_within_consult_logit_std=0.388|mean_abs_raw_logit=0.38
+P1|FRESH|mechanism|rel|enc(cand)-build(cand)|=0.00000|rel|enc(game)-build(game)|=0.00000|mean|W| att.qkv=0.0313 att.out=0.00000 ffn.in=0.0312 ffn.out=0.00000|edge_bias refers_to max=0.00000 mean=0.00000|all edges max=0.00000
+P1|FRESH|reading=text-sensitive|ratio_text_over_pt=2.442
+P1|BC|text|mean_dp=0.04241 [0.03752,0.04765]|mean_dlogit=0.28872|mean_dlogit_raw=0.58726|max_dlogit=2.7045|flip=0.207 [0.167,0.247]|flip_strict=0.207 [0.167,0.247]|cand=322|consults=229|swaps=1547
+P1|BC|text_emb|mean_dp=0.03975 [0.03476,0.04511]|mean_dlogit=0.27855|mean_dlogit_raw=0.56610|max_dlogit=2.4057|flip=0.186 [0.145,0.228]|flip_strict=0.186 [0.145,0.228]|cand=322|consults=229|swaps=1547
+P1|BC|text_kw|mean_dp=0.00997 [0.00887,0.01109]|mean_dlogit=0.05403|mean_dlogit_raw=0.10870|max_dlogit=0.2403|flip=0.041 [0.020,0.067]|flip_strict=0.041 [0.020,0.067]|cand=322|consults=229|swaps=1547
+P1|BC|pt|mean_dp=0.02500 [0.02178,0.02824]|mean_dlogit=0.18408|mean_dlogit_raw=0.39472|max_dlogit=1.1017|flip=0.104 [0.078,0.131]|flip_strict=0.104 [0.078,0.131]|cand=401|consults=276|swaps=878
+P1|BC|cost|mean_dp=0.02843 [0.02487,0.03200]|mean_dlogit=0.16861|mean_dlogit_raw=0.35632|max_dlogit=1.0513|flip=0.187 [0.141,0.231]|flip_strict=0.187 [0.141,0.231]|cand=302|consults=220|swaps=454
+P1|BC|type|mean_dp=0.10408 [0.09603,0.11226]|mean_dlogit=0.76149|mean_dlogit_raw=1.55497|max_dlogit=8.7906|flip=0.222 [0.196,0.248]|flip_strict=0.222 [0.196,0.248]|cand=838|consults=503|swaps=6704
+P1|BC|self_mana|mean_dp=0.01526 [0.01300,0.01761]|mean_dlogit=0.08945|mean_dlogit_raw=0.19206|max_dlogit=0.8989|flip=0.036 [0.019,0.055]|flip_strict=0.036 [0.019,0.055]|cand=838|consults=503|swaps=838
+P1|BC|text_by_keyword|first strike=0.05344(n=175)|flying=0.03009(n=51)|lifelink=0.03680(n=796)|prowess=0.07246(n=175)|vigilance=0.05923(n=350)
+P1|BC|context|mean_p_before(text cands)=0.519
+P1|BC|tie_census|diff-name SPELL pairs, same afterstate row: n=219 mean|dlogit|=0.42233 tied(<1e-4)=0.000 | different row: n=306 mean|dlogit|=1.617
+P1|BC|yardstick|mean_top_gap=4.209|mean_within_consult_logit_std=3.764|mean_abs_raw_logit=5.83
+P1|BC|mechanism|rel|enc(cand)-build(cand)|=0.89821|rel|enc(game)-build(game)|=1.42937|mean|W| att.qkv=0.0320 att.out=0.00751 ffn.in=0.0311 ffn.out=0.00514|edge_bias refers_to max=0.05407 mean=0.02985|all edges max=0.09705
+P1|BC|reading=text-sensitive|ratio_text_over_pt=1.696
