@@ -53,7 +53,7 @@ STEP 1 - ENGINE (from scratch)
 
 STEP 2 - REPRODUCE (on the corrected harness at 19e179b)
 - Port the harness to your build and rerun the base rebuild on the same 200 seeded games.
-- Report whether the per-game turns matched equal the corrected base 200 rows in `rl/l17_dsk/` (see `rl/L17-FIDELITY.md` for the file name). Report any differences, with the reason for each.
+- Report whether the per-game turns matched equal `rl/l17_dsk/fidelity_games_s200.csv` (the corrected base 200 run). Report any differences, with the reason for each.
 - Commit and push.
 
 STEP 3 - IMPROVE THE REBUILDER (the main work). Attack the causes in order of their counts, each as a named, separately reported variant. The base result stays as recorded. Candidates:
