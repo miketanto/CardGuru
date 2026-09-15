@@ -4733,3 +4733,61 @@ one evaluation at a time after the sampled battery. Reading: if the two-stage le
 sampled levels and both stay flat or rise while the argmax-classes levels fall, the decline is a
 readout artifact and argmax-classes is retired for this policy family. If all three fall
 together, it is a real regression. The full text is in `rl/PHASE12-CP7.md` Amendment 5.
+
+### 12 / M_D — third level point, +3,072 episodes (2026-09-15 ~05:25Z WSL)
+
+**Level at 9,472 episodes (+3,072):** CP7 on the own mirror **8/100 = 0.080 [0.041, 0.150]**
+(0 stalls). Heuristic guard **26/50 = 0.520 [0.385, 0.652]**. Not graduated.
+
+| point | trained | CP7 (100), argmax-classes | heuristic guard (50) |
+|---|---|---|---|
+| start | 6,400 | 19/100 = 0.190 [0.125, 0.278] | 35/50 = 0.700 [0.562, 0.809] |
+| +1,024 | 7,424 | 18/100 = 0.180 [0.117, 0.267] | 32/50 = 0.640 [0.501, 0.759] |
+| +2,048 | 8,448 | 9/100 = 0.090 [0.048, 0.162] | 25/50 = 0.500 [0.366, 0.634] |
+| +3,072 | 9,472 | 8/100 = 0.080 [0.041, 0.150] | 26/50 = 0.520 [0.385, 0.652] |
+
+Training blocks n=8..11 (sampled play): n=8 cp7 49/207 = 0.191; n=9 heuristic 147/109 = 0.574;
+n=10 cp7 43/213 = 0.168; n=11 cp7 26/230 = 0.102 (the lowest CP7 block so far; the earlier ones were
+0.137–0.176). Wall ~1,415 s per CP7 block and 552 s per heuristic block.
+
+Per-block CP7 checks n=8..11 (25 argmax games, seed 12500):
+
+| check | trained | CP7 wins | selfrem | counter taken | flash on opp turn | ninjutsu | biggest | creatures/game | consults/game |
+|---|---|---|---|---|---|---|---|---|---|
+| n=8 | 8,704 | 7/25 | 11/18 | 20/37 | 17/76 | 1/3 | 14/23 | 4.04 | 75.7 |
+| n=9 | 8,960 | 5/25 | 9/89 | 14/41 | 3/73 | 0/7 | 11/15 | 4.00 | 72.7 |
+| n=10 | 9,216 | 5/25 | 3/154 | 7/88 | 13/62 | 1/1 | 4/7 | 3.24 | 95.5 |
+| n=11 | 9,472 | 3/25 | 1/114 | 3/108 | 3/35 | 1/2 | 6/7 | 2.36 | 109.0 |
+
+**Reading at +3,072, in the pre-registered terms.**
+
+- **CP7 argmax level:** 0.19 → 0.18 → 0.09 → 0.08. The last interval [0.041, 0.150] overlaps the
+  start's [0.125, 0.278] only at its edge. This is a regression in the point estimate, and not yet
+  clear by the non-overlap criterion.
+- **Heuristic guard:** 0.70 → 0.64 → 0.50 → 0.52, falling and overlapping the start's interval.
+- **"Improving vs CP7" is not met.** "Over-fit to CP7" does not apply.
+- **Card habits oscillate again under the fixed opponent.** At n=8 the counters swung back to
+  "act": selfrem 11/18 = 0.61 (above the clause's 0.3), counter 20/37 = 0.54 (above the [0.2, 0.5]
+  band), creatures 4.04, consults per game 76. By n=10–11 they were back to "hold": selfrem 0.02 /
+  0.01, counter 0.08 / 0.03, creatures 3.24 / 2.36, consults per game 96 / 109.
+  - This is the runbook's "oscillates": selfrem and counter swing across their ranges again, as in
+    Phase 11. So "card habits converge" is not met.
+  - The runbook's **drift-hypothesis test** predicted no oscillation under a fixed mix. The Phase 11
+    oscillation is therefore **not specific to the league mix**, which **weakens self-play drift as
+    the main explanation**.
+  - The runbook's alternative is the coarse terminal reward. It is not established here; it is the
+    pre-registered next candidate.
+- **The Amendment 4 readout artifact applies.** The argmax-classes level increasingly understates
+  the sampled policy: PASS against an acting majority rose 0.153 → 0.167 → 0.428 over the first
+  three points. The sampled and two-stage reruns after training (Amendments 4 and 5) decide how
+  much of the level decline is real.
+  - The oscillation itself is seen in the recorded argmax play. How much of it is the readout
+    flipping at a near-0.5 act mass, and how much is the distribution moving, is part of what those
+    reruns and a readout at the n=8 snapshot could separate. The n=8 readout is not run; noted as
+    owed.
+
+What this cannot support:
+- One seed and one deck.
+- "Clear below the start" still fails narrowly by the overlap criterion.
+- The oscillation reading rests on 25-game checks. One swing from n=7 to n=8 to n=11 is recorded,
+  not a period.
