@@ -5297,3 +5297,53 @@ diagnosis above is a reading of the statistics, not an experiment. Candidate nex
 run): an offline value-fit test on the 13a recordings (can the network predict outcomes at all?), a CP7
 skill ladder with the same recipe (is skill 6's search the ceiling?), larger steps with a KL-to-bc.pt anchor,
 DAgger-style relabelling of the learner's own states by CP7.
+
+## 14 — diagnostics: can the network predict outcomes (D1), and is CP7 skill 6 the ceiling (D2)? (2026-09-15; branch `v7/lane-d`; runbook `rl/PHASE14-DIAG.md`)
+
+Two diagnostics run after 13c BROKE at 2,048 episodes. Pre-registration (thresholds, readings and the combined
+table) is in `rl/PHASE14-DIAG.md`, committed 7b05cde before either ran; nothing below changes a threshold.
+D1 (offline value fit) and D2b (1,024 episodes vs a weaker CP7) are appended to this section when they report.
+
+### 14 / D2a — the CP7 skill ladder of the clone (bc.pt, sampled readout, 100 games per rung)
+
+`bc.pt` (the 13b clone) against CP7 on the BenchDimir mirror, sampled play, row seed 930000 — the same seed
+as bc.pt's skill-6 row in 13b, so the three rows see the same deals. 0 stalls anywhere.
+
+| CP7 skill | search depth / think time | bc.pt sampled level | turns/ep |
+|---|---|---|---|
+| 1 | depth 4, 3 s | 23/100 = 0.230 [0.158, 0.322] | 18.8 |
+| 3 | depth 4, 9 s | 18/100 = 0.180 [0.117, 0.267] | 18.7 |
+| 6 (13b) | depth 6, 18 s | 33/100 = 0.330 [0.246, 0.427] | 17.2 |
+
+**The ladder is inverted: the clone does not do better against a weaker CP7, it does slightly worse.**
+
+**What `rl.aiSkill` actually is** (asked before reading the ladder as a difficulty axis). `-Drl.aiSkill` goes
+straight into the CP7 constructor (`rl/xmage-src/EpisodeRunner.java:248-252`, opponent seat; `:178-181`, the 13a
+teacher seat), `ComputerPlayer7` forwards it unchanged to its parent
+(`Mage.Server.Plugins/Mage.Player.AI.MAD/src/mage/player/ai/ComputerPlayer7.java:23-24`), and the parent binds it
+(`.../ComputerPlayer6.java:92-101`): `if (skill < 4) { maxDepth = 4; } else { maxDepth = skill; }`,
+`maxThinkTimeSecs = skill * 3`, `maxNodes = MAX_SIMULATED_NODES_PER_CALC` (5000, a constant, line 54). So skill 1
+and skill 3 have the **same search depth (4)** and differ only in think time (3 s vs 9 s); skill 6 is depth 6 /
+18 s. Nothing about evaluation or candidate pruning changes with skill. The lower two rungs are therefore a
+**time** ladder at equal depth, which is consistent with skill 3 (same depth, 3x the time) beating skill 1.
+
+**Reading.** The clone was cloned from CP7 *at skill 6* (13a recorded `rl.agent=cp7 -Drl.aiSkill=6`), so a
+lower-skill CP7 is an **off-distribution opponent** — one that behaves differently — rather than a weaker version
+of the opponent bc.pt learned to imitate. A shallower, less deliberative CP7 is not easier for this clone.
+
+**Training rung = skill 1**, by the pre-registered rule as written ("if skill 1 is already ≤ 0.35, use 1"; it is
+also the lowest of {1, 3} at ≤ 0.70). Stated plainly: the rule's premise — that a weaker CP7 gives the clone
+headroom — is contradicted by the measurement, and no threshold was changed after seeing it.
+
+**Cannots.** The three Wilson intervals overlap (skill 1 [0.158, 0.322] vs skill 3 [0.117, 0.267] heavily; skill 1
+vs skill 6 [0.246, 0.427] slightly), so 100 games per rung establish "no headroom appears at lower skill", **not**
+the order of the rungs. One seed, one deck, sampled readout only. CP7's search is wall-clock limited, so its
+effective strength depends on machine load: the two D2a arms ran in parallel (2 servers + 2 JVMs competing) while
+the skill-6 reference row ran alone — that confound would have made the skill-1 / skill-3 opponents *weaker* than
+their nominal budget, i.e. it pushes opposite to the observed inversion and cannot explain it away.
+
+**Pre-stated before D2b reported** (`rl/PHASE14-DIAG.md` STATE, 23:37Z): because the ladder is inverted, a "does
+not climb" at skill 1 cannot be read as "the recipe cannot climb against a weaker opponent" — only as "it does not
+climb against this off-distribution opponent, from this start, in 1,024 episodes". Also pre-stated: the training
+lane runs 4 concurrent driver jobs while the eval rows run 1–2, and CP7 at skill 1 is limited by wall-clock think
+time, so the opponent trained against and the one scored against are not guaranteed to be equally strong.
