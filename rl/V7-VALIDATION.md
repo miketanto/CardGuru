@@ -4602,3 +4602,11 @@ AdamW's fresh start (Amendment 1).
 The selfrem denominators grew 9 → 115–258. Removal windows where only own creatures were legal
 became far more frequent once the policy held its removal, so the rates at n=0 and n=1..3 are on
 very different bases.
+
+**Amendment 3 (user, ~02:20Z 2026-09-15): stop extended.** Training for M_D now stops at
+controller hour 12 from the 22:24Z start, meaning no new block after ~10:24Z instead of ~08:54Z.
+The end phase (final 100-game CP7 level, 50-game heuristic guard, unseen suite) follows as
+before. The change was applied at a block boundary: a graceful stop after block n=6 and its check,
+then a relaunch with `--mains M_D --hours 12`. No other change: the level cadence (every 1,024
+episodes), the rotation, the checks, the seeds and the graduation rule are all unchanged. M_L and
+M_W remain paused.
