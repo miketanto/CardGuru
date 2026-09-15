@@ -1,0 +1,21 @@
+L13|start|M_B|ck=bc.pt|episodes=0|start_level=the 13b row|start_census=the 13b row
+L13|block|n=0|h=0.39|main=M_B|trained=0->256|opp=cp7|W/L/D/S=72/183/1/1|wr=0.281|errors=0|wall=1410s|rc=0
+L13|tput|M_B|opp=cp7|episodes=256|wall=1410s|eps_per_h=654|h_per_1024=1.57
+L13|check|M_B|n=0|h=0.49|trained=256|opp=cp7|wr=4/25 = 0.16 [0.064,0.347]|smallbig=-(solver_no_block=-)|landsearch=-|cpg=3.72|consults_pg=49.8|tag=p13_M_B_n000_t00256
+L13|block|n=1|h=0.66|main=M_B|trained=256->512|opp=heuristic|W/L/D/S=166/90/0/0|wr=0.648|errors=0|wall=606s|rc=0
+L13|tput|M_B|opp=heuristic|episodes=256|wall=606s|eps_per_h=1520|h_per_1024=0.67
+L13|check|M_B|n=1|h=0.74|trained=512|opp=cp7|wr=9/25 = 0.36 [0.202,0.555]|smallbig=-(solver_no_block=-)|landsearch=-|cpg=3.64|consults_pg=49.2|tag=p13_M_B_n001_t00512
+L13|block|n=2|h=1.11|main=M_B|trained=512->768|opp=cp7|W/L/D/S=69/187/0/0|wr=0.270|errors=0|wall=1326s|rc=0
+L13|check|M_B|n=2|h=1.19|trained=768|opp=cp7|wr=11/25 = 0.44 [0.267,0.629]|smallbig=-(solver_no_block=-)|landsearch=-|cpg=4.12|consults_pg=70.6|tag=p13_M_B_n002_t00768
+L13|block|n=3|h=1.72|main=M_B|trained=768->1024|opp=cp7|W/L/D/S=73/183/0/0|wr=0.285|errors=0|wall=1884s|rc=0
+L13|check|M_B|n=3|h=1.89|trained=1024|opp=cp7|wr=4/25 = 0.16 [0.064,0.347]|smallbig=-(solver_no_block=-)|landsearch=-|cpg=3.76|consults_pg=66.4|tag=p13_M_B_n003_t01024
+L13|level|M_B|point=train|h=2.92|trained=1024|gained=1024|sampled_cp7=22/100 = 0.220 [0.150,0.311]|sampled_heur=36/50 = 0.720 [0.583,0.825]|sampled_stalls=0|twostage_cp7=35/100 = 0.350 [0.264,0.447]|twostage_heur=36/50 = 0.720 [0.583,0.825]|twostage_stalls=0|argmax_cp7=39/100 = 0.390 [0.300,0.488]|argmax_heur=37/50 = 0.740 [0.604,0.841]|argmax_stalls=0|graduated=0
+L13|block|n=4|h=3.34|main=M_B|trained=1024->1280|opp=cp7|W/L/D/S=54/202/0/0|wr=0.211|errors=0|wall=1483s|rc=0
+L13|check|M_B|n=4|h=3.41|trained=1280|opp=cp7|wr=10/25 = 0.40 [0.234,0.593]|smallbig=-(solver_no_block=-)|landsearch=-|cpg=3.92|consults_pg=79.8|tag=p13_M_B_n004_t01280
+L13|block|n=5|h=3.62|main=M_B|trained=1280->1536|opp=heuristic|W/L/D/S=183/73/0/0|wr=0.715|errors=0|wall=764s|rc=0
+L13|check|M_B|n=5|h=3.68|trained=1536|opp=cp7|wr=14/25 = 0.56 [0.371,0.733]|smallbig=-(solver_no_block=-)|landsearch=-|cpg=4.12|consults_pg=58.4|tag=p13_M_B_n005_t01536
+L13|block|n=6|h=4.10|main=M_B|trained=1536->1792|opp=cp7|W/L/D/S=61/195/0/0|wr=0.238|errors=0|wall=1529s|rc=0
+L13|check|M_B|n=6|h=4.20|trained=1792|opp=cp7|wr=7/25 = 0.28 [0.143,0.476]|smallbig=-(solver_no_block=-)|landsearch=-|cpg=4.36|consults_pg=95.5|tag=p13_M_B_n006_t01792
+L13|block|n=7|h=4.66|main=M_B|trained=1792->2048|opp=cp7|W/L/D/S=53/203/0/0|wr=0.207|errors=0|wall=1661s|rc=0
+L13|check|M_B|n=7|h=4.76|trained=2048|opp=cp7|wr=3/25 = 0.12 [0.042,0.300]|smallbig=-(solver_no_block=-)|landsearch=-|cpg=3.52|consults_pg=81.0|tag=p13_M_B_n007_t02048
+L13|level|M_B|point=train|h=5.88|trained=2048|gained=2048|sampled_cp7=29/100 = 0.290 [0.210,0.385]|sampled_heur=31/50 = 0.620 [0.482,0.741]|sampled_stalls=0|twostage_cp7=24/100 = 0.240 [0.167,0.332]|twostage_heur=33/50 = 0.660 [0.522,0.776]|twostage_stalls=0|argmax_cp7=32/100 = 0.320 [0.237,0.417]|argmax_heur=30/50 = 0.600 [0.462,0.724]|argmax_stalls=0|graduated=0

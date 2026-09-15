@@ -5248,3 +5248,52 @@ above its sampled start 0.120 [0.070, 0.198] (intervals disjoint) and above its 
 Cannot: exceed its teacher in expectation (a faithful clone in the CP7 mirror sits near 0.5 at best); say
 anything off BenchDimir; separate imitation from the positional regularity in the attack labels; say the clone
 plays draw-go flash (the teacher does not, 13a addendum); read the census as a level (25 games, argmax).
+
+## 13c — RL against CP7 from the clone: BREAK at 2,048 (2026-09-15; branch `v7/lane-d`; runbook `rl/PHASE13-BC.md` + Amendment 1)
+
+One main (M_B, BenchDimir mirror) from `bc.pt`, Phase 12 recipe (lr 3e-5, 1 epoch, logit bound 5,
+AdamW wd 0.01 on heads, `--adv-norm batch`, `--target-kl 0.02`), 75/25 CP7/heuristic rotation, 256-episode
+blocks, 100-game CP7 / 50-game heuristic levels every 1,024 in three readouts. Stopped by the
+pre-registered make-or-break rule (Amendment 1, committed 27dc99d before any block past 1,024 reported).
+
+| checkpoint | sampled vs CP7 | two-stage vs CP7 | argmax vs CP7 | sampled vs heur | two-stage vs heur | argmax vs heur |
+|---|---|---|---|---|---|---|
+| bc.pt (13b) | 33/100 = 0.330 [0.246, 0.427] | 31/100 = 0.310 [0.228, 0.406] | 32/100 = 0.320 [0.237, 0.417] | 39/50 = 0.780 [0.648, 0.872] | 37/50 = 0.740 [0.604, 0.841] | 37/50 = 0.740 [0.604, 0.841] |
+| 1,024 | 22/100 = 0.220 [0.150, 0.311] | 35/100 = 0.350 [0.264, 0.447] | 39/100 = 0.390 [0.300, 0.488] | 36/50 = 0.720 [0.583, 0.825] | 36/50 = 0.720 [0.583, 0.825] | 37/50 = 0.740 [0.604, 0.841] |
+| 2,048 | 29/100 = 0.290 [0.210, 0.385] | 24/100 = 0.240 [0.167, 0.332] | 32/100 = 0.320 [0.237, 0.417] | 31/50 = 0.620 [0.482, 0.741] | 33/50 = 0.660 [0.522, 0.776] | 30/50 = 0.600 [0.462, 0.724] |
+
+Training blocks (sampled play, moving policy): CP7 0→1,024 214/768 = 0.279 [0.248, 0.311] (blocks 0.281 /
+0.270 / 0.285); CP7 1,024→2,048 168/768 = 0.219 [0.191, 0.249] (0.211 / 0.238 / 0.207); heuristic blocks
+166/256 = 0.648 and 183/256 = 0.715. 25-game argmax checks vs CP7: 0.16, 0.36, 0.44, 0.16, 0.40, 0.56, 0.28, 0.12.
+
+Pre-registered readings:
+* **Improves on the clone: not met.**
+* **Forgets the clone: not met as defined** (no sampled or two-stage level clearly below bc.pt's; every interval
+  overlaps). But it is a **regression, not flat**: at 2,048 all four graduation-readout cells are below bc.pt's
+  point estimates, and the CP7 training win rate fell 0.279 → 0.219 with intervals that only touch.
+* **Habits hold: not met** — counter selectivity left its band once in the last four checks (0.293, 0.300,
+  **0.197**, 0.286; bc.pt 0.629, first 13c check 0.721); self-removal < 0.2 held (≤ 0.025); creatures ≥ 3 held
+  (3.52–4.36).
+* **Amendment 1: BREAK** (`rl/artifacts/v7/13/c/makebreak.txt`): rule (a) best sampled/two-stage 29/100 < 43;
+  rule (b) CP7 training blocks 1,024→2,048 Wilson lower 0.191 ≤ 0.311. STOP touched 2026-09-15 22:49Z; the
+  controller finishes block 2,048→2,304 (not part of the verdict). The KL-to-bc.pt remedy was pre-registered
+  only for "forgets" and is not triggered by this verdict.
+
+Behaviour (census, 25-game argmax checks): the clearest change from bc.pt is fewer counters — We Say Thee Nay!
+offered about twice as often but cast rarely (bc.pt 8/27, 2,048 check 5/58 region); Spell Snare / Spell Pierce
+still taken almost always; flash creatures drift toward main-phase casting (instant-speed share 0.17 → ~0.08,
+intervals overlap); removal targeting and board development unchanged. Transcripts (bc.pt vs 1,024 check):
+losses end ~turn 17–18 with the learner at ~3 life and CP7 at 12–15 (races lost, not stalls); attacks match the
+CombatMath reference 73/81 vs 69/79; legend-rule self-losses 2 per 25 games in both (not a cause).
+
+Learner statistics (server log, by quarter of the 64 updates): value_ev 0.05 / 0.16 / 0.15 / 0.22; approx_kl
+mean 0.0012–0.0014 per update (max 0.0032) against the 0.02 target; entropy 0.22–0.25; grad norm 7.2 → 2.8.
+**Interpretation (inference, not tested):** a sparse win/loss signal over 60–95 decisions per game, a value
+function that explains ≤ 22 % of outcome variance and 64 tiny updates is mostly noise around a good imitation
+optimum, so steps away from CP7's choices tend to cost games.
+
+Cannots: one seed; CP7 skill 6 only; 100-game levels resolve ~±0.09; the checks are argmax over 25 games; the
+diagnosis above is a reading of the statistics, not an experiment. Candidate next steps (user's decision, none
+run): an offline value-fit test on the 13a recordings (can the network predict outcomes at all?), a CP7
+skill ladder with the same recipe (is skill 6's search the ceiling?), larger steps with a KL-to-bc.pt anchor,
+DAgger-style relabelling of the learner's own states by CP7.

@@ -159,3 +159,4 @@ At the 2,048 level (the controller's normal 100-game CP7 / 50-game heuristic lev
   policy within each block and includes exploration, so it can MAKE but is not a level.
 * Evaluator: `rl/p13_makebreak.py` (reads `rl/artifacts/v7/13/c/phase13.log`, prints
   `MB|MAKE|...` or `MB|BREAK|...`).
+- 2026-09-15 22:49Z WSL (13c BREAK, Amendment 1): 2,048 level sampled CP7 29/100, two-stage 24/100, argmax 32/100; heuristic 31/33/30 of 50. rule (a) not met, rule (b) CP7 training blocks 1,024->2,048 168/768 lower 0.191 not met -> BREAK; STOP touched (rl/stop_13c.sh), controller finishes block 2,048->2,304 then exits. Row '13c' in rl/V7-VALIDATION.md. Next step is the user's.

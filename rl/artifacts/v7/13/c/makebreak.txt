@@ -1,0 +1,4 @@
+2026-09-15T22:49:01Z MB|BREAK|point=2048|sampled=29/100|twostage=24/100|argmax=32/100(not a MAKE readout)|rule_a=not met(>=43/100)|cp7_train_blocks=168/768 lower=0.191|rule_b=not met(lower>0.311) (applied by the main session at the level line; the watcher may append the same verdict)
+STOP touched 2026-09-15T22:49:01Z
+2026-09-15T22:49:27Z MB|BREAK|point=2048|sampled=29/100|twostage=24/100|argmax=32/100(not a MAKE readout)|rule_a=not met(>=43/100)|cp7_train_blocks=168/768 lower=0.191|rule_b=not met(lower>0.311)
+STOP touched 2026-09-15T22:49:27Z
