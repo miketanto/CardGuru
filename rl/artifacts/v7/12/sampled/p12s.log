@@ -1,0 +1,8 @@
+# after_p12: controller done and no server resident, launching run_p12s 2026-09-15T10:53:48Z
+P12S|start|XDECKS|ck=M_D_06400.pt|agent=BenchDimir|vs=cp7|oppDeck=BenchDimir|12/100 = 0.120 [0.070,0.198]|losses=87 draws=1 stalls=1 turns_per_ep=20.1
+P12S|start|XDECKS|ck=M_D_06400.pt|agent=BenchDimir|vs=heuristic|oppDeck=BenchDimir|36/50 = 0.720 [0.583,0.825]|losses=14 draws=0 stalls=0 turns_per_ep=20.1
+P12S|p1024|XDECKS|ck=M_D_07424.pt|agent=BenchDimir|vs=cp7|oppDeck=BenchDimir|11/100 = 0.110 [0.063,0.186]|losses=89 draws=0 stalls=0 turns_per_ep=18.9
+P12S|p1024|XDECKS|ck=M_D_07424.pt|agent=BenchDimir|vs=heuristic|oppDeck=BenchDimir|29/50 = 0.580 [0.442,0.706]|losses=21 draws=0 stalls=0 turns_per_ep=21.1
+P12S|p2048|XDECKS|ck=M_D_08448.pt|agent=BenchDimir|vs=cp7|oppDeck=BenchDimir|15/100 = 0.150 [0.093,0.233]|losses=85 draws=0 stalls=0 turns_per_ep=19.0
+P12S|p2048|XDECKS|ck=M_D_08448.pt|agent=BenchDimir|vs=heuristic|oppDeck=BenchDimir|32/50 = 0.640 [0.501,0.759]|losses=18 draws=0 stalls=0 turns_per_ep=20.4
+P12S|p3072|XDECKS|ck=M_D_09472.pt|agent=BenchDimir|vs=cp7|oppDeck=BenchDimir|22/100 = 0.220 [0.150,0.311]|losses=78 draws=0 stalls=0 turns_per_ep=19.2

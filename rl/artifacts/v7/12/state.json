@@ -1,0 +1,210 @@
+{
+ "t0": 1789424642.3475068,
+ "n": 21,
+ "rot": 61,
+ "fails": 0,
+ "pending": null,
+ "todo": [],
+ "mains": {
+  "M_D": {
+   "deck": "BenchDimir",
+   "start_ck": "/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/11/drill/pool/M_D_06400.pt",
+   "seed": 21,
+   "out": "/tmp/rl_12_M_D",
+   "start_ep": 6400,
+   "trained": 11776,
+   "latest": "/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/12/pool/M_D_11776.pt",
+   "blocks": 21,
+   "graduated": false,
+   "levels": [
+    {
+     "point": "start",
+     "trained": 6400,
+     "cp7": [
+      19,
+      100
+     ],
+     "heur": [
+      35,
+      50
+     ],
+     "stalls": 0,
+     "graduated": 0,
+     "ck": "/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/11/drill/pool/M_D_06400.pt",
+     "unseen": [
+      98,
+      150,
+      "BenchBurn=29/50;HoldoutControl=39/50;HoldoutMidrange=30/50"
+     ]
+    },
+    {
+     "point": "train",
+     "trained": 7424,
+     "cp7": [
+      18,
+      100
+     ],
+     "heur": [
+      32,
+      50
+     ],
+     "stalls": 0,
+     "graduated": 0,
+     "ck": "/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/12/pool/M_D_07424.pt"
+    },
+    {
+     "point": "train",
+     "trained": 8448,
+     "cp7": [
+      9,
+      100
+     ],
+     "heur": [
+      25,
+      50
+     ],
+     "stalls": 0,
+     "graduated": 0,
+     "ck": "/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/12/pool/M_D_08448.pt"
+    },
+    {
+     "point": "train",
+     "trained": 9472,
+     "cp7": [
+      8,
+      100
+     ],
+     "heur": [
+      26,
+      50
+     ],
+     "stalls": 0,
+     "graduated": 0,
+     "ck": "/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/12/pool/M_D_09472.pt"
+    },
+    {
+     "point": "train",
+     "trained": 10496,
+     "cp7": [
+      31,
+      100
+     ],
+     "heur": [
+      38,
+      50
+     ],
+     "stalls": 0,
+     "graduated": 0,
+     "ck": "/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/12/pool/M_D_10496.pt"
+    },
+    {
+     "point": "train",
+     "trained": 11520,
+     "cp7": [
+      33,
+      100
+     ],
+     "heur": [
+      39,
+      50
+     ],
+     "stalls": 0,
+     "graduated": 0,
+     "ck": "/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/12/pool/M_D_11520.pt"
+    },
+    {
+     "point": "end",
+     "trained": 11776,
+     "cp7": [
+      21,
+      100
+     ],
+     "heur": [
+      32,
+      50
+     ],
+     "stalls": 0,
+     "graduated": 0,
+     "ck": "/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/12/pool/M_D_11776.pt",
+     "unseen": [
+      95,
+      150,
+      "BenchBurn=25/50;HoldoutControl=42/50;HoldoutMidrange=28/50"
+     ]
+    }
+   ],
+   "tput": 737.7,
+   "tput_cp7": 737.7,
+   "tput_heur": 1831.1
+  },
+  "M_L": {
+   "deck": "G1Landfall",
+   "start_ck": "/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/11/drill/pool/M_L_06144.pt",
+   "seed": 22,
+   "out": "/tmp/rl_12_M_L",
+   "start_ep": 6144,
+   "trained": 6144,
+   "latest": "/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/11/drill/pool/M_L_06144.pt",
+   "blocks": 0,
+   "graduated": false,
+   "levels": [
+    {
+     "point": "start",
+     "trained": 6144,
+     "cp7": [
+      35,
+      100
+     ],
+     "heur": [
+      23,
+      50
+     ],
+     "stalls": 0,
+     "graduated": 0,
+     "ck": "/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/11/drill/pool/M_L_06144.pt",
+     "unseen": [
+      93,
+      150,
+      "BenchBurn=25/50;HoldoutControl=48/50;HoldoutMidrange=20/50"
+     ]
+    }
+   ],
+   "tput": null
+  },
+  "M_W": {
+   "deck": "W0Base",
+   "start_ck": "/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/M_W_s1end.pt",
+   "seed": 23,
+   "out": "/tmp/rl_12_M_W",
+   "start_ep": 1792,
+   "trained": 1792,
+   "latest": "/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/M_W_s1end.pt",
+   "blocks": 0,
+   "graduated": false,
+   "levels": [
+    {
+     "point": "start",
+     "trained": 1792,
+     "cp7": [
+      58,
+      100
+     ],
+     "heur": [
+      33,
+      50
+     ],
+     "stalls": 0,
+     "graduated": 0,
+     "ck": "/mnt/c/Users/sutanto4/Documents/CardGuru/rl/artifacts/v7/10/pool/M_W_s1end.pt",
+     "unseen": [
+      116,
+      150,
+      "BenchBurn=41/50;HoldoutControl=50/50;HoldoutMidrange=25/50"
+     ]
+    }
+   ],
+   "tput": null
+  }
+ },
+ "ended": "hours"
+}

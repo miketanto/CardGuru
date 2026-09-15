@@ -4945,3 +4945,105 @@ Carried plainly:
   This carries a qualifier that comes after the pre-registration: the Amendment 4 readout shows the
   argmax yardstick itself flips with the act/pass balance. The sampled and two-stage levels
   (Amendments 4 and 5) say whether the flat argmax series hides movement in the policy.
+
+### 12 / M_D — the three readouts per snapshot and the Amendment 4 reading (2026-09-15 ~12:50Z WSL)
+
+The user stopped the remaining evaluations at ~12:40Z (`rl/stop_p12_evals.sh`, main session):
+"enough to conclude". The sampled battery (Amendment 4) finished 4 of its 6 snapshots: vs CP7 at
+the start, 7,424, 8,448 and 9,472, and vs the heuristic at the first three. The two-stage battery
+(Amendment 5), the after-training watcher and the queued CPU readouts (n=8, 11, 15, 19, 20) were
+cancelled. **Amendment 5 is recorded as cancelled by the user, not run.** Its flag stays in the
+server, default off and tested.
+
+**Levels per snapshot.** "argmax" is the pre-registered argmax-classes readout (the Phase 12 levels);
+"sampled" is the same snapshot frozen and sampled as in training (`-Drl.mode=train`, `--frozen`),
+with the same seeds.
+
+| snapshot | CP7, argmax (100) | **CP7, sampled (100)** | heuristic, argmax (50) | heuristic, sampled (50) | PASS while P(act) > 0.5 (census readout) |
+|---|---|---|---|---|---|
+| start 6,400 | 0.190 [0.125, 0.278] | **0.120 [0.070, 0.198]** | 0.700 [0.562, 0.809] | 0.720 [0.583, 0.825] | 0.153 |
+| +1,024 7,424 | 0.180 [0.117, 0.267] | **0.110 [0.063, 0.186]** | 0.640 [0.501, 0.759] | 0.580 [0.442, 0.706] | 0.167 |
+| +2,048 8,448 | 0.090 [0.048, 0.162] | **0.150 [0.093, 0.233]** | 0.500 [0.366, 0.634] | 0.640 [0.501, 0.759] | 0.428 |
+| +3,072 9,472 | 0.080 [0.041, 0.150] | **0.220 [0.150, 0.311]** | 0.520 [0.385, 0.652] | not run | – |
+| +4,096 10,496 | 0.310 [0.228, 0.406] | not run | 0.760 [0.626, 0.857] | not run | – |
+| +5,120 11,520 | 0.330 [0.246, 0.427] | not run | 0.780 [0.648, 0.872] | not run | – |
+| end 11,776 | 0.210 [0.142, 0.300] | not run | 0.640 [0.501, 0.759] | not run | – |
+
+**Amendment 4 reading, as pre-stated.** "Argmax artifact" needs two halves.
+- **The readout half is met.** PASS chosen while the policy puts more than 0.5 on acting rises
+  0.153 → 0.167 → 0.428 over the three pre-registered points. The sampled act rate on the same
+  states stays ~0.55 while the argmax act rate falls 0.35 → 0.13.
+- **The win-rate half is met.** Over the same snapshots the sampled CP7 level stays flat, then
+  rises: 0.12 → 0.11 → 0.15, then 0.22 at 9,472. Meanwhile the argmax level falls
+  0.19 → 0.18 → 0.09 → 0.08.
+- **So the reading is "argmax artifact":** the mid-phase argmax decline was a readout artifact, not
+  a regression of the policy.
+- **"Real regression" is ruled out** for these four snapshots. The sampled levels did not fall with
+  the argmax ones.
+- **The underlying policy improved modestly against CP7.** Sampled 0.12 at the start against 0.22
+  at 9,472. The two intervals ([0.070, 0.198] and [0.150, 0.311]) overlap on [0.150, 0.198], so the
+  rise is not clear by the overlap test.
+- **Heuristic, sampled:** 0.72 → 0.58 → 0.64, flat within its intervals. The argmax guard's fall to
+  0.50 at 8,448 is also not seen in sampled play there (0.64).
+
+**Correction in the open.** The second- and third-level rows above describe "both yardsticks
+falling ... a regression in the point estimates". The numbers stand as argmax-readout levels. By
+Amendment 4 they are not evidence that the policy regressed: sampled play at those snapshots held
+or rose. The later swing up (0.31–0.33) and back (0.21) is likewise the readout's instability, and
+it is not measured under sampling.
+
+**Card habits under a fixed opponent.**
+- **Oscillation:** across 21 checks the counters swung between "act" (n=0, n=8, n=13, n=16–17) and
+  "hold" (n=1–7, n=10–12, n=14, n=18, n=20) without converging. The counter clause failed over
+  every last-four window.
+- **Self-destroy:** mostly gone. Removal cast with only its own creatures as legal targets went
+  from 7/7 (start) to 0.004–0.12 at every check after n=0, except the act swing at n=8 (11/18).
+  CP7's own rate is 0/164.
+- **Drift hypothesis:** Phase 11's oscillation reappeared with no self-play opponent in the mix, so
+  **self-play drift is not the main explanation** of it. The runbook's alternative, the coarse
+  terminal reward, remains a candidate; nothing here establishes it.
+- **Readout caveat:** the census counters are argmax play too. By Amendment 4 part of each swing is
+  the readout flipping near a 0.5 act mass. How much is readout and how much is the distribution
+  moving was the owed n=8 readout, which was cancelled.
+
+What the reading cannot say:
+- **Two sampled points were not run** (10,496, 11,520 and the end) and the 9,472 heuristic row
+  was not run. **The two-stage readout was not run** (cancelled by the user), so whether a
+  deterministic readout can recover the sampled level is open.
+- **One seed, one deck (Dimir).** Landfall and white are paused at their start points
+  (Amendment 2).
+- **Far from graduation.** The best sampled level is 0.22 and the best argmax level 0.33, against
+  the 0.70 bar.
+- **Sampled play is a level of a stochastic player**, not of the deterministic readout the
+  graduation rule names. The graduation rule was not changed.
+- **A CP7 sampled level of 0.12 at the start, below the argmax 0.19**, means the readouts rank
+  differently at different snapshots. There is no single conversion between them.
+
+## Phase 12 verdict (2026-09-15)
+
+Phase 12 ran Dimir alone for the night (Amendments 2 and 3): 5,376 episodes from M_D_06400,
+against a fixed mix of 75 % CP7 and 25 % heuristic on its own mirror.
+
+**It did not graduate.** Against CP7, the argmax-classes level went 0.19 → 0.18 → 0.09 → 0.08 →
+0.31 → 0.33 → 0.21. The heuristic guard ended at 0.64 (start 0.70), and the unseen suite at 0.633
+(start 0.653). All of these overlap their starts.
+
+**The phase's main finding is about the yardstick.** The argmax-classes readout is not a faithful
+level for this policy family. As training went on, the policy spread its acting mass over several
+distinct candidates, and the class argmax then chose PASS against an acting majority: 15 % of
+PASS-offered consults at the start, 43 % at +2,048. Over the same snapshots the sampled policy
+held, then rose against CP7 (0.12 → 0.11 → 0.15 → 0.22), while the argmax level fell
+(0.19 → 0.08). By the pre-stated Amendment 4 criterion, the mid-phase decline was a readout
+artifact, not a regression. Under a fixed opponent the policy improved modestly against CP7; the
+rise is not clear by the overlap test and is far from the 0.70 bar.
+
+**The card habits oscillated with no self-play in the mix.** So the Phase 11 swing is not
+self-play drift, and the drift hypothesis is not supported as its main explanation. The
+self-removal habit is mostly gone.
+
+**The evaluation protocol for this policy family has to be decided before any further level is
+read.** The candidates are sampled levels, the two-stage readout, or both. Graduation should not be
+judged on argmax-classes alone.
+
+What this cannot support: one seed, one deck; two sampled points and the two-stage readout not run
+(cancelled by the user); no claim about landfall or white (paused), or about Phase 13.
