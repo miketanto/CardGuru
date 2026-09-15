@@ -1,0 +1,212 @@
+ability_id,occurrences,card,has_activated_nonmana,n_activated_nonmana,n_triggered,found
+1268,1210,"Glimmerlight",1,1,1,1
+174356,903,"Glimmer",,,,0
+174533,789,"Oblivious Bookworm",0,0,1,1
+166736,713,"Wary Watchdog",0,0,1,1
+174437,692,"Most Valuable Slayer",0,0,1,1
+174349,618,"Stalked Researcher",0,0,1,1
+64584,546,"Patchwork Beastie",0,0,1,1
+140062,533,"Spineseeker Centipede",0,0,1,1
+174287,480,"Optimistic Scavenger",0,0,1,1
+174430,460,"Glassworks // Shattered Yard",0,0,0,1
+174517,456,"Gremlin Tamer",0,0,1,1
+174429,451,"Glassworks",0,0,0,1
+174306,425,"Trapped in the Screen",0,0,2,1
+174435,364,"Irreverent Gremlin",0,0,1,1
+174497,361,"Threats Around Every Corner",0,0,2,1
+174346,359,"Scrabbling Skullcrab",0,0,1,1
+174420,347,"Clockwork Percussionist",0,0,1,1
+174417,340,"Chainsaw",1,1,2,1
+174458,310,"Vicious Clown",0,0,1,1
+174546,308,"Smoky Lounge // Misty Salon",0,0,0,1
+174442,299,"Painter's Studio // Defaced Gallery",0,0,0,1
+174282,296,"Grand Entryway // Elegant Rotunda",0,0,0,1
+174445,285,"Razorkin Hordecaller",0,0,1,1
+143859,284,"Surgical Suite // Hospital Room",0,0,0,1
+174323,281,"Entity Tracker",0,0,1,1
+174364,270,"Unwilling Vessel",0,0,2,1
+174324,268,"Erratic Apparition",0,0,1,1
+174451,267,"Ticket Booth",0,0,0,1
+174472,251,"Flesh Burrower",0,0,1,1
+152741,246,"Floodpits Drowner",1,1,1,1
+174276,242,"Fear of Immobility",0,0,1,1
+174469,236,"Cryptid Inspector",0,0,1,1
+174559,231,"Ghost Vacuum",1,2,0,1
+174344,222,"Paranormal Analyst",0,0,1,1
+143643,221,"Bottomless Pool // Locker Room",0,0,0,1
+174265,221,"Cult Healer",0,0,1,1
+174452,217,"Ticket Booth // Tunnel of Hate",0,0,0,1
+174397,214,"Osseous Sticktwister",0,0,1,1
+89789,213,"Stay Hidden, Stay Silent",1,1,1,1
+174301,208,"Splitskin Doll",0,0,1,1
+174367,199,"Balemurk Leech",0,0,1,1
+121357,194,"Broodspinner",1,1,1,1
+174438,187,"Norin, Swift Survivalist",0,0,1,1
+174540,187,"Roaring Furnace // Steaming Sauna",0,0,0,1
+140075,182,"Enduring Curiosity",0,0,2,1
+174545,180,"Skullsnap Nuisance",0,0,1,1
+174277,180,"Friendly Ghost",0,0,1,1
+20997,177,"Sheltered by Ghosts",0,0,1,1
+174395,175,"Nowhere to Run",0,0,1,1
+176695,175,"Turn Inside Out",0,0,0,1
+174283,174,"Hardened Escort",0,0,1,1
+174404,171,"Unholy Annex // Ritual Chamber",0,0,0,1
+174311,171,"Veteran Survivor",0,0,1,1
+93266,165,"Grasping Longneck",0,0,1,1
+174382,165,"Fear of Lost Teeth",0,0,1,1
+174447,161,"Razorkin Needlehead",0,0,1,1
+174285,161,"Lionheart Glimmer",0,0,2,1
+174375,158,"Horror",,,,0
+174480,155,"Insidious Fungus",1,1,0,1
+174381,152,"Fanatic of the Harrowing",0,0,1,1
+174264,149,"Acrobatic Cheerleader",0,0,1,1
+174544,147,"Shroudstomper",0,0,1,1
+174507,143,"Arabella, Abandoned Doll",0,0,1,1
+174403,143,"Sporogenic Infection",0,0,2,1
+174401,142,"Popular Egotist",1,1,1,1
+174425,140,"Fear of Burning Alive",0,0,2,1
+174513,140,"Disturbing Mirth",0,0,2,1
+174478,137,"House Cartographer",0,0,1,1
+174432,136,"Hand That Feeds",0,0,1,1
+174443,131,"Ragged Playmate",1,1,0,1
+174288,130,"Orphans of the Wheat",0,0,1,1
+174424,128,"Enduring Courage",0,0,2,1
+174487,128,"Omnivorous Flytrap",0,0,1,1
+174280,126,"Glimmer Seeker",0,0,1,1
+174548,121,"The Swarmweaver",0,0,1,1
+146583,117,"Enduring Innocence",0,0,2,1
+174518,117,"Growing Dread",0,0,2,1
+174426,116,"Fear of Burning Alive",0,0,2,1
+174348,115,"Silent Hallcreeper",0,0,1,1
+2792,114,"Conductive Machete",1,1,1,1
+174554,110,"Primo, the Indivisible",,,,0
+174325,100,"Fear of Falling",0,0,1,1
+174492,99,"Rootwise Survivor",0,0,1,1
+174521,97,"The Jolly Balloon Man",1,1,0,1
+174394,97,"Miasma Demon",0,0,1,1
+174332,96,"Ghostly Keybearer",0,0,1,1
+149382,95,"Overlord of the Floodpits",0,0,2,1
+174509,95,"Baseball Bat",1,1,2,1
+174279,94,"Ghostly Dancers",0,0,2,1
+174365,93,"Unwilling Vessel",0,0,2,1
+174378,93,"Derelict Attic // Widow's Walk",0,0,0,1
+174467,91,"Cautious Survivor",0,0,1,1
+174506,90,"Wickerfolk Thresher",0,0,1,1
+174400,90,"Popular Egotist",1,1,1,1
+174547,86,"Spirit",,,,0
+174470,85,"Defiant Survivor",0,0,1,1
+174293,85,"Reluctant Role Model",0,0,2,1
+174427,84,"Fear of Missing Out",0,0,2,1
+174379,84,"Derelict Attic // Widow's Walk",0,0,0,1
+174542,83,"Sawblade Skinripper",1,1,1,1
+174411,83,"Vile Mutilator",0,0,1,1
+174539,82,"Roaring Furnace // Steaming Sauna",0,0,0,1
+18661,81,"Dissection Tools",1,1,1,1
+174268,81,"Dollmaker's Shop // Porcelain Gallery",0,0,0,1
+174541,80,"Sawblade Skinripper",1,1,1,1
+174416,80,"Chainsaw",1,1,2,1
+174374,79,"Dashing Bloodsucker",0,0,1,1
+174398,78,"Overlord of the Balemurk",0,0,2,1
+174307,77,"Unidentified Hovership",1,1,2,1
+174564,77,"Malevolent Chandelier",1,1,0,1
+174318,77,"Central Elevator // Promising Stairs",0,0,0,1
+174289,76,"Overlord of the Mistmoors",0,0,2,1
+176358,75,"The Jolly Balloon Man",1,1,0,1
+174463,75,"Anthropede",0,0,1,1
+174405,74,"Unholy Annex // Ritual Chamber",0,0,0,1
+174373,73,"Cynical Loner",0,0,1,1
+174415,73,"Boilerbilges Ripper",0,0,1,1
+174407,70,"Unstoppable Slasher",0,0,2,1
+174304,69,"Toby, Beastie Befriender",0,0,1,1
+174498,69,"Twitching Doll",1,1,0,1
+174576,69,"Miasma Demon",0,0,1,1
+174326,68,"Fear of Impostors",0,0,1,1
+174315,68,"Abhorrent Oculus",0,0,1,1
+174274,68,"Fear of Abduction",0,0,2,1
+174402,67,"Resurrected Cultist",1,1,0,1
+174278,67,"Ghostly Dancers",0,0,2,1
+90761,66,"Friendly Teddy",0,0,1,1
+174551,64,"Victor, Valgavoth's Seneschal",0,0,1,1
+149473,61,"Charred Foyer // Warped Space",0,0,0,1
+174399,61,"Overlord of the Balemurk",0,0,2,1
+174371,60,"Cracked Skull",0,0,2,1
+151523,60,"Valgavoth's Faithful",1,1,0,1
+174434,56,"Infernal Phantom",0,0,2,1
+174577,56,"Boilerbilges Ripper",0,0,1,1
+174476,54,"Hedge Shredder",1,1,2,1
+174290,54,"Overlord of the Mistmoors",0,0,2,1
+174490,51,"Everywhere",,,,0
+174423,50,"Diversion Specialist",1,1,0,1
+174512,49,"Insect",,,,0
+137218,47,"Funeral Room // Awakening Hall",0,0,0,1
+174440,46,"Overlord of the Boilerbilges",0,0,2,1
+93125,43,"Baseball Bat",1,1,2,1
+174575,43,"Come Back Wrong",0,0,0,1
+174286,43,"Living Phone",0,0,1,1
+174439,42,"Overlord of the Boilerbilges",0,0,2,1
+174477,41,"Hedge Shredder",1,1,2,1
+174566,40,"Saw",1,1,1,1
+174319,40,"Creeping Peeper",0,0,0,1
+174449,39,"The Rollercrusher Ride",0,0,1,1
+133218,38,"Infernal Phantom",0,0,2,1
+174428,37,"Fear of Missing Out",0,0,2,1
+137205,37,"Clammy Prowler",0,0,1,1
+174406,37,"Unstoppable Slasher",0,0,2,1
+174292,37,"Possessed Goat",1,1,0,1
+174474,37,"Hauntwoods Shrieker",1,1,1,1
+174520,36,"Intruding Soulrager",1,1,0,1
+174543,35,"Shrewd Storyteller",0,0,1,1
+174562,35,"Haunted Screen",1,1,0,1
+174342,34,"Overlord of the Floodpits",0,0,2,1
+174383,34,"Fear of the Dark",0,0,1,1
+174531,33,"Shard",,,,0
+174530,33,"Nashi, Searcher in the Dark",0,0,1,1
+174340,32,"Mirror Room // Fractured Realm",0,0,0,1
+174421,32,"Cursed Recording",1,1,1,1
+169639,30,"Ripchain Razorkin",1,1,0,1
+174473,29,"Greenhouse // Rickety Gazebo",0,0,0,1
+174317,29,"Central Elevator // Promising Stairs",0,0,0,1
+174535,29,"Restricted Office // Lecture Hall",0,0,0,1
+174295,28,"Savior of the Small",0,0,1,1
+174555,26,"Attack-in-the-Box",0,0,1,1
+176357,26,"Anthropede",0,0,1,1
+174578,26,"Cursed Recording",1,1,1,1
+2799,26,"Enduring Tenacity",0,0,2,1
+174552,24,"Winter, Misanthropic Guide",0,0,2,1
+174422,24,"Cursed Recording",1,1,1,1
+177396,23,"Waltz of Rage",0,0,0,1
+174536,23,"Rip, Spawn Hunter",0,0,1,1
+174499,22,"Spider",,,,0
+174489,22,"Everywhere",,,,0
+174500,22,"Tyvar, the Pummeler",1,2,0,1
+174294,22,"Reluctant Role Model",0,0,2,1
+174393,22,"Meathook Massacre II",0,0,3,1
+174501,21,"Tyvar, the Pummeler",1,2,0,1
+210,21,"Shard",,,,0
+174392,21,"Meathook Massacre II",0,0,3,1
+174524,19,"Kaito, Bane of Nightmares",1,4,0,1
+174481,19,"Kona, Rescue Beastie",0,0,1,1
+174450,18,"Screaming Nemesis",0,0,1,1
+174475,18,"Hauntwoods Shrieker",1,1,1,1
+174526,17,"Kaito, Bane of Nightmares",1,4,0,1
+174525,15,"Kaito, Bane of Nightmares",1,4,0,1
+174494,15,"Altanak, the Thrice-Called",1,1,1,1
+91932,15,"Fear of Failed Tests",0,0,1,1
+1131,14,"Bleeding Woods",0,0,0,1
+174386,14,"Grievous Wound",0,0,1,1
+174581,11,"Attack-in-the-Box",0,0,1,1
+4407,10,"Strangled Cemetery",0,0,0,1
+174580,10,"Shard",,,,0
+1211,10,"Razortrap Gorge",0,0,0,1
+1167,9,"Murky Sewer",0,0,0,1
+174384,8,"Funeral Room // Awakening Hall",0,0,0,1
+168506,8,"Kaito, Bane of Nightmares",1,4,0,1
+174391,8,"Meathook Massacre II",0,0,3,1
+4247,8,"Raucous Carnival",0,0,0,1
+146547,7,"Spirit Cleric",,,,0
+174352,6,"The Tale of Tamiyo",0,0,4,1
+174353,6,"The Tale of Tamiyo",0,0,4,1
+1039,6,"Peculiar Lighthouse",0,0,0,1
+18504,6,"Lakeside Shack",0,0,0,1
+2639,6,"Soul Warden",0,0,1,1
+1203,5,"Etched Cornfield",0,0,0,1

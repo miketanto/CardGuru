@@ -9,7 +9,7 @@ in §6 stand unchanged.** This document adds (1) an independent reproduction of
 that base result on a from-scratch engine build, and (2) five named variants of
 the rebuilder, each reported separately. Nothing here re-scores the go/no-go.
 
-Status: engine built; reproduction run and variants below.
+Status: engine built, base result reproduced, variants run.
 
 ## 1. Engine (step 1, from scratch)
 
@@ -39,6 +39,88 @@ dependency set, not merely a similar one. `rl/l17/run_l17_cloud.sh` is
 `run_l17.sh` with the local box's resource caps removed (no shared training
 job here): no `MemAvailable` gate, no `nice`, `-Xmx3g`, batches of 100.
 No other change to the harness was made before the reproduction run.
+
+## 1a. Step 2 — reproduction of the base 200-game rebuild
+
+Same 200 games (`random.Random(17).sample(range(2000), 200)`), the unmodified
+`rl/l17/build_specs.py` (the spec file it writes for the base run is
+**byte-identical** to the one the local session built — verified with `diff`
+after the variant code was added, which emits its extra lines only when a
+variant asks for them), the unmodified `rl/l17/L17Rebuild.java` as of
+`b2978ac`, the unmodified `rl/l17/analyze.py`. All 200 games finished `ok`, no
+timeouts, about 3 minutes of wall time.
+
+| reading | local (`rl/L17-FIDELITY.md` §4) | cloud (`fidelity_games_s200_cloud.csv`) |
+|---|---|---|
+| median turns matched | 2 | **2** |
+| mean turns matched | 2.60 | **2.59** |
+| games ≥ 8 turns | 0/200, Wilson [0.000, 0.019] | **0/200, [0.000, 0.019]** |
+| same, among the 143 games logged ≥ 8 turns | 0/143, [0.000, 0.026] | **0/143, [0.000, 0.026]** |
+| fully matched | 1/200 | **1/200** |
+| turns-matched histogram | 1:31 2:73 3:57 4:27 5:7 6:5 | 1:30 2:76 3:55 4:29 5:5 6:5 |
+| first-mismatch field | creatures 59, hand 43, life 36, oppo_life 28, oppo_hand 15, lands 13, noncre 5 | creatures 61, hand 43, life 36, oppo_life 29, lands 14, oppo_hand 11, noncre 5 |
+| labels per game / unambiguous | 5.00 / 0.368 | 4.94 / 0.365 |
+| user turns with > 1 possible order | 1058/1759 = 0.601 | 1058/1759 = **0.601** (identical; it is a property of the log) |
+
+**Per-game: 193 of 200 games match the local `turns_matched` exactly.** The
+seven that differ are games 252, 528, 688, 712, 822, 886 and 1348.
+
+**Reason for all seven: the harness is not deterministic run to run, and these
+are the games sitting on the boundary.** XMage's `RandomUtil` at the pin holds
+an *unseeded* shared `java.util.Random` (`-Dmage.randomPerThread` is off by
+default), and the AI that resolves every unforced choice draws from it; on top
+of that, permanent and card UUIDs are freshly random each run, so any iteration
+over a UUID-keyed map runs in a different order. Four independent cloud runs of
+the same 200 games disagree with **each other** in 3–5 games, and with the local
+run in 5–7 — the same band. Running the seven games eight more times gives the
+distribution below; **every local value reappears in the cloud distribution**,
+so none of the seven is a port difference:
+
+| game | local | 8 cloud repeats |
+|---|---|---|
+| 252 | 1 | 1×7, 2×1 |
+| 528 | 3 | 2×4, 3×4 |
+| 688 | 5 | 3×5, 5×3 |
+| 712 | 3 | 3×2, 4×1, 5×5 |
+| 822 | 5 | 3×6, 5×2 |
+| 886 | 3 | 2×1, 3×7 |
+| 1348 | 3 | 3×1, 4×7 |
+
+None of it touches the pre-stated readings: `≥ 8 turns` is 0/200 in every one
+of the twelve cloud runs, and the median is 2 in all of them. The base result
+and the NO-GO reproduce.
+
+*What this reproduction cannot support*: it is a reproduction of the **harness**,
+not an independent implementation of it. The same spec builder and the same
+Java replay were used, so a systematic modelling error would reproduce
+faithfully. What it does establish is that the engine build, the dependency
+set and the platform are not what produced the base numbers.
+
+## 1b. Cascading divergence is not what breaks the replay (step 3a, first half)
+
+`rl/l17/cascade.py`, on the base run's own output. For each mismatched game it
+compares the game turn of the first **failed forced action** with the game turn
+of the first **state mismatch**.
+
+| reading (base, 200 games, 199 mismatched) | value |
+|---|---|
+| first failed forced action strictly **before** the first state mismatch | **8/199 = 0.040**, Wilson 95 % [0.021, 0.077] |
+| same turn as the first mismatch | 49/199 |
+| **after** the first mismatch | 138/199 |
+| no failed forced action anywhere in the game | 4/199 |
+| when before: median lead | 3 side-turns |
+
+This is the opposite of what the failure counts suggest. The base run records
+322 absent attackers, 300 casts whose card was not in hand, and so on — but in
+**96 %** of games the state has already visibly diverged by the time the first
+one happens. The impossible forced actions are overwhelmingly a *consequence*
+of divergence, not its cause, so a rebuilder that only made forced actions more
+robust would be repairing symptoms. `rl/L17-FIDELITY.md` §5 assigned 0.28 of
+games to "forced action impossible after unseen drift" using a looser rule (a
+failure on the mismatching turn **or the one before**); that class is real, but
+this sharper measurement says the drift is nearly always visible first in the
+compared state itself, which is why the remaining variants attack choices,
+abilities and the opponent seat rather than action robustness.
 
 ## 2. Pre-registration (written before any variant was run)
 
@@ -161,3 +243,152 @@ the precombat attempt failed and the seat attacked that turn.
 
 `all` = `abil` + `choice` + `oppo` + `order` (not `resync`, which is a different
 measurement). Reported on the same 200 games.
+
+## 3. Step 3/4 — the variants on the 200 seeded games
+
+All seven rebuilds below ran on the same 200 games, all 200 finishing `ok` in
+each, on the same engine build. Per-game rows are
+`rl/l17_dsk/fidelity_games_s200_<variant>_cloud.csv`.
+
+| variant | median | mean | ≥ 8 turns (Wilson 95 %) | fully matched | vs base: longer / shorter | first-mismatch field (top 3) | labels/game | unambiguous |
+|---|---|---|---|---|---|---|---|---|
+| `base` | 2 | 2.59 | 0/200 = 0.000 [0.000, 0.019] | 1/200 | — | creatures 61, hand 43, life 36 | 4.94 | 0.365 |
+| `guided` (the local run's variant, rerun here) | 3 | 2.96 | 0/200 = 0.000 [0.000, 0.019] | 1/200 | 46 / 3 | hand 46, life 44, creatures 42 | 6.03 | 0.360 |
+| `abil` | 2 | 2.60 | 0/200 = 0.000 [0.000, 0.019] | 1/200 | 6 / 6 | creatures 59, hand 48, life 31 | 5.02 | 0.371 |
+| `choice` | 3 | 2.94 | 0/200 = 0.000 [0.000, 0.019] | 1/200 | 44 / 3 | hand 47, life 43, creatures 42 | 6.01 | 0.360 |
+| `oppo` | 2 | 2.60 | 0/200 = 0.000 [0.000, 0.019] | 1/200 | 4 / 2 | creatures 58, hand 44, life 37 | 4.99 | 0.367 |
+| `order` | 2 | 2.59 | 0/200 = 0.000 [0.000, 0.019] | 1/200 | 5 / 4 | creatures 58, hand 43, life 38 | 5.00 | 0.370 |
+| `all` (abil+choice+oppo+order) | 3 | 2.91 | 0/200 = 0.000 [0.000, 0.019] | 1/200 | 45 / 6 | life 48, hand 47, creatures 41 | 5.95 | 0.363 |
+
+Labels per game by kind, and the unambiguous share of each:
+
+| rebuild | land | spell | attack | block | total | unambiguous: land / spell / attack / block / all |
+|---|---|---|---|---|---|---|
+| `base` | 2.62 | 1.67 | 0.57 | 0.08 | 4.94 | 0.420 / 0.033 / 1.000 / 0.938 / **0.365** |
+| `choice` | 2.98 | 2.08 | 0.84 | 0.11 | 6.01 | 0.381 / 0.038 / 1.000 / 0.955 / **0.360** |
+
+The ambiguity denominator is unchanged in every variant — 1058/1759 = 0.601 of
+user turns had more than one possible order — as pre-registered. It is a
+property of the log.
+
+**Read plainly: four of the five new variants move nothing.** `abil`, `oppo`
+and `order` sit inside the run-to-run noise band established in §1a (two reruns
+of the same configuration disagree on 3–5 of 200 games); their longer/shorter
+columns (6/6, 4/2, 5/4) are that noise, not an effect. `choice` reproduces the
+existing `guided` gain (about a third of a turn) and adds nothing measurable on
+top of it. **No variant moves a single game to 8 turns**: the pre-stated bar's
+numerator stays 0 in all seven rebuilds, so the NO-GO of `rl/L17-FIDELITY.md`
+§6 is not disturbed by any of them.
+
+### 3.1 Why each variant failed to move what it was supposed to move
+
+**`abil` (expected to move the 0.27 "ability id logged" class).** The mapping
+worked: `rl/l17/ability_map.py` traced 217 of 278 ability ids to an owning card
+(74.7 % of all logged ability occurrences; 211 ids to a non-basic-land card).
+The *replay* is what failed, and `rl/l17/AbilityKinds.java` says why:
+
+| reading | value |
+|---|---|
+| mapped non-basic-land ability ids | 211 |
+| …whose card has a non-mana **activated** ability in XMage at the pin | **44** |
+| …17 ids whose "card" is a token name, not a card | 1,464 occurrences |
+| share of mapped ability occurrences on a card that has one | **4,627/28,006 = 0.165** |
+| activations the `abil` run actually performed | 286 |
+| attempts that found no activatable ability (card on battlefield 1,510, in hand 412, in graveyard 384, in library 136) | 2,528 |
+
+So **five sixths of the logged ability ids are triggered or static abilities**,
+which the engine fires by itself — `*_abilities` is a log of abilities that
+*resolved*, not of abilities the player *activated*. This is a correction to
+`rl/L17-FIDELITY.md` §5 cause 2 ("activated abilities are not replayed", 0.27
+of games): the class is real as a *co-occurrence* — the breaking side-turn does
+log an ability id — but replaying the activated ones is not the fix, because
+almost none of them are activated. The 0.27 figure should be read as "an
+ability resolved on the turn that broke", which is nearly always true of any
+turn past turn 3, not as a diagnosis.
+
+**`choice` (expected to move the unseen-drift and hidden-choice classes).**
+The steering fires: 134 removal targets, 103 surveils, 87 manifest-dread swaps,
+82 library searches on the 200 games. It buys the same ~0.35 turns the existing
+`guided` rebuild buys, and the surveil steering — added here specifically for
+the one mechanism `rl/L17-FIDELITY.md` §5 verified by hand (game 167) — adds
+nothing on top: `choice` 2.94 vs `guided` 2.96, a difference smaller than the
+noise band. The reason is visible in the failure counts: `guided` already
+rescues a logged draw out of the graveyard when it finds one there (78 rescues
+in 200 games), so preventing the burial and repairing it afterwards are the
+same repair.
+
+*Correction, in the open:* the first `choice` run reported no surveil steering
+at all and was identical to `guided` by construction. `TestPlayer.doSurveil`
+and `TestPlayer.scry` delegate straight to the wrapped `TestComputerPlayer`
+(which is `final`), so the `chooseTarget` the engine makes inside them is the
+AI's and never reaches the harness's player; the hook on
+`chooseTarget(Outcome, Cards, TargetCard, …)` was dead code. `L17Player` now
+overrides `doSurveil` and `scry` themselves. The numbers in the table are from
+the fixed run; the unfixed one gave mean 2.96, i.e. the fix changed nothing
+measurable either.
+
+**`oppo` (expected to move `oppo_hand` and `oppo_life`).** Sizing the
+opponent's hidden hand to the logged count at every turn boundary does not
+help: `oppo_hand` as a first-mismatch field goes 11 → 13 and as any field at
+the first mismatch 23 → 27, both inside the noise. It also makes the hand
+reconstruction fight itself — `no_spare_hand_grew` records go 87 → 144, because
+trimming to the logged count throws out a card the swap then has to fetch
+again. The count was never the binding constraint; the *contents* are, and the
+log does not hold them.
+
+*Correction, in the open:* the first `oppo` run was a large regression (median
+1, `oppo_hand` the first mismatch in 176 of 200 games) because the sizing added
+one for the turn's draw. It runs at the seat's first priority, which is the
+**upkeep** — before the draw step — so no draw should be added. Fixed; the
+table is the corrected run. The bug was caught by the pre-registration: `oppo`
+was declared unable to move `user_lands` or `user_hand`, and the regression
+showed up as `oppo_hand` swamping everything, which is not a result to write up.
+
+**`order` (expected to move "cast not payable" and "card not in hand" failures).**
+Leaving a failed cast pending and retrying it at every later priority of the
+same turn, including the postcombat main phase, changes nothing: mean 2.59 vs
+2.59. That is consistent with §1b — the impossible casts are downstream of a
+state that has already diverged, so no ordering of them is payable.
+
+## 4. Per-turn fidelity after resync (`resync`, the reading that does move)
+
+`-Dl17.variant=resync`, same 200 games, all `ok`. At the start of every turn the
+engine state is pushed to the logged end-of-previous-side-turn state — both
+lives, the user's hand, the opponent's hand size, and both battlefields. Over
+the 200 games: 3,414 resyncs, 996 permanents removed, 1,356 added, 1,340 hand
+cards moved, and **177 unmet items** (a token or a `[Face-Down Card]` the engine
+did not already have, which the log does not describe well enough to
+reconstruct), leaving **3,313 of 3,466 evaluated side-turns (0.956) with a
+provably correct start**.
+
+`turns_matched` is **not reported** for this variant, as pre-registered: the
+state is overwritten every turn, so "the first mismatch" no longer means what it
+means in the base run.
+
+| reading (`rl/l17/perturn.py`, `rl/l17_dsk/perturn_s200_resync_cloud.csv`) | value |
+|---|---|
+| side-turns whose end state matches, **given a correct start** | **1755/3313 = 0.530**, Wilson 95 % [0.513, 0.547] |
+| same, over every evaluated side-turn | 1793/3466 = 0.517, [0.501, 0.534] |
+| fields that mismatch (counting every mismatching field) | creatures 919, hand 594, non-creatures 469, opp life 387, opp hand 385, user life 365, lands 340 |
+
+And, by how deep into the game the side-turn is (clean starts only) — this is
+the shape that matters:
+
+| side-turns | per-turn fidelity (Wilson 95 %) |
+|---|---|
+| 1–2 | 400/400 = **1.000** [0.990, 1.000] |
+| 3–4 | 367/400 = **0.917** [0.886, 0.941] |
+| 5–6 | 284/400 = **0.710** [0.664, 0.752] |
+| 7–8 | 212/393 = **0.539** [0.490, 0.588] |
+| 9–12 | 259/740 = 0.350 [0.316, 0.385] |
+| 13–16 | 138/526 = 0.262 [0.227, 0.302] |
+| 17+ | 95/454 = 0.209 [0.174, 0.249] |
+| **1–8 pooled** | **1263/1593 = 0.793** [0.772, 0.812] |
+| **9+ pooled** | **492/1720 = 0.286** [0.265, 0.308] |
+
+This is the one place the picture changes. Whole-game replay reaches a median of
+2 rounds and never 8; **one-turn replay from a correct start is right about 4
+times in 5 for the first eight side-turns and about 2 times in 7 after that.**
+The decline is not drift — every one of these side-turns starts from the logged
+state — so it measures how much *more* there is to get wrong per turn as boards
+grow: more permanents with triggers, more targets to choose, more combat.
