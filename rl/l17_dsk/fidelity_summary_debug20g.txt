@@ -1,0 +1,31 @@
+FIDELITY|tag=debug20g|games=20|engine_status={'ok': 20}
+FIDELITY|median_turns_matched=3|mean=2.95|median_turns_logged=9
+FIDELITY|share_ge8=0/20=0.000 wilson95=[-0.000,0.161]
+FIDELITY|share_ge8_among_games_ge8_turns_long=0/14=0.000 wilson95=[0.000,0.215]
+FIDELITY|fully_matched=0/20=0.000 wilson95=[-0.000,0.161]
+FIDELITY|turns_matched_hist=[(1, 4), (2, 3), (3, 7), (4, 3), (5, 2), (6, 1)]
+FIRST_FIELD|[('oppo_life', 4), ('user_life', 4), ('oppo_hand', 3), ('user_creatures', 3), ('user_hand', 3), ('user_lands', 2), ('user_noncreatures', 1)]
+FIELDS_AT_FIRST|[('user_hand', 8), ('user_creatures', 6), ('oppo_life', 5), ('user_life', 4), ('user_lands', 4), ('oppo_hand', 4), ('user_noncreatures', 2)]
+YIELD|per_game land=2.95 spell=2.05 attack=0.80 block=0.15 total=5.95
+YIELD|unambiguous_share land=0.407 spell=0.073 attack=1.000 block=1.000 all=0.387
+AMBIG|user_turns_more_than_one_order=115/185=0.622|targeted_user_spells=26
+FAILS_ALL|[(('U', 'ATTACK', 'no_attacker_absent'), 43), (('U', 'CAST', 'not_in_hand'), 29), (('O', 'ATTACK', 'no_attacker_absent'), 22), (('U', 'LAND', 'not_in_hand'), 15), (('U', 'CAST', 'not_playable'), 14), (('O', 'CAST', 'not_in_hand'), 11), (('U', 'DRAW', 'rescued_from_graveyard'), 11), (('U', 'BLOCK', 'no_blocker'), 9), (('U', 'CAST', 'activate_failed'), 8), (('O', 'SWAP', 'not_in_library_graveyard'), 7), (('O', 'SWAP', 'no_spare_hand_grew'), 7), (('O', 'BLOCK', 'no_blocker'), 7), (('O', 'CAST', 'not_playable'), 6), (('O', 'SWAP', 'not_in_library_missing'), 5), (('U', 'ATTACK', 'no_attacker_tapped'), 3), (('O', 'BLOCK', 'no_blocked_attacker'), 3), (('O', 'SWAP', 'not_in_library_battlefield'), 3), (('U', 'DRAW', 'not_in_library_hand'), 2), (('O', 'CASTI', 'not_playable'), 2), (('O', 'CAST', 'activate_failed'), 2)]
+FAILS_NEAR_FIRST_MISMATCH|[(('U', 'LAND', 'not_in_hand'), 4), (('U', 'DRAW', 'rescued_from_graveyard'), 2), (('O', 'CAST', 'not_playable'), 1), (('U', 'CAST', 'activate_failed'), 1), (('O', 'SWAP', 'not_in_library_graveyard'), 1), (('O', 'CAST', 'not_in_hand'), 1), (('U', 'CAST', 'not_in_hand'), 1), (('U', 'ATTACK', 'no_attacker_absent'), 1), (('O', 'ATTACK', 'no_attacker_absent'), 1), (('O', 'SWAP', 'not_in_library_missing'), 1), (('O', 'CASTI', 'not_playable'), 1)]
+EXAMPLE|oppo_life|game=0|user_4|log=8 engine=5|fails=[]
+EXAMPLE|oppo_life|game=2|user_5|log=15 engine=20|fails=['9U:LAND:Island:not_in_hand@Precombat Main']
+EXAMPLE|oppo_life|game=9|user_5|log=12 engine=16|fails=["9U:DRAW:Winter's Intervention:rescued_from_graveyard", '9U:LAND:Swamp:not_in_hand@Precombat Main', '9U:CAST:Vengeful Possession:not_in_hand@Precombat Main', '9U:ATTACK:Swamp:no_attacker_absent']
+EXAMPLE|user_life|game=1|oppo_3|log=17 engine=16|fails=[]
+EXAMPLE|user_life|game=8|oppo_5|log=16 engine=17|fails=['9O:SWAP:baseball bat:not_in_library_graveyard', '9O:CAST:Baseball Bat:not_in_hand@Precombat Main']
+EXAMPLE|user_life|game=12|oppo_6|log=13 engine=15|fails=['7O:SWAP:rickety gazebo:not_in_library_missing', '11O:ATTACK:[Face-Down Card]:no_attacker_absent']
+EXAMPLE|oppo_hand|game=3|oppo_2|log=6 engine=5|fails=[]
+EXAMPLE|oppo_hand|game=4|oppo_3|log=4 engine=5|fails=['5O:CAST:Cackling Slasher:not_playable@Precombat Main']
+EXAMPLE|oppo_hand|game=5|user_2|log=6 engine=5|fails=[]
+EXAMPLE|user_creatures|game=6|user_4|log_only=['unnerving grasp'] engine_only=[]|fails=['8U:CAST:Spineseeker Centipede:activate_failed@Precombat Main']
+EXAMPLE|user_creatures|game=7|oppo_4|log_only=['stalked researcher'] engine_only=['paranormal analyst']|fails=[]
+EXAMPLE|user_creatures|game=11|user_4|log_only=[] engine_only=['floodpits drowner']|fails=[]
+EXAMPLE|user_hand|game=10|user_2|log_only=['fear of burning alive'] engine_only=['mountain']|fails=[]
+EXAMPLE|user_hand|game=13|oppo_2|log_only=['island'] engine_only=['daggermaw megalodon']|fails=[]
+EXAMPLE|user_hand|game=15|user_4|log_only=['cautious survivor'] engine_only=['plains']|fails=['7O:SWAP:hospital room:not_in_library_missing', '8U:DRAW:Oblivious Bookworm:rescued_from_graveyard']
+EXAMPLE|user_lands|game=16|user_6|log_only=['mountain'] engine_only=[]|fails=['7U:DRAW:Enduring Innocence:rescued_from_graveyard', '11U:LAND:Mountain:not_in_hand@Precombat Main']
+EXAMPLE|user_lands|game=18|user_3|log_only=['forest'] engine_only=[]|fails=['6U:LAND:Forest:not_in_hand@Precombat Main']
+EXAMPLE|user_noncreatures|game=19|user_7|log_only=['unable to scream'] engine_only=[]|fails=[]

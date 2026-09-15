@@ -1,0 +1,21 @@
+game,covered,turns_logged,turns_matched,first_mismatch_field,first_mismatch_side_turn,mismatch_fields,mismatch_detail,ambiguous_order_turns,ambiguous_order_turns_matched,targeted_spells,targeted_spells_matched,labels_land,labels_spell,labels_attack,labels_block,unamb_land,unamb_spell,unamb_attack,unamb_block,forced_fails_before_mismatch,engine_status,ms
+0,1,6,3,oppo_life,user_4,oppo_life user_creatures,oppo_life: log=8 engine=5 ; user_creatures: log_only=['ripchain razorkin'] engine_only=['wildfire wickerfolk'],4,2,1,0,3,2,4,0,1,0,4,0,0,ok,1965
+1,1,6,2,user_life,oppo_3,user_life,user_life: log=17 engine=16,2,1,1,0,2,1,0,0,1,0,0,0,0,ok,898
+2,1,9,4,oppo_life,user_5,oppo_life user_lands user_creatures user_noncreatures user_hand,oppo_life: log=15 engine=20 ; user_lands: log_only=['forest'] engine_only=[] ; user_creatures: log_only=['hedge shredder'] engine_only=[] ; user_noncreatures: log_only=[] engine_only=['hedge shredder'] ; user_hand: log_only=[] engine_only=['forest'],5,2,1,1,4,3,0,1,2,0,0,1,1,ok,881
+3,1,9,1,oppo_hand,oppo_2,oppo_hand,oppo_hand: log=6 engine=5,6,0,1,0,1,0,0,0,1,0,0,0,0,ok,832
+4,1,8,2,oppo_hand,oppo_3,oppo_hand,oppo_hand: log=4 engine=5,6,1,0,0,2,1,0,0,1,0,0,0,1,ok,536
+5,1,9,1,oppo_hand,user_2,oppo_hand,oppo_hand: log=6 engine=5,5,0,3,0,1,0,0,0,1,0,0,0,0,ok,960
+6,1,12,2,user_hand,user_3,user_hand,user_hand: log_only=['forest'] engine_only=['mountain'],9,1,0,0,2,1,0,0,1,0,0,0,0,ok,1355
+7,1,7,3,user_life,oppo_4,user_life user_creatures,user_life: log=13 engine=16 ; user_creatures: log_only=['stalked researcher'] engine_only=['paranormal analyst'],4,2,0,0,3,3,2,0,1,1,2,0,1,ok,336
+8,1,7,4,user_life,oppo_5,user_life oppo_hand,user_life: log=16 engine=17 ; oppo_hand: log=2 engine=3,2,2,1,1,2,4,1,0,0,2,1,0,2,ok,467
+9,1,7,4,oppo_life,user_5,oppo_life user_lands user_creatures user_hand,"oppo_life: log=12 engine=16 ; user_lands: log_only=['swamp'] engine_only=[] ; user_creatures: log_only=['swamp'] engine_only=[] ; user_hand: log_only=[""winter's intervention""] engine_only=['mountain']",5,3,2,1,4,3,1,0,1,0,1,0,4,ok,512
+10,1,7,1,user_hand,user_2,user_hand,user_hand: log_only=['fear of burning alive'] engine_only=['mountain'],6,1,0,0,1,1,0,0,0,0,0,0,0,ok,581
+11,1,14,3,user_creatures,user_4,user_creatures,user_creatures: log_only=[] engine_only=['floodpits drowner'],6,0,5,1,3,1,0,0,3,0,0,0,0,ok,840
+12,1,9,2,user_creatures,user_3,user_creatures,"user_creatures: log_only=['house cartographer'] engine_only=['norin, swift survivalist']",7,1,1,0,2,1,0,0,1,0,0,0,0,ok,754
+13,1,11,1,user_hand,oppo_2,user_hand,user_hand: log_only=['island'] engine_only=['daggermaw megalodon'],7,0,2,0,2,0,0,0,2,0,0,0,0,ok,522
+14,1,13,3,user_creatures,user_4,user_creatures,user_creatures: log_only=['cursed windbreaker'] engine_only=['wary watchdog'],9,1,3,0,3,1,0,0,2,0,0,0,0,ok,978
+15,1,10,2,user_creatures,user_3,user_creatures,user_creatures: log_only=['bashful beastie'] engine_only=['plains'],5,1,2,0,2,1,0,1,1,0,0,1,0,ok,432
+16,1,9,3,user_creatures,user_4,user_creatures user_hand,user_creatures: log_only=['enduring innocence'] engine_only=[] ; user_hand: log_only=[] engine_only=['plains'],7,2,2,1,3,3,1,0,1,0,1,0,2,ok,332
+17,1,19,3,oppo_life,user_4,oppo_life,oppo_life: log=18 engine=16,6,2,2,0,3,2,0,0,1,0,0,0,1,ok,857
+18,1,8,2,user_lands,user_3,user_lands user_hand,user_lands: log_only=['forest'] engine_only=[] ; user_hand: log_only=[] engine_only=['slavering branchsnapper'],6,1,0,0,2,1,0,0,1,0,0,0,1,ok,288
+19,1,11,4,user_creatures,user_5,user_creatures,user_creatures: log_only=['fear of falling'] engine_only=['plains'],8,2,2,0,4,2,0,0,2,0,0,0,0,ok,735

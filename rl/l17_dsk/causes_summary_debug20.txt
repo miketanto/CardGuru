@@ -1,0 +1,28 @@
+CAUSES|base=debug20|guided=debug20g|games_with_mismatch=20
+CAUSE|ability_logged|6|0.300
+   EX|game=5 user_2 oppo_hand: oppo_hand: log=6 engine=5
+   EX|game=10 user_2 user_hand: user_hand: log_only=['fear of burning alive'] engine_only=['mountain']
+   EX|game=11 user_4 user_creatures: user_creatures: log_only=[] engine_only=['floodpits drowner']
+CAUSE|hidden_choice|4|0.200
+   EX|game=6 user_3 user_hand: user_hand: log_only=['forest'] engine_only=['mountain']
+   EX|game=12 user_3 user_creatures: user_creatures: log_only=['house cartographer'] engine_only=['norin, swift survivalist']
+   EX|game=15 user_3 user_creatures: user_creatures: log_only=['bashful beastie'] engine_only=['plains']
+CAUSE|forced_LAND_not_in_hand|2|0.100
+   EX|game=2 user_5 oppo_life: oppo_life: log=15 engine=20 ; user_lands: log_only=['forest'] engine_only=[] ; user_creatures: log_only=['hedge shredder'] engine_only=[] ; user_noncreatures: l
+   EX|game=18 user_3 user_lands: user_lands: log_only=['forest'] engine_only=[] ; user_hand: log_only=[] engine_only=['slavering branchsnapper']
+CAUSE|forced_DRAW_not_in_library_graveyard|2|0.100
+   EX|game=9 user_5 oppo_life: oppo_life: log=12 engine=16 ; user_lands: log_only=['swamp'] engine_only=[] ; user_creatures: log_only=['swamp'] engine_only=[] ; user_hand: log_only=["winter's
+   EX|game=16 user_4 user_creatures: user_creatures: log_only=['enduring innocence'] engine_only=[] ; user_hand: log_only=[] engine_only=['plains']
+CAUSE|field_oppo_life|1|0.050
+   EX|game=0 user_4 oppo_life: oppo_life: log=8 engine=5 ; user_creatures: log_only=['ripchain razorkin'] engine_only=['wildfire wickerfolk']
+CAUSE|field_user_life|1|0.050
+   EX|game=1 oppo_3 user_life: user_life: log=17 engine=16
+CAUSE|field_oppo_hand|1|0.050
+   EX|game=3 oppo_2 oppo_hand: oppo_hand: log=6 engine=5
+CAUSE|forced_CAST_not_playable|1|0.050
+   EX|game=4 oppo_3 oppo_hand: oppo_hand: log=4 engine=5
+CAUSE|forced_ATTACK_no_attacker_absent|1|0.050
+   EX|game=7 oppo_4 user_life: user_life: log=13 engine=16 ; user_creatures: log_only=['stalked researcher'] engine_only=['paranormal analyst']
+CAUSE|forced_SWAP_not_in_library_graveyard|1|0.050
+   EX|game=8 oppo_5 user_life: user_life: log=16 engine=17 ; oppo_hand: log=2 engine=3
+GUIDED_VS_BASE|games=20|guided_longer=5|guided_shorter=0
