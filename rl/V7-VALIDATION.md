@@ -4894,3 +4894,54 @@ What this cannot support:
 - A trend. The two recent points sit within one level-to-level swing of the night.
 - One seed and one deck.
 - Graduation remains far off: 33/100 against 70/100.
+
+### 12 / M_D — end point, 11,776 episodes (+5,376), and the full series (2026-09-15 ~10:50Z WSL)
+
+Training ended at the controller's hour-12 stop (Amendment 3):
+`L12|done|reason=hours|blocks=21|h=12.50|graduated=none`. Dimir trained 5,376 episodes
+(21 blocks: 16 vs CP7, 5 vs the heuristic). Landfall and white trained 0 (Amendment 2, deferred).
+
+**Last block and check.**
+- Block n=20: cp7, 53/203 = 0.207, 1,566 s.
+- Check n=20: CP7 2/25. selfrem 5/111, counter 9/101, flash on opp turn 7/65, ninjutsu 0/15,
+  biggest 7/15, creatures per game 3.32, consults per game 94.4.
+
+**End point (11,776):**
+- CP7 **21/100 = 0.210 [0.142, 0.300]**.
+- Heuristic **32/50 = 0.640 [0.501, 0.759]**.
+- Unseen suite **95/150 = 0.633 [0.554, 0.706]** (BenchBurn 25/50, HoldoutControl 42/50,
+  HoldoutMidrange 28/50). The start's was 98/150 = 0.653 (29 / 39 / 30).
+
+**The argmax-classes level series (the pre-registered yardstick):**
+
+| point | trained | CP7 (100) | heuristic guard (50) | unseen (150) |
+|---|---|---|---|---|
+| start | 6,400 | 0.190 [0.125, 0.278] | 0.700 | 0.653 [0.574, 0.725] |
+| +1,024 | 7,424 | 0.180 [0.117, 0.267] | 0.640 | – |
+| +2,048 | 8,448 | 0.090 [0.048, 0.162] | 0.500 | – |
+| +3,072 | 9,472 | 0.080 [0.041, 0.150] | 0.520 | – |
+| +4,096 | 10,496 | 0.310 [0.228, 0.406] | 0.760 | – |
+| +5,120 | 11,520 | 0.330 [0.246, 0.427] | 0.780 | – |
+| end +5,376 | 11,776 | 0.210 [0.142, 0.300] | 0.640 | 0.633 [0.554, 0.706] |
+
+Carried plainly:
+- **One block moved the level from 0.33 to 0.21.** The last 256 episodes were a single CP7 block
+  (sampled 0.207). A drop that size in one block is again the scale of the night's swings. It fits
+  a readout that flips with the act/pass balance, not a trained skill lost in 256 episodes.
+- **Measured from the first level to the last**, the argmax CP7 level went 0.19 → 0.21, the
+  heuristic guard 0.70 → 0.64, and the unseen suite 0.653 → 0.633. All three overlap their start
+  intervals.
+
+**Pre-registered readings at the end (argmax yardstick).**
+- **Competent:** no. Not graduated.
+- **Improving vs CP7:** not met (0.21 against 0.19, overlapping).
+- **Over-fit to CP7:** does not apply. The CP7 level did not rise clear, and the guards did not end
+  clear below.
+- **Card habits converge:** not met, and **"oscillates"**: act swings at n=8, n=13 and n=16–17,
+  and hold at n=10–12, n=14, n=18 and n=20.
+- **Drift hypothesis test:** under the fixed CP7 / heuristic mix, the levels stayed flat by the
+  overlap test and the counters still oscillated. The runbook's own sentence applies: **the drift
+  hypothesis is not supported, and the coarse terminal reward is the leading explanation instead**.
+  This carries a qualifier that comes after the pre-registration: the Amendment 4 readout shows the
+  argmax yardstick itself flips with the act/pass balance. The sampled and two-stage levels
+  (Amendments 4 and 5) say whether the flat argmax series hides movement in the policy.
