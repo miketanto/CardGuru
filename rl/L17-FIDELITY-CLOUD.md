@@ -601,6 +601,36 @@ supports is: **stop**, and keep the 17Lands data for what it measures without
 any engine at all — card win rates, deck composition, and the ~23 logged
 decisions per game as features, none of which need a replay to be correct.
 
+## 9. The full sample (all 2,000 games)
+
+Pre-stated (§2, and the task): the full sample is run for the readings that
+looked promising on the 200. That is `resync` — whose per-turn fidelity is the
+only reading that moved — plus `base` and `choice` as the two whole-game rows to
+put beside it. `abil`, `oppo` and `order` were not worth 2,000 games: each sat
+inside the harness's own noise band on the 200, and a tighter interval around
+"no effect" is still no effect.
+
+All 2,000 games finished `ok` in all three runs.
+
+| reading (2,000 games) | `base` | `choice` |
+|---|---|---|
+| median turns matched | 2 | **3** |
+| mean | 2.58 | 2.91 |
+| **games matching ≥ 8 turns** | **2/2000 = 0.001**, Wilson 95 % [0.000, 0.004] | **2/2000 = 0.001**, [0.000, 0.004] |
+| same, among the 1,409 games logged ≥ 8 turns | 2/1409 = 0.001, [0.000, 0.005] | 2/1409 = 0.001, [0.000, 0.005] |
+| fully matched to the logged end | 13/2000 = 0.006, [0.004, 0.011] | 26/2000 = 0.013, [0.009, 0.019] |
+| turns-matched histogram | 0:8 1:335 2:704 3:570 4:263 5:87 6:22 7:9 8:2 | 0:8 1:249 2:553 3:583 4:396 5:147 6:47 7:15 8:2 |
+| first-mismatch field | creatures 636, hand 459, opp life 279, life 273, opp hand 162, lands 133, non-creatures 45 | creatures 469, hand 410, opp life 344, life 343, opp hand 203, lands 149, non-creatures 56 |
+| labels per game / unambiguous | 5.01 / 0.386 | 5.92 / 0.373 |
+| user turns with > 1 possible order | 10221/17433 = 0.586 | 0.586 (identical, as pre-registered) |
+
+The 200-game sample's `0/200` was a small-sample zero: on the full 2,000, **two
+games do match 8 rounds** in each rebuild. The bar is unaffected — 0.001 with an
+upper bound of 0.004 is 125× below the pre-stated 0.50 — but it is worth saying
+that the true rate is small and positive rather than zero, which the 200-game
+interval [0.000, 0.019] already allowed for.
+
+
 ## 10. Files and how to rerun
 
 New in this branch (`data/l17-cloud`), alongside everything in
