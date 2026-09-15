@@ -4841,3 +4841,56 @@ What this cannot support:
 - A trend from any single level. The whole argmax series is within one 1,024-episode swing.
 - One seed and one deck.
 - Graduation remains far off by the argmax rule: 31/100 against 70/100.
+
+### 12 / M_D — fifth level point, +5,120 episodes (2026-09-15 ~09:55Z WSL)
+
+**Level at 11,520 episodes (+5,120):** CP7 on the own mirror **33/100 = 0.330 [0.246, 0.427]**
+(0 stalls). Heuristic guard **39/50 = 0.780 [0.648, 0.872]**. Not graduated.
+
+| point | trained | CP7 (100), argmax-classes | heuristic guard (50) |
+|---|---|---|---|
+| start | 6,400 | 19/100 = 0.190 [0.125, 0.278] | 35/50 = 0.700 [0.562, 0.809] |
+| +1,024 | 7,424 | 18/100 = 0.180 [0.117, 0.267] | 32/50 = 0.640 [0.501, 0.759] |
+| +2,048 | 8,448 | 9/100 = 0.090 [0.048, 0.162] | 25/50 = 0.500 [0.366, 0.634] |
+| +3,072 | 9,472 | 8/100 = 0.080 [0.041, 0.150] | 26/50 = 0.520 [0.385, 0.652] |
+| +4,096 | 10,496 | 31/100 = 0.310 [0.228, 0.406] | 38/50 = 0.760 [0.626, 0.857] |
+| +5,120 | 11,520 | 33/100 = 0.330 [0.246, 0.427] | 39/50 = 0.780 [0.648, 0.872] |
+
+Training blocks n=16..19 (sampled play): n=16 cp7 61/195 = 0.238; n=17 heuristic 172/84 = 0.672;
+n=18 cp7 60/196 = 0.234; n=19 cp7 51/205 = 0.199. The sampled CP7 blocks since n=15 (0.20–0.25)
+sit above the night's first eleven (0.10–0.19).
+
+Per-block CP7 checks n=16..19 (25 argmax games, seed 12500):
+
+| check | trained | CP7 wins | selfrem | counter taken | flash on opp turn | ninjutsu | biggest | creatures/game | consults/game |
+|---|---|---|---|---|---|---|---|---|---|
+| n=16 | 10,752 | 6/25 | 16/144 | 47/76 | 15/77 | 0/3 | 18/29 | 4.36 | 88.6 |
+| n=17 | 11,008 | 10/25 | 17/148 | 25/72 | 14/80 | 6/8 | 10/13 | 4.24 | 76.7 |
+| n=18 | 11,264 | 5/25 | 2/133 | 8/107 | 10/73 | 0/0 | 12/23 | 3.80 | 90.8 |
+| n=19 | 11,520 | 9/25 | 11/144 | 23/85 | 12/84 | 2/9 | 7/15 | 4.40 | 88.9 |
+
+**Reading at +5,120, in the pre-registered terms.**
+
+- **CP7 argmax level:** 0.19 → 0.18 → 0.09 → 0.08 → 0.31 → 0.33. The last interval
+  [0.246, 0.427] still overlaps the start's [0.125, 0.278] at its edge, so **"improving vs CP7" is
+  not met** by the overlap test.
+  - *Observation, not a reading:* two consecutive points at 0.31–0.33 after two at 0.08–0.09 make
+    a single-checkpoint fluke less likely than at +4,096.
+- **Heuristic guard:** at its best, 0.78 against the start's 0.70, overlapping.
+- **"Over-fit to CP7" does not apply**, since both yardsticks rose.
+- **Card habits over the last four checks (n=16..19):**
+  - selfrem is below 0.3 at all four (0.11, 0.11, 0.02, 0.08): **met**.
+  - Creatures per game are ≥ 3 at all four (4.36, 4.24, 3.80, 4.40): **met**.
+  - Counter selectivity is in [0.2, 0.5] at only **two of four**: 0.62 (above), 0.35, 0.07
+    (below), 0.27. **Not met.**
+  - Correction in the open: the coordinator's summary said three of four. The recount from the
+    check lines is two of four; the clause fails either way.
+  - So "card habits converge" is **not met**, on the counter clause alone. The counter's swing from
+    0.62 to 0.07 within three checks is itself the "oscillates" pattern.
+- **The readout caveat still applies.** The argmax series is what the sampled and two-stage reruns
+  (Amendments 4 and 5) will check. 11,520 is added to their snapshot set (`rl/run_p12s.sh`).
+
+What this cannot support:
+- A trend. The two recent points sit within one level-to-level swing of the night.
+- One seed and one deck.
+- Graduation remains far off: 33/100 against 70/100.
