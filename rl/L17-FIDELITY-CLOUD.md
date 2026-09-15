@@ -168,7 +168,7 @@ Two separate things:
 
 `rl/l17/ability_map.py` infers, from co-occurrence over all 2,000 games, which
 **card** owns each logged ability id (217 of 278 ids accepted, 74.7 % of ability
-occurrences; see §4). The rebuilder forces, once per logged occurrence, a
+occurrences; see §3.1). The rebuilder forces, once per logged occurrence, a
 non-mana activated ability of a permanent or hand card of that name.
 
 * Expected to move: the ~0.27 of base first-mismatches classified "ability id
@@ -187,9 +187,11 @@ non-mana activated ability of a permanent or hand card of that name.
 
 Extends the existing `guided` steering (removal targets from logged non-combat
 kills, manifest dread, library searches, draws rescued from the graveyard) with:
-surveil / scry / mill library-order choices steered so that cards the log shows
-being drawn later stay in the library and cards the log shows in the graveyard
-go there; and discards steered to the logged `cards_discarded` column.
+surveil / scry library-order choices steered so that cards the log shows being
+drawn later stay in the library; and discards steered to the logged
+`cards_discarded` column (rare in this sample: about 0.5 logged discards per
+game, so it cannot carry the variant on its own). Mill is not a choice in these
+cards and is not steered.
 
 * Expected to move: the "drift in state the check does not see" class (0.28 of
   base first-mismatches), whose single biggest verified mechanism is a surveil
@@ -211,6 +213,13 @@ so they are available at instant speed, and (iii) casts its logged
 instants/sorceries on the user's turn in the step the log's damage implies —
 before blockers when the user attacked and the log shows a creature of the
 user's dying non-combat that turn, otherwise at end of turn.
+
+*(Implementation note added after writing the code, before running it: (ii)
+turned out to be already true. The base harness swaps the opponent's cards into
+its hand at its FIRST priority of the turn, which on the user's turn is the
+user's upkeep — before the user's main phase — so its flash and instant cards
+are already in hand at instant speed. Only (i) and (iii) are new in this
+variant.)*
 
 * Expected to move: `oppo_hand` and `oppo_life` first mismatches (28 + 15 of 200
   in the base run), and user creature counts killed by opponent removal.
@@ -591,3 +600,38 @@ If the per-turn design is not worth that work, the alternative this trial
 supports is: **stop**, and keep the 17Lands data for what it measures without
 any engine at all — card win rates, deck composition, and the ~23 logged
 decisions per game as features, none of which need a replay to be correct.
+
+## 10. Files and how to rerun
+
+New in this branch (`data/l17-cloud`), alongside everything in
+`rl/L17-FIDELITY.md` §8:
+
+* `rl/l17/classpath_cloud.txt` — the `Mage.Tests` test classpath of the
+  from-scratch build here (same 125 artifacts as `classpath.txt`).
+* `rl/l17/run_l17_cloud.sh` — driver without the local box's resource caps;
+  `L17_VARIANT` selects the rebuilder variant.
+* `rl/l17/run_variants_cloud.sh`, `rl/l17/run_all2000_cloud.sh` — the batteries.
+* `rl/l17/ability_map.py` — ability id → owning card by co-occurrence →
+  `rl/l17_dsk/ability_map_cloud.csv`.
+* `rl/l17/AbilityKinds.java` — does that card have an activated ability? →
+  `rl/l17_dsk/ability_kinds_cloud.csv`.
+* `rl/l17/cascade.py` — first failed action vs first state mismatch →
+  `rl/l17_dsk/cascade_<tag>.csv`.
+* `rl/l17/perturn.py` — per-turn fidelity of a `resync` run →
+  `rl/l17_dsk/perturn_<tag>.csv`.
+* `rl/l17/build_specs.py`, `rl/l17/L17Rebuild.java` — extended with the five
+  variants; **with no `--variant` / `-Dl17.variant` the base spec and the base
+  behaviour are unchanged**, which is what makes §1a a reproduction.
+* Per-game results: `rl/l17_dsk/fidelity_games_s200{,g,_abil,_choice,_oppo,_order,_all,_resync}_cloud.csv`,
+  `perturn_s200_resync{,choice}_cloud.csv`, `cascade_s200_cloud.csv`, and the
+  `all2000_*_cloud` files for the full-sample runs.
+
+```
+bash rl/setup_engine.sh                                   # step 1
+bash rl/l17/run_l17_cloud.sh s200_cloud --sample 200 --seed 17          # step 2
+python3 rl/l17/cascade.py  /home/user/l17run/spec_s200_cloud.tsv \
+                           /home/user/l17run/out_s200_cloud.tsv --tag s200_cloud
+python3 rl/l17/ability_map.py
+bash rl/l17/run_variants_cloud.sh                         # step 3, all variants
+bash rl/l17/run_all2000_cloud.sh                          # step 4, full sample
+```
