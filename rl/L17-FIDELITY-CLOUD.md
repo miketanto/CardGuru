@@ -564,8 +564,9 @@ The three findings that decide it:
    afterwards. The same steering worth ⅓ of a turn per *game* is worth 0.06 of
    fidelity per *turn* (§4.1) — the whole-game metric throws that away.
 3. **Per-turn fidelity is a usable number, and it has a cliff.** Given a
-   correct start, 0.850 [0.832, 0.867] of side-turns 1–8 replay correctly with
-   outcome-steered choices, against 0.353 [0.331, 0.376] from side-turn 9 on.
+   correct start, on all 2,000 games, 0.853 [0.847, 0.858] of side-turns 1–8
+   replay correctly with outcome-steered choices, against 0.370 [0.363, 0.378]
+   from side-turn 9 on (§9.2).
    The cliff is not drift — every one of these turns starts from the log — it is
    board complexity, and it is where the remaining causes of §5 live.
 
@@ -581,8 +582,9 @@ What it would take to make the per-turn design real, in order of leverage:
   every triggered pump, removal and tap. Days, not weeks; it is the same
   machinery `chooseTarget` already uses.
 * **Cap the label harvest at side-turn 8** (roughly the first 4 rounds) and
-  state the cap. That is where 1,354 of the 1,964 correct side-turns are, and
-  where fidelity is above 0.8.
+  state the cap. On the full sample that is 13,566 of the 19,838 correct
+  side-turns, carrying 6.33 labelled decisions per game at fidelity 0.853
+  [0.847, 0.858] — about 12,700 decisions per 2,000 games.
 * **Do not buy the abilities table.** The finding that changes the plan most is
   that the `*_abilities` column is a log of abilities that *resolved*, not of
   activations: only 16.5 % of mapped occurrences are even on a card with a
@@ -659,6 +661,33 @@ Every band is within the 200-game interval, and the cliff between side-turn 8
 and side-turn 9 survives at full width: 0.799 [0.792, 0.805] against 0.308
 [0.301, 0.315], intervals nowhere near touching. The recommendation in §8 rests
 on this table, not on the 200-game one.
+
+### 9.2 Full sample: `resync` + `choice`, the per-turn ceiling
+
+| side-turns | `resync` | `resync` + `choice` |
+|---|---|---|
+| 1–2 | 0.998 [0.996, 0.999] | 3992/4000 = 0.998 [0.996, 0.999] |
+| 3–4 | 0.906 [0.897, 0.915] | 3740/4000 = **0.935** [0.927, 0.942] |
+| 5–6 | 0.723 [0.709, 0.737] | 3227/3991 = **0.809** [0.796, 0.820] |
+| 7–8 | 0.562 [0.546, 0.577] | 2607/3914 = **0.666** [0.651, 0.681] |
+| 9–12 | 0.371 [0.360, 0.383] | 3207/7171 = **0.447** [0.436, 0.459] |
+| 13–16 | 0.273 [0.261, 0.285] | 1754/5243 = **0.335** [0.322, 0.347] |
+| 17+ | 0.247 [0.235, 0.260] | 1311/4518 = **0.290** [0.277, 0.304] |
+| **1–8 pooled** | 0.799 [0.792, 0.805] | **13566/15905 = 0.853** [0.847, 0.858] |
+| **9+ pooled** | 0.308 [0.301, 0.315] | **6272/16932 = 0.370** [0.363, 0.378] |
+| **all** | 0.546 [0.540, 0.551] | **19838/32837 = 0.604** [0.599, 0.609] |
+
+The 200-game figures (§4.1: 0.850 for 1–8, 0.592 overall) land inside these
+intervals. The cause split among the 12,999 failing clean side-turns is also
+unchanged from §5: a permanent differs 0.607, life totals only 0.141, opponent
+hand count only 0.104, user hand only 0.079, mixed 0.069.
+
+Label yield on the full sample, for §7's table: the log records **22.97** user
+decisions per game; **9.88 (0.430)** fall in side-turns that `resync`+`choice`
+replayed correctly, of which **6.33 (0.276 of all decisions)** are in side-turns
+1–8, where per-turn fidelity is 0.853 [0.847, 0.858]. That 6.33 per game — about
+12,700 labelled decisions per 2,000 games at 0.85 fidelity — is the concrete
+deliverable the recommendation in §8 is about.
 
 
 ## 10. Files and how to rerun
