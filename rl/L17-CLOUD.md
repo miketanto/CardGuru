@@ -114,3 +114,11 @@ guessed.
   local.
 * Cloud session launched on `data/l17-dsk` with the §2–§3 runbook; results land
   in `rl/L17-FIDELITY.md` and `rl/l17_dsk/fidelity_games.csv` on that branch.
+* **Correction (2026-09-15, 13:10 CDT):** the "cloud session" did **not** run in
+  the cloud. The launched session is running on this machine's WSL box beside
+  Phase 13 (its own rl/L17-FIDELITY.md §1 says so). It built nothing: it compiles
+  a private harness against the existing pinned engine at /home/user/mage and
+  leaves /home/user/mage and ~/.m2 untouched. It was told to run one JVM
+  (-Xmx1536m, serial GC, nice 15), to pause while MemAvailable < 2,000 MB or swap
+  > 1 GB, and to stop at 200 games unless that run finishes within ~2 h. So the
+  public push of the sample was not needed for this run.
