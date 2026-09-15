@@ -1,0 +1,3374 @@
+{
+ "consults": 100,
+ "games": 24,
+ "files": [
+  "/tmp/faith13_100.jsonl"
+ ],
+ "layers": 2,
+ "thresholds": {
+  "L3": {
+   "binary": 0.99,
+   "cat": 0.99,
+   "real": 0.95
+  },
+  "L4": {
+   "binary": 0.95,
+   "cat": 0.95,
+   "real": 0.9
+  },
+  "edge": 0.9,
+  "consult": {
+   "real": 0.9,
+   "binary": 0.95
+  }
+ },
+ "stages": {
+  "L3": {
+   "game": {
+    "turn": {
+     "kind": "real",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "too few rows"
+    },
+    "i_am_active": {
+     "kind": "binary",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "too few rows"
+    },
+    "step_upkeep": {
+     "kind": "binary",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "too few rows"
+    },
+    "step_draw": {
+     "kind": "binary",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "too few rows"
+    },
+    "step_main1": {
+     "kind": "binary",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "too few rows"
+    },
+    "step_decl_att": {
+     "kind": "binary",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "too few rows"
+    },
+    "step_decl_blk": {
+     "kind": "binary",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "too few rows"
+    },
+    "step_combat_dmg": {
+     "kind": "binary",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "too few rows"
+    },
+    "step_main2": {
+     "kind": "binary",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "too few rows"
+    },
+    "step_end": {
+     "kind": "binary",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "too few rows"
+    },
+    "priority": {
+     "kind": "binary",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "too few rows"
+    },
+    "stack_depth": {
+     "kind": "real",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "too few rows"
+    },
+    "dtype_PASS": {
+     "kind": "binary",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "too few rows"
+    },
+    "dtype_LAND": {
+     "kind": "binary",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "too few rows"
+    },
+    "dtype_SPELL": {
+     "kind": "binary",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "too few rows"
+    },
+    "dtype_ACTIVATE": {
+     "kind": "binary",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "too few rows"
+    },
+    "dtype_TARGET": {
+     "kind": "binary",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "too few rows"
+    },
+    "dtype_ATTACK": {
+     "kind": "binary",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "too few rows"
+    },
+    "dtype_BLOCK": {
+     "kind": "binary",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "too few rows"
+    },
+    "dtype_OTHER": {
+     "kind": "binary",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "too few rows"
+    },
+    "n_cand": {
+     "kind": "real",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "too few rows"
+    },
+    "consults_so_far": {
+     "kind": "real",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "too few rows"
+    },
+    "my_deck_open": {
+     "kind": "binary",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "too few rows"
+    },
+    "opp_deck_open": {
+     "kind": "binary",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "too few rows"
+    }
+   },
+   "players": {
+    "life": {
+     "kind": "real",
+     "exercised": 196,
+     "score": 0.9999999501361687,
+     "chance": 0.0,
+     "pass": true,
+     "n_test": 38
+    },
+    "poison": {
+     "kind": "real",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "hand": {
+     "kind": "real",
+     "exercised": 183,
+     "score": 0.9999995985342622,
+     "chance": 0.0,
+     "pass": true,
+     "n_test": 38
+    },
+    "library": {
+     "kind": "real",
+     "exercised": 200,
+     "score": 0.9999347169394419,
+     "chance": 0.0,
+     "pass": true,
+     "n_test": 38
+    },
+    "graveyard": {
+     "kind": "real",
+     "exercised": 157,
+     "score": 0.9999973089880719,
+     "chance": 0.0,
+     "pass": true,
+     "n_test": 38
+    },
+    "exile": {
+     "kind": "real",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "pool_W": {
+     "kind": "real",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "pool_U": {
+     "kind": "real",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "pool_B": {
+     "kind": "real",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "pool_R": {
+     "kind": "real",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "pool_G": {
+     "kind": "real",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "pool_C": {
+     "kind": "real",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "untapped_sources": {
+     "kind": "real",
+     "exercised": 145,
+     "score": 0.9999999298160756,
+     "chance": 0.0,
+     "pass": true,
+     "n_test": 38
+    },
+    "lands": {
+     "kind": "real",
+     "exercised": 189,
+     "score": 0.9999991502719244,
+     "chance": 0.0,
+     "pass": true,
+     "n_test": 38
+    },
+    "drawn_this_turn": {
+     "kind": "real",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "permanents": {
+     "kind": "real",
+     "exercised": 189,
+     "score": 0.9999985678873489,
+     "chance": 0.0,
+     "pass": true,
+     "n_test": 38
+    }
+   },
+   "ent": {
+    "kw_first_strike": {
+     "kind": "binary",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "stack_is_ability": {
+     "kind": "binary",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "instant": {
+     "kind": "binary",
+     "exercised": 452,
+     "score": 1.0,
+     "chance": 0.5989010989010989,
+     "pass": true,
+     "n_test": 182,
+     "zones": {
+      "hand": 1.0,
+      "graveyard": 1.0
+     }
+    },
+    "zone_exile": {
+     "kind": "binary",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "zone_library_known": {
+     "kind": "binary",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "kw_protection": {
+     "kind": "binary",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "sick": {
+     "kind": "binary",
+     "exercised": 189,
+     "score": 1.0,
+     "chance": 0.8471615720524017,
+     "pass": true,
+     "n_test": 229,
+     "zones": {
+      "battlefield": 1.0
+     }
+    },
+    "other_perm": {
+     "kind": "binary",
+     "exercised": 288,
+     "score": 1.0,
+     "chance": 0.8384279475982532,
+     "pass": true,
+     "n_test": 229,
+     "zones": {
+      "battlefield": 1.0
+     }
+    },
+    "kw_flash": {
+     "kind": "binary",
+     "exercised": 448,
+     "score": 1.0,
+     "chance": 0.8029197080291971,
+     "pass": true,
+     "n_test": 411,
+     "zones": {
+      "battlefield": 1.0,
+      "hand": 1.0,
+      "graveyard": 1.0
+     }
+    },
+    "can_block": {
+     "kind": "binary",
+     "exercised": 410,
+     "score": 1.0,
+     "chance": 0.6681222707423581,
+     "pass": true,
+     "n_test": 229,
+     "zones": {
+      "battlefield": 1.0
+     }
+    },
+    "face_down": {
+     "kind": "binary",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "mv": {
+     "kind": "real",
+     "exercised": 1324,
+     "score": 0.9999998893672867,
+     "chance": 0.0,
+     "pass": true,
+     "n_test": 411,
+     "zones": {
+      "battlefield": 1.0,
+      "hand": 1.0,
+      "graveyard": 1.0
+     }
+    },
+    "zone_stack": {
+     "kind": "binary",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "ctr_loyalty": {
+     "kind": "real",
+     "exercised": 34,
+     "score": 0.9995845515072211,
+     "chance": 0.0,
+     "pass": true,
+     "n_test": 229,
+     "zones": {
+      "battlefield": 0.9996
+     }
+    },
+    "ctr_p1p1": {
+     "kind": "real",
+     "exercised": 4,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "loyalty": {
+     "kind": "real",
+     "exercised": 34,
+     "score": 0.9995848682160811,
+     "chance": 0.0,
+     "pass": true,
+     "n_test": 229,
+     "zones": {
+      "battlefield": 0.9996
+     }
+    },
+    "printed_power": {
+     "kind": "real",
+     "exercised": 700,
+     "score": 0.999999851704021,
+     "chance": 0.0,
+     "pass": true,
+     "n_test": 411,
+     "zones": {
+      "battlefield": 1.0,
+      "hand": 1.0,
+      "graveyard": 1.0
+     }
+    },
+    "kw_menace": {
+     "kind": "binary",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "kw_shroud": {
+     "kind": "binary",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "kw_flying": {
+     "kind": "binary",
+     "exercised": 270,
+     "score": 0.9975669099756691,
+     "chance": 0.9051094890510949,
+     "pass": true,
+     "n_test": 411,
+     "zones": {
+      "battlefield": 0.9956,
+      "hand": 1.0,
+      "graveyard": 1.0
+     }
+    },
+    "kw_deathtouch": {
+     "kind": "binary",
+     "exercised": 107,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "kw_ward": {
+     "kind": "binary",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "mana_left_if_cast": {
+     "kind": "real",
+     "exercised": 187,
+     "score": 0.9999435212447646,
+     "chance": 0.0,
+     "pass": true,
+     "n_test": 74,
+     "zones": {
+      "hand": 0.9999
+     }
+    },
+    "tough_left": {
+     "kind": "real",
+     "exercised": 741,
+     "score": 0.9999665073436882,
+     "chance": 0.0,
+     "pass": true,
+     "n_test": 411,
+     "zones": {
+      "battlefield": 0.9999,
+      "hand": 1.0,
+      "graveyard": 1.0
+     }
+    },
+    "sorcery": {
+     "kind": "binary",
+     "exercised": 38,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "creature": {
+     "kind": "binary",
+     "exercised": 716,
+     "score": 1.0,
+     "chance": 0.7250608272506083,
+     "pass": true,
+     "n_test": 411,
+     "zones": {
+      "battlefield": 1.0,
+      "hand": 1.0,
+      "graveyard": 1.0
+     }
+    },
+    "tapped": {
+     "kind": "binary",
+     "exercised": 410,
+     "score": 1.0,
+     "chance": 0.6681222707423581,
+     "pass": true,
+     "n_test": 229,
+     "zones": {
+      "battlefield": 1.0
+     }
+    },
+    "ctr_other": {
+     "kind": "real",
+     "exercised": 9,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "turns_on_bf": {
+     "kind": "real",
+     "exercised": 1244,
+     "score": 0.9999771999161899,
+     "chance": 0.0,
+     "pass": true,
+     "n_test": 229,
+     "zones": {
+      "battlefield": 1.0
+     }
+    },
+    "kw_ninjutsu": {
+     "kind": "binary",
+     "exercised": 75,
+     "score": 1.0,
+     "chance": 0.9519650655021834,
+     "pass": true,
+     "n_test": 229,
+     "zones": {
+      "battlefield": 1.0
+     }
+    },
+    "stack_modes": {
+     "kind": "real",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "kw_trample": {
+     "kind": "binary",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "kw_prowess": {
+     "kind": "binary",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "damage": {
+     "kind": "real",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "identity": {
+     "kind": "cat",
+     "exercised": 2132,
+     "score": 1.0,
+     "chance": 0.16058394160583941,
+     "pass": true,
+     "n_test": 411,
+     "zones": {
+      "battlefield": 1.0,
+      "hand": 1.0,
+      "graveyard": 1.0
+     }
+    },
+    "kw_reach": {
+     "kind": "binary",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "stack_mine": {
+     "kind": "binary",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "mine": {
+     "kind": "binary",
+     "exercised": 976,
+     "score": 1.0,
+     "chance": 0.5370919881305638,
+     "pass": true,
+     "n_test": 337,
+     "zones": {
+      "battlefield": 1.0,
+      "graveyard": 1.0
+     }
+    },
+    "kw_haste": {
+     "kind": "binary",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "kw_defender": {
+     "kind": "binary",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "toughness": {
+     "kind": "real",
+     "exercised": 741,
+     "score": 0.9999665073436882,
+     "chance": 0.0,
+     "pass": true,
+     "n_test": 411,
+     "zones": {
+      "battlefield": 0.9999,
+      "hand": 1.0,
+      "graveyard": 1.0
+     }
+    },
+    "power": {
+     "kind": "real",
+     "exercised": 741,
+     "score": 0.9999372344867774,
+     "chance": 0.0,
+     "pass": true,
+     "n_test": 411,
+     "zones": {
+      "battlefield": 0.9999,
+      "hand": 1.0,
+      "graveyard": 1.0
+     }
+    },
+    "attacking": {
+     "kind": "binary",
+     "exercised": 19,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "blocking": {
+     "kind": "binary",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "can_attack": {
+     "kind": "binary",
+     "exercised": 542,
+     "score": 1.0,
+     "chance": 0.5676855895196506,
+     "pass": true,
+     "n_test": 229,
+     "zones": {
+      "battlefield": 1.0
+     }
+    },
+    "zone_command": {
+     "kind": "binary",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "stack_X": {
+     "kind": "real",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "entered": {
+     "kind": "binary",
+     "exercised": 60,
+     "score": 1.0,
+     "chance": 0.9475982532751092,
+     "pass": true,
+     "n_test": 229,
+     "zones": {
+      "battlefield": 1.0
+     }
+    },
+    "land": {
+     "kind": "binary",
+     "exercised": 605,
+     "score": 1.0,
+     "chance": 0.6963696369636964,
+     "pass": true,
+     "n_test": 303,
+     "zones": {
+      "battlefield": 1.0,
+      "hand": 1.0
+     }
+    },
+    "legal_targets": {
+     "kind": "real",
+     "exercised": 46,
+     "score": 0.9994462158152331,
+     "chance": 0.0,
+     "pass": true,
+     "n_test": 74,
+     "zones": {
+      "hand": 0.9994
+     }
+    },
+    "zone_hand": {
+     "kind": "binary",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "token": {
+     "kind": "binary",
+     "exercised": 148,
+     "score": 1.0,
+     "chance": 0.9126637554585153,
+     "pass": true,
+     "n_test": 229,
+     "zones": {
+      "battlefield": 1.0
+     }
+    },
+    "kw_lifelink": {
+     "kind": "binary",
+     "exercised": 72,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "zone_battlefield": {
+     "kind": "binary",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "printed_tough": {
+     "kind": "real",
+     "exercised": 700,
+     "score": 0.9999996283492247,
+     "chance": 0.0,
+     "pass": true,
+     "n_test": 411,
+     "zones": {
+      "battlefield": 1.0,
+      "hand": 1.0,
+      "graveyard": 1.0
+     }
+    },
+    "ctr_m1m1": {
+     "kind": "real",
+     "exercised": 11,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "kw_hexproof": {
+     "kind": "binary",
+     "exercised": 19,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "castable": {
+     "kind": "binary",
+     "exercised": 180,
+     "score": 1.0,
+     "chance": 0.7702702702702703,
+     "pass": true,
+     "n_test": 74,
+     "zones": {
+      "hand": 1.0
+     }
+    },
+    "lethal_as_is": {
+     "kind": "binary",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "zone_graveyard": {
+     "kind": "binary",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "stack_pos": {
+     "kind": "real",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "kw_double_strike": {
+     "kind": "binary",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "kw_vigilance": {
+     "kind": "binary",
+     "exercised": 190,
+     "score": 0.9970326409495549,
+     "chance": 0.9169139465875371,
+     "pass": true,
+     "n_test": 337,
+     "zones": {
+      "battlefield": 0.9956,
+      "graveyard": 1.0
+     }
+    }
+   },
+   "ent_zone_rows": {
+    "battlefield": 1304,
+    "hand": 387,
+    "stack": 12,
+    "graveyard": 800,
+    "exile": 0,
+    "library_known": 0,
+    "command": 0
+   },
+   "opp_hand": {
+    "origin_opening": {
+     "kind": "binary",
+     "exercised": 140,
+     "score": 1.0,
+     "chance": 0.5921052631578947,
+     "pass": true,
+     "n_test": 76
+    },
+    "origin_drawn": {
+     "kind": "binary",
+     "exercised": 135,
+     "score": 1.0,
+     "chance": 0.5921052631578947,
+     "pass": true,
+     "n_test": 76
+    },
+    "origin_returned": {
+     "kind": "binary",
+     "exercised": 5,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "origin_other": {
+     "kind": "binary",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "age": {
+     "kind": "real",
+     "exercised": 306,
+     "score": 0.9999999088016708,
+     "chance": 0.0,
+     "pass": true,
+     "n_test": 76
+    },
+    "known": {
+     "kind": "binary",
+     "exercised": 5,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "seen": {
+     "kind": "binary",
+     "exercised": 5,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "identity": {
+     "kind": "cat",
+     "exercised": 2,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    }
+   },
+   "opp_deck": {
+    "count": {
+     "kind": "real",
+     "exercised": 2111,
+     "score": 0.9999927180605512,
+     "chance": 0.0,
+     "pass": true,
+     "n_test": 403
+    },
+    "fraction": {
+     "kind": "real",
+     "exercised": 2111,
+     "score": 0.9801717544595268,
+     "chance": 0.0,
+     "pass": true,
+     "n_test": 403
+    },
+    "castable_now": {
+     "kind": "binary",
+     "exercised": 666,
+     "score": 1.0,
+     "chance": 0.6352357320099256,
+     "pass": true,
+     "n_test": 403
+    },
+    "mv": {
+     "kind": "real",
+     "exercised": 1419,
+     "score": 0.9999999940973084,
+     "chance": 0.0,
+     "pass": true,
+     "n_test": 403
+    },
+    "instant_speed": {
+     "kind": "binary",
+     "exercised": 951,
+     "score": 1.0,
+     "chance": 0.5359801488833746,
+     "pass": true,
+     "n_test": 403
+    },
+    "identity": {
+     "kind": "cat",
+     "exercised": 2011,
+     "score": 1.0,
+     "chance": 0.04714640198511166,
+     "pass": true,
+     "n_test": 403
+    }
+   },
+   "opp_act": {
+    "act_cast": {
+     "kind": "binary",
+     "exercised": 389,
+     "score": 1.0,
+     "chance": 0.5533333333333333,
+     "pass": true,
+     "n_test": 150
+    },
+    "act_activate": {
+     "kind": "binary",
+     "exercised": 15,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "act_attack": {
+     "kind": "binary",
+     "exercised": 243,
+     "score": 1.0,
+     "chance": 0.8133333333333334,
+     "pass": true,
+     "n_test": 150
+    },
+    "act_block": {
+     "kind": "binary",
+     "exercised": 6,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "act_declined_block": {
+     "kind": "binary",
+     "exercised": 53,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "act_passed_mana_up": {
+     "kind": "binary",
+     "exercised": 213,
+     "score": 1.0,
+     "chance": 0.7,
+     "pass": true,
+     "n_test": 150
+    },
+    "act_other": {
+     "kind": "binary",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "consult_age": {
+     "kind": "real",
+     "exercised": 919,
+     "score": 0.9999999991944464,
+     "chance": 0.0,
+     "pass": true,
+     "n_test": 150
+    }
+   },
+   "cand": {
+    "type_PASS": {
+     "kind": "binary",
+     "exercised": 87,
+     "score": 1.0,
+     "chance": 0.7567567567567568,
+     "pass": true,
+     "n_test": 74
+    },
+    "type_LAND": {
+     "kind": "binary",
+     "exercised": 47,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "type_SPELL": {
+     "kind": "binary",
+     "exercised": 80,
+     "score": 1.0,
+     "chance": 0.6891891891891891,
+     "pass": true,
+     "n_test": 74
+    },
+    "type_ACTIVATE": {
+     "kind": "binary",
+     "exercised": 74,
+     "score": 1.0,
+     "chance": 0.7162162162162162,
+     "pass": true,
+     "n_test": 74
+    },
+    "type_TARGET": {
+     "kind": "binary",
+     "exercised": 32,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "type_ATTACK": {
+     "kind": "binary",
+     "exercised": 8,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "type_BLOCK": {
+     "kind": "binary",
+     "exercised": 5,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "type_OTHER": {
+     "kind": "binary",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "LSA.mana_left_after": {
+     "kind": "real",
+     "exercised": 144,
+     "score": 0.9999994051390902,
+     "chance": 0.0,
+     "pass": true,
+     "n_test": 39
+    },
+    "LSA.targets_legal": {
+     "kind": "real",
+     "exercised": 56,
+     "score": 0.9999992166339587,
+     "chance": 0.0,
+     "pass": true,
+     "n_test": 39
+    },
+    "LSA.instant_speed": {
+     "kind": "binary",
+     "exercised": 73,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "LSA.sorcery_speed": {
+     "kind": "binary",
+     "exercised": 73,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "LSA.flash": {
+     "kind": "binary",
+     "exercised": 30,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "LSA.stack_above_n": {
+     "kind": "real",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "LSA.X_chosen": {
+     "kind": "real",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "TARGET.is_player": {
+     "kind": "-",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "too few rows (32)"
+    },
+    "TARGET.is_me": {
+     "kind": "-",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "too few rows (32)"
+    },
+    "TARGET.life_if_player": {
+     "kind": "-",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "too few rows (32)"
+    },
+    "TARGET.is_creature": {
+     "kind": "-",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "too few rows (32)"
+    },
+    "TARGET.power": {
+     "kind": "-",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "too few rows (32)"
+    },
+    "TARGET.toughness": {
+     "kind": "-",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "too few rows (32)"
+    },
+    "TARGET.mine": {
+     "kind": "-",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "too few rows (32)"
+    },
+    "ATTACK.damage_dealt": {
+     "kind": "-",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "too few rows (8)"
+    },
+    "ATTACK.their_kills": {
+     "kind": "-",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "too few rows (8)"
+    },
+    "ATTACK.my_losses": {
+     "kind": "-",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "too few rows (8)"
+    },
+    "ATTACK.lethal": {
+     "kind": "-",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "too few rows (8)"
+    },
+    "ATTACK.attackers_used": {
+     "kind": "-",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "too few rows (8)"
+    },
+    "ATTACK.opp_life_after": {
+     "kind": "-",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "too few rows (8)"
+    },
+    "ATTACK.bodies_retained": {
+     "kind": "-",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "too few rows (8)"
+    },
+    "ATTACK.power_retained": {
+     "kind": "-",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "too few rows (8)"
+    },
+    "ATTACK.tough_retained": {
+     "kind": "-",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "too few rows (8)"
+    },
+    "ATTACK.crack_back": {
+     "kind": "-",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "too few rows (8)"
+    },
+    "ATTACK.my_life_after": {
+     "kind": "-",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "too few rows (8)"
+    },
+    "BLOCK.damage_taken": {
+     "kind": "-",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "too few rows (5)"
+    },
+    "BLOCK.attackers_killed": {
+     "kind": "-",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "too few rows (5)"
+    },
+    "BLOCK.value_killed": {
+     "kind": "-",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "too few rows (5)"
+    },
+    "BLOCK.blockers_lost": {
+     "kind": "-",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "too few rows (5)"
+    },
+    "BLOCK.value_lost": {
+     "kind": "-",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "too few rows (5)"
+    },
+    "BLOCK.defender_dies": {
+     "kind": "-",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "too few rows (5)"
+    },
+    "BLOCK.blockers_used": {
+     "kind": "-",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "too few rows (5)"
+    },
+    "BLOCK.life_after": {
+     "kind": "-",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "too few rows (5)"
+    }
+   },
+   "cand_type_rows": {
+    "PASS": 87,
+    "LAND": 47,
+    "SPELL": 80,
+    "ACTIVATE": 74,
+    "TARGET": 32,
+    "ATTACK": 8,
+    "BLOCK": 5,
+    "OTHER": 0
+   }
+  },
+  "L4": {
+   "game": {
+    "turn": {
+     "kind": "real",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "too few rows"
+    },
+    "i_am_active": {
+     "kind": "binary",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "too few rows"
+    },
+    "step_upkeep": {
+     "kind": "binary",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "too few rows"
+    },
+    "step_draw": {
+     "kind": "binary",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "too few rows"
+    },
+    "step_main1": {
+     "kind": "binary",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "too few rows"
+    },
+    "step_decl_att": {
+     "kind": "binary",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "too few rows"
+    },
+    "step_decl_blk": {
+     "kind": "binary",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "too few rows"
+    },
+    "step_combat_dmg": {
+     "kind": "binary",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "too few rows"
+    },
+    "step_main2": {
+     "kind": "binary",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "too few rows"
+    },
+    "step_end": {
+     "kind": "binary",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "too few rows"
+    },
+    "priority": {
+     "kind": "binary",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "too few rows"
+    },
+    "stack_depth": {
+     "kind": "real",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "too few rows"
+    },
+    "dtype_PASS": {
+     "kind": "binary",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "too few rows"
+    },
+    "dtype_LAND": {
+     "kind": "binary",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "too few rows"
+    },
+    "dtype_SPELL": {
+     "kind": "binary",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "too few rows"
+    },
+    "dtype_ACTIVATE": {
+     "kind": "binary",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "too few rows"
+    },
+    "dtype_TARGET": {
+     "kind": "binary",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "too few rows"
+    },
+    "dtype_ATTACK": {
+     "kind": "binary",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "too few rows"
+    },
+    "dtype_BLOCK": {
+     "kind": "binary",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "too few rows"
+    },
+    "dtype_OTHER": {
+     "kind": "binary",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "too few rows"
+    },
+    "n_cand": {
+     "kind": "real",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "too few rows"
+    },
+    "consults_so_far": {
+     "kind": "real",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "too few rows"
+    },
+    "my_deck_open": {
+     "kind": "binary",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "too few rows"
+    },
+    "opp_deck_open": {
+     "kind": "binary",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "too few rows"
+    }
+   },
+   "players": {
+    "life": {
+     "kind": "real",
+     "exercised": 196,
+     "score": 0.9969733744468011,
+     "chance": 0.0,
+     "pass": true,
+     "n_test": 38
+    },
+    "poison": {
+     "kind": "real",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "hand": {
+     "kind": "real",
+     "exercised": 183,
+     "score": 0.9955654715188353,
+     "chance": 0.0,
+     "pass": true,
+     "n_test": 38
+    },
+    "library": {
+     "kind": "real",
+     "exercised": 200,
+     "score": 0.9774397988418541,
+     "chance": 0.0,
+     "pass": true,
+     "n_test": 38
+    },
+    "graveyard": {
+     "kind": "real",
+     "exercised": 157,
+     "score": 0.9774166448007604,
+     "chance": 0.0,
+     "pass": true,
+     "n_test": 38
+    },
+    "exile": {
+     "kind": "real",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "pool_W": {
+     "kind": "real",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "pool_U": {
+     "kind": "real",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "pool_B": {
+     "kind": "real",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "pool_R": {
+     "kind": "real",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "pool_G": {
+     "kind": "real",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "pool_C": {
+     "kind": "real",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "untapped_sources": {
+     "kind": "real",
+     "exercised": 145,
+     "score": 0.9943197510872368,
+     "chance": 0.0,
+     "pass": true,
+     "n_test": 38
+    },
+    "lands": {
+     "kind": "real",
+     "exercised": 189,
+     "score": 0.9922046362889391,
+     "chance": 0.0,
+     "pass": true,
+     "n_test": 38
+    },
+    "drawn_this_turn": {
+     "kind": "real",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "permanents": {
+     "kind": "real",
+     "exercised": 189,
+     "score": 0.9870926845616271,
+     "chance": 0.0,
+     "pass": true,
+     "n_test": 38
+    }
+   },
+   "ent": {
+    "kw_first_strike": {
+     "kind": "binary",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "stack_is_ability": {
+     "kind": "binary",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "instant": {
+     "kind": "binary",
+     "exercised": 452,
+     "score": 1.0,
+     "chance": 0.5989010989010989,
+     "pass": true,
+     "n_test": 182,
+     "zones": {
+      "hand": 1.0,
+      "graveyard": 1.0
+     }
+    },
+    "zone_exile": {
+     "kind": "binary",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "zone_library_known": {
+     "kind": "binary",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "kw_protection": {
+     "kind": "binary",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "sick": {
+     "kind": "binary",
+     "exercised": 189,
+     "score": 1.0,
+     "chance": 0.8471615720524017,
+     "pass": true,
+     "n_test": 229,
+     "zones": {
+      "battlefield": 1.0
+     }
+    },
+    "other_perm": {
+     "kind": "binary",
+     "exercised": 288,
+     "score": 1.0,
+     "chance": 0.8384279475982532,
+     "pass": true,
+     "n_test": 229,
+     "zones": {
+      "battlefield": 1.0
+     }
+    },
+    "kw_flash": {
+     "kind": "binary",
+     "exercised": 448,
+     "score": 0.9975669099756691,
+     "chance": 0.8029197080291971,
+     "pass": true,
+     "n_test": 411,
+     "zones": {
+      "battlefield": 0.9956,
+      "hand": 1.0,
+      "graveyard": 1.0
+     }
+    },
+    "can_block": {
+     "kind": "binary",
+     "exercised": 410,
+     "score": 1.0,
+     "chance": 0.6681222707423581,
+     "pass": true,
+     "n_test": 229,
+     "zones": {
+      "battlefield": 1.0
+     }
+    },
+    "face_down": {
+     "kind": "binary",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "mv": {
+     "kind": "real",
+     "exercised": 1324,
+     "score": 0.9989445510817557,
+     "chance": 0.0,
+     "pass": true,
+     "n_test": 411,
+     "zones": {
+      "battlefield": 0.9994,
+      "hand": 0.9985,
+      "graveyard": 0.9983
+     }
+    },
+    "zone_stack": {
+     "kind": "binary",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "ctr_loyalty": {
+     "kind": "real",
+     "exercised": 34,
+     "score": 0.9804730397518194,
+     "chance": 0.0,
+     "pass": true,
+     "n_test": 229,
+     "zones": {
+      "battlefield": 0.9805
+     }
+    },
+    "ctr_p1p1": {
+     "kind": "real",
+     "exercised": 4,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "loyalty": {
+     "kind": "real",
+     "exercised": 34,
+     "score": 0.9804730225888699,
+     "chance": 0.0,
+     "pass": true,
+     "n_test": 229,
+     "zones": {
+      "battlefield": 0.9805
+     }
+    },
+    "printed_power": {
+     "kind": "real",
+     "exercised": 700,
+     "score": 0.9990541747535289,
+     "chance": 0.0,
+     "pass": true,
+     "n_test": 411,
+     "zones": {
+      "battlefield": 0.9989,
+      "hand": 0.9989,
+      "graveyard": 0.9994
+     }
+    },
+    "kw_menace": {
+     "kind": "binary",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "kw_shroud": {
+     "kind": "binary",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "kw_flying": {
+     "kind": "binary",
+     "exercised": 270,
+     "score": 0.9975669099756691,
+     "chance": 0.9051094890510949,
+     "pass": true,
+     "n_test": 411,
+     "zones": {
+      "battlefield": 0.9956,
+      "hand": 1.0,
+      "graveyard": 1.0
+     }
+    },
+    "kw_deathtouch": {
+     "kind": "binary",
+     "exercised": 107,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "kw_ward": {
+     "kind": "binary",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "mana_left_if_cast": {
+     "kind": "real",
+     "exercised": 187,
+     "score": 0.8959770500076619,
+     "chance": 0.0,
+     "pass": false,
+     "n_test": 74,
+     "zones": {
+      "hand": 0.896
+     }
+    },
+    "tough_left": {
+     "kind": "real",
+     "exercised": 741,
+     "score": 0.9947204470842358,
+     "chance": 0.0,
+     "pass": true,
+     "n_test": 411,
+     "zones": {
+      "battlefield": 0.9917,
+      "hand": 0.9979,
+      "graveyard": 0.999
+     }
+    },
+    "sorcery": {
+     "kind": "binary",
+     "exercised": 38,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "creature": {
+     "kind": "binary",
+     "exercised": 716,
+     "score": 1.0,
+     "chance": 0.7250608272506083,
+     "pass": true,
+     "n_test": 411,
+     "zones": {
+      "battlefield": 1.0,
+      "hand": 1.0,
+      "graveyard": 1.0
+     }
+    },
+    "tapped": {
+     "kind": "binary",
+     "exercised": 410,
+     "score": 1.0,
+     "chance": 0.6681222707423581,
+     "pass": true,
+     "n_test": 229,
+     "zones": {
+      "battlefield": 1.0
+     }
+    },
+    "ctr_other": {
+     "kind": "real",
+     "exercised": 9,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "turns_on_bf": {
+     "kind": "real",
+     "exercised": 1244,
+     "score": 0.9778908820570368,
+     "chance": 0.0,
+     "pass": true,
+     "n_test": 229,
+     "zones": {
+      "battlefield": 0.9779
+     }
+    },
+    "kw_ninjutsu": {
+     "kind": "binary",
+     "exercised": 75,
+     "score": 1.0,
+     "chance": 0.9519650655021834,
+     "pass": true,
+     "n_test": 229,
+     "zones": {
+      "battlefield": 1.0
+     }
+    },
+    "stack_modes": {
+     "kind": "real",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "kw_trample": {
+     "kind": "binary",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "kw_prowess": {
+     "kind": "binary",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "damage": {
+     "kind": "real",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "identity": {
+     "kind": "cat",
+     "exercised": 2132,
+     "score": 1.0,
+     "chance": 0.16058394160583941,
+     "pass": true,
+     "n_test": 411,
+     "zones": {
+      "battlefield": 1.0,
+      "hand": 1.0,
+      "graveyard": 1.0
+     }
+    },
+    "kw_reach": {
+     "kind": "binary",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "stack_mine": {
+     "kind": "binary",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "mine": {
+     "kind": "binary",
+     "exercised": 976,
+     "score": 1.0,
+     "chance": 0.5370919881305638,
+     "pass": true,
+     "n_test": 337,
+     "zones": {
+      "battlefield": 1.0,
+      "graveyard": 1.0
+     }
+    },
+    "kw_haste": {
+     "kind": "binary",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "kw_defender": {
+     "kind": "binary",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "toughness": {
+     "kind": "real",
+     "exercised": 741,
+     "score": 0.9947204470842358,
+     "chance": 0.0,
+     "pass": true,
+     "n_test": 411,
+     "zones": {
+      "battlefield": 0.9917,
+      "hand": 0.9979,
+      "graveyard": 0.999
+     }
+    },
+    "power": {
+     "kind": "real",
+     "exercised": 741,
+     "score": 0.9941786270796659,
+     "chance": 0.0,
+     "pass": true,
+     "n_test": 411,
+     "zones": {
+      "battlefield": 0.9902,
+      "hand": 0.9989,
+      "graveyard": 0.9994
+     }
+    },
+    "attacking": {
+     "kind": "binary",
+     "exercised": 19,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "blocking": {
+     "kind": "binary",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "can_attack": {
+     "kind": "binary",
+     "exercised": 542,
+     "score": 1.0,
+     "chance": 0.5676855895196506,
+     "pass": true,
+     "n_test": 229,
+     "zones": {
+      "battlefield": 1.0
+     }
+    },
+    "zone_command": {
+     "kind": "binary",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "stack_X": {
+     "kind": "real",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "entered": {
+     "kind": "binary",
+     "exercised": 60,
+     "score": 1.0,
+     "chance": 0.9475982532751092,
+     "pass": true,
+     "n_test": 229,
+     "zones": {
+      "battlefield": 1.0
+     }
+    },
+    "land": {
+     "kind": "binary",
+     "exercised": 605,
+     "score": 1.0,
+     "chance": 0.6963696369636964,
+     "pass": true,
+     "n_test": 303,
+     "zones": {
+      "battlefield": 1.0,
+      "hand": 1.0
+     }
+    },
+    "legal_targets": {
+     "kind": "real",
+     "exercised": 46,
+     "score": 0.9532634114034845,
+     "chance": 0.0,
+     "pass": true,
+     "n_test": 74,
+     "zones": {
+      "hand": 0.9533
+     }
+    },
+    "zone_hand": {
+     "kind": "binary",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "token": {
+     "kind": "binary",
+     "exercised": 148,
+     "score": 1.0,
+     "chance": 0.9126637554585153,
+     "pass": true,
+     "n_test": 229,
+     "zones": {
+      "battlefield": 1.0
+     }
+    },
+    "kw_lifelink": {
+     "kind": "binary",
+     "exercised": 72,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "zone_battlefield": {
+     "kind": "binary",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "printed_tough": {
+     "kind": "real",
+     "exercised": 700,
+     "score": 0.9983037367076831,
+     "chance": 0.0,
+     "pass": true,
+     "n_test": 411,
+     "zones": {
+      "battlefield": 0.9981,
+      "hand": 0.9979,
+      "graveyard": 0.999
+     }
+    },
+    "ctr_m1m1": {
+     "kind": "real",
+     "exercised": 11,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "kw_hexproof": {
+     "kind": "binary",
+     "exercised": 19,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "castable": {
+     "kind": "binary",
+     "exercised": 180,
+     "score": 1.0,
+     "chance": 0.7702702702702703,
+     "pass": true,
+     "n_test": 74,
+     "zones": {
+      "hand": 1.0
+     }
+    },
+    "lethal_as_is": {
+     "kind": "binary",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "zone_graveyard": {
+     "kind": "binary",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "stack_pos": {
+     "kind": "real",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "kw_double_strike": {
+     "kind": "binary",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "kw_vigilance": {
+     "kind": "binary",
+     "exercised": 190,
+     "score": 0.9970326409495549,
+     "chance": 0.9169139465875371,
+     "pass": true,
+     "n_test": 337,
+     "zones": {
+      "battlefield": 0.9956,
+      "graveyard": 1.0
+     }
+    }
+   },
+   "ent_zone_rows": {
+    "battlefield": 1304,
+    "hand": 387,
+    "stack": 12,
+    "graveyard": 800,
+    "exile": 0,
+    "library_known": 0,
+    "command": 0
+   },
+   "opp_hand": {
+    "origin_opening": {
+     "kind": "binary",
+     "exercised": 140,
+     "score": 1.0,
+     "chance": 0.5921052631578947,
+     "pass": true,
+     "n_test": 76
+    },
+    "origin_drawn": {
+     "kind": "binary",
+     "exercised": 135,
+     "score": 1.0,
+     "chance": 0.5921052631578947,
+     "pass": true,
+     "n_test": 76
+    },
+    "origin_returned": {
+     "kind": "binary",
+     "exercised": 5,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "origin_other": {
+     "kind": "binary",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "age": {
+     "kind": "real",
+     "exercised": 306,
+     "score": 0.9894318396673966,
+     "chance": 0.0,
+     "pass": true,
+     "n_test": 76
+    },
+    "known": {
+     "kind": "binary",
+     "exercised": 5,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "seen": {
+     "kind": "binary",
+     "exercised": 5,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "identity": {
+     "kind": "cat",
+     "exercised": 2,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    }
+   },
+   "opp_deck": {
+    "count": {
+     "kind": "real",
+     "exercised": 2111,
+     "score": 0.9822264287398148,
+     "chance": 0.0,
+     "pass": true,
+     "n_test": 403
+    },
+    "fraction": {
+     "kind": "real",
+     "exercised": 2111,
+     "score": 0.9710123086411271,
+     "chance": 0.0,
+     "pass": true,
+     "n_test": 403
+    },
+    "castable_now": {
+     "kind": "binary",
+     "exercised": 666,
+     "score": 1.0,
+     "chance": 0.6352357320099256,
+     "pass": true,
+     "n_test": 403
+    },
+    "mv": {
+     "kind": "real",
+     "exercised": 1419,
+     "score": 0.9996948697811909,
+     "chance": 0.0,
+     "pass": true,
+     "n_test": 403
+    },
+    "instant_speed": {
+     "kind": "binary",
+     "exercised": 951,
+     "score": 1.0,
+     "chance": 0.5359801488833746,
+     "pass": true,
+     "n_test": 403
+    },
+    "identity": {
+     "kind": "cat",
+     "exercised": 2011,
+     "score": 1.0,
+     "chance": 0.04714640198511166,
+     "pass": true,
+     "n_test": 403
+    }
+   },
+   "opp_act": {
+    "act_cast": {
+     "kind": "binary",
+     "exercised": 389,
+     "score": 1.0,
+     "chance": 0.5533333333333333,
+     "pass": true,
+     "n_test": 150
+    },
+    "act_activate": {
+     "kind": "binary",
+     "exercised": 15,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "act_attack": {
+     "kind": "binary",
+     "exercised": 243,
+     "score": 1.0,
+     "chance": 0.8133333333333334,
+     "pass": true,
+     "n_test": 150
+    },
+    "act_block": {
+     "kind": "binary",
+     "exercised": 6,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "act_declined_block": {
+     "kind": "binary",
+     "exercised": 53,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "act_passed_mana_up": {
+     "kind": "binary",
+     "exercised": 213,
+     "score": 1.0,
+     "chance": 0.7,
+     "pass": true,
+     "n_test": 150
+    },
+    "act_other": {
+     "kind": "binary",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "consult_age": {
+     "kind": "real",
+     "exercised": 919,
+     "score": 0.9992735274734824,
+     "chance": 0.0,
+     "pass": true,
+     "n_test": 150
+    }
+   },
+   "cand": {
+    "type_PASS": {
+     "kind": "binary",
+     "exercised": 87,
+     "score": 1.0,
+     "chance": 0.7567567567567568,
+     "pass": true,
+     "n_test": 74
+    },
+    "type_LAND": {
+     "kind": "binary",
+     "exercised": 47,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "type_SPELL": {
+     "kind": "binary",
+     "exercised": 80,
+     "score": 1.0,
+     "chance": 0.6891891891891891,
+     "pass": true,
+     "n_test": 74
+    },
+    "type_ACTIVATE": {
+     "kind": "binary",
+     "exercised": 74,
+     "score": 1.0,
+     "chance": 0.7162162162162162,
+     "pass": true,
+     "n_test": 74
+    },
+    "type_TARGET": {
+     "kind": "binary",
+     "exercised": 32,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "type_ATTACK": {
+     "kind": "binary",
+     "exercised": 8,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "type_BLOCK": {
+     "kind": "binary",
+     "exercised": 5,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "type_OTHER": {
+     "kind": "binary",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "LSA.mana_left_after": {
+     "kind": "real",
+     "exercised": 144,
+     "score": 0.9781931614043267,
+     "chance": 0.0,
+     "pass": true,
+     "n_test": 39
+    },
+    "LSA.targets_legal": {
+     "kind": "real",
+     "exercised": 56,
+     "score": 0.9904103480548976,
+     "chance": 0.0,
+     "pass": true,
+     "n_test": 39
+    },
+    "LSA.instant_speed": {
+     "kind": "binary",
+     "exercised": 73,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "LSA.sorcery_speed": {
+     "kind": "binary",
+     "exercised": 73,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "LSA.flash": {
+     "kind": "binary",
+     "exercised": 30,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "LSA.stack_above_n": {
+     "kind": "real",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "LSA.X_chosen": {
+     "kind": "real",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "not exercised"
+    },
+    "TARGET.is_player": {
+     "kind": "-",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "too few rows (32)"
+    },
+    "TARGET.is_me": {
+     "kind": "-",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "too few rows (32)"
+    },
+    "TARGET.life_if_player": {
+     "kind": "-",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "too few rows (32)"
+    },
+    "TARGET.is_creature": {
+     "kind": "-",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "too few rows (32)"
+    },
+    "TARGET.power": {
+     "kind": "-",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "too few rows (32)"
+    },
+    "TARGET.toughness": {
+     "kind": "-",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "too few rows (32)"
+    },
+    "TARGET.mine": {
+     "kind": "-",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "too few rows (32)"
+    },
+    "ATTACK.damage_dealt": {
+     "kind": "-",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "too few rows (8)"
+    },
+    "ATTACK.their_kills": {
+     "kind": "-",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "too few rows (8)"
+    },
+    "ATTACK.my_losses": {
+     "kind": "-",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "too few rows (8)"
+    },
+    "ATTACK.lethal": {
+     "kind": "-",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "too few rows (8)"
+    },
+    "ATTACK.attackers_used": {
+     "kind": "-",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "too few rows (8)"
+    },
+    "ATTACK.opp_life_after": {
+     "kind": "-",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "too few rows (8)"
+    },
+    "ATTACK.bodies_retained": {
+     "kind": "-",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "too few rows (8)"
+    },
+    "ATTACK.power_retained": {
+     "kind": "-",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "too few rows (8)"
+    },
+    "ATTACK.tough_retained": {
+     "kind": "-",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "too few rows (8)"
+    },
+    "ATTACK.crack_back": {
+     "kind": "-",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "too few rows (8)"
+    },
+    "ATTACK.my_life_after": {
+     "kind": "-",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "too few rows (8)"
+    },
+    "BLOCK.damage_taken": {
+     "kind": "-",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "too few rows (5)"
+    },
+    "BLOCK.attackers_killed": {
+     "kind": "-",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "too few rows (5)"
+    },
+    "BLOCK.value_killed": {
+     "kind": "-",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "too few rows (5)"
+    },
+    "BLOCK.blockers_lost": {
+     "kind": "-",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "too few rows (5)"
+    },
+    "BLOCK.value_lost": {
+     "kind": "-",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "too few rows (5)"
+    },
+    "BLOCK.defender_dies": {
+     "kind": "-",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "too few rows (5)"
+    },
+    "BLOCK.blockers_used": {
+     "kind": "-",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "too few rows (5)"
+    },
+    "BLOCK.life_after": {
+     "kind": "-",
+     "exercised": 0,
+     "score": null,
+     "chance": null,
+     "pass": null,
+     "n_test": 0,
+     "note": "too few rows (5)"
+    }
+   },
+   "cand_type_rows": {
+    "PASS": 87,
+    "LAND": 47,
+    "SPELL": 80,
+    "ACTIVATE": 74,
+    "TARGET": 32,
+    "ATTACK": 8,
+    "BLOCK": 5,
+    "OTHER": 0
+   }
+  }
+ },
+ "edges_L4": {
+  "blocks": {
+   "exercised": 0,
+   "score": null,
+   "pass": null,
+   "note": "not exercised"
+  },
+  "blocked_by": {
+   "exercised": 0,
+   "score": null,
+   "pass": null,
+   "note": "not exercised"
+  },
+  "attacking_player": {
+   "kind": "binary",
+   "exercised": 0,
+   "score": null,
+   "chance": null,
+   "pass": null,
+   "n_test": 0,
+   "note": "too few rows",
+   "positives": 19
+  },
+  "targets": {
+   "kind": "binary",
+   "exercised": 0,
+   "score": null,
+   "chance": null,
+   "pass": null,
+   "n_test": 0,
+   "note": "too few rows",
+   "positives": 8
+  },
+  "controls": {
+   "kind": "binary",
+   "exercised": 1304,
+   "score": 0.9978165938864629,
+   "chance": 0.5,
+   "pass": true,
+   "n_test": 458,
+   "positives": 1304
+  },
+  "attached_to": {
+   "exercised": 0,
+   "score": null,
+   "pass": null,
+   "note": "not exercised"
+  },
+  "can_block": {
+   "kind": "binary",
+   "exercised": 0,
+   "score": null,
+   "chance": null,
+   "pass": null,
+   "n_test": 0,
+   "note": "too few rows",
+   "positives": 6
+  },
+  "stack_above": {
+   "kind": "binary",
+   "exercised": 0,
+   "score": null,
+   "chance": null,
+   "pass": null,
+   "n_test": 0,
+   "note": "too few rows",
+   "positives": 3
+  },
+  "refers_to": {
+   "kind": "binary",
+   "exercised": 235,
+   "score": 0.9732142857142857,
+   "chance": 0.5,
+   "pass": true,
+   "n_test": 112,
+   "positives": 235
+  },
+  "referred_by": {
+   "kind": "binary",
+   "exercised": 235,
+   "score": 0.9285714285714286,
+   "chance": 0.5,
+   "pass": true,
+   "n_test": 112,
+   "positives": 235
+  }
+ },
+ "consult": {
+  "L3": {
+   "deck_count": {
+    "names": 22,
+    "names_scored": 20,
+    "mean_r2": -0.8745310183855943,
+    "min_r2": -4.338851271978868,
+    "pass": false,
+    "worst": [
+     [
+      -4.338851271978868,
+      "We Say Thee Nay!"
+     ],
+     [
+      -2.476592420365134,
+      "Restless Reef"
+     ],
+     [
+      -2.4554707612471516,
+      "Requiting Hex"
+     ],
+     [
+      -2.1037404568181226,
+      "Hidden Lair"
+     ],
+     [
+      -1.4069601384370851,
+      "Island"
+     ]
+    ]
+   },
+   "known_set": {
+    "names_exercised": 0,
+    "mean_acc": null,
+    "pass": null,
+    "note": "not exercised"
+   },
+   "threat_count": {
+    "kind": "real",
+    "exercised": 69,
+    "score": 0.8024440194108735,
+    "chance": 0.0,
+    "pass": false,
+    "n_test": 19
+   }
+  },
+  "L4": {
+   "deck_count": {
+    "names": 22,
+    "names_scored": 20,
+    "mean_r2": -0.7075879085791985,
+    "min_r2": -3.3717427588621547,
+    "pass": false,
+    "worst": [
+     [
+      -3.3717427588621547,
+      "We Say Thee Nay!"
+     ],
+     [
+      -2.781561309683398,
+      "Requiting Hex"
+     ],
+     [
+      -1.5958403216679842,
+      "Hidden Lair"
+     ],
+     [
+      -1.5040103970560628,
+      "Restless Reef"
+     ],
+     [
+      -1.1043716752188435,
+      "Bitter Triumph"
+     ]
+    ]
+   },
+   "known_set": {
+    "names_exercised": 0,
+    "mean_acc": null,
+    "pass": null,
+    "note": "not exercised"
+   },
+   "threat_count": {
+    "kind": "real",
+    "exercised": 69,
+    "score": 0.7855581594938511,
+    "chance": 0.0,
+    "pass": false,
+    "n_test": 19
+   }
+  }
+ }
+}
