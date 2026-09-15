@@ -5401,3 +5401,30 @@ spans almost the whole range. The target here is the undiscounted ±1 outcome, w
 discounted Monte-Carlo return, so these numbers are not the same quantity as 13c's 0.05–0.22 (they are of similar
 size). The critic was given no privileged rows, because the recordings carry none — this is the unprivileged value
 path, not the `oe`-fed one `policy_server.py` can build.
+
+**D1 addendum — three readings the row above left implicit.**
+
+*Where B0 wins, and how firmly.* B0's point estimate is the highest of the three at **every** stage, not just
+overall: early 0.001 vs N1 −0.116 and N2 −0.019; mid 0.377 vs 0.353 and 0.341; late 0.434 vs 0.028 and 0.123. But
+the strength of that statement differs by stage: in **mid** the three sit inside each other's intervals
+(B0 [0.182, 0.516], N1 [0.047, 0.553], N2 [0.183, 0.447]) — a three-way tie, not a win; in **late** the bucket is
+17 games and nothing is readable; **early** is where B0's advantage is most consistent, and there every model is
+near zero anyway. All three paired differences cross zero (N1 − B0 = −0.101 [−0.293, +0.074]; N2 − B0 = −0.050
+[−0.178, +0.081]; N1 − N2 = −0.051 [−0.212, +0.072]). So "B0 beats the networks" is a **point-estimate**
+statement. What 125 held-out games do establish is the negative: neither network is *better* than ten scalars,
+which is what the pre-registered clause asked.
+
+*Consistency with 13c — the online critic was not unusually bad.* 13c's learner statistics gave `value_ev`
+0.05 / 0.16 / 0.15 / 0.22 by quarter of its 64 updates. That band sits on top of this offline fit (N1 0.095,
+N2 0.146, B0 0.196). The two are not the same quantity — 13c's is a discounted Monte-Carlo return on the
+learner's own states, this is the undiscounted ±1 outcome on CP7's states — so this is a consistency reading,
+not an equality. Read that way, **the 13c critic was performing near what this encoding supports**, so "the
+critic was badly trained" is not the explanation for 13c's failure; the ceiling is low for anything fit to these
+observations. This is the single most load-bearing sentence in D1, and it is an inference from two numbers of
+similar size, not a measurement of the same number twice.
+
+*Two more cannots.* The hold-out is **125 games**; every interval above is that wide for that reason, and no
+stage claim except "mid is where prediction works" survives it. EV is computed against a **stage-mixed variance
+denominator** on a ±1 target: the overall column divides by the variance of the whole held-out pool, so a model
+that is good only in mid-game (as all three are) scores an overall EV well below its mid-game EV. That is why
+N1's overall 0.095 is lower than its mid 0.353, and it is an artefact of the denominator, not a separate finding.
