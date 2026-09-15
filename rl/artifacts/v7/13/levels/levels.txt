@@ -1,0 +1,2 @@
+L13|bc|sampled|cp7|XDECKS|ck=bc.pt|agent=BenchDimir|vs=cp7|oppDeck=BenchDimir|33/100 = 0.330 [0.246,0.427]|losses=67 draws=0 stalls=0 turns_per_ep=17.2
+L13|bc|sampled|heuristic|XDECKS|ck=bc.pt|agent=BenchDimir|vs=heuristic|oppDeck=BenchDimir|39/50 = 0.780 [0.648,0.872]|losses=11 draws=0 stalls=0 turns_per_ep=18.2
