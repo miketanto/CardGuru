@@ -1016,20 +1016,7 @@ public class RLPlayer extends ComputerPlayer {
      *  Vanilla scope, exactly as CombatMath documents - no evasion, so
      *  "untapped creature" and "can block this" are the same set. */
     private List<Permanent> theirBlockers(Game game, UUID defender) {
-        List<Permanent> out = new ArrayList<>();
-        if (defender == null) {
-            return out;
-        }
-        for (Permanent p : game.getBattlefield().getAllActivePermanents(defender)) {
-            if (p.isCreature(game) && !p.isTapped()) {
-                out.add(p);
-            }
-        }
-        out.sort(Comparator
-                .comparingInt((Permanent p) -> p.getToughness().getValue())
-                .thenComparingInt(p -> p.getPower().getValue())
-                .thenComparing(MageObject::getName));
-        return out;
+        return JointCands.theirBlockers(game, defender);
     }
 
     /** Creatures the choice actually ranges over. Above rl.attackMaxCreatures
@@ -1039,16 +1026,7 @@ public class RLPlayer extends ComputerPlayer {
      *  task exists to fix - so it is counted, and the counter is reported
      *  rather than assumed to be zero. */
     private List<Permanent> attackChoiceSet(List<Permanent> avail) {
-        int maxA = Integer.getInteger("rl.attackMaxCreatures", 12);
-        if (avail.size() <= maxA) {
-            return avail;
-        }
-        countFallback("attackCreaturesCapped");
-        List<Permanent> big = new ArrayList<>(avail);
-        big.sort(Comparator.comparingInt(
-                (Permanent p) -> -(p.getPower().getValue()
-                        + p.getToughness().getValue())));
-        return new ArrayList<>(big.subList(0, maxA));
+        return JointCands.attackChoiceSet(avail, this::countFallback);
     }
 
     /**
@@ -1068,107 +1046,17 @@ public class RLPlayer extends ComputerPlayer {
             return;
         }
         long t0 = System.nanoTime();
-        List<Permanent> pick = attackChoiceSet(avail);
-        List<Permanent> theirs = theirBlockers(game, defender);
-        Player op = defender == null ? null : game.getPlayer(defender);
-        int oppLife = op == null ? 20 : op.getLife();
-        List<CombatMath.Body> mb = CombatMath.bodies(pick);
-        List<CombatMath.Body> tb = CombatMath.bodies(theirs);
-        CombatMath.BestAttack search = CombatMath.bestAttack(
-                mb, tb, getLife(), oppLife,
-                Long.getLong("rl.attackCap", 4096L),
-                Long.getLong("rl.attackReplyCap", 200000L));
+        // Phase 13a: built by JointCands (lifted verbatim) so the CP7
+        // teacher seat labels exactly this list
+        JointCands.Attack ja = JointCands.attacks(game, defender, avail,
+                getLife(), stateV >= 7, this::countFallback);
+        List<Permanent> pick = ja.pick;
+        List<Permanent> theirs = ja.theirs;
+        CombatMath.BestAttack search = ja.search;
         attackSearchNodes += search.considered;
-        if (!search.exhaustive) {
-            countFallback("attackCapped");
-        }
-        if (!search.replyExhaustive) {
-            countFallback("attackReplyCapped");
-        }
-        if (search.budgetHit) {
-            countFallback("attackBudgetHit");
-        }
-
-        // PARETO FILTER, four objectives. Blocks use three; attacks need
-        // RETAINED POWER as a fourth, and leaving it out would be a
-        // policy decision disguised as a filter: under a one-combat
-        // outcome, holding a creature back is dominated by attacking with
-        // it almost always, so a three-objective filter would delete the
-        // option to hold from the candidate list entirely and the agent
-        // would alpha-strike by construction. The filter must not decide
-        // the question the fix is supposed to let the policy decide.
-        //
-        // RETAINED BODIES is a fifth objective for the same reason, one
-        // level down: blocking capacity is bodies, not power. Keeping one
-        // 3/3 beats keeping two 1/1s on power and loses on blockers, and
-        // a filter carrying only power would drop the two-body option as
-        // dominated. Each extra objective weakens the filter, which costs
-        // candidate slots and never costs correctness.
-        List<CombatMath.AttackOption> kept = new ArrayList<>();
-        java.util.Set<String> outcomes = new java.util.LinkedHashSet<>();
-        int maxCands = Integer.getInteger("rl.attackMaxCands", 64);
-        for (CombatMath.AttackOption o1 : search.options) {
-            boolean dominated = false;
-            for (CombatMath.AttackOption o2 : search.options) {
-                if (o1 == o2) {
-                    continue;
-                }
-                if (o2.outcome.damageTaken >= o1.outcome.damageTaken
-                        && o2.outcome.blockerValueLost >= o1.outcome.blockerValueLost
-                        && o2.outcome.attackerValueKilled <= o1.outcome.attackerValueKilled
-                        && o2.retainedPower >= o1.retainedPower
-                        && o2.retainedBodies >= o1.retainedBodies
-                        && (o2.outcome.damageTaken > o1.outcome.damageTaken
-                            || o2.outcome.blockerValueLost > o1.outcome.blockerValueLost
-                            || o2.outcome.attackerValueKilled < o1.outcome.attackerValueKilled
-                            || o2.retainedPower > o1.retainedPower
-                            || o2.retainedBodies > o1.retainedBodies)) {
-                    dominated = true;
-                    break;
-                }
-            }
-            if (dominated) {
-                continue;
-            }
-            String key = o1.outcome.damageTaken + "/" + o1.outcome.blockersLost
-                    + "/" + o1.outcome.blockerValueLost + "/"
-                    + o1.outcome.attackersKilled + "/"
-                    + o1.outcome.attackerValueKilled + "/" + o1.attackersUsed
-                    + "/" + o1.retainedPower + "/" + o1.crackBack;
-            if (!outcomes.add(key)) {
-                continue;
-            }
-            kept.add(o1);
-            if (kept.size() >= maxCands) {
-                countFallback("attackCandsCapped");
-                break;
-            }
-        }
-        if (kept.isEmpty()) {                 // cannot happen; not a crash
-            kept.add(search.options.get(0));
-        }
-        float[][] cands = new float[kept.size()][];
-        StateEncoder.CandMeta meta = new StateEncoder.CandMeta(cands.length);
-        for (int i = 0; i < kept.size(); i++) {
-            cands[i] = StateEncoder.forAttackSet(kept.get(i), getLife(), oppLife);
-            if (stateV >= 7) {
-                meta.after(i, StateEncoder.v7AfterAttack(kept.get(i), getLife(), oppLife));
-            }
-            // referents: the attackers in the subset (over `pick`, the list
-            // the search ran on); the empty subset IS the pass here
-            List<UUID> refs = new ArrayList<>();
-            boolean[] att = kept.get(i).attack;
-            for (int j = 0; j < att.length && j < pick.size(); j++) {
-                if (att[j]) {
-                    refs.add(pick.get(j).getId());
-                }
-            }
-            if (refs.isEmpty()) {
-                meta.pass(i);
-            } else {
-                meta.set(i, StateEncoder.C_ATTACK, refs.toArray(new UUID[0]));
-            }
-        }
+        List<CombatMath.AttackOption> kept = ja.kept;
+        float[][] cands = ja.cands;
+        StateEncoder.CandMeta meta = ja.meta;
         attackSearchNanos += System.nanoTime() - t0;
         consults++;
         attackOpportunities += avail.size();
@@ -1344,113 +1232,18 @@ public class RLPlayer extends ComputerPlayer {
                              List<Permanent> attackers, List<Permanent> mine) {
         int A = attackers.size();
         int B = mine.size();
-        List<CombatMath.Body> ab = CombatMath.bodies(attackers);
-        List<CombatMath.Body> bb = CombatMath.bodies(mine);
-        long cap = Long.getLong("rl.jointCap", 20000L);
-        long space = 1;
-        for (int i = 0; i < B; i++) {
-            space *= (A + 1);
-            if (space > cap) {
-                space = cap;
-                countFallback("jointCapped");
-                break;
-            }
-        }
-        Map<String, int[]> byOutcome = new java.util.LinkedHashMap<>();
-        Map<String, float[]> feats = new java.util.LinkedHashMap<>();
-        int[] assign = new int[B];
-        for (long code = 0; code < space; code++) {
-            long c = code;
-            int used = 0;
-            for (int b = 0; b < B; b++) {
-                assign[b] = (int) (c % (A + 1)) - 1;
-                c /= (A + 1);
-                if (assign[b] >= 0) {
-                    used++;
-                }
-            }
-            CombatMath.Outcome o = CombatMath.resolve(ab, bb, assign, getLife());
-            String key = o.damageTaken + "/" + o.attackersKilled + "/"
-                    + o.attackerValueKilled + "/" + o.blockersLost + "/"
-                    + o.blockerValueLost + "/" + used;
-            if (byOutcome.containsKey(key)) {
-                continue;
-            }
-            byOutcome.put(key, assign.clone());
-            feats.put(key, StateEncoder.forAssignment(o, used, getLife()));
-        }
-        // PARETO FILTER. An assignment that takes MORE damage, kills LESS
-        // attacker value and loses MORE blocker value than another is
-        // never preferable under any value function, so it can be dropped
-        // without encoding a preference. This is what keeps the candidate
-        // list inside the policy server's buffer: raw enumeration on a
-        // real board produced 46 distinct outcomes against a 40-slot
-        // buffer and crashed the server mid-run.
-        List<String> keys = new ArrayList<>(byOutcome.keySet());
-        List<int[]> options = new ArrayList<>();
-        List<float[]> kept = new ArrayList<>();
-        int maxCands = Integer.getInteger("rl.jointMaxCands", 48);
-        for (String k1 : keys) {
-            int[] a1 = byOutcome.get(k1);
-            CombatMath.Outcome o1 = CombatMath.resolve(ab, bb, a1, getLife());
-            boolean dominated = false;
-            for (String k2 : keys) {
-                if (k1.equals(k2)) {
-                    continue;
-                }
-                CombatMath.Outcome o2 =
-                        CombatMath.resolve(ab, bb, byOutcome.get(k2), getLife());
-                if (o2.damageTaken <= o1.damageTaken
-                        && o2.attackerValueKilled >= o1.attackerValueKilled
-                        && o2.blockerValueLost <= o1.blockerValueLost
-                        && (o2.damageTaken < o1.damageTaken
-                            || o2.attackerValueKilled > o1.attackerValueKilled
-                            || o2.blockerValueLost < o1.blockerValueLost)) {
-                    dominated = true;
-                    break;
-                }
-            }
-            if (!dominated) {
-                options.add(a1);
-                kept.add(feats.get(k1));
-                if (options.size() >= maxCands) {
-                    countFallback("jointCandsCapped");
-                    break;
-                }
-            }
-        }
-        if (options.isEmpty()) {          // every option dominated: fall back
-            options.add(byOutcome.values().iterator().next());
-            kept.add(feats.values().iterator().next());
-        }
-        float[][] cands = kept.toArray(new float[0][]);
-        StateEncoder.CandMeta meta = new StateEncoder.CandMeta(cands.length);
-        for (int i = 0; i < options.size() && i < cands.length; i++) {
-            // referents: every blocker assigned and the attacker it blocks;
-            // the all-unassigned option IS the pass here
-            int[] as = options.get(i);
-            List<UUID> refs = new ArrayList<>();
-            for (int b = 0; b < as.length && b < mine.size(); b++) {
-                if (as[b] >= 0 && as[b] < attackers.size()) {
-                    refs.add(mine.get(b).getId());
-                    refs.add(attackers.get(as[b]).getId());
-                }
-            }
-            if (refs.isEmpty()) {
-                meta.pass(i);
-            } else {
-                meta.set(i, StateEncoder.C_BLOCK, refs.toArray(new UUID[0]));
-            }
-            if (stateV >= 7) {
-                meta.after(i, StateEncoder.v7AfterBlock(
-                        CombatMath.resolve(ab, bb, as, getLife()), refs.size() / 2, getLife()));
-            }
-        }
+        // Phase 13a: built by JointCands (lifted verbatim) so the CP7
+        // teacher seat labels exactly this list
+        JointCands.Block jb = JointCands.blocks(attackers, mine, getLife(),
+                stateV >= 7, this::countFallback);
+        List<int[]> options = jb.options;
+        float[][] cands = jb.cands;
+        StateEncoder.CandMeta meta = jb.meta;
         consults++;
         blockOpportunities += B;
         log(game, String.format("  [joint] %d attackers, %d blockers, "
                 + "%d distinct outcomes, %d after Pareto",
-                A, B, byOutcome.size(), options.size()));
+                A, B, jb.distinct, options.size()));
         int pick = consult(game, opponentId(game), cands, "blkjoint", meta);
         if (pick < 0 || pick >= options.size()) {
             return;
