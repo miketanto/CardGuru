@@ -4610,3 +4610,71 @@ before. The change was applied at a block boundary: a graceful stop after block 
 then a relaunch with `--mains M_D --hours 12`. No other change: the level cadence (every 1,024
 episodes), the rotation, the checks, the seeds and the graduation rule are all unchanged. M_L and
 M_W remain paused.
+
+### 12 / M_D — second level point, +2,048 episodes (2026-09-15 ~03:20Z WSL)
+
+**Level at 8,448 episodes (+2,048):** CP7 on the own mirror **9/100 = 0.090 [0.048, 0.162]**
+(0 stalls). Heuristic guard **25/50 = 0.500 [0.366, 0.634]**. Not graduated.
+
+| point | trained | CP7 (100) | heuristic guard (50) |
+|---|---|---|---|
+| start | 6,400 | 19/100 = 0.190 [0.125, 0.278] | 35/50 = 0.700 [0.562, 0.809] |
+| +1,024 | 7,424 | 18/100 = 0.180 [0.117, 0.267] | 32/50 = 0.640 [0.501, 0.759] |
+| +2,048 | 8,448 | 9/100 = 0.090 [0.048, 0.162] | 25/50 = 0.500 [0.366, 0.634] |
+
+Training blocks n=4..7 (sampled play):
+
+| n | opponent | W/L/D/S | win rate | wall |
+|---|---|---|---|---|
+| 4 | cp7 | 42/214/0/0 | 0.164 | 1,379 s |
+| 5 | heuristic | 155/101/0/0 | 0.605 | 579 s |
+| 6 | cp7 | 41/215/0/0 | 0.160 | 1,365 s |
+| 7 | cp7 | 45/211/0/0 | 0.176 | 1,348 s |
+
+Per-block CP7 checks n=4..7 (25 argmax games, seed 12500; n=0..3 are in the first-level table
+above):
+
+| check | trained | CP7 wins | selfrem | counter taken | flash on opp turn | ninjutsu | biggest | creatures/game | consults/game |
+|---|---|---|---|---|---|---|---|---|---|
+| n=4 | 7,680 | 6/25 | 4/294 | 3/92 | 9/49 | 0/3 | 11/12 | 3.00 | 97.8 |
+| n=5 | 7,936 | 3/25 | 4/57 | 6/95 | 6/47 | 1/11 | 6/7 | 2.88 | 89.8 |
+| n=6 | 8,192 | 4/25 | 7/154 | 2/80 | 10/66 | 1/2 | 13/24 | 3.72 | 80.6 |
+| n=7 | 8,448 | 2/25 | 1/148 | 6/81 | 8/38 | 1/1 | 9/12 | 2.36 | 100.2 |
+
+**Reading at +2,048, in the pre-registered terms.**
+
+- **Both yardsticks are falling.** CP7: 0.19 → 0.18 → 0.09. Heuristic guard: 0.70 → 0.64 → 0.50.
+  Neither is yet clear below its start. The intervals still overlap by a small margin: CP7
+  [0.048, 0.162] vs [0.125, 0.278], heuristic [0.366, 0.634] vs [0.562, 0.809]. This is a
+  regression in both point estimates, not "flat", and not yet a clear one.
+- **"Improving vs CP7" is not met.** The last level is below the first, not above it.
+- **"Over-fit to CP7" does not apply.** That reading needs the CP7 level up while a guard falls;
+  here the CP7 level itself is falling.
+- **Dimir card habits:**
+  - The self-destroy clause **is met**: every check from n=1 to n=7 is below 0.3 (0.004–0.05 since
+    n=1).
+  - The counter-selectivity clause **fails at every check since n=1** (0.02–0.07 of the windows
+    offering one, against the [0.2, 0.5] band and CP7's ~0.33).
+  - The creatures-per-game clause (≥ 3 over the last four checks) **fails**: 2.88 at n=5 and
+    2.36 at n=7.
+  - So "card habits converge" is **not met**. The counters have not swung back across their range
+    (no Phase 11-style oscillation so far); they have settled on "hold".
+- **Shape:** the policy is moving into a long-game "hold" style. It casts less, counters almost
+  nothing, takes ~80–100 consults per game against 61–69 at the start and n=0, and loses more to
+  both opponents.
+
+**Sampled vs argmax.** Against CP7 the sampled training win rate is flat at ~0.16 over all six CP7
+blocks (0.168, 0.156, 0.137, 0.164, 0.160, 0.176), while the argmax level halved. Against the
+heuristic the sampled training rate rose (0.480 at n=1, 0.605 at n=5) while the argmax guard fell.
+The training signal and the argmax yardsticks are moving apart. This is carried as an observation;
+this phase has no pre-registered reading for it.
+
+What this cannot support:
+- **One seed and one deck (Amendment 2).** The drift-hypothesis test has two points in, of up to
+  five tonight.
+- **"Clear below" needs the next point.** A 100-game level and a 50-game guard are not yet enough
+  to call the fall clear.
+- **The fixed seeds pair the deals only at the first decision.** The levels are not a paired test.
+- **The start snapshot is the Phase 11 drill's last point.** Its own trajectory was oscillating
+  (see "Phase 11 verdict"), so part of any fall could be that trajectory continuing and not this
+  phase's opponent mix.
