@@ -8,7 +8,7 @@ You are continuing a one-set fidelity trial: how faithfully can the XMage engine
 
 REPO AND BRANCHES
 - Repo: https://github.com/miketanto/CardGuru (public).
-- Start from branch `data/l17-dsk` at its latest commit (0ef778d or later). Create and work on a NEW branch `data/l17-cloud` from it. Push only to `data/l17-cloud`. A local session may still push to `data/l17-dsk`; do not push there.
+- Start from branch `data/l17-dsk` at its latest commit (19e179b or later). Create and work on a NEW branch `data/l17-cloud` from it. Push only to `data/l17-cloud`. The local session has finished; do not push to `data/l17-dsk`.
 - End every commit message with: Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
 - Commit results as text/CSV only: no jars, .class files, build output or model files.
 
@@ -26,16 +26,22 @@ DATA
 - `user_turn_N` is the user's own turn N, and `oppo_turn_N` is the opponent's turn N.
 - The user's hand is logged in full; the opponent's hand only as a count.
 
-STATE SO FAR (done by a local session)
-- Coverage: every user deck and every logged opponent card exists at the XMage pin (2000/2000, in `rl/l17_dsk/coverage_games.csv`).
+STATE SO FAR (done by a local session; final commit 19e179b)
+- Coverage: every user deck and every logged opponent card exists at the XMage pin (2000/2000, `rl/l17_dsk/coverage_games.csv`).
 - Harness: in `rl/l17/`. `build_specs.py` turns a game into a spec. `L17Rebuild.java` is a `CardTestPlayerBase` subclass driving an `L17Player` (a `TestPlayer`) that forces the logged actions. `analyze.py` compares states and `causes.py` classifies first mismatches. `run_l17.sh` drives it all.
 - `rl/l17/classpath.txt` and `run_l17.sh` were written for a local machine, using `/home/user/mage` and `~/.m2` from an existing build. Adapt them to your own build.
-- Base result on 200 seeded games (`random.Random(17).sample(range(2000), 200)`): the median game matched 2 turns, and 0 of 200 reached 8 turns (Wilson [0, 0.019]). Only 1 of 200 fully matched. "Turns matched" counts full rounds, so the bar of 8 means about 16 side-turns.
-- First-mismatch fields: user_creatures 57, user_life 42, user_hand 41, oppo_life 30, user_lands 13, oppo_hand 11.
-- Most common failed forced actions: an attacker absent (user 322, opponent 209), a cast whose card was not in hand (user 293, opponent 125), a block with no blocker (141), a land not in hand (116), a draw not found in library or hand (115).
-- Causes of the first mismatch in the 20-game debug: an ability was logged but not replayed (6 of 20); a hidden choice such as a target, manifest dread, surveil or search (4); a forced land not in hand (2); a draw not found (2); the rest single cases.
-- The "guided" variant steers hidden choices using logged outcomes. It matched longer than base in 5 of 20 games and shorter in none.
-- The pre-stated go/no-go was coverage >= 0.6 AND >= 50% of covered games matching >= 8 turns. On the base rebuild it is NO-GO for fidelity, while coverage passed. Do not change that bar or re-score it.
+- Five harness faults were already found and fixed; they are listed in `rl/L17-FIDELITY.md`. The last one: face-down attackers and blockers logged as "[Face-Down Card]" were never matched. The preliminary 200 commit 0ef778d is superseded.
+- Final base results. "Turns matched" counts full rounds, so the bar of 8 means about 16 side-turns.
+  - 200 seeded games (`random.Random(17).sample(range(2000), 200)`): 0/200 >= 8, Wilson [0, 0.019].
+  - All 2,000: median 2, mean 2.60; 1/2000 >= 8, Wilson [0, 0.003]; 15/2000 fully matched. The most frequent first mismatch is user creatures (32%).
+- Guided variant: it steers hidden choices using logged outcomes. On 2,000 games its median is 3, with 4/2000 >= 8 and 25 fully matched. It was longer than base in 405 games and shorter in 21.
+- Yield (base): labelled decisions per game before the first mismatch are land 2.63, spell 1.64, attack 0.66, block 0.07. The unambiguous share is 0.387, but only 0.028 for spells. 58.6% of user turns had more than one possible order.
+- Causes of the first mismatch (2,000 games):
+  - 33%: drift in state the check doesn't compare, which later makes a logged action impossible. Example: a surveil sent next turn's logged draw to the graveyard.
+  - 27%: activated abilities not replayed, because the ability ids are unmapped.
+  - At least 14%: hidden choices (search, manifest dread, targets).
+  - 13%: a life total alone differs.
+- The pre-stated go/no-go was coverage >= 0.6 AND >= 50% of covered games matching >= 8 turns. It is NO-GO on fidelity; coverage passed. Do not change that bar or re-score it. Your job is to find out what CAN be made faithful, as a separate, pre-stated reading.
 
 STEP 1 - ENGINE (from scratch)
 - Install JDK 21 and Maven 3.9.
@@ -45,9 +51,9 @@ STEP 1 - ENGINE (from scratch)
 - Run `mvn -q -T 1C -DskipTests -Dmaven.javadoc.skip=true install`. `rl/setup_engine.sh` does all of this, but it hardcodes /home/user paths; symlink those paths or edit a copy.
 - If GitHub or Maven Central is unreachable, write the blocker to `rl/L17-FIDELITY-CLOUD.md`, then commit, push and stop.
 
-STEP 2 - REPRODUCE
+STEP 2 - REPRODUCE (on the corrected harness at 19e179b)
 - Port the harness to your build and rerun the base rebuild on the same 200 seeded games.
-- Report whether the per-game turns matched equal `rl/l17_dsk/fidelity_games_s200.csv`. Report any differences, with the reason for each.
+- Report whether the per-game turns matched equal the corrected base 200 rows in `rl/l17_dsk/` (see `rl/L17-FIDELITY.md` for the file name). Report any differences, with the reason for each.
 - Commit and push.
 
 STEP 3 - IMPROVE THE REBUILDER (the main work). Attack the causes in order of their counts, each as a named, separately reported variant. The base result stays as recorded. Candidates:

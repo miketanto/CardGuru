@@ -122,3 +122,10 @@ guessed.
   (-Xmx1536m, serial GC, nice 15), to pause while MemAvailable < 2,000 MB or swap
   > 1 GB, and to stop at 200 games unless that run finishes within ~2 h. So the
   public push of the sample was not needed for this run.
+* **Result (2026-09-15, local run, final 19e179b on data/l17-dsk):** coverage
+  2000/2000; fidelity NO-GO. Base: median 2 turns matched, 1/2000 ≥ 8 turns
+  [0, 0.003], 15/2000 fully matched. Guided: median 3, 4/2000 ≥ 8. Main causes:
+  unchecked-state drift making later logged actions impossible 33%, activated
+  abilities not replayed 27%, hidden choices ≥ 14%, life-only 13%. Full report:
+  rl/L17-FIDELITY.md on data/l17-dsk. Follow-up prompt for a real cloud session:
+  rl/L17-CLOUD-HANDOFF.md (updated to this final state).
