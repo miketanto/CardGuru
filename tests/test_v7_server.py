@@ -472,3 +472,47 @@ def test_trainer_cand_refers_pool_flag(tmp_path, capsys):
     tr4 = ps.Trainer(str(tmp_path / "t_on.pt"), 0, None, arch="v7", card_emb="random")
     assert tr4.net.config.get("cand_refers_pool") is True
     assert "strict=False" not in capsys.readouterr().out
+
+
+# ----------------------------------------------------------------- Phase 12 Amendment 5: --argmax-two-stage
+
+def test_argmax_two_stage_readout():
+    """Act iff summed P(non-PASS) > P(PASS), then argmax-classes over the acting candidates;
+    without both a PASS and a non-PASS candidate it is _argmax_classes."""
+    msg = {"v7_cand_type": [0, 2, 2, 2],
+           "v7_cand": [[0.0] * 4, [1.0, 0, 0, 0], [2.0, 0, 0, 0], [3.0, 0, 0, 0]],
+           "v7_cand_refers": [[], [3], [4], [5]],
+           "v7_ent_name": ["A", "B", "C"]}
+    lg = torch.tensor([1.0, 0.6, 0.7, 0.5])        # P(PASS) ~ 0.33, yet PASS is the heaviest class
+    assert ps._argmax_classes(lg, msg) == 0
+    assert ps._argmax_two_stage(lg, msg) == 2
+    lg2 = torch.tensor([3.0, 0.6, 0.7, 0.5])       # P(PASS) > 0.5 -> pass
+    assert ps._argmax_two_stage(lg2, msg) == 0
+    msg3 = {k: (v[1:] if k != "v7_ent_name" else v) for k, v in msg.items()}
+    lg3 = lg[1:]
+    assert ps._argmax_two_stage(lg3, msg3) == ps._argmax_classes(lg3, msg3)
+    # identical acting candidates still pool their mass in stage 2
+    msg4 = {"v7_cand_type": [0, 2, 2, 2],
+            "v7_cand": [[0.0] * 4, [1.0, 0, 0, 0], [1.0, 0, 0, 0], [3.0, 0, 0, 0]],
+            "v7_cand_refers": [[], [3], [4], [5]],
+            "v7_ent_name": ["B", "B", "C"]}
+    lg4 = torch.tensor([0.5, 0.6, 0.6, 0.9])
+    assert ps._argmax_two_stage(lg4, msg4) == 1
+
+
+def test_act_v7_eval_honours_argmax_two_stage(tmp_path, monkeypatch):
+    """The eval branch applies _argmax_two_stage only when the flag is on; off is the old readout."""
+    tr = _small(tmp_path)
+    msgs = F.valid_stream("block", seed=3, n=1, with_opp=True)
+    hello, m = msgs[0], dict(msgs[1])
+    ps.check_hello(hello, tr)
+    tr.hello, tr.n_validated, tr.hidden, tr.deck = hello, 0, None, None
+    K = len(m["v7_cand_type"])
+    lg = torch.linspace(-1.0, 1.0, K).unsqueeze(0)
+    monkeypatch.setattr(ps.Trainer, "_v7_forward", staticmethod(lambda *a, **k: (lg, torch.zeros(1), None)))
+    assert ps.ARGMAX_TWO_STAGE is False
+    monkeypatch.setattr(ps, "ARGMAX_CLASSES", True)
+    assert tr.act_v7(m, sample=False) == ps._argmax_classes(lg[0], m)
+    tr.hidden = None
+    monkeypatch.setattr(ps, "ARGMAX_TWO_STAGE", True)
+    assert tr.act_v7(m, sample=False) == ps._argmax_two_stage(lg[0], m)

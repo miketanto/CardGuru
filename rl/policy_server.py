@@ -64,6 +64,8 @@ ADV_NORM = "batch"
 # --target-kl (C1): stop the v7 update once the mean approx KL to the behaviour
 # policy passes this (0 = off). --argmax-classes (B7): eval argmax over candidate classes.
 TARGET_KL, ARGMAX_CLASSES = 0.0, False
+# --argmax-two-stage (Phase 12 Amendment 5): v7 eval readout only; default OFF = the old readout.
+ARGMAX_TWO_STAGE = False
 UPDATE_EPISODES = 32
 MAX_K = 40                   # candidate buffer; --max-k overrides
 # MAX_K is a BUFFER SIZE, not an architectural constant: every parameter
@@ -440,6 +442,27 @@ def _norm_adv(adv, rewards, mode):
     if mode == "std" or (mode == "auto" and len(set(float(r) for r in rewards)) < 2):
         return adv / (sd + 1e-8)
     return (adv - adv.mean()) / (sd + 1e-8)
+
+
+def _argmax_two_stage(logits, msg):
+    """Phase 12 Amendment 5: a two-stage v7 eval readout. Stage 1 decides act vs pass by
+    summed probability (act iff sum P(non-PASS) > P(PASS)); stage 2, when acting, is
+    _argmax_classes over the acting candidates only (PASS masked out). A consult without
+    both a PASS and a non-PASS candidate falls back to _argmax_classes. Sampling is
+    unaffected (the readout applies on the eval branch only)."""
+    t = msg["v7_cand_type"]
+    n = len(t)
+    lg = logits[:n].float()
+    pas = [k for k in range(n) if t[k] == 0]
+    act = [k for k in range(n) if t[k] != 0]
+    if not pas or not act:
+        return _argmax_classes(logits, msg)
+    p_act = float(torch.softmax(lg, 0)[act].sum())
+    if p_act <= 1.0 - p_act:
+        return pas[int(torch.argmax(lg[pas]))]
+    masked = lg.clone()
+    masked[pas] = float("-inf")
+    return _argmax_classes(masked, msg)
 
 
 def _argmax_classes(logits, msg):
@@ -973,8 +996,11 @@ class Trainer:
                 # 7d correction: --argmax-classes (B7) used to apply on the
                 # v6 act() path only; every v7 eval consult before this was
                 # a plain argmax (V7-VALIDATION "7d overnight - correction")
-                a = (_argmax_classes(logits[0], msg) if ARGMAX_CLASSES
-                     else int(torch.argmax(logits[0])))
+                if ARGMAX_TWO_STAGE:        # Phase 12 Amendment 5 (default off)
+                    a = _argmax_two_stage(logits[0], msg)
+                else:
+                    a = (_argmax_classes(logits[0], msg) if ARGMAX_CLASSES
+                         else int(torch.argmax(logits[0])))
         return a
 
     def _update_v7(self):
@@ -2067,6 +2093,8 @@ if __name__ == "__main__":
                     help="v7: per-batch advantage normalisation (7a arm B8; batch = through 7c)")
     ap.add_argument("--target-kl", type=float, default=0.0, help="v7: stop the update once mean approx KL passes this (C1)")
     ap.add_argument("--argmax-classes", action="store_true", help="v7 eval: argmax over candidate classes (B7)")
+    ap.add_argument("--argmax-two-stage", action="store_true",
+                    help="v7 eval (Phase 12 Amendment 5): act vs pass by summed probability, then argmax over the acting classes")
     ap.add_argument("--cand-refers-pool", action="store_true",
                     help="v7 (Phase 10 A1): pool the candidate's referred entities into its token "
                          "(default off = the pre-Phase-10 network; a checkpoint that has it keeps it)")
@@ -2088,6 +2116,7 @@ if __name__ == "__main__":
     WEIGHT_DECAY, HEADS_OPT, HEADS_LR = args.weight_decay, args.heads_opt, args.heads_lr
     ADV_NORM = args.adv_norm
     TARGET_KL, ARGMAX_CLASSES = args.target_kl, args.argmax_classes
+    ARGMAX_TWO_STAGE = args.argmax_two_stage
     # Phase 12: 4 game threads + N server threads on 4 cores is heavily
     # oversubscribed; measured held-time per consult rose 3.40 -> 5.75 ms
     # from conc1 to conc4. Configurable so the trade can be measured.
