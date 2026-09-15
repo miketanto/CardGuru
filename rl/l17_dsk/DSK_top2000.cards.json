@@ -1,0 +1,6036 @@
+{
+"11809": {
+"expansion": "USG",
+"mana_value": "0",
+"name": "Swamp",
+"rarity": "basic",
+"types": "Basic Land - Swamp"
+},
+"11815": {
+"expansion": "USG",
+"mana_value": "0",
+"name": "Mountain",
+"rarity": "basic",
+"types": "Basic Land - Mountain"
+},
+"11863": {
+"expansion": "USG",
+"mana_value": "0",
+"name": "Plains",
+"rarity": "basic",
+"types": "Basic Land - Plains"
+},
+"12053": {
+"expansion": "USG",
+"mana_value": "0",
+"name": "Island",
+"rarity": "basic",
+"types": "Basic Land - Island"
+},
+"12429": {
+"expansion": "USG",
+"mana_value": "0",
+"name": "Forest",
+"rarity": "basic",
+"types": "Basic Land - Forest"
+},
+"3": {
+"expansion": "ANA",
+"mana_value": "0",
+"name": "[Face-Down Card]",
+"rarity": "token",
+"types": ""
+},
+"34716": {
+"expansion": "ZEN",
+"mana_value": "0",
+"name": "Swamp",
+"rarity": "basic",
+"types": "Basic Land - Swamp"
+},
+"34720": {
+"expansion": "ZEN",
+"mana_value": "0",
+"name": "Swamp",
+"rarity": "basic",
+"types": "Basic Land - Swamp"
+},
+"34722": {
+"expansion": "ZEN",
+"mana_value": "0",
+"name": "Island",
+"rarity": "basic",
+"types": "Basic Land - Island"
+},
+"34724": {
+"expansion": "ZEN",
+"mana_value": "0",
+"name": "Plains",
+"rarity": "basic",
+"types": "Basic Land - Plains"
+},
+"34728": {
+"expansion": "ZEN",
+"mana_value": "0",
+"name": "Island",
+"rarity": "basic",
+"types": "Basic Land - Island"
+},
+"34736": {
+"expansion": "ZEN",
+"mana_value": "0",
+"name": "Forest",
+"rarity": "basic",
+"types": "Basic Land - Forest"
+},
+"34742": {
+"expansion": "ZEN",
+"mana_value": "0",
+"name": "Mountain",
+"rarity": "basic",
+"types": "Basic Land - Mountain"
+},
+"34744": {
+"expansion": "ZEN",
+"mana_value": "0",
+"name": "Forest",
+"rarity": "basic",
+"types": "Basic Land - Forest"
+},
+"34754": {
+"expansion": "ZEN",
+"mana_value": "0",
+"name": "Plains",
+"rarity": "basic",
+"types": "Basic Land - Plains"
+},
+"58437": {
+"expansion": "KTK",
+"mana_value": "0",
+"name": "Plains",
+"rarity": "basic",
+"types": "Basic Land - Plains"
+},
+"58439": {
+"expansion": "KTK",
+"mana_value": "0",
+"name": "Plains",
+"rarity": "basic",
+"types": "Basic Land - Plains"
+},
+"58441": {
+"expansion": "KTK",
+"mana_value": "0",
+"name": "Island",
+"rarity": "basic",
+"types": "Basic Land - Island"
+},
+"58443": {
+"expansion": "KTK",
+"mana_value": "0",
+"name": "Island",
+"rarity": "basic",
+"types": "Basic Land - Island"
+},
+"58447": {
+"expansion": "KTK",
+"mana_value": "0",
+"name": "Swamp",
+"rarity": "basic",
+"types": "Basic Land - Swamp"
+},
+"58449": {
+"expansion": "KTK",
+"mana_value": "0",
+"name": "Mountain",
+"rarity": "basic",
+"types": "Basic Land - Mountain"
+},
+"58451": {
+"expansion": "KTK",
+"mana_value": "0",
+"name": "Mountain",
+"rarity": "basic",
+"types": "Basic Land - Mountain"
+},
+"58455": {
+"expansion": "KTK",
+"mana_value": "0",
+"name": "Forest",
+"rarity": "basic",
+"types": "Basic Land - Forest"
+},
+"62125": {
+"expansion": "BFZ",
+"mana_value": "0",
+"name": "Island",
+"rarity": "basic",
+"types": "Basic Land - Island"
+},
+"62135": {
+"expansion": "BFZ",
+"mana_value": "0",
+"name": "Swamp",
+"rarity": "basic",
+"types": "Basic Land - Swamp"
+},
+"62145": {
+"expansion": "BFZ",
+"mana_value": "0",
+"name": "Mountain",
+"rarity": "basic",
+"types": "Basic Land - Mountain"
+},
+"62155": {
+"expansion": "BFZ",
+"mana_value": "0",
+"name": "Forest",
+"rarity": "basic",
+"types": "Basic Land - Forest"
+},
+"65385": {
+"expansion": "AKH",
+"mana_value": "0",
+"name": "Mountain",
+"rarity": "basic",
+"types": "Basic Land - Mountain"
+},
+"66499": {
+"expansion": "XLN",
+"mana_value": "0",
+"name": "Plains",
+"rarity": "basic",
+"types": "Basic Land - Plains"
+},
+"66507": {
+"expansion": "XLN",
+"mana_value": "0",
+"name": "Island",
+"rarity": "basic",
+"types": "Basic Land - Island"
+},
+"66511": {
+"expansion": "XLN",
+"mana_value": "0",
+"name": "Island",
+"rarity": "basic",
+"types": "Basic Land - Island"
+},
+"66515": {
+"expansion": "XLN",
+"mana_value": "0",
+"name": "Swamp",
+"rarity": "basic",
+"types": "Basic Land - Swamp"
+},
+"66523": {
+"expansion": "XLN",
+"mana_value": "0",
+"name": "Mountain",
+"rarity": "basic",
+"types": "Basic Land - Mountain"
+},
+"66527": {
+"expansion": "XLN",
+"mana_value": "0",
+"name": "Mountain",
+"rarity": "basic",
+"types": "Basic Land - Mountain"
+},
+"66533": {
+"expansion": "XLN",
+"mana_value": "0",
+"name": "Forest",
+"rarity": "basic",
+"types": "Basic Land - Forest"
+},
+"66537": {
+"expansion": "XLN",
+"mana_value": "0",
+"name": "Forest",
+"rarity": "basic",
+"types": "Basic Land - Forest"
+},
+"67023": {
+"expansion": "RIX",
+"mana_value": "0",
+"name": "Forest",
+"rarity": "basic",
+"types": "Basic Land - Forest"
+},
+"67606": {
+"expansion": "DOM",
+"mana_value": "0",
+"name": "Plains",
+"rarity": "basic",
+"types": "Basic Land - Plains"
+},
+"67610": {
+"expansion": "DOM",
+"mana_value": "0",
+"name": "Plains",
+"rarity": "basic",
+"types": "Basic Land - Plains"
+},
+"67614": {
+"expansion": "DOM",
+"mana_value": "0",
+"name": "Island",
+"rarity": "basic",
+"types": "Basic Land - Island"
+},
+"67628": {
+"expansion": "DOM",
+"mana_value": "0",
+"name": "Mountain",
+"rarity": "basic",
+"types": "Basic Land - Mountain"
+},
+"67636": {
+"expansion": "DOM",
+"mana_value": "0",
+"name": "Forest",
+"rarity": "basic",
+"types": "Basic Land - Forest"
+},
+"68204": {
+"expansion": "M19",
+"mana_value": "0",
+"name": "Plains",
+"rarity": "basic",
+"types": "Basic Land - Plains"
+},
+"68208": {
+"expansion": "M19",
+"mana_value": "0",
+"name": "Plains",
+"rarity": "basic",
+"types": "Basic Land - Plains"
+},
+"68214": {
+"expansion": "M19",
+"mana_value": "0",
+"name": "Island",
+"rarity": "basic",
+"types": "Basic Land - Island"
+},
+"68218": {
+"expansion": "M19",
+"mana_value": "0",
+"name": "Island",
+"rarity": "basic",
+"types": "Basic Land - Island"
+},
+"68220": {
+"expansion": "M19",
+"mana_value": "0",
+"name": "Swamp",
+"rarity": "basic",
+"types": "Basic Land - Swamp"
+},
+"68232": {
+"expansion": "M19",
+"mana_value": "0",
+"name": "Mountain",
+"rarity": "basic",
+"types": "Basic Land - Mountain"
+},
+"68240": {
+"expansion": "M19",
+"mana_value": "0",
+"name": "Forest",
+"rarity": "basic",
+"types": "Basic Land - Forest"
+},
+"68742": {
+"expansion": "GRN",
+"mana_value": "0",
+"name": "Island",
+"rarity": "basic",
+"types": "Basic Land - Island"
+},
+"68745": {
+"expansion": "GRN",
+"mana_value": "0",
+"name": "Forest",
+"rarity": "basic",
+"types": "Basic Land - Forest"
+},
+"69703": {
+"expansion": "WAR",
+"mana_value": "0",
+"name": "Plains",
+"rarity": "basic",
+"types": "Basic Land - Plains"
+},
+"69705": {
+"expansion": "WAR",
+"mana_value": "0",
+"name": "Island",
+"rarity": "basic",
+"types": "Basic Land - Island"
+},
+"69709": {
+"expansion": "WAR",
+"mana_value": "0",
+"name": "Swamp",
+"rarity": "basic",
+"types": "Basic Land - Swamp"
+},
+"69713": {
+"expansion": "WAR",
+"mana_value": "0",
+"name": "Forest",
+"rarity": "basic",
+"types": "Basic Land - Forest"
+},
+"6993": {
+"expansion": "MIR",
+"mana_value": "0",
+"name": "Forest",
+"rarity": "basic",
+"types": "Basic Land - Forest"
+},
+"70046": {
+"expansion": "M20",
+"mana_value": "0",
+"name": "Plains",
+"rarity": "basic",
+"types": "Basic Land - Plains"
+},
+"70047": {
+"expansion": "M20",
+"mana_value": "0",
+"name": "Plains",
+"rarity": "basic",
+"types": "Basic Land - Plains"
+},
+"70048": {
+"expansion": "M20",
+"mana_value": "0",
+"name": "Plains",
+"rarity": "basic",
+"types": "Basic Land - Plains"
+},
+"70049": {
+"expansion": "M20",
+"mana_value": "0",
+"name": "Plains",
+"rarity": "basic",
+"types": "Basic Land - Plains"
+},
+"70050": {
+"expansion": "M20",
+"mana_value": "0",
+"name": "Island",
+"rarity": "basic",
+"types": "Basic Land - Island"
+},
+"70051": {
+"expansion": "M20",
+"mana_value": "0",
+"name": "Island",
+"rarity": "basic",
+"types": "Basic Land - Island"
+},
+"70056": {
+"expansion": "M20",
+"mana_value": "0",
+"name": "Swamp",
+"rarity": "basic",
+"types": "Basic Land - Swamp"
+},
+"70057": {
+"expansion": "M20",
+"mana_value": "0",
+"name": "Swamp",
+"rarity": "basic",
+"types": "Basic Land - Swamp"
+},
+"70059": {
+"expansion": "M20",
+"mana_value": "0",
+"name": "Mountain",
+"rarity": "basic",
+"types": "Basic Land - Mountain"
+},
+"70060": {
+"expansion": "M20",
+"mana_value": "0",
+"name": "Mountain",
+"rarity": "basic",
+"types": "Basic Land - Mountain"
+},
+"70062": {
+"expansion": "M20",
+"mana_value": "0",
+"name": "Forest",
+"rarity": "basic",
+"types": "Basic Land - Forest"
+},
+"70398": {
+"expansion": "ELD",
+"mana_value": "0",
+"name": "Plains",
+"rarity": "basic",
+"types": "Basic Land - Plains"
+},
+"70400": {
+"expansion": "ELD",
+"mana_value": "0",
+"name": "Plains",
+"rarity": "basic",
+"types": "Basic Land - Plains"
+},
+"70404": {
+"expansion": "ELD",
+"mana_value": "0",
+"name": "Island",
+"rarity": "basic",
+"types": "Basic Land - Island"
+},
+"70405": {
+"expansion": "ELD",
+"mana_value": "0",
+"name": "Swamp",
+"rarity": "basic",
+"types": "Basic Land - Swamp"
+},
+"70407": {
+"expansion": "ELD",
+"mana_value": "0",
+"name": "Swamp",
+"rarity": "basic",
+"types": "Basic Land - Swamp"
+},
+"70408": {
+"expansion": "ELD",
+"mana_value": "0",
+"name": "Swamp",
+"rarity": "basic",
+"types": "Basic Land - Swamp"
+},
+"70410": {
+"expansion": "ELD",
+"mana_value": "0",
+"name": "Mountain",
+"rarity": "basic",
+"types": "Basic Land - Mountain"
+},
+"70411": {
+"expansion": "ELD",
+"mana_value": "0",
+"name": "Mountain",
+"rarity": "basic",
+"types": "Basic Land - Mountain"
+},
+"70414": {
+"expansion": "ELD",
+"mana_value": "0",
+"name": "Forest",
+"rarity": "basic",
+"types": "Basic Land - Forest"
+},
+"70415": {
+"expansion": "ELD",
+"mana_value": "0",
+"name": "Forest",
+"rarity": "basic",
+"types": "Basic Land - Forest"
+},
+"70416": {
+"expansion": "ELD",
+"mana_value": "0",
+"name": "Forest",
+"rarity": "basic",
+"types": "Basic Land - Forest"
+},
+"70501": {
+"expansion": "ANA",
+"mana_value": "0",
+"name": "Plains",
+"rarity": "basic",
+"types": "Basic Land - Plains"
+},
+"70502": {
+"expansion": "ANA",
+"mana_value": "0",
+"name": "Island",
+"rarity": "basic",
+"types": "Basic Land - Island"
+},
+"70503": {
+"expansion": "ANA",
+"mana_value": "0",
+"name": "Swamp",
+"rarity": "basic",
+"types": "Basic Land - Swamp"
+},
+"70504": {
+"expansion": "ANA",
+"mana_value": "0",
+"name": "Mountain",
+"rarity": "basic",
+"types": "Basic Land - Mountain"
+},
+"70505": {
+"expansion": "ANA",
+"mana_value": "0",
+"name": "Forest",
+"rarity": "basic",
+"types": "Basic Land - Forest"
+},
+"70506": {
+"expansion": "ANA",
+"mana_value": "0",
+"name": "Plains",
+"rarity": "basic",
+"types": "Basic Land - Plains"
+},
+"70507": {
+"expansion": "ANA",
+"mana_value": "0",
+"name": "Island",
+"rarity": "basic",
+"types": "Basic Land - Island"
+},
+"70508": {
+"expansion": "ANA",
+"mana_value": "0",
+"name": "Swamp",
+"rarity": "basic",
+"types": "Basic Land - Swamp"
+},
+"70509": {
+"expansion": "ANA",
+"mana_value": "0",
+"name": "Mountain",
+"rarity": "basic",
+"types": "Basic Land - Mountain"
+},
+"70510": {
+"expansion": "ANA",
+"mana_value": "0",
+"name": "Forest",
+"rarity": "basic",
+"types": "Basic Land - Forest"
+},
+"7065": {
+"expansion": "MIR",
+"mana_value": "0",
+"name": "Island",
+"rarity": "basic",
+"types": "Basic Land - Island"
+},
+"70761": {
+"expansion": "THB",
+"mana_value": "0",
+"name": "Plains",
+"rarity": "basic",
+"types": "Basic Land - Plains"
+},
+"70762": {
+"expansion": "THB",
+"mana_value": "0",
+"name": "Island",
+"rarity": "basic",
+"types": "Basic Land - Island"
+},
+"70763": {
+"expansion": "THB",
+"mana_value": "0",
+"name": "Swamp",
+"rarity": "basic",
+"types": "Basic Land - Swamp"
+},
+"70764": {
+"expansion": "THB",
+"mana_value": "0",
+"name": "Mountain",
+"rarity": "basic",
+"types": "Basic Land - Mountain"
+},
+"70765": {
+"expansion": "THB",
+"mana_value": "0",
+"name": "Forest",
+"rarity": "basic",
+"types": "Basic Land - Forest"
+},
+"70775": {
+"expansion": "THB",
+"mana_value": "0",
+"name": "Plains",
+"rarity": "basic",
+"types": "Basic Land - Plains"
+},
+"70776": {
+"expansion": "THB",
+"mana_value": "0",
+"name": "Island",
+"rarity": "basic",
+"types": "Basic Land - Island"
+},
+"70777": {
+"expansion": "THB",
+"mana_value": "0",
+"name": "Island",
+"rarity": "basic",
+"types": "Basic Land - Island"
+},
+"70778": {
+"expansion": "THB",
+"mana_value": "0",
+"name": "Swamp",
+"rarity": "basic",
+"types": "Basic Land - Swamp"
+},
+"70781": {
+"expansion": "THB",
+"mana_value": "0",
+"name": "Mountain",
+"rarity": "basic",
+"types": "Basic Land - Mountain"
+},
+"70783": {
+"expansion": "THB",
+"mana_value": "0",
+"name": "Forest",
+"rarity": "basic",
+"types": "Basic Land - Forest"
+},
+"7153": {
+"expansion": "MIR",
+"mana_value": "0",
+"name": "Mountain",
+"rarity": "basic",
+"types": "Basic Land - Mountain"
+},
+"7193": {
+"expansion": "MIR",
+"mana_value": "0",
+"name": "Plains",
+"rarity": "basic",
+"types": "Basic Land - Plains"
+},
+"72080": {
+"expansion": "M21",
+"mana_value": "0",
+"name": "Plains",
+"rarity": "basic",
+"types": "Basic Land - Plains"
+},
+"72081": {
+"expansion": "M21",
+"mana_value": "0",
+"name": "Plains",
+"rarity": "basic",
+"types": "Basic Land - Plains"
+},
+"72090": {
+"expansion": "M21",
+"mana_value": "0",
+"name": "Mountain",
+"rarity": "basic",
+"types": "Basic Land - Mountain"
+},
+"72091": {
+"expansion": "M21",
+"mana_value": "0",
+"name": "Mountain",
+"rarity": "basic",
+"types": "Basic Land - Mountain"
+},
+"72092": {
+"expansion": "M21",
+"mana_value": "0",
+"name": "Forest",
+"rarity": "basic",
+"types": "Basic Land - Forest"
+},
+"72094": {
+"expansion": "M21",
+"mana_value": "0",
+"name": "Forest",
+"rarity": "basic",
+"types": "Basic Land - Forest"
+},
+"72562": {
+"expansion": "JMP",
+"mana_value": "0",
+"name": "Plains",
+"rarity": "basic",
+"types": "Basic Land - Plains"
+},
+"72565": {
+"expansion": "JMP",
+"mana_value": "0",
+"name": "Plains",
+"rarity": "basic",
+"types": "Basic Land - Plains"
+},
+"72569": {
+"expansion": "JMP",
+"mana_value": "0",
+"name": "Island",
+"rarity": "basic",
+"types": "Basic Land - Island"
+},
+"72575": {
+"expansion": "JMP",
+"mana_value": "0",
+"name": "Swamp",
+"rarity": "basic",
+"types": "Basic Land - Swamp"
+},
+"72591": {
+"expansion": "JMP",
+"mana_value": "0",
+"name": "Forest",
+"rarity": "basic",
+"types": "Basic Land - Forest"
+},
+"72594": {
+"expansion": "JMP",
+"mana_value": "0",
+"name": "Forest",
+"rarity": "basic",
+"types": "Basic Land - Forest"
+},
+"72596": {
+"expansion": "JMP",
+"mana_value": "0",
+"name": "Forest",
+"rarity": "basic",
+"types": "Basic Land - Forest"
+},
+"72597": {
+"expansion": "JMP",
+"mana_value": "0",
+"name": "Forest",
+"rarity": "basic",
+"types": "Basic Land - Forest"
+},
+"73123": {
+"expansion": "IKO",
+"mana_value": "0",
+"name": "Plains",
+"rarity": "basic",
+"types": "Basic Land - Plains"
+},
+"73124": {
+"expansion": "IKO",
+"mana_value": "0",
+"name": "Island",
+"rarity": "basic",
+"types": "Basic Land - Island"
+},
+"73126": {
+"expansion": "IKO",
+"mana_value": "0",
+"name": "Island",
+"rarity": "basic",
+"types": "Basic Land - Island"
+},
+"73127": {
+"expansion": "IKO",
+"mana_value": "0",
+"name": "Swamp",
+"rarity": "basic",
+"types": "Basic Land - Swamp"
+},
+"73128": {
+"expansion": "IKO",
+"mana_value": "0",
+"name": "Swamp",
+"rarity": "basic",
+"types": "Basic Land - Swamp"
+},
+"73130": {
+"expansion": "IKO",
+"mana_value": "0",
+"name": "Mountain",
+"rarity": "basic",
+"types": "Basic Land - Mountain"
+},
+"73131": {
+"expansion": "IKO",
+"mana_value": "0",
+"name": "Mountain",
+"rarity": "basic",
+"types": "Basic Land - Mountain"
+},
+"73135": {
+"expansion": "IKO",
+"mana_value": "0",
+"name": "Forest",
+"rarity": "basic",
+"types": "Basic Land - Forest"
+},
+"73141": {
+"expansion": "UND",
+"mana_value": "0",
+"name": "Plains",
+"rarity": "basic",
+"types": "Basic Land - Plains"
+},
+"73142": {
+"expansion": "UND",
+"mana_value": "0",
+"name": "Island",
+"rarity": "basic",
+"types": "Basic Land - Island"
+},
+"73143": {
+"expansion": "UND",
+"mana_value": "0",
+"name": "Swamp",
+"rarity": "basic",
+"types": "Basic Land - Swamp"
+},
+"73144": {
+"expansion": "UND",
+"mana_value": "0",
+"name": "Mountain",
+"rarity": "basic",
+"types": "Basic Land - Mountain"
+},
+"73145": {
+"expansion": "UND",
+"mana_value": "0",
+"name": "Forest",
+"rarity": "basic",
+"types": "Basic Land - Forest"
+},
+"7347": {
+"expansion": "MIR",
+"mana_value": "0",
+"name": "Swamp",
+"rarity": "basic",
+"types": "Basic Land - Swamp"
+},
+"73484": {
+"expansion": "ZNR",
+"mana_value": "0",
+"name": "Plains",
+"rarity": "basic",
+"types": "Basic Land - Plains"
+},
+"73485": {
+"expansion": "ZNR",
+"mana_value": "0",
+"name": "Plains",
+"rarity": "basic",
+"types": "Basic Land - Plains"
+},
+"73486": {
+"expansion": "ZNR",
+"mana_value": "0",
+"name": "Plains",
+"rarity": "basic",
+"types": "Basic Land - Plains"
+},
+"73487": {
+"expansion": "ZNR",
+"mana_value": "0",
+"name": "Island",
+"rarity": "basic",
+"types": "Basic Land - Island"
+},
+"73488": {
+"expansion": "ZNR",
+"mana_value": "0",
+"name": "Island",
+"rarity": "basic",
+"types": "Basic Land - Island"
+},
+"73489": {
+"expansion": "ZNR",
+"mana_value": "0",
+"name": "Island",
+"rarity": "basic",
+"types": "Basic Land - Island"
+},
+"73490": {
+"expansion": "ZNR",
+"mana_value": "0",
+"name": "Swamp",
+"rarity": "basic",
+"types": "Basic Land - Swamp"
+},
+"73491": {
+"expansion": "ZNR",
+"mana_value": "0",
+"name": "Swamp",
+"rarity": "basic",
+"types": "Basic Land - Swamp"
+},
+"73492": {
+"expansion": "ZNR",
+"mana_value": "0",
+"name": "Swamp",
+"rarity": "basic",
+"types": "Basic Land - Swamp"
+},
+"73493": {
+"expansion": "ZNR",
+"mana_value": "0",
+"name": "Mountain",
+"rarity": "basic",
+"types": "Basic Land - Mountain"
+},
+"73494": {
+"expansion": "ZNR",
+"mana_value": "0",
+"name": "Mountain",
+"rarity": "basic",
+"types": "Basic Land - Mountain"
+},
+"73495": {
+"expansion": "ZNR",
+"mana_value": "0",
+"name": "Mountain",
+"rarity": "basic",
+"types": "Basic Land - Mountain"
+},
+"73496": {
+"expansion": "ZNR",
+"mana_value": "0",
+"name": "Forest",
+"rarity": "basic",
+"types": "Basic Land - Forest"
+},
+"73497": {
+"expansion": "ZNR",
+"mana_value": "0",
+"name": "Forest",
+"rarity": "basic",
+"types": "Basic Land - Forest"
+},
+"73498": {
+"expansion": "ZNR",
+"mana_value": "0",
+"name": "Forest",
+"rarity": "basic",
+"types": "Basic Land - Forest"
+},
+"73512": {
+"expansion": "ZNR",
+"mana_value": "0",
+"name": "Island",
+"rarity": "basic",
+"types": "Basic Land - Island"
+},
+"73515": {
+"expansion": "ZNR",
+"mana_value": "0",
+"name": "Forest",
+"rarity": "basic",
+"types": "Basic Land - Forest"
+},
+"73644": {
+"expansion": "SLD",
+"mana_value": "0",
+"name": "Plains",
+"rarity": "basic",
+"types": "Basic Land - Plains"
+},
+"73645": {
+"expansion": "SLD",
+"mana_value": "0",
+"name": "Island",
+"rarity": "basic",
+"types": "Basic Land - Island"
+},
+"73646": {
+"expansion": "SLD",
+"mana_value": "0",
+"name": "Swamp",
+"rarity": "basic",
+"types": "Basic Land - Swamp"
+},
+"73647": {
+"expansion": "SLD",
+"mana_value": "0",
+"name": "Mountain",
+"rarity": "basic",
+"types": "Basic Land - Mountain"
+},
+"73648": {
+"expansion": "SLD",
+"mana_value": "0",
+"name": "Forest",
+"rarity": "basic",
+"types": "Basic Land - Forest"
+},
+"74121": {
+"expansion": "AKR",
+"mana_value": "0",
+"name": "Forest",
+"rarity": "basic",
+"types": "Basic Land - Forest"
+},
+"74127": {
+"expansion": "AKR",
+"mana_value": "0",
+"name": "Island",
+"rarity": "basic",
+"types": "Basic Land - Island"
+},
+"74128": {
+"expansion": "AKR",
+"mana_value": "0",
+"name": "Island",
+"rarity": "basic",
+"types": "Basic Land - Island"
+},
+"74134": {
+"expansion": "AKR",
+"mana_value": "0",
+"name": "Mountain",
+"rarity": "basic",
+"types": "Basic Land - Mountain"
+},
+"74139": {
+"expansion": "AKR",
+"mana_value": "0",
+"name": "Mountain",
+"rarity": "basic",
+"types": "Basic Land - Mountain"
+},
+"74144": {
+"expansion": "AKR",
+"mana_value": "0",
+"name": "Plains",
+"rarity": "basic",
+"types": "Basic Land - Plains"
+},
+"74157": {
+"expansion": "AKR",
+"mana_value": "0",
+"name": "Swamp",
+"rarity": "basic",
+"types": "Basic Land - Swamp"
+},
+"74641": {
+"expansion": "M21",
+"mana_value": "0",
+"name": "Plains",
+"rarity": "basic",
+"types": "Basic Land - Plains"
+},
+"74642": {
+"expansion": "M21",
+"mana_value": "0",
+"name": "Island",
+"rarity": "basic",
+"types": "Basic Land - Island"
+},
+"74643": {
+"expansion": "M21",
+"mana_value": "0",
+"name": "Swamp",
+"rarity": "basic",
+"types": "Basic Land - Swamp"
+},
+"74644": {
+"expansion": "M21",
+"mana_value": "0",
+"name": "Mountain",
+"rarity": "basic",
+"types": "Basic Land - Mountain"
+},
+"74645": {
+"expansion": "M21",
+"mana_value": "0",
+"name": "Forest",
+"rarity": "basic",
+"types": "Basic Land - Forest"
+},
+"75021": {
+"expansion": "UST",
+"mana_value": "0",
+"name": "Plains",
+"rarity": "basic",
+"types": "Basic Land - Plains"
+},
+"75022": {
+"expansion": "UST",
+"mana_value": "0",
+"name": "Island",
+"rarity": "basic",
+"types": "Basic Land - Island"
+},
+"75023": {
+"expansion": "UST",
+"mana_value": "0",
+"name": "Swamp",
+"rarity": "basic",
+"types": "Basic Land - Swamp"
+},
+"75024": {
+"expansion": "UST",
+"mana_value": "0",
+"name": "Mountain",
+"rarity": "basic",
+"types": "Basic Land - Mountain"
+},
+"75025": {
+"expansion": "UST",
+"mana_value": "0",
+"name": "Forest",
+"rarity": "basic",
+"types": "Basic Land - Forest"
+},
+"75338": {
+"expansion": "KHM",
+"mana_value": "0",
+"name": "Island",
+"rarity": "basic",
+"types": "Basic Land - Island"
+},
+"75339": {
+"expansion": "KHM",
+"mana_value": "0",
+"name": "Swamp",
+"rarity": "basic",
+"types": "Basic Land - Swamp"
+},
+"75341": {
+"expansion": "KHM",
+"mana_value": "0",
+"name": "Forest",
+"rarity": "basic",
+"types": "Basic Land - Forest"
+},
+"75554": {
+"expansion": "ANB",
+"mana_value": "0",
+"name": "Island",
+"rarity": "basic",
+"types": "Basic Land - Island"
+},
+"75555": {
+"expansion": "ANB",
+"mana_value": "0",
+"name": "Mountain",
+"rarity": "basic",
+"types": "Basic Land - Mountain"
+},
+"75556": {
+"expansion": "ANB",
+"mana_value": "0",
+"name": "Plains",
+"rarity": "basic",
+"types": "Basic Land - Plains"
+},
+"75863": {
+"expansion": "KLR",
+"mana_value": "0",
+"name": "Forest",
+"rarity": "basic",
+"types": "Basic Land - Forest"
+},
+"75868": {
+"expansion": "KLR",
+"mana_value": "0",
+"name": "Island",
+"rarity": "basic",
+"types": "Basic Land - Island"
+},
+"75869": {
+"expansion": "KLR",
+"mana_value": "0",
+"name": "Mountain",
+"rarity": "basic",
+"types": "Basic Land - Mountain"
+},
+"75873": {
+"expansion": "KLR",
+"mana_value": "0",
+"name": "Plains",
+"rarity": "basic",
+"types": "Basic Land - Plains"
+},
+"75890": {
+"expansion": "ANA",
+"mana_value": "0",
+"name": "Plains",
+"rarity": "basic",
+"types": "Basic Land - Plains"
+},
+"75891": {
+"expansion": "ANA",
+"mana_value": "0",
+"name": "Island",
+"rarity": "basic",
+"types": "Basic Land - Island"
+},
+"75892": {
+"expansion": "ANA",
+"mana_value": "0",
+"name": "Swamp",
+"rarity": "basic",
+"types": "Basic Land - Swamp"
+},
+"75893": {
+"expansion": "ANA",
+"mana_value": "0",
+"name": "Mountain",
+"rarity": "basic",
+"types": "Basic Land - Mountain"
+},
+"75894": {
+"expansion": "ANA",
+"mana_value": "0",
+"name": "Forest",
+"rarity": "basic",
+"types": "Basic Land - Forest"
+},
+"75895": {
+"expansion": "ANA",
+"mana_value": "0",
+"name": "Plains",
+"rarity": "basic",
+"types": "Basic Land - Plains"
+},
+"75896": {
+"expansion": "ANA",
+"mana_value": "0",
+"name": "Island",
+"rarity": "basic",
+"types": "Basic Land - Island"
+},
+"75897": {
+"expansion": "ANA",
+"mana_value": "0",
+"name": "Island",
+"rarity": "basic",
+"types": "Basic Land - Island"
+},
+"75898": {
+"expansion": "ANA",
+"mana_value": "0",
+"name": "Swamp",
+"rarity": "basic",
+"types": "Basic Land - Swamp"
+},
+"75899": {
+"expansion": "ANA",
+"mana_value": "0",
+"name": "Mountain",
+"rarity": "basic",
+"types": "Basic Land - Mountain"
+},
+"75900": {
+"expansion": "ANA",
+"mana_value": "0",
+"name": "Mountain",
+"rarity": "basic",
+"types": "Basic Land - Mountain"
+},
+"75901": {
+"expansion": "ANA",
+"mana_value": "0",
+"name": "Forest",
+"rarity": "basic",
+"types": "Basic Land - Forest"
+},
+"75902": {
+"expansion": "ANA",
+"mana_value": "0",
+"name": "Plains",
+"rarity": "basic",
+"types": "Basic Land - Plains"
+},
+"75903": {
+"expansion": "ANA",
+"mana_value": "0",
+"name": "Forest",
+"rarity": "basic",
+"types": "Basic Land - Forest"
+},
+"75904": {
+"expansion": "ANA",
+"mana_value": "0",
+"name": "Swamp",
+"rarity": "basic",
+"types": "Basic Land - Swamp"
+},
+"76382": {
+"expansion": "SLD",
+"mana_value": "0",
+"name": "Plains",
+"rarity": "basic",
+"types": "Basic Land - Plains"
+},
+"76383": {
+"expansion": "SLD",
+"mana_value": "0",
+"name": "Plains",
+"rarity": "basic",
+"types": "Basic Land - Plains"
+},
+"76384": {
+"expansion": "SLD",
+"mana_value": "0",
+"name": "Island",
+"rarity": "basic",
+"types": "Basic Land - Island"
+},
+"76385": {
+"expansion": "SLD",
+"mana_value": "0",
+"name": "Island",
+"rarity": "basic",
+"types": "Basic Land - Island"
+},
+"76386": {
+"expansion": "SLD",
+"mana_value": "0",
+"name": "Swamp",
+"rarity": "basic",
+"types": "Basic Land - Swamp"
+},
+"76387": {
+"expansion": "SLD",
+"mana_value": "0",
+"name": "Swamp",
+"rarity": "basic",
+"types": "Basic Land - Swamp"
+},
+"76388": {
+"expansion": "SLD",
+"mana_value": "0",
+"name": "Mountain",
+"rarity": "basic",
+"types": "Basic Land - Mountain"
+},
+"76389": {
+"expansion": "SLD",
+"mana_value": "0",
+"name": "Mountain",
+"rarity": "basic",
+"types": "Basic Land - Mountain"
+},
+"76390": {
+"expansion": "SLD",
+"mana_value": "0",
+"name": "Forest",
+"rarity": "basic",
+"types": "Basic Land - Forest"
+},
+"76391": {
+"expansion": "SLD",
+"mana_value": "0",
+"name": "Forest",
+"rarity": "basic",
+"types": "Basic Land - Forest"
+},
+"76693": {
+"expansion": "STX",
+"mana_value": "0",
+"name": "Forest",
+"rarity": "basic",
+"types": "Basic Land - Forest"
+},
+"76841": {
+"expansion": "ANA",
+"mana_value": "0",
+"name": "Plains",
+"rarity": "basic",
+"types": "Basic Land - Plains"
+},
+"76842": {
+"expansion": "ANA",
+"mana_value": "0",
+"name": "Plains",
+"rarity": "basic",
+"types": "Basic Land - Plains"
+},
+"76843": {
+"expansion": "ANA",
+"mana_value": "0",
+"name": "Swamp",
+"rarity": "basic",
+"types": "Basic Land - Swamp"
+},
+"76844": {
+"expansion": "ANA",
+"mana_value": "0",
+"name": "Forest",
+"rarity": "basic",
+"types": "Basic Land - Forest"
+},
+"76845": {
+"expansion": "ANA",
+"mana_value": "0",
+"name": "Island",
+"rarity": "basic",
+"types": "Basic Land - Island"
+},
+"76846": {
+"expansion": "ANA",
+"mana_value": "0",
+"name": "Mountain",
+"rarity": "basic",
+"types": "Basic Land - Mountain"
+},
+"76847": {
+"expansion": "ANA",
+"mana_value": "0",
+"name": "Mountain",
+"rarity": "basic",
+"types": "Basic Land - Mountain"
+},
+"76848": {
+"expansion": "ANA",
+"mana_value": "0",
+"name": "Mountain",
+"rarity": "basic",
+"types": "Basic Land - Mountain"
+},
+"76849": {
+"expansion": "ANA",
+"mana_value": "0",
+"name": "Island",
+"rarity": "basic",
+"types": "Basic Land - Island"
+},
+"76850": {
+"expansion": "ANA",
+"mana_value": "0",
+"name": "Island",
+"rarity": "basic",
+"types": "Basic Land - Island"
+},
+"76851": {
+"expansion": "ANA",
+"mana_value": "0",
+"name": "Forest",
+"rarity": "basic",
+"types": "Basic Land - Forest"
+},
+"76852": {
+"expansion": "ANA",
+"mana_value": "0",
+"name": "Swamp",
+"rarity": "basic",
+"types": "Basic Land - Swamp"
+},
+"76853": {
+"expansion": "ANA",
+"mana_value": "0",
+"name": "Plains",
+"rarity": "basic",
+"types": "Basic Land - Plains"
+},
+"76854": {
+"expansion": "ANA",
+"mana_value": "0",
+"name": "Swamp",
+"rarity": "basic",
+"types": "Basic Land - Swamp"
+},
+"76855": {
+"expansion": "ANA",
+"mana_value": "0",
+"name": "Forest",
+"rarity": "basic",
+"types": "Basic Land - Forest"
+},
+"77460": {
+"expansion": "AFR",
+"mana_value": "0",
+"name": "Plains",
+"rarity": "basic",
+"types": "Basic Land - Plains"
+},
+"77466": {
+"expansion": "AFR",
+"mana_value": "0",
+"name": "Island",
+"rarity": "basic",
+"types": "Basic Land - Island"
+},
+"77468": {
+"expansion": "AFR",
+"mana_value": "0",
+"name": "Swamp",
+"rarity": "basic",
+"types": "Basic Land - Swamp"
+},
+"77473": {
+"expansion": "AFR",
+"mana_value": "0",
+"name": "Mountain",
+"rarity": "basic",
+"types": "Basic Land - Mountain"
+},
+"78639": {
+"expansion": "MID",
+"mana_value": "0",
+"name": "Island",
+"rarity": "basic",
+"types": "Basic Land - Island"
+},
+"78641": {
+"expansion": "MID",
+"mana_value": "0",
+"name": "Mountain",
+"rarity": "basic",
+"types": "Basic Land - Mountain"
+},
+"78643": {
+"expansion": "MID",
+"mana_value": "0",
+"name": "Plains",
+"rarity": "basic",
+"types": "Basic Land - Plains"
+},
+"78644": {
+"expansion": "MID",
+"mana_value": "0",
+"name": "Plains",
+"rarity": "basic",
+"types": "Basic Land - Plains"
+},
+"78645": {
+"expansion": "MID",
+"mana_value": "0",
+"name": "Island",
+"rarity": "basic",
+"types": "Basic Land - Island"
+},
+"78646": {
+"expansion": "MID",
+"mana_value": "0",
+"name": "Island",
+"rarity": "basic",
+"types": "Basic Land - Island"
+},
+"78647": {
+"expansion": "MID",
+"mana_value": "0",
+"name": "Swamp",
+"rarity": "basic",
+"types": "Basic Land - Swamp"
+},
+"78648": {
+"expansion": "MID",
+"mana_value": "0",
+"name": "Swamp",
+"rarity": "basic",
+"types": "Basic Land - Swamp"
+},
+"78649": {
+"expansion": "MID",
+"mana_value": "0",
+"name": "Mountain",
+"rarity": "basic",
+"types": "Basic Land - Mountain"
+},
+"78650": {
+"expansion": "MID",
+"mana_value": "0",
+"name": "Mountain",
+"rarity": "basic",
+"types": "Basic Land - Mountain"
+},
+"78651": {
+"expansion": "MID",
+"mana_value": "0",
+"name": "Forest",
+"rarity": "basic",
+"types": "Basic Land - Forest"
+},
+"78652": {
+"expansion": "MID",
+"mana_value": "0",
+"name": "Forest",
+"rarity": "basic",
+"types": "Basic Land - Forest"
+},
+"79093": {
+"expansion": "VOW",
+"mana_value": "0",
+"name": "Island",
+"rarity": "basic",
+"types": "Basic Land - Island"
+},
+"79095": {
+"expansion": "VOW",
+"mana_value": "0",
+"name": "Mountain",
+"rarity": "basic",
+"types": "Basic Land - Mountain"
+},
+"79096": {
+"expansion": "VOW",
+"mana_value": "0",
+"name": "Forest",
+"rarity": "basic",
+"types": "Basic Land - Forest"
+},
+"79100": {
+"expansion": "TVOW",
+"mana_value": "0",
+"name": "Spirit Cleric",
+"rarity": "token",
+"types": "Creature - Spirit Cleric"
+},
+"79115": {
+"expansion": "VOW",
+"mana_value": "0",
+"name": "Plains",
+"rarity": "basic",
+"types": "Basic Land - Plains"
+},
+"79116": {
+"expansion": "VOW",
+"mana_value": "0",
+"name": "Plains",
+"rarity": "basic",
+"types": "Basic Land - Plains"
+},
+"79117": {
+"expansion": "VOW",
+"mana_value": "0",
+"name": "Island",
+"rarity": "basic",
+"types": "Basic Land - Island"
+},
+"79118": {
+"expansion": "VOW",
+"mana_value": "0",
+"name": "Island",
+"rarity": "basic",
+"types": "Basic Land - Island"
+},
+"79119": {
+"expansion": "VOW",
+"mana_value": "0",
+"name": "Swamp",
+"rarity": "basic",
+"types": "Basic Land - Swamp"
+},
+"79120": {
+"expansion": "VOW",
+"mana_value": "0",
+"name": "Swamp",
+"rarity": "basic",
+"types": "Basic Land - Swamp"
+},
+"79121": {
+"expansion": "VOW",
+"mana_value": "0",
+"name": "Mountain",
+"rarity": "basic",
+"types": "Basic Land - Mountain"
+},
+"79122": {
+"expansion": "VOW",
+"mana_value": "0",
+"name": "Mountain",
+"rarity": "basic",
+"types": "Basic Land - Mountain"
+},
+"79123": {
+"expansion": "VOW",
+"mana_value": "0",
+"name": "Forest",
+"rarity": "basic",
+"types": "Basic Land - Forest"
+},
+"79723": {
+"expansion": "NEO",
+"mana_value": "0",
+"name": "Plains",
+"rarity": "basic",
+"types": "Basic Land - Plains"
+},
+"79724": {
+"expansion": "NEO",
+"mana_value": "0",
+"name": "Plains",
+"rarity": "basic",
+"types": "Basic Land - Plains"
+},
+"79725": {
+"expansion": "NEO",
+"mana_value": "0",
+"name": "Island",
+"rarity": "basic",
+"types": "Basic Land - Island"
+},
+"79727": {
+"expansion": "NEO",
+"mana_value": "0",
+"name": "Swamp",
+"rarity": "basic",
+"types": "Basic Land - Swamp"
+},
+"79728": {
+"expansion": "NEO",
+"mana_value": "0",
+"name": "Swamp",
+"rarity": "basic",
+"types": "Basic Land - Swamp"
+},
+"79729": {
+"expansion": "NEO",
+"mana_value": "0",
+"name": "Mountain",
+"rarity": "basic",
+"types": "Basic Land - Mountain"
+},
+"79730": {
+"expansion": "NEO",
+"mana_value": "0",
+"name": "Mountain",
+"rarity": "basic",
+"types": "Basic Land - Mountain"
+},
+"79731": {
+"expansion": "NEO",
+"mana_value": "0",
+"name": "Forest",
+"rarity": "basic",
+"types": "Basic Land - Forest"
+},
+"79732": {
+"expansion": "NEO",
+"mana_value": "0",
+"name": "Forest",
+"rarity": "basic",
+"types": "Basic Land - Forest"
+},
+"79733": {
+"expansion": "NEO",
+"mana_value": "0",
+"name": "Plains",
+"rarity": "basic",
+"types": "Basic Land - Plains"
+},
+"79734": {
+"expansion": "NEO",
+"mana_value": "0",
+"name": "Plains",
+"rarity": "basic",
+"types": "Basic Land - Plains"
+},
+"79735": {
+"expansion": "NEO",
+"mana_value": "0",
+"name": "Island",
+"rarity": "basic",
+"types": "Basic Land - Island"
+},
+"79736": {
+"expansion": "NEO",
+"mana_value": "0",
+"name": "Island",
+"rarity": "basic",
+"types": "Basic Land - Island"
+},
+"79737": {
+"expansion": "NEO",
+"mana_value": "0",
+"name": "Swamp",
+"rarity": "basic",
+"types": "Basic Land - Swamp"
+},
+"79738": {
+"expansion": "NEO",
+"mana_value": "0",
+"name": "Swamp",
+"rarity": "basic",
+"types": "Basic Land - Swamp"
+},
+"79739": {
+"expansion": "NEO",
+"mana_value": "0",
+"name": "Mountain",
+"rarity": "basic",
+"types": "Basic Land - Mountain"
+},
+"79740": {
+"expansion": "NEO",
+"mana_value": "0",
+"name": "Mountain",
+"rarity": "basic",
+"types": "Basic Land - Mountain"
+},
+"79741": {
+"expansion": "NEO",
+"mana_value": "0",
+"name": "Forest",
+"rarity": "basic",
+"types": "Basic Land - Forest"
+},
+"79742": {
+"expansion": "NEO",
+"mana_value": "0",
+"name": "Forest",
+"rarity": "basic",
+"types": "Basic Land - Forest"
+},
+"79901": {
+"expansion": "SLD",
+"mana_value": "0",
+"name": "Plains",
+"rarity": "basic",
+"types": "Basic Land - Plains"
+},
+"79902": {
+"expansion": "SLD",
+"mana_value": "0",
+"name": "Island",
+"rarity": "basic",
+"types": "Basic Land - Island"
+},
+"79903": {
+"expansion": "SLD",
+"mana_value": "0",
+"name": "Swamp",
+"rarity": "basic",
+"types": "Basic Land - Swamp"
+},
+"79904": {
+"expansion": "SLD",
+"mana_value": "0",
+"name": "Mountain",
+"rarity": "basic",
+"types": "Basic Land - Mountain"
+},
+"80413": {
+"expansion": "SNC",
+"mana_value": "0",
+"name": "Plains",
+"rarity": "basic",
+"types": "Basic Land - Plains"
+},
+"80415": {
+"expansion": "SNC",
+"mana_value": "0",
+"name": "Island",
+"rarity": "basic",
+"types": "Basic Land - Island"
+},
+"80417": {
+"expansion": "SNC",
+"mana_value": "0",
+"name": "Swamp",
+"rarity": "basic",
+"types": "Basic Land - Swamp"
+},
+"80419": {
+"expansion": "SNC",
+"mana_value": "0",
+"name": "Mountain",
+"rarity": "basic",
+"types": "Basic Land - Mountain"
+},
+"80420": {
+"expansion": "SNC",
+"mana_value": "0",
+"name": "Mountain",
+"rarity": "basic",
+"types": "Basic Land - Mountain"
+},
+"80421": {
+"expansion": "SNC",
+"mana_value": "0",
+"name": "Forest",
+"rarity": "basic",
+"types": "Basic Land - Forest"
+},
+"80422": {
+"expansion": "SNC",
+"mana_value": "0",
+"name": "Forest",
+"rarity": "basic",
+"types": "Basic Land - Forest"
+},
+"80423": {
+"expansion": "SNC",
+"mana_value": "0",
+"name": "Plains",
+"rarity": "basic",
+"types": "Basic Land - Plains"
+},
+"80425": {
+"expansion": "SNC",
+"mana_value": "0",
+"name": "Island",
+"rarity": "basic",
+"types": "Basic Land - Island"
+},
+"80427": {
+"expansion": "SNC",
+"mana_value": "0",
+"name": "Swamp",
+"rarity": "basic",
+"types": "Basic Land - Swamp"
+},
+"80428": {
+"expansion": "SNC",
+"mana_value": "0",
+"name": "Swamp",
+"rarity": "basic",
+"types": "Basic Land - Swamp"
+},
+"80429": {
+"expansion": "SNC",
+"mana_value": "0",
+"name": "Mountain",
+"rarity": "basic",
+"types": "Basic Land - Mountain"
+},
+"80430": {
+"expansion": "SNC",
+"mana_value": "0",
+"name": "Mountain",
+"rarity": "basic",
+"types": "Basic Land - Mountain"
+},
+"80431": {
+"expansion": "SNC",
+"mana_value": "0",
+"name": "Forest",
+"rarity": "basic",
+"types": "Basic Land - Forest"
+},
+"80432": {
+"expansion": "SNC",
+"mana_value": "0",
+"name": "Forest",
+"rarity": "basic",
+"types": "Basic Land - Forest"
+},
+"81179": {
+"expansion": "UNF",
+"mana_value": "0",
+"name": "Plains",
+"rarity": "basic",
+"types": "Basic Land - Plains"
+},
+"81180": {
+"expansion": "UNF",
+"mana_value": "0",
+"name": "Island",
+"rarity": "basic",
+"types": "Basic Land - Island"
+},
+"81181": {
+"expansion": "UNF",
+"mana_value": "0",
+"name": "Swamp",
+"rarity": "basic",
+"types": "Basic Land - Swamp"
+},
+"81182": {
+"expansion": "UNF",
+"mana_value": "0",
+"name": "Mountain",
+"rarity": "basic",
+"types": "Basic Land - Mountain"
+},
+"81183": {
+"expansion": "UNF",
+"mana_value": "0",
+"name": "Forest",
+"rarity": "basic",
+"types": "Basic Land - Forest"
+},
+"81895": {
+"expansion": "SLD",
+"mana_value": "0",
+"name": "Plains",
+"rarity": "basic",
+"types": "Basic Land - Plains"
+},
+"81896": {
+"expansion": "SLD",
+"mana_value": "0",
+"name": "Island",
+"rarity": "basic",
+"types": "Basic Land - Island"
+},
+"81897": {
+"expansion": "SLD",
+"mana_value": "0",
+"name": "Swamp",
+"rarity": "basic",
+"types": "Basic Land - Swamp"
+},
+"81898": {
+"expansion": "SLD",
+"mana_value": "0",
+"name": "Mountain",
+"rarity": "basic",
+"types": "Basic Land - Mountain"
+},
+"81899": {
+"expansion": "SLD",
+"mana_value": "0",
+"name": "Forest",
+"rarity": "basic",
+"types": "Basic Land - Forest"
+},
+"82314": {
+"expansion": "DMU",
+"mana_value": "0",
+"name": "Plains",
+"rarity": "basic",
+"types": "Basic Land - Plains"
+},
+"82315": {
+"expansion": "DMU",
+"mana_value": "0",
+"name": "Plains",
+"rarity": "basic",
+"types": "Basic Land - Plains"
+},
+"82316": {
+"expansion": "DMU",
+"mana_value": "0",
+"name": "Plains",
+"rarity": "basic",
+"types": "Basic Land - Plains"
+},
+"82317": {
+"expansion": "DMU",
+"mana_value": "0",
+"name": "Island",
+"rarity": "basic",
+"types": "Basic Land - Island"
+},
+"82319": {
+"expansion": "DMU",
+"mana_value": "0",
+"name": "Island",
+"rarity": "basic",
+"types": "Basic Land - Island"
+},
+"82320": {
+"expansion": "DMU",
+"mana_value": "0",
+"name": "Swamp",
+"rarity": "basic",
+"types": "Basic Land - Swamp"
+},
+"82321": {
+"expansion": "DMU",
+"mana_value": "0",
+"name": "Swamp",
+"rarity": "basic",
+"types": "Basic Land - Swamp"
+},
+"82322": {
+"expansion": "DMU",
+"mana_value": "0",
+"name": "Swamp",
+"rarity": "basic",
+"types": "Basic Land - Swamp"
+},
+"82323": {
+"expansion": "DMU",
+"mana_value": "0",
+"name": "Mountain",
+"rarity": "basic",
+"types": "Basic Land - Mountain"
+},
+"82324": {
+"expansion": "DMU",
+"mana_value": "0",
+"name": "Mountain",
+"rarity": "basic",
+"types": "Basic Land - Mountain"
+},
+"82325": {
+"expansion": "DMU",
+"mana_value": "0",
+"name": "Mountain",
+"rarity": "basic",
+"types": "Basic Land - Mountain"
+},
+"82326": {
+"expansion": "DMU",
+"mana_value": "0",
+"name": "Forest",
+"rarity": "basic",
+"types": "Basic Land - Forest"
+},
+"82327": {
+"expansion": "DMU",
+"mana_value": "0",
+"name": "Forest",
+"rarity": "basic",
+"types": "Basic Land - Forest"
+},
+"82390": {
+"expansion": "DMU",
+"mana_value": "0",
+"name": "Plains",
+"rarity": "basic",
+"types": "Basic Land - Plains"
+},
+"82391": {
+"expansion": "DMU",
+"mana_value": "0",
+"name": "Island",
+"rarity": "basic",
+"types": "Basic Land - Island"
+},
+"82392": {
+"expansion": "DMU",
+"mana_value": "0",
+"name": "Swamp",
+"rarity": "basic",
+"types": "Basic Land - Swamp"
+},
+"82393": {
+"expansion": "DMU",
+"mana_value": "0",
+"name": "Mountain",
+"rarity": "basic",
+"types": "Basic Land - Mountain"
+},
+"82394": {
+"expansion": "DMU",
+"mana_value": "0",
+"name": "Forest",
+"rarity": "basic",
+"types": "Basic Land - Forest"
+},
+"82461": {
+"expansion": "HBG",
+"mana_value": "0",
+"name": "Plains",
+"rarity": "basic",
+"types": "Basic Land - Plains"
+},
+"82462": {
+"expansion": "HBG",
+"mana_value": "0",
+"name": "Plains",
+"rarity": "basic",
+"types": "Basic Land - Plains"
+},
+"82465": {
+"expansion": "HBG",
+"mana_value": "0",
+"name": "Island",
+"rarity": "basic",
+"types": "Basic Land - Island"
+},
+"82466": {
+"expansion": "HBG",
+"mana_value": "0",
+"name": "Island",
+"rarity": "basic",
+"types": "Basic Land - Island"
+},
+"82469": {
+"expansion": "HBG",
+"mana_value": "0",
+"name": "Swamp",
+"rarity": "basic",
+"types": "Basic Land - Swamp"
+},
+"82474": {
+"expansion": "HBG",
+"mana_value": "0",
+"name": "Mountain",
+"rarity": "basic",
+"types": "Basic Land - Mountain"
+},
+"82476": {
+"expansion": "HBG",
+"mana_value": "0",
+"name": "Forest",
+"rarity": "basic",
+"types": "Basic Land - Forest"
+},
+"82477": {
+"expansion": "HBG",
+"mana_value": "0",
+"name": "Forest",
+"rarity": "basic",
+"types": "Basic Land - Forest"
+},
+"82478": {
+"expansion": "HBG",
+"mana_value": "0",
+"name": "Forest",
+"rarity": "basic",
+"types": "Basic Land - Forest"
+},
+"82479": {
+"expansion": "HBG",
+"mana_value": "0",
+"name": "Forest",
+"rarity": "basic",
+"types": "Basic Land - Forest"
+},
+"82760": {
+"expansion": "BRO",
+"mana_value": "0",
+"name": "Plains",
+"rarity": "basic",
+"types": "Basic Land - Plains"
+},
+"82761": {
+"expansion": "BRO",
+"mana_value": "0",
+"name": "Plains",
+"rarity": "basic",
+"types": "Basic Land - Plains"
+},
+"82764": {
+"expansion": "BRO",
+"mana_value": "0",
+"name": "Swamp",
+"rarity": "basic",
+"types": "Basic Land - Swamp"
+},
+"82766": {
+"expansion": "BRO",
+"mana_value": "0",
+"name": "Mountain",
+"rarity": "basic",
+"types": "Basic Land - Mountain"
+},
+"82768": {
+"expansion": "BRO",
+"mana_value": "0",
+"name": "Forest",
+"rarity": "basic",
+"types": "Basic Land - Forest"
+},
+"82773": {
+"expansion": "BRO",
+"mana_value": "0",
+"name": "Island",
+"rarity": "basic",
+"types": "Basic Land - Island"
+},
+"82774": {
+"expansion": "BRO",
+"mana_value": "0",
+"name": "Swamp",
+"rarity": "basic",
+"types": "Basic Land - Swamp"
+},
+"82776": {
+"expansion": "BRO",
+"mana_value": "0",
+"name": "Mountain",
+"rarity": "basic",
+"types": "Basic Land - Mountain"
+},
+"83677": {
+"expansion": "UNF",
+"mana_value": "0",
+"name": "Plains",
+"rarity": "basic",
+"types": "Basic Land - Plains"
+},
+"83678": {
+"expansion": "UNF",
+"mana_value": "0",
+"name": "Island",
+"rarity": "basic",
+"types": "Basic Land - Island"
+},
+"83679": {
+"expansion": "UNF",
+"mana_value": "0",
+"name": "Swamp",
+"rarity": "basic",
+"types": "Basic Land - Swamp"
+},
+"83680": {
+"expansion": "UNF",
+"mana_value": "0",
+"name": "Mountain",
+"rarity": "basic",
+"types": "Basic Land - Mountain"
+},
+"83681": {
+"expansion": "UNF",
+"mana_value": "0",
+"name": "Forest",
+"rarity": "basic",
+"types": "Basic Land - Forest"
+},
+"83967": {
+"expansion": "ONE",
+"mana_value": "0",
+"name": "Plains",
+"rarity": "basic",
+"types": "Basic Land - Plains"
+},
+"83968": {
+"expansion": "ONE",
+"mana_value": "0",
+"name": "Island",
+"rarity": "basic",
+"types": "Basic Land - Island"
+},
+"83969": {
+"expansion": "ONE",
+"mana_value": "0",
+"name": "Swamp",
+"rarity": "basic",
+"types": "Basic Land - Swamp"
+},
+"83970": {
+"expansion": "ONE",
+"mana_value": "0",
+"name": "Mountain",
+"rarity": "basic",
+"types": "Basic Land - Mountain"
+},
+"83971": {
+"expansion": "ONE",
+"mana_value": "0",
+"name": "Forest",
+"rarity": "basic",
+"types": "Basic Land - Forest"
+},
+"83972": {
+"expansion": "ONE",
+"mana_value": "0",
+"name": "Plains",
+"rarity": "basic",
+"types": "Basic Land - Plains"
+},
+"83974": {
+"expansion": "ONE",
+"mana_value": "0",
+"name": "Swamp",
+"rarity": "basic",
+"types": "Basic Land - Swamp"
+},
+"83975": {
+"expansion": "ONE",
+"mana_value": "0",
+"name": "Mountain",
+"rarity": "basic",
+"types": "Basic Land - Mountain"
+},
+"83976": {
+"expansion": "ONE",
+"mana_value": "0",
+"name": "Forest",
+"rarity": "basic",
+"types": "Basic Land - Forest"
+},
+"83977": {
+"expansion": "ONE",
+"mana_value": "0",
+"name": "Plains",
+"rarity": "basic",
+"types": "Basic Land - Plains"
+},
+"83979": {
+"expansion": "ONE",
+"mana_value": "0",
+"name": "Swamp",
+"rarity": "basic",
+"types": "Basic Land - Swamp"
+},
+"83980": {
+"expansion": "ONE",
+"mana_value": "0",
+"name": "Mountain",
+"rarity": "basic",
+"types": "Basic Land - Mountain"
+},
+"83981": {
+"expansion": "ONE",
+"mana_value": "0",
+"name": "Forest",
+"rarity": "basic",
+"types": "Basic Land - Forest"
+},
+"84584": {
+"expansion": "MOM",
+"mana_value": "0",
+"name": "Plains",
+"rarity": "basic",
+"types": "Basic Land - Plains"
+},
+"84588": {
+"expansion": "MOM",
+"mana_value": "0",
+"name": "Swamp",
+"rarity": "basic",
+"types": "Basic Land - Swamp"
+},
+"84592": {
+"expansion": "MOM",
+"mana_value": "0",
+"name": "Forest",
+"rarity": "basic",
+"types": "Basic Land - Forest"
+},
+"84595": {
+"expansion": "MOM",
+"mana_value": "0",
+"name": "Island",
+"rarity": "basic",
+"types": "Basic Land - Island"
+},
+"84596": {
+"expansion": "MOM",
+"mana_value": "0",
+"name": "Swamp",
+"rarity": "basic",
+"types": "Basic Land - Swamp"
+},
+"84597": {
+"expansion": "MOM",
+"mana_value": "0",
+"name": "Mountain",
+"rarity": "basic",
+"types": "Basic Land - Mountain"
+},
+"84598": {
+"expansion": "MOM",
+"mana_value": "0",
+"name": "Forest",
+"rarity": "basic",
+"types": "Basic Land - Forest"
+},
+"85584": {
+"expansion": "SLD",
+"mana_value": "0",
+"name": "Plains",
+"rarity": "basic",
+"types": "Basic Land - Plains"
+},
+"85585": {
+"expansion": "SLD",
+"mana_value": "0",
+"name": "Island",
+"rarity": "basic",
+"types": "Basic Land - Island"
+},
+"85586": {
+"expansion": "SLD",
+"mana_value": "0",
+"name": "Swamp",
+"rarity": "basic",
+"types": "Basic Land - Swamp"
+},
+"85587": {
+"expansion": "SLD",
+"mana_value": "0",
+"name": "Mountain",
+"rarity": "basic",
+"types": "Basic Land - Mountain"
+},
+"85588": {
+"expansion": "SLD",
+"mana_value": "0",
+"name": "Forest",
+"rarity": "basic",
+"types": "Basic Land - Forest"
+},
+"86339": {
+"expansion": "SIR",
+"mana_value": "0",
+"name": "Plains",
+"rarity": "basic",
+"types": "Basic Land - Plains"
+},
+"86341": {
+"expansion": "SIR",
+"mana_value": "0",
+"name": "Plains",
+"rarity": "basic",
+"types": "Basic Land - Plains"
+},
+"86344": {
+"expansion": "SIR",
+"mana_value": "0",
+"name": "Island",
+"rarity": "basic",
+"types": "Basic Land - Island"
+},
+"86345": {
+"expansion": "SIR",
+"mana_value": "0",
+"name": "Swamp",
+"rarity": "basic",
+"types": "Basic Land - Swamp"
+},
+"86346": {
+"expansion": "SIR",
+"mana_value": "0",
+"name": "Swamp",
+"rarity": "basic",
+"types": "Basic Land - Swamp"
+},
+"86348": {
+"expansion": "SIR",
+"mana_value": "0",
+"name": "Mountain",
+"rarity": "basic",
+"types": "Basic Land - Mountain"
+},
+"86349": {
+"expansion": "SIR",
+"mana_value": "0",
+"name": "Mountain",
+"rarity": "basic",
+"types": "Basic Land - Mountain"
+},
+"86350": {
+"expansion": "SIR",
+"mana_value": "0",
+"name": "Mountain",
+"rarity": "basic",
+"types": "Basic Land - Mountain"
+},
+"86351": {
+"expansion": "SIR",
+"mana_value": "0",
+"name": "Forest",
+"rarity": "basic",
+"types": "Basic Land - Forest"
+},
+"86353": {
+"expansion": "SIR",
+"mana_value": "0",
+"name": "Forest",
+"rarity": "basic",
+"types": "Basic Land - Forest"
+},
+"87011": {
+"expansion": "WOE",
+"mana_value": "0",
+"name": "Plains",
+"rarity": "basic",
+"types": "Basic Land - Plains"
+},
+"87013": {
+"expansion": "WOE",
+"mana_value": "0",
+"name": "Island",
+"rarity": "basic",
+"types": "Basic Land - Island"
+},
+"87014": {
+"expansion": "WOE",
+"mana_value": "0",
+"name": "Swamp",
+"rarity": "basic",
+"types": "Basic Land - Swamp"
+},
+"87015": {
+"expansion": "WOE",
+"mana_value": "0",
+"name": "Swamp",
+"rarity": "basic",
+"types": "Basic Land - Swamp"
+},
+"87016": {
+"expansion": "WOE",
+"mana_value": "0",
+"name": "Mountain",
+"rarity": "basic",
+"types": "Basic Land - Mountain"
+},
+"87017": {
+"expansion": "WOE",
+"mana_value": "0",
+"name": "Mountain",
+"rarity": "basic",
+"types": "Basic Land - Mountain"
+},
+"87018": {
+"expansion": "WOE",
+"mana_value": "0",
+"name": "Forest",
+"rarity": "basic",
+"types": "Basic Land - Forest"
+},
+"87019": {
+"expansion": "WOE",
+"mana_value": "0",
+"name": "Forest",
+"rarity": "basic",
+"types": "Basic Land - Forest"
+},
+"87020": {
+"expansion": "WOE",
+"mana_value": "0",
+"name": "Plains",
+"rarity": "basic",
+"types": "Basic Land - Plains"
+},
+"87021": {
+"expansion": "WOE",
+"mana_value": "0",
+"name": "Island",
+"rarity": "basic",
+"types": "Basic Land - Island"
+},
+"87022": {
+"expansion": "WOE",
+"mana_value": "0",
+"name": "Swamp",
+"rarity": "basic",
+"types": "Basic Land - Swamp"
+},
+"87023": {
+"expansion": "WOE",
+"mana_value": "0",
+"name": "Mountain",
+"rarity": "basic",
+"types": "Basic Land - Mountain"
+},
+"87024": {
+"expansion": "WOE",
+"mana_value": "0",
+"name": "Forest",
+"rarity": "basic",
+"types": "Basic Land - Forest"
+},
+"87453": {
+"expansion": "LCI",
+"mana_value": "0",
+"name": "Plains",
+"rarity": "basic",
+"types": "Basic Land - Plains"
+},
+"87454": {
+"expansion": "LCI",
+"mana_value": "0",
+"name": "Plains",
+"rarity": "basic",
+"types": "Basic Land - Plains"
+},
+"87455": {
+"expansion": "LCI",
+"mana_value": "0",
+"name": "Island",
+"rarity": "basic",
+"types": "Basic Land - Island"
+},
+"87457": {
+"expansion": "LCI",
+"mana_value": "0",
+"name": "Swamp",
+"rarity": "basic",
+"types": "Basic Land - Swamp"
+},
+"87459": {
+"expansion": "LCI",
+"mana_value": "0",
+"name": "Mountain",
+"rarity": "basic",
+"types": "Basic Land - Mountain"
+},
+"87460": {
+"expansion": "LCI",
+"mana_value": "0",
+"name": "Mountain",
+"rarity": "basic",
+"types": "Basic Land - Mountain"
+},
+"87461": {
+"expansion": "LCI",
+"mana_value": "0",
+"name": "Forest",
+"rarity": "basic",
+"types": "Basic Land - Forest"
+},
+"87578": {
+"expansion": "LTR",
+"mana_value": "0",
+"name": "Plains",
+"rarity": "basic",
+"types": "Basic Land - Plains"
+},
+"87579": {
+"expansion": "LTR",
+"mana_value": "0",
+"name": "Island",
+"rarity": "basic",
+"types": "Basic Land - Island"
+},
+"87580": {
+"expansion": "LTR",
+"mana_value": "0",
+"name": "Island",
+"rarity": "basic",
+"types": "Basic Land - Island"
+},
+"87581": {
+"expansion": "LTR",
+"mana_value": "0",
+"name": "Swamp",
+"rarity": "basic",
+"types": "Basic Land - Swamp"
+},
+"87582": {
+"expansion": "LTR",
+"mana_value": "0",
+"name": "Swamp",
+"rarity": "basic",
+"types": "Basic Land - Swamp"
+},
+"87583": {
+"expansion": "LTR",
+"mana_value": "0",
+"name": "Mountain",
+"rarity": "basic",
+"types": "Basic Land - Mountain"
+},
+"87584": {
+"expansion": "LTR",
+"mana_value": "0",
+"name": "Mountain",
+"rarity": "basic",
+"types": "Basic Land - Mountain"
+},
+"87585": {
+"expansion": "LTR",
+"mana_value": "0",
+"name": "Forest",
+"rarity": "basic",
+"types": "Basic Land - Forest"
+},
+"87586": {
+"expansion": "LTR",
+"mana_value": "0",
+"name": "Forest",
+"rarity": "basic",
+"types": "Basic Land - Forest"
+},
+"87587": {
+"expansion": "LTR",
+"mana_value": "0",
+"name": "Plains",
+"rarity": "basic",
+"types": "Basic Land - Plains"
+},
+"87588": {
+"expansion": "LTR",
+"mana_value": "0",
+"name": "Plains",
+"rarity": "basic",
+"types": "Basic Land - Plains"
+},
+"87589": {
+"expansion": "LTR",
+"mana_value": "0",
+"name": "Island",
+"rarity": "basic",
+"types": "Basic Land - Island"
+},
+"87590": {
+"expansion": "LTR",
+"mana_value": "0",
+"name": "Island",
+"rarity": "basic",
+"types": "Basic Land - Island"
+},
+"87592": {
+"expansion": "LTR",
+"mana_value": "0",
+"name": "Swamp",
+"rarity": "basic",
+"types": "Basic Land - Swamp"
+},
+"87593": {
+"expansion": "LTR",
+"mana_value": "0",
+"name": "Mountain",
+"rarity": "basic",
+"types": "Basic Land - Mountain"
+},
+"87594": {
+"expansion": "LTR",
+"mana_value": "0",
+"name": "Mountain",
+"rarity": "basic",
+"types": "Basic Land - Mountain"
+},
+"87595": {
+"expansion": "LTR",
+"mana_value": "0",
+"name": "Forest",
+"rarity": "basic",
+"types": "Basic Land - Forest"
+},
+"87596": {
+"expansion": "LTR",
+"mana_value": "0",
+"name": "Forest",
+"rarity": "basic",
+"types": "Basic Land - Forest"
+},
+"87648": {
+"expansion": "SLD",
+"mana_value": "0",
+"name": "Swamp",
+"rarity": "rare",
+"types": "Basic Land - Swamp"
+},
+"87651": {
+"expansion": "SLD",
+"mana_value": "0",
+"name": "Mountain",
+"rarity": "rare",
+"types": "Basic Land - Mountain"
+},
+"87656": {
+"expansion": "SLD",
+"mana_value": "0",
+"name": "Island",
+"rarity": "rare",
+"types": "Basic Land - Island"
+},
+"87660": {
+"expansion": "SLD",
+"mana_value": "0",
+"name": "Plains",
+"rarity": "rare",
+"types": "Basic Land - Plains"
+},
+"87661": {
+"expansion": "SLD",
+"mana_value": "0",
+"name": "Island",
+"rarity": "rare",
+"types": "Basic Land - Island"
+},
+"87662": {
+"expansion": "SLD",
+"mana_value": "0",
+"name": "Swamp",
+"rarity": "rare",
+"types": "Basic Land - Swamp"
+},
+"87663": {
+"expansion": "SLD",
+"mana_value": "0",
+"name": "Mountain",
+"rarity": "rare",
+"types": "Basic Land - Mountain"
+},
+"87664": {
+"expansion": "SLD",
+"mana_value": "0",
+"name": "Forest",
+"rarity": "rare",
+"types": "Basic Land - Forest"
+},
+"89204": {
+"expansion": "MKM",
+"mana_value": "0",
+"name": "Plains",
+"rarity": "basic",
+"types": "Basic Land - Plains"
+},
+"89205": {
+"expansion": "MKM",
+"mana_value": "0",
+"name": "Plains",
+"rarity": "basic",
+"types": "Basic Land - Plains"
+},
+"89206": {
+"expansion": "MKM",
+"mana_value": "0",
+"name": "Island",
+"rarity": "basic",
+"types": "Basic Land - Island"
+},
+"89208": {
+"expansion": "MKM",
+"mana_value": "0",
+"name": "Swamp",
+"rarity": "basic",
+"types": "Basic Land - Swamp"
+},
+"89210": {
+"expansion": "MKM",
+"mana_value": "0",
+"name": "Mountain",
+"rarity": "basic",
+"types": "Basic Land - Mountain"
+},
+"89212": {
+"expansion": "MKM",
+"mana_value": "0",
+"name": "Forest",
+"rarity": "basic",
+"types": "Basic Land - Forest"
+},
+"89213": {
+"expansion": "MKM",
+"mana_value": "0",
+"name": "Forest",
+"rarity": "basic",
+"types": "Basic Land - Forest"
+},
+"89214": {
+"expansion": "MKM",
+"mana_value": "0",
+"name": "Plains",
+"rarity": "basic",
+"types": "Basic Land - Plains"
+},
+"89215": {
+"expansion": "MKM",
+"mana_value": "0",
+"name": "Island",
+"rarity": "basic",
+"types": "Basic Land - Island"
+},
+"89216": {
+"expansion": "MKM",
+"mana_value": "0",
+"name": "Swamp",
+"rarity": "basic",
+"types": "Basic Land - Swamp"
+},
+"89217": {
+"expansion": "MKM",
+"mana_value": "0",
+"name": "Mountain",
+"rarity": "basic",
+"types": "Basic Land - Mountain"
+},
+"89218": {
+"expansion": "MKM",
+"mana_value": "0",
+"name": "Forest",
+"rarity": "basic",
+"types": "Basic Land - Forest"
+},
+"90187": {
+"expansion": "SLD",
+"mana_value": "0",
+"name": "Plains",
+"rarity": "rare",
+"types": "Basic Land - Plains"
+},
+"90188": {
+"expansion": "SLD",
+"mana_value": "0",
+"name": "Island",
+"rarity": "rare",
+"types": "Basic Land - Island"
+},
+"90189": {
+"expansion": "SLD",
+"mana_value": "0",
+"name": "Swamp",
+"rarity": "rare",
+"types": "Basic Land - Swamp"
+},
+"90190": {
+"expansion": "SLD",
+"mana_value": "0",
+"name": "Mountain",
+"rarity": "rare",
+"types": "Basic Land - Mountain"
+},
+"90191": {
+"expansion": "SLD",
+"mana_value": "0",
+"name": "Forest",
+"rarity": "rare",
+"types": "Basic Land - Forest"
+},
+"90193": {
+"expansion": "SLD",
+"mana_value": "0",
+"name": "Plains",
+"rarity": "rare",
+"types": "Basic Land - Plains"
+},
+"90194": {
+"expansion": "SLD",
+"mana_value": "0",
+"name": "Island",
+"rarity": "rare",
+"types": "Basic Land - Island"
+},
+"90195": {
+"expansion": "SLD",
+"mana_value": "0",
+"name": "Swamp",
+"rarity": "rare",
+"types": "Basic Land - Swamp"
+},
+"90196": {
+"expansion": "SLD",
+"mana_value": "0",
+"name": "Mountain",
+"rarity": "rare",
+"types": "Basic Land - Mountain"
+},
+"90197": {
+"expansion": "SLD",
+"mana_value": "0",
+"name": "Forest",
+"rarity": "rare",
+"types": "Basic Land - Forest"
+},
+"90234": {
+"expansion": "REX",
+"mana_value": "0",
+"name": "Plains",
+"rarity": "basic",
+"types": "Basic Land - Plains"
+},
+"90235": {
+"expansion": "REX",
+"mana_value": "0",
+"name": "Plains",
+"rarity": "basic",
+"types": "Basic Land - Plains"
+},
+"90236": {
+"expansion": "REX",
+"mana_value": "0",
+"name": "Island",
+"rarity": "basic",
+"types": "Basic Land - Island"
+},
+"90241": {
+"expansion": "REX",
+"mana_value": "0",
+"name": "Mountain",
+"rarity": "basic",
+"types": "Basic Land - Mountain"
+},
+"90243": {
+"expansion": "REX",
+"mana_value": "0",
+"name": "Forest",
+"rarity": "basic",
+"types": "Basic Land - Forest"
+},
+"90618": {
+"expansion": "OTJ",
+"mana_value": "0",
+"name": "Plains",
+"rarity": "basic",
+"types": "Basic Land - Plains"
+},
+"90619": {
+"expansion": "OTJ",
+"mana_value": "0",
+"name": "Island",
+"rarity": "basic",
+"types": "Basic Land - Island"
+},
+"90620": {
+"expansion": "OTJ",
+"mana_value": "0",
+"name": "Swamp",
+"rarity": "basic",
+"types": "Basic Land - Swamp"
+},
+"90621": {
+"expansion": "OTJ",
+"mana_value": "0",
+"name": "Mountain",
+"rarity": "basic",
+"types": "Basic Land - Mountain"
+},
+"90622": {
+"expansion": "OTJ",
+"mana_value": "0",
+"name": "Forest",
+"rarity": "basic",
+"types": "Basic Land - Forest"
+},
+"90623": {
+"expansion": "OTJ",
+"mana_value": "0",
+"name": "Plains",
+"rarity": "basic",
+"types": "Basic Land - Plains"
+},
+"90624": {
+"expansion": "OTJ",
+"mana_value": "0",
+"name": "Plains",
+"rarity": "basic",
+"types": "Basic Land - Plains"
+},
+"90626": {
+"expansion": "OTJ",
+"mana_value": "0",
+"name": "Island",
+"rarity": "basic",
+"types": "Basic Land - Island"
+},
+"90628": {
+"expansion": "OTJ",
+"mana_value": "0",
+"name": "Swamp",
+"rarity": "basic",
+"types": "Basic Land - Swamp"
+},
+"90629": {
+"expansion": "OTJ",
+"mana_value": "0",
+"name": "Mountain",
+"rarity": "basic",
+"types": "Basic Land - Mountain"
+},
+"90630": {
+"expansion": "OTJ",
+"mana_value": "0",
+"name": "Mountain",
+"rarity": "basic",
+"types": "Basic Land - Mountain"
+},
+"90631": {
+"expansion": "OTJ",
+"mana_value": "0",
+"name": "Forest",
+"rarity": "basic",
+"types": "Basic Land - Forest"
+},
+"90632": {
+"expansion": "OTJ",
+"mana_value": "0",
+"name": "Forest",
+"rarity": "basic",
+"types": "Basic Land - Forest"
+},
+"90783": {
+"expansion": "MH3",
+"mana_value": "0",
+"name": "Plains",
+"rarity": "basic",
+"types": "Basic Land - Plains"
+},
+"90784": {
+"expansion": "MH3",
+"mana_value": "0",
+"name": "Island",
+"rarity": "basic",
+"types": "Basic Land - Island"
+},
+"90785": {
+"expansion": "MH3",
+"mana_value": "0",
+"name": "Swamp",
+"rarity": "basic",
+"types": "Basic Land - Swamp"
+},
+"90786": {
+"expansion": "MH3",
+"mana_value": "0",
+"name": "Mountain",
+"rarity": "basic",
+"types": "Basic Land - Mountain"
+},
+"90787": {
+"expansion": "MH3",
+"mana_value": "0",
+"name": "Forest",
+"rarity": "basic",
+"types": "Basic Land - Forest"
+},
+"90789": {
+"expansion": "MH3",
+"mana_value": "0",
+"name": "Plains",
+"rarity": "basic",
+"types": "Basic Land - Plains"
+},
+"90790": {
+"expansion": "MH3",
+"mana_value": "0",
+"name": "Plains",
+"rarity": "basic",
+"types": "Basic Land - Plains"
+},
+"90791": {
+"expansion": "MH3",
+"mana_value": "0",
+"name": "Island",
+"rarity": "basic",
+"types": "Basic Land - Island"
+},
+"90792": {
+"expansion": "MH3",
+"mana_value": "0",
+"name": "Island",
+"rarity": "basic",
+"types": "Basic Land - Island"
+},
+"90793": {
+"expansion": "MH3",
+"mana_value": "0",
+"name": "Swamp",
+"rarity": "basic",
+"types": "Basic Land - Swamp"
+},
+"90794": {
+"expansion": "MH3",
+"mana_value": "0",
+"name": "Swamp",
+"rarity": "basic",
+"types": "Basic Land - Swamp"
+},
+"90795": {
+"expansion": "MH3",
+"mana_value": "0",
+"name": "Mountain",
+"rarity": "basic",
+"types": "Basic Land - Mountain"
+},
+"90796": {
+"expansion": "MH3",
+"mana_value": "0",
+"name": "Mountain",
+"rarity": "basic",
+"types": "Basic Land - Mountain"
+},
+"90797": {
+"expansion": "MH3",
+"mana_value": "0",
+"name": "Forest",
+"rarity": "basic",
+"types": "Basic Land - Forest"
+},
+"90798": {
+"expansion": "MH3",
+"mana_value": "0",
+"name": "Forest",
+"rarity": "basic",
+"types": "Basic Land - Forest"
+},
+"91291": {
+"expansion": "PIP",
+"mana_value": "0",
+"name": "Plains",
+"rarity": "basic",
+"types": "Basic Land - Plains"
+},
+"91292": {
+"expansion": "PIP",
+"mana_value": "0",
+"name": "Plains",
+"rarity": "basic",
+"types": "Basic Land - Plains"
+},
+"91293": {
+"expansion": "PIP",
+"mana_value": "0",
+"name": "Island",
+"rarity": "basic",
+"types": "Basic Land - Island"
+},
+"91294": {
+"expansion": "PIP",
+"mana_value": "0",
+"name": "Island",
+"rarity": "basic",
+"types": "Basic Land - Island"
+},
+"91295": {
+"expansion": "PIP",
+"mana_value": "0",
+"name": "Swamp",
+"rarity": "basic",
+"types": "Basic Land - Swamp"
+},
+"91296": {
+"expansion": "PIP",
+"mana_value": "0",
+"name": "Swamp",
+"rarity": "basic",
+"types": "Basic Land - Swamp"
+},
+"91297": {
+"expansion": "PIP",
+"mana_value": "0",
+"name": "Mountain",
+"rarity": "basic",
+"types": "Basic Land - Mountain"
+},
+"91298": {
+"expansion": "PIP",
+"mana_value": "0",
+"name": "Mountain",
+"rarity": "basic",
+"types": "Basic Land - Mountain"
+},
+"91299": {
+"expansion": "PIP",
+"mana_value": "0",
+"name": "Forest",
+"rarity": "basic",
+"types": "Basic Land - Forest"
+},
+"91300": {
+"expansion": "PIP",
+"mana_value": "0",
+"name": "Forest",
+"rarity": "basic",
+"types": "Basic Land - Forest"
+},
+"91302": {
+"expansion": "ACR",
+"mana_value": "0",
+"name": "Plains",
+"rarity": "basic",
+"types": "Basic Land - Plains"
+},
+"91306": {
+"expansion": "ACR",
+"mana_value": "0",
+"name": "Swamp",
+"rarity": "basic",
+"types": "Basic Land - Swamp"
+},
+"91308": {
+"expansion": "ACR",
+"mana_value": "0",
+"name": "Mountain",
+"rarity": "basic",
+"types": "Basic Land - Mountain"
+},
+"91309": {
+"expansion": "ACR",
+"mana_value": "0",
+"name": "Forest",
+"rarity": "basic",
+"types": "Basic Land - Forest"
+},
+"91812": {
+"expansion": "BLB",
+"mana_value": "0",
+"name": "Plains",
+"rarity": "basic",
+"types": "Basic Land - Plains"
+},
+"91813": {
+"expansion": "BLB",
+"mana_value": "0",
+"name": "Plains",
+"rarity": "basic",
+"types": "Basic Land - Plains"
+},
+"91814": {
+"expansion": "BLB",
+"mana_value": "0",
+"name": "Plains",
+"rarity": "basic",
+"types": "Basic Land - Plains"
+},
+"91816": {
+"expansion": "BLB",
+"mana_value": "0",
+"name": "Island",
+"rarity": "basic",
+"types": "Basic Land - Island"
+},
+"91817": {
+"expansion": "BLB",
+"mana_value": "0",
+"name": "Island",
+"rarity": "basic",
+"types": "Basic Land - Island"
+},
+"91820": {
+"expansion": "BLB",
+"mana_value": "0",
+"name": "Swamp",
+"rarity": "basic",
+"types": "Basic Land - Swamp"
+},
+"91821": {
+"expansion": "BLB",
+"mana_value": "0",
+"name": "Swamp",
+"rarity": "basic",
+"types": "Basic Land - Swamp"
+},
+"91822": {
+"expansion": "BLB",
+"mana_value": "0",
+"name": "Swamp",
+"rarity": "basic",
+"types": "Basic Land - Swamp"
+},
+"91824": {
+"expansion": "BLB",
+"mana_value": "0",
+"name": "Mountain",
+"rarity": "basic",
+"types": "Basic Land - Mountain"
+},
+"91825": {
+"expansion": "BLB",
+"mana_value": "0",
+"name": "Mountain",
+"rarity": "basic",
+"types": "Basic Land - Mountain"
+},
+"91826": {
+"expansion": "BLB",
+"mana_value": "0",
+"name": "Mountain",
+"rarity": "basic",
+"types": "Basic Land - Mountain"
+},
+"91827": {
+"expansion": "BLB",
+"mana_value": "0",
+"name": "Forest",
+"rarity": "basic",
+"types": "Basic Land - Forest"
+},
+"91828": {
+"expansion": "BLB",
+"mana_value": "0",
+"name": "Forest",
+"rarity": "basic",
+"types": "Basic Land - Forest"
+},
+"91830": {
+"expansion": "BLB",
+"mana_value": "0",
+"name": "Forest",
+"rarity": "basic",
+"types": "Basic Land - Forest"
+},
+"91831": {
+"expansion": "BLB",
+"mana_value": "0",
+"name": "Plains",
+"rarity": "basic",
+"types": "Basic Land - Plains"
+},
+"91832": {
+"expansion": "BLB",
+"mana_value": "0",
+"name": "Plains",
+"rarity": "basic",
+"types": "Basic Land - Plains"
+},
+"91833": {
+"expansion": "BLB",
+"mana_value": "0",
+"name": "Island",
+"rarity": "basic",
+"types": "Basic Land - Island"
+},
+"91834": {
+"expansion": "BLB",
+"mana_value": "0",
+"name": "Island",
+"rarity": "basic",
+"types": "Basic Land - Island"
+},
+"91835": {
+"expansion": "BLB",
+"mana_value": "0",
+"name": "Swamp",
+"rarity": "basic",
+"types": "Basic Land - Swamp"
+},
+"91836": {
+"expansion": "BLB",
+"mana_value": "0",
+"name": "Swamp",
+"rarity": "basic",
+"types": "Basic Land - Swamp"
+},
+"91838": {
+"expansion": "BLB",
+"mana_value": "0",
+"name": "Mountain",
+"rarity": "basic",
+"types": "Basic Land - Mountain"
+},
+"91839": {
+"expansion": "BLB",
+"mana_value": "0",
+"name": "Forest",
+"rarity": "basic",
+"types": "Basic Land - Forest"
+},
+"91840": {
+"expansion": "BLB",
+"mana_value": "0",
+"name": "Forest",
+"rarity": "basic",
+"types": "Basic Land - Forest"
+},
+"92055": {
+"expansion": "DSK",
+"mana_value": "2",
+"name": "Acrobatic Cheerleader",
+"rarity": "common",
+"types": "Creature - Human Survivor"
+},
+"92056": {
+"expansion": "DSK",
+"mana_value": "3",
+"name": "Cult Healer",
+"rarity": "common",
+"types": "Creature - Human Doctor"
+},
+"92057": {
+"expansion": "DSK",
+"mana_value": "7",
+"name": "Dazzling Theater // Prop Room",
+"rarity": "rare",
+"types": "Enchantment - Room"
+},
+"92058": {
+"expansion": "DSK",
+"mana_value": "4",
+"name": "Dazzling Theater",
+"rarity": "rare",
+"types": "Enchantment - Room"
+},
+"92059": {
+"expansion": "DSK",
+"mana_value": "3",
+"name": "Prop Room",
+"rarity": "rare",
+"types": "Enchantment - Room"
+},
+"92060": {
+"expansion": "DSK",
+"mana_value": "8",
+"name": "Dollmaker's Shop // Porcelain Gallery",
+"rarity": "mythic",
+"types": "Enchantment - Room"
+},
+"92061": {
+"expansion": "DSK",
+"mana_value": "2",
+"name": "Dollmaker's Shop",
+"rarity": "mythic",
+"types": "Enchantment - Room"
+},
+"92062": {
+"expansion": "DSK",
+"mana_value": "6",
+"name": "Porcelain Gallery",
+"rarity": "mythic",
+"types": "Enchantment - Room"
+},
+"92063": {
+"expansion": "DSK",
+"mana_value": "5",
+"name": "Emerge from the Cocoon",
+"rarity": "common",
+"types": "Sorcery"
+},
+"92064": {
+"expansion": "DSK",
+"mana_value": "3",
+"name": "Enduring Innocence",
+"rarity": "rare",
+"types": "Enchantment Creature - Sheep Glimmer"
+},
+"92065": {
+"expansion": "DSK",
+"mana_value": "1",
+"name": "Ethereal Armor",
+"rarity": "uncommon",
+"types": "Enchantment - Aura"
+},
+"92066": {
+"expansion": "DSK",
+"mana_value": "2",
+"name": "Exorcise",
+"rarity": "uncommon",
+"types": "Sorcery"
+},
+"92067": {
+"expansion": "DSK",
+"mana_value": "6",
+"name": "Fear of Abduction",
+"rarity": "uncommon",
+"types": "Enchantment Creature - Nightmare"
+},
+"92068": {
+"expansion": "DSK",
+"mana_value": "5",
+"name": "Fear of Immobility",
+"rarity": "common",
+"types": "Enchantment Creature - Nightmare"
+},
+"92069": {
+"expansion": "DSK",
+"mana_value": "2",
+"name": "Fear of Surveillance",
+"rarity": "common",
+"types": "Enchantment Creature - Nightmare"
+},
+"92070": {
+"expansion": "DSK",
+"mana_value": "4",
+"name": "Friendly Ghost",
+"rarity": "common",
+"types": "Creature - Spirit"
+},
+"92071": {
+"expansion": "DSK",
+"mana_value": "5",
+"name": "Ghostly Dancers",
+"rarity": "rare",
+"types": "Creature - Spirit"
+},
+"92072": {
+"expansion": "DSK",
+"mana_value": "3",
+"name": "Glimmer Seeker",
+"rarity": "uncommon",
+"types": "Creature - Human Survivor"
+},
+"92073": {
+"expansion": "DSK",
+"mana_value": "5",
+"name": "Grand Entryway // Elegant Rotunda",
+"rarity": "common",
+"types": "Enchantment - Room"
+},
+"92074": {
+"expansion": "DSK",
+"mana_value": "2",
+"name": "Grand Entryway",
+"rarity": "common",
+"types": "Enchantment - Room"
+},
+"92075": {
+"expansion": "DSK",
+"mana_value": "3",
+"name": "Elegant Rotunda",
+"rarity": "common",
+"types": "Enchantment - Room"
+},
+"92076": {
+"expansion": "DSK",
+"mana_value": "3",
+"name": "Hardened Escort",
+"rarity": "common",
+"types": "Creature - Human Soldier"
+},
+"92077": {
+"expansion": "DSK",
+"mana_value": "1",
+"name": "Jump Scare",
+"rarity": "common",
+"types": "Instant"
+},
+"92079": {
+"expansion": "DSK",
+"mana_value": "5",
+"name": "Lionheart Glimmer",
+"rarity": "uncommon",
+"types": "Enchantment Creature - Cat Glimmer"
+},
+"92080": {
+"expansion": "DSK",
+"mana_value": "3",
+"name": "Living Phone",
+"rarity": "common",
+"types": "Artifact Creature - Toy"
+},
+"92081": {
+"expansion": "DSK",
+"mana_value": "1",
+"name": "Optimistic Scavenger",
+"rarity": "uncommon",
+"types": "Creature - Human Scout"
+},
+"92082": {
+"expansion": "DSK",
+"mana_value": "2",
+"name": "Orphans of the Wheat",
+"rarity": "uncommon",
+"types": "Creature - Human"
+},
+"92083": {
+"expansion": "DSK",
+"mana_value": "7",
+"name": "Overlord of the Mistmoors",
+"rarity": "mythic",
+"types": "Enchantment Creature - Avatar Horror"
+},
+"92084": {
+"expansion": "DSK",
+"mana_value": "3",
+"name": "Patched Plaything",
+"rarity": "uncommon",
+"types": "Artifact Creature - Toy"
+},
+"92085": {
+"expansion": "DSK",
+"mana_value": "1",
+"name": "Possessed Goat",
+"rarity": "common",
+"types": "Creature - Goat"
+},
+"92086": {
+"expansion": "DSK",
+"mana_value": "2",
+"name": "Reluctant Role Model",
+"rarity": "rare",
+"types": "Creature - Human Survivor"
+},
+"92087": {
+"expansion": "DSK",
+"mana_value": "4",
+"name": "Savior of the Small",
+"rarity": "uncommon",
+"types": "Creature - Kor Survivor"
+},
+"92088": {
+"expansion": "DSK",
+"mana_value": "5",
+"name": "Seized from Slumber",
+"rarity": "common",
+"types": "Instant"
+},
+"92089": {
+"expansion": "DSK",
+"mana_value": "1",
+"name": "Shardmage's Rescue",
+"rarity": "uncommon",
+"types": "Enchantment - Aura"
+},
+"92090": {
+"expansion": "DSK",
+"mana_value": "2",
+"name": "Sheltered by Ghosts",
+"rarity": "uncommon",
+"types": "Enchantment - Aura"
+},
+"92091": {
+"expansion": "DSK",
+"mana_value": "6",
+"name": "Shepherding Spirits",
+"rarity": "common",
+"types": "Creature - Spirit"
+},
+"92092": {
+"expansion": "DSK",
+"mana_value": "3",
+"name": "Split Up",
+"rarity": "rare",
+"types": "Sorcery"
+},
+"92093": {
+"expansion": "DSK",
+"mana_value": "2",
+"name": "Splitskin Doll",
+"rarity": "uncommon",
+"types": "Artifact Creature - Toy"
+},
+"92094": {
+"expansion": "DSK",
+"mana_value": "6",
+"name": "Surgical Suite // Hospital Room",
+"rarity": "uncommon",
+"types": "Enchantment - Room"
+},
+"92095": {
+"expansion": "DSK",
+"mana_value": "2",
+"name": "Surgical Suite",
+"rarity": "uncommon",
+"types": "Enchantment - Room"
+},
+"92096": {
+"expansion": "DSK",
+"mana_value": "4",
+"name": "Hospital Room",
+"rarity": "uncommon",
+"types": "Enchantment - Room"
+},
+"92097": {
+"expansion": "DSK",
+"mana_value": "3",
+"name": "Toby, Beastie Befriender",
+"rarity": "rare",
+"types": "Legendary Creature - Human Wizard"
+},
+"92098": {
+"expansion": "DSK",
+"mana_value": "3",
+"name": "Trapped in the Screen",
+"rarity": "common",
+"types": "Enchantment"
+},
+"92099": {
+"expansion": "DSK",
+"mana_value": "3",
+"name": "Unidentified Hovership",
+"rarity": "rare",
+"types": "Artifact - Vehicle"
+},
+"92100": {
+"expansion": "DSK",
+"mana_value": "4",
+"name": "Unsettling Twins",
+"rarity": "common",
+"types": "Creature - Human"
+},
+"92101": {
+"expansion": "DSK",
+"mana_value": "1",
+"name": "Unwanted Remake",
+"rarity": "uncommon",
+"types": "Instant"
+},
+"92102": {
+"expansion": "DSK",
+"mana_value": "1",
+"name": "Veteran Survivor",
+"rarity": "uncommon",
+"types": "Creature - Human Survivor"
+},
+"92103": {
+"expansion": "DSK",
+"mana_value": "5",
+"name": "The Wandering Rescuer",
+"rarity": "mythic",
+"types": "Legendary Creature - Human Samurai Noble"
+},
+"92104": {
+"expansion": "DSK",
+"mana_value": "3",
+"name": "Abhorrent Oculus",
+"rarity": "mythic",
+"types": "Creature - Eye"
+},
+"92105": {
+"expansion": "DSK",
+"mana_value": "6",
+"name": "Bottomless Pool // Locker Room",
+"rarity": "uncommon",
+"types": "Enchantment - Room"
+},
+"92106": {
+"expansion": "DSK",
+"mana_value": "1",
+"name": "Bottomless Pool",
+"rarity": "uncommon",
+"types": "Enchantment - Room"
+},
+"92107": {
+"expansion": "DSK",
+"mana_value": "5",
+"name": "Locker Room",
+"rarity": "uncommon",
+"types": "Enchantment - Room"
+},
+"92108": {
+"expansion": "DSK",
+"mana_value": "7",
+"name": "Central Elevator // Promising Stairs",
+"rarity": "rare",
+"types": "Enchantment - Room"
+},
+"92109": {
+"expansion": "DSK",
+"mana_value": "4",
+"name": "Central Elevator",
+"rarity": "rare",
+"types": "Enchantment - Room"
+},
+"92110": {
+"expansion": "DSK",
+"mana_value": "3",
+"name": "Promising Stairs",
+"rarity": "rare",
+"types": "Enchantment - Room"
+},
+"92111": {
+"expansion": "DSK",
+"mana_value": "4",
+"name": "Clammy Prowler",
+"rarity": "common",
+"types": "Enchantment Creature - Horror"
+},
+"92112": {
+"expansion": "DSK",
+"mana_value": "2",
+"name": "Creeping Peeper",
+"rarity": "common",
+"types": "Creature - Eye"
+},
+"92113": {
+"expansion": "DSK",
+"mana_value": "3",
+"name": "Cursed Windbreaker",
+"rarity": "uncommon",
+"types": "Artifact - Equipment"
+},
+"92114": {
+"expansion": "DSK",
+"mana_value": "6",
+"name": "Daggermaw Megalodon",
+"rarity": "common",
+"types": "Creature - Shark"
+},
+"92115": {
+"expansion": "DSK",
+"mana_value": "2",
+"name": "Don't Make a Sound",
+"rarity": "common",
+"types": "Instant"
+},
+"92116": {
+"expansion": "DSK",
+"mana_value": "6",
+"name": "Duskmourn's Domination",
+"rarity": "uncommon",
+"types": "Enchantment - Aura"
+},
+"92117": {
+"expansion": "DSK",
+"mana_value": "4",
+"name": "Enduring Curiosity",
+"rarity": "rare",
+"types": "Enchantment Creature - Cat Glimmer"
+},
+"92118": {
+"expansion": "DSK",
+"mana_value": "1",
+"name": "Enter the Enigma",
+"rarity": "common",
+"types": "Sorcery"
+},
+"92119": {
+"expansion": "DSK",
+"mana_value": "3",
+"name": "Entity Tracker",
+"rarity": "rare",
+"types": "Creature - Human Scout"
+},
+"92120": {
+"expansion": "DSK",
+"mana_value": "3",
+"name": "Erratic Apparition",
+"rarity": "common",
+"types": "Creature - Spirit"
+},
+"92121": {
+"expansion": "DSK",
+"mana_value": "5",
+"name": "Fear of Failed Tests",
+"rarity": "uncommon",
+"types": "Enchantment Creature - Nightmare"
+},
+"92122": {
+"expansion": "DSK",
+"mana_value": "5",
+"name": "Fear of Falling",
+"rarity": "uncommon",
+"types": "Enchantment Creature - Nightmare"
+},
+"92123": {
+"expansion": "DSK",
+"mana_value": "3",
+"name": "Fear of Impostors",
+"rarity": "uncommon",
+"types": "Enchantment Creature - Nightmare"
+},
+"92124": {
+"expansion": "DSK",
+"mana_value": "2",
+"name": "Fear of Isolation",
+"rarity": "uncommon",
+"types": "Enchantment Creature - Nightmare"
+},
+"92125": {
+"expansion": "DSK",
+"mana_value": "2",
+"name": "Floodpits Drowner",
+"rarity": "uncommon",
+"types": "Creature - Merfolk"
+},
+"92126": {
+"expansion": "DSK",
+"mana_value": "2",
+"name": "Get Out",
+"rarity": "uncommon",
+"types": "Instant"
+},
+"92127": {
+"expansion": "DSK",
+"mana_value": "4",
+"name": "Ghostly Keybearer",
+"rarity": "uncommon",
+"types": "Creature - Spirit"
+},
+"92128": {
+"expansion": "DSK",
+"mana_value": "4",
+"name": "Glimmerburst",
+"rarity": "common",
+"types": "Instant"
+},
+"92131": {
+"expansion": "DSK",
+"mana_value": "8",
+"name": "Meat Locker // Drowned Diner",
+"rarity": "common",
+"types": "Enchantment - Room"
+},
+"92132": {
+"expansion": "DSK",
+"mana_value": "3",
+"name": "Meat Locker",
+"rarity": "common",
+"types": "Enchantment - Room"
+},
+"92133": {
+"expansion": "DSK",
+"mana_value": "5",
+"name": "Drowned Diner",
+"rarity": "common",
+"types": "Enchantment - Room"
+},
+"92134": {
+"expansion": "DSK",
+"mana_value": "3",
+"name": "The Mindskinner",
+"rarity": "rare",
+"types": "Legendary Enchantment Creature - Nightmare"
+},
+"92135": {
+"expansion": "DSK",
+"mana_value": "10",
+"name": "Mirror Room // Fractured Realm",
+"rarity": "mythic",
+"types": "Enchantment - Room"
+},
+"92136": {
+"expansion": "DSK",
+"mana_value": "3",
+"name": "Mirror Room",
+"rarity": "mythic",
+"types": "Enchantment - Room"
+},
+"92137": {
+"expansion": "DSK",
+"mana_value": "7",
+"name": "Fractured Realm",
+"rarity": "mythic",
+"types": "Enchantment - Room"
+},
+"92138": {
+"expansion": "DSK",
+"mana_value": "5",
+"name": "Overlord of the Floodpits",
+"rarity": "mythic",
+"types": "Enchantment Creature - Avatar Horror"
+},
+"92139": {
+"expansion": "DSK",
+"mana_value": "2",
+"name": "Paranormal Analyst",
+"rarity": "uncommon",
+"types": "Creature - Human Detective"
+},
+"92140": {
+"expansion": "DSK",
+"mana_value": "2",
+"name": "Piranha Fly",
+"rarity": "common",
+"types": "Creature - Fish Insect"
+},
+"92141": {
+"expansion": "DSK",
+"mana_value": "1",
+"name": "Scrabbling Skullcrab",
+"rarity": "uncommon",
+"types": "Creature - Crab Skeleton"
+},
+"92142": {
+"expansion": "DSK",
+"mana_value": "2",
+"name": "Silent Hallcreeper",
+"rarity": "rare",
+"types": "Enchantment Creature - Horror"
+},
+"92143": {
+"expansion": "DSK",
+"mana_value": "2",
+"name": "Stalked Researcher",
+"rarity": "common",
+"types": "Creature - Human Wizard"
+},
+"92144": {
+"expansion": "DSK",
+"mana_value": "2",
+"name": "Stay Hidden, Stay Silent",
+"rarity": "uncommon",
+"types": "Enchantment - Aura"
+},
+"92145": {
+"expansion": "DSK",
+"mana_value": "3",
+"name": "The Tale of Tamiyo",
+"rarity": "rare",
+"types": "Legendary Enchantment - Saga"
+},
+"92146": {
+"expansion": "DSK",
+"mana_value": "3",
+"name": "Tunnel Surveyor",
+"rarity": "common",
+"types": "Creature - Human Detective"
+},
+"92147": {
+"expansion": "DSK",
+"mana_value": "3",
+"name": "Twist Reality",
+"rarity": "common",
+"types": "Instant"
+},
+"92148": {
+"expansion": "DSK",
+"mana_value": "1",
+"name": "Unable to Scream",
+"rarity": "common",
+"types": "Enchantment - Aura"
+},
+"92149": {
+"expansion": "DSK",
+"mana_value": "5",
+"name": "Underwater Tunnel // Slimy Aquarium",
+"rarity": "common",
+"types": "Enchantment - Room"
+},
+"92150": {
+"expansion": "DSK",
+"mana_value": "1",
+"name": "Underwater Tunnel",
+"rarity": "common",
+"types": "Enchantment - Room"
+},
+"92151": {
+"expansion": "DSK",
+"mana_value": "4",
+"name": "Slimy Aquarium",
+"rarity": "common",
+"types": "Enchantment - Room"
+},
+"92152": {
+"expansion": "DSK",
+"mana_value": "3",
+"name": "Unnerving Grasp",
+"rarity": "uncommon",
+"types": "Sorcery"
+},
+"92153": {
+"expansion": "DSK",
+"mana_value": "3",
+"name": "Unwilling Vessel",
+"rarity": "uncommon",
+"types": "Creature - Human Wizard"
+},
+"92154": {
+"expansion": "DSK",
+"mana_value": "4",
+"name": "Vanish from Sight",
+"rarity": "common",
+"types": "Instant"
+},
+"92155": {
+"expansion": "DSK",
+"mana_value": "3",
+"name": "Appendage Amalgam",
+"rarity": "common",
+"types": "Enchantment Creature - Horror"
+},
+"92156": {
+"expansion": "DSK",
+"mana_value": "2",
+"name": "Balemurk Leech",
+"rarity": "common",
+"types": "Creature - Leech"
+},
+"92157": {
+"expansion": "DSK",
+"mana_value": "4",
+"name": "Cackling Slasher",
+"rarity": "common",
+"types": "Creature - Human Assassin"
+},
+"92158": {
+"expansion": "DSK",
+"mana_value": "3",
+"name": "Come Back Wrong",
+"rarity": "rare",
+"types": "Sorcery"
+},
+"92159": {
+"expansion": "DSK",
+"mana_value": "3",
+"name": "Commune with Evil",
+"rarity": "uncommon",
+"types": "Sorcery"
+},
+"92160": {
+"expansion": "DSK",
+"mana_value": "3",
+"name": "Cracked Skull",
+"rarity": "common",
+"types": "Enchantment - Aura"
+},
+"92161": {
+"expansion": "DSK",
+"mana_value": "2",
+"name": "Cynical Loner",
+"rarity": "uncommon",
+"types": "Creature - Human Survivor"
+},
+"92162": {
+"expansion": "DSK",
+"mana_value": "4",
+"name": "Dashing Bloodsucker",
+"rarity": "uncommon",
+"types": "Creature - Vampire Warrior"
+},
+"92163": {
+"expansion": "DSK",
+"mana_value": "5",
+"name": "Defiled Crypt // Cadaver Lab",
+"rarity": "uncommon",
+"types": "Enchantment - Room"
+},
+"92164": {
+"expansion": "DSK",
+"mana_value": "4",
+"name": "Defiled Crypt",
+"rarity": "uncommon",
+"types": "Enchantment - Room"
+},
+"92165": {
+"expansion": "DSK",
+"mana_value": "1",
+"name": "Cadaver Lab",
+"rarity": "uncommon",
+"types": "Enchantment - Room"
+},
+"92166": {
+"expansion": "DSK",
+"mana_value": "2",
+"name": "Demonic Counsel",
+"rarity": "rare",
+"types": "Sorcery"
+},
+"92167": {
+"expansion": "DSK",
+"mana_value": "7",
+"name": "Derelict Attic // Widow's Walk",
+"rarity": "common",
+"types": "Enchantment - Room"
+},
+"92168": {
+"expansion": "DSK",
+"mana_value": "3",
+"name": "Derelict Attic",
+"rarity": "common",
+"types": "Enchantment - Room"
+},
+"92169": {
+"expansion": "DSK",
+"mana_value": "4",
+"name": "Widow's Walk",
+"rarity": "common",
+"types": "Enchantment - Room"
+},
+"92170": {
+"expansion": "DSK",
+"mana_value": "6",
+"name": "Doomsday Excruciator",
+"rarity": "rare",
+"types": "Creature - Demon"
+},
+"92171": {
+"expansion": "DSK",
+"mana_value": "4",
+"name": "Enduring Tenacity",
+"rarity": "rare",
+"types": "Enchantment Creature - Snake Glimmer"
+},
+"92172": {
+"expansion": "DSK",
+"mana_value": "4",
+"name": "Fanatic of the Harrowing",
+"rarity": "common",
+"types": "Creature - Human Cleric"
+},
+"92173": {
+"expansion": "DSK",
+"mana_value": "1",
+"name": "Fear of Lost Teeth",
+"rarity": "common",
+"types": "Enchantment Creature - Nightmare"
+},
+"92174": {
+"expansion": "DSK",
+"mana_value": "5",
+"name": "Fear of the Dark",
+"rarity": "common",
+"types": "Enchantment Creature - Nightmare"
+},
+"92175": {
+"expansion": "DSK",
+"mana_value": "1",
+"name": "Final Vengeance",
+"rarity": "common",
+"types": "Sorcery"
+},
+"92176": {
+"expansion": "DSK",
+"mana_value": "11",
+"name": "Funeral Room // Awakening Hall",
+"rarity": "mythic",
+"types": "Enchantment - Room"
+},
+"92177": {
+"expansion": "DSK",
+"mana_value": "3",
+"name": "Funeral Room",
+"rarity": "mythic",
+"types": "Enchantment - Room"
+},
+"92178": {
+"expansion": "DSK",
+"mana_value": "8",
+"name": "Awakening Hall",
+"rarity": "mythic",
+"types": "Enchantment - Room"
+},
+"92179": {
+"expansion": "DSK",
+"mana_value": "2",
+"name": "Give In to Violence",
+"rarity": "common",
+"types": "Instant"
+},
+"92180": {
+"expansion": "DSK",
+"mana_value": "5",
+"name": "Grievous Wound",
+"rarity": "rare",
+"types": "Enchantment - Aura"
+},
+"92181": {
+"expansion": "DSK",
+"mana_value": "2",
+"name": "Innocuous Rat",
+"rarity": "common",
+"types": "Creature - Rat"
+},
+"92182": {
+"expansion": "DSK",
+"mana_value": "3",
+"name": "Killer's Mask",
+"rarity": "uncommon",
+"types": "Artifact - Equipment"
+},
+"92183": {
+"expansion": "DSK",
+"mana_value": "4",
+"name": "Let's Play a Game",
+"rarity": "uncommon",
+"types": "Sorcery"
+},
+"92184": {
+"expansion": "DSK",
+"mana_value": "4",
+"name": "Leyline of the Void",
+"rarity": "rare",
+"types": "Enchantment"
+},
+"92185": {
+"expansion": "DSK",
+"mana_value": "5",
+"name": "Live or Die",
+"rarity": "uncommon",
+"types": "Instant"
+},
+"92186": {
+"expansion": "DSK",
+"mana_value": "4",
+"name": "Meathook Massacre II",
+"rarity": "mythic",
+"types": "Legendary Enchantment"
+},
+"92187": {
+"expansion": "DSK",
+"mana_value": "6",
+"name": "Miasma Demon",
+"rarity": "uncommon",
+"types": "Creature - Demon"
+},
+"92188": {
+"expansion": "DSK",
+"mana_value": "3",
+"name": "Murder",
+"rarity": "common",
+"types": "Instant"
+},
+"92189": {
+"expansion": "DSK",
+"mana_value": "2",
+"name": "Nowhere to Run",
+"rarity": "uncommon",
+"types": "Enchantment"
+},
+"92190": {
+"expansion": "DSK",
+"mana_value": "2",
+"name": "Osseous Sticktwister",
+"rarity": "uncommon",
+"types": "Artifact Creature - Scarecrow"
+},
+"92191": {
+"expansion": "DSK",
+"mana_value": "5",
+"name": "Overlord of the Balemurk",
+"rarity": "mythic",
+"types": "Enchantment Creature - Avatar Horror"
+},
+"92192": {
+"expansion": "DSK",
+"mana_value": "3",
+"name": "Popular Egotist",
+"rarity": "uncommon",
+"types": "Creature - Human Rogue"
+},
+"92193": {
+"expansion": "DSK",
+"mana_value": "3",
+"name": "Resurrected Cultist",
+"rarity": "common",
+"types": "Creature - Human Cleric"
+},
+"92194": {
+"expansion": "DSK",
+"mana_value": "6",
+"name": "Spectral Snatcher",
+"rarity": "common",
+"types": "Creature - Spirit"
+},
+"92195": {
+"expansion": "DSK",
+"mana_value": "2",
+"name": "Sporogenic Infection",
+"rarity": "uncommon",
+"types": "Enchantment - Aura"
+},
+"92196": {
+"expansion": "DSK",
+"mana_value": "8",
+"name": "Unholy Annex // Ritual Chamber",
+"rarity": "rare",
+"types": "Enchantment - Room"
+},
+"92197": {
+"expansion": "DSK",
+"mana_value": "3",
+"name": "Unholy Annex",
+"rarity": "rare",
+"types": "Enchantment - Room"
+},
+"92198": {
+"expansion": "DSK",
+"mana_value": "5",
+"name": "Ritual Chamber",
+"rarity": "rare",
+"types": "Enchantment - Room"
+},
+"92199": {
+"expansion": "DSK",
+"mana_value": "3",
+"name": "Unstoppable Slasher",
+"rarity": "rare",
+"types": "Creature - Zombie Assassin"
+},
+"92200": {
+"expansion": "DSK",
+"mana_value": "9",
+"name": "Valgavoth, Terror Eater",
+"rarity": "mythic",
+"types": "Legendary Creature - Elder Demon"
+},
+"92201": {
+"expansion": "DSK",
+"mana_value": "1",
+"name": "Valgavoth's Faithful",
+"rarity": "uncommon",
+"types": "Creature - Human Cleric"
+},
+"92202": {
+"expansion": "DSK",
+"mana_value": "7",
+"name": "Vile Mutilator",
+"rarity": "uncommon",
+"types": "Creature - Demon"
+},
+"92203": {
+"expansion": "DSK",
+"mana_value": "2",
+"name": "Winter's Intervention",
+"rarity": "common",
+"types": "Instant"
+},
+"92204": {
+"expansion": "DSK",
+"mana_value": "3",
+"name": "Withering Torment",
+"rarity": "uncommon",
+"types": "Instant"
+},
+"92205": {
+"expansion": "DSK",
+"mana_value": "6",
+"name": "Bedhead Beastie",
+"rarity": "common",
+"types": "Creature - Beast"
+},
+"92206": {
+"expansion": "DSK",
+"mana_value": "2",
+"name": "Betrayer's Bargain",
+"rarity": "uncommon",
+"types": "Instant"
+},
+"92207": {
+"expansion": "DSK",
+"mana_value": "5",
+"name": "Boilerbilges Ripper",
+"rarity": "common",
+"types": "Creature - Human Assassin"
+},
+"92208": {
+"expansion": "DSK",
+"mana_value": "2",
+"name": "Chainsaw",
+"rarity": "rare",
+"types": "Artifact - Equipment"
+},
+"92209": {
+"expansion": "DSK",
+"mana_value": "10",
+"name": "Charred Foyer // Warped Space",
+"rarity": "mythic",
+"types": "Enchantment - Room"
+},
+"92210": {
+"expansion": "DSK",
+"mana_value": "4",
+"name": "Charred Foyer",
+"rarity": "mythic",
+"types": "Enchantment - Room"
+},
+"92212": {
+"expansion": "DSK",
+"mana_value": "1",
+"name": "Clockwork Percussionist",
+"rarity": "common",
+"types": "Artifact Creature - Monkey Toy"
+},
+"92213": {
+"expansion": "DSK",
+"mana_value": "4",
+"name": "Cursed Recording",
+"rarity": "rare",
+"types": "Artifact"
+},
+"92214": {
+"expansion": "DSK",
+"mana_value": "4",
+"name": "Diversion Specialist",
+"rarity": "uncommon",
+"types": "Creature - Human Warrior"
+},
+"92215": {
+"expansion": "DSK",
+"mana_value": "4",
+"name": "Enduring Courage",
+"rarity": "rare",
+"types": "Enchantment Creature - Dog Glimmer"
+},
+"92216": {
+"expansion": "DSK",
+"mana_value": "3",
+"name": "Fear of Being Hunted",
+"rarity": "uncommon",
+"types": "Enchantment Creature - Nightmare"
+},
+"92217": {
+"expansion": "DSK",
+"mana_value": "6",
+"name": "Fear of Burning Alive",
+"rarity": "uncommon",
+"types": "Enchantment Creature - Nightmare"
+},
+"92218": {
+"expansion": "DSK",
+"mana_value": "2",
+"name": "Fear of Missing Out",
+"rarity": "rare",
+"types": "Enchantment Creature - Nightmare"
+},
+"92219": {
+"expansion": "DSK",
+"mana_value": "8",
+"name": "Glassworks // Shattered Yard",
+"rarity": "common",
+"types": "Enchantment - Room"
+},
+"92220": {
+"expansion": "DSK",
+"mana_value": "3",
+"name": "Glassworks",
+"rarity": "common",
+"types": "Enchantment - Room"
+},
+"92221": {
+"expansion": "DSK",
+"mana_value": "5",
+"name": "Shattered Yard",
+"rarity": "common",
+"types": "Enchantment - Room"
+},
+"92222": {
+"expansion": "DSK",
+"mana_value": "2",
+"name": "Grab the Prize",
+"rarity": "common",
+"types": "Sorcery"
+},
+"92223": {
+"expansion": "DSK",
+"mana_value": "2",
+"name": "Hand That Feeds",
+"rarity": "common",
+"types": "Creature - Mutant"
+},
+"92224": {
+"expansion": "DSK",
+"mana_value": "5",
+"name": "Impossible Inferno",
+"rarity": "common",
+"types": "Instant"
+},
+"92225": {
+"expansion": "DSK",
+"mana_value": "4",
+"name": "Infernal Phantom",
+"rarity": "uncommon",
+"types": "Creature - Spirit"
+},
+"92226": {
+"expansion": "DSK",
+"mana_value": "2",
+"name": "Irreverent Gremlin",
+"rarity": "uncommon",
+"types": "Creature - Gremlin"
+},
+"92227": {
+"expansion": "DSK",
+"mana_value": "4",
+"name": "Leyline of Resonance",
+"rarity": "rare",
+"types": "Enchantment"
+},
+"92228": {
+"expansion": "DSK",
+"mana_value": "4",
+"name": "Most Valuable Slayer",
+"rarity": "common",
+"types": "Creature - Human Warrior"
+},
+"92229": {
+"expansion": "DSK",
+"mana_value": "1",
+"name": "Norin, Swift Survivalist",
+"rarity": "uncommon",
+"types": "Legendary Creature - Human Coward"
+},
+"92230": {
+"expansion": "DSK",
+"mana_value": "6",
+"name": "Overlord of the Boilerbilges",
+"rarity": "mythic",
+"types": "Enchantment Creature - Avatar Horror"
+},
+"92231": {
+"expansion": "DSK",
+"mana_value": "5",
+"name": "Painter's Studio // Defaced Gallery",
+"rarity": "uncommon",
+"types": "Enchantment - Room"
+},
+"92232": {
+"expansion": "DSK",
+"mana_value": "3",
+"name": "Painter's Studio",
+"rarity": "uncommon",
+"types": "Enchantment - Room"
+},
+"92233": {
+"expansion": "DSK",
+"mana_value": "2",
+"name": "Defaced Gallery",
+"rarity": "uncommon",
+"types": "Enchantment - Room"
+},
+"92234": {
+"expansion": "DSK",
+"mana_value": "2",
+"name": "Piggy Bank",
+"rarity": "uncommon",
+"types": "Artifact Creature - Boar Toy"
+},
+"92235": {
+"expansion": "DSK",
+"mana_value": "2",
+"name": "Pyroclasm",
+"rarity": "uncommon",
+"types": "Sorcery"
+},
+"92236": {
+"expansion": "DSK",
+"mana_value": "2",
+"name": "Ragged Playmate",
+"rarity": "common",
+"types": "Artifact Creature - Toy"
+},
+"92237": {
+"expansion": "DSK",
+"mana_value": "3",
+"name": "Rampaging Soulrager",
+"rarity": "common",
+"types": "Creature - Spirit"
+},
+"92238": {
+"expansion": "DSK",
+"mana_value": "5",
+"name": "Razorkin Hordecaller",
+"rarity": "uncommon",
+"types": "Creature - Human Clown Berserker"
+},
+"92239": {
+"expansion": "DSK",
+"mana_value": "2",
+"name": "Razorkin Needlehead",
+"rarity": "rare",
+"types": "Creature - Human Assassin"
+},
+"92240": {
+"expansion": "DSK",
+"mana_value": "4",
+"name": "Ripchain Razorkin",
+"rarity": "common",
+"types": "Creature - Human Berserker"
+},
+"92241": {
+"expansion": "DSK",
+"mana_value": "3",
+"name": "The Rollercrusher Ride",
+"rarity": "mythic",
+"types": "Legendary Enchantment"
+},
+"92242": {
+"expansion": "DSK",
+"mana_value": "2",
+"name": "Scorching Dragonfire",
+"rarity": "common",
+"types": "Instant"
+},
+"92243": {
+"expansion": "DSK",
+"mana_value": "3",
+"name": "Screaming Nemesis",
+"rarity": "mythic",
+"types": "Creature - Spirit"
+},
+"92244": {
+"expansion": "DSK",
+"mana_value": "9",
+"name": "Ticket Booth // Tunnel of Hate",
+"rarity": "common",
+"types": "Enchantment - Room"
+},
+"92245": {
+"expansion": "DSK",
+"mana_value": "3",
+"name": "Ticket Booth",
+"rarity": "common",
+"types": "Enchantment - Room"
+},
+"92246": {
+"expansion": "DSK",
+"mana_value": "6",
+"name": "Tunnel of Hate",
+"rarity": "common",
+"types": "Enchantment - Room"
+},
+"92247": {
+"expansion": "DSK",
+"mana_value": "1",
+"name": "Trial of Agony",
+"rarity": "uncommon",
+"types": "Sorcery"
+},
+"92248": {
+"expansion": "DSK",
+"mana_value": "1",
+"name": "Turn Inside Out",
+"rarity": "common",
+"types": "Instant"
+},
+"92249": {
+"expansion": "DSK",
+"mana_value": "2",
+"name": "Untimely Malfunction",
+"rarity": "uncommon",
+"types": "Instant"
+},
+"92250": {
+"expansion": "DSK",
+"mana_value": "3",
+"name": "Vengeful Possession",
+"rarity": "uncommon",
+"types": "Sorcery"
+},
+"92251": {
+"expansion": "DSK",
+"mana_value": "3",
+"name": "Vicious Clown",
+"rarity": "common",
+"types": "Creature - Human Clown"
+},
+"92252": {
+"expansion": "DSK",
+"mana_value": "1",
+"name": "Violent Urge",
+"rarity": "uncommon",
+"types": "Instant"
+},
+"92253": {
+"expansion": "DSK",
+"mana_value": "5",
+"name": "Waltz of Rage",
+"rarity": "rare",
+"types": "Sorcery"
+},
+"92254": {
+"expansion": "DSK",
+"mana_value": "7",
+"name": "Altanak, the Thrice-Called",
+"rarity": "uncommon",
+"types": "Legendary Creature - Insect Beast"
+},
+"92255": {
+"expansion": "DSK",
+"mana_value": "4",
+"name": "Anthropede",
+"rarity": "common",
+"types": "Creature - Insect"
+},
+"92256": {
+"expansion": "DSK",
+"mana_value": "5",
+"name": "Balustrade Wurm",
+"rarity": "rare",
+"types": "Creature - Wurm"
+},
+"92257": {
+"expansion": "DSK",
+"mana_value": "5",
+"name": "Bashful Beastie",
+"rarity": "common",
+"types": "Creature - Beast"
+},
+"92258": {
+"expansion": "DSK",
+"mana_value": "3",
+"name": "Break Down the Door",
+"rarity": "uncommon",
+"types": "Instant"
+},
+"92259": {
+"expansion": "DSK",
+"mana_value": "2",
+"name": "Cathartic Parting",
+"rarity": "uncommon",
+"types": "Sorcery"
+},
+"92260": {
+"expansion": "DSK",
+"mana_value": "4",
+"name": "Cautious Survivor",
+"rarity": "common",
+"types": "Creature - Elf Survivor"
+},
+"92261": {
+"expansion": "DSK",
+"mana_value": "1",
+"name": "Coordinated Clobbering",
+"rarity": "uncommon",
+"types": "Sorcery"
+},
+"92262": {
+"expansion": "DSK",
+"mana_value": "3",
+"name": "Cryptid Inspector",
+"rarity": "common",
+"types": "Creature - Elf Warrior"
+},
+"92263": {
+"expansion": "DSK",
+"mana_value": "3",
+"name": "Defiant Survivor",
+"rarity": "uncommon",
+"types": "Creature - Human Survivor"
+},
+"92264": {
+"expansion": "DSK",
+"mana_value": "3",
+"name": "Enduring Vitality",
+"rarity": "rare",
+"types": "Enchantment Creature - Elk Glimmer"
+},
+"92265": {
+"expansion": "DSK",
+"mana_value": "3",
+"name": "Fear of Exposure",
+"rarity": "uncommon",
+"types": "Enchantment Creature - Nightmare"
+},
+"92266": {
+"expansion": "DSK",
+"mana_value": "2",
+"name": "Flesh Burrower",
+"rarity": "common",
+"types": "Creature - Insect"
+},
+"92267": {
+"expansion": "DSK",
+"mana_value": "3",
+"name": "Frantic Strength",
+"rarity": "common",
+"types": "Enchantment - Aura"
+},
+"92268": {
+"expansion": "DSK",
+"mana_value": "3",
+"name": "Grasping Longneck",
+"rarity": "common",
+"types": "Enchantment Creature - Horror"
+},
+"92269": {
+"expansion": "DSK",
+"mana_value": "7",
+"name": "Greenhouse // Rickety Gazebo",
+"rarity": "uncommon",
+"types": "Enchantment - Room"
+},
+"92270": {
+"expansion": "DSK",
+"mana_value": "3",
+"name": "Greenhouse",
+"rarity": "uncommon",
+"types": "Enchantment - Room"
+},
+"92271": {
+"expansion": "DSK",
+"mana_value": "4",
+"name": "Rickety Gazebo",
+"rarity": "uncommon",
+"types": "Enchantment - Room"
+},
+"92272": {
+"expansion": "DSK",
+"mana_value": "3",
+"name": "Hauntwoods Shrieker",
+"rarity": "mythic",
+"types": "Creature - Beast Mutant"
+},
+"92273": {
+"expansion": "DSK",
+"mana_value": "4",
+"name": "Hedge Shredder",
+"rarity": "rare",
+"types": "Artifact - Vehicle"
+},
+"92274": {
+"expansion": "DSK",
+"mana_value": "2",
+"name": "Horrid Vigor",
+"rarity": "common",
+"types": "Instant"
+},
+"92275": {
+"expansion": "DSK",
+"mana_value": "2",
+"name": "House Cartographer",
+"rarity": "uncommon",
+"types": "Creature - Human Scout Survivor"
+},
+"92276": {
+"expansion": "DSK",
+"mana_value": "1",
+"name": "Insidious Fungus",
+"rarity": "uncommon",
+"types": "Creature - Fungus"
+},
+"92277": {
+"expansion": "DSK",
+"mana_value": "4",
+"name": "Kona, Rescue Beastie",
+"rarity": "rare",
+"types": "Legendary Creature - Beast Survivor"
+},
+"92278": {
+"expansion": "DSK",
+"mana_value": "4",
+"name": "Leyline of Mutation",
+"rarity": "rare",
+"types": "Enchantment"
+},
+"92279": {
+"expansion": "DSK",
+"mana_value": "2",
+"name": "Manifest Dread",
+"rarity": "common",
+"types": "Sorcery"
+},
+"92280": {
+"expansion": "DSK",
+"mana_value": "9",
+"name": "Moldering Gym // Weight Room",
+"rarity": "common",
+"types": "Enchantment - Room"
+},
+"92281": {
+"expansion": "DSK",
+"mana_value": "3",
+"name": "Moldering Gym",
+"rarity": "common",
+"types": "Enchantment - Room"
+},
+"92282": {
+"expansion": "DSK",
+"mana_value": "6",
+"name": "Weight Room",
+"rarity": "common",
+"types": "Enchantment - Room"
+},
+"92283": {
+"expansion": "DSK",
+"mana_value": "2",
+"name": "Monstrous Emergence",
+"rarity": "common",
+"types": "Sorcery"
+},
+"92284": {
+"expansion": "DSK",
+"mana_value": "3",
+"name": "Omnivorous Flytrap",
+"rarity": "rare",
+"types": "Creature - Plant"
+},
+"92285": {
+"expansion": "DSK",
+"mana_value": "2",
+"name": "Overgrown Zealot",
+"rarity": "uncommon",
+"types": "Creature - Elf Druid"
+},
+"92286": {
+"expansion": "DSK",
+"mana_value": "5",
+"name": "Overlord of the Hauntwoods",
+"rarity": "mythic",
+"types": "Enchantment Creature - Avatar Horror"
+},
+"92287": {
+"expansion": "DSK",
+"mana_value": "1",
+"name": "Patchwork Beastie",
+"rarity": "uncommon",
+"types": "Artifact Creature - Beast"
+},
+"92288": {
+"expansion": "DSK",
+"mana_value": "5",
+"name": "Rootwise Survivor",
+"rarity": "uncommon",
+"types": "Creature - Human Survivor"
+},
+"92289": {
+"expansion": "DSK",
+"mana_value": "2",
+"name": "Say Its Name",
+"rarity": "common",
+"types": "Sorcery"
+},
+"92290": {
+"expansion": "DSK",
+"mana_value": "6",
+"name": "Slavering Branchsnapper",
+"rarity": "common",
+"types": "Creature - Lizard"
+},
+"92291": {
+"expansion": "DSK",
+"mana_value": "3",
+"name": "Spineseeker Centipede",
+"rarity": "common",
+"types": "Creature - Insect"
+},
+"92292": {
+"expansion": "DSK",
+"mana_value": "4",
+"name": "Threats Around Every Corner",
+"rarity": "uncommon",
+"types": "Enchantment"
+},
+"92293": {
+"expansion": "DSK",
+"mana_value": "2",
+"name": "Twitching Doll",
+"rarity": "rare",
+"types": "Artifact Creature - Spider Toy"
+},
+"92294": {
+"expansion": "DSK",
+"mana_value": "3",
+"name": "Tyvar, the Pummeler",
+"rarity": "mythic",
+"types": "Legendary Creature - Elf Warrior"
+},
+"92295": {
+"expansion": "DSK",
+"mana_value": "3",
+"name": "Under the Skin",
+"rarity": "uncommon",
+"types": "Sorcery"
+},
+"92296": {
+"expansion": "DSK",
+"mana_value": "1",
+"name": "Valgavoth's Onslaught",
+"rarity": "rare",
+"types": "Sorcery"
+},
+"92297": {
+"expansion": "DSK",
+"mana_value": "8",
+"name": "Walk-In Closet // Forgotten Cellar",
+"rarity": "mythic",
+"types": "Enchantment - Room"
+},
+"92298": {
+"expansion": "DSK",
+"mana_value": "3",
+"name": "Walk-In Closet",
+"rarity": "mythic",
+"types": "Enchantment - Room"
+},
+"92299": {
+"expansion": "DSK",
+"mana_value": "5",
+"name": "Forgotten Cellar",
+"rarity": "mythic",
+"types": "Enchantment - Room"
+},
+"92300": {
+"expansion": "DSK",
+"mana_value": "2",
+"name": "Wary Watchdog",
+"rarity": "common",
+"types": "Creature - Dog"
+},
+"92301": {
+"expansion": "DSK",
+"mana_value": "4",
+"name": "Wickerfolk Thresher",
+"rarity": "uncommon",
+"types": "Artifact Creature - Scarecrow"
+},
+"92302": {
+"expansion": "DSK",
+"mana_value": "2",
+"name": "Arabella, Abandoned Doll",
+"rarity": "uncommon",
+"types": "Legendary Artifact Creature - Toy"
+},
+"92303": {
+"expansion": "DSK",
+"mana_value": "2",
+"name": "Baseball Bat",
+"rarity": "uncommon",
+"types": "Artifact - Equipment"
+},
+"92304": {
+"expansion": "DSK",
+"mana_value": "2",
+"name": "Beastie Beatdown",
+"rarity": "uncommon",
+"types": "Sorcery"
+},
+"92305": {
+"expansion": "DSK",
+"mana_value": "2",
+"name": "Broodspinner",
+"rarity": "uncommon",
+"types": "Creature - Spider"
+},
+"92306": {
+"expansion": "DSK",
+"mana_value": "2",
+"name": "Disturbing Mirth",
+"rarity": "uncommon",
+"types": "Enchantment"
+},
+"92307": {
+"expansion": "DSK",
+"mana_value": "4",
+"name": "Drag to the Roots",
+"rarity": "uncommon",
+"types": "Instant"
+},
+"92308": {
+"expansion": "DSK",
+"mana_value": "3",
+"name": "Fear of Infinity",
+"rarity": "uncommon",
+"types": "Enchantment Creature - Nightmare"
+},
+"92309": {
+"expansion": "DSK",
+"mana_value": "2",
+"name": "Gremlin Tamer",
+"rarity": "uncommon",
+"types": "Creature - Human Scout"
+},
+"92310": {
+"expansion": "DSK",
+"mana_value": "2",
+"name": "Growing Dread",
+"rarity": "uncommon",
+"types": "Enchantment"
+},
+"92311": {
+"expansion": "DSK",
+"mana_value": "2",
+"name": "Inquisitive Glimmer",
+"rarity": "uncommon",
+"types": "Enchantment Creature - Fox Glimmer"
+},
+"92312": {
+"expansion": "DSK",
+"mana_value": "2",
+"name": "Intruding Soulrager",
+"rarity": "uncommon",
+"types": "Creature - Spirit"
+},
+"92313": {
+"expansion": "DSK",
+"mana_value": "3",
+"name": "The Jolly Balloon Man",
+"rarity": "rare",
+"types": "Legendary Creature - Human Clown"
+},
+"92314": {
+"expansion": "DSK",
+"mana_value": "4",
+"name": "Kaito, Bane of Nightmares",
+"rarity": "mythic",
+"types": "Legendary Planeswalker - Kaito"
+},
+"92315": {
+"expansion": "DSK",
+"mana_value": "5",
+"name": "Marina Vendrell",
+"rarity": "rare",
+"types": "Legendary Creature - Human Warlock"
+},
+"92316": {
+"expansion": "DSK",
+"mana_value": "4",
+"name": "Midnight Mayhem",
+"rarity": "uncommon",
+"types": "Sorcery"
+},
+"92317": {
+"expansion": "DSK",
+"mana_value": "2",
+"name": "Nashi, Searcher in the Dark",
+"rarity": "rare",
+"types": "Legendary Creature - Rat Ninja Wizard"
+},
+"92318": {
+"expansion": "DSK",
+"mana_value": "4",
+"name": "Niko, Light of Hope",
+"rarity": "mythic",
+"types": "Legendary Creature - Human Wizard"
+},
+"92319": {
+"expansion": "DSK",
+"mana_value": "2",
+"name": "Oblivious Bookworm",
+"rarity": "uncommon",
+"types": "Creature - Human Wizard"
+},
+"92320": {
+"expansion": "DSK",
+"mana_value": "4",
+"name": "Peer Past the Veil",
+"rarity": "rare",
+"types": "Instant"
+},
+"92321": {
+"expansion": "DSK",
+"mana_value": "11",
+"name": "Restricted Office // Lecture Hall",
+"rarity": "rare",
+"types": "Enchantment - Room"
+},
+"92322": {
+"expansion": "DSK",
+"mana_value": "4",
+"name": "Restricted Office",
+"rarity": "rare",
+"types": "Enchantment - Room"
+},
+"92323": {
+"expansion": "DSK",
+"mana_value": "7",
+"name": "Lecture Hall",
+"rarity": "rare",
+"types": "Enchantment - Room"
+},
+"92324": {
+"expansion": "DSK",
+"mana_value": "4",
+"name": "Rip, Spawn Hunter",
+"rarity": "rare",
+"types": "Legendary Creature - Human Survivor"
+},
+"92325": {
+"expansion": "DSK",
+"mana_value": "4",
+"name": "Rite of the Moth",
+"rarity": "uncommon",
+"types": "Sorcery"
+},
+"92326": {
+"expansion": "DSK",
+"mana_value": "7",
+"name": "Roaring Furnace // Steaming Sauna",
+"rarity": "rare",
+"types": "Enchantment - Room"
+},
+"92327": {
+"expansion": "DSK",
+"mana_value": "2",
+"name": "Roaring Furnace",
+"rarity": "rare",
+"types": "Enchantment - Room"
+},
+"92328": {
+"expansion": "DSK",
+"mana_value": "5",
+"name": "Steaming Sauna",
+"rarity": "rare",
+"types": "Enchantment - Room"
+},
+"92329": {
+"expansion": "DSK",
+"mana_value": "3",
+"name": "Sawblade Skinripper",
+"rarity": "uncommon",
+"types": "Creature - Human Assassin"
+},
+"92330": {
+"expansion": "DSK",
+"mana_value": "3",
+"name": "Shrewd Storyteller",
+"rarity": "uncommon",
+"types": "Creature - Human Survivor"
+},
+"92331": {
+"expansion": "DSK",
+"mana_value": "7",
+"name": "Shroudstomper",
+"rarity": "uncommon",
+"types": "Creature - Elemental"
+},
+"92332": {
+"expansion": "DSK",
+"mana_value": "2",
+"name": "Skullsnap Nuisance",
+"rarity": "uncommon",
+"types": "Creature - Insect Skeleton"
+},
+"92333": {
+"expansion": "DSK",
+"mana_value": "7",
+"name": "Smoky Lounge // Misty Salon",
+"rarity": "uncommon",
+"types": "Enchantment - Room"
+},
+"92334": {
+"expansion": "DSK",
+"mana_value": "3",
+"name": "Smoky Lounge",
+"rarity": "uncommon",
+"types": "Enchantment - Room"
+},
+"92335": {
+"expansion": "DSK",
+"mana_value": "4",
+"name": "Misty Salon",
+"rarity": "uncommon",
+"types": "Enchantment - Room"
+},
+"92336": {
+"expansion": "DSK",
+"mana_value": "4",
+"name": "The Swarmweaver",
+"rarity": "rare",
+"types": "Legendary Artifact Creature - Scarecrow"
+},
+"92337": {
+"expansion": "DSK",
+"mana_value": "2",
+"name": "Undead Sprinter",
+"rarity": "rare",
+"types": "Creature - Zombie"
+},
+"92338": {
+"expansion": "DSK",
+"mana_value": "3",
+"name": "Victor, Valgavoth's Seneschal",
+"rarity": "rare",
+"types": "Legendary Creature - Human Warlock"
+},
+"92339": {
+"expansion": "DSK",
+"mana_value": "2",
+"name": "Wildfire Wickerfolk",
+"rarity": "uncommon",
+"types": "Artifact Creature - Scarecrow"
+},
+"92340": {
+"expansion": "DSK",
+"mana_value": "4",
+"name": "Winter, Misanthropic Guide",
+"rarity": "rare",
+"types": "Legendary Creature - Human Warlock"
+},
+"92341": {
+"expansion": "DSK",
+"mana_value": "3",
+"name": "Zimone, All-Questioning",
+"rarity": "rare",
+"types": "Legendary Creature - Human Wizard"
+},
+"92342": {
+"expansion": "DSK",
+"mana_value": "3",
+"name": "Attack-in-the-Box",
+"rarity": "uncommon",
+"types": "Artifact Creature - Toy"
+},
+"92343": {
+"expansion": "DSK",
+"mana_value": "1",
+"name": "Bear Trap",
+"rarity": "common",
+"types": "Artifact"
+},
+"92344": {
+"expansion": "DSK",
+"mana_value": "4",
+"name": "Conductive Machete",
+"rarity": "uncommon",
+"types": "Artifact - Equipment"
+},
+"92345": {
+"expansion": "DSK",
+"mana_value": "5",
+"name": "Dissection Tools",
+"rarity": "rare",
+"types": "Artifact - Equipment"
+},
+"92346": {
+"expansion": "DSK",
+"mana_value": "1",
+"name": "Found Footage",
+"rarity": "common",
+"types": "Artifact - Clue"
+},
+"92347": {
+"expansion": "DSK",
+"mana_value": "2",
+"name": "Friendly Teddy",
+"rarity": "common",
+"types": "Artifact Creature - Bear Toy"
+},
+"92348": {
+"expansion": "DSK",
+"mana_value": "1",
+"name": "Ghost Vacuum",
+"rarity": "rare",
+"types": "Artifact"
+},
+"92349": {
+"expansion": "DSK",
+"mana_value": "2",
+"name": "Glimmerlight",
+"rarity": "common",
+"types": "Artifact - Equipment"
+},
+"92350": {
+"expansion": "DSK",
+"mana_value": "3",
+"name": "Haunted Screen",
+"rarity": "uncommon",
+"types": "Artifact"
+},
+"92351": {
+"expansion": "DSK",
+"mana_value": "1",
+"name": "Keys to the House",
+"rarity": "uncommon",
+"types": "Artifact"
+},
+"92352": {
+"expansion": "DSK",
+"mana_value": "6",
+"name": "Malevolent Chandelier",
+"rarity": "common",
+"types": "Artifact Creature - Construct"
+},
+"92353": {
+"expansion": "DSK",
+"mana_value": "2",
+"name": "Marvin, Murderous Mimic",
+"rarity": "rare",
+"types": "Legendary Artifact Creature - Toy"
+},
+"92354": {
+"expansion": "DSK",
+"mana_value": "2",
+"name": "Saw",
+"rarity": "uncommon",
+"types": "Artifact - Equipment"
+},
+"92355": {
+"expansion": "DSK",
+"mana_value": "0",
+"name": "Abandoned Campground",
+"rarity": "common",
+"types": "Land"
+},
+"92356": {
+"expansion": "DSK",
+"mana_value": "0",
+"name": "Blazemire Verge",
+"rarity": "rare",
+"types": "Land"
+},
+"92357": {
+"expansion": "DSK",
+"mana_value": "0",
+"name": "Bleeding Woods",
+"rarity": "common",
+"types": "Land"
+},
+"92358": {
+"expansion": "DSK",
+"mana_value": "0",
+"name": "Etched Cornfield",
+"rarity": "common",
+"types": "Land"
+},
+"92359": {
+"expansion": "DSK",
+"mana_value": "0",
+"name": "Floodfarm Verge",
+"rarity": "rare",
+"types": "Land"
+},
+"92360": {
+"expansion": "DSK",
+"mana_value": "0",
+"name": "Gloomlake Verge",
+"rarity": "rare",
+"types": "Land"
+},
+"92361": {
+"expansion": "DSK",
+"mana_value": "0",
+"name": "Hushwood Verge",
+"rarity": "rare",
+"types": "Land"
+},
+"92362": {
+"expansion": "DSK",
+"mana_value": "0",
+"name": "Lakeside Shack",
+"rarity": "common",
+"types": "Land"
+},
+"92363": {
+"expansion": "DSK",
+"mana_value": "0",
+"name": "Murky Sewer",
+"rarity": "common",
+"types": "Land"
+},
+"92364": {
+"expansion": "DSK",
+"mana_value": "0",
+"name": "Neglected Manor",
+"rarity": "common",
+"types": "Land"
+},
+"92365": {
+"expansion": "DSK",
+"mana_value": "0",
+"name": "Peculiar Lighthouse",
+"rarity": "common",
+"types": "Land"
+},
+"92366": {
+"expansion": "DSK",
+"mana_value": "0",
+"name": "Raucous Carnival",
+"rarity": "common",
+"types": "Land"
+},
+"92367": {
+"expansion": "DSK",
+"mana_value": "0",
+"name": "Razortrap Gorge",
+"rarity": "common",
+"types": "Land"
+},
+"92368": {
+"expansion": "DSK",
+"mana_value": "0",
+"name": "Strangled Cemetery",
+"rarity": "common",
+"types": "Land"
+},
+"92369": {
+"expansion": "DSK",
+"mana_value": "0",
+"name": "Terramorphic Expanse",
+"rarity": "common",
+"types": "Land"
+},
+"92370": {
+"expansion": "DSK",
+"mana_value": "0",
+"name": "Thornspire Verge",
+"rarity": "rare",
+"types": "Land"
+},
+"92371": {
+"expansion": "DSK",
+"mana_value": "0",
+"name": "Valgavoth's Lair",
+"rarity": "rare",
+"types": "Enchantment Land"
+},
+"92372": {
+"expansion": "DSK",
+"mana_value": "0",
+"name": "Plains",
+"rarity": "basic",
+"types": "Basic Land - Plains"
+},
+"92373": {
+"expansion": "DSK",
+"mana_value": "0",
+"name": "Plains",
+"rarity": "basic",
+"types": "Basic Land - Plains"
+},
+"92374": {
+"expansion": "DSK",
+"mana_value": "0",
+"name": "Island",
+"rarity": "basic",
+"types": "Basic Land - Island"
+},
+"92375": {
+"expansion": "DSK",
+"mana_value": "0",
+"name": "Island",
+"rarity": "basic",
+"types": "Basic Land - Island"
+},
+"92376": {
+"expansion": "DSK",
+"mana_value": "0",
+"name": "Swamp",
+"rarity": "basic",
+"types": "Basic Land - Swamp"
+},
+"92377": {
+"expansion": "DSK",
+"mana_value": "0",
+"name": "Swamp",
+"rarity": "basic",
+"types": "Basic Land - Swamp"
+},
+"92378": {
+"expansion": "DSK",
+"mana_value": "0",
+"name": "Mountain",
+"rarity": "basic",
+"types": "Basic Land - Mountain"
+},
+"92379": {
+"expansion": "DSK",
+"mana_value": "0",
+"name": "Mountain",
+"rarity": "basic",
+"types": "Basic Land - Mountain"
+},
+"92380": {
+"expansion": "DSK",
+"mana_value": "0",
+"name": "Forest",
+"rarity": "basic",
+"types": "Basic Land - Forest"
+},
+"92381": {
+"expansion": "DSK",
+"mana_value": "0",
+"name": "Forest",
+"rarity": "basic",
+"types": "Basic Land - Forest"
+},
+"92382": {
+"expansion": "DSK",
+"mana_value": "0",
+"name": "Plains",
+"rarity": "basic",
+"types": "Basic Land - Plains"
+},
+"92383": {
+"expansion": "DSK",
+"mana_value": "0",
+"name": "Island",
+"rarity": "basic",
+"types": "Basic Land - Island"
+},
+"92384": {
+"expansion": "DSK",
+"mana_value": "0",
+"name": "Swamp",
+"rarity": "basic",
+"types": "Basic Land - Swamp"
+},
+"92385": {
+"expansion": "DSK",
+"mana_value": "0",
+"name": "Mountain",
+"rarity": "basic",
+"types": "Basic Land - Mountain"
+},
+"92386": {
+"expansion": "DSK",
+"mana_value": "0",
+"name": "Forest",
+"rarity": "basic",
+"types": "Basic Land - Forest"
+},
+"92388": {
+"expansion": "TDSK",
+"mana_value": "0",
+"name": "Shard",
+"rarity": "token",
+"types": "Enchantment - Shard"
+},
+"92389": {
+"expansion": "TDSK",
+"mana_value": "0",
+"name": "Beast",
+"rarity": "token",
+"types": "Creature - Beast"
+},
+"92390": {
+"expansion": "TDSK",
+"mana_value": "0",
+"name": "Glimmer",
+"rarity": "token",
+"types": "Enchantment Creature - Glimmer"
+},
+"92391": {
+"expansion": "TDSK",
+"mana_value": "0",
+"name": "Insect",
+"rarity": "token",
+"types": "Creature - Insect"
+},
+"92392": {
+"expansion": "TDSK",
+"mana_value": "0",
+"name": "Spirit",
+"rarity": "token",
+"types": "Creature - Spirit"
+},
+"92393": {
+"expansion": "TDSK",
+"mana_value": "0",
+"name": "Toy",
+"rarity": "token",
+"types": "Artifact Creature - Toy"
+},
+"92394": {
+"expansion": "TDSK",
+"mana_value": "0",
+"name": "Spirit",
+"rarity": "token",
+"types": "Creature - Spirit"
+},
+"92395": {
+"expansion": "TDSK",
+"mana_value": "0",
+"name": "Demon",
+"rarity": "token",
+"types": "Creature - Demon"
+},
+"92396": {
+"expansion": "TDSK",
+"mana_value": "0",
+"name": "Horror",
+"rarity": "token",
+"types": "Enchantment Creature - Horror"
+},
+"92397": {
+"expansion": "TDSK",
+"mana_value": "0",
+"name": "Gremlin",
+"rarity": "token",
+"types": "Creature - Gremlin"
+},
+"92398": {
+"expansion": "TDSK",
+"mana_value": "0",
+"name": "Spider",
+"rarity": "token",
+"types": "Creature - Spider"
+},
+"92399": {
+"expansion": "TDSK",
+"mana_value": "0",
+"name": "Insect",
+"rarity": "token",
+"types": "Creature - Insect"
+},
+"92400": {
+"expansion": "TDSK",
+"mana_value": "0",
+"name": "Primo, the Indivisible",
+"rarity": "token",
+"types": "Legendary Creature - Fractal"
+},
+"92401": {
+"expansion": "TDSK",
+"mana_value": "0",
+"name": "Treasure",
+"rarity": "token",
+"types": "Artifact - Treasure"
+},
+"92402": {
+"expansion": "TDSK",
+"mana_value": "0",
+"name": "Everywhere",
+"rarity": "token",
+"types": "Land - Plains Island Swamp Mountain Forest"
+},
+"92403": {
+"expansion": "SPG",
+"mana_value": "4",
+"name": "Hallowed Haunting",
+"rarity": "mythic",
+"types": "Enchantment"
+},
+"92404": {
+"expansion": "SPG",
+"mana_value": "1",
+"name": "Soul Warden",
+"rarity": "mythic",
+"types": "Creature - Human Cleric"
+},
+"92405": {
+"expansion": "SPG",
+"mana_value": "9",
+"name": "Expropriate",
+"rarity": "mythic",
+"types": "Sorcery"
+},
+"92406": {
+"expansion": "SPG",
+"mana_value": "2",
+"name": "Phantasmal Image",
+"rarity": "mythic",
+"types": "Creature - Illusion"
+},
+"92407": {
+"expansion": "SPG",
+"mana_value": "4",
+"name": "Damnation",
+"rarity": "mythic",
+"types": "Sorcery"
+},
+"92410": {
+"expansion": "SPG",
+"mana_value": "1",
+"name": "Unholy Heat",
+"rarity": "mythic",
+"types": "Instant"
+},
+"92411": {
+"expansion": "SPG",
+"mana_value": "4",
+"name": "Collected Company",
+"rarity": "mythic",
+"types": "Instant"
+},
+"92412": {
+"expansion": "SPG",
+"mana_value": "1",
+"name": "Noxious Revival",
+"rarity": "mythic",
+"types": "Instant"
+}
+}
