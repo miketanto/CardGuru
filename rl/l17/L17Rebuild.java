@@ -8,6 +8,8 @@ import mage.abilities.keyword.DeathtouchAbility;
 import mage.abilities.keyword.MenaceAbility;
 import mage.cards.Card;
 import mage.cards.Cards;
+import mage.cards.CardsImpl;
+import mage.game.events.GameEvent;
 import mage.constants.Outcome;
 import mage.target.TargetCard;
 import mage.target.common.TargetCardInLibrary;
@@ -736,20 +738,8 @@ public class L17Rebuild extends CardTestPlayerBase {
             return super.chooseTarget(outcome, cards, target, source, game);
         }
 
-        /**
-         * `choice` variant: surveil and scry both ask, through this method, which of the
-         * top N cards to move off the top (PlayerImpl.doSurveil -> graveyard,
-         * PlayerImpl.scry -> bottom). The base rebuild leaves it to the AI, and the
-         * verified single biggest mechanism of unseen drift (rl/L17-FIDELITY.md §5,
-         * game 167) is an AI surveil burying a card the log draws two turns later.
-         * Here every card the log shows the user drawing on this turn or a later one is
-         * kept on top, and the rest are moved off -- the choice a player who knew the
-         * future would make, which is what "steered by the logged outcome" means.
-         */
-        private boolean pickLibraryOrder(Cards cards, TargetCard target, Game game) {
-            if (!V_CHOICE || !"U".equals(seat) || cards == null || cards.isEmpty()) return false;
-            String tn = target.getTargetName() == null ? "" : target.getTargetName();
-            if (!tn.contains("(Surveil)") && !tn.contains("(Scry)")) return false;
+        /** Cards the log shows the user drawing on this turn or a later one. */
+        private List<String> futureDraws(Game game) {
             int at = Integer.MAX_VALUE;
             for (Integer k : CUR.future.keySet()) {
                 if (k >= game.getTurnNum() && k < at) at = k;
@@ -758,6 +748,88 @@ public class L17Rebuild extends CardTestPlayerBase {
             if (at != Integer.MAX_VALUE) {
                 for (String s : CUR.future.get(at)) keep.add(front(s));
             }
+            return keep;
+        }
+
+        /** The subset of `cards` to move off the top: everything the log does not draw later. */
+        private Cards offTheTop(Cards cards, Game game) {
+            List<String> keep = futureDraws(game);
+            Cards off = new CardsImpl();
+            for (Card c : cards.getCards(game)) {
+                if (keep.remove(front(c.getMainCard().getName()))) continue;
+                off.add(c);
+            }
+            return off;
+        }
+
+        /**
+         * `choice` variant: surveil, the verified single biggest mechanism of unseen
+         * drift (rl/L17-FIDELITY.md §5, game 167 -- an AI surveil put a card the log
+         * draws on the next turn into the graveyard). Every card the log shows the user
+         * drawing on this turn or a later one is kept on top; the rest go to the
+         * graveyard. That is the choice a player who knew the future would make, which
+         * is what "steered by the logged outcome" means, and is not a fidelity a
+         * label-producing pipeline could claim.
+         *
+         * This has to override `doSurveil` itself rather than hook the choice:
+         * `TestPlayer.doSurveil` delegates straight to the wrapped `TestComputerPlayer`
+         * (which is `final`, so it cannot be subclassed), so the `chooseTarget` the
+         * engine makes inside it is the AI's, never this player's. The body below is
+         * `PlayerImpl.doSurveil` at the pin with the choice replaced, events and all.
+         */
+        @Override
+        public Player.SurveilResult doSurveil(int value, Ability source, Game game) {
+            if (!V_CHOICE || !"U".equals(seat)) return super.doSurveil(value, source, game);
+            GameEvent event = new GameEvent(GameEvent.EventType.SURVEIL, getId(), source, getId(), value, true);
+            if (game.replaceEvent(event) || event.getAmount() < 1) return Player.SurveilResult.noSurveil();
+            Cards cards = new CardsImpl();
+            cards.addAllCards(getLibrary().getTopCards(game, event.getAmount()));
+            int totalCount = cards.size();
+            if (!cards.isEmpty()) {
+                Cards off = offTheTop(cards, game);
+                out("G\t" + CUR.idx + "\t" + game.getTurnNum() + "\t" + seat + "\tsurveil\t"
+                        + off.size() + "/" + totalCount);
+                moveCards(off, Zone.GRAVEYARD, source, game);
+                cards.removeIf(off::contains);
+                putCardsOnTopOfLibrary(cards, game, source, true);
+            }
+            game.fireEvent(new GameEvent(GameEvent.EventType.SURVEILED, getId(), source, getId(), event.getAmount(), true));
+            return Player.SurveilResult.surveil(totalCount - cards.size(), cards.size());
+        }
+
+        /** `choice` variant, same reason and same shape as doSurveil above: PlayerImpl.scry. */
+        @Override
+        public boolean scry(int value, Ability source, Game game) {
+            if (!V_CHOICE || !"U".equals(seat)) return super.scry(value, source, game);
+            if (game.getTurnNum() == 1 && game.getStep() == null) return false;  // TestPlayer's own guard
+            GameEvent event = new GameEvent(GameEvent.EventType.SCRY, getId(), source, getId(), value, true);
+            if (game.replaceEvent(event)) return false;
+            Cards cards = new CardsImpl();
+            cards.addAllCards(getLibrary().getTopCards(game, event.getAmount()));
+            if (!cards.isEmpty()) {
+                Cards bottom = offTheTop(cards, game);
+                out("G\t" + CUR.idx + "\t" + game.getTurnNum() + "\t" + seat + "\tscry\t"
+                        + bottom.size() + "/" + cards.size());
+                putCardsOnBottomOfLibrary(bottom, game, source, true);
+                if (!bottom.isEmpty()) {
+                    game.fireEvent(GameEvent.getEvent(GameEvent.EventType.SCRY_TO_BOTTOM, getId(), source, getId(), bottom.size()));
+                }
+                cards.removeIf(bottom::contains);
+                putCardsOnTopOfLibrary(cards, game, source, true);
+            }
+            game.fireEvent(new GameEvent(GameEvent.EventType.SCRIED, getId(), source, getId(), event.getAmount(), true));
+            return true;
+        }
+
+        /**
+         * Secondary path for the same steering: effects that ask the controller directly
+         * which cards to move off the top (rather than going through scry/surveil).
+         */
+        private boolean pickLibraryOrder(Cards cards, TargetCard target, Game game) {
+            if (!V_CHOICE || !"U".equals(seat) || cards == null || cards.isEmpty()) return false;
+            String tn = target.getTargetName() == null ? "" : target.getTargetName();
+            if (!tn.contains("(Surveil)") && !tn.contains("(Scry)")) return false;
+            List<String> keep = futureDraws(game);
             int moved = 0;
             for (Card c : cards.getCards(game)) {
                 String n = front(c.getMainCard().getName());
@@ -808,12 +880,14 @@ public class L17Rebuild extends CardTestPlayerBase {
                 }
                 return;
             }
-            if (V_OPPO) sizeOppoHand(game, t);
             List<String> need = new ArrayList<>();
             for (Act a : CUR.acts) {
                 if (a.turn == t && a.seat.equals(seat) && (!"CASTI".equals(a.kind) || hasFlash(a.name))) need.add(front(a.name));
             }
-            if (need.isEmpty()) return;
+            if (need.isEmpty()) {
+                if (V_OPPO) sizeOppoHand(game, t, need);
+                return;
+            }
             Set<String> future = new HashSet<>();
             for (Act a : CUR.acts) {
                 if (a.turn > t && a.seat.equals(seat)) future.add(front(a.name));
@@ -876,6 +950,7 @@ public class L17Rebuild extends CardTestPlayerBase {
                     fail(t, seat, "SWAP", n, "no_spare_hand_grew");
                 }
             }
+            if (V_OPPO) sizeOppoHand(game, t, need);
         }
 
         /**
@@ -887,11 +962,13 @@ public class L17Rebuild extends CardTestPlayerBase {
          * from or giving back to the top of its library. Only the COUNT is logged, so
          * this fixes the compared field while the hand's CONTENTS stay invented.
          */
-        private void sizeOppoHand(Game game, int t) {
+        private void sizeOppoHand(Game game, int t, List<String> needNow) {
             Integer want = CUR.rsOHand.get(t - 1);
             if (want == null) return;
-            // the seat draws for its turn before this point, except on game turn 1
-            int target = want + (game.getActivePlayerId().equals(getId()) && t > 1 ? 1 : 0);
+            // this runs at the seat's first priority of the turn, which is the UPKEEP --
+            // before the draw step -- so the target is the logged end-of-previous-turn
+            // count with no draw added.
+            int target = want;
             int have = getHand().size();
             for (int i = have; i < target; i++) {
                 Card c = getLibrary().removeFromTop(game);
@@ -899,19 +976,16 @@ public class L17Rebuild extends CardTestPlayerBase {
                 c.setZone(Zone.HAND, game);
                 getHand().add(c);
             }
+            Set<String> need = new HashSet<>(needNow);
             for (int i = have; i > target; i--) {
                 Card spare = null;
-                Set<String> need = new HashSet<>();
-                for (Act a : CUR.acts) {
-                    if (a.turn >= t && a.seat.equals(seat) && !a.done) need.add(front(a.name));
-                }
                 for (Card c : getHand().getCards(game)) {
                     if (!need.contains(front(c.getMainCard().getName()))) {
                         spare = c;
                         break;
                     }
                 }
-                if (spare == null) break;
+                if (spare == null) break;   // every card left is one the log says it uses this turn
                 getHand().remove(spare);
                 spare.setZone(Zone.LIBRARY, game);
                 getLibrary().putOnBottom(spare, game);
