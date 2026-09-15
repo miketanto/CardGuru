@@ -59,3 +59,5 @@ side by side (D1 = one GPU python process; D2 = one policy server + one driver J
 | barely predicts | does not climb | the win/loss signal from this encoding is too weak for this RL at this scale: privileged critic, denser rewards, or search |
 
 ## STATE (append-only)
+- 2026-09-15 23:16Z WSL: 13c has exited (L13|done|reason=stopfile, recorded in rl/PHASE13-BC.md STATE); box free (no server, no driver JVM; three old `sleep 64800` keepalives left alone). D1 and D2 both start now.
+- 2026-09-15 23:18Z WSL (D2a LAUNCHED): rl/battery_p14s.sh = copy of rl/battery_p12s.sh with `SKILL` (default 6) in `-Drl.aiSkill` and `skill=` in the XDECKS line (diff: 3 lines + header; the original is untouched); rl/battery_x14.sh = the same change on rl/battery_xdeck.sh (for the two-stage levels). Runner rl/run_14d2a.sh (cmd start /min wsl): bc.pt sampled, 100 games vs CP7 on BenchDimir, row seed 930000 (= 13b's skill-6 level), skill 1 on 7949/7914 and skill 3 on 7947/7913 in parallel. Output rl/artifacts/v7/14/d2a/run.log (XDECKS|...|skill=N| lines), probes in d2a/s1, d2a/s3. pgrep-verified 23:18:50Z (runner, server 7949, JVM).
