@@ -630,6 +630,36 @@ upper bound of 0.004 is 125× below the pre-stated 0.50 — but it is worth sayi
 that the true rate is small and positive rather than zero, which the 200-game
 interval [0.000, 0.019] already allowed for.
 
+### 9.1 Full sample: cascade and per-turn fidelity
+
+Both readings hold at 10× the sample size.
+
+| reading (2,000 games) | 200-game value | full sample |
+|---|---|---|
+| first failed forced action **before** the first state mismatch | 8/199 = 0.040 [0.021, 0.077] | **72/1987 = 0.036**, Wilson 95 % [0.029, 0.045] |
+| …same turn / after / never | 49 / 138 / 4 | 613 / 1237 / 65 |
+| per-turn fidelity, `resync`, given a clean start | 0.530 [0.513, 0.547] | **17897/32799 = 0.546**, [0.540, 0.551] |
+| side-turns with a provably correct start | 0.956 | 0.951 (32,799 of 34,479) |
+
+Per-turn fidelity by depth, on 2,000 games (`resync`, clean starts only):
+
+| side-turns | per-turn fidelity (Wilson 95 %) |
+|---|---|
+| 1–2 | 3992/4000 = 0.998 [0.996, 0.999] |
+| 3–4 | 3626/4000 = 0.906 [0.897, 0.915] |
+| 5–6 | 2884/3989 = 0.723 [0.709, 0.737] |
+| 7–8 | 2199/3914 = 0.562 [0.546, 0.577] |
+| 9–12 | 2657/7157 = 0.371 [0.360, 0.383] |
+| 13–16 | 1426/5233 = 0.273 [0.261, 0.285] |
+| 17+ | 1113/4506 = 0.247 [0.235, 0.260] |
+| **1–8 pooled** | **12701/15903 = 0.799** [0.792, 0.805] |
+| **9+ pooled** | **5196/16896 = 0.308** [0.301, 0.315] |
+
+Every band is within the 200-game interval, and the cliff between side-turn 8
+and side-turn 9 survives at full width: 0.799 [0.792, 0.805] against 0.308
+[0.301, 0.315], intervals nowhere near touching. The recommendation in §8 rests
+on this table, not on the 200-game one.
+
 
 ## 10. Files and how to rerun
 
