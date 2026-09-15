@@ -133,6 +133,8 @@ public class L17Rebuild extends CardTestPlayerBase {
 
     static boolean nameMatch(Permanent p, String want, Game game) {
         if ("TOKEN".equals(want)) return p.isToken();
+        // 17Lands names face-down permanents (manifest dread) "[Face-Down Card]"
+        if ("[face-down card]".equals(front(want))) return p.isFaceDown(game);
         return bare(pname(p, game)).equals(front(want));
     }
 
@@ -582,6 +584,10 @@ public class L17Rebuild extends CardTestPlayerBase {
                 }
                 avail.remove(pick);
                 declareAttacker(pick.getId(), def, game, false);
+                // restrictions ("can't attack unless ...") can refuse the declaration silently
+                if (!game.getCombat().getAttackers().contains(pick.getId())) {
+                    fail(t, seat, "ATTACK", n, "attack_rejected");
+                }
             }
         }
 

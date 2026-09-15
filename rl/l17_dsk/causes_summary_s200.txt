@@ -1,0 +1,70 @@
+CAUSES|base=s200|guided=s200g|games_with_mismatch=199
+CAUSE|ability_logged|54|0.271
+   EX|game=10 user_2 user_hand: user_hand: log_only=['fear of burning alive'] engine_only=['mountain']
+   EX|game=55 user_4 user_hand: user_hand: log_only=['plains'] engine_only=[]
+   EX|game=102 oppo_3 user_hand: user_hand: log_only=['island'] engine_only=['daggermaw megalodon']
+CAUSE|hidden_choice|35|0.176
+   EX|game=19 user_5 user_creatures: user_creatures: log_only=['fear of falling'] engine_only=['plains']
+   EX|game=36 user_3 user_lands: user_lands: log_only=['forest'] engine_only=['island']
+   EX|game=42 user_4 user_creatures: user_creatures: log_only=['fear of isolation'] engine_only=['twist reality']
+CAUSE|field_user_life|21|0.106
+   EX|game=39 oppo_4 user_life: user_life: log=16 engine=19
+   EX|game=101 oppo_5 user_life: user_life: log=16 engine=13 ; user_creatures: log_only=[] engine_only=['demon']
+   EX|game=119 oppo_2 user_life: user_life: log=18 engine=19
+CAUSE|field_oppo_life|15|0.075
+   EX|game=100 user_2 oppo_life: oppo_life: log=17 engine=20 ; user_hand: log_only=['overlord of the boilerbilges'] engine_only=['forest']
+   EX|game=110 user_4 oppo_life: oppo_life: log=14 engine=16 ; user_creatures: log_only=['piggy bank'] engine_only=['glimmer'] ; user_noncreatures: log_only=[] engine_only=['treasure']
+   EX|game=225 user_3 oppo_life: oppo_life: log=17 engine=18 ; user_creatures: log_only=['kaito, bane of nightmares'] engine_only=['friendly teddy'] ; user_hand: log_only=['friendly teddy', 'wi
+CAUSE|forced_DRAW_not_in_library_graveyard|11|0.055
+   EX|game=167 user_3 user_creatures: user_creatures: log_only=['paranormal analyst'] engine_only=[] ; user_hand: log_only=[] engine_only=['slavering branchsnapper']
+   EX|game=286 user_5 user_creatures: user_creatures: log_only=['oblivious bookworm'] engine_only=[] ; user_hand: log_only=[] engine_only=['enter the enigma']
+   EX|game=402 user_3 user_hand: user_hand: log_only=['break down the door'] engine_only=['vanish from sight']
+CAUSE|forced_CAST_not_playable|10|0.050
+   EX|game=174 oppo_4 user_life: user_life: log=12 engine=13 ; oppo_life: log=25 engine=20 ; user_creatures: log_only=[] engine_only=['glimmer seeker'] ; oppo_hand: log=2 engine=3
+   EX|game=252 user_2 user_creatures: user_creatures: log_only=['fear of surveillance'] engine_only=[] ; user_hand: log_only=[] engine_only=['fear of surveillance']
+   EX|game=349 user_2 user_creatures: user_creatures: log_only=[] engine_only=['piranha fly'] ; oppo_hand: log=5 engine=6
+CAUSE|field_user_creatures|10|0.050
+   EX|game=239 oppo_4 user_creatures: user_creatures: log_only=[] engine_only=['glimmer']
+   EX|game=564 oppo_4 user_creatures: user_creatures: log_only=['fear of surveillance'] engine_only=['living phone']
+   EX|game=993 oppo_4 user_creatures: user_creatures: log_only=[] engine_only=['entity tracker']
+CAUSE|forced_LAND_not_in_hand|8|0.040
+   EX|game=460 user_3 user_lands: user_lands: log_only=['forest'] engine_only=[] ; user_hand: log_only=[] engine_only=['slavering branchsnapper']
+   EX|game=650 user_3 user_lands: user_lands: log_only=['mountain'] engine_only=[] ; user_hand: log_only=['turn inside out'] engine_only=['bashful beastie', 'mountain']
+   EX|game=677 user_4 user_lands: user_lands: log_only=['forest'] engine_only=[] ; user_creatures: log_only=['glassworks'] engine_only=['omnivorous flytrap'] ; user_hand: log_only=[] engine_only
+CAUSE|forced_CAST_activate_failed|7|0.035
+   EX|game=127 oppo_3 user_creatures: user_creatures: log_only=[] engine_only=['paranormal analyst'] ; oppo_hand: log=5 engine=6
+   EX|game=190 oppo_3 oppo_hand: oppo_hand: log=3 engine=4
+   EX|game=495 user_4 oppo_life: oppo_life: log=20 engine=22 ; user_creatures: log_only=['gremlin', 'razorkin hordecaller'] engine_only=[] ; user_hand: log_only=[] engine_only=['razorkin hordec
+CAUSE|field_user_hand|7|0.035
+   EX|game=437 user_2 user_hand: user_hand: log_only=['wickerfolk thresher'] engine_only=['miasma demon']
+   EX|game=629 oppo_5 user_hand: user_hand: log_only=['fear of immobility'] engine_only=['island']
+   EX|game=634 user_3 user_hand: user_hand: log_only=['mountain'] engine_only=['bashful beastie']
+CAUSE|forced_CAST_not_in_hand|5|0.025
+   EX|game=105 user_2 user_creatures: user_creatures: log_only=['veteran survivor'] engine_only=[]
+   EX|game=1144 user_3 oppo_life: oppo_life: log=18 engine=19 ; user_creatures: log_only=['clockwork percussionist'] engine_only=[] ; user_noncreatures: log_only=['surgical suite'] engine_only=[
+   EX|game=1513 user_4 user_creatures: user_creatures: log_only=['unstoppable slasher'] engine_only=[]
+CAUSE|forced_SWAP_not_in_library_graveyard|4|0.020
+   EX|game=334 oppo_4 user_creatures: user_creatures: log_only=[] engine_only=['piggy bank'] ; user_noncreatures: log_only=['treasure'] engine_only=[] ; oppo_hand: log=4 engine=5
+   EX|game=726 oppo_4 oppo_hand: oppo_hand: log=3 engine=4
+   EX|game=822 oppo_6 oppo_hand: oppo_hand: log=2 engine=4
+CAUSE|forced_BLOCK_no_blocker|3|0.015
+   EX|game=309 user_3 oppo_life: oppo_life: log=18 engine=16
+   EX|game=394 user_3 oppo_life: oppo_life: log=20 engine=18 ; user_creatures: log_only=[] engine_only=['reluctant role model']
+   EX|game=1818 user_3 oppo_life: oppo_life: log=20 engine=18 ; user_creatures: log_only=[] engine_only=['acrobatic cheerleader'] ; oppo_hand: log=3 engine=4
+CAUSE|forced_ATTACK_no_attacker_tapped|2|0.010
+   EX|game=330 user_3 oppo_life: oppo_life: log=18 engine=20 ; user_creatures: log_only=['oblivious bookworm'] engine_only=[] ; user_hand: log_only=[] engine_only=["don't make a sound"]
+   EX|game=1760 oppo_4 user_life: user_life: log=18 engine=19
+CAUSE|forced_ATTACK_no_attacker_absent|2|0.010
+   EX|game=1228 oppo_3 user_life: user_life: log=16 engine=18
+   EX|game=1648 oppo_7 user_life: user_life: log=5 engine=10
+CAUSE|forced_SWAP_not_in_library_battlefield|1|0.005
+   EX|game=131 oppo_5 user_creatures: user_creatures: log_only=[] engine_only=['scrabbling skullcrab'] ; oppo_hand: log=2 engine=3
+CAUSE|forced_SWAP_no_spare_hand_grew|1|0.005
+   EX|game=996 oppo_5 oppo_hand: oppo_hand: log=1 engine=2
+CAUSE|field_user_noncreatures|1|0.005
+   EX|game=1465 oppo_3 user_noncreatures: user_noncreatures: log_only=['underwater tunnel'] engine_only=[] ; user_hand: log_only=[] engine_only=['underwater tunnel']
+CAUSE|field_oppo_hand|1|0.005
+   EX|game=1540 oppo_4 oppo_hand: oppo_hand: log=8 engine=7
+CAUSE|forced_SWAP_not_in_library_missing|1|0.005
+   EX|game=1697 user_4 user_creatures: user_creatures: log_only=['oblivious bookworm'] engine_only=['forest']
+GUIDED_VS_BASE|games=200|guided_longer=45|guided_shorter=2
