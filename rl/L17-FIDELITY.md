@@ -193,6 +193,29 @@ Steering hidden choices buys about a third of a turn on average and moves no
 game near 8 turns; the most frequent first break moves from the user's
 creatures to the user's hand and life totals.
 
+### 4.1 All 2,000 games (base; the 200-game run finished well inside the 2-hour gate)
+
+`rl/l17_dsk/fidelity_games.csv` (the requested per-game file; identical to
+`fidelity_games_all.csv`), `fidelity_summary_all.txt`. 2000/2000 engine runs
+ok, about 22 minutes of wall time under the caps.
+
+| reading (base, 2,000 games) | value |
+|---|---|
+| coverage | 2000/2000 (§2) |
+| median turns matched before first mismatch | **2** (mean 2.58; median turns logged 9) |
+| games matching ≥ 8 turns | **1/2000 = 0.0005**, Wilson 95% [0.000, 0.003] |
+| same, among the 1,409 games logged ≥ 8 turns | 1/1409, [0.000, 0.004] |
+| games fully matched to their logged end | 15/2000 = 0.007, [0.005, 0.012] |
+| turns-matched histogram | 0: 8, 1: 336, 2: 702, 3: 569, 4: 265, 5: 85, 6: 25, 7: 9, 8: 1 |
+| most frequent first-mismatch field | **user_creatures 634 (0.317)**; user_hand 456, oppo_life 278, user_life 277, oppo_hand 161, user_lands 131, user_noncreatures 48 |
+| labels per game before the first mismatch | land 2.63, spell 1.64, attack 0.66, block 0.07 (total 5.00) |
+| unambiguous share of those labels | land 0.438, spell 0.028, attack 1.000, block 0.993 (all 0.387) |
+| user turns with more than one possible order | 10221/17433 = 0.586 |
+| targeted user spells cast by the engine | 2,414 |
+
+The 200-game sample was representative: every reading agrees with §4 within
+its interval.
+
 ## 5. Why the replay breaks (base, 200 games; `rl/l17/causes.py`)
 
 One cause per game with a mismatch (199 of 200), first rule that applies:
