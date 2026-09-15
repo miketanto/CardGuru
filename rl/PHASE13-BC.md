@@ -132,3 +132,30 @@ Phase 13 verdict and a HANDOFF-V7 UPDATE + section.
 - 2026-09-15 ~16:05Z WSL (13b census of bc.pt, rl/record_census.sh bc.pt BenchDimir cp7 25 p13_bc 13700 - argmax-classes play vs CP7, 25 games, transcripts kept, cand_refers_pool=True; rl/artifacts/v7/13/bc/census_bc.txt): W/L 10/15 (a census, not a level); HABITS vs the pre-registered clauses: self-destroy 2/120 = 0.017 [0.005, 0.059] < 0.2 MET (CP7 0.007); counterspells taken 22/35 = 0.629 [0.463, 0.768] - the [0.2, 0.5] band NOT MET (above it; CP7's own 0.472 [0.446, 0.499], intervals overlap); creatures cast per game 3.88 [2.99, 4.77] >= 3 MET (CP7 3.84). So 'habits cloned' holds on 2 of 3 clauses. Also: flash cast at instant speed 13/75 = 0.173 (CP7 0.037), removal on the highest-power enemy 24/24, ninjutsu 2/9, turns/game 17.8. Levels (three readouts) next in the chain.
 - 2026-09-15 16:15Z WSL (13b levels, SAMPLED readout of bc.pt, rl/run_13_levels.sh via battery_p12s.sh, row seed 930000): vs CP7 33/100 = 0.330 [0.246, 0.427] (17.2 turns, 0 stalls); vs heuristic 39/50 = 0.780 [0.648, 0.872]. Phase 12's best sampled CP7 level was 0.22 [0.150, 0.311] - bc.pt's point is above it, the intervals overlap; 'competent start' needs >= 0.35 on sampled OR two-stage: sampled misses by 0.02, two-stage pending. Two-stage then argmax-classes rows running (~40 min); rl/artifacts/v7/13/levels/levels.txt.
 - 2026-09-15 16:57Z WSL (13b ROW WRITTEN + 13c LAUNCHED): rl/V7-VALIDATION.md '13b — the clone'. Levels of bc.pt vs CP7 sampled 0.330 [0.246, 0.427] / two-stage 0.310 [0.228, 0.406] / argmax 0.320 [0.237, 0.417]; vs heuristic 0.780 / 0.740 / 0.740. SCRIPT FAULT (not a failed measurement): run_13_levels.sh grepped ^XDECKS (battery_p12s.sh) and missed battery_xdeck.sh's XDECK| lines, so run_13b.log marks the two-stage and argmax rows L13|FAIL; numbers read from the rows' probe files; fixed (^XDECKS?|). The same mismatch the other way round was in the generated phase13.py (phase12's battery() kept only XDECK| lines: the sampled readout would have parsed 0/0 at every 13c level) - fixed in make_phase13.py (accepts both prefixes; tested on a real XDECKS line), phase13.py regenerated and swapped atomically BEFORE 13c launched. Readings: card-level clone NOT met by the letter (priority 0.897 of ceiling; card-swap text dp 0.0424 vs 0.0430, missed by 0.0006, overlapping; flips 0.207 vs 0.119, same-row separation 0.42 vs 0.10) -> 'type-level clone again' recorded with those caveats; competent start NOT met (0.33 / 0.31 < 0.35, bar inside both intervals; clear above Phase 12's sampled start 0.12); habits 2 of 3 (counterspells 0.63 above the band). chain_13bc.sh blocked on its keepalive step (WSL-side cmd.exe interop of 'cmd.exe /c start' never returned; the keepalive itself started) - unblocked with rl/unblock_13c.sh (pid-checked kill of that interop process only). 13c LAUNCHED 16:55:38Z (rl/phase13.py, pid 124516), pgrep-verified 16:56:45Z: controller, lane rung0_lane_league.sh, learner server 7950, driver 7912, keepalives x3 (newest 18 h from 16:55Z). WATCH rl/artifacts/v7/13/c/phase13.log: L13|block|n=..|trained=a->b|opp=..|wr=.. per 256 episodes; L13|check|M_B|... per block (25 CP7 argmax games, dimir counters); L13|level|M_B|point=train|trained=..|sampled_cp7=..|twostage_cp7=..|argmax_cp7=..|graduated=.. every 1,024; L13|grad / L13|done. Lane log /tmp/rl_13_M_B/lane.log; state rl/artifacts/v7/13/c/state.json (resumable: python3 rl/phase13.py). Stop cleanly: touch rl/artifacts/v7/13/c/STOP (after the current block). --hours 12 from 16:55Z.
+
+## Amendment 1 — the 2,048 level is make-or-break (user decision, 2026-09-15 20:15Z)
+
+Registered before any training block past 1,024 had reported (last log line at
+registration: the 1,024 level). The 1,024 level: sampled CP7 0.220 [0.150,0.311],
+two-stage 0.350 [0.264,0.447], argmax 0.390 [0.300,0.488]; heuristic 0.72 / 0.72 /
+0.74; bc.pt was sampled 0.330 [0.246,0.427] / two-stage 0.310 / argmax 0.320.
+Pooled CP7 training blocks 0→1,024: 214/768 = 0.279 [0.248, 0.311].
+
+At the 2,048 level (the controller's normal 100-game CP7 / 50-game heuristic level):
+
+* **MAKE** (continue under this runbook to the 3,072 level) if either
+  (a) the **sampled or two-stage** level vs CP7 is **≥ 43/100** (the smallest count
+  whose Wilson lower bound, 0.337, clears bc.pt's 0.33), or
+  (b) the pooled win rate of the **CP7 training blocks 1,024→2,048** has a Wilson
+  lower bound **> 0.311** (above the 0→1,024 interval; with 768 games that is ≥ 265/768).
+* **BREAK** otherwise: stop 13c gracefully after the level (STOP file), keep every
+  checkpoint, write the 13c row with the reading "does not learn past the clone on
+  this recipe in 2,048 episodes", and hand the next step to the user (candidates,
+  not chosen here: KL-to-bc.pt, a larger or cleaner BC set, a different learning
+  signal).
+* The argmax readout is reported but cannot MAKE (as in the graduation rule).
+* The pre-registered "forgets the clone" reading still applies at 2,048.
+* Cannots: one seed; 100-game levels resolve only ~±0.09; rule (b) mixes a moving
+  policy within each block and includes exploration, so it can MAKE but is not a level.
+* Evaluator: `rl/p13_makebreak.py` (reads `rl/artifacts/v7/13/c/phase13.log`, prints
+  `MB|MAKE|...` or `MB|BREAK|...`).
