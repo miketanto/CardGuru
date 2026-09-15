@@ -1,6 +1,7 @@
 """L17 step 3a: turn 17Lands DSK games into rebuild specs for L17Rebuild.java.
 
   python3 rl/l17/build_specs.py OUT.tsv [--games 0-19 | --sample 200 --seed 17 | --all]
+                                        [--variant abil,choice,oppo,order,resync|all]
 
 Spec format (tab separated, one block per game, seats: U = logged user, O = opponent):
   G  idx  userIsA(1/0)  lastGameTurn
@@ -15,7 +16,27 @@ Player A always starts (XMage test framework); game turn 1 = A's first turn.
 Order rule within a turn (not logged): land first, then casts by ascending mana
 value (ties by name). Instants: DECLARE_BLOCKERS if the active seat attacked
 that turn, else PRECOMBAT_MAIN (own turn) / END_TURN (other seat's turn).
+
+Cloud variants (rl/L17-FIDELITY-CLOUD.md §2) add lines, each emitted ONLY when
+its variant is selected, so a `base` spec stays byte-identical to the one the
+local session built:
+  ABIL turn seat name        (--variant abil)   a logged ability id whose owning
+                             card rl/l17/ability_map.py identified, as a card name
+  FUT  turn name|name        (--variant choice) cards the log shows the user
+                             drawing on this or a later turn (surveil/scry steering)
+  DISC turn seat name|name   (--variant choice) cards the log shows discarded
+  RS   turn seat name|name   (--variant resync) that seat's permanents at end of
+                             turn; `tok:` prefix = token, `fd` = [Face-Down Card]
+  RL   turn userLife oppoLife       (--variant resync)
+  RH   turn name|name               (--variant resync) the user's hand at end of turn
+  RO   turn count                   (--variant resync) the opponent's hand SIZE
+The `oppo` variant moves the non-active seat's logged instants from
+DECLARE_BLOCKERS to DECLARE_ATTACKERS when the active seat attacked and the log
+records one of its creatures dying outside combat that turn (i.e. the instant
+was removal aimed at an attacker), and emits RO so the opponent's hidden hand
+can be sized to the logged count.
 """
+import csv
 import gzip
 import json
 import os
@@ -26,6 +47,25 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 DATA = os.path.join(HERE, '..', 'l17_dsk')
 BASIC = {'W': 'Plains', 'U': 'Island', 'B': 'Swamp', 'R': 'Mountain', 'G': 'Forest'}
 DECK_SIZE = 40
+VARIANTS = set()
+
+
+def on(v):
+    return v in VARIANTS or ('all' in VARIANTS and v != 'resync')
+
+
+def ability_owner_map():
+    """ability id -> owning card name, for ids rl/l17/ability_map.py accepted and
+    whose owner is not a basic land (a basic land's only ability is its mana
+    ability, which the engine uses on its own)."""
+    path = os.path.join(DATA, 'ability_map_cloud.csv')
+    out = {}
+    if not os.path.exists(path):
+        return out
+    for r in csv.DictReader(open(path, encoding='utf-8')):
+        if r['accepted'] == '1' and r['is_basic_land'] == '0' and r['card']:
+            out[r['ability_id']] = r['card']
+    return out
 
 
 def load():
@@ -97,12 +137,13 @@ def on_play(g):
     return v is True or str(v).strip().lower() in ('true', '1', '1.0')
 
 
-def build(idx, g, nm, rng):
+def build(idx, g, nm, rng, abmap=None):
     user_is_a = on_play(g)
     seat = {'user': 'U', 'oppo': 'O'}
     nt = int(g['num_turns'])
     lines = []
     acts, atks, blocks, draws, eots, eotc, kills, seen = [], [], [], [], [], [], [], []
+    abils, discs, rsperm, rlife, rhand, rohand = [], [], [], [], [], []
     prev_perm = {}
     opp_seq = []  # opponent card instances in play order (for its hand/library)
     last = 0
@@ -133,9 +174,14 @@ def build(idx, g, nm, rng):
                     if side == 'oppo':
                         opp_seq.append(nm.name(i))
             # the other seat's instants on this turn
+            act_killed = ids(g, p + f'{side}_creatures_killed_non_combat')
             for i in ids(g, p + f'{other}_instants_sorceries_cast'):
                 if not nm.is_token(i):
                     step = 'DECLARE_BLOCKERS' if attackers else 'END_TURN'
+                    # oppo variant: removal that answered an attacker has to be cast
+                    # after attackers are declared but BEFORE blocks, not after them
+                    if on('oppo') and attackers and act_killed:
+                        step = 'DECLARE_ATTACKERS'
                     acts.append((t, seat[other], step, 'CAST', nm.name(i)))
                     if other == 'oppo':
                         opp_seq.append(nm.name(i))
@@ -190,6 +236,46 @@ def build(idx, g, nm, rng):
                 d = nm.names(ids(g, p + 'cards_drawn'))
                 if d:
                     draws.append((t, d))
+            # --- cloud variant lines (emitted only for the variants that use them)
+            if abmap:
+                for who in ('user', 'oppo'):
+                    for a in ids(g, p + f'{who}_abilities'):
+                        c = abmap.get(a)
+                        if c:
+                            abils.append((t, seat[who], c))
+            if on('choice'):
+                for who, s_ in (('user', 'U'), ('oppo', 'O')):
+                    dn = [nm.name(i) for i in ids(g, p + 'cards_discarded')] if who == 'user' else []
+                    dn = [x for x in dn if x]
+                    if dn:
+                        discs.append((t, s_, dn))
+            if on('resync'):
+                for who, s_ in (('user', 'U'), ('oppo', 'O')):
+                    perm = []
+                    for key in ('eot_%s_lands_in_play', 'eot_%s_creatures_in_play', 'eot_%s_non_creatures_in_play'):
+                        for i in ids(g, p + key % who):
+                            n_ = nm.name(i)
+                            if n_ == '[Face-Down Card]':
+                                perm.append('fd')
+                            elif nm.is_token(i):
+                                perm.append('tok:' + (n_ or 'unknown'))
+                            else:
+                                perm.append(n_)
+                    rsperm.append((t, s_, perm))
+                try:
+                    rlife.append((t, int(float(g.get(p + 'eot_user_life', 20))), int(float(g.get(p + 'eot_oppo_life', 20)))))
+                except ValueError:
+                    pass
+                rhand.append((t, [nm.name(i) for i in ids(g, p + 'eot_user_cards_in_hand') if nm.name(i)]))
+                try:
+                    rohand.append((t, int(float(g.get(p + 'eot_oppo_cards_in_hand', 0)))))
+                except ValueError:
+                    pass
+            elif on('oppo'):
+                try:
+                    rohand.append((t, int(float(g.get(p + 'eot_oppo_cards_in_hand', 0)))))
+                except ValueError:
+                    pass
     # ---- user seat: hand + library (logged draws on top, rest seeded-random, mulligan bottoms last)
     deck = []
     for c, k in (g.get('deck') or {}).items():
@@ -248,6 +334,25 @@ def build(idx, g, nm, rng):
         lines.append(f'N\t{t}\t{s}\t' + '|'.join(kn))
     for t, vis in seen:
         lines.append(f'W\t{t}\tU\t' + '|'.join(vis))
+    for t, s, c in abils:
+        lines.append(f'ABIL\t{t}\t{s}\t{c}')
+    for t, s, dn in discs:
+        lines.append(f'DISC\t{t}\t{s}\t' + '|'.join(dn))
+    if on('choice'):
+        # cards the log shows the user drawing on this or a later turn: a surveil
+        # or scry must not bury them
+        by_turn = sorted(draws)
+        for k, (t, _) in enumerate(by_turn):
+            fut = [c for _, d in by_turn[k:] for c in d]
+            lines.append(f'FUT\t{t}\t' + '|'.join(fut))
+    for t, s, perm in rsperm:
+        lines.append(f'RS\t{t}\t{s}\t' + '|'.join(perm))
+    for t, ul, ol in rlife:
+        lines.append(f'RL\t{t}\t{ul}\t{ol}')
+    for t, h in rhand:
+        lines.append(f'RH\t{t}\t' + '|'.join(h))
+    for t, c in rohand:
+        lines.append(f'RO\t{t}\t{c}')
     lines.append('E')
     return lines
 
@@ -268,15 +373,19 @@ def select(games, argv):
 
 
 def main():
+    global VARIANTS
     out = sys.argv[1]
+    if '--variant' in sys.argv:
+        VARIANTS = {x for x in sys.argv[sys.argv.index('--variant') + 1].split(',') if x and x != 'base'}
     cards, games = load()
     nm = Namer(cards)
     sel = select(games, sys.argv)
+    abmap = ability_owner_map() if on('abil') else None
     with open(out, 'w', encoding='utf-8', newline='\n') as f:
         for i in sel:
-            for line in build(i, games[i], nm, random.Random(1000 + i)):
+            for line in build(i, games[i], nm, random.Random(1000 + i), abmap):
                 f.write(line + '\n')
-    print(f'SPECS|games={len(sel)}|out={out}')
+    print(f'SPECS|games={len(sel)}|variants={sorted(VARIANTS) or ["base"]}|out={out}')
 
 
 if __name__ == '__main__':

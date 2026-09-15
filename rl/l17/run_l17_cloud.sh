@@ -28,7 +28,7 @@ VARIANT=${L17_VARIANT:-base}
 [ "$GUIDE" = "1" ] && GFLAG="-Dl17.guide=true" || GFLAG="-Dl17.guide=false"
 mkdir -p "$RUN/classes"
 javac -nowarn -encoding UTF-8 -d "$RUN/classes" -cp "$CP" "$REPO/rl/l17/L17Rebuild.java" || exit 1
-[ -f "$RUN/spec_$TAG.tsv" ] || python3 "$REPO/rl/l17/build_specs.py" "$RUN/spec_$TAG.tsv" "$@" || exit 1
+[ -f "$RUN/spec_$TAG.tsv" ] || python3 "$REPO/rl/l17/build_specs.py" "$RUN/spec_$TAG.tsv" --variant "$VARIANT" "$@" || exit 1
 cd "$RUN" || exit 1
 
 fails=0

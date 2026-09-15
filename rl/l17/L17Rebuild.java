@@ -11,8 +11,12 @@ import mage.cards.Cards;
 import mage.constants.Outcome;
 import mage.target.TargetCard;
 import mage.target.common.TargetCardInLibrary;
+import mage.abilities.common.SimpleStaticAbility;
+import mage.abilities.effects.common.InfoEffect;
 import mage.cards.repository.CardInfo;
 import mage.cards.repository.CardRepository;
+import mage.cards.repository.TokenInfo;
+import mage.cards.repository.TokenRepository;
 import mage.constants.PhaseStep;
 import mage.constants.RangeOfInfluence;
 import mage.constants.Zone;
@@ -23,7 +27,9 @@ import mage.filter.predicate.permanent.SummoningSicknessPredicate;
 import mage.game.Game;
 import mage.game.permanent.Permanent;
 import mage.game.permanent.PermanentCard;
+import mage.game.permanent.token.Token;
 import mage.players.Player;
+import mage.util.CardUtil;
 import mage.util.ThreadUtils;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
@@ -61,6 +67,7 @@ public class L17Rebuild extends CardTestPlayerBase {
         int turn;
         String seat, step, kind, name;
         boolean done;
+        int tries;
     }
 
     static class Blk {
@@ -82,10 +89,36 @@ public class L17Rebuild extends CardTestPlayerBase {
         Map<String, List<String>> eotCre = new HashMap<>();   // turn:seat -> logged creatures at end of turn
         Map<String, List<String>> kills = new HashMap<>();    // turn:seat -> that seat's creatures killed non-combat
         Map<Integer, List<String>> seen = new HashMap<>();    // turn -> user's logged hand + permanents at end of turn
+        // ---- cloud variant data (rl/L17-FIDELITY-CLOUD.md §2)
+        List<Act> abils = new ArrayList<>();                  // ABIL: logged ability, by owning card name
+        Map<Integer, List<String>> future = new HashMap<>();  // FUT: user's draws on this turn or later
+        Map<String, List<String>> disc = new HashMap<>();     // DISC: turn:seat -> cards discarded
+        Map<String, List<String>> rsPerm = new HashMap<>();   // RS: turn:seat -> permanents at end of turn
+        Map<Integer, int[]> rsLife = new HashMap<>();         // RL: turn -> {user life, oppo life}
+        Map<Integer, List<String>> rsHand = new HashMap<>();  // RH: turn -> user's hand at end of turn
+        Map<Integer, Integer> rsOHand = new HashMap<>();      // RO: turn -> opponent's hand SIZE
     }
 
     /** -Dl17.guide=true: log-guided hidden choices (removal targets, manifest dread, draws rescued from the graveyard). */
     static final boolean GUIDE = Boolean.getBoolean("l17.guide");
+
+    /**
+     * -Dl17.variant=base|abil|choice|oppo|order|resync|all (comma separated also accepted).
+     * "all" is abil+choice+oppo+order; resync is a different measurement and is never
+     * included in "all". See rl/L17-FIDELITY-CLOUD.md §2 for what each may and may not move.
+     */
+    static final String VARIANT = System.getProperty("l17.variant", "base");
+    static final Set<String> VARIANTS = new HashSet<>(Arrays.asList(VARIANT.split(",")));
+
+    static boolean on(String v) {
+        return VARIANTS.contains(v) || (VARIANTS.contains("all") && !"resync".equals(v));
+    }
+
+    static final boolean V_ABIL = on("abil"), V_CHOICE = on("choice"), V_OPPO = on("oppo"),
+            V_ORDER = on("order"), V_RESYNC = on("resync");
+    /** the log-outcome steering of hidden choices: the original guided run, or the `choice` variant. */
+    static final boolean STEER = GUIDE || V_CHOICE;
+    static final int ORDER_MAX_TRIES = 8;
     static final Map<String, Boolean> FLASH_CACHE = new HashMap<>();
 
     static boolean hasFlash(String name) {
@@ -199,7 +232,194 @@ public class L17Rebuild extends CardTestPlayerBase {
         if (t - 1 > lastSnapTurn) {
             snapshot(game, t - 1, false);
             lastSnapTurn = t - 1;
+            if (V_RESYNC && t > 1) resync(game, t - 1);
         }
+    }
+
+    // ---------------------------------------------------------------- resync
+    /**
+     * `resync` variant (rl/L17-FIDELITY-CLOUD.md §2a). Right after the snapshot for
+     * side-turn T is taken, the engine's state is pushed to the LOGGED end-of-side-turn-T
+     * state, so side-turn T+1 is replayed from a correct start rather than from whatever
+     * the replay had drifted to. That makes each side-turn an independent test of
+     * one-turn fidelity, which is a different quantity from "turns matched before the
+     * first mismatch" and is reported separately, never against the base run.
+     *
+     * Three things the log does not hold, and which therefore cannot be resynced:
+     * a token or a [Face-Down Card] the engine does not already have (the log names the
+     * token but not which card is under a face-down permanent, and the token's identity
+     * is not enough to rebuild its characteristics reliably) -- these are counted as
+     * `unmet`; the CONTENTS of the opponent's hand (only its size is logged); and
+     * everything the compared state never held -- graveyards, exile, counters, tapped
+     * status, the libraries' order below the forced draws.
+     */
+    static Ability fakeAbility(UUID controllerId) {
+        Ability a = new SimpleStaticAbility(Zone.OUTSIDE, new InfoEffect("l17 resync"));
+        a.setControllerId(controllerId);
+        return a;
+    }
+
+    static Card findCard(Player p, String name, Game game) {
+        String n = front(name);
+        for (Card c : p.getLibrary().getCards(game)) if (front(c.getMainCard().getName()).equals(n)) return c;
+        for (Card c : p.getHand().getCards(game)) if (front(c.getMainCard().getName()).equals(n)) return c;
+        for (Card c : p.getGraveyard().getCards(game)) if (front(c.getMainCard().getName()).equals(n)) return c;
+        return null;
+    }
+
+    /** Take a card out of whatever zone it is in so it can be moved somewhere else. */
+    static void detach(Player p, Card c, Game game) {
+        p.getLibrary().remove(c.getId(), game);
+        p.getHand().remove(c);
+        p.getGraveyard().remove(c);
+    }
+
+    /** A copy of the named card, registered with the game, for a permanent the log has and the engine does not. */
+    static Card freshCard(Game game, Player p, String name) {
+        CardInfo ci = CardRepository.instance.findCard(dbName(name), true);
+        if (ci == null) return null;
+        Card c = ci.createCard();
+        if (c == null) return null;
+        game.loadCards(new HashSet<>(Collections.singletonList(c)), p.getId());
+        return c;
+    }
+
+    static boolean addPermanent(Game game, Player p, String name) {
+        Card c = findCard(p, name, game);
+        if (c != null) detach(p, c, game);
+        else c = freshCard(game, p, name);
+        if (c == null) return false;
+        try {
+            CardUtil.putCardOntoBattlefieldWithEffects(fakeAbility(p.getId()), game, c, p, false);
+            return true;
+        } catch (Throwable e) {
+            return false;
+        }
+    }
+
+    static boolean addToken(Game game, Player p, String tokenName) {
+        try {
+            for (TokenInfo ti : TokenRepository.instance.getAll()) {
+                if (!front(ti.getName()).equals(front(tokenName))) continue;
+                Object o = Class.forName(ti.getFullClassFileName()).getDeclaredConstructor().newInstance();
+                if (!(o instanceof Token)) continue;
+                Set<UUID> before = new HashSet<>();
+                for (Permanent q : game.getBattlefield().getAllActivePermanents(p.getId())) before.add(q.getId());
+                if (!((Token) o).putOntoBattlefield(1, game, fakeAbility(p.getId()), p.getId())) return false;
+                for (Permanent q : game.getBattlefield().getAllActivePermanents(p.getId())) {
+                    if (!before.contains(q.getId()) && q instanceof mage.game.permanent.PermanentImpl) {
+                        ((mage.game.permanent.PermanentImpl) q).removeSummoningSickness();
+                    }
+                }
+                return true;
+            }
+        } catch (Throwable ignored) {
+        }
+        return false;
+    }
+
+    /** Remove a permanent the log does not have, without firing leave-the-battlefield triggers. */
+    static void removeSilently(Game game, Permanent perm, Player p) {
+        // Break both directions of every attachment first. A host that keeps the id of a
+        // removed aura or equipment is dereferenced by the AI's board evaluator
+        // (GameStateEvaluator2.evaluatePermanent) and throws, killing the game.
+        for (UUID aid : new ArrayList<>(perm.getAttachments())) {
+            Permanent at = game.getPermanent(aid);
+            if (at != null) at.unattach(game);
+        }
+        if (perm.getAttachedTo() != null) {
+            Permanent host = game.getPermanent(perm.getAttachedTo());
+            if (host != null) host.removeAttachment(perm.getId(), null, game);
+            perm.unattach(game);
+        }
+        game.getBattlefield().removePermanent(perm.getId());
+        if (perm instanceof PermanentCard) {
+            Card c = ((PermanentCard) perm).getCard();
+            if (c != null) {
+                c.setZone(Zone.GRAVEYARD, game);
+                p.getGraveyard().add(c);
+            }
+        }
+    }
+
+    static void resync(Game game, int T) {
+        Player u = game.getPlayer(uId), o = game.getPlayer(oId);
+        int unmet = 0, removed = 0, added = 0, handFix = 0;
+        int[] lf = CUR.rsLife.get(T);
+        if (lf != null) {
+            u.setLife(lf[0], game, (Ability) null);
+            o.setLife(lf[1], game, (Ability) null);
+        }
+        for (String s : new String[]{"U", "O"}) {
+            Player p = "U".equals(s) ? u : o;
+            List<String> want = CUR.rsPerm.get(T + ":" + s);
+            if (want == null) continue;
+            List<String> wantN = new ArrayList<>();
+            for (String x : want) wantN.add(x.startsWith("tok:") ? "tok:" + front(x.substring(4)) : front(x));
+            List<Permanent> extra = new ArrayList<>();
+            for (Permanent perm : game.getBattlefield().getAllActivePermanents(p.getId())) {
+                String n = pname(perm, game);                       // tok:x / FD:x / plain
+                String key = n.startsWith("FD:") ? "fd" : n;
+                if (wantN.remove(key) || wantN.remove(bare(n))) continue;
+                extra.add(perm);
+            }
+            for (Permanent perm : extra) {
+                removeSilently(game, perm, p);
+                removed++;
+            }
+            for (String n : wantN) {
+                boolean ok;
+                if ("fd".equals(n)) ok = false;                     // the log never says what is under it
+                else if (n.startsWith("tok:")) ok = addToken(game, p, n.substring(4));
+                else ok = addPermanent(game, p, n);
+                if (ok) added++;
+                else unmet++;
+            }
+        }
+        List<String> wh = CUR.rsHand.get(T);
+        if (wh != null) {
+            List<String> wantH = new ArrayList<>();
+            for (String x : wh) wantH.add(front(x));
+            for (Card c : new ArrayList<>(u.getHand().getCards(game))) {
+                if (wantH.remove(front(c.getMainCard().getName()))) continue;
+                u.getHand().remove(c);
+                c.setZone(Zone.LIBRARY, game);
+                u.getLibrary().putOnBottom(c, game);
+                handFix++;
+            }
+            for (String n : wantH) {
+                Card c = findCard(u, n, game);
+                if (c != null) detach(u, c, game);
+                else c = freshCard(game, u, n);
+                if (c == null) {
+                    unmet++;
+                    continue;
+                }
+                c.setZone(Zone.HAND, game);
+                u.getHand().add(c);
+                handFix++;
+            }
+        }
+        Integer oh = CUR.rsOHand.get(T);
+        if (oh != null) {
+            while (o.getHand().size() < oh) {
+                Card c = o.getLibrary().removeFromTop(game);
+                if (c == null) break;
+                c.setZone(Zone.HAND, game);
+                o.getHand().add(c);
+                handFix++;
+            }
+            while (o.getHand().size() > oh) {
+                Card c = o.getHand().getCards(game).iterator().next();
+                o.getHand().remove(c);
+                c.setZone(Zone.LIBRARY, game);
+                o.getLibrary().putOnBottom(c, game);
+                handFix++;
+            }
+            if (o.getHand().size() != oh) unmet++;
+        }
+        game.applyEffects();
+        out("RS\t" + CUR.idx + "\t" + T + "\t" + unmet + "\t" + removed + "\t" + added + "\t" + handFix);
     }
 
     // ----------------------------------------------------------------- player
@@ -243,17 +463,66 @@ public class L17Rebuild extends CardTestPlayerBase {
             }
             if (game.getStack().isEmpty()) {
                 int stepIdx = game.getTurnStepType().getIndex();
+                boolean pending = false;
                 for (Act a : CUR.acts) {
                     if (a.done || a.turn != t || !a.seat.equals(seat)) continue;
-                    if (PhaseStep.valueOf(a.step).getIndex() > stepIdx) continue;
-                    a.done = true;
-                    if (tryAct(game, a)) return true;
+                    if (PhaseStep.valueOf(a.step).getIndex() > stepIdx) {
+                        pending = true;
+                        continue;
+                    }
+                    // `order` variant: a cast that is not payable or not yet drawable in
+                    // this step is left pending and retried at every later priority of the
+                    // same turn (so the effective within-turn order is whatever works),
+                    // instead of being spent on its first chance. Base marks it done here.
+                    boolean last = !V_ORDER || ++a.tries >= ORDER_MAX_TRIES
+                            || game.getTurnStepType() == PhaseStep.END_TURN;
+                    a.done = !V_ORDER || last;
+                    if (tryAct(game, a, last)) return true;
+                    if (!a.done) pending = true;
+                }
+                if (V_ABIL && !pending) {
+                    for (Act a : CUR.abils) {
+                        if (a.done || a.turn != t || !a.seat.equals(seat)) continue;
+                        a.done = true;
+                        if (tryAbility(game, a)) return true;
+                    }
                 }
             }
             return super.priority(game);
         }
 
-        private boolean tryAct(Game game, Act a) {
+        /**
+         * `abil` variant: rl/l17/ability_map.py identified which CARD owns each logged
+         * ability id, but not which ability of it, so activate the first playable
+         * non-mana activated ability of a permanent or hand card of that name. Casts
+         * and land plays are excluded -- those are already forced from the log.
+         */
+        private boolean tryAbility(Game game, Act a) {
+            String want = front(a.name);
+            List<ActivatedAbility> cands = new ArrayList<>();
+            for (ActivatedAbility ab : getPlayable(game, true)) {
+                if (ab instanceof mage.abilities.mana.ManaAbility || ab instanceof SpellAbility
+                        || ab instanceof PlayLandAbility) continue;
+                Card c = game.getCard(ab.getSourceId());
+                if (c == null) continue;
+                if (!front(c.getMainCard().getName()).equals(want) && !front(c.getName()).equals(want)) continue;
+                cands.add(ab);
+            }
+            for (ActivatedAbility ab : cands) {
+                int bm = game.bookmarkState();
+                if (activateAbility(ab.copy(), game)) {
+                    out("T\t" + CUR.idx + "\t" + a.turn + "\t" + seat + "\tABIL:" + a.name + "\t0");
+                    return true;
+                }
+                game.restoreState(bm, "l17");
+            }
+            fail(a.turn, seat, "ABIL", a.name,
+                    (cands.isEmpty() ? "no_activatable_ability_" + where(this, a.name, game) : "activate_failed")
+                            + "@" + game.getTurnStepType());
+            return false;
+        }
+
+        private boolean tryAct(Game game, Act a, boolean reportFailure) {
             boolean land = "LAND".equals(a.kind);
             if ("CASTI".equals(a.kind) && !hasFlash(a.name)) {
                 return false; // inferred from end-of-turn state but not a flash card: not a cast
@@ -292,7 +561,7 @@ public class L17Rebuild extends CardTestPlayerBase {
             } else {
                 why = "activate_failed";
             }
-            fail(a.turn, seat, a.kind, a.name, why + "@" + game.getTurnStepType());
+            if (reportFailure) fail(a.turn, seat, a.kind, a.name, why + "@" + game.getTurnStepType());
             return false;
         }
 
@@ -348,7 +617,7 @@ public class L17Rebuild extends CardTestPlayerBase {
 
         /** Guided mode, user seat: a library search takes the card the log shows arriving this turn. */
         private boolean pickSearch(Cards cards, TargetCard target, Game game) {
-            if (!GUIDE || !"U".equals(seat) || !(target instanceof TargetCardInLibrary) || cards == null) return false;
+            if (!STEER || !"U".equals(seat) || !(target instanceof TargetCardInLibrary) || cards == null) return false;
             List<String> vis = CUR.seen.get(game.getTurnNum());
             if (vis == null) return false;
             List<String> want = new ArrayList<>();
@@ -383,7 +652,7 @@ public class L17Rebuild extends CardTestPlayerBase {
         @Override
         public boolean choose(Outcome outcome, Cards cards, TargetCard target, Ability source, Game game) {
             if (pickFetch(cards, target, game)) return true;
-            if (GUIDE && outcome == Outcome.PutCreatureInPlay && cards != null && pickManifest(cards, target, game)) return true;
+            if (STEER && outcome == Outcome.PutCreatureInPlay && cards != null && pickManifest(cards, target, game)) return true;
             return super.choose(outcome, cards, target, source, game);
         }
 
@@ -420,7 +689,25 @@ public class L17Rebuild extends CardTestPlayerBase {
         /** Guided mode: a harmful targeted choice prefers permanents the log says died (non-combat) this turn. */
         @Override
         public boolean chooseTarget(Outcome outcome, mage.target.Target target, Ability source, Game game) {
-            if (GUIDE && !outcome.isGood()) {
+            // `choice` variant: a forced discard takes the card the log records discarded
+            // that turn. (Rare in this sample: ~0.5 logged discards per game.)
+            if (V_CHOICE && outcome == Outcome.Discard) {
+                List<String> want = CUR.disc.get(game.getTurnNum() + ":" + seat);
+                if (want != null) {
+                    List<String> w = new ArrayList<>();
+                    for (String s : want) w.add(front(s));
+                    for (Card c : getHand().getCards(game)) {
+                        if (!w.contains(front(c.getMainCard().getName()))) continue;
+                        if (!target.canTarget(getId(), c.getId(), source, game)) continue;
+                        target.addTarget(c.getId(), source, game);
+                        w.remove(front(c.getMainCard().getName()));
+                        out("G\t" + CUR.idx + "\t" + game.getTurnNum() + "\t" + seat + "\tdiscard\t"
+                                + front(c.getMainCard().getName()));
+                        if (target.isChosen(game)) return true;
+                    }
+                }
+            }
+            if (STEER && !outcome.isGood()) {
                 int t = game.getTurnNum();
                 List<String> killed = new ArrayList<>();
                 for (String s : new String[]{"U", "O"}) {
@@ -444,8 +731,44 @@ public class L17Rebuild extends CardTestPlayerBase {
 
         @Override
         public boolean chooseTarget(Outcome outcome, Cards cards, TargetCard target, Ability source, Game game) {
+            if (pickLibraryOrder(cards, target, game)) return true;
             if (pickFetch(cards, target, game)) return true;
             return super.chooseTarget(outcome, cards, target, source, game);
+        }
+
+        /**
+         * `choice` variant: surveil and scry both ask, through this method, which of the
+         * top N cards to move off the top (PlayerImpl.doSurveil -> graveyard,
+         * PlayerImpl.scry -> bottom). The base rebuild leaves it to the AI, and the
+         * verified single biggest mechanism of unseen drift (rl/L17-FIDELITY.md §5,
+         * game 167) is an AI surveil burying a card the log draws two turns later.
+         * Here every card the log shows the user drawing on this turn or a later one is
+         * kept on top, and the rest are moved off -- the choice a player who knew the
+         * future would make, which is what "steered by the logged outcome" means.
+         */
+        private boolean pickLibraryOrder(Cards cards, TargetCard target, Game game) {
+            if (!V_CHOICE || !"U".equals(seat) || cards == null || cards.isEmpty()) return false;
+            String tn = target.getTargetName() == null ? "" : target.getTargetName();
+            if (!tn.contains("(Surveil)") && !tn.contains("(Scry)")) return false;
+            int at = Integer.MAX_VALUE;
+            for (Integer k : CUR.future.keySet()) {
+                if (k >= game.getTurnNum() && k < at) at = k;
+            }
+            List<String> keep = new ArrayList<>();
+            if (at != Integer.MAX_VALUE) {
+                for (String s : CUR.future.get(at)) keep.add(front(s));
+            }
+            int moved = 0;
+            for (Card c : cards.getCards(game)) {
+                String n = front(c.getMainCard().getName());
+                if (keep.remove(n)) continue;              // a logged future draw: leave on top
+                target.add(c.getId(), game);
+                moved++;
+                if (target.getTargets().size() >= target.getMaxNumberOfTargets()) break;
+            }
+            out("G\t" + CUR.idx + "\t" + game.getTurnNum() + "\t" + seat + "\t"
+                    + (tn.contains("(Scry)") ? "scry" : "surveil") + "\t" + moved + "/" + cards.size());
+            return true;
         }
 
         /** User: stack this turn's logged draws on top. Opponent: swap needed cards into its hidden hand. */
@@ -461,7 +784,7 @@ public class L17Rebuild extends CardTestPlayerBase {
                             break;
                         }
                     }
-                    if (hit == null && GUIDE) {
+                    if (hit == null && STEER) {
                         for (Card c : getGraveyard().getCards(game)) {
                             if (front(c.getMainCard().getName()).equals(front(d.get(i)))) {
                                 hit = c;
@@ -485,6 +808,7 @@ public class L17Rebuild extends CardTestPlayerBase {
                 }
                 return;
             }
+            if (V_OPPO) sizeOppoHand(game, t);
             List<String> need = new ArrayList<>();
             for (Act a : CUR.acts) {
                 if (a.turn == t && a.seat.equals(seat) && (!"CASTI".equals(a.kind) || hasFlash(a.name))) need.add(front(a.name));
@@ -551,6 +875,49 @@ public class L17Rebuild extends CardTestPlayerBase {
                 } else {
                     fail(t, seat, "SWAP", n, "no_spare_hand_grew");
                 }
+            }
+        }
+
+        /**
+         * `oppo` variant. The opponent's hand is logged only as a COUNT, and the base
+         * rebuild keeps its size fixed by swapping one card out for each one it swaps in
+         * -- which drifts whenever it has no spare to give back ("no_spare_hand_grew", 87
+         * records in the 200-game base run) or whenever an unreplayed ability drew it a
+         * card. Here the size is pushed to the logged end-of-previous-turn count, taking
+         * from or giving back to the top of its library. Only the COUNT is logged, so
+         * this fixes the compared field while the hand's CONTENTS stay invented.
+         */
+        private void sizeOppoHand(Game game, int t) {
+            Integer want = CUR.rsOHand.get(t - 1);
+            if (want == null) return;
+            // the seat draws for its turn before this point, except on game turn 1
+            int target = want + (game.getActivePlayerId().equals(getId()) && t > 1 ? 1 : 0);
+            int have = getHand().size();
+            for (int i = have; i < target; i++) {
+                Card c = getLibrary().removeFromTop(game);
+                if (c == null) break;
+                c.setZone(Zone.HAND, game);
+                getHand().add(c);
+            }
+            for (int i = have; i > target; i--) {
+                Card spare = null;
+                Set<String> need = new HashSet<>();
+                for (Act a : CUR.acts) {
+                    if (a.turn >= t && a.seat.equals(seat) && !a.done) need.add(front(a.name));
+                }
+                for (Card c : getHand().getCards(game)) {
+                    if (!need.contains(front(c.getMainCard().getName()))) {
+                        spare = c;
+                        break;
+                    }
+                }
+                if (spare == null) break;
+                getHand().remove(spare);
+                spare.setZone(Zone.LIBRARY, game);
+                getLibrary().putOnBottom(spare, game);
+            }
+            if (getHand().size() != target) {
+                fail(t, seat, "OHAND", String.valueOf(target), "size_" + getHand().size());
             }
         }
 
@@ -862,6 +1229,34 @@ public class L17Rebuild extends CardTestPlayerBase {
                     break;
                 case "W":
                     cur.seen.put(Integer.parseInt(f[1]), split(f[3]));
+                    break;
+                case "ABIL": {
+                    Act a = new Act();
+                    a.turn = Integer.parseInt(f[1]);
+                    a.seat = f[2];
+                    a.step = "PRECOMBAT_MAIN";
+                    a.kind = "ABIL";
+                    a.name = f[3];
+                    cur.abils.add(a);
+                    break;
+                }
+                case "FUT":
+                    cur.future.put(Integer.parseInt(f[1]), split(f[2]));
+                    break;
+                case "DISC":
+                    cur.disc.put(f[1] + ":" + f[2], split(f[3]));
+                    break;
+                case "RS":
+                    cur.rsPerm.put(f[1] + ":" + f[2], split(f[3]));
+                    break;
+                case "RL":
+                    cur.rsLife.put(Integer.parseInt(f[1]), new int[]{Integer.parseInt(f[2]), Integer.parseInt(f[3])});
+                    break;
+                case "RH":
+                    cur.rsHand.put(Integer.parseInt(f[1]), split(f[2]));
+                    break;
+                case "RO":
+                    cur.rsOHand.put(Integer.parseInt(f[1]), Integer.parseInt(f[2]));
                     break;
                 case "E":
                     specs.add(cur);

@@ -1,0 +1,8 @@
+game,covered,turns_logged,turns_matched,first_mismatch_field,first_mismatch_side_turn,mismatch_fields,mismatch_detail,ambiguous_order_turns,ambiguous_order_turns_matched,targeted_spells,targeted_spells_matched,labels_land,labels_spell,labels_attack,labels_block,unamb_land,unamb_spell,unamb_attack,unamb_block,forced_fails_before_mismatch,engine_status,ms
+252,1,11,1,user_creatures,user_2,user_creatures user_hand,user_creatures: log_only=['fear of surveillance'] engine_only=[] ; user_hand: log_only=[] engine_only=['fear of surveillance'],8,0,3,0,1,0,0,0,1,0,0,0,1,ok,1919
+528,1,10,3,user_life,user_4,user_life,user_life: log=20 engine=22,4,1,1,0,2,2,1,0,1,1,1,0,0,ok,680
+688,1,9,3,oppo_life,user_4,oppo_life,oppo_life: log=16 engine=15,6,2,3,1,3,2,1,0,1,0,1,0,0,ok,486
+712,1,8,5,oppo_hand,oppo_6,oppo_hand,oppo_hand: log=4 engine=3,4,3,2,2,5,3,0,0,2,0,0,0,2,ok,510
+822,1,8,3,user_creatures,user_4,user_creatures,"user_creatures: log_only=[""duskmourn's domination""] engine_only=['kona, rescue beastie']",5,1,3,0,3,1,1,0,2,0,1,0,0,ok,416
+886,1,9,3,oppo_life,user_4,oppo_life user_creatures oppo_hand,oppo_life: log=16 engine=18 ; user_creatures: log_only=['creeping peeper'] engine_only=[] ; oppo_hand: log=4 engine=5,8,2,2,0,3,2,1,0,1,0,1,0,0,ok,413
+1348,1,10,4,user_life,oppo_5,user_life,user_life: log=14 engine=16,4,3,2,1,5,3,1,0,2,0,1,0,0,ok,359
