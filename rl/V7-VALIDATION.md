@@ -6024,3 +6024,22 @@ AND THE SINGLE-DECK RUNS DID NOT MERELY STOP EARLY - THEY STOPPED MOVING. Per-ep
 HYPOTHESIS, stated as such and not tested here: the heads apply logits = B*tanh(logits/B) with B = 5, the lane logit bound inherited from 13b. A network that saturates that bound has vanishing gradients, which would freeze training exactly as observed, and the smallest, easiest single-deck set saturates fastest. The OWED diagnostic is therefore not more patience but a re-clone with the bound relaxed (--logit-bound 0) or a lower learning rate, reported beside the patience-3 number as a diagnostic and never as a new bar.
 
 WHAT THIS DOES TO THE VERDICT, in the verdict own paragraph rather than below it: the pre-registered clause reads NOT MET on RUNG and that remains the reading of record - but it must be read as "the aspect is not learnable FROM 1,000 GAMES OF THIS DECK BY THIS RECIPE, in a run whose optimisation stalled after one epoch", NOT as evidence that the network cannot represent flying. JOINT reaches 0.8006 on the same 1,048 aspect priority consults (0.906 of ceiling) where RUNG reaches 0.6489 (0.734), and A1 independently reads DATA-LIMITED on this axis (+0.0118 top-1 on its last doubling, still rising at 1,125 games). If the pattern RUNG == ZERO with JOINT much higher repeats on rungs 1b, 1c and 1d, the ladder-level reading will say ONCE that A4L as instantiated measured data volume and an optimisation stall more than aspect transfer - which would be the phase most useful conclusion about the design itself.
+
+**Saturation diagnostic — the stall mechanism, measured (, one forward pass, trains nothing; a DIAGNOSTIC, never a bar).**
+
+The heads apply logits = B*tanh(raw/B) with B = 5. Setting logit_bound = 0 on a loaded checkpoint returns the RAW pre-tanh values, so no model source is touched. Over 1,800 held-out W0Base consults (8,821 real candidate logits):
+
+| checkpoint | mean abs raw | max | share >= 5 | share >= 10 | share >= 20 | train CE trace |
+|---|---|---|---|---|---|---|
+| bc_W0Base.pt (best epoch 1, FROZEN) | **54.45** | 82.9 | 1.0000 | 1.0000 | **0.9509** | frozen from epoch 2 |
+| bcj_W1Fly.pt (best epoch 5, healthy) | **21.30** | 94.2 | 0.9777 | 0.8799 | **0.4636** | improving to epoch 8 |
+
+Top-logit only (the one the argmax rides on): 67.8 mean for the frozen clone against 26.8 for the healthy one.
+
+**Reading.** Both clones are saturated relative to the bound, but by very different margins, and the gradient through the tanh falls exponentially: at raw 54 the factor 1 - tanh^2(54/5) is about 1e-9, at raw 21 it is about 8e-4 - roughly six orders of magnitude. The frozen clone is gradient-dead; the healthy one is merely compressed. This supports the saturation hypothesis as the mechanism behind the A4L single-deck stall.
+
+**And it is REGIME-DEPENDENT, which the free log evidence pins down.** Scanning every Phase 15 training log for a frozen train-CE trace (identical to four decimals over the last three epochs): A0 (2,000 consults, 40 epochs, no early stop, weight decay 0) fell 0.7349 to 0.0565 - NOT frozen; A1 policy fractions 0.6332 to 0.2391 - not frozen; A2 card-blind floor clone 0.5013 to 0.3155 - not frozen; A3 auxiliary-loss clone 0.4628 to 0.2290 - not frozen; the A4L JOINT clone 0.4982 to 0.3850 - not frozen. **Only the two single-deck rung clones froze** (W0Base 0.5535 x3, W1Fly 0.6167 x3). So B = 5 does not freeze training unconditionally - the same bound trained fine on 2,000 consults, on 68,500, and on 37,289. It is the ~17,600-consult single-deck regime that stalls.
+
+**What this implies beyond A4L, stated as a candidate and not a demonstration.** Every clone in this project is trained with this bound, so all of them are compressed to some degree, and the degree is measurable. It is a candidate explanation for 13c tiny per-update KL (about 0.0012 against a 0.02 target), which has so far been attributed to the recipe: if a policy raw logits sit far outside the bound, the BOUNDED logits the update actually moves barely change, and the KL per update is small for a reason that has nothing to do with the learning rate. Testing that means measuring raw logits on 13c checkpoints, which is cheap but is not done here.
+
+**OWED, deliberately not applied tonight:** a re-clone with the bound relaxed (--logit-bound 0) or a lower learning rate, reported beside the patience-3 number. Changing the bound or the head parameterisation mid-ladder would make the rungs incomparable, so the ladder runs unchanged and the fix waits.
