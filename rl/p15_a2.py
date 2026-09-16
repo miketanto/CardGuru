@@ -158,7 +158,7 @@ def load_targets():
     return e2, dim, fields
 
 
-def collect(net, rows, args, heldout_ids, base_names):
+def collect(net, rows, args, heldout_ids, base_names, emb_table):
     e2, dim, fields = load_targets()
     dev = args.device
     X, E, YB, YN, G, CID, UN, OFF, NAMES = [], [], [], [], [], [], [], [], []
@@ -185,9 +185,15 @@ def collect(net, rows, args, heldout_ids, base_names):
                     k = norm(names[j])
                     if cid < 0 or k not in e2 or k not in fields:
                         continue
+                    if cid >= emb_table.shape[0]:
+                        continue
                     col, num = fields[k]
                     X.append(ent[i, j])
-                    E.append(net.table.table[cid].float().cpu().numpy())
+                    # The EMB ceiling is ALWAYS the frozen card_emb_v8 row, never the
+                    # probed checkpoint's own table. Indexing net.table.table[cid] crashed
+                    # on the card-blind control (1,001 rows vs card ids up to 35,477) and,
+                    # worse, would have scored a RANDOM row as the "ceiling" for that arm.
+                    E.append(emb_table[cid].numpy())
                     YB.append(np.concatenate([e2[k], col]))
                     YN.append(num)
                     G.append(r[0])
@@ -195,7 +201,10 @@ def collect(net, rows, args, heldout_ids, base_names):
                     UN.append(1.0 if cid in heldout_ids else 0.0)
                     OFF.append(0.0 if k in base_names else 1.0)
                     NAMES.append(k)
-                    distinct += int(cid < getattr(net.table, "n", 0) and net.table.version == "random")
+                    # how many probed entities keep a row of their own in THIS net's table:
+                    # for the card-blind control CardTable clamps every id >= n onto one
+                    # shared zero row, so this is the fraction that is not collapsed.
+                    distinct += int(cid < net.table.n) if net.table.version == "random" else 1
                     if args.max_entities and len(X) >= args.max_entities:
                         break
             if args.max_entities and len(X) >= args.max_entities:
@@ -297,6 +306,10 @@ def main():
     say("data", f"consults={len(rows)}", f"games={len(games)}", f"held_games={len(held_games)}",
         f"load_s={time.time() - t0:.0f}")
 
+    # the frozen embedding, loaded ONCE and shared by every arm's EMB control
+    emb_table = torch.load(os.path.join(HERE, "artifacts", "card_emb_v8", "emb.pt")).float()
+    say("emb_table", f"shape={list(emb_table.shape)}")
+
     out = {"tag": args.tag, "recordings": [os.path.basename(p) for p in args.recordings],
            "games": len(games), "models": {}, "off_wire_cols": len(offwire)}
     shared = {}
@@ -306,7 +319,7 @@ def main():
             say(name, "MISSING", path)
             continue
         net = P.V7Policy.load(path, device=args.device)
-        X, E, YB, YN, G, CID, UN, OFF, NAMES, dim, rd = collect(net, rows, args, heldout_ids, base_names)
+        X, E, YB, YN, G, CID, UN, OFF, NAMES, dim, rd = collect(net, rows, args, heldout_ids, base_names, emb_table)
         card_emb_version = net.table.version
         del net
         torch.cuda.empty_cache()

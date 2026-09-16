@@ -460,3 +460,23 @@ absence is not a negative result.
   Caveat that travels with it: the control is card-BLIND, not random-identity (CardTable clamps ids >= 1000 onto
   one shared zero row), one seed, one deck, and top-1 agreement is not a win rate. Probe 1 (the encoder-token
   probe) is running now over both checkpoints; probe 3 and the card-swap arm follow.
+- 2026-09-16 04:07Z WSL (A2 probe CRASHED on its floor arm; fixed; A2 re-run): `A2RUN|probe1|rc=1` with
+  `IndexError: index 27817 is out of bounds for dimension 0 with size 1001` at `net.table.table[cid]` - the probe
+  took the EMB ceiling row from THE PROBED CHECKPOINT's own card table, and the card-blind control's table has
+  1,001 rows while card ids run to 35,477. Two faults in one line, and the second is worse than the crash: even
+  where it did not crash, the ceiling for the RAND arm would have been a RANDOM row rather than the frozen
+  embedding, so the control's own ceiling would have been meaningless. FIX: `rl/artifacts/card_emb_v8/emb.pt` is
+  loaded ONCE in main and shared by every arm's EMB control, with a bounds guard; `rand_distinct_frac` now counts
+  the probed entities that keep a row of their own under CardTable's clamp. Verified on a two-deck smoke: both
+  arms complete, and the EMB control is now IDENTICAL for BC and RAND (0.8622 both), which is the signature of a
+  shared frozen table and could not have happened before. Stopped chain + A2 steps with `rl/stop_chain15.sh
+  --steps` BEFORE editing (the rule: never edit a script a running job is executing); the expensive artifact
+  `bc_random.pt` survives, so the re-run skips the floor clone and redoes probe 1 / probe 3 / card-swap only.
+  SMOKE NUMBERS, EXPLICITLY NOT A READING (577 unseen-card entities over 17 informative columns - far too thin,
+  and the real run pools the full 13a set): token 0.8552, frozen-embedding ceiling 0.8622, card-blind floor
+  0.7674. If that shape held at scale it would satisfy A2's first clause (0.992 of ceiling, bar 0.80) and FAIL
+  the floor clause (0.088 above the floor, bar 0.25; and within 0.10 of the floor is the explicit "discards"
+  branch). That is why `rl/p15_a3.py` was written ahead of the reading. No reading is made until the real run.
+  Also visible and behaving as designed: the card-blind net reads the WIRE's 18 keyword bits nearly perfectly
+  (on-wire 0.9983) while scoring 0.7674 off-wire - the on-wire/off-wire split is doing exactly the job it was
+  added for.
