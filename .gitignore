@@ -32,3 +32,10 @@ rl/artifacts/v7/13/**/*.jsonl
 rl/data/l17/
 rl/artifacts/subgame/*.err
 rl/artifacts/subgame/*.log
+# In-flight subgame shard output. Appended to continuously while a
+# generation run goes, so tracking it mid-run races every commit against
+# the writers. The run is deterministic given its seed, so losing it
+# costs time and not information; the completed family file is committed
+# with `git add -f` once every shard has written its '# admission'
+# footer.
+rl/artifacts/subgame/gen_s*_sh*.tsv
