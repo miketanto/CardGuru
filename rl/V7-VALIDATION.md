@@ -5944,3 +5944,71 @@ Raised by the A4L rung-0 gate and recorded here as a finding in its own right, b
 **Owed, needs instrumentation (deliberately not built overnight):** which declarations are missed. The teacher counters give only miss COUNTS; naming the kinds - partial attacks, multi-blocks, blocks that trade down - requires logging the candidate list beside the declared set at the consult, which is new engine plumbing. Written down rather than guessed.
 
 **Cannots.** Two decks; the per-lane split is from job counters, not per-consult analysis; alias matches are counted as covered, so these are upper bounds on coverage; and nothing here says the missed sets are better play, only that they are unreachable.
+
+### 15 / A4L rung 1a — `W1Fly` (Leonin Skyhunter, flying): **the aspect is NOT learnable at this rung, which VOIDS its transfer reading**
+
+**Recording**: 1,000 games, 27,663 labelled consults. **Gate** (this deck's own, re-run on the full recording):
+priority 17,047/17,047 = **1.000** pass, target 578/578 = **1.000** pass, joint attack 5,443/8,486 = **0.641** FAIL,
+joint block 4,595/7,121 = **0.645** FAIL. **CombatMath coverage for this deck is 0.641 / 0.645** (W0Base: 0.598 /
+0.604) — carried here because it varies by deck and two rungs cannot be compared without it.
+
+**The limitation this rung inherits, restated rather than footnoted.** `W1Fly` exists to test **flying**, which
+changes *which blocks are legal*. With joint attack and block uncloned (they fail the gate), **this rung cannot
+measure that at all.** What it measures is whether the flyer's *presence* changes priority and target choice.
+
+**Clones** (13b recipe, kinds `prio,target`): rung clone `bc_W1Fly.pt` best epoch **1** of 4, held CE 0.6239,
+top-1 0.632 — it saturates at epoch 1 exactly as rung 0's did. Joint clone `bcj_W1Fly.pt` (W0Base + W1Fly, 2,000
+games, 37,289 labelled consults) best epoch **5** of 8, held CE 0.3723, top-1 0.791, class 0.910, type 0.952.
+
+**Evaluation** on W1Fly's own held-out games: 100 games, 2,746 scored consults, **aspect 1,663 / shared 1,083**
+(aspect = Leonin Skyhunter in hand, on either battlefield, or a candidate referent). Trivial predictor:
+**aspect 0.6356 exact / 0.6909 class**, **shared 0.5753 exact / 0.7073 class**.
+
+| model | pop | kind | n | exact top-1 | ceiling | frac | **class top-1** | **type** |
+|---|---|---|---|---|---|---|---|---|
+| ZERO (rung-0 clone) | aspect | priority | 1,048 | 0.6489 | 0.8836 | 0.734 | 0.7252 | 0.9017 |
+| RUNG (W1Fly clone) | aspect | priority | 1,048 | **0.6489** | 0.8836 | **0.734** | 0.7252 | 0.9017 |
+| JOINT (both decks) | aspect | priority | 1,048 | **0.8006** | 0.8836 | **0.906** | 0.9074 | 0.9427 |
+| ZERO | shared | priority | 677 | 0.5775 | 0.8139 | 0.710 | 0.7046 | 0.8685 |
+| RUNG | shared | priority | 677 | **0.5775** | 0.8139 | **0.710** | 0.7046 | 0.8685 |
+| JOINT | shared | priority | 677 | **0.7341** | 0.8139 | **0.902** | 0.9069 | 0.9513 |
+| all three | either | target | 51 | 1.0000 | 1.0000 | 1.000 | 1.0000 | 1.0000 |
+
+**ZERO and RUNG are the same numbers to four decimals in every cell but one** (aspect all-kinds 0.5574 vs
+0.5562). They are different checkpoints — different files, different held-out CE (0.5758 vs 0.6239) — trained on
+**different decks**, and they make the same predictions here. Both have collapsed to the same positional policy.
+
+**Readings, as pre-registered.**
+* **"The aspect is learnable at all": NOT MET — and this is the reading that governs the rung.** The
+  rung-specific clone reaches **0.734** of its aspect copy ceiling on priority (0.600 on all kinds), against a bar
+  of **0.80**. A4L states that a rung failing this clause "says the aspect is not learnable from CP7 labels by
+  this network — a stronger finding than a transfer failure, and it makes that rung's transfer reading **void**."
+  **Rung 1a's transfer reading is therefore void**, and the two clauses below are recorded only for completeness.
+* **"The shared game transfers": met by the letter, and empty.** Zero-shot shared priority 0.5775 against the
+  rung clone's 0.5775 is a ratio of **1.000** (bar 0.95). But the two models are the same policy, and neither
+  beats the trivial predictor: on exact index they sit at it (shared all-kinds 0.5762 vs trivial 0.5753), and on
+  **class agreement they are BELOW it** (0.6556 vs 0.7073; priority 0.7046 vs 0.7400). This is exactly the
+  degenerate case the A4L preamble was amended to warn about — the clause is satisfied by two near-trivial models,
+  so it measures the decks' shared positional regularity, not a shared game. **This reading rests on exact
+  top-1; on class agreement it would fail, and that is stated rather than resolved.**
+* **"The aspect does not transfer": NOT met.** Zero-shot aspect exact top-1 (0.5574 all, 0.6489 priority) is not
+  ≥ 0.10 below its own shared figure — on priority it is *higher* (0.6489 vs 0.5775).
+
+**"Joint helps", and it is the most informative number here.** Training on both decks nearly **doubles the gap to
+the ceiling**: aspect priority 0.8006 (0.906 of ceiling) against the rung clone's 0.6489 (0.734); shared priority
+0.7341 (0.902) against 0.5775 (0.710); class agreement 0.907 against 0.725. **The joint clone clears the very
+learnability bar the rung clone fails.** The difference between them is not architecture, seed or deck — it is
+**1,000 games versus 2,000**.
+
+**Operational consequence, and the most useful thing this rung produced.** A per-rung recording of 1,000 games
+does not train a clone that can serve as the "rung-specific" comparand A4L's design requires: at that volume the
+clone collapses to a positional rule and fails the learnability clause. This is the ladder meeting **A1's
+data-limited finding** from the other side — A1 showed held-out top-1 still rising at 1,125 games on BenchDimir,
+and here 1,000 games is visibly not enough. Later rungs are run unchanged (the volume is pre-registered and is not
+being altered mid-ladder), but every rung's learnability clause should be expected to fail for the same reason,
+and the JOINT column is the one to read.
+
+**Cannots.** Target is 51 held consults and is 1.0000 for every model — it carries nothing. Attack and block are
+uncloned, so nothing here touches flying's actual effect on legal blocks. One seed per clone. Top-1 against copy
+ceilings is not a win rate. The aspect/shared split is by card presence, not by whether the decision turned on the
+aspect.
