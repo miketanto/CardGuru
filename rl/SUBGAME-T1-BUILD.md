@@ -81,3 +81,64 @@ The exact solver: enumerate both seats' lines by replay, back up
 win/loss, and report the optimal action set per instance plus the solve
 cost in replays. That is what turns this from a scripted check into
 ground truth.
+
+---
+
+## RL seat smoke — two harness findings, no capability number
+
+Seat A swapped from `LinePlayer` to `RLPlayer` (v7 seat, joint attack
+and block candidates via `JointCands`), driven by the in-process
+`RandomPolicyClient`. No network: torch is not installed in this
+container, so the policy server cannot run here yet.
+
+### Finding 1 — who goes first was not pinned, and the POLICY was deciding it
+
+The first RL run's action log showed seat A being **attacked on turn 1**
+in a subgame whose whole premise is "A to act". Cause:
+`GameImpl.init` resolves the starting player by asking the choosing
+player's `choose()` callback (GameImpl.java:1318-1340). `LinePlayer`
+inherits `ComputerPlayer.choose` and answers deterministically;
+`RLPlayer` overrides `choose` and **delegates to the policy** — so a
+random policy was silently picking which side was on the play. Twenty
+"episodes of T1.HOLD" were a mixture of two different subgames.
+
+Fixed by pinning `game.setStartingPlayerId(first.getId())` before
+`start`. The two scripted lines re-verify unchanged afterwards (A wins
+turn 5 / B wins turn 2), so the fix did not move the instance.
+
+This is a general hazard for the whole design: **any engine question
+routed through the policy's generic callbacks is a decision the subgame
+did not intend to ask.** Later rungs with modes, X values and targets
+will have more of them.
+
+### Finding 2 — a fixed line cannot be an opponent
+
+With the starting player pinned, the random policy went **100/100**
+against seat B. That is not a capability result, it is the opponent
+being inert: B's line is a list of indices consumed in decision order,
+and *which decision comes first depends on what A does*. A attacked on
+turn 1, so B's single scripted index was eaten by the resulting BLOCK
+decision, leaving B's attack decision past the end of its line and
+defaulted to "no attack" — forever. B then sat still and lost to its own
+deck-out clock.
+
+So a line is a replay artefact, not a strategy. **The opponent seat has
+to be a function of state** — the solver's best defence, or at minimum a
+rule-based defender. Recorded here because it was the argued-about
+question ("why a solver?") and it is now a measured answer rather than a
+prediction.
+
+### Throughput, measured
+
+**38.5 episodes/sec** for T1.HOLD with the random policy (100 episodes,
+one JVM, warm). Full BenchBurn games on this box smoke at 1.465
+games/sec, so a subgame is roughly 26x cheaper. That makes replay-based
+exact solving clearly affordable: a few hundred replays per instance is
+seconds, not minutes.
+
+### What these runs do NOT support
+
+No statement about the network (none ran), and none about T1.HOLD's
+difficulty: the 1.000 is against an inert opponent and must never be
+quoted as a win rate. The only real numbers here are the throughput and
+the two bugs.

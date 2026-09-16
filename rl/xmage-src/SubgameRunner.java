@@ -128,18 +128,27 @@ public final class SubgameRunner {
         public String frontierKind;
         public int decisionsA;
         public int decisionsB;
+        public String log = "";
     }
 
     public static Result play(Spec spec, int[] lineA, int[] lineB) {
+        LinePlayer pa = new LinePlayer("A");
+        pa.reset(lineA);
+        return run(spec, pa, lineB, null);
+    }
+
+    /** Seat A is whatever player is passed in - a LinePlayer for scripted
+     *  checks, an RLPlayer for a policy. Seat B stays a LinePlayer so the
+     *  opponent is a stated, fixed line and not a second moving part. */
+    public static Result run(Spec spec, Player seatA, int[] lineB, RLPlayer rlA) {
         Game game = new TwoPlayerDuel(MultiplayerAttackOption.LEFT,
                 RangeOfInfluence.ONE, MulliganType.GAME_DEFAULT.getMulligan(0),
                 60, 20, 7);
 
-        LinePlayer pa = new LinePlayer("A");
+        Player pa = seatA;
         LinePlayer pb = new LinePlayer("B");
         pa.setTestMode(true);
         pb.setTestMode(true);
-        pa.reset(lineA);
         pb.reset(lineB);
 
         Player first = spec.aOnPlay ? pa : pb;
@@ -156,6 +165,14 @@ public final class SubgameRunner {
         }
         furnish(game, pa, spec.a);
         furnish(game, pb, spec.b);
+
+        // PIN THE STARTING PLAYER. Without this the engine asks the
+        // CHOOSING player's choose() callback who goes first - and for an
+        // RL seat that question reaches the POLICY, so a random policy
+        // silently decided which side was on the play and turned one
+        // subgame into two. Found by an RL smoke whose action log showed
+        // seat A being attacked on turn 1.
+        game.setStartingPlayerId(first.getId());
 
         GameOptions options = new GameOptions();
         options.testMode = true;
@@ -174,9 +191,15 @@ public final class SubgameRunner {
         r.turns = game.getTurnNum();
         r.lifeA = pa.getLife();
         r.lifeB = pb.getLife();
-        r.frontierOptions = pa.frontierOptions;
-        r.frontierKind = pa.frontierKind;
-        r.decisionsA = pa.decisionsSeen;
+        if (pa instanceof LinePlayer) {
+            LinePlayer la = (LinePlayer) pa;
+            r.frontierOptions = la.frontierOptions;
+            r.frontierKind = la.frontierKind;
+            r.decisionsA = la.decisionsSeen;
+        } else if (rlA != null) {
+            r.decisionsA = (int) rlA.consults;
+            r.log = rlA.actionLog.toString();
+        }
         r.decisionsB = pb.decisionsSeen;
         return r;
     }
@@ -232,6 +255,40 @@ public final class SubgameRunner {
                         + "|mv=" + c.getManaValue()
                         + "|types=" + c.getCardType()
                         + "|abilities=" + (ab.length() == 0 ? "NONE" : ab));
+            }
+            return;
+        }
+        if ("rl".equals(args[0])) {
+            int episodes = Integer.parseInt(args[1]);
+            int[] lineB = parseLine(args.length > 2 ? args[2] : "-");
+            String small = args.length > 3 ? args[3] : "Silvercoat Lion";
+            String big = args.length > 4 ? args[4] : "Trokin High Guard";
+            Spec spec = t1Hold(small, big);
+            int winsA = 0;
+            String firstLog = null;
+            long t0 = System.nanoTime();
+            for (int i = 0; i < episodes; i++) {
+                RLPlayer rl = new RLPlayer("A");
+                rl.policy = new RandomPolicyClient(1000L + i);
+                rl.resetPerEpisode();
+                rl.benchSeed = 1000L + i;
+                Result r = run(spec, rl, lineB, rl);
+                if ("A".equals(r.winner)) {
+                    winsA++;
+                }
+                if (firstLog == null) {
+                    firstLog = r.log;
+                }
+            }
+            double secs = (System.nanoTime() - t0) / 1e9;
+            System.out.println("SUBGAMERL|" + spec.name
+                    + "|episodes=" + episodes
+                    + "|winsA=" + winsA
+                    + "|rateA=" + String.format("%.3f", winsA / (double) episodes)
+                    + "|eps_per_sec=" + String.format("%.2f", episodes / secs));
+            if (firstLog != null && !firstLog.isEmpty()) {
+                System.out.println("---- episode 0 action log ----");
+                System.out.println(firstLog);
             }
             return;
         }
