@@ -1,0 +1,29 @@
+# id	label	value	aLife	aFiller	aBodies	bLife	bFiller	bBodies	rootOpts	classes	optClasses	randA	replays	secs	heur
+INST	T1.GEN.22	SWING	1	6	4	Oreskos Swiftclaw	1	5	Bonebreaker Giant*;Nether Horror*	2	2	Oreskos Swiftclaw	0.580	67	0.5	allin=1,never=0,bodycount=1,safeattack=1
+INST	T1.GEN.48	SWING	1	1	5	Amphin Cutthroat;Nether Horror	6	6	Barony Vampire*;Regathan Firecat*	4	4	Amphin Cutthroat;Nether Horror	0.390	4203	35.0	allin=1,never=0,bodycount=1,safeattack=1
+INST	T1.GEN.66	HOLD	1	4	6	Armored Warhorse;Oreskos Swiftclaw	5	5	Nether Horror*;Regathan Firecat	4	4	-	0.405	767	5.2	allin=0,never=1,bodycount=0,safeattack=1
+INST	T1.GEN.84	SWING	1	1	3	Armored Cancrix	1	5	Zombie Goliath*	2	2	Armored Cancrix	0.695	91	1.6	allin=1,never=0,bodycount=1,safeattack=1
+INST	T1.GEN.140	SWING	1	2	3	Zombie Goliath;Zombie Goliath	8	4	Horned Turtle;Regathan Firecat*	4	3	Zombie Goliath	0.465	2594	48.3	allin=0,never=0,bodycount=0,safeattack=0
+INST	T1.GEN.152	SWING	1	2	5	Armored Cancrix;Fugitive Wizard	1	6	Bonebreaker Giant*;Maritime Guard	4	4	Armored Cancrix;Fugitive Wizard	0.680	4985	41.4	allin=1,never=0,bodycount=1,safeattack=0
+INST	T1.GEN.156	HOLD	1	5	6	Horned Turtle	1	4	Barony Vampire;Barony Vampire*	2	2	-	0.600	3825	24.8	allin=0,never=1,bodycount=1,safeattack=0
+INST	T1.GEN.171	HOLD	1	3	6	Amphin Cutthroat;Bronze Sable	3	5	Fire Elemental	4	4	-	0.315	1075	22.0	allin=0,never=1,bodycount=0,safeattack=1
+INST	T1.GEN.174	HOLD	1	5	5	Canyon Minotaur;Siege Mastodon	3	4	Fire Elemental;Regathan Firecat	4	4	-	0.510	1437	28.0	allin=0,never=1,bodycount=1,safeattack=1
+INST	T1.GEN.272	SWING	1	3	5	Oreskos Swiftclaw	3	6	Oreskos Swiftclaw*	2	2	Oreskos Swiftclaw	0.585	57	0.3	allin=1,never=0,bodycount=1,safeattack=1
+INST	T1.GEN.302	SWING	1	4	5	Oreskos Swiftclaw	3	6	Bonebreaker Giant*	2	2	Oreskos Swiftclaw	0.560	87	0.5	allin=1,never=0,bodycount=1,safeattack=1
+INST	T1.GEN.307	HOLD	1	2	5	Armored Warhorse;Nether Horror	4	3	Bonebreaker Giant*;Nether Horror	4	4	-	0.585	411	8.4	allin=0,never=1,bodycount=0,safeattack=1
+INST	T1.GEN.362	SWING	1	2	5	Horned Turtle	1	6	Bonebreaker Giant*	2	2	Horned Turtle	0.645	87	1.9	allin=1,never=0,bodycount=1,safeattack=1
+INST	T1.GEN.418	SWING	1	2	3	Runeclaw Bear;Zombie Goliath	3	6	Armored Warhorse;Runeclaw Bear*	4	4	Zombie Goliath	0.560	1234	26.4	allin=0,never=0,bodycount=0,safeattack=1
+INST	T1.GEN.455	SWING	1	2	3	Armored Cancrix;Regathan Firecat	6	4	Zombie Goliath	4	4	Regathan Firecat	0.420	1719	36.1	allin=0,never=0,bodycount=0,safeattack=0
+INST	T1.GEN.477	HOLD	1	5	5	Armored Warhorse;Bronze Sable	2	5	Bonebreaker Giant;Horned Turtle	4	4	-	0.600	4309	103.1	allin=0,never=1,bodycount=1,safeattack=1
+INST	T1.GEN.480	SWING	1	7	4	Fire Elemental;Horned Turtle	2	4	Fire Elemental*;Nether Horror	4	4	Fire Elemental;Horned Turtle	0.680	3677	23.7	allin=1,never=0,bodycount=1,safeattack=0
+INST	T1.GEN.498	HOLD	1	1	6	Fire Elemental;Maritime Guard	3	5	Armored Cancrix;Bonebreaker Giant	4	4	-	0.465	1714	39.4	allin=0,never=1,bodycount=1,safeattack=1
+INST	T1.GEN.521	SWING	1	1	3	Bronze Sable;Nether Horror	5	6	Armored Warhorse	4	4	Nether Horror	0.330	788	16.5	allin=0,never=0,bodycount=0,safeattack=0
+INST	T1.GEN.549	SWING	1	3	3	Regathan Firecat;Siege Mastodon	5	6	Armored Warhorse*;Siege Mastodon*	4	4	Regathan Firecat;Siege Mastodon	0.495	1623	9.9	allin=1,never=0,bodycount=1,safeattack=1
+INST	T1.GEN.559	SWING	1	2	3	Bonebreaker Giant	4	4	Armored Cancrix*;Horned Turtle*	2	2	Bonebreaker Giant	0.725	91	1.8	allin=1,never=0,bodycount=1,safeattack=1
+INST	T1.GEN.560	SWING	1	2	6	Armored Cancrix;Barony Vampire	4	3	Fire Elemental*;Fire Elemental*	4	4	Armored Cancrix;Barony Vampire	0.365	1211	26.0	allin=1,never=0,bodycount=1,safeattack=1
+INST	T1.GEN.579	SWING	1	2	6	Bronze Sable	2	5	Canyon Minotaur*	2	2	Bronze Sable	0.610	83	1.8	allin=1,never=0,bodycount=1,safeattack=1
+INST	T1.GEN.588	HOLD	1	2	4	Barony Vampire;Oreskos Swiftclaw	5	4	Bonebreaker Giant	4	4	-	0.415	597	12.7	allin=0,never=1,bodycount=0,safeattack=1
+INST	T1.GEN.593	SWING	1	5	3	Fire Elemental;Regathan Firecat	6	5	Amphin Cutthroat;Canyon Minotaur	4	4	Regathan Firecat	0.510	5154	114.3	allin=0,never=0,bodycount=0,safeattack=0
+INST	T1.GEN.596	SWING	1	6	5	Maritime Guard	1	3	Siege Mastodon*;Siege Mastodon*	2	2	Maritime Guard	0.660	101	2.0	allin=1,never=0,bodycount=1,safeattack=1
+INST	T1.GEN.626	SWING	1	5	3	Amphin Cutthroat	2	6	Fire Elemental*	2	2	Amphin Cutthroat	0.595	49	1.0	allin=1,never=0,bodycount=1,safeattack=1
+INST	T1.GEN.650	HOLD	1	2	4	Maritime Guard;Nether Horror	4	3	Oreskos Swiftclaw;Zombie Goliath	4	4	-	0.655	427	2.1	allin=0,never=1,bodycount=1,safeattack=1
