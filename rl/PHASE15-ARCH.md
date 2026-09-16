@@ -134,6 +134,29 @@ White branch (combat), each rung = `W0Base` + 4 copies of one card:
 Black branch (threat assessment), run only if the white branch finishes inside budget: `B1Narrow` (power ≤ 2),
 `B2Mid` (≤ 3), `B3Open` (any creature), `B1Fast` (Defeat's instant twin), `B4Card` (no board effect at all).
 
+### What the rung-0 gate costs this ladder (added 2026-09-16, before any rung was cloned; changes no threshold)
+
+The W-deck recordings do NOT support cloning the joint attack and joint block decisions: on `W0Base` the 13a
+per-kind gate reads priority 1.000 and target 1.000 but **joint attack 0.831 and joint block 0.869**, both below
+the 0.9 bar, because on a pure-creature deck CP7 frequently declares attack/block sets that are outside
+CombatMath's candidate list (on BenchDimir the same counters are 0.948 / 0.974). 13a's convention applies - a kind
+that fails the gate is not cloned - and the cloned kind set is **fixed across every rung at `prio,target`** so
+rung-to-rung comparisons mean anything.
+
+**The consequence, which must appear in every keyword rung's row and not as a footnote.** Rungs 1a-1d exist to
+change combat itself: `W1Fly` changes which blocks are **legal**, `W1Fst` changes the **math of a trade**,
+`W1Vig` removes the **attack-vs-hold-back tradeoff**, `W1Lif` changes the **arithmetic of a race**. With attack
+and block uncloned, those rungs no longer measure any of that. What they measure is the much weaker question
+of whether the new card's **presence** changes priority and target decisions - which creature to cast, which
+spell to cast, what to target. Every rung reading is to be written in those terms: "the aspect does not transfer"
+can only mean "it does not transfer through priority and target choice", and says nothing about blocking or
+attacking, which were not labelled well enough on these decks to clone. Where that makes a rung's reading
+**meaningless rather than merely weaker**, the row says so instead of reporting a number that looks like a result.
+
+A label-free combat comparison is reported separately for the keyword rungs where it is cheap (the driver's
+`[atkaudit]` / `[audit]` lines against CombatMath's reference, from `rl/record_census.sh`'s audit output). It is
+**not part of any pre-registered A4L reading** and cannot become one.
+
 ### Data
 
 CP7-labelled recordings per rung, the 13a job shape, **1,000 games per rung** (these decks run ~2 games/s, about
