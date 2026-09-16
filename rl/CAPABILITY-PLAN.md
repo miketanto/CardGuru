@@ -41,8 +41,18 @@ So this is not a new ladder. It is the existing ladder, blocked.
 > for them, so RUNG1 decks must not use this until it is extended.
 
 `CombatMath.Body` (line 49) is power, toughness, name. Nothing else.
-`JointCands.theirBlockers` (line 38) collects untapped creatures with no
-`canBlock` check, so a flier's block options include ground creatures.
+
+> **Correction (same session, before any run).** This section first
+> claimed `JointCands.theirBlockers` (line 38) was defective for
+> collecting untapped creatures with no `canBlock` check. That is wrong
+> and the claim is withdrawn: `theirBlockers` is the defender's *body
+> pool* for the attack-side simulation, and block legality is enforced
+> where assignments are actually made — `RLPlayer.java:1156`, `:1182`,
+> `:1258` each gate on `canBlock`, as does `TeacherLogPlayer.java:250`.
+> What survives is the keyword blindness above: the attack-side pricing
+> treats every one of those bodies as able to block the attackers,
+> because `Body` has no evasion, which is the same B1 defect and not a
+> second one.
 
 Rungs 1a-1c ran on `W1Fly`, `W1Fst`, `W1Vig` anyway. Every combat
 candidate on those decks was enumerated, priced and Pareto-filtered by a
@@ -185,13 +195,20 @@ about the network, which is not involved.
   so plainly and treat coverage as per-deck, which makes every tier need
   its own coverage row before its capability row.
 
-**Cost.** One re-recording per deck at A4L rung-0 scale (1,000 games,
-~31k labelled consults there) unless the existing `W0Base` and 13a
-recordings can be replayed — they cannot be re-read offline for this,
-because the NDJSON stores candidates as feature vectors, not as sets.
-**Open question for the user: do the rung-0 / 13a game recordings still
-exist on the WSL box, and is a re-record at that scale acceptable?**
+**Cost.** A re-record is needed either way: the existing NDJSON stores
+candidates as feature vectors, not as sets, so no miss reason can be
+recovered offline from it. One recording per deck at A4L rung-0 scale
+(1,000 games, ~31k labelled consults there). The census itself is a
+counter pass over that recording and is free by comparison.
 
-**Note on where this runs.** This container has the repo only — no XMage
-checkout, no GPU, no `rl/artifacts` recordings. Engine work here is
-code, not runs.
+**Where this runs.** In this container. `rl/setup_engine.sh` rebuilds
+the pinned checkout here (clone + `phase9-engine.patch` + the
+`rl/xmage-src` overlay), and the recording is CPU-only — no GPU is
+involved in a teacher recording, which is CP7 playing itself and
+logging. Only the training steps later in the ladder would want the
+user's 3060. Throughput on a container of this shape was ~2.6 games/s
+scripted (`rl/THROUGHPUT-LOCAL.md`), so a 1,000-game recording is
+plausibly well under an hour, but that figure is from the old 4-core
+box and is **not** a measurement of this one: the first thing the build
+buys is a real throughput number, and the cost above is quoted in games
+rather than hours until then.
