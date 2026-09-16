@@ -6183,3 +6183,29 @@ I proposed, in two committed rows, that 13c's approx_kl of ~0.0012 against a 0.0
 **What survives, quantified rather than dropped.** At mean abs raw logit ~8 with B = 5, the gradient factor through B*tanh(raw/B) is about 0.15 - updates are compressed roughly 6.7x relative to an unbounded head. That is a real effect on every bounded run in this project and is worth knowing, but it is a constant-factor compression, not the exponential death (1e-9 to 1e-19) that froze the ladder clones. It does not explain a KL two orders of magnitude below target.
 
 **The saturation finding therefore remains scoped exactly to the A4L single-deck ladder regime**, where it is decisive (+0.143 held-out top-1 from relaxing the bound), and does not reach the published Phase 13 rows.
+
+### 15 / A4L rung 1c — W1Vig (Sun Sentinel, vigilance): the most degenerate rung; ALL THREE ARMS IDENTICAL IN EVERY CELL
+
+**Recording**: 1,000 games, 31,121 labelled consults. **Gate** (own, full recording, run before the runner reached its gate step): priority 19,036/19,036 = 1.000 pass, target 569/569 = 1.000 pass, joint attack 6,279/10,290 = **0.610** FAIL, joint block 5,237/8,797 = **0.595** FAIL. **Coverage for this deck: 0.610 / 0.595.**
+
+**The limitation restated:** W1Vig exists to test VIGILANCE, which removes the attack-vs-hold-back tradeoff. With joint attack and block uncloned, this rung cannot measure that at all.
+
+**Clones - both froze.** Rung clone bc_W1Vig.pt: best epoch 1 of 4, held CE 0.5920 identical epochs 1-4, train CE pinned at 0.5498 from epoch 2. Joint clone bcj_W1Vig.pt (2,000 games): best epoch 1 of 4, held CE 0.5568 identical epochs 1-4, train CE pinned at 0.5544. That makes **six frozen clones of the seven trained across the four rungs** - only rung 1a's joint arm ever escaped.
+
+**Evaluation**: 100 held-out games, 2,884 consults, aspect 1,736 / shared 1,148. Trivial predictor: aspect **0.6215 exact / 0.6774 class**, shared **0.6298 / 0.7125**.
+
+| model | pop | kind | n | exact top-1 | ceiling | frac | class | type |
+|---|---|---|---|---|---|---|---|---|
+| ZERO = RUNG = JOINT | aspect | priority | 1,115 | **0.7085** | 0.8825 | 0.803 | 0.7955 | 0.9256 |
+| ZERO = RUNG = JOINT | aspect | all | 1,736 | 0.5968 | 0.9240 | 0.646 | 0.6526 | 0.8548 |
+| ZERO = RUNG = JOINT | shared | priority | 685 | 0.5971 | 0.8015 | 0.745 | 0.7358 | 0.8803 |
+| ZERO = RUNG = JOINT | shared | all | 1,148 | 0.5897 | 0.8815 | 0.669 | 0.6725 | 0.8598 |
+| ZERO = RUNG = JOINT | shared | target | 51 | 1.0000 | 1.0000 | 1.000 | 1.0000 | 1.0000 |
+
+**Every arm is identical to four decimals in EVERY cell** - not merely on priority, as in rung 1b, but on aspect all-kinds too. Three clones trained on different data are one policy.
+
+**And that policy IS the trivial rule.** Its aspect priority exact top-1 is **0.7085**, and the trivial pos-1 predictor on the same consults scores **0.7085** - equal to four decimals, exactly as rung 0's anchor did. On shared priority it is 0.5971 against the trivial 0.5971. The arms are not near-trivial; they ARE the positional rule.
+
+**Readings: NOT INTERPRETABLE, all four.** Aspect-is-learnable would read 0.803 of aspect ceiling - nominally clearing 0.80 - but that number is produced by a frozen model that reproduces a fixed-position rule exactly, so recording it as a pass would be the artefact the preamble warns against. Shared-transfers, aspect-does-not-transfer and joint-helps are each comparisons between one policy and itself. **Rung 1c measures the freeze.**
+
+**Cannots.** Aspect target is 5 consults. Attack and block uncloned. One seed per arm. Nothing here speaks about vigilance.
