@@ -6,6 +6,16 @@ You are continuing a Magic: The Gathering RL research project. Repo: C:\Users\su
 (= /home/user/CardGuru inside WSL; Python, the XMage engine and the GPU live only in WSL). Branch `v7/lane-d`,
 HEAD 797f527. Box: 11 GB WSL RAM, one RTX 3060.
 
+## How to work with me, before anything is run
+
+* **First task: design a research plan to measure the network's capability.** Not more phases of the old kind.
+  Start from what is actually established (below) and propose how to measure what this network can and cannot do.
+* **Discuss every step with me before executing it.** Bring one step at a time: what it measures, what it cannot
+  measure, the pre-registered reading, and the cost in wall-clock. Wait for my answer. Do not launch a runbook,
+  an agent or an overnight chain off your own judgement.
+* **Keep replies compact.** Lead with the answer, give the numbers that change a decision, skip the narration of
+  what you are about to do. Long tables and full derivations only when I ask.
+
 READ FIRST: `LEVELSET.md`, then in `rl/V7-VALIDATION.md` the sections `15 / A0` … `15 / A4L`, `15 / C`, `15 / D`,
 and the `13c` and `14` rows. Runbooks: `rl/PHASE15-ARCH.md`, `rl/PHASE14-DIAG.md`, `rl/PHASE13-BC.md`,
 `rl/CURRICULUM-LADDER.md`. Ground rules are in `CLAUDE.md` (pre-register; Wilson intervals; never report a level
