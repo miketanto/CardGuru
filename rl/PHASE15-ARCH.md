@@ -66,7 +66,7 @@ advance), everything else as 13b.
   by ≤ 0.02 from 0.876. Then card conditioning is fixable by training, not by redesign.
 * Otherwise report what it cost.
 
-## A4 — does anything transfer across decks? (~3 h: 2 h recording + 1 h training)
+## A4 (SUPERSEDED 2026-09-16, before it ran, by A4L below — user redirect: prove transfer level by level on the minimal-deck ladder, not on one complex deck. Kept here as written.)
 
 The existing non-Dimir recordings (`rl/artifacts/v7/11/rec_b1_M_*.jsonl`) carry **no teacher labels** (checked:
 no `y`), so record one new CP7-labelled set on a second deck with the 13a machinery: **G1Landfall**, 1,250 games,
@@ -109,3 +109,74 @@ built on a representation that does not carry cards, and the fix is architectura
   Smokes (4 games, 2 epochs, /tmp): round-robin picks 2 games per file; grads non-zero on adapter and cand_ref.
   A4 ON HOLD by coordinator message (the transfer rung is being rewritten as a ladder over the minimal W-decks);
   nothing for A4 was launched or written.
+
+## A4L — transfer, level by level, along the curriculum ladder (replaces A4; ~5–6 h, no RL)
+
+User (2026-09-16): "go with simpler decks to prove different aspects of the game to prove transferability in
+each level". The ladder already exists and was built for exactly this discipline (`rl/CURRICULUM-LADDER.md`):
+**each rung is the previous deck with four cards of sixty changed**, and every keyword rung has a no-keyword
+control with the same swap. Nothing new is designed here; A4L measures transfer along it.
+
+White branch (combat), each rung = `W0Base` + 4 copies of one card:
+
+| rung | deck | the four cards | the aspect | control |
+|---|---|---|---|---|
+| 0 | `W0Base` | — | vanilla attack / block / trade math | — |
+| 1a | `W1Fly` | Leonin Skyhunter | flying: changes which blocks are **legal** | `W1Ctrl` (Shrine Keeper, no keyword) |
+| 1b | `W1Fst` | Head of Security | first strike: changes the **math** of a trade | `W1Ctrl` |
+| 1c | `W1Vig` | Sun Sentinel | vigilance: removes the attack-vs-hold-back tradeoff | `W1Ctrl` |
+| 1d | `W1Lif` | Mesa Unicorn | lifelink: changes the arithmetic of a race | `W1Ctrl` |
+| 2 | `W2FlyLif` | Skyhunter + Unicorn | composition: two keywords at once | `W2Ctrl` |
+| 3 | `W3Sorc` | Take Vengeance (sorcery) | removal exists; tapping is a liability | — |
+| 4 | `W4Inst` | Swift Response (instant, **identical text and cost** to rung 3's) | **timing, and nothing else** | rung 3 is the control |
+| 5 | `W5Trick` | Aegis of the Heavens (instant, +1/+7) | hidden information while blocking | — |
+
+Black branch (threat assessment), run only if the white branch finishes inside budget: `B1Narrow` (power ≤ 2),
+`B2Mid` (≤ 3), `B3Open` (any creature), `B1Fast` (Defeat's instant twin), `B4Card` (no board effect at all).
+
+### Data
+
+CP7-labelled recordings per rung, the 13a job shape, **1,000 games per rung** (these decks run ~2 games/s, about
+20× BenchDimir, so a rung is ~10–15 min). Rung 0 may reuse `rl/artifacts/v7/7d1b/*.jsonl` (15 files, 1,500
+W0Base games, `teacher=cp7`, labels present) **if** its wire/label version matches 13a's gate; check, and say
+which was used. Each rung's gate: ≥ 0.9 labelled per kind, as 13a.
+
+### The split that makes a rung readable (definition fixed here, before any data)
+
+For rung R, every held-out consult is **aspect** if the rung's new card is in the agent's hand, on either
+battlefield, or is a candidate in that consult; otherwise **shared**. Report both separately, always.
+
+### Measurements per rung
+
+1. **Zero-shot**: the rung-0 clone (trained on `W0Base` only) evaluated on rung R's held-out games.
+2. **Rung-specific**: a clone trained on rung R only, same 13b recipe.
+3. **Joint**: a clone trained on rungs 0..R.
+4. **Card-swap** (`rl/p10_cardswap.py`) restricted to the rung's new card against its control card.
+Each with top-1, copy ceiling, ceiling fraction, and that rung's trivial predictor — on aspect and shared consults.
+
+### Pre-registered readings (per rung; none may be changed after seeing data)
+
+* **"The shared game transfers"** if zero-shot top-1 on **shared** consults ≥ 0.95 × the rung-specific clone's
+  top-1 on the same consults.
+* **"The aspect does not transfer"** if zero-shot top-1 on **aspect** consults is ≥ 0.10 below its own shared
+  top-1 AND within 0.05 of the rung's trivial predictor there.
+* **"The aspect is learnable at all"** if the rung-specific clone reaches ≥ 0.8 of its aspect copy ceiling. A
+  rung that fails this says the aspect is not learnable from CP7 labels by this network — a stronger finding
+  than a transfer failure, and it makes that rung's transfer reading void.
+* **Control discipline (the point of the ladder)**: the same three numbers for `W1Ctrl` / `W2Ctrl`. If a control
+  rung's zero-shot drop is within 0.03 of a keyword rung's, that rung's drop is **deck-change noise, not the
+  aspect** — say so and withdraw the aspect claim for it.
+* **Rung 4 against rung 3** isolates timing: same text, same cost, sorcery vs instant. Reading: **"timing is
+  represented"** if the rung-4 clone's aspect top-1 is within 0.05 of the rung-3 clone's aspect top-1 AND
+  zero-shot from a rung-3 clone to rung 4 loses ≥ 0.10 specifically on instant-speed consults (opponent's turn
+  or declare-blockers windows).
+* **Ladder-level reading**: the highest rung whose shared part transfers and whose aspect is learnable. State it
+  as a level, e.g. "combat transfers through rung 2; removal timing does not".
+
+### Cannots
+
+Labels are CP7's choices, not optimal play — a rung failure mixes the network with CP7's own weakness at that
+aspect; one seed per clone; top-1 against copy ceilings, not win rates, so nothing here is a claim about winning;
+the aspect/shared split is by card presence, not by whether the decision actually turned on the aspect; two
+control decks cannot separate every confound, only the one-card-swap ones; the black branch is optional and its
+absence is not a negative result.
