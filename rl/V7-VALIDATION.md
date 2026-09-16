@@ -6157,3 +6157,11 @@ The owed diagnostic, run on W1Fly because that rung already had a healthy compar
 Also worth stating: the UNBOUNDED clone's raw logits stay small (mean 10.2, max 49), so relaxing the bound did not merely lift a ceiling that the network then ran through - the bounded run's mean of 108 is the anomaly, not the unbounded run's 10.
 
 **What remains open is the 13c RL checkpoints**, not bc.pt: PPO could have driven logits outward during training even from a healthy start. If ck_1024 / ck_2048 sit in the 54-110 band, that is a candidate mechanical explanation for 13c's approx_kl of ~0.0012 against a 0.02 target - a bounded policy whose raw logits are far outside the bound barely moves whatever the update asks for. That would mean 13c's policy could not move rather than chose not to, and the 13c verdict would need an amendment saying so. **The 13c verdict is NOT rewritten here**; this is recorded as a candidate pending the measurement.
+
+**The 13c checkpoints no longer exist, so the 13c question is answered through its twin.**
+
+rl/artifacts/v7/13/c/ retains only logs, levels, census lines and state.json - the .pt files were gitignored and not kept, so ck_1024 / ck_2048 cannot be measured and the 13c saturation question is **unanswerable from its own artifacts**. Recording that plainly rather than leaving a pending measurement that will never arrive.
+
+The substitute is exact in the ways that matter: **rl/artifacts/v7/14/d2b/ck_{256,512,768,1024}.pt** were trained FROM bc.pt with the **Phase 13 recipe unchanged** - lr 3e-5, logit bound 5, --adv-norm batch, --target-kl 0.02 - for 1,024 episodes. Same start point, same recipe, same bound; the one difference is the opponent (CP7 skill 1 rather than skill 6). If PPO under this bound drives raw logits outward, that trajectory will show it.
+
+**bc_aux.pt (A3's auxiliary-loss clone) measures mean abs raw logit 9.09, max 28.8, 7.4 percent beyond +/-20** - the same healthy band as bc.pt (7.57). So every PUBLISHED clone measured so far sits at 7-10, and only the bounded single-deck LADDER clones sit at 54-110. The pathology is specific to that regime, not to the bound as such.
