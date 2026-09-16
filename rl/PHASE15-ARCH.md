@@ -402,3 +402,21 @@ absence is not a negative result.
   and EV does not move; that D1 remark is qualified in the open. Every value interval straddles zero and is ~0.4
   wide, so the value half has almost no power and nothing should rest on it alone. Row: rl/V7-VALIDATION.md
   '15 / A1'. A3 is not triggered by A1 (it depends only on A2's reading). Chain moves to A2 next.
+- 2026-09-16 03:41Z WSL (recorder restarted; the order for the rest of the night, stated because the ladder is
+  the part most at risk of not finishing). ANSWER to "did run_15recall.sh exit early?": it exited BY MY DECISION
+  at 02:52Z (STOPALL then rl/stop_15rec.sh), to keep two growing JVMs off A1's two largest fractions when
+  MemAvailable had fallen 11.4 -> 3.7 GB. I cleared STOPALL at 03:02Z but did not restart it, so it was idle
+  ~50 min - that idleness was an omission, not a design, and it is now corrected: restarted 03:41Z with A2's
+  floor clone running, because recording is ENGINE-ONLY and A2's clone is lighter than A1's policy stage
+  (MemAvailable 10.3 GB at restart).
+  THE ORDER THIS PRODUCES, which is the one we want: the recorder works through the 16 ladder decks on the engine
+  while the GPU does A2; `chain_15.sh`'s ladder step already WAITS for the recorder to exit (6 h cap) before
+  starting `run_15a4.sh`, so the ladder's clone steps never share the box with two JVMs. When the ladder does
+  start, every deck whose DONE file exists is skipped straight to gate -> clone -> eval, which is the whole point
+  of recording ahead. If RAM falls under ~2.5 GB the recorder is paused again (STOPALL then stop_15rec.sh) - it
+  is resumable per 50-game job and costs nothing but the job in flight.
+  TRAP TO AVOID FOR THE REST OF THE PHASE (this is how the chain jammed once already): the chain polls
+  `pgrep -f "run_15recal[l]\.sh"` for the recorder, so no long-lived process of mine may carry that literal
+  string in its argv - a monitoring loop that does would make the chain believe the recorder is still running and
+  hold the ladder indefinitely. Short polls are fine (worst case the chain sleeps one more cycle); wait loops
+  must key on files.
