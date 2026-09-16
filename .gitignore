@@ -44,3 +44,4 @@ rl/artifacts/subgame/gen_s*_sh*.tsv
 # commit. Force-added once GATES|DONE is in gates.log.
 rl/artifacts/subgame/gate1_*.tsv
 rl/artifacts/subgame/gate3_*.tsv
+rl/artifacts/subgame/gate1retry_*.tsv
