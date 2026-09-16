@@ -509,3 +509,19 @@ absence is not a negative result.
   CANNOTS for probe 1: 22 distinct cards and only 6 held-out identities, 12 informative off-wire columns - thin,
   and probe 3 (pooled over ladder and wire3a decks) exists to widen exactly that. Linear probes lower-bound what
   is present; a fail can be non-linear encoding. One deck, one seed.
+- 2026-09-16 04:44Z WSL (A3 TRAINING DONE - the agreement clause is MET at no cost): rl/p15_a3.py, 13b's recipe
+  plus the pre-registered auxiliary loss (every encoded entity token predicts its card's 68 e2_features, BCE,
+  weight 0.1 fixed in the runbook before any A3 data), 65,471 labelled consults, 1,250 games, the 13b hold-out,
+  aux coverage 0.942 of probed entities, early stop at epoch 11 with best epoch 8, 1,680 s.
+  Held-out at best epoch: CE 0.2821, all-kinds top-1 0.8846, cls1 0.8979, type1 0.9327; priority top-1 0.8767.
+  A3 CLAUSE ONE: priority 0.8767 against 13b's 0.876 = a drop of -0.0007, i.e. the remedy costs NOTHING in
+  agreement (bar: drop <= 0.02). MET.
+  The auxiliary objective was solved almost immediately and completely - held-out aux BCE 0.0034 after one epoch,
+  0.0000 from epoch 7 - so the mechanism was fully active and the entity tokens certainly encode the e2 columns
+  now. Whether that RECOVERS the probe score is clause two and is not known yet.
+  Worth recording because it affects which checkpoint the clause is read on: held-out TOP-1 kept climbing to
+  epoch 10 (0.8919) while held-out CE worsened after epoch 8, and v7_bc/p15_a3 select on CE. The saved checkpoint
+  is therefore the CONSERVATIVE one for this clause; selecting on top-1 would have made the remedy look better,
+  and that choice was inherited from 13b rather than made here.
+  Next: the combined BC / RAND / AUX probe pass on the probe-1 population (where the "discards" reading was made)
+  for clause two, which also produces the majority-class diagnostic the A2 row records as owed.
