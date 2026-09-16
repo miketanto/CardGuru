@@ -6074,3 +6074,34 @@ Rung 2 joint clone froze exactly as its single-deck arms did (held CE 0.5862 ide
 **This revises the rung 1a conclusion, in the open.** Rung 1a attributed the JOINT-over-RUNG gap to data volume, supported by A1 reading data-limited. That attribution is now too simple: rung 2 joint arm has the same doubled data and does NOT escape. What separates the runs is whether they escaped saturation, which the doubled, more varied data made more likely on rung 1 but did not guarantee. The honest statement is that **the A4L arms are measuring the interaction of the logit bound with this training regime at least as much as they measure transfer**, and a rung whose arms all froze cannot speak about its aspect at all.
 
 **The OWED --logit-bound 0 re-clone is now the load-bearing diagnostic of this phase**, because it decides whether any A4L arm measured the network rather than the bound. It is still not run tonight: changing the bound mid-ladder would make the rungs incomparable, and the ladder is mid-flight.
+
+### 15 / A4L rung 1b — W1Fst (Head of Security, first strike): ALL THREE ARMS FROZE AND COINCIDE; the rung cannot speak about its aspect
+
+**Recording**: 1,000 games, 30,142 labelled consults. **Gate** (own, full recording): priority 18,647/18,647 = 1.000 pass, target 600/600 = 1.000 pass, joint attack 6,035/10,235 = **0.590** FAIL, joint block 4,860/8,695 = **0.559** FAIL. **CombatMath coverage for this deck: 0.590 / 0.559** - the worst of the three recorded so far (W0Base 0.598/0.604, W1Fly 0.641/0.645).
+
+**The limitation restated, not footnoted:** W1Fst exists to test FIRST STRIKE, which changes the MATH OF A TRADE. With joint attack and block uncloned, this rung cannot measure that at all; it measures only whether the presence of Head of Security shifts priority and target choice.
+
+**Clones - all three froze.** Rung clone bc_W1Fst.pt: best epoch 1 of 4, held CE 0.5823 identical across epochs 1-4, train CE 0.5623 from epoch 2. Joint clone bcj_W1Fst.pt (2,000 games, 38,911 labelled): best epoch 1 of 4, held CE 0.5862 identical across epochs 1-4, train CE 0.5767 from epoch 2 - and it ROSE from 0.5655. Raw-logit saturation: rung clone mean abs 90.8, joint clone 93.0, both with 99-100 percent of logits beyond +/-20.
+
+**Evaluation** on W1Fst held-out games: 100 games, 2,793 consults, aspect 2,122 / shared 671. Trivial predictor: aspect **0.6013 exact / 0.6616 class**, shared **0.6066 exact / 0.7765 class**.
+
+| model | pop | kind | n | exact top-1 | ceiling | frac | class top-1 | type |
+|---|---|---|---|---|---|---|---|---|
+| ZERO | aspect | priority | 1,353 | 0.6814 | 0.8891 | 0.766 | 0.7568 | 0.9047 |
+| RUNG | aspect | priority | 1,353 | **0.6814** | 0.8891 | **0.766** | 0.7568 | 0.9047 |
+| JOINT | aspect | priority | 1,353 | **0.6814** | 0.8891 | **0.766** | 0.7568 | 0.9047 |
+| ZERO / RUNG / JOINT | shared | priority | 422 | **0.5687** | 0.7725 | 0.736 | 0.7417 | 0.8768 |
+| ZERO / RUNG / JOINT | shared | target | 54 | 0.9444 | 1.0000 | 0.944 | 0.9444 | 1.0000 |
+| ZERO / RUNG / JOINT | aspect | target | 6 | 0.0000 | 0.6667 | 0.000 | 0.0000 | 1.0000 |
+
+**All three arms coincide to four decimals on priority and on every shared cell.** A clone trained on W0Base, a clone trained on W1Fst, and a clone trained on both make the same predictions. They differ only in the third decimal of the aspect all-kinds figure (0.5551 / 0.5509 / 0.5556), which is carried by untrained attack and block heads.
+
+**Readings, as pre-registered.**
+* **"The aspect is learnable at all": NOT MET.** The rung clone reaches 0.766 of its aspect ceiling on priority (0.593 all kinds) against a 0.80 bar. By A4L own rule this VOIDS the rung transfer reading.
+* **"The shared game transfers": met by the letter and empty**, for the second rung running - zero-shot shared priority 0.5687 against the rung clone 0.5687 is a ratio of exactly 1.000, because they are the same policy. On exact index the arms sit BELOW the shared trivial predictor (0.6095 all-kinds against 0.6066 is +0.003; priority 0.5687 against a 0.5142 positional rule is above, but class agreement 0.7417 is below the trivial class figure 0.7844).
+* **"The aspect does not transfer": NOT met** - zero-shot aspect priority (0.6814) is higher than its shared counterpart (0.5687), not 0.10 below.
+* **"Joint helps": NO, and this is the new fact.** On rung 1a the joint arm was far stronger; here it is IDENTICAL to both single-deck arms, and its aspect exact top-1 (0.5556) is BELOW the aspect trivial predictor (0.6013) with class agreement (0.6037) below trivial class (0.6616). The joint arm froze at epoch 1 at mean abs raw logit 93.0.
+
+**What this rung establishes.** Nothing about first strike - it could not, with combat uncloned. What it establishes is about the LADDER: when every arm saturates and freezes at epoch 1, all three collapse onto the same near-trivial policy and the pre-registered clauses become arithmetic on identical numbers. A rung in that state cannot speak about its aspect, and reporting its transfer clauses as if it could would be the artefact the preamble was amended to guard against.
+
+**Cannots.** Aspect target is 6 consults and shared target 54 - both carry nothing. Attack and block are uncloned. One seed per arm. Top-1 against copy ceilings is not a win rate. And for this rung specifically: with all arms frozen and coincident, NO comparison between arms is informative, including the ones that formally pass.
