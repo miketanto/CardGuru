@@ -509,7 +509,18 @@ public final class SubgameFamily {
                 String before = f[12];          // optClasses column
                 Solved s = solve(b, delta, cap);
                 String after = String.join("|", s.optClasses);
-                boolean same = before.equals(after) && s.value == Integer.parseInt(f[3]);
+                // A SOLVE THAT RAN OUT OF BUDGET IS NOT A PASS, even when
+                // its class set matches. optimalRootChoices walks the root
+                // options in order and collects the ones that hold the
+                // value, so a solve cut short after option 0 returns just
+                // option 0 - which for a HOLD instance is exactly the
+                // expected answer. Two instances were scored stable=1 on
+                // exactly that coincidence, and were only caught because
+                // their labelAfter still said TIMEOUT. Stability is now
+                // conditional on having finished.
+                boolean measured = !"TIMEOUT".equals(s.label) && !"CAPPED".equals(s.label);
+                boolean same = measured && before.equals(after)
+                        && s.value == Integer.parseInt(f[3]);
                 System.out.println("GATE1\t" + id + "\t" + label
                         + "\tdelta=" + delta
                         + "\tbefore=" + before + "\tafter=" + after

@@ -1,0 +1,3 @@
+# id	label	value	aLife	aFiller	aBodies	bLife	bFiller	bBodies	rootOpts	classes	optClasses	randA	replays	secs	heur
+INST	T1.GEN.174	HOLD	1	5	5	Canyon Minotaur;Siege Mastodon	3	4	Fire Elemental;Regathan Firecat	4	4	-	0.510	1437	28.0	allin=0,never=1,bodycount=1,safeattack=1
+INST	T1.GEN.498	HOLD	1	1	6	Fire Elemental;Maritime Guard	3	5	Armored Cancrix;Bonebreaker Giant	4	4	-	0.465	1714	39.4	allin=0,never=1,bodycount=1,safeattack=1
