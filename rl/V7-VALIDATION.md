@@ -5556,3 +5556,67 @@ PARTIAL so that the bar stands as written.
 **Cannots.** Says nothing about generalisation — nothing was held out, by design. One slice, one seed, one init.
 The value EV here is a *memorisation* number on 40 games and is not comparable with 14/D1's held-out 0.095. The
 copy ceiling is a property of this slice; a different 40 games would cap the metric somewhere else.
+
+### 15 / A1 — is the fit data-limited or capacity-limited? **DATA-LIMITED by the rule as written — carried entirely by the policy half; the value half is flat**
+
+`rl/p15_a1.py`, two stages. Nested fractions (one `Random(0)` shuffle, prefixes taken, so each fraction is a
+doubling of the *same* pool) of the 1,125 training games, scored against **the 13b hold-out reproduced exactly**
+(125 games; 7,167 labelled consults for the policy stage, 7,535 for the value stage). Policy stage = 13b's recipe
+unchanged (fresh `--cand-refers-pool` init, lr 1e-4, AdamW decay 0.01 on heads, batch 32, ≤ 20 epochs, early stop
+on held-out CE, patience 3, seed 0). Value stage = Phase 14 D1's N1 unchanged (bc.pt's critic trained on MSE to
+the recorded seat's ±1 outcome, early stop on a validation split of 10 % of the *training* games so the hold-out
+is never used for selection; EV = 1 − MSE/Var(r), 1,000 bootstrap resamples of held-out GAMES).
+
+| fraction | train games | train consults | best epoch | held CE | **all top-1** | cls1 | type1 | priority | target | attack | block |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| 12.5 % | 141 | 7,375 | 7 | 0.4033 | 0.8436 | 0.8571 | 0.9051 | 0.8415 | 0.8496 | 0.9298 | 0.5920 |
+| 25 % | 281 | 14,893 | 5 | 0.3656 | 0.8573 | 0.8721 | 0.9146 | 0.8524 | 0.8872 | 0.9632 | 0.5287 |
+| 50 % | 562 | 28,949 | 7 | 0.3191 | 0.8753 | 0.8889 | 0.9290 | 0.8677 | 0.8969 | 0.9699 | 0.7069 |
+| **100 %** | 1,125 | 58,304 | 6 | 0.2922 | **0.8871** | 0.9022 | 0.9393 | 0.8793 | 0.8872 | 0.9783 | 0.8276 |
+
+| fraction | train games | **value EV** | EV 95 % (bootstrap over games) | AUC |
+|---|---|---|---|---|
+| 12.5 % | 141 | −0.0314 | [−0.253, 0.096] | 0.701 |
+| 25 % | 281 | −0.0575 | [−0.450, 0.128] | 0.764 |
+| 50 % | 562 | **0.0970** | [−0.136, 0.243] | 0.770 |
+| **100 %** | 1,125 | **0.0951** | [−0.172, 0.256] | 0.788 |
+
+**Readings, as pre-registered.** The rule is an OR: *data-limited* if the last doubling adds ≥ 0.01 top-1 **or**
+≥ 0.03 EV; *saturated* if it adds < 0.01 top-1 **and** < 0.03 EV.
+* **Overall: DATA-LIMITED**, on the top-1 clause alone.
+* **Policy half — still rising.** Doubling increments in all-kinds top-1 are +0.0137, +0.0180, **+0.0118**:
+  monotone, decelerating, and the last one clears 0.01. Priority top-1 rises 0.8415 → 0.8524 → 0.8677 → 0.8793.
+* **Value half — flat, and on its own it would read saturated.** The last doubling adds **−0.0019** EV
+  (0.0970 → 0.0951), nowhere near +0.03, and the sign is negative. The two halves disagree and are reported
+  separately rather than reconciled, as the runbook's "state what a number cannot support" requires.
+* **A3 is not triggered by A1** (A3 depends only on A2's reading).
+
+**Both halves reproduce their parent phases, which is the check that this is a measurement and not a tooling
+artefact.** Policy 100 % vs 13b's clone (same recipe, same data, same hold-out): all-kinds top-1 0.8871 vs 0.884,
+held CE 0.2922 vs 0.2920, cls1 0.9022 vs 0.898, type1 0.9393 vs 0.932, priority 0.8793 vs 0.876, best epoch 6 vs
+6 — largest gap 0.004 on a rate, 0.0002 on CE, i.e. single-seed and cuda-nondeterminism scale. Value 100 % vs
+Phase 14 D1's N1: EV **0.0951 vs 0.095**, best epoch **2** with val_mse **0.5600** in both, and the same hold-out
+(125 games, 7,535 consults, held r̄ 0.579, Var 0.665).
+
+**What this supports, and what it does not.**
+* It supports: **more recordings are the cheap fix for the imitation side.** 1,250 BenchDimir games ≈ 2 h of
+  engine time (13a), and the ladder decks run ~20× faster; the clone's agreement with CP7 was still climbing at
+  the largest set we have.
+* It does **not** support the natural next sentence, and the difference matters: **A1 gives no evidence that more
+  data fixes the critic.** Phase 14 D1's addendum inferred from the critic's fast overfitting that "at 1,125
+  training games this fit is data-limited, not capacity-limited"; A1 tests that inference directly by doubling
+  the data, and EV does not move (0.0970 → 0.0951). Read as a **qualification of that D1 remark**: over this
+  range, more of the same recordings did not buy the critic anything. The Phase 14 combined verdict ("the win/loss
+  signal from this encoding is too weak for this RL at this scale") is untouched by A1 and, if anything, the value
+  half is consistent with it.
+* **Rank versus calibration again.** AUC rises monotonically with data (0.701 → 0.764 → 0.770 → 0.788) while EV
+  does not — the same split Phase 14 D1 recorded (ordering carries signal, squared-error fit does not). A critic
+  used for GAE needs the magnitude.
+
+**Cannots.** One seed per point, and the fractions are nested, so the four points are not independent samples.
+**Every value interval straddles zero and is ~0.4 wide**: the value half's "flat" is a statement about point
+estimates under the pre-registered rule, and the intervals cannot separate any two fractions — that half has
+essentially no power, and no claim about the critic should rest on it alone. The policy stage early-stops on the
+hold-out (13b's behaviour, kept so the 100 % point is comparable with the published row), which makes every
+held-out number here mildly optimistic, equally at every fraction. Nothing here is a win rate or says anything
+about winning; the critic's effective sample is games (1,250), not consults. Only BenchDimir.

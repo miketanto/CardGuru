@@ -392,3 +392,13 @@ absence is not a negative result.
   two GPU trainers on one box; (3) one chain relaunched afterwards. Cost: ~20 idle minutes, nothing lost - every
   chain step is resumable and all four A1 policy points were already on disk. Lesson for the rest of this phase:
   a watcher's argv is part of the system; wait on artifacts, not on process names.
+- 2026-09-16 03:40Z WSL (A1 COMPLETE, both halves; row written): value EV by fraction −0.0314 / −0.0575 / 0.0970 /
+  0.0951 (AUC 0.701 / 0.764 / 0.770 / 0.788), 930 s. Last doubling: policy +0.0118 top-1 (>= 0.01) and value
+  −0.0019 EV (< 0.03) -> by the pre-registered OR rule the reading is **DATA-LIMITED**, carried entirely by the
+  policy half; the value half alone would read saturated. Reported separately, not reconciled. Both halves
+  reproduce their parents (policy = 13b to <= 0.004; value = D1's N1 EV 0.095, best epoch 2, val_mse 0.5600, same
+  hold-out), so A1 measures what 13b and 14/D1 measured. IMPORTANT and stated in the row: A1 does NOT support
+  "more data fixes the critic" - it tests D1's "this fit is data-limited" inference directly by doubling the data
+  and EV does not move; that D1 remark is qualified in the open. Every value interval straddles zero and is ~0.4
+  wide, so the value half has almost no power and nothing should rest on it alone. Row: rl/V7-VALIDATION.md
+  '15 / A1'. A3 is not triggered by A1 (it depends only on A2's reading). Chain moves to A2 next.
