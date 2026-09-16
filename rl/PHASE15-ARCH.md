@@ -180,3 +180,21 @@ aspect; one seed per clone; top-1 against copy ceilings, not win rates, so nothi
 the aspect/shared split is by card presence, not by whether the decision actually turned on the aspect; two
 control decks cannot separate every confound, only the one-card-swap ones; the black branch is optional and its
 absence is not a negative result.
+- 2026-09-16 02:33Z WSL (A4L read; rung-0 reuse CHECKED and DECLINED; ladder recording tooling written, nothing
+  launched): `rl/artifacts/v7/7d1b/*.jsonl` matches 13a on the WIRE exactly (hello: wire 7, v7_dims identical,
+  v7_rtypes 8 / v7_ctypes 8 / v7_zones 7, v7_emax 160 / v7_kmax 96, card_emb_v8, d_c 128, teacher=cp7) but NOT on
+  the LABEL version: a per-kind census of `7d1b_s7400.jsonl` (100 games) finds priority consults only - prio
+  1,488/1,488 = 1.000 labelled, and ZERO target / attack / block consults in the file, because 7d1b predates the
+  13a teacher build (target and joint attack/block labels were added 2026-09-15 12:50Z). A rung-0 clone trained on
+  priority-only labels would not be comparable with the four-kind clones every other rung gets, and A4L's gate is
+  per decision kind. DECISION: re-record rung 0 on W0Base with the 13a job shape (`rl/run_15rec.sh W0Base`);
+  7d1b is not used. Tooling written (not yet run): `rl/record_15.sh` (13a's job, deck as an argument),
+  `rl/run_15rec.sh` (two lanes H/C, 50-game jobs, resumable per job, idempotent per deck via a DONE file, starts
+  drivers 7911/7912 if down), `rl/gate_15rec.sh` (the 13a per-kind gate through `rl/rec13_summary.py` unchanged),
+  `rl/stop_15rec.sh` (kill-by-script-file; its own name matches none of its patterns). Ladder decks all exist and
+  each is W0Base with exactly 4 of 60 cards swapped: W1Fly Leonin Skyhunter / W1Fst Head of Security / W1Vig Sun
+  Sentinel / W1Lif Mesa Unicorn / W1Ctrl Shrine Keeper (all for Silvercoat Lion); W2FlyLif Skyhunter + Unicorn and
+  W2Ctrl Shrine Keeper + Traveling Philosopher (both for Glory Seeker + Silvercoat Lion); W3Sorc Take Vengeance /
+  W4Inst Swift Response / W5Trick Aegis of the Heavens. Those names are the aspect/shared split keys.
+  `rl/p15_a1.py` written (A1: policy and value stages, nested fractions of the 13b training games against the 13b
+  hold-out, one JSON per point, resumable).
