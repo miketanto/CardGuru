@@ -1,0 +1,8 @@
+# The hand-authored T1.HOLD from rl/SUBGAME-DESIGN.md, written in the
+# generated-family row format so the same gate tooling runs over it. Its
+# solve is already recorded in rl/SUBGAME-T1-BUILD.md (value 1, unique
+# optimal root [0], 611 replays); re-deriving it through the family path
+# is the end-to-end check that the pipeline reproduces the instance the
+# family generator was built to generalise.
+# id	label	value	aLife	aFiller	aBodies	bLife	bFiller	bBodies	rootOpts	classes	optClasses	randA	replays	secs	heur
+INST	T1.HOLD.authored	HOLD	1	3	7	Silvercoat Lion;Silvercoat Lion	4	4	Trokin High Guard	4	3	-	-	611	2.8	allin=0,never=1,bodycount=0,safeattack=1

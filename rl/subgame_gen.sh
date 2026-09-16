@@ -21,6 +21,13 @@ cd "$MAGE"
 CP="target/test-classes:target/classes:$(cat /tmp/cp.txt)"
 
 for s in $(seq 0 $((SHARDS - 1))); do
+  # STAGGER THE STARTS. CardScanner.scan opens the H2 card DB, and three
+  # JVMs opening it in the same second lose the race with
+  #   JdbcSQLException: Error opening database: "Lock file recently
+  #   modified"
+  # which kills that shard outright while the others run on - a silently
+  # short family if the .err files are not read.
+  [ "$s" -gt 0 ] && sleep 25
   java -Dsubgame.replayCap="$CAP" -cp "$CP" \
     org.mage.test.benchmark.rl.SubgameFamily \
     gen "$POOL" "$SEED" "$N" "$s" "$SHARDS" \

@@ -26,8 +26,8 @@ cat $FILES | grep '^INST' | awk -F'\t' '
 echo
 echo "== the family (HOLD + SWING: unique optimal class) =="
 cat $FILES | grep '^INST' | awk -F'\t' '$3=="HOLD"||$3=="SWING"' |
-  awk -F'\t' '{printf "%-12s %-6s A:%s life %s %s  |  B:%s life %s %s  |  opt=%s rand=%s\n",
-       $2,$3,$5,$7,"("$6" filler)",$8,$10,"("$9" filler)",$11,$14}'
+  awk -F'\t' '{printf "%-12s %-6s A:%s life  %s (%s filler)  |  B:%s life  %s (%s filler)  |  opt=%s rand=%s\n",
+       $2,$3,$5,$7,$6,$8,$10,$9,$13,$14}'
 
 echo
 echo "== stats-only baselines on the family =="

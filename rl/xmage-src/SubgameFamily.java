@@ -506,7 +506,7 @@ public final class SubgameFamily {
                     continue;
                 }
                 Board b = Board.parse(id, f, 4);
-                String before = f[10];
+                String before = f[12];          // optClasses column
                 Solved s = solve(b, delta, cap);
                 String after = String.join("|", s.optClasses);
                 boolean same = before.equals(after) && s.value == Integer.parseInt(f[3]);
@@ -556,7 +556,7 @@ public final class SubgameFamily {
                     continue;
                 }
                 Board b = Board.parse(f[1], f, 4);
-                Set<String> classes = new TreeSet<>(Arrays.asList(f[10].split("\\|")));
+                Set<String> classes = new TreeSet<>(Arrays.asList(f[12].split("\\|")));
                 Set<Integer> optimal = masksOfClasses(b.aBodies, classes);
                 SubgameProbe.Result pr = SubgameProbe.probe(
                         b.toSpec(0), optimal, samples, port, shared);
