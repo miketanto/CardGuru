@@ -1,0 +1,10 @@
+D2B|start|2026-09-15T23:34:09Z|skill=1|seed=41|out=/tmp/rl_14_d2b
+D2B|agent|from=bc.pt
+D2B|block|n=1|trained=0->256|budget=256|opp=cp7|skill=1|W/L/D/S=69/187/0/0|episodes=256|wr=0.270|wall=1118s|rc=0
+D2B|block|n=2|trained=256->512|budget=512|opp=cp7|skill=1|W/L/D/S=67/189/0/0|episodes=256|wr=0.262|wall=791s|rc=0
+D2B|block|n=3|trained=512->768|budget=768|opp=cp7|skill=1|W/L/D/S=62/194/0/0|episodes=256|wr=0.242|wall=857s|rc=0
+D2B|block|n=4|trained=768->1024|budget=1024|opp=cp7|skill=1|W/L/D/S=81/175/0/0|episodes=256|wr=0.316|wall=849s|rc=0
+D2B|trained|1024
+XDECKS|ck=ck_1024.pt|agent=BenchDimir|vs=cp7|skill=1|oppDeck=BenchDimir|34/100 = 0.340 [0.255,0.437]|losses=66 draws=0 stalls=0 turns_per_ep=18.9
+XDECK|ck=ck_1024.pt|agent=BenchDimir|vs=cp7|skill=1|oppDeck=BenchDimir|33/100 = 0.330 [0.246,0.427]|losses=67 draws=0 stalls=0 turns_per_ep=18.4
+D2B|done|2026-09-16T00:46:13Z
