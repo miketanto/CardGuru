@@ -5,8 +5,9 @@ search that was supposed to replace it, per the closing section of
 `rl/SUBGAME-DESIGN.md`: *an instance is not a design, it is a search
 result.* Engine pin `7554968c`, this container.
 
-Status: generation **COMPLETE** (28 instances); gates 1 and 3 running.
-Nothing here is a capability claim; no network has been
+Status: generation **COMPLETE** (28 instances). Gate 2 and gate 3 pass.
+Gate 1 is 16 pass / 1 fail / 11 re-running after its budget was found
+too small. Nothing here is a capability claim; no network has been
 scored on this family.
 
 ## What runs
@@ -162,6 +163,52 @@ The family-level gate passes: none is at ceiling. The load-bearing
 consequence is the bar it sets — **a network on this family is measured
 against 0.750, not against 0.25 or 0.5.** A checkpoint scoring 0.6 here
 is worse than a rule that reads two numbers off the cards.
+
+### Gate 3 — expressibility: PASSES, 28/28
+
+Every instance, 200 samples each: **`expressible=200/200`**. The optimal
+action is in the candidate list `RLPlayer` actually selects from, on
+every position and every sample. The §15/C coverage hole does not bite
+anywhere on this family — verified per position rather than estimated
+from teacher counters.
+
+This is checked against every mask in the optimal *symmetry class*, not
+the solver's representative mask; `T1.GEN.140` has `optimalMasks=[1, 2]`
+(two copies of Zombie Goliath) and would have been scored as a coverage
+hole under mask equality.
+
+The same run gives the **action-space** random baseline — a policy
+picking uniformly from `RLPlayer`'s own filtered candidate list, which
+is a smaller space than the solver's. Per instance it runs 0.200–0.555.
+That is a different number from gate 2's `randA` and the two must not be
+pooled: `randA` is uniform over solver options across a whole game,
+this is one uniform draw from the filtered candidate list at the root.
+
+### Gate 1 — horizon insensitivity: 16 pass, 1 fails, 11 unmeasured
+
+Not "12 unstable". The distinction is the finding:
+
+| outcome | n |
+|---|---|
+| optimal class unchanged at +2 filler | **16** |
+| optimal class genuinely moved | **1** |
+| solve ran out of clock — no measurement | **11** |
+
+The one real failure is `T1.GEN.521`: unique `Nether Horror` at +0, and
+`-|Nether Horror` at +2 — holding also wins once the libraries are
+deeper. That instance is measuring the deck-out clock as well as the
+combat, and per the design it is **cut, not tuned**.
+
+The other 11 came back at *exactly* 90.0 s with an empty optimal set.
+That is the `subgame.solveSecs` default — added to the solver earlier in
+this same session — and `rl/subgame_gates.sh` raised `subgame.replayCap`
+to 200,000 while leaving the clock at its default. Gate 1 adds filler,
+and replays roughly triple per two extra cards while each replay also
+gets longer, so a budget sized for generation is far too small for the
+gate. **Reporting those 11 as instability would have been a fabricated
+finding** — an empty result set is not a moved one. They are re-running
+at a 900 s budget via `rl/subgame_gate1_retry.sh`; until that lands,
+the gate-1-clean family is 16 instances, not 27.
 
 ### The family is too small for the claim it is meant to support
 

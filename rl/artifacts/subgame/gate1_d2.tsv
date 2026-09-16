@@ -1,0 +1,28 @@
+GATE1	T1.GEN.22	SWING	delta=2	before=Oreskos Swiftclaw	after=Oreskos Swiftclaw	value=1	stable=1	labelAfter=SWING	replays=109	secs=4.2
+GATE1	T1.GEN.48	SWING	delta=2	before=Amphin Cutthroat;Nether Horror	after=	value=1	stable=0	labelAfter=TIMEOUT	replays=3165	secs=90.0
+GATE1	T1.GEN.66	HOLD	delta=2	before=-	after=-	value=1	stable=1	labelAfter=HOLD	replays=1353	secs=33.3
+GATE1	T1.GEN.84	SWING	delta=2	before=Armored Cancrix	after=Armored Cancrix	value=1	stable=1	labelAfter=SWING	replays=379	secs=8.4
+GATE1	T1.GEN.140	SWING	delta=2	before=Zombie Goliath	after=	value=1	stable=0	labelAfter=TIMEOUT	replays=3797	secs=90.0
+GATE1	T1.GEN.152	SWING	delta=2	before=Armored Cancrix;Fugitive Wizard	after=	value=0	stable=0	labelAfter=TIMEOUT	replays=3251	secs=90.0
+GATE1	T1.GEN.156	HOLD	delta=2	before=-	after=	value=0	stable=0	labelAfter=TIMEOUT	replays=3624	secs=90.0
+GATE1	T1.GEN.171	HOLD	delta=2	before=-	after=-	value=1	stable=1	labelAfter=HOLD	replays=2718	secs=67.6
+GATE1	T1.GEN.174	HOLD	delta=2	before=-	after=-	value=1	stable=1	labelAfter=TIMEOUT	replays=3592	secs=90.0
+GATE1	T1.GEN.272	SWING	delta=2	before=Oreskos Swiftclaw	after=Oreskos Swiftclaw	value=1	stable=1	labelAfter=SWING	replays=77	secs=1.8
+GATE1	T1.GEN.302	SWING	delta=2	before=Oreskos Swiftclaw	after=Oreskos Swiftclaw	value=1	stable=1	labelAfter=SWING	replays=133	secs=3.3
+GATE1	T1.GEN.307	HOLD	delta=2	before=-	after=-	value=1	stable=1	labelAfter=HOLD	replays=1035	secs=23.5
+GATE1	T1.GEN.362	SWING	delta=2	before=Horned Turtle	after=Horned Turtle	value=1	stable=1	labelAfter=SWING	replays=133	secs=3.2
+GATE1	T1.GEN.418	SWING	delta=2	before=Zombie Goliath	after=	value=1	stable=0	labelAfter=TIMEOUT	replays=3711	secs=90.0
+GATE1	T1.GEN.455	SWING	delta=2	before=Regathan Firecat	after=-	value=1	stable=0	labelAfter=TIMEOUT	replays=3789	secs=90.0
+GATE1	T1.GEN.477	HOLD	delta=2	before=-	after=	value=1	stable=0	labelAfter=TIMEOUT	replays=3398	secs=90.0
+GATE1	T1.GEN.480	SWING	delta=2	before=Fire Elemental;Horned Turtle	after=	value=1	stable=0	labelAfter=TIMEOUT	replays=3619	secs=90.0
+GATE1	T1.GEN.498	HOLD	delta=2	before=-	after=-	value=1	stable=1	labelAfter=TIMEOUT	replays=3531	secs=90.0
+GATE1	T1.GEN.521	SWING	delta=2	before=Nether Horror	after=-|Nether Horror	value=1	stable=0	labelAfter=MULTI	replays=1450	secs=33.7
+GATE1	T1.GEN.549	SWING	delta=2	before=Regathan Firecat;Siege Mastodon	after=	value=1	stable=0	labelAfter=TIMEOUT	replays=3665	secs=90.0
+GATE1	T1.GEN.559	SWING	delta=2	before=Bonebreaker Giant	after=Bonebreaker Giant	value=1	stable=1	labelAfter=SWING	replays=379	secs=8.7
+GATE1	T1.GEN.560	SWING	delta=2	before=Armored Cancrix;Barony Vampire	after=	value=1	stable=0	labelAfter=TIMEOUT	replays=3730	secs=90.0
+GATE1	T1.GEN.579	SWING	delta=2	before=Bronze Sable	after=Bronze Sable	value=1	stable=1	labelAfter=SWING	replays=129	secs=3.0
+GATE1	T1.GEN.588	HOLD	delta=2	before=-	after=-	value=1	stable=1	labelAfter=HOLD	replays=1766	secs=41.1
+GATE1	T1.GEN.593	SWING	delta=2	before=Regathan Firecat	after=	value=1	stable=0	labelAfter=TIMEOUT	replays=3658	secs=90.0
+GATE1	T1.GEN.596	SWING	delta=2	before=Maritime Guard	after=Maritime Guard	value=1	stable=1	labelAfter=SWING	replays=147	secs=3.3
+GATE1	T1.GEN.626	SWING	delta=2	before=Amphin Cutthroat	after=Amphin Cutthroat	value=1	stable=1	labelAfter=SWING	replays=87	secs=1.9
+GATE1	T1.GEN.650	HOLD	delta=2	before=-	after=-	value=1	stable=1	labelAfter=HOLD	replays=1227	secs=27.6
