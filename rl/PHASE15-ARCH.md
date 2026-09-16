@@ -157,6 +157,19 @@ A label-free combat comparison is reported separately for the keyword rungs wher
 `[atkaudit]` / `[audit]` lines against CombatMath's reference, from `rl/record_census.sh`'s audit output). It is
 **not part of any pre-registered A4L reading** and cannot become one.
 
+**And what the ANCHOR's weakness costs (measured 2026-09-16, after rung 0 ran; changes no threshold).** Rung 0's
+clone turned out to equal its own trivial fixed-position predictor to five decimals on exact top-1 for both cloned
+kinds - priority 0.67908 vs 0.67908 (position 1), target 0.82258 vs 0.82258 (first index) - while being genuinely
+above it on class top-1 (0.777), type agreement (0.908) and copy-ceiling fraction (0.785, against 13b's 0.897 on
+BenchDimir). It is not a bug: the log shows real training and an honest early stop. But every A4L clause is
+measured against that anchor, so "the shared game transfers" can be satisfied by two models that have both learned
+little more than a positional rule - it would then be measuring the shared POSITIONAL regularity of these decks,
+not a shared game. Consequently every rung row reports **class top-1 and type agreement beside exact top-1**, the
+trivial predictor is scored **both ways**, and each reading **names the metric it rests on**; a clause met on exact
+index but not on class agreement is reported as such rather than as transfer. This is a limitation of the ladder
+as instantiated on a sixty-card vanilla deck whose priority decisions are nearly positional, and it sits beside
+the readings exactly as the uncloned combat kinds do.
+
 ### Data
 
 CP7-labelled recordings per rung, the 13a job shape, **1,000 games per rung** (these decks run ~2 games/s, about
