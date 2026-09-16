@@ -104,6 +104,60 @@ public final class SubgameProbe {
         }
     }
 
+    /** What one position's probe returned. */
+    public static final class Result {
+        public int samples;
+        public int expressible;
+        public int optimalPicks;
+        public final Set<Integer> cands = new TreeSet<>();
+        public final Set<Integer> seenChoices = new TreeSet<>();
+    }
+
+    /**
+     * Probe ONE position whose optimal action set is already known.
+     *
+     * `optimal` is a set of MASKS, and for a family it is every mask in
+     * the optimal symmetry class rather than the single mask the solver
+     * happened to return: two copies of one vanilla body are one
+     * decision, so offering either satisfies expressibility.
+     *
+     * `shared` must be one client for the whole battery - see the note in
+     * main(); passing a fresh one per sample is a measured way to get a
+     * clean-looking wrong number.
+     */
+    public static Result probe(SubgameRunner.Spec spec, Set<Integer> optimal,
+                               int samples, int port, RandomPolicyClient shared)
+            throws java.io.IOException {
+        Result out = new Result();
+        for (int i = 0; i < samples; i++) {
+            ProbePlayer p = new ProbePlayer("A");
+            p.policy = port > 0
+                    ? new SocketPolicyClient(port, "eval", samples)
+                    : shared;
+            p.resetPerEpisode();
+            p.benchSeed = 7000L + i;
+            SubgameRunner.run(spec, p, new int[0], p);
+            if (p.chosenMask >= 0) {
+                out.samples++;
+                out.seenChoices.add(p.chosenMask);
+                out.cands.addAll(p.candidateMasks);
+                for (int o : optimal) {
+                    if (p.candidateMasks.contains(o)) {
+                        out.expressible++;
+                        break;
+                    }
+                }
+                if (optimal.contains(p.chosenMask)) {
+                    out.optimalPicks++;
+                }
+            }
+            if (port > 0) {
+                break;      // argmax policy is deterministic; one is enough
+            }
+        }
+        return out;
+    }
+
     public static void main(String[] args) throws Exception {
         mage.cards.repository.CardScanner.scan();
         int samples = args.length > 0 ? Integer.parseInt(args[0]) : 200;

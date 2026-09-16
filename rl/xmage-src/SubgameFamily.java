@@ -437,37 +437,30 @@ public final class SubgameFamily {
         Random play = new Random(seed ^ 0x5DEECE66DL);
         System.out.println("# id\tlabel\tvalue\taLife\taFiller\taBodies\tbLife\tbFiller"
                 + "\tbBodies\trootOpts\tclasses\toptClasses\trandA\treplays\tsecs\theur");
-        int screenSamples = Integer.getInteger("subgame.screenSamples", 60);
-        double screenLo = Double.parseDouble(System.getProperty("subgame.screenLo", "0.10"));
-        double screenHi = Double.parseDouble(System.getProperty("subgame.screenHi", "0.90"));
-
-        int drawn = 0, rejStats = 0, rejScreen = 0, kept = 0;
+        // NO PRE-SOLVE SCREEN. A 60-playout screen was tried first, on the
+        // reasoning that a board uniform-random play already decides has
+        // no discrimination to measure and should not be paid for. It
+        // rejected 1 admitted board in 9 while costing more per board than
+        // the solve it was protecting, because the shards each had to run
+        // it over the whole stream before they knew whose board it was.
+        // Gate 2 is therefore applied AFTER the solve, on the instances
+        // that survive uniqueness - which is also the unbiased way round,
+        // since the family is then not selected on the statistic it
+        // reports.
+        int drawn = 0, rejStats = 0, kept = 0;
         while (kept < n) {
             Board b = draw(draws, list, drawn++);
             if (!admissible(b, pool)) {
                 rejStats++;
                 continue;
             }
-            // CHEAP SCREEN, and it is gate 2 rather than a shortcut. A
-            // board that uniform-random play already wins or loses at
-            // ceiling has no discrimination to measure, and the design
-            // requires it be cut. A playout costs ~26 ms against ~50 s for
-            // an exact solve, so applying the gate BEFORE the solve is
-            // what makes the search affordable.
-            //
-            // The consequence is stated rather than hidden: the family is
-            // SELECTED on random-play win rate, so the randA column is the
-            // gate, not an unbiased estimate of random play on admissible
-            // boards. It is re-measured on an independent sample below so
-            // the reported number is at least not the screen's own draw.
-            double screen = randomWinRate(b, screenSamples, play);
-            if (screen < screenLo || screen > screenHi) {
-                rejScreen++;
-                continue;
-            }
+            // shard on the STATS-admitted index, before anything
+            // expensive: admissibility is deterministic, so every shard
+            // walks the same stream and the union of shards is exactly
+            // the single-JVM run
             int idx = kept++;
             if (idx % shards != shard) {
-                continue;                   // same draw stream in every shard
+                continue;
             }
             Solved s = solve(b, 0, cap);
             StringBuilder heur = new StringBuilder();
@@ -491,7 +484,7 @@ public final class SubgameFamily {
             System.out.flush();
         }
         System.out.println("# admission: drawn=" + drawn
-                + " rejStats=" + rejStats + " rejScreen=" + rejScreen
+                + " rejStats=" + rejStats
                 + " admitted=" + kept + " rate="
                 + String.format("%.3f", kept / (double) drawn));
     }
@@ -530,11 +523,64 @@ public final class SubgameFamily {
         }
     }
 
+    // ------------------------------------------- gate 3, expressibility
+
+    /** Every mask whose symmetry class is one of the optimal ones. Two
+     *  copies of a body are one decision, so offering either satisfies
+     *  expressibility - checking only the solver's representative mask
+     *  would report a coverage hole that is not there. */
+    static Set<Integer> masksOfClasses(List<String> sortedBodies, Set<String> classes) {
+        Set<Integer> out = new TreeSet<>();
+        for (int m = 0; m < (1 << sortedBodies.size()); m++) {
+            if (classes.contains(maskClass(sortedBodies, m))) {
+                out.add(m);
+            }
+        }
+        return out;
+    }
+
+    private static void probeMode(String[] args) throws Exception {
+        int samples = args.length > 3 ? Integer.parseInt(args[3]) : 200;
+        int port = args.length > 4 ? Integer.parseInt(args[4]) : 0;
+        // ONE client for the whole battery, across every instance
+        RandomPolicyClient shared = new RandomPolicyClient(7000L);
+        try (BufferedReader r = new BufferedReader(new FileReader(args[2]))) {
+            String line;
+            while ((line = r.readLine()) != null) {
+                if (!line.startsWith("INST\t")) {
+                    continue;
+                }
+                String[] f = line.split("\t");
+                String label = f[2];
+                if (!"HOLD".equals(label) && !"SWING".equals(label)) {
+                    continue;
+                }
+                Board b = Board.parse(f[1], f, 4);
+                Set<String> classes = new TreeSet<>(Arrays.asList(f[10].split("\\|")));
+                Set<Integer> optimal = masksOfClasses(b.aBodies, classes);
+                SubgameProbe.Result pr = SubgameProbe.probe(
+                        b.toSpec(0), optimal, samples, port, shared);
+                System.out.println("PROBE\t" + b.id + "\t" + label
+                        + "\tpolicy=" + (port > 0 ? "socket" : "random")
+                        + "\tsamples=" + pr.samples
+                        + "\toptimalMasks=" + optimal
+                        + "\tcandidateMasks=" + pr.cands
+                        + "\texpressible=" + pr.expressible + "/" + pr.samples
+                        + "\toptimalPicks=" + pr.optimalPicks + "/" + pr.samples
+                        + "\trate=" + (pr.samples == 0 ? "-"
+                            : String.format("%.3f", pr.optimalPicks / (double) pr.samples))
+                        + "\tchoicesSeen=" + pr.seenChoices);
+                System.out.flush();
+            }
+        }
+    }
+
     public static void main(String[] args) throws Exception {
         mage.cards.repository.CardScanner.scan();
         if (args.length == 0) {
             System.out.println("usage: pool <sets> | gen <pool> <seed> <n> [shard] [shards]"
-                    + " | gate1 <pool> <instFile> [delta]");
+                    + " | gate1 <pool> <instFile> [delta]"
+                    + " | probe <pool> <instFile> [samples] [port]");
             return;
         }
         switch (args[0]) {
@@ -546,6 +592,9 @@ public final class SubgameFamily {
                 return;
             case "gate1":
                 gate1Mode(args);
+                return;
+            case "probe":
+                probeMode(args);
                 return;
             default:
                 System.out.println("unknown mode: " + args[0]);
