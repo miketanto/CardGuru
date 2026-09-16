@@ -5717,3 +5717,91 @@ non-linear encoding, and probe 2 shows behaviour that probe 1 does not see. The 
 off-wire from a 1,001-row random table) and a majority-class diagnostic is owed to say how much of that is class
 imbalance rather than signal — it is added as an addendum, never as a bar. One seed, one clone per arm,
 BenchDimir only; none of this is a win rate.
+
+### 15 / A2 addendum — the majority-class diagnostic the row above records as owed
+
+Probe 1's card-blind floor (0.7824 off-wire on unseen cards) was suspiciously high for a network that cannot see
+the card table at all, so the obvious question is how much of it is signal and how much is class imbalance: most
+off-wire columns are rare mechanics that are 0 for nearly every card. The diagnostic needs no network — predict
+each column's TRAINING-set majority class, constant (`majority_baseline` in `rl/p15_a2.py`, a DIAGNOSTIC, never
+a bar).
+
+| | off-wire macro accuracy, unseen cards (12 cols, n = 15,571) |
+|---|---|
+| majority class, no model at all | **0.6537** |
+| card-blind floor (RAND token) | 0.7824 |
+| A3's auxiliary-loss clone (AUX token) | 0.8232 |
+| the clone (BC token) | 0.8590 |
+| frozen `card_emb_v8` row (ceiling) | 0.8727 |
+
+Read as the share of the **0.6537 → 0.8727 span** (from "no information" to "the embedding itself"):
+the card-blind floor captures **59 %**, AUX **77 %**, and the clone **94 %**. Per-column majority accuracies are
+0.80, 0.80, 0.92, 0.74, 0.89, 0.68, 0.28, 0.54, 0.46, 0.89, 0.15, 0.69 — so the columns are indeed imbalanced,
+but not uniformly. On seen cards the majority baseline is 0.7894, which is why the seen-card row of probe 1
+(1.0000 for token and embedding, 0.9739 card-blind) carries so little information.
+
+**What this settles.** The floor is **not** mostly an artefact of imbalance: imbalance alone buys 0.6537, while a
+card-blind network reaches 0.7824, so the wire's entity fields genuinely carry mechanical information about
+cards the probe has never seen. And it sharpens A2's central finding rather than softening it: measured against
+"no information" instead of against zero, the clone recovers 94 % of what the frozen embedding itself yields,
+while a network with no card identity at all already recovers 59 %.
+
+### 15 / A3 — the remedy test: **"the remedy works" by the bar as written; it did not fix what A2 actually found**
+
+Run because A2's probe 1 read "discards". `rl/p15_a3.py`: 13b's recipe unchanged (same fresh
+`--cand-refers-pool` init, lr 1e-4, AdamW decay 0.01 on heads, batch 32, clip 1.0, logit bound 5, early stop on
+held-out CE with patience 3, seed 0, the 13b hold-out, all four kinds) **plus** the pre-registered auxiliary loss:
+a linear head on every encoded entity token predicts that card's 68 `e2_features`, BCE, **weight 0.1 fixed in the
+runbook before any A3 data existed**. `rl/v7_bc.py` was deliberately not modified, so 13b stays reproducible and
+A2 and the ladder keep calling it. 65,471 labelled consults, 1,250 games, aux coverage 0.942 of probed entities,
+early stop at epoch 11 with best epoch 8, 1,680 s.
+
+| | bc.pt (13b) | **bc_aux.pt (A3)** |
+|---|---|---|
+| held-out CE | 0.2920 | **0.2821** |
+| all-kinds top-1 | 0.884 | **0.8846** |
+| **priority top-1** | **0.876** | **0.8767** |
+| class top-1 / type | 0.898 / 0.932 | 0.8979 / 0.9327 |
+| held-out auxiliary BCE | — | **0.0000** (0.0034 after one epoch) |
+
+Probe 1 re-run with all three arms on the same population the "discards" reading was made on (15,571 unseen-card
+entities, 12 informative off-wire columns):
+
+| arm | off-wire, unseen cards | fraction of the frozen-embedding ceiling | above the card-blind floor |
+|---|---|---|---|
+| frozen embedding (ceiling) | 0.8727 | 1.000 | +0.0903 |
+| clone `bc.pt` | 0.8590 | 0.984 | **+0.0766** |
+| **A3 `bc_aux.pt`** | **0.8232** | **0.943** | **+0.0408** |
+| card-blind floor | 0.7824 | 0.896 | — |
+
+**Readings, as pre-registered.**
+* **Clause 1 — agreement: MET, at no cost.** Priority top-1 0.8767 against 13b's 0.876 is a drop of **−0.0007**
+  (bar: ≤ 0.02). Held-out CE actually improves (0.2821 vs 0.2920).
+* **Clause 2 — probe recovery: MET.** 0.8232 / 0.8727 = **0.943** ≥ 0.90.
+* **Reading of record: "the remedy works."** Both clauses are met, and the bar is not reinterpreted.
+
+**Why that reading, on its own, would mislead — stated beside it, not instead of it.**
+1. **Clause 2 was already satisfied before the remedy.** `bc.pt` sits at **0.984** of the embedding's score; the
+   0.90 bar was never the thing A2 failed. A2's failure was the **floor** clause — the token being only +0.0766
+   above a network that cannot see cards at all.
+2. **On that measure the remedy moved the wrong way.** AUX is **+0.0408** above the card-blind floor, *half* of
+   bc.pt's +0.0766. Forcing every entity token to predict its 68 `e2_features` made the token's off-wire probe
+   score **worse** (0.8590 → 0.8232), not better.
+3. So the honest summary is: **the auxiliary loss is free (it costs no agreement and slightly improves CE) and it
+   does not do what it was proposed to do.** The mechanism was certainly active — held-out auxiliary BCE reached
+   0.0000, i.e. the tokens do encode the e2 columns — which makes the outcome more informative, not less: the
+   columns were made *predictable by a head trained jointly with them* without making them more *linearly
+   recoverable by a probe trained afterwards*.
+4. On the bar as written (the saturated game-split probe), AUX scores 1.0000, exactly like bc.pt — that probe
+   still cannot tell any of these networks apart, and the card-blind net scores 0.9792 on it.
+
+**Checkpoint-selection caveat, recorded because it favours the conservative side.** `p15_a3.py` selects on
+held-out CE (13b's rule, inherited deliberately). Held-out top-1 kept climbing after the selected epoch — 0.8919
+at epoch 10 against 0.8846 at the saved epoch 8 — so selecting on top-1 would have made the remedy look better on
+clause 1. The published number is the CE-selected one.
+
+**Cannots.** One seed, one weight (0.1, fixed in advance and not tuned — a different weight might trade
+differently), BenchDimir only, and the probe population is 22 distinct cards with 6 held-out identities over 12
+informative columns. Linear probes lower-bound what is present, so "worse probe score" is not "less identity
+present"; A2's probe 2 (behaviour) was not re-run on `bc_aux.pt`, so nothing here says whether the remedy changed
+card-swap sensitivity, and that is owed. Nothing in A3 is a win rate.
