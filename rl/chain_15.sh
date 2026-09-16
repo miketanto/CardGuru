@@ -22,12 +22,23 @@ say() { echo "C15|$*|$(date -u +%FT%TZ)"; }
 stop_check() { [ -f $A/CHAINSTOP ] && { say "stopfile"; exit 0; }; return 0; }
 
 say "start"
-# 1. wait out the policy stage (cap 4 h), then run the value stage
+# 1. wait for the policy stage's OUTPUT (cap 4 h), then run the value stage.
+#
+# This waits on FILES, never on pgrep. The first version polled
+# `pgrep -f "p15_a1.py --stage policy"` and hung for 20 minutes with the box idle,
+# because any wrapper shell whose argv merely CONTAINS that string matches it - and one
+# did: a `bash -lc timeout 2400 bash -c 'while pgrep -f "p15_a1.py --stage policy" ...'`
+# watcher launched from outside this script. That is the CLAUDE.md hazard ("pkill -f
+# matches the wrapper shell's own argv") in its polling form, and the [b]racket trick
+# does not help, since the text is genuinely present in the other process's argv.
+# The four per-fraction JSONs are the stage's real completion signal and cannot be
+# spoofed by anyone's command line.
 T=0
-while pgrep -f "p15_a1.py --stage policy" > /dev/null; do
-    sleep 30; T=$((T + 30)); [ $T -ge 14400 ] && { say "policy stage still running after 4 h - giving up"; exit 1; }
+while [ "$(ls $A/a1/a1_policy_*.json 2>/dev/null | wc -l)" -lt 4 ]; do
+    sleep 30; T=$((T + 30))
+    [ $T -ge 14400 ] && { say "policy points still incomplete after 4 h - going on anyway"; break; }
 done
-say "policy stage not running|points=$(ls $A/a1/a1_policy_*.json 2>/dev/null | wc -l)"
+say "policy stage points=$(ls $A/a1/a1_policy_*.json 2>/dev/null | wc -l)"
 stop_check
 if [ "$(ls $A/a1/a1_value_*.json 2>/dev/null | wc -l)" -ge 4 ]; then
     say "a1 value|skip"

@@ -373,3 +373,22 @@ absence is not a negative result.
   container recycles on SESSION inactivity, not process activity; long runs need a heartbeat). Remedy applied:
   relaunched the chain and started an 8 h `cmd //c start //min wsl -e bash -lc "sleep 28800"` keepalive beside it,
   which is what Phase 13 used. The chain is resumable, so nothing was lost but the idle minutes.
+- 2026-09-16 03:24Z WSL (**CORRECTION IN THE OPEN** to the 03:21Z entry and to commit a47e53d): I wrote there
+  that `chain_15.sh` "DIED" and "was GONE by 03:21Z". **That was wrong, and the diagnosis was wrong.** The chain
+  never died: at 03:21Z I checked for a *value-stage* process and read the chain log, but never pgrep'd for
+  `chain_15.sh` itself; it was alive the whole time (pids 159987/159993), stuck in its wait loop. The 03:21Z
+  entry's "unexplained detached-job death" and its appeal to the container-recycling gotcha are withdrawn.
+  THE REAL CAUSE, which is a better lesson than the wrong one: the loop polled
+  `pgrep -f "p15_a1.py --stage policy"`, and **my own watcher process matched it** - a
+  `bash -lc timeout 2400 bash -c 'while pgrep -f "p15_a1.py --stage policy" ...'` launched from outside the
+  script to notify me when the stage ended. Its argv CONTAINS the pattern, so the chain saw "the policy stage is
+  still running" for as long as my watcher lived, and the box sat idle ~20 minutes with A1's value stage queued
+  behind a stage that had already finished. This is the CLAUDE.md hazard ("pkill -f matches the wrapper shell's
+  own argv") in POLLING form rather than killing form, and the usual [b]racket trick does not help, because the
+  text is genuinely present in the other process's command line.
+  FIXES: (1) `chain_15.sh` now waits on the stage's OUTPUT - the four `a1_policy_*.json` points - which no command
+  line can spoof; (2) `rl/stop_chain15.sh` added (its name matches none of its own patterns, per the rule) and
+  used to stop BOTH chains, because my erroneous "it died" relaunch had left two running, which would have put
+  two GPU trainers on one box; (3) one chain relaunched afterwards. Cost: ~20 idle minutes, nothing lost - every
+  chain step is resumable and all four A1 policy points were already on disk. Lesson for the rest of this phase:
+  a watcher's argv is part of the system; wait on artifacts, not on process names.
