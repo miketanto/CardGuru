@@ -96,3 +96,16 @@ the RL-side explanation; a failure at A2 or A4 would mean Phase 13's clone and e
 built on a representation that does not carry cards, and the fix is architectural.
 
 ## STATE (append-only)
+- 2026-09-15 ~21:40Z WSL (phase start, A0 launched): box clear at launch (MemAvailable 11.3 GB, GPU 1.0 GB used / idle,
+  no policy server, no driver JVM, no controller). Tools written: `rl/p15_a0.py` (the memorisation test; reuses
+  `rl/v7_bc.py` load/run_epoch/ceilings and `rl/p14_d1.py`'s value path and EV, so A0 measures the same code
+  13b and 14/D1 measured), `rl/run_15a0.sh` (resumable: skips when `a0.json` exists). A0 slice = 40 games taken
+  ROUND-ROBIN over the two 13a lanes (20 from `rec13_H_s13000` = CP7 vs the heuristic, 20 from `rec13_C_s13500`
+  = the CP7 mirror), capped at 2,000 labelled consults, 40 epochs, AdamW weight_decay 0, lr 1e-4, batch 32, no
+  early stop, `--cand-refers-pool` init `rl/artifacts/v7/13/init_on_s13.pt` (the 13b start). Two lanes rather than
+  one because a single lane's 40 games are ~0.83 wins and the value half needs outcome variance in its denominator.
+  A0 also prints the grad norms on the card path after epoch 1 (adapter / cand_ref / zone MLP / pointer) - the
+  "gradients reaching the card path" clause of the fail branch, checked directly rather than inferred.
+  Smokes (4 games, 2 epochs, /tmp): round-robin picks 2 games per file; grads non-zero on adapter and cand_ref.
+  A4 ON HOLD by coordinator message (the transfer rung is being rewritten as a ladder over the minimal W-decks);
+  nothing for A4 was launched or written.
