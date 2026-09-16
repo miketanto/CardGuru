@@ -49,6 +49,17 @@ public class LinePlayer extends ComputerPlayer {
         public String frontierKind = null;
         public String frontierSeat = null;
 
+        /**
+         * When set, decisions past the end of `choices` are UNIFORM
+         * RANDOM over the option count rather than the canonical
+         * do-nothing. That turns the same replay path into a random
+         * playout, which is how the discrimination gate is measured.
+         * ONE RNG is shared across a battery on purpose: seeding per
+         * sample is what produced the impossible 200/200 in the first
+         * probe run (rl/SUBGAME-T1-BUILD.md).
+         */
+        public java.util.Random rnd;
+
         public Script(int[] choices) {
             this.choices = choices;
         }
@@ -58,6 +69,9 @@ public class LinePlayer extends ComputerPlayer {
             if (idx < choices.length) {
                 int v = choices[idx];
                 return (v >= 0 && v < optionCount) ? v : 0;
+            }
+            if (rnd != null) {
+                return optionCount <= 1 ? 0 : rnd.nextInt(optionCount);
             }
             if (!frontierHit) {
                 frontierHit = true;

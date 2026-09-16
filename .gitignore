@@ -30,3 +30,5 @@ rl/artifacts/v7/11/*.jsonl
 rl/artifacts/v7/11/*.transcripts.txt
 rl/artifacts/v7/13/**/*.jsonl
 rl/data/l17/
+rl/artifacts/subgame/*.err
+rl/artifacts/subgame/*.log

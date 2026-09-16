@@ -56,6 +56,9 @@ public final class SubgameRunner {
         public static Body of(String card, int count) {
             return new Body(card, count, false);
         }
+        public static Body of(String card, int count, boolean tapped) {
+            return new Body(card, count, tapped);
+        }
     }
 
     public static final class Side {
@@ -136,7 +139,15 @@ public final class SubgameRunner {
     /** Both seats consume ONE shared script in global decision order.
      *  This is the entry point the solver replays through. */
     public static Result scripted(Spec spec, int[] choices) {
+        return scripted(spec, choices, null);
+    }
+
+    /** With `rnd` non-null every decision past the prefix is uniform
+     *  random instead of the canonical do-nothing - a random playout
+     *  through the same replay path the solver uses. */
+    public static Result scripted(Spec spec, int[] choices, java.util.Random rnd) {
         LinePlayer.Script script = new LinePlayer.Script(choices);
+        script.rnd = rnd;
         LinePlayer pa = new LinePlayer("A");
         pa.script = script;
         Result r = run(spec, pa, new int[0], null, script);
