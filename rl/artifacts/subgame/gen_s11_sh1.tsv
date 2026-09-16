@@ -1,0 +1,5 @@
+# id	label	value	aLife	aFiller	aBodies	bLife	bFiller	bBodies	rootOpts	classes	optClasses	randA	replays	secs	heur
+INST	T1.GEN.3	TRIVIAL	1	3	3	Fire Elemental;Zombie Goliath	8	5	Barony Vampire	4	4	-|Fire Elemental|Fire Elemental;Zombie Goliath|Zombie Goliath	-	220	6.2	allin=1,never=1,bodycount=1,safeattack=1
+INST	T1.GEN.12	CAPPED	1	2	4	Armored Warhorse;Canyon Minotaur;Zombie Goliath	6	6	Armored Cancrix*;Horned Turtle	8	8		-	8000	186.4	allin=0,never=0,bodycount=0,safeattack=0
+INST	T1.GEN.28	TRIVIAL	1	1	6	Runeclaw Bear;Siege Mastodon	1	6	Zombie Goliath*	4	4	-|Runeclaw Bear|Runeclaw Bear;Siege Mastodon|Siege Mastodon	-	298	6.2	allin=1,never=1,bodycount=1,safeattack=1
+INST	T1.GEN.39	TRIVIAL	1	4	3	Amphin Cutthroat;Amphin Cutthroat	1	5	Nether Horror;Oreskos Swiftclaw	4	3	-|Amphin Cutthroat|Amphin Cutthroat;Amphin Cutthroat	-	839	15.8	allin=1,never=1,bodycount=1,safeattack=1
