@@ -210,3 +210,29 @@ absence is not a negative result.
   Row written to rl/V7-VALIDATION.md '## 15 — architecture validation' / '15 / A0'. A1 policy stage launched
   02:38Z over all 25 recordings (one JSON per fraction, resumable); A4L rung 0 (W0Base, 1,000 games, two lanes,
   drivers 7911/7912) launched 02:37Z beside it - engine + one GPU trainer, within the box rule.
+- 2026-09-16 02:41Z WSL (box decision + A2 definitions pre-registered BEFORE A2 runs): CONCURRENCY - A1's load of
+  all 25 recordings plus the two recording JVMs took MemAvailable from 11.4 GB to 4.9 GB and falling (JVM RSS
+  2.5 GB each, A1 1.8 GB mid-load). A1 is the in-order rung and a 40-min GPU run that would reload from scratch;
+  the ladder recording is resumable at 50-game job granularity and idempotent. DECISION: stop the recording with
+  `rl/stop_15rec.sh` (the stop-script file), let A1 own the box, resume the recording when A1's policy stage ends.
+  Nothing is lost but the in-flight job.
+  RUNG-0 GATE RISK (observed on the first 7 jobs, ~350 games, NOT the gate - the gate runs on the finished
+  recording): priority 3,013/3,013 = 1.000 and target 1.000, but joint attack (986 exact + 9 alias)/1,184 = 0.840
+  and joint block (1,058 + 141)/1,371 = 0.875, both below the 0.9 bar (on BenchDimir 13a got 0.948 / 0.974). On a
+  pure-creature deck CP7 declares attacks and blocks outside CombatMath's candidate list more often. If the
+  finished recording confirms it, I will apply 13a's own convention - "a kind that fails the gate is not cloned" -
+  and clone the passing kinds only, UNIFORMLY on every rung so the rungs stay comparable, rather than skipping the
+  rung; the ladder's aspect/shared split is by card presence, not by decision kind, so a priority+target clone
+  still measures transfer. That is my decision if it comes to it; recorded here in advance.
+  A2 DEFINITIONS, fixed before any A2 data (definitions, not thresholds): probe 1's SCORE = macro accuracy over
+  INFORMATIVE binary columns - the 68 e2_features columns plus 5 colour bits, keeping only columns carrying both
+  classes in the training AND held-out entity sets; the column set depends only on the targets, so BC / EMB / RAND
+  are scored on identical columns. R^2 for mana value / power / toughness is reported beside it and is NOT the
+  gate. Probed entities = cards in the recorded seat's OWN HAND (zone one-hot hand, mine=1, face-up, card id
+  resolved), fit on training games, scored on held-out games. CEILING = a probe on the frozen card_emb_v8 row
+  itself (128-d, pre-adapter) over the same entity instances and split. FLOOR = a clone trained from
+  `V7Policy(random_table=True)` (rl/artifacts/v7/15/a2/init_random.pt built, seed 13, cand_refers_pool=True,
+  17.5 M params - the same shape as bc.pt). CAVEAT that must travel with the floor: that table has 1,000 random
+  rows and CardTable clamps ids, so every card id >= 1000 lands on the same zero row - the control is card-BLIND
+  (identity removed) rather than random-identity; the fraction of probed entities keeping a distinct row is
+  reported as rand_distinct_frac. `rl/p15_a2.py` written and syntax-checked.
