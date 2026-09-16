@@ -480,3 +480,32 @@ absence is not a negative result.
   Also visible and behaving as designed: the card-blind net reads the WIRE's 18 keyword bits nearly perfectly
   (on-wire 0.9983) while scoring 0.7674 off-wire - the on-wire/off-wire split is doing exactly the job it was
   added for.
+- 2026-09-16 04:11Z WSL (A2 PROBE 1 COMPLETE -> reading is **"the encoder discards card identity"**, so A3 IS
+  TRIGGERED): full 13a set, 68,952 consults / 1,250 games, 60,003 probed hand entities, 22 distinct cards,
+  6 held-out card identities, 15,571 unseen-card entities.
+
+  | measurement | BC (card-aware) | frozen embedding (ceiling) | card-blind floor |
+  |---|---|---|---|
+  | `pre` - the bar AS WRITTEN (41 cols, held GAMES) | **1.0000** | **1.0000** | **0.9792** |
+  | `card` unseen cards, OFF-WIRE (12 cols) | **0.8590** | **0.8727** | **0.7824** |
+  | `card` unseen cards, on-wire (2 cols) | 0.8515 | 0.7968 | **1.0000** |
+  | `card` seen cards, off-wire | 1.0000 | 1.0000 | 0.9739 |
+
+  READINGS, as pre-registered: clause 1 **MET** - 0.8590 / 0.8727 = **0.984 of the frozen embedding's own probe
+  score** (bar 0.80). Clause 2 **NOT MET** - the token is **0.0766 above the card-blind floor** (bar 0.25), and
+  the runbook's explicit discard branch is "within 0.10 of the random floor", which 0.0766 satisfies. So probe 1
+  reads **"the encoder discards card identity"**, and A3 (already written, `rl/p15_a3.py`) is required. Note both
+  clauses are decided on the SAME number, which is why the pair is not contradictory: the token is near the
+  embedding's ceiling, but so is a network that cannot see the embedding at all.
+  The saturation I reported at 03:01Z is now settled as fact rather than suspicion: on the bar as written the
+  CARD-BLIND net scores **0.9792** against the card-aware net's 1.0000. A probe that a card-blind network passes
+  at 0.98 cannot be evidence that card identity survives, and that is why the off-wire card-identity split was
+  added beside it rather than instead of it.
+  CAVEAT RESOLVED: `rand_distinct_frac = 0.0` - every probed BenchDimir entity is clamped onto CardTable's shared
+  zero row, so on this deck the control is a TRUE card-blind floor, not a partially random-identity one.
+  ODD AND WORTH REPORTING, not a claim: on the 2 on-wire keyword columns the card-blind net is PERFECT (1.0000)
+  on unseen cards while the card-aware net is 0.8515 and the frozen embedding 0.7968. A net with no identity
+  channel echoes the wire's keyword bits exactly; the one with an identity channel does so less faithfully.
+  CANNOTS for probe 1: 22 distinct cards and only 6 held-out identities, 12 informative off-wire columns - thin,
+  and probe 3 (pooled over ladder and wire3a decks) exists to widen exactly that. Linear probes lower-bound what
+  is present; a fail can be non-linear encoding. One deck, one seed.
