@@ -37,25 +37,41 @@ else
     grep '^BC|best|' $O/bc_random.log | sed 's/^/A2RUN|floor|/'
 fi
 
+# Probe 1: the 13a recordings only, card split = a seeded 25 % of card identities.
 if [ -s $O/a2_probe1.json ]; then
     echo "A2RUN|probe1|skip"
 else
     python3 $RL/p15_a2.py --ckpt BC=$BC --ckpt RAND=$O/bc_random.pt --out $O --tag probe1 \
-        --device cuda --baseline-names $RL/BenchDimir.dck $REC/rec13_*.jsonl > $O/probe1.log 2>&1
+        --device cuda --card-test random --baseline-names $RL/BenchDimir.dck \
+        $REC/rec13_*.jsonl > $O/probe1.log 2>&1
     echo "A2RUN|probe1|rc=$?"
     grep '^A2|' $O/probe1.log | grep -v '^A2|setup' | sed 's/^/A2RUN|probe1|/'
 fi
 
+# Probe 3: POOL the 13a recordings with every ladder-deck recording that exists, and make
+# the card-level test set exactly the cards absent from BenchDimir - so the probe is fit on
+# BenchDimir's identities and scored on identities it has never seen (the ladder decks share
+# no cards with BenchDimir at all). Entities are interleaved across files, so every deck
+# contributes. This is the population the 13a recordings cannot supply on their own.
 if [ -s $O/a2_offdeck.json ]; then
     echo "A2RUN|probe3|skip"
-elif ls $A/15/rec/W0Base/rec15_W0Base_*.jsonl > /dev/null 2>&1; then
-    python3 $RL/p15_a2.py --ckpt BC=$BC --ckpt RAND=$O/bc_random.pt --out $O --tag offdeck \
-        --device cuda --baseline-names $RL/BenchDimir.dck \
-        $A/15/rec/W0Base/rec15_W0Base_*.jsonl > $O/probe3.log 2>&1
-    echo "A2RUN|probe3|rc=$?"
-    grep '^A2|' $O/probe3.log | grep -v '^A2|setup' | sed 's/^/A2RUN|probe3|/'
 else
-    echo "A2RUN|probe3|no W0Base recording yet"
+    # Pool every deck we can reach: the ladder recordings AND the label-free wire
+    # recordings (wire3a spans B1Fast / BenchDimir / P8Faeries / W0Base ...). The probe
+    # needs no labels, and without mechanically diverse cards the off-wire columns are
+    # constant on the test population and the score means nothing (W0Base alone leaves
+    # exactly one informative column).
+    LAD=$(ls $A/15/rec/*/rec15_*.jsonl 2>/dev/null | head -30)
+    LAD="$LAD $(ls $A/wire3a/*_p99.jsonl $A/wire3a/*_p1.jsonl 2>/dev/null | head -20)"
+    if [ -z "$(echo $LAD | tr -d ' ')" ]; then
+        echo "A2RUN|probe3|no extra-deck recording yet"
+    else
+        python3 $RL/p15_a2.py --ckpt BC=$BC --ckpt RAND=$O/bc_random.pt --out $O --tag offdeck \
+            --device cuda --card-test off_deck --baseline-names $RL/BenchDimir.dck \
+            $REC/rec13_*.jsonl $LAD > $O/probe3.log 2>&1
+        echo "A2RUN|probe3|rc=$?"
+        grep '^A2|' $O/probe3.log | grep -v '^A2|setup' | sed 's/^/A2RUN|probe3|/'
+    fi
 fi
 
 if [ -s $O/cardswap/cardswap_summary.txt ]; then

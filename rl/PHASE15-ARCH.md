@@ -318,3 +318,31 @@ absence is not a negative result.
   for `run_15recall.sh` to exit before starting the ladder, so stopping the loop lets the chain reach the ladder
   sooner - which is correct, because run_15a4.sh serialises record -> drivers down -> clone by itself and never
   holds the engine and a GPU trainer at once.
+- 2026-09-16 03:01Z WSL (A2 probe 1 was MEASURING THE WRONG THING; caught by smoking it before the chain reached
+  it, fixed, and the flaw is reported rather than hidden). Three defects, in the order the smokes found them:
+  (1) SATURATION - the pre-registered probe splits by GAME, but a recording uses ONE deck, so the held-out games
+  contain the SAME card identities the probe was fit on (BenchDimir: 38 distinct cards). Worse, mana value, power,
+  toughness, the type flags and the 18 keyword bits are FIELDS OF THE ENTITY ROW (WIRE-V7 2d 10-17, 30-33, 34-51)
+  that the token is built from, and `v7_net.MLPSkip` exists precisely to keep every input field linearly
+  recoverable. Measured: token macro accuracy 1.0000 AND frozen-embedding 1.0000, R^2 1.000/1.000/1.000. A
+  card-BLIND net would also score ~1.0 on those columns, so the probe as written cannot discriminate BC from EMB
+  from RAND and its "pass" would have been an artefact. (2) TRUNCATION - `--max-entities` filled the budget from
+  the first recording, so pooling a second deck contributed zero entities (off_deck and unseen_id both empty).
+  (3) COLUMN-VARIANCE COLLAPSE - fitting on BenchDimir and scoring on W0Base left exactly ONE informative
+  off-wire column, because the minimal white decks are vanilla creatures and every ans_/api_/trig_ column is
+  constant zero there; a 1-column macro accuracy of 1.0000 is meaningless. The cause of (3) being unfixable in
+  place was that `v7_bc.load` DROPS every consult without a teacher label, which locked the probe out of the 125
+  label-free wire recordings (`rl/artifacts/v7/wire3a/`) that span several decks - and A2 uses no labels at all.
+  FIXES (definitions added, NO pre-registered threshold changed): the probe now reports TWO measurements side by
+  side - `pre`, the bar exactly as written (kept, and reported as saturated), and `card`, split by CARD IDENTITY
+  (fit on one set of ids, scored on ids never seen, plus an off_deck mode whose test set is exactly the cards
+  absent from the baseline deck) and scored on OFF-WIRE columns only: the 50 e2 columns the entity row does not
+  carry plus the 5 colour bits, which appear nowhere in WIRE-V7 2d. What survives there can only have come
+  through the card embedding, which is what A2 asks. Entities are interleaved across files; loading is label-free.
+  Smoke after the fixes (13a + W0Base + three wire3a decks, 53 distinct cards, 18 informative off-wire columns,
+  7,515 unseen-card entities): `pre` token 1.0000 / embedding 1.0000 (saturated, as diagnosed); `card` unseen
+  cards token off-wire 0.9641 vs embedding 0.9738, seen cards 1.0000 for both (memorised, as expected). The
+  floor arm (RAND) is trained by the chain and is not in the smoke. Also worth reporting rather than hiding: the
+  mv / power / toughness R^2 goes NEGATIVE on unseen cards (token -0.56 / -0.05 / +0.26, embedding -1.08 / -0.39 /
+  -0.03) - a ridge fit on one set of identities extrapolates badly to new ones, which is itself a statement about
+  how card-specific these readouts are.
