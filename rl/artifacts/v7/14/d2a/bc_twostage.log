@@ -1,0 +1,5 @@
+BCTS|start|2026-09-16T00:46:48Z|skill=1
+XDECK|ck=bc.pt|agent=BenchDimir|vs=cp7|skill=1|oppDeck=BenchDimir|38/100 = 0.380 [0.291,0.478]|losses=62 draws=0 stalls=0 turns_per_ep=18.1
+XDECK|pooled|ck=bc.pt|agent=BenchDimir|rows=1|38/100 = 0.380 [0.291,0.478]
+XDECK|done|bc.pt|2026-09-16T00:55:28Z
+BCTS|done|2026-09-16T00:55:28Z

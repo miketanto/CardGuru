@@ -5428,3 +5428,62 @@ stage claim except "mid is where prediction works" survives it. EV is computed a
 denominator** on a ±1 target: the overall column divides by the variance of the whole held-out pool, so a model
 that is good only in mid-game (as all three are) scores an overall EV well below its mid-game EV. That is why
 N1's overall 0.095 is lower than its mid 0.353, and it is an artefact of the denominator, not a separate finding.
+
+### 14 / D2b — 1,024 episodes of the Phase 13 recipe against CP7 at the rung (skill 1)
+
+From `bc.pt`, the Phase 13 recipe unchanged (lr 3e-5, 1 epoch, logit bound 5, AdamW wd 0.01 on heads,
+`--adv-norm batch`, `--target-kl 0.02`), opponent = CP7 at skill 1 **only** (no heuristic blocks), 256-episode
+blocks, lane seed 41, runner `rl/run_14d2b.sh`. 0 draws and 0 stalls everywhere.
+
+| training block | episodes | win rate |
+|---|---|---|
+| 1 (0 → 256) | 69/256 | 0.270 |
+| 2 (256 → 512) | 67/256 | 0.262 |
+| 3 (512 → 768) | 62/256 | 0.242 |
+| 4 (768 → 1,024) | 81/256 | 0.316 |
+| pooled 0 → 512 | 136/512 | 0.266 [0.229, 0.306] |
+| pooled 512 → 1,024 | 143/512 | 0.279 [0.242, 0.320] |
+| whole run | 279/1,024 | 0.272 [0.246, 0.301] |
+
+100-game levels vs CP7 **at skill 1**, both readouts, each against its own same-skill baseline:
+
+| checkpoint | sampled | two-stage |
+|---|---|---|
+| bc.pt (the start) | 23/100 = 0.230 [0.158, 0.322] | 38/100 = 0.380 [0.291, 0.478] |
+| ck_1024 (after 1,024 episodes) | 34/100 = 0.340 [0.255, 0.437] | 33/100 = 0.330 [0.246, 0.427] |
+
+Pre-registered readings:
+* **"Climbs against a weaker CP7": NOT met**, on both of its clauses. (a) The sampled level rises 0.230 → 0.340,
+  but the Wilson intervals overlap ([0.255, 0.437] vs [0.158, 0.322]), so it is not *clearly* above; the two-stage
+  level does not rise at all — 0.330 against the start's 0.380 — so that half of the clause fails in the opposite
+  direction. (b) Pooled training blocks 512→1,024 (0.279 [0.242, 0.320]) are not clearly above blocks 0→512
+  (0.266 [0.229, 0.306]); the intervals overlap almost entirely.
+* **"Does not climb even against a weaker CP7": MET** (the `otherwise` branch), with the caveat pre-stated before
+  the run: skill 1 is **off-distribution rather than weaker** (D2a), so this says the recipe does not climb against
+  *this* opponent from *this* start in 1,024 episodes — not that it cannot climb against a weaker opponent in general.
+
+**The two readouts disagree in direction, so both are reported** (the Phase 13 evaluation protocol). Sampled says
++0.11, two-stage says −0.05. Note also that bc.pt's own two readouts differ by 0.15 at skill 1 (0.230 sampled vs
+0.380 two-stage) where at skill 6 they nearly agreed (0.330 vs 0.310): at this opponent the *readout* choice moves
+the number more than 1,024 episodes of training did. No conclusion about "improvement" survives that.
+
+### 14 — combined reading
+
+The runbook's table, entered with D1 = **barely predicts** and D2 = **does not climb**:
+
+> *barely predicts × does not climb* — **the win/loss signal from this encoding is too weak for this RL at this
+> scale: a privileged critic, denser rewards, or search.**
+
+That is the row that applies, and both diagnostics point the same way independently: nothing fit to these
+observations predicts outcomes better than ten scalars (D1), and 1,024 episodes against a differently-skilled CP7
+move neither the levels nor the training win rate (D2b).
+
+**Cannots for section 14 as a whole.** One seed everywhere; 1,024 episodes is short, and a "does not climb" at this
+scale is about this recipe at this scale. Every level is 100 games, resolving only about ±0.09 — the sampled
++0.11 is right at that edge, which is why it is not readable as a climb. The CP7 skill ladder is inverted and
+below skill 4 only think time varies, so "weaker opponent" was never actually tested; what was tested is a
+differently-behaving one. CP7's search is wall-clock limited while the training lane runs 4 concurrent driver jobs
+and the eval rows run 1–2, so the opponent trained against and the one scored against are not guaranteed equally
+strong (pre-stated, unmeasured). D1's states are CP7's, not the learner's, and its hold-out mixes two opponent
+populations. **No behaviour census was run for D2b** (13c had per-block counters), so nothing here says what the
+policy changed about its play — only that the outcome numbers did not move.
