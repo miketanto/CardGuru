@@ -149,3 +149,156 @@ hands mean priority windows are trivial and only combat branches), but
 the per-node cost of an XMage state copy on this box is unmeasured.
 That number sets how wide a subgame board can be, and it is the first
 thing the build should produce.
+
+---
+
+# One sample per rung (for review; none of these are validated)
+
+Boards are written as mechanics, not card names — the swap rule picks
+and engine-verifies the actual cards later. `lib` is the filler clock.
+"Correct" below is my hand-derivation against a *best-playing* opponent;
+the solver is what decides, and §"What hand-authoring got wrong" below
+is the reason that distinction is not a formality.
+
+## T1 — correct combat · `T1.HOLD`
+
+A: 3 life, two 2/2 vanilla, lib 7 · B: 4 life, one 3/3 vanilla, lib 4 ·
+A to act.
+
+- attack with both → 3/3 blocks one and lives, 2 through; crack-back
+  into tapped bodies kills A.
+- **hold both → B is on the shorter clock and must come; A double-blocks,
+  the 3/3 dies, A attacks out. A wins.**
+
+The asymmetric library is load-bearing: without it both players sit and
+the deck-out clock, not combat, decides. It survives gate 1 because
+adding two cards to *both* libraries preserves the asymmetry.
+
+*Measures:* that holding back can beat attacking, and that a double block
+is one decision. *Cannot:* say anything about card identity — the bodies
+are interchangeable.
+
+## T2a — flying · `T2.FLY`
+
+A: 3 life, one 2/2 flier + one 2/2 ground · B: 4 life, one 3/3 ground,
+no reach · A to act.
+
+- attack with both → the ground 2/2 is blocked and dies, B to 2, A is
+  tapped out and dies to the crack-back.
+- **attack with the flier only → B to 2, the ground 2/2 stays home as a
+  blocker. B attacks or holds; A wins either way.**
+
+*Measures:* evasion used as evasion — attack with the one that cannot be
+blocked, keep the one that can. *Cannot:* separate "knows flying" from
+"knows this card", which is what the B/C swap is for.
+*C-control:* flier → same-stat ground body; the answer must change.
+
+## T2b — first strike · `T2.FST`
+
+A: 2 life, one 2/2 vanilla + one 3/3 vanilla, both untapped · B: attacks
+with a 2/2 first striker · A to act (declare blockers).
+
+- no block → A takes 2 and dies.
+- block with the 2/2 → first strike kills it before it deals damage.
+- **block with the 3/3 → it survives the 2 and kills the attacker.**
+
+*Measures:* that first strike changes which blocker is correct without
+changing which blocks are legal. *Cannot:* be passed by body-size
+heuristics alone — "block with the biggest" happens to be right here, so
+the family needs an instance where it is wrong before the rung counts.
+
+## T2c — vigilance · `T2.VIG`
+
+A: 3 life, three 2/2 **vigilance**, lib 3 · B: 6 life, one 3/3, lib 8 ·
+A to act.
+
+- **alpha strike → B blocks one, 4 through, and A's survivors are still
+  untapped. A wins whether B attacks back or sits.**
+- hold → A's short clock decks A out first.
+
+*Measures:* the keyword that removes the attack-or-block tradeoff, on a
+board where the same alpha without it is lethal to A. *Cannot:* be run
+as a straight `W1Ctrl` twin — see below.
+
+## T3 — combat trick · `T3.TRICK` (revealed-hand variant)
+
+A: one 3/3 · B: one 2/2, two untapped lands, and a **revealed** +2/+2
+instant in hand · A to act.
+
+- attack → B pumps and eats the 3/3.
+- **hold, or attack only when the trick cannot profit.**
+
+*Measures:* playing around a known answer. *Cannot:* say anything about
+hidden information — the hidden-hand variant is a separate rung scored
+against a game value, never an optimality rate.
+
+## T4 — removal · `T4.REMOVE`
+
+A: 2 life, one 2/2, two untapped lands, an instant "destroy target
+creature" in hand · B: attacks with a 4/4 · A to act.
+
+- chump-block → A lives, loses the body, the 4/4 is still there.
+- **cast the removal on the attacker → A keeps the body and the board.**
+
+*Measures:* the project's sharpest known failure — a trained agent
+offered instant-speed removal 5,504 times and cast it zero
+(`LEVELSET.md` §3). This rung makes that decision the entire episode.
+
+## T5 — flash · `T5.AMBUSH` (revealed-hand variant)
+
+A: two attackers, a 2/2 and a 4/4 · B: untapped mana and a **revealed**
+2/2 flash creature · A to act.
+
+- attack with the 2/2 → it is ambushed and dies.
+- **attack with the 4/4 → the ambush cannot profitably block it.**
+
+*Measures:* anticipating a blocker that is not on the board yet.
+
+## T6 — global effect · `T6.ANTHEM`
+
+A: two 2/2, an anthem (+1/+1 to A's creatures) in hand and the mana for
+it · B: two 3/3 · A to act.
+
+- attack first, cast later → the 2/2s trade badly or bounce off.
+- **cast the anthem precombat, then attack as 3/3s.**
+
+*Measures:* a board-wide effect changing every combat number at once —
+sequencing, not selection.
+
+## T7 — activated ability · `T7.PUMP`
+
+A: one 2/2 with "{1}: +1/+0" and two untapped lands · B: one 3/3
+blocker · A to act.
+
+- attack and pump precombat → the mana is spent before the information
+  arrives.
+- **attack, wait for blockers, then pump to win the fight.**
+
+*Measures:* holding a decision until the information exists — the timing
+axis every phase has found starved.
+
+---
+
+## What hand-authoring got wrong, and what that changes
+
+Drafting these, the lifelink instance I intended as `T2.LIF` collapsed:
+every board where lifelink looked decisive was one where the best
+opponent simply *declines to attack* and wins the long game instead, and
+the keyword stopped mattering. The vigilance instance has the mirror
+problem — its `W1Ctrl`-style twin, same board minus the keyword, has no
+correct action at all, because A loses down every line. A control
+variant with no winning move is not a control.
+
+Both failures are the same failure: **an instance is not a design, it is
+a search result.** So instance creation is not authoring:
+
+1. generate candidate boards from a family's parameter ranges;
+2. solve each exactly, for the A, B and C card sets separately;
+3. **keep only instances where the correct action is unique, where a
+   stats-only heuristic gets it wrong, and where A and C have
+   *different* correct actions;**
+4. then run the four validation gates on what survives.
+
+The samples above are therefore shapes to agree on, not the instances.
+Anything hand-drawn that reaches a scoreboard without step 3 is a
+position I talked myself into.
