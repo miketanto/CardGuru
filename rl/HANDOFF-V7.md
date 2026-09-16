@@ -1175,3 +1175,30 @@ OWED, in priority order (pre-stated, none run):
 
 UPDATE (2026-09-15 16:57Z WSL): **Phase 13 in progress** (runbook rl/PHASE13-BC.md, STATE lines are the record; rows '13a — the recording' + its flash addendum and '13b — the clone' in rl/V7-VALIDATION.md). 13a: 68,500 CP7-labelled consults on BenchDimir (priority / target / joint attack / joint block labelled 1.000 / 1.000 / 0.948 / 0.974; CP7 0.831 vs heuristic, 0.492 mirror). 13b: fresh flag-ON net cloned (held-out priority top-1 0.876 = 0.897 of ceiling); card-level clause on card-swap missed by 0.0006; levels vs CP7 sampled 0.330 / two-stage 0.310 / argmax 0.320 (competent start not met; clear above Phase 12's 0.12 start). 13c RUNNING since 16:55:38Z (rl/phase13.py from bc.pt, Phase 12 recipe, three-readout levels every 1,024, graduation sampled or two-stage >= 0.70 with lower >= 0.60; log rl/artifacts/v7/13/c/phase13.log; stop: touch rl/artifacts/v7/13/c/STOP). OWED: 13c readings (improves on / forgets the clone, habits hold), the Phase 13 verdict and a HANDOFF section; the Enduring Curiosity opponent-turn offer question; the faithfulness sub-slice at 25 games.
 UPDATE (2026-09-15 22:55Z WSL): **Phase 13 closed on a BREAK.** 13c (RL vs CP7 from bc.pt) failed the pre-registered make-or-break at 2,048 (Amendment 1 in rl/PHASE13-BC.md): sampled 0.29 / two-stage 0.24 vs CP7 (bc.pt 0.33 / 0.31), CP7 training win rate 0.279 -> 0.219; habits: counters dipped to 0.197 once. Row '13c' in rl/V7-VALIDATION.md has the tables, census, transcripts and learner statistics (value_ev <= 0.22, approx_kl ~0.0012/update). User's point: a league would only drift when RL cannot even climb against one fixed opponent. Candidate diagnostics, not run: offline value-fit on the 13a recordings; CP7 skill ladder; larger steps + KL-to-bc.pt; DAgger relabelling. Side thread: 17Lands one-set trial (rl/L17-CLOUD.md, branch data/l17-dsk) coverage 2000/2000, fidelity NO-GO (median 2 turns matched); cloud follow-up prompt rl/L17-CLOUD-HANDOFF.md.
+
+## Q. UPDATE (2026-09-16; v7/lane-d = HEAD). Extends §P with the Phase 14 diagnostics.
+
+Phase 13 ended with 13c BREAKing at 2,048 episodes (RL from the CP7 clone does not learn past the clone against
+CP7 skill 6). **Phase 14 asked why, in two pre-registered diagnostics** — runbook `rl/PHASE14-DIAG.md`, results in
+`rl/V7-VALIDATION.md` section **'## 14 — diagnostics'** (D2a ladder, D1 value fit, D2b training, combined reading,
+cannots). Read that section before proposing the next RL run.
+
+* **D1 (offline value fit on the 13a recordings): outcomes are barely predictable from v7 observations.** Held-out
+  EV — the network's critic 0.095, the clone's frozen representation 0.146, **ten hand-picked scalars 0.196**.
+  AUC ≈ 0.79 for all three: the models rank winners but do not calibrate magnitude, which is what a critic in GAE
+  needs. 13c's online `value_ev` (0.05–0.22) sits in the same band, so **that critic was near what this encoding
+  supports** — "the critic was badly trained" is not the explanation for 13c.
+* **D2a (CP7 skill ladder): the ladder is inverted** — the clone scores 0.230 / 0.180 / 0.330 sampled at skill
+  1 / 3 / 6. Engine finding to keep: `rl.aiSkill` below 4 **pins `maxDepth` to 4** and only
+  `maxThinkTimeSecs = 3 × skill` varies (`ComputerPlayer6.java:92-101`), node cap constant. A lower skill is an
+  **off-distribution** opponent for a clone of CP7-at-6, not a weaker one.
+* **D2b (1,024 episodes at skill 1): does not climb.** Sampled 0.230 → 0.340 (overlapping), two-stage 0.380 →
+  0.330 (down), pooled training halves 0.266 vs 0.279. CP7 training win rate is **0.272 at skill 1 vs 0.279 at
+  skill 6** — opponent strength barely moves it.
+* **Combined reading (the runbook's table): _the win/loss signal from this encoding is too weak for this RL at this
+  scale_ — candidates are a privileged-information critic, denser in-game rewards, or decision-time search.**
+  A league is premature: it varies the opponent, the axis just shown not to matter at this scale.
+
+Not done and worth knowing: no behaviour census was run for D2b (13c had per-block counters), so nothing says what
+the policy changed about its play; D1's states are CP7's, not the learner's, and its hold-out mixes two opponent
+populations; everything is one seed on BenchDimir.

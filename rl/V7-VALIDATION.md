@@ -5487,3 +5487,22 @@ and the eval rows run 1–2, so the opponent trained against and the one scored 
 strong (pre-stated, unmeasured). D1's states are CP7's, not the learner's, and its hold-out mixes two opponent
 populations. **No behaviour census was run for D2b** (13c had per-block counters), so nothing here says what the
 policy changed about its play — only that the outcome numbers did not move.
+
+**D2b addendum — two readings that the tables above do not make on their own.**
+
+*The readouts converged instead of rising, and that is a Phase 12 problem recurring.* At skill 1 the clone's two
+readouts disagree by 0.15 (sampled 0.230 [0.158, 0.322], two-stage 0.380 [0.291, 0.478] — barely overlapping),
+where at skill 6 they nearly agreed (0.330 vs 0.310). This is the readout-faithfulness problem Phase 12 recorded:
+sampled play and the two-stage act/pass decomposition do not measure the same policy, and the gap is opponent-
+dependent. After 1,024 episodes the two land on 0.340 and 0.330 — the training moved them **toward each other**,
+not up. An "improvement" visible in one readout and absent in the other is a readout artefact until a third
+measurement separates them, and none was run here.
+
+*Opponent strength barely moves the training win rate, which is the direct evidence.* CP7 training win rate is
+**0.272 [0.246, 0.301] over 1,024 episodes at skill 1**, against **0.279 [0.248, 0.311] over the first 1,024
+episodes at skill 6 in 13c** — the same number, at opponents whose search differs by two plies of depth and 6x the
+think time. Together with D1 (nothing fit to these observations beats ten scalars), this is what identifies the
+block as **the learning signal, not the opponent**: making the opponent different did not change what the learner
+extracts per game. It also makes a league premature — a league varies the opponent, which is the axis just shown
+not to matter at this scale. What this cannot support: two skills on one deck with one seed, and "the same number"
+is an overlap of two intervals, not a demonstration that opponent strength is irrelevant in general.

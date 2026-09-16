@@ -1,0 +1,269 @@
+deck context: /home/user/CardGuru/rl/artifacts/deck_ctx_v1
+/home/miketanto/.local/lib/python3.10/site-packages/torch/nn/modules/transformer.py:382: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+resumed ckpt: 0 episodes, 0 updates
+cand_refers_pool=True
+policy server on :7950 (threads=4) device=cuda
+deck context: /home/user/CardGuru/rl/artifacts/deck_ctx_v1
+/home/miketanto/.local/lib/python3.10/site-packages/torch/nn/modules/transformer.py:382: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+resumed ckpt: 0 episodes, 0 updates
+cand_refers_pool=True
+policy server on :7950 (threads=4) device=cuda
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+KL|update=1|approx_kl=-0.0001|samples=1810|stopped=0
+TRAIN|update=1 episodes=32 batch_eps=32 steps=1810 batch_win_rate=0.312 mean_abs_phi=0.000 value_ev=0.0004 oracle_cover=0.000 critic_ev=nan update_s=35.66 entropy=0.246 max_logit=5.00 grad_norm=16.81 chosen_types=864/212/288/138/156/116/36/0
+RLLOCK|calls=2000|wait_s=139.1|held_s=52.6|wait_per_call_ms=69.55|held_per_call_ms=26.30|wait_share=72.6%
+conn closed
+conn closed
+conn closed
+KL|update=2|approx_kl=0.0033|samples=1628|stopped=0
+TRAIN|update=2 episodes=64 batch_eps=32 steps=1628 batch_win_rate=0.438 mean_abs_phi=0.000 value_ev=0.0316 oracle_cover=0.000 critic_ev=nan update_s=73.62 entropy=0.248 max_logit=5.00 grad_norm=5.16 chosen_types=772/206/277/106/116/113/38/0
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn closed
+RLLOCK|calls=4000|wait_s=306.9|held_s=163.8|wait_per_call_ms=76.73|held_per_call_ms=40.94|wait_share=65.2%
+KL|update=3|approx_kl=0.0004|samples=1872|stopped=0
+TRAIN|update=3 episodes=96 batch_eps=32 steps=1872 batch_win_rate=0.250 mean_abs_phi=0.000 value_ev=0.0596 oracle_cover=0.000 critic_ev=nan update_s=74.30 entropy=0.228 max_logit=5.00 grad_norm=4.80 chosen_types=967/196/292/119/164/110/24/0
+RLLOCK|calls=6000|wait_s=831.6|held_s=325.2|wait_per_call_ms=138.60|held_per_call_ms=54.21|wait_share=71.9%
+conn closed
+conn closed
+conn closed
+KL|update=4|approx_kl=0.0000|samples=1640|stopped=0
+TRAIN|update=4 episodes=128 batch_eps=32 steps=1640 batch_win_rate=0.156 mean_abs_phi=0.000 value_ev=0.0192 oracle_cover=0.000 critic_ev=nan update_s=31.67 entropy=0.231 max_logit=5.00 grad_norm=4.39 chosen_types=847/187/272/99/131/74/30/0
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn closed
+RLLOCK|calls=8000|wait_s=971.0|held_s=415.6|wait_per_call_ms=121.37|held_per_call_ms=51.95|wait_share=70.0%
+KL|update=5|approx_kl=0.0006|samples=1672|stopped=0
+TRAIN|update=5 episodes=160 batch_eps=32 steps=1672 batch_win_rate=0.438 mean_abs_phi=0.000 value_ev=0.0266 oracle_cover=0.000 critic_ev=nan update_s=27.55 entropy=0.277 max_logit=5.00 grad_norm=7.79 chosen_types=732/207/309/137/146/120/21/0
+RLLOCK|calls=10000|wait_s=1087.2|held_s=468.0|wait_per_call_ms=108.72|held_per_call_ms=46.80|wait_share=69.9%
+conn closed
+conn closed
+conn closed
+KL|update=6|approx_kl=-0.0004|samples=1534|stopped=0
+TRAIN|update=6 episodes=192 batch_eps=32 steps=1534 batch_win_rate=0.125 mean_abs_phi=0.000 value_ev=0.0676 oracle_cover=0.000 critic_ev=nan update_s=24.76 entropy=0.260 max_logit=5.00 grad_norm=6.84 chosen_types=692/203/264/120/139/89/27/0
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn closed
+RLLOCK|calls=12000|wait_s=1128.6|held_s=517.0|wait_per_call_ms=94.05|held_per_call_ms=43.08|wait_share=68.6%
+KL|update=7|approx_kl=0.0014|samples=1810|stopped=0
+TRAIN|update=7 episodes=224 batch_eps=32 steps=1810 batch_win_rate=0.219 mean_abs_phi=0.000 value_ev=0.0373 oracle_cover=0.000 critic_ev=nan update_s=33.82 entropy=0.241 max_logit=5.00 grad_norm=4.28 chosen_types=913/213/279/118/149/108/30/0
+conn closed
+conn closed
+conn closed
+KL|update=8|approx_kl=0.0011|samples=1557|stopped=0
+TRAIN|update=8 episodes=256 batch_eps=32 steps=1557 batch_win_rate=0.219 mean_abs_phi=0.000 value_ev=0.0331 oracle_cover=0.000 critic_ev=nan update_s=24.59 entropy=0.264 max_logit=5.00 grad_norm=7.74 chosen_types=726/193/274/109/133/87/35/0
+conn closed
+RLLOCK|calls=13523|wait_s=1252.0|held_s=555.0|wait_per_call_ms=92.58|held_per_call_ms=41.04|wait_share=69.3%
+deck context: /home/user/CardGuru/rl/artifacts/deck_ctx_v1
+/home/miketanto/.local/lib/python3.10/site-packages/torch/nn/modules/transformer.py:382: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+resumed ckpt: 256 episodes, 8 updates
+cand_refers_pool=True
+policy server on :7950 (threads=4) device=cuda
+deck context: /home/user/CardGuru/rl/artifacts/deck_ctx_v1
+/home/miketanto/.local/lib/python3.10/site-packages/torch/nn/modules/transformer.py:382: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+resumed ckpt: 256 episodes, 8 updates
+cand_refers_pool=True
+policy server on :7950 (threads=4) device=cuda
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+KL|update=9|approx_kl=0.0004|samples=1526|stopped=0
+TRAIN|update=9 episodes=288 batch_eps=32 steps=1526 batch_win_rate=0.219 mean_abs_phi=0.000 value_ev=0.0643 oracle_cover=0.000 critic_ev=nan update_s=25.79 entropy=0.253 max_logit=5.00 grad_norm=2.70 chosen_types=713/198/270/92/131/89/33/0
+RLLOCK|calls=2000|wait_s=104.4|held_s=50.8|wait_per_call_ms=52.19|held_per_call_ms=25.40|wait_share=67.3%
+conn closed
+conn closed
+conn closed
+KL|update=10|approx_kl=-0.0004|samples=1767|stopped=0
+TRAIN|update=10 episodes=320 batch_eps=32 steps=1767 batch_win_rate=0.250 mean_abs_phi=0.000 value_ev=0.0656 oracle_cover=0.000 critic_ev=nan update_s=32.81 entropy=0.236 max_logit=5.00 grad_norm=3.68 chosen_types=910/187/290/108/130/106/36/0
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn closed
+RLLOCK|calls=4000|wait_s=131.6|held_s=101.0|wait_per_call_ms=32.90|held_per_call_ms=25.24|wait_share=56.6%
+KL|update=11|approx_kl=0.0011|samples=1530|stopped=0
+TRAIN|update=11 episodes=352 batch_eps=32 steps=1530 batch_win_rate=0.344 mean_abs_phi=0.000 value_ev=0.1001 oracle_cover=0.000 critic_ev=nan update_s=27.06 entropy=0.266 max_logit=5.00 grad_norm=4.29 chosen_types=687/179/270/108/150/103/33/0
+RLLOCK|calls=6000|wait_s=240.8|held_s=149.5|wait_per_call_ms=40.14|held_per_call_ms=24.91|wait_share=61.7%
+conn closed
+conn closed
+conn closed
+KL|update=12|approx_kl=0.0009|samples=1944|stopped=0
+TRAIN|update=12 episodes=384 batch_eps=32 steps=1944 batch_win_rate=0.344 mean_abs_phi=0.000 value_ev=0.1040 oracle_cover=0.000 critic_ev=nan update_s=33.06 entropy=0.246 max_logit=5.00 grad_norm=5.05 chosen_types=899/221/329/172/172/115/36/0
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn closed
+RLLOCK|calls=8000|wait_s=274.9|held_s=198.8|wait_per_call_ms=34.37|held_per_call_ms=24.84|wait_share=58.0%
+KL|update=13|approx_kl=0.0007|samples=1396|stopped=0
+TRAIN|update=13 episodes=416 batch_eps=32 steps=1396 batch_win_rate=0.250 mean_abs_phi=0.000 value_ev=0.0319 oracle_cover=0.000 critic_ev=nan update_s=24.70 entropy=0.243 max_logit=5.00 grad_norm=7.92 chosen_types=618/179/264/78/133/93/31/0
+conn closed
+conn closed
+conn closed
+KL|update=14|approx_kl=0.0012|samples=1665|stopped=0
+TRAIN|update=14 episodes=448 batch_eps=32 steps=1665 batch_win_rate=0.250 mean_abs_phi=0.000 value_ev=0.1266 oracle_cover=0.000 critic_ev=nan update_s=28.25 entropy=0.234 max_logit=5.00 grad_norm=4.94 chosen_types=815/199/284/122/129/86/30/0
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn closed
+RLLOCK|calls=10000|wait_s=394.8|held_s=247.0|wait_per_call_ms=39.48|held_per_call_ms=24.70|wait_share=61.5%
+KL|update=15|approx_kl=-0.0002|samples=1564|stopped=0
+TRAIN|update=15 episodes=480 batch_eps=32 steps=1564 batch_win_rate=0.125 mean_abs_phi=0.000 value_ev=-0.1892 oracle_cover=0.000 critic_ev=nan update_s=29.48 entropy=0.219 max_logit=5.00 grad_norm=5.61 chosen_types=789/199/267/75/119/84/31/0
+RLLOCK|calls=12000|wait_s=505.3|held_s=298.6|wait_per_call_ms=42.11|held_per_call_ms=24.88|wait_share=62.9%
+conn closed
+conn closed
+conn closed
+KL|update=16|approx_kl=0.0000|samples=1764|stopped=0
+TRAIN|update=16 episodes=512 batch_eps=32 steps=1764 batch_win_rate=0.312 mean_abs_phi=0.000 value_ev=0.0581 oracle_cover=0.000 critic_ev=nan update_s=29.85 entropy=0.235 max_logit=5.00 grad_norm=3.84 chosen_types=885/203/279/99/154/115/29/0
+conn closed
+RLLOCK|calls=13156|wait_s=526.3|held_s=326.1|wait_per_call_ms=40.01|held_per_call_ms=24.78|wait_share=61.7%
+deck context: /home/user/CardGuru/rl/artifacts/deck_ctx_v1
+/home/miketanto/.local/lib/python3.10/site-packages/torch/nn/modules/transformer.py:382: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+resumed ckpt: 512 episodes, 16 updates
+cand_refers_pool=True
+policy server on :7950 (threads=4) device=cuda
+deck context: /home/user/CardGuru/rl/artifacts/deck_ctx_v1
+/home/miketanto/.local/lib/python3.10/site-packages/torch/nn/modules/transformer.py:382: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+resumed ckpt: 512 episodes, 16 updates
+cand_refers_pool=True
+policy server on :7950 (threads=4) device=cuda
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+KL|update=17|approx_kl=0.0038|samples=1598|stopped=0
+TRAIN|update=17 episodes=544 batch_eps=32 steps=1598 batch_win_rate=0.156 mean_abs_phi=0.000 value_ev=0.0608 oracle_cover=0.000 critic_ev=nan update_s=27.94 entropy=0.248 max_logit=5.00 grad_norm=2.09 chosen_types=827/176/238/88/144/93/32/0
+RLLOCK|calls=2000|wait_s=101.7|held_s=52.2|wait_per_call_ms=50.87|held_per_call_ms=26.12|wait_share=66.1%
+conn closed
+conn closed
+conn closed
+KL|update=18|approx_kl=0.0026|samples=1438|stopped=0
+TRAIN|update=18 episodes=576 batch_eps=32 steps=1438 batch_win_rate=0.188 mean_abs_phi=0.000 value_ev=0.1228 oracle_cover=0.000 critic_ev=nan update_s=26.90 entropy=0.267 max_logit=5.00 grad_norm=3.04 chosen_types=692/184/236/97/111/81/37/0
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn closed
+RLLOCK|calls=4000|wait_s=133.9|held_s=102.5|wait_per_call_ms=33.48|held_per_call_ms=25.62|wait_share=56.6%
+KL|update=19|approx_kl=0.0018|samples=1618|stopped=0
+TRAIN|update=19 episodes=608 batch_eps=32 steps=1618 batch_win_rate=0.188 mean_abs_phi=0.000 value_ev=0.1333 oracle_cover=0.000 critic_ev=nan update_s=29.87 entropy=0.249 max_logit=5.00 grad_norm=2.45 chosen_types=788/207/267/112/120/96/28/0
+RLLOCK|calls=6000|wait_s=253.5|held_s=153.1|wait_per_call_ms=42.25|held_per_call_ms=25.52|wait_share=62.3%
+conn closed
+conn closed
+conn closed
+KL|update=20|approx_kl=-0.0004|samples=1953|stopped=0
+TRAIN|update=20 episodes=640 batch_eps=32 steps=1953 batch_win_rate=0.438 mean_abs_phi=0.000 value_ev=0.1719 oracle_cover=0.000 critic_ev=nan update_s=35.28 entropy=0.243 max_logit=5.00 grad_norm=5.37 chosen_types=955/224/308/155/154/132/25/0
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn closed
+RLLOCK|calls=8000|wait_s=294.8|held_s=203.0|wait_per_call_ms=36.85|held_per_call_ms=25.37|wait_share=59.2%
+KL|update=21|approx_kl=0.0004|samples=1716|stopped=0
+TRAIN|update=21 episodes=672 batch_eps=32 steps=1716 batch_win_rate=0.250 mean_abs_phi=0.000 value_ev=0.1439 oracle_cover=0.000 critic_ev=nan update_s=30.30 entropy=0.245 max_logit=5.00 grad_norm=2.96 chosen_types=870/194/254/119/136/108/35/0
+RLLOCK|calls=10000|wait_s=411.9|held_s=253.3|wait_per_call_ms=41.19|held_per_call_ms=25.33|wait_share=61.9%
+conn closed
+conn closed
+conn closed
+KL|update=22|approx_kl=-0.0001|samples=1788|stopped=0
+TRAIN|update=22 episodes=704 batch_eps=32 steps=1788 batch_win_rate=0.250 mean_abs_phi=0.000 value_ev=0.1941 oracle_cover=0.000 critic_ev=nan update_s=29.38 entropy=0.247 max_logit=5.00 grad_norm=3.80 chosen_types=900/190/300/107/158/96/37/0
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn closed
+RLLOCK|calls=12000|wait_s=444.1|held_s=303.4|wait_per_call_ms=37.01|held_per_call_ms=25.29|wait_share=59.4%
+KL|update=23|approx_kl=0.0019|samples=1895|stopped=0
+TRAIN|update=23 episodes=736 batch_eps=32 steps=1895 batch_win_rate=0.250 mean_abs_phi=0.000 value_ev=0.1696 oracle_cover=0.000 critic_ev=nan update_s=31.22 entropy=0.231 max_logit=5.00 grad_norm=4.92 chosen_types=1024/200/287/99/159/95/31/0
+conn closed
+conn closed
+conn closed
+KL|update=24|approx_kl=0.0023|samples=1785|stopped=0
+TRAIN|update=24 episodes=768 batch_eps=32 steps=1785 batch_win_rate=0.219 mean_abs_phi=0.000 value_ev=0.1607 oracle_cover=0.000 critic_ev=nan update_s=30.63 entropy=0.273 max_logit=5.00 grad_norm=3.44 chosen_types=907/209/270/122/138/98/41/0
+conn closed
+RLLOCK|calls=13791|wait_s=573.7|held_s=347.7|wait_per_call_ms=41.60|held_per_call_ms=25.21|wait_share=62.3%
+deck context: /home/user/CardGuru/rl/artifacts/deck_ctx_v1
+/home/miketanto/.local/lib/python3.10/site-packages/torch/nn/modules/transformer.py:382: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+resumed ckpt: 768 episodes, 24 updates
+cand_refers_pool=True
+policy server on :7950 (threads=4) device=cuda
+deck context: /home/user/CardGuru/rl/artifacts/deck_ctx_v1
+/home/miketanto/.local/lib/python3.10/site-packages/torch/nn/modules/transformer.py:382: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+resumed ckpt: 768 episodes, 24 updates
+cand_refers_pool=True
+policy server on :7950 (threads=4) device=cuda
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+KL|update=25|approx_kl=0.0019|samples=1703|stopped=0
+TRAIN|update=25 episodes=800 batch_eps=32 steps=1703 batch_win_rate=0.281 mean_abs_phi=0.000 value_ev=0.2772 oracle_cover=0.000 critic_ev=nan update_s=26.96 entropy=0.257 max_logit=5.00 grad_norm=4.47 chosen_types=905/189/255/101/125/95/33/0
+RLLOCK|calls=2000|wait_s=118.9|held_s=48.4|wait_per_call_ms=59.44|held_per_call_ms=24.19|wait_share=71.1%
+conn closed
+conn closed
+RLLOCK|calls=4000|wait_s=163.1|held_s=95.1|wait_per_call_ms=40.79|held_per_call_ms=23.78|wait_share=63.2%
+conn closed
+KL|update=26|approx_kl=0.0003|samples=2318|stopped=0
+TRAIN|update=26 episodes=832 batch_eps=32 steps=2318 batch_win_rate=0.344 mean_abs_phi=0.000 value_ev=0.0197 oracle_cover=0.000 critic_ev=nan update_s=42.34 entropy=0.210 max_logit=5.00 grad_norm=5.22 chosen_types=1403/212/278/119/160/114/32/0
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn closed
+RLLOCK|calls=6000|wait_s=201.8|held_s=144.6|wait_per_call_ms=33.63|held_per_call_ms=24.10|wait_share=58.3%
+KL|update=27|approx_kl=0.0001|samples=2015|stopped=0
+TRAIN|update=27 episodes=864 batch_eps=32 steps=2015 batch_win_rate=0.375 mean_abs_phi=0.000 value_ev=0.3434 oracle_cover=0.000 critic_ev=nan update_s=35.01 entropy=0.268 max_logit=5.00 grad_norm=4.01 chosen_types=1100/190/293/118/153/118/43/0
+RLLOCK|calls=8000|wait_s=344.0|held_s=193.1|wait_per_call_ms=43.00|held_per_call_ms=24.14|wait_share=64.0%
+conn closed
+conn closed
+conn closed
+KL|update=28|approx_kl=0.0052|samples=2080|stopped=0
+TRAIN|update=28 episodes=896 batch_eps=32 steps=2080 batch_win_rate=0.312 mean_abs_phi=0.000 value_ev=0.1693 oracle_cover=0.000 critic_ev=nan update_s=33.41 entropy=0.226 max_logit=5.00 grad_norm=6.03 chosen_types=1192/193/279/119/156/107/34/0
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn closed
+KL|update=29|approx_kl=0.0004|samples=1707|stopped=0
+TRAIN|update=29 episodes=928 batch_eps=32 steps=1707 batch_win_rate=0.312 mean_abs_phi=0.000 value_ev=0.2348 oracle_cover=0.000 critic_ev=nan update_s=27.90 entropy=0.218 max_logit=5.00 grad_norm=3.16 chosen_types=961/167/247/80/152/87/13/0
+RLLOCK|calls=10000|wait_s=464.2|held_s=241.3|wait_per_call_ms=46.42|held_per_call_ms=24.13|wait_share=65.8%
+conn closed
+conn closed
+conn closed
+KL|update=30|approx_kl=0.0008|samples=1876|stopped=0
+TRAIN|update=30 episodes=960 batch_eps=32 steps=1876 batch_win_rate=0.344 mean_abs_phi=0.000 value_ev=0.3029 oracle_cover=0.000 critic_ev=nan update_s=33.25 entropy=0.250 max_logit=5.00 grad_norm=3.53 chosen_types=1043/192/261/103/142/104/31/0
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn: mode=train episodes=64
+conn closed
+RLLOCK|calls=12000|wait_s=494.0|held_s=290.8|wait_per_call_ms=41.17|held_per_call_ms=24.23|wait_share=62.9%
+KL|update=31|approx_kl=0.0003|samples=2048|stopped=0
+TRAIN|update=31 episodes=992 batch_eps=32 steps=2048 batch_win_rate=0.312 mean_abs_phi=0.000 value_ev=0.2240 oracle_cover=0.000 critic_ev=nan update_s=33.21 entropy=0.203 max_logit=5.00 grad_norm=5.29 chosen_types=1258/187/264/84/122/102/31/0
+RLLOCK|calls=14000|wait_s=636.5|held_s=338.9|wait_per_call_ms=45.46|held_per_call_ms=24.21|wait_share=65.3%
+conn closed
+conn closed
+conn closed
+KL|update=32|approx_kl=0.0012|samples=2041|stopped=0
+TRAIN|update=32 episodes=1024 batch_eps=32 steps=2041 batch_win_rate=0.250 mean_abs_phi=0.000 value_ev=0.1413 oracle_cover=0.000 critic_ev=nan update_s=38.29 entropy=0.200 max_logit=5.00 grad_norm=4.91 chosen_types=1299/172/252/82/120/72/44/0
+conn closed
+RLLOCK|calls=15788|wait_s=667.3|held_s=383.8|wait_per_call_ms=42.27|held_per_call_ms=24.31|wait_share=63.5%
