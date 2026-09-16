@@ -436,3 +436,27 @@ absence is not a negative result.
   embedding. If that holds to convergence it says most of the clone's agreement with CP7 on this deck does not
   require card identity at all - which is the context every A2 number must be read in, and it is what probe 1's
   floor clause exists to expose.
+- 2026-09-16 04:02Z WSL (A2 FLOOR CLONE DONE - a finding in its own right, committed before the probes land):
+  `bc_random.pt` = the card-blind control (V7Policy(random_table=True), seed 13, cand_refers_pool, 13b's recipe
+  and all four kinds, 68,500 labels, best epoch 6 of 9, 1,299 s-scale run). Held-out agreement, card-BLIND vs
+  bc.pt (card-aware, the 13b row), on the SAME 13b hold-out:
+
+  | kind | card-blind | bc.pt | difference |
+  |---|---|---|---|
+  | all | 0.861 (CE 0.3377) | 0.884 (CE 0.2920) | -0.023 |
+  | priority | **0.848** | **0.876** | **-0.028** |
+  | target | 0.884 | 0.889 | -0.005 |
+  | joint attack | 0.968 | 0.977 | -0.009 |
+  | joint block | 0.810 | 0.799 | **+0.011** (the card-blind net is BETTER) |
+
+  Reading this as context, not as A2's pre-registered probe: **deleting card identity from the network costs
+  0.028 priority top-1 and 0.023 overall, and nothing at all on blocks.** Whatever the clone is imitating on
+  BenchDimir, ~97 % of it is reachable without knowing which card anything is - the wire's entity fields (zone,
+  power, toughness, mana value, type flags, keyword bits, castable-now, legal-targets) plus position carry it.
+  That is the honest frame for every A2 number: probe 1's floor clause exists precisely to expose this, and it
+  also qualifies 13b's "card-level clone" discussion, where the ceiling fraction was read as evidence the clone
+  follows CP7's CARD choice. A ceiling fraction cannot separate the two; a card-blind control can, and it says
+  most of the agreement is not about card identity.
+  Caveat that travels with it: the control is card-BLIND, not random-identity (CardTable clamps ids >= 1000 onto
+  one shared zero row), one seed, one deck, and top-1 agreement is not a win rate. Probe 1 (the encoder-token
+  probe) is running now over both checkpoints; probe 3 and the card-swap arm follow.
