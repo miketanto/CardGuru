@@ -39,3 +39,8 @@ rl/artifacts/subgame/*.log
 # with `git add -f` once every shard has written its '# admission'
 # footer.
 rl/artifacts/subgame/gen_s*_sh*.tsv
+# In-flight gate output, same reason as the shard files above: appended
+# to while gate 1 and gate 3 run, so tracking it mid-run races every
+# commit. Force-added once GATES|DONE is in gates.log.
+rl/artifacts/subgame/gate1_*.tsv
+rl/artifacts/subgame/gate3_*.tsv

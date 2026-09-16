@@ -1,2 +1,0 @@
-RL|cardFeatures|path=/home/user/CardGuru/rl/e2_features.tsv|cards=35390|dim=68
-PROBE	T1.GEN.22	SWING	policy=random	samples=200	optimalMasks=[1]	candidateMasks=[0, 1]	expressible=200/200	optimalPicks=111/200	rate=0.555	choicesSeen=[0, 1]
