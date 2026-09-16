@@ -236,3 +236,15 @@ absence is not a negative result.
   rows and CardTable clamps ids, so every card id >= 1000 lands on the same zero row - the control is card-BLIND
   (identity removed) rather than random-identity; the fraction of probed entities keeping a distinct row is
   reported as rand_distinct_frac. `rl/p15_a2.py` written and syntax-checked.
+- 2026-09-16 02:43Z WSL (A1 running; A4L evaluator written and smoked): A1 policy stage is at frac 0.125 epoch 5
+  (held_top1 0.833) and owns the box; its hold-out reproduces 13b exactly (125 games, 7,167 held consults - the
+  same 7,167 the 13b row reports), which is the check that the split rule was reproduced rather than re-drawn.
+  `rl/p15_a4.py` written, compiled and smoked on the 350 already-recorded W0Base games with 13b's Dimir clone:
+  the smoke is the zero-shot shape and the whole pipeline works (aspect/shared split, per-kind copy ceilings,
+  trivial predictor chosen on TRAINING games and applied unchanged to the held population). Smoke numbers are 133
+  consults and carry no reading. DECISION on the JOINT clone, taken for cost and recorded in advance: A4L asks for
+  "trained on rungs 0..R"; a true cumulative clone at rung 5 would be ~11,000 games (13b's 1,250 took 1,299 s), so
+  JOINT = rung 0 + the rung's own recording for every rung. Defence: every white rung is W0Base with exactly one
+  card swapped, so the union {0, R} carries the same content as 0..R except for the other one-card decks; the one
+  rung where that is NOT true is rung 2 (composition = 1a + 1d), and the true cumulative joint is run there if the
+  night has room. Stated as a deviation, not as the runbook's text.
