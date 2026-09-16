@@ -5805,3 +5805,43 @@ differently), BenchDimir only, and the probe population is 22 distinct cards wit
 informative columns. Linear probes lower-bound what is present, so "worse probe score" is not "less identity
 present"; A2's probe 2 (behaviour) was not re-run on `bc_aux.pt`, so nothing here says whether the remedy changed
 card-swap sensitivity, and that is owed. Nothing in A3 is a win rate.
+
+**A3 addendum — probe 2 on `bc_aux.pt`, the item the row above records as owed. It reverses the natural reading.**
+
+`rl/p10_cardswap.py` unchanged, the same pair lists and consult sets as A2's probe 2, `bc.pt` re-run beside it so
+the two arms are scored on identical swaps (`rl/artifacts/v7/15/a3/cardswap/`):
+
+| swap class | `bc.pt` (13b clone) | **`bc_aux.pt` (A3)** |
+|---|---|---|
+| text only | 0.04241 [0.03752, 0.04765] | **0.07001 [0.05801, 0.08195]** |
+| **text — embedding row ONLY** | 0.03975 [0.03476, 0.04511] | **0.06730 [0.05522, 0.07956]** |
+| text — keyword bits only (wire) | 0.00997 [0.00887, 0.01109] | **0.00604 [0.00524, 0.00682]** |
+| P/T | 0.02500 [0.02178, 0.02824] | **0.06550 [0.05448, 0.07659]** |
+| cost | 0.02843 [0.02487, 0.03200] | **0.05438 [0.04583, 0.06336]** |
+| type | 0.10408 [0.09603, 0.11226] | 0.11201 [0.10191, 0.12120] |
+| own-afterstate control | 0.01526 | 0.01879 |
+| strict flip rate (text) | 0.207 [0.167, 0.247] | 0.149 [0.111, 0.196] |
+
+**The auxiliary loss did what it was proposed to do — behaviourally.** Swapping only the embedding row moves the
+remedied clone's probability **1.7x** more than the un-remedied one (0.06730 vs 0.03975, **disjoint intervals**),
+and its sensitivity to P/T and cost roughly doubles, while its response to the wire's keyword bits **falls**
+(0.00604 vs 0.00997, disjoint). That is a shift of weight from wire fields toward card identity: the direction
+A3 was written to produce.
+
+**And the linear probe cannot see it.** On the same checkpoint the off-wire probe score went the other way
+(0.8590 → 0.8232). Both can be true at once: the probe asks whether a linear map from a frozen token recovers
+mechanical columns **for card identities it was never fit on**, while the swap asks whether the network's own
+decision moves when the identity changes. A representation can become more behaviourally load-bearing and less
+linearly legible to a post-hoc probe at the same time — and the auxiliary head being trained *jointly* is exactly
+the kind of thing that fits columns on seen cards without making them linearly decodable on unseen ones.
+
+**What this does to A3's reading of record.** Nothing: the bar as written was two clauses, both were met, and
+"the remedy works" stands. What changes is the caveat attached to it. The row above says the remedy "did not fix
+what A2 actually found" because the floor gap on probe 1 halved; probe 2 says the remedy **did** move card
+identity into the decision, measurably and with disjoint intervals. Both are reported. The honest joint statement
+is that **probe 1 is the weak instrument here** — the same conclusion A2 reached from the other direction — and
+that the case for the auxiliary loss now rests on behaviour rather than on the probe.
+
+**Cannot:** one seed, one weight; the flip rate falls while Δp rises, so the two behavioural measures disagree in
+direction and neither is a win rate; nothing here says the remedy helps the agent play better, only that its
+decisions depend more on which card it is looking at.
