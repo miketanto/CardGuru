@@ -147,19 +147,102 @@ version of C).
 Wilson intervals, ≥100 games or ≥500 puzzle decisions per cell, per
 `CLAUDE.md`.
 
+## Revision 1 — subgames are the primary instrument, decks are the transfer test
+
+Decided after reading what already exists. Two instruments are in the
+tree and neither can carry this ladder alone:
+
+- **`rl/position_probe.py`** — constructed positions with **no engine in
+  the loop**: a Python re-port of `StateEncoder` and `CombatMath` that
+  asks the policy server directly and prints CombatMath's reference
+  answer. Very cheap, `--validate` guards the port against drift. It
+  produced the cleanest combat finding the project has (a checkpoint
+  declining a **lethal** attack into an empty board,
+  `rl/ATTACK-JOINT-RESULT.md`). Its reference answer is CombatMath's,
+  which is one combat deep and vanilla-only — so it **cannot be
+  extended past tier 1 honestly**: a keyword-aware Python reference
+  would be a second place to be wrong about the rules.
+- **The full-game decks** (`W0Base` … `W3Sorc`, black branch) — real
+  play, real rules, but combat labels that fail their gate (§15/C) and
+  a win rate that answers no per-concept question.
+
+### What a subgame is here
+
+A constructed board, both hands fixed and known, libraries stacked or
+empty, a horizon of one to three turns, and a terminal criterion that is
+binary and checkable (lethal / not, survive / not). Small enough that
+the game tree is **finite and exhaustively solvable in the engine**, so
+"correct" needs no teacher and no evaluator — which is what separates
+this from every previous phase, each of which leaned on CP7 or on a
+material evaluator.
+
+Three things follow, and they are why this is worth the build:
+
+1. **It dissolves B2 inside the instrument.** The coverage hole is worst
+   on wide boards (0.50 in the `W0Base` mirror, 0.95 on narrow
+   `BenchDimir`). A subgame bounds board width by construction, so
+   enumeration is exhaustive and coverage is a per-subgame gate that can
+   be *verified* rather than estimated.
+2. **It makes the starved decision the only decision.** `LEVELSET.md` §3
+   is that rare decisions get no signal — one win/loss bit spread over
+   ~45 consults, and a removal spell offered 5,504 times and cast zero.
+   In a two-decision subgame the concept under test carries the whole
+   terminal reward. Subgames are therefore a **training** environment as
+   well as a probe, which is what turns "can it learn the basics" into a
+   claim rather than an audit of old checkpoints.
+3. **It gives adaptation a clean axis.** Same subgame, card swapped for
+   an analog (B), and for a lookalike whose mechanic differs and whose
+   correct answer flips (C).
+
+### The fork that needs deciding
+
+**Where does ground truth come from above tier 1?**
+
+| | engine-exhaustive | CombatMath-referenced |
+|---|---|---|
+| truth | exact, teacher-free, real rules | best-by-a-vanilla-evaluator, one combat deep |
+| keywords | correct by construction | wrong by construction (B1) |
+| build | subgame driver + exhaustive search over engine state copies | already built (`position_probe.py`) |
+| cost | state copies per node; unmeasured on this box | ~free |
+
+Recommendation: **engine-exhaustive for the ladder, `position_probe.py`
+kept as the cheap tier-1 regression check.** A Python reference that
+must learn flying, first strike and trample is a rules engine we would
+be writing twice.
+
+### Division of labour, stated so neither is over-read
+
+Subgames prove **capability** — that the network can represent and
+select the right play when the concept is isolated. The existing decks
+measure whether that capability **survives a real game**. Pre-registered:
+subgame competence is not strength, and a tier passing in its subgame
+says nothing about win rate until the deck-level transfer run is done.
+A tier that passes its subgame and fails on its deck is a finding about
+transfer, not a failed tier.
+
+### What this does to Step 1
+
+The miss-reason census is still owed — every *full-game* combat result
+in the project is bounded by it — but it is no longer on the critical
+path to proving the basics, because subgames sidestep the hole rather
+than depending on its repair. It moves behind the tier-1 subgame.
+
 ## Step order
+
+Revised by Revision 1. The census (old Step 1) keeps its spec below and
+moves to position 4.
 
 | # | Step | Gates |
 |---|---|---|
-| 1 | Miss-reason census (B2), on `W0Base` + `BenchDimir` | everything combat-shaped |
-| 2 | Fix the generator per what Step 1 names; re-measure coverage | tier 1 |
-| 3 | Extend `CombatMath` for the rung-1 keywords (B1) | tiers 2+ |
-| 4 | Puzzle probe + tier 1 (`W0Base`) A/B/C | first capability claim |
-| 5 | Tier 2 keyword rungs, re-run with labels that pass their gate | — |
-| 6+ | Tricks / removal / flash, then design rungs for globals and activated abilities | — |
+| 1 | Subgame driver + exact solver + tier-1 (vanilla combat) family, A/B/C | the whole ladder |
+| 2 | Train on tier 1; read A/B/C | first capability claim |
+| 3 | Extend `CombatMath` for the rung-1 keywords (B1); tier 2 subgames | tiers 2+ |
+| 4 | Miss-reason census (B2) on `W0Base` + `BenchDimir` | every full-game combat result |
+| 5 | Deck-level transfer for the tiers that passed | the strength question |
+| 6+ | Tricks / removal / flash; then design subgames for globals and activated abilities | — |
 
-Steps 3 and 4 are independent of each other and of Step 2's fix; Step 1
-is upstream of all of them.
+Step 1 is upstream of everything; Steps 3 and 4 are independent of each
+other.
 
 ---
 
