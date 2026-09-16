@@ -5,8 +5,8 @@ search that was supposed to replace it, per the closing section of
 `rl/SUBGAME-DESIGN.md`: *an instance is not a design, it is a search
 result.* Engine pin `7554968c`, this container.
 
-Status: **IN PROGRESS** — the numbers below are filled in as the run
-completes. Nothing here is a capability claim; no network has been
+Status: generation **COMPLETE** (28 instances); gates 1 and 3 running.
+Nothing here is a capability claim; no network has been
 scored on this family.
 
 ## What runs
@@ -110,7 +110,76 @@ per-instance "at least one baseline is wrong" filter is deliberately
 
 ## Results
 
-_pending — the sharded run is still going._
+Seed 11, three shards, replay cap 8,000. All three wrote **identical**
+admission footers — `drawn=658 rejStats=448 admitted=210 rate=0.319` —
+which is the check that they walked the same draw stream, so the union
+of shards is exactly the single-JVM run.
+
+### Yield
+
+| label | n | |
+|---|---|---|
+| `TRIVIAL` | 92 | opening action not load-bearing |
+| `CAPPED` | 36 | no answer inside the replay cap |
+| `MULTI` | 31 | A wins, but several classes do |
+| `DEAD` | 23 | A loses down every line |
+| `SWING` | 19 | **family** |
+| `HOLD` | 9 | **family** |
+
+**28 instances have a unique optimal opening class.** That is 13.3% of
+admitted boards (Wilson 95% 0.094–0.186) and 4.3% of boards drawn
+(0.030–0.061). The yield is reported rather than tuned away: it is what
+the method costs.
+
+`TRIVIAL` at 44% of admitted is the single biggest cost, and it is the
+same thing the first calibration finding was about — the admission test
+buys sharpness on *life totals* but nothing on whether A has slack to
+recover in.
+
+### Solve cost
+
+Mean 41.3 s, max 217.3 s, mean 2,449 replays. **36 of 210 boards bought
+no answer at all.** This is the number that should set how wide a tier-2
+board is allowed to be, and it is why the solver now carries a
+wall-clock budget as well as a replay cap.
+
+### Gate 2 — discrimination: PASSES
+
+Uniform-random play (both seats) over the family: mean **0.539**, min
+0.315, max 0.725, n=28 instances × 200 playouts. Nowhere near ceiling,
+on any instance.
+
+### The baselines — no stats-only rule solves the family
+
+| baseline | correct | Wilson 95% |
+|---|---|---|
+| `safeattack` | 21/28 = **0.750** | 0.566–0.873 |
+| `bodycount` | 19/28 = 0.679 | 0.493–0.821 |
+| `allin` | 14/28 = 0.500 | 0.326–0.674 |
+| `never` | 9/28 = 0.321 | 0.179–0.507 |
+
+The family-level gate passes: none is at ceiling. The load-bearing
+consequence is the bar it sets — **a network on this family is measured
+against 0.750, not against 0.25 or 0.5.** A checkpoint scoring 0.6 here
+is worse than a rule that reads two numbers off the cards.
+
+### The family is too small for the claim it is meant to support
+
+Stated plainly because it is the result that most constrains what
+happens next. At n=28 the baseline intervals are ±0.15 and they
+**overlap each other**: `safeattack` 0.566–0.873 and `bodycount`
+0.493–0.821 cannot be told apart by this family, let alone a network
+separated from either. The project's standing rule — never report a
+level from fewer than 100 games; a rate is not a result until its
+interval is narrower than the effect claimed — applies here with
+instances in place of games.
+
+So 28 instances is enough to prove the *pipeline* works and to set the
+bar; it is not enough to score an arm on. Reaching ~200 instances needs
+roughly 1,500 admitted boards at the observed 13.3% yield, which at
+41.3 s a solve over three shards is about **six hours** of wall clock.
+That is a real and affordable number, and it is the honest price of
+Step 2 rather than a reason to quote a level off 28.
 
 ## What this will not support
 
