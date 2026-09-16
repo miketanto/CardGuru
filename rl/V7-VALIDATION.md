@@ -6165,3 +6165,21 @@ rl/artifacts/v7/13/c/ retains only logs, levels, census lines and state.json - t
 The substitute is exact in the ways that matter: **rl/artifacts/v7/14/d2b/ck_{256,512,768,1024}.pt** were trained FROM bc.pt with the **Phase 13 recipe unchanged** - lr 3e-5, logit bound 5, --adv-norm batch, --target-kl 0.02 - for 1,024 episodes. Same start point, same recipe, same bound; the one difference is the opponent (CP7 skill 1 rather than skill 6). If PPO under this bound drives raw logits outward, that trajectory will show it.
 
 **bc_aux.pt (A3's auxiliary-loss clone) measures mean abs raw logit 9.09, max 28.8, 7.4 percent beyond +/-20** - the same healthy band as bc.pt (7.57). So every PUBLISHED clone measured so far sits at 7-10, and only the bounded single-deck LADDER clones sit at 54-110. The pathology is specific to that regime, not to the bound as such.
+
+**CORRECTION IN THE OPEN — the saturation explanation for 13c's tiny per-update KL is REFUTED, by the measurement I proposed for it.**
+
+I proposed, in two committed rows, that 13c's approx_kl of ~0.0012 against a 0.02 target might be mechanical: a bounded policy whose raw logits sit far outside the bound barely moves. Measured on the twin run (Phase 14 D2b: same start bc.pt, same Phase 13 recipe, same bound, 1,024 episodes), across 500 held consults of the 13a recordings:
+
+| checkpoint | episodes | mean abs raw logit | max | share >= 20 |
+|---|---|---|---|---|
+| bc.pt (start) | 0 | 7.57 | 26.4 | 0.0095 |
+| ck_256 | 256 | 7.24 | 31.8 | 0.0109 |
+| ck_512 | 512 | 7.70 | 34.0 | 0.0136 |
+| ck_768 | 768 | 7.86 | 32.1 | 0.0136 |
+| ck_1024 | 1,024 | **8.09** | 34.1 | 0.0190 |
+
+**PPO under this bound does not drive logits into saturation.** Over 1,024 episodes the mean moves +0.53 (about 7 percent) and the share beyond +/-20 goes from 1 percent to 2 percent - nothing like the 54-110 band of the frozen ladder clones. The candidate is **withdrawn**: 13c's small per-update KL is not explained by logit saturation, and the recipe-based account in the 13c row stands as written and is not amended.
+
+**What survives, quantified rather than dropped.** At mean abs raw logit ~8 with B = 5, the gradient factor through B*tanh(raw/B) is about 0.15 - updates are compressed roughly 6.7x relative to an unbounded head. That is a real effect on every bounded run in this project and is worth knowing, but it is a constant-factor compression, not the exponential death (1e-9 to 1e-19) that froze the ladder clones. It does not explain a KL two orders of magnitude below target.
+
+**The saturation finding therefore remains scoped exactly to the A4L single-deck ladder regime**, where it is decisive (+0.143 held-out top-1 from relaxing the bound), and does not reach the published Phase 13 rows.
