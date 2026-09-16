@@ -6119,3 +6119,25 @@ Stated plainly, because reporting them as outcomes would imply they measured som
 The three are distinct files that converge on the same near-trivial policy, identical to four decimals on priority and on every shared cell. **Therefore: "aspect is learnable at all", "the shared game transfers", "the aspect does not transfer" and "joint helps" are all NOT INTERPRETABLE here.** They are recorded above because they were pre-registered and the arithmetic is what it is, but not one of them measures the aspect, transfer, or the network - each is a comparison between frozen models. Rung 1b measures the FREEZE.
 
 For contrast, rung 1a's joint arm trained normally (best epoch 5, mean abs raw logit 17.2), which is why its JOINT column carried information and this one does not. That difference is the pathology, not the decks.
+
+### 15 / D — the logit bound was freezing training: relaxing it is worth +0.14 held-out top-1 on the same data
+
+The owed diagnostic, run on W1Fly because that rung already had a healthy comparison on record.  with **--logit-bound 0** and nothing else changed: same init (), same seed 0, same 10 % game hold-out, same kinds prio,target, same lr / batch / patience, same 1,000-game recording.
+
+| | bounded (B = 5, the recipe of record) | **unbounded (B = 0)** |
+|---|---|---|
+| best epoch | **1** of 4 | **12** of 15 |
+| held-out CE | 0.6239 | **0.4006** |
+| held-out top-1 | 0.632 | **0.775** |
+| held-out class top-1 | 0.725 | **0.916** |
+| held-out type agreement | 0.892 | **0.951** |
+| priority top-1 / class | 0.621 / - | **0.768 / 0.914** |
+| train CE | frozen at 0.6167 from epoch 2 | 0.5488 -> 0.4018, still falling at stop |
+
+**+0.143 held-out top-1 and +0.191 class agreement, from one flag.** The bounded run was not merely stopped early - at its best it was 0.14 worse than the same recipe unbounded, and it never moved after epoch 1 because its raw logits sat at mean |109.9| against a bound of 5, where the gradient through B*tanh(raw/B) is ~1e-19.
+
+**What this means for the A4L ladder, and it is not a small correction.** Rungs 0, 1a and 1b were all trained under the bounded recipe, and five of the six clones in them froze. Their ZERO / RUNG / JOINT arms collapsed onto the same near-trivial policy, which is why every pre-registered clause on rung 1b came out as arithmetic on identical numbers. **The first series measured a training pathology, not transfer.**
+
+**What is NOT changed, per the rule pre-registered before this diagnostic was read** (PHASE15-ARCH STATE, 07:23Z): every reading of record already committed for the first series - rungs 0, 1a, 1b and their clauses - **stands as written**. Nothing is re-scored or withdrawn. Any re-run at the relaxed bound is published as a clearly-labelled **second series** beside the first and the two are never pooled.
+
+**Scope beyond A4L, stated as a candidate.** Every clone and every RL checkpoint in this project uses B = 5, including , the 13b clone that 13c trained from. If bc.pt is comparably saturated, then 13c per-update KL of ~0.0012 against a 0.02 target - so far attributed to the recipe - has a mechanical explanation: the bounded logits an update actually moves barely change when the raw logits are an order of magnitude past the bound. That check is cheap and is being run; it is a candidate explanation until it reports.
