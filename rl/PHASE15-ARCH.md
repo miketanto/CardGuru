@@ -420,3 +420,19 @@ absence is not a negative result.
   string in its argv - a monitoring loop that does would make the chain believe the recorder is still running and
   hold the ladder indefinitely. Short polls are fine (worst case the chain sleeps one more cycle); wait loops
   must key on files.
+- 2026-09-16 03:48Z WSL (third recorder pause; the night goes STRICTLY SEQUENTIAL from here, by decision):
+  MemAvailable fell 6.5 -> 5.8 -> 5.1 -> 4.2 GB in five minutes with two recording JVMs growing beside A2's
+  card-blind floor clone, and A2's heavy steps were still ahead - probe 3 pools the 25 13a recordings with the
+  ladder and wire3a files, which is the largest load in the phase. Paused the recorder (STOPALL, then
+  rl/stop_15rec.sh) with W0Base at 564/1,000 games kept and every finished 50-game job in counts.txt.
+  DECISION, and it is a real trade: I am no longer trying to overlap the engine and the GPU. Three times now the
+  pair has walked RAM down toward the bar, and each rescue costs attention that an unattended night does not have.
+  `rl/run_15a4.sh` already serialises record -> drivers down -> clone -> eval per rung, so the ladder does its own
+  recording safely; the cost is wall-clock (no engine/GPU overlap), the gain is that nothing gets OOM-killed at
+  04:00 and every step stays resumable. `chain_15.sh` waits for the recorder to exit before the ladder, so with
+  the recorder stopped the chain will go A2 -> ladder directly, which is exactly the sequential order wanted.
+  EARLY A2 SIGNAL, not a reading (the clone has not finished, no probe has run): the CARD-BLIND floor clone
+  reaches held-out top-1 0.815 after one epoch and 0.852 after two, against bc.pt's 0.884 with the real
+  embedding. If that holds to convergence it says most of the clone's agreement with CP7 on this deck does not
+  require card identity at all - which is the context every A2 number must be read in, and it is what probe 1's
+  floor clause exists to expose.
