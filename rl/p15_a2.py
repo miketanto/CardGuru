@@ -243,6 +243,24 @@ def score(mb, mn, X, YB, YN, cols, num_ok):
     return {"n": int(len(X)), "macro_acc": float(np.mean(acc)), "n_cols": len(cols), "r2": r2}
 
 
+def majority_baseline(YB_tr, YB_te, cols):
+    """Predict each column's TRAINING-set majority class, constant, no model at all.
+
+    Diagnostic added 2026-09-16 after probe 1 showed the card-BLIND floor recovering
+    0.78 of the off-wire columns: a floor that high may be identity signal leaking
+    through the wire, or it may be nothing but class imbalance (most of these columns
+    are rare mechanics that are 0 for almost every card).  This separates the two
+    cheaply and needs no network.  It is a DIAGNOSTIC and never a bar.
+    """
+    if not cols or len(YB_te) < 1:
+        return {"macro_acc": float("nan"), "per_col": []}
+    per = []
+    for c in cols:
+        maj = 1.0 if YB_tr[:, c].mean() > 0.5 else 0.0
+        per.append(float(((YB_te[:, c] > 0.5) == (maj > 0.5)).mean()))
+    return {"macro_acc": float(np.mean(per)), "per_col": per}
+
+
 def informative(YB, tr, te, subset):
     return [c for c in subset
             if 0 < YB[tr, c].sum() < tr.sum() and 0 < YB[te, c].sum() < te.sum()]
@@ -352,6 +370,16 @@ def main():
             say("cols_used", f"pre={len(shared['pre_cols'])}",
                 f"card_offwire={len(shared['card_cols'])}", f"card_onwire={len(shared['card_cols_onwire'])}")
         num_ok = np.isfinite(YN)
+        # model-free diagnostic: how much of any off-wire score is just class imbalance?
+        if "baseline" not in shared:
+            shared["baseline"] = {}
+            for pop, mask in (("unseen_card", c_te), ("unseen_id", c_te & (UN > 0.5)),
+                              ("off_deck", c_te & (OFF > 0.5)), ("seen_card", c_tr)):
+                b = majority_baseline(YB[c_tr], YB[mask], shared["card_cols"])
+                shared["baseline"][pop] = b
+                say("majority_baseline", f"pop={pop}", f"n={int(mask.sum())}",
+                    f"offwire_macro={b['macro_acc']:.4f}",
+                    "per_col=" + ",".join(f"{x:.2f}" for x in b["per_col"]))
         res = {"card_emb": card_emb_version, "rand_distinct_frac": rd}
         for key, F in (("TOKEN", X), ("EMB", E)):
             # (1) pre-registered: fit on training games, score on held-out games
@@ -374,6 +402,7 @@ def main():
                     "r2=" + ",".join(f"{k}:{v:.3f}" for k, v in s_off["r2"].items()))
         out["models"][name] = res
     out["counts"] = shared.get("counts", {})
+    out["majority_baseline"] = shared.get("baseline", {})
     out["cols_used"] = {k: len(shared.get(k, [])) for k in ("pre_cols", "card_cols", "card_cols_onwire")}
     with open(os.path.join(args.out, f"a2_{args.tag}.json"), "w") as fh:
         json.dump(out, fh, indent=1)
