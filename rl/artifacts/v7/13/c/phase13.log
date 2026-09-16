@@ -19,3 +19,5 @@ L13|check|M_B|n=6|h=4.20|trained=1792|opp=cp7|wr=7/25 = 0.28 [0.143,0.476]|small
 L13|block|n=7|h=4.66|main=M_B|trained=1792->2048|opp=cp7|W/L/D/S=53/203/0/0|wr=0.207|errors=0|wall=1661s|rc=0
 L13|check|M_B|n=7|h=4.76|trained=2048|opp=cp7|wr=3/25 = 0.12 [0.042,0.300]|smallbig=-(solver_no_block=-)|landsearch=-|cpg=3.52|consults_pg=81.0|tag=p13_M_B_n007_t02048
 L13|level|M_B|point=train|h=5.88|trained=2048|gained=2048|sampled_cp7=29/100 = 0.290 [0.210,0.385]|sampled_heur=31/50 = 0.620 [0.482,0.741]|sampled_stalls=0|twostage_cp7=24/100 = 0.240 [0.167,0.332]|twostage_heur=33/50 = 0.660 [0.522,0.776]|twostage_stalls=0|argmax_cp7=32/100 = 0.320 [0.237,0.417]|argmax_heur=30/50 = 0.600 [0.462,0.724]|argmax_stalls=0|graduated=0
+L13|block|n=8|h=6.34|main=M_B|trained=2048->2304|opp=cp7|W/L/D/S=59/197/0/0|wr=0.230|errors=0|wall=1634s|rc=0
+L13|done|reason=stopfile|blocks=9|h=6.34|graduated=none|M_B_trained=2304
