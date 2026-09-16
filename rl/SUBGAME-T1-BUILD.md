@@ -206,3 +206,69 @@ written in its header: the seats choose only attacks and blocks
 (priority always passes, so no rung with castable cards can use it
 unchanged — that is T3 onward), and the block option space is a superset
 in which distinct indices can denote the same legal assignment.
+
+---
+
+## The probe: a policy at a solved position
+
+`rl/xmage-src/SubgameProbe.java`. Rather than seating the solver as an
+opponent and playing games, the probe asks the cheaper and more
+diagnostic question: **at a position whose optimal action is known, what
+does the policy choose, and could it have chosen right?**
+
+Everything is compared in SOLVER space — an attack is the set of
+attacking creature ids, mapped to a bitmask over canonically ordered
+available attackers. Mapping by id, not by list position, is required:
+`RLPlayer` sorts its candidates by name only and `LinePlayer` by name
+then id, so comparing positions would silently compare different
+creatures.
+
+### Result on `T1.HOLD`
+
+| policy | expressible | optimal | choices seen |
+|---|---|---|---|
+| uniform random, 200 samples | 200/200 | **89/200 = 0.445** (Wilson 95% 0.373-0.510) | {0, 3} |
+| v7 network, untrained, argmax | 1/1 | **0/1** | {3} |
+
+- **Gate 3 (expressibility) PASSES here.** The optimal action, mask 0
+  ("attack with nobody"), is in the candidate list every time. On this
+  position the §15/C coverage hole does not bite, and that is now
+  verified per position rather than estimated from teacher counters.
+- **The candidate list is {0, 3}, not all four subsets.** The Pareto
+  filter and outcome dedup remove both single-attacker sets. So the
+  action space the policy chooses from has 2 options where the solver
+  has 4 — which means **the random baseline on this position is ~0.5,
+  not 0.25**. The filter blamed for the coverage hole is also what makes
+  a coin-flip score 0.445 here, and any "beats random" bar has to be set
+  against the filtered space.
+- **The untrained network picked mask 3** — attack with both, the line
+  the solver proves loses. One deterministic argmax decision from a
+  fresh random initialisation: it demonstrates the socket path works end
+  to end and **nothing whatsoever about capability**. A trained
+  checkpoint is what makes this row mean anything.
+
+### A methodology bug caught by disagreement, not by review
+
+The first probe run reported the uniform random policy playing
+**optimally 200/200**, which is impossible for a coin flip. Cause: the
+probe built a fresh `RandomPolicyClient(7000 + i)` per sample, and at
+encoder v5+ there is exactly ONE consult per combat, so only the FIRST
+`nextInt` of each seed was ever used — and `java.util.Random` returns
+the same first value for long runs of consecutive seeds. At v2 the
+per-creature attack path made two consults per combat, which hid the
+correlation behind a second draw.
+
+Fixed by sharing one client across the battery; the rate fell to the
+0.445 above. Recorded because the wrong version was a *clean-looking*
+number that would have made every later "the agent beats random" claim
+meaningless.
+
+### Wiring notes for the next session
+
+- The v7 arch needs `-Drl.cardFeatures=rl/e2_features.tsv` or the
+  handshake fails with `cdim 41 != 94`; `CAND_DIM` is a class-init
+  constant derived from that file.
+- A failed handshake **kills the policy server**, so it must be
+  restarted between attempts.
+- Start the server with output redirected to a file, not through a pipe:
+  it binds within ~4 s, but piping its stdout made it look hung.
