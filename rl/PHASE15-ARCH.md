@@ -198,3 +198,15 @@ absence is not a negative result.
   W4Inst Swift Response / W5Trick Aegis of the Heavens. Those names are the aspect/shared split keys.
   `rl/p15_a1.py` written (A1: policy and value stages, nested fractions of the 13b training games against the 13b
   hold-out, one JSON per point, resumable).
+- 2026-09-16 02:36Z WSL (A0 DONE, reading PARTIAL, phase continues; A1 policy launched; A4L rung 0 recording
+  launched): A0 = training CE 0.0476 (copy floor 0.0408), exact top-1 0.9795, class top-1 0.9960, type 0.9980,
+  value EV 0.9908 (MSE 0.0086, Var(r) 0.9351), 328 s. The value bar (>= 0.95) is MET; the top-1 bar (>= 0.99) is
+  NOT met by the letter, but this slice's pooled exact-top-1 COPY CEILING is 0.9810, i.e. the bar is above what
+  the metric can reach here at any fit quality; 0.9795 is 0.9984 of the ceiling and attack/block sit exactly on
+  theirs. DECISION I made without the user: continue to A1, record the rung as PARTIAL, leave the bar as written.
+  Defence: the fail branch is specifically "the plumbing is broken (masking, the frozen-table adapter, gradients
+  reaching the card path)", and all three are checked clean - adapter grad 0.118 and cand_ref grad 0.204 after
+  epoch 1 (printed, not inferred), attack/block top-1 exactly 1.000 (masking), CE within 0.007 of the copy floor.
+  Row written to rl/V7-VALIDATION.md '## 15 — architecture validation' / '15 / A0'. A1 policy stage launched
+  02:38Z over all 25 recordings (one JSON per fraction, resumable); A4L rung 0 (W0Base, 1,000 games, two lanes,
+  drivers 7911/7912) launched 02:37Z beside it - engine + one GPU trainer, within the box rule.
