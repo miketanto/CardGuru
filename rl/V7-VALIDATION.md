@@ -6056,3 +6056,21 @@ Top-logit only (the one the argmax rides on): 67.8 mean for the frozen clone aga
 Top-logit-only means run higher still (67.8 / 116.3 / 132.9 for the three frozen clones against 26.8 for the joint one). Every single-deck rung clone measured is beyond the bound on 100 percent of its candidate logits, and the three that froze are 2.5x to 5x deeper into saturation than the one that trained normally. The gradient through the tanh dies exponentially in raw/B, so this is a dose-response relationship between saturation depth and the stall, measured on three independent checkpoints rather than inferred from one.
 
 This does not change any pre-registered reading. It sharpens the mechanism: the A4L single-deck regime drives raw logits an order of magnitude past B = 5 within one epoch, after which the head is gradient-dead and training stops even though the loss is far from its floor. The fix remains OWED and unapplied so the rungs stay comparable.
+
+**Saturation across five checkpoints — it is the stall, not the data volume.**
+
+Rung 2 joint clone froze exactly as its single-deck arms did (held CE 0.5862 identical epochs 1-4, train CE 0.5767 from epoch 2, best epoch 1 of 4), which rung 1 joint clone did not. Measuring both settles why:
+
+| checkpoint | trained? | mean abs raw logit | max | share >= 20 |
+|---|---|---|---|---|
+| bcj_W1Fly.pt (joint, rung 1) | 8 epochs, CE 0.4982 -> 0.3850 | **17.2** | 58.8 | 0.3586 |
+| bcj_W1Fst.pt (joint, rung 2) | FROZEN at epoch 1 | **93.0** | 182.8 | **1.0000** |
+| bc_W0Base.pt | FROZEN at epoch 1 | 54.4 | 82.9 | 0.9509 |
+| bc_W1Fst.pt | FROZEN at epoch 1 | 90.8 | 155.3 | 0.9905 |
+| bc_W1Fly.pt | FROZEN at epoch 1 | 109.9 | 157.1 | 1.0000 |
+
+**Every checkpoint that froze sits at mean abs raw logit 54 to 110; both that trained sit at 17 to 21.** The separation is clean across five independent runs and it cuts across the data-volume axis: the two JOINT arms have identical training-set sizes (2,000 games, ~38,000 labelled consults) and identical recipes, yet one trained for eight epochs at mean 17.2 and the other died at epoch 1 at mean 93.0.
+
+**This revises the rung 1a conclusion, in the open.** Rung 1a attributed the JOINT-over-RUNG gap to data volume, supported by A1 reading data-limited. That attribution is now too simple: rung 2 joint arm has the same doubled data and does NOT escape. What separates the runs is whether they escaped saturation, which the doubled, more varied data made more likely on rung 1 but did not guarantee. The honest statement is that **the A4L arms are measuring the interaction of the logit bound with this training regime at least as much as they measure transfer**, and a rung whose arms all froze cannot speak about its aspect at all.
+
+**The OWED --logit-bound 0 re-clone is now the load-bearing diagnostic of this phase**, because it decides whether any A4L arm measured the network rather than the bound. It is still not run tonight: changing the bound mid-ladder would make the rungs incomparable, and the ladder is mid-flight.
