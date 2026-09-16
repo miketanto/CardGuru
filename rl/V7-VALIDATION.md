@@ -5620,3 +5620,100 @@ essentially no power, and no claim about the critic should rest on it alone. The
 hold-out (13b's behaviour, kept so the 100 % point is comparable with the published row), which makes every
 held-out number here mildly optimistic, equally at every fraction. Nothing here is a win rate or says anything
 about winning; the critic's effective sample is games (1,250), not consults. Only BenchDimir.
+
+### 15 / A2 — does the policy network keep card identity? Probe 1 reads "the encoder discards card identity" (the bar as written) and A3 is triggered — but probe 2 disagrees and is reported beside it
+
+Three probes on the SAME clone (`rl/artifacts/v7/13/bc/bc.pt`), each against two controls fixed in advance: the
+frozen `card_emb_v8` row (ceiling, loaded once and shared by every arm) and a card-blind clone trained from
+`V7Policy(random_table=True)` on the same 68,500 labels with 13b's recipe (floor;
+`rl/artifacts/v7/15/a2/bc_random.pt`, best epoch 6). Tooling `rl/p15_a2.py`, `rl/run_15a2.sh`;
+`rl/p10_cardswap.py` unchanged.
+
+**A correction that shaped this row, made before any A2 number was read** (STATE 03:01Z, commit d1f810c). Probe 1
+as pre-registered splits by GAME, but one recording is one deck, so the held-out games contain the SAME 22 card
+identities the probe was fit on; and mana value, power, toughness, the type flags and the 18 keyword bits are
+fields of the entity row (WIRE-V7 2d 10-17, 30-33, 34-51) that `v7_net.MLPSkip` is explicitly built to keep
+linearly recoverable. The probe as written is therefore SATURATED — measured, not asserted: token 1.0000, frozen
+embedding 1.0000, and the card-blind net 0.9792. A probe that a card-blind network passes at 0.98 cannot show
+that card identity survives. So the bar as written is reported, and a card-identity split on OFF-WIRE columns
+only (the 50 e2 columns the entity row does not carry, plus the 5 colour bits) is reported beside it.
+
+**Probe 1 — representation, on the pre-registered population** (13a: 68,952 consults, 1,250 games, 60,003 probed
+hand entities, 22 distinct cards, 6 held-out identities, 15,571 unseen-card entities, 12 informative off-wire
+columns):
+
+| | token (BC) | frozen embedding | card-blind floor |
+|---|---|---|---|
+| bar as written (41 cols, held games) | 1.0000 | 1.0000 | **0.9792** |
+| **off-wire, unseen cards** | **0.8590** | **0.8727** | **0.7824** |
+| on-wire (2 cols), unseen cards | 0.8515 | 0.7968 | **1.0000** |
+| off-wire, seen cards | 1.0000 | 1.0000 | 0.9739 |
+
+* Clause 1 **MET**: 0.8590 / 0.8727 = **0.984** of the embedding's own score (bar 0.80).
+* Clause 2 **NOT MET**: the token is **+0.0766** above the card-blind floor (bar >= 0.25), and +0.0766 also
+  satisfies the fail branch's "within 0.10 of the random floor".
+* **Reading of record: "the encoder discards card identity" — the bar as written. A3 runs.** The two clauses are
+  decided by the same number and are not contradictory: the token is near the embedding's ceiling, and so is a
+  network that never sees the embedding.
+* **On-wire cannot separate the models, and is reported only to show that**: the card-blind net scores 1.0000
+  there, because those bits are in the wire. Only the off-wire split carries information.
+* `rand_distinct_frac = 0.0` — every probed BenchDimir entity is clamped onto `CardTable`'s shared zero row, so
+  this floor is a true card-blind floor, not a partially random-identity one.
+* **Two populations are EMPTY here, by construction, and an empty population is not a pass**: `off_deck` = 0
+  because probe 1 runs on BenchDimir recordings only, so no card is off-deck; `unseen_id` = 0 because none of
+  BenchDimir's 22 cards fall in `card_emb_v8/split.json`'s held-out 10 % — they were all in the embedding's
+  training split. Probe 3 exists to fill both.
+
+**Probe 3 — unseen cards, pooled decks** (13a + the ladder's W0Base recording + `wire3a` decks, label-free
+loading; 57 distinct cards, 35 held-out identities, 18 informative off-wire columns):
+
+| population | n | token (BC) | ceiling | floor | token/ceiling | token − floor |
+|---|---|---|---|---|---|---|
+| unseen cards (= off-deck) | 27,576 | **0.9606** | 0.9706 | 0.7897 | 0.990 | **+0.1709** |
+| unseen to the EMBEDDING (`split.json`) | 2,506 | 0.9473 | 1.0000 | 0.7338 | 0.947 | +0.2135 |
+| seen cards | 32,444 | 1.0000 | 1.0000 | 0.9795 | — | — |
+
+On these wider populations **neither branch fires**: the gap to the floor (+0.171, +0.214) clears the 0.10 discard
+clause but misses the 0.25 survival clause. Recorded as **partial**, not bent toward either reading. The
+pre-registered clauses attach to probe 1, whose reading stands.
+
+**Probe 2 — behaviour** (`rl/p10_cardswap.py` unchanged, the 10/A2 pair lists and consult sets), mean dp with
+bootstrap 95 % CI:
+
+| swap class | fresh flag-ON init | bc.pt | card-blind floor |
+|---|---|---|---|
+| text only | 0.04298 [0.04054, 0.04556] | **0.04241 [0.03752, 0.04765]** | **0.02887 [0.02483, 0.03336]** |
+| **text — embedding row ONLY** | 0.04315 | **0.03975 [0.03476, 0.04511]** | **0.01234 [0.01022, 0.01470]** |
+| text — keyword bits only | 0.00352 | 0.00997 | 0.02053 |
+| P/T | 0.01760 | 0.02500 | 0.01942 |
+| cost | 0.03843 | 0.02843 | 0.00610 |
+| type | 0.09934 | 0.10408 | 0.15237 |
+| strict flip rate (text) | 0.119 [0.082, 0.157] | **0.207 [0.167, 0.247]** | **0.070 [0.042, 0.098]** |
+
+**Probe 2 contradicts probe 1's floor clause, and that is the most informative thing in this row.** Swapping only
+the embedding row moves the clone's probability 3.2x more than it moves the card-blind net's (0.03975 vs 0.01234,
+disjoint intervals), and the clone's strict flip rate is triple the floor's (0.207 vs 0.070, disjoint). The
+card-blind net's response to text swaps is almost entirely the keyword bits it reads off the wire (text_kw
+0.02053 > text_emb 0.01234), which is exactly the confound probe 1's off-wire split was built to remove.
+Reproduction check: bc.pt text 0.0424 and fresh 0.0430 are the 13b row's numbers.
+
+**What A2 establishes, taking the three probes together.** Card identity IS present in the network and IS used
+behaviourally (probe 2, disjoint from a card-blind control). What the linear probe cannot show is that much extra
+mechanical fact survives in the entity token beyond what the wire already carries (probe 1: +0.077 over a
+card-blind floor on the pre-registered population, +0.171 pooled). The runbook's own gloss for a pass-on-1 with a
+floor-level probe 2 was "identity is present but unused"; what was measured is the reverse, and the honest
+statement is that probe 1 is a weak instrument here rather than that identity is absent.
+
+**The phase's central finding so far, from two independent measurements pointing the same way.** (1) The
+card-blind clone reaches held-out priority top-1 **0.848** against bc.pt's **0.876** — deleting card identity
+entirely costs **0.028**, and nothing at all on blocks (0.810 vs 0.799). (2) Probe 1's token sits only +0.077
+above that same card-blind floor. **On this deck, what the network relies on is mostly wire fields, not card
+identity.** That qualifies 13b's "card-level clone" discussion: a copy-ceiling fraction cannot separate card
+choice from wire fields, and a card-blind control can.
+
+**Cannots.** Probe 1's population has 22 distinct cards and 6 held-out identities over 12 informative columns —
+thin, which is why probe 3 pools to 57 and 35. Linear probes LOWER-BOUND what is present: a fail can be
+non-linear encoding, and probe 2 shows behaviour that probe 1 does not see. The floor is suspiciously high (0.78
+off-wire from a 1,001-row random table) and a majority-class diagnostic is owed to say how much of that is class
+imbalance rather than signal — it is added as an addendum, never as a bar. One seed, one clone per arm,
+BenchDimir only; none of this is a win rate.
