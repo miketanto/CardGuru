@@ -5910,3 +5910,16 @@ and it will be carried into every rung reading rather than discovered again at e
 **Cannots.** No transfer claim is made or possible at rung 0 (it is the reference). Two of four decision kinds are
 uncloned. One seed, one clone. Top-1 against copy ceilings is not a win rate, and nothing here says how the clone
 would play.
+
+**Rung 0 addendum — the anchor is AT the trivial predictor on exact index, and every transfer clause is measured against it.**
+
+Checked rather than assumed: `bc_W0Base.log` shows real training (held CE 0.8170 -> 0.5758, held top-1 0.653 -> 0.684 at epoch 1) and an honest early stop at epoch 4 saving best_epoch 1, so this is not a bug. But the numbers land exactly on the fixed-position rule:
+
+| kind | clone exact top-1 | trivial rule | difference |
+|---|---|---|---|
+| priority | 0.67908 | 0.67908 (position 1) | **0.00000** |
+| target | 0.82258 | 0.82258 (first index) | **0.00000** |
+
+Equal to five decimals on both cloned kinds. The clone IS above trivial on the metrics that ignore ties - class top-1 0.777, type agreement 0.908 - and its priority exact top-1 is 0.785 of its copy ceiling (13b on BenchDimir reached 0.897 of its own). But on exact index the rung-0 anchor is a fixed-position rule.
+
+**What this costs the ladder, stated here because every A4L reading is measured against this anchor.** The pre-registered clause "the shared game transfers" compares zero-shot top-1 on shared consults against the rung-specific clone on the same consults. If both sit at or near a fixed-position rule, that clause can be satisfied by two models that have learned almost nothing - it would be measuring the shared POSITIONAL regularity of the decks, not a shared game. So from rung 1 on, every row reports class top-1 and type agreement beside exact top-1, with the trivial predictor scored BOTH ways, and every reading names the metric it rests on. Where a clause is met on exact index but not on class agreement, the row says so rather than claiming transfer. This is a limitation of the ladder as instantiated on W0Base - a sixty-card vanilla deck whose priority decisions are nearly positional - not a reason to stop, and it sits beside the readings exactly as the uncloned combat kinds do.

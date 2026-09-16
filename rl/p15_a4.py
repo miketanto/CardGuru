@@ -119,14 +119,25 @@ def apply_trivial(rules, rows):
         if k not in rules:
             continue
         name, fn, tracc = rules[k]
+
+        def same_class(r):
+            i = fn(r)
+            return 0 <= i < len(r[5]) and r[5][i] == r[5][r[2]]
         out[k] = {"rule": name, "train_acc": tracc, "n": len(rr),
-                  "acc": float(np.mean([fn(r) == r[2] for r in rr]))}
+                  "acc": float(np.mean([fn(r) == r[2] for r in rr])),
+                  # class-level accuracy of the SAME fixed rule: on these decks exact
+                  # top-1 can be dominated by ties among identical candidates, so a
+                  # reading that rests on exact index alone may be an artefact of the
+                  # metric. The trivial predictor is scored both ways for comparison.
+                  "acc_class": float(np.mean([same_class(r) for r in rr]))}
     if rows:
-        allacc, n = 0.0, 0
+        allacc, allcls, n = 0.0, 0.0, 0
         for k, v in out.items():
             allacc += v["acc"] * v["n"]
+            allcls += v["acc_class"] * v["n"]
             n += v["n"]
-        out["all"] = {"rule": "per-kind", "n": n, "acc": allacc / n if n else float("nan")}
+        out["all"] = {"rule": "per-kind", "n": n, "acc": allacc / n if n else float("nan"),
+                      "acc_class": allcls / n if n else float("nan")}
     return out
 
 
@@ -187,7 +198,10 @@ def main():
     for pop, v in triv.items():
         if "all" in v:
             say("trivial", f"pop={pop}", f"n={v['all']['n']}", f"acc={v['all']['acc']:.4f}",
-                "rules=" + ",".join(f"{k}:{x['rule']}" for k, x in v.items() if k != "all"))
+                f"acc_class={v['all']['acc_class']:.4f}",
+                "rules=" + ",".join(f"{k}:{x['rule']}" for k, x in v.items() if k != "all"),
+                "per_kind=" + ",".join(f"{k}:{x['acc']:.4f}/{x['acc_class']:.4f}"
+                                       for k, x in v.items() if k != "all"))
 
     out = {"rung": args.rung, "aspect_cards": sorted(aspect), "games": len(games),
            "held_games": n_held, "held_consults": len(held), "n_aspect": int(asp.sum()),
