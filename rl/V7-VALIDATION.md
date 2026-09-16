@@ -6043,3 +6043,16 @@ Top-logit only (the one the argmax rides on): 67.8 mean for the frozen clone aga
 **What this implies beyond A4L, stated as a candidate and not a demonstration.** Every clone in this project is trained with this bound, so all of them are compressed to some degree, and the degree is measurable. It is a candidate explanation for 13c tiny per-update KL (about 0.0012 against a 0.02 target), which has so far been attributed to the recipe: if a policy raw logits sit far outside the bound, the BOUNDED logits the update actually moves barely change, and the KL per update is small for a reason that has nothing to do with the learning rate. Testing that means measuring raw logits on 13c checkpoints, which is cheap but is not done here.
 
 **OWED, deliberately not applied tonight:** a re-clone with the bound relaxed (--logit-bound 0) or a lower learning rate, reported beside the patience-3 number. Changing the bound or the head parameterisation mid-ladder would make the rungs incomparable, so the ladder runs unchanged and the fix waits.
+
+**Saturation, measured on all three frozen rung clones — a dose-response, not a single coincidence.**
+
+| checkpoint | state | mean abs raw logit | max | share >= 20 | gradient factor 1-tanh^2(raw/B), B=5 |
+|---|---|---|---|---|---|
+| bcj_W1Fly.pt (joint, 2,000 games) | trained 8 epochs | **21.3** | 94.2 | 0.4636 | ~8e-4 |
+| bc_W0Base.pt | FROZEN at epoch 1 | **54.4** | 82.9 | 0.9509 | ~1e-9 |
+| bc_W1Fst.pt | FROZEN at epoch 1 | **90.8** | 155.3 | 0.9905 | ~1e-16 |
+| bc_W1Fly.pt | FROZEN at epoch 1 | **109.9** | 157.1 | **1.0000** | ~1e-19 |
+
+Top-logit-only means run higher still (67.8 / 116.3 / 132.9 for the three frozen clones against 26.8 for the joint one). Every single-deck rung clone measured is beyond the bound on 100 percent of its candidate logits, and the three that froze are 2.5x to 5x deeper into saturation than the one that trained normally. The gradient through the tanh dies exponentially in raw/B, so this is a dose-response relationship between saturation depth and the stall, measured on three independent checkpoints rather than inferred from one.
+
+This does not change any pre-registered reading. It sharpens the mechanism: the A4L single-deck regime drives raw logits an order of magnitude past B = 5 within one epoch, after which the head is gradient-dead and training stops even though the loss is far from its floor. The fix remains OWED and unapplied so the rungs stay comparable.
