@@ -248,3 +248,23 @@ absence is not a negative result.
   card swapped, so the union {0, R} carries the same content as 0..R except for the other one-card decks; the one
   rung where that is NOT true is rung 2 (composition = 1a + 1d), and the true cumulative joint is run there if the
   night has room. Stated as a deviation, not as the runbook's text.
+- 2026-09-16 02:45Z WSL (rung 0 GATE MEASURED on the 437 games recorded before the box pause; A1 frac 0.125 point
+  in): `rl/gate_15rec.sh W0Base` -> priority 5,184/5,184 = 1.000 **pass**, target 213/213 = 1.000 **pass**,
+  joint attack 1,687/2,031 = 0.831 **FAIL** (exact 1,675, alias 12, miss 344), joint block 2,079/2,393 = 0.869
+  **FAIL** (exact 1,846, alias 233, miss 314). This confirms the risk logged at 02:41Z and is a property of the
+  DECK, not of the tooling: on a pure-creature deck CP7 declares attack/block sets outside CombatMath's candidate
+  list far more often than on BenchDimir (0.948 / 0.974 there). Applying 13a's convention as pre-registered: the
+  failing kinds are NOT cloned. Further decision taken now, before any rung is cloned: the cloned kind set is
+  FIXED ACROSS RUNGS at rung 0's passing kinds (prio,target) rather than re-derived per rung - a per-rung set
+  would clone different decision kinds on different rungs and no rung-to-rung comparison would mean anything.
+  Each rung's own gate is still measured, recorded in its row, and warned about if it disagrees with the fixed
+  set. `rl/run_15a4.sh` changed accordingly before it has ever run.
+  WHAT THIS COSTS, stated plainly: the white ladder's aspects are COMBAT keywords (flying, first strike,
+  vigilance, lifelink) and the joint attack/block decisions are exactly where they would show most directly. With
+  those kinds uncloneable on this deck family, A4L measures transfer through priority and target decisions only -
+  which creature to cast, which spell to cast, what to target - where the aspect still enters (A4L's split is by
+  card presence, not by decision kind). Any rung reading must carry this: "the aspect does not transfer" would
+  mean it does not transfer THROUGH PRIORITY AND TARGET CHOICE, and says nothing about blocking decisions, which
+  were not labelled well enough to clone on these decks.
+  A1: frac 0.125 POINT = held CE 0.4033, held top-1 0.8436, priority top-1 0.8415, best epoch 7 of 10 (141
+  training games); frac 0.25 running.
