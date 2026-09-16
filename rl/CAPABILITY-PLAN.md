@@ -227,6 +227,104 @@ in the project is bounded by it — but it is no longer on the critical
 path to proving the basics, because subgames sidestep the hole rather
 than depending on its repair. It moves behind the tier-1 subgame.
 
+## Revision 2 — which agent, and how it learns a subgame
+
+### First, a sharpening of B1 that changes what needs fixing
+
+`StateEncoder` imports and encodes fourteen combat keywords — flying,
+deathtouch, first strike, double strike, trample, lifelink, vigilance,
+menace, reach, defender, ward, hexproof, shroud, protection
+(StateEncoder.java:18-35, 921). So the split is:
+
+- **Observation is keyword-aware.** The network can see a flier.
+- **Action generation and pricing are keyword-blind.** `CombatMath`
+  enumerates and Pareto-filters attack sets on power/toughness alone, so
+  the *menu* the policy chooses from, and the consequence features
+  attached to each item on it, are built as though flying did not exist.
+
+B1 is therefore an **action-space and pricing** defect, not an
+observability one. That is a smaller, better-targeted fix than "extend
+the encoder", and it means a keyword tier fails today at the point of
+choosing, not of seeing.
+
+### Architecture: unchanged
+
+The v7 card-aware network, as is. Changing the environment and the
+network in the same step would make every result uninterpretable, and
+the network is not the suspect — §15/A0-A1 record that it fits to 0.998
+of its metric ceiling and is data-limited, not capacity-limited.
+
+### The learner: two arms per tier, run as a diagnostic pair
+
+A subgame has an exact solver, so for the first time both of these are
+answerable on the same positions:
+
+1. **Oracle-supervised arm — the ceiling.** Train on solver-labelled
+   positions, score on a held-out split. Answers *can the network
+   represent and select this concept at all?* If this arm fails, no
+   reward signal can rescue it and the defect is representation or
+   action space.
+2. **PPO arm — the recipe we actually deploy.** Terminal reward is the
+   subgame's own binary criterion, everything else as in the rest of the
+   project.
+
+**The gap between the two arms is the measurement.** Supervised passes
+and PPO fails → the learning signal is the problem, in a setting small
+enough to fix. Both fail → representation or action space, and B1/B2 are
+where to look. Both pass → the tier is genuinely learned, and the
+question moves to transfer.
+
+This is not the banned BC scale-up (`LEVELSET.md` §6). That dead end was
+cloning CP7 on full games as a route to a deployable agent; this is a
+per-tier ceiling probe on exactly-labelled positions in a bounded
+subgame, used as a diagnostic and never shipped as the agent. Stated
+here so it is not re-run by accident under a new name.
+
+### Whose weights
+
+| arm | what it measures |
+|---|---|
+| **fresh per tier** | is the tier learnable on its own (the control) |
+| **cumulative** | does tier N keep tier N-1 — the accumulation claim, with earlier tiers re-scored after each new one (forgetting check) |
+| `bc.pt`-initialised | deferred: it carries CP7 habits and the logit-bound history, and would confound the first reading |
+
+Start with fresh + cumulative. `bc.pt` joins only once a tier has a
+clean fresh-arm number to compare against.
+
+### Who plays the other seat
+
+**The solver.** It already computes the optimal defence to score the
+position, so using it as the opponent costs nothing extra, needs no
+second agent, and keeps CP7 out of the loop entirely (CP7 is the held-out
+strength metric — `LEVELSET.md` §5).
+
+This is exact for tiers 1-2, which are perfect information. It breaks at
+tier 3: once the opponent holds a trick, an omniscient solver opponent is
+cheating, and "the correct action" stops being a single move and becomes
+a game value over mixed strategies. **Pre-registered staging:** each
+hidden-information tier runs first in a *revealed-hand* variant (still
+exactly solvable, and it isolates the mechanic), then in a hidden-hand
+variant which is scored against the game value, not against a single
+best move. No hidden-information tier is reported as an optimality rate.
+
+### Reward versus metric, kept apart
+
+Reward is the binary criterion only. The **metric** is per-decision
+optimality rate plus regret against the solver's value. The metric never
+becomes the reward — that is the same move as cloning the oracle, and it
+would make the PPO arm measure nothing.
+
+### The failure mode this design has
+
+A policy that is excellent in subgames and useless in a game, because
+the subgames share an accidental regularity ("always attack" is right in
+every two-turn position we built). Mitigation, built in from the start:
+randomise everything the concept does not depend on — life totals, spare
+lands, dead cards in hand, irrelevant board bodies — so the concept is
+the only invariant across a family. And the deck-level transfer run
+(Step 5) is what actually tests it; until then, subgame numbers are
+capability, not strength.
+
 ## Step order
 
 Revised by Revision 1. The census (old Step 1) keeps its spec below and
