@@ -5923,3 +5923,24 @@ Checked rather than assumed: `bc_W0Base.log` shows real training (held CE 0.8170
 Equal to five decimals on both cloned kinds. The clone IS above trivial on the metrics that ignore ties - class top-1 0.777, type agreement 0.908 - and its priority exact top-1 is 0.785 of its copy ceiling (13b on BenchDimir reached 0.897 of its own). But on exact index the rung-0 anchor is a fixed-position rule.
 
 **What this costs the ladder, stated here because every A4L reading is measured against this anchor.** The pre-registered clause "the shared game transfers" compares zero-shot top-1 on shared consults against the rung-specific clone on the same consults. If both sit at or near a fixed-position rule, that clause can be satisfied by two models that have learned almost nothing - it would be measuring the shared POSITIONAL regularity of the decks, not a shared game. So from rung 1 on, every row reports class top-1 and type agreement beside exact top-1, with the trivial predictor scored BOTH ways, and every reading names the metric it rests on. Where a clause is met on exact index but not on class agreement, the row says so rather than claiming transfer. This is a limitation of the ladder as instantiated on W0Base - a sixty-card vanilla deck whose priority decisions are nearly positional - not a reason to stop, and it sits beside the readings exactly as the uncloned combat kinds do.
+
+### 15 / C — CombatMath candidate coverage: a bound on what any of our policies can express in combat
+
+Raised by the A4L rung-0 gate and recorded here as a finding in its own right, because it bounds every combat result in this project rather than only the A4L rungs. The v7 seat chooses its attack and block sets from CombatMath candidate lists (rl/xmage-src/JointCands.java, lifted verbatim from RLPlayer). The 13a teacher counters measure how often the set CP7 actually declares is IN that list: teacherAtkConsults vs exact+alias, teacherBlkConsults vs exact+alias. A miss is a set our own policy could not have chosen either.
+
+| deck / lane | joint attack | joint block | source |
+|---|---|---|---|
+| BenchDimir, pooled | 0.948 | 0.974 | 13a, 1,250 games |
+| W0Base, pooled | **0.598** | **0.604** | A4L rung 0, 1,000 games |
+| W0Base, lane H (CP7 vs heuristic) | 0.833 (2,436/2,923) | 0.867 (2,933/3,383) | per-job counters |
+| W0Base, lane C (CP7 mirror) | **0.503** (3,648/7,256) | **0.450** (2,600/5,774) | per-job counters |
+
+**The partial-vs-full discrepancy is explained, not merely noted.** An earlier gate on a partial 437-game W0Base recording read 0.831 / 0.869 and was quoted in three STATE entries before the full recording corrected it to 0.598 / 0.604. The partial sample was drawn almost entirely from the early jobs of lane H, and 0.831 / 0.869 is essentially lane H own rate. So the discrepancy is not sampling noise: coverage is **opponent-dependent**. The mirror lane also produces about 2.5x as many combat consults as the heuristic lane (7,256 vs 2,923 attack consults), so the pooled figure is dominated by the lane where coverage is worst. Job-order shows no trend within a lane (first five H jobs 0.832-0.854 attack; last five C jobs 0.508-0.534).
+
+**What it bounds.** On a pure-creature deck in a competent mirror, about half of the attack sets and more than half of the block assignments that a strong search player actually chooses are OUTSIDE the candidate list our policy selects from. That is a ceiling on expressible combat play, independent of the network, the teacher and the training signal, and it is tightest exactly where combat decisions are most contested. It is therefore a candidate explanation - not a demonstrated one - for combat behaviour previously attributed to the policy: Phase 8 deck results, the Phase 10 league, and the atkaudit GAP / OVER lines read off 13c transcripts all involve seats drawing from this list. Re-reading those rows against per-deck coverage is OWED and is not done here.
+
+**Carried forward:** every A4L rung row from rung 1 on reports its own decks coverage numbers, because they vary by deck and two rungs cannot be compared without them.
+
+**Owed, needs instrumentation (deliberately not built overnight):** which declarations are missed. The teacher counters give only miss COUNTS; naming the kinds - partial attacks, multi-blocks, blocks that trade down - requires logging the candidate list beside the declared set at the consult, which is new engine plumbing. Written down rather than guessed.
+
+**Cannots.** Two decks; the per-lane split is from job counters, not per-consult analysis; alias matches are counted as covered, so these are upper bounds on coverage; and nothing here says the missed sets are better play, only that they are unreachable.
