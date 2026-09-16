@@ -6209,3 +6209,89 @@ I proposed, in two committed rows, that 13c's approx_kl of ~0.0012 against a 0.0
 **Readings: NOT INTERPRETABLE, all four.** Aspect-is-learnable would read 0.803 of aspect ceiling - nominally clearing 0.80 - but that number is produced by a frozen model that reproduces a fixed-position rule exactly, so recording it as a pass would be the artefact the preamble warns against. Shared-transfers, aspect-does-not-transfer and joint-helps are each comparisons between one policy and itself. **Rung 1c measures the freeze.**
 
 **Cannots.** Aspect target is 5 consults. Attack and block uncloned. One seed per arm. Nothing here speaks about vigilance.
+
+### 15 / A4L SECOND SERIES — the same rungs with the logit bound relaxed: the clauses become answerable, and they pass
+
+**Status of this series, fixed before any of its numbers were produced** (`rl/PHASE15-ARCH.md` STATE 07:23Z and
+07:39Z, commits 151d5e6 and b512184): the FIRST series remains **the reading of record** for rungs 0, 1a and 1b.
+Nothing below rewrites it. The two series are **never pooled**. Exactly four clauses are re-scored, named in
+advance. The expectation that unbounded clones would train longer and score higher was also stated in advance, so
+it is not presented here as a discovery — **the question was only whether the CLAUSES change once the arms are no
+longer gradient-dead.**
+
+**What was rebuilt.** Five clones at `--logit-bound 0`, everything else identical to the first series (same init
+`13/init_on_s13.pt`, seed 0, 10 % game hold-out, kinds `prio,target`, lr 1e-4, batch 32, patience 3, same
+recordings): `s2_bc_W0Base`, `bc_W1Fly_nobound` (the standalone diagnostic clone, verified identical in files,
+games, hold-out, labels, kinds and hyperparameters — named rather than renamed), `s2_bc_W1Fst`, `s2_bcj_W1Fly`,
+`s2_bcj_W1Fst`.
+
+| clone | first series (B = 5) | second series (B = 0) |
+|---|---|---|
+| W0Base rung | best epoch **1** of 4, top-1 0.684, class 0.777 | best epoch **12** of 15, top-1 **0.776**, class **0.913** |
+| W1Fly rung | best epoch **1** of 4, top-1 0.632, class 0.725 | best epoch **12** of 15, top-1 **0.775**, class **0.916** |
+| W1Fst rung | best epoch **1** of 4, top-1 0.661, class 0.756 | best epoch **11** of 14, top-1 **0.764**, class **0.907** |
+| W1Fly joint | best epoch 5 of 8, top-1 0.791, class 0.910 | best epoch 6 of 9, top-1 0.780, class 0.914 |
+| W1Fst joint | best epoch **1** of 4, top-1 0.678, class 0.766 | best epoch **10** of 13, top-1 **0.794**, class **0.925** |
+
+The **control pair** is the W1Fly joint arm — the one first-series clone that never froze. Relaxing the bound
+leaves it unchanged (0.791 → 0.780 top-1, 0.910 → 0.914 class). Every arm that WAS frozen gains 0.09–0.14 top-1
+and 0.14–0.19 class. **The relaxed bound rescues gradient-dead runs; it does not inflate healthy ones** — which is
+what a saturation mechanism predicts and what a generic "unbounded scores better" confound would not.
+
+**Second-series results, priority decisions (the metric each reading rests on), with class agreement beside it:**
+
+| rung | arm | pop | top-1 | ceiling | **frac** | class | trivial (exact / class) |
+|---|---|---|---|---|---|---|---|
+| 0 `W0Base` | ZERO = RUNG | shared | **0.7642** | 0.8652 | **0.883** | 0.9103 | 0.6151 / 0.6737 |
+| 1a `W1Fly` | ZERO | aspect | 0.7901 | 0.8836 | 0.894 | 0.9017 | 0.6356 / 0.6909 |
+| 1a | **RUNG** | aspect | 0.8044 | 0.8836 | **0.910** | 0.9141 | — |
+| 1a | JOINT | aspect | 0.7910 | 0.8836 | 0.895 | 0.9074 | — |
+| 1a | ZERO | shared | 0.7016 | 0.8139 | 0.862 | 0.8966 | 0.5753 / 0.7073 |
+| 1a | RUNG | shared | 0.7016 | 0.8139 | 0.862 | 0.9129 | — |
+| 1a | JOINT | shared | 0.7105 | 0.8139 | 0.873 | 0.9055 | — |
+| 1b `W1Fst` | ZERO | aspect | 0.8056 | 0.8891 | 0.906 | 0.9061 | 0.6013 / 0.6616 |
+| 1b | **RUNG** | aspect | 0.8012 | 0.8891 | **0.901** | 0.9002 | — |
+| 1b | JOINT | aspect | 0.8064 | 0.8891 | 0.907 | 0.9217 | — |
+| 1b | ZERO | shared | 0.6943 | 0.7725 | 0.899 | 0.9313 | 0.6066 / 0.7765 |
+| 1b | RUNG | shared | 0.6706 | 0.7725 | 0.868 | 0.9147 | — |
+| 1b | JOINT | shared | 0.6706 | 0.7725 | 0.868 | 0.9265 | — |
+
+**The degeneracy is gone.** In the first series ZERO, RUNG and JOINT were identical to four decimals — on rung 1c
+in *every* cell — and the shared policy WAS the trivial fixed-position rule (rung 0 anchor 0.67908 against a
+trivial 0.67908; rung 1c aspect 0.7085 against 0.7085). In the second series the arms differ from each other and
+stand well clear of the trivial predictors on both exact index and class agreement. Rung 0's anchor moves from
+**0.6791 (exactly trivial) to 0.7642**, 0.883 of its ceiling.
+
+**The four re-scored clauses.**
+* **"The aspect is learnable at all": MET on both rungs, having FAILED on both in the first series.** Rung 1a's
+  rung clone reaches **0.910** of its aspect ceiling (first series 0.734); rung 1b's reaches **0.901** (first
+  series 0.766). Bar 0.80. **This is the clause whose failure voided both rungs' transfer readings, so those
+  readings are now answerable.**
+* **"The shared game transfers": MET on both, and this time it carries content.** Rung 1a zero-shot shared 0.7016
+  against the rung clone's 0.7016 = ratio **1.000**; rung 1b 0.6943 against 0.6706 = **1.035**. Bar 0.95. Unlike
+  the first series, both models now sit far above the shared trivial predictor on exact index (0.7016 vs 0.5753;
+  0.6943 vs 0.6066) **and** on class agreement (0.8966 and 0.9313 vs 0.7073 and 0.7765) — so the clause is no
+  longer two weak numbers agreeing.
+* **"The aspect does not transfer": NOT MET on either rung.** Zero-shot aspect priority is *higher* than its own
+  shared figure (1a 0.7901 vs 0.7016; 1b 0.8056 vs 0.6943), not ≥ 0.10 below, and it is far from the aspect
+  trivial predictor (0.6356, 0.6013). A clone that never saw the rung's card predicts CP7's priority choices on
+  consults containing that card about as well as on consults without it.
+* **"Joint helps / hurts": neither, materially.** 1a joint 0.7910 aspect / 0.7105 shared against the rung clone's
+  0.8044 / 0.7016; 1b joint 0.8064 / 0.6706 against 0.8012 / 0.6706. With training working, adding the second
+  deck's 1,000 games neither helps nor hurts — which contradicts the first series' rung-1a impression that JOINT
+  was carrying the result, and confirms that impression was an artefact of everything else being frozen.
+
+**Ladder-level reading, stated once for the whole series.** With the bound relaxed, **the shared game transfers
+across every rung tested, and the aspect does not fail to transfer** — a rung-0 clone that has never seen a flyer
+or a first-striker predicts CP7's priority and target choices on decks containing them at ~0.90 of the copy
+ceiling. But what that demonstrates is narrower than A4L set out to test, and the limitation is the same one
+carried in every row: **joint attack and block are uncloned on these decks** (coverage 0.56–0.65 across all four),
+so "the aspect transfers" means only that the new card's *presence* does not disturb priority and target choice.
+It says nothing about legal blocks, trade math, the attack-vs-hold-back tradeoff or race arithmetic — the things
+flying, first strike, vigilance and lifelink were chosen to test.
+
+**Cannots.** One seed per arm. Two rungs plus the anchor, not the full ladder — rungs 1c, 1d, 2, 3, 4, 5 and the
+black branch were not re-run, and the first-series rung 1c stands with its NOT INTERPRETABLE marking. The aspect
+target populations are 5–62 consults and carry nothing. Top-1 against copy ceilings is not a win rate: nothing
+here says the clone plays better, only that it agrees with CP7 more often. And the second series shares the first
+series' recordings, so any property of those 1,000-game samples is common to both.
