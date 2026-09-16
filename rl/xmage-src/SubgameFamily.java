@@ -379,7 +379,7 @@ public final class SubgameFamily {
         if (root.seat == null || !"A".equals(root.seat) || !"atk".equals(root.kind)) {
             out.label = "BADROOT";
         } else if (out.capHit) {
-            out.label = "CAPPED";
+            out.label = s.budgetHit ? "TIMEOUT" : "CAPPED";
         } else if (out.noWinner > 0) {
             out.label = "NOTERM";
         } else if (out.value == 0) {

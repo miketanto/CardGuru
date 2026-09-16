@@ -31,6 +31,33 @@ public final class SubgameSolver {
     public long nodes = 0;
     public long cap = Long.getLong("subgame.replayCap", 200000L);
     public boolean capHit = false;
+    /**
+     * A replay cap is not a time budget. Replay cost is per-DECISION,
+     * and a stalled board - nothing can profitably attack, nothing dies -
+     * runs to stopOnTurn every replay, so the same 8,000 replays cost
+     * seconds on one board and many minutes on another. Measured: one
+     * shard sat on a single board for over five minutes while its
+     * siblings cleared a dozen. The wall-clock budget is what actually
+     * bounds a generation run; 0 disables it.
+     */
+    public long budgetNanos = Long.getLong("subgame.solveSecs", 90L) * 1_000_000_000L;
+    private long startNanos = System.nanoTime();
+
+    /** Set when it was the clock, not the replay cap, that stopped the
+     *  solve - the two are different budgets and a board that ran out of
+     *  time should not be reported as a board that ran out of tree. */
+    public boolean budgetHit = false;
+
+    private boolean outOfBudget() {
+        if (replays >= cap) {
+            return true;
+        }
+        if (budgetNanos > 0 && System.nanoTime() - startNanos > budgetNanos) {
+            budgetHit = true;
+            return true;
+        }
+        return false;
+    }
     /** Replays that ended with nobody winning - a subgame that did not
      *  terminate is a design violation, so these are counted, not hidden. */
     public long noWinner = 0;
@@ -68,7 +95,7 @@ public final class SubgameSolver {
         boolean maximizing = "A".equals(n.seat);
         int best = maximizing ? 0 : 1;
         for (int i = 0; i < n.options; i++) {
-            if (replays >= cap) {
+            if (outOfBudget()) {
                 capHit = true;
                 break;
             }
@@ -98,7 +125,7 @@ public final class SubgameSolver {
             return out;
         }
         for (int i = 0; i < root.options; i++) {
-            if (replays >= cap) {
+            if (outOfBudget()) {
                 capHit = true;
                 break;
             }
