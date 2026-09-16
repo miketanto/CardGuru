@@ -282,3 +282,16 @@ absence is not a negative result.
   0.3656, held top-1 0.8573, priority top-1 0.8524, best epoch 5. The last doubling so far adds +0.0137 top-1;
   the A1 reading needs the 50 % and 100 % points and is not made here. Box at this line: MemAvailable 4.6 GB with
   two JVMs plus the trainer, GPU 2.9 GB of 12.
+- 2026-09-16 02:52Z WSL (second box decision, same cause): MemAvailable fell 11.4 -> 8.8 -> 6.4 -> 4.6 -> 3.7 GB
+  over five minutes as the two recording JVMs grew toward their 4.5 GB heaps beside the A1 trainer, and A1's two
+  LARGEST fractions (50 %, 100 %) had not started. The box bar is 1.5 GB and the trend would have crossed it
+  mid-fraction. DECISION: pause the engine recorder again - `touch rl/artifacts/v7/15/rec/STOPALL` FIRST, then
+  `rl/stop_15rec.sh`. Both are needed and the reason is worth recording: stop_15rec.sh's patterns are deliberately
+  written so they cannot match its own shell, and `run_15recall.sh` does not contain the string `run_15rec.sh`, so
+  the stop script kills the inner per-deck recorder but NOT the outer loop, which would simply start the next deck
+  and bring the JVMs back. STOPALL is the loop's own between-decks check. Nothing is lost: W0Base keeps its 541
+  recorded games, every finished 50-game job is in counts.txt, and `rl/run_15a4.sh` records whatever is missing
+  per rung (skipping finished jobs) when the chain reaches the ladder. Consequence, stated: `chain_15.sh` waits
+  for `run_15recall.sh` to exit before starting the ladder, so stopping the loop lets the chain reach the ladder
+  sooner - which is correct, because run_15a4.sh serialises record -> drivers down -> clone by itself and never
+  holds the engine and a GPU trainer at once.
