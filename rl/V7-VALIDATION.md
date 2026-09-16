@@ -6295,3 +6295,20 @@ black branch were not re-run, and the first-series rung 1c stands with its NOT I
 target populations are 5–62 consults and carry nothing. Top-1 against copy ceilings is not a win rate: nothing
 here says the clone plays better, only that it agrees with CP7 more often. And the second series shares the first
 series' recordings, so any property of those 1,000-game samples is common to both.
+
+**A3 addendum 2 — the pooled probe REVERSES the narrow one, and the reversal needs its own caveat.**
+
+The A3 row recorded that the auxiliary loss made the off-wire probe score WORSE (0.8590 -> 0.8232) on the 13a-only population - 22 distinct cards, 6 held-out identities, 12 informative columns. Re-run pooled over six decks (13a BenchDimir + W0Base + W1Fly + wire3a B1Fast and P8Faeries; 54 distinct cards, 32 held-out identities, 18 informative off-wire columns, 10,811 unseen-card entities):
+
+| arm | unseen cards, off-wire | unseen to the EMBEDDING (n=1,035) |
+|---|---|---|
+| card-blind floor (RAND) | 0.8037 | 0.7398 |
+| clone (BC) | 0.9632 | 0.9488 |
+| **A3 auxiliary-loss clone (AUX)** | **0.9804** | **0.9956** |
+| frozen card_emb_v8 ceiling (EMB) | 0.9789 | 1.0000 |
+
+**On the wide population AUX is ABOVE BC and at the embedding's own ceiling**, and on cards the embedding never saw during its training it is 0.9956 against BC's 0.9488. That is the opposite sign to the narrow result. **Correction in the open:** the A3 row's statement that the remedy "made the token's off-wire probe score worse" is true only of the 13a-only population and does NOT survive pooling. The A3 readings of record (both clauses MET) are unchanged; what changes is the caveat attached to them, which now cuts in the remedy's favour on the wider population and against it on the narrow one.
+
+**And the caveat on the reversal, which matters as much.** The model-free majority-class baseline on this pooled population is **0.9099** (unseen-to-embedding: 0.9356). So BC 0.9632, AUX 0.9804 and the ceiling 0.9789 all sit within the top nine points of the scale, and the whole BC-to-AUX difference is 0.017 of range that class imbalance already covers. One of the 18 columns is pathological (majority accuracy 0.05 - the majority class flips between populations). **The pooled probe is far less discriminating than its headline numbers look**, which is why the narrow population was used for the pre-registered reading in the first place. Neither population is clean: the narrow one is thin, the wide one is saturated by imbalance.
+
+**What survives both.** The card-blind floor is the one arm that stays clearly separated on every population (0.7398-0.8037 against 0.9488-0.9956), so the finding that identity information IS present in the encoder - and absent when the card table is removed - holds regardless of which population is read. The finer question of whether the auxiliary loss improves that representation is NOT settled by this probe in either direction.
