@@ -5847,3 +5847,66 @@ direction and neither is a win rate; nothing here says the remedy helps the agen
 decisions depend more on which card it is looking at.
 
 **The two behavioural measures disagree in SIGN, and that belongs here rather than in the cannots.** On embedding-row swaps dp RISES (0.03975 [0.03476, 0.04511] -> 0.06730 [0.05522, 0.07956], disjoint) while the strict flip rate FALLS (0.207 [0.167, 0.247] -> 0.149 [0.111, 0.196]). The two ask different questions: dp is how much probability moves when the card changes, the flip rate is how often the argmax changes. Sharper logits would explain a larger dp with fewer flips, but the yardsticks are nearly equal (mean top gap 4.233 for bc_aux.pt against 4.209 for bc.pt), so sharpness does not account for it. Nothing measured here decides which of the two should be preferred, and the claim "the remedy increased card sensitivity" rests on dp alone; on flips it points the other way. Both are reported, and this disagreement is a standing caveat on the A3 addendum rather than a resolved point.
+
+### 15 / A4L rung 0 — `W0Base`, the base of the ladder (the reference every later rung is measured against)
+
+**Recording** (`rl/run_15rec.sh W0Base 1000`, the 13a job shape: two lanes, CP7 teacher vs the heuristic and the
+CP7 mirror, 50-game jobs, seats by play/draw parity): **1,000 games, 31,281 labelled consults**, 20 jobs, every
+job rc=0.
+
+**Gate, per decision kind, on the full recording** (`rl/gate_15rec.sh`, the 13a gate):
+
+| kind | consults | labelled | fraction | gate |
+|---|---|---|---|---|
+| priority | 19,070 | 19,070 | **1.000** | pass |
+| target | 594 | 594 | **1.000** | pass |
+| joint attack | 10,179 | 6,084 (exact 6,018, alias 66, miss 4,095) | **0.598** | **FAIL** |
+| joint block | 9,157 | 5,533 (exact 4,782, alias 751, miss 3,624) | **0.604** | **FAIL** |
+
+13a's convention applies — a kind that fails its gate is not cloned — and the passing set **`prio,target` is fixed
+for every rung of the ladder** so rung-to-rung comparisons are comparable. **What that costs is stated here and
+repeated in every keyword rung: with joint attack and block uncloned, the white ladder measures only whether the
+rung's new card, by its presence, changes PRIORITY and TARGET choice. It says nothing about which blocks are
+legal, the math of a trade, the attack-vs-hold-back tradeoff, or the arithmetic of a race — which is what rungs
+1a–1d were built to test.** On this deck CP7 declares attack/block sets outside CombatMath's candidate list about
+**40 %** of the time (against 5 % / 3 % on BenchDimir in 13a), so this is a property of vanilla-creature decks,
+not of the tooling. *(Correction in the open: an earlier partial recording of 437 games gave 0.831 / 0.869 and the
+runner derived its fixed kind set from that stale file; the kind set is unchanged, but the figures of record are
+the 1,000-game ones above.)*
+
+**Clone** (`rl/v7_bc.py`, 13b's recipe unchanged, the same fresh `--cand-refers-pool` init, kinds `prio,target`):
+early stop at epoch 4, **best epoch 1**, held-out CE 0.5758, top-1 0.684, class top-1 0.777, type 0.908. Held-out
+CE and every held-out rate are **identical from epoch 1 through epoch 4** while train CE barely moves — the clone
+saturates immediately.
+
+**Evaluation** (`rl/p15_a4.py`, the rung's own held-out games: 100 games, 2,902 scored consults). Rung 0 adds no
+card, so the **aspect population is empty and `all` = `shared`**; and `ZERO` and `RUNG` are the **same checkpoint**
+by construction. Both are correct, not defects.
+
+| measure | n | top-1 | copy ceiling | fraction of ceiling |
+|---|---|---|---|---|
+| **priority** | 1,773 | **0.6791** | 0.8652 | **0.785** |
+| **target** | 62 | **0.8226** | 0.9355 | **0.879** |
+| all kinds — **not usable, see below** | 2,902 | 0.5796 | 0.9163 | 0.633 |
+| joint attack — **never trained** | 597 | 0.2563 | 1.000 | — |
+| joint block — **never trained** | 470 | 0.5830 | 1.000 | — |
+
+Trivial predictor on this population: **0.6151** (best fixed index per kind, chosen on the rung's TRAINING games
+and applied unchanged: priority = position 1, target = first, attack/block = last).
+
+**Measurement note that governs every rung row.** `p15_a4.py` scores every decision kind present in the held-out
+consults, but the clone is trained on `prio,target` only. The attack and block rows therefore come from heads
+that were never trained, and the `all` row mixes them in — which is why `all` (0.5796) sits *below* the trivial
+predictor (0.6151). **The rung's numbers are the priority and target rows.** `all` is reported once, here, to
+document the artefact, and is not used in any reading.
+
+**Reading — rung 0 is a reference, not a transfer test, and it sets a low bar.** The base clone reaches **0.785**
+of its priority copy ceiling, but its priority top-1 (0.6791) is only **+0.064** above a fixed-position rule
+(0.6151), and it stopped improving after one epoch. On a sixty-card vanilla white deck there is very little for a
+card-aware network to learn beyond "play a land, cast the largest creature affordable", so the headroom any later
+rung can demonstrate against this reference is small by construction. That is a property of the ladder's base,
+and it will be carried into every rung reading rather than discovered again at each one.
+
+**Cannots.** No transfer claim is made or possible at rung 0 (it is the reference). Two of four decision kinds are
+uncloned. One seed, one clone. Top-1 against copy ceilings is not a win rate, and nothing here says how the clone
+would play.
