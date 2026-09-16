@@ -346,3 +346,30 @@ absence is not a negative result.
   mv / power / toughness R^2 goes NEGATIVE on unseen cards (token -0.56 / -0.05 / +0.26, embedding -1.08 / -0.39 /
   -0.03) - a ridge fit on one set of identities extrapolates badly to new ones, which is itself a statement about
   how card-specific these readouts are.
+- 2026-09-16 03:21Z WSL (A1 POLICY HALF COMPLETE; the chain had DIED and was relaunched): A1 policy stage, four
+  nested fractions of the 13b training games against the 13b hold-out (125 games / 7,167 consults, reproduced
+  exactly):
+
+  | frac | train games | train consults | best epoch | held CE | all top-1 | cls1 | type1 | priority top-1 | target | attack | block |
+  |---|---|---|---|---|---|---|---|---|---|---|---|
+  | 0.125 | 141 | 7,375 | 7 | 0.4033 | 0.8436 | 0.8571 | 0.9051 | 0.8415 | 0.8496 | 0.9298 | 0.5920 |
+  | 0.25 | 281 | 14,893 | 5 | 0.3656 | 0.8573 | 0.8721 | 0.9146 | 0.8524 | 0.8872 | 0.9632 | 0.5287 |
+  | 0.5 | 562 | 28,949 | 7 | 0.3191 | 0.8753 | 0.8889 | 0.9290 | 0.8677 | 0.8969 | 0.9699 | 0.7069 |
+  | 1.0 | 1,125 | 58,304 | 6 | 0.2922 | 0.8871 | 0.9022 | 0.9393 | 0.8793 | 0.8872 | 0.9783 | 0.8276 |
+
+  Doubling increments in all-kinds top-1: +0.0137, +0.0180, **+0.0118** - monotone, decelerating, and the LAST one
+  is above A1's 0.01 "still rising" bar, so the POLICY half reads **data-limited**. Checked rather than assumed.
+  13b REPRODUCTION CHECK (the row must state it, because a mismatch would be a tooling fault rather than a
+  finding): A1's 100 % point is the 13b recipe on the 13b data and hold-out, and it lands on 13b's published
+  numbers - all-kinds top-1 0.8871 vs 0.884, held CE 0.2922 vs 0.2920, cls1 0.9022 vs 0.898, type1 0.9393 vs
+  0.932, priority 0.8793 vs 0.876, best epoch 6 vs 6. Largest gap 0.004 on a rate and 0.0002 on CE - single-seed
+  and cuda-nondeterminism scale. It reproduces; the A1 tooling is measuring what 13b measured.
+  The VALUE half (>= 0.03 EV on the last doubling) is the other half of A1's bar and is NOT run yet, so no A1
+  reading is written here; if the halves disagree they are reported separately, not reconciled.
+  INCIDENT: `chain_15.sh` was launched 02:50Z, logged `C15|start`, was alive at 03:04Z, and was GONE by 03:21Z
+  having written no further line - it died while sitting in its 30 s wait loop, so the value stage it had queued
+  never started and the box sat idle for roughly two minutes after the policy stage finished. No OOM (dmesg
+  clean), no error line, cause unexplained. It is the project's known detached-job failure (CLAUDE.md: the
+  container recycles on SESSION inactivity, not process activity; long runs need a heartbeat). Remedy applied:
+  relaunched the chain and started an 8 h `cmd //c start //min wsl -e bash -lc "sleep 28800"` keepalive beside it,
+  which is what Phase 13 used. The chain is resumable, so nothing was lost but the idle minutes.
