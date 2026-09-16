@@ -6105,3 +6105,17 @@ Rung 2 joint clone froze exactly as its single-deck arms did (held CE 0.5862 ide
 **What this rung establishes.** Nothing about first strike - it could not, with combat uncloned. What it establishes is about the LADDER: when every arm saturates and freezes at epoch 1, all three collapse onto the same near-trivial policy and the pre-registered clauses become arithmetic on identical numbers. A rung in that state cannot speak about its aspect, and reporting its transfer clauses as if it could would be the artefact the preamble was amended to guard against.
 
 **Cannots.** Aspect target is 6 consults and shared target 54 - both carry nothing. Attack and block are uncloned. One seed per arm. Top-1 against copy ceilings is not a win rate. And for this rung specifically: with all arms frozen and coincident, NO comparison between arms is informative, including the ones that formally pass.
+
+**Rung 1b amendment — the clauses above are NOT INTERPRETABLE for this rung.**
+
+Stated plainly, because reporting them as outcomes would imply they measured something. On this rung every arm is a gradient-dead model:
+
+| arm | best epoch | held CE trace | mean abs raw logit | share >= 20 |
+|---|---|---|---|---|
+| ZERO (bc_W0Base.pt) | 1 of 4 | flat from epoch 1 | 54.4 | 0.9509 |
+| RUNG (bc_W1Fst.pt, md5 54fce56f) | 1 of 4 | flat from epoch 1 | 90.8 | 0.9905 |
+| JOINT (bcj_W1Fst.pt, md5 ee115349) | 1 of 4 | flat from epoch 1, train CE ROSE | 93.0 | 1.0000 |
+
+The three are distinct files that converge on the same near-trivial policy, identical to four decimals on priority and on every shared cell. **Therefore: "aspect is learnable at all", "the shared game transfers", "the aspect does not transfer" and "joint helps" are all NOT INTERPRETABLE here.** They are recorded above because they were pre-registered and the arithmetic is what it is, but not one of them measures the aspect, transfer, or the network - each is a comparison between frozen models. Rung 1b measures the FREEZE.
+
+For contrast, rung 1a's joint arm trained normally (best epoch 5, mean abs raw logit 17.2), which is why its JOINT column carried information and this one does not. That difference is the pathology, not the decks.
