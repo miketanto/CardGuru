@@ -59,17 +59,17 @@ public final class SubgameRunner {
     }
 
     public static final class Side {
-        int life = 20;
+        public int life = 20;
         final List<Body> battlefield = new ArrayList<>();
         final List<String> hand = new ArrayList<>();
-        int filler = 5;
+        public int filler = 5;
         String fillerCard = "Plains";
     }
 
     public static final class Spec {
         String name = "unnamed";
-        final Side a = new Side();
-        final Side b = new Side();
+        public final Side a = new Side();
+        public final Side b = new Side();
         boolean aOnPlay = true;
     }
 
@@ -129,18 +129,39 @@ public final class SubgameRunner {
         public int decisionsA;
         public int decisionsB;
         public String log = "";
+        public boolean frontierHit = false;
+        public String frontierSeat = null;
+    }
+
+    /** Both seats consume ONE shared script in global decision order.
+     *  This is the entry point the solver replays through. */
+    public static Result scripted(Spec spec, int[] choices) {
+        LinePlayer.Script script = new LinePlayer.Script(choices);
+        LinePlayer pa = new LinePlayer("A");
+        pa.script = script;
+        Result r = run(spec, pa, new int[0], null, script);
+        r.frontierHit = script.frontierHit;
+        r.frontierOptions = script.frontierOptions;
+        r.frontierKind = script.frontierKind;
+        r.frontierSeat = script.frontierSeat;
+        return r;
     }
 
     public static Result play(Spec spec, int[] lineA, int[] lineB) {
         LinePlayer pa = new LinePlayer("A");
         pa.reset(lineA);
-        return run(spec, pa, lineB, null);
+        return run(spec, pa, lineB, null, null);
     }
 
     /** Seat A is whatever player is passed in - a LinePlayer for scripted
      *  checks, an RLPlayer for a policy. Seat B stays a LinePlayer so the
      *  opponent is a stated, fixed line and not a second moving part. */
     public static Result run(Spec spec, Player seatA, int[] lineB, RLPlayer rlA) {
+        return run(spec, seatA, lineB, rlA, null);
+    }
+
+    public static Result run(Spec spec, Player seatA, int[] lineB, RLPlayer rlA,
+                             LinePlayer.Script shared) {
         Game game = new TwoPlayerDuel(MultiplayerAttackOption.LEFT,
                 RangeOfInfluence.ONE, MulliganType.GAME_DEFAULT.getMulligan(0),
                 60, 20, 7);
@@ -150,6 +171,9 @@ public final class SubgameRunner {
         pa.setTestMode(true);
         pb.setTestMode(true);
         pb.reset(lineB);
+        if (shared != null) {
+            pb.script = shared;
+        }
 
         Player first = spec.aOnPlay ? pa : pb;
         Player second = spec.aOnPlay ? pb : pa;
@@ -256,6 +280,17 @@ public final class SubgameRunner {
                         + "|types=" + c.getCardType()
                         + "|abilities=" + (ab.length() == 0 ? "NONE" : ab));
             }
+            return;
+        }
+        if ("scripted".equals(args[0])) {
+            Result r = scripted(t1Hold(
+                    args.length > 2 ? args[2] : "Silvercoat Lion",
+                    args.length > 3 ? args[3] : "Trokin High Guard"),
+                    parseLine(args[1]));
+            System.out.println("SCRIPTED|winner=" + r.winner + "|turns=" + r.turns
+                    + "|lifeA=" + r.lifeA + "|lifeB=" + r.lifeB
+                    + "|frontier=" + r.frontierSeat + ":" + r.frontierKind
+                    + ":" + r.frontierOptions);
             return;
         }
         if ("rl".equals(args[0])) {

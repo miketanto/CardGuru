@@ -35,6 +35,43 @@ import java.util.UUID;
  */
 public class LinePlayer extends ComputerPlayer {
 
+    /**
+     * A script both seats share, so choices are indexed in GLOBAL
+     * decision order. That is what the solver needs: whose decision comes
+     * next depends on what was chosen before, so a per-seat line is not a
+     * strategy (measured - see rl/SUBGAME-T1-BUILD.md, finding 2).
+     */
+    public static final class Script {
+        public int[] choices = new int[0];
+        public int cursor = 0;
+        public boolean frontierHit = false;
+        public int frontierOptions = -1;
+        public String frontierKind = null;
+        public String frontierSeat = null;
+
+        public Script(int[] choices) {
+            this.choices = choices;
+        }
+
+        int next(int optionCount, String kind, String seat) {
+            int idx = cursor++;
+            if (idx < choices.length) {
+                int v = choices[idx];
+                return (v >= 0 && v < optionCount) ? v : 0;
+            }
+            if (!frontierHit) {
+                frontierHit = true;
+                frontierOptions = optionCount;
+                frontierKind = kind;
+                frontierSeat = seat;
+            }
+            return 0;
+        }
+    }
+
+    /** When set, this replaces the per-seat line and is shared. */
+    public Script script;
+
     /** The choices to make, in order. */
     public int[] line = new int[0];
     /** How many decisions this seat has been asked so far. */
@@ -63,6 +100,10 @@ public class LinePlayer extends ComputerPlayer {
     /** Consume one choice. Returns 0 (the canonical do-nothing option)
      *  once past the end of the line, and records the frontier. */
     private int next(int optionCount, String kind) {
+        if (script != null) {
+            decisionsSeen++;
+            return script.next(optionCount, kind, getName());
+        }
         int idx = decisionsSeen++;
         if (idx < line.length) {
             int v = line[idx];

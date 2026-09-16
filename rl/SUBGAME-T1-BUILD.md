@@ -142,3 +142,67 @@ No statement about the network (none ran), and none about T1.HOLD's
 difficulty: the 1.000 is against an inert opponent and must never be
 quoted as a win rate. The only real numbers here are the throughput and
 the two bugs.
+
+---
+
+## The solver runs, and `T1.HOLD` is exactly solved
+
+`rl/xmage-src/SubgameSolver.java`. Replay-based minimax over the real
+game: run from the start with a prefix of choices, and when a decision
+arrives past the end of it, branch on its options with a fresh replay
+each. Values are binary ("does A win"), so alpha-beta degenerates into a
+short-circuit — an A node stops at the first winning child, a B node at
+the first losing one — which is what keeps an exhaustive solve cheap.
+Both seats now consume ONE shared script in global decision order, the
+fix demanded by finding 2: whose decision comes next depends on what was
+chosen before, so per-seat lines cannot express a strategy.
+
+### Result
+
+```
+SOLVE|T1.HOLD|value=1|rootSeat=A|rootKind=atk|rootOptions=4
+      |optimalRoot=[0]|unique=true|replays=611|noWinner=0|capHit=false
+      |solveSecs=2.8
+```
+
+- **value = 1**: with best play on both sides, A wins.
+- **optimalRoot = [0], unique = true**: option 0 is "attack with
+  nobody". **Holding is the only first action that wins**, against a
+  defence that is now optimal rather than scripted. The hand-derivation
+  in `SUBGAME-DESIGN.md` is confirmed by exact solve, and the uniqueness
+  gate passes.
+- **noWinner = 0**: every replay terminated on its own. The
+  small-library clock does what the design claims.
+- **611 replays, 2.8 s.** Exact ground truth for a combat position costs
+  seconds on this box.
+
+### Gate 1 (horizon insensitivity) — PASSES
+
+Same instance with more filler in both libraries:
+
+| filler delta | value | optimal root | replays | solve |
+|---|---|---|---|---|
+| +0 | 1 | [0] | 611 | 2.5 s |
+| +2 | 1 | [0] | 1,802 | 6.9 s |
+| +4 | 1 | [0] | 4,049 | 17.1 s |
+
+The answer does not move, so `T1.HOLD` is measuring combat and not the
+deck-out clock. The cost of the gate is worth noting for later rungs:
+**replays roughly triple per two extra cards**, because filler extends
+the game and every extra turn adds decisions. Libraries should be as
+short as the concept allows.
+
+### Discrimination, at the root only
+
+One of four root options wins, so a policy choosing its first action
+uniformly scores 0.25 there. That is a root-level statistic, not the
+family's discrimination — the full gate needs the solver seated as the
+opponent, which is the next build.
+
+### What this still does not support
+
+Nothing about the network. And the solver's own two limits stand as
+written in its header: the seats choose only attacks and blocks
+(priority always passes, so no rung with castable cards can use it
+unchanged — that is T3 onward), and the block option space is a superset
+in which distinct indices can denote the same legal assignment.
