@@ -6141,3 +6141,19 @@ The owed diagnostic, run on W1Fly because that rung already had a healthy compar
 **What is NOT changed, per the rule pre-registered before this diagnostic was read** (PHASE15-ARCH STATE, 07:23Z): every reading of record already committed for the first series - rungs 0, 1a, 1b and their clauses - **stands as written**. Nothing is re-scored or withdrawn. Any re-run at the relaxed bound is published as a clearly-labelled **second series** beside the first and the two are never pooled.
 
 **Scope beyond A4L, stated as a candidate.** Every clone and every RL checkpoint in this project uses B = 5, including , the 13b clone that 13c trained from. If bc.pt is comparably saturated, then 13c per-update KL of ~0.0012 against a 0.02 target - so far attributed to the recipe - has a mechanical explanation: the bounded logits an update actually moves barely change when the raw logits are an order of magnitude past the bound. That check is cheap and is being run; it is a candidate explanation until it reports.
+
+**Saturation on the published checkpoints — bc.pt is NOT the pathology, which narrows where it lives.**
+
+| checkpoint | bound | mean abs raw logit | max | share >= 20 | gradient factor 1-tanh^2(raw/B) |
+|---|---|---|---|---|---|
+| **bc.pt (13b clone, best epoch 6 of 9)** | 5 | **7.57** | 26.4 | **0.0095** | ~0.15 - alive |
+| bc_W1Fly_nobound.pt (unbounded, best epoch 12) | 0 | 10.16 | 49.2 | 0.1694 | n/a, no tanh |
+| bc_W1Fly.pt (bounded twin, FROZEN epoch 1) | 5 | **108.0** | 156.6 | **1.0000** | ~1e-19 - dead |
+| bc_W0Base.pt / bc_W1Fst.pt / bcj_W1Fst.pt (frozen) | 5 | 54.4 / 90.8 / 93.0 | 83-183 | 0.95-1.00 | 1e-9 to 1e-16 |
+| bcj_W1Fly.pt (joint, trained 8 epochs) | 5 | 21.3 | 94.2 | 0.4636 | ~8e-4 |
+
+**bc.pt sits at 7.6, not at 54-110.** The 13b clone - the one every Phase 13 RL run started from - is only mildly compressed, and its gradient factor of about 0.15 is consistent with the honest nine-epoch training its log shows. So the freeze is **not** a universal property of B = 5, and the published 13b row is not undermined by it.
+
+Also worth stating: the UNBOUNDED clone's raw logits stay small (mean 10.2, max 49), so relaxing the bound did not merely lift a ceiling that the network then ran through - the bounded run's mean of 108 is the anomaly, not the unbounded run's 10.
+
+**What remains open is the 13c RL checkpoints**, not bc.pt: PPO could have driven logits outward during training even from a healthy start. If ck_1024 / ck_2048 sit in the 54-110 band, that is a candidate mechanical explanation for 13c's approx_kl of ~0.0012 against a 0.02 target - a bounded policy whose raw logits are far outside the bound barely moves whatever the update asks for. That would mean 13c's policy could not move rather than chose not to, and the 13c verdict would need an amendment saying so. **The 13c verdict is NOT rewritten here**; this is recorded as a candidate pending the measurement.
