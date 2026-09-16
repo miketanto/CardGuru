@@ -268,3 +268,17 @@ absence is not a negative result.
   were not labelled well enough to clone on these decks.
   A1: frac 0.125 POINT = held CE 0.4033, held top-1 0.8436, priority top-1 0.8415, best epoch 7 of 10 (141
   training games); frac 0.25 running.
+- 2026-09-16 02:50Z WSL (the night is now self-driving): three things run without further input.
+  (1) ENGINE: `rl/run_15recall.sh` records and gates all 16 ladder decks one at a time (W0Base resuming from the
+  437 games recorded before the 02:41Z pause; 531 at this line), two driver JVMs, no GPU, resumable per deck and
+  per 50-game job. (2) GPU: `rl/p15_a1.py --stage policy` is on its third fraction. (3) `rl/chain_15.sh` launched
+  02:50Z waits for the policy stage to exit, then runs the A1 VALUE stage, then `rl/run_15a2.sh` (A2), then
+  `rl/run_15a4.sh` (the A4L ladder) - one GPU process at a time, and it holds the ladder until the recorder is
+  finished so engine and GPU never compete for RAM. Every step is skipped when its own output exists, so killing
+  anything costs the step in flight, not the night. Clean stops: `rl/artifacts/v7/15/CHAINSTOP` (between chain
+  steps), `rl/artifacts/v7/15/rec/STOPALL` (between decks), `rl/stop_15rec.sh` (immediate, engine only).
+  A1 points so far, against the 13b hold-out (125 games / 7,167 consults, reproduced exactly): 12.5 % (141
+  training games) held CE 0.4033, held top-1 0.8436, priority top-1 0.8415, best epoch 7; 25 % (281 games) held CE
+  0.3656, held top-1 0.8573, priority top-1 0.8524, best epoch 5. The last doubling so far adds +0.0137 top-1;
+  the A1 reading needs the 50 % and 100 % points and is not made here. Box at this line: MemAvailable 4.6 GB with
+  two JVMs plus the trainer, GPU 2.9 GB of 12.
