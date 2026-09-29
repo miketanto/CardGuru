@@ -1,0 +1,2561 @@
+[
+ {
+  "name": "Emrakul, the Exigent Doom",
+  "number": 1,
+  "rarity": "M",
+  "sections": [
+   "cards",
+   "extended art"
+  ]
+ },
+ {
+  "name": "Academic Ascent",
+  "number": 2,
+  "rarity": "C",
+  "sections": [
+   "cards"
+  ]
+ },
+ {
+  "name": "Blossom-Blessed Angel",
+  "number": 3,
+  "rarity": "C",
+  "sections": [
+   "cards"
+  ]
+ },
+ {
+  "name": "Campus Crier",
+  "number": 4,
+  "rarity": "C",
+  "sections": [
+   "cards"
+  ]
+ },
+ {
+  "name": "Enlightened Confidant",
+  "number": 1,
+  "rarity": "M",
+  "sections": [
+   "cards",
+   "borderless",
+   "extended art",
+   "shattered mirror"
+  ]
+ },
+ {
+  "name": "Fateshaper Aspirant",
+  "number": 6,
+  "rarity": "C",
+  "sections": [
+   "cards"
+  ]
+ },
+ {
+  "name": "Flickering Hound",
+  "number": 1,
+  "rarity": "R",
+  "sections": [
+   "cards",
+   "borderless",
+   "braintwister"
+  ]
+ },
+ {
+  "name": "Generous Revival",
+  "number": 8,
+  "rarity": "U",
+  "sections": [
+   "cards"
+  ]
+ },
+ {
+  "name": "Germinate Recruits",
+  "number": 1,
+  "rarity": "R",
+  "sections": [
+   "cards",
+   "borderless",
+   "sculptors stronghold"
+  ]
+ },
+ {
+  "name": "Graft Surgeon",
+  "number": 10,
+  "rarity": "C",
+  "sections": [
+   "cards"
+  ]
+ },
+ {
+  "name": "Guiding Hydra",
+  "number": 1,
+  "rarity": "R",
+  "sections": [
+   "cards",
+   "borderless",
+   "braintwister"
+  ]
+ },
+ {
+  "name": "Hexhaven Battalion",
+  "number": 12,
+  "rarity": "C",
+  "sections": [
+   "cards"
+  ]
+ },
+ {
+  "name": "Kindred Judgment",
+  "number": 1,
+  "rarity": "R",
+  "sections": [
+   "cards",
+   "borderless",
+   "extended art",
+   "shattered mirror"
+  ]
+ },
+ {
+  "name": "Loyal Tutor",
+  "number": 14,
+  "rarity": "R",
+  "sections": [
+   "cards",
+   "extended art"
+  ]
+ },
+ {
+  "name": "Memory Trap",
+  "number": 15,
+  "rarity": "C",
+  "sections": [
+   "cards"
+  ]
+ },
+ {
+  "name": "Predictive Preparations",
+  "number": 16,
+  "rarity": "C",
+  "sections": [
+   "cards"
+  ]
+ },
+ {
+  "name": "Prophesied End",
+  "number": 17,
+  "rarity": "U",
+  "sections": [
+   "cards"
+  ]
+ },
+ {
+  "name": "Refute Destiny",
+  "number": 1,
+  "rarity": "U",
+  "sections": [
+   "cards",
+   "borderless",
+   "braintwister"
+  ]
+ },
+ {
+  "name": "Repurposed Enforcer",
+  "number": 1,
+  "rarity": "R",
+  "sections": [
+   "cards",
+   "borderless",
+   "sculptors stronghold"
+  ]
+ },
+ {
+  "name": "Return to the Light Realms",
+  "number": 1,
+  "rarity": "M",
+  "sections": [
+   "cards",
+   "borderless",
+   "extended art",
+   "shattered mirror"
+  ]
+ },
+ {
+  "name": "Shatterwing Pegasus",
+  "number": 21,
+  "rarity": "C",
+  "sections": [
+   "cards"
+  ]
+ },
+ {
+  "name": "Surgical Precision",
+  "number": 22,
+  "rarity": "C",
+  "sections": [
+   "cards"
+  ]
+ },
+ {
+  "name": "Unflinching Hortimancer",
+  "number": 23,
+  "rarity": "C",
+  "sections": [
+   "cards"
+  ]
+ },
+ {
+  "name": "Your Fate Ends Here",
+  "number": 24,
+  "rarity": "U",
+  "sections": [
+   "cards"
+  ]
+ },
+ {
+  "name": "Countersculpt",
+  "number": 25,
+  "rarity": "U",
+  "sections": [
+   "cards"
+  ]
+ },
+ {
+  "name": "Cruel Calculations",
+  "number": 1,
+  "rarity": "R",
+  "sections": [
+   "cards",
+   "borderless",
+   "sculptors stronghold"
+  ]
+ },
+ {
+  "name": "Cryotheory Adept",
+  "number": 27,
+  "rarity": "C",
+  "sections": [
+   "cards"
+  ]
+ },
+ {
+  "name": "Diviner of Victory",
+  "number": 28,
+  "rarity": "R",
+  "sections": [
+   "cards",
+   "extended art"
+  ]
+ },
+ {
+  "name": "Divining Duelist",
+  "number": 29,
+  "rarity": "C",
+  "sections": [
+   "cards"
+  ]
+ },
+ {
+  "name": "Icy Reception",
+  "number": 30,
+  "rarity": "C",
+  "sections": [
+   "cards"
+  ]
+ },
+ {
+  "name": "Infinite Coursework",
+  "number": 31,
+  "rarity": "C",
+  "sections": [
+   "cards"
+  ]
+ },
+ {
+  "name": "Jace's Machinations",
+  "number": 1,
+  "rarity": "R",
+  "sections": [
+   "cards",
+   "borderless",
+   "sculptors stronghold"
+  ]
+ },
+ {
+  "name": "Mindseeker Oculus",
+  "number": 33,
+  "rarity": "C",
+  "sections": [
+   "cards"
+  ]
+ },
+ {
+  "name": "Perfected Theory",
+  "number": 34,
+  "rarity": "U",
+  "sections": [
+   "cards"
+  ]
+ },
+ {
+  "name": "Plan for All Outcomes",
+  "number": 35,
+  "rarity": "U",
+  "sections": [
+   "cards"
+  ]
+ },
+ {
+  "name": "Precise Redaction",
+  "number": 1,
+  "rarity": "U",
+  "sections": [
+   "cards",
+   "borderless",
+   "braintwister"
+  ]
+ },
+ {
+  "name": "Protege's Awakening",
+  "number": 37,
+  "rarity": "C",
+  "sections": [
+   "cards"
+  ]
+ },
+ {
+  "name": "Seasoned Cryomancer",
+  "number": 1,
+  "rarity": "M",
+  "sections": [
+   "cards",
+   "borderless",
+   "extended art",
+   "shattered mirror"
+  ]
+ },
+ {
+  "name": "Semester Foreseer",
+  "number": 39,
+  "rarity": "C",
+  "sections": [
+   "cards"
+  ]
+ },
+ {
+  "name": "Sphinx of False Conclusions",
+  "number": 1,
+  "rarity": "R",
+  "sections": [
+   "cards",
+   "borderless",
+   "sculptors stronghold"
+  ]
+ },
+ {
+  "name": "Sphinx's Approach",
+  "number": 41,
+  "rarity": "C",
+  "sections": [
+   "cards",
+   "extended art"
+  ]
+ },
+ {
+  "name": "Surveillance Phantasm",
+  "number": 42,
+  "rarity": "C",
+  "sections": [
+   "cards"
+  ]
+ },
+ {
+  "name": "The Theorist, Jace Beleren",
+  "number": 1,
+  "rarity": "M",
+  "sections": [
+   "cards",
+   "borderless",
+   "extended art",
+   "braintwister"
+  ]
+ },
+ {
+  "name": "Theorist's Proxy",
+  "number": 1,
+  "rarity": "R",
+  "sections": [
+   "cards",
+   "borderless",
+   "sculptors stronghold"
+  ]
+ },
+ {
+  "name": "Undulating Witness",
+  "number": 45,
+  "rarity": "C",
+  "sections": [
+   "cards"
+  ]
+ },
+ {
+  "name": "Unsummon",
+  "number": 46,
+  "rarity": "C",
+  "sections": [
+   "cards"
+  ]
+ },
+ {
+  "name": "Variable Chaser",
+  "number": 47,
+  "rarity": "R",
+  "sections": [
+   "cards",
+   "extended art"
+  ]
+ },
+ {
+  "name": "Apex Witchstalker",
+  "number": 48,
+  "rarity": "C",
+  "sections": [
+   "cards"
+  ]
+ },
+ {
+  "name": "Bloodline Recollector",
+  "number": 49,
+  "rarity": "M",
+  "sections": [
+   "cards",
+   "extended art"
+  ]
+ },
+ {
+  "name": "Break Under Pressure",
+  "number": 50,
+  "rarity": "U",
+  "sections": [
+   "cards"
+  ]
+ },
+ {
+  "name": "Cast Away Doubt",
+  "number": 51,
+  "rarity": "C",
+  "sections": [
+   "cards"
+  ]
+ },
+ {
+  "name": "Dark Matter Manipulator",
+  "number": 1,
+  "rarity": "R",
+  "sections": [
+   "cards",
+   "borderless",
+   "sculptors stronghold"
+  ]
+ },
+ {
+  "name": "Darklight Phoenix",
+  "number": 1,
+  "rarity": "M",
+  "sections": [
+   "cards",
+   "borderless",
+   "extended art",
+   "shattered mirror"
+  ]
+ },
+ {
+  "name": "Extended Absence",
+  "number": 54,
+  "rarity": "C",
+  "sections": [
+   "cards"
+  ]
+ },
+ {
+  "name": "Extrapolate the Impossible",
+  "number": 1,
+  "rarity": "R",
+  "sections": [
+   "cards",
+   "borderless",
+   "braintwister"
+  ]
+ },
+ {
+  "name": "Last Gasp",
+  "number": 56,
+  "rarity": "C",
+  "sections": [
+   "cards"
+  ]
+ },
+ {
+  "name": "Lich's Relic",
+  "number": 1,
+  "rarity": "R",
+  "sections": [
+   "cards",
+   "borderless",
+   "braintwister"
+  ]
+ },
+ {
+  "name": "Multiply by Zero",
+  "number": 58,
+  "rarity": "U",
+  "sections": [
+   "cards"
+  ]
+ },
+ {
+  "name": "Overwrite the Multiverse",
+  "number": 59,
+  "rarity": "M",
+  "sections": [
+   "cards",
+   "borderless",
+   "extended art"
+  ]
+ },
+ {
+  "name": "Rampart Hunter",
+  "number": 60,
+  "rarity": "C",
+  "sections": [
+   "cards"
+  ]
+ },
+ {
+  "name": "Rank Rat",
+  "number": 61,
+  "rarity": "C",
+  "sections": [
+   "cards"
+  ]
+ },
+ {
+  "name": "Rewrite Regrets",
+  "number": 62,
+  "rarity": "U",
+  "sections": [
+   "cards"
+  ]
+ },
+ {
+  "name": "Rise of the Deathbringer",
+  "number": 1,
+  "rarity": "R",
+  "sections": [
+   "cards",
+   "borderless",
+   "extended art",
+   "shattered mirror"
+  ]
+ },
+ {
+  "name": "Sanctum Lurker",
+  "number": 1,
+  "rarity": "R",
+  "sections": [
+   "cards",
+   "borderless",
+   "sculptors stronghold"
+  ]
+ },
+ {
+  "name": "Screeching Soulbreaker",
+  "number": 65,
+  "rarity": "C",
+  "sections": [
+   "cards"
+  ]
+ },
+ {
+  "name": "Silence the Echo",
+  "number": 66,
+  "rarity": "C",
+  "sections": [
+   "cards"
+  ]
+ },
+ {
+  "name": "Solve for Disappointment",
+  "number": 67,
+  "rarity": "C",
+  "sections": [
+   "cards"
+  ]
+ },
+ {
+  "name": "Terminal Criticism",
+  "number": 1,
+  "rarity": "U",
+  "sections": [
+   "cards",
+   "borderless",
+   "braintwister"
+  ]
+ },
+ {
+  "name": "Theoretical Necromancer",
+  "number": 69,
+  "rarity": "C",
+  "sections": [
+   "cards"
+  ]
+ },
+ {
+  "name": "Void Extrapolator",
+  "number": 70,
+  "rarity": "C",
+  "sections": [
+   "cards"
+  ]
+ },
+ {
+  "name": "Vraska's Final Mercy",
+  "number": 1,
+  "rarity": "R",
+  "sections": [
+   "cards",
+   "borderless",
+   "sculptors stronghold"
+  ]
+ },
+ {
+  "name": "Ajani's Anguish",
+  "number": 1,
+  "rarity": "R",
+  "sections": [
+   "cards",
+   "borderless",
+   "braintwister"
+  ]
+ },
+ {
+  "name": "Artifist Acumen",
+  "number": 73,
+  "rarity": "C",
+  "sections": [
+   "cards"
+  ]
+ },
+ {
+  "name": "Awaken the Inferno",
+  "number": 74,
+  "rarity": "C",
+  "sections": [
+   "cards"
+  ]
+ },
+ {
+  "name": "Blazing Crescendo",
+  "number": 75,
+  "rarity": "C",
+  "sections": [
+   "cards"
+  ]
+ },
+ {
+  "name": "Chandra's Emberling",
+  "number": 76,
+  "rarity": "C",
+  "sections": [
+   "cards"
+  ]
+ },
+ {
+  "name": "Command the Stage",
+  "number": 77,
+  "rarity": "U",
+  "sections": [
+   "cards"
+  ]
+ },
+ {
+  "name": "Craterclaw Colossus",
+  "number": 1,
+  "rarity": "M",
+  "sections": [
+   "cards",
+   "borderless",
+   "extended art",
+   "shattered mirror"
+  ]
+ },
+ {
+  "name": "Curse-Marred Demon",
+  "number": 1,
+  "rarity": "R",
+  "sections": [
+   "cards",
+   "borderless",
+   "extended art",
+   "shattered mirror"
+  ]
+ },
+ {
+  "name": "Draconic Visitor",
+  "number": 1,
+  "rarity": "R",
+  "sections": [
+   "cards",
+   "borderless",
+   "braintwister"
+  ]
+ },
+ {
+  "name": "Eardrum Rattler",
+  "number": 81,
+  "rarity": "C",
+  "sections": [
+   "cards"
+  ]
+ },
+ {
+  "name": "Essence Burn",
+  "number": 1,
+  "rarity": "U",
+  "sections": [
+   "cards",
+   "borderless",
+   "braintwister"
+  ]
+ },
+ {
+  "name": "Face Yourself",
+  "number": 1,
+  "rarity": "R",
+  "sections": [
+   "cards",
+   "borderless",
+   "braintwister"
+  ]
+ },
+ {
+  "name": "Fulminous Forte",
+  "number": 84,
+  "rarity": "U",
+  "sections": [
+   "cards"
+  ]
+ },
+ {
+  "name": "Hallway Heckler",
+  "number": 85,
+  "rarity": "C",
+  "sections": [
+   "cards"
+  ]
+ },
+ {
+  "name": "Heartstring Puller",
+  "number": 86,
+  "rarity": "C",
+  "sections": [
+   "cards"
+  ]
+ },
+ {
+  "name": "Identity Echo",
+  "number": 1,
+  "rarity": "R",
+  "sections": [
+   "cards",
+   "borderless",
+   "braintwister"
+  ]
+ },
+ {
+  "name": "Master of Barbs",
+  "number": 1,
+  "rarity": "R",
+  "sections": [
+   "cards",
+   "borderless",
+   "sculptors stronghold"
+  ]
+ },
+ {
+  "name": "No Admittance",
+  "number": 89,
+  "rarity": "C",
+  "sections": [
+   "cards"
+  ]
+ },
+ {
+  "name": "Pompous Battlemage",
+  "number": 90,
+  "rarity": "R",
+  "sections": [
+   "cards",
+   "extended art"
+  ]
+ },
+ {
+  "name": "Pyre Rhymer",
+  "number": 91,
+  "rarity": "R",
+  "sections": [
+   "cards",
+   "extended art"
+  ]
+ },
+ {
+  "name": "Skilled Battlecarver",
+  "number": 92,
+  "rarity": "C",
+  "sections": [
+   "cards"
+  ]
+ },
+ {
+  "name": "Stingcaster Mage",
+  "number": 1,
+  "rarity": "M",
+  "sections": [
+   "cards",
+   "borderless",
+   "extended art",
+   "shattered mirror"
+  ]
+ },
+ {
+  "name": "Tether Technician",
+  "number": 94,
+  "rarity": "C",
+  "sections": [
+   "cards"
+  ]
+ },
+ {
+  "name": "Violent Echoes",
+  "number": 95,
+  "rarity": "U",
+  "sections": [
+   "cards"
+  ]
+ },
+ {
+  "name": "Wrath of the Bloodmane",
+  "number": 96,
+  "rarity": "C",
+  "sections": [
+   "cards"
+  ]
+ },
+ {
+  "name": "Arcane Amphisbaena",
+  "number": 97,
+  "rarity": "C",
+  "sections": [
+   "cards"
+  ]
+ },
+ {
+  "name": "Bestial Incursion",
+  "number": 98,
+  "rarity": "C",
+  "sections": [
+   "cards"
+  ]
+ },
+ {
+  "name": "Budding Insurgent",
+  "number": 99,
+  "rarity": "C",
+  "sections": [
+   "cards"
+  ]
+ },
+ {
+  "name": "Carnivorous Cultivator",
+  "number": 100,
+  "rarity": "R",
+  "sections": [
+   "cards",
+   "extended art"
+  ]
+ },
+ {
+  "name": "Compel Brutality",
+  "number": 101,
+  "rarity": "C",
+  "sections": [
+   "cards"
+  ]
+ },
+ {
+  "name": "Flourishing Grapple",
+  "number": 1,
+  "rarity": "U",
+  "sections": [
+   "cards",
+   "borderless",
+   "braintwister"
+  ]
+ },
+ {
+  "name": "Gardenize",
+  "number": 1,
+  "rarity": "R",
+  "sections": [
+   "cards",
+   "borderless",
+   "extended art",
+   "sculptors stronghold"
+  ]
+ },
+ {
+  "name": "Greenhouse Propagator",
+  "number": 104,
+  "rarity": "C",
+  "sections": [
+   "cards"
+  ]
+ },
+ {
+  "name": "Heartwood Crafter",
+  "number": 105,
+  "rarity": "U",
+  "sections": [
+   "cards"
+  ]
+ },
+ {
+  "name": "Hexhaven Invigorator",
+  "number": 1,
+  "rarity": "M",
+  "sections": [
+   "cards",
+   "borderless",
+   "extended art",
+   "shattered mirror"
+  ]
+ },
+ {
+  "name": "Hungering Puppetbeast",
+  "number": 1,
+  "rarity": "R",
+  "sections": [
+   "cards",
+   "borderless",
+   "sculptors stronghold"
+  ]
+ },
+ {
+  "name": "Hunter's Axe",
+  "number": 108,
+  "rarity": "U",
+  "sections": [
+   "cards"
+  ]
+ },
+ {
+  "name": "Inspired Tethermage",
+  "number": 109,
+  "rarity": "C",
+  "sections": [
+   "cards"
+  ]
+ },
+ {
+  "name": "Omnipresence",
+  "number": 1,
+  "rarity": "M",
+  "sections": [
+   "cards",
+   "borderless",
+   "extended art",
+   "shattered mirror"
+  ]
+ },
+ {
+  "name": "Puppet Crafting",
+  "number": 1,
+  "rarity": "R",
+  "sections": [
+   "cards",
+   "borderless",
+   "braintwister"
+  ]
+ },
+ {
+  "name": "Restore with Empathy",
+  "number": 112,
+  "rarity": "U",
+  "sections": [
+   "cards"
+  ]
+ },
+ {
+  "name": "Simulacrum Shaper",
+  "number": 1,
+  "rarity": "R",
+  "sections": [
+   "cards",
+   "borderless",
+   "extended art",
+   "shattered mirror"
+  ]
+ },
+ {
+  "name": "Something Worth Saving",
+  "number": 114,
+  "rarity": "C",
+  "sections": [
+   "cards"
+  ]
+ },
+ {
+  "name": "Sureshot Sower",
+  "number": 115,
+  "rarity": "C",
+  "sections": [
+   "cards"
+  ]
+ },
+ {
+  "name": "Tarmogoyf",
+  "number": 1,
+  "rarity": "M",
+  "sections": [
+   "cards",
+   "borderless",
+   "braintwister"
+  ]
+ },
+ {
+  "name": "Tethermage's Advantage",
+  "number": 117,
+  "rarity": "C",
+  "sections": [
+   "cards"
+  ]
+ },
+ {
+  "name": "Verdant Kraken",
+  "number": 1,
+  "rarity": "R",
+  "sections": [
+   "cards",
+   "borderless",
+   "braintwister"
+  ]
+ },
+ {
+  "name": "Vinelasher Adept",
+  "number": 119,
+  "rarity": "C",
+  "sections": [
+   "cards"
+  ]
+ },
+ {
+  "name": "Wrecking Gecko",
+  "number": 120,
+  "rarity": "C",
+  "sections": [
+   "cards"
+  ]
+ },
+ {
+  "name": "Aerid Konstrari",
+  "number": 1,
+  "rarity": "M",
+  "sections": [
+   "cards",
+   "borderless",
+   "extended art",
+   "sculptors stronghold"
+  ]
+ },
+ {
+  "name": "Avatar of Burgeoning Echoes",
+  "number": 1,
+  "rarity": "M",
+  "sections": [
+   "cards",
+   "borderless",
+   "sculptors stronghold"
+  ]
+ },
+ {
+  "name": "Blessed Ghoul",
+  "number": 123,
+  "rarity": "C",
+  "sections": [
+   "cards"
+  ]
+ },
+ {
+  "name": "Bloombrute",
+  "number": 124,
+  "rarity": "U",
+  "sections": [
+   "cards"
+  ]
+ },
+ {
+  "name": "Charge the Sanctum",
+  "number": 125,
+  "rarity": "C",
+  "sections": [
+   "cards"
+  ]
+ },
+ {
+  "name": "Clash of Elements",
+  "number": 126,
+  "rarity": "U",
+  "sections": [
+   "cards"
+  ]
+ },
+ {
+  "name": "Craftwork Crusher",
+  "number": 127,
+  "rarity": "U",
+  "sections": [
+   "cards"
+  ]
+ },
+ {
+  "name": "Denzilore Fatehold",
+  "number": 1,
+  "rarity": "M",
+  "sections": [
+   "cards",
+   "borderless",
+   "extended art",
+   "sculptors stronghold"
+  ]
+ },
+ {
+  "name": "Desperate Futurescribe",
+  "number": 129,
+  "rarity": "U",
+  "sections": [
+   "cards"
+  ]
+ },
+ {
+  "name": "Emergency Phytomedic",
+  "number": 130,
+  "rarity": "C",
+  "sections": [
+   "cards"
+  ]
+ },
+ {
+  "name": "Entrust the Spark",
+  "number": 1,
+  "rarity": "R",
+  "sections": [
+   "cards",
+   "borderless",
+   "sculptors stronghold"
+  ]
+ },
+ {
+  "name": "Fatehold Charm",
+  "number": 132,
+  "rarity": "U",
+  "sections": [
+   "cards",
+   "extended art"
+  ]
+ },
+ {
+  "name": "Fatehold Chronologist",
+  "number": 133,
+  "rarity": "C",
+  "sections": [
+   "cards"
+  ]
+ },
+ {
+  "name": "Ferocity of the Hunt",
+  "number": 134,
+  "rarity": "C",
+  "sections": [
+   "cards"
+  ]
+ },
+ {
+  "name": "Frostbite Pyromental",
+  "number": 1,
+  "rarity": "R",
+  "sections": [
+   "cards",
+   "borderless",
+   "extended art",
+   "shattered mirror"
+  ]
+ },
+ {
+  "name": "Grim Repriser",
+  "number": 136,
+  "rarity": "U",
+  "sections": [
+   "cards"
+  ]
+ },
+ {
+  "name": "Ingris Stingerquill",
+  "number": 1,
+  "rarity": "M",
+  "sections": [
+   "cards",
+   "borderless",
+   "extended art",
+   "sculptors stronghold"
+  ]
+ },
+ {
+  "name": "Konstrari Charm",
+  "number": 138,
+  "rarity": "U",
+  "sections": [
+   "cards",
+   "extended art"
+  ]
+ },
+ {
+  "name": "Konstrari Improviser",
+  "number": 139,
+  "rarity": "C",
+  "sections": [
+   "cards"
+  ]
+ },
+ {
+  "name": "Kwia Vigorbloom",
+  "number": 1,
+  "rarity": "M",
+  "sections": [
+   "cards",
+   "borderless",
+   "extended art",
+   "sculptors stronghold"
+  ]
+ },
+ {
+  "name": "Mind Meanderer",
+  "number": 141,
+  "rarity": "U",
+  "sections": [
+   "cards"
+  ]
+ },
+ {
+  "name": "Null Summoner",
+  "number": 1,
+  "rarity": "R",
+  "sections": [
+   "cards",
+   "borderless",
+   "sculptors stronghold"
+  ]
+ },
+ {
+  "name": "Paradox Shaper",
+  "number": 143,
+  "rarity": "U",
+  "sections": [
+   "cards"
+  ]
+ },
+ {
+  "name": "Primal Witchstalker",
+  "number": 144,
+  "rarity": "U",
+  "sections": [
+   "cards"
+  ]
+ },
+ {
+  "name": "Proctor of Potential",
+  "number": 1,
+  "rarity": "R",
+  "sections": [
+   "cards",
+   "borderless",
+   "sculptors stronghold"
+  ]
+ },
+ {
+  "name": "Prudent Fateseer",
+  "number": 146,
+  "rarity": "U",
+  "sections": [
+   "cards"
+  ]
+ },
+ {
+  "name": "Recursive Recruitment",
+  "number": 147,
+  "rarity": "U",
+  "sections": [
+   "cards"
+  ]
+ },
+ {
+  "name": "Solarium Sentry",
+  "number": 1,
+  "rarity": "R",
+  "sections": [
+   "cards",
+   "borderless",
+   "braintwister"
+  ]
+ },
+ {
+  "name": "Solitary Cell",
+  "number": 1,
+  "rarity": "R",
+  "sections": [
+   "cards",
+   "borderless",
+   "sculptors stronghold"
+  ]
+ },
+ {
+  "name": "Stingerquill Charm",
+  "number": 150,
+  "rarity": "U",
+  "sections": [
+   "cards",
+   "extended art"
+  ]
+ },
+ {
+  "name": "Stingerquill Voxmancer",
+  "number": 151,
+  "rarity": "U",
+  "sections": [
+   "cards"
+  ]
+ },
+ {
+  "name": "Stinging Vitriol",
+  "number": 1,
+  "rarity": "R",
+  "sections": [
+   "cards",
+   "borderless",
+   "sculptors stronghold"
+  ]
+ },
+ {
+  "name": "Tam's Resistance",
+  "number": 153,
+  "rarity": "C",
+  "sections": [
+   "cards"
+  ]
+ },
+ {
+  "name": "Tenured Tethermage",
+  "number": 1,
+  "rarity": "R",
+  "sections": [
+   "cards",
+   "borderless",
+   "sculptors stronghold"
+  ]
+ },
+ {
+  "name": "Theorix Charm",
+  "number": 155,
+  "rarity": "U",
+  "sections": [
+   "cards",
+   "extended art"
+  ]
+ },
+ {
+  "name": "Theorix Metamage",
+  "number": 156,
+  "rarity": "C",
+  "sections": [
+   "cards"
+  ]
+ },
+ {
+  "name": "Twinned Vision",
+  "number": 157,
+  "rarity": "C",
+  "sections": [
+   "cards"
+  ]
+ },
+ {
+  "name": "Twisted Fates",
+  "number": 158,
+  "rarity": "U",
+  "sections": [
+   "cards"
+  ]
+ },
+ {
+  "name": "Uldaros Theorix",
+  "number": 1,
+  "rarity": "M",
+  "sections": [
+   "cards",
+   "borderless",
+   "extended art",
+   "sculptors stronghold"
+  ]
+ },
+ {
+  "name": "Vigorbloom Charm",
+  "number": 160,
+  "rarity": "U",
+  "sections": [
+   "cards",
+   "extended art"
+  ]
+ },
+ {
+  "name": "Vigorbloom Vanguard",
+  "number": 161,
+  "rarity": "U",
+  "sections": [
+   "cards"
+  ]
+ },
+ {
+  "name": "Vindictive Triumph",
+  "number": 1,
+  "rarity": "R",
+  "sections": [
+   "cards",
+   "borderless",
+   "braintwister"
+  ]
+ },
+ {
+  "name": "Warrior's Blades",
+  "number": 163,
+  "rarity": "U",
+  "sections": [
+   "cards"
+  ]
+ },
+ {
+  "name": "Whiplash Wordsmith",
+  "number": 164,
+  "rarity": "C",
+  "sections": [
+   "cards"
+  ]
+ },
+ {
+  "name": "Woodwork Prodigy",
+  "number": 165,
+  "rarity": "U",
+  "sections": [
+   "cards"
+  ]
+ },
+ {
+  "name": "Afterthought Sentry",
+  "number": 166,
+  "rarity": "C",
+  "sections": [
+   "cards"
+  ]
+ },
+ {
+  "name": "Archive Arbiter",
+  "number": 167,
+  "rarity": "U",
+  "sections": [
+   "cards"
+  ]
+ },
+ {
+  "name": "Codie, Ravenous Codex",
+  "number": 168,
+  "rarity": "R",
+  "sections": [
+   "cards",
+   "extended art"
+  ]
+ },
+ {
+  "name": "The Echoverse Fulcrum",
+  "number": 1,
+  "rarity": "M",
+  "sections": [
+   "cards",
+   "borderless",
+   "braintwister"
+  ]
+ },
+ {
+  "name": "Eye of Jace",
+  "number": 170,
+  "rarity": "U",
+  "sections": [
+   "cards"
+  ]
+ },
+ {
+  "name": "Keeper of the Quiet Hour",
+  "number": 171,
+  "rarity": "C",
+  "sections": [
+   "cards"
+  ]
+ },
+ {
+  "name": "Living Library",
+  "number": 172,
+  "rarity": "C",
+  "sections": [
+   "cards"
+  ]
+ },
+ {
+  "name": "Medic's Kitesail",
+  "number": 173,
+  "rarity": "C",
+  "sections": [
+   "cards"
+  ]
+ },
+ {
+  "name": "Murmuring Volume",
+  "number": 174,
+  "rarity": "C",
+  "sections": [
+   "cards"
+  ]
+ },
+ {
+  "name": "Dedicated Commons",
+  "number": 1,
+  "rarity": "L",
+  "sections": [
+   "cards",
+   "dual basic"
+  ]
+ },
+ {
+  "name": "Deserted Beach",
+  "number": 1,
+  "rarity": "R",
+  "sections": [
+   "cards",
+   "borderless",
+   "portal view land"
+  ]
+ },
+ {
+  "name": "Fatehold Annex",
+  "number": 1,
+  "rarity": "L",
+  "sections": [
+   "cards",
+   "dual basic"
+  ]
+ },
+ {
+  "name": "Formidable Commons",
+  "number": 1,
+  "rarity": "L",
+  "sections": [
+   "cards",
+   "dual basic"
+  ]
+ },
+ {
+  "name": "Hall of Echoes",
+  "number": 1,
+  "rarity": "R",
+  "sections": [
+   "cards",
+   "borderless",
+   "braintwister"
+  ]
+ },
+ {
+  "name": "Haunted Ridge",
+  "number": 1,
+  "rarity": "R",
+  "sections": [
+   "cards",
+   "borderless",
+   "portal view land"
+  ]
+ },
+ {
+  "name": "Hexhaven Dueling Arena",
+  "number": 181,
+  "rarity": "U",
+  "sections": [
+   "cards"
+  ]
+ },
+ {
+  "name": "Innovative Commons",
+  "number": 1,
+  "rarity": "L",
+  "sections": [
+   "cards",
+   "dual basic"
+  ]
+ },
+ {
+  "name": "Konstrari Annex",
+  "number": 1,
+  "rarity": "L",
+  "sections": [
+   "cards",
+   "dual basic"
+  ]
+ },
+ {
+  "name": "Meticulous Commons",
+  "number": 1,
+  "rarity": "L",
+  "sections": [
+   "cards",
+   "dual basic"
+  ]
+ },
+ {
+  "name": "Overgrown Farmland",
+  "number": 1,
+  "rarity": "R",
+  "sections": [
+   "cards",
+   "borderless",
+   "portal view land"
+  ]
+ },
+ {
+  "name": "Rockfall Vale",
+  "number": 1,
+  "rarity": "R",
+  "sections": [
+   "cards",
+   "borderless",
+   "portal view land"
+  ]
+ },
+ {
+  "name": "Roiling Canopy",
+  "number": 1,
+  "rarity": "R",
+  "sections": [
+   "cards",
+   "borderless",
+   "braintwister"
+  ]
+ },
+ {
+  "name": "Room of Refuge",
+  "number": 188,
+  "rarity": "C",
+  "sections": [
+   "cards"
+  ]
+ },
+ {
+  "name": "Shipwreck Marsh",
+  "number": 1,
+  "rarity": "R",
+  "sections": [
+   "cards",
+   "borderless",
+   "portal view land"
+  ]
+ },
+ {
+  "name": "Stingerquill Annex",
+  "number": 1,
+  "rarity": "L",
+  "sections": [
+   "cards",
+   "dual basic"
+  ]
+ },
+ {
+  "name": "Theorist's Sanctum",
+  "number": 1,
+  "rarity": "R",
+  "sections": [
+   "cards",
+   "borderless",
+   "braintwister"
+  ]
+ },
+ {
+  "name": "Theorix Annex",
+  "number": 1,
+  "rarity": "L",
+  "sections": [
+   "cards",
+   "dual basic"
+  ]
+ },
+ {
+  "name": "Transformative Commons",
+  "number": 1,
+  "rarity": "L",
+  "sections": [
+   "cards",
+   "dual basic"
+  ]
+ },
+ {
+  "name": "Vigorbloom Annex",
+  "number": 1,
+  "rarity": "L",
+  "sections": [
+   "cards",
+   "dual basic"
+  ]
+ },
+ {
+  "name": "Ajani Resolute",
+  "number": 1,
+  "rarity": "M",
+  "sections": [
+   "cards",
+   "borderless",
+   "borderless echoed pair",
+   "echoed pair"
+  ]
+ },
+ {
+  "name": "Danitha, Sword of Hope",
+  "number": 1,
+  "rarity": "U",
+  "sections": [
+   "cards",
+   "echoed pair"
+  ]
+ },
+ {
+  "name": "Ghalta the Immovable",
+  "number": 1,
+  "rarity": "U",
+  "sections": [
+   "cards",
+   "echoed pair"
+  ]
+ },
+ {
+  "name": "Gideon's Memorial",
+  "number": 1,
+  "rarity": "R",
+  "sections": [
+   "cards",
+   "borderless",
+   "borderless echoed pair",
+   "echoed pair"
+  ]
+ },
+ {
+  "name": "Koth of the Homestead",
+  "number": 1,
+  "rarity": "U",
+  "sections": [
+   "cards",
+   "echoed pair"
+  ]
+ },
+ {
+  "name": "Liliana the Faultless",
+  "number": 1,
+  "rarity": "R",
+  "sections": [
+   "cards",
+   "borderless",
+   "borderless echoed pair",
+   "echoed pair"
+  ]
+ },
+ {
+  "name": "Lyra, Archangel of Dawn",
+  "number": 1,
+  "rarity": "R",
+  "sections": [
+   "cards",
+   "borderless",
+   "borderless echoed pair",
+   "echoed pair"
+  ]
+ },
+ {
+  "name": "Rescue Girl, First Responder",
+  "number": 1,
+  "rarity": "U",
+  "sections": [
+   "cards",
+   "echoed pair"
+  ]
+ },
+ {
+  "name": "Saheeli, Consul of Oversight",
+  "number": 1,
+  "rarity": "U",
+  "sections": [
+   "cards",
+   "echoed pair"
+  ]
+ },
+ {
+  "name": "Teyo, Lightshield Expert",
+  "number": 1,
+  "rarity": "U",
+  "sections": [
+   "cards",
+   "borderless",
+   "borderless echoed pair",
+   "echoed pair"
+  ]
+ },
+ {
+  "name": "Thalia, the Survivor",
+  "number": 1,
+  "rarity": "U",
+  "sections": [
+   "cards",
+   "borderless",
+   "borderless echoed pair",
+   "echoed pair"
+  ]
+ },
+ {
+  "name": "Tomik, Orzhov Lawmage",
+  "number": 1,
+  "rarity": "U",
+  "sections": [
+   "cards",
+   "echoed pair"
+  ]
+ },
+ {
+  "name": "Way of the Healer",
+  "number": 1,
+  "rarity": "U",
+  "sections": [
+   "cards",
+   "echoed pair"
+  ]
+ },
+ {
+  "name": "Way of the Mentor",
+  "number": 1,
+  "rarity": "U",
+  "sections": [
+   "cards",
+   "echoed pair"
+  ]
+ },
+ {
+  "name": "Yoshimaru, Beloved Companion",
+  "number": 1,
+  "rarity": "U",
+  "sections": [
+   "cards",
+   "echoed pair"
+  ]
+ },
+ {
+  "name": "Yuriko, Blade of the Mighty",
+  "number": 1,
+  "rarity": "U",
+  "sections": [
+   "cards",
+   "echoed pair"
+  ]
+ },
+ {
+  "name": "Arni, Humble Scribe",
+  "number": 1,
+  "rarity": "U",
+  "sections": [
+   "cards",
+   "echoed pair"
+  ]
+ },
+ {
+  "name": "Chandra, Chill of Compliance",
+  "number": 1,
+  "rarity": "M",
+  "sections": [
+   "cards",
+   "borderless",
+   "borderless echoed pair",
+   "echoed pair"
+  ]
+ },
+ {
+  "name": "Fblthp, Impossibly Lost",
+  "number": 1,
+  "rarity": "U",
+  "sections": [
+   "cards",
+   "borderless",
+   "borderless echoed pair",
+   "echoed pair"
+  ]
+ },
+ {
+  "name": "Geist of Saint Thalia",
+  "number": 1,
+  "rarity": "U",
+  "sections": [
+   "cards",
+   "borderless",
+   "borderless echoed pair",
+   "echoed pair"
+  ]
+ },
+ {
+  "name": "Hapatra, the Desert Frost",
+  "number": 1,
+  "rarity": "U",
+  "sections": [
+   "cards",
+   "echoed pair"
+  ]
+ },
+ {
+  "name": "Jace, Reality Sculptor",
+  "number": 1,
+  "rarity": "R",
+  "sections": [
+   "cards",
+   "borderless",
+   "borderless echoed pair",
+   "echoed pair"
+  ]
+ },
+ {
+  "name": "Lyra, Tolarian Archangel",
+  "number": 217,
+  "rarity": "R",
+  "sections": [
+   "cards",
+   "borderless"
+  ]
+ },
+ {
+  "name": "Proft, Consulting Detective",
+  "number": 1,
+  "rarity": "U",
+  "sections": [
+   "cards",
+   "echoed pair"
+  ]
+ },
+ {
+  "name": "Ruric Thar, Biomagus",
+  "number": 1,
+  "rarity": "U",
+  "sections": [
+   "cards",
+   "echoed pair"
+  ]
+ },
+ {
+  "name": "Samut, Tyrant of Naktamun",
+  "number": 1,
+  "rarity": "R",
+  "sections": [
+   "cards",
+   "borderless",
+   "borderless echoed pair",
+   "echoed pair"
+  ]
+ },
+ {
+  "name": "Tetsuko Umezawa, Fugitive",
+  "number": 1,
+  "rarity": "U",
+  "sections": [
+   "cards",
+   "echoed pair"
+  ]
+ },
+ {
+  "name": "Traxos, Academy Guardian",
+  "number": 1,
+  "rarity": "U",
+  "sections": [
+   "cards",
+   "echoed pair"
+  ]
+ },
+ {
+  "name": "Way of the Cryomancer",
+  "number": 1,
+  "rarity": "U",
+  "sections": [
+   "cards",
+   "echoed pair"
+  ]
+ },
+ {
+  "name": "Way of the Mind Sculptor",
+  "number": 1,
+  "rarity": "U",
+  "sections": [
+   "cards",
+   "echoed pair"
+  ]
+ },
+ {
+  "name": "Yargle, Goliath of Otaria",
+  "number": 1,
+  "rarity": "U",
+  "sections": [
+   "cards",
+   "echoed pair"
+  ]
+ },
+ {
+  "name": "Yuriko, Hope from the Shadows",
+  "number": 1,
+  "rarity": "U",
+  "sections": [
+   "cards",
+   "echoed pair"
+  ]
+ },
+ {
+  "name": "Danitha, Spear of Agony",
+  "number": 1,
+  "rarity": "U",
+  "sections": [
+   "cards",
+   "echoed pair"
+  ]
+ },
+ {
+  "name": "Gallia, Tragic Host",
+  "number": 1,
+  "rarity": "U",
+  "sections": [
+   "cards",
+   "echoed pair"
+  ]
+ },
+ {
+  "name": "Garruk, Veiled Butcher",
+  "number": 1,
+  "rarity": "M",
+  "sections": [
+   "cards",
+   "borderless",
+   "borderless echoed pair",
+   "echoed pair"
+  ]
+ },
+ {
+  "name": "Gideon the Oathless",
+  "number": 1,
+  "rarity": "R",
+  "sections": [
+   "cards",
+   "borderless",
+   "borderless echoed pair",
+   "echoed pair"
+  ]
+ },
+ {
+  "name": "Liliana the Repentant",
+  "number": 1,
+  "rarity": "R",
+  "sections": [
+   "cards",
+   "borderless",
+   "borderless echoed pair",
+   "echoed pair"
+  ]
+ },
+ {
+  "name": "Loot, the Anomaly",
+  "number": 1,
+  "rarity": "U",
+  "sections": [
+   "cards",
+   "echoed pair"
+  ]
+ },
+ {
+  "name": "Mabel, Bitter Recluse",
+  "number": 1,
+  "rarity": "U",
+  "sections": [
+   "cards",
+   "echoed pair"
+  ]
+ },
+ {
+  "name": "Massacre Girl, Most Wanted",
+  "number": 1,
+  "rarity": "U",
+  "sections": [
+   "cards",
+   "echoed pair"
+  ]
+ },
+ {
+  "name": "Proft, Sinister Mastermind",
+  "number": 1,
+  "rarity": "U",
+  "sections": [
+   "cards",
+   "echoed pair"
+  ]
+ },
+ {
+  "name": "Teyo, Diamondblade Mage",
+  "number": 1,
+  "rarity": "U",
+  "sections": [
+   "cards",
+   "borderless",
+   "borderless echoed pair",
+   "echoed pair"
+  ]
+ },
+ {
+  "name": "Tinybones, Pocket Nuisance",
+  "number": 1,
+  "rarity": "U",
+  "sections": [
+   "cards",
+   "echoed pair"
+  ]
+ },
+ {
+  "name": "Way of the Deathbringer",
+  "number": 1,
+  "rarity": "U",
+  "sections": [
+   "cards",
+   "echoed pair"
+  ]
+ },
+ {
+  "name": "Way of the Necromancer",
+  "number": 1,
+  "rarity": "U",
+  "sections": [
+   "cards",
+   "echoed pair"
+  ]
+ },
+ {
+  "name": "Winter, Tormented Loner",
+  "number": 240,
+  "rarity": "U",
+  "sections": [
+   "cards",
+   "borderless"
+  ]
+ },
+ {
+  "name": "Yargle, Glutton of Urborg",
+  "number": 1,
+  "rarity": "U",
+  "sections": [
+   "cards",
+   "echoed pair"
+  ]
+ },
+ {
+  "name": "Ajani Unrelenting",
+  "number": 1,
+  "rarity": "M",
+  "sections": [
+   "cards",
+   "borderless",
+   "borderless echoed pair",
+   "echoed pair"
+  ]
+ },
+ {
+  "name": "Arni, Renowned Champion",
+  "number": 1,
+  "rarity": "U",
+  "sections": [
+   "cards",
+   "echoed pair"
+  ]
+ },
+ {
+  "name": "Chandra, Torch of Defiance",
+  "number": 1,
+  "rarity": "M",
+  "sections": [
+   "cards",
+   "borderless",
+   "borderless echoed pair",
+   "echoed pair"
+  ]
+ },
+ {
+  "name": "Gallia, the Merrymaker",
+  "number": 1,
+  "rarity": "U",
+  "sections": [
+   "cards",
+   "echoed pair"
+  ]
+ },
+ {
+  "name": "Jiang Yanggu, Alone",
+  "number": 1,
+  "rarity": "U",
+  "sections": [
+   "cards",
+   "echoed pair"
+  ]
+ },
+ {
+  "name": "Kiora of Fire and Ashes",
+  "number": 1,
+  "rarity": "U",
+  "sections": [
+   "cards",
+   "echoed pair"
+  ]
+ },
+ {
+  "name": "Koth, the Geomancer",
+  "number": 1,
+  "rarity": "U",
+  "sections": [
+   "cards",
+   "echoed pair"
+  ]
+ },
+ {
+  "name": "Marwyn, the Clearcutter",
+  "number": 1,
+  "rarity": "U",
+  "sections": [
+   "cards",
+   "borderless",
+   "borderless echoed pair",
+   "echoed pair"
+  ]
+ },
+ {
+  "name": "Pia, Determined Rebuilder",
+  "number": 1,
+  "rarity": "U",
+  "sections": [
+   "cards",
+   "echoed pair"
+  ]
+ },
+ {
+  "name": "Samut, Hazoret's Champion",
+  "number": 1,
+  "rarity": "R",
+  "sections": [
+   "cards",
+   "borderless",
+   "borderless echoed pair",
+   "echoed pair"
+  ]
+ },
+ {
+  "name": "Tetsuko Umezawa, Pursuer",
+  "number": 1,
+  "rarity": "U",
+  "sections": [
+   "cards",
+   "echoed pair"
+  ]
+ },
+ {
+  "name": "Tomik, Izzet Sparkmage",
+  "number": 1,
+  "rarity": "U",
+  "sections": [
+   "cards",
+   "echoed pair"
+  ]
+ },
+ {
+  "name": "Way of the Pyromancer",
+  "number": 1,
+  "rarity": "U",
+  "sections": [
+   "cards",
+   "echoed pair"
+  ]
+ },
+ {
+  "name": "Way of the Warlord",
+  "number": 1,
+  "rarity": "U",
+  "sections": [
+   "cards",
+   "echoed pair"
+  ]
+ },
+ {
+  "name": "Winter, Team Player",
+  "number": 1,
+  "rarity": "U",
+  "sections": [
+   "cards",
+   "borderless",
+   "borderless echoed pair",
+   "echoed pair"
+  ]
+ },
+ {
+  "name": "Edgar, Moonlit Sovereign",
+  "number": 1,
+  "rarity": "U",
+  "sections": [
+   "cards",
+   "echoed pair"
+  ]
+ },
+ {
+  "name": "Fblthp, Knows the Way",
+  "number": 1,
+  "rarity": "U",
+  "sections": [
+   "cards",
+   "borderless",
+   "borderless echoed pair",
+   "echoed pair"
+  ]
+ },
+ {
+  "name": "Garruk, Curse Breaker",
+  "number": 1,
+  "rarity": "M",
+  "sections": [
+   "cards",
+   "borderless",
+   "borderless echoed pair",
+   "echoed pair"
+  ]
+ },
+ {
+  "name": "Ghalta the Unstoppable",
+  "number": 1,
+  "rarity": "U",
+  "sections": [
+   "cards",
+   "echoed pair"
+  ]
+ },
+ {
+  "name": "Jiang Yanggu, Never Alone",
+  "number": 1,
+  "rarity": "U",
+  "sections": [
+   "cards",
+   "echoed pair"
+  ]
+ },
+ {
+  "name": "Loot, the Nexus",
+  "number": 1,
+  "rarity": "U",
+  "sections": [
+   "cards",
+   "echoed pair"
+  ]
+ },
+ {
+  "name": "Marwyn, the Preserver",
+  "number": 1,
+  "rarity": "U",
+  "sections": [
+   "cards",
+   "borderless",
+   "borderless echoed pair",
+   "echoed pair"
+  ]
+ },
+ {
+  "name": "Pia, Aether Ascetic",
+  "number": 1,
+  "rarity": "U",
+  "sections": [
+   "cards",
+   "echoed pair"
+  ]
+ },
+ {
+  "name": "Ruric Thar, Magecrusher",
+  "number": 1,
+  "rarity": "U",
+  "sections": [
+   "cards",
+   "echoed pair"
+  ]
+ },
+ {
+  "name": "Titanbones, Towering Heart",
+  "number": 1,
+  "rarity": "U",
+  "sections": [
+   "cards",
+   "echoed pair"
+  ]
+ },
+ {
+  "name": "Way of the Paradox",
+  "number": 1,
+  "rarity": "U",
+  "sections": [
+   "cards",
+   "echoed pair"
+  ]
+ },
+ {
+  "name": "Way of the Wildspeaker",
+  "number": 1,
+  "rarity": "U",
+  "sections": [
+   "cards",
+   "echoed pair"
+  ]
+ },
+ {
+  "name": "Yoshimaru, Scrappy Stray",
+  "number": 1,
+  "rarity": "U",
+  "sections": [
+   "cards",
+   "echoed pair"
+  ]
+ },
+ {
+  "name": "Edgar, Ancient Bloodlord",
+  "number": 1,
+  "rarity": "U",
+  "sections": [
+   "cards",
+   "echoed pair"
+  ]
+ },
+ {
+  "name": "Hapatra, the Desert Fang",
+  "number": 1,
+  "rarity": "U",
+  "sections": [
+   "cards",
+   "echoed pair"
+  ]
+ },
+ {
+  "name": "Karn, Gilded Guardian",
+  "number": 1,
+  "rarity": "R",
+  "sections": [
+   "cards",
+   "borderless",
+   "borderless echoed pair",
+   "echoed pair"
+  ]
+ },
+ {
+  "name": "Kiora of Salt and Sand",
+  "number": 1,
+  "rarity": "U",
+  "sections": [
+   "cards",
+   "echoed pair"
+  ]
+ },
+ {
+  "name": "Mabel, Valley Hero",
+  "number": 1,
+  "rarity": "U",
+  "sections": [
+   "cards",
+   "echoed pair"
+  ]
+ },
+ {
+  "name": "Saheeli, Jewel of Avishkar",
+  "number": 1,
+  "rarity": "U",
+  "sections": [
+   "cards",
+   "echoed pair"
+  ]
+ },
+ {
+  "name": "Tam, the Possibility",
+  "number": 1,
+  "rarity": "R",
+  "sections": [
+   "cards",
+   "borderless",
+   "borderless echoed pair",
+   "echoed pair"
+  ]
+ },
+ {
+  "name": "Vraska, Soul of Stone",
+  "number": 1,
+  "rarity": "R",
+  "sections": [
+   "cards",
+   "borderless",
+   "borderless echoed pair",
+   "echoed pair"
+  ]
+ },
+ {
+  "name": "Vraska, the Cutting Glare",
+  "number": 1,
+  "rarity": "R",
+  "sections": [
+   "cards",
+   "borderless",
+   "borderless echoed pair",
+   "echoed pair"
+  ]
+ },
+ {
+  "name": "Karn, Argent Defender",
+  "number": 1,
+  "rarity": "R",
+  "sections": [
+   "cards",
+   "borderless",
+   "borderless echoed pair",
+   "echoed pair"
+  ]
+ },
+ {
+  "name": "Traxos, Scourge Eternal",
+  "number": 1,
+  "rarity": "U",
+  "sections": [
+   "cards",
+   "echoed pair"
+  ]
+ }
+]

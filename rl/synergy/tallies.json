@@ -1,0 +1,8505 @@
+{
+ "effect_api": [
+  [
+   "ChangeZone",
+   54,
+   49,
+   [
+    "Afterthought Sentry",
+    "Blessed Ghoul",
+    "Carnivorous Cultivator",
+    "Clash of Elements",
+    "Command the Stage",
+    "Curse-Marred Demon",
+    "Darklight Phoenix",
+    "Diviner of Victory",
+    "Emrakul, the Exigent Doom",
+    "Entrust the Spark",
+    "Extended Absence",
+    "Extrapolate the Impossible",
+    "Fatehold Charm",
+    "Fateshaper Aspirant",
+    "Fblthp, Impossibly Lost",
+    "Fblthp, Knows the Way",
+    "Ferocity of the Hunt",
+    "Flickering Hound",
+    "Gallia, Tragic Host",
+    "Garruk, Veiled Butcher",
+    "Generous Revival",
+    "Grim Repriser",
+    "Hexhaven Invigorator",
+    "Identity Echo",
+    "Liliana the Repentant",
+    "Living Library",
+    "Loyal Tutor",
+    "Marwyn, the Preserver",
+    "Memory Trap",
+    "Null Summoner",
+    "Paradox Shaper",
+    "Pia, Aether Ascetic",
+    "Plan for All Outcomes",
+    "Primal Witchstalker",
+    "Proctor of Potential",
+    "Puppet Crafting",
+    "Refute Destiny",
+    "Rescue Girl, First Responder",
+    "Restore with Empathy",
+    "Rewrite Regrets",
+    "Simulacrum Shaper",
+    "Solitary Cell",
+    "Something Worth Saving",
+    "Sphinx's Approach",
+    "The Theorist, Jace Beleren",
+    "Theoretical Necromancer",
+    "Uldaros Theorix",
+    "Unsummon",
+    "Vindictive Triumph"
+   ]
+  ],
+  [
+   "Pump",
+   52,
+   44,
+   [
+    "Academic Ascent",
+    "Aerid Konstrari",
+    "Afterthought Sentry",
+    "Arni, Renowned Champion",
+    "Blazing Crescendo",
+    "Bloombrute",
+    "Charge the Sanctum",
+    "Compel Brutality",
+    "Cruel Calculations",
+    "Desperate Futurescribe",
+    "Diviner of Victory",
+    "Edgar, Ancient Bloodlord",
+    "Fateshaper Aspirant",
+    "Flourishing Grapple",
+    "Garruk, Curse Breaker",
+    "Garruk, Veiled Butcher",
+    "Hungering Puppetbeast",
+    "Hunter's Axe",
+    "Icy Reception",
+    "Jace, Reality Sculptor",
+    "Konstrari Charm",
+    "Last Gasp",
+    "Liliana the Faultless",
+    "Loot, the Anomaly",
+    "Pia, Determined Rebuilder",
+    "Proft, Sinister Mastermind",
+    "Rampart Hunter",
+    "Roiling Canopy",
+    "Skilled Battlecarver",
+    "Stingcaster Mage",
+    "Stingerquill Charm",
+    "Tam's Resistance",
+    "Tethermage's Advantage",
+    "Teyo, Diamondblade Mage",
+    "Teyo, Lightshield Expert",
+    "Theorix Charm",
+    "Tomik, Orzhov Lawmage",
+    "Uldaros Theorix",
+    "Undulating Witness",
+    "Vigorbloom Charm",
+    "Wrecking Gecko",
+    "Yoshimaru, Scrappy Stray",
+    "Yuriko, Blade of the Mighty",
+    "Yuriko, Hope from the Shadows"
+   ]
+  ],
+  [
+   "PutCounter",
+   45,
+   43,
+   [
+    "Ajani Resolute",
+    "Avatar of Burgeoning Echoes",
+    "Awaken the Inferno",
+    "Blossom-Blessed Angel",
+    "Chandra's Emberling",
+    "Chandra, Chill of Compliance",
+    "Charge the Sanctum",
+    "Cryotheory Adept",
+    "Danitha, Spear of Agony",
+    "Desperate Futurescribe",
+    "Edgar, Ancient Bloodlord",
+    "Edgar, Moonlit Sovereign",
+    "Emergency Phytomedic",
+    "Fateshaper Aspirant",
+    "Gallia, the Merrymaker",
+    "Gardenize",
+    "Graft Surgeon",
+    "Hapatra, the Desert Fang",
+    "Hapatra, the Desert Frost",
+    "Hungering Puppetbeast",
+    "Inspired Tethermage",
+    "Jiang Yanggu, Alone",
+    "Konstrari Charm",
+    "Koth of the Homestead",
+    "Liliana the Repentant",
+    "Mabel, Valley Hero",
+    "Massacre Girl, Most Wanted",
+    "Predictive Preparations",
+    "Proft, Consulting Detective",
+    "Recursive Recruitment",
+    "Room of Refuge",
+    "Seasoned Cryomancer",
+    "Tam's Resistance",
+    "Tenured Tethermage",
+    "Teyo, Diamondblade Mage",
+    "Teyo, Lightshield Expert",
+    "Titanbones, Towering Heart",
+    "Unflinching Hortimancer",
+    "Vigorbloom Charm",
+    "Vigorbloom Vanguard",
+    "Vinelasher Adept",
+    "Yoshimaru, Beloved Companion",
+    "Yoshimaru, Scrappy Stray"
+   ]
+  ],
+  [
+   "Draw",
+   45,
+   42,
+   [
+    "Ajani Unrelenting",
+    "Arni, Humble Scribe",
+    "Artifist Acumen",
+    "Bloodline Recollector",
+    "Bloombrute",
+    "Budding Insurgent",
+    "Cast Away Doubt",
+    "Chandra, Chill of Compliance",
+    "Craftwork Crusher",
+    "Cruel Calculations",
+    "Danitha, Sword of Hope",
+    "Divining Duelist",
+    "Fatehold Charm",
+    "Fblthp, Impossibly Lost",
+    "Frostbite Pyromental",
+    "Garruk, Curse Breaker",
+    "Garruk, Veiled Butcher",
+    "Hallway Heckler",
+    "Jiang Yanggu, Alone",
+    "Karn, Gilded Guardian",
+    "Lyra, Tolarian Archangel",
+    "Marwyn, the Clearcutter",
+    "Murmuring Volume",
+    "Pompous Battlemage",
+    "Proft, Consulting Detective",
+    "Prophesied End",
+    "Protege's Awakening",
+    "Rise of the Deathbringer",
+    "Ruric Thar, Biomagus",
+    "Seasoned Cryomancer",
+    "Simulacrum Shaper",
+    "Solitary Cell",
+    "Sphinx of False Conclusions",
+    "Sphinx's Approach",
+    "Surgical Precision",
+    "The Echoverse Fulcrum",
+    "The Theorist, Jace Beleren",
+    "Theorix Charm",
+    "Twinned Vision",
+    "Variable Chaser",
+    "Vigorbloom Charm",
+    "Way of the Mind Sculptor"
+   ]
+  ],
+  [
+   "Token",
+   39,
+   37,
+   [
+    "Aerid Konstrari",
+    "Ajani Resolute",
+    "Ajani Unrelenting",
+    "Bestial Incursion",
+    "Command the Stage",
+    "Craftwork Crusher",
+    "Fatehold Chronologist",
+    "Garruk, Curse Breaker",
+    "Garruk, Veiled Butcher",
+    "Germinate Recruits",
+    "Heartstring Puller",
+    "Heartwood Crafter",
+    "Hexhaven Battalion",
+    "Hungering Puppetbeast",
+    "Ingris Stingerquill",
+    "Jiang Yanggu, Never Alone",
+    "Kiora of Fire and Ashes",
+    "Kiora of Salt and Sand",
+    "Konstrari Improviser",
+    "Kwia Vigorbloom",
+    "Lyra, Tolarian Archangel",
+    "Pia, Determined Rebuilder",
+    "Prudent Fateseer",
+    "Recursive Recruitment",
+    "Saheeli, Consul of Oversight",
+    "Saheeli, Jewel of Avishkar",
+    "Semester Foreseer",
+    "Stingerquill Charm",
+    "Tenured Tethermage",
+    "The Theorist, Jace Beleren",
+    "Verdant Kraken",
+    "Vraska, Soul of Stone",
+    "Vraska, the Cutting Glare",
+    "Way of the Deathbringer",
+    "Way of the Healer",
+    "Way of the Wildspeaker",
+    "Woodwork Prodigy"
+   ]
+  ],
+  [
+   "Empower",
+   35,
+   35,
+   [
+    "Academic Ascent",
+    "Arcane Amphisbaena",
+    "Avatar of Burgeoning Echoes",
+    "Campus Crier",
+    "Countersculpt",
+    "Fatehold Charm",
+    "Hexhaven Battalion",
+    "Inspired Tethermage",
+    "Jace's Machinations",
+    "Jace, Reality Sculptor",
+    "Keeper of the Quiet Hour",
+    "Mindseeker Oculus",
+    "No Admittance",
+    "Overwrite the Multiverse",
+    "Plan for All Outcomes",
+    "Protege's Awakening",
+    "Repurposed Enforcer",
+    "Rewrite Regrets",
+    "Sanctum Lurker",
+    "Solve for Disappointment",
+    "Tam's Resistance",
+    "Theorist's Proxy",
+    "Theorist's Sanctum",
+    "Violent Echoes",
+    "Vraska's Final Mercy",
+    "Way of the Cryomancer",
+    "Way of the Deathbringer",
+    "Way of the Healer",
+    "Way of the Mentor",
+    "Way of the Mind Sculptor",
+    "Way of the Necromancer",
+    "Way of the Paradox",
+    "Way of the Pyromancer",
+    "Way of the Warlord",
+    "Way of the Wildspeaker"
+   ]
+  ],
+  [
+   "Mana",
+   32,
+   32,
+   [
+    "Chandra, Chill of Compliance",
+    "Chandra, Torch of Defiance",
+    "Dedicated Commons",
+    "Deserted Beach",
+    "Emrakul, the Exigent Doom",
+    "Fatehold Annex",
+    "Formidable Commons",
+    "Gardenize",
+    "Gideon's Memorial",
+    "Greenhouse Propagator",
+    "Hall of Echoes",
+    "Haunted Ridge",
+    "Heartwood Crafter",
+    "Hexhaven Dueling Arena",
+    "Innovative Commons",
+    "Konstrari Annex",
+    "Konstrari Charm",
+    "Koth, the Geomancer",
+    "Loot, the Nexus",
+    "Meticulous Commons",
+    "Murmuring Volume",
+    "Overgrown Farmland",
+    "Pyre Rhymer",
+    "Rockfall Vale",
+    "Roiling Canopy",
+    "Room of Refuge",
+    "Shipwreck Marsh",
+    "Stingerquill Annex",
+    "Theorix Annex",
+    "Transformative Commons",
+    "Vigorbloom Annex",
+    "Way of the Pyromancer"
+   ]
+  ],
+  [
+   "DealDamage",
+   35,
+   30,
+   [
+    "Ajani's Anguish",
+    "Awaken the Inferno",
+    "Cast Away Doubt",
+    "Chandra, Torch of Defiance",
+    "Clash of Elements",
+    "Compel Brutality",
+    "Craftwork Crusher",
+    "Essence Burn",
+    "Eye of Jace",
+    "Flourishing Grapple",
+    "Fulminous Forte",
+    "Gideon the Oathless",
+    "Gideon's Memorial",
+    "Hallway Heckler",
+    "Ingris Stingerquill",
+    "Konstrari Charm",
+    "Koth, the Geomancer",
+    "Massacre Girl, Most Wanted",
+    "No Admittance",
+    "Stingerquill Charm",
+    "Stingerquill Voxmancer",
+    "Stinging Vitriol",
+    "Tether Technician",
+    "Tetsuko Umezawa, Pursuer",
+    "Tinybones, Pocket Nuisance",
+    "Violent Echoes",
+    "Warrior's Blades",
+    "Way of the Warlord",
+    "Whiplash Wordsmith",
+    "Wrath of the Bloodmane"
+   ]
+  ],
+  [
+   "GainLife",
+   27,
+   26,
+   [
+    "Ajani Resolute",
+    "Apex Witchstalker",
+    "Archive Arbiter",
+    "Blossom-Blessed Angel",
+    "Break Under Pressure",
+    "Edgar, Ancient Bloodlord",
+    "Emergency Phytomedic",
+    "Extended Absence",
+    "Eye of Jace",
+    "Greenhouse Propagator",
+    "Koth of the Homestead",
+    "Liliana the Faultless",
+    "Massacre Girl, Most Wanted",
+    "Medic's Kitesail",
+    "Restore with Empathy",
+    "Sanctum Lurker",
+    "Screeching Soulbreaker",
+    "Solarium Sentry",
+    "Something Worth Saving",
+    "Surgical Precision",
+    "Terminal Criticism",
+    "Titanbones, Towering Heart",
+    "Vigorbloom Charm",
+    "Vigorbloom Vanguard",
+    "Warrior's Blades",
+    "Way of the Paradox"
+   ]
+  ],
+  [
+   "AlterAttribute",
+   25,
+   24,
+   [
+    "Bloodline Recollector",
+    "Blossom-Blessed Angel",
+    "Carnivorous Cultivator",
+    "Codie, Ravenous Codex",
+    "Diviner of Victory",
+    "Emergency Phytomedic",
+    "Fatehold Chronologist",
+    "Hallway Heckler",
+    "Heartwood Crafter",
+    "Hexhaven Dueling Arena",
+    "Infinite Coursework",
+    "Konstrari Improviser",
+    "Paradox Shaper",
+    "Pompous Battlemage",
+    "Prudent Fateseer",
+    "Pyre Rhymer",
+    "Semester Foreseer",
+    "Stingerquill Voxmancer",
+    "Theorix Metamage",
+    "Variable Chaser",
+    "Vigorbloom Vanguard",
+    "Void Extrapolator",
+    "Whiplash Wordsmith",
+    "Woodwork Prodigy"
+   ]
+  ],
+  [
+   "Tap",
+   24,
+   24,
+   [
+    "Chandra, Chill of Compliance",
+    "Cryotheory Adept",
+    "Dedicated Commons",
+    "Deserted Beach",
+    "Divining Duelist",
+    "Fatehold Annex",
+    "Formidable Commons",
+    "Hapatra, the Desert Frost",
+    "Haunted Ridge",
+    "Infinite Coursework",
+    "Innovative Commons",
+    "Konstrari Annex",
+    "Meticulous Commons",
+    "Overgrown Farmland",
+    "Rockfall Vale",
+    "Roiling Canopy",
+    "Room of Refuge",
+    "Seasoned Cryomancer",
+    "Shipwreck Marsh",
+    "Stingerquill Annex",
+    "Theorist's Sanctum",
+    "Theorix Annex",
+    "Transformative Commons",
+    "Vigorbloom Annex"
+   ]
+  ],
+  [
+   "Cleanup",
+   19,
+   19,
+   [
+    "Blazing Crescendo",
+    "Chandra, Chill of Compliance",
+    "Chandra, Torch of Defiance",
+    "Clash of Elements",
+    "Command the Stage",
+    "Enlightened Confidant",
+    "Extrapolate the Impossible",
+    "Flickering Hound",
+    "Flourishing Grapple",
+    "Garruk, Veiled Butcher",
+    "Overwrite the Multiverse",
+    "Primal Witchstalker",
+    "Recursive Recruitment",
+    "Rise of the Deathbringer",
+    "Seasoned Cryomancer",
+    "Something Worth Saving",
+    "Uldaros Theorix",
+    "Variable Chaser",
+    "Vindictive Triumph"
+   ]
+  ],
+  [
+   "Charm",
+   18,
+   18,
+   [
+    "Archive Arbiter",
+    "Charge the Sanctum",
+    "Compel Brutality",
+    "Craftwork Crusher",
+    "Divining Duelist",
+    "Fatehold Charm",
+    "Fateshaper Aspirant",
+    "Fulminous Forte",
+    "Icy Reception",
+    "Konstrari Charm",
+    "Perfected Theory",
+    "Rise of the Deathbringer",
+    "Stingerquill Charm",
+    "Surgical Precision",
+    "Theorix Charm",
+    "Vigorbloom Charm",
+    "Vraska's Final Mercy",
+    "Yuriko, Hope from the Shadows"
+   ]
+  ],
+  [
+   "Effect",
+   15,
+   15,
+   [
+    "Ajani Resolute",
+    "Blazing Crescendo",
+    "Chandra, Chill of Compliance",
+    "Chandra, Torch of Defiance",
+    "Eardrum Rattler",
+    "Emrakul, the Exigent Doom",
+    "Garruk, Curse Breaker",
+    "Hall of Echoes",
+    "Jace's Machinations",
+    "Jace, Reality Sculptor",
+    "Kiora of Salt and Sand",
+    "Lyra, Tolarian Archangel",
+    "Pyre Rhymer",
+    "Theorist's Proxy",
+    "Way of the Paradox"
+   ]
+  ],
+  [
+   "Discard",
+   14,
+   14,
+   [
+    "Ajani Unrelenting",
+    "Arni, Humble Scribe",
+    "Curse-Marred Demon",
+    "Divining Duelist",
+    "Garruk, Veiled Butcher",
+    "Jiang Yanggu, Alone",
+    "Rank Rat",
+    "Seasoned Cryomancer",
+    "Solve for Disappointment",
+    "Sphinx of False Conclusions",
+    "Stinging Vitriol",
+    "The Echoverse Fulcrum",
+    "Tinybones, Pocket Nuisance",
+    "Variable Chaser"
+   ]
+  ],
+  [
+   "Surveil",
+   14,
+   13,
+   [
+    "Chandra, Chill of Compliance",
+    "Diviner of Victory",
+    "Enlightened Confidant",
+    "Eye of Jace",
+    "Fatehold Chronologist",
+    "Proctor of Potential",
+    "Prudent Fateseer",
+    "Refute Destiny",
+    "Semester Foreseer",
+    "Surveillance Phantasm",
+    "Way of the Healer",
+    "Your Fate Ends Here",
+    "Yuriko, Hope from the Shadows"
+   ]
+  ],
+  [
+   "Destroy",
+   12,
+   12,
+   [
+    "Archive Arbiter",
+    "Budding Insurgent",
+    "Lich's Relic",
+    "Prophesied End",
+    "Silence the Echo",
+    "Sureshot Sower",
+    "Surgical Precision",
+    "Terminal Criticism",
+    "Twisted Fates",
+    "Vraska's Final Mercy",
+    "Vraska, the Cutting Glare",
+    "Your Fate Ends Here"
+   ]
+  ],
+  [
+   "PumpAll",
+   11,
+   11,
+   [
+    "Ajani Unrelenting",
+    "Artifist Acumen",
+    "Charge the Sanctum",
+    "Craterclaw Colossus",
+    "Fatehold Charm",
+    "Ingris Stingerquill",
+    "Master of Barbs",
+    "Prudent Fateseer",
+    "Rise of the Deathbringer",
+    "Shatterwing Pegasus",
+    "Winter, Team Player"
+   ]
+  ],
+  [
+   "PutCounterAll",
+   9,
+   9,
+   [
+    "Command the Stage",
+    "Denzilore Fatehold",
+    "Edgar, Moonlit Sovereign",
+    "Guiding Hydra",
+    "Lyra, Archangel of Dawn",
+    "The Theorist, Jace Beleren",
+    "Twisted Fates",
+    "Way of the Mentor",
+    "Way of the Necromancer"
+   ]
+  ],
+  [
+   "Mill",
+   8,
+   8,
+   [
+    "Dark Matter Manipulator",
+    "Liliana the Repentant",
+    "Paradox Shaper",
+    "Primal Witchstalker",
+    "Something Worth Saving",
+    "Theorix Charm",
+    "Theorix Metamage",
+    "Void Extrapolator"
+   ]
+  ],
+  [
+   "Untap",
+   7,
+   7,
+   [
+    "Arni, Humble Scribe",
+    "Divining Duelist",
+    "Garruk, Curse Breaker",
+    "Hapatra, the Desert Frost",
+    "Kiora of Salt and Sand",
+    "Tethermage's Advantage",
+    "Traxos, Scourge Eternal"
+   ]
+  ],
+  [
+   "Sacrifice",
+   6,
+   6,
+   [
+    "Break Under Pressure",
+    "Eye of Jace",
+    "Face Yourself",
+    "Frostbite Pyromental",
+    "Garruk, Veiled Butcher",
+    "Winter, Tormented Loner"
+   ]
+  ],
+  [
+   "ChangeZoneAll",
+   5,
+   5,
+   [
+    "Chandra, Chill of Compliance",
+    "Enlightened Confidant",
+    "Jace, Reality Sculptor",
+    "Overwrite the Multiverse",
+    "Return to the Light Realms"
+   ]
+  ],
+  [
+   "DamageAll",
+   5,
+   5,
+   [
+    "Ajani Unrelenting",
+    "Extended Absence",
+    "Fulminous Forte",
+    "Sanctum Lurker",
+    "Screeching Soulbreaker"
+   ]
+  ],
+  [
+   "ImmediateTrigger",
+   5,
+   5,
+   [
+    "Lich's Relic",
+    "Primal Witchstalker",
+    "Seasoned Cryomancer",
+    "Tether Technician",
+    "Winter, Tormented Loner"
+   ]
+  ],
+  [
+   "Counter",
+   4,
+   4,
+   [
+    "Countersculpt",
+    "Icy Reception",
+    "Precise Redaction",
+    "Theorix Charm"
+   ]
+  ],
+  [
+   "Animate",
+   4,
+   3,
+   [
+    "Flourishing Grapple",
+    "Multiply by Zero",
+    "Perfected Theory"
+   ]
+  ],
+  [
+   "LoseLife",
+   4,
+   3,
+   [
+    "Bloodline Recollector",
+    "Rise of the Deathbringer",
+    "Vraska's Final Mercy"
+   ]
+  ],
+  [
+   "Fight",
+   3,
+   3,
+   [
+    "Mind Meanderer",
+    "Vigorbloom Charm",
+    "Yoshimaru, Scrappy Stray"
+   ]
+  ],
+  [
+   "CopyPermanent",
+   2,
+   2,
+   [
+    "Face Yourself",
+    "Sphinx of False Conclusions"
+   ]
+  ],
+  [
+   "CopySpellAbility",
+   2,
+   2,
+   [
+    "Codie, Ravenous Codex",
+    "Way of the Cryomancer"
+   ]
+  ],
+  [
+   "DelayedTrigger",
+   2,
+   2,
+   [
+    "Theorist's Proxy",
+    "Way of the Cryomancer"
+   ]
+  ],
+  [
+   "DestroyAll",
+   2,
+   2,
+   [
+    "Kindred Judgment",
+    "The Echoverse Fulcrum"
+   ]
+  ],
+  [
+   "Dig",
+   2,
+   2,
+   [
+    "Blazing Crescendo",
+    "Chandra, Torch of Defiance"
+   ]
+  ],
+  [
+   "Play",
+   2,
+   2,
+   [
+    "Chandra, Torch of Defiance",
+    "Uldaros Theorix"
+   ]
+  ],
+  [
+   "UntapAll",
+   2,
+   2,
+   [
+    "Emrakul, the Exigent Doom",
+    "Jiang Yanggu, Never Alone"
+   ]
+  ],
+  [
+   "StoreSVar",
+   2,
+   1,
+   [
+    "Garruk, Veiled Butcher"
+   ]
+  ],
+  [
+   "ChooseColor",
+   1,
+   1,
+   [
+    "Room of Refuge"
+   ]
+  ],
+  [
+   "ChooseType",
+   1,
+   1,
+   [
+    "Kindred Judgment"
+   ]
+  ],
+  [
+   "Clone",
+   1,
+   1,
+   [
+    "Hall of Echoes"
+   ]
+  ],
+  [
+   "DamageResolve",
+   1,
+   1,
+   [
+    "Way of the Warlord"
+   ]
+  ],
+  [
+   "DigUntil",
+   1,
+   1,
+   [
+    "Identity Echo"
+   ]
+  ],
+  [
+   "Proliferate",
+   1,
+   1,
+   [
+    "Tam, the Possibility"
+   ]
+  ],
+  [
+   "RemoveCounter",
+   1,
+   1,
+   [
+    "Mabel, Bitter Recluse"
+   ]
+  ],
+  [
+   "RepeatEach",
+   1,
+   1,
+   [
+    "Garruk, Veiled Butcher"
+   ]
+  ],
+  [
+   "ReplaceCounter",
+   1,
+   1,
+   [
+    "Yoshimaru, Beloved Companion"
+   ]
+  ],
+  [
+   "ReplaceEffect",
+   1,
+   1,
+   [
+    "Tomik, Izzet Sparkmage"
+   ]
+  ],
+  [
+   "ReplaceToken",
+   1,
+   1,
+   [
+    "Draconic Visitor"
+   ]
+  ],
+  [
+   "WinsGame",
+   1,
+   1,
+   [
+    "Fblthp, Impossibly Lost"
+   ]
+  ]
+ ],
+ "trigger_mode": [
+  [
+   "ChangesZone",
+   87,
+   82,
+   [
+    "Aerid Konstrari",
+    "Ajani's Anguish",
+    "Apex Witchstalker",
+    "Arcane Amphisbaena",
+    "Archive Arbiter",
+    "Arni, Humble Scribe",
+    "Arni, Renowned Champion",
+    "Avatar of Burgeoning Echoes",
+    "Craftwork Crusher",
+    "Craterclaw Colossus",
+    "Curse-Marred Demon",
+    "Dark Matter Manipulator",
+    "Divining Duelist",
+    "Edgar, Ancient Bloodlord",
+    "Fateshaper Aspirant",
+    "Fblthp, Knows the Way",
+    "Ferocity of the Hunt",
+    "Gardenize",
+    "Garruk, Curse Breaker",
+    "Gideon the Oathless",
+    "Graft Surgeon",
+    "Greenhouse Propagator",
+    "Hapatra, the Desert Fang",
+    "Hapatra, the Desert Frost",
+    "Heartstring Puller",
+    "Hungering Puppetbeast",
+    "Infinite Coursework",
+    "Jiang Yanggu, Never Alone",
+    "Karn, Gilded Guardian",
+    "Keeper of the Quiet Hour",
+    "Kiora of Fire and Ashes",
+    "Koth of the Homestead",
+    "Koth, the Geomancer",
+    "Lich's Relic",
+    "Liliana the Faultless",
+    "Liliana the Repentant",
+    "Mabel, Bitter Recluse",
+    "Mabel, Valley Hero",
+    "Massacre Girl, Most Wanted",
+    "Memory Trap",
+    "Mind Meanderer",
+    "Mindseeker Oculus",
+    "Null Summoner",
+    "Pia, Aether Ascetic",
+    "Pia, Determined Rebuilder",
+    "Plan for All Outcomes",
+    "Primal Witchstalker",
+    "Proctor of Potential",
+    "Rampart Hunter",
+    "Rank Rat",
+    "Roiling Canopy",
+    "Sanctum Lurker",
+    "Seasoned Cryomancer",
+    "Semester Foreseer",
+    "Simulacrum Shaper",
+    "Solitary Cell",
+    "Sphinx of False Conclusions",
+    "Stingcaster Mage",
+    "Tenured Tethermage",
+    "Tether Technician",
+    "Teyo, Diamondblade Mage",
+    "Teyo, Lightshield Expert",
+    "The Echoverse Fulcrum",
+    "Theorist's Proxy",
+    "Tinybones, Pocket Nuisance",
+    "Uldaros Theorix",
+    "Vinelasher Adept",
+    "Vraska, the Cutting Glare",
+    "Warrior's Blades",
+    "Way of the Cryomancer",
+    "Way of the Deathbringer",
+    "Way of the Healer",
+    "Way of the Mentor",
+    "Way of the Mind Sculptor",
+    "Way of the Necromancer",
+    "Way of the Paradox",
+    "Way of the Pyromancer",
+    "Way of the Warlord",
+    "Way of the Wildspeaker",
+    "Winter, Tormented Loner",
+    "Yoshimaru, Scrappy Stray",
+    "Yuriko, Hope from the Shadows"
+   ]
+  ],
+  [
+   "Phase",
+   18,
+   18,
+   [
+    "Bloodline Recollector",
+    "Command the Stage",
+    "Darklight Phoenix",
+    "Desperate Futurescribe",
+    "Edgar, Moonlit Sovereign",
+    "Enlightened Confidant",
+    "Eye of Jace",
+    "Face Yourself",
+    "Frostbite Pyromental",
+    "Gardenize",
+    "Guiding Hydra",
+    "Jiang Yanggu, Never Alone",
+    "Lyra, Tolarian Archangel",
+    "Paradox Shaper",
+    "Stingerquill Voxmancer",
+    "The Theorist, Jace Beleren",
+    "Verdant Kraken",
+    "Woodwork Prodigy"
+   ]
+  ],
+  [
+   "SpellCast",
+   15,
+   14,
+   [
+    "Chandra's Emberling",
+    "Chandra, Chill of Compliance",
+    "Chandra, Torch of Defiance",
+    "Codie, Ravenous Codex",
+    "Danitha, Spear of Agony",
+    "Danitha, Sword of Hope",
+    "Emrakul, the Exigent Doom",
+    "Flickering Hound",
+    "Plan for All Outcomes",
+    "Saheeli, Jewel of Avishkar",
+    "Solarium Sentry",
+    "Traxos, Scourge Eternal",
+    "Vraska, Soul of Stone",
+    "Winter, Team Player"
+   ]
+  ],
+  [
+   "Attacks",
+   8,
+   8,
+   [
+    "Afterthought Sentry",
+    "Hunter's Axe",
+    "Ingris Stingerquill",
+    "Jace, Reality Sculptor",
+    "Medic's Kitesail",
+    "Repurposed Enforcer",
+    "Screeching Soulbreaker",
+    "Sphinx of False Conclusions"
+   ]
+  ],
+  [
+   "LifeGained",
+   7,
+   7,
+   [
+    "Ajani Resolute",
+    "Bloombrute",
+    "Kwia Vigorbloom",
+    "Lyra, Archangel of Dawn",
+    "Titanbones, Towering Heart",
+    "Unflinching Hortimancer",
+    "Way of the Mentor"
+   ]
+  ],
+  [
+   "Scry",
+   5,
+   5,
+   [
+    "Denzilore Fatehold",
+    "Diviner of Victory",
+    "Proft, Consulting Detective",
+    "Prudent Fateseer",
+    "Saheeli, Consul of Oversight"
+   ]
+  ],
+  [
+   "Surveil",
+   5,
+   5,
+   [
+    "Denzilore Fatehold",
+    "Diviner of Victory",
+    "Proft, Consulting Detective",
+    "Prudent Fateseer",
+    "Saheeli, Consul of Oversight"
+   ]
+  ],
+  [
+   "Continuous",
+   5,
+   4,
+   [
+    "Ajani Resolute",
+    "Blazing Crescendo",
+    "Emrakul, the Exigent Doom",
+    "Way of the Paradox"
+   ]
+  ],
+  [
+   "AbilityCast",
+   4,
+   4,
+   [
+    "Ajani Unrelenting",
+    "Gideon the Oathless",
+    "Way of the Mind Sculptor",
+    "Way of the Paradox"
+   ]
+  ],
+  [
+   "DamageDone",
+   4,
+   4,
+   [
+    "Carnivorous Cultivator",
+    "Frostbite Pyromental",
+    "Lyra, Tolarian Archangel",
+    "Massacre Girl, Most Wanted"
+   ]
+  ],
+  [
+   "AttackersDeclaredOneTarget",
+   3,
+   3,
+   [
+    "Garruk, Curse Breaker",
+    "Jiang Yanggu, Alone",
+    "Yuriko, Blade of the Mighty"
+   ]
+  ],
+  [
+   "CantBlockBy",
+   2,
+   2,
+   [
+    "Eardrum Rattler",
+    "Kiora of Salt and Sand"
+   ]
+  ],
+  [
+   "DamageAll",
+   2,
+   2,
+   [
+    "Fblthp, Impossibly Lost",
+    "Master of Barbs"
+   ]
+  ],
+  [
+   "AttackRestrict",
+   1,
+   1,
+   [
+    "Tomik, Orzhov Lawmage"
+   ]
+  ],
+  [
+   "AttackersDeclared",
+   1,
+   1,
+   [
+    "Kiora of Salt and Sand"
+   ]
+  ],
+  [
+   "BecomesTarget",
+   1,
+   1,
+   [
+    "Ruric Thar, Biomagus"
+   ]
+  ],
+  [
+   "Blocks",
+   1,
+   1,
+   [
+    "Tetsuko Umezawa, Pursuer"
+   ]
+  ],
+  [
+   "CastWithFlash",
+   1,
+   1,
+   [
+    "Jace's Machinations"
+   ]
+  ],
+  [
+   "CounterAddedOnce",
+   1,
+   1,
+   [
+    "Inspired Tethermage"
+   ]
+  ],
+  [
+   "DamageDoneOnce",
+   1,
+   1,
+   [
+    "Hexhaven Invigorator"
+   ]
+  ],
+  [
+   "Discarded",
+   1,
+   1,
+   [
+    "Titanbones, Towering Heart"
+   ]
+  ],
+  [
+   "DiscardedAll",
+   1,
+   1,
+   [
+    "Tinybones, Pocket Nuisance"
+   ]
+  ],
+  [
+   "IgnoreLegendRule",
+   1,
+   1,
+   [
+    "Hall of Echoes"
+   ]
+  ],
+  [
+   "TapsForMana",
+   1,
+   1,
+   [
+    "Pyre Rhymer"
+   ]
+  ]
+ ],
+ "trigger_changeszone_shape": [
+  [
+   "Any->Battlefield",
+   77,
+   76,
+   [
+    "Aerid Konstrari",
+    "Ajani's Anguish",
+    "Apex Witchstalker",
+    "Arcane Amphisbaena",
+    "Archive Arbiter",
+    "Arni, Humble Scribe",
+    "Arni, Renowned Champion",
+    "Avatar of Burgeoning Echoes",
+    "Craftwork Crusher",
+    "Craterclaw Colossus",
+    "Curse-Marred Demon",
+    "Dark Matter Manipulator",
+    "Divining Duelist",
+    "Fateshaper Aspirant",
+    "Fblthp, Knows the Way",
+    "Garruk, Curse Breaker",
+    "Gideon the Oathless",
+    "Greenhouse Propagator",
+    "Hapatra, the Desert Fang",
+    "Hapatra, the Desert Frost",
+    "Heartstring Puller",
+    "Hungering Puppetbeast",
+    "Infinite Coursework",
+    "Jiang Yanggu, Never Alone",
+    "Karn, Gilded Guardian",
+    "Keeper of the Quiet Hour",
+    "Kiora of Fire and Ashes",
+    "Koth of the Homestead",
+    "Koth, the Geomancer",
+    "Lich's Relic",
+    "Liliana the Faultless",
+    "Liliana the Repentant",
+    "Mabel, Bitter Recluse",
+    "Mabel, Valley Hero",
+    "Memory Trap",
+    "Mind Meanderer",
+    "Mindseeker Oculus",
+    "Null Summoner",
+    "Pia, Aether Ascetic",
+    "Pia, Determined Rebuilder",
+    "Plan for All Outcomes",
+    "Primal Witchstalker",
+    "Proctor of Potential",
+    "Rampart Hunter",
+    "Rank Rat",
+    "Roiling Canopy",
+    "Sanctum Lurker",
+    "Seasoned Cryomancer",
+    "Semester Foreseer",
+    "Simulacrum Shaper",
+    "Solitary Cell",
+    "Stingcaster Mage",
+    "Tenured Tethermage",
+    "Tether Technician",
+    "Teyo, Diamondblade Mage",
+    "Teyo, Lightshield Expert",
+    "The Echoverse Fulcrum",
+    "Theorist's Proxy",
+    "Tinybones, Pocket Nuisance",
+    "Uldaros Theorix",
+    "Vinelasher Adept",
+    "Vraska, the Cutting Glare",
+    "Warrior's Blades",
+    "Way of the Cryomancer",
+    "Way of the Deathbringer",
+    "Way of the Healer",
+    "Way of the Mentor",
+    "Way of the Mind Sculptor",
+    "Way of the Necromancer",
+    "Way of the Paradox",
+    "Way of the Pyromancer",
+    "Way of the Warlord",
+    "Way of the Wildspeaker",
+    "Winter, Tormented Loner",
+    "Yoshimaru, Scrappy Stray",
+    "Yuriko, Hope from the Shadows"
+   ]
+  ],
+  [
+   "Battlefield->Graveyard",
+   10,
+   10,
+   [
+    "Aerid Konstrari",
+    "Apex Witchstalker",
+    "Edgar, Ancient Bloodlord",
+    "Ferocity of the Hunt",
+    "Gardenize",
+    "Graft Surgeon",
+    "Massacre Girl, Most Wanted",
+    "Simulacrum Shaper",
+    "Sphinx of False Conclusions",
+    "Way of the Necromancer"
+   ]
+  ]
+ ],
+ "trigger_counter_type": [
+  [
+   "CounterAddedOnce:LOYALTY",
+   1,
+   1,
+   [
+    "Inspired Tethermage"
+   ]
+  ]
+ ],
+ "static_mode": [
+  [
+   "Continuous",
+   39,
+   39,
+   [
+    "Ajani's Anguish",
+    "Avatar of Burgeoning Echoes",
+    "Dark Matter Manipulator",
+    "Fblthp, Knows the Way",
+    "Ferocity of the Hunt",
+    "Gallia, the Merrymaker",
+    "Ghalta the Unstoppable",
+    "Gideon's Memorial",
+    "Hunter's Axe",
+    "Infinite Coursework",
+    "Kiora of Salt and Sand",
+    "Lich's Relic",
+    "Marwyn, the Preserver",
+    "Medic's Kitesail",
+    "Mind Meanderer",
+    "Null Summoner",
+    "Omnipresence",
+    "Puppet Crafting",
+    "Ruric Thar, Magecrusher",
+    "Saheeli, Jewel of Avishkar",
+    "Samut, Hazoret's Champion",
+    "Samut, Tyrant of Naktamun",
+    "Sanctum Lurker",
+    "Skilled Battlecarver",
+    "Tarmogoyf",
+    "Theorix Metamage",
+    "Tomik, Orzhov Lawmage",
+    "Vigorbloom Vanguard",
+    "Void Extrapolator",
+    "Vraska, Soul of Stone",
+    "Warrior's Blades",
+    "Way of the Cryomancer",
+    "Way of the Deathbringer",
+    "Way of the Healer",
+    "Way of the Pyromancer",
+    "Way of the Warlord",
+    "Way of the Wildspeaker",
+    "Whiplash Wordsmith",
+    "Winter, Tormented Loner"
+   ]
+  ],
+  [
+   "ReduceCost",
+   6,
+   6,
+   [
+    "Geist of Saint Thalia",
+    "Ghalta the Immovable",
+    "Ghalta the Unstoppable",
+    "Tam, the Possibility",
+    "Traxos, Academy Guardian",
+    "Wrath of the Bloodmane"
+   ]
+  ],
+  [
+   "CanAttackDefender",
+   2,
+   2,
+   [
+    "Ghalta the Immovable",
+    "Surveillance Phantasm"
+   ]
+  ],
+  [
+   "CantBeCast",
+   2,
+   2,
+   [
+    "Proft, Sinister Mastermind",
+    "Yuriko, Blade of the Mighty"
+   ]
+  ],
+  [
+   "CantBeActivated",
+   1,
+   1,
+   [
+    "Yuriko, Blade of the Mighty"
+   ]
+  ],
+  [
+   "CantBlockBy",
+   1,
+   1,
+   [
+    "Tetsuko Umezawa, Fugitive"
+   ]
+  ],
+  [
+   "CombatDamageNegatePower",
+   1,
+   1,
+   [
+    "Loot, the Anomaly"
+   ]
+  ],
+  [
+   "CombatDamageToughness",
+   1,
+   1,
+   [
+    "Ghalta the Immovable"
+   ]
+  ],
+  [
+   "DisableTriggers",
+   1,
+   1,
+   [
+    "Karn, Argent Defender"
+   ]
+  ],
+  [
+   "IgnorePlaneswalkerZeroLoyaltyRule",
+   1,
+   1,
+   [
+    "Sanctum Lurker"
+   ]
+  ],
+  [
+   "RaiseCost",
+   1,
+   1,
+   [
+    "Thalia, the Survivor"
+   ]
+  ]
+ ],
+ "replacement_event": [
+  [
+   "Moved",
+   19,
+   19,
+   [
+    "Dedicated Commons",
+    "Deserted Beach",
+    "Fatehold Annex",
+    "Formidable Commons",
+    "Garruk, Veiled Butcher",
+    "Haunted Ridge",
+    "Innovative Commons",
+    "Konstrari Annex",
+    "Meticulous Commons",
+    "Overgrown Farmland",
+    "Rockfall Vale",
+    "Roiling Canopy",
+    "Room of Refuge",
+    "Shipwreck Marsh",
+    "Stingerquill Annex",
+    "Theorist's Sanctum",
+    "Theorix Annex",
+    "Transformative Commons",
+    "Vigorbloom Annex"
+   ]
+  ],
+  [
+   "Untap",
+   2,
+   2,
+   [
+    "Infinite Coursework",
+    "Traxos, Scourge Eternal"
+   ]
+  ],
+  [
+   "AddCounter",
+   1,
+   1,
+   [
+    "Yoshimaru, Beloved Companion"
+   ]
+  ],
+  [
+   "Counter",
+   1,
+   1,
+   [
+    "Ruric Thar, Magecrusher"
+   ]
+  ],
+  [
+   "CreateToken",
+   1,
+   1,
+   [
+    "Draconic Visitor"
+   ]
+  ],
+  [
+   "DamageDone",
+   1,
+   1,
+   [
+    "Tomik, Izzet Sparkmage"
+   ]
+  ]
+ ],
+ "counter_type": [
+  [
+   "P1P1",
+   42,
+   41,
+   [
+    "Avatar of Burgeoning Echoes",
+    "Awaken the Inferno",
+    "Blossom-Blessed Angel",
+    "Chandra's Emberling",
+    "Charge the Sanctum",
+    "Command the Stage",
+    "Danitha, Spear of Agony",
+    "Denzilore Fatehold",
+    "Desperate Futurescribe",
+    "Edgar, Ancient Bloodlord",
+    "Edgar, Moonlit Sovereign",
+    "Emergency Phytomedic",
+    "Fateshaper Aspirant",
+    "Gallia, the Merrymaker",
+    "Guiding Hydra",
+    "Hungering Puppetbeast",
+    "Inspired Tethermage",
+    "Jiang Yanggu, Alone",
+    "Konstrari Charm",
+    "Koth of the Homestead",
+    "Liliana the Repentant",
+    "Lyra, Archangel of Dawn",
+    "Mabel, Valley Hero",
+    "Massacre Girl, Most Wanted",
+    "Predictive Preparations",
+    "Proft, Consulting Detective",
+    "Recursive Recruitment",
+    "Room of Refuge",
+    "Tam's Resistance",
+    "Tenured Tethermage",
+    "Teyo, Diamondblade Mage",
+    "Teyo, Lightshield Expert",
+    "The Theorist, Jace Beleren",
+    "Titanbones, Towering Heart",
+    "Twisted Fates",
+    "Unflinching Hortimancer",
+    "Vigorbloom Charm",
+    "Vigorbloom Vanguard",
+    "Vinelasher Adept",
+    "Yoshimaru, Beloved Companion",
+    "Yoshimaru, Scrappy Stray"
+   ]
+  ],
+  [
+   "LOYALTY",
+   6,
+   6,
+   [
+    "Ajani Resolute",
+    "Inspired Tethermage",
+    "Teyo, Diamondblade Mage",
+    "Teyo, Lightshield Expert",
+    "Way of the Mentor",
+    "Way of the Necromancer"
+   ]
+  ],
+  [
+   "Stun",
+   3,
+   3,
+   [
+    "Chandra, Chill of Compliance",
+    "Cryotheory Adept",
+    "Seasoned Cryomancer"
+   ]
+  ],
+  [
+   "Any",
+   1,
+   1,
+   [
+    "Mabel, Bitter Recluse"
+   ]
+  ],
+  [
+   "CHARGE",
+   1,
+   1,
+   [
+    "Gardenize"
+   ]
+  ],
+  [
+   "EachFromSource",
+   1,
+   1,
+   [
+    "Graft Surgeon"
+   ]
+  ],
+  [
+   "M1M1",
+   1,
+   1,
+   [
+    "Hapatra, the Desert Fang"
+   ]
+  ],
+  [
+   "STUN",
+   1,
+   1,
+   [
+    "Hapatra, the Desert Frost"
+   ]
+  ]
+ ],
+ "cost_verb": [
+  [
+   "T",
+   42,
+   38,
+   [
+    "Arni, Humble Scribe",
+    "Codie, Ravenous Codex",
+    "Dedicated Commons",
+    "Deserted Beach",
+    "Eardrum Rattler",
+    "Emrakul, the Exigent Doom",
+    "Fatehold Annex",
+    "Formidable Commons",
+    "Gallia, the Merrymaker",
+    "Gideon's Memorial",
+    "Greenhouse Propagator",
+    "Hall of Echoes",
+    "Hallway Heckler",
+    "Haunted Ridge",
+    "Heartwood Crafter",
+    "Hexhaven Dueling Arena",
+    "Innovative Commons",
+    "Konstrari Annex",
+    "Liliana the Faultless",
+    "Loot, the Nexus",
+    "Marwyn, the Clearcutter",
+    "Meticulous Commons",
+    "Murmuring Volume",
+    "Overgrown Farmland",
+    "Rescue Girl, First Responder",
+    "Rockfall Vale",
+    "Roiling Canopy",
+    "Room of Refuge",
+    "Shipwreck Marsh",
+    "Solitary Cell",
+    "Stingerquill Annex",
+    "Tam, the Possibility",
+    "The Echoverse Fulcrum",
+    "Theorist's Sanctum",
+    "Theorix Annex",
+    "Tomik, Orzhov Lawmage",
+    "Transformative Commons",
+    "Vigorbloom Annex"
+   ]
+  ],
+  [
+   "SubCounter",
+   24,
+   16,
+   [
+    "Ajani Resolute",
+    "Ajani Unrelenting",
+    "Avatar of Burgeoning Echoes",
+    "Chandra, Chill of Compliance",
+    "Chandra, Torch of Defiance",
+    "Garruk, Curse Breaker",
+    "Garruk, Veiled Butcher",
+    "Guiding Hydra",
+    "Jace, Reality Sculptor",
+    "Kiora of Salt and Sand",
+    "The Theorist, Jace Beleren",
+    "Way of the Cryomancer",
+    "Way of the Deathbringer",
+    "Way of the Healer",
+    "Way of the Warlord",
+    "Way of the Wildspeaker"
+   ]
+  ],
+  [
+   "Sac",
+   10,
+   10,
+   [
+    "Budding Insurgent",
+    "Edgar, Ancient Bloodlord",
+    "Hungering Puppetbeast",
+    "Living Library",
+    "Loot, the Anomaly",
+    "Marwyn, the Clearcutter",
+    "Room of Refuge",
+    "Tenured Tethermage",
+    "Theorist's Proxy",
+    "Winter, Tormented Loner"
+   ]
+  ],
+  [
+   "AddCounter",
+   12,
+   9,
+   [
+    "Ajani Unrelenting",
+    "Chandra, Chill of Compliance",
+    "Chandra, Torch of Defiance",
+    "Garruk, Curse Breaker",
+    "Garruk, Veiled Butcher",
+    "Jace, Reality Sculptor",
+    "Sanctum Lurker",
+    "The Theorist, Jace Beleren",
+    "Way of the Pyromancer"
+   ]
+  ],
+  [
+   "Discard",
+   9,
+   9,
+   [
+    "Gideon's Memorial",
+    "Hallway Heckler",
+    "Liliana the Faultless",
+    "Murmuring Volume",
+    "Pia, Aether Ascetic",
+    "Proft, Sinister Mastermind",
+    "Solitary Cell",
+    "Sureshot Sower",
+    "Tether Technician"
+   ]
+  ],
+  [
+   "ExileFromGrave",
+   5,
+   5,
+   [
+    "Campus Crier",
+    "Cryotheory Adept",
+    "Gallia, Tragic Host",
+    "Seasoned Cryomancer",
+    "Theoretical Necromancer"
+   ]
+  ],
+  [
+   "Exile",
+   1,
+   1,
+   [
+    "The Echoverse Fulcrum"
+   ]
+  ],
+  [
+   "ExileFromHand",
+   1,
+   1,
+   [
+    "Emrakul, the Exigent Doom"
+   ]
+  ],
+  [
+   "tapXType",
+   1,
+   1,
+   [
+    "Tenured Tethermage"
+   ]
+  ]
+ ],
+ "cost_counter": [
+  [
+   "SubCounter:LOYALTY",
+   23,
+   15,
+   [
+    "Ajani Resolute",
+    "Ajani Unrelenting",
+    "Avatar of Burgeoning Echoes",
+    "Chandra, Chill of Compliance",
+    "Chandra, Torch of Defiance",
+    "Garruk, Curse Breaker",
+    "Garruk, Veiled Butcher",
+    "Jace, Reality Sculptor",
+    "Kiora of Salt and Sand",
+    "The Theorist, Jace Beleren",
+    "Way of the Cryomancer",
+    "Way of the Deathbringer",
+    "Way of the Healer",
+    "Way of the Warlord",
+    "Way of the Wildspeaker"
+   ]
+  ],
+  [
+   "AddCounter:LOYALTY",
+   12,
+   9,
+   [
+    "Ajani Unrelenting",
+    "Chandra, Chill of Compliance",
+    "Chandra, Torch of Defiance",
+    "Garruk, Curse Breaker",
+    "Garruk, Veiled Butcher",
+    "Jace, Reality Sculptor",
+    "Sanctum Lurker",
+    "The Theorist, Jace Beleren",
+    "Way of the Pyromancer"
+   ]
+  ],
+  [
+   "SubCounter:P1P1",
+   1,
+   1,
+   [
+    "Guiding Hydra"
+   ]
+  ]
+ ],
+ "count_expr": [
+  [
+   "Valid",
+   16,
+   15,
+   [
+    "Aerid Konstrari",
+    "Ajani Unrelenting",
+    "Avatar of Burgeoning Echoes",
+    "Break Under Pressure",
+    "Craterclaw Colossus",
+    "Ghalta the Immovable",
+    "Ghalta the Unstoppable",
+    "Jace, Reality Sculptor",
+    "Karn, Gilded Guardian",
+    "Loot, the Nexus",
+    "Omnipresence",
+    "Pia, Determined Rebuilder",
+    "Repurposed Enforcer",
+    "Rise of the Deathbringer",
+    "Tam, the Possibility"
+   ]
+  ],
+  [
+   "ValidGraveyard",
+   8,
+   8,
+   [
+    "Dark Matter Manipulator",
+    "Eye of Jace",
+    "Hapatra, the Desert Fang",
+    "Proft, Sinister Mastermind",
+    "Recursive Recruitment",
+    "Tarmogoyf",
+    "Winter, Tormented Loner",
+    "Yuriko, Hope from the Shadows"
+   ]
+  ],
+  [
+   "xPaid",
+   4,
+   4,
+   [
+    "Ajani's Anguish",
+    "Chandra, Chill of Compliance",
+    "Fblthp, Knows the Way",
+    "Guiding Hydra"
+   ]
+  ],
+  [
+   "ThisTurnEntered",
+   3,
+   3,
+   [
+    "Bloodline Recollector",
+    "Cruel Calculations",
+    "Darklight Phoenix"
+   ]
+  ],
+  [
+   "ValidSelf",
+   3,
+   3,
+   [
+    "Paradox Shaper",
+    "Stingerquill Voxmancer",
+    "Woodwork Prodigy"
+   ]
+  ],
+  [
+   "YouScryThisTurn",
+   3,
+   3,
+   [
+    "Desperate Futurescribe",
+    "Proctor of Potential",
+    "Surveillance Phantasm"
+   ]
+  ],
+  [
+   "YouSurveilThisTurn",
+   3,
+   3,
+   [
+    "Desperate Futurescribe",
+    "Proctor of Potential",
+    "Surveillance Phantasm"
+   ]
+  ],
+  [
+   "DamageAmount",
+   2,
+   2,
+   [
+    "Hexhaven Invigorator",
+    "Tomik, Izzet Sparkmage"
+   ]
+  ],
+  [
+   "LifeYouGainedThisTurn",
+   2,
+   2,
+   [
+    "Enlightened Confidant",
+    "Germinate Recruits"
+   ]
+  ],
+  [
+   "ThisTurnCast",
+   2,
+   2,
+   [
+    "Edgar, Moonlit Sovereign",
+    "Traxos, Academy Guardian"
+   ]
+  ],
+  [
+   "CardCounters",
+   1,
+   1,
+   [
+    "Gardenize"
+   ]
+  ],
+  [
+   "CounterNum",
+   1,
+   1,
+   [
+    "Yoshimaru, Beloved Companion"
+   ]
+  ],
+  [
+   "Domain",
+   1,
+   1,
+   [
+    "Fblthp, Knows the Way"
+   ]
+  ],
+  [
+   "ThisTurnActivated",
+   1,
+   1,
+   [
+    "Kiora of Salt and Sand"
+   ]
+  ],
+  [
+   "ValidHand",
+   1,
+   1,
+   [
+    "The Theorist, Jace Beleren"
+   ]
+  ],
+  [
+   "ValidLibrary",
+   1,
+   1,
+   [
+    "Fblthp, Impossibly Lost"
+   ]
+  ],
+  [
+   "YouDrewThisTurn",
+   1,
+   1,
+   [
+    "Lyra, Tolarian Archangel"
+   ]
+  ]
+ ],
+ "effect_zone": [
+  [
+   "ChangeZone:Origin=Graveyard",
+   20,
+   20,
+   [
+    "Afterthought Sentry",
+    "Blessed Ghoul",
+    "Carnivorous Cultivator",
+    "Command the Stage",
+    "Darklight Phoenix",
+    "Fateshaper Aspirant",
+    "Ferocity of the Hunt",
+    "Gallia, Tragic Host",
+    "Generous Revival",
+    "Grim Repriser",
+    "Liliana the Repentant",
+    "Marwyn, the Preserver",
+    "Paradox Shaper",
+    "Primal Witchstalker",
+    "Proctor of Potential",
+    "Puppet Crafting",
+    "Restore with Empathy",
+    "Rewrite Regrets",
+    "Theoretical Necromancer",
+    "Uldaros Theorix"
+   ]
+  ],
+  [
+   "ChangeZone:Destination=Hand",
+   18,
+   18,
+   [
+    "Blessed Ghoul",
+    "Carnivorous Cultivator",
+    "Command the Stage",
+    "Curse-Marred Demon",
+    "Diviner of Victory",
+    "Extrapolate the Impossible",
+    "Fatehold Charm",
+    "Fateshaper Aspirant",
+    "Fblthp, Knows the Way",
+    "Marwyn, the Preserver",
+    "Pia, Aether Ascetic",
+    "Puppet Crafting",
+    "Rescue Girl, First Responder",
+    "Restore with Empathy",
+    "Something Worth Saving",
+    "The Theorist, Jace Beleren",
+    "Theoretical Necromancer",
+    "Unsummon"
+   ]
+  ],
+  [
+   "ChangeZone:Origin=Battlefield",
+   17,
+   16,
+   [
+    "Clash of Elements",
+    "Diviner of Victory",
+    "Extended Absence",
+    "Fblthp, Impossibly Lost",
+    "Flickering Hound",
+    "Garruk, Veiled Butcher",
+    "Identity Echo",
+    "Living Library",
+    "Memory Trap",
+    "Plan for All Outcomes",
+    "Refute Destiny",
+    "Rescue Girl, First Responder",
+    "Solitary Cell",
+    "The Theorist, Jace Beleren",
+    "Unsummon",
+    "Vindictive Triumph"
+   ]
+  ],
+  [
+   "ChangeZone:Destination=Battlefield",
+   15,
+   15,
+   [
+    "Darklight Phoenix",
+    "Entrust the Spark",
+    "Ferocity of the Hunt",
+    "Flickering Hound",
+    "Gallia, Tragic Host",
+    "Generous Revival",
+    "Grim Repriser",
+    "Hexhaven Invigorator",
+    "Liliana the Repentant",
+    "Primal Witchstalker",
+    "Proctor of Potential",
+    "Rewrite Regrets",
+    "Simulacrum Shaper",
+    "Sphinx's Approach",
+    "Vindictive Triumph"
+   ]
+  ],
+  [
+   "ChangeZone:Destination=Exile",
+   12,
+   12,
+   [
+    "Afterthought Sentry",
+    "Emrakul, the Exigent Doom",
+    "Extended Absence",
+    "Flickering Hound",
+    "Garruk, Veiled Butcher",
+    "Identity Echo",
+    "Memory Trap",
+    "Null Summoner",
+    "Refute Destiny",
+    "Solitary Cell",
+    "Uldaros Theorix",
+    "Vindictive Triumph"
+   ]
+  ],
+  [
+   "ChangeZone:Origin=Library",
+   9,
+   9,
+   [
+    "Carnivorous Cultivator",
+    "Curse-Marred Demon",
+    "Entrust the Spark",
+    "Fblthp, Knows the Way",
+    "Hexhaven Invigorator",
+    "Loyal Tutor",
+    "Pia, Aether Ascetic",
+    "Simulacrum Shaper",
+    "Sphinx's Approach"
+   ]
+  ],
+  [
+   "ChangeZone:Destination=Library",
+   7,
+   6,
+   [
+    "Clash of Elements",
+    "Fblthp, Impossibly Lost",
+    "Living Library",
+    "Loyal Tutor",
+    "Paradox Shaper",
+    "Plan for All Outcomes"
+   ]
+  ],
+  [
+   "ChangeZoneAll:Origin=Graveyard",
+   3,
+   3,
+   [
+    "Chandra, Chill of Compliance",
+    "Enlightened Confidant",
+    "Return to the Light Realms"
+   ]
+  ],
+  [
+   "ChangeZone:Origin=All",
+   2,
+   2,
+   [
+    "Flickering Hound",
+    "Vindictive Triumph"
+   ]
+  ],
+  [
+   "ChangeZoneAll:Destination=Exile",
+   2,
+   2,
+   [
+    "Jace, Reality Sculptor",
+    "Overwrite the Multiverse"
+   ]
+  ],
+  [
+   "ChangeZoneAll:Destination=Hand",
+   2,
+   2,
+   [
+    "Chandra, Chill of Compliance",
+    "Enlightened Confidant"
+   ]
+  ],
+  [
+   "ChangeZone:Origin=Sideboard",
+   2,
+   1,
+   [
+    "Extrapolate the Impossible"
+   ]
+  ],
+  [
+   "ChangeZone:Destination=Graveyard",
+   1,
+   1,
+   [
+    "Carnivorous Cultivator"
+   ]
+  ],
+  [
+   "ChangeZone:Origin=Battlefield,Stack",
+   1,
+   1,
+   [
+    "Fatehold Charm"
+   ]
+  ],
+  [
+   "ChangeZone:Origin=Command",
+   1,
+   1,
+   [
+    "Emrakul, the Exigent Doom"
+   ]
+  ],
+  [
+   "ChangeZone:Origin=Graveyard,Exile",
+   1,
+   1,
+   [
+    "Something Worth Saving"
+   ]
+  ],
+  [
+   "ChangeZone:Origin=Hand",
+   1,
+   1,
+   [
+    "Null Summoner"
+   ]
+  ],
+  [
+   "ChangeZoneAll:Destination=Battlefield",
+   1,
+   1,
+   [
+    "Return to the Light Realms"
+   ]
+  ],
+  [
+   "ChangeZoneAll:Origin=Battlefield",
+   1,
+   1,
+   [
+    "Overwrite the Multiverse"
+   ]
+  ],
+  [
+   "ChangeZoneAll:Origin=Library",
+   1,
+   1,
+   [
+    "Jace, Reality Sculptor"
+   ]
+  ]
+ ],
+ "mana_produced": [
+  [
+   "C",
+   5,
+   5,
+   [
+    "Emrakul, the Exigent Doom",
+    "Hall of Echoes",
+    "Heartwood Crafter",
+    "Hexhaven Dueling Arena",
+    "Konstrari Charm"
+   ]
+  ],
+  [
+   "R",
+   4,
+   4,
+   [
+    "Chandra, Torch of Defiance",
+    "Koth, the Geomancer",
+    "Pyre Rhymer",
+    "Way of the Pyromancer"
+   ]
+  ],
+  [
+   "Any",
+   3,
+   3,
+   [
+    "Gideon's Memorial",
+    "Loot, the Nexus",
+    "Murmuring Volume"
+   ]
+  ],
+  [
+   "G",
+   3,
+   3,
+   [
+    "Gardenize",
+    "Greenhouse Propagator",
+    "Roiling Canopy"
+   ]
+  ],
+  [
+   "Combo B R",
+   2,
+   2,
+   [
+    "Haunted Ridge",
+    "Stingerquill Annex"
+   ]
+  ],
+  [
+   "Combo G W",
+   2,
+   2,
+   [
+    "Overgrown Farmland",
+    "Vigorbloom Annex"
+   ]
+  ],
+  [
+   "Combo R G",
+   2,
+   2,
+   [
+    "Konstrari Annex",
+    "Rockfall Vale"
+   ]
+  ],
+  [
+   "Combo U B",
+   2,
+   2,
+   [
+    "Shipwreck Marsh",
+    "Theorix Annex"
+   ]
+  ],
+  [
+   "Combo W U",
+   2,
+   2,
+   [
+    "Deserted Beach",
+    "Fatehold Annex"
+   ]
+  ],
+  [
+   "Chosen",
+   1,
+   1,
+   [
+    "Room of Refuge"
+   ]
+  ],
+  [
+   "Combo B G",
+   1,
+   1,
+   [
+    "Formidable Commons"
+   ]
+  ],
+  [
+   "Combo G U",
+   1,
+   1,
+   [
+    "Transformative Commons"
+   ]
+  ],
+  [
+   "Combo R W",
+   1,
+   1,
+   [
+    "Dedicated Commons"
+   ]
+  ],
+  [
+   "Combo U R",
+   1,
+   1,
+   [
+    "Innovative Commons"
+   ]
+  ],
+  [
+   "Combo W B",
+   1,
+   1,
+   [
+    "Meticulous Commons"
+   ]
+  ],
+  [
+   "U",
+   1,
+   1,
+   [
+    "Chandra, Chill of Compliance"
+   ]
+  ]
+ ],
+ "valid_head": [
+  [
+   "Card",
+   147,
+   130,
+   [
+    "Aerid Konstrari",
+    "Afterthought Sentry",
+    "Ajani's Anguish",
+    "Apex Witchstalker",
+    "Arcane Amphisbaena",
+    "Archive Arbiter",
+    "Blazing Crescendo",
+    "Carnivorous Cultivator",
+    "Chandra's Emberling",
+    "Chandra, Torch of Defiance",
+    "Codie, Ravenous Codex",
+    "Countersculpt",
+    "Craftwork Crusher",
+    "Craterclaw Colossus",
+    "Curse-Marred Demon",
+    "Dark Matter Manipulator",
+    "Dedicated Commons",
+    "Deserted Beach",
+    "Divining Duelist",
+    "Eardrum Rattler",
+    "Emrakul, the Exigent Doom",
+    "Fatehold Annex",
+    "Fatehold Charm",
+    "Fateshaper Aspirant",
+    "Fblthp, Knows the Way",
+    "Ferocity of the Hunt",
+    "Formidable Commons",
+    "Frostbite Pyromental",
+    "Geist of Saint Thalia",
+    "Ghalta the Immovable",
+    "Ghalta the Unstoppable",
+    "Graft Surgeon",
+    "Hapatra, the Desert Fang",
+    "Hapatra, the Desert Frost",
+    "Haunted Ridge",
+    "Heartstring Puller",
+    "Hexhaven Invigorator",
+    "Hungering Puppetbeast",
+    "Hunter's Axe",
+    "Icy Reception",
+    "Infinite Coursework",
+    "Innovative Commons",
+    "Jiang Yanggu, Never Alone",
+    "Karn, Gilded Guardian",
+    "Keeper of the Quiet Hour",
+    "Kiora of Fire and Ashes",
+    "Kiora of Salt and Sand",
+    "Konstrari Annex",
+    "Lich's Relic",
+    "Loot, the Anomaly",
+    "Lyra, Tolarian Archangel",
+    "Mabel, Bitter Recluse",
+    "Mabel, Valley Hero",
+    "Massacre Girl, Most Wanted",
+    "Medic's Kitesail",
+    "Memory Trap",
+    "Meticulous Commons",
+    "Mind Meanderer",
+    "Mindseeker Oculus",
+    "Null Summoner",
+    "Omnipresence",
+    "Overgrown Farmland",
+    "Paradox Shaper",
+    "Pia, Aether Ascetic",
+    "Pia, Determined Rebuilder",
+    "Plan for All Outcomes",
+    "Precise Redaction",
+    "Primal Witchstalker",
+    "Proctor of Potential",
+    "Proft, Sinister Mastermind",
+    "Rampart Hunter",
+    "Rank Rat",
+    "Repurposed Enforcer",
+    "Rockfall Vale",
+    "Roiling Canopy",
+    "Room of Refuge",
+    "Ruric Thar, Biomagus",
+    "Ruric Thar, Magecrusher",
+    "Saheeli, Jewel of Avishkar",
+    "Sanctum Lurker",
+    "Screeching Soulbreaker",
+    "Seasoned Cryomancer",
+    "Semester Foreseer",
+    "Shipwreck Marsh",
+    "Simulacrum Shaper",
+    "Solarium Sentry",
+    "Solitary Cell",
+    "Sphinx of False Conclusions",
+    "Stingcaster Mage",
+    "Stingerquill Annex",
+    "Surveillance Phantasm",
+    "Tenured Tethermage",
+    "Tether Technician",
+    "Teyo, Diamondblade Mage",
+    "Teyo, Lightshield Expert",
+    "Thalia, the Survivor",
+    "The Echoverse Fulcrum",
+    "Theorist's Proxy",
+    "Theorist's Sanctum",
+    "Theorix Annex",
+    "Theorix Charm",
+    "Tinybones, Pocket Nuisance",
+    "Titanbones, Towering Heart",
+    "Tomik, Izzet Sparkmage",
+    "Tomik, Orzhov Lawmage",
+    "Transformative Commons",
+    "Traxos, Academy Guardian",
+    "Traxos, Scourge Eternal",
+    "Uldaros Theorix",
+    "Vigorbloom Annex",
+    "Vinelasher Adept",
+    "Vraska, Soul of Stone",
+    "Vraska, the Cutting Glare",
+    "Warrior's Blades",
+    "Way of the Cryomancer",
+    "Way of the Deathbringer",
+    "Way of the Healer",
+    "Way of the Mentor",
+    "Way of the Mind Sculptor",
+    "Way of the Necromancer",
+    "Way of the Paradox",
+    "Way of the Pyromancer",
+    "Way of the Warlord",
+    "Way of the Wildspeaker",
+    "Winter, Team Player",
+    "Winter, Tormented Loner",
+    "Wrath of the Bloodmane",
+    "Yoshimaru, Scrappy Stray",
+    "Yuriko, Blade of the Mighty",
+    "Yuriko, Hope from the Shadows"
+   ]
+  ],
+  [
+   "Creature",
+   164,
+   125,
+   [
+    "Academic Ascent",
+    "Ajani Resolute",
+    "Ajani Unrelenting",
+    "Ajani's Anguish",
+    "Arni, Humble Scribe",
+    "Arni, Renowned Champion",
+    "Artifist Acumen",
+    "Avatar of Burgeoning Echoes",
+    "Awaken the Inferno",
+    "Blazing Crescendo",
+    "Bloombrute",
+    "Blossom-Blessed Angel",
+    "Chandra, Chill of Compliance",
+    "Chandra, Torch of Defiance",
+    "Charge the Sanctum",
+    "Compel Brutality",
+    "Craftwork Crusher",
+    "Craterclaw Colossus",
+    "Cryotheory Adept",
+    "Denzilore Fatehold",
+    "Desperate Futurescribe",
+    "Diviner of Victory",
+    "Divining Duelist",
+    "Eardrum Rattler",
+    "Edgar, Ancient Bloodlord",
+    "Edgar, Moonlit Sovereign",
+    "Emergency Phytomedic",
+    "Essence Burn",
+    "Extended Absence",
+    "Fatehold Charm",
+    "Fateshaper Aspirant",
+    "Ferocity of the Hunt",
+    "Flickering Hound",
+    "Flourishing Grapple",
+    "Fulminous Forte",
+    "Gallia, the Merrymaker",
+    "Gardenize",
+    "Garruk, Curse Breaker",
+    "Garruk, Veiled Butcher",
+    "Generous Revival",
+    "Ghalta the Immovable",
+    "Ghalta the Unstoppable",
+    "Gideon the Oathless",
+    "Gideon's Memorial",
+    "Graft Surgeon",
+    "Greenhouse Propagator",
+    "Guiding Hydra",
+    "Hall of Echoes",
+    "Hapatra, the Desert Fang",
+    "Hapatra, the Desert Frost",
+    "Hexhaven Dueling Arena",
+    "Hunter's Axe",
+    "Icy Reception",
+    "Identity Echo",
+    "Ingris Stingerquill",
+    "Jace, Reality Sculptor",
+    "Jiang Yanggu, Alone",
+    "Karn, Argent Defender",
+    "Kindred Judgment",
+    "Kiora of Salt and Sand",
+    "Konstrari Charm",
+    "Koth of the Homestead",
+    "Last Gasp",
+    "Lich's Relic",
+    "Liliana the Faultless",
+    "Liliana the Repentant",
+    "Living Library",
+    "Mabel, Bitter Recluse",
+    "Mabel, Valley Hero",
+    "Massacre Girl, Most Wanted",
+    "Master of Barbs",
+    "Medic's Kitesail",
+    "Mind Meanderer",
+    "Multiply by Zero",
+    "Perfected Theory",
+    "Pia, Determined Rebuilder",
+    "Predictive Preparations",
+    "Proctor of Potential",
+    "Proft, Sinister Mastermind",
+    "Prophesied End",
+    "Prudent Fateseer",
+    "Rampart Hunter",
+    "Refute Destiny",
+    "Rewrite Regrets",
+    "Rise of the Deathbringer",
+    "Roiling Canopy",
+    "Room of Refuge",
+    "Samut, Hazoret's Champion",
+    "Seasoned Cryomancer",
+    "Shatterwing Pegasus",
+    "Silence the Echo",
+    "Stingerquill Charm",
+    "Sureshot Sower",
+    "Surgical Precision",
+    "Tam's Resistance",
+    "Terminal Criticism",
+    "Tethermage's Advantage",
+    "Tetsuko Umezawa, Fugitive",
+    "Tetsuko Umezawa, Pursuer",
+    "The Echoverse Fulcrum",
+    "The Theorist, Jace Beleren",
+    "Theoretical Necromancer",
+    "Theorix Charm",
+    "Tomik, Orzhov Lawmage",
+    "Traxos, Scourge Eternal",
+    "Twisted Fates",
+    "Uldaros Theorix",
+    "Unsummon",
+    "Vigorbloom Charm",
+    "Vigorbloom Vanguard",
+    "Vindictive Triumph",
+    "Vinelasher Adept",
+    "Violent Echoes",
+    "Vraska's Final Mercy",
+    "Vraska, Soul of Stone",
+    "Warrior's Blades",
+    "Way of the Necromancer",
+    "Way of the Warlord",
+    "Winter, Team Player",
+    "Wrath of the Bloodmane",
+    "Yoshimaru, Beloved Companion",
+    "Yoshimaru, Scrappy Stray",
+    "Your Fate Ends Here",
+    "Yuriko, Blade of the Mighty",
+    "Yuriko, Hope from the Shadows"
+   ]
+  ],
+  [
+   "You",
+   93,
+   76,
+   [
+    "Ajani Resolute",
+    "Ajani Unrelenting",
+    "Arni, Humble Scribe",
+    "Bloombrute",
+    "Break Under Pressure",
+    "Chandra's Emberling",
+    "Chandra, Chill of Compliance",
+    "Chandra, Torch of Defiance",
+    "Codie, Ravenous Codex",
+    "Curse-Marred Demon",
+    "Danitha, Spear of Agony",
+    "Danitha, Sword of Hope",
+    "Dark Matter Manipulator",
+    "Darklight Phoenix",
+    "Denzilore Fatehold",
+    "Desperate Futurescribe",
+    "Diviner of Victory",
+    "Divining Duelist",
+    "Edgar, Ancient Bloodlord",
+    "Edgar, Moonlit Sovereign",
+    "Enlightened Confidant",
+    "Extended Absence",
+    "Eye of Jace",
+    "Fblthp, Impossibly Lost",
+    "Flickering Hound",
+    "Gardenize",
+    "Guiding Hydra",
+    "Infinite Coursework",
+    "Inspired Tethermage",
+    "Jiang Yanggu, Alone",
+    "Jiang Yanggu, Never Alone",
+    "Kindred Judgment",
+    "Koth of the Homestead",
+    "Kwia Vigorbloom",
+    "Liliana the Faultless",
+    "Liliana the Repentant",
+    "Lyra, Archangel of Dawn",
+    "Massacre Girl, Most Wanted",
+    "Medic's Kitesail",
+    "Paradox Shaper",
+    "Plan for All Outcomes",
+    "Primal Witchstalker",
+    "Proft, Consulting Detective",
+    "Protege's Awakening",
+    "Prudent Fateseer",
+    "Restore with Empathy",
+    "Rise of the Deathbringer",
+    "Room of Refuge",
+    "Saheeli, Consul of Oversight",
+    "Saheeli, Jewel of Avishkar",
+    "Sanctum Lurker",
+    "Screeching Soulbreaker",
+    "Solarium Sentry",
+    "Something Worth Saving",
+    "Sphinx of False Conclusions",
+    "Stingerquill Voxmancer",
+    "Surgical Precision",
+    "Terminal Criticism",
+    "The Echoverse Fulcrum",
+    "Theorist's Proxy",
+    "Theorix Charm",
+    "Theorix Metamage",
+    "Titanbones, Towering Heart",
+    "Traxos, Scourge Eternal",
+    "Unflinching Hortimancer",
+    "Vigorbloom Charm",
+    "Void Extrapolator",
+    "Vraska's Final Mercy",
+    "Vraska, Soul of Stone",
+    "Warrior's Blades",
+    "Way of the Cryomancer",
+    "Way of the Mentor",
+    "Way of the Mind Sculptor",
+    "Way of the Paradox",
+    "Winter, Team Player",
+    "Woodwork Prodigy"
+   ]
+  ],
+  [
+   "Self",
+   45,
+   45,
+   [
+    "Aerid Konstrari",
+    "Afterthought Sentry",
+    "Ajani Resolute",
+    "Arni, Humble Scribe",
+    "Arni, Renowned Champion",
+    "Chandra's Emberling",
+    "Command the Stage",
+    "Danitha, Spear of Agony",
+    "Darklight Phoenix",
+    "Dedicated Commons",
+    "Deserted Beach",
+    "Diviner of Victory",
+    "Edgar, Ancient Bloodlord",
+    "Edgar, Moonlit Sovereign",
+    "Emrakul, the Exigent Doom",
+    "Fatehold Annex",
+    "Fblthp, Impossibly Lost",
+    "Formidable Commons",
+    "Haunted Ridge",
+    "Innovative Commons",
+    "Inspired Tethermage",
+    "Konstrari Annex",
+    "Liliana the Repentant",
+    "Loot, the Anomaly",
+    "Massacre Girl, Most Wanted",
+    "Meticulous Commons",
+    "Mind Meanderer",
+    "Overgrown Farmland",
+    "Proft, Consulting Detective",
+    "Rockfall Vale",
+    "Roiling Canopy",
+    "Room of Refuge",
+    "Shipwreck Marsh",
+    "Skilled Battlecarver",
+    "Sphinx of False Conclusions",
+    "Stingerquill Annex",
+    "Theorist's Sanctum",
+    "Theorix Annex",
+    "Titanbones, Towering Heart",
+    "Transformative Commons",
+    "Traxos, Scourge Eternal",
+    "Undulating Witness",
+    "Unflinching Hortimancer",
+    "Vigorbloom Annex",
+    "Wrecking Gecko"
+   ]
+  ],
+  [
+   "Planeswalker",
+   52,
+   40,
+   [
+    "Avatar of Burgeoning Echoes",
+    "Awaken the Inferno",
+    "Compel Brutality",
+    "Craftwork Crusher",
+    "Edgar, Ancient Bloodlord",
+    "Essence Burn",
+    "Extended Absence",
+    "Flourishing Grapple",
+    "Fulminous Forte",
+    "Identity Echo",
+    "Inspired Tethermage",
+    "Jace's Machinations",
+    "Kiora of Salt and Sand",
+    "Lich's Relic",
+    "Liliana the Faultless",
+    "Liliana the Repentant",
+    "Living Library",
+    "Mabel, Bitter Recluse",
+    "Massacre Girl, Most Wanted",
+    "Refute Destiny",
+    "Rewrite Regrets",
+    "Sanctum Lurker",
+    "Silence the Echo",
+    "Tam, the Possibility",
+    "Terminal Criticism",
+    "Tomik, Orzhov Lawmage",
+    "Uldaros Theorix",
+    "Vindictive Triumph",
+    "Violent Echoes",
+    "Vraska's Final Mercy",
+    "Way of the Cryomancer",
+    "Way of the Deathbringer",
+    "Way of the Healer",
+    "Way of the Mentor",
+    "Way of the Necromancer",
+    "Way of the Pyromancer",
+    "Way of the Warlord",
+    "Way of the Wildspeaker",
+    "Wrath of the Bloodmane",
+    "Your Fate Ends Here"
+   ]
+  ],
+  [
+   "Player",
+   20,
+   19,
+   [
+    "Bloodline Recollector",
+    "Carnivorous Cultivator",
+    "Cast Away Doubt",
+    "Chandra, Torch of Defiance",
+    "Cruel Calculations",
+    "Extended Absence",
+    "Eye of Jace",
+    "Face Yourself",
+    "Frostbite Pyromental",
+    "Garruk, Veiled Butcher",
+    "Ingris Stingerquill",
+    "Lyra, Tolarian Archangel",
+    "Sanctum Lurker",
+    "Tinybones, Pocket Nuisance",
+    "Twisted Fates",
+    "Variable Chaser",
+    "Verdant Kraken",
+    "Way of the Warlord",
+    "Winter, Tormented Loner"
+   ]
+  ],
+  [
+   "Opponent",
+   19,
+   18,
+   [
+    "Break Under Pressure",
+    "Fblthp, Impossibly Lost",
+    "Garruk, Veiled Butcher",
+    "Hallway Heckler",
+    "Koth, the Geomancer",
+    "Massacre Girl, Most Wanted",
+    "Master of Barbs",
+    "Null Summoner",
+    "Rank Rat",
+    "Screeching Soulbreaker",
+    "Solarium Sentry",
+    "Solve for Disappointment",
+    "Stingerquill Voxmancer",
+    "Stinging Vitriol",
+    "The Theorist, Jace Beleren",
+    "Tinybones, Pocket Nuisance",
+    "Tomik, Izzet Sparkmage",
+    "Whiplash Wordsmith"
+   ]
+  ],
+  [
+   "Permanent",
+   18,
+   17,
+   [
+    "Archive Arbiter",
+    "Clash of Elements",
+    "Hall of Echoes",
+    "Infinite Coursework",
+    "Jiang Yanggu, Never Alone",
+    "Memory Trap",
+    "Plan for All Outcomes",
+    "Puppet Crafting",
+    "Rescue Girl, First Responder",
+    "Restore with Empathy",
+    "Solitary Cell",
+    "Teyo, Diamondblade Mage",
+    "Teyo, Lightshield Expert",
+    "Tomik, Izzet Sparkmage",
+    "Twisted Fates",
+    "Vigorbloom Charm",
+    "Vraska, the Cutting Glare"
+   ]
+  ],
+  [
+   "Targeted",
+   17,
+   15,
+   [
+    "Bloodline Recollector",
+    "Chandra, Chill of Compliance",
+    "Charge the Sanctum",
+    "Clash of Elements",
+    "Cryotheory Adept",
+    "Desperate Futurescribe",
+    "Fateshaper Aspirant",
+    "Hapatra, the Desert Frost",
+    "Konstrari Charm",
+    "Seasoned Cryomancer",
+    "Tam's Resistance",
+    "Tethermage's Advantage",
+    "Teyo, Diamondblade Mage",
+    "Teyo, Lightshield Expert",
+    "Uldaros Theorix"
+   ]
+  ],
+  [
+   "creature or planeswalker",
+   9,
+   9,
+   [
+    "Extended Absence",
+    "Fulminous Forte",
+    "Identity Echo",
+    "Silence the Echo",
+    "Vindictive Triumph",
+    "Violent Echoes",
+    "Vraska's Final Mercy",
+    "Way of the Warlord",
+    "Wrath of the Bloodmane"
+   ]
+  ],
+  [
+   "Land",
+   10,
+   8,
+   [
+    "Avatar of Burgeoning Echoes",
+    "Carnivorous Cultivator",
+    "Emrakul, the Exigent Doom",
+    "Garruk, Curse Breaker",
+    "Koth of the Homestead",
+    "Koth, the Geomancer",
+    "Marwyn, the Preserver",
+    "Primal Witchstalker"
+   ]
+  ],
+  [
+   "Artifact",
+   7,
+   7,
+   [
+    "Budding Insurgent",
+    "Chandra, Chill of Compliance",
+    "Draconic Visitor",
+    "Karn, Argent Defender",
+    "The Theorist, Jace Beleren",
+    "Traxos, Scourge Eternal",
+    "Uldaros Theorix"
+   ]
+  ],
+  [
+   "creature you control",
+   7,
+   7,
+   [
+    "Awaken the Inferno",
+    "Compel Brutality",
+    "Flourishing Grapple",
+    "Hall of Echoes",
+    "Konstrari Charm",
+    "Roiling Canopy",
+    "Vigorbloom Charm"
+   ]
+  ],
+  [
+   "Activated",
+   6,
+   6,
+   [
+    "Ajani Unrelenting",
+    "Gideon the Oathless",
+    "Jace's Machinations",
+    "Way of the Mind Sculptor",
+    "Way of the Paradox",
+    "Yuriko, Blade of the Mighty"
+   ]
+  ],
+  [
+   "Any",
+   6,
+   6,
+   [
+    "Ajani's Anguish",
+    "Chandra, Torch of Defiance",
+    "No Admittance",
+    "Stingerquill Charm",
+    "Tether Technician",
+    "Warrior's Blades"
+   ]
+  ],
+  [
+   "Remembered",
+   5,
+   5,
+   [
+    "Flickering Hound",
+    "Flourishing Grapple",
+    "Recursive Recruitment",
+    "Variable Chaser",
+    "Vindictive Triumph"
+   ]
+  ],
+  [
+   "Spell",
+   5,
+   5,
+   [
+    "Chandra, Torch of Defiance",
+    "Danitha, Sword of Hope",
+    "Ruric Thar, Magecrusher",
+    "Theorist's Proxy",
+    "Uldaros Theorix"
+   ]
+  ],
+  [
+   "Instant",
+   4,
+   4,
+   [
+    "Samut, Tyrant of Naktamun",
+    "Stingcaster Mage",
+    "Uldaros Theorix",
+    "Way of the Cryomancer"
+   ]
+  ],
+  [
+   "Sorcery",
+   4,
+   4,
+   [
+    "Samut, Tyrant of Naktamun",
+    "Stingcaster Mage",
+    "Uldaros Theorix",
+    "Way of the Cryomancer"
+   ]
+  ],
+  [
+   "creature or planeswalker an opponent controls",
+   4,
+   3,
+   [
+    "Awaken the Inferno",
+    "Compel Brutality",
+    "Living Library"
+   ]
+  ],
+  [
+   "TriggeredAttackers",
+   3,
+   3,
+   [
+    "Garruk, Curse Breaker",
+    "Jiang Yanggu, Alone",
+    "Yuriko, Blade of the Mighty"
+   ]
+  ],
+  [
+   "nonland permanent",
+   3,
+   3,
+   [
+    "Archive Arbiter",
+    "Clash of Elements",
+    "Twisted Fates"
+   ]
+  ],
+  [
+   "permanent you control",
+   3,
+   3,
+   [
+    "Teyo, Diamondblade Mage",
+    "Teyo, Lightshield Expert",
+    "Vigorbloom Charm"
+   ]
+  ],
+  [
+   "EQ1",
+   2,
+   2,
+   [
+    "Jiang Yanggu, Alone",
+    "Yuriko, Blade of the Mighty"
+   ]
+  ],
+  [
+   "Emblem",
+   2,
+   2,
+   [
+    "Massacre Girl, Most Wanted",
+    "Tomik, Izzet Sparkmage"
+   ]
+  ],
+  [
+   "Enchantment",
+   2,
+   2,
+   [
+    "Budding Insurgent",
+    "Uldaros Theorix"
+   ]
+  ],
+  [
+   "Exile",
+   2,
+   2,
+   [
+    "Chandra, Torch of Defiance",
+    "Uldaros Theorix"
+   ]
+  ],
+  [
+   "For each opponent",
+   2,
+   2,
+   [
+    "Hapatra, the Desert Fang",
+    "Lich's Relic"
+   ]
+  ],
+  [
+   "ParentTarget",
+   2,
+   2,
+   [
+    "Vigorbloom Charm",
+    "Yoshimaru, Scrappy Stray"
+   ]
+  ],
+  [
+   "Select target land card in your graveyard",
+   2,
+   2,
+   [
+    "Marwyn, the Preserver",
+    "Primal Witchstalker"
+   ]
+  ],
+  [
+   "Select up to one target creature an opponent controls",
+   2,
+   2,
+   [
+    "Mind Meanderer",
+    "Yoshimaru, Scrappy Stray"
+   ]
+  ],
+  [
+   "TriggeredCardController",
+   2,
+   2,
+   [
+    "Gideon the Oathless",
+    "Simulacrum Shaper"
+   ]
+  ],
+  [
+   "TriggeredSpellAbility",
+   2,
+   2,
+   [
+    "Codie, Ravenous Codex",
+    "Way of the Cryomancer"
+   ]
+  ],
+  [
+   "Valid Creature",
+   2,
+   2,
+   [
+    "Codie, Ravenous Codex",
+    "Face Yourself"
+   ]
+  ],
+  [
+   "another creature you control",
+   2,
+   2,
+   [
+    "Desperate Futurescribe",
+    "Flickering Hound"
+   ]
+  ],
+  [
+   "creature an opponent controls",
+   2,
+   2,
+   [
+    "Hapatra, the Desert Frost",
+    "Vigorbloom Charm"
+   ]
+  ],
+  [
+   "creature that entered this turn",
+   2,
+   2,
+   [
+    "Gallia, the Merrymaker",
+    "Mabel, Valley Hero"
+   ]
+  ],
+  [
+   "creature with flying",
+   2,
+   2,
+   [
+    "Konstrari Charm",
+    "Sureshot Sower"
+   ]
+  ],
+  [
+   "Enchanted",
+   2,
+   1,
+   [
+    "Infinite Coursework"
+   ]
+  ],
+  [
+   "P1P1",
+   2,
+   1,
+   [
+    "Yoshimaru, Beloved Companion"
+   ]
+  ],
+  [
+   "Select target creature",
+   2,
+   1,
+   [
+    "Divining Duelist"
+   ]
+  ],
+  [
+   "Angel",
+   1,
+   1,
+   [
+    "Lyra, Archangel of Dawn"
+   ]
+  ],
+  [
+   "Battle",
+   1,
+   1,
+   [
+    "Uldaros Theorix"
+   ]
+  ],
+  [
+   "ChangesZone",
+   1,
+   1,
+   [
+    "Karn, Argent Defender"
+   ]
+  ],
+  [
+   "ChangesZoneAll",
+   1,
+   1,
+   [
+    "Karn, Argent Defender"
+   ]
+  ],
+  [
+   "Equipment",
+   1,
+   1,
+   [
+    "Danitha, Sword of Hope"
+   ]
+  ],
+  [
+   "Forest",
+   1,
+   1,
+   [
+    "Roiling Canopy"
+   ]
+  ],
+  [
+   "Kindred",
+   1,
+   1,
+   [
+    "Uldaros Theorix"
+   ]
+  ],
+  [
+   "Mountain",
+   1,
+   1,
+   [
+    "Pyre Rhymer"
+   ]
+  ],
+  [
+   "Plains",
+   1,
+   1,
+   [
+    "Koth of the Homestead"
+   ]
+  ],
+  [
+   "ReplacedCard",
+   1,
+   1,
+   [
+    "Garruk, Veiled Butcher"
+   ]
+  ],
+  [
+   "Select another target creature you control",
+   1,
+   1,
+   [
+    "Yoshimaru, Scrappy Stray"
+   ]
+  ],
+  [
+   "Select target attacking or blocking creature",
+   1,
+   1,
+   [
+    "Gideon's Memorial"
+   ]
+  ],
+  [
+   "Select target black or green creature or planeswalker",
+   1,
+   1,
+   [
+    "Essence Burn"
+   ]
+  ],
+  [
+   "Select target creature or planeswalker",
+   1,
+   1,
+   [
+    "Craftwork Crusher"
+   ]
+  ],
+  [
+   "Select target creatures",
+   1,
+   1,
+   [
+    "Predictive Preparations"
+   ]
+  ],
+  [
+   "Select target instant or sorcery card in your graveyard",
+   1,
+   1,
+   [
+    "Stingcaster Mage"
+   ]
+  ],
+  [
+   "Select target legendary card in your graveyard",
+   1,
+   1,
+   [
+    "Fateshaper Aspirant"
+   ]
+  ],
+  [
+   "Select target nonlegendary creature",
+   1,
+   1,
+   [
+    "Yoshimaru, Scrappy Stray"
+   ]
+  ],
+  [
+   "Select up to one target creature you control",
+   1,
+   1,
+   [
+    "Graft Surgeon"
+   ]
+  ],
+  [
+   "SpellAbility",
+   1,
+   1,
+   [
+    "Ruric Thar, Biomagus"
+   ]
+  ],
+  [
+   "TargetedController",
+   1,
+   1,
+   [
+    "Prophesied End"
+   ]
+  ],
+  [
+   "TargetedOwner",
+   1,
+   1,
+   [
+    "Clash of Elements"
+   ]
+  ],
+  [
+   "TargetedPlayer",
+   1,
+   1,
+   [
+    "Stinging Vitriol"
+   ]
+  ],
+  [
+   "Thopter",
+   1,
+   1,
+   [
+    "Saheeli, Jewel of Avishkar"
+   ]
+  ],
+  [
+   "TriggeredActivator",
+   1,
+   1,
+   [
+    "Gideon the Oathless"
+   ]
+  ],
+  [
+   "TriggeredAttackerLKICopy",
+   1,
+   1,
+   [
+    "Jace, Reality Sculptor"
+   ]
+  ],
+  [
+   "TriggeredBlockerController",
+   1,
+   1,
+   [
+    "Tetsuko Umezawa, Pursuer"
+   ]
+  ],
+  [
+   "TriggeredNewCardLKICopy",
+   1,
+   1,
+   [
+    "Ferocity of the Hunt"
+   ]
+  ],
+  [
+   "Wizard",
+   1,
+   1,
+   [
+    "Command the Stage"
+   ]
+  ],
+  [
+   "another creature or planeswalker",
+   1,
+   1,
+   [
+    "Mabel, Bitter Recluse"
+   ]
+  ],
+  [
+   "another creature or planeswalker you control",
+   1,
+   1,
+   [
+    "Liliana the Faultless"
+   ]
+  ],
+  [
+   "another nonland permanent",
+   1,
+   1,
+   [
+    "Plan for All Outcomes"
+   ]
+  ],
+  [
+   "another target creature you control with power 2 or less",
+   1,
+   1,
+   [
+    "Eardrum Rattler"
+   ]
+  ],
+  [
+   "another target permanent you control",
+   1,
+   1,
+   [
+    "Rescue Girl, First Responder"
+   ]
+  ],
+  [
+   "artifact or creature",
+   1,
+   1,
+   [
+    "Chandra, Chill of Compliance"
+   ]
+  ],
+  [
+   "artifact or creature each opponent controls",
+   1,
+   1,
+   [
+    "The Theorist, Jace Beleren"
+   ]
+  ],
+  [
+   "artifact or enchantment",
+   1,
+   1,
+   [
+    "Budding Insurgent"
+   ]
+  ],
+  [
+   "attacking creature",
+   1,
+   1,
+   [
+    "Kiora of Salt and Sand"
+   ]
+  ],
+  [
+   "card in your graveyard",
+   1,
+   1,
+   [
+    "Paradox Shaper"
+   ]
+  ],
+  [
+   "creature an opponent controls with mana value 3 or less",
+   1,
+   1,
+   [
+    "Diviner of Victory"
+   ]
+  ],
+  [
+   "creature card in your graveyard",
+   1,
+   1,
+   [
+    "Theoretical Necromancer"
+   ]
+  ],
+  [
+   "creature card with mana value 3 or less in your graveyard",
+   1,
+   1,
+   [
+    "Generous Revival"
+   ]
+  ],
+  [
+   "creature or legendary spell",
+   1,
+   1,
+   [
+    "Icy Reception"
+   ]
+  ],
+  [
+   "creature or planeswalker an opponent controls that's red or white",
+   1,
+   1,
+   [
+    "Flourishing Grapple"
+   ]
+  ],
+  [
+   "creature or planeswalker card in your graveyard",
+   1,
+   1,
+   [
+    "Liliana the Repentant"
+   ]
+  ],
+  [
+   "creature or planeswalker card with mana value 6 or less in your graveyard",
+   1,
+   1,
+   [
+    "Rewrite Regrets"
+   ]
+  ],
+  [
+   "creature or planeswalker that's green or blue",
+   1,
+   1,
+   [
+    "Refute Destiny"
+   ]
+  ],
+  [
+   "creature or planeswalker that’s blue or red",
+   1,
+   1,
+   [
+    "Terminal Criticism"
+   ]
+  ],
+  [
+   "creature or planeswalker with mana value 3 or greater",
+   1,
+   1,
+   [
+    "Your Fate Ends Here"
+   ]
+  ],
+  [
+   "creature or planeswalker you control",
+   1,
+   1,
+   [
+    "Identity Echo"
+   ]
+  ],
+  [
+   "creature with a ",
+   1,
+   1,
+   [
+    "Tomik, Orzhov Lawmage"
+   ]
+  ],
+  [
+   "creature with toughness 4 or greater",
+   1,
+   1,
+   [
+    "Surgical Precision"
+   ]
+  ],
+  [
+   "each creature and planeswalker your opponents control",
+   1,
+   1,
+   [
+    "Fulminous Forte"
+   ]
+  ],
+  [
+   "each creature except for tokens you control",
+   1,
+   1,
+   [
+    "Ajani Unrelenting"
+   ]
+  ],
+  [
+   "instant card in your graveyard",
+   1,
+   1,
+   [
+    "Uldaros Theorix"
+   ]
+  ],
+  [
+   "land card in your graveyard",
+   1,
+   1,
+   [
+    "Carnivorous Cultivator"
+   ]
+  ],
+  [
+   "legendary creature",
+   1,
+   1,
+   [
+    "Yoshimaru, Beloved Companion"
+   ]
+  ],
+  [
+   "noncreature",
+   1,
+   1,
+   [
+    "Archive Arbiter"
+   ]
+  ],
+  [
+   "noncreature spell",
+   1,
+   1,
+   [
+    "Theorix Charm"
+   ]
+  ],
+  [
+   "nonland artifact card in your graveyard",
+   1,
+   1,
+   [
+    "Uldaros Theorix"
+   ]
+  ],
+  [
+   "nonland battle card in your graveyard",
+   1,
+   1,
+   [
+    "Uldaros Theorix"
+   ]
+  ],
+  [
+   "nonland creature card in your graveyard",
+   1,
+   1,
+   [
+    "Uldaros Theorix"
+   ]
+  ],
+  [
+   "nonland enchantment card in your graveyard",
+   1,
+   1,
+   [
+    "Uldaros Theorix"
+   ]
+  ],
+  [
+   "nonland kindred card in your graveyard",
+   1,
+   1,
+   [
+    "Uldaros Theorix"
+   ]
+  ],
+  [
+   "nonland permanent an opponent controls",
+   1,
+   1,
+   [
+    "Memory Trap"
+   ]
+  ],
+  [
+   "nonland permanent an opponent controls with mana value 3 or less",
+   1,
+   1,
+   [
+    "Solitary Cell"
+   ]
+  ],
+  [
+   "nonland planeswalker card in your graveyard",
+   1,
+   1,
+   [
+    "Uldaros Theorix"
+   ]
+  ],
+  [
+   "permanent an opponent controls",
+   1,
+   1,
+   [
+    "Vraska, the Cutting Glare"
+   ]
+  ],
+  [
+   "permanent card in your graveyard",
+   1,
+   1,
+   [
+    "Restore with Empathy"
+   ]
+  ],
+  [
+   "planeswalker you control",
+   1,
+   1,
+   [
+    "Compel Brutality"
+   ]
+  ],
+  [
+   "select up to one target creature or planeswalker that player controls",
+   1,
+   1,
+   [
+    "Lich's Relic"
+   ]
+  ],
+  [
+   "select up to one target creature that player controls",
+   1,
+   1,
+   [
+    "Hapatra, the Desert Fang"
+   ]
+  ],
+  [
+   "sorcery card in your graveyard",
+   1,
+   1,
+   [
+    "Uldaros Theorix"
+   ]
+  ],
+  [
+   "white or black spell",
+   1,
+   1,
+   [
+    "Precise Redaction"
+   ]
+  ]
+ ],
+ "valid_expr": [
+  [
+   "ValidCard$ Card.Self",
+   99,
+   96,
+   [
+    "Aerid Konstrari",
+    "Afterthought Sentry",
+    "Ajani's Anguish",
+    "Apex Witchstalker",
+    "Arcane Amphisbaena",
+    "Archive Arbiter",
+    "Craftwork Crusher",
+    "Craterclaw Colossus",
+    "Curse-Marred Demon",
+    "Dark Matter Manipulator",
+    "Dedicated Commons",
+    "Deserted Beach",
+    "Divining Duelist",
+    "Emrakul, the Exigent Doom",
+    "Fatehold Annex",
+    "Fateshaper Aspirant",
+    "Fblthp, Knows the Way",
+    "Formidable Commons",
+    "Ghalta the Immovable",
+    "Ghalta the Unstoppable",
+    "Graft Surgeon",
+    "Hapatra, the Desert Fang",
+    "Hapatra, the Desert Frost",
+    "Haunted Ridge",
+    "Heartstring Puller",
+    "Hungering Puppetbeast",
+    "Hunter's Axe",
+    "Infinite Coursework",
+    "Innovative Commons",
+    "Jiang Yanggu, Never Alone",
+    "Karn, Gilded Guardian",
+    "Keeper of the Quiet Hour",
+    "Kiora of Fire and Ashes",
+    "Konstrari Annex",
+    "Lich's Relic",
+    "Mabel, Bitter Recluse",
+    "Medic's Kitesail",
+    "Memory Trap",
+    "Meticulous Commons",
+    "Mind Meanderer",
+    "Mindseeker Oculus",
+    "Overgrown Farmland",
+    "Pia, Aether Ascetic",
+    "Pia, Determined Rebuilder",
+    "Plan for All Outcomes",
+    "Primal Witchstalker",
+    "Proft, Sinister Mastermind",
+    "Rampart Hunter",
+    "Rank Rat",
+    "Repurposed Enforcer",
+    "Rockfall Vale",
+    "Roiling Canopy",
+    "Room of Refuge",
+    "Ruric Thar, Magecrusher",
+    "Sanctum Lurker",
+    "Screeching Soulbreaker",
+    "Seasoned Cryomancer",
+    "Semester Foreseer",
+    "Shipwreck Marsh",
+    "Simulacrum Shaper",
+    "Solitary Cell",
+    "Sphinx of False Conclusions",
+    "Stingcaster Mage",
+    "Stingerquill Annex",
+    "Surveillance Phantasm",
+    "Tenured Tethermage",
+    "Tether Technician",
+    "Teyo, Diamondblade Mage",
+    "Teyo, Lightshield Expert",
+    "The Echoverse Fulcrum",
+    "Theorist's Proxy",
+    "Theorist's Sanctum",
+    "Theorix Annex",
+    "Tinybones, Pocket Nuisance",
+    "Titanbones, Towering Heart",
+    "Transformative Commons",
+    "Traxos, Academy Guardian",
+    "Traxos, Scourge Eternal",
+    "Vigorbloom Annex",
+    "Vinelasher Adept",
+    "Vraska, the Cutting Glare",
+    "Warrior's Blades",
+    "Way of the Cryomancer",
+    "Way of the Deathbringer",
+    "Way of the Healer",
+    "Way of the Mentor",
+    "Way of the Mind Sculptor",
+    "Way of the Necromancer",
+    "Way of the Paradox",
+    "Way of the Pyromancer",
+    "Way of the Warlord",
+    "Way of the Wildspeaker",
+    "Winter, Tormented Loner",
+    "Wrath of the Bloodmane",
+    "Yoshimaru, Scrappy Stray",
+    "Yuriko, Hope from the Shadows"
+   ]
+  ],
+  [
+   "Defined$ Self",
+   45,
+   45,
+   [
+    "Aerid Konstrari",
+    "Afterthought Sentry",
+    "Ajani Resolute",
+    "Arni, Humble Scribe",
+    "Arni, Renowned Champion",
+    "Chandra's Emberling",
+    "Command the Stage",
+    "Danitha, Spear of Agony",
+    "Darklight Phoenix",
+    "Dedicated Commons",
+    "Deserted Beach",
+    "Diviner of Victory",
+    "Edgar, Ancient Bloodlord",
+    "Edgar, Moonlit Sovereign",
+    "Emrakul, the Exigent Doom",
+    "Fatehold Annex",
+    "Fblthp, Impossibly Lost",
+    "Formidable Commons",
+    "Haunted Ridge",
+    "Innovative Commons",
+    "Inspired Tethermage",
+    "Konstrari Annex",
+    "Liliana the Repentant",
+    "Loot, the Anomaly",
+    "Massacre Girl, Most Wanted",
+    "Meticulous Commons",
+    "Mind Meanderer",
+    "Overgrown Farmland",
+    "Proft, Consulting Detective",
+    "Rockfall Vale",
+    "Roiling Canopy",
+    "Room of Refuge",
+    "Shipwreck Marsh",
+    "Skilled Battlecarver",
+    "Sphinx of False Conclusions",
+    "Stingerquill Annex",
+    "Theorist's Sanctum",
+    "Theorix Annex",
+    "Titanbones, Towering Heart",
+    "Transformative Commons",
+    "Traxos, Scourge Eternal",
+    "Undulating Witness",
+    "Unflinching Hortimancer",
+    "Vigorbloom Annex",
+    "Wrecking Gecko"
+   ]
+  ],
+  [
+   "Defined$ You",
+   44,
+   38,
+   [
+    "Ajani Unrelenting",
+    "Arni, Humble Scribe",
+    "Break Under Pressure",
+    "Chandra, Torch of Defiance",
+    "Curse-Marred Demon",
+    "Dark Matter Manipulator",
+    "Divining Duelist",
+    "Edgar, Ancient Bloodlord",
+    "Extended Absence",
+    "Eye of Jace",
+    "Fblthp, Impossibly Lost",
+    "Jiang Yanggu, Alone",
+    "Kindred Judgment",
+    "Koth of the Homestead",
+    "Liliana the Faultless",
+    "Liliana the Repentant",
+    "Massacre Girl, Most Wanted",
+    "Medic's Kitesail",
+    "Paradox Shaper",
+    "Primal Witchstalker",
+    "Protege's Awakening",
+    "Restore with Empathy",
+    "Rise of the Deathbringer",
+    "Room of Refuge",
+    "Sanctum Lurker",
+    "Screeching Soulbreaker",
+    "Solarium Sentry",
+    "Something Worth Saving",
+    "Sphinx of False Conclusions",
+    "Surgical Precision",
+    "Terminal Criticism",
+    "The Echoverse Fulcrum",
+    "Theorix Charm",
+    "Theorix Metamage",
+    "Vigorbloom Charm",
+    "Void Extrapolator",
+    "Vraska's Final Mercy",
+    "Warrior's Blades"
+   ]
+  ],
+  [
+   "ValidTgts$ Creature",
+   36,
+   34,
+   [
+    "Academic Ascent",
+    "Avatar of Burgeoning Echoes",
+    "Blazing Crescendo",
+    "Bloombrute",
+    "Blossom-Blessed Angel",
+    "Chandra, Torch of Defiance",
+    "Charge the Sanctum",
+    "Cryotheory Adept",
+    "Divining Duelist",
+    "Emergency Phytomedic",
+    "Fateshaper Aspirant",
+    "Garruk, Veiled Butcher",
+    "Hapatra, the Desert Frost",
+    "Hexhaven Dueling Arena",
+    "Icy Reception",
+    "Koth of the Homestead",
+    "Last Gasp",
+    "Multiply by Zero",
+    "Perfected Theory",
+    "Pia, Determined Rebuilder",
+    "Predictive Preparations",
+    "Proft, Sinister Mastermind",
+    "Prophesied End",
+    "Rampart Hunter",
+    "Room of Refuge",
+    "Seasoned Cryomancer",
+    "Stingerquill Charm",
+    "Tam's Resistance",
+    "Tethermage's Advantage",
+    "Theorix Charm",
+    "Unsummon",
+    "Vigorbloom Vanguard",
+    "Vinelasher Adept",
+    "Yuriko, Hope from the Shadows"
+   ]
+  ],
+  [
+   "ValidPlayer$ You",
+   28,
+   23,
+   [
+    "Ajani Resolute",
+    "Bloombrute",
+    "Darklight Phoenix",
+    "Denzilore Fatehold",
+    "Desperate Futurescribe",
+    "Diviner of Victory",
+    "Edgar, Moonlit Sovereign",
+    "Enlightened Confidant",
+    "Eye of Jace",
+    "Gardenize",
+    "Guiding Hydra",
+    "Jiang Yanggu, Never Alone",
+    "Kwia Vigorbloom",
+    "Lyra, Archangel of Dawn",
+    "Paradox Shaper",
+    "Proft, Consulting Detective",
+    "Prudent Fateseer",
+    "Saheeli, Consul of Oversight",
+    "Stingerquill Voxmancer",
+    "Titanbones, Towering Heart",
+    "Unflinching Hortimancer",
+    "Way of the Mentor",
+    "Woodwork Prodigy"
+   ]
+  ],
+  [
+   "ValidActivatingPlayer$ You",
+   17,
+   17,
+   [
+    "Ajani Unrelenting",
+    "Chandra's Emberling",
+    "Chandra, Chill of Compliance",
+    "Chandra, Torch of Defiance",
+    "Codie, Ravenous Codex",
+    "Danitha, Spear of Agony",
+    "Danitha, Sword of Hope",
+    "Flickering Hound",
+    "Plan for All Outcomes",
+    "Saheeli, Jewel of Avishkar",
+    "Theorist's Proxy",
+    "Traxos, Scourge Eternal",
+    "Vraska, Soul of Stone",
+    "Way of the Cryomancer",
+    "Way of the Mind Sculptor",
+    "Way of the Paradox",
+    "Winter, Team Player"
+   ]
+  ],
+  [
+   "Defined$ Targeted",
+   17,
+   15,
+   [
+    "Bloodline Recollector",
+    "Chandra, Chill of Compliance",
+    "Charge the Sanctum",
+    "Clash of Elements",
+    "Cryotheory Adept",
+    "Desperate Futurescribe",
+    "Fateshaper Aspirant",
+    "Hapatra, the Desert Frost",
+    "Konstrari Charm",
+    "Seasoned Cryomancer",
+    "Tam's Resistance",
+    "Tethermage's Advantage",
+    "Teyo, Diamondblade Mage",
+    "Teyo, Lightshield Expert",
+    "Uldaros Theorix"
+   ]
+  ],
+  [
+   "ValidCards$ Creature.YouCtrl",
+   12,
+   12,
+   [
+    "Ajani Unrelenting",
+    "Artifist Acumen",
+    "Charge the Sanctum",
+    "Craterclaw Colossus",
+    "Denzilore Fatehold",
+    "Fatehold Charm",
+    "Ingris Stingerquill",
+    "Master of Barbs",
+    "Prudent Fateseer",
+    "Shatterwing Pegasus",
+    "The Theorist, Jace Beleren",
+    "Winter, Team Player"
+   ]
+  ],
+  [
+   "Affected$ Planeswalker.YouCtrl",
+   10,
+   10,
+   [
+    "Avatar of Burgeoning Echoes",
+    "Kiora of Salt and Sand",
+    "Sanctum Lurker",
+    "Tomik, Orzhov Lawmage",
+    "Way of the Cryomancer",
+    "Way of the Deathbringer",
+    "Way of the Healer",
+    "Way of the Pyromancer",
+    "Way of the Warlord",
+    "Way of the Wildspeaker"
+   ]
+  ],
+  [
+   "ValidTgts$ Creature,Planeswalker",
+   9,
+   9,
+   [
+    "Craftwork Crusher",
+    "Extended Absence",
+    "Fulminous Forte",
+    "Silence the Echo",
+    "Vindictive Triumph",
+    "Violent Echoes",
+    "Vraska's Final Mercy",
+    "Way of the Warlord",
+    "Wrath of the Bloodmane"
+   ]
+  ],
+  [
+   "ValidTgts$ Creature.YouCtrl",
+   8,
+   8,
+   [
+    "Awaken the Inferno",
+    "Compel Brutality",
+    "Flourishing Grapple",
+    "Graft Surgeon",
+    "Hall of Echoes",
+    "Konstrari Charm",
+    "Roiling Canopy",
+    "Vigorbloom Charm"
+   ]
+  ],
+  [
+   "ValidTgts$ Opponent",
+   8,
+   8,
+   [
+    "Break Under Pressure",
+    "Hallway Heckler",
+    "Massacre Girl, Most Wanted",
+    "Null Summoner",
+    "Solve for Disappointment",
+    "Stingerquill Voxmancer",
+    "Stinging Vitriol",
+    "Whiplash Wordsmith"
+   ]
+  ],
+  [
+   "ValidTgtsDesc$ creature or planeswalker",
+   8,
+   8,
+   [
+    "Extended Absence",
+    "Fulminous Forte",
+    "Silence the Echo",
+    "Vindictive Triumph",
+    "Violent Echoes",
+    "Vraska's Final Mercy",
+    "Way of the Warlord",
+    "Wrath of the Bloodmane"
+   ]
+  ],
+  [
+   "ValidCard$ Card.nonCreature",
+   7,
+   7,
+   [
+    "Chandra's Emberling",
+    "Geist of Saint Thalia",
+    "Plan for All Outcomes",
+    "Saheeli, Jewel of Avishkar",
+    "Thalia, the Survivor",
+    "Vraska, Soul of Stone",
+    "Winter, Team Player"
+   ]
+  ],
+  [
+   "ValidTgtsDesc$ creature you control",
+   7,
+   7,
+   [
+    "Awaken the Inferno",
+    "Compel Brutality",
+    "Flourishing Grapple",
+    "Hall of Echoes",
+    "Konstrari Charm",
+    "Roiling Canopy",
+    "Vigorbloom Charm"
+   ]
+  ],
+  [
+   "ValidTgts$ Any",
+   6,
+   6,
+   [
+    "Ajani's Anguish",
+    "Chandra, Torch of Defiance",
+    "No Admittance",
+    "Stingerquill Charm",
+    "Tether Technician",
+    "Warrior's Blades"
+   ]
+  ],
+  [
+   "Defined$ Player.Opponent",
+   5,
+   5,
+   [
+    "Chandra, Torch of Defiance",
+    "Eye of Jace",
+    "Ingris Stingerquill",
+    "Tinybones, Pocket Nuisance",
+    "Winter, Tormented Loner"
+   ]
+  ],
+  [
+   "Defined$ Remembered",
+   5,
+   5,
+   [
+    "Flickering Hound",
+    "Flourishing Grapple",
+    "Recursive Recruitment",
+    "Variable Chaser",
+    "Vindictive Triumph"
+   ]
+  ],
+  [
+   "ValidTgts$ Creature.OppCtrl",
+   5,
+   5,
+   [
+    "Hapatra, the Desert Fang",
+    "Hapatra, the Desert Frost",
+    "Mind Meanderer",
+    "Vigorbloom Charm",
+    "Yoshimaru, Scrappy Stray"
+   ]
+  ],
+  [
+   "ValidTgts$ Player",
+   5,
+   5,
+   [
+    "Bloodline Recollector",
+    "Cruel Calculations",
+    "Face Yourself",
+    "Twisted Fates",
+    "Way of the Warlord"
+   ]
+  ],
+  [
+   "ValidTgts$ Creature.OppCtrl,Planeswalker.OppCtrl",
+   5,
+   4,
+   [
+    "Awaken the Inferno",
+    "Compel Brutality",
+    "Lich's Relic",
+    "Living Library"
+   ]
+  ],
+  [
+   "Defined$ Opponent",
+   4,
+   4,
+   [
+    "Garruk, Veiled Butcher",
+    "Koth, the Geomancer",
+    "Rank Rat",
+    "Tinybones, Pocket Nuisance"
+   ]
+  ],
+  [
+   "ValidCard$ Creature.Other+YouCtrl,Planeswalker.Other+YouCtrl",
+   4,
+   4,
+   [
+    "Edgar, Ancient Bloodlord",
+    "Liliana the Faultless",
+    "Liliana the Repentant",
+    "Massacre Girl, Most Wanted"
+   ]
+  ],
+  [
+   "ValidCard$ Creature.YouCtrl",
+   4,
+   4,
+   [
+    "Gardenize",
+    "Ghalta the Immovable",
+    "Ingris Stingerquill",
+    "Way of the Necromancer"
+   ]
+  ],
+  [
+   "ValidSA$ Spell",
+   4,
+   4,
+   [
+    "Chandra, Torch of Defiance",
+    "Ruric Thar, Magecrusher",
+    "Theorist's Proxy",
+    "Uldaros Theorix"
+   ]
+  ],
+  [
+   "ValidTgtsDesc$ creature or planeswalker an opponent controls",
+   4,
+   3,
+   [
+    "Awaken the Inferno",
+    "Compel Brutality",
+    "Living Library"
+   ]
+  ],
+  [
+   "Affected$ Creature.YouCtrl",
+   3,
+   3,
+   [
+    "Ajani Resolute",
+    "Ajani's Anguish",
+    "Samut, Hazoret's Champion"
+   ]
+  ],
+  [
+   "Defined$ Player",
+   3,
+   3,
+   [
+    "Cast Away Doubt",
+    "Garruk, Veiled Butcher",
+    "Variable Chaser"
+   ]
+  ],
+  [
+   "Defined$ TriggeredAttackers",
+   3,
+   3,
+   [
+    "Garruk, Curse Breaker",
+    "Jiang Yanggu, Alone",
+    "Yuriko, Blade of the Mighty"
+   ]
+  ],
+  [
+   "ValidCard$ Land.YouCtrl",
+   3,
+   3,
+   [
+    "Avatar of Burgeoning Echoes",
+    "Koth of the Homestead",
+    "Koth, the Geomancer"
+   ]
+  ],
+  [
+   "ValidCards$ Creature",
+   3,
+   3,
+   [
+    "Rise of the Deathbringer",
+    "The Echoverse Fulcrum",
+    "Twisted Fates"
+   ]
+  ],
+  [
+   "ValidSA$ Activated.Loyalty",
+   3,
+   3,
+   [
+    "Ajani Unrelenting",
+    "Jace's Machinations",
+    "Way of the Paradox"
+   ]
+  ],
+  [
+   "ValidTarget$ Opponent",
+   3,
+   3,
+   [
+    "Fblthp, Impossibly Lost",
+    "Massacre Girl, Most Wanted",
+    "Master of Barbs"
+   ]
+  ],
+  [
+   "ValidTarget$ Player",
+   3,
+   3,
+   [
+    "Carnivorous Cultivator",
+    "Frostbite Pyromental",
+    "Lyra, Tolarian Archangel"
+   ]
+  ],
+  [
+   "ValidTgts$ Permanent.YouCtrl",
+   3,
+   3,
+   [
+    "Teyo, Diamondblade Mage",
+    "Teyo, Lightshield Expert",
+    "Vigorbloom Charm"
+   ]
+  ],
+  [
+   "ValidTgtsDesc$ permanent you control",
+   3,
+   3,
+   [
+    "Teyo, Diamondblade Mage",
+    "Teyo, Lightshield Expert",
+    "Vigorbloom Charm"
+   ]
+  ],
+  [
+   "ValidCard$ Card",
+   3,
+   2,
+   [
+    "Theorist's Proxy",
+    "Yuriko, Blade of the Mighty"
+   ]
+  ],
+  [
+   "Affected$ Creature",
+   2,
+   2,
+   [
+    "Ferocity of the Hunt",
+    "Warrior's Blades"
+   ]
+  ],
+  [
+   "Affected$ Creature.EquippedBy",
+   2,
+   2,
+   [
+    "Hunter's Axe",
+    "Medic's Kitesail"
+   ]
+  ],
+  [
+   "Defined$ ParentTarget",
+   2,
+   2,
+   [
+    "Vigorbloom Charm",
+    "Yoshimaru, Scrappy Stray"
+   ]
+  ],
+  [
+   "Defined$ TriggeredCardController",
+   2,
+   2,
+   [
+    "Gideon the Oathless",
+    "Simulacrum Shaper"
+   ]
+  ],
+  [
+   "Defined$ TriggeredSpellAbility",
+   2,
+   2,
+   [
+    "Codie, Ravenous Codex",
+    "Way of the Cryomancer"
+   ]
+  ],
+  [
+   "TgtPrompt$ Select target land card in your graveyard",
+   2,
+   2,
+   [
+    "Marwyn, the Preserver",
+    "Primal Witchstalker"
+   ]
+  ],
+  [
+   "TgtPrompt$ Select up to one target creature an opponent controls",
+   2,
+   2,
+   [
+    "Mind Meanderer",
+    "Yoshimaru, Scrappy Stray"
+   ]
+  ],
+  [
+   "ValidAttacker$ Card.IsRemembered",
+   2,
+   2,
+   [
+    "Eardrum Rattler",
+    "Kiora of Salt and Sand"
+   ]
+  ],
+  [
+   "ValidAttackers$ Creature.YouCtrl",
+   2,
+   2,
+   [
+    "Jiang Yanggu, Alone",
+    "Yuriko, Blade of the Mighty"
+   ]
+  ],
+  [
+   "ValidAttackersAmount$ EQ1",
+   2,
+   2,
+   [
+    "Jiang Yanggu, Alone",
+    "Yuriko, Blade of the Mighty"
+   ]
+  ],
+  [
+   "ValidCard$ Card.Self+wasCastByYou",
+   2,
+   2,
+   [
+    "Null Summoner",
+    "Uldaros Theorix"
+   ]
+  ],
+  [
+   "ValidCard$ Creature",
+   2,
+   2,
+   [
+    "Flickering Hound",
+    "Jace, Reality Sculptor"
+   ]
+  ],
+  [
+   "ValidCard$ Creature.Other+YouCtrl",
+   2,
+   2,
+   [
+    "Arni, Renowned Champion",
+    "Greenhouse Propagator"
+   ]
+  ],
+  [
+   "ValidCard$ Planeswalker",
+   2,
+   2,
+   [
+    "Inspired Tethermage",
+    "Tam, the Possibility"
+   ]
+  ],
+  [
+   "ValidCards$ Planeswalker.YouCtrl",
+   2,
+   2,
+   [
+    "Way of the Mentor",
+    "Way of the Necromancer"
+   ]
+  ],
+  [
+   "ValidPlayer$ Player",
+   2,
+   2,
+   [
+    "Tinybones, Pocket Nuisance",
+    "Verdant Kraken"
+   ]
+  ],
+  [
+   "ValidPlayers$ Player.Opponent",
+   2,
+   2,
+   [
+    "Extended Absence",
+    "Sanctum Lurker"
+   ]
+  ],
+  [
+   "ValidSource$ Card.Self",
+   2,
+   2,
+   [
+    "Carnivorous Cultivator",
+    "Frostbite Pyromental"
+   ]
+  ],
+  [
+   "ValidStepTurnToController$ You",
+   2,
+   2,
+   [
+    "Infinite Coursework",
+    "Traxos, Scourge Eternal"
+   ]
+  ],
+  [
+   "ValidTarget$ Card.Self",
+   2,
+   2,
+   [
+    "Hexhaven Invigorator",
+    "Ruric Thar, Biomagus"
+   ]
+  ],
+  [
+   "ValidTgts$ Card",
+   2,
+   2,
+   [
+    "Afterthought Sentry",
+    "Countersculpt"
+   ]
+  ],
+  [
+   "ValidTgts$ Creature.Other+YouCtrl",
+   2,
+   2,
+   [
+    "Desperate Futurescribe",
+    "Flickering Hound"
+   ]
+  ],
+  [
+   "ValidTgts$ Creature.ThisTurnEntered",
+   2,
+   2,
+   [
+    "Gallia, the Merrymaker",
+    "Mabel, Valley Hero"
+   ]
+  ],
+  [
+   "ValidTgts$ Creature.withFlying",
+   2,
+   2,
+   [
+    "Konstrari Charm",
+    "Sureshot Sower"
+   ]
+  ],
+  [
+   "ValidTgts$ Land",
+   2,
+   2,
+   [
+    "Emrakul, the Exigent Doom",
+    "Garruk, Curse Breaker"
+   ]
+  ],
+  [
+   "ValidTgts$ Land.YouOwn",
+   2,
+   2,
+   [
+    "Carnivorous Cultivator",
+    "Primal Witchstalker"
+   ]
+  ],
+  [
+   "ValidTgts$ Permanent.nonLand",
+   2,
+   2,
+   [
+    "Clash of Elements",
+    "Twisted Fates"
+   ]
+  ],
+  [
+   "ValidTgtsDesc$ another creature you control",
+   2,
+   2,
+   [
+    "Desperate Futurescribe",
+    "Flickering Hound"
+   ]
+  ],
+  [
+   "ValidTgtsDesc$ creature an opponent controls",
+   2,
+   2,
+   [
+    "Hapatra, the Desert Frost",
+    "Vigorbloom Charm"
+   ]
+  ],
+  [
+   "ValidTgtsDesc$ creature that entered this turn",
+   2,
+   2,
+   [
+    "Gallia, the Merrymaker",
+    "Mabel, Valley Hero"
+   ]
+  ],
+  [
+   "ValidTgtsDesc$ creature with flying",
+   2,
+   2,
+   [
+    "Konstrari Charm",
+    "Sureshot Sower"
+   ]
+  ],
+  [
+   "ValidTgtsDesc$ nonland permanent",
+   2,
+   2,
+   [
+    "Clash of Elements",
+    "Twisted Fates"
+   ]
+  ],
+  [
+   "ValidZone$ Exile",
+   2,
+   2,
+   [
+    "Chandra, Torch of Defiance",
+    "Uldaros Theorix"
+   ]
+  ],
+  [
+   "Defined$ Enchanted",
+   2,
+   1,
+   [
+    "Infinite Coursework"
+   ]
+  ],
+  [
+   "TgtPrompt$ Select target creature",
+   2,
+   1,
+   [
+    "Divining Duelist"
+   ]
+  ],
+  [
+   "ValidCounterType$ P1P1",
+   2,
+   1,
+   [
+    "Yoshimaru, Beloved Companion"
+   ]
+  ],
+  [
+   "Affected$ Card.!dealtCombatDamagetoAny",
+   1,
+   1,
+   [
+    "Ruric Thar, Magecrusher"
+   ]
+  ],
+  [
+   "Affected$ Card.IsImprinted+IsRemembered",
+   1,
+   1,
+   [
+    "Emrakul, the Exigent Doom"
+   ]
+  ],
+  [
+   "Affected$ Card.IsRemembered",
+   1,
+   1,
+   [
+    "Blazing Crescendo"
+   ]
+  ],
+  [
+   "Affected$ Card.IsRemembered+!IsImprinted",
+   1,
+   1,
+   [
+    "Emrakul, the Exigent Doom"
+   ]
+  ],
+  [
+   "Affected$ Card.nonLand+ExiledWithSource",
+   1,
+   1,
+   [
+    "Null Summoner"
+   ]
+  ],
+  [
+   "Affected$ Card.nonLand+YouOwn+cmcLEX",
+   1,
+   1,
+   [
+    "Omnipresence"
+   ]
+  ],
+  [
+   "Affected$ Creature.Artifact+YouCtrl",
+   1,
+   1,
+   [
+    "Vraska, Soul of Stone"
+   ]
+  ],
+  [
+   "Affected$ Creature.Other+YouCtrl+counters_GE1_P1P1",
+   1,
+   1,
+   [
+    "Gallia, the Merrymaker"
+   ]
+  ],
+  [
+   "Affected$ Creature.YouCtrl+Other",
+   1,
+   1,
+   [
+    "Ghalta the Unstoppable"
+   ]
+  ],
+  [
+   "Affected$ Creature.YouCtrl+counters_GE1_P1P1",
+   1,
+   1,
+   [
+    "Vigorbloom Vanguard"
+   ]
+  ],
+  [
+   "Affected$ Creature.token+YouCtrl",
+   1,
+   1,
+   [
+    "Gideon's Memorial"
+   ]
+  ],
+  [
+   "Affected$ Instant.YouCtrl,Sorcery.YouCtrl",
+   1,
+   1,
+   [
+    "Samut, Tyrant of Naktamun"
+   ]
+  ],
+  [
+   "Affected$ Land.YouCtrl",
+   1,
+   1,
+   [
+    "Marwyn, the Preserver"
+   ]
+  ],
+  [
+   "Affected$ Permanent",
+   1,
+   1,
+   [
+    "Infinite Coursework"
+   ]
+  ],
+  [
+   "Affected$ Permanent.EnchantedBy",
+   1,
+   1,
+   [
+    "Puppet Crafting"
+   ]
+  ],
+  [
+   "Affected$ Thopter.YouCtrl",
+   1,
+   1,
+   [
+    "Saheeli, Jewel of Avishkar"
+   ]
+  ],
+  [
+   "Affected$ You",
+   1,
+   1,
+   [
+    "Way of the Paradox"
+   ]
+  ],
+  [
+   "Defined$ ReplacedCard",
+   1,
+   1,
+   [
+    "Garruk, Veiled Butcher"
+   ]
+  ],
+  [
+   "Defined$ TargetedController",
+   1,
+   1,
+   [
+    "Prophesied End"
+   ]
+  ],
+  [
+   "Defined$ TargetedOwner",
+   1,
+   1,
+   [
+    "Clash of Elements"
+   ]
+  ],
+  [
+   "Defined$ TargetedPlayer",
+   1,
+   1,
+   [
+    "Stinging Vitriol"
+   ]
+  ],
+  [
+   "Defined$ TriggeredActivator",
+   1,
+   1,
+   [
+    "Gideon the Oathless"
+   ]
+  ],
+  [
+   "Defined$ TriggeredAttackerLKICopy",
+   1,
+   1,
+   [
+    "Jace, Reality Sculptor"
+   ]
+  ],
+  [
+   "Defined$ TriggeredBlockerController",
+   1,
+   1,
+   [
+    "Tetsuko Umezawa, Pursuer"
+   ]
+  ],
+  [
+   "Defined$ TriggeredNewCardLKICopy",
+   1,
+   1,
+   [
+    "Ferocity of the Hunt"
+   ]
+  ],
+  [
+   "Defined$ Valid Creature.TargetedPlayerCtrl",
+   1,
+   1,
+   [
+    "Face Yourself"
+   ]
+  ],
+  [
+   "Defined$ Valid Creature.YouCtrl",
+   1,
+   1,
+   [
+    "Codie, Ravenous Codex"
+   ]
+  ],
+  [
+   "TgtPrompt$ For each opponent, select up to one target creature or planeswalker that player controls",
+   1,
+   1,
+   [
+    "Lich's Relic"
+   ]
+  ],
+  [
+   "TgtPrompt$ For each opponent, select up to one target creature that player controls",
+   1,
+   1,
+   [
+    "Hapatra, the Desert Fang"
+   ]
+  ],
+  [
+   "TgtPrompt$ Select another target creature you control",
+   1,
+   1,
+   [
+    "Yoshimaru, Scrappy Stray"
+   ]
+  ],
+  [
+   "TgtPrompt$ Select target attacking or blocking creature",
+   1,
+   1,
+   [
+    "Gideon's Memorial"
+   ]
+  ],
+  [
+   "TgtPrompt$ Select target black or green creature or planeswalker",
+   1,
+   1,
+   [
+    "Essence Burn"
+   ]
+  ],
+  [
+   "TgtPrompt$ Select target creature or planeswalker",
+   1,
+   1,
+   [
+    "Craftwork Crusher"
+   ]
+  ],
+  [
+   "TgtPrompt$ Select target creatures",
+   1,
+   1,
+   [
+    "Predictive Preparations"
+   ]
+  ],
+  [
+   "TgtPrompt$ Select target instant or sorcery card in your graveyard",
+   1,
+   1,
+   [
+    "Stingcaster Mage"
+   ]
+  ],
+  [
+   "TgtPrompt$ Select target legendary card in your graveyard",
+   1,
+   1,
+   [
+    "Fateshaper Aspirant"
+   ]
+  ],
+  [
+   "TgtPrompt$ Select target nonlegendary creature",
+   1,
+   1,
+   [
+    "Yoshimaru, Scrappy Stray"
+   ]
+  ],
+  [
+   "TgtPrompt$ Select up to one target creature you control",
+   1,
+   1,
+   [
+    "Graft Surgeon"
+   ]
+  ],
+  [
+   "Valid$ Card.IsImprinted",
+   1,
+   1,
+   [
+    "Chandra, Torch of Defiance"
+   ]
+  ],
+  [
+   "Valid$ Card.nonLand+IsRemembered",
+   1,
+   1,
+   [
+    "Uldaros Theorix"
+   ]
+  ],
+  [
+   "Valid$ Creature,Planeswalker",
+   1,
+   1,
+   [
+    "Identity Echo"
+   ]
+  ],
+  [
+   "ValidActivatingPlayer$ Opponent",
+   1,
+   1,
+   [
+    "Solarium Sentry"
+   ]
+  ],
+  [
+   "ValidAttacker$ Creature.YouCtrl+powerLE1,Creature.YouCtrl+toughnessLE1",
+   1,
+   1,
+   [
+    "Tetsuko Umezawa, Fugitive"
+   ]
+  ],
+  [
+   "ValidAttackers$ Creature",
+   1,
+   1,
+   [
+    "Garruk, Curse Breaker"
+   ]
+  ],
+  [
+   "ValidCard$ Artifact,Creature",
+   1,
+   1,
+   [
+    "Traxos, Scourge Eternal"
+   ]
+  ],
+  [
+   "ValidCard$ Card.AttachedBy",
+   1,
+   1,
+   [
+    "Ferocity of the Hunt"
+   ]
+  ],
+  [
+   "ValidCard$ Card.IsImprinted+IsRemembered+wasCastFromExile",
+   1,
+   1,
+   [
+    "Emrakul, the Exigent Doom"
+   ]
+  ],
+  [
+   "ValidCard$ Card.IsRemembered",
+   1,
+   1,
+   [
+    "Theorist's Proxy"
+   ]
+  ],
+  [
+   "ValidCard$ Card.Self+!token",
+   1,
+   1,
+   [
+    "Sphinx of False Conclusions"
+   ]
+  ],
+  [
+   "ValidCard$ Card.Self+powerLT0",
+   1,
+   1,
+   [
+    "Loot, the Anomaly"
+   ]
+  ],
+  [
+   "ValidCard$ Card.Self,Creature.Other+YouCtrl",
+   1,
+   1,
+   [
+    "Mabel, Valley Hero"
+   ]
+  ],
+  [
+   "ValidCard$ Card.Self,Creature.YouCtrl",
+   1,
+   1,
+   [
+    "Proctor of Potential"
+   ]
+  ],
+  [
+   "ValidCard$ Card.cmcLE2",
+   1,
+   1,
+   [
+    "Solarium Sentry"
+   ]
+  ],
+  [
+   "ValidCard$ Card.prepared",
+   1,
+   1,
+   [
+    "Codie, Ravenous Codex"
+   ]
+  ],
+  [
+   "ValidCard$ Creature.OppCtrl",
+   1,
+   1,
+   [
+    "Gideon the Oathless"
+   ]
+  ],
+  [
+   "ValidCard$ Creature.OppCtrl+powerLE1,Creature.OppCtrl+toughnessLE1",
+   1,
+   1,
+   [
+    "Tetsuko Umezawa, Pursuer"
+   ]
+  ],
+  [
+   "ValidCard$ Creature.YouCtrl+!token+Other",
+   1,
+   1,
+   [
+    "Arni, Humble Scribe"
+   ]
+  ],
+  [
+   "ValidCard$ Creature.YouCtrl+inZoneBattlefield",
+   1,
+   1,
+   [
+    "Yoshimaru, Beloved Companion"
+   ]
+  ],
+  [
+   "ValidCard$ Creature.powerGE4+YouCtrl",
+   1,
+   1,
+   [
+    "Garruk, Curse Breaker"
+   ]
+  ],
+  [
+   "ValidCard$ Creature.powerLTtoughness+YouCtrl",
+   1,
+   1,
+   [
+    "Ghalta the Immovable"
+   ]
+  ],
+  [
+   "ValidCard$ Forest.YouCtrl",
+   1,
+   1,
+   [
+    "Roiling Canopy"
+   ]
+  ],
+  [
+   "ValidCard$ Instant,Sorcery",
+   1,
+   1,
+   [
+    "Way of the Cryomancer"
+   ]
+  ],
+  [
+   "ValidCard$ Mountain",
+   1,
+   1,
+   [
+    "Pyre Rhymer"
+   ]
+  ],
+  [
+   "ValidCard$ Permanent.AttachedBy",
+   1,
+   1,
+   [
+    "Infinite Coursework"
+   ]
+  ],
+  [
+   "ValidCard$ Permanent.YouCtrl",
+   1,
+   1,
+   [
+    "Hall of Echoes"
+   ]
+  ],
+  [
+   "ValidCard$ Plains.YouCtrl",
+   1,
+   1,
+   [
+    "Koth of the Homestead"
+   ]
+  ],
+  [
+   "ValidCard$ Planeswalker.Jace+YouCtrl",
+   1,
+   1,
+   [
+    "Jace's Machinations"
+   ]
+  ],
+  [
+   "ValidCard$ Planeswalker.YouCtrl",
+   1,
+   1,
+   [
+    "Sanctum Lurker"
+   ]
+  ],
+  [
+   "ValidCards$ Angel.YouCtrl",
+   1,
+   1,
+   [
+    "Lyra, Archangel of Dawn"
+   ]
+  ],
+  [
+   "ValidCards$ Creature.IsNotChosenType",
+   1,
+   1,
+   [
+    "Kindred Judgment"
+   ]
+  ],
+  [
+   "ValidCards$ Creature.OppCtrl,Planeswalker.OppCtrl",
+   1,
+   1,
+   [
+    "Fulminous Forte"
+   ]
+  ],
+  [
+   "ValidCards$ Creature.Other+YouCtrl",
+   1,
+   1,
+   [
+    "Guiding Hydra"
+   ]
+  ],
+  [
+   "ValidCards$ Creature.YouCtrl+!token,Creature.YouDontCtrl",
+   1,
+   1,
+   [
+    "Ajani Unrelenting"
+   ]
+  ],
+  [
+   "ValidCards$ Creature.YouCtrl+counters_GE1_P1P1",
+   1,
+   1,
+   [
+    "Edgar, Moonlit Sovereign"
+   ]
+  ],
+  [
+   "ValidCards$ Land.YouCtrl",
+   1,
+   1,
+   [
+    "Emrakul, the Exigent Doom"
+   ]
+  ],
+  [
+   "ValidCards$ Permanent.token+YouCtrl",
+   1,
+   1,
+   [
+    "Jiang Yanggu, Never Alone"
+   ]
+  ],
+  [
+   "ValidCards$ Wizard.!IsRemembered+token+YouCtrl",
+   1,
+   1,
+   [
+    "Command the Stage"
+   ]
+  ],
+  [
+   "ValidCause$ Artifact,Creature",
+   1,
+   1,
+   [
+    "Karn, Argent Defender"
+   ]
+  ],
+  [
+   "ValidDefender$ Card.Self",
+   1,
+   1,
+   [
+    "Tomik, Orzhov Lawmage"
+   ]
+  ],
+  [
+   "ValidDescription$ creature or planeswalker",
+   1,
+   1,
+   [
+    "Identity Echo"
+   ]
+  ],
+  [
+   "ValidDescription$ each creature and planeswalker your opponents control.",
+   1,
+   1,
+   [
+    "Fulminous Forte"
+   ]
+  ],
+  [
+   "ValidDescription$ each creature except for tokens you control",
+   1,
+   1,
+   [
+    "Ajani Unrelenting"
+   ]
+  ],
+  [
+   "ValidLKI$ Creature.OppCtrl",
+   1,
+   1,
+   [
+    "Garruk, Veiled Butcher"
+   ]
+  ],
+  [
+   "ValidMode$ ChangesZone,ChangesZoneAll",
+   1,
+   1,
+   [
+    "Karn, Argent Defender"
+   ]
+  ],
+  [
+   "ValidPlayer$ Opponent",
+   1,
+   1,
+   [
+    "The Theorist, Jace Beleren"
+   ]
+  ],
+  [
+   "ValidPlayers$ Opponent",
+   1,
+   1,
+   [
+    "Screeching Soulbreaker"
+   ]
+  ],
+  [
+   "ValidSA$ Activated.!ManaAbility",
+   1,
+   1,
+   [
+    "Yuriko, Blade of the Mighty"
+   ]
+  ],
+  [
+   "ValidSA$ Activated.Loyalty+CountersRemovedToPayGE2",
+   1,
+   1,
+   [
+    "Way of the Mind Sculptor"
+   ]
+  ],
+  [
+   "ValidSA$ Activated.Loyalty+OppCtrl",
+   1,
+   1,
+   [
+    "Gideon the Oathless"
+   ]
+  ],
+  [
+   "ValidSA$ Equipment,Spell.IsTargeting Valid Creature.YouCtrl",
+   1,
+   1,
+   [
+    "Danitha, Sword of Hope"
+   ]
+  ],
+  [
+   "ValidSource$ Card,Emblem",
+   1,
+   1,
+   [
+    "Massacre Girl, Most Wanted"
+   ]
+  ],
+  [
+   "ValidSource$ Card.EffectSource",
+   1,
+   1,
+   [
+    "Lyra, Tolarian Archangel"
+   ]
+  ],
+  [
+   "ValidSource$ Card.YouCtrl,Emblem.YouCtrl",
+   1,
+   1,
+   [
+    "Tomik, Izzet Sparkmage"
+   ]
+  ],
+  [
+   "ValidSource$ SpellAbility.OppCtrl",
+   1,
+   1,
+   [
+    "Ruric Thar, Biomagus"
+   ]
+  ],
+  [
+   "ValidSource$ You",
+   1,
+   1,
+   [
+    "Inspired Tethermage"
+   ]
+  ],
+  [
+   "ValidTarget$ Permanent.OppCtrl,Opponent",
+   1,
+   1,
+   [
+    "Tomik, Izzet Sparkmage"
+   ]
+  ],
+  [
+   "ValidTgts$ Artifact,Creature",
+   1,
+   1,
+   [
+    "Chandra, Chill of Compliance"
+   ]
+  ],
+  [
+   "ValidTgts$ Artifact,Enchantment",
+   1,
+   1,
+   [
+    "Budding Insurgent"
+   ]
+  ],
+  [
+   "ValidTgts$ Artifact.OppCtrl,Creature.OppCtrl",
+   1,
+   1,
+   [
+    "The Theorist, Jace Beleren"
+   ]
+  ],
+  [
+   "ValidTgts$ Artifact.nonLand+YouOwn",
+   1,
+   1,
+   [
+    "Uldaros Theorix"
+   ]
+  ],
+  [
+   "ValidTgts$ Battle.nonLand+YouOwn",
+   1,
+   1,
+   [
+    "Uldaros Theorix"
+   ]
+  ],
+  [
+   "ValidTgts$ Card.Legendary+YouCtrl",
+   1,
+   1,
+   [
+    "Fateshaper Aspirant"
+   ]
+  ],
+  [
+   "ValidTgts$ Card.White,Card.Black",
+   1,
+   1,
+   [
+    "Precise Redaction"
+   ]
+  ],
+  [
+   "ValidTgts$ Card.YouOwn",
+   1,
+   1,
+   [
+    "Paradox Shaper"
+   ]
+  ],
+  [
+   "ValidTgts$ Card.nonCreature",
+   1,
+   1,
+   [
+    "Theorix Charm"
+   ]
+  ],
+  [
+   "ValidTgts$ Creature,Card.Legendary",
+   1,
+   1,
+   [
+    "Icy Reception"
+   ]
+  ],
+  [
+   "ValidTgts$ Creature,Card.inZoneStack",
+   1,
+   1,
+   [
+    "Fatehold Charm"
+   ]
+  ],
+  [
+   "ValidTgts$ Creature.Black,Creature.Green,Planeswalker.Black,Planeswalker.Green",
+   1,
+   1,
+   [
+    "Essence Burn"
+   ]
+  ],
+  [
+   "ValidTgts$ Creature.Blue,Creature.Red,Planeswalker.Blue,Planeswalker.Red",
+   1,
+   1,
+   [
+    "Terminal Criticism"
+   ]
+  ],
+  [
+   "ValidTgts$ Creature.Green,Creature.Blue,Planeswalker.Green,Planeswalker.Blue",
+   1,
+   1,
+   [
+    "Refute Destiny"
+   ]
+  ],
+  [
+   "ValidTgts$ Creature.Legendary",
+   1,
+   1,
+   [
+    "Yoshimaru, Beloved Companion"
+   ]
+  ],
+  [
+   "ValidTgts$ Creature.OppCtrl+cmcLE3",
+   1,
+   1,
+   [
+    "Diviner of Victory"
+   ]
+  ],
+  [
+   "ValidTgts$ Creature.Other+YouCtrl+powerLE2",
+   1,
+   1,
+   [
+    "Eardrum Rattler"
+   ]
+  ],
+  [
+   "ValidTgts$ Creature.Other+YouCtrl,Planeswalker.Other+YouCtrl",
+   1,
+   1,
+   [
+    "Liliana the Faultless"
+   ]
+  ],
+  [
+   "ValidTgts$ Creature.Other,Planeswalker.Other",
+   1,
+   1,
+   [
+    "Mabel, Bitter Recluse"
+   ]
+  ],
+  [
+   "ValidTgts$ Creature.Red+OppCtrl,Creature.White+OppCtrl,Planeswalker.Red+OppCtrl,Planeswalker.White+OppCtrl",
+   1,
+   1,
+   [
+    "Flourishing Grapple"
+   ]
+  ],
+  [
+   "ValidTgts$ Creature.YouCtrl+Other",
+   1,
+   1,
+   [
+    "Yoshimaru, Scrappy Stray"
+   ]
+  ],
+  [
+   "ValidTgts$ Creature.YouCtrl,Planeswalker.YouCtrl",
+   1,
+   1,
+   [
+    "Identity Echo"
+   ]
+  ],
+  [
+   "ValidTgts$ Creature.YouOwn+Other",
+   1,
+   1,
+   [
+    "Theoretical Necromancer"
+   ]
+  ],
+  [
+   "ValidTgts$ Creature.YouOwn+cmcLE3",
+   1,
+   1,
+   [
+    "Generous Revival"
+   ]
+  ],
+  [
+   "ValidTgts$ Creature.YouOwn,Planeswalker.YouOwn",
+   1,
+   1,
+   [
+    "Liliana the Repentant"
+   ]
+  ],
+  [
+   "ValidTgts$ Creature.attackedThisTurn",
+   1,
+   1,
+   [
+    "Hexhaven Dueling Arena"
+   ]
+  ],
+  [
+   "ValidTgts$ Creature.attacking",
+   1,
+   1,
+   [
+    "Kiora of Salt and Sand"
+   ]
+  ],
+  [
+   "ValidTgts$ Creature.attacking,Creature.blocking",
+   1,
+   1,
+   [
+    "Gideon's Memorial"
+   ]
+  ],
+  [
+   "ValidTgts$ Creature.cmcGE3,Planeswalker.cmcGE3",
+   1,
+   1,
+   [
+    "Your Fate Ends Here"
+   ]
+  ],
+  [
+   "ValidTgts$ Creature.cmcLE6+YouOwn,Planeswalker.cmcLE6+YouOwn",
+   1,
+   1,
+   [
+    "Rewrite Regrets"
+   ]
+  ],
+  [
+   "ValidTgts$ Creature.counters_GE1_P1P1",
+   1,
+   1,
+   [
+    "Tomik, Orzhov Lawmage"
+   ]
+  ],
+  [
+   "ValidTgts$ Creature.nonLand+YouOwn",
+   1,
+   1,
+   [
+    "Uldaros Theorix"
+   ]
+  ],
+  [
+   "ValidTgts$ Creature.nonLegendary",
+   1,
+   1,
+   [
+    "Yoshimaru, Scrappy Stray"
+   ]
+  ],
+  [
+   "ValidTgts$ Creature.toughnessGE4",
+   1,
+   1,
+   [
+    "Surgical Precision"
+   ]
+  ],
+  [
+   "ValidTgts$ Enchantment.nonLand+YouOwn",
+   1,
+   1,
+   [
+    "Uldaros Theorix"
+   ]
+  ],
+  [
+   "ValidTgts$ Instant.YouCtrl,Sorcery.YouCtrl",
+   1,
+   1,
+   [
+    "Stingcaster Mage"
+   ]
+  ],
+  [
+   "ValidTgts$ Instant.YouOwn",
+   1,
+   1,
+   [
+    "Uldaros Theorix"
+   ]
+  ],
+  [
+   "ValidTgts$ Kindred.nonLand+YouOwn",
+   1,
+   1,
+   [
+    "Uldaros Theorix"
+   ]
+  ],
+  [
+   "ValidTgts$ Land.YouCtrl",
+   1,
+   1,
+   [
+    "Marwyn, the Preserver"
+   ]
+  ],
+  [
+   "ValidTgts$ Permanent.OppCtrl",
+   1,
+   1,
+   [
+    "Vraska, the Cutting Glare"
+   ]
+  ],
+  [
+   "ValidTgts$ Permanent.Other+nonLand",
+   1,
+   1,
+   [
+    "Plan for All Outcomes"
+   ]
+  ],
+  [
+   "ValidTgts$ Permanent.YouCtrl+Other",
+   1,
+   1,
+   [
+    "Rescue Girl, First Responder"
+   ]
+  ],
+  [
+   "ValidTgts$ Permanent.YouOwn",
+   1,
+   1,
+   [
+    "Restore with Empathy"
+   ]
+  ],
+  [
+   "ValidTgts$ Permanent.nonCreature+nonLand",
+   1,
+   1,
+   [
+    "Archive Arbiter"
+   ]
+  ],
+  [
+   "ValidTgts$ Permanent.nonLand+OppCtrl",
+   1,
+   1,
+   [
+    "Memory Trap"
+   ]
+  ],
+  [
+   "ValidTgts$ Permanent.nonLand+OppCtrl+cmcLE3",
+   1,
+   1,
+   [
+    "Solitary Cell"
+   ]
+  ],
+  [
+   "ValidTgts$ Planeswalker.YouCtrl",
+   1,
+   1,
+   [
+    "Compel Brutality"
+   ]
+  ],
+  [
+   "ValidTgts$ Planeswalker.nonLand+YouOwn",
+   1,
+   1,
+   [
+    "Uldaros Theorix"
+   ]
+  ],
+  [
+   "ValidTgts$ Sorcery.YouOwn",
+   1,
+   1,
+   [
+    "Uldaros Theorix"
+   ]
+  ],
+  [
+   "ValidTgtsDesc$ another creature or planeswalker",
+   1,
+   1,
+   [
+    "Mabel, Bitter Recluse"
+   ]
+  ],
+  [
+   "ValidTgtsDesc$ another creature or planeswalker you control",
+   1,
+   1,
+   [
+    "Liliana the Faultless"
+   ]
+  ],
+  [
+   "ValidTgtsDesc$ another nonland permanent",
+   1,
+   1,
+   [
+    "Plan for All Outcomes"
+   ]
+  ],
+  [
+   "ValidTgtsDesc$ another target creature you control with power 2 or less",
+   1,
+   1,
+   [
+    "Eardrum Rattler"
+   ]
+  ],
+  [
+   "ValidTgtsDesc$ another target permanent you control",
+   1,
+   1,
+   [
+    "Rescue Girl, First Responder"
+   ]
+  ],
+  [
+   "ValidTgtsDesc$ artifact or creature",
+   1,
+   1,
+   [
+    "Chandra, Chill of Compliance"
+   ]
+  ],
+  [
+   "ValidTgtsDesc$ artifact or creature each opponent controls",
+   1,
+   1,
+   [
+    "The Theorist, Jace Beleren"
+   ]
+  ],
+  [
+   "ValidTgtsDesc$ artifact or enchantment",
+   1,
+   1,
+   [
+    "Budding Insurgent"
+   ]
+  ],
+  [
+   "ValidTgtsDesc$ attacking creature",
+   1,
+   1,
+   [
+    "Kiora of Salt and Sand"
+   ]
+  ],
+  [
+   "ValidTgtsDesc$ card in your graveyard",
+   1,
+   1,
+   [
+    "Paradox Shaper"
+   ]
+  ],
+  [
+   "ValidTgtsDesc$ creature an opponent controls with mana value 3 or less",
+   1,
+   1,
+   [
+    "Diviner of Victory"
+   ]
+  ],
+  [
+   "ValidTgtsDesc$ creature card in your graveyard",
+   1,
+   1,
+   [
+    "Theoretical Necromancer"
+   ]
+  ],
+  [
+   "ValidTgtsDesc$ creature card with mana value 3 or less in your graveyard",
+   1,
+   1,
+   [
+    "Generous Revival"
+   ]
+  ],
+  [
+   "ValidTgtsDesc$ creature or legendary spell",
+   1,
+   1,
+   [
+    "Icy Reception"
+   ]
+  ],
+  [
+   "ValidTgtsDesc$ creature or planeswalker an opponent controls that's red or white",
+   1,
+   1,
+   [
+    "Flourishing Grapple"
+   ]
+  ],
+  [
+   "ValidTgtsDesc$ creature or planeswalker card in your graveyard",
+   1,
+   1,
+   [
+    "Liliana the Repentant"
+   ]
+  ],
+  [
+   "ValidTgtsDesc$ creature or planeswalker card with mana value 6 or less in your graveyard",
+   1,
+   1,
+   [
+    "Rewrite Regrets"
+   ]
+  ],
+  [
+   "ValidTgtsDesc$ creature or planeswalker that's green or blue",
+   1,
+   1,
+   [
+    "Refute Destiny"
+   ]
+  ],
+  [
+   "ValidTgtsDesc$ creature or planeswalker that’s blue or red",
+   1,
+   1,
+   [
+    "Terminal Criticism"
+   ]
+  ],
+  [
+   "ValidTgtsDesc$ creature or planeswalker with mana value 3 or greater",
+   1,
+   1,
+   [
+    "Your Fate Ends Here"
+   ]
+  ],
+  [
+   "ValidTgtsDesc$ creature or planeswalker you control",
+   1,
+   1,
+   [
+    "Identity Echo"
+   ]
+  ],
+  [
+   "ValidTgtsDesc$ creature with a +1/+1 counter on it",
+   1,
+   1,
+   [
+    "Tomik, Orzhov Lawmage"
+   ]
+  ],
+  [
+   "ValidTgtsDesc$ creature with toughness 4 or greater",
+   1,
+   1,
+   [
+    "Surgical Precision"
+   ]
+  ],
+  [
+   "ValidTgtsDesc$ instant card in your graveyard",
+   1,
+   1,
+   [
+    "Uldaros Theorix"
+   ]
+  ],
+  [
+   "ValidTgtsDesc$ land card in your graveyard",
+   1,
+   1,
+   [
+    "Carnivorous Cultivator"
+   ]
+  ],
+  [
+   "ValidTgtsDesc$ legendary creature",
+   1,
+   1,
+   [
+    "Yoshimaru, Beloved Companion"
+   ]
+  ],
+  [
+   "ValidTgtsDesc$ noncreature spell",
+   1,
+   1,
+   [
+    "Theorix Charm"
+   ]
+  ],
+  [
+   "ValidTgtsDesc$ noncreature, nonland permanent",
+   1,
+   1,
+   [
+    "Archive Arbiter"
+   ]
+  ],
+  [
+   "ValidTgtsDesc$ nonland artifact card in your graveyard",
+   1,
+   1,
+   [
+    "Uldaros Theorix"
+   ]
+  ],
+  [
+   "ValidTgtsDesc$ nonland battle card in your graveyard",
+   1,
+   1,
+   [
+    "Uldaros Theorix"
+   ]
+  ],
+  [
+   "ValidTgtsDesc$ nonland creature card in your graveyard",
+   1,
+   1,
+   [
+    "Uldaros Theorix"
+   ]
+  ],
+  [
+   "ValidTgtsDesc$ nonland enchantment card in your graveyard",
+   1,
+   1,
+   [
+    "Uldaros Theorix"
+   ]
+  ],
+  [
+   "ValidTgtsDesc$ nonland kindred card in your graveyard",
+   1,
+   1,
+   [
+    "Uldaros Theorix"
+   ]
+  ],
+  [
+   "ValidTgtsDesc$ nonland permanent an opponent controls",
+   1,
+   1,
+   [
+    "Memory Trap"
+   ]
+  ],
+  [
+   "ValidTgtsDesc$ nonland permanent an opponent controls with mana value 3 or less",
+   1,
+   1,
+   [
+    "Solitary Cell"
+   ]
+  ],
+  [
+   "ValidTgtsDesc$ nonland planeswalker card in your graveyard",
+   1,
+   1,
+   [
+    "Uldaros Theorix"
+   ]
+  ],
+  [
+   "ValidTgtsDesc$ permanent an opponent controls",
+   1,
+   1,
+   [
+    "Vraska, the Cutting Glare"
+   ]
+  ],
+  [
+   "ValidTgtsDesc$ permanent card in your graveyard",
+   1,
+   1,
+   [
+    "Restore with Empathy"
+   ]
+  ],
+  [
+   "ValidTgtsDesc$ planeswalker you control",
+   1,
+   1,
+   [
+    "Compel Brutality"
+   ]
+  ],
+  [
+   "ValidTgtsDesc$ sorcery card in your graveyard",
+   1,
+   1,
+   [
+    "Uldaros Theorix"
+   ]
+  ],
+  [
+   "ValidTgtsDesc$ white or black spell",
+   1,
+   1,
+   [
+    "Precise Redaction"
+   ]
+  ],
+  [
+   "ValidToken$ Artifact.YouCtrl",
+   1,
+   1,
+   [
+    "Draconic Visitor"
+   ]
+  ]
+ ],
+ "keyword": [
+  [
+   "Flying",
+   28,
+   28,
+   [
+    "Aerid Konstrari",
+    "Archive Arbiter",
+    "Blossom-Blessed Angel",
+    "Curse-Marred Demon",
+    "Darklight Phoenix",
+    "Denzilore Fatehold",
+    "Desperate Futurescribe",
+    "Draconic Visitor",
+    "Emrakul, the Exigent Doom",
+    "Fatehold Chronologist",
+    "Geist of Saint Thalia",
+    "Ingris Stingerquill",
+    "Kwia Vigorbloom",
+    "Lyra, Archangel of Dawn",
+    "Lyra, Tolarian Archangel",
+    "Mind Meanderer",
+    "Rescue Girl, First Responder",
+    "Ruric Thar, Biomagus",
+    "Saheeli, Consul of Oversight",
+    "Screeching Soulbreaker",
+    "Shatterwing Pegasus",
+    "Sphinx of False Conclusions",
+    "Surveillance Phantasm",
+    "Tomik, Orzhov Lawmage",
+    "Traxos, Academy Guardian",
+    "Uldaros Theorix",
+    "Undulating Witness",
+    "Variable Chaser"
+   ]
+  ],
+  [
+   "ETBReplacement",
+   18,
+   18,
+   [
+    "Blossom-Blessed Angel",
+    "Carnivorous Cultivator",
+    "Diviner of Victory",
+    "Emergency Phytomedic",
+    "Fatehold Chronologist",
+    "Hallway Heckler",
+    "Heartwood Crafter",
+    "Konstrari Improviser",
+    "Pompous Battlemage",
+    "Prudent Fateseer",
+    "Pyre Rhymer",
+    "Room of Refuge",
+    "Semester Foreseer",
+    "Theorix Metamage",
+    "Variable Chaser",
+    "Vigorbloom Vanguard",
+    "Void Extrapolator",
+    "Whiplash Wordsmith"
+   ]
+  ],
+  [
+   "Trample",
+   10,
+   10,
+   [
+    "Arni, Renowned Champion",
+    "Craftwork Crusher",
+    "Curse-Marred Demon",
+    "Emrakul, the Exigent Doom",
+    "Frostbite Pyromental",
+    "Ghalta the Unstoppable",
+    "Heartstring Puller",
+    "Karn, Gilded Guardian",
+    "Ruric Thar, Magecrusher",
+    "Traxos, Scourge Eternal"
+   ]
+  ],
+  [
+   "Prowess",
+   10,
+   9,
+   [
+    "Cryotheory Adept",
+    "Grim Repriser",
+    "Pompous Battlemage",
+    "Pyre Rhymer",
+    "Ruric Thar, Biomagus",
+    "Tetsuko Umezawa, Pursuer",
+    "Tomik, Izzet Sparkmage",
+    "Traxos, Academy Guardian",
+    "Variable Chaser"
+   ]
+  ],
+  [
+   "Flash",
+   9,
+   9,
+   [
+    "Denzilore Fatehold",
+    "Divining Duelist",
+    "Edgar, Moonlit Sovereign",
+    "Ferocity of the Hunt",
+    "Sphinx of False Conclusions",
+    "Teyo, Diamondblade Mage",
+    "Teyo, Lightshield Expert",
+    "Theorist's Proxy",
+    "Yuriko, Hope from the Shadows"
+   ]
+  ],
+  [
+   "Vigilance",
+   8,
+   8,
+   [
+    "Blossom-Blessed Angel",
+    "Budding Insurgent",
+    "Hexhaven Invigorator",
+    "Karn, Gilded Guardian",
+    "Kwia Vigorbloom",
+    "Ruric Thar, Magecrusher",
+    "Surveillance Phantasm",
+    "Traxos, Academy Guardian"
+   ]
+  ],
+  [
+   "Haste",
+   6,
+   6,
+   [
+    "Chandra's Emberling",
+    "Craterclaw Colossus",
+    "Darklight Phoenix",
+    "Frostbite Pyromental",
+    "Gallia, the Merrymaker",
+    "Stingcaster Mage"
+   ]
+  ],
+  [
+   "Menace",
+   6,
+   6,
+   [
+    "Apex Witchstalker",
+    "Gallia, Tragic Host",
+    "Jiang Yanggu, Alone",
+    "Master of Barbs",
+    "Primal Witchstalker",
+    "Proft, Sinister Mastermind"
+   ]
+  ],
+  [
+   "Reach",
+   6,
+   6,
+   [
+    "Koth, the Geomancer",
+    "Ruric Thar, Magecrusher",
+    "Sureshot Sower",
+    "Tether Technician",
+    "Titanbones, Towering Heart",
+    "Vinelasher Adept"
+   ]
+  ],
+  [
+   "Deathtouch",
+   5,
+   5,
+   [
+    "Arcane Amphisbaena",
+    "Carnivorous Cultivator",
+    "Mabel, Bitter Recluse",
+    "Rampart Hunter",
+    "Vraska, the Cutting Glare"
+   ]
+  ],
+  [
+   "Flashback",
+   5,
+   5,
+   [
+    "Bestial Incursion",
+    "Generous Revival",
+    "Predictive Preparations",
+    "Recursive Recruitment",
+    "Twinned Vision"
+   ]
+  ],
+  [
+   "TypeCycling",
+   5,
+   5,
+   [
+    "Apex Witchstalker",
+    "Awaken the Inferno",
+    "Hexhaven Battalion",
+    "Undulating Witness",
+    "Vinelasher Adept"
+   ]
+  ],
+  [
+   "Ward",
+   5,
+   5,
+   [
+    "Emrakul, the Exigent Doom",
+    "Gideon the Oathless",
+    "Kwia Vigorbloom",
+    "Unflinching Hortimancer",
+    "Wrecking Gecko"
+   ]
+  ],
+  [
+   "Equip",
+   4,
+   4,
+   [
+    "Hunter's Axe",
+    "Lich's Relic",
+    "Medic's Kitesail",
+    "Warrior's Blades"
+   ]
+  ],
+  [
+   "Lifelink",
+   4,
+   4,
+   [
+    "Blessed Ghoul",
+    "Enlightened Confidant",
+    "Kwia Vigorbloom",
+    "Thalia, the Survivor"
+   ]
+  ],
+  [
+   "Enchant",
+   3,
+   3,
+   [
+    "Ferocity of the Hunt",
+    "Infinite Coursework",
+    "Puppet Crafting"
+   ]
+  ],
+  [
+   "AlternateAdditionalCost",
+   2,
+   2,
+   [
+    "Countersculpt",
+    "Silence the Echo"
+   ]
+  ],
+  [
+   "First Strike",
+   2,
+   2,
+   [
+    "Danitha, Spear of Agony",
+    "Danitha, Sword of Hope"
+   ]
+  ],
+  [
+   "etbCounter",
+   2,
+   2,
+   [
+    "Graft Surgeon",
+    "Guiding Hydra"
+   ]
+  ],
+  [
+   "A deck can have any number of cards named CARDNAME.",
+   1,
+   1,
+   [
+    "Sphinx's Approach"
+   ]
+  ],
+  [
+   "Convoke",
+   1,
+   1,
+   [
+    "Winter, Team Player"
+   ]
+  ],
+  [
+   "Defender",
+   1,
+   1,
+   [
+    "Surveillance Phantasm"
+   ]
+  ],
+  [
+   "Double Strike",
+   1,
+   1,
+   [
+    "Tetsuko Umezawa, Pursuer"
+   ]
+  ]
+ ],
+ "type_word": [
+  [
+   "Creature",
+   160,
+   160,
+   [
+    "Aerid Konstrari",
+    "Afterthought Sentry",
+    "Apex Witchstalker",
+    "Arcane Amphisbaena",
+    "Archive Arbiter",
+    "Arni, Humble Scribe",
+    "Arni, Renowned Champion",
+    "Avatar of Burgeoning Echoes",
+    "Blessed Ghoul",
+    "Bloodline Recollector",
+    "Bloombrute",
+    "Blossom-Blessed Angel",
+    "Budding Insurgent",
+    "Campus Crier",
+    "Carnivorous Cultivator",
+    "Chandra's Emberling",
+    "Codie, Ravenous Codex",
+    "Craftwork Crusher",
+    "Craterclaw Colossus",
+    "Cryotheory Adept",
+    "Curse-Marred Demon",
+    "Danitha, Spear of Agony",
+    "Danitha, Sword of Hope",
+    "Dark Matter Manipulator",
+    "Darklight Phoenix",
+    "Denzilore Fatehold",
+    "Desperate Futurescribe",
+    "Diviner of Victory",
+    "Divining Duelist",
+    "Draconic Visitor",
+    "Eardrum Rattler",
+    "Edgar, Ancient Bloodlord",
+    "Edgar, Moonlit Sovereign",
+    "Emergency Phytomedic",
+    "Emrakul, the Exigent Doom",
+    "Enlightened Confidant",
+    "Fatehold Chronologist",
+    "Fateshaper Aspirant",
+    "Fblthp, Impossibly Lost",
+    "Fblthp, Knows the Way",
+    "Flickering Hound",
+    "Frostbite Pyromental",
+    "Gallia, Tragic Host",
+    "Gallia, the Merrymaker",
+    "Geist of Saint Thalia",
+    "Ghalta the Immovable",
+    "Ghalta the Unstoppable",
+    "Gideon the Oathless",
+    "Graft Surgeon",
+    "Greenhouse Propagator",
+    "Grim Repriser",
+    "Guiding Hydra",
+    "Hallway Heckler",
+    "Hapatra, the Desert Fang",
+    "Hapatra, the Desert Frost",
+    "Heartstring Puller",
+    "Heartwood Crafter",
+    "Hexhaven Invigorator",
+    "Hungering Puppetbeast",
+    "Ingris Stingerquill",
+    "Inspired Tethermage",
+    "Jiang Yanggu, Alone",
+    "Jiang Yanggu, Never Alone",
+    "Karn, Argent Defender",
+    "Karn, Gilded Guardian",
+    "Keeper of the Quiet Hour",
+    "Kiora of Fire and Ashes",
+    "Kiora of Salt and Sand",
+    "Konstrari Improviser",
+    "Koth of the Homestead",
+    "Koth, the Geomancer",
+    "Kwia Vigorbloom",
+    "Liliana the Faultless",
+    "Liliana the Repentant",
+    "Living Library",
+    "Loot, the Anomaly",
+    "Loot, the Nexus",
+    "Lyra, Archangel of Dawn",
+    "Lyra, Tolarian Archangel",
+    "Mabel, Bitter Recluse",
+    "Mabel, Valley Hero",
+    "Marwyn, the Clearcutter",
+    "Marwyn, the Preserver",
+    "Massacre Girl, Most Wanted",
+    "Master of Barbs",
+    "Mind Meanderer",
+    "Mindseeker Oculus",
+    "Null Summoner",
+    "Paradox Shaper",
+    "Pia, Aether Ascetic",
+    "Pia, Determined Rebuilder",
+    "Pompous Battlemage",
+    "Primal Witchstalker",
+    "Proctor of Potential",
+    "Proft, Consulting Detective",
+    "Proft, Sinister Mastermind",
+    "Prudent Fateseer",
+    "Pyre Rhymer",
+    "Rampart Hunter",
+    "Rank Rat",
+    "Repurposed Enforcer",
+    "Rescue Girl, First Responder",
+    "Ruric Thar, Biomagus",
+    "Ruric Thar, Magecrusher",
+    "Saheeli, Consul of Oversight",
+    "Saheeli, Jewel of Avishkar",
+    "Samut, Hazoret's Champion",
+    "Samut, Tyrant of Naktamun",
+    "Sanctum Lurker",
+    "Screeching Soulbreaker",
+    "Seasoned Cryomancer",
+    "Semester Foreseer",
+    "Shatterwing Pegasus",
+    "Simulacrum Shaper",
+    "Skilled Battlecarver",
+    "Solarium Sentry",
+    "Sphinx of False Conclusions",
+    "Stingcaster Mage",
+    "Stingerquill Voxmancer",
+    "Sureshot Sower",
+    "Surveillance Phantasm",
+    "Tam, the Possibility",
+    "Tarmogoyf",
+    "Tenured Tethermage",
+    "Tether Technician",
+    "Tetsuko Umezawa, Fugitive",
+    "Tetsuko Umezawa, Pursuer",
+    "Teyo, Diamondblade Mage",
+    "Teyo, Lightshield Expert",
+    "Thalia, the Survivor",
+    "Theoretical Necromancer",
+    "Theorist's Proxy",
+    "Theorix Metamage",
+    "Tinybones, Pocket Nuisance",
+    "Titanbones, Towering Heart",
+    "Tomik, Izzet Sparkmage",
+    "Tomik, Orzhov Lawmage",
+    "Traxos, Academy Guardian",
+    "Traxos, Scourge Eternal",
+    "Uldaros Theorix",
+    "Undulating Witness",
+    "Unflinching Hortimancer",
+    "Variable Chaser",
+    "Verdant Kraken",
+    "Vigorbloom Vanguard",
+    "Vinelasher Adept",
+    "Void Extrapolator",
+    "Vraska, Soul of Stone",
+    "Vraska, the Cutting Glare",
+    "Whiplash Wordsmith",
+    "Winter, Team Player",
+    "Winter, Tormented Loner",
+    "Woodwork Prodigy",
+    "Wrecking Gecko",
+    "Yargle, Glutton of Urborg",
+    "Yargle, Goliath of Otaria",
+    "Yoshimaru, Beloved Companion",
+    "Yoshimaru, Scrappy Stray",
+    "Yuriko, Blade of the Mighty",
+    "Yuriko, Hope from the Shadows"
+   ]
+  ],
+  [
+   "Legendary",
+   95,
+   95,
+   [
+    "Aerid Konstrari",
+    "Ajani Resolute",
+    "Ajani Unrelenting",
+    "Arni, Humble Scribe",
+    "Arni, Renowned Champion",
+    "Chandra, Chill of Compliance",
+    "Chandra, Torch of Defiance",
+    "Codie, Ravenous Codex",
+    "Danitha, Spear of Agony",
+    "Danitha, Sword of Hope",
+    "Denzilore Fatehold",
+    "Edgar, Ancient Bloodlord",
+    "Edgar, Moonlit Sovereign",
+    "Emrakul, the Exigent Doom",
+    "Fblthp, Impossibly Lost",
+    "Fblthp, Knows the Way",
+    "Gallia, Tragic Host",
+    "Gallia, the Merrymaker",
+    "Garruk, Curse Breaker",
+    "Garruk, Veiled Butcher",
+    "Geist of Saint Thalia",
+    "Ghalta the Immovable",
+    "Ghalta the Unstoppable",
+    "Gideon the Oathless",
+    "Gideon's Memorial",
+    "Hapatra, the Desert Fang",
+    "Hapatra, the Desert Frost",
+    "Ingris Stingerquill",
+    "Jace, Reality Sculptor",
+    "Jiang Yanggu, Alone",
+    "Jiang Yanggu, Never Alone",
+    "Karn, Argent Defender",
+    "Karn, Gilded Guardian",
+    "Kiora of Fire and Ashes",
+    "Kiora of Salt and Sand",
+    "Koth of the Homestead",
+    "Koth, the Geomancer",
+    "Kwia Vigorbloom",
+    "Liliana the Faultless",
+    "Liliana the Repentant",
+    "Loot, the Anomaly",
+    "Loot, the Nexus",
+    "Lyra, Archangel of Dawn",
+    "Lyra, Tolarian Archangel",
+    "Mabel, Bitter Recluse",
+    "Mabel, Valley Hero",
+    "Marwyn, the Clearcutter",
+    "Marwyn, the Preserver",
+    "Massacre Girl, Most Wanted",
+    "Pia, Aether Ascetic",
+    "Pia, Determined Rebuilder",
+    "Proft, Consulting Detective",
+    "Proft, Sinister Mastermind",
+    "Rescue Girl, First Responder",
+    "Ruric Thar, Biomagus",
+    "Ruric Thar, Magecrusher",
+    "Saheeli, Consul of Oversight",
+    "Saheeli, Jewel of Avishkar",
+    "Samut, Hazoret's Champion",
+    "Samut, Tyrant of Naktamun",
+    "Tam, the Possibility",
+    "Tetsuko Umezawa, Fugitive",
+    "Tetsuko Umezawa, Pursuer",
+    "Teyo, Diamondblade Mage",
+    "Teyo, Lightshield Expert",
+    "Thalia, the Survivor",
+    "The Echoverse Fulcrum",
+    "The Theorist, Jace Beleren",
+    "Tinybones, Pocket Nuisance",
+    "Titanbones, Towering Heart",
+    "Tomik, Izzet Sparkmage",
+    "Tomik, Orzhov Lawmage",
+    "Traxos, Academy Guardian",
+    "Traxos, Scourge Eternal",
+    "Uldaros Theorix",
+    "Vraska, Soul of Stone",
+    "Vraska, the Cutting Glare",
+    "Way of the Cryomancer",
+    "Way of the Deathbringer",
+    "Way of the Healer",
+    "Way of the Mentor",
+    "Way of the Mind Sculptor",
+    "Way of the Necromancer",
+    "Way of the Paradox",
+    "Way of the Pyromancer",
+    "Way of the Warlord",
+    "Way of the Wildspeaker",
+    "Winter, Team Player",
+    "Winter, Tormented Loner",
+    "Yargle, Glutton of Urborg",
+    "Yargle, Goliath of Otaria",
+    "Yoshimaru, Beloved Companion",
+    "Yoshimaru, Scrappy Stray",
+    "Yuriko, Blade of the Mighty",
+    "Yuriko, Hope from the Shadows"
+   ]
+  ],
+  [
+   "Human",
+   51,
+   51,
+   [
+    "Arni, Humble Scribe",
+    "Arni, Renowned Champion",
+    "Campus Crier",
+    "Cryotheory Adept",
+    "Danitha, Spear of Agony",
+    "Danitha, Sword of Hope",
+    "Dark Matter Manipulator",
+    "Eardrum Rattler",
+    "Gideon the Oathless",
+    "Graft Surgeon",
+    "Hapatra, the Desert Fang",
+    "Hapatra, the Desert Frost",
+    "Jiang Yanggu, Alone",
+    "Jiang Yanggu, Never Alone",
+    "Konstrari Improviser",
+    "Koth of the Homestead",
+    "Koth, the Geomancer",
+    "Liliana the Faultless",
+    "Liliana the Repentant",
+    "Massacre Girl, Most Wanted",
+    "Null Summoner",
+    "Pia, Aether Ascetic",
+    "Pia, Determined Rebuilder",
+    "Proctor of Potential",
+    "Proft, Consulting Detective",
+    "Proft, Sinister Mastermind",
+    "Repurposed Enforcer",
+    "Rescue Girl, First Responder",
+    "Saheeli, Consul of Oversight",
+    "Saheeli, Jewel of Avishkar",
+    "Samut, Hazoret's Champion",
+    "Samut, Tyrant of Naktamun",
+    "Seasoned Cryomancer",
+    "Semester Foreseer",
+    "Skilled Battlecarver",
+    "Stingcaster Mage",
+    "Sureshot Sower",
+    "Tenured Tethermage",
+    "Tetsuko Umezawa, Fugitive",
+    "Tetsuko Umezawa, Pursuer",
+    "Teyo, Diamondblade Mage",
+    "Teyo, Lightshield Expert",
+    "Thalia, the Survivor",
+    "Tomik, Izzet Sparkmage",
+    "Tomik, Orzhov Lawmage",
+    "Unflinching Hortimancer",
+    "Variable Chaser",
+    "Winter, Team Player",
+    "Winter, Tormented Loner",
+    "Yuriko, Blade of the Mighty",
+    "Yuriko, Hope from the Shadows"
+   ]
+  ],
+  [
+   "Sorcery",
+   45,
+   45,
+   [
+    "Artifist Acumen",
+    "Awaken the Inferno",
+    "Bestial Incursion",
+    "Blossom-Blessed Angel",
+    "Cast Away Doubt",
+    "Command the Stage",
+    "Cruel Calculations",
+    "Diviner of Victory",
+    "Emergency Phytomedic",
+    "Entrust the Spark",
+    "Extrapolate the Impossible",
+    "Face Yourself",
+    "Fatehold Chronologist",
+    "Generous Revival",
+    "Hallway Heckler",
+    "Heartwood Crafter",
+    "Hexhaven Battalion",
+    "Kindred Judgment",
+    "Konstrari Improviser",
+    "No Admittance",
+    "Overwrite the Multiverse",
+    "Paradox Shaper",
+    "Pompous Battlemage",
+    "Predictive Preparations",
+    "Protege's Awakening",
+    "Prudent Fateseer",
+    "Recursive Recruitment",
+    "Refute Destiny",
+    "Return to the Light Realms",
+    "Rewrite Regrets",
+    "Semester Foreseer",
+    "Silence the Echo",
+    "Solve for Disappointment",
+    "Stingerquill Voxmancer",
+    "Stinging Vitriol",
+    "Surgical Precision",
+    "Tam's Resistance",
+    "Theorix Metamage",
+    "Twisted Fates",
+    "Variable Chaser",
+    "Vigorbloom Vanguard",
+    "Void Extrapolator",
+    "Vraska's Final Mercy",
+    "Whiplash Wordsmith",
+    "Woodwork Prodigy"
+   ]
+  ],
+  [
+   "Instant",
+   40,
+   40,
+   [
+    "Academic Ascent",
+    "Blazing Crescendo",
+    "Bloodline Recollector",
+    "Break Under Pressure",
+    "Carnivorous Cultivator",
+    "Charge the Sanctum",
+    "Clash of Elements",
+    "Compel Brutality",
+    "Countersculpt",
+    "Essence Burn",
+    "Extended Absence",
+    "Fatehold Charm",
+    "Flourishing Grapple",
+    "Fulminous Forte",
+    "Germinate Recruits",
+    "Icy Reception",
+    "Jace's Machinations",
+    "Konstrari Charm",
+    "Last Gasp",
+    "Loyal Tutor",
+    "Multiply by Zero",
+    "Perfected Theory",
+    "Precise Redaction",
+    "Prophesied End",
+    "Pyre Rhymer",
+    "Restore with Empathy",
+    "Rise of the Deathbringer",
+    "Something Worth Saving",
+    "Sphinx's Approach",
+    "Stingerquill Charm",
+    "Terminal Criticism",
+    "Tethermage's Advantage",
+    "Theorix Charm",
+    "Twinned Vision",
+    "Unsummon",
+    "Vigorbloom Charm",
+    "Vindictive Triumph",
+    "Violent Echoes",
+    "Wrath of the Bloodmane",
+    "Your Fate Ends Here"
+   ]
+  ],
+  [
+   "Artifact",
+   22,
+   22,
+   [
+    "Afterthought Sentry",
+    "Archive Arbiter",
+    "Codie, Ravenous Codex",
+    "Craftwork Crusher",
+    "Craterclaw Colossus",
+    "Eye of Jace",
+    "Gideon's Memorial",
+    "Hungering Puppetbeast",
+    "Hunter's Axe",
+    "Karn, Argent Defender",
+    "Karn, Gilded Guardian",
+    "Keeper of the Quiet Hour",
+    "Lich's Relic",
+    "Living Library",
+    "Medic's Kitesail",
+    "Murmuring Volume",
+    "Solitary Cell",
+    "The Echoverse Fulcrum",
+    "Traxos, Academy Guardian",
+    "Traxos, Scourge Eternal",
+    "Warrior's Blades",
+    "Wrecking Gecko"
+   ]
+  ],
+  [
+   "Land",
+   20,
+   20,
+   [
+    "Dedicated Commons",
+    "Deserted Beach",
+    "Fatehold Annex",
+    "Formidable Commons",
+    "Hall of Echoes",
+    "Haunted Ridge",
+    "Hexhaven Dueling Arena",
+    "Innovative Commons",
+    "Konstrari Annex",
+    "Meticulous Commons",
+    "Overgrown Farmland",
+    "Rockfall Vale",
+    "Roiling Canopy",
+    "Room of Refuge",
+    "Shipwreck Marsh",
+    "Stingerquill Annex",
+    "Theorist's Sanctum",
+    "Theorix Annex",
+    "Transformative Commons",
+    "Vigorbloom Annex"
+   ]
+  ],
+  [
+   "Enchantment",
+   19,
+   19,
+   [
+    "Ajani's Anguish",
+    "Ferocity of the Hunt",
+    "Gardenize",
+    "Identity Echo",
+    "Infinite Coursework",
+    "Memory Trap",
+    "Omnipresence",
+    "Plan for All Outcomes",
+    "Puppet Crafting",
+    "Way of the Cryomancer",
+    "Way of the Deathbringer",
+    "Way of the Healer",
+    "Way of the Mentor",
+    "Way of the Mind Sculptor",
+    "Way of the Necromancer",
+    "Way of the Paradox",
+    "Way of the Pyromancer",
+    "Way of the Warlord",
+    "Way of the Wildspeaker"
+   ]
+  ],
+  [
+   "Wizard",
+   19,
+   19,
+   [
+    "Arni, Humble Scribe",
+    "Cryotheory Adept",
+    "Diviner of Victory",
+    "Divining Duelist",
+    "Fatehold Chronologist",
+    "Hapatra, the Desert Frost",
+    "Lyra, Tolarian Archangel",
+    "Paradox Shaper",
+    "Prudent Fateseer",
+    "Ruric Thar, Biomagus",
+    "Samut, Tyrant of Naktamun",
+    "Seasoned Cryomancer",
+    "Semester Foreseer",
+    "Stingcaster Mage",
+    "Tam, the Possibility",
+    "Theorix Metamage",
+    "Tomik, Izzet Sparkmage",
+    "Variable Chaser",
+    "Vraska, Soul of Stone"
+   ]
+  ],
+  [
+   "Cleric",
+   14,
+   14,
+   [
+    "Blessed Ghoul",
+    "Blossom-Blessed Angel",
+    "Emergency Phytomedic",
+    "Enlightened Confidant",
+    "Fateshaper Aspirant",
+    "Geist of Saint Thalia",
+    "Graft Surgeon",
+    "Hapatra, the Desert Fang",
+    "Liliana the Faultless",
+    "Proctor of Potential",
+    "Rescue Girl, First Responder",
+    "Samut, Hazoret's Champion",
+    "Teyo, Lightshield Expert",
+    "Unflinching Hortimancer"
+   ]
+  ],
+  [
+   "Warlock",
+   10,
+   10,
+   [
+    "Bloodline Recollector",
+    "Carnivorous Cultivator",
+    "Dark Matter Manipulator",
+    "Liliana the Repentant",
+    "Mabel, Bitter Recluse",
+    "Null Summoner",
+    "Teyo, Diamondblade Mage",
+    "Theoretical Necromancer",
+    "Void Extrapolator",
+    "Winter, Tormented Loner"
+   ]
+  ],
+  [
+   "Druid",
+   8,
+   8,
+   [
+    "Greenhouse Propagator",
+    "Jiang Yanggu, Never Alone",
+    "Marwyn, the Preserver",
+    "Pia, Aether Ascetic",
+    "Simulacrum Shaper",
+    "Titanbones, Towering Heart",
+    "Vigorbloom Vanguard",
+    "Woodwork Prodigy"
+   ]
+  ],
+  [
+   "Planeswalker",
+   8,
+   8,
+   [
+    "Ajani Resolute",
+    "Ajani Unrelenting",
+    "Chandra, Chill of Compliance",
+    "Chandra, Torch of Defiance",
+    "Garruk, Curse Breaker",
+    "Garruk, Veiled Butcher",
+    "Jace, Reality Sculptor",
+    "The Theorist, Jace Beleren"
+   ]
+  ],
+  [
+   "Construct",
+   7,
+   7,
+   [
+    "Codie, Ravenous Codex",
+    "Craftwork Crusher",
+    "Craterclaw Colossus",
+    "Hungering Puppetbeast",
+    "Traxos, Academy Guardian",
+    "Traxos, Scourge Eternal",
+    "Wrecking Gecko"
+   ]
+  ],
+  [
+   "Elder",
+   7,
+   7,
+   [
+    "Aerid Konstrari",
+    "Denzilore Fatehold",
+    "Ghalta the Immovable",
+    "Ghalta the Unstoppable",
+    "Ingris Stingerquill",
+    "Kwia Vigorbloom",
+    "Uldaros Theorix"
+   ]
+  ],
+  [
+   "Elf",
+   7,
+   7,
+   [
+    "Carnivorous Cultivator",
+    "Heartstring Puller",
+    "Heartwood Crafter",
+    "Inspired Tethermage",
+    "Marwyn, the Clearcutter",
+    "Marwyn, the Preserver",
+    "Simulacrum Shaper"
+   ]
+  ],
+  [
+   "Sphinx",
+   7,
+   7,
+   [
+    "Aerid Konstrari",
+    "Archive Arbiter",
+    "Denzilore Fatehold",
+    "Ingris Stingerquill",
+    "Kwia Vigorbloom",
+    "Sphinx of False Conclusions",
+    "Uldaros Theorix"
+   ]
+  ],
+  [
+   "Warrior",
+   7,
+   7,
+   [
+    "Inspired Tethermage",
+    "Koth, the Geomancer",
+    "Marwyn, the Clearcutter",
+    "Ruric Thar, Magecrusher",
+    "Samut, Hazoret's Champion",
+    "Skilled Battlecarver",
+    "Winter, Team Player"
+   ]
+  ],
+  [
+   "Artificer",
+   6,
+   6,
+   [
+    "Heartwood Crafter",
+    "Konstrari Improviser",
+    "Pia, Determined Rebuilder",
+    "Saheeli, Jewel of Avishkar",
+    "Tenured Tethermage",
+    "Tether Technician"
+   ]
+  ],
+  [
+   "Sorcerer",
+   6,
+   6,
+   [
+    "Hallway Heckler",
+    "Heartstring Puller",
+    "Pompous Battlemage",
+    "Pyre Rhymer",
+    "Stingerquill Voxmancer",
+    "Whiplash Wordsmith"
+   ]
+  ],
+  [
+   "Elemental",
+   5,
+   5,
+   [
+    "Bloombrute",
+    "Chandra's Emberling",
+    "Frostbite Pyromental",
+    "Hallway Heckler",
+    "Pyre Rhymer"
+   ]
+  ],
+  [
+   "Horror",
+   5,
+   5,
+   [
+    "Guiding Hydra",
+    "Hexhaven Invigorator",
+    "Loot, the Anomaly",
+    "Rampart Hunter",
+    "Sanctum Lurker"
+   ]
+  ],
+  [
+   "Illusion",
+   5,
+   5,
+   [
+    "Living Library",
+    "Mind Meanderer",
+    "Sphinx of False Conclusions",
+    "Surveillance Phantasm",
+    "Theorist's Proxy"
+   ]
+  ],
+  [
+   "Noble",
+   5,
+   5,
+   [
+    "Edgar, Ancient Bloodlord",
+    "Edgar, Moonlit Sovereign",
+    "Kiora of Fire and Ashes",
+    "Kiora of Salt and Sand",
+    "Loot, the Nexus"
+   ]
+  ],
+  [
+   "Soldier",
+   5,
+   5,
+   [
+    "Mabel, Valley Hero",
+    "Repurposed Enforcer",
+    "Solarium Sentry",
+    "Thalia, the Survivor",
+    "Vinelasher Adept"
+   ]
+  ],
+  [
+   "Bard",
+   4,
+   4,
+   [
+    "Eardrum Rattler",
+    "Grim Repriser",
+    "Master of Barbs",
+    "Screeching Soulbreaker"
+   ]
+  ],
+  [
+   "Beast",
+   4,
+   4,
+   [
+    "Craterclaw Colossus",
+    "Hungering Puppetbeast",
+    "Loot, the Anomaly",
+    "Loot, the Nexus"
+   ]
+  ],
+  [
+   "Equipment",
+   4,
+   4,
+   [
+    "Hunter's Axe",
+    "Lich's Relic",
+    "Medic's Kitesail",
+    "Warrior's Blades"
+   ]
+  ],
+  [
+   "Vampire",
+   4,
+   4,
+   [
+    "Bloodline Recollector",
+    "Edgar, Ancient Bloodlord",
+    "Theoretical Necromancer",
+    "Whiplash Wordsmith"
+   ]
+  ],
+  [
+   "Zombie",
+   4,
+   4,
+   [
+    "Blessed Ghoul",
+    "Gallia, Tragic Host",
+    "Grim Repriser",
+    "Rank Rat"
+   ]
+  ],
+  [
+   "Advisor",
+   3,
+   3,
+   [
+    "Campus Crier",
+    "Saheeli, Consul of Oversight",
+    "Tomik, Orzhov Lawmage"
+   ]
+  ],
+  [
+   "Angel",
+   3,
+   3,
+   [
+    "Blossom-Blessed Angel",
+    "Lyra, Archangel of Dawn",
+    "Lyra, Tolarian Archangel"
+   ]
+  ],
+  [
+   "Aura",
+   3,
+   3,
+   [
+    "Ferocity of the Hunt",
+    "Infinite Coursework",
+    "Puppet Crafting"
+   ]
+  ],
+  [
+   "Bird",
+   3,
+   3,
+   [
+    "Fatehold Chronologist",
+    "Mind Meanderer",
+    "Surveillance Phantasm"
+   ]
+  ],
+  [
+   "Book",
+   3,
+   3,
+   [
+    "Codie, Ravenous Codex",
+    "Living Library",
+    "Murmuring Volume"
+   ]
+  ],
+  [
+   "Cat",
+   3,
+   3,
+   [
+    "Greenhouse Propagator",
+    "Solarium Sentry",
+    "Woodwork Prodigy"
+   ]
+  ],
+  [
+   "Dog",
+   3,
+   3,
+   [
+    "Flickering Hound",
+    "Yoshimaru, Beloved Companion",
+    "Yoshimaru, Scrappy Stray"
+   ]
+  ],
+  [
+   "Dragon",
+   3,
+   3,
+   [
+    "Draconic Visitor",
+    "Traxos, Academy Guardian",
+    "Traxos, Scourge Eternal"
+   ]
+  ],
+  [
+   "Gorgon",
+   3,
+   3,
+   [
+    "Tam, the Possibility",
+    "Vraska, Soul of Stone",
+    "Vraska, the Cutting Glare"
+   ]
+  ],
+  [
+   "Homunculus",
+   3,
+   3,
+   [
+    "Fblthp, Impossibly Lost",
+    "Fblthp, Knows the Way",
+    "Mindseeker Oculus"
+   ]
+  ],
+  [
+   "Knight",
+   3,
+   3,
+   [
+    "Danitha, Spear of Agony",
+    "Danitha, Sword of Hope",
+    "Lyra, Archangel of Dawn"
+   ]
+  ],
+  [
+   "Merfolk",
+   3,
+   3,
+   [
+    "Divining Duelist",
+    "Kiora of Fire and Ashes",
+    "Kiora of Salt and Sand"
+   ]
+  ],
+  [
+   "Rogue",
+   3,
+   3,
+   [
+    "Proft, Sinister Mastermind",
+    "Tetsuko Umezawa, Fugitive",
+    "Tinybones, Pocket Nuisance"
+   ]
+  ],
+  [
+   "Scout",
+   3,
+   3,
+   [
+    "Budding Insurgent",
+    "Desperate Futurescribe",
+    "Fblthp, Knows the Way"
+   ]
+  ],
+  [
+   "Spirit",
+   3,
+   3,
+   [
+    "Geist of Saint Thalia",
+    "Yargle, Glutton of Urborg",
+    "Yargle, Goliath of Otaria"
+   ]
+  ],
+  [
+   "Ajani",
+   2,
+   2,
+   [
+    "Ajani Resolute",
+    "Ajani Unrelenting"
+   ]
+  ],
+  [
+   "Assassin",
+   2,
+   2,
+   [
+    "Massacre Girl, Most Wanted",
+    "Vraska, the Cutting Glare"
+   ]
+  ],
+  [
+   "Berserker",
+   2,
+   2,
+   [
+    "Arni, Renowned Champion",
+    "Jiang Yanggu, Alone"
+   ]
+  ],
+  [
+   "Chandra",
+   2,
+   2,
+   [
+    "Chandra, Chill of Compliance",
+    "Chandra, Torch of Defiance"
+   ]
+  ],
+  [
+   "Chimera",
+   2,
+   2,
+   [
+    "Hexhaven Invigorator",
+    "Keeper of the Quiet Hour"
+   ]
+  ],
+  [
+   "Dinosaur",
+   2,
+   2,
+   [
+    "Ghalta the Immovable",
+    "Ghalta the Unstoppable"
+   ]
+  ],
+  [
+   "Dryad",
+   2,
+   2,
+   [
+    "Budding Insurgent",
+    "Emergency Phytomedic"
+   ]
+  ],
+  [
+   "Dwarf",
+   2,
+   2,
+   [
+    "Diviner of Victory",
+    "Prudent Fateseer"
+   ]
+  ],
+  [
+   "Frog",
+   2,
+   2,
+   [
+    "Yargle, Glutton of Urborg",
+    "Yargle, Goliath of Otaria"
+   ]
+  ],
+  [
+   "Garruk",
+   2,
+   2,
+   [
+    "Garruk, Curse Breaker",
+    "Garruk, Veiled Butcher"
+   ]
+  ],
+  [
+   "Goblin",
+   2,
+   2,
+   [
+    "Pompous Battlemage",
+    "Stingerquill Voxmancer"
+   ]
+  ],
+  [
+   "Golem",
+   2,
+   2,
+   [
+    "Karn, Argent Defender",
+    "Karn, Gilded Guardian"
+   ]
+  ],
+  [
+   "Jace",
+   2,
+   2,
+   [
+    "Jace, Reality Sculptor",
+    "The Theorist, Jace Beleren"
+   ]
+  ],
+  [
+   "Kor",
+   2,
+   2,
+   [
+    "Desperate Futurescribe",
+    "Enlightened Confidant"
+   ]
+  ],
+  [
+   "Lizard",
+   2,
+   2,
+   [
+    "Master of Barbs",
+    "Wrecking Gecko"
+   ]
+  ],
+  [
+   "Mercenary",
+   2,
+   2,
+   [
+    "Gideon the Oathless",
+    "Tetsuko Umezawa, Pursuer"
+   ]
+  ],
+  [
+   "Mouse",
+   2,
+   2,
+   [
+    "Mabel, Bitter Recluse",
+    "Mabel, Valley Hero"
+   ]
+  ],
+  [
+   "Ogre",
+   2,
+   2,
+   [
+    "Ruric Thar, Biomagus",
+    "Ruric Thar, Magecrusher"
+   ]
+  ],
+  [
+   "Plant",
+   2,
+   2,
+   [
+    "Bloombrute",
+    "Verdant Kraken"
+   ]
+  ],
+  [
+   "Rhino",
+   2,
+   2,
+   [
+    "Fateshaper Aspirant",
+    "Vinelasher Adept"
+   ]
+  ],
+  [
+   "Satyr",
+   2,
+   2,
+   [
+    "Gallia, Tragic Host",
+    "Gallia, the Merrymaker"
+   ]
+  ],
+  [
+   "Skeleton",
+   2,
+   2,
+   [
+    "Tinybones, Pocket Nuisance",
+    "Titanbones, Towering Heart"
+   ]
+  ],
+  [
+   "Wolf",
+   2,
+   2,
+   [
+    "Apex Witchstalker",
+    "Primal Witchstalker"
+   ]
+  ],
+  [
+   "Aetherborn",
+   1,
+   1,
+   [
+    "Void Extrapolator"
+   ]
+  ],
+  [
+   "Archer",
+   1,
+   1,
+   [
+    "Sureshot Sower"
+   ]
+  ],
+  [
+   "Avatar",
+   1,
+   1,
+   [
+    "Avatar of Burgeoning Echoes"
+   ]
+  ],
+  [
+   "Boar",
+   1,
+   1,
+   [
+    "Craftwork Crusher"
+   ]
+  ],
+  [
+   "Cave",
+   1,
+   1,
+   [
+    "Room of Refuge"
+   ]
+  ],
+  [
+   "Citizen",
+   1,
+   1,
+   [
+    "Koth of the Homestead"
+   ]
+  ],
+  [
+   "Crab",
+   1,
+   1,
+   [
+    "Ruric Thar, Biomagus"
+   ]
+  ],
+  [
+   "Demon",
+   1,
+   1,
+   [
+    "Curse-Marred Demon"
+   ]
+  ],
+  [
+   "Detective",
+   1,
+   1,
+   [
+    "Proft, Consulting Detective"
+   ]
+  ],
+  [
+   "Eldrazi",
+   1,
+   1,
+   [
+    "Emrakul, the Exigent Doom"
+   ]
+  ],
+  [
+   "Fish",
+   1,
+   1,
+   [
+    "Mind Meanderer"
+   ]
+  ],
+  [
+   "Gargoyle",
+   1,
+   1,
+   [
+    "Afterthought Sentry"
+   ]
+  ],
+  [
+   "Gremlin",
+   1,
+   1,
+   [
+    "Chandra's Emberling"
+   ]
+  ],
+  [
+   "Hydra",
+   1,
+   1,
+   [
+    "Guiding Hydra"
+   ]
+  ],
+  [
+   "Island",
+   1,
+   1,
+   [
+    "Theorist's Sanctum"
+   ]
+  ],
+  [
+   "Kraken",
+   1,
+   1,
+   [
+    "Verdant Kraken"
+   ]
+  ],
+  [
+   "Lhurgoyf",
+   1,
+   1,
+   [
+    "Tarmogoyf"
+   ]
+  ],
+  [
+   "Minotaur",
+   1,
+   1,
+   [
+    "Tether Technician"
+   ]
+  ],
+  [
+   "Ninja",
+   1,
+   1,
+   [
+    "Yuriko, Hope from the Shadows"
+   ]
+  ],
+  [
+   "Octopus",
+   1,
+   1,
+   [
+    "Paradox Shaper"
+   ]
+  ],
+  [
+   "Pegasus",
+   1,
+   1,
+   [
+    "Shatterwing Pegasus"
+   ]
+  ],
+  [
+   "Phoenix",
+   1,
+   1,
+   [
+    "Darklight Phoenix"
+   ]
+  ],
+  [
+   "Rat",
+   1,
+   1,
+   [
+    "Rank Rat"
+   ]
+  ],
+  [
+   "Samurai",
+   1,
+   1,
+   [
+    "Yuriko, Blade of the Mighty"
+   ]
+  ],
+  [
+   "Serpent",
+   1,
+   1,
+   [
+    "Undulating Witness"
+   ]
+  ],
+  [
+   "Shade",
+   1,
+   1,
+   [
+    "Theorix Metamage"
+   ]
+  ],
+  [
+   "Siren",
+   1,
+   1,
+   [
+    "Screeching Soulbreaker"
+   ]
+  ],
+  [
+   "Snake",
+   1,
+   1,
+   [
+    "Arcane Amphisbaena"
+   ]
+  ],
+  [
+   "Troll",
+   1,
+   1,
+   [
+    "Vigorbloom Vanguard"
+   ]
+  ],
+  [
+   "Werewolf",
+   1,
+   1,
+   [
+    "Edgar, Moonlit Sovereign"
+   ]
+  ]
+ ],
+ "HELDOUT_DeckHas": [
+  [
+   "Ability$Counters",
+   10,
+   10,
+   [
+    "Awaken the Inferno",
+    "Chandra's Emberling",
+    "Edgar, Moonlit Sovereign",
+    "Gallia, the Merrymaker",
+    "Graft Surgeon",
+    "Guiding Hydra",
+    "Tam's Resistance",
+    "Unflinching Hortimancer",
+    "Vinelasher Adept",
+    "Yoshimaru, Scrappy Stray"
+   ]
+  ],
+  [
+   "Ability$Token",
+   8,
+   8,
+   [
+    "Command the Stage",
+    "Craftwork Crusher",
+    "Germinate Recruits",
+    "Pia, Determined Rebuilder",
+    "Saheeli, Jewel of Avishkar",
+    "Tenured Tethermage",
+    "The Theorist, Jace Beleren",
+    "Verdant Kraken"
+   ]
+  ],
+  [
+   "Ability$Discard",
+   6,
+   6,
+   [
+    "Arni, Humble Scribe",
+    "Curse-Marred Demon",
+    "Divining Duelist",
+    "Murmuring Volume",
+    "Sphinx of False Conclusions",
+    "Tether Technician"
+   ]
+  ],
+  [
+   "Ability$LifeGain",
+   4,
+   4,
+   [
+    "Apex Witchstalker",
+    "Edgar, Ancient Bloodlord",
+    "Enlightened Confidant",
+    "Greenhouse Propagator"
+   ]
+  ],
+  [
+   "Ability$Graveyard",
+   3,
+   3,
+   [
+    "Carnivorous Cultivator",
+    "Generous Revival",
+    "Theoretical Necromancer"
+   ]
+  ],
+  [
+   "Ability$Lifegain",
+   2,
+   2,
+   [
+    "Archive Arbiter",
+    "Extended Absence"
+   ]
+  ],
+  [
+   "Ability$Mill",
+   2,
+   2,
+   [
+    "Dark Matter Manipulator",
+    "Something Worth Saving"
+   ]
+  ],
+  [
+   "Ability$Sacrifice",
+   1,
+   1,
+   [
+    "Marwyn, the Clearcutter"
+   ]
+  ],
+  [
+   "Ability$Surveil",
+   1,
+   1,
+   [
+    "Protege's Awakening"
+   ]
+  ],
+  [
+   "Ability$Tokens",
+   1,
+   1,
+   [
+    "Kwia Vigorbloom"
+   ]
+  ],
+  [
+   "Counters$",
+   1,
+   1,
+   [
+    "Generous Revival"
+   ]
+  ],
+  [
+   "Graveyard$",
+   1,
+   1,
+   [
+    "Protege's Awakening"
+   ]
+  ],
+  [
+   "LifeGain$",
+   1,
+   1,
+   [
+    "Something Worth Saving"
+   ]
+  ],
+  [
+   "Sacrifice$",
+   1,
+   1,
+   [
+    "Edgar, Ancient Bloodlord"
+   ]
+  ],
+  [
+   "Soldier$",
+   1,
+   1,
+   [
+    "Craftwork Crusher"
+   ]
+  ],
+  [
+   "Type$Wizard",
+   1,
+   1,
+   [
+    "Craftwork Crusher"
+   ]
+  ]
+ ],
+ "HELDOUT_DeckHints": [
+  [
+   "Type$Planeswalker",
+   14,
+   14,
+   [
+    "Face Yourself",
+    "Kiora of Salt and Sand",
+    "Sanctum Lurker",
+    "Tomik, Orzhov Lawmage",
+    "Way of the Cryomancer",
+    "Way of the Deathbringer",
+    "Way of the Healer",
+    "Way of the Mentor",
+    "Way of the Mind Sculptor",
+    "Way of the Necromancer",
+    "Way of the Paradox",
+    "Way of the Pyromancer",
+    "Way of the Warlord",
+    "Way of the Wildspeaker"
+   ]
+  ],
+  [
+   "Ability$Counters",
+   6,
+   6,
+   [
+    "Desperate Futurescribe",
+    "Edgar, Moonlit Sovereign",
+    "Gallia, the Merrymaker",
+    "Guiding Hydra",
+    "Tomik, Orzhov Lawmage",
+    "Yoshimaru, Beloved Companion"
+   ]
+  ],
+  [
+   "Ability$LifeGain",
+   6,
+   6,
+   [
+    "Bloombrute",
+    "Enlightened Confidant",
+    "Germinate Recruits",
+    "Kwia Vigorbloom",
+    "Titanbones, Towering Heart",
+    "Unflinching Hortimancer"
+   ]
+  ],
+  [
+   "Ability$Graveyard",
+   2,
+   2,
+   [
+    "Dark Matter Manipulator",
+    "Marwyn, the Preserver"
+   ]
+  ],
+  [
+   "Type$Jace",
+   2,
+   2,
+   [
+    "Jace's Machinations",
+    "Mind Meanderer"
+   ]
+  ],
+  [
+   "Ability$Discard",
+   1,
+   1,
+   [
+    "Tinybones, Pocket Nuisance"
+   ]
+  ],
+  [
+   "Ability$Lifegain",
+   1,
+   1,
+   [
+    "Lyra, Archangel of Dawn"
+   ]
+  ],
+  [
+   "Ability$Token",
+   1,
+   1,
+   [
+    "Gideon's Memorial"
+   ]
+  ],
+  [
+   "Sorcery$",
+   1,
+   1,
+   [
+    "Saheeli, Jewel of Avishkar"
+   ]
+  ],
+  [
+   "Thopter$",
+   1,
+   1,
+   [
+    "Saheeli, Jewel of Avishkar"
+   ]
+  ],
+  [
+   "Type$Angel",
+   1,
+   1,
+   [
+    "Lyra, Archangel of Dawn"
+   ]
+  ],
+  [
+   "Type$Artifact",
+   1,
+   1,
+   [
+    "Craterclaw Colossus"
+   ]
+  ],
+  [
+   "Type$Equipment",
+   1,
+   1,
+   [
+    "Danitha, Sword of Hope"
+   ]
+  ],
+  [
+   "Type$Instant",
+   1,
+   1,
+   [
+    "Saheeli, Jewel of Avishkar"
+   ]
+  ],
+  [
+   "Type$Legendary",
+   1,
+   1,
+   [
+    "Solitary Cell"
+   ]
+  ],
+  [
+   "Type$Sphinx",
+   1,
+   1,
+   [
+    "Sphinx's Approach"
+   ]
+  ]
+ ],
+ "HELDOUT_DeckNeeds": [
+  [
+   "Ability$Mill",
+   1,
+   1,
+   [
+    "Cruel Calculations"
+   ]
+  ],
+  [
+   "Ability$Token",
+   1,
+   1,
+   [
+    "Draconic Visitor"
+   ]
+  ],
+  [
+   "Enchantment$",
+   1,
+   1,
+   [
+    "Puppet Crafting"
+   ]
+  ],
+  [
+   "Type$Artifact",
+   1,
+   1,
+   [
+    "Puppet Crafting"
+   ]
+  ],
+  [
+   "Type$Planeswalker",
+   1,
+   1,
+   [
+    "Entrust the Spark"
+   ]
+  ]
+ ]
+}
