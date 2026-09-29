@@ -77,6 +77,8 @@ def parse_filter(expr):
                 pat["counters"] = x.split("_")[-1]
             elif x == "prepared":
                 pat["prepared"] = True
+            elif x in ("AttachedBy", "EnchantedBy", "EquippedBy"):
+                pat["host"] = True  # the object this aura/equipment is on
             elif x in ("Artifact", "Creature", "Legendary", "Enchantment", "Land",
                        "Planeswalker", "Instant", "Sorcery") or (x[:1].isupper() and x.isalpha()
                        and x not in ("Other", "Self", "IsRemembered", "IsTargeted")):
@@ -257,8 +259,14 @@ def analyse(card):
         for ab in f["abilities"]:
             analyse_ability(card, f, ft, ab, cost_svars)
 
+        for ab in f["abilities"]:  # inline Count$ in ability params
+            for key, val in ab["params"].items():
+                if key in ("SpellDescription", "StackDescription", "TriggerDescription", "Description"):
+                    continue
+                for m in re.finditer(r"(?<![A-Za-z])Count\$([^|]+)", val):
+                    count_listens(card, m.group(1).strip(), "condition", f"{ab['kind']} {key}$ Count${m.group(1)[:50]}", ft)
         for sv, raw in f["svars"].items():
-            for m in re.finditer(r"Count\$(\S+(?: [^|]+)?)", raw):
+            for m in re.finditer(r"(?<![A-Za-z])Count\$(\S+(?: [^|]+)?)", raw):
                 mech = "cost_mod" if sv in cost_svars else "condition"
                 count_listens(card, m.group(1).strip(), mech, f"SVar:{sv}:{raw[:60]}", ft)
 
@@ -348,7 +356,9 @@ def analyse_ability(card, f, ft, ab, cost_svars):
                 elif o == "Battlefield" and d == "Graveyard":
                     card.L("die", [self_pat(card, ft)], "trigger", f"{src} self dies")
             else:
-                pats = [x for x in pats if not x["self"]]
+                # host triggers ("when enchanted creature dies") concern this
+                # card's own attachment, not another card's emission
+                pats = [x for x in pats if not x["self"] and not x.get("host")]
                 if d == "Battlefield":
                     card.L("enter", pats, "trigger", f"{src} {o}->{d} {vc}")
                 elif o == "Battlefield" and d == "Graveyard":
@@ -411,8 +421,9 @@ def analyse_ability(card, f, ft, ab, cost_svars):
         return
     if k == "R":
         if api == "AddCounter":
-            card.L("counter+", parse_filter(p.get("ValidCard", "")), "replacement", f"R:{api}",
-                   sub=p.get("CounterType", "*").upper())
+            ct = p.get("ValidCounterType") or p.get("CounterType") or "*"
+            card.L("counter+", parse_filter(p.get("ValidCard", "")), "replacement", f"R:{api} {ct}",
+                   sub=ct.upper())
         elif api == "CreateToken":
             card.L("enter", parse_filter("Card.token+YouCtrl"), "replacement", f"R:{api}")
         return

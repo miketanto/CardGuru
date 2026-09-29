@@ -65,12 +65,12 @@ for c in cards:
                         bump("cost_verb", tok, nm)
                         if m.group(1) in ("SubCounter", "AddCounter"):
                             bump("cost_counter", f"{m.group(1)}:{m.group(2).split('/')[1] if '/' in m.group(2) else m.group(2)}", nm)
-                for cm in re.finditer(r"Count\$([A-Za-z]+)", val):
+                for cm in re.finditer(r"(?<![A-Za-z])Count\$([A-Za-z]+)", val):
                     bump("count_expr", cm.group(1), nm)
                 if key in ("Produced",) and api == "Mana":
                     bump("mana_produced", val, nm)
         for sv, raw in f["svars"].items():
-            for cm in re.finditer(r"Count\$([A-Za-z]+)", raw):
+            for cm in re.finditer(r"(?<![A-Za-z])Count\$([A-Za-z]+)", raw):
                 bump("count_expr", cm.group(1), nm)
         # DeckHas/DeckHints/DeckNeeds are top-level lines, e.g.
         # "DeckHas:Ability$Graveyard & Type$Zombie"

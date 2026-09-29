@@ -142,7 +142,7 @@ Cards: 280. Each row: `key` — occurrences / distinct cards. Rows used by exact
 - `AddCounter:LOYALTY` — 12 / 9
 - `SubCounter:P1P1` — 1 / 1 — Guiding Hydra
 
-## count_expr (17 distinct)
+## count_expr (15 distinct)
 
 - `Valid` — 16 / 15
 - `ValidGraveyard` — 8 / 8
@@ -151,11 +151,9 @@ Cards: 280. Each row: `key` — occurrences / distinct cards. Rows used by exact
 - `ValidSelf` — 3 / 3
 - `YouScryThisTurn` — 3 / 3
 - `YouSurveilThisTurn` — 3 / 3
-- `DamageAmount` — 2 / 2
 - `LifeYouGainedThisTurn` — 2 / 2
 - `ThisTurnCast` — 2 / 2
 - `CardCounters` — 1 / 1 — Gardenize
-- `CounterNum` — 1 / 1 — Yoshimaru, Beloved Companion
 - `Domain` — 1 / 1 — Fblthp, Knows the Way
 - `ThisTurnActivated` — 1 / 1 — Kiora of Salt and Sand
 - `ValidHand` — 1 / 1 — The Theorist, Jace Beleren

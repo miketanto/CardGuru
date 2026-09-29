@@ -18632,24 +18632,6 @@
     "src": "S:Continuous Affected$ Creature"
    },
    {
-    "event": "die",
-    "sub": "",
-    "pat": {
-     "types": null,
-     "neg": [],
-     "token": null,
-     "side": "any",
-     "self": false,
-     "counters": null,
-     "prepared": null,
-     "also": [
-      "AttachedBy"
-     ]
-    },
-    "mech": "trigger",
-    "src": "T Mode$ChangesZone Battlefield->Graveyard Card.AttachedBy"
-   },
-   {
     "event": "tograve",
     "sub": "",
     "pat": {
@@ -28523,7 +28505,7 @@
   "listens": [
    {
     "event": "counter+",
-    "sub": "*",
+    "sub": "P1P1",
     "pat": {
      "types": [
       "Creature"
@@ -28536,7 +28518,7 @@
      "prepared": null
     },
     "mech": "replacement",
-    "src": "R:AddCounter"
+    "src": "R:AddCounter P1P1"
    },
    {
     "event": "mana",
@@ -28573,25 +28555,6 @@
     },
     "mech": "consumes",
     "src": "A AB$PutCounter needs a target"
-   },
-   {
-    "event": "counter+",
-    "sub": "*",
-    "pat": {
-     "types": [
-      "Creature",
-      "Dog",
-      "Legendary"
-     ],
-     "neg": [],
-     "token": false,
-     "side": "you",
-     "self": true,
-     "counters": null,
-     "prepared": null
-    },
-    "mech": "condition",
-    "src": "SVar:X:ReplaceCount$CounterNum/Plus.1"
    }
   ]
  },

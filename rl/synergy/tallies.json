@@ -1978,15 +1978,6 @@
    ]
   ],
   [
-   "DamageAmount",
-   2,
-   2,
-   [
-    "Hexhaven Invigorator",
-    "Tomik, Izzet Sparkmage"
-   ]
-  ],
-  [
    "LifeYouGainedThisTurn",
    2,
    2,
@@ -2010,14 +2001,6 @@
    1,
    [
     "Gardenize"
-   ]
-  ],
-  [
-   "CounterNum",
-   1,
-   1,
-   [
-    "Yoshimaru, Beloved Companion"
    ]
   ],
   [
