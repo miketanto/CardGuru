@@ -786,7 +786,7 @@ and WU surveil share their best enablers in this graph. That is
 consistent with the set's mechanics (both Library→Graveyard), but it
 gives UB no cluster of its own. *(An earlier draft of this paragraph
 said the signpost's graveyard link was only a self-listener. That was
-wrong, and was corrected before commit.)*
+wrong; it was committed in `d8b865c` and corrected in the next commit.)*
 
 **Recommendation.** Keep `norm_knn` for archetype questions. It has the
 fewest misses (1), the best gold and colour NMI, and the highest
