@@ -289,6 +289,13 @@ def target_pats(p, default_self_types):
 def analyse_ability(card, f, ft, ab, cost_svars):
     k, head, api, p = ab["kind"], ab["head"], ab["api"], ab["params"]
     src = f"{k}{':'+ab['id'] if ab['id'] else ''} {head}${api}"
+    # Statics / replacements granted through Effect (StaticAbilities$ /
+    # ReplacementEffects$) live in SVars with no Execute$: treat as S: / R:.
+    if k == "SVar" and "Execute" not in p:
+        if head == "Mode":
+            k = "S"
+        elif head == "Event":
+            k = "R"
     cost = p.get("Cost", "")
     is_loyalty = "LOYALTY" in cost or p.get("Planeswalker") == "True"
 
@@ -402,13 +409,28 @@ def analyse_ability(card, f, ft, ab, cost_svars):
     if k == "S":
         if api == "Continuous":
             aff = p.get("Affected", "")
-            if aff and not aff.startswith(("Card.Self", "Self")) and "EnchantedBy" not in aff \
+            if p.get("AdjustLandPlays") and aff in ("You", ""):
+                card.E("mana", concrete(["Land"]), "effect", f"{src} extra land play (ramp)",
+                       amount=1, colors=list("WUBRG"))
+            # an effect-chosen object or a player is not a population to grow
+            chosen = any(q in aff for q in ("IsRemembered", "IsImprinted", "Targeted"))
+            if aff and aff not in ("You", "Player", "Opponent") and not chosen \
+                    and not aff.startswith(("Card.Self", "Self")) and "EnchantedBy" not in aff \
                     and "EquippedBy" not in aff and "AttachedBy" not in aff:
                 for pp in parse_filter(aff):
                     if pp.get("counters"):
-                        card.L("counter+", [pp], "static", f"S:Continuous Affected$ {aff}", sub=pp["counters"])
+                        card.L("counter+", [pp], "static", f"{src} Affected$ {aff}", sub=pp["counters"])
                     else:
-                        card.L("enter", [pp], "static", f"S:Continuous Affected$ {aff}")
+                        card.L("enter", [pp], "static", f"{src} Affected$ {aff}")
+        elif api == "CastWithFlash" and "Loyalty" in p.get("ValidSA", ""):
+            # instant-speed loyalty activations: wants those planeswalkers
+            card.L("enter", parse_filter(p.get("ValidCard", "Planeswalker.YouCtrl")), "static",
+                   f"{src} ValidCard$ {p.get('ValidCard')}")
+        elif api == "IgnoreLegendRule":
+            vc = p.get("ValidCard", "Permanent.YouCtrl")
+            head_, _, quals = vc.partition(".")
+            card.L("enter", parse_filter(f"{head_}.Legendary+{quals}" if quals else f"{head_}.Legendary"),
+                   "static", f"{src} ValidCard$ {vc} (legendaries)")
         elif api in ("ReduceCost", "RaiseCost"):
             vc = p.get("ValidCard", "")
             if vc and vc not in ("Card.Self",):

@@ -4207,7 +4207,7 @@
      "prepared": null
     },
     "mech": "static",
-    "src": "S:Continuous Affected$ Permanent"
+    "src": "S Mode$Continuous Affected$ Permanent"
    }
   ]
  },
@@ -4327,7 +4327,28 @@
     "src": "SVar:DBEmpower DB$Empower Empower Jace token has loyalty abilities"
    }
   ],
-  "listens": []
+  "listens": [
+   {
+    "event": "enter",
+    "sub": "",
+    "pat": {
+     "types": [
+      "Planeswalker"
+     ],
+     "neg": [],
+     "token": null,
+     "side": "you",
+     "self": false,
+     "counters": null,
+     "prepared": null,
+     "also": [
+      "Jace"
+     ]
+    },
+    "mech": "static",
+    "src": "SVar:InstantJace Mode$CastWithFlash ValidCard$ Planeswalker.Jace+YouCtrl"
+   }
+  ]
  },
  {
   "name": "Mindseeker Oculus",
@@ -8913,7 +8934,7 @@
      "prepared": null
     },
     "mech": "static",
-    "src": "S:Continuous Affected$ Planeswalker.YouCtrl"
+    "src": "S Mode$Continuous Affected$ Planeswalker.YouCtrl"
    }
   ]
  },
@@ -9982,7 +10003,7 @@
      "prepared": null
     },
     "mech": "static",
-    "src": "S:Continuous Affected$ Creature.YouCtrl"
+    "src": "S Mode$Continuous Affected$ Creature.YouCtrl"
    },
    {
     "event": "mana",
@@ -15017,7 +15038,7 @@
      "prepared": null
     },
     "mech": "static",
-    "src": "S:Continuous Affected$ Card.nonLand+YouOwn+cmcLEX"
+    "src": "S Mode$Continuous Affected$ Card.nonLand+YouOwn+cmcLEX"
    },
    {
     "event": "enter",
@@ -16838,7 +16859,7 @@
      "prepared": null
     },
     "mech": "static",
-    "src": "S:Continuous Affected$ Planeswalker.YouCtrl"
+    "src": "S Mode$Continuous Affected$ Planeswalker.YouCtrl"
    },
    {
     "event": "counter+",
@@ -18629,7 +18650,7 @@
      "prepared": null
     },
     "mech": "static",
-    "src": "S:Continuous Affected$ Creature"
+    "src": "S Mode$Continuous Affected$ Creature"
    },
    {
     "event": "tograve",
@@ -19931,7 +19952,7 @@
      ]
     },
     "mech": "static",
-    "src": "S:Continuous Affected$ Card.nonLand+ExiledWithSource"
+    "src": "S Mode$Continuous Affected$ Card.nonLand+ExiledWithSource"
    }
   ]
  },
@@ -22926,7 +22947,7 @@
      "prepared": null
     },
     "mech": "static",
-    "src": "S:Continuous Affected$ Creature.YouCtrl+counters_GE1_P1P1"
+    "src": "S Mode$Continuous Affected$ Creature.YouCtrl+counters_GE1_P1P1"
    },
    {
     "event": "enter",
@@ -23170,7 +23191,7 @@
      "prepared": null
     },
     "mech": "static",
-    "src": "S:Continuous Affected$ Creature"
+    "src": "S Mode$Continuous Affected$ Creature"
    }
   ]
  },
@@ -25089,6 +25110,24 @@
     "mech": "resource",
     "src": "A AB$Clone mana sink Cost$ 5",
     "demand": 5
+   },
+   {
+    "event": "enter",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "you",
+     "self": false,
+     "counters": null,
+     "prepared": null,
+     "also": [
+      "Legendary"
+     ]
+    },
+    "mech": "static",
+    "src": "SVar:LegendPermission Mode$IgnoreLegendRule ValidCard$ Permanent.YouCtrl (legendaries)"
    }
   ]
  },
@@ -26330,6 +26369,23 @@
     },
     "mech": "consumes",
     "src": "A AB$Effect Cost$ -LOYALTY"
+   },
+   {
+    "event": "enter",
+    "sub": "",
+    "pat": {
+     "types": [
+      "Creature"
+     ],
+     "neg": [],
+     "token": null,
+     "side": "you",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "static",
+    "src": "SVar:STPump Mode$Continuous Affected$ Creature.YouCtrl"
    }
   ]
  },
@@ -26740,7 +26796,7 @@
      "prepared": null
     },
     "mech": "static",
-    "src": "S:Continuous Affected$ Creature.token+YouCtrl"
+    "src": "S Mode$Continuous Affected$ Creature.token+YouCtrl"
    },
    {
     "event": "draw",
@@ -27955,7 +28011,7 @@
      "prepared": null
     },
     "mech": "static",
-    "src": "S:Continuous Affected$ Planeswalker.YouCtrl"
+    "src": "S Mode$Continuous Affected$ Planeswalker.YouCtrl"
    }
   ]
  },
@@ -28183,7 +28239,7 @@
      "prepared": null
     },
     "mech": "static",
-    "src": "S:Continuous Affected$ Planeswalker.YouCtrl"
+    "src": "S Mode$Continuous Affected$ Planeswalker.YouCtrl"
    },
    {
     "event": "counter+",
@@ -30458,7 +30514,7 @@
      "prepared": null
     },
     "mech": "static",
-    "src": "S:Continuous Affected$ Instant.YouCtrl,Sorcery.YouCtrl"
+    "src": "S Mode$Continuous Affected$ Instant.YouCtrl,Sorcery.YouCtrl"
    },
    {
     "event": "enter",
@@ -30475,7 +30531,7 @@
      "prepared": null
     },
     "mech": "static",
-    "src": "S:Continuous Affected$ Instant.YouCtrl,Sorcery.YouCtrl"
+    "src": "S Mode$Continuous Affected$ Instant.YouCtrl,Sorcery.YouCtrl"
    }
   ]
  },
@@ -30880,7 +30936,7 @@
      "prepared": null
     },
     "mech": "static",
-    "src": "S:Continuous Affected$ Planeswalker.YouCtrl"
+    "src": "S Mode$Continuous Affected$ Planeswalker.YouCtrl"
    },
    {
     "event": "counter+",
@@ -33482,7 +33538,7 @@
      "prepared": null
     },
     "mech": "static",
-    "src": "S:Continuous Affected$ Planeswalker.YouCtrl"
+    "src": "S Mode$Continuous Affected$ Planeswalker.YouCtrl"
    },
    {
     "event": "counter+",
@@ -34885,7 +34941,7 @@
      "prepared": null
     },
     "mech": "static",
-    "src": "S:Continuous Affected$ Creature.Other+YouCtrl+counters_GE1_P1P1"
+    "src": "S Mode$Continuous Affected$ Creature.Other+YouCtrl+counters_GE1_P1P1"
    },
    {
     "event": "enter",
@@ -35894,7 +35950,7 @@
      "prepared": null
     },
     "mech": "static",
-    "src": "S:Continuous Affected$ Creature.YouCtrl"
+    "src": "S Mode$Continuous Affected$ Creature.YouCtrl"
    }
   ]
  },
@@ -36353,7 +36409,7 @@
      "prepared": null
     },
     "mech": "static",
-    "src": "S:Continuous Affected$ Planeswalker.YouCtrl"
+    "src": "S Mode$Continuous Affected$ Planeswalker.YouCtrl"
    }
   ]
  },
@@ -36562,7 +36618,7 @@
      "prepared": null
     },
     "mech": "static",
-    "src": "S:Continuous Affected$ Planeswalker.YouCtrl"
+    "src": "S Mode$Continuous Affected$ Planeswalker.YouCtrl"
    },
    {
     "event": "counter+",
@@ -37452,7 +37508,7 @@
      "prepared": null
     },
     "mech": "static",
-    "src": "S:Continuous Affected$ Creature.YouCtrl+Other"
+    "src": "S Mode$Continuous Affected$ Creature.YouCtrl+Other"
    },
    {
     "event": "enter",
@@ -37869,7 +37925,7 @@
      "prepared": null
     },
     "mech": "static",
-    "src": "S:Continuous Affected$ Land.YouCtrl"
+    "src": "S Mode$Continuous Affected$ Land.YouCtrl"
    },
    {
     "event": "tograve",
@@ -38157,7 +38213,7 @@
      "prepared": null
     },
     "mech": "static",
-    "src": "S:Continuous Affected$ Card.!dealtCombatDamagetoAny"
+    "src": "S Mode$Continuous Affected$ Card.!dealtCombatDamagetoAny"
    },
    {
     "event": "mana",
@@ -38474,6 +38530,32 @@
     },
     "mech": "effect",
     "src": "SVar:TrigGainLife DB$GainLife"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": [
+      "Land"
+     ],
+     "neg": [],
+     "token": false,
+     "side": "you",
+     "self": false,
+     "concrete": true,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "effect",
+    "src": "SVar:Exploration Mode$Continuous extra land play (ramp)",
+    "amount": 1,
+    "colors": [
+     "W",
+     "U",
+     "B",
+     "R",
+     "G"
+    ]
    }
   ],
   "listens": [
@@ -38704,7 +38786,7 @@
      "prepared": null
     },
     "mech": "static",
-    "src": "S:Continuous Affected$ Planeswalker.YouCtrl"
+    "src": "S Mode$Continuous Affected$ Planeswalker.YouCtrl"
    },
    {
     "event": "counter+",
@@ -39618,7 +39700,7 @@
      "prepared": null
     },
     "mech": "static",
-    "src": "S:Continuous Affected$ Planeswalker.YouCtrl"
+    "src": "S Mode$Continuous Affected$ Planeswalker.YouCtrl"
    },
    {
     "event": "counter+",
@@ -39939,7 +40021,7 @@
      "prepared": null
     },
     "mech": "static",
-    "src": "S:Continuous Affected$ Thopter.YouCtrl"
+    "src": "S Mode$Continuous Affected$ Thopter.YouCtrl"
    },
    {
     "event": "cast",
@@ -40281,7 +40363,7 @@
      ]
     },
     "mech": "static",
-    "src": "S:Continuous Affected$ Creature.Artifact+YouCtrl"
+    "src": "S Mode$Continuous Affected$ Creature.Artifact+YouCtrl"
    },
    {
     "event": "cast",

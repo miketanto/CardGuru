@@ -227,10 +227,10 @@ cannot pick a scheme.**
   can pay only generic mana. There is no curve model, so "Chandra ramps
   into 5-drops" and "Chandra pays for a 6-mana activated sink" weigh the
   same.
-- **Known unmapped script content:** 11 SVar-borne statics/replacements
-  on 10 cards (statics granted through Forge's generic `Effect` API),
-  numeric qualifiers (`powerGE4`, `cmcLE2`), and Phase triggers (by
-  design).
+- **Known unmapped script content:** numeric qualifiers (`powerGE4`,
+  `cmcLE2`) and Phase triggers (by design). *(Update, §10: the 11
+  `Effect`-granted statics listed here originally are now routed; 4 map to
+  a primitive, 7 have none.)*
 
 ## 7. Corrections made after the first run (in the open)
 
@@ -264,16 +264,15 @@ unchanged; its pre-registered items 2 and 4 held throughout.
   weight.
 - **Does Oracle / SpellDescription text add anything?** Not tested; no
   text is used anywhere. The structured params already recover Empower
-  and Prepare. Where text would help: the 11 unmapped `Effect`-granted
-  statics, and the generic APIs `Effect` (15 cards) and `Charm` (18).
+  and Prepare. Where text would help: the generic APIs `Effect` (15 cards) and `Charm` (18).
   Charm choices *are* followed, because their sub-abilities are parsed
   SVars.
 - **Coverage:** complete (§1).
 
 ## 9. Next
 
-1. Map SVar-borne statics (the 11 unmapped abilities) and re-run. That is
-   the only known mapping gap that touches real cards.
+1. ~~Map SVar-borne statics (the 11 unmapped abilities) and re-run.~~
+   Done, §10: no headline number changed.
 2. Replace the colour factor with a curve-aware resource weight, then
    re-check whether Chandra's resource partners move up.
 3. Run the pipeline on a second set with known archetypes (the extraction
@@ -316,3 +315,59 @@ player (`You`) is not a population listener. `IgnoreLegendRule` and
   mana listeners' edges slightly). Community sizes, V1 rates and the
   held-out hit count may shift a little. A change larger than a few hits
   or one community reshuffle would be surprising.
+
+### 10.2 Result of the re-run
+
+Written after the re-run. Before: `runs/eval.v1-pre-effect.json`,
+`runs/GRAPH-REPORT.v1-pre-effect.md`. After: `eval.json`,
+`GRAPH-REPORT.md`.
+
+**Signals.** Exactly the 4 predicted cards changed; nothing was removed.
+Correction to the prediction above: it said mana emitters go "25 → 26".
+25 was the number of mana *emission records* in the census. The number of
+*cards* emitting mana is 23 → 24. The +1 was right; the base was misquoted.
+
+| mapped ability | new undirected pairs | max w(full) | share from intrinsic emissions |
+|---|---|---|---|
+| Jace's Machinations `CastWithFlash` (Jace PWs) | 42 | 0.072 | 5% (41 Empower cards make the Jace token it enables) |
+| Way of the Paradox extra land play (ramp) | 77 | 0.071 | 0% (all mana consumers) |
+| Hall of Echoes `IgnoreLegendRule` | 99 | 0.034 | 94% (every legendary) |
+| Ajani Resolute emblem anthem | 177 | 0.015 | 81% (every creature) |
+
+Undirected edges 18,596 → 18,850; directed matches 32,305 → 32,731.
+
+**Metrics** (before → after):
+
+| scheme | V1 same-comm rate | held-out hits /430 | colour NMI |
+|---|---|---|---|
+| uniform | 0.922 → 0.922 | 86 → 87 | 0.097 → 0.100 |
+| tight | 0.766 → 0.766 | 89 → 90 | 0.094 → 0.095 |
+| rarity | 0.688 → 0.688 | 99 → 96 | 0.119 → 0.138 |
+| full | 0.065 → 0.065 | 80 → 83 | 0.192 → 0.189 |
+| full_knn | 0.065 → 0.065 | 81 → 82 | 0.196 → 0.202 |
+
+Every "cannot move" prediction held: V2 is 43/44 (median rank 22),
+V3 has 77 consumers with 0 sharing a keyword (best pure-resource rank
+12), and pre-reg item 4 is 0. The held-out changes (−3 to +3 hits) are
+well inside the ±0.04 intervals, so they are neither an improvement nor
+a regression.
+
+**Communities (`full_knn`).** The same nine archetypes, with the same
+dominant primitives. Modularity 0.507 → 0.506, seed stability 0.909 →
+0.917. Sizes moved by ≤ 4: recursion 65→63, planeswalker 50→51, Prepare
+41→37, death triggers 14→18, lands 11→12. Seven of 280 cards changed
+community:
+
+- Hall of Echoes: recursion → lands. A direct effect, since it is a land
+  and its new legendary listener ties it to the land-side legendaries.
+- Six moved **indirectly**, through rarity counts. No new edge touches
+  them. Bloodline Recollector, Fulminous Forte, Kindred Judgment and
+  Silence the Echo went Prepare → death triggers; Lich's Relic went
+  recursion → death triggers; Way of the Necromancer went death
+  triggers → planeswalker. The four removal spells emit `die`, so the
+  death-trigger community is at least as defensible a home. These moves
+  still show the partition near those cards is sensitive to small
+  reweightings.
+
+§3's table is from before this change and still describes the
+communities; only its sizes are superseded by the figures above.

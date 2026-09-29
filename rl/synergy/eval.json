@@ -3,37 +3,37 @@
   "full_knn": [
    {
     "id": 0,
-    "size": 65,
+    "size": 63,
     "core": [
      "Liliana the Repentant",
      "Rewrite Regrets",
      "Generous Revival",
      "Hungering Puppetbeast",
-     "Vraska, the Cutting Glare",
      "Aerid Konstrari",
-     "Gallia, Tragic Host",
-     "Tenured Tethermage"
+     "Vraska, the Cutting Glare",
+     "Tenured Tethermage",
+     "Return to the Light Realms"
     ],
     "top_prims": [
      [
       "reenter",
-      0.5182984126344324
+      0.526839656247798
      ],
      [
       "enter",
-      0.20622652394400262
+      0.20535618751353807
      ],
      [
       "mana (resource)",
-      0.12445490203981883
+      0.11527129335069657
      ],
      [
       "cast",
-      0.0735513809148323
+      0.07240404715240482
      ],
      [
       "tograve",
-      0.03755413191181693
+      0.03890308286119163
      ]
     ],
     "colors": "RBG",
@@ -56,7 +56,6 @@
      "Ghalta the Unstoppable",
      "Gideon the Oathless",
      "Grim Repriser",
-     "Hall of Echoes",
      "Hapatra, the Desert Fang",
      "Hapatra, the Desert Frost",
      "Heartstring Puller",
@@ -69,7 +68,6 @@
      "Karn, Argent Defender",
      "Karn, Gilded Guardian",
      "Kiora of Fire and Ashes",
-     "Lich's Relic",
      "Liliana the Repentant",
      "Loot, the Nexus",
      "Mabel, Bitter Recluse",
@@ -107,12 +105,12 @@
    },
    {
     "id": 1,
-    "size": 50,
+    "size": 51,
     "core": [
      "Inspired Tethermage",
      "Ajani Unrelenting",
-     "Way of the Mind Sculptor",
      "Way of the Paradox",
+     "Way of the Mind Sculptor",
      "Kiora of Salt and Sand",
      "Jace, Reality Sculptor",
      "Tam, the Possibility",
@@ -121,26 +119,26 @@
     "top_prims": [
      [
       "activate_loyalty",
-      0.5463203747889525
+      0.5088145074339457
      ],
      [
       "enter",
-      0.19787072526008348
+      0.20593442531639566
      ],
      [
       "counter+:LOYALTY",
-      0.1782920912039824
+      0.20361757517164183
      ],
      [
       "cost_mod (cost)",
-      0.03559751646563839
+      0.03302207704886073
      ],
      [
       "counter+:*",
-      0.020607959833420782
+      0.01911699761684046
      ]
     ],
-    "colors": "UGR",
+    "colors": "UGB",
     "members": [
      "Ajani Unrelenting",
      "Arcane Amphisbaena",
@@ -188,6 +186,7 @@
      "Way of the Cryomancer",
      "Way of the Deathbringer",
      "Way of the Mind Sculptor",
+     "Way of the Necromancer",
      "Way of the Paradox",
      "Way of the Pyromancer",
      "Way of the Warlord",
@@ -196,7 +195,7 @@
    },
    {
     "id": 2,
-    "size": 41,
+    "size": 37,
     "core": [
      "Codie, Ravenous Codex",
      "Infinite Coursework",
@@ -204,35 +203,34 @@
      "Pyre Rhymer",
      "Variable Chaser",
      "Pompous Battlemage",
-     "Bloodline Recollector",
-     "Theorix Metamage"
+     "Theorix Metamage",
+     "Void Extrapolator"
     ],
     "top_prims": [
      [
       "prepare",
-      0.4429670329670333
+      0.45555958429669985
      ],
      [
       "cast",
-      0.2747041420118339
+      0.2819888586994905
      ],
      [
       "cost_mod (cost)",
-      0.14600591715976335
+      0.1394310685006334
      ],
      [
       "mana (resource)",
-      0.04974640743871513
+      0.05383706201174406
      ],
      [
       "tograve",
-      0.041665257819104
+      0.046420515814901864
      ]
     ],
-    "colors": "RUB",
+    "colors": "RUG",
     "members": [
      "Bestial Incursion",
-     "Bloodline Recollector",
      "Carnivorous Cultivator",
      "Clash of Elements",
      "Codie, Ravenous Codex",
@@ -242,12 +240,10 @@
      "Extrapolate the Impossible",
      "Ferocity of the Hunt",
      "Flourishing Grapple",
-     "Fulminous Forte",
      "Geist of Saint Thalia",
      "Heartwood Crafter",
      "Icy Reception",
      "Infinite Coursework",
-     "Kindred Judgment",
      "Konstrari Improviser",
      "Loyal Tutor",
      "Omnipresence",
@@ -257,7 +253,6 @@
      "Precise Redaction",
      "Puppet Crafting",
      "Pyre Rhymer",
-     "Silence the Echo",
      "Stingerquill Charm",
      "Stingerquill Voxmancer",
      "Stinging Vitriol",
@@ -290,23 +285,23 @@
     "top_prims": [
      [
       "draw",
-      0.7142655265112432
+      0.7150057077813347
      ],
      [
       "discard",
-      0.17769795521318743
+      0.17788210059512236
      ],
      [
       "mana (resource)",
-      0.04361686045365208
+      0.0429251474647252
      ],
      [
       "tograve",
-      0.04124080634666064
+      0.04128354349592553
      ],
      [
       "enter",
-      0.023178851475256803
+      0.022903500662892148
      ]
     ],
     "colors": "URB",
@@ -359,23 +354,23 @@
     "top_prims": [
      [
       "lifegain",
-      0.9434729401835635
+      0.9412819927113303
      ],
      [
       "enter",
-      0.018377465977423797
+      0.020895722569517952
      ],
      [
       "counter+:LOYALTY",
-      0.016552378942926483
+      0.016440371432942368
      ],
      [
       "discard",
-      0.008207616837219123
+      0.008152077103141595
      ],
      [
       "tograve",
-      0.007144213524633406
+      0.007095869684122735
      ]
     ],
     "colors": "WGB",
@@ -426,23 +421,23 @@
     "top_prims": [
      [
       "counter+:P1P1",
-      0.5664796248526269
+      0.5668062158518412
      ],
      [
       "cast_target_own",
-      0.3677720749231003
+      0.3679841055843328
      ],
      [
       "cast",
-      0.03202315418096076
+      0.032041616405307616
      ],
      [
       "enter",
-      0.024865037364040117
+      0.024427020506634516
      ],
      [
       "mana (resource)",
-      0.0075703179710838705
+      0.007450507344071528
      ]
     ],
     "colors": "WRG",
@@ -476,6 +471,59 @@
    },
    {
     "id": 6,
+    "size": 18,
+    "core": [
+     "Edgar, Ancient Bloodlord",
+     "Eye of Jace",
+     "Loot, the Anomaly",
+     "Gardenize",
+     "Massacre Girl, Most Wanted",
+     "Darklight Phoenix",
+     "Bloodline Recollector",
+     "Living Library"
+    ],
+    "top_prims": [
+     [
+      "die",
+      0.9622962328436266
+     ],
+     [
+      "enter",
+      0.019412223131074376
+     ],
+     [
+      "mana (resource)",
+      0.010208484957781318
+     ],
+     [
+      "tograve",
+      0.008083059067517698
+     ]
+    ],
+    "colors": "BGW",
+    "members": [
+     "Apex Witchstalker",
+     "Bloodline Recollector",
+     "Budding Insurgent",
+     "Darklight Phoenix",
+     "Edgar, Ancient Bloodlord",
+     "Eye of Jace",
+     "Fulminous Forte",
+     "Gardenize",
+     "Graft Surgeon",
+     "Kindred Judgment",
+     "Lich's Relic",
+     "Living Library",
+     "Loot, the Anomaly",
+     "Massacre Girl, Most Wanted",
+     "Silence the Echo",
+     "Simulacrum Shaper",
+     "Sphinx of False Conclusions",
+     "Theorist's Proxy"
+    ]
+   },
+   {
+    "id": 7,
     "size": 16,
     "core": [
      "Prudent Fateseer",
@@ -490,23 +538,23 @@
     "top_prims": [
      [
       "surveil",
-      0.9313981603730686
+      0.9317517286382972
      ],
      [
       "tograve",
-      0.030736760236962563
+      0.030748428225432046
      ],
      [
       "enter",
-      0.02430465175354146
+      0.02399701331459338
      ],
      [
       "reenter",
-      0.008567781753635517
+      0.008571034171194812
      ],
      [
       "mana (resource)",
-      0.003606496711815829
+      0.003545120283107663
      ]
     ],
     "colors": "UWR",
@@ -530,84 +578,36 @@
     ]
    },
    {
-    "id": 7,
-    "size": 14,
-    "core": [
-     "Edgar, Ancient Bloodlord",
-     "Eye of Jace",
-     "Loot, the Anomaly",
-     "Way of the Necromancer",
-     "Gardenize",
-     "Massacre Girl, Most Wanted",
-     "Budding Insurgent",
-     "Theorist's Proxy"
-    ],
-    "top_prims": [
-     [
-      "die",
-      0.9525016738495942
-     ],
-     [
-      "enter",
-      0.030753329823124474
-     ],
-     [
-      "mana (resource)",
-      0.010478623478096952
-     ],
-     [
-      "tograve",
-      0.006266372849184529
-     ]
-    ],
-    "colors": "BGU",
-    "members": [
-     "Apex Witchstalker",
-     "Budding Insurgent",
-     "Darklight Phoenix",
-     "Edgar, Ancient Bloodlord",
-     "Eye of Jace",
-     "Gardenize",
-     "Graft Surgeon",
-     "Living Library",
-     "Loot, the Anomaly",
-     "Massacre Girl, Most Wanted",
-     "Simulacrum Shaper",
-     "Sphinx of False Conclusions",
-     "Theorist's Proxy",
-     "Way of the Necromancer"
-    ]
-   },
-   {
     "id": 8,
-    "size": 11,
+    "size": 12,
     "core": [
+     "Koth, the Geomancer",
      "Rockfall Vale",
      "Overgrown Farmland",
      "Shipwreck Marsh",
-     "Haunted Ridge",
      "Primal Witchstalker",
+     "Haunted Ridge",
      "Deserted Beach",
-     "Koth, the Geomancer",
      "Hexhaven Invigorator"
     ],
     "top_prims": [
      [
       "enter",
-      0.9929181587212675
-     ],
-     [
-      "tograve",
-      0.004241102686698545
+      0.9796770762834767
      ],
      [
       "mana (resource)",
-      0.002840738592033931
+      0.01622353282413228
+     ],
+     [
+      "tograve",
+      0.004099390892390992
      ]
     ],
     "colors": "GRB",
     "members": [
      "Deserted Beach",
+     "Hall of Echoes",
      "Haunted Ridge",
      "Hexhaven Invigorator",
      "Koth, the Geomancer",
@@ -624,7 +624,7 @@
   "full": [
    {
     "id": 0,
-    "size": 84,
+    "size": 85,
     "core": [
      "Liliana the Repentant",
      "Rewrite Regrets",
@@ -638,29 +638,29 @@
     "top_prims": [
      [
       "enter",
-      0.3184019532874535
+      0.31609953577355987
      ],
      [
       "mana (resource)",
-      0.251103419594585
+      0.2589954280449024
      ],
      [
       "reenter",
-      0.2097235078681528
+      0.20432069184356494
      ],
      [
       "counter+:P1P1",
-      0.07541295586129958
+      0.07280621090201266
      ],
      [
       "cast",
-      0.0628608991791671
+      0.06296568350821233
      ]
     ],
     "colors": "RGB",
     "members": [
      "Aerid Konstrari",
-     "Afterthought Sentry",
+     "Ajani's Anguish",
      "Arni, Renowned Champion",
      "Craterclaw Colossus",
      "Curse-Marred Demon",
@@ -735,6 +735,7 @@
      "Vinelasher Adept",
      "Vraska, Soul of Stone",
      "Vraska, the Cutting Glare",
+     "Winter, Team Player",
      "Winter, Tormented Loner",
      "Woodwork Prodigy",
      "Wrecking Gecko",
@@ -751,8 +752,8 @@
     "core": [
      "Inspired Tethermage",
      "Ajani Unrelenting",
-     "Way of the Mind Sculptor",
      "Way of the Paradox",
+     "Way of the Mind Sculptor",
      "Kiora of Salt and Sand",
      "Jace, Reality Sculptor",
      "Avatar of Burgeoning Echoes",
@@ -761,23 +762,23 @@
     "top_prims": [
      [
       "enter",
-      0.5254999944644937
+      0.5280168491652094
      ],
      [
       "activate_loyalty",
-      0.2919577419569126
+      0.28759589267518015
      ],
      [
       "counter+:LOYALTY",
-      0.12891913734694363
+      0.1269930851625788
      ],
      [
       "cost_mod (cost)",
-      0.017229258463786788
+      0.01697185330593301
      ],
      [
       "counter+:*",
-      0.012032803401014145
+      0.011853033292778113
      ]
     ],
     "colors": "UGW",
@@ -841,7 +842,7 @@
    },
    {
     "id": 2,
-    "size": 54,
+    "size": 53,
     "core": [
      "Geist of Saint Thalia",
      "Codie, Ravenous Codex",
@@ -849,34 +850,34 @@
      "Infinite Coursework",
      "Pyre Rhymer",
      "Pompous Battlemage",
-     "Grim Repriser",
-     "Danitha, Sword of Hope"
+     "Danitha, Sword of Hope",
+     "Grim Repriser"
     ],
     "top_prims": [
      [
       "cast",
-      0.42640050998403334
-     ],
-     [
-      "prepare",
-      0.13569278090673623
+      0.40355754298239027
      ],
      [
       "tograve",
-      0.13400966529142005
+      0.15876994922515975
+     ],
+     [
+      "prepare",
+      0.1420726267443523
      ],
      [
       "cost_mod (cost)",
-      0.11767082045574541
+      0.11957970328108973
      ],
      [
       "cast_target_own",
-      0.10910796976282776
+      0.11423788177502649
      ]
     ],
     "colors": "RBU",
     "members": [
-     "Ajani's Anguish",
+     "Afterthought Sentry",
      "Bestial Incursion",
      "Blazing Crescendo",
      "Carnivorous Cultivator",
@@ -928,7 +929,6 @@
      "Vindictive Triumph",
      "Void Extrapolator",
      "Whiplash Wordsmith",
-     "Winter, Team Player",
      "Wrath of the Bloodmane"
     ]
    },
@@ -936,8 +936,8 @@
     "id": 3,
     "size": 37,
     "core": [
-     "Titanbones, Towering Heart",
      "Ajani Resolute",
+     "Titanbones, Towering Heart",
      "Kwia Vigorbloom",
      "Enlightened Confidant",
      "Way of the Mentor",
@@ -948,23 +948,23 @@
     "top_prims": [
      [
       "lifegain",
-      0.777401644976291
+      0.7759194099697295
      ],
      [
       "die",
-      0.11315368759056567
+      0.11293794279770074
      ],
      [
       "enter",
-      0.03621396937269139
+      0.03827836315760178
      ],
      [
       "tograve",
-      0.024646071581639978
+      0.024599080080774757
      ],
      [
       "counter+:P1P1",
-      0.019907070404713168
+      0.019869114533610205
      ]
     ],
     "colors": "WGB",
@@ -1024,23 +1024,23 @@
     "top_prims": [
      [
       "draw",
-      0.7202884754288427
+      0.7209788200398576
      ],
      [
       "discard",
-      0.12823969981961011
+      0.12836260833294696
      ],
      [
       "tograve",
-      0.060426860662811825
+      0.060484775455345856
      ],
      [
       "enter",
-      0.0395635086731536
+      0.03910274829679732
      ],
      [
       "mana (resource)",
-      0.027214034099958834
+      0.02678036798442783
      ]
     ],
     "colors": "URB",
@@ -1099,23 +1099,23 @@
     "top_prims": [
      [
       "surveil",
-      0.9326012461589243
+      0.9328266256399084
      ],
      [
       "tograve",
-      0.0412709323732488
+      0.04128090621936613
      ],
      [
       "enter",
-      0.013873811946383206
+      0.013703572595577846
      ],
      [
       "reenter",
-      0.005900708833708231
+      0.00590213484369895
      ],
      [
       "mana (resource)",
-      0.003913388211513533
+      0.003846258577497009
      ]
     ],
     "colors": "UW",
@@ -1140,37 +1140,160 @@
   "rarity": [
    {
     "id": 0,
-    "size": 81,
+    "size": 84,
+    "core": [
+     "Proctor of Potential",
+     "Chandra, Chill of Compliance",
+     "Eye of Jace",
+     "Grim Repriser",
+     "Prudent Fateseer",
+     "Enlightened Confidant",
+     "Diviner of Victory",
+     "Yuriko, Hope from the Shadows"
+    ],
+    "top_prims": [
+     [
+      "tograve",
+      0.45226448331364943
+     ],
+     [
+      "cast",
+      0.22940803110308067
+     ],
+     [
+      "surveil",
+      0.12726672688112262
+     ],
+     [
+      "enter",
+      0.046478395168947875
+     ],
+     [
+      "prepare",
+      0.040843060283934356
+     ]
+    ],
+    "colors": "UBW",
+    "members": [
+     "Afterthought Sentry",
+     "Artifist Acumen",
+     "Bestial Incursion",
+     "Blazing Crescendo",
+     "Blessed Ghoul",
+     "Bloodline Recollector",
+     "Carnivorous Cultivator",
+     "Cast Away Doubt",
+     "Chandra's Emberling",
+     "Chandra, Chill of Compliance",
+     "Charge the Sanctum",
+     "Clash of Elements",
+     "Codie, Ravenous Codex",
+     "Command the Stage",
+     "Compel Brutality",
+     "Cruel Calculations",
+     "Cryotheory Adept",
+     "Dark Matter Manipulator",
+     "Darklight Phoenix",
+     "Denzilore Fatehold",
+     "Desperate Futurescribe",
+     "Diviner of Victory",
+     "Enlightened Confidant",
+     "Essence Burn",
+     "Extended Absence",
+     "Extrapolate the Impossible",
+     "Eye of Jace",
+     "Fatehold Chronologist",
+     "Flourishing Grapple",
+     "Fulminous Forte",
+     "Geist of Saint Thalia",
+     "Grim Repriser",
+     "Hapatra, the Desert Fang",
+     "Icy Reception",
+     "Infinite Coursework",
+     "Kindred Judgment",
+     "Last Gasp",
+     "Lich's Relic",
+     "Loyal Tutor",
+     "Memory Trap",
+     "Multiply by Zero",
+     "Null Summoner",
+     "Paradox Shaper",
+     "Perfected Theory",
+     "Pompous Battlemage",
+     "Precise Redaction",
+     "Predictive Preparations",
+     "Proctor of Potential",
+     "Proft, Consulting Detective",
+     "Prophesied End",
+     "Prudent Fateseer",
+     "Puppet Crafting",
+     "Pyre Rhymer",
+     "Recursive Recruitment",
+     "Refute Destiny",
+     "Restore with Empathy",
+     "Return to the Light Realms",
+     "Ruric Thar, Biomagus",
+     "Saheeli, Consul of Oversight",
+     "Saheeli, Jewel of Avishkar",
+     "Semester Foreseer",
+     "Silence the Echo",
+     "Something Worth Saving",
+     "Stingerquill Charm",
+     "Stingerquill Voxmancer",
+     "Stinging Vitriol",
+     "Surgical Precision",
+     "Surveillance Phantasm",
+     "Terminal Criticism",
+     "Tethermage's Advantage",
+     "Tetsuko Umezawa, Pursuer",
+     "Theorix Metamage",
+     "Tomik, Izzet Sparkmage",
+     "Traxos, Academy Guardian",
+     "Twisted Fates",
+     "Unsummon",
+     "Variable Chaser",
+     "Vindictive Triumph",
+     "Void Extrapolator",
+     "Whiplash Wordsmith",
+     "Winter, Team Player",
+     "Wrath of the Bloodmane",
+     "Your Fate Ends Here",
+     "Yuriko, Hope from the Shadows"
+    ]
+   },
+   {
+    "id": 1,
+    "size": 82,
     "core": [
      "Kwia Vigorbloom",
-     "Hungering Puppetbeast",
      "Yoshimaru, Beloved Companion",
+     "Hungering Puppetbeast",
+     "Vigorbloom Vanguard",
      "Aerid Konstrari",
      "Tenured Tethermage",
-     "Vigorbloom Vanguard",
      "Edgar, Ancient Bloodlord",
      "Traxos, Scourge Eternal"
     ],
     "top_prims": [
      [
       "mana (resource)",
-      0.390199521615393
+      0.36982019091117296
      ],
      [
       "enter",
-      0.29183533696533587
+      0.30056328651366376
      ],
      [
       "counter+:P1P1",
-      0.09409141309990038
-     ],
-     [
-      "cast",
-      0.07410392382775557
+      0.09800236918791179
      ],
      [
       "lifegain",
-      0.05841370000065952
+      0.08358268075285892
+     ],
+     [
+      "cast",
+      0.07040198089400626
      ]
     ],
     "colors": "GRW",
@@ -1180,18 +1303,22 @@
      "Archive Arbiter",
      "Arni, Renowned Champion",
      "Bloombrute",
+     "Blossom-Blessed Angel",
+     "Craftwork Crusher",
      "Craterclaw Colossus",
      "Danitha, Spear of Agony",
-     "Darklight Phoenix",
+     "Danitha, Sword of Hope",
      "Draconic Visitor",
      "Eardrum Rattler",
      "Edgar, Ancient Bloodlord",
      "Edgar, Moonlit Sovereign",
+     "Emergency Phytomedic",
      "Emrakul, the Exigent Doom",
      "Fblthp, Knows the Way",
      "Flickering Hound",
      "Gallia, the Merrymaker",
      "Gardenize",
+     "Germinate Recruits",
      "Ghalta the Immovable",
      "Ghalta the Unstoppable",
      "Gideon the Oathless",
@@ -1214,19 +1341,18 @@
      "Koth of the Homestead",
      "Koth, the Geomancer",
      "Kwia Vigorbloom",
-     "Lich's Relic",
      "Living Library",
      "Loot, the Anomaly",
      "Loot, the Nexus",
      "Lyra, Archangel of Dawn",
      "Mabel, Valley Hero",
+     "Marwyn, the Clearcutter",
      "Massacre Girl, Most Wanted",
      "Master of Barbs",
      "Medic's Kitesail",
      "Omnipresence",
      "Pia, Determined Rebuilder",
      "Rescue Girl, First Responder",
-     "Rise of the Deathbringer",
      "Room of Refuge",
      "Ruric Thar, Magecrusher",
      "Samut, Hazoret's Champion",
@@ -1240,7 +1366,6 @@
      "Tetsuko Umezawa, Fugitive",
      "Thalia, the Survivor",
      "Traxos, Scourge Eternal",
-     "Twisted Fates",
      "Unflinching Hortimancer",
      "Verdant Kraken",
      "Vigorbloom Charm",
@@ -1248,7 +1373,6 @@
      "Vraska, Soul of Stone",
      "Vraska, the Cutting Glare",
      "Warrior's Blades",
-     "Winter, Team Player",
      "Woodwork Prodigy",
      "Wrecking Gecko",
      "Yargle, Glutton of Urborg",
@@ -1256,125 +1380,6 @@
      "Yoshimaru, Beloved Companion",
      "Yoshimaru, Scrappy Stray",
      "Yuriko, Blade of the Mighty"
-    ]
-   },
-   {
-    "id": 1,
-    "size": 80,
-    "core": [
-     "Proctor of Potential",
-     "Chandra, Chill of Compliance",
-     "Enlightened Confidant",
-     "Eye of Jace",
-     "Prudent Fateseer",
-     "Diviner of Victory",
-     "Codie, Ravenous Codex",
-     "Yuriko, Hope from the Shadows"
-    ],
-    "top_prims": [
-     [
-      "tograve",
-      0.43742415610848456
-     ],
-     [
-      "cast",
-      0.21224911802052743
-     ],
-     [
-      "surveil",
-      0.13942629609058807
-     ],
-     [
-      "enter",
-      0.05755394257410713
-     ],
-     [
-      "prepare",
-      0.05113756421829413
-     ]
-    ],
-    "colors": "UWB",
-    "members": [
-     "Afterthought Sentry",
-     "Bestial Incursion",
-     "Blazing Crescendo",
-     "Blessed Ghoul",
-     "Bloodline Recollector",
-     "Blossom-Blessed Angel",
-     "Carnivorous Cultivator",
-     "Chandra's Emberling",
-     "Chandra, Chill of Compliance",
-     "Charge the Sanctum",
-     "Clash of Elements",
-     "Codie, Ravenous Codex",
-     "Command the Stage",
-     "Compel Brutality",
-     "Cruel Calculations",
-     "Cryotheory Adept",
-     "Danitha, Sword of Hope",
-     "Dark Matter Manipulator",
-     "Denzilore Fatehold",
-     "Desperate Futurescribe",
-     "Diviner of Victory",
-     "Emergency Phytomedic",
-     "Enlightened Confidant",
-     "Essence Burn",
-     "Extended Absence",
-     "Extrapolate the Impossible",
-     "Eye of Jace",
-     "Fatehold Chronologist",
-     "Ferocity of the Hunt",
-     "Flourishing Grapple",
-     "Fulminous Forte",
-     "Geist of Saint Thalia",
-     "Germinate Recruits",
-     "Hapatra, the Desert Fang",
-     "Icy Reception",
-     "Infinite Coursework",
-     "Kindred Judgment",
-     "Last Gasp",
-     "Loyal Tutor",
-     "Memory Trap",
-     "Multiply by Zero",
-     "Null Summoner",
-     "Paradox Shaper",
-     "Perfected Theory",
-     "Pompous Battlemage",
-     "Precise Redaction",
-     "Predictive Preparations",
-     "Proctor of Potential",
-     "Proft, Consulting Detective",
-     "Prudent Fateseer",
-     "Puppet Crafting",
-     "Pyre Rhymer",
-     "Recursive Recruitment",
-     "Refute Destiny",
-     "Restore with Empathy",
-     "Ruric Thar, Biomagus",
-     "Saheeli, Consul of Oversight",
-     "Saheeli, Jewel of Avishkar",
-     "Semester Foreseer",
-     "Silence the Echo",
-     "Something Worth Saving",
-     "Stingerquill Charm",
-     "Stingerquill Voxmancer",
-     "Stinging Vitriol",
-     "Surgical Precision",
-     "Surveillance Phantasm",
-     "Terminal Criticism",
-     "Tethermage's Advantage",
-     "Tetsuko Umezawa, Pursuer",
-     "Theorix Metamage",
-     "Tomik, Izzet Sparkmage",
-     "Traxos, Academy Guardian",
-     "Unsummon",
-     "Variable Chaser",
-     "Vindictive Triumph",
-     "Void Extrapolator",
-     "Whiplash Wordsmith",
-     "Wrath of the Bloodmane",
-     "Your Fate Ends Here",
-     "Yuriko, Hope from the Shadows"
     ]
    },
    {
@@ -1393,23 +1398,23 @@
     "top_prims": [
      [
       "enter",
-      0.5316973224479477
+      0.5338467581163356
      ],
      [
       "activate_loyalty",
-      0.2322663094302386
+      0.2290005575221807
      ],
      [
       "counter+:LOYALTY",
-      0.15280821682032902
+      0.1506596756613806
      ],
      [
       "counter+:*",
-      0.026316902943758352
+      0.025946877363149698
      ],
      [
-      "cost_mod (cost)",
-      0.013887972530278155
+      "mana (resource)",
+      0.013774015082442125
      ]
     ],
     "colors": "UGW",
@@ -1485,56 +1490,53 @@
    },
    {
     "id": 3,
-    "size": 52,
+    "size": 47,
     "core": [
-     "Murmuring Volume",
      "Liliana the Repentant",
-     "Gideon's Memorial",
+     "Murmuring Volume",
      "Tinybones, Pocket Nuisance",
-     "Solitary Cell",
+     "Titanbones, Towering Heart",
+     "Gideon's Memorial",
+     "Seasoned Cryomancer",
      "Proft, Sinister Mastermind",
-     "Grim Repriser",
-     "Hallway Heckler"
+     "Solitary Cell"
     ],
     "top_prims": [
      [
       "tograve",
-      0.353400715339353
+      0.37819017318057296
      ],
      [
       "draw",
-      0.2914331723426923
+      0.2862707545719766
      ],
      [
       "reenter",
-      0.15098052108365329
+      0.11400591291973676
      ],
      [
       "discard",
-      0.09651994724899521
+      0.11228341604252894
      ],
      [
       "enter",
-      0.07522911081308742
+      0.08263799639047782
      ]
     ],
-    "colors": "BRU",
+    "colors": "BUR",
     "members": [
      "Apex Witchstalker",
      "Arni, Humble Scribe",
-     "Artifist Acumen",
      "Awaken the Inferno",
-     "Cast Away Doubt",
-     "Craftwork Crusher",
      "Curse-Marred Demon",
      "Divining Duelist",
      "Fateshaper Aspirant",
      "Fblthp, Impossibly Lost",
+     "Ferocity of the Hunt",
      "Frostbite Pyromental",
      "Gallia, Tragic Host",
      "Generous Revival",
      "Gideon's Memorial",
-     "Grim Repriser",
      "Hallway Heckler",
      "Hapatra, the Desert Frost",
      "Heartstring Puller",
@@ -1544,16 +1546,14 @@
      "Liliana the Repentant",
      "Lyra, Tolarian Archangel",
      "Mabel, Bitter Recluse",
-     "Marwyn, the Clearcutter",
      "Murmuring Volume",
      "Pia, Aether Ascetic",
      "Primal Witchstalker",
      "Proft, Sinister Mastermind",
-     "Prophesied End",
      "Rampart Hunter",
      "Rank Rat",
-     "Return to the Light Realms",
      "Rewrite Regrets",
+     "Rise of the Deathbringer",
      "Seasoned Cryomancer",
      "Solitary Cell",
      "Sphinx of False Conclusions",
@@ -1578,55 +1578,55 @@
  },
  "colour_nmi": {
   "uniform": {
-   "obs": 0.09727249612448038,
-   "shuffled_mean": 0.039991017465550595,
-   "shuffled_max": 0.06608560607618724
+   "obs": 0.09966778089514046,
+   "shuffled_mean": 0.03886687184133484,
+   "shuffled_max": 0.06073707542629886
   },
   "tight": {
-   "obs": 0.09384580994518767,
-   "shuffled_mean": 0.03893594310797471,
-   "shuffled_max": 0.07234216465968558
+   "obs": 0.09453904972537983,
+   "shuffled_mean": 0.039124273827575384,
+   "shuffled_max": 0.06811753984606136
   },
   "rarity": {
-   "obs": 0.11931172822177205,
-   "shuffled_mean": 0.053514164267716074,
-   "shuffled_max": 0.08130710086368619
+   "obs": 0.13793248232723604,
+   "shuffled_mean": 0.05539193757777292,
+   "shuffled_max": 0.07826114339293
   },
   "full": {
-   "obs": 0.1921345219608264,
-   "shuffled_mean": 0.07855791658754792,
-   "shuffled_max": 0.11443519943526412
+   "obs": 0.18899865440879093,
+   "shuffled_mean": 0.07840677757185309,
+   "shuffled_max": 0.11931058104892946
   },
   "full_knn": {
-   "obs": 0.1955358627242836,
-   "shuffled_mean": 0.10660564020579484,
-   "shuffled_max": 0.13705960565236672
+   "obs": 0.20224187239789135,
+   "shuffled_mean": 0.10787835382816324,
+   "shuffled_max": 0.13479547528190935
   }
  },
  "V1": {
   "uniform": {
    "obs": 0.922077922077922,
-   "base": 0.3425779220779227,
+   "base": 0.3408668831168837,
    "p": 0.0004997501249375312
   },
   "tight": {
    "obs": 0.7662337662337663,
-   "base": 0.3499448051948056,
+   "base": 0.34894155844155933,
    "p": 0.0004997501249375312
   },
   "rarity": {
    "obs": 0.6883116883116883,
-   "base": 0.25504220779220776,
+   "base": 0.26003896103896085,
    "p": 0.0004997501249375312
   },
   "full": {
    "obs": 0.06493506493506493,
-   "base": 0.20069155844155823,
+   "base": 0.1995779220779219,
    "p": 1.0
   },
   "full_knn": {
    "obs": 0.06493506493506493,
-   "base": 0.14077272727272686,
+   "base": 0.13610389610389576,
    "p": 0.9940029985007496
   }
  },
@@ -1648,43 +1648,43 @@
  },
  "heldout": {
   "uniform": {
-   "hits": 86,
+   "hits": 87,
    "n": 430,
-   "rate": 0.2,
-   "lo": 0.16492275627926775,
-   "hi": 0.24039015055124371,
+   "rate": 0.20232558139534884,
+   "lo": 0.1670664474383351,
+   "hi": 0.24285643685860647,
    "base": 0.03709260648495457
   },
   "tight": {
-   "hits": 89,
+   "hits": 90,
    "n": 430,
-   "rate": 0.2069767441860465,
-   "lo": 0.17135959843326304,
-   "hi": 0.2477832407965388,
+   "rate": 0.20930232558139536,
+   "lo": 0.17350901063309,
+   "hi": 0.25024380606314206,
    "base": 0.03709260648495457
   },
   "rarity": {
-   "hits": 99,
+   "hits": 96,
    "n": 430,
-   "rate": 0.2302325581395349,
-   "lo": 0.1929349031644697,
-   "hi": 0.2723077107296336,
+   "rate": 0.22325581395348837,
+   "lo": 0.1864437985732241,
+   "hi": 0.26496888292158877,
    "base": 0.03709260648495457
   },
   "full": {
-   "hits": 80,
+   "hits": 83,
    "n": 430,
-   "rate": 0.18604651162790697,
-   "lo": 0.1521026052867109,
-   "hi": 0.22555043674521966,
+   "rate": 0.1930232558139535,
+   "lo": 0.1585035208948275,
+   "hi": 0.2329794535363935,
    "base": 0.03709260648495457
   },
   "full_knn": {
-   "hits": 81,
+   "hits": 82,
    "n": 430,
-   "rate": 0.1883720930232558,
-   "lo": 0.15423416158876935,
-   "hi": 0.22802885790959132,
+   "rate": 0.19069767441860466,
+   "lo": 0.15636780974994385,
+   "hi": 0.23050518721484703,
    "base": 0.03709260648495457
   }
  },

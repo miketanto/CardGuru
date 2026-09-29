@@ -130,3 +130,10 @@ them change rows of the §2 table:
   no longer matches `ReplaceCount$` / `TriggerCount$`, and inline `Count$`
   in ability params is now read. Host-attached triggers (`AttachedBy`,
   `EnchantedBy`, `EquippedBy`) are no longer cross-card listeners.
+- Statics and replacements granted through `Effect` (SVar `Mode$`/`Event$`
+  lines with no `Execute$`) are now routed as `S:`/`R:` lines. New mappings:
+  `CastWithFlash` for loyalty abilities → listen `enter` on those
+  planeswalkers; `IgnoreLegendRule` → listen `enter` Legendary;
+  `AdjustLandPlays` → emit `mana` (ramp). A `Continuous` whose `Affected$`
+  names an effect-chosen object or a player is not a population listener.
+  See `SYNERGY-GRAPH.md` §10.
