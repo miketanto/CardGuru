@@ -1,0 +1,2113 @@
+{
+ "profiles": {
+  "full_knn": [
+   {
+    "id": 0,
+    "size": 65,
+    "core": [
+     "Liliana the Repentant",
+     "Rewrite Regrets",
+     "Generous Revival",
+     "Hungering Puppetbeast",
+     "Vraska, the Cutting Glare",
+     "Aerid Konstrari",
+     "Gallia, Tragic Host",
+     "Tenured Tethermage"
+    ],
+    "top_prims": [
+     [
+      "reenter",
+      0.5182984126344324
+     ],
+     [
+      "enter",
+      0.20622652394400262
+     ],
+     [
+      "mana (resource)",
+      0.12445490203981883
+     ],
+     [
+      "cast",
+      0.0735513809148323
+     ],
+     [
+      "tograve",
+      0.03755413191181693
+     ]
+    ],
+    "colors": "RBG",
+    "members": [
+     "Aerid Konstrari",
+     "Afterthought Sentry",
+     "Ajani's Anguish",
+     "Arni, Renowned Champion",
+     "Craterclaw Colossus",
+     "Curse-Marred Demon",
+     "Dark Matter Manipulator",
+     "Draconic Visitor",
+     "Eardrum Rattler",
+     "Emrakul, the Exigent Doom",
+     "Fblthp, Knows the Way",
+     "Flickering Hound",
+     "Gallia, Tragic Host",
+     "Generous Revival",
+     "Ghalta the Immovable",
+     "Ghalta the Unstoppable",
+     "Gideon the Oathless",
+     "Grim Repriser",
+     "Hall of Echoes",
+     "Hapatra, the Desert Fang",
+     "Hapatra, the Desert Frost",
+     "Heartstring Puller",
+     "Hexhaven Dueling Arena",
+     "Hungering Puppetbeast",
+     "Hunter's Axe",
+     "Identity Echo",
+     "Ingris Stingerquill",
+     "Jiang Yanggu, Never Alone",
+     "Karn, Argent Defender",
+     "Karn, Gilded Guardian",
+     "Kiora of Fire and Ashes",
+     "Lich's Relic",
+     "Liliana the Repentant",
+     "Loot, the Nexus",
+     "Mabel, Bitter Recluse",
+     "Master of Barbs",
+     "Memory Trap",
+     "Mind Meanderer",
+     "Null Summoner",
+     "Pia, Determined Rebuilder",
+     "Rampart Hunter",
+     "Rank Rat",
+     "Rescue Girl, First Responder",
+     "Return to the Light Realms",
+     "Rewrite Regrets",
+     "Ruric Thar, Magecrusher",
+     "Saheeli, Jewel of Avishkar",
+     "Samut, Hazoret's Champion",
+     "Samut, Tyrant of Naktamun",
+     "Shatterwing Pegasus",
+     "Skilled Battlecarver",
+     "Stingcaster Mage",
+     "Tarmogoyf",
+     "Tenured Tethermage",
+     "Tetsuko Umezawa, Fugitive",
+     "Traxos, Scourge Eternal",
+     "Uldaros Theorix",
+     "Vinelasher Adept",
+     "Vraska, Soul of Stone",
+     "Vraska, the Cutting Glare",
+     "Winter, Tormented Loner",
+     "Wrecking Gecko",
+     "Yargle, Glutton of Urborg",
+     "Yargle, Goliath of Otaria",
+     "Yuriko, Blade of the Mighty"
+    ]
+   },
+   {
+    "id": 1,
+    "size": 50,
+    "core": [
+     "Inspired Tethermage",
+     "Ajani Unrelenting",
+     "Way of the Mind Sculptor",
+     "Way of the Paradox",
+     "Kiora of Salt and Sand",
+     "Jace, Reality Sculptor",
+     "Tam, the Possibility",
+     "Avatar of Burgeoning Echoes"
+    ],
+    "top_prims": [
+     [
+      "activate_loyalty",
+      0.5463203747889525
+     ],
+     [
+      "enter",
+      0.19787072526008348
+     ],
+     [
+      "counter+:LOYALTY",
+      0.1782920912039824
+     ],
+     [
+      "cost_mod (cost)",
+      0.03559751646563839
+     ],
+     [
+      "counter+:*",
+      0.020607959833420782
+     ]
+    ],
+    "colors": "UGR",
+    "members": [
+     "Ajani Unrelenting",
+     "Arcane Amphisbaena",
+     "Avatar of Burgeoning Echoes",
+     "Campus Crier",
+     "Chandra, Torch of Defiance",
+     "Countersculpt",
+     "Dedicated Commons",
+     "Entrust the Spark",
+     "Face Yourself",
+     "Fatehold Annex",
+     "Fatehold Charm",
+     "Formidable Commons",
+     "Garruk, Curse Breaker",
+     "Garruk, Veiled Butcher",
+     "Hexhaven Battalion",
+     "Innovative Commons",
+     "Inspired Tethermage",
+     "Jace's Machinations",
+     "Jace, Reality Sculptor",
+     "Keeper of the Quiet Hour",
+     "Kiora of Salt and Sand",
+     "Konstrari Annex",
+     "Meticulous Commons",
+     "Mindseeker Oculus",
+     "No Admittance",
+     "Overwrite the Multiverse",
+     "Plan for All Outcomes",
+     "Protege's Awakening",
+     "Repurposed Enforcer",
+     "Sanctum Lurker",
+     "Solve for Disappointment",
+     "Stingerquill Annex",
+     "Tam, the Possibility",
+     "Tetsuko Umezawa, Pursuer",
+     "Teyo, Diamondblade Mage",
+     "Teyo, Lightshield Expert",
+     "Theorist's Sanctum",
+     "Theorix Annex",
+     "Tomik, Orzhov Lawmage",
+     "Transformative Commons",
+     "Vigorbloom Annex",
+     "Violent Echoes",
+     "Vraska's Final Mercy",
+     "Way of the Cryomancer",
+     "Way of the Deathbringer",
+     "Way of the Mind Sculptor",
+     "Way of the Paradox",
+     "Way of the Pyromancer",
+     "Way of the Warlord",
+     "Way of the Wildspeaker"
+    ]
+   },
+   {
+    "id": 2,
+    "size": 41,
+    "core": [
+     "Codie, Ravenous Codex",
+     "Infinite Coursework",
+     "Geist of Saint Thalia",
+     "Pyre Rhymer",
+     "Variable Chaser",
+     "Pompous Battlemage",
+     "Bloodline Recollector",
+     "Theorix Metamage"
+    ],
+    "top_prims": [
+     [
+      "prepare",
+      0.4429670329670333
+     ],
+     [
+      "cast",
+      0.2747041420118339
+     ],
+     [
+      "cost_mod (cost)",
+      0.14600591715976335
+     ],
+     [
+      "mana (resource)",
+      0.04974640743871513
+     ],
+     [
+      "tograve",
+      0.041665257819104
+     ]
+    ],
+    "colors": "RUB",
+    "members": [
+     "Bestial Incursion",
+     "Bloodline Recollector",
+     "Carnivorous Cultivator",
+     "Clash of Elements",
+     "Codie, Ravenous Codex",
+     "Compel Brutality",
+     "Cryotheory Adept",
+     "Essence Burn",
+     "Extrapolate the Impossible",
+     "Ferocity of the Hunt",
+     "Flourishing Grapple",
+     "Fulminous Forte",
+     "Geist of Saint Thalia",
+     "Heartwood Crafter",
+     "Icy Reception",
+     "Infinite Coursework",
+     "Kindred Judgment",
+     "Konstrari Improviser",
+     "Loyal Tutor",
+     "Omnipresence",
+     "Paradox Shaper",
+     "Perfected Theory",
+     "Pompous Battlemage",
+     "Precise Redaction",
+     "Puppet Crafting",
+     "Pyre Rhymer",
+     "Silence the Echo",
+     "Stingerquill Charm",
+     "Stingerquill Voxmancer",
+     "Stinging Vitriol",
+     "Theorix Metamage",
+     "Tomik, Izzet Sparkmage",
+     "Traxos, Academy Guardian",
+     "Unsummon",
+     "Variable Chaser",
+     "Vindictive Triumph",
+     "Void Extrapolator",
+     "Whiplash Wordsmith",
+     "Winter, Team Player",
+     "Woodwork Prodigy",
+     "Wrath of the Bloodmane"
+    ]
+   },
+   {
+    "id": 3,
+    "size": 30,
+    "core": [
+     "Tinybones, Pocket Nuisance",
+     "Murmuring Volume",
+     "Lyra, Tolarian Archangel",
+     "The Theorist, Jace Beleren",
+     "Hallway Heckler",
+     "Solitary Cell",
+     "Proft, Sinister Mastermind",
+     "Gideon's Memorial"
+    ],
+    "top_prims": [
+     [
+      "draw",
+      0.7142655265112432
+     ],
+     [
+      "discard",
+      0.17769795521318743
+     ],
+     [
+      "mana (resource)",
+      0.04361686045365208
+     ],
+     [
+      "tograve",
+      0.04124080634666064
+     ],
+     [
+      "enter",
+      0.023178851475256803
+     ]
+    ],
+    "colors": "URB",
+    "members": [
+     "Arni, Humble Scribe",
+     "Artifist Acumen",
+     "Cast Away Doubt",
+     "Craftwork Crusher",
+     "Cruel Calculations",
+     "Divining Duelist",
+     "Fblthp, Impossibly Lost",
+     "Frostbite Pyromental",
+     "Gideon's Memorial",
+     "Hallway Heckler",
+     "Jiang Yanggu, Alone",
+     "Lyra, Tolarian Archangel",
+     "Marwyn, the Clearcutter",
+     "Murmuring Volume",
+     "Pia, Aether Ascetic",
+     "Proft, Sinister Mastermind",
+     "Prophesied End",
+     "Rise of the Deathbringer",
+     "Seasoned Cryomancer",
+     "Solitary Cell",
+     "Sphinx's Approach",
+     "Sureshot Sower",
+     "Tether Technician",
+     "The Echoverse Fulcrum",
+     "The Theorist, Jace Beleren",
+     "Theoretical Necromancer",
+     "Theorix Charm",
+     "Tinybones, Pocket Nuisance",
+     "Twinned Vision",
+     "Undulating Witness"
+    ]
+   },
+   {
+    "id": 4,
+    "size": 28,
+    "core": [
+     "Ajani Resolute",
+     "Titanbones, Towering Heart",
+     "Kwia Vigorbloom",
+     "Bloombrute",
+     "Lyra, Archangel of Dawn",
+     "Unflinching Hortimancer",
+     "Way of the Mentor",
+     "Enlightened Confidant"
+    ],
+    "top_prims": [
+     [
+      "lifegain",
+      0.9434729401835635
+     ],
+     [
+      "enter",
+      0.018377465977423797
+     ],
+     [
+      "counter+:LOYALTY",
+      0.016552378942926483
+     ],
+     [
+      "discard",
+      0.008207616837219123
+     ],
+     [
+      "tograve",
+      0.007144213524633406
+     ]
+    ],
+    "colors": "WGB",
+    "members": [
+     "Ajani Resolute",
+     "Archive Arbiter",
+     "Blessed Ghoul",
+     "Bloombrute",
+     "Blossom-Blessed Angel",
+     "Break Under Pressure",
+     "Emergency Phytomedic",
+     "Enlightened Confidant",
+     "Extended Absence",
+     "Germinate Recruits",
+     "Greenhouse Propagator",
+     "Koth of the Homestead",
+     "Kwia Vigorbloom",
+     "Liliana the Faultless",
+     "Lyra, Archangel of Dawn",
+     "Medic's Kitesail",
+     "Restore with Empathy",
+     "Screeching Soulbreaker",
+     "Solarium Sentry",
+     "Something Worth Saving",
+     "Surgical Precision",
+     "Terminal Criticism",
+     "Thalia, the Survivor",
+     "Titanbones, Towering Heart",
+     "Unflinching Hortimancer",
+     "Vigorbloom Charm",
+     "Warrior's Blades",
+     "Way of the Mentor"
+    ]
+   },
+   {
+    "id": 5,
+    "size": 25,
+    "core": [
+     "Vigorbloom Vanguard",
+     "Ruric Thar, Biomagus",
+     "Yoshimaru, Beloved Companion",
+     "Danitha, Sword of Hope",
+     "Gallia, the Merrymaker",
+     "Guiding Hydra",
+     "Predictive Preparations",
+     "Tam's Resistance"
+    ],
+    "top_prims": [
+     [
+      "counter+:P1P1",
+      0.5664796248526269
+     ],
+     [
+      "cast_target_own",
+      0.3677720749231003
+     ],
+     [
+      "cast",
+      0.03202315418096076
+     ],
+     [
+      "enter",
+      0.024865037364040117
+     ],
+     [
+      "mana (resource)",
+      0.0075703179710838705
+     ]
+    ],
+    "colors": "WRG",
+    "members": [
+     "Academic Ascent",
+     "Awaken the Inferno",
+     "Blazing Crescendo",
+     "Chandra's Emberling",
+     "Charge the Sanctum",
+     "Danitha, Spear of Agony",
+     "Danitha, Sword of Hope",
+     "Edgar, Moonlit Sovereign",
+     "Fateshaper Aspirant",
+     "Gallia, the Merrymaker",
+     "Guiding Hydra",
+     "Konstrari Charm",
+     "Last Gasp",
+     "Mabel, Valley Hero",
+     "Multiply by Zero",
+     "Predictive Preparations",
+     "Recursive Recruitment",
+     "Room of Refuge",
+     "Ruric Thar, Biomagus",
+     "Tam's Resistance",
+     "Tethermage's Advantage",
+     "Twisted Fates",
+     "Vigorbloom Vanguard",
+     "Yoshimaru, Beloved Companion",
+     "Yoshimaru, Scrappy Stray"
+    ]
+   },
+   {
+    "id": 6,
+    "size": 16,
+    "core": [
+     "Prudent Fateseer",
+     "Proctor of Potential",
+     "Diviner of Victory",
+     "Surveillance Phantasm",
+     "Denzilore Fatehold",
+     "Saheeli, Consul of Oversight",
+     "Proft, Consulting Detective",
+     "Desperate Futurescribe"
+    ],
+    "top_prims": [
+     [
+      "surveil",
+      0.9313981603730686
+     ],
+     [
+      "tograve",
+      0.030736760236962563
+     ],
+     [
+      "enter",
+      0.02430465175354146
+     ],
+     [
+      "reenter",
+      0.008567781753635517
+     ],
+     [
+      "mana (resource)",
+      0.003606496711815829
+     ]
+    ],
+    "colors": "UWR",
+    "members": [
+     "Chandra, Chill of Compliance",
+     "Command the Stage",
+     "Denzilore Fatehold",
+     "Desperate Futurescribe",
+     "Diviner of Victory",
+     "Fatehold Chronologist",
+     "Proctor of Potential",
+     "Proft, Consulting Detective",
+     "Prudent Fateseer",
+     "Refute Destiny",
+     "Saheeli, Consul of Oversight",
+     "Semester Foreseer",
+     "Surveillance Phantasm",
+     "Way of the Healer",
+     "Your Fate Ends Here",
+     "Yuriko, Hope from the Shadows"
+    ]
+   },
+   {
+    "id": 7,
+    "size": 14,
+    "core": [
+     "Edgar, Ancient Bloodlord",
+     "Eye of Jace",
+     "Loot, the Anomaly",
+     "Way of the Necromancer",
+     "Gardenize",
+     "Massacre Girl, Most Wanted",
+     "Budding Insurgent",
+     "Theorist's Proxy"
+    ],
+    "top_prims": [
+     [
+      "die",
+      0.9525016738495942
+     ],
+     [
+      "enter",
+      0.030753329823124474
+     ],
+     [
+      "mana (resource)",
+      0.010478623478096952
+     ],
+     [
+      "tograve",
+      0.006266372849184529
+     ]
+    ],
+    "colors": "BGU",
+    "members": [
+     "Apex Witchstalker",
+     "Budding Insurgent",
+     "Darklight Phoenix",
+     "Edgar, Ancient Bloodlord",
+     "Eye of Jace",
+     "Gardenize",
+     "Graft Surgeon",
+     "Living Library",
+     "Loot, the Anomaly",
+     "Massacre Girl, Most Wanted",
+     "Simulacrum Shaper",
+     "Sphinx of False Conclusions",
+     "Theorist's Proxy",
+     "Way of the Necromancer"
+    ]
+   },
+   {
+    "id": 8,
+    "size": 11,
+    "core": [
+     "Rockfall Vale",
+     "Overgrown Farmland",
+     "Shipwreck Marsh",
+     "Haunted Ridge",
+     "Primal Witchstalker",
+     "Deserted Beach",
+     "Koth, the Geomancer",
+     "Hexhaven Invigorator"
+    ],
+    "top_prims": [
+     [
+      "enter",
+      0.9929181587212675
+     ],
+     [
+      "tograve",
+      0.004241102686698545
+     ],
+     [
+      "mana (resource)",
+      0.002840738592033931
+     ]
+    ],
+    "colors": "GRB",
+    "members": [
+     "Deserted Beach",
+     "Haunted Ridge",
+     "Hexhaven Invigorator",
+     "Koth, the Geomancer",
+     "Marwyn, the Preserver",
+     "Overgrown Farmland",
+     "Primal Witchstalker",
+     "Rockfall Vale",
+     "Roiling Canopy",
+     "Shipwreck Marsh",
+     "Verdant Kraken"
+    ]
+   }
+  ],
+  "full": [
+   {
+    "id": 0,
+    "size": 84,
+    "core": [
+     "Liliana the Repentant",
+     "Rewrite Regrets",
+     "Generous Revival",
+     "Hungering Puppetbeast",
+     "Tenured Tethermage",
+     "Yoshimaru, Beloved Companion",
+     "Aerid Konstrari",
+     "Vraska, the Cutting Glare"
+    ],
+    "top_prims": [
+     [
+      "enter",
+      0.3184019532874535
+     ],
+     [
+      "mana (resource)",
+      0.251103419594585
+     ],
+     [
+      "reenter",
+      0.2097235078681528
+     ],
+     [
+      "counter+:P1P1",
+      0.07541295586129958
+     ],
+     [
+      "cast",
+      0.0628608991791671
+     ]
+    ],
+    "colors": "RGB",
+    "members": [
+     "Aerid Konstrari",
+     "Afterthought Sentry",
+     "Arni, Renowned Champion",
+     "Craterclaw Colossus",
+     "Curse-Marred Demon",
+     "Danitha, Spear of Agony",
+     "Dark Matter Manipulator",
+     "Deserted Beach",
+     "Draconic Visitor",
+     "Eardrum Rattler",
+     "Edgar, Moonlit Sovereign",
+     "Emrakul, the Exigent Doom",
+     "Fateshaper Aspirant",
+     "Fblthp, Knows the Way",
+     "Flickering Hound",
+     "Gallia, Tragic Host",
+     "Gallia, the Merrymaker",
+     "Generous Revival",
+     "Ghalta the Immovable",
+     "Ghalta the Unstoppable",
+     "Gideon the Oathless",
+     "Guiding Hydra",
+     "Hall of Echoes",
+     "Hapatra, the Desert Fang",
+     "Hapatra, the Desert Frost",
+     "Haunted Ridge",
+     "Heartstring Puller",
+     "Heartwood Crafter",
+     "Hexhaven Dueling Arena",
+     "Hexhaven Invigorator",
+     "Hungering Puppetbeast",
+     "Identity Echo",
+     "Ingris Stingerquill",
+     "Jiang Yanggu, Never Alone",
+     "Karn, Argent Defender",
+     "Karn, Gilded Guardian",
+     "Kiora of Fire and Ashes",
+     "Konstrari Charm",
+     "Konstrari Improviser",
+     "Koth, the Geomancer",
+     "Liliana the Repentant",
+     "Loot, the Nexus",
+     "Mabel, Bitter Recluse",
+     "Mabel, Valley Hero",
+     "Marwyn, the Preserver",
+     "Master of Barbs",
+     "Null Summoner",
+     "Overgrown Farmland",
+     "Pia, Determined Rebuilder",
+     "Primal Witchstalker",
+     "Rampart Hunter",
+     "Rank Rat",
+     "Rescue Girl, First Responder",
+     "Return to the Light Realms",
+     "Rewrite Regrets",
+     "Rockfall Vale",
+     "Roiling Canopy",
+     "Room of Refuge",
+     "Ruric Thar, Magecrusher",
+     "Samut, Hazoret's Champion",
+     "Samut, Tyrant of Naktamun",
+     "Shatterwing Pegasus",
+     "Shipwreck Marsh",
+     "Simulacrum Shaper",
+     "Skilled Battlecarver",
+     "Stingcaster Mage",
+     "Tenured Tethermage",
+     "Tetsuko Umezawa, Fugitive",
+     "Theoretical Necromancer",
+     "Traxos, Scourge Eternal",
+     "Twisted Fates",
+     "Uldaros Theorix",
+     "Verdant Kraken",
+     "Vinelasher Adept",
+     "Vraska, Soul of Stone",
+     "Vraska, the Cutting Glare",
+     "Winter, Tormented Loner",
+     "Woodwork Prodigy",
+     "Wrecking Gecko",
+     "Yargle, Glutton of Urborg",
+     "Yargle, Goliath of Otaria",
+     "Yoshimaru, Beloved Companion",
+     "Yoshimaru, Scrappy Stray",
+     "Yuriko, Blade of the Mighty"
+    ]
+   },
+   {
+    "id": 1,
+    "size": 55,
+    "core": [
+     "Inspired Tethermage",
+     "Ajani Unrelenting",
+     "Way of the Mind Sculptor",
+     "Way of the Paradox",
+     "Kiora of Salt and Sand",
+     "Jace, Reality Sculptor",
+     "Avatar of Burgeoning Echoes",
+     "Tam, the Possibility"
+    ],
+    "top_prims": [
+     [
+      "enter",
+      0.5254999944644937
+     ],
+     [
+      "activate_loyalty",
+      0.2919577419569126
+     ],
+     [
+      "counter+:LOYALTY",
+      0.12891913734694363
+     ],
+     [
+      "cost_mod (cost)",
+      0.017229258463786788
+     ],
+     [
+      "counter+:*",
+      0.012032803401014145
+     ]
+    ],
+    "colors": "UGW",
+    "members": [
+     "Academic Ascent",
+     "Ajani Unrelenting",
+     "Arcane Amphisbaena",
+     "Avatar of Burgeoning Echoes",
+     "Campus Crier",
+     "Chandra, Torch of Defiance",
+     "Countersculpt",
+     "Dedicated Commons",
+     "Entrust the Spark",
+     "Face Yourself",
+     "Fatehold Annex",
+     "Fatehold Charm",
+     "Formidable Commons",
+     "Garruk, Curse Breaker",
+     "Garruk, Veiled Butcher",
+     "Hexhaven Battalion",
+     "Innovative Commons",
+     "Inspired Tethermage",
+     "Jace's Machinations",
+     "Jace, Reality Sculptor",
+     "Keeper of the Quiet Hour",
+     "Kiora of Salt and Sand",
+     "Konstrari Annex",
+     "Meticulous Commons",
+     "Mind Meanderer",
+     "Mindseeker Oculus",
+     "No Admittance",
+     "Overwrite the Multiverse",
+     "Plan for All Outcomes",
+     "Protege's Awakening",
+     "Repurposed Enforcer",
+     "Sanctum Lurker",
+     "Solve for Disappointment",
+     "Stingerquill Annex",
+     "Tam's Resistance",
+     "Tam, the Possibility",
+     "Teyo, Diamondblade Mage",
+     "Teyo, Lightshield Expert",
+     "Theorist's Proxy",
+     "Theorist's Sanctum",
+     "Theorix Annex",
+     "Tomik, Orzhov Lawmage",
+     "Transformative Commons",
+     "Vigorbloom Annex",
+     "Violent Echoes",
+     "Vraska's Final Mercy",
+     "Way of the Cryomancer",
+     "Way of the Deathbringer",
+     "Way of the Healer",
+     "Way of the Mind Sculptor",
+     "Way of the Necromancer",
+     "Way of the Paradox",
+     "Way of the Pyromancer",
+     "Way of the Warlord",
+     "Way of the Wildspeaker"
+    ]
+   },
+   {
+    "id": 2,
+    "size": 54,
+    "core": [
+     "Geist of Saint Thalia",
+     "Codie, Ravenous Codex",
+     "Ruric Thar, Biomagus",
+     "Infinite Coursework",
+     "Pyre Rhymer",
+     "Pompous Battlemage",
+     "Grim Repriser",
+     "Danitha, Sword of Hope"
+    ],
+    "top_prims": [
+     [
+      "cast",
+      0.42640050998403334
+     ],
+     [
+      "prepare",
+      0.13569278090673623
+     ],
+     [
+      "tograve",
+      0.13400966529142005
+     ],
+     [
+      "cost_mod (cost)",
+      0.11767082045574541
+     ],
+     [
+      "cast_target_own",
+      0.10910796976282776
+     ]
+    ],
+    "colors": "RBU",
+    "members": [
+     "Ajani's Anguish",
+     "Bestial Incursion",
+     "Blazing Crescendo",
+     "Carnivorous Cultivator",
+     "Chandra's Emberling",
+     "Charge the Sanctum",
+     "Clash of Elements",
+     "Codie, Ravenous Codex",
+     "Command the Stage",
+     "Compel Brutality",
+     "Cryotheory Adept",
+     "Danitha, Sword of Hope",
+     "Essence Burn",
+     "Extrapolate the Impossible",
+     "Ferocity of the Hunt",
+     "Flourishing Grapple",
+     "Fulminous Forte",
+     "Geist of Saint Thalia",
+     "Grim Repriser",
+     "Hunter's Axe",
+     "Icy Reception",
+     "Infinite Coursework",
+     "Kindred Judgment",
+     "Last Gasp",
+     "Lich's Relic",
+     "Loyal Tutor",
+     "Memory Trap",
+     "Multiply by Zero",
+     "Omnipresence",
+     "Paradox Shaper",
+     "Perfected Theory",
+     "Pompous Battlemage",
+     "Precise Redaction",
+     "Predictive Preparations",
+     "Puppet Crafting",
+     "Pyre Rhymer",
+     "Recursive Recruitment",
+     "Ruric Thar, Biomagus",
+     "Saheeli, Jewel of Avishkar",
+     "Silence the Echo",
+     "Stingerquill Charm",
+     "Stingerquill Voxmancer",
+     "Stinging Vitriol",
+     "Tethermage's Advantage",
+     "Tetsuko Umezawa, Pursuer",
+     "Theorix Metamage",
+     "Tomik, Izzet Sparkmage",
+     "Traxos, Academy Guardian",
+     "Unsummon",
+     "Vindictive Triumph",
+     "Void Extrapolator",
+     "Whiplash Wordsmith",
+     "Winter, Team Player",
+     "Wrath of the Bloodmane"
+    ]
+   },
+   {
+    "id": 3,
+    "size": 37,
+    "core": [
+     "Titanbones, Towering Heart",
+     "Ajani Resolute",
+     "Kwia Vigorbloom",
+     "Enlightened Confidant",
+     "Way of the Mentor",
+     "Unflinching Hortimancer",
+     "Bloombrute",
+     "Lyra, Archangel of Dawn"
+    ],
+    "top_prims": [
+     [
+      "lifegain",
+      0.777401644976291
+     ],
+     [
+      "die",
+      0.11315368759056567
+     ],
+     [
+      "enter",
+      0.03621396937269139
+     ],
+     [
+      "tograve",
+      0.024646071581639978
+     ],
+     [
+      "counter+:P1P1",
+      0.019907070404713168
+     ]
+    ],
+    "colors": "WGB",
+    "members": [
+     "Ajani Resolute",
+     "Apex Witchstalker",
+     "Archive Arbiter",
+     "Blessed Ghoul",
+     "Bloombrute",
+     "Blossom-Blessed Angel",
+     "Break Under Pressure",
+     "Darklight Phoenix",
+     "Edgar, Ancient Bloodlord",
+     "Emergency Phytomedic",
+     "Enlightened Confidant",
+     "Extended Absence",
+     "Eye of Jace",
+     "Gardenize",
+     "Germinate Recruits",
+     "Graft Surgeon",
+     "Greenhouse Propagator",
+     "Koth of the Homestead",
+     "Kwia Vigorbloom",
+     "Living Library",
+     "Loot, the Anomaly",
+     "Lyra, Archangel of Dawn",
+     "Massacre Girl, Most Wanted",
+     "Medic's Kitesail",
+     "Restore with Empathy",
+     "Screeching Soulbreaker",
+     "Solarium Sentry",
+     "Something Worth Saving",
+     "Surgical Precision",
+     "Terminal Criticism",
+     "Thalia, the Survivor",
+     "Titanbones, Towering Heart",
+     "Unflinching Hortimancer",
+     "Vigorbloom Charm",
+     "Vigorbloom Vanguard",
+     "Warrior's Blades",
+     "Way of the Mentor"
+    ]
+   },
+   {
+    "id": 4,
+    "size": 36,
+    "core": [
+     "Tinybones, Pocket Nuisance",
+     "The Theorist, Jace Beleren",
+     "Murmuring Volume",
+     "Lyra, Tolarian Archangel",
+     "Hallway Heckler",
+     "Solitary Cell",
+     "Gideon's Memorial",
+     "Proft, Sinister Mastermind"
+    ],
+    "top_prims": [
+     [
+      "draw",
+      0.7202884754288427
+     ],
+     [
+      "discard",
+      0.12823969981961011
+     ],
+     [
+      "tograve",
+      0.060426860662811825
+     ],
+     [
+      "enter",
+      0.0395635086731536
+     ],
+     [
+      "mana (resource)",
+      0.027214034099958834
+     ]
+    ],
+    "colors": "URB",
+    "members": [
+     "Arni, Humble Scribe",
+     "Artifist Acumen",
+     "Awaken the Inferno",
+     "Bloodline Recollector",
+     "Budding Insurgent",
+     "Cast Away Doubt",
+     "Craftwork Crusher",
+     "Cruel Calculations",
+     "Divining Duelist",
+     "Fblthp, Impossibly Lost",
+     "Frostbite Pyromental",
+     "Gideon's Memorial",
+     "Hallway Heckler",
+     "Jiang Yanggu, Alone",
+     "Liliana the Faultless",
+     "Lyra, Tolarian Archangel",
+     "Marwyn, the Clearcutter",
+     "Murmuring Volume",
+     "Pia, Aether Ascetic",
+     "Proft, Sinister Mastermind",
+     "Prophesied End",
+     "Rise of the Deathbringer",
+     "Seasoned Cryomancer",
+     "Solitary Cell",
+     "Sphinx of False Conclusions",
+     "Sphinx's Approach",
+     "Sureshot Sower",
+     "Tarmogoyf",
+     "Tether Technician",
+     "The Echoverse Fulcrum",
+     "The Theorist, Jace Beleren",
+     "Theorix Charm",
+     "Tinybones, Pocket Nuisance",
+     "Twinned Vision",
+     "Undulating Witness",
+     "Variable Chaser"
+    ]
+   },
+   {
+    "id": 5,
+    "size": 14,
+    "core": [
+     "Prudent Fateseer",
+     "Diviner of Victory",
+     "Proctor of Potential",
+     "Surveillance Phantasm",
+     "Denzilore Fatehold",
+     "Saheeli, Consul of Oversight",
+     "Proft, Consulting Detective",
+     "Chandra, Chill of Compliance"
+    ],
+    "top_prims": [
+     [
+      "surveil",
+      0.9326012461589243
+     ],
+     [
+      "tograve",
+      0.0412709323732488
+     ],
+     [
+      "enter",
+      0.013873811946383206
+     ],
+     [
+      "reenter",
+      0.005900708833708231
+     ],
+     [
+      "mana (resource)",
+      0.003913388211513533
+     ]
+    ],
+    "colors": "UW",
+    "members": [
+     "Chandra, Chill of Compliance",
+     "Denzilore Fatehold",
+     "Desperate Futurescribe",
+     "Diviner of Victory",
+     "Fatehold Chronologist",
+     "Proctor of Potential",
+     "Proft, Consulting Detective",
+     "Prudent Fateseer",
+     "Refute Destiny",
+     "Saheeli, Consul of Oversight",
+     "Semester Foreseer",
+     "Surveillance Phantasm",
+     "Your Fate Ends Here",
+     "Yuriko, Hope from the Shadows"
+    ]
+   }
+  ],
+  "rarity": [
+   {
+    "id": 0,
+    "size": 81,
+    "core": [
+     "Kwia Vigorbloom",
+     "Hungering Puppetbeast",
+     "Yoshimaru, Beloved Companion",
+     "Aerid Konstrari",
+     "Tenured Tethermage",
+     "Vigorbloom Vanguard",
+     "Edgar, Ancient Bloodlord",
+     "Traxos, Scourge Eternal"
+    ],
+    "top_prims": [
+     [
+      "mana (resource)",
+      0.390199521615393
+     ],
+     [
+      "enter",
+      0.29183533696533587
+     ],
+     [
+      "counter+:P1P1",
+      0.09409141309990038
+     ],
+     [
+      "cast",
+      0.07410392382775557
+     ],
+     [
+      "lifegain",
+      0.05841370000065952
+     ]
+    ],
+    "colors": "GRW",
+    "members": [
+     "Aerid Konstrari",
+     "Ajani's Anguish",
+     "Archive Arbiter",
+     "Arni, Renowned Champion",
+     "Bloombrute",
+     "Craterclaw Colossus",
+     "Danitha, Spear of Agony",
+     "Darklight Phoenix",
+     "Draconic Visitor",
+     "Eardrum Rattler",
+     "Edgar, Ancient Bloodlord",
+     "Edgar, Moonlit Sovereign",
+     "Emrakul, the Exigent Doom",
+     "Fblthp, Knows the Way",
+     "Flickering Hound",
+     "Gallia, the Merrymaker",
+     "Gardenize",
+     "Ghalta the Immovable",
+     "Ghalta the Unstoppable",
+     "Gideon the Oathless",
+     "Graft Surgeon",
+     "Greenhouse Propagator",
+     "Guiding Hydra",
+     "Hall of Echoes",
+     "Heartwood Crafter",
+     "Hexhaven Dueling Arena",
+     "Hexhaven Invigorator",
+     "Hungering Puppetbeast",
+     "Hunter's Axe",
+     "Identity Echo",
+     "Ingris Stingerquill",
+     "Karn, Argent Defender",
+     "Karn, Gilded Guardian",
+     "Kiora of Fire and Ashes",
+     "Konstrari Charm",
+     "Konstrari Improviser",
+     "Koth of the Homestead",
+     "Koth, the Geomancer",
+     "Kwia Vigorbloom",
+     "Lich's Relic",
+     "Living Library",
+     "Loot, the Anomaly",
+     "Loot, the Nexus",
+     "Lyra, Archangel of Dawn",
+     "Mabel, Valley Hero",
+     "Massacre Girl, Most Wanted",
+     "Master of Barbs",
+     "Medic's Kitesail",
+     "Omnipresence",
+     "Pia, Determined Rebuilder",
+     "Rescue Girl, First Responder",
+     "Rise of the Deathbringer",
+     "Room of Refuge",
+     "Ruric Thar, Magecrusher",
+     "Samut, Hazoret's Champion",
+     "Samut, Tyrant of Naktamun",
+     "Screeching Soulbreaker",
+     "Shatterwing Pegasus",
+     "Simulacrum Shaper",
+     "Skilled Battlecarver",
+     "Solarium Sentry",
+     "Tenured Tethermage",
+     "Tetsuko Umezawa, Fugitive",
+     "Thalia, the Survivor",
+     "Traxos, Scourge Eternal",
+     "Twisted Fates",
+     "Unflinching Hortimancer",
+     "Verdant Kraken",
+     "Vigorbloom Charm",
+     "Vigorbloom Vanguard",
+     "Vraska, Soul of Stone",
+     "Vraska, the Cutting Glare",
+     "Warrior's Blades",
+     "Winter, Team Player",
+     "Woodwork Prodigy",
+     "Wrecking Gecko",
+     "Yargle, Glutton of Urborg",
+     "Yargle, Goliath of Otaria",
+     "Yoshimaru, Beloved Companion",
+     "Yoshimaru, Scrappy Stray",
+     "Yuriko, Blade of the Mighty"
+    ]
+   },
+   {
+    "id": 1,
+    "size": 80,
+    "core": [
+     "Proctor of Potential",
+     "Chandra, Chill of Compliance",
+     "Enlightened Confidant",
+     "Eye of Jace",
+     "Prudent Fateseer",
+     "Diviner of Victory",
+     "Codie, Ravenous Codex",
+     "Yuriko, Hope from the Shadows"
+    ],
+    "top_prims": [
+     [
+      "tograve",
+      0.43742415610848456
+     ],
+     [
+      "cast",
+      0.21224911802052743
+     ],
+     [
+      "surveil",
+      0.13942629609058807
+     ],
+     [
+      "enter",
+      0.05755394257410713
+     ],
+     [
+      "prepare",
+      0.05113756421829413
+     ]
+    ],
+    "colors": "UWB",
+    "members": [
+     "Afterthought Sentry",
+     "Bestial Incursion",
+     "Blazing Crescendo",
+     "Blessed Ghoul",
+     "Bloodline Recollector",
+     "Blossom-Blessed Angel",
+     "Carnivorous Cultivator",
+     "Chandra's Emberling",
+     "Chandra, Chill of Compliance",
+     "Charge the Sanctum",
+     "Clash of Elements",
+     "Codie, Ravenous Codex",
+     "Command the Stage",
+     "Compel Brutality",
+     "Cruel Calculations",
+     "Cryotheory Adept",
+     "Danitha, Sword of Hope",
+     "Dark Matter Manipulator",
+     "Denzilore Fatehold",
+     "Desperate Futurescribe",
+     "Diviner of Victory",
+     "Emergency Phytomedic",
+     "Enlightened Confidant",
+     "Essence Burn",
+     "Extended Absence",
+     "Extrapolate the Impossible",
+     "Eye of Jace",
+     "Fatehold Chronologist",
+     "Ferocity of the Hunt",
+     "Flourishing Grapple",
+     "Fulminous Forte",
+     "Geist of Saint Thalia",
+     "Germinate Recruits",
+     "Hapatra, the Desert Fang",
+     "Icy Reception",
+     "Infinite Coursework",
+     "Kindred Judgment",
+     "Last Gasp",
+     "Loyal Tutor",
+     "Memory Trap",
+     "Multiply by Zero",
+     "Null Summoner",
+     "Paradox Shaper",
+     "Perfected Theory",
+     "Pompous Battlemage",
+     "Precise Redaction",
+     "Predictive Preparations",
+     "Proctor of Potential",
+     "Proft, Consulting Detective",
+     "Prudent Fateseer",
+     "Puppet Crafting",
+     "Pyre Rhymer",
+     "Recursive Recruitment",
+     "Refute Destiny",
+     "Restore with Empathy",
+     "Ruric Thar, Biomagus",
+     "Saheeli, Consul of Oversight",
+     "Saheeli, Jewel of Avishkar",
+     "Semester Foreseer",
+     "Silence the Echo",
+     "Something Worth Saving",
+     "Stingerquill Charm",
+     "Stingerquill Voxmancer",
+     "Stinging Vitriol",
+     "Surgical Precision",
+     "Surveillance Phantasm",
+     "Terminal Criticism",
+     "Tethermage's Advantage",
+     "Tetsuko Umezawa, Pursuer",
+     "Theorix Metamage",
+     "Tomik, Izzet Sparkmage",
+     "Traxos, Academy Guardian",
+     "Unsummon",
+     "Variable Chaser",
+     "Vindictive Triumph",
+     "Void Extrapolator",
+     "Whiplash Wordsmith",
+     "Wrath of the Bloodmane",
+     "Your Fate Ends Here",
+     "Yuriko, Hope from the Shadows"
+    ]
+   },
+   {
+    "id": 2,
+    "size": 67,
+    "core": [
+     "Ajani Unrelenting",
+     "Inspired Tethermage",
+     "Kiora of Salt and Sand",
+     "Way of the Paradox",
+     "Way of the Mind Sculptor",
+     "Tam, the Possibility",
+     "Way of the Necromancer",
+     "Way of the Mentor"
+    ],
+    "top_prims": [
+     [
+      "enter",
+      0.5316973224479477
+     ],
+     [
+      "activate_loyalty",
+      0.2322663094302386
+     ],
+     [
+      "counter+:LOYALTY",
+      0.15280821682032902
+     ],
+     [
+      "counter+:*",
+      0.026316902943758352
+     ],
+     [
+      "cost_mod (cost)",
+      0.013887972530278155
+     ]
+    ],
+    "colors": "UGW",
+    "members": [
+     "Academic Ascent",
+     "Ajani Resolute",
+     "Ajani Unrelenting",
+     "Arcane Amphisbaena",
+     "Avatar of Burgeoning Echoes",
+     "Break Under Pressure",
+     "Budding Insurgent",
+     "Campus Crier",
+     "Chandra, Torch of Defiance",
+     "Countersculpt",
+     "Dedicated Commons",
+     "Deserted Beach",
+     "Entrust the Spark",
+     "Face Yourself",
+     "Fatehold Annex",
+     "Fatehold Charm",
+     "Formidable Commons",
+     "Garruk, Curse Breaker",
+     "Garruk, Veiled Butcher",
+     "Haunted Ridge",
+     "Hexhaven Battalion",
+     "Innovative Commons",
+     "Inspired Tethermage",
+     "Jace's Machinations",
+     "Jace, Reality Sculptor",
+     "Keeper of the Quiet Hour",
+     "Kiora of Salt and Sand",
+     "Konstrari Annex",
+     "Marwyn, the Preserver",
+     "Meticulous Commons",
+     "Mind Meanderer",
+     "Mindseeker Oculus",
+     "No Admittance",
+     "Overgrown Farmland",
+     "Overwrite the Multiverse",
+     "Plan for All Outcomes",
+     "Protege's Awakening",
+     "Repurposed Enforcer",
+     "Rockfall Vale",
+     "Roiling Canopy",
+     "Sanctum Lurker",
+     "Shipwreck Marsh",
+     "Solve for Disappointment",
+     "Stingerquill Annex",
+     "Tam's Resistance",
+     "Tam, the Possibility",
+     "Teyo, Diamondblade Mage",
+     "Teyo, Lightshield Expert",
+     "The Theorist, Jace Beleren",
+     "Theorist's Proxy",
+     "Theorist's Sanctum",
+     "Theorix Annex",
+     "Tomik, Orzhov Lawmage",
+     "Transformative Commons",
+     "Vigorbloom Annex",
+     "Violent Echoes",
+     "Vraska's Final Mercy",
+     "Way of the Cryomancer",
+     "Way of the Deathbringer",
+     "Way of the Healer",
+     "Way of the Mentor",
+     "Way of the Mind Sculptor",
+     "Way of the Necromancer",
+     "Way of the Paradox",
+     "Way of the Pyromancer",
+     "Way of the Warlord",
+     "Way of the Wildspeaker"
+    ]
+   },
+   {
+    "id": 3,
+    "size": 52,
+    "core": [
+     "Murmuring Volume",
+     "Liliana the Repentant",
+     "Gideon's Memorial",
+     "Tinybones, Pocket Nuisance",
+     "Solitary Cell",
+     "Proft, Sinister Mastermind",
+     "Grim Repriser",
+     "Hallway Heckler"
+    ],
+    "top_prims": [
+     [
+      "tograve",
+      0.353400715339353
+     ],
+     [
+      "draw",
+      0.2914331723426923
+     ],
+     [
+      "reenter",
+      0.15098052108365329
+     ],
+     [
+      "discard",
+      0.09651994724899521
+     ],
+     [
+      "enter",
+      0.07522911081308742
+     ]
+    ],
+    "colors": "BRU",
+    "members": [
+     "Apex Witchstalker",
+     "Arni, Humble Scribe",
+     "Artifist Acumen",
+     "Awaken the Inferno",
+     "Cast Away Doubt",
+     "Craftwork Crusher",
+     "Curse-Marred Demon",
+     "Divining Duelist",
+     "Fateshaper Aspirant",
+     "Fblthp, Impossibly Lost",
+     "Frostbite Pyromental",
+     "Gallia, Tragic Host",
+     "Generous Revival",
+     "Gideon's Memorial",
+     "Grim Repriser",
+     "Hallway Heckler",
+     "Hapatra, the Desert Frost",
+     "Heartstring Puller",
+     "Jiang Yanggu, Alone",
+     "Jiang Yanggu, Never Alone",
+     "Liliana the Faultless",
+     "Liliana the Repentant",
+     "Lyra, Tolarian Archangel",
+     "Mabel, Bitter Recluse",
+     "Marwyn, the Clearcutter",
+     "Murmuring Volume",
+     "Pia, Aether Ascetic",
+     "Primal Witchstalker",
+     "Proft, Sinister Mastermind",
+     "Prophesied End",
+     "Rampart Hunter",
+     "Rank Rat",
+     "Return to the Light Realms",
+     "Rewrite Regrets",
+     "Seasoned Cryomancer",
+     "Solitary Cell",
+     "Sphinx of False Conclusions",
+     "Sphinx's Approach",
+     "Stingcaster Mage",
+     "Sureshot Sower",
+     "Tarmogoyf",
+     "Tether Technician",
+     "The Echoverse Fulcrum",
+     "Theoretical Necromancer",
+     "Theorix Charm",
+     "Tinybones, Pocket Nuisance",
+     "Titanbones, Towering Heart",
+     "Twinned Vision",
+     "Uldaros Theorix",
+     "Undulating Witness",
+     "Vinelasher Adept",
+     "Winter, Tormented Loner"
+    ]
+   }
+  ]
+ },
+ "colour_nmi": {
+  "uniform": {
+   "obs": 0.09727249612448038,
+   "shuffled_mean": 0.039991017465550595,
+   "shuffled_max": 0.06608560607618724
+  },
+  "tight": {
+   "obs": 0.09384580994518767,
+   "shuffled_mean": 0.03893594310797471,
+   "shuffled_max": 0.07234216465968558
+  },
+  "rarity": {
+   "obs": 0.11931172822177205,
+   "shuffled_mean": 0.053514164267716074,
+   "shuffled_max": 0.08130710086368619
+  },
+  "full": {
+   "obs": 0.1921345219608264,
+   "shuffled_mean": 0.07855791658754792,
+   "shuffled_max": 0.11443519943526412
+  },
+  "full_knn": {
+   "obs": 0.1955358627242836,
+   "shuffled_mean": 0.10660564020579484,
+   "shuffled_max": 0.13705960565236672
+  }
+ },
+ "V1": {
+  "uniform": {
+   "obs": 0.922077922077922,
+   "base": 0.3425779220779227,
+   "p": 0.0004997501249375312
+  },
+  "tight": {
+   "obs": 0.7662337662337663,
+   "base": 0.3499448051948056,
+   "p": 0.0004997501249375312
+  },
+  "rarity": {
+   "obs": 0.6883116883116883,
+   "base": 0.25504220779220776,
+   "p": 0.0004997501249375312
+  },
+  "full": {
+   "obs": 0.06493506493506493,
+   "base": 0.20069155844155823,
+   "p": 1.0
+  },
+  "full_knn": {
+   "obs": 0.06493506493506493,
+   "base": 0.14077272727272686,
+   "p": 0.9940029985007496
+  }
+ },
+ "V2": {
+  "Inspired Tethermage": {
+   "loyalty_emitters": 44,
+   "linked": 43,
+   "median_rank_full": 22
+  }
+ },
+ "prereg4_violations": 0,
+ "V3": {
+  "consumers": 77,
+  "shared_keyword": 0,
+  "keyword_in_reason": 0,
+  "best_any_consumer_rank_full": 1,
+  "pure_resource_consumers": 72,
+  "best_pure_resource_rank_full": 12
+ },
+ "heldout": {
+  "uniform": {
+   "hits": 86,
+   "n": 430,
+   "rate": 0.2,
+   "lo": 0.16492275627926775,
+   "hi": 0.24039015055124371,
+   "base": 0.03709260648495457
+  },
+  "tight": {
+   "hits": 89,
+   "n": 430,
+   "rate": 0.2069767441860465,
+   "lo": 0.17135959843326304,
+   "hi": 0.2477832407965388,
+   "base": 0.03709260648495457
+  },
+  "rarity": {
+   "hits": 99,
+   "n": 430,
+   "rate": 0.2302325581395349,
+   "lo": 0.1929349031644697,
+   "hi": 0.2723077107296336,
+   "base": 0.03709260648495457
+  },
+  "full": {
+   "hits": 80,
+   "n": 430,
+   "rate": 0.18604651162790697,
+   "lo": 0.1521026052867109,
+   "hi": 0.22555043674521966,
+   "base": 0.03709260648495457
+  },
+  "full_knn": {
+   "hits": 81,
+   "n": 430,
+   "rate": 0.1883720930232558,
+   "lo": 0.15423416158876935,
+   "hi": 0.22802885790959132,
+   "base": 0.03709260648495457
+  }
+ },
+ "scarce": [
+  {
+   "prim": "cost_mod",
+   "enablers": [
+    "Geist of Saint Thalia"
+   ],
+   "listeners": [
+    "Academic Ascent",
+    "Ajani's Anguish",
+    "Artifist Acumen",
+    "Awaken the Inferno",
+    "Bestial Incursion",
+    "Blazing Crescendo",
+    "Break Under Pressure",
+    "Cast Away Doubt",
+    "Charge the Sanctum",
+    "Clash of Elements",
+    "Command the Stage",
+    "Compel Brutality",
+    "Countersculpt",
+    "Cruel Calculations",
+    "Entrust the Spark",
+    "Essence Burn",
+    "Extended Absence",
+    "Extrapolate the Impossible",
+    "Eye of Jace",
+    "Face Yourself",
+    "Fatehold Charm",
+    "Ferocity of the Hunt",
+    "Flourishing Grapple",
+    "Fulminous Forte",
+    "Gardenize",
+    "Generous Revival",
+    "Germinate Recruits",
+    "Gideon's Memorial",
+    "Hexhaven Battalion",
+    "Hunter's Axe",
+    "Icy Reception",
+    "Identity Echo",
+    "Infinite Coursework",
+    "Jace's Machinations",
+    "Kindred Judgment",
+    "Konstrari Charm",
+    "Last Gasp",
+    "Lich's Relic",
+    "Loyal Tutor",
+    "Medic's Kitesail",
+    "Memory Trap",
+    "Multiply by Zero",
+    "Murmuring Volume",
+    "No Admittance",
+    "Omnipresence",
+    "Overwrite the Multiverse",
+    "Perfected Theory",
+    "Plan for All Outcomes",
+    "Precise Redaction",
+    "Predictive Preparations",
+    "Prophesied End",
+    "Protege's Awakening",
+    "Puppet Crafting",
+    "Recursive Recruitment",
+    "Refute Destiny",
+    "Restore with Empathy",
+    "Return to the Light Realms",
+    "Rewrite Regrets",
+    "Rise of the Deathbringer",
+    "Silence the Echo",
+    "Solitary Cell",
+    "Solve for Disappointment",
+    "Something Worth Saving",
+    "Sphinx's Approach",
+    "Stingerquill Charm",
+    "Stinging Vitriol",
+    "Surgical Precision",
+    "Tam's Resistance",
+    "Terminal Criticism",
+    "Tethermage's Advantage",
+    "The Echoverse Fulcrum",
+    "Theorix Charm",
+    "Twinned Vision",
+    "Twisted Fates",
+    "Unsummon",
+    "Vigorbloom Charm",
+    "Vindictive Triumph",
+    "Violent Echoes",
+    "Vraska's Final Mercy",
+    "Warrior's Blades",
+    "Way of the Cryomancer",
+    "Way of the Deathbringer",
+    "Way of the Healer",
+    "Way of the Mentor",
+    "Way of the Mind Sculptor",
+    "Way of the Necromancer",
+    "Way of the Paradox",
+    "Way of the Pyromancer",
+    "Way of the Warlord",
+    "Way of the Wildspeaker",
+    "Wrath of the Bloodmane",
+    "Your Fate Ends Here"
+   ]
+  },
+  {
+   "prim": "counter+:*",
+   "enablers": [
+    "Tam, the Possibility"
+   ],
+   "listeners": [
+    "Gardenize"
+   ]
+  },
+  {
+   "prim": "prepare",
+   "enablers": [
+    "Codie, Ravenous Codex",
+    "Infinite Coursework"
+   ],
+   "listeners": [
+    "Bloodline Recollector",
+    "Blossom-Blessed Angel",
+    "Carnivorous Cultivator",
+    "Diviner of Victory",
+    "Emergency Phytomedic",
+    "Fatehold Chronologist",
+    "Hallway Heckler",
+    "Heartwood Crafter",
+    "Konstrari Improviser",
+    "Paradox Shaper",
+    "Pompous Battlemage",
+    "Prudent Fateseer",
+    "Pyre Rhymer",
+    "Semester Foreseer",
+    "Stingerquill Voxmancer",
+    "Theorix Metamage",
+    "Variable Chaser",
+    "Vigorbloom Vanguard",
+    "Void Extrapolator",
+    "Whiplash Wordsmith",
+    "Woodwork Prodigy"
+   ]
+  },
+  {
+   "prim": "cost_mod",
+   "enablers": [
+    "Geist of Saint Thalia",
+    "Tam, the Possibility"
+   ],
+   "listeners": [
+    "Ajani Resolute",
+    "Ajani Unrelenting",
+    "Chandra, Chill of Compliance",
+    "Chandra, Torch of Defiance",
+    "Garruk, Curse Breaker",
+    "Garruk, Veiled Butcher",
+    "Jace, Reality Sculptor",
+    "The Theorist, Jace Beleren"
+   ]
+  },
+  {
+   "prim": "counter+:LOYALTY",
+   "enablers": [
+    "Tam, the Possibility",
+    "Teyo, Diamondblade Mage",
+    "Teyo, Lightshield Expert"
+   ],
+   "listeners": [
+    "Avatar of Burgeoning Echoes",
+    "Kiora of Salt and Sand",
+    "Way of the Cryomancer",
+    "Way of the Deathbringer",
+    "Way of the Healer",
+    "Way of the Warlord",
+    "Way of the Wildspeaker"
+   ]
+  },
+  {
+   "prim": "counter+:*",
+   "enablers": [
+    "Tam, the Possibility",
+    "Teyo, Diamondblade Mage",
+    "Teyo, Lightshield Expert"
+   ],
+   "listeners": [
+    "Avatar of Burgeoning Echoes",
+    "Kiora of Salt and Sand",
+    "Way of the Cryomancer",
+    "Way of the Deathbringer",
+    "Way of the Healer",
+    "Way of the Warlord",
+    "Way of the Wildspeaker"
+   ]
+  }
+ ],
+ "lonely": [
+  {
+   "prim": "counter+:LOYALTY",
+   "listeners": [
+    "Inspired Tethermage"
+   ],
+   "emitters": [
+    "Academic Ascent",
+    "Ajani Resolute",
+    "Ajani Unrelenting",
+    "Arcane Amphisbaena",
+    "Avatar of Burgeoning Echoes",
+    "Campus Crier",
+    "Chandra, Chill of Compliance",
+    "Chandra, Torch of Defiance",
+    "Countersculpt",
+    "Fatehold Charm",
+    "Garruk, Curse Breaker",
+    "Garruk, Veiled Butcher",
+    "Hexhaven Battalion",
+    "Jace's Machinations",
+    "Jace, Reality Sculptor",
+    "Keeper of the Quiet Hour",
+    "Mindseeker Oculus",
+    "No Admittance",
+    "Overwrite the Multiverse",
+    "Plan for All Outcomes",
+    "Protege's Awakening",
+    "Repurposed Enforcer",
+    "Rewrite Regrets",
+    "Sanctum Lurker",
+    "Solve for Disappointment",
+    "Tam's Resistance",
+    "The Theorist, Jace Beleren",
+    "Theorist's Proxy",
+    "Theorist's Sanctum",
+    "Violent Echoes",
+    "Vraska's Final Mercy",
+    "Way of the Cryomancer",
+    "Way of the Deathbringer",
+    "Way of the Healer",
+    "Way of the Mentor",
+    "Way of the Mind Sculptor",
+    "Way of the Necromancer",
+    "Way of the Paradox",
+    "Way of the Pyromancer",
+    "Way of the Warlord",
+    "Way of the Wildspeaker"
+   ]
+  },
+  {
+   "prim": "discard",
+   "listeners": [
+    "Tinybones, Pocket Nuisance",
+    "Titanbones, Towering Heart"
+   ],
+   "emitters": [
+    "Ajani Unrelenting",
+    "Apex Witchstalker",
+    "Arni, Humble Scribe",
+    "Awaken the Inferno",
+    "Curse-Marred Demon",
+    "Divining Duelist",
+    "Gideon's Memorial",
+    "Hallway Heckler",
+    "Hexhaven Battalion",
+    "Jiang Yanggu, Alone",
+    "Liliana the Faultless",
+    "Murmuring Volume",
+    "Pia, Aether Ascetic",
+    "Proft, Sinister Mastermind",
+    "Seasoned Cryomancer",
+    "Solitary Cell",
+    "Sphinx of False Conclusions",
+    "Sureshot Sower",
+    "Tether Technician",
+    "The Echoverse Fulcrum",
+    "Undulating Witness",
+    "Variable Chaser",
+    "Vinelasher Adept"
+   ]
+  },
+  {
+   "prim": "die",
+   "listeners": [
+    "Bloodline Recollector",
+    "Darklight Phoenix"
+   ],
+   "emitters": [
+    "Ajani Unrelenting",
+    "Archive Arbiter",
+    "Fulminous Forte",
+    "Kindred Judgment",
+    "Lich's Relic",
+    "Mind Meanderer",
+    "Prophesied End",
+    "Silence the Echo",
+    "Sureshot Sower",
+    "Surgical Precision",
+    "Terminal Criticism",
+    "The Echoverse Fulcrum",
+    "Twisted Fates",
+    "Vigorbloom Charm",
+    "Vraska's Final Mercy",
+    "Vraska, the Cutting Glare",
+    "Yoshimaru, Scrappy Stray",
+    "Your Fate Ends Here"
+   ]
+  },
+  {
+   "prim": "cast_target_own",
+   "listeners": [
+    "Danitha, Sword of Hope",
+    "Ruric Thar, Biomagus"
+   ],
+   "emitters": [
+    "Academic Ascent",
+    "Blazing Crescendo",
+    "Blossom-Blessed Angel",
+    "Emergency Phytomedic",
+    "Last Gasp",
+    "Multiply by Zero",
+    "Predictive Preparations",
+    "Tam's Resistance",
+    "Tethermage's Advantage",
+    "Vigorbloom Vanguard"
+   ]
+  },
+  {
+   "prim": "counter+:P1P1",
+   "listeners": [
+    "Gallia, the Merrymaker",
+    "Vigorbloom Vanguard",
+    "Yoshimaru, Beloved Companion"
+   ],
+   "emitters": [
+    "Chandra's Emberling",
+    "Danitha, Spear of Agony",
+    "Edgar, Ancient Bloodlord",
+    "Edgar, Moonlit Sovereign",
+    "Graft Surgeon",
+    "Guiding Hydra",
+    "Hungering Puppetbeast",
+    "Inspired Tethermage",
+    "Liliana the Repentant",
+    "Massacre Girl, Most Wanted",
+    "Proft, Consulting Detective",
+    "Tenured Tethermage",
+    "Titanbones, Towering Heart",
+    "Unflinching Hortimancer"
+   ]
+  },
+  {
+   "prim": "counter+:P1P1",
+   "listeners": [
+    "Gallia, the Merrymaker",
+    "Guiding Hydra",
+    "Yoshimaru, Beloved Companion"
+   ],
+   "emitters": [
+    "Vigorbloom Vanguard"
+   ]
+  },
+  {
+   "prim": "counter+:P1P1",
+   "listeners": [
+    "Gallia, the Merrymaker",
+    "Guiding Hydra",
+    "Vigorbloom Vanguard"
+   ],
+   "emitters": [
+    "Yoshimaru, Beloved Companion"
+   ]
+  },
+  {
+   "prim": "counter+:P1P1",
+   "listeners": [
+    "Guiding Hydra",
+    "Vigorbloom Vanguard",
+    "Yoshimaru, Beloved Companion"
+   ],
+   "emitters": [
+    "Gallia, the Merrymaker"
+   ]
+  },
+  {
+   "prim": "activate_loyalty",
+   "listeners": [
+    "Kiora of Salt and Sand",
+    "Way of the Mind Sculptor",
+    "Way of the Paradox"
+   ],
+   "emitters": [
+    "Ajani Unrelenting"
+   ]
+  },
+  {
+   "prim": "activate_loyalty",
+   "listeners": [
+    "Ajani Unrelenting",
+    "Kiora of Salt and Sand",
+    "Way of the Mind Sculptor"
+   ],
+   "emitters": [
+    "Way of the Paradox"
+   ]
+  },
+  {
+   "prim": "activate_loyalty",
+   "listeners": [
+    "Ajani Unrelenting",
+    "Way of the Mind Sculptor",
+    "Way of the Paradox"
+   ],
+   "emitters": [
+    "Kiora of Salt and Sand"
+   ]
+  },
+  {
+   "prim": "activate_loyalty",
+   "listeners": [
+    "Ajani Unrelenting",
+    "Kiora of Salt and Sand",
+    "Way of the Paradox"
+   ],
+   "emitters": [
+    "Way of the Mind Sculptor"
+   ]
+  }
+ ]
+}

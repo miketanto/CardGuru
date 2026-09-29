@@ -279,3 +279,40 @@ unchanged; its pre-registered items 2 and 4 held throughout.
 3. Run the pipeline on a second set with known archetypes (the extraction
    is set-agnostic: change the edition file). One set is one data point
    for "the method recovers archetypes."
+
+## 10. Effect-granted statics (follow-up to §9 item 1)
+
+### 10.1 Mapping and predictions — written before the re-run
+
+The 11 SVar-borne statics/replacements (granted through Forge's generic
+`Effect` API) are routed through the same code as `S:`/`R:` lines. There are
+no new primitives. Per ability:
+
+| card | granted ability | maps to |
+|---|---|---|
+| Ajani Resolute | `Continuous Affected$ Creature.YouCtrl` +2/+2 | listen `enter` Creature.YouCtrl (static), same as an `S:` anthem |
+| Jace's Machinations | `CastWithFlash ValidCard$ Planeswalker.Jace+YouCtrl ValidSA$ Activated.Loyalty` | listen `enter` Planeswalker.Jace (static) |
+| Hall of Echoes | `IgnoreLegendRule ValidCard$ Permanent.YouCtrl` | listen `enter` Legendary (the rule only affects legendaries) |
+| Way of the Paradox | `Continuous Affected$ You AdjustLandPlays$ 1` | emit `mana` ramp ×1, same as a library→battlefield land fetch |
+| Emrakul, the Exigent Doom | `Continuous Affected$ Card.IsRemembered AddAbility$ Mana` | nothing new: the granted `{T}: Add {C}{C}` SVar is already parsed and emitted |
+| Emrakul (MayPlay), Blazing Crescendo | `MayPlay` from exile | nothing: no primitive |
+| Eardrum Rattler, Kiora of Salt and Sand | `CantBlockBy` on a remembered creature | nothing: evasion is excluded (`PRIMITIVES.md` §3) |
+| Tomik, Orzhov Lawmage | `AttackRestrict` | nothing: a restriction, not a state change |
+| Theorist's Proxy | `R: Counter … CantHappen` (can't be countered) | nothing: no primitive |
+
+Two general rules come with it. A `Continuous` whose `Affected$` names an
+effect-chosen object (`IsRemembered`, `IsImprinted`, `Targeted`) or a
+player (`You`) is not a population listener. `IgnoreLegendRule` and
+`CastWithFlash` statics get their first mapping here.
+
+**Predictions:**
+- Signals change on exactly **4 cards**. Mana emitters go 25 → 26; no
+  other emission count changes.
+- **Cannot move:** V2 (43/44; no loyalty emission changes), the V1
+  surveil/payoff sets (13/12), V3's consumer count (77; the new
+  producer is not a Chandra consumer), and pre-reg item 4 (0).
+- **Can move:** edges incident to the 4 cards; every other weight only
+  through rarity counts (one more mana emitter lowers the rarity of 84
+  mana listeners' edges slightly). Community sizes, V1 rates and the
+  held-out hit count may shift a little. A change larger than a few hits
+  or one community reshuffle would be surprising.
