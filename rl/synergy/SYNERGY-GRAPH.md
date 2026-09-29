@@ -773,14 +773,20 @@ for UB.**
   cards, Shipwreck Marsh in its core). Lands-matter is not a draft
   archetype, but it is a structure lost.
 
-**Why UB still misses.** Its signpost, Recursive Recruitment, reads "if
-cast from a graveyard" (a flashback-style payoff). The vocabulary maps
-that as a self-listener that only generic mill can satisfy, at
-tightness 0.6 × 0.5. Its gold cards follow the strongest self-mill
-signal in the set, surveil, into WU's cluster. In this graph, UB
-self-mill and WU surveil share their best enablers. That fits the set's
-mechanics (both Library→Graveyard), but it doesn't give UB a cluster of
-its own.
+**Why UB still misses** (checked on the signpost's edges). Recursive
+Recruitment has both a Flashback self-listener and a graveyard-count
+listener (`Count$ValidGraveyard Card.YouOwn`). After the fix it has 86
+incoming `tograve` edges, but every one comes from a random-bin
+emission (mill, surveil, discard; tightness 0.6), and the heaviest is
+0.117 under `full`. Its two strongest links are unrelated to UB: Geist
+of Saint Thalia's noncreature cost reduction (0.165) and Yoshimaru's
++1/+1 counters (0.119). The UB gold cards follow their strongest
+self-mill signal, which is surveil, into WU's cluster. So UB self-mill
+and WU surveil share their best enablers in this graph. That is
+consistent with the set's mechanics (both Library→Graveyard), but it
+gives UB no cluster of its own. *(An earlier draft of this paragraph
+said the signpost's graveyard link was only a self-listener. That was
+wrong, and was corrected before commit.)*
 
 **Recommendation.** Keep `norm_knn` for archetype questions. It has the
 fewest misses (1), the best gold and colour NMI, and the highest
