@@ -33,6 +33,7 @@ EVENTS = {
     "prepare":     "a creature becomes prepared (FRA)",
     "attack":      "a creature attacks",
     "damage":      "damage is dealt",
+    "damage_opp":  "noncombat damage is dealt to an opponent",
     "mana":        "mana is produced (resource flow)",
 }
 
@@ -279,6 +280,10 @@ def analyse(card):
                     continue
                 for m in re.finditer(r"(?<![A-Za-z])Count\$([^|]+)", val):
                     count_listens(card, m.group(1).strip(), "condition", f"{ab['kind']} {key}$ Count${m.group(1)[:50]}", ft)
+        for where, raw in [(f"SVar:{k}", v) for k, v in f["svars"].items()] + \
+                [(f"{ab['kind']} {k}$", v) for ab in f["abilities"] for k, v in ab["params"].items()]:
+            if "wasDealtNonCombatDamage" in raw:
+                card.L("damage_opp", parse_filter(""), "condition", f"{where} wasDealtNonCombatDamage")
         for sv, raw in f["svars"].items():
             for m in re.finditer(r"(?<![A-Za-z])Count\$(\S+(?: [^|]+)?)", raw):
                 mech = "cost_mod" if sv in cost_svars else "condition"
@@ -298,6 +303,20 @@ def target_pats(p, default_self_types):
             return parse_filter(v)
     return [{"types": default_self_types, "neg": [], "token": False, "side": "you", "self": True,
              "counters": None, "prepared": None}]
+
+
+PLAYER_TARGETS = ("Opponent", "Player", "Player.Opponent", "TargetedOwner", "TargetedController",
+                  "TargetedPlayer", "Defending", "DefendingPlayer")
+
+
+def emit_damage_opp(card, p, src):
+    """Noncombat damage that can hit an opponent (SYNERGY-GRAPH.md §13)."""
+    tv = ",".join(p.get(k, "") for k in ("ValidTgts", "Defined", "ValidPlayers"))
+    alts = [x.strip() for x in tv.split(",") if x.strip()]
+    if any(x == "Any" for x in alts):
+        card.E("damage_opp", concrete([]), "random", f"{src} (any target)")
+    elif any(x in PLAYER_TARGETS or x.startswith("Opponent") or x.startswith("Player.Opponent") for x in alts):
+        card.E("damage_opp", concrete([]), "effect", f"{src} -> {tv.strip(',')}")
 
 
 def analyse_ability(card, f, ft, ab, cost_svars):
@@ -414,6 +433,11 @@ def analyse_ability(card, f, ft, ab, cost_svars):
         elif api in ("Attacks",):
             if not (pats[0]["self"] and len(pats) == 1):
                 card.L("attack", pats, "trigger", f"{src} {vc}")
+        elif api in ("DamageDone", "DamageAll", "DamageDoneOnce"):
+            vt, vs = p.get("ValidTarget", ""), p.get("ValidSource", "")
+            if ("Opponent" in vt or vt.startswith("Player")) and p.get("CombatDamage") == "False" \
+                    and vs not in ("Card.Self", "Self"):
+                card.L("damage_opp", parse_filter(""), "trigger", f"{src} ValidTarget$ {vt} noncombat")
         elif api == "BecomesTarget":
             card.L("cast_target_own", parse_filter(""), "trigger", src)
         elif api == "TapsForMana":
@@ -525,6 +549,8 @@ def analyse_ability(card, f, ft, ab, cost_svars):
         if "Opponent" not in p.get("Defined", ""):
             card.E("lifegain", concrete([]), "effect", src)
     elif api in ("Destroy", "DestroyAll", "Fight", "DamageAll"):
+        if api == "DamageAll":
+            emit_damage_opp(card, p, src)
         for pp in tp:
             if pp["self"]:
                 continue
@@ -532,6 +558,7 @@ def analyse_ability(card, f, ft, ab, cost_svars):
             card.E("die", q, "random", f"{src} {p.get('ValidTgts', p.get('ValidCards', ''))}")
     elif api == "DealDamage":
         card.E("damage", concrete([]), "effect", src)
+        emit_damage_opp(card, p, src)
     elif api == "Sacrifice":
         d = p.get("Defined", "") + p.get("ValidTgts", "")
         if "Opponent" in d or "Player" in d:

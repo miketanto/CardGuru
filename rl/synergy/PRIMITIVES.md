@@ -141,3 +141,9 @@ them change rows of the §2 table:
   card with MV ≥ 2 is a candidate, kept only if a producer saves it at
   least a turn (turns-saved model, `SYNERGY-GRAPH.md` §11). `Count$xPaid`
   counts only when X is in a mana cost, not in `SubCounter<X/LOYALTY>`.
+- New primitive `damage_opp` (noncombat damage to an opponent): emitted by
+  `DealDamage`/`DamageAll` that can target a player (`random` for `Any`);
+  listened for by noncombat `DamageDone`/`DamageAll` triggers and by
+  `wasDealtNonCombatDamage*` conditions. Intrinsic spell-resolution
+  `tograve` now satisfies only typed graveyard listeners. See
+  `SYNERGY-GRAPH.md` §13.

@@ -10,6 +10,12 @@ Written 2026-09-29, against the current graph (`full_knn`, after
 > `norm_knn` the tally is **4 recovered, 4 partial, 2 missed**. RG gains a
 > ramp cluster and UR a partial match; UB and BR are unchanged. The text
 > below is the original `full_knn` result.
+>
+> **Update 2 (`SYNERGY-GRAPH.md` §13.2):** after the mill and
+> noncombat-damage fixes: `norm_knn` **5 recovered / 4 partial / 1
+> missed**, `full_knn` 6 / 1 / 3. BR is recovered under both (a B/R
+> `damage_opp` cluster). UB is still missed; its gold cards now join the
+> WU surveil cluster.
 
 **4 of 10 archetypes recovered cleanly, 2 partly, 4 missed.** The
 recovered ones are the archetypes whose theme is a single primitive

@@ -20,7 +20,10 @@ and no hand-authored archetype labels. Written 2026-09-29.
    Empower/planeswalker loyalty and Prepare. Neither name appears in any
    label the method sees; both reach the graph only as Forge API names
    (`Empower`, `AlterAttribute Prepared`).
-2. **Validation: 2 of 3 plan checks pass outright. The third passes at
+2. *[Correction, §13.2: after the mill fix, V1 co-clusters significantly
+   under `full_knn` (p = 0.002) and `norm_knn` (p = 0.001). The claim below
+   that the UW/B split is "the correct reading" was partly an artefact.]*
+   **Validation: 2 of 3 plan checks pass outright. The third passes at
    edge level and fails at cluster level, for a reason that looks real.**
    Surveil enablers link to every graveyard-size payoff (154/154 pairs, all
    schemes). They co-cluster under three schemes but **not** under `full` /
@@ -70,6 +73,15 @@ Held-out base rate: 0.037 for all schemes. V1 p-values (one-sided, 2000 label sh
 passing schemes; 1.0 (`full`) and 0.99 (`full_knn`) for the two failing.
 
 ### 2.1 V1 — surveil ↔ graveyard payoffs: passes at edge level; cluster level depends on scheme
+
+> **Correction (§13.2).** Part of the split described here was an
+> artefact. Every instant and sorcery counted as a graveyard enabler,
+> which drowned the graveyard-size listeners' rarity. Once that was
+> removed, surveil and graveyard payoffs co-cluster significantly under
+> `full_knn` and `norm_knn`, though still partially (0.25–0.28 of pairs,
+> against a 0.12–0.13 baseline). The colour facts below still stand: no
+> black card surveils. But "full separates them correctly" no longer
+> holds as stated.
 
 Every one of the 13 surveil emitters links directly to every one of the
 12 graveyard-size payoffs (`Count$ValidGraveyard`, Threshold, graveyard
@@ -686,3 +698,92 @@ listeners**. *Changes:*
   UW surveil cluster with the black graveyard cards. That would *pass*
   V1 but *lose* WU's separate identity, and it would be reported as a
   loss.
+
+### 13.2 Result of the re-run
+
+Written after the re-run. Before: `runs/eval.v4-pre-mill-dmg.json`.
+After: `eval.json` / `GRAPH-REPORT.md`.
+
+**Predictions vs outcome:**
+
+| prediction | outcome |
+|---|---|
+| non-`tograve` / non-`damage_opp` matches cannot move | **held**: resource 2,029, cost 702, V2 43/44, pre-reg 4 = 0, V3 52 |
+| non-intrinsic `tograve` matches cannot move | **held**: 2,450 exactly |
+| typed listeners keep their intrinsic matches | vacuous: no typed listener had any; all 1,862 intrinsic matches were to untyped listeners and are gone |
+| `damage_opp` ≤ 100 matches (≈ 20 × 5) | **slightly wrong**: 108 (21 emitter cards × 5 listeners, some pairs matched twice) |
+| V1 rises under `full` / `norm_knn` | **held**, and past baseline (table) |
+| UB moves toward a `tograve` cluster | **partly**: it left the Prepare/spells cluster, but went into the *surveil* cluster, whose dominant primitive is surveil, not graveyard size |
+| BR moves toward the `damage_opp` listeners | **held**: a new B/R `damage_opp` cluster under both kNN schemes |
+| risk: the WU surveil cluster merges with graveyard cards | **partly realised** (below) |
+
+**V1** (same-community rate, shuffled baseline, p):
+
+| scheme | before | after | baseline | p |
+|---|---|---|---|---|
+| uniform | 0.922 | 0.922 | 0.262 | 0.0005 |
+| tight | 0.766 | 0.922 | 0.230 | 0.0005 |
+| rarity | 0.688 | 0.922 | 0.253 | 0.0005 |
+| full | 0.065 | 0.130 | 0.178 | 0.92 ✗ |
+| full_knn | 0.065 | **0.253** | 0.134 | **0.002** |
+| mutual_knn | 0.065 | 0.065 | 0.048 | 0.26 |
+| norm_knn | 0.065 | **0.279** | 0.118 | **0.001** |
+
+**Other metrics** (before → after):
+
+| scheme | modularity | seed stab. | held-out /430 | colour NMI | gold NMI | Prepare spread |
+|---|---|---|---|---|---|---|
+| full_knn | 0.505 → 0.488 | 0.919 → 0.855 | 75 → 77 | 0.205 → 0.190 | 0.499 → 0.556 | 12 → 13 |
+| norm_knn | 0.605 → 0.591 | 0.932 → 0.940 | 65 → 64 | 0.224 → 0.232 | 0.579 → 0.597 | 8 → 8 |
+
+Held-out moved by ≤ 2 hits (flat within the interval). `full_knn` lost
+seed stability (0.919 → 0.855), a regression in reproducibility.
+
+**Archetype scorecard** (tests as in `ARCHETYPES-CHECK.md` §2; n = 4–7
+gold cards per pair, so these are judgement calls on counts):
+
+| pair | `norm_knn`: signpost cluster / gold plurality | verdict (was) | `full_knn`: signpost cluster / gold plurality | verdict (was) |
+|---|---|---|---|---|
+| WU | surveil / 6/7 | recovered (recovered) | surveil + Prepare / 6/7 | recovered (recovered) |
+| GW | lifegain / 4/7 | recovered (recovered) | lifegain / 6/7 | recovered (recovered) |
+| GU | Empower / 4/6 | recovered (recovered) | Empower / 4/6 | recovered (recovered) |
+| RW | +1/+1 / 2/4 | recovered (recovered) | +1/+1 / 2/4 | recovered (recovered) |
+| **BR** | **`damage_opp` 95% / 5/7** | **recovered** (missed) | **`damage_opp` 68% / 6/7** | **recovered** (missed) |
+| BG | recursion / 2/4 elsewhere | partial (partial) | recursion / 3/4 same | **recovered** (partial) |
+| WB | death / 1/4 | partial (partial) | death / 2/4 elsewhere | partial (partial) |
+| UR | noncreature spells + cost reduction ✓ / 2/4 elsewhere | partial (partial) | recursion ✗ / 2/4 elsewhere | missed (missed) |
+| RG | draw ✗ / ramp 5/7 | partial (partial) | recursion ✗ / 3/7 in surveil | missed (missed) |
+| UB | draw ✗ / 3/7 in surveil | missed (missed) | +1/+1 ✗ / 3/7 in surveil | missed (missed) |
+| **tally** | | **5 / 4 / 1** (was 4 / 4 / 2) | | **6 / 1 / 3** (was 4 / 2 / 4) |
+
+**Against the §13.1 success line:** BR reached its own theme cluster
+under both kNN schemes; **UB did not**. No recovered or partial
+archetype was lost under `norm_knn`. Under `full_knn`, BG was gained and
+nothing was lost that had been recovered there. **Success for BR, not
+for UB.**
+
+**What changed structurally under `norm_knn`:**
+- The surveil cluster (22 cards, U 68% W 45% B 18%) now holds WU 6/7
+  *and* UB 3/7. So the merge risk is partly realised, but WU keeps a
+  surveil-dominated cluster of its own (surveil 75%, `tograve` 6%).
+- The old Prepare/spells cluster became a noncreature-spells + cost
+  reduction cluster (Geist of Saint Thalia; `cast` 52%, cost 31%), where
+  UR's signpost now sits.
+- The lands cluster merged into the Empower/planeswalker cluster (59
+  cards, Shipwreck Marsh in its core). Lands-matter is not a draft
+  archetype, but it is a structure lost.
+
+**Why UB still misses.** Its signpost, Recursive Recruitment, reads "if
+cast from a graveyard" (a flashback-style payoff). The vocabulary maps
+that as a self-listener that only generic mill can satisfy, at
+tightness 0.6 × 0.5. Its gold cards follow the strongest self-mill
+signal in the set, surveil, into WU's cluster. In this graph, UB
+self-mill and WU surveil share their best enablers. That fits the set's
+mechanics (both Library→Graveyard), but it doesn't give UB a cluster of
+its own.
+
+**Recommendation.** Keep `norm_knn` for archetype questions. It has the
+fewest misses (1), the best gold and colour NMI, and the highest
+modularity and stability. `full_knn` recovers one more archetype fully
+(BG), but misses three and is less stable. Neither scheme is best on
+every row.

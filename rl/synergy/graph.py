@@ -32,6 +32,8 @@ def match(e, l, owner_types):
         if not (e["sub"] == l["sub"] or "*" in (e["sub"], l["sub"])):
             return 0.0
     ep, lp = e["pat"], l["pat"]
+    if e["event"] == "tograve" and e["mech"] == "intrinsic" and not (lp["types"] or lp.get("also")):
+        return 0.0  # a spell resolving is not an enabler for "cards in graveyard" (§13)
     if lp["side"] == "you" and ep["side"] == "opp":
         return 0.0
     if lp.get("side") == "you" and ep.get("side") == "any" and e["mech"] == "random" and e["event"] == "die":

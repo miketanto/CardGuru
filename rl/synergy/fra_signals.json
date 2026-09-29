@@ -8058,6 +8058,22 @@
     },
     "mech": "effect",
     "src": "SVar:DBDamage DB$DealDamage"
+   },
+   {
+    "event": "damage_opp",
+    "sub": "",
+    "pat": {
+     "types": [],
+     "neg": [],
+     "token": false,
+     "side": "you",
+     "self": false,
+     "concrete": true,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "effect",
+    "src": "SVar:DBDamage DB$DealDamage -> Player"
    }
   ],
   "listens": [
@@ -8445,6 +8461,22 @@
     },
     "mech": "intrinsic",
     "src": "Extended Absence resolves to graveyard"
+   },
+   {
+    "event": "damage_opp",
+    "sub": "",
+    "pat": {
+     "types": [],
+     "neg": [],
+     "token": false,
+     "side": "you",
+     "self": false,
+     "concrete": true,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "effect",
+    "src": "SVar:DBDamageAll DB$DamageAll -> Player.Opponent"
    },
    {
     "event": "lifegain",
@@ -9777,6 +9809,22 @@
     "src": "SVar:PWLurker AB$DamageAll loyalty ability"
    },
    {
+    "event": "damage_opp",
+    "sub": "",
+    "pat": {
+     "types": [],
+     "neg": [],
+     "token": false,
+     "side": "you",
+     "self": false,
+     "concrete": true,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "effect",
+    "src": "SVar:PWLurker AB$DamageAll -> Player.Opponent"
+   },
+   {
     "event": "lifegain",
     "sub": "",
     "pat": {
@@ -9934,6 +9982,22 @@
     },
     "mech": "intrinsic",
     "src": "Screeching Soulbreaker can attack"
+   },
+   {
+    "event": "damage_opp",
+    "sub": "",
+    "pat": {
+     "types": [],
+     "neg": [],
+     "token": false,
+     "side": "you",
+     "self": false,
+     "concrete": true,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "effect",
+    "src": "SVar:TrigDamageAll DB$DamageAll -> Opponent"
    },
    {
     "event": "lifegain",
@@ -11012,6 +11076,22 @@
     },
     "mech": "effect",
     "src": "SVar:TrigDamage DB$DealDamage"
+   },
+   {
+    "event": "damage_opp",
+    "sub": "",
+    "pat": {
+     "types": [],
+     "neg": [],
+     "token": false,
+     "side": "you",
+     "self": false,
+     "concrete": true,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "random",
+    "src": "SVar:TrigDamage DB$DealDamage (any target)"
    }
   ],
   "listens": [
@@ -11716,6 +11796,21 @@
     },
     "mech": "consumes",
     "src": "SVar:TrigReturn DB$ChangeZone Graveyard->Hand"
+   },
+   {
+    "event": "damage_opp",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "condition",
+    "src": "SVar:X wasDealtNonCombatDamage"
    },
    {
     "event": "mana",
@@ -12792,6 +12887,22 @@
     },
     "mech": "effect",
     "src": "A SP$DealDamage"
+   },
+   {
+    "event": "damage_opp",
+    "sub": "",
+    "pat": {
+     "types": [],
+     "neg": [],
+     "token": false,
+     "side": "you",
+     "self": false,
+     "concrete": true,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "effect",
+    "src": "A SP$DealDamage -> Opponent"
    }
   ],
   "listens": [
@@ -13181,6 +13292,21 @@
   ],
   "listens": [
    {
+    "event": "damage_opp",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "trigger",
+    "src": "T Mode$DamageAll ValidTarget$ Opponent noncombat"
+   },
+   {
     "event": "mana",
     "sub": "",
     "pat": {
@@ -13271,6 +13397,22 @@
     },
     "mech": "effect",
     "src": "A SP$DealDamage"
+   },
+   {
+    "event": "damage_opp",
+    "sub": "",
+    "pat": {
+     "types": [],
+     "neg": [],
+     "token": false,
+     "side": "you",
+     "self": false,
+     "concrete": true,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "random",
+    "src": "A SP$DealDamage (any target)"
    },
    {
     "event": "enter",
@@ -14120,6 +14262,22 @@
     },
     "mech": "effect",
     "src": "SVar:TrigDamage DB$DealDamage"
+   },
+   {
+    "event": "damage_opp",
+    "sub": "",
+    "pat": {
+     "types": [],
+     "neg": [],
+     "token": false,
+     "side": "you",
+     "self": false,
+     "concrete": true,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "random",
+    "src": "SVar:TrigDamage DB$DealDamage (any target)"
    }
   ],
   "listens": [
@@ -19113,6 +19271,22 @@
     },
     "mech": "effect",
     "src": "SVar:DBDamage DB$DealDamage"
+   },
+   {
+    "event": "damage_opp",
+    "sub": "",
+    "pat": {
+     "types": [],
+     "neg": [],
+     "token": false,
+     "side": "you",
+     "self": false,
+     "concrete": true,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "effect",
+    "src": "SVar:DBDamage DB$DealDamage -> TargetedOwner"
    }
   ],
   "listens": [
@@ -20849,6 +21023,21 @@
     "src": "A AB$ChangeZone Graveyard->Battlefield"
    },
    {
+    "event": "damage_opp",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "condition",
+    "src": "SVar:X wasDealtNonCombatDamage"
+   },
+   {
     "event": "mana",
     "sub": "",
     "pat": {
@@ -20975,6 +21164,22 @@
     },
     "mech": "effect",
     "src": "SVar:TrigDamage DB$DealDamage"
+   },
+   {
+    "event": "damage_opp",
+    "sub": "",
+    "pat": {
+     "types": [],
+     "neg": [],
+     "token": false,
+     "side": "you",
+     "self": false,
+     "concrete": true,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "effect",
+    "src": "SVar:TrigDamage DB$DealDamage -> Player.Opponent"
    },
    {
     "event": "enter",
@@ -23372,6 +23577,22 @@
     "src": "SVar:DBDamage DB$DealDamage"
    },
    {
+    "event": "damage_opp",
+    "sub": "",
+    "pat": {
+     "types": [],
+     "neg": [],
+     "token": false,
+     "side": "you",
+     "self": false,
+     "concrete": true,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "random",
+    "src": "SVar:DBDamage DB$DealDamage (any target)"
+   },
+   {
     "event": "enter",
     "sub": "",
     "pat": {
@@ -23550,6 +23771,22 @@
     },
     "mech": "effect",
     "src": "A SP$DealDamage"
+   },
+   {
+    "event": "damage_opp",
+    "sub": "",
+    "pat": {
+     "types": [],
+     "neg": [],
+     "token": false,
+     "side": "you",
+     "self": false,
+     "concrete": true,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "effect",
+    "src": "A SP$DealDamage -> Opponent"
    }
   ],
   "listens": [
@@ -23646,6 +23883,22 @@
     },
     "mech": "effect",
     "src": "A SP$DealDamage"
+   },
+   {
+    "event": "damage_opp",
+    "sub": "",
+    "pat": {
+     "types": [],
+     "neg": [],
+     "token": false,
+     "side": "you",
+     "self": false,
+     "concrete": true,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "effect",
+    "src": "A SP$DealDamage -> Opponent"
    }
   ],
   "listens": [
@@ -25447,6 +25700,22 @@
     "src": "SVar:TrigDamage DB$DealDamage"
    },
    {
+    "event": "damage_opp",
+    "sub": "",
+    "pat": {
+     "types": [],
+     "neg": [],
+     "token": false,
+     "side": "you",
+     "self": false,
+     "concrete": true,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "random",
+    "src": "SVar:TrigDamage DB$DealDamage (any target)"
+   },
+   {
     "event": "lifegain",
     "sub": "",
     "pat": {
@@ -25658,6 +25927,22 @@
     },
     "mech": "effect",
     "src": "A SP$DealDamage"
+   },
+   {
+    "event": "damage_opp",
+    "sub": "",
+    "pat": {
+     "types": [],
+     "neg": [],
+     "token": false,
+     "side": "you",
+     "self": false,
+     "concrete": true,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "effect",
+    "src": "A SP$DealDamage -> Opponent"
    }
   ],
   "listens": [
@@ -25679,6 +25964,21 @@
     },
     "mech": "trigger",
     "src": "Prepare card: re-prepared by others"
+   },
+   {
+    "event": "damage_opp",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "condition",
+    "src": "SVar:X wasDealtNonCombatDamage"
    },
    {
     "event": "mana",
@@ -26649,6 +26949,22 @@
     },
     "mech": "effect",
     "src": "SVar:DBDealDamage DB$DealDamage"
+   },
+   {
+    "event": "damage_opp",
+    "sub": "",
+    "pat": {
+     "types": [],
+     "neg": [],
+     "token": false,
+     "side": "you",
+     "self": false,
+     "concrete": true,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "effect",
+    "src": "SVar:DBDealDamage DB$DealDamage -> Player.Opponent"
    },
    {
     "event": "lifegain",
@@ -35787,6 +36103,22 @@
     "src": "SVar:TrigDamage DB$DealDamage"
    },
    {
+    "event": "damage_opp",
+    "sub": "",
+    "pat": {
+     "types": [],
+     "neg": [],
+     "token": false,
+     "side": "you",
+     "self": false,
+     "concrete": true,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "effect",
+    "src": "SVar:TrigDamage DB$DealDamage -> Opponent"
+   },
+   {
     "event": "lifegain",
     "sub": "",
     "pat": {
@@ -35857,6 +36189,21 @@
     },
     "mech": "trigger",
     "src": "T Mode$ChangesZone Battlefield->Graveyard Creature.Other+YouCtrl,Planeswalker.Other+YouCtrl"
+   },
+   {
+    "event": "damage_opp",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "trigger",
+    "src": "T Mode$DamageDone ValidTarget$ Opponent noncombat"
    },
    {
     "event": "mana",
@@ -36385,6 +36732,22 @@
     },
     "mech": "effect",
     "src": "SVar:TrigDamage DB$DealDamage"
+   },
+   {
+    "event": "damage_opp",
+    "sub": "",
+    "pat": {
+     "types": [],
+     "neg": [],
+     "token": false,
+     "side": "you",
+     "self": false,
+     "concrete": true,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "effect",
+    "src": "SVar:TrigDamage DB$DealDamage -> Player.Opponent"
    }
   ],
   "listens": [
@@ -37781,6 +38144,22 @@
     "src": "SVar:DBDamage DB$DealDamage"
    },
    {
+    "event": "damage_opp",
+    "sub": "",
+    "pat": {
+     "types": [],
+     "neg": [],
+     "token": false,
+     "side": "you",
+     "self": false,
+     "concrete": true,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "effect",
+    "src": "SVar:DBDamage DB$DealDamage -> Player.Opponent"
+   },
+   {
     "event": "counter+",
     "sub": "LOYALTY",
     "pat": {
@@ -37915,6 +38294,22 @@
     },
     "mech": "effect",
     "src": "SVar:EffSpellCast DB$DealDamage"
+   },
+   {
+    "event": "damage_opp",
+    "sub": "",
+    "pat": {
+     "types": [],
+     "neg": [],
+     "token": false,
+     "side": "you",
+     "self": false,
+     "concrete": true,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "random",
+    "src": "SVar:EffSpellCast DB$DealDamage (any target)"
    }
   ],
   "listens": [
@@ -38662,6 +39057,22 @@
     },
     "mech": "effect",
     "src": "SVar:TrigDamage DB$DealDamage"
+   },
+   {
+    "event": "damage_opp",
+    "sub": "",
+    "pat": {
+     "types": [],
+     "neg": [],
+     "token": false,
+     "side": "you",
+     "self": false,
+     "concrete": true,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "effect",
+    "src": "SVar:TrigDamage DB$DealDamage -> Opponent"
    },
    {
     "event": "mana",
@@ -39912,6 +40323,22 @@
     },
     "mech": "effect",
     "src": "SVar:DBDealDamage DB$DealDamage"
+   },
+   {
+    "event": "damage_opp",
+    "sub": "",
+    "pat": {
+     "types": [],
+     "neg": [],
+     "token": false,
+     "side": "you",
+     "self": false,
+     "concrete": true,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "effect",
+    "src": "SVar:DBDealDamage DB$DealDamage -> Player"
    }
   ],
   "listens": [
