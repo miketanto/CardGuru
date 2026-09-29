@@ -6,7 +6,7 @@ module that reads the held-out DeckHas/DeckHints labels.
 """
 import json, math, random, collections, re, sys
 
-SCHEMES = ("uniform", "tight", "rarity", "full", "full_knn")
+SCHEMES = ("uniform", "tight", "rarity", "full", "full_knn", "mutual_knn", "norm_knn")
 cards = {c["name"]: c for c in json.load(open("fra_signals.json", encoding="utf-8"))}
 edges = json.load(open("fra_edges.json", encoding="utf-8"))
 graph = json.load(open("fra_graph.json", encoding="utf-8"))
@@ -69,7 +69,7 @@ def profile(s):
     for x in edges:
         if lab[x["a"]] == lab[x["b"]] and x["b"] in W[s][x["a"]]:
             prim_in[lab[x["a"]]][x["prim"] + ("" if x["type"] == "state" else f" ({x['type']})")] += \
-                x["w"]["full" if s == "full_knn" else s]
+                x["w"]["full" if s.endswith("_knn") else s]
     rows = []
     for c, members in sorted(comm.items(), key=lambda kv: -len(kv[1])):
         strength = {m: sum(W[s][m].get(o, 0) for o in members if o != m) for m in members}
@@ -99,7 +99,7 @@ P()
 P("Cross-scheme agreement (NMI): " + ", ".join(f"{k} {v}" for k, v in graph["cross_scheme_nmi"].items()))
 P()
 EV["profiles"] = {}
-for s, tag in (("full_knn", "a"), ("full", "b"), ("rarity", "c")):
+for s, tag in (("full_knn", "a"), ("mutual_knn", "a2"), ("norm_knn", "a3"), ("full", "b"), ("rarity", "c")):
     rows = profile(s)
     EV["profiles"][s] = rows
     P(f"## 2{tag}. Communities under `{s}`")
@@ -138,6 +138,45 @@ for s in SCHEMES:
         rng.shuffle(vals); sh.append(nmi(dict(zip(LAB[s].keys(), vals)), COL))
     EV["colour_nmi"][s] = {"obs": obs, "shuffled_mean": sum(sh) / len(sh), "shuffled_max": max(sh)}
     P(f"| {s} | {obs:.3f} | {sum(sh)/len(sh):.3f} | {max(sh):.3f} |")
+P()
+
+# ---------------- draft archetypes (ground truth: archetypes.json) ----------------
+ARCH = {k: v for k, v in json.load(open("archetypes.json", encoding="utf-8")).items() if not k.startswith("_")}
+PAIR = {}
+for n, c in cards.items():
+    for p in ARCH:
+        if len(c["colors"]) == 2 and set(c["colors"]) == set(p):
+            PAIR[n] = p
+HUBS = {"Codie, Ravenous Codex", "Infinite Coursework"}
+PREP = [n for n, c in cards.items() if c["prepare"]]
+P("## 2y. Draft-archetype agreement and hub damping (`SYNERGY-GRAPH.md` §12)")
+P()
+P(f"Gold cards: {len(PAIR)} (colours exactly one of the 10 pairs). Signpost agreement = pairs whose signpost "
+  "shares a cluster with the plurality of the pair's gold cards. Hub slots = kept edges between a Prepare "
+  "card and Codie / Infinite Coursework. Prepare spread = most Prepare cards in one cluster.")
+P()
+P("| scheme | signpost agreement /10 | gold NMI | hub slots | Prepare spread /21 | isolated | UB / BR / RG gold plurality |")
+P("|---|---|---|---|---|---|---|")
+EV["archetypes"] = {}
+for s in SCHEMES:
+    lab = LAB[s]
+    agree, plural = 0, {}
+    for p, a in ARCH.items():
+        gold = [n for n, q in PAIR.items() if q == p]
+        cnt = collections.Counter(lab[n] for n in gold)
+        top, k = cnt.most_common(1)[0]
+        plural[p] = (top, k, len(gold))
+        agree += lab[a["signpost"]] == top
+    gl = {n: lab[n] for n in PAIR}
+    gnmi = nmi(gl, PAIR)
+    hub = sum(1 for n in PREP for h in HUBS if h in W[s].get(n, {}))
+    spread = max(collections.Counter(lab[n] for n in PREP).values())
+    iso = len(graph["schemes"][s]["isolated"])
+    EV["archetypes"][s] = {"signpost_agreement": agree, "gold_nmi": gnmi, "hub_slots": hub,
+                           "prepare_spread": spread, "isolated": iso,
+                           "plurality": {p: list(v) for p, v in plural.items()}}
+    ubr = " / ".join(f"C{plural[p][0]} {plural[p][1]}/{plural[p][2]}" for p in ("UB", "BR", "RG"))
+    P(f"| {s} | {agree} | {gnmi:.3f} | {hub} | {spread} | {iso} | {ubr} |")
 P()
 
 # ---------------- validation ----------------
@@ -371,4 +410,4 @@ P()
 
 open("GRAPH-REPORT.md", "w", encoding="utf-8").write("\n".join(OUT) + "\n")
 json.dump(EV, open("eval.json", "w"), indent=1, ensure_ascii=False, default=str)
-print(json.dumps({k: EV[k] for k in ("V1", "V2", "V3", "prereg4_violations", "heldout", "colour_nmi")}, default=str)[:3000])
+print(json.dumps({k: EV[k] for k in ("V1", "V2", "V3", "prereg4_violations", "heldout", "colour_nmi", "archetypes")}, default=str)[:6000])

@@ -6,6 +6,11 @@ Written 2026-09-29, against the current graph (`full_knn`, after
 
 ## 0. Answer
 
+> **Update (`SYNERGY-GRAPH.md` §12.2):** under the hub-damped scheme
+> `norm_knn` the tally is **4 recovered, 4 partial, 2 missed**. RG gains a
+> ramp cluster and UR a partial match; UB and BR are unchanged. The text
+> below is the original `full_knn` result.
+
 **4 of 10 archetypes recovered cleanly, 2 partly, 4 missed.** The
 recovered ones are the archetypes whose theme is a single primitive
 with its own trigger: surveil, lifegain, Empower, +1/+1 counters. The

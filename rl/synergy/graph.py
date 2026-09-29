@@ -19,7 +19,7 @@ import json, math, sys, collections, random
 import networkx as nx
 from signals import EMIT_T, LISTEN_T
 
-SCHEMES = ("uniform", "tight", "rarity", "full", "full_knn")
+SCHEMES = ("uniform", "tight", "rarity", "full", "full_knn", "mutual_knn", "norm_knn")
 KNN = 10  # full_knn: keep an edge only if it is in either endpoint's top-KNN under full
 
 
@@ -165,17 +165,32 @@ def build(cards):
     return edges
 
 
+def knn_keep(w, mutual=False):
+    """Edges in the top-KNN of either endpoint (or of both, if mutual)."""
+    nb = collections.defaultdict(list)
+    for (a, b), v in w.items():
+        nb[a].append((v, b)); nb[b].append((v, a))
+    votes = collections.Counter()
+    for a, lst in nb.items():
+        for v, b in sorted(lst, reverse=True)[:KNN]:
+            votes[tuple(sorted((a, b)))] += 1
+    need = 2 if mutual else 1
+    return {k: v for k, v in w.items() if votes[k] >= need}
+
+
 def pair_weights(edges, scheme):
+    # hub damping (SYNERGY-GRAPH.md §12): mutual_knn drops edges a hub cannot
+    # reciprocate; norm_knn divides by sqrt(strength_a * strength_b) first.
     if scheme == "full_knn":
+        return knn_keep(pair_weights(edges, "full"))
+    if scheme == "mutual_knn":
+        return knn_keep(pair_weights(edges, "full"), mutual=True)
+    if scheme == "norm_knn":
         w = pair_weights(edges, "full")
-        nb = collections.defaultdict(list)
+        s = collections.defaultdict(float)
         for (a, b), v in w.items():
-            nb[a].append((v, b)); nb[b].append((v, a))
-        keep = set()
-        for a, lst in nb.items():
-            for v, b in sorted(lst, reverse=True)[:KNN]:
-                keep.add(tuple(sorted((a, b))))
-        return {k: v for k, v in w.items() if k in keep}
+            s[a] += v; s[b] += v
+        return knn_keep({k: v / math.sqrt(s[k[0]] * s[k[1]]) for k, v in w.items()})
     best = collections.defaultdict(float)
     for x in edges:
         k = (x["a"], x["b"], x["prim"], x["type"])

@@ -549,3 +549,81 @@ which evaluate reads and graph construction does not.
 - **Success** means UB/BR/RG improve without losing any of the four
   recovered archetypes (WU, GW, GU, RW) on the §2 scorecard. Anything
   else is reported as it is.
+
+### 12.2 Result of the re-run
+
+Written after the re-run. Before: `runs/eval.v3-pre-hub.json`. After:
+`eval.json` / `GRAPH-REPORT.md` §2y.
+
+**Cannot-move checks: all held.** The old five schemes are
+byte-identical on V1, held-out and colour NMI. V2 43/44, pre-reg 4 = 0,
+V3 52 consumers.
+
+| scheme | comms | modularity | seed stab. | isolated | signpost agreement /10 | gold NMI | hub slots | Prepare spread /21 | held-out /430 | colour NMI |
+|---|---|---|---|---|---|---|---|---|---|---|
+| full_knn | 9 | 0.505 | 0.919 | 0 | 5 | 0.499 | 42 | 12 | 75 | 0.205 |
+| mutual_knn | 9 + 96 singletons | 0.674 | 0.957 | **96** | 4 | 0.620 | 20 | 7 | 53 | 0.402 |
+| **norm_knn** | 10 | **0.605** | **0.932** | 0 | 6 | **0.579** | 40 | **8** | 65 | **0.224** |
+
+Signpost agreement is inflated for the dense schemes (8/10 for `uniform`
+with 3 communities, where nearly everything shares a cluster); read it
+only across the kNN schemes.
+
+**`mutual_knn` is rejected.** It isolates 96 of 280 cards (34%), the
+risk stated in §12.1. Its high NMI and colour scores come from
+shattering the graph, not from recovering structure.
+
+**`norm_knn` against the predictions:**
+- *Prepare spread falls below 12:* **held** (12 → 8). The Prepare cards
+  now sit 8 / 4 / 3 / 3 / 3 across five communities, close to the set's
+  design of 3 per allied pair.
+- *Hub slots fall below 42:* **held only nominally** (42 → 40). The hubs
+  are still in almost every Prepare card's top-10. Normalisation works by
+  weakening those edges relative to each card's pair-specific edges, not
+  by removing them. My pre-registered mechanism was wrong even though
+  the outcome moved.
+- *At least one of UB/BR/RG leaves the Prepare cluster:* **held for
+  RG.** A new R/G **ramp community** appears (39 cards, `enter` 51%,
+  `mana` 27%). It holds 5/7 RG gold cards, and its core is the Heartwood
+  makers (Traxos, Hungering Puppetbeast, Aerid Konstrari). This is the
+  first time resource edges carry a cluster.
+- *No loss among WU, GW, GU, RW:* **held** (scorecard below).
+  GW's gold cards are split 4/7 lifegain + 3/7 counters. That matches its
+  two-part theme, but is less concentrated than 6/7.
+- **Held-out: a decline of 10 hits (75 → 65), inside the interval, and
+  its cause is the stated GU risk.** Per-label diff against `full_knn`:
+  planeswalker hints −12, Jace −2, instant +5, others ±1. Planeswalker
+  cards are high-strength nodes, and normalisation down-weights edges
+  into them, so Empower cards' top-10 lists hold fewer actual
+  planeswalkers. The GU *cluster* survived (Kiora and 4/6 GU gold cards
+  in the Empower community).
+
+**Archetype scorecard under `norm_knn`** (same tests as
+`ARCHETYPES-CHECK.md` §2):
+
+| pair | signpost → cluster | gold plurality | verdict (was, under `full_knn`) |
+|---|---|---|---|
+| WU | surveil | 6/7 | recovered (recovered) |
+| GW | lifegain | 4/7 (+3 in counters) | recovered (recovered) |
+| GU | Empower/PW | 4/6 | recovered (recovered) |
+| RW | +1/+1 & target-own | 2/4 | recovered (recovered) |
+| RG | draw/discard ✗ | **ramp 5/7** | **partial** (missed): the ramp cluster exists, the signpost is outside it |
+| UR | noncreature spells + Prepare ✓ | 2/4 same cluster | **partial** (missed): theme and signpost co-located, but the cluster is shared with BR and UB |
+| WB | death/sac ✓ | spread 1/4 | partial (partial) |
+| BG | recursion ✓ | lands 2/4 | partial (partial) |
+| BR | noncreature spells + Prepare | 5/7 same cluster | missed (missed): co-located, but the cluster's theme is Prepare/spells, not burn |
+| UB | +1/+1 ✗ | Prepare/spells 3/7 | missed (missed) |
+
+**Totals: 4 recovered, 4 partial, 2 missed** (was 4 / 2 / 4). Against the
+§12.1 success line: one of the three targeted pairs improved (RG), none
+of the four recovered was lost, and UB and BR did not move to their own
+theme. **Partial success.** UB and BR need the other two fixes in
+`ARCHETYPES-CHECK.md` §3 (mill vs spell-resolution `tograve`; a
+noncombat-damage listener). Hub damping cannot supply a primitive the
+vocabulary doesn't have.
+
+**Recommendation update (§8):** use `norm_knn` for archetype questions:
+best modularity, stability and colour/gold agreement of the connected
+schemes. Keep `full_knn` for planeswalker-partner queries, where it
+scores 10 more held-out hits. V1 (surveil ↔ graveyard co-clustering)
+remains a split under both.
