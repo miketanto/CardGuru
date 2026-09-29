@@ -627,3 +627,62 @@ best modularity, stability and colour/gold agreement of the connected
 schemes. Keep `full_knn` for planeswalker-partner queries, where it
 scores 10 more held-out hits. V1 (surveil ↔ graveyard co-clustering)
 remains a split under both.
+
+## 13. Mill and noncombat-damage fixes (`ARCHETYPES-CHECK.md` §3.2–3.3)
+
+### 13.1 Changes and predictions — written before the re-run
+
+**Mill.** 85 of the 131 `tograve` emissions are intrinsic: an instant or
+sorcery going to the graveyard as it resolves. They account for 1,862
+of 4,312 `tograve` matches and satisfy every untyped graveyard-size
+listener (`Count$ValidGraveyard Card.YouOwn`, Threshold,
+`ExileFromGrave<1/Card>`). The 40 real enablers (mill, surveil,
+discard) sit among them at rarity ≈ 0.
+
+*Change:* an intrinsic `tograve` emission satisfies only a listener that
+**names a card type** (e.g. "instant and sorcery cards in your
+graveyard", which is a real spell-count synergy). "Every spell ends up
+in the graveyard" is not an enabler for "cards in graveyard". No other
+emission or listener changes.
+
+**Noncombat damage.** The `damage` event had 35 emitters and **zero
+listeners**. *Changes:*
+- **New primitive `damage_opp`:** noncombat damage dealt to an opponent.
+- **Emitted by** `DealDamage` / `DamageAll` whose target can be a
+  player. Mech is `effect` when the target is Opponent / Player /
+  `Player.Opponent` / `TargetedOwner`, and `random` (0.6) for `Any`,
+  since the damage may go to a creature instead.
+- **Listened for by** `DamageDone` / `DamageAll` / `DamageDoneOnce`
+  triggers with `ValidTarget` Opponent/Player, `CombatDamage$ False` and
+  a non-self source (trigger). Also by any ability or SVar using
+  `wasDealtNonCombatDamageThisTurn` / `LastTurn` (condition).
+- **Expected listeners** (5 cards, all B/R): Command the Stage, Master of
+  Barbs, Grim Repriser (the BR signpost), Whiplash Wordsmith, Massacre
+  Girl.
+- The old untyped `damage` emission is kept but still has no listener,
+  so it contributes nothing.
+
+**Predictions:**
+- **Cannot move:**
+  - every match whose primitive is not `tograve` or `damage_opp`, with
+    its weight (rarity counts are per signal): V2 43/44, pre-reg 4 = 0,
+    V3 52 consumers, resource matches 2,029, cost matches 702;
+  - `tograve` matches from non-intrinsic emissions (2,450), and typed
+    listeners' intrinsic matches.
+- **Will move:**
+  - `tograve` matches fall by most of the 1,862 intrinsic ones; the
+    untyped graveyard-size listeners' rarity rises;
+  - new `damage_opp` matches: roughly 20 emitters × 5 listeners, ≤ 100.
+- **Can move, direction predicted:**
+  - V1 surveil→graveyard edges get heavier, so V1 co-clustering under
+    `full` / `norm_knn` should rise; whether above baseline is not
+    predicted;
+  - UB gold cards should move toward a `tograve`-dominated cluster, and
+    BR gold cards toward the B/R `damage_opp` listeners.
+- **Success line** (read on `norm_knn`, the recommended scheme): UB
+  and/or BR reach a cluster whose dominant primitive is their theme,
+  with no loss among the 4 recovered and 4 partial archetypes.
+- **Risk, stated now:** strengthening surveil→graveyard could merge the
+  UW surveil cluster with the black graveyard cards. That would *pass*
+  V1 but *lose* WU's separate identity, and it would be reported as a
+  loss.
