@@ -223,10 +223,11 @@ cannot pick a scheme.**
   listener. Louvain on the dense graphs gives 3–6 communities with
   modularity ≤ 0.28. The 9-community `full_knn` result depends on the
   kNN sparsification (k = 10, not tuned).
-- **Resource edges are all-or-nothing on colour**: 0.6 when the producer
+- ~~**Resource edges are all-or-nothing on colour**: 0.6 when the producer
   can pay only generic mana. There is no curve model, so "Chandra ramps
   into 5-drops" and "Chandra pays for a 6-mana activated sink" weigh the
-  same.
+  same.~~ *Superseded by §11:* a turns-saved model with pip-level colour.
+  That model has its own limits, listed in §11.1.
 - **Known unmapped script content:** numeric qualifiers (`powerGE4`,
   `cmcLE2`) and Phase triggers (by design). *(Update, §10: the 11
   `Effect`-granted statics listed here originally are now routed; 4 map to
@@ -273,8 +274,10 @@ unchanged; its pre-registered items 2 and 4 held throughout.
 
 1. ~~Map SVar-borne statics (the 11 unmapped abilities) and re-run.~~
    Done, §10: no headline number changed.
-2. Replace the colour factor with a curve-aware resource weight, then
-   re-check whether Chandra's resource partners move up.
+2. ~~Replace the colour factor with a curve-aware resource weight, then
+   re-check whether Chandra's resource partners move up.~~ Done, §11:
+   within resource edges her partners are now all MV 7–10; her overall
+   rank is unchanged (12th).
 3. Run the pipeline on a second set with known archetypes (the extraction
    is set-agnostic: change the edition file). One set is one data point
    for "the method recovers archetypes."
@@ -423,3 +426,75 @@ dorks and one turn pessimistic for a haste dork.
   every MV ≥ 4 card, so total resource matches should rise.
 - V1 rates, held-out hits, colour NMI and communities can all move
   (pair weights include resource edges); no direction predicted.
+
+### 11.2 Result of the re-run
+
+Written after the re-run. Before: `runs/eval.v2-pre-curve.json`,
+`runs/GRAPH-REPORT.v2-pre-curve.md`. After: `eval.json`,
+`GRAPH-REPORT.md`.
+
+**Two corrections made during this change** (in the open):
+
+1. **Model bug in §11.1 as pre-registered: rituals.** "Nonland producer
+   ready at MV + 1" is wrong for an instant or sorcery that makes mana:
+   the mana arrives on the cast turn, net of its own cost. It is now
+   `ready = MV`, `surplus = amount − MV`. This affects 2 cards (Konstrari
+   Charm; Molten Tide, Pyre Rhymer's spell face). I found it by reading
+   the producer list, not the metrics.
+2. **Pre-existing bug: `Count$xPaid` on a loyalty cost.** Chandra, Chill
+   of Compliance's `−X` sets `xPaid`, and was read as an X-mana consumer.
+   `xPaid` now counts only when X appears in a mana cost; 1 listener
+   dropped. It shaped resource edges before this change too. Its effect
+   was small (one listener) and is folded into the numbers below.
+
+**Predictions vs outcome:**
+
+| prediction | outcome |
+|---|---|
+| state/cost edges cannot move | **held**: 29,877 state + 702 cost matches, identical |
+| V2 43/44, V1 154/154 direct, pre-reg 4 = 0 cannot move | **held** (V2 median rank also unchanged, 22) |
+| Chandra loses every MV 5 consumer; count falls from 77 | **held**: 0 MV 5 cast consumers; 77 → 52 (her remaining 5s are activated sinks) |
+| total resource matches should rise | **wrong**: 2,152 → 2,029 (pairs 1,843 → 1,777). Only 5 of 24 producers are ready by turn 3, and the 14 ready on turn 4 lose their 5-drops. The new cheap-producer → 4-drop edges don't make up the difference. |
+| Chandra's best pure-resource rank: direction not predicted | unchanged at 12th |
+
+Resource matches now split into 1,195 cast acceleration, 742 sink and
+92 X-spell.
+
+**Chandra, Torch of Defiance's resource partners**
+(`query.py chandra --type resource`): all of the top 8 are MV 7–10
+(Kindred Judgment, Craterclaw Colossus, Face Yourself, Verdant Kraken,
+Craftwork Crusher, Ruric Thar Magecrusher, Emrakul 10, Return to the
+Light Realms 9). Each saves two turns (q = 1.0). Before, the list was a
+flat tie at w = 0.070 across 5-drops, X spells and sinks. **Within
+resource edges, the check now ranks the top end first. Across all edge
+types it does not:** state edges still dominate her neighbour list.
+
+**Metrics** (before → after):
+
+| scheme | modularity | V1 same-comm | held-out hits /430 [after 95% CI] | colour NMI (shuffled max) |
+|---|---|---|---|---|
+| uniform | 0.134 → 0.134 | 0.922 → 0.922 | 87 → 89 [0.171, 0.248] | 0.100 → 0.100 (0.059) |
+| tight | 0.146 → 0.148 | 0.766 → 0.766 | 90 → 89 [0.171, 0.248] | 0.095 → 0.092 (0.070) |
+| rarity | 0.225 → 0.227 | 0.688 → 0.688 | 96 → 94 [0.182, 0.260] | 0.138 → 0.132 (0.074) |
+| full | 0.278 → 0.286 | 0.065 → 0.065 | **83 → 75** [0.141, 0.213] | 0.189 → 0.188 (0.111) |
+| full_knn | 0.506 → 0.505 | 0.065 → 0.065 | **82 → 75** [0.141, 0.213] | 0.202 → 0.205 (0.136) |
+
+**Held-out under `full` / `full_knn`: a small decline, not flat, not
+significant.** The before-rates (0.193 / 0.191) lie inside the after
+intervals. To see what drives it, I rebuilt the pre-change graph and
+compared top-10 lists per hinted card. The net −8 sits in 6 (card, hint)
+pairs: Puppet Crafting / artifact −3, Kwia Vigorbloom / lifegain −2, Way
+of the Paradox / planeswalker −2, Draconic Visitor / token −1, Way of the
+Mind Sculptor / planeswalker −1, Gideon's Memorial / token +1. These are
+mostly early producers. Their top-10 slots are now taken by the top-end
+cards they accelerate, which is what the model says. Forge's hand tags
+record a different kind of partner, and the held-out check scores that
+kind.
+
+**Communities (`full_knn`):** the same nine archetypes with the same
+dominant primitives. Sizes: recursion 63→61, Prepare 37→40, draw 30→29,
+death 18→17, lands 12→13 (the rest unchanged). Seed stability 0.917 →
+0.919. Six cards moved: Draconic Visitor, Identity Echo and Vraska, Soul
+of Stone went recursion → Prepare; Hexhaven Dueling Arena went
+recursion → lands; Theoretical Necromancer went draw → recursion;
+Lich's Relic went death → recursion.

@@ -73,16 +73,39 @@ def match(e, l, owner_types):
     return 0.5  # emission generic, listener specific (mill 'a card' vs 'instants in graveyard')
 
 
+def cost_shape(cost):
+    """'3 R R' -> (3, [{'R'}, {'R'}]). A pip is the set of colours that pay it,
+    or 'any' (2/W, Phyrexian: payable with generic mana or life)."""
+    gen, pips = 0, []
+    for t in (cost or "").split():
+        if t.isdigit():
+            gen += int(t)
+        elif t in ("X", "Y", "Z", "S"):
+            continue
+        elif "/" in t:
+            parts = t.split("/")
+            pips.append("any" if any(x.isdigit() or x == "P" for x in parts) else set(parts))
+        else:
+            pips.append({t})
+    return gen, pips
+
+
 def resource_q(e, l, consumer):
-    amt = e.get("amount", 1)
-    d = l.get("demand", 5)
-    if d == "X":
-        q = min(1.0, amt / 2)
-    else:
-        q = min(1.0, amt / max(1, d - 4))
-    need = set(consumer["colors"])
+    """Curve-aware resource weight (SYNERGY-GRAPH.md §11.1)."""
+    gen, pips = cost_shape(l.get("cost", ""))
     have = set(e.get("colors") or [])
-    return q * (1.0 if not need or need <= have else 0.6)
+    payable = sum(1 for p in pips if p == "any" or (p & have))
+    eff = min(e.get("amount", 1), gen + payable)
+    if eff <= 0:
+        return 0.0
+    kind = l.get("kind", "cast")
+    if kind == "x":
+        return min(1.0, eff / 2)
+    if kind == "sink":
+        return min(1.0, eff / max(1, gen + len(pips)))
+    mv = l.get("mv", consumer["cmc"])
+    saved = mv - max(e.get("ready", 1), mv - eff)
+    return min(1.0, saved / 2) if saved >= 1 else 0.0
 
 
 def cost_mod_q(e, target):

@@ -137,3 +137,7 @@ them change rows of the §2 table:
   `AdjustLandPlays` → emit `mana` (ramp). A `Continuous` whose `Affected$`
   names an effect-chosen object or a player is not a population listener.
   See `SYNERGY-GRAPH.md` §10.
+- `mana` (resource): the consumer side is no longer "MV ≥ 5". Every nonland
+  card with MV ≥ 2 is a candidate, kept only if a producer saves it at
+  least a turn (turns-saved model, `SYNERGY-GRAPH.md` §11). `Count$xPaid`
+  counts only when X is in a mana cost, not in `SubCounter<X/LOYALTY>`.

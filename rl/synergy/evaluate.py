@@ -238,7 +238,9 @@ EV["V3"].update({"best_any_consumer_rank_full": first_res, "pure_resource_consum
 P(f"Among Chandra's {len(nb_all)} neighbours under `full`: best consumer of any kind ranks {first_res} "
   f"(that one is linked by other edges too); {len(pure)} consumers have resource flow as their *strongest* link, the best of "
   f"which ranks {first_pure}. "
-  "Mana is a common primitive (25 emitters, 84 listeners), so rarity weighting ranks these edges low; "
+  f"Mana is a common primitive ({sum(any(e['event'] == 'mana' for e in c['emits']) for c in cards.values())} emitting cards, "
+  f"{sum(any(l['event'] == 'mana' and l['mech'] == 'resource' for l in c['listens']) for c in cards.values())} consuming cards), "
+  "so rarity weighting ranks these edges low; "
   "they are present but not what the combined weight surfaces first.")
 P()
 P("Chandra top-10 neighbours overall (full): " + "; ".join(f"{n} {v:.3f}" for n, v in neighbours(ch, "full", 10)))

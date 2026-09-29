@@ -105,7 +105,10 @@
     "mech": "effect",
     "src": "SVar:Mana AB$Mana Produced$ C x2",
     "amount": 2,
-    "colors": []
+    "colors": [
+     "C"
+    ],
+    "ready": 11
    }
   ],
   "listens": [
@@ -141,7 +144,9 @@
     },
     "mech": "resource",
     "src": "ManaCost 10 (MV 10)",
-    "demand": 10
+    "kind": "cast",
+    "cost": "10",
+    "mv": 10
    }
   ]
  },
@@ -277,7 +282,26 @@
     "src": "SVar:DBEmpower DB$Empower Empower Jace token has loyalty abilities"
    }
   ],
-  "listens": []
+  "listens": [
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 1 W (MV 2)",
+    "kind": "cast",
+    "cost": "1 W",
+    "mv": 2
+   }
+  ]
  },
  {
   "name": "Blossom-Blessed Angel",
@@ -493,6 +517,24 @@
     },
     "mech": "consumes",
     "src": "A SP$PutCounter needs a target"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 3 W (MV 4)",
+    "kind": "cast",
+    "cost": "3 W",
+    "mv": 4
    }
   ]
  },
@@ -676,6 +718,24 @@
     },
     "mech": "consumes",
     "src": "A AB$Empower ActivationZone$ Graveyard"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 1 W (MV 2)",
+    "kind": "cast",
+    "cost": "1 W",
+    "mv": 2
    }
   ]
  },
@@ -847,6 +907,24 @@
     },
     "mech": "condition",
     "src": "SVar:X:Count$LifeYouGainedThisTurn"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 1 W (MV 2)",
+    "kind": "cast",
+    "cost": "1 W",
+    "mv": 2
    }
   ]
  },
@@ -1021,7 +1099,9 @@
     },
     "mech": "resource",
     "src": "ManaCost 4 W (MV 5)",
-    "demand": 5
+    "kind": "cast",
+    "cost": "4 W",
+    "mv": 5
    }
   ]
  },
@@ -1139,6 +1219,24 @@
     },
     "mech": "trigger",
     "src": "T Mode$SpellCast Creature"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 3 W (MV 4)",
+    "kind": "cast",
+    "cost": "3 W",
+    "mv": 4
    }
   ]
  },
@@ -1271,6 +1369,24 @@
     },
     "mech": "consumes",
     "src": "A SP$ChangeZone Graveyard->Battlefield"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 2 W (MV 3)",
+    "kind": "cast",
+    "cost": "2 W",
+    "mv": 3
    }
   ]
  },
@@ -1370,6 +1486,24 @@
     },
     "mech": "condition",
     "src": "SVar:X:Count$LifeYouGainedThisTurn"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 2 W (MV 3)",
+    "kind": "cast",
+    "cost": "2 W",
+    "mv": 3
    }
   ]
  },
@@ -1534,6 +1668,24 @@
     },
     "mech": "consumes",
     "src": "SVar:TrigPutCounter DB$PutCounter needs a target"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 2 W (MV 3)",
+    "kind": "cast",
+    "cost": "2 W",
+    "mv": 3
    }
   ]
  },
@@ -1715,7 +1867,9 @@
     },
     "mech": "resource",
     "src": "SVar:X:Count$xPaid",
-    "demand": "X"
+    "kind": "x",
+    "cost": "X W",
+    "mv": 1
    },
    {
     "event": "mana",
@@ -1731,7 +1885,9 @@
     },
     "mech": "resource",
     "src": "ManaCost X W (X spell)",
-    "demand": "X"
+    "kind": "x",
+    "cost": "X W",
+    "mv": 1
    }
   ]
  },
@@ -1938,7 +2094,9 @@
     },
     "mech": "resource",
     "src": "ManaCost 4 W W (MV 6)",
-    "demand": 6
+    "kind": "cast",
+    "cost": "4 W W",
+    "mv": 6
    }
   ]
  },
@@ -2034,7 +2192,9 @@
     },
     "mech": "resource",
     "src": "ManaCost 5 W W (MV 7)",
-    "demand": 7
+    "kind": "cast",
+    "cost": "5 W W",
+    "mv": 7
    }
   ]
  },
@@ -2171,6 +2331,24 @@
     },
     "mech": "trigger",
     "src": "T Mode$ChangesZone self ETB (Any->Battlefield)"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 2 W (MV 3)",
+    "kind": "cast",
+    "cost": "2 W",
+    "mv": 3
    }
   ]
  },
@@ -2302,6 +2480,24 @@
     },
     "mech": "consumes",
     "src": "A SP$PutCounter needs a target"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 1 W (MV 2)",
+    "kind": "cast",
+    "cost": "1 W",
+    "mv": 2
    }
   ]
  },
@@ -2410,6 +2606,24 @@
     },
     "mech": "condition",
     "src": "SVar:DBDraw DB$Draw ConditionPresent$ Card.!attacking"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 1 W (MV 2)",
+    "kind": "cast",
+    "cost": "1 W",
+    "mv": 2
    }
   ]
  },
@@ -2501,7 +2715,26 @@
     "src": "SVar:DBSurveil DB$Surveil (may bin)"
    }
   ],
-  "listens": []
+  "listens": [
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 1 W (MV 2)",
+    "kind": "cast",
+    "cost": "1 W",
+    "mv": 2
+   }
+  ]
  },
  {
   "name": "Repurposed Enforcer",
@@ -2662,6 +2895,24 @@
     },
     "mech": "condition",
     "src": "SVar:X:Count$Valid Creature.YouCtrl"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 1 W (MV 2)",
+    "kind": "cast",
+    "cost": "1 W",
+    "mv": 2
    }
   ]
  },
@@ -2788,7 +3039,9 @@
     },
     "mech": "resource",
     "src": "ManaCost 7 W W (MV 9)",
-    "demand": 9
+    "kind": "cast",
+    "cost": "7 W W",
+    "mv": 9
    }
   ]
  },
@@ -2889,7 +3142,27 @@
     },
     "mech": "resource",
     "src": "A AB$PumpAll mana sink Cost$ 4 W",
-    "demand": 5
+    "kind": "sink",
+    "cost": "4 W",
+    "mv": 3
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 2 W (MV 3)",
+    "kind": "cast",
+    "cost": "2 W",
+    "mv": 3
    }
   ]
  },
@@ -3015,7 +3288,26 @@
     "src": "SVar:DBGainLife2 DB$GainLife"
    }
   ],
-  "listens": []
+  "listens": [
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 1 W (MV 2)",
+    "kind": "cast",
+    "cost": "1 W",
+    "mv": 2
+   }
+  ]
  },
  {
   "name": "Unflinching Hortimancer",
@@ -3142,6 +3434,24 @@
     },
     "mech": "trigger",
     "src": "T Mode$LifeGained"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 1 W (MV 2)",
+    "kind": "cast",
+    "cost": "1 W",
+    "mv": 2
    }
   ]
  },
@@ -3267,7 +3577,26 @@
     "src": "SVar:DBSurveil DB$Surveil (may bin)"
    }
   ],
-  "listens": []
+  "listens": [
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 2 W (MV 3)",
+    "kind": "cast",
+    "cost": "2 W",
+    "mv": 3
+   }
+  ]
  },
  {
   "name": "Countersculpt",
@@ -3385,7 +3714,26 @@
     "src": "SVar:DBEmpower DB$Empower Empower Jace token has loyalty abilities"
    }
   ],
-  "listens": []
+  "listens": [
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost U U (MV 2)",
+    "kind": "cast",
+    "cost": "U U",
+    "mv": 2
+   }
+  ]
  },
  {
   "name": "Cruel Calculations",
@@ -3477,6 +3825,24 @@
     },
     "mech": "condition",
     "src": "SVar:X:Count$ThisTurnEntered_Graveyard_from_Library_Card.OwnedBy Ta"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 2 U (MV 3)",
+    "kind": "cast",
+    "cost": "2 U",
+    "mv": 3
    }
   ]
  },
@@ -3633,7 +3999,9 @@
     },
     "mech": "resource",
     "src": "A AB$Tap mana sink Cost$ 3 U ExileFromGrave<1/CARDNAME/this card>",
-    "demand": 5
+    "kind": "sink",
+    "cost": "3 U card>",
+    "mv": 2
    },
    {
     "event": "tograve",
@@ -3668,6 +4036,24 @@
     },
     "mech": "consumes",
     "src": "SVar:DBPutCounter DB$PutCounter needs a target"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 1 U (MV 2)",
+    "kind": "cast",
+    "cost": "1 U",
+    "mv": 2
    }
   ]
  },
@@ -4033,6 +4419,24 @@
     },
     "mech": "trigger",
     "src": "T Mode$ChangesZone self ETB (Any->Battlefield)"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 2 U (MV 3)",
+    "kind": "cast",
+    "cost": "2 U",
+    "mv": 3
    }
   ]
  },
@@ -4093,7 +4497,26 @@
     "src": "Icy Reception resolves to graveyard"
    }
   ],
-  "listens": []
+  "listens": [
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 1 U (MV 2)",
+    "kind": "cast",
+    "cost": "1 U",
+    "mv": 2
+   }
+  ]
  },
  {
   "name": "Infinite Coursework",
@@ -4208,6 +4631,24 @@
     },
     "mech": "static",
     "src": "S Mode$Continuous Affected$ Permanent"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 2 U (MV 3)",
+    "kind": "cast",
+    "cost": "2 U",
+    "mv": 3
    }
   ]
  },
@@ -4347,6 +4788,24 @@
     },
     "mech": "static",
     "src": "SVar:InstantJace Mode$CastWithFlash ValidCard$ Planeswalker.Jace+YouCtrl"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 2 U (MV 3)",
+    "kind": "cast",
+    "cost": "2 U",
+    "mv": 3
    }
   ]
  },
@@ -4505,6 +4964,24 @@
     },
     "mech": "trigger",
     "src": "T Mode$ChangesZone self ETB (Any->Battlefield)"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 2 U (MV 3)",
+    "kind": "cast",
+    "cost": "2 U",
+    "mv": 3
    }
   ]
  },
@@ -4715,6 +5192,24 @@
     },
     "mech": "trigger",
     "src": "T Mode$SpellCast Card.nonCreature"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 3 U (MV 4)",
+    "kind": "cast",
+    "cost": "3 U",
+    "mv": 4
    }
   ]
  },
@@ -4775,7 +5270,26 @@
     "src": "Precise Redaction resolves to graveyard"
    }
   ],
-  "listens": []
+  "listens": [
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 1 U (MV 2)",
+    "kind": "cast",
+    "cost": "1 U",
+    "mv": 2
+   }
+  ]
  },
  {
   "name": "Protege's Awakening",
@@ -4909,7 +5423,26 @@
     "src": "SVar:DBDraw DB$Draw"
    }
   ],
-  "listens": []
+  "listens": [
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 3 U (MV 4)",
+    "kind": "cast",
+    "cost": "3 U",
+    "mv": 4
+   }
+  ]
  },
  {
   "name": "Seasoned Cryomancer",
@@ -5159,7 +5692,9 @@
     },
     "mech": "resource",
     "src": "A AB$Draw mana sink Cost$ 3 U U ExileFromGrave<1/CARDNAME>",
-    "demand": 5
+    "kind": "sink",
+    "cost": "3 U U",
+    "mv": 3
    },
    {
     "event": "tograve",
@@ -5179,6 +5714,24 @@
     },
     "mech": "consumes",
     "src": "A AB$Draw ActivationZone$ Graveyard"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 1 U U (MV 3)",
+    "kind": "cast",
+    "cost": "1 U U",
+    "mv": 3
    }
   ]
  },
@@ -5427,6 +5980,24 @@
     },
     "mech": "trigger",
     "src": "T Mode$ChangesZone self ETB (Any->Battlefield)"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 3 U (MV 4)",
+    "kind": "cast",
+    "cost": "3 U",
+    "mv": 4
    }
   ]
  },
@@ -5586,6 +6157,24 @@
     },
     "mech": "trigger",
     "src": "T Mode$ChangesZone self dies"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 2 U U (MV 4)",
+    "kind": "cast",
+    "cost": "2 U U",
+    "mv": 4
    }
   ]
  },
@@ -5686,7 +6275,26 @@
     "src": "SVar:DBSearch DB$ChangeZone Library->Battlefield"
    }
   ],
-  "listens": []
+  "listens": [
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 1 U U (MV 3)",
+    "kind": "cast",
+    "cost": "1 U U",
+    "mv": 3
+   }
+  ]
  },
  {
   "name": "Surveillance Phantasm",
@@ -5823,7 +6431,9 @@
     },
     "mech": "resource",
     "src": "A AB$Surveil mana sink Cost$ 3 U",
-    "demand": 4
+    "kind": "sink",
+    "cost": "3 U",
+    "mv": 2
    },
    {
     "event": "scry",
@@ -5854,6 +6464,24 @@
     },
     "mech": "condition",
     "src": "SVar:Y:Count$YouSurveilThisTurn"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 1 U (MV 2)",
+    "kind": "cast",
+    "cost": "1 U",
+    "mv": 2
    }
   ]
  },
@@ -6141,6 +6769,24 @@
     },
     "mech": "condition",
     "src": "SVar:X:Count$ValidHand Card.YouOwn"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 2 U U (MV 4)",
+    "kind": "cast",
+    "cost": "2 U U",
+    "mv": 4
    }
   ]
  },
@@ -6319,6 +6965,24 @@
     },
     "mech": "trigger",
     "src": "T Mode$ChangesZone self ETB (Any->Battlefield)"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 1 U (MV 2)",
+    "kind": "cast",
+    "cost": "1 U",
+    "mv": 2
    }
   ]
  },
@@ -6474,7 +7138,9 @@
     },
     "mech": "resource",
     "src": "ManaCost 4 U (MV 5)",
-    "demand": 5
+    "kind": "cast",
+    "cost": "4 U",
+    "mv": 5
    }
   ]
  },
@@ -6746,6 +7412,24 @@
     },
     "mech": "trigger",
     "src": "Prepare card: re-prepared by others"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 2 U (MV 3)",
+    "kind": "cast",
+    "cost": "2 U",
+    "mv": 3
    }
   ]
  },
@@ -6955,7 +7639,9 @@
     },
     "mech": "resource",
     "src": "ManaCost 4 B B (MV 6)",
-    "demand": 6
+    "kind": "cast",
+    "cost": "4 B B",
+    "mv": 6
    }
   ]
  },
@@ -7133,6 +7819,24 @@
     },
     "mech": "condition",
     "src": "SVar:X:Count$ThisTurnEntered_Graveyard_from_Battlefield_Creature"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 1 B (MV 2)",
+    "kind": "cast",
+    "cost": "1 B",
+    "mv": 2
    }
   ]
  },
@@ -7246,6 +7950,24 @@
     },
     "mech": "condition",
     "src": "SVar:X:Count$Valid Creature.TargetedPlayerCtrl,Planeswalker.Targete"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 2 B (MV 3)",
+    "kind": "cast",
+    "cost": "2 B",
+    "mv": 3
    }
   ]
  },
@@ -7338,7 +8060,26 @@
     "src": "SVar:DBDamage DB$DealDamage"
    }
   ],
-  "listens": []
+  "listens": [
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 2 B (MV 3)",
+    "kind": "cast",
+    "cost": "2 B",
+    "mv": 3
+   }
+  ]
  },
  {
   "name": "Dark Matter Manipulator",
@@ -7626,6 +8367,24 @@
     },
     "mech": "condition",
     "src": "SVar:X:Count$ThisTurnEntered_Graveyard_from_Battlefield_Creature"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 3 B (MV 4)",
+    "kind": "cast",
+    "cost": "3 B",
+    "mv": 4
    }
   ]
  },
@@ -7704,7 +8463,26 @@
     "src": "SVar:DBGainLife DB$GainLife"
    }
   ],
-  "listens": []
+  "listens": [
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 3 B (MV 4)",
+    "kind": "cast",
+    "cost": "3 B",
+    "mv": 4
+   }
+  ]
  },
  {
   "name": "Extrapolate the Impossible",
@@ -7763,7 +8541,26 @@
     "src": "Extrapolate the Impossible resolves to graveyard"
    }
   ],
-  "listens": []
+  "listens": [
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 1 B (MV 2)",
+    "kind": "cast",
+    "cost": "1 B",
+    "mv": 2
+   }
+  ]
  },
  {
   "name": "Last Gasp",
@@ -7840,7 +8637,26 @@
     "src": "A SP$Pump targets Creature"
    }
   ],
-  "listens": []
+  "listens": [
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 1 B (MV 2)",
+    "kind": "cast",
+    "cost": "1 B",
+    "mv": 2
+   }
+  ]
  },
  {
   "name": "Lich's Relic",
@@ -8035,7 +8851,26 @@
     "src": "A SP$Animate targets Creature"
    }
   ],
-  "listens": []
+  "listens": [
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 1 B (MV 2)",
+    "kind": "cast",
+    "cost": "1 B",
+    "mv": 2
+   }
+  ]
  },
  {
   "name": "Overwrite the Multiverse",
@@ -8166,7 +9001,9 @@
     },
     "mech": "resource",
     "src": "ManaCost 4 B B (MV 6)",
-    "demand": 6
+    "kind": "cast",
+    "cost": "4 B B",
+    "mv": 6
    }
   ]
  },
@@ -8270,6 +9107,24 @@
     },
     "mech": "trigger",
     "src": "T Mode$ChangesZone self ETB (Any->Battlefield)"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 3 B (MV 4)",
+    "kind": "cast",
+    "cost": "3 B",
+    "mv": 4
    }
   ]
  },
@@ -8377,6 +9232,24 @@
     },
     "mech": "trigger",
     "src": "T Mode$ChangesZone self ETB (Any->Battlefield)"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 1 B (MV 2)",
+    "kind": "cast",
+    "cost": "1 B",
+    "mv": 2
    }
   ]
  },
@@ -8596,6 +9469,24 @@
     },
     "mech": "consumes",
     "src": "A SP$ChangeZone Graveyard->Battlefield"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 3 B (MV 4)",
+    "kind": "cast",
+    "cost": "3 B",
+    "mv": 4
    }
   ]
  },
@@ -8704,7 +9595,9 @@
     },
     "mech": "resource",
     "src": "ManaCost 4 B (MV 5)",
-    "demand": 5
+    "kind": "cast",
+    "cost": "4 B",
+    "mv": 5
    }
   ]
  },
@@ -8935,6 +9828,24 @@
     },
     "mech": "static",
     "src": "S Mode$Continuous Affected$ Planeswalker.YouCtrl"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 2 B (MV 3)",
+    "kind": "cast",
+    "cost": "2 B",
+    "mv": 3
    }
   ]
  },
@@ -9041,7 +9952,26 @@
     "src": "SVar:DBGainLife DB$GainLife"
    }
   ],
-  "listens": []
+  "listens": [
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 2 B (MV 3)",
+    "kind": "cast",
+    "cost": "2 B",
+    "mv": 3
+   }
+  ]
  },
  {
   "name": "Silence the Echo",
@@ -9136,7 +10066,26 @@
     "src": "A SP$Destroy Creature,Planeswalker"
    }
   ],
-  "listens": []
+  "listens": [
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 1 B (MV 2)",
+    "kind": "cast",
+    "cost": "1 B",
+    "mv": 2
+   }
+  ]
  },
  {
   "name": "Solve for Disappointment",
@@ -9252,7 +10201,26 @@
     "src": "SVar:DBEmpower DB$Empower Empower Jace token has loyalty abilities"
    }
   ],
-  "listens": []
+  "listens": [
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 1 B (MV 2)",
+    "kind": "cast",
+    "cost": "1 B",
+    "mv": 2
+   }
+  ]
  },
  {
   "name": "Terminal Criticism",
@@ -9407,7 +10375,26 @@
     "src": "SVar:DBGainLife DB$GainLife"
    }
   ],
-  "listens": []
+  "listens": [
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 1 B (MV 2)",
+    "kind": "cast",
+    "cost": "1 B",
+    "mv": 2
+   }
+  ]
  },
  {
   "name": "Theoretical Necromancer",
@@ -9530,7 +10517,9 @@
     },
     "mech": "resource",
     "src": "A AB$ChangeZone mana sink Cost$ 3 B ExileFromGrave<1/CARDNAME/this card>",
-    "demand": 5
+    "kind": "sink",
+    "cost": "3 B card>",
+    "mv": 3
    },
    {
     "event": "tograve",
@@ -9567,6 +10556,24 @@
     },
     "mech": "consumes",
     "src": "A AB$ChangeZone Graveyard->Hand"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 2 B (MV 3)",
+    "kind": "cast",
+    "cost": "2 B",
+    "mv": 3
    }
   ]
  },
@@ -9744,6 +10751,24 @@
     },
     "mech": "condition",
     "src": "S Mode$Continuous Threshold"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 1 B (MV 2)",
+    "kind": "cast",
+    "cost": "1 B",
+    "mv": 2
    }
   ]
  },
@@ -9895,7 +10920,26 @@
     "src": "SVar:DBEmpower DB$Empower Empower Jace token has loyalty abilities"
    }
   ],
-  "listens": []
+  "listens": [
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost B B (MV 2)",
+    "kind": "cast",
+    "cost": "B B",
+    "mv": 2
+   }
+  ]
  },
  {
   "name": "Ajani's Anguish",
@@ -10019,7 +11063,9 @@
     },
     "mech": "resource",
     "src": "SVar:X:Count$xPaid",
-    "demand": "X"
+    "kind": "x",
+    "cost": "X R",
+    "mv": 1
    },
    {
     "event": "mana",
@@ -10035,7 +11081,9 @@
     },
     "mech": "resource",
     "src": "ManaCost X R (X spell)",
-    "demand": "X"
+    "kind": "x",
+    "cost": "X R",
+    "mv": 1
    }
   ]
  },
@@ -10292,7 +11340,9 @@
     },
     "mech": "resource",
     "src": "ManaCost 4 R (MV 5)",
-    "demand": 5
+    "kind": "cast",
+    "cost": "4 R",
+    "mv": 5
    }
   ]
  },
@@ -10371,7 +11421,26 @@
     "src": "A SP$Pump targets Creature"
    }
   ],
-  "listens": []
+  "listens": [
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 1 R (MV 2)",
+    "kind": "cast",
+    "cost": "1 R",
+    "mv": 2
+   }
+  ]
  },
  {
   "name": "Chandra's Emberling",
@@ -10498,6 +11567,24 @@
     },
     "mech": "trigger",
     "src": "T Mode$SpellCast Card.nonCreature"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 2 R (MV 3)",
+    "kind": "cast",
+    "cost": "2 R",
+    "mv": 3
    }
   ]
  },
@@ -10629,6 +11716,24 @@
     },
     "mech": "consumes",
     "src": "SVar:TrigReturn DB$ChangeZone Graveyard->Hand"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 2 R (MV 3)",
+    "kind": "cast",
+    "cost": "2 R",
+    "mv": 3
    }
   ]
  },
@@ -10778,7 +11883,9 @@
     },
     "mech": "resource",
     "src": "ManaCost 4 R R R (MV 7)",
-    "demand": 7
+    "kind": "cast",
+    "cost": "4 R R R",
+    "mv": 7
    }
   ]
  },
@@ -10916,6 +12023,24 @@
     },
     "mech": "trigger",
     "src": "T Mode$ChangesZone self ETB (Any->Battlefield)"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 2 R R (MV 4)",
+    "kind": "cast",
+    "cost": "2 R R",
+    "mv": 4
    }
   ]
  },
@@ -11033,7 +12158,9 @@
     },
     "mech": "resource",
     "src": "ManaCost 3 R R (MV 5)",
-    "demand": 5
+    "kind": "cast",
+    "cost": "3 R R",
+    "mv": 5
    }
   ]
  },
@@ -11122,7 +12249,26 @@
     "src": "Eardrum Rattler can attack"
    }
   ],
-  "listens": []
+  "listens": [
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 1 R (MV 2)",
+    "kind": "cast",
+    "cost": "1 R",
+    "mv": 2
+   }
+  ]
  },
  {
   "name": "Essence Burn",
@@ -11197,7 +12343,26 @@
     "src": "A SP$DealDamage"
    }
   ],
-  "listens": []
+  "listens": [
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 1 R (MV 2)",
+    "kind": "cast",
+    "cost": "1 R",
+    "mv": 2
+   }
+  ]
  },
  {
   "name": "Face Yourself",
@@ -11307,7 +12472,9 @@
     },
     "mech": "resource",
     "src": "ManaCost 5 R R (MV 7)",
-    "demand": 7
+    "kind": "cast",
+    "cost": "5 R R",
+    "mv": 7
    }
   ]
  },
@@ -11418,7 +12585,26 @@
     "src": "SVar:DBDamage DB$DealDamage"
    }
   ],
-  "listens": []
+  "listens": [
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 2 R (MV 3)",
+    "kind": "cast",
+    "cost": "2 R",
+    "mv": 3
+   }
+  ]
  },
  {
   "name": "Hallway Heckler",
@@ -11642,6 +12828,24 @@
     },
     "mech": "consumes",
     "src": "A AB$Draw Cost$ Discard (needs cards)"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 2 R (MV 3)",
+    "kind": "cast",
+    "cost": "2 R",
+    "mv": 3
    }
   ]
  },
@@ -11771,6 +12975,24 @@
     },
     "mech": "trigger",
     "src": "T Mode$ChangesZone self ETB (Any->Battlefield)"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 3 R (MV 4)",
+    "kind": "cast",
+    "cost": "3 R",
+    "mv": 4
    }
   ]
  },
@@ -11846,7 +13068,27 @@
     },
     "mech": "resource",
     "src": "A AB$ChangeZone mana sink Cost$ 3 R",
-    "demand": 4
+    "kind": "sink",
+    "cost": "3 R",
+    "mv": 3
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 2 R (MV 3)",
+    "kind": "cast",
+    "cost": "2 R",
+    "mv": 3
    }
   ]
  },
@@ -11937,7 +13179,26 @@
     "src": "Master of Barbs can attack"
    }
   ],
-  "listens": []
+  "listens": [
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 1 R (MV 2)",
+    "kind": "cast",
+    "cost": "1 R",
+    "mv": 2
+   }
+  ]
  },
  {
   "name": "No Admittance",
@@ -12069,7 +13330,26 @@
     "src": "SVar:DBEmpower DB$Empower Empower Jace token has loyalty abilities"
    }
   ],
-  "listens": []
+  "listens": [
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 1 R (MV 2)",
+    "kind": "cast",
+    "cost": "1 R",
+    "mv": 2
+   }
+  ]
  },
  {
   "name": "Pompous Battlemage",
@@ -12392,10 +13672,11 @@
     },
     "mech": "effect",
     "src": "SVar:TrigMana DB$Mana Produced$ R x1",
-    "amount": 1,
+    "amount": 0,
     "colors": [
      "R"
-    ]
+    ],
+    "ready": 1
    }
   ],
   "listens": [
@@ -12451,6 +13732,24 @@
     },
     "mech": "trigger",
     "src": "SVar:IslandTrigger Mode$TapsForMana Mountain"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 1 R R (MV 3)",
+    "kind": "cast",
+    "cost": "1 R R",
+    "mv": 3
    }
   ]
  },
@@ -12539,7 +13838,26 @@
     "src": "Skilled Battlecarver can attack"
    }
   ],
-  "listens": []
+  "listens": [
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 1 R (MV 2)",
+    "kind": "cast",
+    "cost": "1 R",
+    "mv": 2
+   }
+  ]
  },
  {
   "name": "Stingcaster Mage",
@@ -12647,6 +13965,24 @@
     },
     "mech": "trigger",
     "src": "T Mode$ChangesZone self ETB (Any->Battlefield)"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 1 R (MV 2)",
+    "kind": "cast",
+    "cost": "1 R",
+    "mv": 2
    }
   ]
  },
@@ -12835,7 +14171,9 @@
     },
     "mech": "resource",
     "src": "ManaCost 4 R (MV 5)",
-    "demand": 5
+    "kind": "cast",
+    "cost": "4 R",
+    "mv": 5
    }
   ]
  },
@@ -12969,7 +14307,26 @@
     "src": "SVar:DBEmpower DB$Empower Empower Jace token has loyalty abilities"
    }
   ],
-  "listens": []
+  "listens": [
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 2 R R (MV 4)",
+    "kind": "cast",
+    "cost": "2 R R",
+    "mv": 4
+   }
+  ]
  },
  {
   "name": "Wrath of the Bloodmane",
@@ -13064,6 +14421,24 @@
     },
     "mech": "condition",
     "src": "S Mode$ReduceCost IsPresent$ Creature.Legendary+YouCtrl"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 2 R (MV 3)",
+    "kind": "cast",
+    "cost": "2 R",
+    "mv": 3
    }
   ]
  },
@@ -13224,6 +14599,24 @@
     },
     "mech": "trigger",
     "src": "T Mode$ChangesZone self ETB (Any->Battlefield)"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 1 G (MV 2)",
+    "kind": "cast",
+    "cost": "1 G",
+    "mv": 2
    }
   ]
  },
@@ -13322,6 +14715,24 @@
     },
     "mech": "consumes",
     "src": "K:Flashback"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 3 G (MV 4)",
+    "kind": "cast",
+    "cost": "3 G",
+    "mv": 4
    }
   ]
  },
@@ -13501,6 +14912,24 @@
     },
     "mech": "condition",
     "src": "SVar:DBDraw DB$Draw ConditionPresent$ Enchantment.Legendary"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 2 G (MV 3)",
+    "kind": "cast",
+    "cost": "2 G",
+    "mv": 3
    }
   ]
  },
@@ -13684,6 +15113,24 @@
     },
     "mech": "consumes",
     "src": "SVar:TrigReturn DB$ChangeZone Graveyard->Hand"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 1 G (MV 2)",
+    "kind": "cast",
+    "cost": "1 G",
+    "mv": 2
    }
   ]
  },
@@ -13776,7 +15223,26 @@
     "src": "SVar:DBDamagePlaneswalker DB$DealDamage"
    }
   ],
-  "listens": []
+  "listens": [
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 1 G (MV 2)",
+    "kind": "cast",
+    "cost": "1 G",
+    "mv": 2
+   }
+  ]
  },
  {
   "name": "Flourishing Grapple",
@@ -13946,7 +15412,8 @@
     "amount": 2,
     "colors": [
      "G"
-    ]
+    ],
+    "ready": 4
    }
   ],
   "listens": [
@@ -13983,6 +15450,24 @@
     },
     "mech": "condition",
     "src": "SVar:X:Count$CardCounters.CHARGE"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 1 G G (MV 3)",
+    "kind": "cast",
+    "cost": "1 G G",
+    "mv": 3
    }
   ]
  },
@@ -14110,7 +15595,8 @@
     "amount": 1,
     "colors": [
      "G"
-    ]
+    ],
+    "ready": 4
    }
   ],
   "listens": [
@@ -14130,6 +15616,24 @@
     },
     "mech": "trigger",
     "src": "T Mode$ChangesZone Any->Battlefield Creature.Other+YouCtrl"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 2 G (MV 3)",
+    "kind": "cast",
+    "cost": "2 G",
+    "mv": 3
    }
   ]
  },
@@ -14241,7 +15745,10 @@
     "mech": "effect",
     "src": "A AB$Mana Produced$ C x1",
     "amount": 1,
-    "colors": []
+    "colors": [
+     "C"
+    ],
+    "ready": 2
    },
    {
     "event": "cast",
@@ -14318,9 +15825,11 @@
     "src": "A SP$Token rg_a_heartwood makes mana",
     "amount": 1,
     "colors": [
-     "R",
-     "G"
-    ]
+     "C",
+     "G",
+     "R"
+    ],
+    "ready": 4
    }
   ],
   "listens": [
@@ -14472,10 +15981,30 @@
      "B",
      "R",
      "G"
-    ]
+    ],
+    "ready": 5
    }
   ],
-  "listens": []
+  "listens": [
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost G G G G (MV 4)",
+    "kind": "cast",
+    "cost": "G G G G",
+    "mv": 4
+   }
+  ]
  },
  {
   "name": "Hungering Puppetbeast",
@@ -14605,9 +16134,11 @@
     "src": "SVar:TrigToken DB$Token rg_a_heartwood makes mana",
     "amount": 1,
     "colors": [
-     "R",
-     "G"
-    ]
+     "C",
+     "G",
+     "R"
+    ],
+    "ready": 6
    },
    {
     "event": "die",
@@ -14699,7 +16230,9 @@
     },
     "mech": "resource",
     "src": "ManaCost 3 G G (MV 5)",
-    "demand": 5
+    "kind": "cast",
+    "cost": "3 G G",
+    "mv": 5
    }
   ]
  },
@@ -14961,7 +16494,27 @@
     },
     "mech": "resource",
     "src": "A AB$Empower mana sink Cost$ 6",
-    "demand": 6
+    "kind": "sink",
+    "cost": "6",
+    "mv": 3
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 2 G (MV 3)",
+    "kind": "cast",
+    "cost": "2 G",
+    "mv": 3
    }
   ]
  },
@@ -15071,7 +16624,9 @@
     },
     "mech": "resource",
     "src": "ManaCost 5 G G G (MV 8)",
-    "demand": 8
+    "kind": "cast",
+    "cost": "5 G G G",
+    "mv": 8
    }
   ]
  },
@@ -15155,7 +16710,9 @@
     },
     "mech": "resource",
     "src": "A AB$ChangeZone mana sink Cost$ 4 G",
-    "demand": 5
+    "kind": "sink",
+    "cost": "4 G",
+    "mv": 2
    },
    {
     "event": "tograve",
@@ -15189,6 +16746,24 @@
     },
     "mech": "consumes",
     "src": "A AB$ChangeZone Graveyard->Hand"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 1 G (MV 2)",
+    "kind": "cast",
+    "cost": "1 G",
+    "mv": 2
    }
   ]
  },
@@ -15280,6 +16855,24 @@
     },
     "mech": "consumes",
     "src": "A SP$ChangeZone Graveyard->Hand"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 2 G (MV 3)",
+    "kind": "cast",
+    "cost": "2 G",
+    "mv": 3
    }
   ]
  },
@@ -15411,7 +17004,8 @@
      "B",
      "R",
      "G"
-    ]
+    ],
+    "ready": 4
    },
    {
     "event": "draw",
@@ -15468,6 +17062,24 @@
     },
     "mech": "trigger",
     "src": "T Mode$ChangesZone self dies"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 1 G G (MV 3)",
+    "kind": "cast",
+    "cost": "1 G G",
+    "mv": 3
    }
   ]
  },
@@ -15576,6 +17188,24 @@
     },
     "mech": "consumes",
     "src": "SVar:DBChangeZone DB$ChangeZone Graveyard,Exile->Hand"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 1 G (MV 2)",
+    "kind": "cast",
+    "cost": "1 G",
+    "mv": 2
    }
   ]
  },
@@ -15744,7 +17374,27 @@
     },
     "mech": "resource",
     "src": "A AB$Destroy mana sink Cost$ 3 G Discard<1/CARDNAME/this card>",
-    "demand": 5
+    "kind": "sink",
+    "cost": "3 G card>",
+    "mv": 2
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 1 G (MV 2)",
+    "kind": "cast",
+    "cost": "1 G",
+    "mv": 2
    }
   ]
  },
@@ -15845,6 +17495,24 @@
     },
     "mech": "condition",
     "src": "SVar:X:Count$ValidGraveyard Card$CardTypes"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 1 G (MV 2)",
+    "kind": "cast",
+    "cost": "1 G",
+    "mv": 2
    }
   ]
  },
@@ -16048,7 +17716,9 @@
     },
     "mech": "resource",
     "src": "ManaCost 4 G G G (MV 7)",
-    "demand": 7
+    "kind": "cast",
+    "cost": "4 G G G",
+    "mv": 7
    }
   ]
  },
@@ -16266,7 +17936,9 @@
     },
     "mech": "resource",
     "src": "ManaCost 4 G G (MV 6)",
-    "demand": 6
+    "kind": "cast",
+    "cost": "4 G G",
+    "mv": 6
    }
   ]
  },
@@ -16377,7 +18049,9 @@
     },
     "mech": "resource",
     "src": "A AB$Pump mana sink Cost$ 6 G G",
-    "demand": 8
+    "kind": "sink",
+    "cost": "6 G G",
+    "mv": 5
    },
    {
     "event": "mana",
@@ -16393,7 +18067,9 @@
     },
     "mech": "resource",
     "src": "ManaCost 4 G (MV 5)",
-    "demand": 5
+    "kind": "cast",
+    "cost": "4 G",
+    "mv": 5
    }
   ]
  },
@@ -16528,9 +18204,11 @@
     "src": "SVar:TrigToken DB$Token rg_a_heartwood makes mana",
     "amount": 1,
     "colors": [
-     "R",
-     "G"
-    ]
+     "C",
+     "G",
+     "R"
+    ],
+    "ready": 5
    },
    {
     "event": "enter",
@@ -16571,9 +18249,11 @@
     "src": "A AB$Token rg_a_heartwood makes mana",
     "amount": 1,
     "colors": [
-     "R",
-     "G"
-    ]
+     "C",
+     "G",
+     "R"
+    ],
+    "ready": 5
    }
   ],
   "listens": [
@@ -16631,7 +18311,9 @@
     },
     "mech": "resource",
     "src": "A AB$Token mana sink Cost$ 6",
-    "demand": 6
+    "kind": "sink",
+    "cost": "6",
+    "mv": 4
    },
    {
     "event": "enter",
@@ -16649,6 +18331,24 @@
     },
     "mech": "condition",
     "src": "SVar:X:Count$Valid Artifact.YouCtrl"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 1 R G G (MV 4)",
+    "kind": "cast",
+    "cost": "1 R G G",
+    "mv": 4
    }
   ]
  },
@@ -16912,6 +18612,24 @@
     },
     "mech": "condition",
     "src": "SVar:X:Count$Valid Land.YouCtrl"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost G U (MV 2)",
+    "kind": "cast",
+    "cost": "G U",
+    "mv": 2
    }
   ]
  },
@@ -17190,7 +18908,27 @@
     },
     "mech": "resource",
     "src": "A AB$Pump mana sink Cost$ 4 G W",
-    "demand": 6
+    "kind": "sink",
+    "cost": "4 G W",
+    "mv": 4
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 2 G W (MV 4)",
+    "kind": "cast",
+    "cost": "2 G W",
+    "mv": 4
    }
   ]
  },
@@ -17282,6 +19020,24 @@
     },
     "mech": "consumes",
     "src": "SVar:DBPutCounter DB$PutCounter needs a target"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 2 RW (MV 3)",
+    "kind": "cast",
+    "cost": "2 RW",
+    "mv": 3
    }
   ]
  },
@@ -17389,6 +19145,24 @@
     },
     "mech": "condition",
     "src": "SVar:DBChangeZone DB$ChangeZone ConditionPresent$ Card"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 1 U R (MV 3)",
+    "kind": "cast",
+    "cost": "1 U R",
+    "mv": 3
    }
   ]
  },
@@ -17574,7 +19348,9 @@
     },
     "mech": "resource",
     "src": "ManaCost 3 R R G G (MV 7)",
-    "demand": 7
+    "kind": "cast",
+    "cost": "3 R R G G",
+    "mv": 7
    }
   ]
  },
@@ -17736,6 +19512,24 @@
     },
     "mech": "consumes",
     "src": "SVar:TrigPutCounterAll DB$PutCounterAll needs a target"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 1 W U U (MV 4)",
+    "kind": "cast",
+    "cost": "1 W U U",
+    "mv": 4
    }
   ]
  },
@@ -17889,6 +19683,24 @@
     },
     "mech": "condition",
     "src": "SVar:Y:Count$YouSurveilThisTurn"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 2 W U (MV 4)",
+    "kind": "cast",
+    "cost": "2 W U",
+    "mv": 4
    }
   ]
  },
@@ -18199,7 +20011,9 @@
     },
     "mech": "resource",
     "src": "ManaCost 3 G U (MV 5)",
-    "demand": 5
+    "kind": "cast",
+    "cost": "3 G U",
+    "mv": 5
    }
   ]
  },
@@ -18334,7 +20148,26 @@
     "src": "SVar:DBEmpower DB$Empower Empower Jace token has loyalty abilities"
    }
   ],
-  "listens": []
+  "listens": [
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost W U (MV 2)",
+    "kind": "cast",
+    "cost": "W U",
+    "mv": 2
+   }
+  ]
  },
  {
   "name": "Fatehold Chronologist",
@@ -18532,6 +20365,24 @@
     },
     "mech": "trigger",
     "src": "Prepare card: re-prepared by others"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 1 WU (MV 2)",
+    "kind": "cast",
+    "cost": "1 WU",
+    "mv": 2
    }
   ]
  },
@@ -18668,6 +20519,24 @@
     },
     "mech": "consumes",
     "src": "SVar:TrigChange DB$ChangeZone Graveyard->Battlefield"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 1 BG (MV 2)",
+    "kind": "cast",
+    "cost": "1 BG",
+    "mv": 2
    }
   ]
  },
@@ -18788,7 +20657,26 @@
     "src": "SVar:TrigSac DB$Sacrifice"
    }
   ],
-  "listens": []
+  "listens": [
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost U R R (MV 3)",
+    "kind": "cast",
+    "cost": "U R R",
+    "mv": 3
+   }
+  ]
  },
  {
   "name": "Grim Repriser",
@@ -18959,6 +20847,24 @@
     },
     "mech": "consumes",
     "src": "A AB$ChangeZone Graveyard->Battlefield"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost B R (MV 2)",
+    "kind": "cast",
+    "cost": "B R",
+    "mv": 2
    }
   ]
  },
@@ -19123,7 +21029,27 @@
     },
     "mech": "resource",
     "src": "A AB$Token mana sink Cost$ 4",
-    "demand": 4
+    "kind": "sink",
+    "cost": "4",
+    "mv": 3
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost B R R (MV 3)",
+    "kind": "cast",
+    "cost": "B R R",
+    "mv": 3
    }
   ]
  },
@@ -19234,8 +21160,11 @@
     },
     "mech": "effect",
     "src": "SVar:DBMana DB$Mana Produced$ C x3",
-    "amount": 3,
-    "colors": []
+    "amount": 1,
+    "colors": [
+     "C"
+    ],
+    "ready": 2
    }
   ],
   "listens": [
@@ -19255,6 +21184,24 @@
     },
     "mech": "consumes",
     "src": "SVar:DBPutCounter DB$PutCounter needs a target"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost R G (MV 2)",
+    "kind": "cast",
+    "cost": "R G",
+    "mv": 2
    }
   ]
  },
@@ -19421,9 +21368,11 @@
     "src": "A SP$Token rg_a_heartwood makes mana",
     "amount": 1,
     "colors": [
-     "R",
-     "G"
-    ]
+     "C",
+     "G",
+     "R"
+    ],
+    "ready": 4
    }
   ],
   "listens": [
@@ -19445,6 +21394,24 @@
     },
     "mech": "trigger",
     "src": "Prepare card: re-prepared by others"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 1 RG (MV 2)",
+    "kind": "cast",
+    "cost": "1 RG",
+    "mv": 2
    }
   ]
  },
@@ -19600,12 +21567,13 @@
     "src": "SVar:TrigToken DB$Token lotus makes mana",
     "amount": 3,
     "colors": [
-     "W",
-     "U",
      "B",
+     "G",
      "R",
-     "G"
-    ]
+     "U",
+     "W"
+    ],
+    "ready": 7
    }
   ],
   "listens": [
@@ -19638,7 +21606,9 @@
     },
     "mech": "resource",
     "src": "ManaCost 3 G W W (MV 6)",
-    "demand": 6
+    "kind": "cast",
+    "cost": "3 G W W",
+    "mv": 6
    }
   ]
  },
@@ -19809,7 +21779,9 @@
     },
     "mech": "resource",
     "src": "ManaCost 3 G U U (MV 6)",
-    "demand": 6
+    "kind": "cast",
+    "cost": "3 G U U",
+    "mv": 6
    }
   ]
  },
@@ -19953,6 +21925,24 @@
     },
     "mech": "static",
     "src": "S Mode$Continuous Affected$ Card.nonLand+ExiledWithSource"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 2 U B (MV 4)",
+    "kind": "cast",
+    "cost": "2 U B",
+    "mv": 4
    }
   ]
  },
@@ -20128,6 +22118,24 @@
     },
     "mech": "consumes",
     "src": "A AB$ChangeZone Graveyard->Library"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 1 UB (MV 2)",
+    "kind": "cast",
+    "cost": "1 UB",
+    "mv": 2
    }
   ]
  },
@@ -20313,6 +22321,24 @@
     },
     "mech": "consumes",
     "src": "SVar:ReturnLand DB$ChangeZone Graveyard->Battlefield"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 1 B G (MV 3)",
+    "kind": "cast",
+    "cost": "1 B G",
+    "mv": 3
    }
   ]
  },
@@ -20544,6 +22570,24 @@
     },
     "mech": "condition",
     "src": "SVar:Y:Count$YouSurveilThisTurn"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost W U (MV 2)",
+    "kind": "cast",
+    "cost": "W U",
+    "mv": 2
    }
   ]
  },
@@ -20772,6 +22816,24 @@
     },
     "mech": "trigger",
     "src": "T Mode$Surveil"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 1 WU WU (MV 3)",
+    "kind": "cast",
+    "cost": "1 WU WU",
+    "mv": 3
    }
   ]
  },
@@ -20932,6 +22994,24 @@
     },
     "mech": "condition",
     "src": "SVar:X:Count$ValidGraveyard Card.YouOwn/DivideEvenlyDown.3"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 2 U B (MV 4)",
+    "kind": "cast",
+    "cost": "2 U B",
+    "mv": 4
    }
   ]
  },
@@ -21037,7 +23117,26 @@
     "src": "SVar:TrigGainLife DB$GainLife"
    }
   ],
-  "listens": []
+  "listens": [
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost G W (MV 2)",
+    "kind": "cast",
+    "cost": "G W",
+    "mv": 2
+   }
+  ]
  },
  {
   "name": "Solitary Cell",
@@ -21178,6 +23277,24 @@
     },
     "mech": "consumes",
     "src": "A AB$Draw Cost$ Discard (needs cards)"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost R W (MV 2)",
+    "kind": "cast",
+    "cost": "R W",
+    "mv": 2
    }
   ]
  },
@@ -21275,7 +23392,26 @@
     "src": "SVar:DBToken DB$Token cadet"
    }
   ],
-  "listens": []
+  "listens": [
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost B R (MV 2)",
+    "kind": "cast",
+    "cost": "B R",
+    "mv": 2
+   }
+  ]
  },
  {
   "name": "Stingerquill Voxmancer",
@@ -21512,7 +23648,26 @@
     "src": "A SP$DealDamage"
    }
   ],
-  "listens": []
+  "listens": [
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost B R (MV 2)",
+    "kind": "cast",
+    "cost": "B R",
+    "mv": 2
+   }
+  ]
  },
  {
   "name": "Tam's Resistance",
@@ -21683,6 +23838,24 @@
     },
     "mech": "consumes",
     "src": "A SP$PutCounter needs a target"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 1 GU (MV 2)",
+    "kind": "cast",
+    "cost": "1 GU",
+    "mv": 2
    }
   ]
  },
@@ -21829,9 +24002,11 @@
     "src": "SVar:TrigToken AB$Token rg_a_heartwood makes mana",
     "amount": 1,
     "colors": [
-     "R",
-     "G"
-    ]
+     "C",
+     "G",
+     "R"
+    ],
+    "ready": 4
    },
    {
     "event": "counter+",
@@ -21906,6 +24081,24 @@
     },
     "mech": "consumes",
     "src": "A AB$PutCounter Cost$ tapXType<2/Artifact>"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 1 R G (MV 3)",
+    "kind": "cast",
+    "cost": "1 R G",
+    "mv": 3
    }
   ]
  },
@@ -21998,7 +24191,26 @@
     "src": "SVar:DBDraw DB$Draw"
    }
   ],
-  "listens": []
+  "listens": [
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost U B (MV 2)",
+    "kind": "cast",
+    "cost": "U B",
+    "mv": 2
+   }
+  ]
  },
  {
   "name": "Theorix Metamage",
@@ -22174,6 +24386,24 @@
     },
     "mech": "condition",
     "src": "S Mode$Continuous Threshold"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 2 UB (MV 3)",
+    "kind": "cast",
+    "cost": "2 UB",
+    "mv": 3
    }
   ]
  },
@@ -22316,6 +24546,24 @@
     },
     "mech": "condition",
     "src": "SVar:DBDraw DB$Draw ConditionPresent$ Card.wasCastFromYourHand"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 1 UR (MV 2)",
+    "kind": "cast",
+    "cost": "1 UR",
+    "mv": 2
    }
   ]
  },
@@ -22439,7 +24687,9 @@
     },
     "mech": "resource",
     "src": "ManaCost 2 W W B (MV 5)",
-    "demand": 5
+    "kind": "cast",
+    "cost": "2 W W B",
+    "mv": 5
    }
   ]
  },
@@ -22588,7 +24838,9 @@
     },
     "mech": "resource",
     "src": "ManaCost 3 U B B (MV 6)",
-    "demand": 6
+    "kind": "cast",
+    "cost": "3 U B B",
+    "mv": 6
    }
   ]
  },
@@ -22733,6 +24985,24 @@
     },
     "mech": "consumes",
     "src": "SVar:DBPutCounter DB$PutCounter needs a target"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost G W (MV 2)",
+    "kind": "cast",
+    "cost": "G W",
+    "mv": 2
    }
   ]
  },
@@ -22965,6 +25235,24 @@
     },
     "mech": "consumes",
     "src": "A SP$PutCounter needs a target"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 1 GW (MV 2)",
+    "kind": "cast",
+    "cost": "1 GW",
+    "mv": 2
    }
   ]
  },
@@ -23058,6 +25346,24 @@
     },
     "mech": "condition",
     "src": "SVar:DBReturn DB$ChangeZone ConditionPresent$ Permanent.cmcLE3"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost W B B (MV 3)",
+    "kind": "cast",
+    "cost": "W B B",
+    "mv": 3
    }
   ]
  },
@@ -23192,6 +25498,24 @@
     },
     "mech": "static",
     "src": "S Mode$Continuous Affected$ Creature"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 2 R W (MV 4)",
+    "kind": "cast",
+    "cost": "2 R W",
+    "mv": 4
    }
   ]
  },
@@ -23355,6 +25679,24 @@
     },
     "mech": "trigger",
     "src": "Prepare card: re-prepared by others"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 3 BR (MV 4)",
+    "kind": "cast",
+    "cost": "3 BR",
+    "mv": 4
    }
   ]
  },
@@ -23519,9 +25861,11 @@
     "src": "A SP$Token rg_a_heartwood makes mana",
     "amount": 1,
     "colors": [
-     "R",
-     "G"
-    ]
+     "C",
+     "G",
+     "R"
+    ],
+    "ready": 4
    }
   ],
   "listens": [
@@ -23543,6 +25887,24 @@
     },
     "mech": "trigger",
     "src": "Prepare card: re-prepared by others"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 2 RG (MV 3)",
+    "kind": "cast",
+    "cost": "2 RG",
+    "mv": 3
    }
   ]
  },
@@ -23644,6 +26006,24 @@
     },
     "mech": "consumes",
     "src": "SVar:TrigExile DB$ChangeZone Graveyard->Exile"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 2 (MV 2)",
+    "kind": "cast",
+    "cost": "2",
+    "mv": 2
    }
   ]
  },
@@ -23802,7 +26182,9 @@
     },
     "mech": "resource",
     "src": "ManaCost 6 (MV 6)",
-    "demand": 6
+    "kind": "cast",
+    "cost": "6",
+    "mv": 6
    }
   ]
  },
@@ -23946,7 +26328,27 @@
     },
     "mech": "resource",
     "src": "A AB$AlterAttribute mana sink Cost$ W U B R G T",
-    "demand": 5
+    "kind": "sink",
+    "cost": "W U B R G",
+    "mv": 3
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 3 (MV 3)",
+    "kind": "cast",
+    "cost": "3",
+    "mv": 3
    }
   ]
  },
@@ -24106,7 +26508,27 @@
     },
     "mech": "resource",
     "src": "A AB$DestroyAll mana sink Cost$ 5 T Exile<1/CARDNAME>",
-    "demand": 5
+    "kind": "sink",
+    "cost": "5",
+    "mv": 2
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 2 (MV 2)",
+    "kind": "cast",
+    "cost": "2",
+    "mv": 2
    }
   ]
  },
@@ -24467,6 +26889,24 @@
     },
     "mech": "trigger",
     "src": "T Mode$ChangesZone self ETB (Any->Battlefield)"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 3 (MV 3)",
+    "kind": "cast",
+    "cost": "3",
+    "mv": 3
    }
   ]
  },
@@ -24593,7 +27033,27 @@
     },
     "mech": "resource",
     "src": "A AB$ChangeZone mana sink Cost$ 6 Sac<1/CARDNAME/this creature>",
-    "demand": 7
+    "kind": "sink",
+    "cost": "6 creature>",
+    "mv": 2
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 2 (MV 2)",
+    "kind": "cast",
+    "cost": "2",
+    "mv": 2
    }
   ]
  },
@@ -24674,7 +27134,26 @@
     "src": "SVar:TrigGainLife DB$GainLife"
    }
   ],
-  "listens": []
+  "listens": [
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 2 (MV 2)",
+    "kind": "cast",
+    "cost": "2",
+    "mv": 2
+   }
+  ]
  },
  {
   "name": "Murmuring Volume",
@@ -24761,7 +27240,8 @@
      "B",
      "R",
      "G"
-    ]
+    ],
+    "ready": 4
    },
    {
     "event": "discard",
@@ -24826,6 +27306,24 @@
     },
     "mech": "consumes",
     "src": "A AB$Draw Cost$ Discard (needs cards)"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 3 (MV 3)",
+    "kind": "cast",
+    "cost": "3",
+    "mv": 3
    }
   ]
  },
@@ -25109,7 +27607,9 @@
     },
     "mech": "resource",
     "src": "A AB$Clone mana sink Cost$ 5",
-    "demand": 5
+    "kind": "sink",
+    "cost": "5",
+    "mv": 0
    },
    {
     "event": "enter",
@@ -25240,7 +27740,9 @@
     },
     "mech": "resource",
     "src": "A AB$AlterAttribute mana sink Cost$ 4 T",
-    "demand": 4
+    "kind": "sink",
+    "cost": "4",
+    "mv": 0
    }
   ]
  },
@@ -25712,7 +28214,9 @@
     },
     "mech": "resource",
     "src": "A AB$PutCounter mana sink Cost$ 5 T Sac<1/CARDNAME/this land>",
-    "demand": 6
+    "kind": "sink",
+    "cost": "5 land>",
+    "mv": 0
    },
    {
     "event": "enter",
@@ -26386,6 +28890,24 @@
     },
     "mech": "static",
     "src": "SVar:STPump Mode$Continuous Affected$ Creature.YouCtrl"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 1 W (MV 2)",
+    "kind": "cast",
+    "cost": "1 W",
+    "mv": 2
    }
   ]
  },
@@ -26514,6 +29036,24 @@
     },
     "mech": "trigger",
     "src": "T Mode$SpellCast Equipment,Spell.IsTargeting Valid Creature.YouCtrl"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 2 W (MV 3)",
+    "kind": "cast",
+    "cost": "2 W",
+    "mv": 3
    }
   ]
  },
@@ -26639,7 +29179,9 @@
     },
     "mech": "resource",
     "src": "ManaCost 8 W (MV 9)",
-    "demand": 9
+    "kind": "cast",
+    "cost": "8 W",
+    "mv": 9
    }
   ]
  },
@@ -26730,7 +29272,8 @@
      "B",
      "R",
      "G"
-    ]
+    ],
+    "ready": 3
    },
    {
     "event": "discard",
@@ -26812,6 +29355,24 @@
     },
     "mech": "consumes",
     "src": "A AB$DealDamage Cost$ Discard (needs cards)"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 1 W (MV 2)",
+    "kind": "cast",
+    "cost": "1 W",
+    "mv": 2
    }
   ]
  },
@@ -26989,6 +29550,24 @@
     },
     "mech": "consumes",
     "src": "SVar:TrigPutCounter DB$PutCounter needs a target"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 2 W (MV 3)",
+    "kind": "cast",
+    "cost": "2 W",
+    "mv": 3
    }
   ]
  },
@@ -27324,6 +29903,24 @@
     },
     "mech": "consumes",
     "src": "SVar:TrigPutCounterAll DB$PutCounterAll needs a target"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 2 W (MV 3)",
+    "kind": "cast",
+    "cost": "2 W",
+    "mv": 3
    }
   ]
  },
@@ -27419,7 +30016,26 @@
     "src": "Rescue Girl, First Responder can attack"
    }
   ],
-  "listens": []
+  "listens": [
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 2 W (MV 3)",
+    "kind": "cast",
+    "cost": "2 W",
+    "mv": 3
+   }
+  ]
  },
  {
   "name": "Saheeli, Consul of Oversight",
@@ -27578,7 +30194,9 @@
     },
     "mech": "resource",
     "src": "ManaCost 3 W W (MV 5)",
-    "demand": 5
+    "kind": "cast",
+    "cost": "3 W W",
+    "mv": 5
    }
   ]
  },
@@ -27788,6 +30406,24 @@
     },
     "mech": "consumes",
     "src": "SVar:DBPutCounterLoyalty DB$PutCounter needs a target"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 1 W (MV 2)",
+    "kind": "cast",
+    "cost": "1 W",
+    "mv": 2
    }
   ]
  },
@@ -27899,7 +30535,26 @@
     "src": "K:Lifelink"
    }
   ],
-  "listens": []
+  "listens": [
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 3 W (MV 4)",
+    "kind": "cast",
+    "cost": "3 W",
+    "mv": 4
+   }
+  ]
  },
  {
   "name": "Tomik, Orzhov Lawmage",
@@ -28012,6 +30667,24 @@
     },
     "mech": "static",
     "src": "S Mode$Continuous Affected$ Planeswalker.YouCtrl"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 1 W (MV 2)",
+    "kind": "cast",
+    "cost": "1 W",
+    "mv": 2
    }
   ]
  },
@@ -28258,6 +30931,24 @@
     },
     "mech": "consumes",
     "src": "SVar:PWHealer AB$Token Cost$ -LOYALTY"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 3 W (MV 4)",
+    "kind": "cast",
+    "cost": "3 W",
+    "mv": 4
    }
   ]
  },
@@ -28448,6 +31139,24 @@
     },
     "mech": "consumes",
     "src": "SVar:TrigPutCounterAll DB$PutCounterAll needs a target"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 2 W (MV 3)",
+    "kind": "cast",
+    "cost": "2 W",
+    "mv": 3
    }
   ]
  },
@@ -28590,7 +31299,9 @@
     },
     "mech": "resource",
     "src": "A AB$PutCounter mana sink Cost$ 6",
-    "demand": 6
+    "kind": "sink",
+    "cost": "6",
+    "mv": 3
    },
    {
     "event": "enter",
@@ -28611,6 +31322,24 @@
     },
     "mech": "consumes",
     "src": "A AB$PutCounter needs a target"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 2 W (MV 3)",
+    "kind": "cast",
+    "cost": "2 W",
+    "mv": 3
    }
   ]
  },
@@ -28704,7 +31433,26 @@
     "src": "Yuriko, Blade of the Mighty can attack"
    }
   ],
-  "listens": []
+  "listens": [
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 3 W (MV 4)",
+    "kind": "cast",
+    "cost": "3 W",
+    "mv": 4
+   }
+  ]
  },
  {
   "name": "Arni, Humble Scribe",
@@ -28862,6 +31610,24 @@
     },
     "mech": "trigger",
     "src": "T Mode$ChangesZone Any->Battlefield Creature.YouCtrl+!token+Other"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 2 U (MV 3)",
+    "kind": "cast",
+    "cost": "2 U",
+    "mv": 3
    }
   ]
  },
@@ -29060,7 +31826,8 @@
     "amount": 1,
     "colors": [
      "U"
-    ]
+    ],
+    "ready": 4
    },
    {
     "event": "activate_loyalty",
@@ -29234,8 +32001,10 @@
      "prepared": null
     },
     "mech": "resource",
-    "src": "SVar:X:Count$xPaid",
-    "demand": "X"
+    "src": "ManaCost 1 U U (MV 3)",
+    "kind": "cast",
+    "cost": "1 U U",
+    "mv": 3
    }
   ]
  },
@@ -29340,7 +32109,26 @@
     "src": "SVar:TrigDraw DB$Draw"
    }
   ],
-  "listens": []
+  "listens": [
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 1 U (MV 2)",
+    "kind": "cast",
+    "cost": "1 U",
+    "mv": 2
+   }
+  ]
  },
  {
   "name": "Geist of Saint Thalia",
@@ -29452,7 +32240,26 @@
     "sign": -1
    }
   ],
-  "listens": []
+  "listens": [
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 1 U (MV 2)",
+    "kind": "cast",
+    "cost": "1 U",
+    "mv": 2
+   }
+  ]
  },
  {
   "name": "Hapatra, the Desert Frost",
@@ -29594,6 +32401,24 @@
     },
     "mech": "consumes",
     "src": "SVar:DBPutCounter DB$PutCounter needs a target"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 3 U (MV 4)",
+    "kind": "cast",
+    "cost": "3 U",
+    "mv": 4
    }
   ]
  },
@@ -29902,7 +32727,9 @@
     },
     "mech": "resource",
     "src": "ManaCost 3 U U (MV 5)",
-    "demand": 5
+    "kind": "cast",
+    "cost": "3 U U",
+    "mv": 5
    }
   ]
  },
@@ -30048,7 +32875,9 @@
     },
     "mech": "resource",
     "src": "A AB$Effect mana sink Cost$ 3 U U",
-    "demand": 5
+    "kind": "sink",
+    "cost": "3 U U",
+    "mv": 3
    },
    {
     "event": "draw",
@@ -30064,6 +32893,24 @@
     },
     "mech": "condition",
     "src": "SVar:X:Count$YouDrewThisTurn"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 1 U U (MV 3)",
+    "kind": "cast",
+    "cost": "1 U U",
+    "mv": 3
    }
   ]
  },
@@ -30223,6 +33070,24 @@
     },
     "mech": "trigger",
     "src": "T Mode$Surveil"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 1 U (MV 2)",
+    "kind": "cast",
+    "cost": "1 U",
+    "mv": 2
    }
   ]
  },
@@ -30404,7 +33269,9 @@
     },
     "mech": "resource",
     "src": "ManaCost 4 U U (MV 6)",
-    "demand": 6
+    "kind": "cast",
+    "cost": "4 U U",
+    "mv": 6
    }
   ]
  },
@@ -30532,6 +33399,24 @@
     },
     "mech": "static",
     "src": "S Mode$Continuous Affected$ Instant.YouCtrl,Sorcery.YouCtrl"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 1 U (MV 2)",
+    "kind": "cast",
+    "cost": "1 U",
+    "mv": 2
    }
   ]
  },
@@ -30625,7 +33510,26 @@
     "src": "Tetsuko Umezawa, Fugitive can attack"
    }
   ],
-  "listens": []
+  "listens": [
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 1 U (MV 2)",
+    "kind": "cast",
+    "cost": "1 U",
+    "mv": 2
+   }
+  ]
  },
  {
   "name": "Traxos, Academy Guardian",
@@ -30760,6 +33664,24 @@
     },
     "mech": "condition",
     "src": "SVar:X:Count$ThisTurnCast_Card.nonCreature+YouCtrl"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 3 U (MV 4)",
+    "kind": "cast",
+    "cost": "3 U",
+    "mv": 4
    }
   ]
  },
@@ -30955,6 +33877,24 @@
     },
     "mech": "consumes",
     "src": "SVar:PWCryomancer AB$DelayedTrigger Cost$ -LOYALTY"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 2 U (MV 3)",
+    "kind": "cast",
+    "cost": "2 U",
+    "mv": 3
    }
   ]
  },
@@ -31142,7 +34082,9 @@
     },
     "mech": "resource",
     "src": "ManaCost 4 U (MV 5)",
-    "demand": 5
+    "kind": "cast",
+    "cost": "4 U",
+    "mv": 5
    }
   ]
  },
@@ -31251,7 +34193,9 @@
     },
     "mech": "resource",
     "src": "ManaCost 4 U (MV 5)",
-    "demand": 5
+    "kind": "cast",
+    "cost": "4 U",
+    "mv": 5
    }
   ]
  },
@@ -31543,6 +34487,24 @@
     },
     "mech": "trigger",
     "src": "T Mode$SpellCast "
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 2 B (MV 3)",
+    "kind": "cast",
+    "cost": "2 B",
+    "mv": 3
    }
   ]
  },
@@ -31700,7 +34662,9 @@
     },
     "mech": "resource",
     "src": "A AB$ChangeZone mana sink Cost$ 4 B ExileFromGrave<1/Creature.Other/another creature card>",
-    "demand": 7
+    "kind": "sink",
+    "cost": "4 B creature card>",
+    "mv": 2
    },
    {
     "event": "tograve",
@@ -31736,6 +34700,24 @@
     },
     "mech": "consumes",
     "src": "A AB$ChangeZone Graveyard->Battlefield"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 1 B (MV 2)",
+    "kind": "cast",
+    "cost": "1 B",
+    "mv": 2
    }
   ]
  },
@@ -31988,7 +34970,9 @@
     },
     "mech": "resource",
     "src": "ManaCost 3 B B (MV 5)",
-    "demand": 5
+    "kind": "cast",
+    "cost": "3 B B",
+    "mv": 5
    }
   ]
  },
@@ -32116,7 +35100,26 @@
     "src": "SVar:TrigDamage2 DB$DealDamage"
    }
   ],
-  "listens": []
+  "listens": [
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 2 B (MV 3)",
+    "kind": "cast",
+    "cost": "2 B",
+    "mv": 3
+   }
+  ]
  },
  {
   "name": "Liliana the Repentant",
@@ -32360,7 +35363,9 @@
     },
     "mech": "resource",
     "src": "A AB$ChangeZone mana sink Cost$ 5 B",
-    "demand": 6
+    "kind": "sink",
+    "cost": "5 B",
+    "mv": 2
    },
    {
     "event": "tograve",
@@ -32395,6 +35400,24 @@
     },
     "mech": "consumes",
     "src": "A AB$ChangeZone Graveyard->Battlefield"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 1 B (MV 2)",
+    "kind": "cast",
+    "cost": "1 B",
+    "mv": 2
    }
   ]
  },
@@ -32522,6 +35545,24 @@
     },
     "mech": "consumes",
     "src": "A AB$Pump Cost$ Sac<1/Creature.Other;Planeswalker.Other/another creature or planeswalker> (needs fodder)"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 2 B (MV 3)",
+    "kind": "cast",
+    "cost": "2 B",
+    "mv": 3
    }
   ]
  },
@@ -32831,7 +35872,9 @@
     },
     "mech": "resource",
     "src": "ManaCost 4 B (MV 5)",
-    "demand": 5
+    "kind": "cast",
+    "cost": "4 B",
+    "mv": 5
    }
   ]
  },
@@ -32988,6 +36031,24 @@
     },
     "mech": "condition",
     "src": "SVar:X:Count$ValidGraveyard Card.YouOwn"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 2 B (MV 3)",
+    "kind": "cast",
+    "cost": "2 B",
+    "mv": 3
    }
   ]
  },
@@ -33197,6 +36258,24 @@
     },
     "mech": "consumes",
     "src": "SVar:DBPutCounterLoyalty DB$PutCounter needs a target"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 3 B (MV 4)",
+    "kind": "cast",
+    "cost": "3 B",
+    "mv": 4
    }
   ]
  },
@@ -33343,6 +36422,24 @@
     },
     "mech": "trigger",
     "src": "T Mode$DiscardedAll"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 2 B (MV 3)",
+    "kind": "cast",
+    "cost": "2 B",
+    "mv": 3
    }
   ]
  },
@@ -33557,6 +36654,24 @@
     },
     "mech": "consumes",
     "src": "SVar:PWDeathbringer AB$Token Cost$ -LOYALTY"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 2 B (MV 3)",
+    "kind": "cast",
+    "cost": "2 B",
+    "mv": 3
    }
   ]
  },
@@ -33749,6 +36864,24 @@
     },
     "mech": "consumes",
     "src": "SVar:TrigPutCounterAll DB$PutCounterAll needs a target"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 1 B (MV 2)",
+    "kind": "cast",
+    "cost": "1 B",
+    "mv": 2
    }
   ]
  },
@@ -33930,6 +37063,24 @@
     },
     "mech": "condition",
     "src": "SVar:X:Count$ValidGraveyard Creature.YouOwn,Planeswalker.YouOwn"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 2 B (MV 3)",
+    "kind": "cast",
+    "cost": "2 B",
+    "mv": 3
    }
   ]
  },
@@ -34038,7 +37189,9 @@
     },
     "mech": "resource",
     "src": "ManaCost 4 B (MV 5)",
-    "demand": 5
+    "kind": "cast",
+    "cost": "4 B",
+    "mv": 5
    }
   ]
  },
@@ -34372,7 +37525,9 @@
     },
     "mech": "resource",
     "src": "ManaCost 4 R R (MV 6)",
-    "demand": 6
+    "kind": "cast",
+    "cost": "4 R R",
+    "mv": 6
    }
   ]
  },
@@ -34485,6 +37640,24 @@
     },
     "mech": "trigger",
     "src": "T Mode$ChangesZone Any->Battlefield Creature.Other+YouCtrl"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 3 R (MV 4)",
+    "kind": "cast",
+    "cost": "3 R",
+    "mv": 4
    }
   ]
  },
@@ -34668,7 +37841,8 @@
     "amount": 2,
     "colors": [
      "R"
-    ]
+    ],
+    "ready": 5
    },
    {
     "event": "activate_loyalty",
@@ -34811,6 +37985,24 @@
     },
     "mech": "trigger",
     "src": "SVar:TrigSpellCast Mode$SpellCast "
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 2 R R (MV 4)",
+    "kind": "cast",
+    "cost": "2 R R",
+    "mv": 4
    }
   ]
  },
@@ -34962,6 +38154,24 @@
     },
     "mech": "consumes",
     "src": "A AB$PutCounter needs a target"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 1 R (MV 2)",
+    "kind": "cast",
+    "cost": "1 R",
+    "mv": 2
    }
   ]
  },
@@ -35153,7 +38363,9 @@
     },
     "mech": "resource",
     "src": "ManaCost 4 R (MV 5)",
-    "demand": 5
+    "kind": "cast",
+    "cost": "4 R",
+    "mv": 5
    }
   ]
  },
@@ -35320,7 +38532,9 @@
     },
     "mech": "resource",
     "src": "A AB$Token mana sink Cost$ 8",
-    "demand": 8
+    "kind": "sink",
+    "cost": "8",
+    "mv": 6
    },
    {
     "event": "mana",
@@ -35336,7 +38550,9 @@
     },
     "mech": "resource",
     "src": "ManaCost 4 R R (MV 6)",
-    "demand": 6
+    "kind": "cast",
+    "cost": "4 R R",
+    "mv": 6
    }
   ]
  },
@@ -35470,7 +38686,8 @@
     "amount": 1,
     "colors": [
      "R"
-    ]
+    ],
+    "ready": 4
    }
   ],
   "listens": [
@@ -35507,6 +38724,24 @@
     },
     "mech": "condition",
     "src": "SVar:DBMana DB$Mana ConditionPresent$ Mountain"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 2 R (MV 3)",
+    "kind": "cast",
+    "cost": "2 R",
+    "mv": 3
    }
   ]
  },
@@ -35667,7 +38902,9 @@
     },
     "mech": "resource",
     "src": "A AB$Draw mana sink Cost$ 2 T Sac<1/Artifact;Land/artifact or land>",
-    "demand": 4
+    "kind": "sink",
+    "cost": "2 or land>",
+    "mv": 1
    }
   ]
  },
@@ -35818,7 +39055,9 @@
     },
     "mech": "resource",
     "src": "A AB$Pump mana sink Cost$ 5 R",
-    "demand": 6
+    "kind": "sink",
+    "cost": "5 R",
+    "mv": 3
    },
    {
     "event": "enter",
@@ -35836,6 +39075,24 @@
     },
     "mech": "condition",
     "src": "SVar:X:Count$Valid Artifact.YouCtrl"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 2 R (MV 3)",
+    "kind": "cast",
+    "cost": "2 R",
+    "mv": 3
    }
   ]
  },
@@ -35951,6 +39208,24 @@
     },
     "mech": "static",
     "src": "S Mode$Continuous Affected$ Creature.YouCtrl"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 1 R (MV 2)",
+    "kind": "cast",
+    "cost": "1 R",
+    "mv": 2
    }
   ]
  },
@@ -36080,6 +39355,24 @@
     },
     "mech": "trigger",
     "src": "K:Prowess"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 3 R (MV 4)",
+    "kind": "cast",
+    "cost": "3 R",
+    "mv": 4
    }
   ]
  },
@@ -36192,6 +39485,24 @@
     },
     "mech": "trigger",
     "src": "K:Prowess"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 1 R (MV 2)",
+    "kind": "cast",
+    "cost": "1 R",
+    "mv": 2
    }
   ]
  },
@@ -36372,7 +39683,8 @@
     "amount": 1,
     "colors": [
      "R"
-    ]
+    ],
+    "ready": 3
    }
   ],
   "listens": [
@@ -36410,6 +39722,24 @@
     },
     "mech": "static",
     "src": "S Mode$Continuous Affected$ Planeswalker.YouCtrl"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 1 R (MV 2)",
+    "kind": "cast",
+    "cost": "1 R",
+    "mv": 2
    }
   ]
  },
@@ -36637,6 +39967,24 @@
     },
     "mech": "consumes",
     "src": "SVar:PWWarlord AB$DealDamage Cost$ -LOYALTY"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 2 R (MV 3)",
+    "kind": "cast",
+    "cost": "2 R",
+    "mv": 3
    }
   ]
  },
@@ -36781,7 +40129,9 @@
     },
     "mech": "resource",
     "src": "ManaCost 4 R (MV 5)",
-    "demand": 5
+    "kind": "cast",
+    "cost": "4 R",
+    "mv": 5
    }
   ]
  },
@@ -36933,7 +40283,9 @@
     },
     "mech": "resource",
     "src": "A AB$PutCounterAll mana sink Cost$ 4 G",
-    "demand": 5
+    "kind": "sink",
+    "cost": "4 G",
+    "mv": 5
    },
    {
     "event": "enter",
@@ -36981,7 +40333,9 @@
     },
     "mech": "resource",
     "src": "ManaCost 3 G G (MV 5)",
-    "demand": 5
+    "kind": "cast",
+    "cost": "3 G G",
+    "mv": 5
    }
   ]
  },
@@ -37110,7 +40464,9 @@
     },
     "mech": "resource",
     "src": "SVar:X:Count$xPaid",
-    "demand": "X"
+    "kind": "x",
+    "cost": "X G G",
+    "mv": 2
    },
    {
     "event": "enter",
@@ -37143,7 +40499,9 @@
     },
     "mech": "resource",
     "src": "ManaCost X G G (X spell)",
-    "demand": "X"
+    "kind": "x",
+    "cost": "X G G",
+    "mv": 2
    }
   ]
  },
@@ -37396,7 +40754,9 @@
     },
     "mech": "resource",
     "src": "ManaCost 3 G G (MV 5)",
-    "demand": 5
+    "kind": "cast",
+    "cost": "3 G G",
+    "mv": 5
    }
   ]
  },
@@ -37541,7 +40901,9 @@
     },
     "mech": "resource",
     "src": "ManaCost 8 G (MV 9)",
-    "demand": 9
+    "kind": "cast",
+    "cost": "8 G",
+    "mv": 9
    }
   ]
  },
@@ -37675,6 +41037,24 @@
     },
     "mech": "trigger",
     "src": "T Mode$ChangesZone self ETB (Any->Battlefield)"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 3 G (MV 4)",
+    "kind": "cast",
+    "cost": "3 G",
+    "mv": 4
    }
   ]
  },
@@ -37794,7 +41174,8 @@
      "B",
      "R",
      "G"
-    ]
+    ],
+    "ready": 4
    }
   ],
   "listens": [
@@ -37814,6 +41195,24 @@
     },
     "mech": "condition",
     "src": "SVar:X:Count$Valid Creature.YouCtrl$DifferentCardPower"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 2 G (MV 3)",
+    "kind": "cast",
+    "cost": "2 G",
+    "mv": 3
    }
   ]
  },
@@ -37943,6 +41342,24 @@
     },
     "mech": "consumes",
     "src": "A AB$ChangeZone Graveyard->Hand"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 1 G (MV 2)",
+    "kind": "cast",
+    "cost": "1 G",
+    "mv": 2
    }
   ]
  },
@@ -38102,6 +41519,24 @@
     },
     "mech": "consumes",
     "src": "SVar:TrigChange AB$ChangeZone Cost$ Discard (needs cards)"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 2 G (MV 3)",
+    "kind": "cast",
+    "cost": "2 G",
+    "mv": 3
    }
   ]
  },
@@ -38229,7 +41664,9 @@
     },
     "mech": "resource",
     "src": "ManaCost 5 G G (MV 7)",
-    "demand": 7
+    "kind": "cast",
+    "cost": "5 G G",
+    "mv": 7
    }
   ]
  },
@@ -38393,6 +41830,24 @@
     },
     "mech": "trigger",
     "src": "T Mode$Discarded"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 3 G (MV 4)",
+    "kind": "cast",
+    "cost": "3 G",
+    "mv": 4
    }
   ]
  },
@@ -38555,7 +42010,8 @@
      "B",
      "R",
      "G"
-    ]
+    ],
+    "ready": 4
    }
   ],
   "listens": [
@@ -38591,6 +42047,24 @@
     },
     "mech": "trigger",
     "src": "T Mode$AbilityCast Activated.LoyaltyYou"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 2 G (MV 3)",
+    "kind": "cast",
+    "cost": "2 G",
+    "mv": 3
    }
   ]
  },
@@ -38820,7 +42294,9 @@
     },
     "mech": "resource",
     "src": "ManaCost 4 G (MV 5)",
-    "demand": 5
+    "kind": "cast",
+    "cost": "4 G",
+    "mv": 5
    }
   ]
  },
@@ -38981,7 +42457,9 @@
     },
     "mech": "resource",
     "src": "A AB$PutCounter mana sink Cost$ 6",
-    "demand": 6
+    "kind": "sink",
+    "cost": "6",
+    "mv": 2
    },
    {
     "event": "enter",
@@ -39001,6 +42479,24 @@
     },
     "mech": "consumes",
     "src": "A AB$PutCounter needs a target"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 1 G (MV 2)",
+    "kind": "cast",
+    "cost": "1 G",
+    "mv": 2
    }
   ]
  },
@@ -39216,7 +42712,27 @@
     },
     "mech": "resource",
     "src": "A AB$PutCounter mana sink Cost$ 2 Sac<1/Creature.Other;Planeswalker.Other/another creature or planeswalker>",
-    "demand": 5
+    "kind": "sink",
+    "cost": "2 creature or planeswalker>",
+    "mv": 2
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost W B (MV 2)",
+    "kind": "cast",
+    "cost": "W B",
+    "mv": 2
    }
   ]
  },
@@ -39378,7 +42894,9 @@
     },
     "mech": "resource",
     "src": "ManaCost 2 B B G (MV 5)",
-    "demand": 5
+    "kind": "cast",
+    "cost": "2 B B G",
+    "mv": 5
    }
   ]
  },
@@ -39547,7 +43065,9 @@
     },
     "mech": "resource",
     "src": "ManaCost 2W 2U 2B 2R 2G (MV 5)",
-    "demand": 5
+    "kind": "cast",
+    "cost": "2W 2U 2B 2R 2G",
+    "mv": 5
    }
   ]
  },
@@ -39736,6 +43256,24 @@
     },
     "mech": "condition",
     "src": "SVar:X:Count$ThisTurnActivated_Activated.Loyalty+YouCtrl"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 1 G U (MV 3)",
+    "kind": "cast",
+    "cost": "1 G U",
+    "mv": 3
    }
   ]
  },
@@ -39887,6 +43425,24 @@
     },
     "mech": "consumes",
     "src": "SVar:TrigPutCounter DB$PutCounter needs a target"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 1 R W (MV 3)",
+    "kind": "cast",
+    "cost": "1 R W",
+    "mv": 3
    }
   ]
  },
@@ -40039,6 +43595,24 @@
     },
     "mech": "trigger",
     "src": "T Mode$SpellCast Card.nonCreature"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 2 U R (MV 4)",
+    "kind": "cast",
+    "cost": "2 U R",
+    "mv": 4
    }
   ]
  },
@@ -40181,7 +43755,9 @@
     },
     "mech": "resource",
     "src": "A AB$Proliferate mana sink Cost$ W U B R G T",
-    "demand": 5
+    "kind": "sink",
+    "cost": "W U B R G",
+    "mv": 3
    },
    {
     "event": "enter",
@@ -40199,6 +43775,24 @@
     },
     "mech": "condition",
     "src": "SVar:X:Count$Valid Planeswalker.YouCtrl$PlaneswalkerType"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 1 G U (MV 3)",
+    "kind": "cast",
+    "cost": "1 G U",
+    "mv": 3
    }
   ]
  },
@@ -40336,12 +43930,13 @@
     "src": "SVar:TrigToken DB$Token c_1_1_a_sculpture_treasure makes mana",
     "amount": 1,
     "colors": [
-     "W",
-     "U",
      "B",
+     "G",
      "R",
-     "G"
-    ]
+     "U",
+     "W"
+    ],
+    "ready": 4
    }
   ],
   "listens": [
@@ -40381,6 +43976,24 @@
     },
     "mech": "trigger",
     "src": "T Mode$SpellCast Card.nonCreature"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost U R W (MV 3)",
+    "kind": "cast",
+    "cost": "U R W",
+    "mv": 3
    }
   ]
  },
@@ -40530,12 +44143,13 @@
     "src": "SVar:DBToken DB$Token c_a_treasure_sac makes mana",
     "amount": 1,
     "colors": [
-     "W",
-     "U",
      "B",
+     "G",
      "R",
-     "G"
-    ]
+     "U",
+     "W"
+    ],
+    "ready": 4
    }
   ],
   "listens": [
@@ -40575,6 +44189,24 @@
     },
     "mech": "trigger",
     "src": "T Mode$ChangesZone self ETB (Any->Battlefield)"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost B B G (MV 3)",
+    "kind": "cast",
+    "cost": "B B G",
+    "mv": 3
    }
   ]
  },
@@ -40666,7 +44298,26 @@
     "src": "Karn, Argent Defender can attack"
    }
   ],
-  "listens": []
+  "listens": [
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 2 (MV 2)",
+    "kind": "cast",
+    "cost": "2",
+    "mv": 2
+   }
+  ]
  },
  {
   "name": "Traxos, Scourge Eternal",
@@ -40797,6 +44448,24 @@
     },
     "mech": "trigger",
     "src": "T Mode$SpellCast Artifact,Creature"
+   },
+   {
+    "event": "mana",
+    "sub": "",
+    "pat": {
+     "types": null,
+     "neg": [],
+     "token": null,
+     "side": "any",
+     "self": false,
+     "counters": null,
+     "prepared": null
+    },
+    "mech": "resource",
+    "src": "ManaCost 4 (MV 4)",
+    "kind": "cast",
+    "cost": "4",
+    "mv": 4
    }
   ]
  }

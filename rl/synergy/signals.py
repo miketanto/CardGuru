@@ -111,13 +111,15 @@ def load_token_types(tokendir):
         m = re.search(r"^Types:(.*)$", txt, re.M)
         mana = [l for l in txt.splitlines() if l.startswith("A:") and "Mana" in l.split("|")[0]]
         amt = 0
+        cols = set()
         for l in mana:
             a = re.search(r"Amount\$\s*(\d+)", l)
             prod = re.search(r"Produced\$\s*([^|]+)", l)
             n = int(a.group(1)) if a else max(1, len((prod.group(1) if prod else "C").split()) if prod and "Combo" not in prod.group(1) else 1)
             amt = max(amt, n)
+            cols |= set(mana_colors({"Produced": prod.group(1).strip() if prod else "C"}))
         info[fn[:-4]] = {"types": type_set(m.group(1)) if m else [], "mana": amt,
-                         "sac_mana": any("Sac<" in l for l in mana)}
+                         "colors": sorted(cols), "sac_mana": any("Sac<" in l for l in mana)}
     return info
 
 
@@ -187,7 +189,12 @@ def count_listens(card, expr, mech, src, face_types):
         sub = expr.split(".")[1].split("/")[0] if head == "CardCounters" and "." in expr else "*"
         card.L("counter+", [self_pat(card, face_types)], mech, src, sub=sub.upper())
     elif head == "xPaid":
-        card.L("mana", parse_filter(""), "resource", src, demand="X")
+        # only an X paid in *mana*: SubCounter<X/LOYALTY> also sets xPaid
+        mana_x = "X" in (card.faces[0]["mana_cost"] or "").split() or any(
+            "X" in ab["params"].get("Cost", "").split() for fc in card.faces for ab in fc["abilities"])
+        if mana_x:
+            card.L("mana", parse_filter(""), "resource", src, kind="x",
+                   cost=card.faces[0]["mana_cost"] or "", mv=card.cmc)
     elif head == "Domain":
         card.L("enter", parse_filter("Land.YouCtrl"), mech, src)
 
@@ -205,10 +212,17 @@ def mana_amount(p):
 
 
 def mana_colors(p):
+    """Colours a mana ability can produce; 'C' = colourless (pays generic and {C})."""
     prod = p.get("Produced", "C")
     if prod.startswith(("Any", "Chosen")):
         return list("WUBRG")
-    return sorted({ch for ch in prod if ch in "WUBRG"})
+    return sorted({ch for ch in prod if ch in "WUBRGC"})
+
+
+def ready_turn(face):
+    """Curve model: first turn a producer's surplus is usable. A nonland producer
+    eats the whole turn it is cast, so MV + 1; a land is ready on turn 1."""
+    return 1 if "Land" in type_set(face["types"]) else face["cmc"] + 1
 
 
 def analyse(card):
@@ -336,8 +350,9 @@ def analyse_ability(card, f, ft, ab, cost_svars):
         gen = sum(int(t) for t in mana_part.split() if t.isdigit())
         pips = sum(1 for t in mana_part.split() if not t.isdigit() and t != "X")
         if head == "AB" and not is_loyalty and ("X" in mana_part.split() or gen + pips >= 4):
+            xs = "X" in mana_part.split()
             card.L("mana", parse_filter(""), "resource", f"{src} mana sink Cost$ {cost}",
-                   demand="X" if "X" in mana_part.split() else gen + pips)
+                   kind="x" if xs else "sink", cost=mana_part, mv=f["cmc"])
     if is_loyalty and head == "AB":
         card.E("activate_loyalty", concrete(ft), "loyalty", f"{src} loyalty ability")
     if p.get("ActivationZone") == "Graveyard":
@@ -411,7 +426,7 @@ def analyse_ability(card, f, ft, ab, cost_svars):
             aff = p.get("Affected", "")
             if p.get("AdjustLandPlays") and aff in ("You", ""):
                 card.E("mana", concrete(["Land"]), "effect", f"{src} extra land play (ramp)",
-                       amount=1, colors=list("WUBRG"))
+                       amount=1, colors=list("WUBRG"), ready=f["cmc"] + 1)
             # an effect-chosen object or a player is not a population to grow
             chosen = any(q in aff for q in ("IsRemembered", "IsImprinted", "Targeted"))
             if aff and aff not in ("You", "Player", "Opponent") and not chosen \
@@ -476,12 +491,17 @@ def analyse_ability(card, f, ft, ab, cost_svars):
             card.E("enter", concrete(info["types"], token=True), "effect", f"{src} {ts}")
             if info.get("mana"):
                 card.E("mana", concrete(info["types"], token=True), "effect", f"{src} {ts} makes mana",
-                       amount=info["mana"], colors=list("WUBRG") if info["mana"] >= 3 else ["R", "G"] if "heartwood" in ts else list("WUBRG"))
+                       amount=info["mana"], colors=info.get("colors") or ["C"], ready=f["cmc"] + 1)
     elif api == "Mana":
         if "Land" in ft and mana_amount(p) < 2:
             return  # a land tapping for one is the baseline, not a flow
+        land = "Land" in ft
+        amt, ready = mana_amount(p) - (1 if land else 0), ready_turn(f)
+        if any(t in ft for t in ("Instant", "Sorcery")):
+            # a ritual's mana arrives the turn it is cast, net of its own cost
+            amt, ready = mana_amount(p) - f["cmc"], max(1, f["cmc"])
         card.E("mana", concrete(ft), "effect", f"{src} Produced$ {p.get('Produced')} x{mana_amount(p)}",
-               amount=mana_amount(p), colors=mana_colors(p))
+               amount=amt, colors=mana_colors(p), ready=ready)
     elif api == "Draw":
         if "Opponent" not in p.get("Defined", ""):
             card.E("draw", concrete([]), "effect", src)
@@ -529,7 +549,9 @@ def analyse_ability(card, f, ft, ab, cost_svars):
                 if o in ("Graveyard", "Exile") or "Graveyard" in o:
                     card.E("reenter", pp, "effect", f"{src} {o}->{d}")
             if o == "Library" and any((x["types"] or [""])[0].startswith("Land") for x in pats):
-                card.E("mana", concrete(["Land"]), "effect", f"{src} ramp", amount=1, colors=list("WUBRG"))
+                n = p.get("ChangeNum", "1")
+                card.E("mana", concrete(["Land"]), "effect", f"{src} ramp",
+                       amount=int(n) if n.isdigit() else 1, colors=list("WUBRG"), ready=f["cmc"] + 1)
         if d == "Graveyard":
             for pp in pats:
                 card.E("tograve", pp, "effect", f"{src} {o}->{d}")
@@ -555,13 +577,15 @@ def main():
     for rec in json.load(open(parsed, encoding="utf-8")):
         c = Card(rec, tok)
         analyse(c)
-        # mana demand from the card's own cost: top end and X spells
+        # mana demand from the card's own cost. Curve-aware: every nonland card
+        # with MV >= 2 is a candidate; graph.resource_q keeps it only if a
+        # producer lets it be cast at least a turn earlier.
         mc = c.faces[0]["mana_cost"] or ""
         if "Land" not in c.front_types:
             if "X" in mc.split():
-                c.L("mana", parse_filter(""), "resource", f"ManaCost {mc} (X spell)", demand="X")
-            elif c.cmc >= 5:
-                c.L("mana", parse_filter(""), "resource", f"ManaCost {mc} (MV {c.cmc})", demand=c.cmc)
+                c.L("mana", parse_filter(""), "resource", f"ManaCost {mc} (X spell)", kind="x", cost=mc, mv=c.cmc)
+            elif c.cmc >= 2:
+                c.L("mana", parse_filter(""), "resource", f"ManaCost {mc} (MV {c.cmc})", kind="cast", cost=mc, mv=c.cmc)
         cards.append({"name": c.name, "types": c.types, "front_types": c.front_types, "cmc": c.cmc,
                       "colors": sorted({x for fc in c.faces for x in fc["colors"]}),
                       "mana_cost": c.faces[0]["mana_cost"], "keywords": c.keywords,
