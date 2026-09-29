@@ -205,7 +205,7 @@
      "Variable Chaser",
      "Pompous Battlemage",
      "Bloodline Recollector",
-     "Void Extrapolator"
+     "Theorix Metamage"
     ],
     "top_prims": [
      [
@@ -560,7 +560,7 @@
       0.006266372849184529
      ]
     ],
-    "colors": "BGW",
+    "colors": "BGU",
     "members": [
      "Apex Witchstalker",
      "Budding Insurgent",
@@ -582,9 +582,9 @@
     "id": 8,
     "size": 11,
     "core": [
+     "Rockfall Vale",
      "Overgrown Farmland",
      "Shipwreck Marsh",
-     "Rockfall Vale",
      "Haunted Ridge",
      "Primal Witchstalker",
      "Deserted Beach",
@@ -605,7 +605,7 @@
       0.002840738592033931
      ]
     ],
-    "colors": "GBR",
+    "colors": "GRB",
     "members": [
      "Deserted Beach",
      "Haunted Ridge",
@@ -1578,56 +1578,56 @@
  },
  "colour_nmi": {
   "uniform": {
-   "obs": 0.0972724961244804,
-   "shuffled_mean": 0.03949532311104359,
-   "shuffled_max": 0.07151332243123998
+   "obs": 0.09727249612448038,
+   "shuffled_mean": 0.039991017465550595,
+   "shuffled_max": 0.06608560607618724
   },
   "tight": {
    "obs": 0.09384580994518767,
-   "shuffled_mean": 0.03863961728317569,
-   "shuffled_max": 0.06977847207683373
+   "shuffled_mean": 0.03893594310797471,
+   "shuffled_max": 0.07234216465968558
   },
   "rarity": {
    "obs": 0.11931172822177205,
-   "shuffled_mean": 0.05429371435847898,
-   "shuffled_max": 0.07631276500189858
+   "shuffled_mean": 0.053514164267716074,
+   "shuffled_max": 0.08130710086368619
   },
   "full": {
-   "obs": 0.19213452196082642,
-   "shuffled_mean": 0.07740101259615043,
-   "shuffled_max": 0.11132089783749984
+   "obs": 0.1921345219608264,
+   "shuffled_mean": 0.07855791658754792,
+   "shuffled_max": 0.11443519943526412
   },
   "full_knn": {
    "obs": 0.1955358627242836,
-   "shuffled_mean": 0.10790721783781419,
-   "shuffled_max": 0.13605643365565986
+   "shuffled_mean": 0.10660564020579484,
+   "shuffled_max": 0.13705960565236672
   }
  },
  "V1": {
   "uniform": {
    "obs": 0.922077922077922,
-   "base": 0.343798701298702,
+   "base": 0.3425779220779227,
    "p": 0.0004997501249375312
   },
   "tight": {
    "obs": 0.7662337662337663,
-   "base": 0.35325649350649385,
+   "base": 0.3499448051948056,
    "p": 0.0004997501249375312
   },
   "rarity": {
    "obs": 0.6883116883116883,
-   "base": 0.25370129870129865,
+   "base": 0.25504220779220776,
    "p": 0.0004997501249375312
   },
   "full": {
    "obs": 0.06493506493506493,
-   "base": 0.1990844155844158,
+   "base": 0.20069155844155823,
    "p": 1.0
   },
   "full_knn": {
    "obs": 0.06493506493506493,
-   "base": 0.14158441558441542,
-   "p": 0.9950024987506247
+   "base": 0.14077272727272686,
+   "p": 0.9940029985007496
   }
  },
  "V2": {

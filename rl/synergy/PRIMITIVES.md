@@ -117,3 +117,16 @@ What the construction **cannot** do, so a result on any of these is a bug:
 Expected but not guaranteed (the plan's validation): surveil ↔ graveyard
 payoffs co-cluster; loyalty adders → the `CounterAddedOnce:LOYALTY` card;
 Chandra's `+1: RR` → top end / X spells.
+
+## 5. Corrections after the first graph run
+
+The sections above are unchanged from the pre-registration commit.
+Mapping fixes made afterwards are listed in `SYNERGY-GRAPH.md` §7. Two of
+them change rows of the §2 table:
+
+- `cost_mod`: **RaiseCost no longer emits an edge.** It is a tax on the
+  matching cards, so it is anti-synergy.
+- `counter+` listeners: `R:AddCounter` reads `ValidCounterType$`. `Count$`
+  no longer matches `ReplaceCount$` / `TriggerCount$`, and inline `Count$`
+  in ability params is now read. Host-attached triggers (`AttachedBy`,
+  `EnchantedBy`, `EquippedBy`) are no longer cross-card listeners.

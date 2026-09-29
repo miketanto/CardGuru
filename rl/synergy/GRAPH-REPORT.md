@@ -23,7 +23,7 @@ Cross-scheme agreement (NMI): uniform~tight 0.644, uniform~rarity 0.456, uniform
   core: Inspired Tethermage, Ajani Unrelenting, Way of the Mind Sculptor, Way of the Paradox, Kiora of Salt and Sand, Jace, Reality Sculptor, Tam, the Possibility, Avatar of Burgeoning Echoes
 
 **C2** (41 cards, colours RUB) — primitives: prepare 44%, cast 27%, cost_mod (cost) 15%, mana (resource) 5%, tograve 4%
-  core: Codie, Ravenous Codex, Infinite Coursework, Geist of Saint Thalia, Pyre Rhymer, Variable Chaser, Pompous Battlemage, Bloodline Recollector, Void Extrapolator
+  core: Codie, Ravenous Codex, Infinite Coursework, Geist of Saint Thalia, Pyre Rhymer, Variable Chaser, Pompous Battlemage, Bloodline Recollector, Theorix Metamage
 
 **C3** (30 cards, colours URB) — primitives: draw 71%, discard 18%, mana (resource) 4%, tograve 4%, enter 2%
   core: Tinybones, Pocket Nuisance, Murmuring Volume, Lyra, Tolarian Archangel, The Theorist, Jace Beleren, Hallway Heckler, Solitary Cell, Proft, Sinister Mastermind, Gideon's Memorial
@@ -37,11 +37,11 @@ Cross-scheme agreement (NMI): uniform~tight 0.644, uniform~rarity 0.456, uniform
 **C6** (16 cards, colours UWR) — primitives: surveil 93%, tograve 3%, enter 2%, reenter 1%, mana (resource) 0%
   core: Prudent Fateseer, Proctor of Potential, Diviner of Victory, Surveillance Phantasm, Denzilore Fatehold, Saheeli, Consul of Oversight, Proft, Consulting Detective, Desperate Futurescribe
 
-**C7** (14 cards, colours BGW) — primitives: die 95%, enter 3%, mana (resource) 1%, tograve 1%
+**C7** (14 cards, colours BGU) — primitives: die 95%, enter 3%, mana (resource) 1%, tograve 1%
   core: Edgar, Ancient Bloodlord, Eye of Jace, Loot, the Anomaly, Way of the Necromancer, Gardenize, Massacre Girl, Most Wanted, Budding Insurgent, Theorist's Proxy
 
-**C8** (11 cards, colours GBR) — primitives: enter 99%, tograve 0%, mana (resource) 0%
-  core: Overgrown Farmland, Shipwreck Marsh, Rockfall Vale, Haunted Ridge, Primal Witchstalker, Deserted Beach, Koth, the Geomancer, Hexhaven Invigorator
+**C8** (11 cards, colours GRB) — primitives: enter 99%, tograve 0%, mana (resource) 0%
+  core: Rockfall Vale, Overgrown Farmland, Shipwreck Marsh, Haunted Ridge, Primal Witchstalker, Deserted Beach, Koth, the Geomancer, Hexhaven Invigorator
 
 ## 2b. Communities under `full`
 
@@ -83,11 +83,11 @@ Colour enters the graph only through the resource-flow colour factor. In a draft
 
 | scheme | NMI with colour | shuffled mean | max shuffled |
 |---|---|---|---|
-| uniform | 0.097 | 0.039 | 0.072 |
-| tight | 0.094 | 0.039 | 0.070 |
-| rarity | 0.119 | 0.054 | 0.076 |
-| full | 0.192 | 0.077 | 0.111 |
-| full_knn | 0.196 | 0.108 | 0.136 |
+| uniform | 0.097 | 0.040 | 0.066 |
+| tight | 0.094 | 0.039 | 0.072 |
+| rarity | 0.119 | 0.054 | 0.081 |
+| full | 0.192 | 0.079 | 0.114 |
+| full_knn | 0.196 | 0.107 | 0.137 |
 
 ## 3. Validation (plan's three known-good checks)
 
@@ -97,11 +97,11 @@ Colour enters the graph only through the resource-flow colour factor. In a draft
 
 | scheme | same-community rate | shuffled-label baseline | p (one-sided, 2000 perms) | direct edges S→P / pairs |
 |---|---|---|---|---|
-| uniform | 0.922 | 0.344 | 0.0005 | 154/154 |
-| tight | 0.766 | 0.353 | 0.0005 | 154/154 |
-| rarity | 0.688 | 0.254 | 0.0005 | 154/154 |
-| full | 0.065 | 0.199 | 1.0000 | 154/154 |
-| full_knn | 0.065 | 0.142 | 0.9950 | 154/154 |
+| uniform | 0.922 | 0.343 | 0.0005 | 154/154 |
+| tight | 0.766 | 0.350 | 0.0005 | 154/154 |
+| rarity | 0.688 | 0.255 | 0.0005 | 154/154 |
+| full | 0.065 | 0.201 | 1.0000 | 154/154 |
+| full_knn | 0.065 | 0.141 | 0.9940 | 154/154 |
 
 Payoffs: Cruel Calculations, Dark Matter Manipulator, Eye of Jace, Hapatra, the Desert Fang, Null Summoner, Proft, Sinister Mastermind, Recursive Recruitment, Tarmogoyf, Theorix Metamage, Void Extrapolator, Winter, Tormented Loner, Yuriko, Hope from the Shadows
 
