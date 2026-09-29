@@ -373,3 +373,53 @@ community:
 
 §3's table is from before this change and still describes the
 communities; only its sizes are superseded by the figures above.
+
+## 11. Curve-aware resource weight (follow-up to §9 item 2)
+
+### 11.1 Model and predictions — written before the re-run
+
+The old weight was `min(1, amount / (MV − 4))` for MV ≥ 5 consumers,
+`min(1, amount/2)` for X spells and sinks, times a flat 0.6 when the
+producer's colours did not cover the consumer's. It had no notion of
+*when* the producer arrives. The new model asks **how many turns earlier
+this producer lets the consumer be cast**, assuming one land per turn:
+
+- **Ready turn** `R`. For a nonland producer, `R = MV_producer + 1`: the
+  turn it is cast, all mana goes into it. That covers mana abilities,
+  mana tokens (Treasure, Lotus, Heartwood; `MV` of the card that makes
+  them), land ramp and extra land plays. For a land producing N mana,
+  `R = 1` and the surplus is N − 1.
+- **Payable amount** `eff = min(amount, generic_c + pips the producer's
+  colours can pay)`. This replaces the flat 0.6 colour factor. Hybrid
+  pips are payable by either colour; `2/W` and Phyrexian pips count as
+  generic; `{C}` pips need a colourless producer.
+- **Cast acceleration.** Every nonland card with MV ≥ 2 is now a
+  candidate consumer; the MV ≥ 5 cutoff is removed as the crude proxy it
+  was. `saved = MV_c − max(R, MV_c − eff)`, and `q = min(1, saved / 2)`.
+  **An edge exists only if `saved ≥ 1`.**
+- **X spells:** `q = min(1, eff / 2)`, unchanged (each mana is +1 X from
+  turn `R`).
+- **Activated sinks** (same set as before: non-loyalty, mana cost ≥ 4 or
+  X): `q = min(1, eff / s)`. That is the share of one activation the
+  producer pays each turn; it absorbs surplus rather than accelerating.
+
+What it does not model: casting two spells in one turn, one-shot vs
+repeatable producers (a Treasure counts like a mana rock), tapped lands,
+and summoning sickness. Folding sickness into `R = MV + 1` is exact for
+dorks and one turn pessimistic for a haste dork.
+
+**Predictions:**
+- **Cannot move:** every state/cost edge weight (their rarity counts are
+  keyed per signal, and mana signals only pair with each other). That
+  pins V2's 43/44 link count, V1's 154/154 direct edges, and pre-reg
+  item 4 (0).
+- **Chandra, Torch of Defiance** (MV 4, `R = 5`, 2 red). Arithmetic says
+  `saved ≥ 1` iff `MV_c ≥ 6`, so **she loses every MV 5 consumer**. On
+  turn 5 she lets you cast a 7-drop, not a 5-drop earlier. Her consumer
+  count should fall from 77. Whether her best pure-resource rank (12)
+  rises or falls is **not predicted**: tighter edges and fewer
+  competitors pull in opposite directions.
+- Cheap producers gain consumers. A 2-mana dork (`R = 3`, +1) accelerates
+  every MV ≥ 4 card, so total resource matches should rise.
+- V1 rates, held-out hits, colour NMI and communities can all move
+  (pair weights include resource edges); no direction predicted.
