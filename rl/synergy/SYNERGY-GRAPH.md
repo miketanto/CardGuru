@@ -358,8 +358,10 @@ dominant primitives. Modularity 0.507 → 0.506, seed stability 0.909 →
 41→37, death triggers 14→18, lands 11→12. Seven of 280 cards changed
 community:
 
-- Hall of Echoes: recursion → lands. A direct effect, since it is a land
-  and its new legendary listener ties it to the land-side legendaries.
+- Hall of Echoes: recursion → lands. It is the only mover whose own
+  edges changed (+99 legendary pairs, all weak). Its intrinsic land
+  `enter` already tied it to the lands community's landfall listeners;
+  which edge tipped it was not traced.
 - Six moved **indirectly**, through rarity counts. No new edge touches
   them. Bloodline Recollector, Fulminous Forte, Kindred Judgment and
   Silence the Echo went Prepare → death triggers; Lich's Relic went
