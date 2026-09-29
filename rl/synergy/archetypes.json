@@ -1,0 +1,13 @@
+{
+ "_source": "web-search summaries 2026-09-29 (guide pages egress-blocked); see ARCHETYPES-CHECK.md §1. Enemy-pair signposts = the pair's gold uncommon in Forge data. Used only by evaluate.py.",
+ "WU": {"theme": "Fatehold surveil aggro", "signpost": "Desperate Futurescribe"},
+ "UB": {"theme": "Theorix graveyard / self-mill", "signpost": "Recursive Recruitment"},
+ "BR": {"theme": "Stingerquill burn aggro", "signpost": "Grim Repriser"},
+ "RG": {"theme": "Konstrari ramp (Heartwood)", "signpost": "Craftwork Crusher"},
+ "GW": {"theme": "Vigorbloom lifegain + counters", "signpost": "Bloombrute"},
+ "WB": {"theme": "Liliana attrition / sacrifice", "signpost": "Edgar, Ancient Bloodlord"},
+ "UR": {"theme": "Chandra noncreature spells", "signpost": "Saheeli, Jewel of Avishkar"},
+ "BG": {"theme": "Garruk graveyard / creature value", "signpost": "Hapatra, the Desert Fang"},
+ "RW": {"theme": "Mabel +1/+1 counters aggro", "signpost": "Mabel, Valley Hero"},
+ "GU": {"theme": "Kiora Empower Jace", "signpost": "Kiora of Salt and Sand"}
+}

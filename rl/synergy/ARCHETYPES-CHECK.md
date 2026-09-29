@@ -95,6 +95,13 @@ In priority order. None of these fixes has been tried yet.
    fall into C2. **Candidate fix:** damp rarity for hub-and-spoke
    enablers (e.g. rarity from the listener side only, or cap an
    enabler's total contribution), run as a new A/B scheme.
+   *Correction (measured before trying it):* both named fixes make this
+   worse. The re-prepare edge has `m_listen = 2`, `m_emit = 21`. Its
+   rarity is 0.403 now; listener-side-only would give 0.877 and
+   emitter-side-only 0.460. The hub effect lives in the clustered graph,
+   not the rarity formula: both hubs sit in the top-10 neighbours of all
+   21 Prepare cards (42/42), and Codie is #1 for 16. See
+   `SYNERGY-GRAPH.md` §12 for the fix actually tried.
 2. **BR burn is invisible.** Whiplash Wordsmith's payoff is
    `CheckSVar$ X` with `X:PlayerCountOpponents$HasPropertywasDealtNonCombatDamageThisTurn`.
    That is not a `Count$` expression, so it is never parsed. 35 cards

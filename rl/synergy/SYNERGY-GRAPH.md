@@ -500,3 +500,52 @@ death 18→17, lands 12→13 (the rest unchanged). Seed stability 0.917 →
 of Stone went recursion → Prepare; Hexhaven Dueling Arena went
 recursion → lands; Theoretical Necromancer went draw → recursion;
 Lich's Relic went death → recursion.
+
+## 12. Hub damping (the Prepare hub effect, `ARCHETYPES-CHECK.md` §3.1)
+
+### 12.1 Method and predictions — written before the re-run
+
+**Mechanism (measured on the current graph):**
+- Codie, Ravenous Codex and Infinite Coursework are the only two cards
+  that re-prepare. Every Prepare card's `prepare` listener pairs with
+  both, at rarity 0.403 (`m_listen = 2`, `m_emit = 21`).
+- Both hubs are in the top-10 `full` neighbours of **all 21** Prepare
+  cards (42/42 slots), and Codie is #1 for 16 of them. `full_knn` keeps
+  every one of those edges, so Louvain pulls the spokes toward the hubs
+  whatever their colour.
+
+**Two new schemes.** Both are graph-wide; nothing names Prepare. The old
+five schemes are kept unchanged for A/B.
+- `mutual_knn`: keep a `full` edge only if it is in the top-10 of
+  **both** endpoints. A hub with 21 spokes can keep at most 10.
+- `norm_knn`: symmetric strength normalisation,
+  `w' = w / sqrt(s_a · s_b)` with `s` = a card's total `full` weight,
+  then top-10 of either endpoint (as `full_knn`).
+
+**New metrics** (`evaluate.py` §2y). Ground truth is `archetypes.json`,
+which evaluate reads and graph construction does not.
+- **Hub slots:** the number of kept edges between a Prepare card and the
+  two re-prepare hubs (42 under `full_knn`).
+- On the 65 gold cards (colours = exactly one pair):
+  - **signpost agreement**: the number of pairs whose signpost shares a
+    cluster with the plurality of that pair's gold cards;
+  - **gold NMI**: NMI(cluster, pair) over those 65 cards.
+- **Prepare spread:** the largest share of the 21 Prepare cards in one
+  cluster (12/21 under `full_knn`).
+
+**Predictions:**
+- **Cannot move:** matches and match-level weights (`fra_edges.json`),
+  so every number for the old five schemes is identical. That includes
+  V1 direct edges 154/154, V2 43/44 and pre-reg item 4.
+- **Should move:** hub slots fall below 42 under both new schemes, and
+  the Prepare spread falls below 12/21. At least one of UB/BR/RG has its
+  gold plurality leave the Prepare-dominated cluster.
+- **Risks, stated now:**
+  - `mutual_knn` can isolate cards whose top-10 is never reciprocated,
+    so the isolated count is reported.
+  - Hub damping is not Prepare-specific, and the Empower/planeswalker
+    cluster also leans on hubs (Inspired Tethermage, Tam). GU could
+    fragment; that would count as a loss.
+- **Success** means UB/BR/RG improve without losing any of the four
+  recovered archetypes (WU, GW, GU, RW) on the §2 scorecard. Anything
+  else is reported as it is.
