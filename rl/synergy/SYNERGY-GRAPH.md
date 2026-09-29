@@ -118,6 +118,8 @@ planeswalker *card*'s minus abilities) holds: **0** such edges.
 
 ### 2.3 V3 — Chandra, Torch of Defiance → top end / X: pass on links; weak on ranking
 
+*Superseded in part by §11.2* (curve-aware resource weight): 52 consumers, none of them MV 5 cast; her top resource partners are MV 7–10. The overall rank (12th) is unchanged. The text below is the original result.
+
 Chandra's `+1: Add {R}{R}` feeds **77** consumers: MV ≥ 5 cards, X
 spells (Ajani's Anguish), and mana sinks. **0** of them share a
 keyword with Chandra, and 0 resource edges cite a keyword; pre-registration
